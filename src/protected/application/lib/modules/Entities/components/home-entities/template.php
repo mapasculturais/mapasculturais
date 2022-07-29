@@ -46,7 +46,7 @@ use MapasCulturais\i;
                 <div class="card__left">
                     <div class="card__left--content">
                         <div class="card__left--content-icon event__background">
-                            <iconify icon="icons8:idea"></iconify>
+                            <iconify icon="ant-design:calendar-twotone"></iconify>
                         </div>
                         
                         <div class="card__left--content-title">
@@ -74,7 +74,7 @@ use MapasCulturais\i;
                 <div class="card__left">
                     <div class="card__left--content">
                         <div class="card__left--content-icon space__background">
-                            <iconify icon="icons8:idea"></iconify>
+                            <iconify icon="clarity:building-line"></iconify>
                         </div>
                         
                         <div class="card__left--content-title">
@@ -102,7 +102,7 @@ use MapasCulturais\i;
                 <div class="card__left">
                     <div class="card__left--content">
                         <div class="card__left--content-icon agent__background">
-                            <iconify icon="icons8:idea"></iconify>
+                            <iconify icon="fa-solid:user-friends"></iconify>
                         </div>
                         
                         <div class="card__left--content-title">
@@ -130,7 +130,7 @@ use MapasCulturais\i;
                 <div class="card__left">
                     <div class="card__left--content">
                         <div class="card__left--content-icon project__background">
-                            <iconify icon="icons8:idea"></iconify>
+                            <iconify icon="ri:file-list-2-line"></iconify>
                         </div>
                         
                         <div class="card__left--content-title">
