@@ -1,11 +1,12 @@
 @use '../settings/mixins' as *;
 
 .home-entities {
-    border:1px solid;
-    padding: size(60) size(16);
     background-color: var(--mc-gray-300);
+    padding: size(60) size(16);
     
     &__content {
+        min-height:size(156);
+
         &--header {
             .title {
                 font-weight: 700;
@@ -20,7 +21,7 @@
             }
 
         }
-        
+
         &--cards {
             display: flex;
             flex-direction: column;
@@ -29,25 +30,26 @@
 
             .card {
                 display: flex;
-
+                
                 &__left {
                     flex-basis: 55%;
                     width: size(648);
-                    height: size(156);
                     overflow: hidden;
                     position: relative;
                     
                     &--content {
-                        position: absolute;
-                        width: 100%;
-                        height: 100%;
-                        padding: 46px 40px;
+                        align-items: center;
+                        background-color: rgba(0,0,0,.3);
                         display: flex;
                         flex-direction: row;
-                        align-items: center;
+                        position: absolute;
+                        height: 100%;
+                        width: 100%;
+                        padding: 46px 40px;
                         gap: 18px;
-                        background-color: rgba(0,0,0,.3);
-                        
+                        max-width: 1170px;
+                        margin: 0 auto;
+
                         &-icon {
                             width:64px;
                             height: 64px;
@@ -71,27 +73,43 @@
                     }
 
                     &--img{
+                        height: size(156);
+
                         img {
                             width: 100%;
                             object-fit: cover;
                             -o-object-fit: cover;
+                            
                         }
                     }
                 }
 
                 &__right{
-                    padding: size(24) size(32) size(13);
-                    flex-basis: 45%;
+                    align-items: flex-end;
                     background-color: var(--mc-high-300);
-                    width: 523px;
-                    height: 156px;
                     display: flex;
+                    flex-basis: 45%;
+                    flex-direction: column;
+                    padding: size(24) size(32) size(13);
+                    width: 523px;
+                
 
                     p {
                         font-weight: 400;
                         font-size: 16px;
                         line-height: 22px;
                         margin: 0;
+                    }
+                }
+
+                @media (max-width:size(800)) {
+                    display: flex;
+                    flex-direction: column;
+
+                    &__left,
+                    &__right {
+                        flex-basis: 50%;
+                        width: 100%;
                     }
                 }
             }

@@ -18,22 +18,26 @@ use MapasCulturais\i;
                 <div class="card__left">
                     <div class="card__left--content">
                         <div class="card__left--content-icon opportunity__background">
-                        <iconify icon="icons8:idea"></iconify>
+                            <iconify icon="icons8:idea"></iconify>
                         </div>
+                        
                         <div class="card__left--content-title">
                             <label class="title">
                                 <?php i::_e('Oportunidades') ?>
                             </label>
                         </div>
                     </div>
+
                     <div class="card__left--img">
                         <img src="<?php $this->asset('img/home/mapa.jpg') ?>" />
                     </div>
                 </div>
+
                 <div class="card__right">
                     <p>
-                    Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e concursos. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.
+                        Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e concursos. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.
                     </p>
+                    <a class="button button--icon button--sm opportunity__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
                 </div>
 
             </div>
