@@ -13,7 +13,6 @@ $this->import('modal');
             <div style="height:500px; width:500px;">
                 <cropper
                     ref="cropper"
-                    class="upload-example-cropper"
                     :src="image.src"
                     :stencil-props="stencilProps"
                     :default-size="defaultSize"
@@ -23,7 +22,7 @@ $this->import('modal');
 
         <template #button="modal">
             <label>
-                <slot :modal="modal" :blob="blob" :file="file" :blobUrl="blobUrl" :fileDescription="fileDescription" :upload="upload"></slot>
+                <slot :modal="modal" :blob="blob" :file="file" :blobUrl="blobUrl" :description="description" :upload="upload"></slot>
                 <input :id="group+<?= date("Ymd") ?>" type="file" ref="file" @change="loadImage($event, modal)" accept="image/*" style="display:none">
             </label>
         </template>
