@@ -3,6 +3,121 @@
 .entity-card {
     background-color: var(--mc-white);
     border-radius: var(--mc-border-radius);
+    padding: size(16);
+    width: 100%;
+
+    &__header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 size(20);
+
+        &--image {
+            align-items: center;
+            background-color: var(--mc-gray-300);
+            border-radius: 50%;
+            display: flex;
+            height: size(48);
+            justify-content: center;
+            overflow: hidden;
+            width: size(48);
+
+            img {
+                width: 100%;
+            }
+
+            .iconify {
+                color: var(--mc-gray-700);
+            }
+        }
+
+        &--title {
+            display: flex;
+            flex-direction: column;
+            gap: size(4) 0;
+
+            &-title {
+                font-weight: 700;
+                font-size: size(18);
+                line-height: size(25);
+                display: flex;
+                align-items: center;
+            }
+
+            &-metadata {
+                display: flex;
+                flex-direction: column;
+                gap: size(4) 0;
+            }
+        }
+    }
+
+    &__content {
+
+        &--description {
+            font-weight: 400;
+            font-size: size(12);
+            line-height: size(16);
+            margin: size(15) 0;
+        }
+    }
+
+    &__footer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: size(24) 0;
+
+        &--data {
+            flex-basis: 50%;
+            min-width: 296px;
+            
+            .seals {
+                display: flex;
+                flex-wrap: wrap;
+                gap: size(5);
+
+                &__title {
+                    align-items: center;
+                    display: flex;
+                    font-size: size(12);
+                    line-height: size(16);
+                    text-transform: uppercase;
+                    width: 100%;
+                }
+
+                &__seal {
+                    align-items: center;
+                    background: #C4C4C4;
+                    border-radius: size(4);
+                    display: flex;
+                    font-size: size(12);
+                    font-weight: 400;
+                    height: size(32);
+                    justify-content: center;
+                    line-height: size(16);
+                    width: size(32);
+                }
+            }
+        }
+
+        &--action {
+            flex-basis: 50%;
+            min-width: 296px;
+
+            .button {
+                display: block;
+                text-align: center;
+
+                .iconify {
+                    float: right;
+                }
+            }
+        }
+    }
+}
+
+/* .entity-card {
+    background-color: var(--mc-white);
+    border-radius: var(--mc-border-radius);
 
     &__header {
         align-items: center;
@@ -144,4 +259,4 @@
             }
         }
     }
-}
+} */
