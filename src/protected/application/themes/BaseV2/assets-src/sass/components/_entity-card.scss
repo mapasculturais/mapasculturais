@@ -67,8 +67,7 @@
         gap: size(24) 0;
 
         &--data {
-            flex-basis: 50%;
-            min-width: 296px;
+            max-width: 296px;
             
             .seals {
                 display: flex;
@@ -100,8 +99,10 @@
         }
 
         &--action {
-            flex-basis: 50%;
-            min-width: 296px;
+            align-items: flex-end;
+            display: flex;
+            max-width: 500px;
+            width: 100%;
 
             .button {
                 display: block;
@@ -115,7 +116,7 @@
     }
 }
 
-/* .entity-card {
+.panel-entity-card {
     background-color: var(--mc-white);
     border-radius: var(--mc-border-radius);
 
@@ -231,6 +232,7 @@
     &__footer-actions {
         display: flex;
         justify-content: flex-end;
+        gap: size(20);
 
         button {
             margin-left: size(4);
@@ -259,4 +261,4 @@
             }
         }
     }
-} */
+}
