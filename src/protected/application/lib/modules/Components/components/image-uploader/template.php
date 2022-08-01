@@ -8,16 +8,16 @@ $this->import('modal');
     
     <modal title="<?php i::_e("Recorte a imagem") ?>" @open="reset()">
         <template #default>
-            <input v-if="useDescription" v-model="description" placeholder="<?php i::esc_attr_e('Descrição da imagem') ?>">
-
-            <div style="height:500px; width:500px;">
-                <cropper
-                    ref="cropper"
-                    :src="image.src"
-                    :stencil-props="stencilProps"
-                    :default-size="defaultSize"
-                />
+            <div class="field">
+                <input v-if="useDescription" v-model="description" class="input" placeholder="<?php i::esc_attr_e('Descrição da imagem') ?>">
             </div>
+
+            <cropper
+                ref="cropper"
+                :src="image.src"
+                :stencil-props="stencilProps"
+                :default-size="defaultSize"
+            />
         </template>
 
         <template #button="modal">

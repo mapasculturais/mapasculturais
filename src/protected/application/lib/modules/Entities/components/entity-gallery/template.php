@@ -21,7 +21,7 @@ $this->import('confirm-button popover modal');
                         <a @click="toggle()"> <iconify icon="zondicons:edit-pencil"></iconify> </a>
                     </template>
                     <template #default="popover">
-                        <form @submit="rename(img, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                        <form @submit="rename(img, popover); $event.preventDefault()" class="entity-gallery__addNew--newGroup">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="field">
