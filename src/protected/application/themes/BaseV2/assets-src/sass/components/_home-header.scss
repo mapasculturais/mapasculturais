@@ -2,6 +2,8 @@
 
 .home-header {
     background-color: #0074C1;
+    position: relative;
+    
     &__content {
         display: flex;
         height: size(510);
