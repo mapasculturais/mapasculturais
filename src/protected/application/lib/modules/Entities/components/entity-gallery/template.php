@@ -15,6 +15,8 @@ $this->import('confirm-button popover modal');
                 <img @click="openImg(index)" :src="img.transformations.galleryFull?.url" :imgId="img.id" :title="img.description"/>
             </div>
 
+            <p @click="openVideo(index); open()" class="entity-gallery__list--image-label"> {{img.description}} </p>
+
             <div v-if="editable" class="entity-gallery__list--image-actions">
                 <popover @open="img.newDescription = img.description" openside="down-right">
                     <template #button="{ toggle }">
