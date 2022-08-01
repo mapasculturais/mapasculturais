@@ -90,6 +90,10 @@ app.component('image-uploader', {
                     height: height,
                 };
             } 
+        },
+        
+        blobUrl () {
+            return this.blob ? URL.createObjectURL(this.blob) : '';
         }
     },
 
@@ -106,12 +110,6 @@ app.component('image-uploader', {
             modal: null,
 		};
 	},
-
-    computed: {
-        blobUrl () {
-            return this.blob ? URL.createObjectURL(this.blob) : '';
-        }
-    },
     
 	methods: {
 		crop(modal) {
