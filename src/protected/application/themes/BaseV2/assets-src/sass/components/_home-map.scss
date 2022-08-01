@@ -2,15 +2,37 @@
 
 
 .home-map {
-    padding: size(60) size(16);
     position: relative;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    background-color: var(--mc-white);
+    padding: size(80) 0;
 
     &__content {
+        max-width: size(1170);
+        margin:0 auto;
+        position: relative;
         
-         
+        &--title {
+            font-weight: 700;
+            font-size: size(32);
+            line-height: size(44);   
+            @media (max-width:size(800)) {
+                font-size: size(24);
+                line-height: size(28);
+            }
+        }
+
+        &--description {
+            font-weight: 400;
+            font-size: size(18);
+            line-height: size(25);
+            @media (max-width:size(800)) {
+                font-size: size(14);
+                line-height: size(19);
+            }
+        }
+
+        &--img {
+            width: 100%;
+        }
+        
     } 
 }
