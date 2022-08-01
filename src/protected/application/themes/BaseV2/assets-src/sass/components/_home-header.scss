@@ -45,6 +45,7 @@
                     font-weight: 400;
                     font-size: size(18);
                     line-height: size(25);
+                    margin: size(24) 0;
                 }
             }
         }
@@ -71,9 +72,10 @@
             }
         }
     
-        @media (max-width: 800px) {
+        @media (max-width: 600px) {
             flex-direction: column;
             min-height: size(510);
+            height: auto;
     
             &--left {
                 padding: size(24);
@@ -81,6 +83,15 @@
     
                 &::before {
                     display: none;
+                }
+
+                .content {
+            
+                    &__description {
+                        font-size: size(16);
+                        line-height: size(22);
+                        margin: size(8) 0 size(19);
+                    }
                 }
             }
     
