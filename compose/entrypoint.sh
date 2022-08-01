@@ -25,6 +25,7 @@ echo "\ncorrigindo status da fila de criação de cache de permissão\n\n";
 $pdo->query("UPDATE permission_cache_pending SET status = 0;");
 '
 mkdir -p /var/www/html/protected/DoctrineProxies
+mkdir -p /var/www/SaaS
 if ! cmp /var/www/version.txt /var/www/private-files/deployment-version >/dev/null 2>&1
 then
     /var/www/scripts/deploy.sh
@@ -34,7 +35,7 @@ else
     /var/www/scripts/mc-db-updates.sh
 fi
 
-chown -R www-data:www-data /var/www/html/assets /var/www/html/files /var/www/private-files /var/www/html/protected/DoctrineProxies
+chown -R www-data:www-data /var/www/html/assets /var/www/html/files /var/www/private-files /var/www/html/protected/DoctrineProxies /var/www/SaaS
 
 cd /
 touch /nohup.out
