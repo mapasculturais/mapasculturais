@@ -10,7 +10,7 @@ use MapasCulturais\i;
             <?php i::_e('Existem algumas maneiras de desenvolvedores interagirem com o <b>mapas culturais</b>. A primeira é através da nossa API, com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o <b>mapas culturais</b> é construído a partir do <u>sofware livre Mapas Culturais</u>, criado em parceria com o Instituto TIM, e você pode contribuir para o seu desenvolvimento através do GitHub.') ?>
         </div>
         <div class="home-developers__content--link">
-            <a class="link"href="https://github.com/mapasculturais">Conheça o repositório <iconify icon="la:github-alt"></iconify></a>
+            <a class="link" href="https://github.com/mapasculturais"> Conheça o repositório <iconify icon="la:github-alt"></iconify> </a>
         </div>
     </div>
 </div>

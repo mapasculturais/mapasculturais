@@ -9,7 +9,9 @@ use MapasCulturais\i;
                 <?php i::_e('O que você encontra em Mapas Culturais,') ?>
             </label>
             <label class="description">
-                <p></p><?php i::_e('Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum et, rhoncus semper et, nulla. ,') ?></p>
+                <p>
+                    <?php i::_e('Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum et, rhoncus semper et, nulla. ,') ?>
+                </p>
             </label>
         
         </div>

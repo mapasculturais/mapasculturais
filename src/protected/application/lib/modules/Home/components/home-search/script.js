@@ -11,6 +11,9 @@ app.component('home-search', {
     },
 
     data() {
+        return {
+            
+        }
     },
 
     computed: {
