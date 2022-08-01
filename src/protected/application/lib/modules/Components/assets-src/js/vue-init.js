@@ -3,6 +3,7 @@ import * as Pinia from 'pinia'
 import * as Vue from 'vue'
 import VueFinalModal from 'vue-final-modal'
 import * as VueAdvancedCropper from "vue-advanced-cropper";
+import * as Vue3Carousel from "vue3-carousel";
 
 const app = Vue.createApp({})
 const pinia = Pinia.createPinia()
@@ -21,6 +22,7 @@ globalThis.Pinia = Pinia
 globalThis.pinia = pinia
 globalThis.Vue = Vue
 globalThis.VueAdvancedCropper = VueAdvancedCropper
+globalThis.Vue3Carousel = Vue3Carousel
 
 document.addEventListener('DOMContentLoaded', () => {
     app.mount('#main-app')
