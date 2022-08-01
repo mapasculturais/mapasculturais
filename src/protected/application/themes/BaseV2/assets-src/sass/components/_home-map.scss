@@ -3,11 +3,11 @@
 
 .home-map {
     position: relative;
-    padding: size(80) 0;
+    padding: size(80) size(16);
 
     &__content {
         max-width: size(1170);
-        margin:0 auto;
+        margin: 0 auto;
         position: relative;
         
         &--title {
