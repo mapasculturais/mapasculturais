@@ -2,10 +2,11 @@
     text-align: center;
     position: relative;
     user-select: none;
-    max-height: 100%;
-    max-width: 100%;
     direction: ltr;
     overflow: hidden;
+    max-height: 500px; 
+    max-width: 500px; 
+    margin: 20px 0 0;
   }
   .vue-advanced-cropper__stretcher {
     pointer-events: none;
