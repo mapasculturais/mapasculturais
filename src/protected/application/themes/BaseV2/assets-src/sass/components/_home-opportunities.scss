@@ -7,73 +7,6 @@
     padding: size(80) size(16);
     width: 100%;
 
-    &__filter {
-        display: flex;
-        gap: size(30);
-        justify-content: center;
-        left: 0;
-        padding: 0 size(16);
-        position: absolute;
-        top: size(-18.5);
-        width: 100%;
-
-        &--form {
-            align-items: center;
-            display: flex;
-            max-width: size(470);
-            position: relative;
-            width: 100%;
-
-            .input {
-                border: size(1) solid var(--mc-gray-100);
-                border-radius: size(68) 0 0 size(68);
-                border-right: 0;
-                font-size: size(16);
-                line-height: size(18);
-                max-width: size(385);
-                padding: size(14) 0 size(14) size(20);
-                width: 100%;
-
-                &:focus-visible {
-                    outline: 0;
-                }
-            }
-
-            .button {
-                align-items: center;
-                background: white;
-                border: size(1) solid var(--mc-gray-100);
-                border-radius: 0 size(68) size(68) 0;
-                border-left: 0;
-                cursor: pointer;
-                display: flex;
-                font-size: size(20);
-                padding: size(15) size(34);
-                margin-left: size(-1);
-
-                .iconify {
-                    font-size: size(16);
-                }
-
-                &:focus-visible {
-                    outline: 0;
-                }
-            }
-        }
-
-        .button.filter {
-            .iconify {
-                font-size: size(24);
-            }
-
-            @media (max-width: size(800)) {
-                font-size: size(14);
-                padding: size(5) size(15);
-                gap: size(9);
-            }
-        }
-    }
-
     &__content {
         max-width: size(1170);
         margin: 0 auto;
@@ -81,6 +14,7 @@
         &--title {
             display: flex;
             justify-content: space-between;
+            max-width: calc(100% - 130px);
 
             label {
                 font-weight: 700;
@@ -91,46 +25,18 @@
                     line-height: size(28);
                 }
             }
-
-            .actions {
-                gap: size(24);
-                display: flex;
-
-                &--btn {
-                    align-items: center;
-                    background: var(--mc-white);
-                    border: none;
-                    border-radius: 50%;
-                    cursor: pointer;
-                    display: flex;
-                    height: size(48);
-                    justify-content: center;
-                    width: size(48);
-
-                    .iconify{
-                        font-size: size(27);
-                        color: #D50200;
-                    }
-
-                    &:disabled {
-                        background: var(--mc-gray-100);
-                        cursor: default;
-                        .iconify {
-                            color: #8A4A4A;
-                        }
-                    }
-                }
-            }
         }
 
         &--description {
             font-weight: 400;
             font-size: size(16);
             line-height: size(22);
+            max-width: calc(100% - 130px);
         }
 
         &--cards {
-            &-list {
+
+            /* &-list {
                 list-style: none;
                 padding: 0;
                 display: flex;
@@ -142,7 +48,65 @@
                     min-width: size(328);
                     width: 100%;
                 }
+            } */
+
+            .actions {
+                gap: size(24);
+                display: flex;
+                position: absolute;
+                top: size(-90);
+                right: 0;
             }
+
+            .carousel {
+                margin-top: size(20);
+
+                &__prev {
+                    background: url('https://api.iconify.design/akar-icons/arrow-left.svg?color=%23d50200') no-repeat center center / size(27);
+                    background-color: var(--mc-white);
+                    cursor: pointer;
+
+                    .carousel__icon {
+                        display: none;
+                    }
+                }
+
+                &__next {
+                    background: url('https://api.iconify.design/akar-icons/arrow-right.svg?color=%23d50200') no-repeat center center / size(27);
+                    background-color: var(--mc-white);
+                    cursor: pointer;
+
+                    .carousel__icon {
+                        display: none;
+                    }
+                }
+
+                &__prev,
+                &__next {
+                    align-items: center;
+                    border: none;
+                    border-radius: 50%;
+                    display: flex;
+                    height: size(48);
+                    justify-content: center;
+                    width: size(48);
+
+                    &--in-active {
+                        background-color: var(--mc-gray-100);
+                        cursor: default;
+                    }
+                }
+
+                &__viewport {
+                    ol {
+                        li{
+                            justify-content: flex-start;
+                            padding: 0 size(20);
+                        }
+                    }
+                }
+            }
+
         }
 
     }
