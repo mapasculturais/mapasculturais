@@ -746,8 +746,9 @@ class Theme extends MapasCulturais\Theme {
 
     protected static function _getTexts(){
         $app = App::i();
+        $class = get_called_class();
 
-        return array_map(function($e) { return $e['text']; }, self::_dict());
+        return array_map(function($e) { return $e['text']; }, $class::_dict());
     }
 
     function getSearchAgentsUrl(){
