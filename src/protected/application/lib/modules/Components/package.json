@@ -12,6 +12,7 @@
         "pinia": "^2.0.13",
         "vue": "^3.2.33",
         "vue-final-modal": "^3.4.3",
-        "vue-advanced-cropper": "^2.8.1"
+        "vue-advanced-cropper": "^2.8.1",
+        "vue3-carousel": "^0.1.40"
     }
 }
