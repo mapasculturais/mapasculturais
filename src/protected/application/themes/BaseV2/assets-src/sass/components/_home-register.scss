@@ -3,22 +3,49 @@
 
 .home-register {
     padding: size(60) size(16);
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: #003F69;
+
+    &__background {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        opacity: 0.21;
+    }
     &__content {
-        background-color: var(--mc-white);
-        align-items: center;
+        align-items: flex-start;
+        color: var(--mc-white);
         display: flex;
         flex-direction: column;
         margin: 0 auto;
         max-width: size(1170);
-
+        z-index: 2;
         &--title {
-
+            font-weight: 700;
+            font-size: size(32);
+            line-height: size(44);
         }
         &--description{
-
+            margin: size(16) 0 size(25);
+            font-weight: 400;
+            font-size: size(18);
+            line-height: size(25);
         }
         &--button {
-
+            border-radius: size(8);
+            font-size: size(24);
+            line-height: size(28);
+            color: var(--mc-warning-500);
+            display: flex;
+            justify-content: space-between;
+            max-width: size(544);
+            width: 100%;
+            .iconify {
+                font-size: size(29);
+            }
         }  
     } 
 }
