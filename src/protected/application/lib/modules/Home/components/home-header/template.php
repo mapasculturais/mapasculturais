@@ -1,6 +1,6 @@
 <?php
 use MapasCulturais\i;
-
+$this->import('home-search');
 ?>
 
 <div class="home-header">
@@ -22,4 +22,5 @@ use MapasCulturais\i;
             </div>
         </div>
     </div>
+    <home-search></home-search>
 </div>
