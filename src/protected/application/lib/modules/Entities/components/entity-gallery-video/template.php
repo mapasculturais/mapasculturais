@@ -21,19 +21,11 @@ use MapasCulturais\i;
                     </template>
                     <template #default="{close}">
                         <form @submit="save(metalist).then(close); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                            
                             <div class="row">
                                 <div class="col-12">
                                     <div class="field">
-                                        <label><?php i::_e('Link do vídeo') ?></label>
-                                        <input v-model="metalist.newData.value" type="url" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="field">
-                                        <label><?php i::_e('Nome do vídeo') ?></label>
+                                        <label><?php i::_e('Título do vídeo') ?></label>
                                         <input v-model="metalist.newData.title" type="text" />
                                     </div>
                                 </div>
