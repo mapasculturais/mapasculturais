@@ -11,7 +11,7 @@ $this->import('confirm-button popover modal');
     <div class="entity-gallery__list" v-if="images">   
 
         <div class="entity-gallery__list--image" v-for="(img, index) in images">
-            <div class="row">
+            <div>
                 <div @click="open" class="entity-gallery__list--image-img" >
                     <img @click="openImg(index)" :src="img.transformations.galleryFull?.url" :imgId="img.id" :title="img.description"/>
                 </div>
@@ -32,11 +32,9 @@ $this->import('confirm-button popover modal');
                                         <input v-model="img.newDescription" type="text" placeholder="<?php i::esc_attr_e("Informe a descrição da imagem") ?>"/>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div class="actions">
-                                <button class="button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
-                                <button class="button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
+
+                                <button class="col-6 button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
