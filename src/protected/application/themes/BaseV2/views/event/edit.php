@@ -33,32 +33,27 @@ $this->breadcramb = [
             <template #content>
                 
                 <div class="left">
-                    <div class="row">
+                    <div class="row v-center">
                         <div class="col-12">
                             <entity-cover :entity="entity"></entity-cover>
                         </div>
-                    </div>    
-                    
-                    <div class="row v-center">
-                        <div class="col-3 col-sm-12">
+                        
+                        <div class="col-3 sm:col-12">
                             <entity-profile :entity="entity"></entity-profile>
                         </div>
 
-                        <div class="col-9 col-sm-12">
-                            <div class="rol">
+                        <div class="col-9 sm:col-12">
+                            <div class="row">
                                 <div class="col-12">
                                     <entity-field :entity="entity" label="Nome do Evento" prop="name"></entity-field>
                                 </div>
-                            </div>
-                            <div class="rol">
+                                
                                 <div class="col-12">
                                     <entity-field :entity="entity" label="Subtítulo do evento" prop="subTitle"></entity-field>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-field :entity="entity" prop="shortDescription"></entity-field>
                         </div>
@@ -76,14 +71,11 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-field :entity="entity" label="Classificação etária" prop="classificacaoEtaria"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-terms :entity="entity" taxonomy="linguagem" :editable="true" title="Linguagens culturais"></entity-terms>
                         </div>
-                    </div>
-
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-social-media :entity="entity" :editable="true"></entity-social-media>
                         </div>
@@ -108,22 +100,20 @@ $this->breadcramb = [
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Informações sobre o evento"); ?></label>
+                </template>
+                <template #content>   
                     <div class="row">
                         <div class="col-6">
                         </div>
+
                         <div class="col-6">
                             <entity-field :entity="entity" label="Telefone para informações sobre o evento" prop="telefonePublico"></entity-field>
                         </div>
-                    </div>   
-                    <div class="row">
+                        
                         <div class="col-12">
-                        <entity-field :entity="entity" label="Informações sobre a inscrição" prop="registrationInfo"></entity-field>
-
+                            <entity-field :entity="entity" label="Informações sobre a inscrição" prop="registrationInfo"></entity-field>
                         </div>
-                    </div>
-                </template>
-                <template #content>   
-                
+                    </div>                
                 </template>   
             </mapas-card>
 
@@ -146,19 +136,17 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-gallery-video title="<?php i::_e('Adicionar vídeos') ?>" :entity="entity" :editable="true"></entity-gallery-video>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" :editable="true"></entity-gallery>
                         </div>
                     </div>
                 </template>  
-            </mapas-card>
+            </mapas-card>                
         </main>
 
         <aside>
@@ -168,21 +156,15 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-admins :entity="entity" :editable="true"></entity-admins>
                         </div>
-                    </div>
-                    
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-terms :entity="entity" taxonomy="tag" title="Tags" :editable="true"></entity-terms>
                         </div>
-                    </div>
 
-                    <div class="row">
                         <div class="col-12">
                             <entity-related-agents :entity="entity" :editable="true"></entity-related-agents>
                         </div>
-                    </div>
-
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-owner :entity="entity" title="Publicado por" :editable="true"></entity-owner>
                         </div>
