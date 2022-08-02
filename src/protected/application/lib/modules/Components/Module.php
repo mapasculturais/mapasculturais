@@ -28,6 +28,8 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueScript($app_group, 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api', 'components-entityFile', 'components-entityMetalist']);
             $app->view->enqueueScript($app_group, 'components-utils', 'js/components-base/Utils.js', ['components-init']);
             $app->view->enqueueStyle($vendor_group, 'components-carousel', 'css/components-base/carousel.css');
+            $app->view->enqueueStyle($vendor_group, 'leaflet', '../node_modules/leaflet/dist/leaflet.css');
+            $app->view->assetManager->publishFolder('js/vue-init/', 'js/vue-init/');
 
             if (isset($app->components->templates)) {
                 $app->components->templates = [];
