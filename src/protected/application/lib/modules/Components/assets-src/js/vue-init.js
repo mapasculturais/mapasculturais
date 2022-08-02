@@ -14,10 +14,6 @@ app.use(VueFinalModal)
 app.component('Iconify', Icon)
 app.component('Cropper', VueAdvancedCropper)
 
-globalThis.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
-globalThis.$DESCRIPTIONS = $MAPAS.EntitiesDescription ?? []
-globalThis.$TAXONOMIES = $MAPAS.Taxonomies ?? {}
-
 globalThis.app = app
 globalThis.Pinia = Pinia
 globalThis.pinia = pinia
@@ -27,5 +23,9 @@ globalThis.Vue3Carousel = Vue3Carousel
 globalThis.VueLeaflet = VueLeaflet
 
 document.addEventListener('DOMContentLoaded', () => {
+    globalThis.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
+    globalThis.$DESCRIPTIONS = $MAPAS.EntitiesDescription ?? []
+    globalThis.$TAXONOMIES = $MAPAS.Taxonomies ?? {}
+
     app.mount('#main-app')
 })
