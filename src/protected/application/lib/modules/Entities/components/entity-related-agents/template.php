@@ -26,7 +26,7 @@ $this->import('popover confirm-button');
 
                     <template #default="popover">
                         <form @submit="renameGroup(groupName, groupAgents.newGroupName, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
-                            <div class="row">
+                            <div class="grid-12">
                                 <div class="col-12">
                                     <input v-model="groupAgents.newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                                 </div>
@@ -102,7 +102,7 @@ $this->import('popover confirm-button');
             <template #default="{ close }">
                 <div class="entity-related-agents__addNew--newGroup">
                     <form @submit="addGroup(newGroupName); close(); $event.preventDefault();">
-                        <div class="row">
+                        <div class="grid-12">
                             <div class="col-12">
                                 <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                             </div>

@@ -31,7 +31,7 @@ $this->breadcramb = [
             </template>
             <template #content>                
                 <div class="left">
-                    <div class="row v-bottom">
+                    <div class="grid-12 v-bottom">
                         <div class="col-12">
                             <entity-cover :entity="entity"></entity-cover>
                         </div>
@@ -57,7 +57,7 @@ $this->breadcramb = [
                 <div class="divider"></div>
 
                 <div class="right">
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Áreas de interesse"></entity-terms>
                         </div>
@@ -77,7 +77,7 @@ $this->breadcramb = [
                     <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistema e não serão exibidos publicamente"); ?></p>
                 </template>
                 <template #content>                
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-field :entity="entity" prop="nomeCompleto" label="<?= i::__('Nome Completo') ?>"></entity-field>
                         </div>
@@ -156,7 +156,7 @@ $this->breadcramb = [
                     <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
                 </template>
                 <template #content>
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-6 sm:col-12">
                             <entity-field :entity="entity" prop="dataDeNascimento" label="<?= i::__('Data de Nascimento') ?>"></entity-field>
                         </div>
@@ -182,7 +182,7 @@ $this->breadcramb = [
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
                 </template>
                 <template #content>
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
                         </div>
@@ -202,7 +202,7 @@ $this->breadcramb = [
         <aside>
             <mapas-card>
                 <template #content>
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-admins :entity="entity" :editable="true"></entity-admins>
                         </div>

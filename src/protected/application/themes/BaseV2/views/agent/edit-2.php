@@ -31,7 +31,7 @@ $this->breadcramb = [
             </template>
             <template #content>                
                 <div class="left">
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-cover :entity="entity"></entity-cover>
                         </div>
@@ -57,7 +57,7 @@ $this->breadcramb = [
                 <div class="divider"></div>
 
                 <div class="right">
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Áreas de interesse"></entity-terms>
                         </div>
@@ -77,7 +77,7 @@ $this->breadcramb = [
                 </template>
                 <template #content>                
                     
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-field :entity="entity" prop="documento" label="CNPJ"></entity-field>
                         </div>
@@ -105,7 +105,7 @@ $this->breadcramb = [
                     
                     <div class="divider"></div>
                     
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-4 sm:col-12">
                             <entity-field :entity="entity" prop="En_CEP"></entity-field>
                         </div>
@@ -147,14 +147,14 @@ $this->breadcramb = [
                 <template #title>
                     <label><?php i::_e("Mais informações públicas"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-field :entity="entity" prop="longDescription" label="Descrição"></entity-field>
                         </div>
                     </div>
                 </template>
                 <template #content>
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
                         </div>
@@ -174,7 +174,7 @@ $this->breadcramb = [
         <aside>
             <mapas-card>
                 <template #content>
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-admins :entity="entity" :editable="true"></entity-admins>
                         </div>

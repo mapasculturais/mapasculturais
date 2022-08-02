@@ -17,7 +17,7 @@ use MapasCulturais\i;
                     </template>
                     <template #default="{close}">
                         <form @submit="save(metalist).then(close); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
-                            <div class="row">
+                            <div class="grid-12">
                                 <div class="col-12">
                                     <div class="field">
                                         <label><?php i::_e('Título do link') ?></label>
@@ -26,7 +26,7 @@ use MapasCulturais\i;
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="grid-12">
                                 <div class="col-12">
                                     <div class="field">
                                         <label><?php i::_e('Link') ?></label>
@@ -68,7 +68,7 @@ use MapasCulturais\i;
 
         <template #default="{ close }">
             <form @submit="create().then(close); $event.preventDefault();" class="entity-links__newLink">
-                <div class="row">
+                <div class="grid-12">
                     <div class="col-12">
                         <div class="field">
                             <label><?php i::_e('Título do link') ?></label>
@@ -77,7 +77,7 @@ use MapasCulturais\i;
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="grid-12">
                     <div class="col-12">
                         <div class="field">
                             <label><?php i::_e('Link') ?></label>
