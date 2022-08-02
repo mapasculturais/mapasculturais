@@ -143,6 +143,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     protected $updateTimestamp;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="publish_timestamp", type="datetime", nullable=true)
+     */
+    protected $publishTimestamp;
+
 
     /**
      * @var integer
@@ -492,6 +499,16 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $this->registrationTo = \DateTime::createFromFormat('Y-m-d H:i', $date);
         }else{
             $this->registrationTo = null;
+        }
+    }
+
+    function setPublishTimestamp($date){
+        if($date instanceof \DateTime){
+            $this->publishTimestamp = $date;
+        }elseif($date){
+            $this->publishTimestamp = new \DateTime($date);
+        }else{
+            $this->publishTimestamp = null;
         }
     }
 
