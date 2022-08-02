@@ -8,7 +8,7 @@ $this->import('
         entity-admins entity-related-agents entity-owner
         entity-actions
         mapas-container mapas-card mapas-breadcrumb
-        messages');
+        entity-map');
 
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -113,6 +113,11 @@ $this->breadcramb = [
                         </div>
                         <div class="col-6">
                             <entity-field :entity="entity" label="Estado" prop="En_Estado"></entity-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-map :entity="entity" :editable="true"></entity-map>
                         </div>
                     </div>
                 </template>   
