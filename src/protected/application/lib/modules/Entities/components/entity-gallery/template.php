@@ -11,11 +11,13 @@ $this->import('confirm-button popover modal');
     <div class="entity-gallery__list" v-if="images">   
 
         <div class="entity-gallery__list--image" v-for="(img, index) in images">
-            <div @click="open" class="entity-gallery__list--image-img" >
-                <img @click="openImg(index)" :src="img.transformations.galleryFull?.url" :imgId="img.id" :title="img.description"/>
+            <div class="row">
+                <div @click="open" class="entity-gallery__list--image-img" >
+                    <img @click="openImg(index)" :src="img.transformations.galleryFull?.url" :imgId="img.id" :title="img.description"/>
+                </div>
+    
+                <p @click="openImg(index); open()" class="entity-gallery__list--image-label"> {{img.description}} </p>
             </div>
-
-            <p @click="openVideo(index); open()" class="entity-gallery__list--image-label"> {{img.description}} </p>
 
             <div v-if="editable" class="entity-gallery__list--image-actions">
                 <popover @open="img.newDescription = img.description" openside="down-right">
@@ -56,7 +58,10 @@ $this->import('confirm-button popover modal');
     <div v-if="editable" class="entity-gallery__addNew">
         <image-uploader :useDescription="true" :entity="entity" group="gallery" :circular="false">
             <template #default='uploader'>
-                <span class="button button--primary"><?php i::_e('Adicionar') ?></span>
+                <a class="button button--primary button--icon button--primary-outline" @click="toggle()">
+                    <iconify icon="gridicons:plus"></iconify>
+                    <?php i::_e("Adicionar imagem")?>
+                </a>
             </template>
         </image-uploader>
     </div>

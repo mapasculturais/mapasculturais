@@ -5,5 +5,10 @@
     
     &.action-edit {
         background-color: var(--mc-gray-100);
+        .container{
+            main {
+                gap: 40px;
+            }
+        }
     }
 }
