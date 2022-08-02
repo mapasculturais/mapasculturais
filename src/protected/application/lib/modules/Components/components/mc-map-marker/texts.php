@@ -1,4 +1,6 @@
 <?php
 use MapasCulturais\i;
 
-return [];
+return [
+    
+];

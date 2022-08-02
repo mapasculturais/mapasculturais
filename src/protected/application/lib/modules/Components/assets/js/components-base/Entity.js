@@ -36,6 +36,10 @@ class Entity {
                 val = new Date(val.date);
             }
 
+            if (prop == 'location') {
+                val = {lat: val.latitude, lng: val.longitude};
+            }
+
             this[prop] = val;
         }
 
