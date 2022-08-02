@@ -37,7 +37,7 @@ class Entity {
             }
 
             if (prop == 'location') {
-                val = {lat: val.latitude, lng: val.longitude};
+                val = {lat: val?.latitude, lng: val?.longitude};
             }
 
             this[prop] = val;
