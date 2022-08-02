@@ -5,5 +5,24 @@
 
     &.action-edit {
         background-color: var(--mc-gray-100);
+        .container{
+            main {
+                gap: 40px;
+            }
+        }
+    }
+
+    &.action-single {
+        .divider {
+            background-color: var(--mc-black);
+            grid-column-end: 3;
+            grid-column-start: 1;
+            height: 5px;
+            width: 100%;
+            
+            @media (max-width: size(800)) {
+                grid-column-end: 2;
+            }
+        }
     }
 }

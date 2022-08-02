@@ -8,11 +8,14 @@ use MapasCulturais\i;
     <div class="entity-gallery__list">   
 
         <div v-if="entity.metalists?.videos" v-for="(metalist, index) in videos" class="entity-gallery__list--video">
-            <div class="entity-gallery__list--video-img">
-                <img @click="openVideo(index); open()" :src="metalist.video.thumbnail" />
+            <div class="row">
+                <div class="entity-gallery__list--video-img">
+                    <img @click="openVideo(index); open()" :src="metalist.video.thumbnail" />
+                </div>
+                
+                <p @click="openVideo(index); open()" class="entity-gallery__list--video-label"> {{metalist.title}} </p>
             </div>
 
-            <p @click="openVideo(index); open()" class="entity-gallery__list--video-label"> {{metalist.title}} </p>
 
             <div v-if="editable" class="entity-gallery__list--video-actions">
                 <popover @open="metalist.newData = {...metalist}" openside="down-right">
