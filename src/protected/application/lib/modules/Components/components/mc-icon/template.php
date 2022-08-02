@@ -1,0 +1,1 @@
+<iconify :icon="icon"></iconify>
