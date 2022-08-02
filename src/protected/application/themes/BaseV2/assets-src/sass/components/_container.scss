@@ -22,7 +22,7 @@ $col-columns: 12;
 
 
 
-.row{
+.grid-12{
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: size(20) size(24);

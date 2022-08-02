@@ -26,7 +26,7 @@ $this->import('confirm-button popover modal');
                     </template>
                     <template #default="popover">
                         <form @submit="rename(img, popover); $event.preventDefault()" class="entity-gallery__addNew--newGroup">
-                            <div class="row">
+                            <div class="grid-12">
                                 <div class="col-12">
                                     <div class="field">
                                         <input v-model="img.newDescription" type="text" placeholder="<?php i::esc_attr_e("Informe a descrição da imagem") ?>"/>

@@ -25,7 +25,7 @@ use MapasCulturais\i;
                     <template #default="{close}">
                         <form @submit="save(metalist).then(close); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
                             
-                            <div class="row">
+                            <div class="grid-12">
                                 <div class="col-12">
                                     <div class="field">
                                         <label><?php i::_e('Título do vídeo') ?></label>
@@ -67,7 +67,7 @@ use MapasCulturais\i;
 
             <template #default="{ close }">
                 <form @submit="create().then(close); $event.preventDefault();">
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <div class="field">
                                 <label><?php i::_e('URL do vídeo') ?></label>

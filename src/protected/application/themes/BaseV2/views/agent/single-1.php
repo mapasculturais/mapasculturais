@@ -12,7 +12,7 @@ $this->import('
         <div class="divider"></div>
         
         <main>
-            <div class="row">
+            <div class="grid-12">
                 <div class="col-12">
                     <h3>Endereço</h3>
                     <p>
@@ -25,22 +25,16 @@ $this->import('
                         <span v-else> sem endereço </span>
                     </p>
                 </div>
-            </div>
-
-            <div class="row">
+                
                 <div class="col-12">
                     <h2>Descrição Detalhada</h2>
                     <p>{{entity.longDescription}}</p>
                 </div>
-            </div>
-
-            <div class="row">
+                
                 <div class="col-12">
                     <entity-files-list :entity="entity" group="downloads" title="Arquivos para download"></entity-files-list>
                 </div>
-            </div>
-            
-            <div class="row">
+
                 <div class="col-12">
                     <entity-gallery :entity="entity"></entity-gallery>
                 </div>
@@ -48,37 +42,27 @@ $this->import('
         </main>
         
         <aside>         
-            <div class="row">
+            <div class="grid-12">
                 <div class="col-12">
                     <entity-terms :entity="entity" taxonomy="area" title="Areas de atuação"></entity-terms>
                 </div>
-            </div>
-
-            <div class="row">
+                
                 <div class="col-12">
                     <entity-social-media :entity="entity"></entity-social-media>
                 </div>
-            </div>
-
-            <div class="row">
+                
                 <div class="col-12">
                     <entity-seals :entity="entity" title="Verificações"></entity-seals>
                 </div>
-            </div>
-
-            <div class="row">
+                
                 <div class="col-12">
                     <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>  
                 </div>
-            </div>
-
-            <div class="row">
+                
                 <div class="col-12">
                     <entity-owner :entity="entity" title="Publicado por"></entity-owner>
                 </div>
-            </div>
-
-            <div class="row">
+                
                 <div class="col-12">
                     <share-links title="Compartilhar" text="Veja este link:"></share-links>
                 </div>

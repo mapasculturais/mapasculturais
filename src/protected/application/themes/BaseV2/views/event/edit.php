@@ -33,7 +33,7 @@ $this->breadcramb = [
             <template #content>
                 
                 <div class="left">
-                    <div class="row v-center">
+                    <div class="grid-12 v-center">
                         <div class="col-12">
                             <entity-cover :entity="entity"></entity-cover>
                         </div>
@@ -43,7 +43,7 @@ $this->breadcramb = [
                         </div>
 
                         <div class="col-9 sm:col-12">
-                            <div class="row">
+                            <div class="grid-12">
                                 <div class="col-12">
                                     <entity-field :entity="entity" label="Nome do Evento" prop="name"></entity-field>
                                 </div>
@@ -67,7 +67,7 @@ $this->breadcramb = [
                 <div class="divider"></div>
 
                 <div class="right">
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-field :entity="entity" label="Classificação etária" prop="classificacaoEtaria"></entity-field>
                         </div>
@@ -102,7 +102,7 @@ $this->breadcramb = [
                     <label><?php i::_e("Informações sobre o evento"); ?></label>
                 </template>
                 <template #content>   
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-6">
                         </div>
 
@@ -132,7 +132,7 @@ $this->breadcramb = [
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
                 </template>
                 <template #content>
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
                         </div>
@@ -152,7 +152,7 @@ $this->breadcramb = [
         <aside>
             <mapas-card>
                 <template #content>
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <entity-admins :entity="entity" :editable="true"></entity-admins>
                         </div>
