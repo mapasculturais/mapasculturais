@@ -31,23 +31,19 @@ $this->breadcramb = [
             </template>
             <template #content>                
                 <div class="left">
-                    <div class="row">
+                    <div class="row v-bottom">
                         <div class="col-12">
                             <entity-cover :entity="entity"></entity-cover>
                         </div>
-                    </div>    
-                    
-                    <div class="row">
-                        <div class="col-3 col-sm-12">
+
+                        <div class="col-3 sm:col-12">
                             <entity-profile :entity="entity"></entity-profile>
                         </div>
 
-                        <div class="col-9 col-sm-12">
+                        <div class="col-9 sm:col-12">
                             <entity-field :entity="entity" prop="name"></entity-field>
                         </div>
-                    </div>
-                    
-                    <div class="row">
+
                         <div class="col-12">
                             <entity-field :entity="entity" prop="shortDescription"></entity-field>
                         </div>
@@ -65,9 +61,7 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Áreas de interesse"></entity-terms>
                         </div>
-                    </div>
-                    
-                    <div class="row">
+
                         <div class="col-12">
                             <entity-social-media :entity="entity" :editable="true"></entity-social-media>
                         </div>
@@ -87,78 +81,67 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-field :entity="entity" prop="nomeCompleto" label="<?= i::__('Nome Completo') ?>"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
+
                         <div class="col-12">
                             <entity-field :entity="entity" prop="documento"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-field :entity="entity" prop="emailPrivado"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-field :entity="entity" prop="telefonePublico"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-field :entity="entity" prop="emailPublico"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-field :entity="entity" prop="telefone1"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-field :entity="entity" prop="telefone2"></entity-field>
                         </div>
-                    </div>
                     
-                    <div class="divider"></div>
+                        <div class="col-12 divider"></div>
                     
-                    <div class="row">
-                        <div class="col-4 col-sm-12">
+                        <div class="col-4 sm:col-12">
                             <entity-field :entity="entity" prop="En_CEP"></entity-field>
                         </div>
-                        <div class="col-8 col-sm-12">
+
+                        <div class="col-8 sm:col-12">
                             <entity-field :entity="entity" prop="En_Nome_Logradouro"></entity-field>
                         </div>                        
-                    </div>
-                    <div class="row">
-                        <div class="col-2 col-sm-4">
+                        
+                        <div class="col-2 sm:col-4">
                             <entity-field :entity="entity" prop="En_Num"></entity-field>
                         </div>
-                        <div class="col-10 col-sm-8">
+
+                        <div class="col-10 sm:col-8">
                             <entity-field :entity="entity" prop="En_Bairro"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-field :entity="entity" prop="En_Complemento"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6 col-sm-12">
+                        
+                        <div class="col-6 sm:col-12">
                             <entity-field :entity="entity" prop="En_Municipio"></entity-field>
                         </div>
-                        <div class="col-6 col-sm-12">
+
+                        <div class="col-6 sm:col-12">
                             <entity-field :entity="entity" prop="En_Estado"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <!-- <entity-field :entity="entity" prop="publicLocation"></entity-field> -->
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-field :entity="entity" prop="longDescription"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-map :entity="entity" :editable="true"></entity-map>
                         </div>
@@ -174,18 +157,19 @@ $this->breadcramb = [
                 </template>
                 <template #content>
                     <div class="row">
-                        <div class="col-6 col-sm-12">
+                        <div class="col-6 sm:col-12">
                             <entity-field :entity="entity" prop="dataDeNascimento" label="<?= i::__('Data de Nascimento') ?>"></entity-field>
                         </div>
-                        <div class="col-6 col-sm-12">
+
+                        <div class="col-6 sm:col-12">
                             <entity-field :entity="entity" prop="genero" label="<?= i::__('Selecione o Gênero')?>" ></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6 col-sm-12">
+                        
+                        <div class="col-6 sm:col-12">
                             <entity-field :entity="entity" prop="orientacaoSexual" label="<?= i::__('Selecione a Orientação Sexual') ?>"></entity-field>
                         </div>
-                        <div class="col-6 col-sm-12">
+
+                        <div class="col-6 sm:col-12">
                             <entity-field :entity="entity" prop="raca" label="<?= i::__('Selecione a Raça/Cor') ?>"></entity-field>
                         </div>
                     </div>
@@ -202,13 +186,11 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-gallery-video title="<?php i::_e('Adicionar vídeos') ?>" :entity="entity" :editable="true"></entity-gallery-video>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" :editable="true"></entity-gallery>
                         </div>
@@ -224,21 +206,15 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-admins :entity="entity" :editable="true"></entity-admins>
                         </div>
-                    </div>
-                    
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-terms :entity="entity" taxonomy="tag" title="Tags" :editable="true"></entity-terms>
                         </div>
-                    </div>
-
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-related-agents :entity="entity" :editable="true"></entity-related-agents>
                         </div>
-                    </div>
-
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-owner :entity="entity" title="Publicado por" :editable="true"></entity-owner>
                         </div>

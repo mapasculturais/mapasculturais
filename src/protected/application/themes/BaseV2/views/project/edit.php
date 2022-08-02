@@ -31,32 +31,27 @@ $this->breadcramb = [
             <template #content>
 
                 <div class="left">
-                    <div class="row">
+                    <div class="row v-center">
                         <div class="col-12">
                             <entity-cover :entity="entity"></entity-cover>
                         </div>
-                    </div>    
-                    
-                    <div class="row v-center">
-                        <div class="col-3 col-sm-12">
+
+                        <div class="col-3 sm:col-12">
                             <entity-profile :entity="entity"></entity-profile>
                         </div>
 
-                        <div class="col-9 col-sm-12">
+                        <div class="col-9 sm:col-12">
                             <div class="row">
                                 <div class="col-12">
                                     <entity-field :entity="entity" label="<?php i::_e("Nome do projeto") ?>" prop="name"></entity-field>
                                 </div>
-                            </div>
-                            <div class="row">
+                                
                                 <div class="col-12">
                                     <entity-field :entity="entity" label="<?php i::_e("Tipo do projeto") ?>" prop="type"></entity-field>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-field :entity="entity" prop="shortDescription"></entity-field>
                         </div>
@@ -91,9 +86,9 @@ $this->breadcramb = [
                         <div class="col-6">
                             <entity-field :entity="entity" label="<?php i::_e('Data inicial')?>" prop="registrationFrom"></entity-field>
                         </div>
+
                         <div class="col-6">
                             <entity-field :entity="entity" label="<?php i::_e('Data Final')?>" prop="registrationTo"></entity-field>
-                        
                         </div>
                     </div>
                 </template>   
@@ -158,18 +153,15 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-field :entity="entity" label="<?php i::_e('Descrição')?>" prop="longDescription"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-links title="<?php i::_e('Adicionar links')?>" :entity="entity" :editable="true"></entity-links>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-gallery-video title="<?php i::_e('Adicionar vídeos') ?>" :entity="entity" :editable="true"></entity-gallery-video>
                         </div>
-                    </div>
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" :editable="true"></entity-gallery>
                         </div>
@@ -186,21 +178,15 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-admins :entity="entity" :editable="true"></entity-admins>
                         </div>
-                    </div>
-                    
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-terms :entity="entity" taxonomy="tag" title="<?php i::_e('Tags')?>" :editable="true"></entity-terms>
                         </div>
-                    </div>
-
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-related-agents :entity="entity" :editable="true"></entity-related-agents>
                         </div>
-                    </div>
-
-                    <div class="row">
+                        
                         <div class="col-12">
                             <entity-owner :entity="entity" title="<?php i::_e('Publicado por')?>" :editable="true"></entity-owner>
                         </div>
