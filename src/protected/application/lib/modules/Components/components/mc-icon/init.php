@@ -9,7 +9,8 @@ $iconset = [
     'project' => 'ri:file-list-2-line',
     'opportunity' => 'icons8:idea',
 
-    'edit' => 'zondicons:edit-pencil'
+    'edit' => 'zondicons:edit-pencil',
+    'home' => 'fluent:home-12-regular'
     // @todo completar
 ];
 
