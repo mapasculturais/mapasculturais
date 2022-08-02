@@ -6,7 +6,8 @@ $this->import('
     entity-field entity-profile entity-cover entity-terms 
     entity-admins entity-header entity-actions entity-owner 
     entity-social-media entity-related-agents entity-links
-    entity-gallery entity-gallery-video');
+    entity-gallery entity-gallery-video
+    entity-map');
 
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -157,7 +158,13 @@ $this->breadcramb = [
                             <entity-field :entity="entity" prop="longDescription"></entity-field>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-map :entity="entity" :editable="true"></entity-map>
+                        </div>
+                    </div>
                 </template>
+                
             </mapas-card>
 
             <mapas-card>
