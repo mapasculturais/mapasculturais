@@ -110,7 +110,7 @@ $this->breadcramb = [
 
                         <div class="col-12">
                             
-                            <entity-location></entity-location>
+                            <entity-location :entity="entity"></entity-location>
                         </div>
                     </div>
                 </template>

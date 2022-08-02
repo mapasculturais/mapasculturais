@@ -9,6 +9,9 @@ app.component('entity-location', {
     },
 
     props: {
-        
+        entity: {
+            type: Entity,
+            required: true
+        }        
     },
 });
