@@ -3,7 +3,7 @@ use MapasCulturais\i;
 $this->import('modal entity-field entity-terms'); 
 ?>
 
-<modal title="Criar Agente" class="create-modal" button-label="Criar Agente" >
+<modal title="Criar Agente" classes="create-modal" button-label="Criar Agente" >
     <template #default>
         <label><?php i::_e('Crie um agente com informações básicas')?><br><?php i::_e('e de forma rápida')?></label>
         <div class="create-modal__fields">
