@@ -1738,4 +1738,7 @@ $$
     "Adiciona coluna avaliableEvaluationFields na tabela opportunity" => function() use ($conn){
         __exec("ALTER TABLE opportunity ADD avaliable_evaluation_fields JSON DEFAULT NULL;");
     },
+    "Adiciona coluna publish_timestamp na tabela opportunity" => function() use ($conn){
+        __exec("ALTER TABLE opportunity ADD publish_timestamp timestamp DEFAULT NULL;");
+    },
 ] + $updates ;

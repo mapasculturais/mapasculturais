@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [feature/BaseV2]
 
 ### Novas funcionalidades
+- Cria coluna que registra data e horário de publicação automática dos resultados de uma oportunidade
 - Possibilidade de selecionar files pelo parâmetro @select da api (#1994)
 - Possibilidade de selecionar metalists pelo parâmetro @select da api (#2000)
 - Possibilidade de selecionar agentes relacionados (relatedAgents) e relações de agentes (agentRelations) pelo parâmetro @select da api (#1999)
