@@ -15,7 +15,7 @@ app.component('entity-location', {
         },
         editable: {
             type: Boolean,
-            default: false
+            default: true
         }        
         
     },
