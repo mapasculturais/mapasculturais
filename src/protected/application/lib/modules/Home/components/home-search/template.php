@@ -6,12 +6,12 @@ use MapasCulturais\i;
         <input class="input" type="text" name="search" />
         
         <button class="button" type="submit">
-            <iconify icon="ant-design:search-outlined"></iconify>
+            <mc-icon name="search"></mc-icon>
         </button>    
     </form>
 
     <button class="button button--primary button--icon filter">
-        <iconify icon="ic:baseline-filter-alt"></iconify>
+        <mc-icon name="filter"></mc-icon>
         <?php i::_e('Filtrar')?>
     </button>
 </div>

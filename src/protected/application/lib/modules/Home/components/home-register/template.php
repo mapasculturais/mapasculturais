@@ -8,8 +8,11 @@ use MapasCulturais\i;
     </div>
     <div class="home-register__content">
         <label class="home-register__content--title"><?php i::_e('Faça seu cadastro e colabore com o Mapas Culturais') ?></label>
-        <p class="home-register__content--description">Colabore com a plataforma livre, colaborativa e interativa de mapeamento do cenário cultural e instrumento de governança digital no aprimoramento da gestão pública, dos mecanismos de participação e da democratização do acesso às políticas culturais promovidas pela Secretaria da Cultura.
+        <p class="home-register__content--description"><?php i::_e('Colabore com a plataforma livre, colaborativa e interativa de mapeamento do cenário cultural e instrumento de governança digital no aprimoramento da gestão pública, dos mecanismos de participação e da democratização do acesso às políticas culturais promovidas pela Secretaria da Cultura.'); ?>
         </p>
-        <button class="home-register__content--button button button--icon button--bg"><?php i::_e('Fazer Cadastro')?><iconify icon="akar-icons:arrow-right"></iconify></button>
+        <button class="home-register__content--button button button--icon button--bg">
+            <?php i::_e('Fazer Cadastro')?>
+            <mc-icon name="access"></mc-icon>
+        </button>
     </div>
 </div>

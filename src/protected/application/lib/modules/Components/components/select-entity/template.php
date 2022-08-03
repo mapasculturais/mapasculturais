@@ -19,7 +19,7 @@ use MapasCulturais\i;
                         <form class="select-entity__form" @submit="entities.refresh(); $event.preventDefault();">
                             <input v-model="query['@keyword']" type="text" class="select-entity__form--input" name="search" :placeholder="placeholder" />
                             <button type="button" class="select-entity__form--button">
-                                <iconify icon="ant-design:search-outlined" />
+                                <mc-icon name="search"></mc-icon>
                             </button>
                         </form>
                     </template>

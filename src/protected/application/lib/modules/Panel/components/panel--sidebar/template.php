@@ -4,8 +4,8 @@ use MapasCulturais\i;
 <div class="panel-sidebar">
     <h2>
         <button class="button panel-sidebar__toggle" @click="open = !open">
-            <iconify icon="mdi:chevron-up" v-show="open"></iconify>
-            <iconify icon="mdi:chevron-down" v-show="!open"></iconify>
+            <mc-icon v-show="open" name="up"></mc-icon>
+            <mc-icon v-show="!open" name="down"></mc-icon>
             <span><?=i::__('Menu do painel')?></span>
         </button>
     </h2>
@@ -13,31 +13,31 @@ use MapasCulturais\i;
         <ul>
             <li>
                 <a href="<?= $this->controller->createUrl('index') ?>">
-                    <iconify icon="mdi:view-dashboard-outline"></iconify>
+                    <mc-icon name="dashboard"></mc-icon>
                     <span><?=i::__('Visão geral')?></span>
                 </a>
             </li>
             <li>
                 <a href="<?= $this->controller->createUrl('agents') ?>">
-                    <iconify icon="mdi:account-multiple-outline"></iconify>
+                    <mc-icon name="agent"></mc-icon>
                     <span><?=i::__('Meus agentes')?></span>
                 </a>
             </li>
             <li>
                 <a href="<?= $this->controller->createUrl('spaces') ?>">
-                    <iconify icon="mdi:domain"></iconify>
+                    <mc-icon name="space"></mc-icon>
                     <span><?=i::__('Meus espaços')?></span>
                 </a>
             </li>
             <li>
                 <a href="<?= $this->controller->createUrl('events') ?>">
-                    <iconify icon="mdi:calendar-month"></iconify>
+                    <mc-icon name="event"></mc-icon>
                     <span><?=i::__('Meus eventos')?></span>
                 </a>
             </li>
             <li>
                 <a href="<?= $this->controller->createUrl('projects') ?>">
-                    <iconify icon="mdi:clipboard-text-outline"></iconify>
+                    <mc-icon name="project"></mc-icon>
                     <span><?=i::__('Meus projetos')?></span>
                 </a>
             </li>
@@ -46,19 +46,19 @@ use MapasCulturais\i;
         <ul>
             <li>
                 <a href="#">
-                    <iconify icon="mdi:lightbulb-on-outline"></iconify>
+                    <mc-icon name="opportunity"></mc-icon>
                     <span><?=i::__('Minhas inscrições')?></span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <iconify icon="mdi:lightbulb-on-outline"></iconify>
+                    <mc-icon name="opportunity"></mc-icon>
                     <span><?=i::__('Minhas oportunidades')?></span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <iconify icon="mdi:lightbulb-on-outline"></iconify>
+                    <mc-icon name="opportunity"></mc-icon>
                     <span><?=i::__('Prestações de contas')?></span>
                 </a>
             </li>
@@ -67,19 +67,19 @@ use MapasCulturais\i;
         <ul>
             <li>
                 <a href="#">
-                    <iconify icon="grommet-icons:connect" style="height: 1.25em"></iconify>
+                    <mc-icon name="network"></mc-icon>
                     <span><?=i::__('Vincular cadastro')?></span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <iconify icon="mdi:puzzle-outline"></iconify>
+                    <mc-icon name="app"></mc-icon>
                     <span><?=i::__('Meus apps')?></span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <iconify icon="mdi:cog-outline"></iconify>
+                    <mc-icon name="settings"></mc-icon>
                     <span><?=i::__('Configuração de conta')?></span>
                 </a>
             </li>

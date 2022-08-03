@@ -75,10 +75,10 @@ use MapasCulturais\i;
     <div class="main-footer__logo">
         <?php $this->part('site-logo') ?>
         <div class="main-footer__logo--share">
-            <a><iconify icon="cib:facebook-f" /></a>
-            <a><iconify icon="fa-brands:twitter" /></a>
-            <a><iconify icon="brandico:vimeo" /></a>
-            <a><iconify icon="akar-icons:youtube-fill" /></a>
+            <a><mc-icon name="facebook"></mc-icon></a>
+            <a><mc-icon name="twitter"></mc-icon></a>
+            <a><mc-icon name="vimeo"></mc-icon></a>
+            <a><mc-icon name="youtube"></mc-icon></a>
             
         </div>
     </div>

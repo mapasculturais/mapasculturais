@@ -7,13 +7,13 @@ use MapasCulturais\i;
     <ul class="entity-links__links">
         <li class="entity-links__links--item" v-for="metalist in entity.metalists.links">
             <a class="link" :class="{'editable': editable}" :href="metalist.value" target="_blank" >
-                <iconify icon="eva:link-outline" /> 
+                <mc-icon name="link"></mc-icon> 
                 {{metalist.title}}
             </a>            
             <div v-if="editable" class="edit">
                 <popover @open="metalist.newData = {...metalist}" openside="down-right">
                     <template #button="{ toggle, close }">
-                        <a @click="toggle()"> <iconify icon="zondicons:edit-pencil"></iconify> </a>
+                        <a @click="toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
                     <template #default="{close}">
                         <form @submit="save(metalist).then(close); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
@@ -45,7 +45,7 @@ use MapasCulturais\i;
                 
                 <confirm-button @confirm="metalist.delete()">
                     <template #button="{open}">
-                        <a @click="open()"> <iconify icon="ooui:trash" /> </a>
+                        <a @click="open()"> <mc-icon name="trash"></mc-icon> </a>
                     </template> 
                     <template #message="message">
                         <?php i::_e('Deseja remover o link?') ?>
@@ -60,7 +60,7 @@ use MapasCulturais\i;
         <template #button="{ toggle }">
             <slot name="button" :toggle="toggle"> 
                 <a class="button button--primary button--icon button--primary-outline" @click="toggle()">
-                    <iconify icon="gridicons:plus"></iconify>
+                    <mc-icon name="add"></mc-icon>
                     <?php i::_e("Adicionar Link")?>
                 </a>
             </slot>
