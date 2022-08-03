@@ -25,7 +25,7 @@ $this->import('loading confirm-button');
                 <confirm-button v-if="entity.currentUserPermissions?.remove" @confirm="entity.delete()">
                     <template #button="modal">
                         <button  @click="modal.open()" class="button button--icon button--sm excluir">
-                            <mv-icon name="trash"></mv-icon>
+                            <mc-icon name="trash"></mc-icon>
                             <?php i::_e("Excluir")?>
                         </button>
                     </template> 
