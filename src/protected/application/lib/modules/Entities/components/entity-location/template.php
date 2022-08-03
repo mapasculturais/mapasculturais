@@ -1,11 +1,11 @@
 <?php
 use MapasCulturais\i;
-$this->import('entity-field');
+$this->import('entity-field entity-map');
 ?>
 
 
-<div class="teste grid-12">
-    <div class="col-12">
+<div class="entity-location grid-12">
+    <div class="entity-location__title col-12">
         <label ><?= i::__('Endereço')?></label>
     </div>
     
@@ -37,14 +37,12 @@ $this->import('entity-field');
         <entity-field :entity="entity" prop="En_Estado"></entity-field>
     </div>
 
-    <!-- <entity-field :entity="entity" prop="publicLocation"></entity-field> -->
-
-    <div class="col-12">
-        <entity-field :entity="entity" prop="longDescription"></entity-field>
+    <div class="col">
+        <entity-field :entity="entity" prop="publicLocation"></entity-field>
     </div>
 
     <div class="col-12">
-        <p>
+        <p class="entity-location__address">
             <span v-if="entity.En_Nome_Logradouro">{{entity.En_Nome_Logradouro}}, </span>
             <span v-if="entity.En_Num">{{entity.En_Num}}, </span>
             <span v-if="entity.En_Bairro">{{entity.En_Bairro}}. </span>

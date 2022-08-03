@@ -1,1 +1,19 @@
 @use '../settings/mixins' as *;
+
+.entity-location {
+    
+    &__title {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 25px;
+    }
+
+    .leaflet-container {
+        z-index: 1;
+    }
+
+    &__address {
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
