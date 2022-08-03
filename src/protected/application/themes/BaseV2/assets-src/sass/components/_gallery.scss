@@ -37,10 +37,6 @@ body.galleryOpen {
             gap: size(8);
             justify-content: space-between;
             max-width: size(139);
-            
-            .row {
-                justify-content: center;
-            }
 
             &-img {
                 aspect-ratio: 1.34/1;
