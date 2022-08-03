@@ -109,7 +109,6 @@ $this->breadcramb = [
                         <div class="col-12 divider"></div>
 
                         <div class="col-12">
-                            
                             <entity-location :entity="entity"></entity-location>
                         </div>
                     </div>
@@ -150,6 +149,10 @@ $this->breadcramb = [
                 </template>
                 <template #content>
                     <div class="grid-12">
+                        <div class="col-12">
+                            <entity-field :entity="entity" prop="longDescription"></entity-field>
+                        </div>
+                        
                         <div class="col-12">
                             <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
                         </div>
