@@ -22,10 +22,10 @@ globalThis.VueAdvancedCropper = VueAdvancedCropper
 globalThis.Vue3Carousel = Vue3Carousel
 globalThis.VueLeaflet = VueLeaflet
 
-document.addEventListener('DOMContentLoaded', () => {
-    globalThis.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
-    globalThis.$DESCRIPTIONS = $MAPAS.EntitiesDescription ?? []
-    globalThis.$TAXONOMIES = $MAPAS.Taxonomies ?? {}
+globalThis.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
+globalThis.$DESCRIPTIONS = $MAPAS.EntitiesDescription ?? []
+globalThis.$TAXONOMIES = $MAPAS.Taxonomies ?? {}
 
+document.addEventListener('DOMContentLoaded', () => {
     app.mount('#main-app')
 })
