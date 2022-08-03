@@ -12,6 +12,11 @@ app.component('entity-location', {
         entity: {
             type: Entity,
             required: true
+        },
+        editable: {
+            type: Boolean,
+            default: false
         }        
+        
     },
 });
