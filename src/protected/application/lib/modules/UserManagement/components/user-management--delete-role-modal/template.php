@@ -18,7 +18,7 @@ $this->import('modal entities loading, entity');
     <template #button="modal">
         <a @click="modal.open()">
             {{role.name}}
-            <iconify icon="mdi:close" class="icon"></iconify>
+            <mc-icon name="delete"></mc-icon>
         </a>
     </template>
 

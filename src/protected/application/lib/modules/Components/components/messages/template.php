@@ -10,7 +10,7 @@ $this->import('mapas-container');
                     {{message.text}}
                 </div>
                 <a class="messages__content--message-close" @click="message.active=false">
-                    <iconify icon="gg:close"></iconify>
+                    <mc-icon name="close"></mc-icon>
                 </a>
             </div>
         </template>

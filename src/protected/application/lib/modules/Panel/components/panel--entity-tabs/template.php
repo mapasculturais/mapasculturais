@@ -18,8 +18,8 @@ $tabs = $tabs ?? [
 <tabs class="entity-tabs">
     <?php $this->applyTemplateHook('entity-tabs', 'begin') ?>
     <template #header="{ tab }">
-        <iconify icon="mdi:archive-outline" v-if="tab.slug === 'archived'"></iconify>
-        <iconify icon="mdi:delete-outline" v-else-if="tab.slug === 'trash'"></iconify>
+        <mc-icon v-if="tab.slug === 'archived'" name="archive"></mc-icon>
+        <mc-icon v-else-if="tab.slug === 'trash'" name="trash"></mc-icon>
         {{ tab.label }}
     </template>
     <?php foreach($tabs as $status => $label): ?>
@@ -37,8 +37,8 @@ $tabs = $tabs ?? [
                     <button type="button" class="button button--solid" @click="entities.refresh()">
                         <?=i::__('Filtrar')?>
                     </button>
-                    <button type="button" class="button button--solid">
-                        <iconify icon="mdi:sort" inline></iconify>
+                    <button type="button" class="button button--icon button--solid">
+                        <mc-icon name="sort"></mc-icon>
                         <?=i::__('Ordenar')?>
                     </button>
                 </div>
@@ -57,7 +57,7 @@ $tabs = $tabs ?? [
                         <template #header-actions="{ entity }">
                             <slot name="card-actions">
                                 <button class="entity-card__header-action">
-                                    <iconify icon="mdi:star-outline"></iconify>
+                                    <mc-icon name="favorite"></mc-icon>
                                     <span><?=i::__('Favoritar')?></span>
                                 </button>
                             </slot>

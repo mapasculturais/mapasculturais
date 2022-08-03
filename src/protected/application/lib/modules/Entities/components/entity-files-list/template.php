@@ -6,7 +6,7 @@ use MapasCulturais\i;
     <h2> {{title}} </h2>
     <div class="files">
         <a v-for="file in entity.files.downloads" :download="file.name" :href="file.url">
-            <iconify icon="el:download-alt" /> 
+            <mc-icon name="download"></mc-icon>
             <span v-if="file.description">{{file.description}}</span>
             <span v-else> <? i::_e('Sem descrição') ?> </span>
         </a>

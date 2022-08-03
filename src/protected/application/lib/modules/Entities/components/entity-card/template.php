@@ -43,7 +43,10 @@ use MapasCulturais\i;
             </div>
         </div>
         <div class="entity-card__footer--action">
-            <button class="button button--primary button--large button--icon"> <?php i::_e('Acessar') ?> <iconify icon="ooui:previous-rtl"></iconify> </button>
+            <button class="button button--primary button--large button--icon"> 
+                <?php i::_e('Acessar') ?> 
+                <mc-icon name="access"></mc-icon> 
+            </button>
         </div>
     </div>
 

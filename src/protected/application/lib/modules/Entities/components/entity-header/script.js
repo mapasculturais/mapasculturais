@@ -7,7 +7,6 @@ app.component('entity-header', {
     },
     data() {
         return {
-            icon: '',
             titleEdit: ''
         }
     },
@@ -24,23 +23,18 @@ app.component('entity-header', {
     created() {
         switch(this.entity.__objectType) {
             case 'agent': 
-                this.icon = "fa-solid:user-friends";
                 this.titleEdit = (this.entity.type?.id == 1) ?  __('title agent-1', 'entity-header') : __('title agent-2', 'entity-header');
                 break;
             case 'project':
-                this.icon = "ri:file-list-2-line";
                 this.titleEdit = __('title project', 'entity-header');
                 break;
             case 'space':
-                this.icon = "clarity:building-line";
                 this.titleEdit = __('title space', 'entity-header');
                 break;
             case 'opportunity':
-                this.icon = "icons8:idea";
                 this.titleEdit = __('title opportunity', 'entity-header');
                 break;
             case 'event':
-                this.icon = "ant-design:calendar-twotone";
                 this.titleEdit = __('title event', 'entity-header');
                 break;
         }

@@ -6,7 +6,7 @@ $this->import('create-agent panel--entity-tabs panel--entity-card');
 
 <div class="panel__row">
     <h1>
-        <iconify icon="mdi:account-multiple-outline"></iconify>
+        <mc-icon name="agent"></mc-icon>
         <?= i::__('Meus agentes') ?>
     </h1>
     <a class="panel__help-link" href="#"><?=i::__('Ajuda')?></a>
@@ -15,7 +15,7 @@ $this->import('create-agent panel--entity-tabs panel--entity-card');
     <p><?=i::__('Nesta seção você visualiza e gerencia seu perfil de usuário e outros agentes criados')?></p>
     <create-agent  :editable="true" #default="{modal}"  >
         <button @click="modal.open()" class="button button--icon button--solid">
-            <iconify icon="mdi:account-multiple-plus"></iconify>
+            <mc-icon name="add"></mc-icon>
             <span><?=i::__('Criar agente')?></span>
         </button>
     </create-agent>

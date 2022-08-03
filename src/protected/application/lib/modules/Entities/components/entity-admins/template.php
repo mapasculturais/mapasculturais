@@ -37,7 +37,10 @@ $this->import('select-entity confirm-button');
 
             <select-entity type="agent" @select="addAgent($event)" :query="query" openside="down-right">            
                 <template #button="{ toggle }">
-                    <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()"> <?php i::_e('Adicionar administrador') ?> <iconify icon="ps:plus"/> </button>
+                    <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()"> 
+                        <?php i::_e('Adicionar administrador') ?> 
+                        <mc-icon name="add"></mc-icon> 
+                    </button>
                 </template>
             </select-entity>
             

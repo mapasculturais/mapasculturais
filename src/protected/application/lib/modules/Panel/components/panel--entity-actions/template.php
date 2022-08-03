@@ -20,7 +20,7 @@ $this->import('loading');
     @confirm="archiveEntity($event)"
     button-class="button--text archive button--icon"
     message="<?php i::esc_attr_e("Você está certo que deseja arquivar esta entidade?") ?>">
-        <iconify icon="mdi:archive-outline"></iconify>
+        <mc-icon name="archive"></mc-icon>
         <span><?php i::_e('Arquivar') ?></span>
     </confirm-button>
 
@@ -28,7 +28,7 @@ $this->import('loading');
     @confirm="deleteEntity($event)"
     button-class="button--text delete button--icon"
     message="<?php i::esc_attr_e("Você está certo que deseja excluir esta entidade?") ?>">
-        <iconify icon="mdi:delete-outline"></iconify>
+        <mc-icon name="trash"></mc-icon>
         <span><?php i::_e('Excluir') ?></span>
     </confirm-button>
 

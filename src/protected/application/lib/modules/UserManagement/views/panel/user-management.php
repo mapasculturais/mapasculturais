@@ -12,7 +12,7 @@ $profile = $app->user->profile;
 
 <div class="panel__row">
     <h1>
-        <iconify icon="mdi:account-multiple-outline"></iconify>
+        <mc-icon name="user"></mc-icon>
         <?= i::__('Gerenciamento de usuários') ?>
     </h1>
     <a class="panel__help-link" href="#"><?=i::__('Ajuda')?></a>

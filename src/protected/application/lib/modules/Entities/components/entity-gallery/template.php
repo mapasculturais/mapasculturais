@@ -22,7 +22,7 @@ $this->import('confirm-button popover modal');
             <div v-if="editable" class="entity-gallery__list--image-actions">
                 <popover @open="img.newDescription = img.description" openside="down-right">
                     <template #button="{ toggle }">
-                        <a @click="toggle()"> <iconify icon="zondicons:edit-pencil"></iconify> </a>
+                        <a @click="toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
                     <template #default="popover">
                         <form @submit="rename(img, popover); $event.preventDefault()" class="entity-gallery__addNew--newGroup">
@@ -44,7 +44,7 @@ $this->import('confirm-button popover modal');
 
                 <confirm-button @confirm="img.delete()">
                     <template #button="modal">
-                        <a @click="modal.open()"> <iconify icon="ooui:trash"></iconify> </a>
+                        <a @click="modal.open()"> <mc-icon name="trash"></mc-icon> </a>
                     </template> 
                     <template #message="message">
                         <?php i::_e('Deseja excluir essa imagem?') ?>
@@ -59,7 +59,7 @@ $this->import('confirm-button popover modal');
         <image-uploader :useDescription="true" :entity="entity" group="gallery" :circular="false">
             <template #default='uploader'>
                 <a class="button button--primary button--icon button--primary-outline" @click="toggle()">
-                    <iconify icon="gridicons:plus"></iconify>
+                    <mc-icon name="add"></mc-icon>
                     <?php i::_e("Adicionar imagem")?>
                 </a>
             </template>
@@ -71,13 +71,13 @@ $this->import('confirm-button popover modal');
 
         <div class="entity-gallery__full--image">
             <img v-if="actualImg" :src="actualImg?.url" :imgId="actualImg?.id" :title="actualImg?.description"/>
-            <iconify icon="eos-icons:bubble-loading" />
+            <mc-icon name="loading"></mc-icon>
             <div class="description">{{actualImg?.description}}</div>
         </div>
 
         <div class="entity-gallery__full--buttons">
-            <div @click="prev" class="btnPrev"> <iconify icon="ooui:previous-ltr" /> </div>
-            <div @click="next" class="btnNext"> <iconify icon="ooui:previous-rtl" /> </div>
+            <div @click="prev" class="btnPrev"> <mc-icon name="previous"></mc-icon> </div>
+            <div @click="next" class="btnNext"> <mc-icon name="next"></mc-icon> </div>
         </div>
     </div>
 

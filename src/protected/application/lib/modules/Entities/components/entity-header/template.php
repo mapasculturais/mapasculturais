@@ -6,37 +6,35 @@ use MapasCulturais\i;
 
     <div class="entity-header__single">
 
-        <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.url) }">    
-            <iconify v-if="!entity.files.header?.url" :icon="icon" />
-        </div>
+        <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.url) }"></div>
 
         <div class="entity-header__single--content">
 
             <div class="leftSide">
                 <div class="avatar">
                     <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarBig?.url">
-
-                    <iconify v-else :icon="icon" />
+                    
+                    <mc-icon :entity="entity"></mc-icon>
                 </div>
 
                 <nav class="share" aria-label="<?= i::__('Compartilhar') ?>">
                     <a v-if="entity.twitter" :href="entity.twitter" class="button button--text button--icon" aria-label="Twitter" target="_blank">
-                        <iconify icon="fa6-brands:twitter"></iconify>
+                        <mc-icon name="twitter"></mc-icon>
                     </a>
                     <a v-if="entity.facebook" :href="entity.facebook" class="button button--text button--icon" aria-label="Facebook" target="_blank">
-                        <iconify icon="la:facebook-f"></iconify>
+                        <mc-icon name="facebook"></mc-icon>
                     </a>
                     <a v-if="entity.instagram" :href="entity.instagram" class="button button--text button--icon" aria-label="Instagram" target="_blank">
-                        <iconify icon="fa6-brands:instagram"></iconify>
+                        <mc-icon name="instagram"></mc-icon>
                     </a>
                     <a v-if="entity.telegram" :href="entity.telegram" class="button button--text button--icon" aria-label="Telegram" target="_blank">
-                        <iconify icon="bxl:telegram"></iconify>
+                        <mc-icon name="telegram"></mc-icon>
                     </a>
                     <a v-if="entity.pinterest" :href="entity.pinterest" class="button button--text button--icon" aria-label="Pinterest" target="_blank">
-                        <iconify icon="fa6-brands:pinterest-p"></iconify>
+                        <mc-icon name="pinterest"></mc-icon>
                     </a>
                     <a v-if="entity.whatsapp" :href="entity.whatsapp" class="button button--text button--icon" aria-label="WhatsApp" target="_blank">
-                        <iconify icon="fa6-brands:whatsapp"></iconify>
+                        <mc-icon name="whatsapp"></mc-icon>
                     </a>
                 </nav>
             </div>
@@ -58,22 +56,22 @@ use MapasCulturais\i;
 
                 <nav class="share share-mobile" aria-label="<?= i::__('Compartilhar') ?>">
                     <a v-if="entity.twitter" :href="entity.twitter" class="button button--text button--icon" aria-label="Twitter" target="_blank">
-                        <iconify icon="fa6-brands:twitter"></iconify>
+                        <mc-icon name="twitter"></mc-icon>
                     </a>
                     <a v-if="entity.facebook" :href="entity.facebook" class="button button--text button--icon" aria-label="Facebook" target="_blank">
-                        <iconify icon="la:facebook-f"></iconify>
+                        <mc-icon name="facebook"></mc-icon>
                     </a>
                     <a v-if="entity.instagram" :href="entity.instagram" class="button button--text button--icon" aria-label="Instagram" target="_blank">
-                        <iconify icon="fa6-brands:instagram"></iconify>
+                        <mc-icon name="instagram"></mc-icon>
                     </a>
                     <a v-if="entity.telegram" :href="entity.telegram" class="button button--text button--icon" aria-label="Telegram" target="_blank">
-                        <iconify icon="bxl:telegram"></iconify>
+                        <mc-icon name="telegram"></mc-icon>
                     </a>
                     <a v-if="entity.pinterest" :href="entity.pinterest" class="button button--text button--icon" aria-label="Pinterest" target="_blank">
-                        <iconify icon="fa6-brands:pinterest-p"></iconify>
+                        <mc-icon name="pinterest"></mc-icon>
                     </a>
                     <a v-if="entity.whatsapp" :href="entity.whatsapp" class="button button--text button--icon" aria-label="WhatsApp" target="_blank">
-                        <iconify icon="fa6-brands:whatsapp"></iconify>
+                        <mc-icon name="whatsapp"></mc-icon>
                     </a>
                 </nav>
 
@@ -84,7 +82,7 @@ use MapasCulturais\i;
                 </div>
                 <div class="field">
                     <dt><?= i::__('Site') ?></dt>
-                    <h3><iconify icon="akar-icons:link-on"/>{{entity.site}}</h3>
+                    <h3><mc-icon name="link"></mc-icon>{{entity.site}}</h3>
                 </div>
             </div>
 
@@ -99,7 +97,7 @@ use MapasCulturais\i;
         <div class="entity-header__edit--content">
             <div class="title">
                 <div :class="['icon', entity.__objectType+'__background']">
-                    <iconify :icon="icon" />
+                    <mc-icon :entity="entity"></mc-icon>
                 </div>
                 <h2>{{titleEdit}}</h2>
             </div>

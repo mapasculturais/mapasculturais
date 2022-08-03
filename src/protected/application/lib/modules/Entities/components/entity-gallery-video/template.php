@@ -20,7 +20,7 @@ use MapasCulturais\i;
             <div v-if="editable" class="entity-gallery__list--video-actions">
                 <popover @open="metalist.newData = {...metalist}" openside="down-right">
                     <template #button="{ toggle, close }">
-                        <a @click="toggle()"> <iconify icon="zondicons:edit-pencil"></iconify> </a>
+                        <a @click="toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
                     <template #default="{close}">
                         <form @submit="save(metalist).then(close); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
@@ -44,7 +44,7 @@ use MapasCulturais\i;
                 
                 <confirm-button @confirm="metalist.delete()">
                     <template #button="{open}">
-                        <a @click="open()"> <iconify icon="ooui:trash" /> </a>
+                        <a @click="open()"> <mc-icon name="trash"></mc-icon> </a>
                     </template> 
                     <template #message="message">
                         <?php i::_e('Deseja remover este vídeo?') ?>
@@ -60,7 +60,7 @@ use MapasCulturais\i;
             <template #button="{ toggle }">
                 <slot name="button" :toggle="toggle"> 
                     <a class="button button--primary button--icon button--primary-outline" @click="toggle()">
-                        <iconify icon="gridicons:plus"></iconify>
+                        <mc-icon name="add"></mc-icon>
                         <?php i::_e("Adicionar vídeo")?>
                     </a>
                 </slot>
@@ -105,8 +105,8 @@ use MapasCulturais\i;
         </div>
 
         <div class="entity-gallery__full--buttons">
-            <div @click="prev" class="btnPrev"> <iconify icon="ooui:previous-ltr" /> </div>
-            <div @click="next" class="btnNext"> <iconify icon="ooui:previous-rtl" /> </div>
+            <div @click="prev" class="btnPrev"> <mc-icon name="previous"></mc-icon> </div>
+            <div @click="next" class="btnNext"> <mc-icon name="next"></mc-icon> </div>
         </div>
     </div>
 
