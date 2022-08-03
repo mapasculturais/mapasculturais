@@ -34,7 +34,7 @@ app.component('mc-icon', {
             if (this.entity) {
                 const e = this.entity;
 
-                return iconset[`${e.__objectType}-${e.type.id}`] || iconset[e.__objectType];
+                return iconset[`${e.__objectType}-${e.type?.id}`] || iconset[e.__objectType];
             } else {
 
                 return iconset[this.name];
