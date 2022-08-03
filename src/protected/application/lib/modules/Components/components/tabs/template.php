@@ -14,7 +14,7 @@ $this->import('tab');
                 role="tab"
                 @click="selectTab(tab.slug, $event)">
                 <slot name="header" :tab="tab">
-                    <iconify v-if="tab.icon" :icon="tab.icon"></iconify>
+                    <mc-icon v-if="tab.icon" :name="tab.icon"></mc-icon>
                     <span>{{ tab.label }}</span>
                 </slot>
             </a>
