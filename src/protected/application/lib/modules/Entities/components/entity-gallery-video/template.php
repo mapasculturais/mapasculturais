@@ -8,7 +8,7 @@ use MapasCulturais\i;
     <div class="entity-gallery__list">   
 
         <div v-if="entity.metalists?.videos" v-for="(metalist, index) in videos" class="entity-gallery__list--video">
-            <div class="row">
+            <div>
                 <div class="entity-gallery__list--video-img">
                     <img @click="openVideo(index); open()" :src="metalist.video.thumbnail" />
                 </div>
@@ -25,19 +25,18 @@ use MapasCulturais\i;
                     <template #default="{close}">
                         <form @submit="save(metalist).then(close); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
                             
-                            <div class="row">
+                            <div class="grid-12">
                                 <div class="col-12">
                                     <div class="field">
                                         <label><?php i::_e('Título do vídeo') ?></label>
                                         <input v-model="metalist.newData.title" type="text" />
                                     </div>
                                 </div>
+                                
+                                <button class="col-6 button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                             </div>                            
 
-                            <div class="actions">
-                                <button class="button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
-                                <button class="button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
-                            </div>
                         </form>
                     </template>
                 </popover>
@@ -68,28 +67,25 @@ use MapasCulturais\i;
 
             <template #default="{ close }">
                 <form @submit="create().then(close); $event.preventDefault();">
-                    <div class="row">
+                    <div class="grid-12">
                         <div class="col-12">
                             <div class="field">
                                 <label><?php i::_e('URL do vídeo') ?></label>
                                 <input v-model="metalist.value" class="newVideo" type="url" name="newVideo" />
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
                         <div class="col-12">
                             <div class="field">
                                 <label><?php i::_e('Título do vídeo') ?></label>
                                 <input v-model="metalist.title" class="newVideoDesc" type="text" name="newVideoDesc" />
                             </div>
                         </div>
+
+                        <button class="col-6 button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                        <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                     </div>
                     
-                    <div class="actions">
-                        <button class="button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
-                        <button class="button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
-                    </div>
                 </form>
             </template>        
         </popover>
