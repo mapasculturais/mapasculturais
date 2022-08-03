@@ -7,7 +7,7 @@ use MapasCulturais\i;
     <div class="entity-card__header">
         <div class="entity-card__header--image">
             <img v-if="entity.files?.avatar" :src="entity.files?.avatar?.transformations?.avatarMedium.url" />
-            <iconify v-else icon="bi:image-fill" />
+            <mc-icon v-else :entity="entity"></mc-icon>
         </div>
         <div class="entity-card__header--title">
             <label class="entity-card__header--title-title"> 

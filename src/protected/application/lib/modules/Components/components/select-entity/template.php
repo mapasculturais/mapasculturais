@@ -30,7 +30,7 @@ use MapasCulturais\i;
                             <li v-for="entity in entities" class="select-entity__results--item" :class="type" @click="selectEntity(entity, close)">
                                 <span class="icon">
                                     <img v-if="entity.files" :src="entity.files?.avatar?.transformations?.avatarSmall?.url" />
-                                    <iconify v-else :icon="icon"></iconify>
+                                    <mc-icon v-else :entity="entity"></mc-icon>
                                 </span>
                                 <span class="label"> {{entity.name}} </span>
                             </li>

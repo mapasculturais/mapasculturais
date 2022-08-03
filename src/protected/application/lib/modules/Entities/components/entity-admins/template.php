@@ -15,14 +15,14 @@ $this->import('select-entity confirm-button');
             <div v-for="agent in group" class="agent">
                 <a :href="agent.singleUrl" class="agent__img">
                     <img v-if="agent.files.avatar" :src="agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
-                    <iconify v-else icon="bi:image-fill" />
+                    <mc-icon v-else name="agent"></mc-icon>
                 </a>
 
                 <div v-if="editable" class="agent__delete">
                     <!-- remover agente -->
                     <confirm-button @confirm="removeAgent(agent)">
                         <template #button="modal">
-                            <iconify @click="modal.open()" icon="gg:close"/>
+                            <mc-icon @click="modal.open()" name="delete"></mc-icon>
                         </template> 
                         <template #message="message">
                             <?php i::_e('Remover agente relacionado?') ?>
