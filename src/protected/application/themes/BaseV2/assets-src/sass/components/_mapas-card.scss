@@ -3,7 +3,7 @@
 .mapas-card {
     padding: size(25) size(24);
     background-color: var(--mc-white);
-    border-radius: size(5);
+    border-radius: var(--mc-border-radius-sm);
     width: 100%;
 
     &__title {

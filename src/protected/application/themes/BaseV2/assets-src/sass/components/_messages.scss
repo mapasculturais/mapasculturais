@@ -21,7 +21,7 @@
         &--message {
             align-items: center;
             box-shadow: size(0) size(4) size(4) rgba(0, 0, 0, 0.25);
-            border-radius: size(4);
+            border-radius: var(--mc-border-radius-sm);
             display: flex;
             justify-content: space-between;
             padding: size(15);

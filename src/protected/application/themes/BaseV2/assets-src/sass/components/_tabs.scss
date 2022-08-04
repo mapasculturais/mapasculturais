@@ -24,7 +24,7 @@
         transform: rotateX(180deg);
 
         &::after {
-            border-radius: var(--mc-border-radius);
+            border-radius: var(--mc-border-radius-sm);
             display: block;
             height: 6px;
             content: '';

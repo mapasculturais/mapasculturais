@@ -40,7 +40,7 @@ body.galleryOpen {
 
             &-img {
                 aspect-ratio: 1.34/1;
-                border-radius: size(4);
+                border-radius: var(--mc-border-radius-xs);
                 cursor: pointer;
                 display: flex;
                 height: size(104);
@@ -60,7 +60,7 @@ body.galleryOpen {
             &-actions {
                 align-items: center;
                 background-color: var(--mc-gray-300);
-                border-radius: size(4);
+                border-radius: var(--mc-border-radius-xs);
                 display: flex;
                 height: size(30);
                 justify-content: space-evenly;
@@ -186,7 +186,7 @@ body.galleryOpen {
             & > * {
                 align-items: center;
                 background: rgba(0,0,0,0.2);
-                border-radius: size(5);
+                border-radius: var(--mc-border-radius-xs);
                 color: white;
                 cursor: pointer;
                 display: flex;

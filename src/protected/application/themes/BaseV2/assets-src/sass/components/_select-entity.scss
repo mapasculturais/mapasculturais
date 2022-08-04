@@ -50,7 +50,7 @@
         &--item {
             align-items: center;
             border: size(1) solid;
-            border-radius: size(5);
+            border-radius: var(--mc-border-radius-xs);
             color: inherit;
             cursor: pointer;
             display: flex;
@@ -152,7 +152,7 @@
         &--button {
             align-items: center;
             border: 1px solid var(--mc-primary-500);
-            border-radius: 5px;
+            border-radius: var(--mc-border-radius-xs);
             color: var(--mc-primary-500);
             display: flex;
             gap: 10px;
