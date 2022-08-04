@@ -1,0 +1,17 @@
+@use '../settings/mixins' as *;
+
+.mc-map {
+    &-marker {
+        align-items: center;
+        border-radius: size(50) size(50) 0 size(50);
+        display: flex;
+        width: size(30);
+        height: size(30);
+        justify-content: center;
+        transform: rotate(45deg);
+
+        .iconify {
+            transform: rotate(-45deg);
+        }
+    }
+}
