@@ -31,7 +31,7 @@ app.component('entity', {
     methods: {
         getDataFromApi() {
             var api = new API(this.type, this.scope || 'default');
-            api.findOne(this.id).then(entity => { 
+            api.findOne(this.id, this.select).then(entity => { 
                 this.entity = entity;
                 this.loading = false;
             }).catch((error) => {
