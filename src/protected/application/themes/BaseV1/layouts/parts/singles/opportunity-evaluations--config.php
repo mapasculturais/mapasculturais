@@ -7,6 +7,20 @@ $definition = $configuration->definition;
 
 <div id="evaluations-config" class="aba-content" ng-controller="EvaluationMethodConfigurationController">
 
+    <div class="highlighted-message clearfix" id="opportunity-main-info">
+        <div class="registration-dates clear">
+            <?php /* Translators: "de" como início de um intervalo de data *DE* 25/1 a 25/2 às 13:00 */ ?>
+            <?php \MapasCulturais\i::_e("Avaliações abertas de");?>
+            <strong class="js-editable" data-type="date" data-yearrange="2000:+25" data-viewformat="dd/mm/yyyy" data-edit="evaluateFrom" <?php echo $entity->evaluateFrom ? "data-value='" . $entity->evaluateFrom->format('Y-m-d') . "'" : ' '?> data-showbuttons="false" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Data inicial");?>"><?php echo $entity->evaluateFrom ? $entity->evaluateFrom->format('d/m/Y') : \MapasCulturais\i::__("Data inicial"); ?></strong>
+            <?php /* Translators: "a" indicando intervalo de data de 25/1 *A* 25/2 às 13:00 */ ?>
+            <?php \MapasCulturais\i::_e("a");?>
+            <strong class="js-editable" data-type="date" data-yearrange="2000:+25" data-viewformat="dd/mm/yyyy" data-edit="evaluateTo" <?php echo $entity->evaluateTo ? "data-value='".$entity->evaluateTo->format('Y-m-d') . "'" : ''?> data-timepicker="#evaluateTo_time" data-showbuttons="false" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Data final");?>"><?php echo $entity->evaluateTo ? $entity->evaluateTo->format('d/m/Y') : \MapasCulturais\i::__("Data final"); ?></strong>
+            <?php /* Translators: "às" indicando horário de data de 25/1 a 25/2 *ÀS* 13:00 */ ?>
+            <?php \MapasCulturais\i::_e("às");?>
+            <strong class="js-editable" id="evaluateTo_time" data-datetime-value="<?php echo $entity->evaluateTo ? $entity->evaluateTo->format('Y-m-d H:i') : ''; ?>" data-placeholder="<?php \MapasCulturais\i::esc_attr_e("Hora final");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Hora final");?>"><?php echo $entity->evaluateTo ? $entity->evaluateTo->format('H:i') : ''; ?></strong>
+        </div>
+    </div>
+    
     <?php
     if(is_object($definition) && property_exists($definition, 'evaluationMethod') ) :
         $evaluationMethod = $definition->evaluationMethod;

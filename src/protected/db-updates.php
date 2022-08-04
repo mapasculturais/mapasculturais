@@ -1741,4 +1741,8 @@ $$
     "Adiciona coluna publish_timestamp na tabela opportunity" => function() use ($conn){
         __exec("ALTER TABLE opportunity ADD publish_timestamp timestamp DEFAULT NULL;");
     },
+    "Adiciona coluna evaluate_from e evaluate_to na tabela opportunity" => function() use ($conn){
+        __exec("ALTER TABLE opportunity ADD evaluate_from timestamp DEFAULT NULL;");
+        __exec("ALTER TABLE opportunity ADD evaluate_to timestamp DEFAULT NULL;");
+    },
 ] + $updates ;
