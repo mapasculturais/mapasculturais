@@ -10,6 +10,16 @@ class Entity {
 
         this.__properties = this.API.getEntityDescription('!relations');
         this.__relations = this.API.getEntityDescription('relations');
+        if (this.__objectType == 'opportunity') {
+            this.__relations.ownerEntity = {
+                isEntityRelation: true,
+                isMetadata: false,
+                isOwningSide: true,
+                label: "",
+                targetEntity: null,
+            };
+        }
+
         this.__skipDataProperties = ['createTimestamp', 'updateTimestamp'];
         
         this.__lists = [];
@@ -43,8 +53,14 @@ class Entity {
             this[prop] = val;
         }
 
-        for (let prop in this.__relations) {
-            this[prop] = obj[prop];
+        for (let key in this.__relations) {
+            let prop = obj[key];
+            if (prop instanceof Array) {
+                for (let i in prop) {
+                    prop[i] = this.parceRelation(prop[i]);
+                }
+            } 
+            this[key] = this.parceRelation(prop);
         }
 
         this.populateFiles(obj.files);
@@ -53,6 +69,17 @@ class Entity {
         this.cleanErrors();
         
         return this;
+    }
+
+    parceRelation(prop) {
+        if (prop?.['@entityType'] && prop?.id) {
+            const propAPI = new API(prop['@entityType'], this.__scope);
+            const instance = propAPI.getEntityInstance(prop.id);
+            instance.populate(prop);
+            return instance;
+        } else {
+            return prop;
+        }
     }
 
     populateFiles(files) {
