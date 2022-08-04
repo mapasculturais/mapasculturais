@@ -1062,6 +1062,8 @@ class ApiQuery {
                     $entity[$prop] = null;
                 }
             }
+
+            $entity['@entityType'] = $this->entityController->id;
         }
     }
 
