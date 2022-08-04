@@ -45,6 +45,12 @@ class ApiQuery {
     protected $em;
 
     /**
+     * Doctrine Entity Class Metadata
+     * @var \Doctrine\ORM\Mapping\ClassMetadata
+     */
+    protected $entityClassMetadata;
+
+    /**
      * The Entity Class Name
      *
      * @example "MapasCulturais\Entities\Agent"
@@ -444,18 +450,22 @@ class ApiQuery {
         krsort($api_params);
         $this->apiParams = $api_params;
         
+        // para quando se está consultando as oportunidades de uma outra entidade, por exemplo:
+        // /api/agent/find?@select=id,name,ownedOpportunities
         if(strpos($class, 'MapasCulturais\Entities\Opportunity') === 0 && $this->parentQuery){
             $parent_class = $this->parentQuery->entityClassName;
             if($parent_class != 'MapasCulturais\Entities\Opportunity') {
                 $class = $parent_class::getOpportunityClassName();
             }
         }
-        
-        $this->entityProperties = array_keys($this->em->getClassMetadata($class)->fieldMappings);
-        $this->entityRelations = $this->em->getClassMetadata($class)->associationMappings;
-        
+
         $this->entityClassName = $class;
-        $this->entityController = $app->getControllerByEntity($this->entityClassName);
+        $this->entityClassMetadata = $this->em->getClassMetadata($this->entityClassName);
+        
+        $this->entityProperties = array_keys($this->entityClassMetadata->fieldMappings);
+        $this->entityRelations = $this->entityClassMetadata->associationMappings;
+        
+        $this->entityController = $app->getControllerByEntity($class::getClassName());
         $this->entityRepository = $app->repo($this->entityClassName);
         
         $this->usesFiles = $class::usesFiles();
@@ -557,6 +567,13 @@ class ApiQuery {
     }
     
     public function getFindOneResult() {
+        if ($this->entityClassMetadata->inheritanceType == 3 && $this->entityClassMetadata->subClasses) {
+            $result = $this->getSubClassesResult();
+            if(!empty($result)) {
+                return $result[0];
+            }
+        }
+
         $dql = $this->getFindDQL();
 
         $q = $this->em->createQuery($dql);
@@ -587,8 +604,46 @@ class ApiQuery {
     public function find(){
         return $this->getFindResult();
     }
+
+    protected function getSubClassesResult() {
+        $ids = $this->findIds();
+        $entities = [];
+        $subclasses = $this->entityClassMetadata->subClasses;
+        $main_class = $this->entityClassName;
+        foreach($subclasses as $subclass) {
+            $this->entityClassName = $subclass;
+            $this->entityClassMetadata = $this->em->getClassMetadata($this->entityClassName);
+            $this->entityProperties = array_keys($this->entityClassMetadata->fieldMappings);
+            $this->entityRelations = $this->entityClassMetadata->associationMappings;
+
+            $entities = array_merge($entities, $this->getFindResult());
+        }
+        $this->entityClassName = $main_class;
+        $this->entityClassMetadata = $this->em->getClassMetadata($this->entityClassName);
+        $this->entityProperties = array_keys($this->entityClassMetadata->fieldMappings);
+        $this->entityRelations = $this->entityClassMetadata->associationMappings;
+
+        $result = [];
+        foreach ($ids as $id) {
+            foreach($entities as $entity) {
+                if($entity['id'] == $id) {
+                    $result[] = $entity;
+                }
+            }
+        }
+        return $result;
+    }
     
+    private $__inSubclassesQuery = false;
     public function getFindResult(string $select = null) {
+
+        if (!$this->__inSubclassesQuery && $this->entityClassMetadata->inheritanceType == 3 && $this->entityClassMetadata->subClasses) {
+            $this->__inSubclassesQuery = true;
+            $result = $this->getSubClassesResult();
+            $this->__inSubclassesQuery = false;
+            return $result;
+        }
+
         $dql = $this->getFindDQL($select);
 
         $q = $this->em->createQuery($dql);
