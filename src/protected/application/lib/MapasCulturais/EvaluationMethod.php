@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais;
 
+use DateTime;
 use \MapasCulturais\i;
 
 abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
@@ -161,6 +162,10 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
 
         if(isset($this->_canUserEvaluateRegistrationCache[$cache_id])){
             return $this->_canUserEvaluateRegistrationCache[$cache_id];
+        }
+
+        if(new DateTime('now') < $registration->opportunity->evaluateFrom || new DateTime('now') > $registration->opportunity->evaluateTo){
+            return false;
         }
 
         $config = $registration->getEvaluationMethodConfiguration();
