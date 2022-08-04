@@ -3,15 +3,41 @@
 .mc-map {
     &-marker {
         align-items: center;
-        border-radius: size(50) size(50) 0 size(50);
+        border-radius: 50%;
+        border: var(--mc-border-hairline) var(--mc-gray-300);
         display: flex;
-        width: size(30);
         height: size(30);
         justify-content: center;
-        transform: rotate(45deg);
+        left: -14px;
+        position: absolute;
+        top: -48px;
+        width: size(30);
 
-        .iconify {
-            transform: rotate(-45deg);
+        &::before {
+            background: white;
+            border-radius: 50%;
+            border: var(--mc-border-hairline) var(--mc-gray-300);
+            content: '';
+            height: 45px;
+            position: absolute;
+            transform: rotate(45deg);
+            width: 45px;
+            z-index: -1;
+        }
+
+        &::after {
+            width: 13px;
+            height: 13px;
+            content: '';
+            position: absolute;
+            background: white;
+            bottom: -14px;
+            -webkit-transform: rotate(45deg) skew(20deg, 20deg);
+            transform: rotate(45deg) skew(20deg, 20deg);
+            border: var(--mc-border-hairline) var(--mc-gray-300);
+            z-index: -1;
+            border-top: none;
+            border-left: none;
         }
     }
 }
