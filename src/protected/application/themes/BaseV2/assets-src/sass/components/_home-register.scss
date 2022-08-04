@@ -63,7 +63,7 @@
         }
 
         &--button {
-            border-radius: size(8);
+            border-radius: var(--mc-border-radius-sm);
             font-size: size(24);
             line-height: size(28);
             color: var(--mc-warning-500);
