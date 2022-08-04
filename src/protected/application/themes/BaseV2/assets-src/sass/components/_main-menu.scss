@@ -10,7 +10,7 @@
 
     &__btn {
         background:  var(--mc-gray-700);
-        border-radius: size(8);
+        border-radius: var(--mc-border-radius-sm);
         color: var(--mc-white);
         cursor: pointer;
         display: inline;

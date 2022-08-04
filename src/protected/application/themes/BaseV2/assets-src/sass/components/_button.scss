@@ -4,7 +4,7 @@
     align-items: center;
     appearance: none;
     border: 2px solid transparent;
-    border-radius: var(--mc-border-radius);
+    border-radius: var(--mc-border-radius-sm);
     cursor: pointer;
     display: inline-flex;
     font-size: size(16);
@@ -77,7 +77,7 @@
     // estilos
 
     &--rounded {
-        border-radius: size(264);
+        border-radius: var(--mc-border-radius-pill);
     }
 
     &--outline {
