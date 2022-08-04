@@ -638,7 +638,7 @@ abstract class Entity implements \JsonSerializable{
         if($class::usesTypes()){
             $types = [];
             $types_order = [];
-            foreach($app->getRegisteredEntityTypes(self::getClassName()) as $type) {
+            foreach($app->getRegisteredEntityTypes($class) as $type) {
                 $types[$type->id] = $type->name;
                 $types_order[] = $type->id;
             }
