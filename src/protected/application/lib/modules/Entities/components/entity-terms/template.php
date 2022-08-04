@@ -56,7 +56,7 @@ $this->import('popover')
     </popover>
 
     <ul class="entity-terms__terms">
-        <li class="button--solid entity-terms__terms--term" v-for="term in entityTerms"> 
+        <li :class="[entity.__objectType+'__background', 'entity-terms__terms--term']" v-for="term in entityTerms"> 
             {{term}}
             <mc-icon v-if="editable" @click="remove(term)" name="delete"></mc-icon>
         </li>
