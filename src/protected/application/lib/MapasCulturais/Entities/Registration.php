@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
@@ -1138,6 +1139,10 @@ class Registration extends \MapasCulturais\Entity
         }
 
         if($this->opportunity->publishedRegistrations){
+            return false;
+        }
+
+        if(new DateTime('now') < $this->opportunity->evaluateFrom || new DateTime('now') > $this->opportunity->evaluateTo){
             return false;
         }
         
