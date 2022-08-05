@@ -88,7 +88,7 @@ $shadow-lv-1: 0px 4px 8px rgba(0, 0, 0, 0.16);
 $shadow-lv-2: 0px 8px 16px rgba(0, 0, 0, 0.16);
 $shadow-lv-3: 0px 8px 24px rgba(0, 0, 0, 0.16);
 $shadow-lv-4: 0px 16px 48px rgba(0, 0, 0, 0.16);
-
+$shadow-lv-1-up: 0px -4px 8px rgba(0, 0, 0, 0.16);
 :root {
     --mc-agents-300: #{$agents-300};
     --mc-agents-500: #{$agents-500};
@@ -133,6 +133,7 @@ $shadow-lv-4: 0px 16px 48px rgba(0, 0, 0, 0.16);
     --mc-secondary-500: #{$secondary-500};
     --mc-secondary-700: #{$secondary-700};
     --mc-shadow-lv1: #{$shadow-lv-1};
+    --mc-shadow-lv1-up: #{$shadow-lv-1-up};
     --mc-shadow-lv2: #{$shadow-lv-2};
     --mc-shadow-lv3: #{$shadow-lv-3};
     --mc-shadow-lv4: #{$shadow-lv-4};

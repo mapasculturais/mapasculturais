@@ -11,7 +11,7 @@
     flex-wrap: wrap;
 
     &::before {
-        box-shadow: var(--mc-shadow-lv1);
+        box-shadow: var(--mc-shadow-lv1-up);
         content: '';
         height: size(80);
         position: absolute;
