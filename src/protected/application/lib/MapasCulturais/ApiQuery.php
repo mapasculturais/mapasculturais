@@ -1063,7 +1063,7 @@ class ApiQuery {
                 }
             }
 
-            $entity['@entityType'] = $this->entityController->id;
+            $entity['@entityType'] = $this->entityController->id ?? strtolower(substr(strrchr($this->entityClassName, "\\"), 1));
         }
     }
 
