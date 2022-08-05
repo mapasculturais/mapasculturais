@@ -8,7 +8,7 @@ $this->import('select-entity');
     <h4>{{title}}</h4>
     <a class="entity-owner__owner" :href="owner.singleUrl" :title="owner.shortDescription">
         <div class="entity-owner__owner--img">
-            <img v-if="owner.files" class="profile" :src="owner.files?.avatar?.url">
+            <img v-if="owner.files.avatar" class="profile" :src="owner.files?.avatar?.url">
             <div v-else class="placeholder">
                 <mc-icon name="agent-1"></mc-icon>
             </div>
