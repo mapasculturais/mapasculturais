@@ -52,6 +52,21 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     protected $opportunity;
 
+         /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="evaluation_from", type="datetime", nullable=true)
+     */
+    protected $evaluationFrom;
+
+
+     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="evaluation_to", type="datetime", nullable=true)
+     */
+    protected $evaluationTo;
+
     /**
      * @var \MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation[] Agent Relations
      *
@@ -74,6 +89,26 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $this->opportunity = $opportunity;
         if ($cascade) {
             $opportunity->setEvaluationMethodConfiguration($this, false);
+        }
+    }
+
+    function setEvaluationFrom($date){
+        if($date instanceof \DateTime){
+            $this->evaluationFrom = $date;
+        }elseif($date){
+            $this->evaluationFrom = new \DateTime($date);
+        }else{
+            $this->evaluationFrom = null;
+        }
+    }
+
+    function setEvaluationTo($date){
+        if($date instanceof \DateTime){
+            $this->evaluationTo = $date;
+        }elseif($date){
+            $this->evaluationTo = new \DateTime($date);
+        }else{
+            $this->evaluationTo = null;
         }
     }
 

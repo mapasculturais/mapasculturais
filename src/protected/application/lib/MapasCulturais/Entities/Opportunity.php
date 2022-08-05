@@ -150,22 +150,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     protected $publishTimestamp;
 
-         /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="evaluate_from", type="datetime", nullable=true)
-     */
-    protected $evaluateFrom;
-
-
-     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="evaluate_to", type="datetime", nullable=true)
-     */
-    protected $evaluateTo;
-
-
     /**
      * @var integer
      *
@@ -524,26 +508,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $this->publishTimestamp = new \DateTime($date);
         }else{
             $this->publishTimestamp = null;
-        }
-    }
-
-    function setEvaluateFrom($date){
-        if($date instanceof \DateTime){
-            $this->evaluateFrom = $date;
-        }elseif($date){
-            $this->evaluateFrom = new \DateTime($date);
-        }else{
-            $this->evaluateFrom = null;
-        }
-    }
-
-    function setEvaluateTo($date){
-        if($date instanceof \DateTime){
-            $this->evaluateTo = $date;
-        }elseif($date){
-            $this->evaluateTo = new \DateTime($date);
-        }else{
-            $this->evaluateTo = null;
         }
     }
 
