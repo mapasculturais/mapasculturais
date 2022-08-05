@@ -1643,16 +1643,33 @@ class App extends \Slim\Slim{
      **********************************************/
 
     /**
+     * Enfileira um job, substituindo um já existente
      * 
      * @param string $type_slug 
      * @param array $data 
      * @param string $start_string 
      * @param string $interval_string 
      * @param int $iterations 
+     * @return void 
+     * @throws Exception 
+     */
+    public function enqueueOrReplaceJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
+        $this->enqueueJob($type_slug, $data, $start_string, $interval_string, $iterations, true);
+    }
+
+    
+    /**
+     * Enfileira um job
+     * @param string $type_slug 
+     * @param array $data 
+     * @param string $start_string 
+     * @param string $interval_string 
+     * @param int $iterations 
+     * @param bool $replace
      * @return Job 
      * @throws Exception 
      */
-    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
+    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false) {
         if($this->config['app.log.jobs']) {
             $this->log->debug("ENQUEUED JOB: $type_slug");
         }
@@ -1667,7 +1684,11 @@ class App extends \Slim\Slim{
 
         if ($job = $this->repo('Job')->find($id)) {
             $this->log->debug('JOB ID JÁ EXISTE: ' . $id);
-            return $job;
+            if ($replace) {
+                $job->delete(true);
+            } else {
+                return $job;
+            }
         }
 
         $job = new Job($type);
