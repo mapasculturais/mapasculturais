@@ -36,6 +36,10 @@
 
         &--cards {
 
+            .carousel__track {
+                align-items: flex-start;
+            }
+            
             .actions {
                 gap: size(24);
                 display: flex;
