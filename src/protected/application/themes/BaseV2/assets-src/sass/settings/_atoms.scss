@@ -40,6 +40,7 @@
     }
     &__background {
         background-color: var(--mc-primary-500);
+        color: var(--mc-high-500);
     }
     &__hover {
         &:hover {
@@ -54,6 +55,7 @@
     }
     &__background {
         background-color: var(--mc-agents-500);
+        color: var(--mc-low-500);
     }
     &__hover {
         &:hover {
@@ -68,6 +70,7 @@
     }
     &__background {
         background-color: var(--mc-spaces-500);
+        color: var(--mc-high-500);
     }
     &__hover {
         &:hover {
@@ -82,6 +85,7 @@
     }
     &__background {
         background-color: var(--mc-events-500);
+        color: var(--mc-high-500);
     }
     &__hover {
         &:hover {
@@ -96,6 +100,7 @@
     }
     &__background {
         background-color: var(--mc-projects-500);
+        color: var(--mc-high-500);
     }
     &__hover {
         &:hover {
@@ -110,6 +115,7 @@
     }
     &__background {
         background-color: var(--mc-opportunities-500);
+        color: var(--mc-high-500);
     }
     /* &__hover {
         &:hover {
