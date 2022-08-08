@@ -15,29 +15,7 @@ app.component('home-opportunities', {
     },
 
     created() { 
-        /* window.onload = function () {
-            
-            this.lista = document.querySelector('.home-opportunities__content--cards-list');
-            this.btnLeft = document.querySelector('.actions').firstElementChild;
-            this.btnRight = document.querySelector('.actions').lastElementChild;
-            this.scrollMin = 0;
-
-            // card = 328;
-            // gap/lastGap = 40;
-            // scrollMax = (((card+gap) * (totalElementos - 3)) - lastGap); 
-            this.scrollMax = (this.lista.childElementCount > 3) ? ((368 * (this.lista.childElementCount - 3)) - 40) : ((368 * this.lista.childElementCount) - 40); 
-
-            if ((368 * this.lista.childElementCount) >= this.lista.offsetWidth) {
-                // desabilida apenas o left
-                this.btnLeft.disabled = true;
-            } else {
-                // desabilida ambos
-                this.btnLeft.disabled = true;
-                this.btnRight.disabled = true;
-            }
-
-            console.log(this.lista);
-        }*/
+        
     }, 
 
     props: {
@@ -97,56 +75,10 @@ app.component('home-opportunities', {
         },
     }),
 
-    /* data() {
-        return {
-            leftDisabled: false,
-            rightDisabled: false,
-            scroll: 0,
-            lista: '',
-            btnLeft: '',
-            btnRight: '',
-            scrollMax: 0,
-            scrollMin: 0
-        }
-    }, */
-
     computed: {
     },
     
     methods: {
-        /* right() {    
-            console.log(this.lista);
-            if ((368 * this.lista.childElementCount) >= this.lista.offsetWidth) {       
-                if (this.btnLeft.disabled == true) this.btnLeft.disabled = false;
-                
-                if (scroll >= scrollMax) {
-                    this.scroll = this.scrollMax;
-                    this.btnRight.disabled = true;
-                } else {
-                    this.scroll = scroll + 368;
-                    this.btnRight.disabled = false;
-                }
+    }
 
-                this.lista.scroll({ left: scroll, behavior: 'smooth' });
-            }
-        },
-
-        left() {
-            console.log(this.lista);
-            if ((368 * this.lista.childElementCount) >= this.lista.offsetWidth) {
-                if (btnRight.disabled == true) btnRight.disabled = false;
-
-                if (scroll <= scrollMin) {
-                    this.scroll = this.scrollMin
-                    this.btnLeft.disabled = true;
-                } else {
-                    this.scroll = scroll - 368;
-                    this.btnLeft.disabled = false;
-                }
-
-                this.lista.scroll({ left: scroll, behavior: 'smooth' });
-            }
-        } */
-
-    },
 });
