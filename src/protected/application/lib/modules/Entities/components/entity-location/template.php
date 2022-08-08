@@ -54,7 +54,7 @@ $this->import('entity-field entity-map');
             <span v-if="entity.En_Estado">{{entity.En_Estado}} - </span>            
             <span v-if="entity.En_CEP">CEP: {{entity.En_CEP}}. </span>
         </p>
-        <entity-map :entity="entity" :editable="true"></entity-map>
+        <entity-map :entity="entity" :editable="editable"></entity-map>
     </div>
 
 </div>
