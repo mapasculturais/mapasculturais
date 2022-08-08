@@ -7,7 +7,8 @@ app.component('entity-card', {
         return { text }
     },
 
-    mounted() {
+    data() {
+        return {}
     },
 
     props: {
@@ -23,6 +24,18 @@ app.component('entity-card', {
     },
 
     computed: {
+        seals() {
+            return (this.entity.seals.length > 0 ? this.entity.seals.slice(0, 2) : false);
+        },
+        areas() {
+            return (Array.isArray(this.entity.terms.area) ? this.entity.terms.area.join(", ") : false);
+        },
+        tags() {
+            return (Array.isArray(this.entity.terms.tag) ? this.entity.terms.tag.join(", ") : false);
+        },
+        linguagens() {
+            return (Array.isArray(this.entity.terms.linguagem) ? this.entity.terms.linguagem.join(", ") : false);
+        }
     },
     
     methods: {
