@@ -1,53 +1,39 @@
 app.component('home-map', {
     template: $TEMPLATES['home-map'],
     
+    created(){
+
+        this.spaceAPI = new API('space');
+        this.agentAPI = new API('agent');
+        this.findEntities();
+    },
+    
     data() {
         return{
-            select: 'id,name,shortDescription,terms,seals',
-            query: {"@permissions": ""}
+            agents: [],
+            spaces: [],
         }
     },
 
     computed: {
-        async allEntities() {
-            let entities = {};
-            let newIndex = 0;
-            const spaceAPI = new API('space');
-            const agentAPI = new API('agent');
-            const spaces = await spaceAPI.find();
-            const agents = await agentAPI.find();
-
-            spaces.forEach(function(entity, index){
-                entities[newIndex] = entity;
-                ++newIndex;
-            });
-
-            agents.forEach(function(entity, index){
-                entities[newIndex] = entity;
-                ++newIndex;
-            });
-
-            // entities.concat(spaces).concat(agents);
-            console.log(entities);
+        entities() {
+            const entities = this.spaces.concat(this.agents);
             return entities;
         }
         // captar eventos
         // concatenar no foreach usando push
-
-
     },
     
-
-
-
-
-
-
-
     props: {
     },
 
     methods: {
-        
+        async findEntities() {
+            const query = {
+                '@select': 'id,name,shortDescription,location,terms,seals',
+            }
+            this.spaces = await this.spaceAPI.find(query);
+            this.agents = await this.agentAPI.find(query);
+        }
     },
 });
