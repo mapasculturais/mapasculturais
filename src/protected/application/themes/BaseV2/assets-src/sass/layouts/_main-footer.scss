@@ -3,6 +3,7 @@
 .main-footer {
     align-items: flex-start;
     background: #FFFFFF;
+    box-shadow: var(--mc-shadow-lv1-up);
     display: flex;
     gap: size(40);
     justify-content: center;
@@ -10,7 +11,7 @@
     position: relative;
     flex-wrap: wrap;
 
-    &::before {
+    /* &::before {
         box-shadow: var(--mc-shadow-lv1-up);
         content: '';
         height: size(80);
@@ -18,7 +19,7 @@
         top: 0;
         width: 100%;
         z-index: 2;
-    }
+    } */
     
     @include mobile {
         align-items: center;
