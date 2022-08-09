@@ -15,7 +15,7 @@ $this->import('entities entity-card');
         </div>
 
         <div class="home-opportunities__content--cards">
-            <entities type="opportunity" :select="select" :query="query">
+            <entities type="opportunity" :query="getQuery">
                 <template #default="{entities}">
                     
                     <carousel v-if="entities.length > 0" :settings="settings" :breakpoints="breakpoints">
