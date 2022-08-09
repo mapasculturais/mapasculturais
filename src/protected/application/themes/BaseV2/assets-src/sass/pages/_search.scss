@@ -1,0 +1,11 @@
+@use '../settings/mixins' as *;
+
+.search {
+    &-agent {
+        &__header {
+            background-color: var(--mc-white);
+            height: 185px;
+
+        }
+    }
+}
