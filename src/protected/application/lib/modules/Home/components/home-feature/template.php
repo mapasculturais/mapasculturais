@@ -1,13 +1,13 @@
 <?php
 use MapasCulturais\i;
 
-$this->import('entities entity-card');
+$this->import('entities entity-card tabs');
 ?>
 
 <div class="home-feature">
     <div class="home-feature__content">
         <div class="home-feature__content--title">
-            <label> <?php i::_e('Oportunidades do momento')?> </label>
+            <label> <?php i::_e('Em destaque')?> </label>
         </div>
 
         <div class="home-feature__content--description">
@@ -15,20 +15,10 @@ $this->import('entities entity-card');
         </div>
 
         <div class="home-feature__content--cards">
-            <div class="filter">
-                <ul class="filter__list">
-                    <li class="filter__list--item active">Todos</li>
-                    <li class="filter__list--item">Eventos</li>
-                    <li class="filter__list--item">Espaços</li>
-                    <li class="filter__list--item">Agentes</li>
-                    <li class="filter__list--item">Projetos</li>
-                </ul>
-            </div>
 
-            <entities type="agent" :select="select" :query="query">
-                <template #default="{entities}">
-                    
-                    <carousel v-if="entities.length > 0" :settings="settings" :breakpoints="breakpoints">
+            <tabs>
+                <tab label="Todos" slug="all">
+                    <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in entities" :key="entity.id">
                             <entity-card :entity="entity"></entity-card> 
                         </slide>                        
@@ -39,9 +29,37 @@ $this->import('entities entity-card');
                             </div>
                         </template>
                     </carousel>
+                </tab>
 
-                </template>
-            </entities>
+                <tab label="Agentes" slug="agents">
+                    <carousel :settings="settings" :breakpoints="breakpoints">
+                        <slide v-for="entity in agents" :key="entity.id">
+                            <entity-card :entity="entity"></entity-card> 
+                        </slide>                        
+
+                        <template #addons>
+                            <div class="actions">
+                                <navigation :slideWidth="368" />
+                            </div>
+                        </template>
+                    </carousel>
+                </tab>
+
+                <tab label="Espaços" slug="spaces">
+                    <carousel :settings="settings" :breakpoints="breakpoints">
+                        <slide v-for="entity in spaces" :key="entity.id">
+                            <entity-card :entity="entity"></entity-card> 
+                        </slide>                        
+
+                        <template #addons>
+                            <div class="actions">
+                                <navigation :slideWidth="368" />
+                            </div>
+                        </template>
+                    </carousel>
+                </tab>
+            </tabs>
+            
         </div>
     </div>
 </div>

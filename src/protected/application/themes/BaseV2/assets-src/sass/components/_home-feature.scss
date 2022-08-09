@@ -44,46 +44,6 @@
                 right: 0;
             }
 
-            .filter {
-                list-style: none;
-                padding: 0;
-                gap: size(48);
-                display: flex;
-                margin-top: size(40);
-
-                &__list {
-                    list-style: none;
-                    padding: 0;
-                    display: flex;
-                    gap: size(48);
-                    padding-bottom: size(20);
-                    margin: 0;    
-                    
-                    @media (max-width: size(550)) {
-                        overflow-x: scroll;
-                    }
-
-                    &--item{
-                        padding: 0 0 size(16);
-                        position: relative;
-                        cursor: pointer;
-
-                        &.active {                            
-                            &::after {
-                                content: '';
-                                width: 100%;
-                                height: size(7);
-                                background: black;
-                                position: absolute;
-                                bottom: 0;
-                                left: 0;
-                                border-radius: var(--mc-border-radius-pill);
-                            }
-                        }
-                    }
-                }
-            }
-
             .carousel {
                 margin-top: size(20);
 
