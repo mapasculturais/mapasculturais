@@ -48,7 +48,9 @@ $(function() {
                 const oldNeighbourhood = $nbhood.val();
                 const oldState = $state.val();
                 const oldCity = $city.val();
-                const msgLoading = coalesce(MapasCulturais.gettext.locationPatch.loading, "carregando...");
+                
+                const msgLoading = typeof MapasCulturais.gettext.locationPatch !== "undefined" ? MapasCulturais.gettext.locationPatch.loading : "carregando...";
+
                 $([$street, $nbhood, $state, $city]).val("").attr("placeholder", msgLoading);
                 $.getJSON("/site/address_by_postalcode?postalcode=" + $cep.val())
                 .done(function(r) {
