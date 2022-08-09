@@ -18,11 +18,6 @@ app.component('entity-card', {
         }
     },
 
-    data() {
-        return {
-        }
-    },
-
     computed: {
         seals() {
             return (this.entity.seals.length > 0 ? this.entity.seals.slice(0, 2) : false);
