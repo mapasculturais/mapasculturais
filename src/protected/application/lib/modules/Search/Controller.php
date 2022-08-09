@@ -1,17 +1,14 @@
 <?php
 
-namespace Home;
+namespace Search;
 
 class Controller extends \MapasCulturais\Controller
 {
     function __construct()
     {
-        $this->layout = 'home';
     }
     
     function GET_index() {
-        $this->requireAuthentication();
-        $this->render('index');
+        $this->render('search-agent', []);
     }
-
 }
