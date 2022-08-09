@@ -4,16 +4,21 @@
     
     &__title {
         font-weight: 600;
-        font-size: 18px;
-        line-height: 25px;
+        font-size: size(18);
+        line-height: size(25);
     }
 
     .leaflet-container {
-        z-index: 1;
+        z-index: 0;
     }
 
     &__address {
-        font-size: 14px;
-        line-height: 18px;
+        font-size: size(13);
+        line-height: size(18);
+        margin: size(5) 0;
+    }
+
+    .mc-map {
+        max-height: size(230);
     }
 }
