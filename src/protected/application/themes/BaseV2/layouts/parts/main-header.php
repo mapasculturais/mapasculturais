@@ -14,37 +14,37 @@ $this->import('popover messages main-menu');
     <!-- Menu -->
     <ul class="main-header__menu">
         <li> 
-            <a href="" class="main-header__menu--item home">
+            <a href="<?= $app->createUrl('home', 'index') ?>" class="main-header__menu--item home">
                 <span class="icon"> <mc-icon name="home"></mc-icon> </span>
                 <p class="label"> <?php i::_e('Home') ?> </p>      
             </a>  
         </li>
         <li>
-            <a href="" class="main-header__menu--item opportunity">
+            <a href="<?= $app->createUrl('search', 'opportunities') ?>" class="main-header__menu--item opportunity">
                 <span class="icon opportunity__bg-hover"> <mc-icon name="opportunity"></mc-icon> </span>
                 <p class="label"> <?php i::_e('Oportunidades') ?> </p>
             </a>
         </li>
         <li>
-            <a href="" class="main-header__menu--item agent">
+            <a href="<?= $app->createUrl('search', 'agents') ?>" class="main-header__menu--item agent">
                 <span class="icon"> <mc-icon name="agent-2"> </span>
                 <p class="label"> <?php i::_e('Agentes') ?> </p>
             </a>
         </li>
         <li> 
-            <a href="" class="main-header__menu--item event">
+            <a href="<?= $app->createUrl('search', 'events') ?>" class="main-header__menu--item event">
                 <span class="icon"> <mc-icon name="event"> </span>
                 <p class="label"> <?php i::_e('Eventos') ?> </p>
             </a>  
         </li>
         <li> 
-            <a href="" class="main-header__menu--item space">
+            <a href="<?= $app->createUrl('search', 'spaces') ?>" class="main-header__menu--item space">
                 <span class="icon"> <mc-icon name="space"> </span>
                 <p class="label"> <?php i::_e('Espaços') ?> </p>       
             </a> 
         </li>
         <li> 
-            <a href="" class="main-header__menu--item project">
+            <a href="<?= $app->createUrl('search', 'projects') ?>" class="main-header__menu--item project">
                 <span class="icon"> <mc-icon name="project"> </span>
                 <p class="label"> <?php i::_e('Projetos') ?> </p>      
             </a> 
