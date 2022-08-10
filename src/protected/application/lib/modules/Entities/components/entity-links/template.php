@@ -24,20 +24,16 @@ use MapasCulturais\i;
                                         <input class="input" v-model="metalist.newData.title" type="text" />
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="grid-12">
+                                
                                 <div class="col-12">
                                     <div class="field">
                                         <label><?php i::_e('Link') ?></label>
                                         <input class="input" v-model="metalist.newData.value" type="url" />
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div class="actions">
-                                <button class="button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
-                                <button class="button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
+
+                                <button class="col-6 button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
@@ -75,20 +71,16 @@ use MapasCulturais\i;
                             <input v-model="metalist.title" class="newLinkTitle" type="text" name="newLinkTitle" />
                         </div>
                     </div>
-                </div>
-
-                <div class="grid-12">
+                    
                     <div class="col-12">
                         <div class="field">
                             <label><?php i::_e('Link') ?></label>
                             <input v-model="metalist.value" class="newLink" type="url" name="newLink" />
                         </div>
-                    </div>
-                </div>
-                
-                <div class="actions">
-                    <button class="button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
-                    <button class="button button--solid" type="submit"> <?php i::_e("Confirmar") ?> </button>
+                    </div> 
+
+                    <button class="col-6 button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                    <button class="col-6 button button--solid" type="submit"> <?php i::_e("Confirmar") ?> </button>
                 </div>
             </form>
         </template>

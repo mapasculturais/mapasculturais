@@ -8,11 +8,6 @@ app.component('entity-location', {
         return { hasSlot }
     },
 
-    updated() {
-        this.address();
-        console.log('teste');
-    },
-
     props: {
         entity: {
             type: Entity,

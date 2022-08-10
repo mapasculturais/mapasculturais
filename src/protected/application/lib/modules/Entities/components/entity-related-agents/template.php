@@ -30,11 +30,9 @@ $this->import('popover confirm-button');
                                 <div class="col-12">
                                     <input v-model="groupAgents.newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                                 </div>
-                            </div>
-                            
-                            <div class="actions">
-                                <button class="button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
-                                <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
+
+                                <button class="col-6 button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--primary"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
@@ -112,11 +110,9 @@ $this->import('popover confirm-button');
                             <div class="col-12">
                                 <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                             </div>
-                        </div>
-                        
-                        <div class="actions">
-                            <button class="button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
-                            <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
+
+                            <button class="col-6 button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                            <button class="col-6 button button--primary"> <?php i::_e("Confirmar") ?> </button>
                         </div>
                     </form>
                 </div>
