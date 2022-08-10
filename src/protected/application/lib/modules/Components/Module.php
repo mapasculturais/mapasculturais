@@ -29,6 +29,8 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueScript('components', 'components-utils', 'js/components-base/Utils.js', ['components-init']);
             $app->view->enqueueStyle($vendor_group, 'components-carousel', 'css/components-base/carousel.css');
             $app->view->enqueueStyle($vendor_group, 'leaflet', '../node_modules/leaflet/dist/leaflet.css');
+            $app->view->enqueueStyle($vendor_group, 'leaflet.markercluster', '../node_modules/leaflet.markercluster/dist/MarkerCluster.css');
+            $app->view->enqueueStyle($vendor_group, 'leaflet.markercluster.default', '../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css');
             $app->view->assetManager->publishFolder('js/vue-init/', 'js/vue-init/');
             
             // Importa componentes globais
