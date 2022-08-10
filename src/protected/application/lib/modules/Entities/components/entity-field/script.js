@@ -34,8 +34,7 @@ app.component('entity-field', {
             __timeout: null,
             description: description,
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
-            fieldType: this.type || description.input_type || description.type,
-            value: value
+            fieldType: this.type || description.input_type || description.type
         }
     },
 
@@ -77,19 +76,22 @@ app.component('entity-field', {
         },
         errors() {
             return this.entity.__validationErrors[this.prop];
+        },
+        value() {
+            return this.entity[this.prop];
         }
     },
     
     methods: {
-        change() {
+        change(event) {
             clearTimeout(this.__timeout);
 
             let oldValue = this.entity[this.prop];
 
             this.__timeout = setTimeout(() => {
-                this.entity[this.prop] = this.value;
+                this.entity[this.prop] = event.target.value;
 
-                this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: this.value});
+                this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
             }, this.debounce);
         },
 
