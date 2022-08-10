@@ -22,7 +22,6 @@ app.component('entity-location', {
 
     methods: {
         address() {
-
             let rua         = this.entity.En_Nome_Logradouro == null ? '' : this.entity.En_Nome_Logradouro;
             let numero      = this.entity.En_Num             == null ? '' : this.entity.En_Num;
             let complemento = this.entity.En_Complemento     == null ? '' : this.entity.En_Complemento;
@@ -91,6 +90,7 @@ app.component('entity-location', {
             }
            
             this.entity.endereco = address;
+            this.geolocation();
         },
 
         pesquisacep(valor) {
@@ -110,6 +110,84 @@ app.component('entity-location', {
                         });    
                 } 
             } 
+        },
+
+        formatParams( params ){
+            return "?" + Object.keys(params).map(function(key){
+                            return key+"="+encodeURIComponent(params[key])
+                        }).join("&");
+        },
+
+        geolocation() {
+            let rua         = this.entity.En_Nome_Logradouro == null ? '' : this.entity.En_Nome_Logradouro;
+            let numero      = this.entity.En_Num             == null ? '' : this.entity.En_Num;
+            let bairro      = this.entity.En_Bairro          == null ? '' : this.entity.En_Bairro;
+            let cidade      = this.entity.En_Municipio       == null ? '' : this.entity.En_Municipio;
+            let estado      = this.entity.En_Estado          == null ? '' : this.entity.En_Estado;
+            let cep         = this.entity.En_CEP             == null ? '' : this.entity.En_CEP;
+
+            if (estado && cidade && rua) {
+                var address = bairro ?
+                    rua + " " + numero + ", " + bairro + ", " + cidade + ", " + estado :
+                    rua + " " + numero + ", " + cidade + ", " + estado;
+
+                var addressElements = {
+                    fullAddress: address,
+                    streetName: rua,
+                    city: cidade,
+                    state: estado,
+                };
+
+                if (numero)
+                    addressElements["number"] = numero;
+
+                if (bairro)
+                    addressElements["neighborhood"] = bairro;
+
+                if (cep)
+                    addressElements["postalCode"] = cep;
+
+                var params = {
+                    format: "json",
+                    countrycodes: "br"
+                };
+                var structured = false;
+
+                if (addressElements.streetName) {
+                    params.street = (addressElements.number ? addressElements.number + " " : "") + addressElements.streetName;
+                    structured = true;
+                }
+                if (addressElements.city) {
+                    params.city = addressElements.city;
+                    structured = true;
+                }
+                if (addressElements.state) {
+                    params.state = addressElements.state;
+                    structured = true;
+                }
+                if (addressElements.country) {
+                    params.country = addressElements.country;
+                    structured = true;
+                }
+                // Parece que o nominatim não se dá bem com nosso CEP
+                // if (addressElements.postalCode) {
+                //     params.postalcode = addressElements.postalCode;
+                //     structured = true;
+                // }
+                if (!structured && addressElements.fullAddress) {
+                    params.q = addressElements.fullAddress;
+                }
+
+                let url = 'https://nominatim.openstreetmap.org/search' + this.formatParams(params);
+                fetch(url)
+                    .then( response => response.json() )
+                    .then( r => {
+                        // Consideramos o primeiro resultado
+                        if (r[0] && r[0].lat && r[0].lon) {
+                            this.entity.location = {lat: r[0].lat, lon: r[0].lon};
+                        }
+                    } );
+            }            
         }
     }
 });
