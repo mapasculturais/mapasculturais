@@ -49,6 +49,10 @@ $col-columns: 12;
     max-width: size(1190);
     padding: 0 size(16);
     flex-wrap: wrap;
+
+    @media (max-width: size(1060)) {
+        grid-template-columns: 60% 37%;
+    }
     
     @media (max-width: size(800)) {
         grid-template-columns: 100%;

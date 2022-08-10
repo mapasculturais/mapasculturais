@@ -41,6 +41,10 @@
             display: grid;
             grid-template-columns: 66% 7% 27%;
             flex-wrap: wrap;
+
+            @media (max-width: size(1060)) {
+                grid-template-columns: 58% 7% 35%;
+            }
         
             @media (max-width: size(800)) {
                 grid-template-columns: 100%;
