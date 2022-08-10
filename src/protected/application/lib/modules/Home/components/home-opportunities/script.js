@@ -22,7 +22,7 @@ app.component('home-opportunities', {
             // query
             query: {
                 '@order' : 'registrationFrom ASC',
-                '@select' : 'id,name,shortDescription,terms,seals',
+                '@select' : 'id,name,shortDescription,terms,seals,singleUrl',
                 '@verified' : '1'
             },
 

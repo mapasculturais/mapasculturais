@@ -69,10 +69,10 @@ $this->import('mc-icon');
         </div>
 
         <div class="entity-card__footer--action">
-            <button class="button button--primary button--large button--icon"> 
+            <a :href="entity.singleUrl" class="button button--primary button--large button--icon"> 
                 <?php i::_e('Acessar') ?> 
                 <mc-icon name="access"></mc-icon> 
-            </button>
+            </a>
         </div>
     </div>
 
