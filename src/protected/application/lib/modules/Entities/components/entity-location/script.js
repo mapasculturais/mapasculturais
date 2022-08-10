@@ -22,14 +22,73 @@ app.component('entity-location', {
 
     methods: {
         address() {
-            var address = '';        
-            address += this.entity.En_Nome_Logradouro;
-            address += address != '' && this.entity.En_Complemento  ? ', '+this.entity.En_Complemento : this.entity.En_Complemento;
-            address += address != '' && this.entity.En_Bairro       ? ', '+this.entity.En_Bairro : this.entity.En_Bairro;
-            address += address != '' && this.entity.En_Municipio    ? ', '+this.entity.En_Municipio : this.entity.En_Municipio;
-            address += address != '' && this.entity.En_Num          ? ', '+this.entity.En_Num : this.entity.En_Num;
-            address += address != '' && this.entity.En_Estado       ? ', '+this.entity.En_Estado : this.entity.En_Estado;
-            address += address != '' && this.entity.En_CEP          ? ', '+this.entity.En_CEP : this.entity.En_CEP;
+
+            let rua         = this.entity.En_Nome_Logradouro == null ? '' : this.entity.En_Nome_Logradouro;
+            let numero      = this.entity.En_Num             == null ? '' : this.entity.En_Num;
+            let complemento = this.entity.En_Complemento     == null ? '' : this.entity.En_Complemento;
+            let bairro      = this.entity.En_Bairro          == null ? '' : this.entity.En_Bairro;
+            let cidade      = this.entity.En_Municipio       == null ? '' : this.entity.En_Municipio;
+            let estado      = this.entity.En_Estado          == null ? '' : this.entity.En_Estado;
+            let cep         = this.entity.En_CEP             == null ? '' : this.entity.En_CEP;
+
+            // rua, num, complemento - bairro - cidade/uf - CEP: 00000000
+            var address = '';
+
+            if(rua) {
+                address += rua;
+            }
+
+            if(numero) {
+                if (address) {
+                    address += ', ' + numero;
+                } else {
+                    address += numero;
+                }
+            }
+
+            if(complemento) {
+                if (address) {
+                    address += ', ' + complemento;
+                } else {
+                    address += complemento;
+                }
+            }
+
+            if(bairro) {
+                if (address) {
+                    address += ' - ' + bairro;
+                } else {
+                    address += bairro;
+                }
+            }
+
+            if (cidade && estado) {
+                if (address) {
+                    address += ' - ' + cidade + '/' + estado;
+                } else {
+                    address += cidade + '/' + estado;
+                }                
+            } else if (cidade) {
+                if (address) {
+                    address += ' - ' + cidade;
+                } else {
+                    address += cidade;
+                }  
+            } else if (estado) {
+                if (address) {
+                    address += ' - ' + estado;
+                } else {
+                    address += estado;
+                }
+            }
+
+            if(cep) {
+                if (address) {
+                    address += ' - CEP: ' + cep;
+                } else {
+                    address += 'CEP: ' + cep;
+                }
+            }
            
             this.entity.endereco = address;
         },
