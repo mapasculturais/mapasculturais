@@ -6,6 +6,12 @@
         max-width: 100vw;
     }
     
+    &__header {
+        align-items: baseline;
+        display: flex;
+        gap: size(16);
+    }
+
     &__buttons {
         display: flex;
         margin: size(40) 0 0;
