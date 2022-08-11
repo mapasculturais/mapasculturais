@@ -6,32 +6,46 @@ app.component('home-map', {
         this.spaceAPI = new API('space');
         this.agentAPI = new API('agent');
         
-        const query = {
-            '@select': 'id,name,location',
-            '@verified': 1
+        const query = this.query;
+        query['@select'] = 'id,name,location';
+
+        if(this.limit) {
+            query['@limit'] = this.limit;
         }
+
+        query['@order'] = this.order;
+            
         this.spaces = await this.spaceAPI.find(query);
         this.agents = await this.agentAPI.find(query);
     },
     
     data() {
         return {
-            agents: Vue.shallowReactive([]),
-            spaces: Vue.shallowReactive([]),
+            agents: [],
+            spaces: [],
         }
     },
 
     computed: {
         entities() {
             const entities = this.spaces.concat(this.agents);
-             
             return Vue.shallowReactive(entities);
         }
-        // captar eventos
-        // concatenar no foreach usando push
     },
     
     props: {
+        limit: {
+            type: Number,
+            default: null
+        },
+        order: {
+            type: String,
+            default: 'createTimestamp DESC'
+        },
+        query: {
+            type: Object,
+            default: {}
+        }
     },
 
     methods: {
