@@ -69,7 +69,7 @@ $this->import('confirm-button popover modal');
 
         <div class="entity-gallery__full--image">
             <img v-if="actualImg" :src="actualImg?.url" :imgId="actualImg?.id" :title="actualImg?.description"/>
-            <mc-icon name="loading"></mc-icon>
+            <mc-icon v-else name="loading"></mc-icon>
             <div class="description">{{actualImg?.description}}</div>
         </div>
 

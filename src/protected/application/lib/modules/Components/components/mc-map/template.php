@@ -3,7 +3,7 @@ use MapasCulturais\i;
 
 $this->import('mc-map-marker');
 ?>
-<div style="height: 400px;">
+<div class="mc-map">
     <l-map 
         ref="map" 
         :zoom="defaultZoom" 

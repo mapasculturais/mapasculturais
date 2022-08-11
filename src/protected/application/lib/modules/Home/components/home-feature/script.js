@@ -80,7 +80,7 @@ app.component('home-feature', {
     methods: {
         async findEntities() {
             const query = {
-                '@select': 'id,name,shortDescription,location,terms,seals',
+                '@select': 'id,name,shortDescription,location,terms,seals,singleUrl',
             }
             this.spaces = await this.spaceAPI.find(query);
             this.agents = await this.agentAPI.find(query);
