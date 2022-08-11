@@ -9,12 +9,17 @@ $this->breadcramb = [
 ?>
 
 
-<div class="project">
+<div class="search">
     <mapas-breadcrumb></mapas-breadcrumb>
-        <search-header type="project">
-            <template #create>
-                <create-agent></create-agent>
-            </template>
-            
-        </search-header>
+    
+    <search-header class="search__header" type="project">
+        <template #create>
+            <create-agent></create-agent>
+        </template>
+        <template #actions>
+        </template>
+    </search-header>
+    <div class="search__content">
+    <!-- verificar com ux se será adicionado o campo de pesquisa -->
+    </div>
 </div>
