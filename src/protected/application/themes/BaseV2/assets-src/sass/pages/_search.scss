@@ -1,11 +1,35 @@
 @use '../settings/mixins' as *;
 
 .search {
-    &-agent {
-        &__header {
-            background-color: var(--mc-white);
-            height: 185px;
+    &__header {
+        &--tabs{
+            &-label {
+                font-weight: 600;
+                font-size: size(16);
+                line-height: size(22);
+            }
 
+            .tabs-component__header {
+                padding: size(21) 0 size(18);
+            }
+
+            .tabs-component__panels {
+                background-color: var(--mc-gray-100);
+            }
+
+            .tabs-component__button {
+                font-weight: 700;
+                font-size: size(14);
+                line-height: size(19);
+
+                a {
+                    margin: 0 size(7);
+                }
+                
+                &--active::after {
+                    background-color: var(--mc-primary-500);  
+                }
+            }
         }
     }
 }
