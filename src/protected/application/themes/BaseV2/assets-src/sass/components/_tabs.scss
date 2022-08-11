@@ -5,11 +5,15 @@
     @include mobile {
         max-width: 100vw;
     }
-    
+
     &__header {
         align-items: baseline;
         display: flex;
         gap: size(16);
+        max-width: size(1170);
+        margin: 0 auto;
+        padding: 0 size(16);
+
     }
 
     &__buttons {
