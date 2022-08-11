@@ -1,7 +1,5 @@
 <?php
 use MapasCulturais\i;
-
-$this->import('mc-map-marker');
 ?>
 <div class="mc-map">
     <l-map 
