@@ -1,6 +1,8 @@
 @use '../settings/mixins' as *;
 
 .mc-map {
+    height: 400px;  
+
     &-marker {
         align-items: center;
         border-radius: 50%;

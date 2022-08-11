@@ -12,7 +12,19 @@ class Controller extends \MapasCulturais\Controller
         $this->render('index', []);
     }
     function GET_agents() {
-        $this->render('search-agent', []);
+        $this->render('agent', []);
+    }
+    function GET_events() {
+        $this->render('event', []);
+    }
+    function GET_projects() {
+        $this->render('project', []);
+    }
+    function GET_opportunities() {
+        $this->render('opportunity', []);
+    }
+    function GET_spaces() {
+        $this->render('space', []);
     }
     
 }
