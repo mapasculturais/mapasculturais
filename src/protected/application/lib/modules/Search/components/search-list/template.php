@@ -1,6 +1,6 @@
 <?php
 use MapasCulturais\i;
-$this->import('mc-map-markercluster mc-map entities');
+$this->import('entity-card');
 ?>
 <div class="search-list">
     <div class="grid-12">
