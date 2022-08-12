@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('entities entity-card mapas-breadcrumb mapas-card mapas-container search-map search-header tabs mc-map create-agent');
+$this->import('entities entity-card mapas-breadcrumb mapas-card mapas-container search-list search-map search-header tabs mc-map create-agent');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Agentes'), 'url' => $app->createUrl('agents')],
@@ -26,15 +26,7 @@ $this->breadcramb = [
                     <tab icon="list" label="Lista" slug="list">
                         <mapas-container>
                             <main>
-                                <entities type="agent" :query="{'@order' : 'registrationFrom ASC', '@limit' : 20, '@select' : 'id,name,shortDescription,terms,seals,singleUrl'}"> 
-                                    <template #default="{entities}">
-                                        <div class="grid-12">
-                                            <div class="col-12" v-for="entity in entities" :key="entity.id">
-                                                <entity-card :entity="entity"></entity-card> 
-                                            </div>
-                                        </div>
-                                    </template>
-                                </entities>
+                                <search-list type="agent"></search-list>
                             </main>
                             <aside>
                                 <mapas-card></mapas-card>
