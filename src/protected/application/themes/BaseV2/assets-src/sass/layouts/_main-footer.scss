@@ -33,11 +33,30 @@
 
     &__logo {
         &--img {
-            @include mobile {
-                width: 70%;
+            flex-basis: 100%;
+            width: 100%;
+
+            @media (max-width: size(800)) {
+                .theme-logo {
+                    margin: 0 auto;
+                }
             }
 
-            @media (max-width: size(450)) {
+            @media (max-width: size(500)) {
+                width: 70%;
+
+                .theme-logo {
+                    grid-template-columns: 100%;
+                    text-align: center;
+
+                    &__logo {
+                        width: 50%;
+                        margin: 0 25%;
+                    }
+                }
+            }
+
+            @media (max-width: size(490)) {
                 width: 100%;
             }
 

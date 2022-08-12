@@ -1,12 +1,13 @@
 <?php 
 use MapasCulturais\i;
+$this->import('theme-logo');
 ?>
 <div class="main-footer">
 
     <div class="main-footer__logo">
 
         <div class="main-footer__logo--img">
-            <?php $this->part('site-logo') ?>
+            <theme-logo title="mapa cultural" subtitle="do Pará" ></theme-logo>
         </div>
 
         <div class="main-footer__logo--share">
