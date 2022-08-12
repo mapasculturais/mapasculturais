@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('mapas-breadcrumb tabs search-header mc-map create-agent');
+$this->import('mapas-breadcrumb search-header tabs');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Eventos'), 'url' => $app->createUrl('events')],
