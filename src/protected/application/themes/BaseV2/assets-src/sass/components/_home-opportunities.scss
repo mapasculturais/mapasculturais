@@ -3,7 +3,7 @@
 .home-opportunities {
     margin: 0 auto;
     position: relative;
-    background-color: #FFA794;
+    background-color: var(--mc-secondary-300);
     padding: size(80) size(16);
     width: 100%;
 
@@ -36,20 +36,10 @@
 
         &--cards {
 
-            /* &-list {
-                list-style: none;
-                padding: 0;
-                display: flex;
-                gap: size(40);
-                overflow: hidden;
-
-                li {
-                    max-width: size(328);
-                    min-width: size(328);
-                    width: 100%;
-                }
-            } */
-
+            .carousel__track {
+                align-items: flex-start;
+            }
+            
             .actions {
                 gap: size(24);
                 display: flex;

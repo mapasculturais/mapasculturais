@@ -11,7 +11,7 @@ $this->import('popover');
 
     <!-- Menu mobile -->
     <a class="main-menu__mobile--btn">
-        <iconify icon="icon-park-outline:hamburger-button" />
+        <mc-icon name="menu-mobile"></mc-icon>
     </a>    
     <ul class="main-menu__mobile">
         <slot name="default"></slot>

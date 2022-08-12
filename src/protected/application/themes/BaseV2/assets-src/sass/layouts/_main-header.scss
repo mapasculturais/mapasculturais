@@ -3,7 +3,7 @@
 .main-header {
     align-items: center;
     background-color: white;
-    box-shadow: 0 size(4) size(4) rgba(0, 0, 0, 0.25);
+    box-shadow: var(--mc-shadow-lv1);
     display: flex;
     height: size(90);
     justify-content: space-between;
@@ -14,6 +14,8 @@
 
     &__logo {
         color: var(--mc-primary-500);
+        flex-basis: 500px;
+
         svg {
             width: size(350);
             @media (max-width: 1100px) {
@@ -38,15 +40,11 @@
         -ms-user-select: none;
         user-select: none;
 
-        @media (max-width: 1300px) {
+        @media (max-width: 1400px) {
             gap: size(26);
         }
 
-        @media (max-width: 1100px) {
-            gap: size(16);
-        }
-
-        @media (max-width: 940px) {
+        @media (max-width: 1200px) {
             display: none;
         }
 
@@ -185,7 +183,7 @@
                         }
                     }
     
-                    @media (max-width: 1200px) {
+                    @media (max-width: 1250px) {
                         &.mobile {
                             display: flex;
                         }
@@ -204,7 +202,7 @@
             .logIn {
                 align-items: center;
                 background:  var(--mc-gray-700);
-                border-radius: size(8);
+                border-radius: var(--mc-border-radius-sm);
                 color: var(--mc-white);
                 display: flex;
                 font-size: size(14);

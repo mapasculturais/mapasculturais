@@ -16,6 +16,7 @@
 @use 'components/entity-cover';
 @use 'components/entity-header';
 @use 'components/entity-links';
+@use 'components/entity-location';
 @use 'components/entity-owner';
 @use 'components/entity-profile';
 @use 'components/entity-related-agents';
@@ -26,6 +27,7 @@
 @use 'components/files-list';
 @use 'components/gallery';
 @use 'components/home-entities';
+@use 'components/home-feature';
 @use 'components/home-header';
 @use 'components/home-developers';
 @use 'components/home-register';
@@ -36,15 +38,18 @@
 @use 'components/main-menu';
 @use 'components/mapas-breadcrumb';
 @use 'components/mapas-card';
+@use 'components/mc-map';
 @use 'components/messages';
 @use 'components/navbar';
 @use 'components/panel';
 @use 'components/panel-sidebar';
 @use 'components/popover';
+@use 'components/search-header';
 @use 'components/select-entity';
 @use 'components/share-links';
 @use 'components/stack';
 @use 'components/tabs';
+@use 'components/theme-logo';
 
 // LAYOUTS
 @use 'layouts/entity-tabs';
@@ -57,4 +62,5 @@
 @use 'pages/agents';
 @use 'pages/events';
 @use 'pages/projects';
+@use 'pages/search';
 @use 'pages/spaces';

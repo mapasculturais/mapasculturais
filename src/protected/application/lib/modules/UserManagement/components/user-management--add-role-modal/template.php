@@ -28,8 +28,8 @@ $this->import('modal entities loading');
 
     <template #button="modal">
         <a @click="modal.open()">
-        <?=i::__('Adicionar função')?>
-            <iconify icon="mdi:plus" class="icon"></iconify>
+            <?=i::__('Adicionar função')?>
+            <mc-icon name="add"></mc-icon>
         </a>
     </template>   
 </modal>

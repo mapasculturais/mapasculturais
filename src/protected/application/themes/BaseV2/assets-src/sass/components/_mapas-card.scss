@@ -3,7 +3,7 @@
 .mapas-card {
     padding: size(25) size(24);
     background-color: var(--mc-white);
-    border-radius: size(5);
+    border-radius: var(--mc-border-radius-sm);
     width: 100%;
 
     &__title {
@@ -41,6 +41,10 @@
             display: grid;
             grid-template-columns: 66% 7% 27%;
             flex-wrap: wrap;
+
+            @media (max-width: size(1060)) {
+                grid-template-columns: 58% 7% 35%;
+            }
         
             @media (max-width: size(800)) {
                 grid-template-columns: 100%;

@@ -13,7 +13,7 @@ $this->import('loading confirm-button');
                 <confirm-button v-if="entity.currentUserPermissions?.archive" @confirm="entity.archive()">
                     <template #button="modal">
                         <button  @click="modal.open()" class="button button--icon button--sm arquivar">
-                            <iconify icon="mi:archive"></iconify>
+                            <mc-icon name="archive"></mc-icon>
                             <?php i::_e("Arquivar")?>
                         </button>
                     </template> 
@@ -25,7 +25,7 @@ $this->import('loading confirm-button');
                 <confirm-button v-if="entity.currentUserPermissions?.remove" @confirm="entity.delete()">
                     <template #button="modal">
                         <button  @click="modal.open()" class="button button--icon button--sm excluir">
-                            <iconify icon="ooui:trash"></iconify>
+                            <mc-icon name="trash"></mc-icon>
                             <?php i::_e("Excluir")?>
                         </button>
                     </template> 

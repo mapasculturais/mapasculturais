@@ -46,7 +46,7 @@
             }
 
             .card {
-                border-radius: size(6);
+                border-radius: var(--mc-border-radius-xs);
                 display: flex;
                 overflow: hidden;
                 

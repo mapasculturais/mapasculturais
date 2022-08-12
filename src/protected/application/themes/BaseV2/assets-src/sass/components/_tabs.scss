@@ -1,10 +1,30 @@
 @use '../settings/mixins' as *;
 
 .tabs-component {
-    max-width: calc(100vw - size(320));
-
+    
     @include mobile {
         max-width: 100vw;
+    }
+
+    &__header {
+        align-items: baseline;
+        display: flex;
+        gap: size(16);
+        justify-content: space-between;
+        max-width: size(1170);
+        margin: 0 auto;
+        padding: 0 size(16);
+
+        &--left {
+            align-items: baseline;
+            display: flex;
+            gap: size(16);
+        }
+
+        &--right {
+
+        }
+
     }
 
     &__buttons {
@@ -18,30 +38,28 @@
     }
 
     &__button {
-        --mc-tab-active-color: var(--mc-primary-500);
         display: inline-block;
         list-style: none;
         transform: rotateX(180deg);
 
-        &::after {
-            border-radius: var(--mc-border-radius);
-            display: block;
-            height: 6px;
-            content: '';
-            width: 100%;
-        }
+        &--active {
+            &::after {
+                border-radius: var(--mc-border-radius-sm);
+                background-color: black;
+                display: block;
+                height: size(6);
+                content: '';
+                width: 100%;
+            }
+        }        
 
         a {
             align-items: center;
             color: inherit;
             display: flex;
             line-height: size(20);
-            padding: size(16);
+            padding: size(7) size(16);
             text-decoration: none;
-        }
-
-        &:focus, &:hover {
-            background-color: var(--mc-gray-100);
         }
 
         .iconify {
@@ -51,15 +69,15 @@
         }
 
         &.is-active {
-            color: var(--mc-tab-active-color);
+            color: var(--mc-primary-500);
             font-weight: bold;
 
             &::after {
-                background-color: var(--mc-tab-active-color);
+                background-color: var(--mc-primary-500);
             }
 
             .iconify {
-                color: var(--mc-tab-active-color);
+                color: var(--mc-primary-500);
             }
         }
 
@@ -69,7 +87,6 @@
     }
 
     &__panels {
-        background-color: var(--mc-gray-100);
         padding: 0.1px; // Hack to avoid margins collapse
         margin: 0 0 size(40);
     }

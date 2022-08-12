@@ -1,13 +1,16 @@
 <?php
+
+use MapasCulturais\i;
+
 $this->import('select-entity');
 ?>
 <div v-if="owner" class="entity-owner">
     <h4>{{title}}</h4>
     <a class="entity-owner__owner" :href="owner.singleUrl" :title="owner.shortDescription">
         <div class="entity-owner__owner--img">
-            <img v-if="owner.files" class="profile" :src="owner.files?.avatar?.url">
+            <img v-if="owner.files.avatar" class="profile" :src="owner.files?.avatar?.url">
             <div v-else class="placeholder">
-                <iconify icon="bi:image-fill" />
+                <mc-icon name="agent-1"></mc-icon>
             </div>
         </div>
         <div class="entity-owner__owner--name">
@@ -20,7 +23,8 @@ $this->import('select-entity');
         <select-entity type="agent" @select="changeOwner($event)" openside="right-down">            
             <template #button="{ toggle }">
                 <a class="entity-owner__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
-                    <iconify icon="material-symbols:change-circle-outline"/> <h4> Alterar Propriedade</h4>    
+                    <mc-icon name="exchange"></mc-icon>
+                    <h4><?php i::_e('Alterar Propriedade') ?></h4>    
                 </a>
             </template>
         </select-entity>

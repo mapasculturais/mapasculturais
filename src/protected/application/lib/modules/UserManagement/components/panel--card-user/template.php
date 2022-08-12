@@ -16,7 +16,7 @@ $this->import('
     <template #header-actions>
         <slot name="card-actions">
             <button class="entity-card__header-action">
-                <iconify icon="mdi:star-outline"></iconify>
+                <mc-icon name="favorite"></mc-icon>
                 <span><?=i::__('Favoritar')?></span>
             </button>
         </slot>

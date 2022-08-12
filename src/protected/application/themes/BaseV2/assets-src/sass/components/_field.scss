@@ -37,8 +37,8 @@
     }
 
     input, textarea, select {
-        border: 1px solid var(--mc-gray-100);
-        border-radius: 5px;
+        border: 1px solid var(--mc-gray-500);
+        border-radius: var(--mc-border-radius-xs);
         font-size: 16px;
         padding: 14px;
         width: 100%;

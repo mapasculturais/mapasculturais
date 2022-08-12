@@ -19,22 +19,20 @@ $this->import('popover confirm-button');
                     <template #button="{ toggle }">
                         <slot name="button" :toggle="toggle"> 
                             <a @click="toggle()"> 
-                                <iconify icon="zondicons:edit-pencil"></iconify> 
+                                <mc-icon name="edit"></mc-icon>
                             </a>
                         </slot>
                     </template>
 
                     <template #default="popover">
                         <form @submit="renameGroup(groupName, groupAgents.newGroupName, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
-                            <div class="row">
+                            <div class="grid-12">
                                 <div class="col-12">
                                     <input v-model="groupAgents.newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                                 </div>
-                            </div>
-                            
-                            <div class="actions">
-                                <button class="button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
-                                <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
+
+                                <button class="col-6 button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--primary"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
@@ -45,7 +43,7 @@ $this->import('popover confirm-button');
                 <confirm-button @confirm="removeGroup(groupName)">
                     <template #button="modal">
                         <a @click="modal.open()"> 
-                            <iconify icon="ooui:trash"></iconify> 
+                            <mc-icon name="trash"></mc-icon>
                         </a>
                     </template> 
                     <template #message="message">
@@ -61,14 +59,14 @@ $this->import('popover confirm-button');
             <div v-for="agent in groupAgents" class="agent">
                 <a :href="agent.singleUrl" class="agent__img">
                     <img v-if="agent.files.avatar" :src="agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
-                    <iconify v-else icon="bi:image-fill" />
+                    <mc-icon v-else name="image"></mc-icon>
                 </a>
 
                 <div v-if="editable" class="agent__delete">
                     <!-- remover agente -->
                     <confirm-button @confirm="removeAgent(groupName, agent)">
                         <template #button="modal">
-                            <iconify @click="modal.open()" icon="gg:close"/>
+                            <mc-icon @click="modal.open()" name="delete"></mc-icon>
                         </template> 
                         <template #message="message">
                             <?php i::_e('Remover agente relacionado?') ?>
@@ -82,7 +80,10 @@ $this->import('popover confirm-button');
         <div class="entity-related-agents__group--actions">
             <select-entity type="agent" @select="addAgent(groupName, $event)" :query="queries[groupName]" openside="down-right">
                 <template #button="{ toggle }">
-                    <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()"> <?php i::_e('Adicionar agente') ?> <iconify icon="ps:plus"/> </button>
+                    <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()"> 
+                        <?php i::_e('Adicionar agente') ?> 
+                        <mc-icon name="add"></mc-icon>
+                    </button>
                 </template>
             </select-entity>            
         </div>
@@ -95,22 +96,23 @@ $this->import('popover confirm-button');
         <popover openside="down-right">
             <template #button="{ toggle }">
                 <slot name="button" :toggle="toggle"> 
-                    <button class="button button--primary-outline button--icon" @click="toggle()" > <iconify icon="ps:plus"/> <?php i::_e("Adicionar grupo") ?> </button>
+                    <button class="button button--primary-outline button--icon" @click="toggle()" > 
+                        <mc-icon name="add"></mc-icon>
+                        <?php i::_e("Adicionar grupo") ?> 
+                    </button>
                 </slot>
             </template>
 
             <template #default="{ close }">
                 <div class="entity-related-agents__addNew--newGroup">
                     <form @submit="addGroup(newGroupName); close(); $event.preventDefault();">
-                        <div class="row">
+                        <div class="grid-12">
                             <div class="col-12">
                                 <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                             </div>
-                        </div>
-                        
-                        <div class="actions">
-                            <button class="button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
-                            <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
+
+                            <button class="col-6 button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                            <button class="col-6 button button--primary"> <?php i::_e("Confirmar") ?> </button>
                         </div>
                     </form>
                 </div>

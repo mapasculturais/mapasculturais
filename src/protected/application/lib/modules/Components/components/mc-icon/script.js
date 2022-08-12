@@ -13,7 +13,7 @@ app.component('mc-icon', {
             required: false
         },
 
-        of: {
+        name: {
             type: String,
             required: false
         },
@@ -30,15 +30,14 @@ app.component('mc-icon', {
 
     computed: {
         icon() {
-            // @todo colocar o iconset de forma configurável
             const iconset = $MAPAS.config.iconset;
             if (this.entity) {
                 const e = this.entity;
 
-                return iconset[`${e.__objectType}-${e.type.id}`] || iconset[e.__objectType];
+                return iconset[`${e.__objectType}-${e.type?.id}`] || iconset[e.__objectType];
             } else {
 
-                return iconset[this.of];
+                return iconset[this.name];
             }
         },
     },

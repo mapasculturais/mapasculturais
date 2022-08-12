@@ -13,4 +13,5 @@ class Controller extends \MapasCulturais\Controller
         $this->requireAuthentication();
         $this->render('index');
     }
+
 }

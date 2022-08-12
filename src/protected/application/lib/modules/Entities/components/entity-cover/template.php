@@ -12,7 +12,7 @@ use MapasCulturais\i;
                 </div>
 
                 <div v-else class="entity-cover__cover--newImg">
-                    <iconify icon="bi:image-fill" />
+                    <mc-icon name="image"></mc-icon>
                     <label class="label"> <?php i::_e("Adicionar Imagem de Capa")?> </label>
                 </div>
             </div>

@@ -1,7 +1,10 @@
 <?php
 // https://icon-sets.iconify.design/
 $iconset = [
-    'agent' => 'fa-solid:user',
+    // entidades
+    'app' => 'mdi:puzzle-outlin',
+    'user' => 'fa-solid:user-friends',
+    'agent' => 'fa-solid:user-friends',
     'agent-1' => 'fa-solid:user',
     'agent-2' => 'fa-solid:user-friends',
     'space' => 'clarity:building-line',
@@ -9,8 +12,51 @@ $iconset = [
     'project' => 'ri:file-list-2-line',
     'opportunity' => 'icons8:idea',
 
-    'edit' => 'zondicons:edit-pencil'
-    // @todo completar
+    // redes sociais
+    'facebook' => 'brandico:facebook',
+    'github' => 'la:github-alt',
+    'instagram' => 'fa6-brands:instagram',
+    'linkedin' => 'akar-icons:linkedin-box-fill',
+    'pinterest' => 'fa6-brands:pinterest-p',
+    'spotify' => 'akar-icons:spotify-fill',
+    'telegram' => 'cib:telegram-plane',
+    'twitter' => 'akar-icons:twitter-fill',
+    'whatsapp' => 'akar-icons:whatsapp-fill',
+    'youtube' => 'brandico:vimeo',
+    'vimeo' => 'akar-icons:youtube-fill',
+
+
+    // IMPORTANTE: manter ordem alfabética
+    'access' => 'ooui:previous-rtl',
+    'add' => 'ps:plus',
+    'archive' => 'mi:archive',
+    'exchange' => 'material-symbols:change-circle-outline',
+    'code' => 'fa-solid:code',
+    'close' => 'gg:close',
+    'down' => 'mdi:chevron-down',
+    'dashboard' => 'mdi:view-dashboard-outline',
+    'delete' => 'gg:close',
+    'download' => 'el:download-alt',
+    'edit' => 'zondicons:edit-pencil',
+    'favorite' => 'mdi:star-outline',
+    'filter' => 'ic:baseline-filter-alt',
+    'home' => 'fluent:home-12-regular',
+    'image' => 'bi:image-fill',
+    'link' => 'akar-icons:link-on',
+    'list' => 'ci:list-ul',
+    'loading' => 'eos-icons:three-dots-loading',
+    'login' => 'icon-park-outline:login',
+    'map' => 'bxs:map-alt',
+    'menu-mobile' => 'icon-park-outline:hamburger-button',
+    'network' => 'grommet-icons:connect',
+    'next' => 'ooui:previous-rtl',
+    'notification' => 'eva:bell-outline',
+    'previous' => 'ooui:previous-ltr',
+    'search' => 'ant-design:search-outlined',
+    'settings' => 'mdi:cog-outline',
+    'sort' => 'mdi:sort',
+    'trash' => 'ooui:trash',
+    'up' => 'mdi:chevron-up',
 ];
 
 $app->applyHook('component(mc-icon).iconset', [&$iconset]);

@@ -20,7 +20,7 @@ use MapasCulturais\i;
                 <div class="card__left">
                     <div class="card__left--content">
                         <div class="card__left--content-icon opportunity__background">
-                            <iconify icon="icons8:idea"></iconify>
+                            <mc-icon name="opportunity"></mc-icon>
                         </div>
                         
                         <div class="card__left--content-title">
@@ -37,7 +37,10 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                     <p>{{opportunityText}}</p>
-                    <a class="button button--icon button--sm opportunity__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
+                    <a class="button button--icon button--sm opportunity__color">
+                        <?php i::_e('Ver todos')?>
+                        <mc-icon name="access"></mc-icon>
+                    </a>
                 </div>
             </div>
 
@@ -45,7 +48,7 @@ use MapasCulturais\i;
                 <div class="card__left">
                     <div class="card__left--content">
                         <div class="card__left--content-icon event__background">
-                            <iconify icon="ant-design:calendar-twotone"></iconify>
+                            <mc-icon name="event"></mc-icon>
                         </div>
                         
                         <div class="card__left--content-title">
@@ -64,7 +67,10 @@ use MapasCulturais\i;
                     <p>
                         {{eventText}}
                     </p>
-                    <a class="button button--icon button--sm event__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
+                    <a class="button button--icon button--sm event__color">
+                        <?php i::_e('Ver todos')?>
+                        <mc-icon name="access"></mc-icon>
+                    </a>
                 </div>
             </div>
 
@@ -72,7 +78,7 @@ use MapasCulturais\i;
                 <div class="card__left">
                     <div class="card__left--content">
                         <div class="card__left--content-icon space__background">
-                            <iconify icon="clarity:building-line"></iconify>
+                            <mc-icon name="space"></mc-icon>
                         </div>
                         
                         <div class="card__left--content-title">
@@ -89,7 +95,10 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                     <p>{{spaceText}}</p>
-                    <a class="button button--icon button--sm space__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
+                    <a class="button button--icon button--sm space__color">
+                        <?php i::_e('Ver todos')?>
+                        <mc-icon name="access"></mc-icon>
+                    </a>
                 </div>
 
             </div>
@@ -98,7 +107,7 @@ use MapasCulturais\i;
                 <div class="card__left">
                     <div class="card__left--content">
                         <div class="card__left--content-icon agent__background">
-                            <iconify icon="fa-solid:user-friends"></iconify>
+                            <mc-icon name="agent-2"></mc-icon>
                         </div>
                         
                         <div class="card__left--content-title">
@@ -115,7 +124,10 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                         <p>{{agentText}}</p>
-                    <a class="button button--icon button--sm agent__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
+                    <a class="button button--icon button--sm agent__color">
+                        <?php i::_e('Ver todos')?>
+                        <mc-icon name="access"></mc-icon>
+                    </a>
                 </div>
             </div>
 
@@ -123,7 +135,7 @@ use MapasCulturais\i;
                 <div class="card__left">
                     <div class="card__left--content">
                         <div class="card__left--content-icon project__background">
-                            <iconify icon="ri:file-list-2-line"></iconify>
+                            <mc-icon name="project"></mc-icon>
                         </div>
                         
                         <div class="card__left--content-title">
@@ -140,7 +152,10 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                     <p>{{projectText}}</p>
-                    <a class="button button--icon button--sm project__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
+                    <a class="button button--icon button--sm project__color">
+                        <?php i::_e('Ver todos')?>
+                        <mc-icon name="access"></mc-icon>
+                    </a>
                 </div>
             </div>
         </div>

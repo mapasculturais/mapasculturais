@@ -2,7 +2,7 @@ app.component('mc-map', {
     template: $TEMPLATES['mc-map'],
 
     // define os eventos que este componente emite
-    emits: [],
+    emits: ['ready'],
 
     components: {
         LMap: VueLeaflet.LMap,
@@ -45,5 +45,14 @@ app.component('mc-map', {
 
     computed: {},
 
-    methods: {},
+    methods: {
+        async handleMapSetup () {
+            const leafletObject = Vue.toRaw(this.$refs.map.leafletObject);
+            leafletObject.markersGroup = L.markerClusterGroup({
+                maxClusterRadius: 35
+            });
+            leafletObject.addLayer(leafletObject.markersGroup);
+            this.$emit('ready', leafletObject);
+        },
+    },
 });

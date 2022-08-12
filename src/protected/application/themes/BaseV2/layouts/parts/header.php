@@ -11,7 +11,6 @@
 
         <?php $this->printStyles('vendor-v2'); ?>
         <?php $this->printStyles('app-v2'); ?>
-        <?php $this->printJsObject(); ?>
 
         <?php $this->printScripts('vendor-v2'); ?>
         <?php $this->printScripts('app-v2'); ?>

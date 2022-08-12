@@ -6,13 +6,8 @@ class Entity {
         this.__objectId = `${objectType}-${id}`;
         this.__validationErrors = {};
 
-        this.API = new API(this.__objectType, this.__scope || 'default');
-
-        this.__properties = this.API.getEntityDescription('!relations');
-        this.__relations = this.API.getEntityDescription('relations');
         this.__skipDataProperties = ['createTimestamp', 'updateTimestamp'];
-        
-        this.__lists = [];
+
         this.__processing = false;
 
         // as traduções estão no arquivo texts.php do componente <entity>
@@ -21,6 +16,8 @@ class Entity {
     }
 
     populate(obj) {
+        const __properties = this.$PROPERTIES;
+        const __relations = this.$RELATIONS;
         const defaultProperties = ['terms', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
         
         for (const prop of defaultProperties) {
@@ -28,8 +25,8 @@ class Entity {
             this[prop] = obj[prop] || _default;
         }
 
-        for (let prop in this.__properties) {
-            let definition = this.__properties[prop];
+        for (let prop in __properties) {
+            let definition = __properties[prop];
             let val = obj[prop];
 
             if (definition.type == 'datetime' && val) {
@@ -37,14 +34,20 @@ class Entity {
             }
 
             if (prop == 'location') {
-                val = {lat: val?.latitude, lng: val?.longitude};
+                val = {lat: parseFloat(val?.latitude), lng: parseFloat(val?.longitude)};
             }
 
             this[prop] = val;
         }
 
-        for (let prop in this.__relations) {
-            this[prop] = obj[prop];
+        for (let key in __relations) {
+            let prop = obj[key];
+            if (prop instanceof Array) {
+                for (let i in prop) {
+                    prop[i] = this.parceRelation(prop[i]);
+                }
+            } 
+            this[key] = this.parceRelation(prop);
         }
 
         this.populateFiles(obj.files);
@@ -53,6 +56,17 @@ class Entity {
         this.cleanErrors();
         
         return this;
+    }
+
+    parceRelation(prop) {
+        if (prop?.['@entityType'] && prop?.id) {
+            const propAPI = new API(prop['@entityType'], this.__scope);
+            const instance = propAPI.getEntityInstance(prop.id);
+            instance.populate(prop);
+            return instance;
+        } else {
+            return prop;
+        }
     }
 
     populateFiles(files) {
@@ -76,9 +90,7 @@ class Entity {
     }
 
     cleanErrors() {
-        for (let prop in this.__properties) {
-            this.__validationErrors[prop] = [];
-        }
+        this.__validationErrors = {};
     }
 
     catchErrors(res, data) {
@@ -98,7 +110,7 @@ class Entity {
     data() {
         const result = {};
 
-        for (let prop in this.__properties) {
+        for (let prop in this.$PROPERTIES) {
             if (this.__skipDataProperties.indexOf(prop) > -1) {
                 continue;
             }
@@ -119,6 +131,33 @@ class Entity {
         return result;
     }
 
+    get API () {
+        return new API(this.__objectType, this.__scope || 'default');
+    }
+
+    get $PROPERTIES() {
+        return this.API.getEntityDescription('!relations');
+    }
+
+    get $RELATIONS() {
+        const result = this.API.getEntityDescription('relations');
+        if (this.__objectType == 'opportunity') {
+            result.ownerEntity = {
+                isEntityRelation: true,
+                isMetadata: false,
+                isOwningSide: true,
+                label: "",
+                targetEntity: null,
+            };
+        }
+        return result;
+    }
+
+    get $LISTS() {
+        const lists = useEntitiesLists();
+        return lists.fetchEntityLists(this);
+    }
+
     get singleUrl() {
         return this.getUrl('single');
     }
@@ -137,7 +176,7 @@ class Entity {
 
     removeFromLists(skipList) {
         skipList = skipList || [];
-        this.__lists.forEach((list) => {
+        this.$LISTS.forEach((list) => {
             if (skipList.indexOf(list.__name) >= 0) {
                 return;
             }

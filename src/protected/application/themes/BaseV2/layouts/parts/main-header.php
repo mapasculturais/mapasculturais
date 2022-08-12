@@ -1,52 +1,51 @@
 <?php
 use MapasCulturais\App;
 use MapasCulturais\i;
-$this->import('popover messages main-menu');
+$this->import('popover messages main-menu theme-logo');
 ?>
 
 <header class="main-header">
 
     <!-- Logo -->
     <div class="main-header__logo">
-        <?php $this->part('site-logo') ?>
+        <theme-logo title="mapa cultural" subtitle="do Pará" color="#498200"></theme-logo>
     </div>     
-
     
     <!-- Menu -->
     <ul class="main-header__menu">
         <li> 
-            <a href="" class="main-header__menu--item home">
-                <span class="icon"> <iconify icon="fluent:home-12-regular"></iconify> </span>
+            <a href="<?= $app->createUrl('home', 'index') ?>" class="main-header__menu--item home">
+                <span class="icon"> <mc-icon name="home"></mc-icon> </span>
                 <p class="label"> <?php i::_e('Home') ?> </p>      
             </a>  
         </li>
         <li>
-            <a href="" class="main-header__menu--item opportunity">
-                <span class="icon opportunity__bg-hover"> <iconify icon="icons8:idea"></iconify> </span>
+            <a href="<?= $app->createUrl('search', 'opportunities') ?>" class="main-header__menu--item opportunity">
+                <span class="icon opportunity__bg-hover"> <mc-icon name="opportunity"></mc-icon> </span>
                 <p class="label"> <?php i::_e('Oportunidades') ?> </p>
             </a>
         </li>
         <li>
-            <a href="" class="main-header__menu--item agent">
-                <span class="icon"> <iconify icon="fa-solid:user-friends"></iconify> </span>
+            <a href="<?= $app->createUrl('search', 'agents') ?>" class="main-header__menu--item agent">
+                <span class="icon"> <mc-icon name="agent-2"> </span>
                 <p class="label"> <?php i::_e('Agentes') ?> </p>
             </a>
         </li>
         <li> 
-            <a href="" class="main-header__menu--item event">
-                <span class="icon"> <iconify icon="ant-design:calendar-twotone"></iconify>  </span>
+            <a href="<?= $app->createUrl('search', 'events') ?>" class="main-header__menu--item event">
+                <span class="icon"> <mc-icon name="event"> </span>
                 <p class="label"> <?php i::_e('Eventos') ?> </p>
             </a>  
         </li>
         <li> 
-            <a href="" class="main-header__menu--item space">
-                <span class="icon"> <iconify icon="clarity:building-line"></iconify> </span>
+            <a href="<?= $app->createUrl('search', 'spaces') ?>" class="main-header__menu--item space">
+                <span class="icon"> <mc-icon name="space"> </span>
                 <p class="label"> <?php i::_e('Espaços') ?> </p>       
             </a> 
         </li>
         <li> 
-            <a href="" class="main-header__menu--item project">
-                <span class="icon"> <iconify icon="ri:file-list-2-line"></iconify> </span>
+            <a href="<?= $app->createUrl('search', 'projects') ?>" class="main-header__menu--item project">
+                <span class="icon"> <mc-icon name="project"> </span>
                 <p class="label"> <?php i::_e('Projetos') ?> </p>      
             </a> 
         </li>
@@ -59,8 +58,8 @@ $this->import('popover messages main-menu');
             
             <div class="main-header__options--loggedOff">
                 <a href="" class="logIn">
-                    <span><iconify icon="icon-park-outline:login"></iconify></span>
-                    Entrar
+                    <span><mc-icon name="project"></mc-icon></span>
+                    <?php i::_e('Entrar') ?>
                 </a>
             </div>
             
@@ -68,8 +67,8 @@ $this->import('popover messages main-menu');
 
             <div class="main-header__options--loggedIn active">
                 <div class="notifications">
-                    <a class="desk" href=""> Notificações <iconify icon="eva:bell-outline"></iconify> </a>
-                    <a class="mobile" href=""> <iconify icon="eva:bell-outline"></iconify> </a>
+                    <a class="desk" href=""> <?php i::_e('Notificações') ?> <mc-icon name="notification"></mc-icon> </a>
+                    <a class="mobile" href=""> <mc-icon name="notification"></mc-icon> </a>
                 </div>
 
                 <main-menu>

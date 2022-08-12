@@ -15,11 +15,11 @@ $this->import('
         <div class="divider"></div>
         
         <main>
-            <div class="row">
+            <div class="grid-12">
                 <h3>Endereço</h3>
                 <p>{{entity.En_Nome_Logradouro}}, {{entity.En_Num}}, {{entity.En_Bairro}}, {{entity.En_CEP}}, {{entity.En_Municipio}}, {{entity.En_Estado}}</p>
             </div>
-            <div class="row">
+            <div class="grid-12">
                 <h2>Descrição Detalhada</h2>
                 <p>{{entity.longDescription}}</p>
             </div>

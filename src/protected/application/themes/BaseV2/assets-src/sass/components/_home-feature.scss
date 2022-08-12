@@ -1,0 +1,103 @@
+@use '../settings/mixins' as *;
+
+.home-feature {
+    margin: 0 auto;
+    position: relative;
+    background-color: #4FC9E0;
+    padding: size(80) size(16);
+    width: 100%;
+
+    &__content {
+        max-width: size(1170);
+        margin: 0 auto;
+
+        &--title {
+            display: flex;
+            justify-content: space-between;
+            max-width: calc(100% - 130px);
+
+            label {
+                font-weight: 700;
+                font-size: size(32);
+                line-height: size(44);
+                @media (max-width: size(500)) {
+                    font-size: size(24);
+                    line-height: size(28);
+                }
+            }
+        }
+
+        &--description {
+            font-weight: 400;
+            font-size: size(16);
+            line-height: size(22);
+            max-width: calc(100% - 130px);
+        }
+
+        &--cards {
+            
+            .actions {
+                gap: size(24);
+                display: flex;
+                position: absolute;
+                top: size(-180);
+                right: 0;
+            }
+
+            .carousel {
+                margin-top: size(20);
+
+                &__prev {
+                    background: url('https://api.iconify.design/akar-icons/arrow-left.svg?color=%23d50200') no-repeat center center / size(27);
+                    background-color: var(--mc-white);
+                    cursor: pointer;
+
+                    .carousel__icon {
+                        display: none;
+                    }
+                }
+
+                &__next {
+                    background: url('https://api.iconify.design/akar-icons/arrow-right.svg?color=%23d50200') no-repeat center center / size(27);
+                    background-color: var(--mc-white);
+                    cursor: pointer;
+
+                    .carousel__icon {
+                        display: none;
+                    }
+                }
+
+                &__prev,
+                &__next {
+                    align-items: center;
+                    border: none;
+                    border-radius: 50%;
+                    display: flex;
+                    height: size(48);
+                    justify-content: center;
+                    width: size(48);
+
+                    &--in-active {
+                        background-color: var(--mc-gray-100);
+                        cursor: default;
+                    }
+                }
+
+                &__viewport {
+                    ol {
+                        li{
+                            justify-content: flex-start;
+                            padding: 0 size(20);
+                        }
+                    }
+                }
+
+                &__track {
+                    align-items: flex-start;
+                }
+            }
+
+        }
+
+    }
+}

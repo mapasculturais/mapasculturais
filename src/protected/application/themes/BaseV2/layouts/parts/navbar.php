@@ -6,37 +6,37 @@ use MapasCulturais\i;
         <ul>
             <li>
                 <a class="main-navbar__link home" href="#">
-                    <iconify icon="mdi:home-outline"></iconify>
+                    <mc-icon name="home"></mc-icon>
                     <span><?= i::__('Início') ?></span>
                 </a>
             </li>
             <li>
                 <a class="main-navbar__link opportunities" href="#">
-                    <iconify icon="mdi:lightbulb-on-outline"></iconify>
+                    <mc-icon name="opportunity"></mc-icon>
                     <span><?= i::__('Editais') ?></span>
                 </a>
             </li>
             <li>
                 <a class="main-navbar__link agents active" href="#">
-                    <iconify icon="mdi:account-multiple-outline"></iconify>
+                    <mc-icon name="agent"></mc-icon>
                     <span><?= i::__('Agentes') ?></span>
                 </a>
             </li>
             <li>
                 <a class="main-navbar__link events" href="#">
-                    <iconify icon="mdi:calendar-month"></iconify>
+                    <mc-icon name="event"></mc-icon>
                     <span><?= i::__('Eventos') ?></span>
                 </a>
             </li>
             <li>
                 <a class="main-navbar__link spaces" href="#">
-                    <iconify icon="mdi:domain"></iconify>
+                    <mc-icon name="space"></mc-icon>
                     <span><?= i::__('Espaços') ?></span>
                 </a>
             </li>
             <li>
                 <a class="main-navbar__link projects" href="#">
-                    <iconify icon="mdi:clipboard-list-outline"></iconify>
+                    <mc-icon name="project"></mc-icon>
                     <span><?= i::__('Projetos') ?></span>
                 </a>
             </li>
@@ -45,7 +45,7 @@ use MapasCulturais\i;
     <div class="main-navbar__notifications">
         <span><?= i::__('Notificações') ?></span>
         <div class="main-navbar__notifications-count">
-            <iconify icon="mdi:bell-outline"></iconify>
+            <mc-icon name="notification"></mc-icon>
             <span>1</span>
         </div>
     </div>
