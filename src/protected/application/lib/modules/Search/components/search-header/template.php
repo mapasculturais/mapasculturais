@@ -18,9 +18,9 @@ use MapasCulturais\i;
         </div>
     </div>
         
-    <!-- <div class="search-header__actions">
-        <slot name="tabs">
+    <div class="search-header__actions">
+        <slot name="actions">
         </slot>
-    </div> -->
+    </div>
 
 </div>

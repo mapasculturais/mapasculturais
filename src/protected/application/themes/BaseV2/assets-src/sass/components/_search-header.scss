@@ -4,7 +4,7 @@
     background-color: var(--mc-high-500);
     border: unset;
     bottom: 0;
-    padding: size(50) 0 size(23);
+    padding: size(50) 0 0;
     
     &__content {
         padding:0 size(16);
@@ -39,16 +39,4 @@
             }
         }
     }
-
-    // &__actions {
-    //     position: relative;
-    //     &--label {
-    //         position: absolute;
-    //         top: 5px;
-    //         padding-left: 16px;
-    //     }
-    //     .tabs-component__buttons {
-    //         padding-left: size(150);
-    //     }
-    // }
 }
