@@ -71,6 +71,8 @@ abstract class Entity implements \JsonSerializable{
      * enable or disable the usage of magic getter hook to filter properties values
      */
     protected $__enableMagicGetterHook = false;
+    protected $__enableMagicSetterHook = false;
+
 
     /**
      * Creates the new empty entity object adding an empty point to properties of type 'point' and,
