@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('entities entity-card mapas-breadcrumb mapas-card mapas-container tabs search-header mc-map create-agent');
+$this->import('entities entity-card mapas-breadcrumb mapas-card mapas-container search-map search-header tabs mc-map create-agent');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Agentes'), 'url' => $app->createUrl('agents')],
@@ -37,12 +37,13 @@ $this->breadcramb = [
                                 </entities>
                             </main>
                             <aside>
-                                <mapas-card>TESTE</mapas-card>
+                                <mapas-card></mapas-card>
                             </aside>
                         </mapas-container>
                     </tab>
+
                     <tab icon="map" label="Mapa" slug="map">
-                        <h2>Conteúdo secundário</h2>
+                        <search-map type="agent"></search-map>
                     </tab>
                     
                     <template #after-tablist>
