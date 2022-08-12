@@ -645,7 +645,7 @@ class ApiQuery {
         }
 
         $dql = $this->getFindDQL($select);
-
+        App::i()->log->debug($dql);
         $q = $this->em->createQuery($dql);
 
         if ($offset = $this->getOffset()) {
@@ -659,7 +659,6 @@ class ApiQuery {
         $params = $this->getDqlParams();
 
         $q->setParameters($params);
-        
         $this->logDql($dql, __FUNCTION__, $params);
         
         $result = [];
@@ -1004,7 +1003,7 @@ class ApiQuery {
         $main_site_url = $app->config['base.url'];
         
         if($this->_selectingType){
-            $types = $app->getRegisteredEntityTypes($this->entityClassName);
+            $types = $app->getRegisteredEntityTypes($this->entityClassMetadata->rootEntityName ?? $this->entityClassName);
         }
 
         if($this->permissionCacheClassName){
@@ -1032,13 +1031,12 @@ class ApiQuery {
             if($this->_selectingOriginSiteUrl && empty($entity['originSiteUrl'])){
                 $entity['originSiteUrl'] = $main_site_url;
             }
-            
-            if($this->_selectingType){
+            if($this->_selectingType && isset($entity['_type'])){
                 $entity['type'] = $types[$entity['_type']];
                 unset($entity['_type']);
             }
             
-            foreach($this->_selecting as $prop){
+            foreach($this->_selecting as $prop){    
                 if($prop && $prop[0] != '#' && !isset($entity[$prop])){
                     $entity[$prop] = null;
                 }

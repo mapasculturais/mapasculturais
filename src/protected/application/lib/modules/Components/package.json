@@ -16,6 +16,7 @@
         "vue3-carousel": "^0.1.40",
         "@vue-leaflet/vue-leaflet": "^0.6.1",
         "@types/leaflet": "^1.7.11",
+        "leaflet.markercluster": "^1.5.3",
         "leaflet": "1.7.1"
         
     }

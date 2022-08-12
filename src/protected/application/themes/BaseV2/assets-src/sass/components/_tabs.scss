@@ -6,6 +6,27 @@
         max-width: 100vw;
     }
 
+    &__header {
+        align-items: baseline;
+        display: flex;
+        gap: size(16);
+        justify-content: space-between;
+        max-width: size(1170);
+        margin: 0 auto;
+        padding: 0 size(16);
+
+        &--left {
+            align-items: baseline;
+            display: flex;
+            gap: size(16);
+        }
+
+        &--right {
+
+        }
+
+    }
+
     &__buttons {
         display: flex;
         margin: size(40) 0 0;
