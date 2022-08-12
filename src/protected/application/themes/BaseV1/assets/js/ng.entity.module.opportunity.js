@@ -844,7 +844,7 @@ module.factory('EvaluationsFieldsConfigService', ['$http', '$rootScope', functio
 
 module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFieldsConfigService', '$timeout', function ($scope, EvaluationsFieldsConfigService, $timeout) {
     $scope.data = {
-        fields: MapasCulturais.evaluationFieldsList || [],
+        fields: [],
         avaliableEvaluationFields: {},
         category:{
             fieldName: "category",
@@ -898,12 +898,17 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
         $scope.data.projectName,
         $scope.data.agentsSummary,
         $scope.data.spaceSummary,
-    ].concat(MapasCulturais.evaluationFieldsList)
+    ];
 
+
+    if(MapasCulturais.evaluationFieldsList){
+        MapasCulturais.evaluationFieldsList.forEach(function(item){
+            $scope.data.fields.push(item);
+        })
+    }
 
     $scope.fieldTitles = [];
     $scope.data.fields.map(function(item){
-
         if(item.hasOwnProperty("groupName")){
             item.ref = item.groupName;
         }else{
