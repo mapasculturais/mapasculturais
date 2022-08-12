@@ -2,14 +2,8 @@ app.component('search-map', {
     template: $TEMPLATES['search-map'],
     
     async created(){
-        switch(this.type) {
-            case 'agent':
-                this.entityAPI = new API(this.type);
-                break;
-            case 'space':
-                this.entityAPI = new API(this.type);
-                break;
-        }
+        
+        this.entityAPI = new API(this.type);
         
         const query = this.query;
         query['@select'] = 'id,name,location';
