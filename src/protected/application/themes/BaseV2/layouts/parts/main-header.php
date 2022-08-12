@@ -1,14 +1,14 @@
 <?php
 use MapasCulturais\App;
 use MapasCulturais\i;
-$this->import('popover messages main-menu');
+$this->import('popover messages main-menu theme-logo');
 ?>
 
 <header class="main-header">
 
     <!-- Logo -->
     <div class="main-header__logo">
-        <?php $this->part('site-logo') ?>
+        <theme-logo title="mapa cultural" subtitle="do Pará" color="#498200"></theme-logo>
     </div>     
     
     <!-- Menu -->
