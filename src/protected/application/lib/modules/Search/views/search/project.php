@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('mapas-breadcrumb mapas-card mapas-container search-list search-map search-header');
+$this->import('mapas-breadcrumb mapas-card mapas-container search-list search-header');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Projetos'), 'url' => $app->createUrl('projects')],
