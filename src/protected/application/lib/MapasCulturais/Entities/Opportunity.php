@@ -68,6 +68,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityArchive;
         
     protected $__enableMagicGetterHook = true;
+    protected $__enableMagicSetterHook = true;
+
 
     /**
      * @var integer
