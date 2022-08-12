@@ -74,9 +74,6 @@ app.component('home-opportunities', {
         getQuery() {
             this.query['registrationFrom'] = 'LTE('+this.futureDate()+')';
             this.query['registrationTo'] = 'GTE('+this.actualDate()+')';
-            
-
-            console.log(this.query);
 
             return this.query;
         }
