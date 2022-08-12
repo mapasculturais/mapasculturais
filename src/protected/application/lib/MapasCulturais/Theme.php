@@ -134,7 +134,8 @@ abstract class Theme extends \Slim\View {
                 "project"       => Entities\Project::getPropertiesMetadata(),
                 "opportunity"   => Entities\Opportunity::getPropertiesMetadata(),
                 "subsite"       => Entities\Subsite::getPropertiesMetadata(),
-                "seal"          => Entities\Seal::getPropertiesMetadata()
+                "seal"          => Entities\Seal::getPropertiesMetadata(),
+                'evaluationMethodConfiguration' => Entities\EvaluationMethodConfiguration::getPropertiesMetadata(),
             ];
 
             $taxonomies = [];
