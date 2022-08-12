@@ -32,5 +32,16 @@
                 }
             }
         }
+        &--filter {
+            max-width: size(1170);
+            margin: 0 auto;
+            padding: size(16) 0;
+        }
     }
+
+    &__content {
+        background-color: var(--mc-gray-100);
+        display: flow-root;
+    }
+
 }
