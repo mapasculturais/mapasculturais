@@ -11,7 +11,7 @@ $this->import('popover')
         <template #button="popover">
             <button @click="popover.toggle()" class="button button--rounded button--sm button--icon button--primary" v-if="editable">
                 <?php i::_e("Adicionar nova") ?>
-                <iconify icon="ps:plus"></iconify>
+                <mc-icon name="add"></mc-icon>
             </button>
         </template>
 
@@ -21,9 +21,8 @@ $this->import('popover')
                 <form class="entity-terms__tags--form" @submit="addTerm(filter, popover)">
                     <input type="text" v-model="filter" class="input" placeholder="<?= i::__('Adicione uma nova tag') ?>">
                     <button class="button button--primary button--icon entity-terms__tags--form-addBtn" type="submit">
-                        <iconify icon="gridicons:plus"></iconify>
+                        <mc-icon name="add"></mc-icon>
                     </button>
-                    <!-- <button class="entity-terms__popover--button"><iconify icon="ic:baseline-search"></iconify></button> -->
                 </form>
                 <ul class="entity-terms__tags--list" v-if="filteredTerms.length > 0">
                     <li class="entity-terms__tags--list-item" @click="addTerm(term, popover)" v-for="term in filteredTerms">
@@ -57,9 +56,9 @@ $this->import('popover')
     </popover>
 
     <ul class="entity-terms__terms">
-        <li class="button--solid entity-terms__terms--term" v-for="term in entityTerms"> 
+        <li :class="[entity.__objectType+'__background', 'entity-terms__terms--term']" v-for="term in entityTerms"> 
             {{term}}
-            <iconify v-if="editable" @click="remove(term)" icon="gg:close"></iconify>
+            <mc-icon v-if="editable" @click="remove(term)" name="delete"></mc-icon>
         </li>
     </ul>
 </div>

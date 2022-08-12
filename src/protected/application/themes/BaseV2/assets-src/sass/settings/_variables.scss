@@ -12,70 +12,95 @@ $white: #FFFFFF !default;
 $gray-500: color.mix($gray-300, $gray-700, 50%) !default;
 
 // Default lightness deltas
-$lightness-300: 40% !default;
-$lightness-700: -40% !default;
+$lightness-300: 85% !default;
+$lightness-700: 25% !default;
 
-$primary-500: #D14526 !default;
-$primary-300: color.scale($primary-500, $lightness: $lightness-300) !default;
-$primary-700: color.scale($primary-500, $lightness: $lightness-700) !default;
+// Brand colors
+$primary-500: #0074C1 !default;
+$primary-300: color.change($primary-500, $lightness: $lightness-300) !default;
+$primary-700: color.change($primary-500, $lightness: $lightness-700) !default;
 
-$secondary-500: #5EB1BF !default;
-$secondary-300: color.scale($secondary-500, $lightness: $lightness-300) !default;
-$secondary-700: color.scale($secondary-500, $lightness: $lightness-700) !default;
+$secondary-500: #D50200 !default;
+$secondary-300: color.change($secondary-500, $lightness: $lightness-300) !default;
+$secondary-700: color.change($secondary-500, $lightness: $lightness-700) !default;
 
-$highlight-500: #FF9F1C !default;
-$highlight-300: color.scale($highlight-500, $lightness: $lightness-300) !default;
-$highlight-700: color.scale($highlight-500, $lightness: $lightness-700) !default;
-
+// Entities colors
 $agents-500: #EF7B45 !default;
-$agents-300: color.scale($agents-500, $lightness: $lightness-300) !default;
-$agents-700: color.scale($agents-500, $lightness: $lightness-700) !default;
+$agents-300: color.change($agents-500, $lightness: $lightness-300) !default;
+$agents-700: color.change($agents-500, $lightness: $lightness-700) !default;
 
 $events-500: #9C4EC7 !default;
-$events-300: color.scale($events-500, $lightness: $lightness-300) !default;
-$events-700: color.scale($events-500, $lightness: $lightness-700) !default;
+$events-300: color.change($events-500, $lightness: $lightness-300) !default;
+$events-700: color.change($events-500, $lightness: $lightness-700) !default;
 
-$opportunities-500: #D14526 !default;
-$opportunities-300: color.scale($opportunities-500, $lightness: $lightness-300) !default;
-$opportunities-700: color.scale($opportunities-500, $lightness: $lightness-700) !default;
+$opportunities-500: #D50200 !default;
+$opportunities-300: color.change($opportunities-500, $lightness: $lightness-300) !default;
+$opportunities-700: color.change($opportunities-500, $lightness: $lightness-700) !default;
 
-$projects-500: #5EB1BF !default;
-$projects-300: color.scale($projects-500, $lightness: $lightness-300) !default;
-$projects-700: color.scale($projects-500, $lightness: $lightness-700) !default;
+$projects-500: #0074C1 !default;
+$projects-300: color.change($projects-500, $lightness: $lightness-300) !default;
+$projects-700: color.change($projects-500, $lightness: $lightness-700) !default;
 
 $spaces-500: #498200 !default;
-$spaces-300: color.scale($spaces-500, $lightness: $lightness-300) !default;
-$spaces-700: color.scale($spaces-500, $lightness: $lightness-700) !default;
+$spaces-300: color.change($spaces-500, $lightness: $lightness-300) !default;
+$spaces-700: color.change($spaces-500, $lightness: $lightness-700) !default;
 
-$warning-500: #ED0000 !default;
-$warning-300: color.scale($warning-500, $lightness: $lightness-300) !default;
-$warning-700: color.scale($warning-500, $lightness: $lightness-700) !default;
+// Feedback colors
+$danger-500: #ED0000 !default;
+$danger-300: color.change($danger-500, $lightness: $lightness-300) !default;
+$danger-700: color.change($danger-500, $lightness: $lightness-700) !default;
 
-$helper-500: #498200 !default;
-$helper-300: color.scale($helper-500, $lightness: $lightness-300) !default;
-$helper-700: color.scale($helper-500, $lightness: $lightness-700) !default;
+$success-500: #498200 !default;
+$success-300: color.change($success-500, $lightness: $lightness-300) !default;
+$success-700: color.change($success-500, $lightness: $lightness-700) !default;
 
+$warning-500: #FF9F1C !default;
+$warning-300: color.change($warning-500, $lightness: $lightness-300) !default;
+$warning-700: color.change($warning-500, $lightness: $lightness-700) !default;
+
+$helper-500: #0074C1 !default;
+$helper-300: color.change($helper-500, $lightness: $lightness-300) !default;
+$helper-700: color.change($helper-500, $lightness: $lightness-700) !default;
+
+// Neutral colors
 $low-500: #1E1E1E !default;
-$low-300: color.scale($low-500, $lightness: $lightness-300) !default;
-$low-700: color.scale($low-500, $lightness: $lightness-700) !default;
+$low-300: color.change($low-500, $lightness: $lightness-300) !default;
+$low-700: color.change($low-500, $lightness: $lightness-700) !default;
 
 $high-500: #FFFFFF !default;
-$high-300: color.scale($high-500, $lightness: $lightness-300) !default;
-$high-700: color.scale($high-500, $lightness: $lightness-700) !default;
+$high-300: color.change($high-500, $lightness: $lightness-300) !default;
+$high-700: color.change($high-500, $lightness: $lightness-700) !default;
 
 // FONTS
 $font-body: 'Open Sans', sans-serif !default;
 $font-headings: 'Open Sans', sans-serif !default;
 
-// DIMENSIONS
-$border-radius: 6px !default;
+// Borders radius
+$border-radius-xs: 4px !default;
+$border-radius-sm: 8px !default;
+$border-radius-pill: 64px !default;
 
+// Borders
+$border-hairline: 1px solid;
+
+// Shadows
+$shadow-lv-1: 0px 4px 8px rgba(0, 0, 0, 0.16);
+$shadow-lv-2: 0px 8px 16px rgba(0, 0, 0, 0.16);
+$shadow-lv-3: 0px 8px 24px rgba(0, 0, 0, 0.16);
+$shadow-lv-4: 0px 16px 48px rgba(0, 0, 0, 0.16);
+$shadow-lv-1-up: 0px -4px 8px rgba(0, 0, 0, 0.16);
 :root {
     --mc-agents-300: #{$agents-300};
     --mc-agents-500: #{$agents-500};
     --mc-agents-700: #{$agents-700};
     --mc-black: #{$black};
-    --mc-border-radius: #{$border-radius};
+    --mc-border-hairline: #{$border-hairline};
+    --mc-border-radius-xs: #{$border-radius-sm};
+    --mc-border-radius-sm: #{$border-radius-sm};
+    --mc-border-radius-pill: #{$border-radius-pill};
+    --mc-danger-300: #{$danger-300};
+    --mc-danger-500: #{$danger-500};
+    --mc-danger-700: #{$danger-700};
     --mc-error: #{$error};
     --mc-events-300: #{$events-300};
     --mc-events-500: #{$events-500};
@@ -92,9 +117,6 @@ $border-radius: 6px !default;
     --mc-high-300: #{$high-300};
     --mc-high-500: #{$high-500};
     --mc-high-700: #{$high-700};
-    --mc-highlight-300: #{$highlight-300};
-    --mc-highlight-500: #{$highlight-500};
-    --mc-highlight-700: #{$highlight-700};
     --mc-low-300: #{$low-300};
     --mc-low-500: #{$low-500};
     --mc-low-700: #{$low-700};
@@ -110,9 +132,17 @@ $border-radius: 6px !default;
     --mc-secondary-300: #{$secondary-300};
     --mc-secondary-500: #{$secondary-500};
     --mc-secondary-700: #{$secondary-700};
+    --mc-shadow-lv1: #{$shadow-lv-1};
+    --mc-shadow-lv1-up: #{$shadow-lv-1-up};
+    --mc-shadow-lv2: #{$shadow-lv-2};
+    --mc-shadow-lv3: #{$shadow-lv-3};
+    --mc-shadow-lv4: #{$shadow-lv-4};
     --mc-spaces-300: #{$spaces-300};
     --mc-spaces-500: #{$spaces-500};
     --mc-spaces-700: #{$spaces-700};
+    --mc-success-300: #{$success-300};
+    --mc-success-500: #{$success-500};
+    --mc-success-700: #{$success-700};
     --mc-warning-300: #{$warning-300};
     --mc-warning-500: #{$warning-500};
     --mc-warning-700: #{$warning-700};

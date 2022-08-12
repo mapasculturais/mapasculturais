@@ -1,34 +1,58 @@
 <?php 
 use MapasCulturais\i;
+$this->import('theme-logo');
 ?>
 <div class="main-footer">
 
+    <div class="main-footer__logo">
+
+        <div class="main-footer__logo--img">
+            <theme-logo title="mapa cultural" subtitle="do Pará" ></theme-logo>
+        </div>
+
+        <div class="main-footer__logo--share">
+            <a><mc-icon name="facebook"></mc-icon></a>
+            <a><mc-icon name="twitter"></mc-icon></a>
+            <a><mc-icon name="vimeo"></mc-icon></a>
+            <a><mc-icon name="youtube"></mc-icon></a>
+            
+        </div>
+    </div>
 
     <div class="main-footer__links">
-        <ul>
+        
+        <ul class="main-footer__links--group">
             <li>
                 <a>Acesse</a>
             </li>
             <li>
-                <a href="<?= $app->createUrl('search', 'opportunities') ?>">Lista de editais e oportunidades</a>
+                <a href="<?= $app->createUrl('search', 'opportunities') ?>"> 
+                    <mc-icon name="opportunity"></mc-icon> <?php i::_e('editais e oportunidades'); ?>
+                </a>
             </li>
             <li>
-                <a href="<?= $app->createUrl('search', 'events') ?>">Lista de eventos</a>
+                <a href="<?= $app->createUrl('search', 'events') ?>"> 
+                    <mc-icon name="event"></mc-icon>  <?php i::_e('eventos'); ?>
+                </a>
             </li>
             <li>
-                <a href="<?= $app->createUrl('search', 'agents') ?>">Lista de agentes</a>
+                <a href="<?= $app->createUrl('search', 'agents') ?>"> 
+                    <mc-icon name="agent"></mc-icon>  <?php i::_e('agentes'); ?>
+                </a>
             </li>
             <li>
-                <a href="<?= $app->createUrl('search', 'spaces') ?>">Lista de espaços</a>
+                <a href="<?= $app->createUrl('search', 'spaces') ?>"> 
+                    <mc-icon name="space"></mc-icon>  <?php i::_e('espaços'); ?>
+                </a>
             </li>
             <li>
-                <a href="<?= $app->createUrl('search', 'projects') ?>">Lista de projetos</a>
+                <a href="<?= $app->createUrl('search', 'projects') ?>"> 
+                    <mc-icon name="project"></mc-icon>  <?php i::_e('projetos'); ?>
+                </a>
             </li>
         </ul>
-    </div>
-
-    <div class="main-footer__links">
-        <ul>
+        
+        <ul class="main-footer__links--group">
             <li>
                 <a href="<?= $app->createUrl('panel', 'index') ?>">Painel</a>
             </li>
@@ -48,11 +72,9 @@ use MapasCulturais\i;
                 <a href="<?= $app->createUrl('auth', 'logout') ?>">Sair</a>
             </li>
         </ul>
-    </div> 
-    
-    <div class="main-footer__links">
-        <ul>
-            <!-- <li>
+
+        <ul class="main-footer__links--group">
+            <li>
                 <a>Ajuda e Privacidade</a>
             </li>
             <li>
@@ -60,7 +82,7 @@ use MapasCulturais\i;
             </li>
             <li>
                 <a>Dúvidas frequentes (FAQ)</a>
-            </li> -->
+            </li>
             <li>
                 <a>Termos de uso</a>
             </li>
@@ -71,15 +93,19 @@ use MapasCulturais\i;
                 <a>Autorização de uso de imagem</a>
             </li>
         </ul>
+
     </div>
-    <div class="main-footer__logo">
-        <?php $this->part('site-logo') ?>
-        <div class="main-footer__logo--share">
-            <a><iconify icon="cib:facebook-f" /></a>
-            <a><iconify icon="fa-brands:twitter" /></a>
-            <a><iconify icon="brandico:vimeo" /></a>
-            <a><iconify icon="akar-icons:youtube-fill" /></a>
-            
+
+    <div class="main-footer__reg">
+        <div class="main-footer__reg--content">
+            <p>
+                plataforma criada pela comunidade <strong>mapas culturais</strong> e desenvolvida por <strong>hacklab<span style="color: red">/</span></strong>
+            </p>
+    
+            <a class="link" href="https://github.com/mapasculturais"> 
+                <?php i::_e("Conheça o repositório") ?> 
+                <mc-icon name="github"></mc-icon>
+            </a>
         </div>
     </div>
 </div>

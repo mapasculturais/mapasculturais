@@ -3,7 +3,7 @@
 .entity-cover {
     align-items: center;    
     border: size(1) dashed var(--mc-gray-500);
-    border-radius: size(8);
+    border-radius: var(--mc-border-radius-sm);
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -26,7 +26,7 @@
 
             .label{
                 align-items: center;
-                border-radius: size(8);
+                border-radius: var(--mc-border-radius-sm);
                 color: var(--mc-white);
                 cursor: pointer;
                 display: none;

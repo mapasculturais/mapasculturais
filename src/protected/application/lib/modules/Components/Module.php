@@ -21,22 +21,27 @@ class Module extends \MapasCulturais\Module {
             $vendor_group = $theme instanceof \MapasCulturais\Themes\BaseV2\Theme ? 'vendor-v2' : 'vendor';
             $app_group = $theme instanceof \MapasCulturais\Themes\BaseV2\Theme ? 'app-v2' : 'app';
 
-            $app->view->enqueueScript($app_group, 'components-init', 'js/vue-init.js', []);
-            $app->view->enqueueScript($app_group, 'components-api', 'js/components-base/API.js', ['components-init']);
-            $app->view->enqueueScript($app_group, 'components-entityFile', 'js/components-base/EntityFile.js', ['components-init']);
-            $app->view->enqueueScript($app_group, 'components-entityMetalist', 'js/components-base/EntityMetalist.js', ['components-init']);
-            $app->view->enqueueScript($app_group, 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api', 'components-entityFile', 'components-entityMetalist']);
-            $app->view->enqueueScript($app_group, 'components-utils', 'js/components-base/Utils.js', ['components-init']);
+            $app->view->enqueueScript('components', 'components-init', 'js/vue-init.js', []);
+            $app->view->enqueueScript('components', 'components-api', 'js/components-base/API.js', ['components-init']);
+            $app->view->enqueueScript('components', 'components-entityFile', 'js/components-base/EntityFile.js', ['components-init']);
+            $app->view->enqueueScript('components', 'components-entityMetalist', 'js/components-base/EntityMetalist.js', ['components-init']);
+            $app->view->enqueueScript('components', 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api', 'components-entityFile', 'components-entityMetalist']);
+            $app->view->enqueueScript('components', 'components-utils', 'js/components-base/Utils.js', ['components-init']);
             $app->view->enqueueStyle($vendor_group, 'components-carousel', 'css/components-base/carousel.css');
             $app->view->enqueueStyle($vendor_group, 'leaflet', '../node_modules/leaflet/dist/leaflet.css');
+            $app->view->enqueueStyle($vendor_group, 'leaflet.markercluster', '../node_modules/leaflet.markercluster/dist/MarkerCluster.css');
+            $app->view->enqueueStyle($vendor_group, 'leaflet.markercluster.default', '../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css');
             $app->view->assetManager->publishFolder('js/vue-init/', 'js/vue-init/');
-
+            
+            // Importa componentes globais
+            $app->view->import('mc-icon popover entities');
+            
             if (isset($app->components->templates)) {
                 $app->components->templates = [];
             }
         });
 
-        $app->hook('mapasculturais.body:after,template(<<*>>.body):after', function () use($app) {
+        $app->hook('mapas.printJsObject:after', function () use($app) {
             $templates = json_encode($app->components->templates);
             echo "\n<script>window.\$TEMPLATES = $templates</script>";
             $app->view->printScripts('components');

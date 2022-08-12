@@ -2,5 +2,4 @@
 use MapasCulturais\i;
 
 return [
-    
 ];

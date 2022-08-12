@@ -7,7 +7,7 @@ $this->import('mapas-card');
     <mapas-card class="space-card__card">
         <template #profile>
         <div class="profile">
-        <iconify icon="bi:image-fill" />
+            <mc-icon name="space"></mc-icon>
         </div>
         </template>
         <template #title>

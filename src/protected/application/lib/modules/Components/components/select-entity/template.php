@@ -19,7 +19,7 @@ use MapasCulturais\i;
                         <form class="select-entity__form" @submit="entities.refresh(); $event.preventDefault();">
                             <input v-model="query['@keyword']" type="text" class="select-entity__form--input" name="search" :placeholder="placeholder" />
                             <button type="button" class="select-entity__form--button">
-                                <iconify icon="ant-design:search-outlined" />
+                                <mc-icon name="search"></mc-icon>
                             </button>
                         </form>
                     </template>
@@ -30,7 +30,7 @@ use MapasCulturais\i;
                             <li v-for="entity in entities" class="select-entity__results--item" :class="type" @click="selectEntity(entity, close)">
                                 <span class="icon">
                                     <img v-if="entity.files" :src="entity.files?.avatar?.transformations?.avatarSmall?.url" />
-                                    <iconify v-else :icon="icon"></iconify>
+                                    <mc-icon v-else :entity="entity"></mc-icon>
                                 </span>
                                 <span class="label"> {{entity.name}} </span>
                             </li>

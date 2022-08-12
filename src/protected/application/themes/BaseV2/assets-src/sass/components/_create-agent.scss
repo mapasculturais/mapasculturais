@@ -6,7 +6,7 @@
     color: black;
 
     &__buttons {
-        border-radius: 8px;
+        border-radius: var(--mc-border-radius-sm);
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;

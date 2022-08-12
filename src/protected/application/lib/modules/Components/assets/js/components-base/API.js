@@ -50,6 +50,15 @@ globalThis.useEntitiesLists = Pinia.defineStore('entitiesLists', {
         fetchAll(scope) {
             this[scope] = this[scope] || {};
             return this[scope];
+        },
+
+        fetchEntityLists(entity, scope) {
+            this[scope] = this[scope] || {};
+            this[scope].ENTITY_LISTS = this[scope].ENTITY_LISTS || {};
+
+            const objectId = entity.__objectId;
+            this[scope].ENTITY_LISTS[objectId] = this[scope].ENTITY_LISTS[objectId] || [];
+            return this[scope].ENTITY_LISTS[objectId];
         }
     }
 });
@@ -205,7 +214,7 @@ class API {
                 let entity = this.getEntityInstance(element.id);
                 entity.populate(element);
                 result.push(entity);
-                entity.__lists.push(result);
+                entity.$LISTS.push(result);
             });
 
             return result;

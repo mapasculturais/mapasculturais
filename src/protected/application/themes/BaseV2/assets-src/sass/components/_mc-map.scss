@@ -1,0 +1,45 @@
+@use '../settings/mixins' as *;
+
+.mc-map {
+    height: 400px;  
+
+    &-marker {
+        align-items: center;
+        border-radius: 50%;
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        display: flex;
+        height: size(30);
+        justify-content: center;
+        left: -14px;
+        position: absolute;
+        top: -48px;
+        width: size(30);
+
+        &::before {
+            background: white;
+            border-radius: 50%;
+            border: var(--mc-border-hairline) var(--mc-gray-300);
+            content: '';
+            height: 45px;
+            position: absolute;
+            transform: rotate(45deg);
+            width: 45px;
+            z-index: -1;
+        }
+
+        &::after {
+            width: 13px;
+            height: 13px;
+            content: '';
+            position: absolute;
+            background: white;
+            bottom: -14px;
+            -webkit-transform: rotate(45deg) skew(20deg, 20deg);
+            transform: rotate(45deg) skew(20deg, 20deg);
+            border: var(--mc-border-hairline) var(--mc-gray-300);
+            z-index: -1;
+            border-top: none;
+            border-left: none;
+        }
+    }
+}

@@ -4,66 +4,41 @@ $col-columns: 12;
 
 [class*="col-"] {
     float: left;
-    margin-bottom: size(20);
     box-sizing: border-box;
-    padding-right: size(24);
-    &:last-child {
-        padding-right: 0;
-    }
-}
-
-
-.col-12 {
-    padding-right: 0;
-}
-@media (max-width: size(800)) {
-    .col-sm-12 {
-        padding-right: 0;
-    }
 }
 
 @for $i from 1 through $col-columns {
     .col-#{$i} {
-        width: 100% / $col-columns * $i;
+        grid-column-end: span $i;
     }
+}
+@for $i from 1 through $col-columns {
     @media (max-width: size(800)) {
-        .col-sm-#{$i} {
-            width: 100% / $col-columns * $i !important;
+        .sm\:col-#{$i} {
+            grid-column-end: span $i;
         }
     }
 }
 
-.row{
-    align-items: flex-end;
-    box-sizing: border-box;
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
 
-    &.no-breakline {
-        flex-wrap: nowrap;
-    }
+
+.grid-12{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: size(20) size(24);
+    width: 100%;
 
     &.v-center {
         align-items: center;
     }
 
     &.v-top {
-        align-items: flex-start;
+        align-items: start;
     }
 
     &.v-bottom {
-        align-items: flex-end;
+        align-items: end;
     }
-}
-  
-.row:before, .row:after {
-    content: " ";
-    display: table;
-}
-  
-.row:after {
-    clear: both;
 }
 
 .container {
@@ -74,6 +49,10 @@ $col-columns: 12;
     max-width: size(1190);
     padding: 0 size(16);
     flex-wrap: wrap;
+
+    @media (max-width: size(1060)) {
+        grid-template-columns: 60% 37%;
+    }
     
     @media (max-width: size(800)) {
         grid-template-columns: 100%;
