@@ -5,7 +5,7 @@ class Entity {
         this.__objectType = objectType;
         this.__objectId = `${objectType}-${id}`;
         this.__validationErrors = {};
-
+        
         this.__skipDataProperties = ['createTimestamp', 'updateTimestamp'];
 
         this.__processing = false;
@@ -21,6 +21,9 @@ class Entity {
         const defaultProperties = ['terms', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
         
         for (const prop of defaultProperties) {
+            if (this[prop] && !obj[prop]) {
+                continue;
+            }
             let _default = prop == 'terms' ? [] : {};
             this[prop] = obj[prop] || _default;
         }
@@ -70,10 +73,14 @@ class Entity {
     }
 
     populateFiles(files) {
+        if (this.files) {
+            return;
+        }
         this.files = {};
         for (let groupName in files) {
             const group = files[groupName];
             if (group instanceof Array) {
+                this.files[groupName] = this.files[groupName] || [];
                 this.files[groupName] = group.map((data) => new EntityFile(this, groupName, data));
             } else {
                 this.files[groupName] = new EntityFile(this, groupName, group);
