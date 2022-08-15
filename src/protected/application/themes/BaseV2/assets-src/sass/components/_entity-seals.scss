@@ -2,22 +2,27 @@
 
 .entity-seals {
     margin: 0;
+
     &__title {
         margin: 0 0 size(10) 0;
     }
+
     &__seals {
         display: flex;
         gap: size(20);
         flex-wrap: wrap;
+
         &--seal {
             align-items: center;
             background: #C4C4C4;
             border-radius: var(--mc-border-radius-xs);
+            cursor: pointer;
             display: flex;
             height: size(48);
             justify-content: center;
             position: relative;
-            width: size(48);            
+            width: size(48);   
+
             .image {
                 align-items: center;
                 border-radius: var(--mc-border-radius-xs);
@@ -26,10 +31,12 @@
                 justify-content: center;
                 overflow: hidden;
                 width: 100%;
+
                 img {
                     max-height: 100%;
                 }
             }
+
             .icon {
                 align-items: center;
                 background-color: red;
@@ -46,16 +53,27 @@
                 width: size(16);
             }
         }
+        
         &--addSeal {
             align-items: center;
-            border: 1px solid;
+            border: size(1) solid;
             border-radius: var(--mc-border-radius-xs);
             display: flex;
-            height: 47px;
+            height: size(47);
             justify-content: center;
             position: relative;
-            width: 48px;
+            width: size(47);
             cursor: pointer;
+
+            &-list {
+                margin: 0;
+                list-style: none;
+                padding: 0;
+                display: flex;
+                gap: size(8);
+                width: size(272);
+                flex-wrap: wrap;
+            }
         }
     }
 }

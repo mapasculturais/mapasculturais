@@ -7,6 +7,13 @@ app.component('entity-seals', {
         return { hasSlot }
     },
 
+    computed: {
+        query() {
+            const ids = this.entity.seals.map((item) => item.sealId).join(',');
+            return ids ? {id: `!IN(${ids})`} : {};
+        }
+    },
+
     props: {
         entity: {
             type: Entity,
@@ -21,4 +28,13 @@ app.component('entity-seals', {
             default: false
         }
     },
+
+    methods: {
+        addSeal(seal) {
+            this.entity.createSealRelation(seal);
+        },
+        removeSeal(seal) {
+            this.entity.removeSealRelation(seal);
+        }
+    }
 });

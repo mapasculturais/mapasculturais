@@ -448,4 +448,48 @@ class Entity {
             return this.doCatch(error);
         }
     }
+
+    async createSealRelation(seal) 
+    {   
+        console.log(seal)
+        this.__processing = this.text('relacionando selo à entidade');
+
+        try{
+            const res = await this.API.POST(this.getUrl('createSealRelation'), {sealId: seal.id});
+
+            this.doPromise(res, (r) => {
+
+                const seal = {
+                    sealId: r.seal.id,
+                    sealRelationId: r.id,
+                    singleUrl: Utils.createUrl('sealRelation', 'single', [r.id]),
+                    name: r.seal.name,
+                    createTimestamp: r.createTimestamp,
+                    files: r.seal.files,
+                };          
+                
+                this.seals = this.seals || [];
+                this.seals.push(seal);
+            });
+        } catch (error) {
+            this.doCatch(error);
+        }
+    }
+
+    async removeSealRelation(seal) 
+    {
+        this.__processing = this.text('removendo selo da entidade');
+
+        try {
+            const res = await this.API.POST(this.getUrl('removeSealRelation'), {sealId: seal.sealId});
+            this.doPromise(res, (data) => {
+                let index;
+                
+                index = this.seals.indexOf(seal);
+                this.seals.splice(index,1);
+            });
+        } catch (error) {
+            return this.doCatch(error);
+        }
+    }
 }
