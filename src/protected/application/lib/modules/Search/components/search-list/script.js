@@ -1,30 +1,15 @@
 app.component('search-list', {
     template: $TEMPLATES['search-list'],
     
-    async created(){
-
-        this.entityAPI = new API(this.type);
-        
-        const query = this.query;
-        query['@select'] = 'id,name,location';
-
-        if(this.limit) 
-            query['@limit'] = this.limit;
-        
-        query['@order'] = this.order;
-        this.response = await this.entityAPI.find(query);
-    },
-    
     data() {
         return {
-            response: [],
+            statusLabel: '',
+            typeLabel: '',
+            termsLabel: '', 
         }
     },
 
     computed: {
-        entities() {
-            return Vue.shallowReactive(this.response);
-        }
     },
     
     props: {
@@ -34,18 +19,15 @@ app.component('search-list', {
         },
         limit: {
             type: Number,
-            default: null
+            default: 20,
         },
-        order: {
+        select: {
             type: String,
-            default: 'createTimestamp DESC'
-        },
-        query: {
-            type: Object,
-            default: {}
+            default: 'id,name,shortDescription,seals,terms,singleUrl'
         }
     },
 
     methods: {
+
     },
 });

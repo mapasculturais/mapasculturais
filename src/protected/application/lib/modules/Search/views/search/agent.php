@@ -24,13 +24,8 @@ $this->breadcramb = [
                     </template>
                     
                     <tab icon="list" label="Lista" slug="list">
-                        <mapas-container>
-                            <main>
-                                <search-list type="agent"></search-list>
-                            </main>
-                            <aside>
-                                <mapas-card></mapas-card>
-                            </aside>
+                        <mapas-container class="search-list">
+                            <search-list type="agent"></search-list>
                         </mapas-container>
                     </tab>
 

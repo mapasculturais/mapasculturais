@@ -43,7 +43,14 @@
         padding: 14px;
         width: 100%;
     }
+    input[type="checkbox"] {
+        float: left;
+        height: size(18);
+        margin-right:size( 8);
+        width: size(18);
+        width: unset;
 
+    }
     select {
         appearance: none;
         -webkit-appearance: none;
