@@ -14,11 +14,22 @@ app.component('home-feature', {
         return { text }
     },
 
-    created(){
+    async created(){
 
-        this.spaceAPI = new API('space');
-        this.agentAPI = new API('agent');
-        this.findEntities();
+        const spaceAPI = new API('space');
+        const agentAPI = new API('agent');
+        
+        const query = this.query;
+
+        query['@select'] = 'id,name,shortDescription,location,terms,seals,singleUrl';
+        query['@order'] = this.order;
+
+        if(this.limit) {
+            query['@limit'] = this.limit;
+        }
+
+        this.spaces = await spaceAPI.find(query);
+        this.agents = await agentAPI.find(query);
     },
     
     data() {
@@ -72,18 +83,33 @@ app.component('home-feature', {
 
     computed: {
         entities() {
-            const entities = this.spaces.concat(this.agents);
+            const entities = this.spaces.concat(this.agents).sort((a,b) => {
+                if (a.name > b.name) {
+                    return 1;
+                } else if (a.name == b.name) {
+                    return 0
+                } else {
+                    return -1;
+                }
+            });
             return entities;
         }
     },
     
-    methods: {
-        async findEntities() {
-            const query = {
-                '@select': 'id,name,shortDescription,location,terms,seals,singleUrl',
-            }
-            this.spaces = await this.spaceAPI.find(query);
-            this.agents = await this.agentAPI.find(query);
-        }  
+    props: {
+        limit: {
+            type: Number,
+            default: 15
+        },
+        order: {
+            type: String,
+            default: 'createTimestamp DESC'
+        },
+        query: {
+            type: Object,
+            default: {}
+        }
     },
+    
+    methods: {},
 });
