@@ -29,4 +29,7 @@ return [
     'removendo grupo de agentes relacionados' => i::__('Removendo grupo de agentes relacionados'),
     'renomeando grupo de agentes relacionados' => i::__('Renomeando grupo de agentes relacionados'),
     'adicionando administrador' => i::__('Adicionando administrador'),
+
+    'removendo selo da entidade' => i::__('Removendo selo da entidade'),
+    'relacionando selo à entidade' =>  i::__('Relacionando selo à entidade'),
 ];
