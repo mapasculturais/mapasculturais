@@ -35,11 +35,12 @@ app.component('mc-map-markercluster', {
         const entity = Vue.toRaw(this.entity);
         let interval = setInterval(() => {
             if(leafletObject.markersGroup) {
+                clearInterval(interval);
+                
                 if (!entity.location || !entity.location.lat || !entity.location.lng) {
                     return;
                 }
 
-                clearInterval(interval);
 
                 const options = { title: entity.name, clickable: true, draggable: false }
                 
