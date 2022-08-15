@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
 
-$this->import('confirm-button popover modal');
+$this->import('confirm-button popover modal image-uploader');
 ?>
 
 <div class="entity-gallery">
