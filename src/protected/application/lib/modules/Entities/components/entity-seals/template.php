@@ -1,3 +1,8 @@
+<?php
+use MapasCulturais\i;
+$this->import('popover confirm-button');
+?>
+
 <div class="entity-seals">
     <h4 class="entity-seals__title"> {{title}} </h4>
 
@@ -7,17 +12,24 @@
             <div v-if="seal.files?.avatar" class="image">
                 <img :src="seal.files.avatar?.transformations?.avatarSmall?.url">
             </div>
-            <span class="icon" v-if="editable">
-                <mc-icon name="delete"></mc-icon>
-            </span>
-        </div>
+            <div v-if="editable" class="icon">
+                <confirm-button @confirm="removeSeal(seal)">
+                    <template #button="modal">
+                        <mc-icon @click="modal.open()" name="delete"></mc-icon>
+                    </template> 
+                    <template #message="message">
+                        <?php i::_e('Remover selo?') ?>
+                    </template> 
+                </confirm-button>
+            </div>
+        </div>  
         
-        <div class="entity-seals__seals--addSeal" v-if="editable">
-            <span class="icon">
-                <mc-icon name="add"></mc-icon>
-            </span>
-        </div>
-
-    </div>
-   
+        <select-entity v-if="editable" type="seal" @select="addSeal($event)" :query="query" openside="down-right">    
+            <template #button="{ toggle }">
+                <div class="entity-seals__seals--addSeal" @click="toggle()">
+                    <mc-icon name="add"></mc-icon>
+                </div>
+            </template>
+        </select-entity>
+    </div>   
 </div>
