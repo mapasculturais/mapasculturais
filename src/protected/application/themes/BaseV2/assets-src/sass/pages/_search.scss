@@ -16,6 +16,16 @@
             .tabs-component__panels {
                 background-color: var(--mc-gray-100);
                 margin:0;
+
+                .search-list {
+                    main {
+                        grid-row-start: 1;
+                    }
+                    aside {
+                        grid-column-start: 2;
+                    }
+                }
+
             }
 
             .tabs-component__button {
