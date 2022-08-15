@@ -20,13 +20,13 @@ use MapasCulturais\i;
         
         <template v-if="is('radio')">
             <label v-for="optionValue in description.optionsOrder">
-                <input :value="value" type="radio" :value="optionValue" @change="change($event)"> {{description.options[optionValue]}} 
+                <input :checked="value == optionValue" type="radio" :value="optionValue" @change="change($event)"> {{description.options[optionValue]}} 
             </label>
         </template>
         
         <template v-if="is('multiselect')">
             <label v-for="optionValue in description.optionsOrder">
-                <input :value="value" type="checkbox" :value="optionValue" @change="change($event)"> {{description.options[optionValue]}} 
+                <input :checked="value == optionValue" type="checkbox" :value="optionValue" @change="change($event)"> {{description.options[optionValue]}} 
             </label>
         </template>
     </slot>
