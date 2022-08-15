@@ -1934,6 +1934,8 @@ class ApiQuery {
                 }
 
                 $this->_relatedSeals[$entity_id][] = [
+                    'sealRelationId' => $relation->relation_id,
+                    'sealId' => $relation->seal_id,
                     'name' => $relation->seal_name,
                     'singleUrl' => $app->createUrl('seal', 'sealRelation', [$relation->relation_id]),
                     'createTimestamp' => $relation->relation_create_timestamp,
