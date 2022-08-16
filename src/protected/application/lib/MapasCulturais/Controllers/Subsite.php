@@ -123,8 +123,10 @@ class Subsite extends EntityController {
         parent::POST_index($data);
     }
 
-
+   
     function GET_single(){
+        $app = App::i();
+        $app->view->editable = true;
         parent::GET_edit();
     }
     

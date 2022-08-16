@@ -394,7 +394,9 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->affirmativePolicies;
         $affirmativePoliciesRoof = $registration->opportunity->evaluationMethodConfiguration->affirmativePoliciesRoof;
         $isActiveAffirmativePolicies = filter_var($registration->opportunity->evaluationMethodConfiguration->isActiveAffirmativePolicies, FILTER_VALIDATE_BOOL);
+        $metadata = $registration->getRegisteredMetadata();
 
+       
         if(!$isActiveAffirmativePolicies || empty($affirmativePoliciesConfig)){
             return $result;
         }
@@ -402,14 +404,30 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         $totalPercent = 0.00;
         $appliedPolicies = [];
         foreach($affirmativePoliciesConfig as $rules){
+            if(empty($metadata)){
+                continue;
+            }
+            
             $fieldName = "field_".$rules->field;
             $applied = false;
+            $field_conf = $metadata[$fieldName]->config['registrationFieldConfiguration'];
+
+            if($field_conf->categories && !in_array($registration->category, $field_conf->categories)){
+                continue;
+            }
+
+            if(isset($field_conf->config['require']['condition']) && $field_conf->config['require']['condition']){
+                $_field_name = $field_conf->config['require']['field'];
+                if(trim($registration->$_field_name) != trim($field_conf->config['require']['value'])){
+                    continue;
+                }
+            }
 
             if(is_object($rules->value) || is_array($rules->value)){
+
                 foreach($rules->value as $key => $value){
                     if(is_array($registration->$fieldName)){
                         if(in_array($key, $registration->$fieldName) && filter_var($value, FILTER_VALIDATE_BOOL)){
-                            $totalPercent += $rules->fieldPercent;
                             $_value = $key;
                             $applied = true;
                             continue;
@@ -417,7 +435,6 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
                     }else{
                         if($registration->$fieldName == $key && filter_var($value, FILTER_VALIDATE_BOOL)){
-                            $totalPercent += $rules->fieldPercent;
                             $_value = $key;
                             $applied = true;
                             continue;
@@ -432,6 +449,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
         
             if($applied){
+                $totalPercent += $rules->fieldPercent;
                 $field = $app->repo('RegistrationFieldConfiguration')->find($rules->field);
                 $appliedPolicies[] = [
                     'field' => [

@@ -219,6 +219,7 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function save($flush = false){
+        $this->cleanRegisteredFields();
         parent::save($flush);
     }
 
@@ -230,6 +231,21 @@ class Registration extends \MapasCulturais\Entity
         return App::i()->createUrl('registration', 'view', [$this->id]);
     }
 
+    function cleanRegisteredFields() {
+        $app = App::i();
+        $registered_metadata = $app->getRegisteredMetadata($this);
+
+        $fields = [];
+        foreach($this->opportunity->registrationFieldConfigurations as $field){
+            $fields[] = $field->getFieldName();
+        }
+
+        foreach($registered_metadata as $key => $metadada){
+            if(!in_array($key, $fields) && (strpos("field_", $key) === 0)){
+                $app->unregisterEntityMetadata(Registration::class, $key);
+            }
+        }
+    }
     
     function consolidateResult($flush = false, $caller = null){
         $app = App::i();

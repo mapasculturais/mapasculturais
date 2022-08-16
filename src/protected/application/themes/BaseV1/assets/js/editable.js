@@ -810,7 +810,7 @@ MapasCulturais.Editables = {
                         // $json->redirect = "true";
                         // $json->url = ['controller'=>'aldirblanc', 'action'=>'selecionaragente'];
                         if(response.redirect == undefined || response.redirect === 'true' ) {
-                            if(response.url) {
+                            if(response.url && response.url.controller) {
                                 
                                 document.location = MapasCulturais.createUrl(response.url.controller, response.url.action, [response.id]);
                                 
