@@ -100,6 +100,7 @@ class RoutesManager{
                 $args = $this->extractArgs($url_args);
             }
 
+            $app->applyHook('routes.filter', [&$controller_id, &$action_name, &$args, &$api_call]);
 
             if($controller = $app->controller($controller_id)){
                 try{

@@ -222,7 +222,7 @@ class Metadata extends \MapasCulturais\Definition{
      *
      * @return bool|array true if the value is valid or an array of errors
      */
-    function validate(\MapasCulturais\Entity $owner, $value){
+    function validate(\MapasCulturais\Entity $entity, $value){
         $errors = [];
 
         if($this->is_required && !$value){
@@ -231,15 +231,19 @@ class Metadata extends \MapasCulturais\Definition{
         }elseif($value){
             foreach($this->_validations as $validation => $message){
                 $ok = true;
-                $validation = str_replace('v::', 'MapasCulturais\Validator::', $validation);
 
-                eval('$ok = ' . $validation . '->validate($value);');
+                if(strpos($validation,'v::') === 0){
+                    $validation = str_replace('v::', 'MapasCulturais\Validator::', $validation);
+                    eval('$ok = ' . $validation . '->validate($value);');
+                }else{
+                    eval('$ok = ' . $validation . ';');
+                }
 
                 if(!$ok)
                     $errors[] = $message;
             }
 
-            if(!$errors && $this->is_unique && !$this->validateUniqueValue($owner, $value))
+            if(!$errors && $this->is_unique && !$this->validateUniqueValue($entity, $value))
                 $errors[] = $this->is_unique_error_message;
 
         }
