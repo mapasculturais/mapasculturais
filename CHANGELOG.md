@@ -4,6 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.25] - 2022-08-16
+- ### Correções
+- Corrige objeto Module para a chamada do método getChartsColors
+- Corrige exportação do .csv quando existe campos de endereço do agente na inscrição
+- Corrige busca de endereço agente por cep na inscrição
 ## [5.3.24] - 2022-08-12
 - ### Correções
 - Ajusta permissão dos avaliadores para nao quebrar quando o formulário estiver sem campos
