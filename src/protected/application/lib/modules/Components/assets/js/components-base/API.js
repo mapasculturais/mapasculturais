@@ -204,12 +204,22 @@ class API {
         }));
     }
 
-    async find(query, list) {
+    async find(query, list, rawProcessor) {
         let url = this.createApiUrl('find', query);
         return this.GET(url).then(response => response.json().then(objs => {
-            let result = list || [];
+            let result;
+            if(rawProcessor) {
+                rawProcessor = (typeof rawProcessor == 'function') ? rawProcessor : Utils.entityRawProcessor;
+
+                result = objs.map(rawProcessor);
+
+                result.metadata = JSON.parse(response.headers.get('API-Metadata'));
+                return result;
+            }
+
+            result = list || [];
             result.metadata = JSON.parse(response.headers.get('API-Metadata'));
-            
+
             objs.forEach(element => {
                 let entity = this.getEntityInstance(element.id);
                 entity.populate(element);
