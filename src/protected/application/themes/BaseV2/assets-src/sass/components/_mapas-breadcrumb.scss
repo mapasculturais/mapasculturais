@@ -5,7 +5,7 @@
     max-width: 1170px;
     
     @media (max-width: size(800)) {
-        font-size: 14px;
+        font-size: size(14);
     }
 
     ul, li {
@@ -14,11 +14,13 @@
     }
 
     ul {
+        width: 100%;
+        max-width: size(1170);
         align-items: center;
         display: flex;
         flex-wrap: wrap;
         gap: size(5);
-        margin: size(8) size(10);
+        padding: size(8) size(10);
         position: absolute;
         z-index: 1;
     }
@@ -60,5 +62,13 @@
     a {
         color: inherit;
         text-decoration: none;
+    }
+
+    &__hasCover {
+        ul {
+            background: linear-gradient(180deg, rgba(2, 2, 1, 0.35) 0%, rgba(255, 255, 255, 0) 100%);
+            color: white;
+            padding: size(8) size(10) size(60); 
+        }
     }
 }
