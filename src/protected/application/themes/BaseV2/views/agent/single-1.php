@@ -37,7 +37,7 @@ $this->import('
                     </p>
                 </div>
                 
-                <div class="col-12">
+                <div v-if="entity.longDescription" class="col-12">
                     <h2>Descrição Detalhada</h2>
                     <p>{{entity.longDescription}}</p>
                 </div>
@@ -78,12 +78,9 @@ $this->import('
                 </div>
                 
                 <div class="col-12">
-                    <entity-owner :entity="entity" title="Publicado por"></entity-owner>
-                </div>
-                
-                <div class="col-12">
                     <share-links title="Compartilhar" text="Veja este link:"></share-links>
                 </div>
+
                 <div  class="col-12">
                     <entity-owner title="Publicado por" :entity="entity"></entity-links>
                 </div>
