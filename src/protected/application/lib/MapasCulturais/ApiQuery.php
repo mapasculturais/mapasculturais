@@ -2022,7 +2022,7 @@ class ApiQuery {
         }
 
         foreach($selecting as $prop) {
-            if(in_array($prop, $selecting)) {
+            if(!in_array($prop, $this->_selecting)) {
                 $this->_selecting[] = $prop;
             }
         }
