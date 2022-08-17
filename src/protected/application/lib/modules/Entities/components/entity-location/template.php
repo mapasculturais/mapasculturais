@@ -47,7 +47,8 @@ $this->import('entity-field entity-map');
 
     <div class="col-12">
         <p class="entity-location__address">
-            <span>{{entity.endereco}}</span>
+            <span v-if="entity.endereco">{{entity.endereco}}</span>
+            <span v-else><?= i::_e("Sem Endereço"); ?></span>
         </p>
         <entity-map :entity="entity" :editable="editable"></entity-map>
     </div>
