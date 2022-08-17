@@ -4,6 +4,7 @@ namespace MapasCulturais;
 
 use Doctrine\ORM\Query;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Types\GeoPoint;
 
 class ApiQuery {
     use Traits\MagicGetter;
@@ -2054,7 +2055,10 @@ class ApiQuery {
         $app = App::i();
         
         if(!is_array($value)){
-            if (trim($value) === '@me') {
+            if (preg_match('#POINT\((\-?[0-9\.]+):(\-?[0-9\.]+)\)#', $value, $matches)) {
+                $value = new GeoPoint($matches[1],$matches[2]);
+                // $value = "({$matches[1]},{$matches[2]})";
+            } else if (trim($value) === '@me') {
                 $value = $app->user->is('guest') ? null : $app->user;
             } elseif (strpos($value, '@me.') === 0) {
                 $v = str_replace('@me.', '', $value);
@@ -2088,6 +2092,10 @@ class ApiQuery {
             $not = $match[1];
             $operator = strtoupper($match[2]);
             $value = $match[3];
+            
+            if (preg_match('#[a-z0-9]+.location#i', $key)) {
+                $value = preg_replace('#\[(\-?[0-9\.]+)\,(\-?[0-9\.]+)\]#', 'POINT($1:$2)', $value);
+            }
 
             if ($operator == 'OR' || $operator == 'AND') {
                 $expressions = $this->parseExpression($value);
@@ -2199,11 +2207,25 @@ class ApiQuery {
                 $dql = $not ?
                         "ST_DWithin($key, ST_MakePoint($longitude,$latitude), $radius) <> TRUE" :
                         "ST_DWithin($key, ST_MakePoint($longitude,$latitude), $radius) = TRUE";
-            }
+                        
+            } elseif ($operator == 'GEOBOUNDING') {
+                $values = $this->splitParam($value);
+                $rexp = '#POINT\((\-?[0-9\.]+):(\-?[0-9\.]+)\)#';
+                if (count($values) !== 2 || !(preg_match($rexp, $values[0], $matches1)) || !(preg_match($rexp, $values[1], $matches2))) {
+                    throw new Exceptions\Api\InvalidArgument('expression GEOBOX expects 2 arguments: point A, point B. ex: GEOBOX([-43.33,-1.55],[-40.33,-2.5])');
+                }
 
-            /*
-             * location=GEO_NEAR([long,lat]) //
-             */
+                $lng1 = $matches1[1];
+                $lat1 = $matches1[2];
+                $lng2 = $matches2[1];
+                $lat2 = $matches2[2];
+
+                $line = $this->addSingleParam("LINESTRING($lng1 $lat1, $lng2 $lat2)");
+
+                $dql = $not ?
+                        "st_covers(st_envelope(st_geomfromtext({$line})), $key) <> TRUE" :
+                        "st_covers(st_envelope(st_geomfromtext({$line})), $key) = TRUE";
+            }
             return $dql;
         }
     }
