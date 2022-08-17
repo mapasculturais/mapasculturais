@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Possibilidade de selecionar agentes relacionados (relatedAgents) e relações de agentes (agentRelations) pelo parâmetro @select da api (#1999)
 - Possibilidade de selecionar as permissões do usuário autenticado (currentUserPermissions) pelo parâmetro @select da api (#2001)
 - Possibilidade de selecionar tudo e mais um pouco (@select=*,agentRelations)
+- Possibilidade de filtrar agentes e espaço utilizando um delimitador de latitude e longitude (_geoLocation=GEOBOUNDING([lng1,lat1],[lng2,lat2]))
 
 ### Quebra de compatibilidade
 - Não é mais possível selecionar entidades reacionadas utilizando várias vezes o nome da entidade (ex: `@select=owner.id,owner.name`). Deve-se substituir por `@select=owner.{id,name}`
