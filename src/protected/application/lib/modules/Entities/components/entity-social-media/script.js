@@ -8,12 +8,14 @@ app.component('entity-social-media', {
     },
 
     created() {
-
+        if (this.entity.instagram || this.entity.twitter || this.entity.linkedin || this.entity.facebook || this.entity.youtube || this.entity.spotify || this.entity.pinterest) {
+            this.show = true;
+        }
     },
 
     data() {
         return {
-            message: 'test'
+            show: false,
         }
     },
 
