@@ -47,7 +47,7 @@ use MapasCulturais\i;
                         <slot name="metadata">
                             <dl>
                                 <dt><?= i::__('Tipo') ?></dt>
-                                <dd class="type"> {{entity.type.name}} </dd>
+                                <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
                             </dl>
                         </slot>
                     </div>
@@ -80,9 +80,9 @@ use MapasCulturais\i;
                         <p> {{entity.shortDescription}} </p>
                     </slot>
                 </div>
-                <div class="field">
-                    <dt><?= i::__('Site') ?></dt>
-                    <h3><mc-icon name="link"></mc-icon>{{entity.site}}</h3>
+
+                <div class="site">
+                    <a><mc-icon :class="entity.__objectType+'__color'"name="link"></mc-icon>{{entity.site}}</a>
                 </div>
             </div>
 
