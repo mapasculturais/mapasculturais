@@ -2,21 +2,23 @@ app.component('home-map', {
     template: $TEMPLATES['home-map'],
     
     async created(){
+        const spaceAPI = new API('space');
+        const agentAPI = new API('agent');
 
-        this.spaceAPI = new API('space');
-        this.agentAPI = new API('agent');
-        
         const query = this.query;
-        query['@select'] = 'id,name,location';
+        
+        query['@select'] = 'id,type,name,location,singleUrl';
+        query['@order'] = this.order;
+        query['location'] = '!EQ([0,0])';
 
         if(this.limit) {
             query['@limit'] = this.limit;
         }
+        console.time('home-map: fetchEntities');
+        this.spaces = await spaceAPI.find(query, null, true);
+        this.agents = await agentAPI.find(query, null, true);
+        console.timeEnd('home-map: fetchEntities');
 
-        query['@order'] = this.order;
-            
-        this.spaces = await this.spaceAPI.find(query);
-        this.agents = await this.agentAPI.find(query);
     },
     
     data() {
@@ -28,15 +30,22 @@ app.component('home-map', {
 
     computed: {
         entities() {
-            const entities = this.spaces.concat(this.agents);
+            let entities = [];
+
+            if (this.spaces instanceof Array) {
+                entities = entities.concat(this.spaces);
+            } 
+            
+            if (this.agents instanceof Array) {
+                entities = entities.concat(this.agents);
+            } 
             return Vue.shallowReactive(entities);
         }
     },
     
     props: {
         limit: {
-            type: Number,
-            default: null
+            type: Number
         },
         order: {
             type: String,
@@ -45,7 +54,8 @@ app.component('home-map', {
         query: {
             type: Object,
             default: {}
-        }
+        },
+        text: String
     },
 
     methods: {

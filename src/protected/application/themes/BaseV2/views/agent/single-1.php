@@ -1,11 +1,18 @@
 <?php 
 $this->layout = 'entity'; 
+use MapasCulturais\i;
 $this->import('
-    mapas-container mapas-card
-    entity-terms share-links entity-files-list entity-links entity-owner entity-seals entity-header entity-gallery entity-social-media');
+    mapas-container mapas-card mc-map mc-map-marker entity-owner mapas-breadcrumb
+    entity-terms share-links entity-files-list entity-links entity-owner entity-gallery-video entity-seals entity-header entity-gallery entity-social-media');
+    $this->breadcramb = [
+        ['label'=> i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
+        ['label'=> i::__('Agentes'), 'url' => $app->createUrl('panel', 'agents')],
+        ['label'=> $entity->name, 'url' => $app->createUrl('agent', 'single', [$entity->id])],
+    ];
 ?>
-<div class="main-app single-1">
 
+<div class="main-app single-1">
+    <mapas-breadcrumb></mapas-breadcrumb>
     <entity-header :entity="entity"></entity-header>    
     
     <mapas-container>        
@@ -15,6 +22,10 @@ $this->import('
             <div class="grid-12">
                 <div class="col-12">
                     <h3>Endereço</h3>
+                        <mc-map>
+                            <mc-map-marker :entity="entity"></mc-map-marker>
+                        </mc-map>
+                       
                     <p>
                         <span v-if="entity.En_Nome_Logradouro">{{entity.En_Nome_Logradouro}},</span>
                         <span v-if="entity.En_Num">{{entity.En_Num}},</span>
@@ -36,7 +47,14 @@ $this->import('
                 </div>
 
                 <div class="col-12">
+                    <entity-gallery-video :entity="entity"></entity-gallery-video>
+                </div>
+
+                <div class="col-12">
                     <entity-gallery :entity="entity"></entity-gallery>
+                </div>
+                <div class="property col-6">
+                    <button class="button button--primary button--md button-large">Reinvindicar Propriedade</button>
                 </div>
             </div>
         </main>
@@ -65,6 +83,9 @@ $this->import('
                 
                 <div class="col-12">
                     <share-links title="Compartilhar" text="Veja este link:"></share-links>
+                </div>
+                <div  class="col-12">
+                    <entity-owner title="Publicado por" :entity="entity"></entity-links>
                 </div>
             </div>
         </aside>
