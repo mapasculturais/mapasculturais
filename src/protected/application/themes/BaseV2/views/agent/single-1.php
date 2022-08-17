@@ -3,7 +3,7 @@ $this->layout = 'entity';
 use MapasCulturais\i;
 $this->import('
     mapas-container mapas-card mc-map mc-map-marker entity-owner mapas-breadcrumb
-    entity-terms share-links entity-files-list entity-links entity-owner entity-gallery-video entity-seals entity-header entity-gallery entity-social-media');
+    entity-terms share-links entity-files-list entity-links entity-location entity-owner entity-gallery-video entity-seals entity-header entity-gallery entity-social-media');
     $this->breadcramb = [
         ['label'=> i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
         ['label'=> i::__('Agentes'), 'url' => $app->createUrl('panel', 'agents')],
@@ -21,20 +21,7 @@ $this->import('
         <main>
             <div class="grid-12">
                 <div class="col-12">
-                    <h3>Endereço</h3>
-                        <mc-map>
-                            <mc-map-marker :entity="entity"></mc-map-marker>
-                        </mc-map>
-                       
-                    <p>
-                        <span v-if="entity.En_Nome_Logradouro">{{entity.En_Nome_Logradouro}},</span>
-                        <span v-if="entity.En_Num">{{entity.En_Num}},</span>
-                        <span v-if="entity.En_Bairro">{{entity.En_Bairro}}.</span>
-                        <span v-if="entity.En_CEP">CEP: {{entity.En_CEP}}.</span>
-                        <span v-if="entity.En_Municipio">{{entity.En_Municipio}}/</span>
-                        <span v-if="entity.En_Estado">{{entity.En_Estado}}</span>
-                        <span v-else> sem endereço </span>
-                    </p>
+                    <entity-location :entity="entity"></entity-location>
                 </div>
                 
                 <div v-if="entity.longDescription" class="col-12">
