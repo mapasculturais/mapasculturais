@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 $this->import('popover')
 ?>
-<div v-if="editable || entity.terms?.[taxonomy]" class="entity-terms">
+<div v-if="editable || entity.terms?.[taxonomy].length > 0" class="entity-terms">
 
     <h4 class="entity-terms__title" v-if="title == ''"> {{taxonomy}} </h4>
     <h4 class="entity-terms__title" v-else> {{title}} </h4>
