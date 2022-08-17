@@ -1,7 +1,7 @@
 <?php
 use MapasCulturais\i;
 ?>
-<div class="entity-gallery">
+<div v-if="editable || entity.metalists?.videos" class="entity-gallery">
 
     <label class="entity-gallery__title"> {{title}} </label>
 
