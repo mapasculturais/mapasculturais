@@ -106,5 +106,13 @@ globalThis.Utils = {
             return new URL($MAPAS.baseURL + route);
         }
         
+    },
+
+    entityRawProcessor (entity){
+        entity.__objectId = `${entity['@entityType']}:${entity.id}`;
+        if (entity.location) {
+            entity.location = {lat: entity.location.latitude, lng: entity.location.longitude};
+        }
+        return entity;
     }
 }
