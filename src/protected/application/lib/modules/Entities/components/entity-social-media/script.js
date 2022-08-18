@@ -7,15 +7,9 @@ app.component('entity-social-media', {
         return { hasSlot }
     },
 
-    created() {
-        if (this.entity.instagram || this.entity.twitter || this.entity.linkedin || this.entity.facebook || this.entity.youtube || this.entity.spotify || this.entity.pinterest) {
-            this.show = true;
-        }
-    },
-
     data() {
         return {
-            show: false,
+            show: !!(this.entity.instagram || this.entity.twitter || this.entity.linkedin || this.entity.facebook || this.entity.youtube || this.entity.spotify || this.entity.pinterest),
         }
     },
 
