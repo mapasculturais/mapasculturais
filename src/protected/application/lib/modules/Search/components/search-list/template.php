@@ -12,7 +12,7 @@ $this->import('entities mapas-card entity-card');
         </template>
 
         <template #default="{entities}">
-            <div class="col-9" v-for="entity in entities" :key="entity.__objectId"> {{entity.__objectId}}
+            <div class="col-9" v-for="entity in entities" :key="entity.__objectId">
                 <entity-card :entity="entity"></entity-card> 
             </div>
         </template>
