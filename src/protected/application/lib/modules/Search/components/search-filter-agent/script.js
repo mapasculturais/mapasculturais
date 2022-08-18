@@ -15,12 +15,16 @@ app.component('search-filter-agent', {
         api: {
             type: API,
             required: true
+        },
+        query: {
+            type: Object,
+            required: true
         }
     },
 
     data() {
         return {
-            query: {}
+            terms: $TAXONOMIES.area.terms,
         }
     },
 
