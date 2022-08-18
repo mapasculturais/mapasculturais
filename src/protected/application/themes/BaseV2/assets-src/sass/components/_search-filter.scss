@@ -1,0 +1,100 @@
+@use '../settings/mixins' as *;
+
+.search-filter {
+    position: relative;
+
+    &__actions {
+        position: absolute;
+        display: flex;
+        top: size(-90);
+        right: 0;
+        flex-direction: column;
+        align-items: flex-end;
+
+        &--form {
+            display: flex;
+
+            &-input {
+                margin: 0;
+                border: var(--mc-border-hairline) var(--mc-gray-500);
+                font-weight: 400;
+                font-size: size(16);
+                line-height: size(19);
+                padding: size(13) size(20) size(13);
+                border-radius: var(--mc-border-radius-pill) 0 0 var(--mc-border-radius-pill);
+                border-right: none;
+            }
+    
+            &-button {
+                margin: 0;
+                border: var(--mc-border-hairline) var(--mc-gray-500);
+                background-color: var(--mc-high-500);
+                padding: size(13) size(33) size(13) size(20);
+                display: flex;
+                border-radius: 0 var(--mc-border-radius-pill) var(--mc-border-radius-pill) 0;
+                border-left: none;
+                align-items: center;
+                justify-content: center;
+
+                .iconify {
+                    width: size(20.5);
+                    height: size(20.5);
+                }
+            }
+        }
+    }
+
+    &__filter {
+        background: #FFFFFF;
+        box-shadow: var(--mc-shadow-lv1);
+        border-radius: var(--mc-border-radius-xs);
+        padding: size(16);
+        position: absolute;
+        width: 100%;
+    }
+
+    .list {
+        .search-filter__actions {
+            &--formBtn {
+                display: none;
+            }
+        }
+    }   
+    
+    .map {
+        .search-filter {
+            &__actions {
+                top: size(-66);
+
+                &--formBtn {
+                    position: absolute;
+                    bottom: size(-74);
+                }
+            }
+
+            &__filter {
+                padding: 0 size(16) size(21);
+                background-color: var(--mc-gray-100);
+                position: absolute;
+                width: 100%;
+                right: 0;
+                top: size(14);
+
+                &>* {
+                    clear: both;
+                }
+
+                &--close {
+                    float: right;
+                    padding-right: 0;
+                }
+
+                form {
+                    background: #FFFFFF;
+                    border-radius: var(--mc-border-radius-xs);
+                    padding: size(16);
+                }
+            }
+        }
+    }
+}
