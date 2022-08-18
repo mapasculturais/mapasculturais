@@ -7,11 +7,24 @@ app.component('search', {
         return { text }
     },
 
+    created() {
+        this.api = new API(this.entityType);
+    },
+
     props: {
+        pageTitle: {
+            type: String,
+            required: true
+        },
+        entityType: {
+            type: String,
+            required: true
+        }
     },
 
     data() {
         return {
+            api: null,
             query: {},
         }
     },
