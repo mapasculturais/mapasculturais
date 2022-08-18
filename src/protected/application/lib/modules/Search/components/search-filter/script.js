@@ -15,12 +15,15 @@ app.component('search-filter', {
         api: {
             type: API,
             required: true
+        },
+        query: {
+            type: Object,
+            required: true
         }
     },
 
     data() {
         return {
-            query: {},
             show: true,
         }
     },
