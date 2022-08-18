@@ -4,7 +4,7 @@ app.component('mapas-breadcrumb', {
     data() {
         return {
             list: $MAPAS.breadcramb,
-            cover: $MAPAS.requestedEntity.files.header,
+            cover: !!$MAPAS.requestedEntity?.files?.header,
         }
     },
 });
