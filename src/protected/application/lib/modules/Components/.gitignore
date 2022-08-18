@@ -1,2 +1,3 @@
-assets/js/*.js
-assets/js/*.js.txt
+assets/js/vue-init*
+assets/js/app.js
+images/vendor*
