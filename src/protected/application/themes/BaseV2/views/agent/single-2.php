@@ -3,7 +3,7 @@ $this->layout = 'entity';
 use MapasCulturais\i;
 $this->import('
     mapas-container mc-map mc-map-marker  mapas-breadcrumb
-    entity-terms share-links entity-files-list entity-links entity-location entity-owner entity-seals entity-header entity-gallery entity-gallery-video entity-social-media');
+    entity-terms share-links entity-files-list entity-links entity-location entity-owner entity-related-agents entity-seals entity-header entity-gallery entity-gallery-video entity-social-media');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label'=> i::__('Agentes'), 'url' => $app->createUrl('panel', 'agents')],
@@ -62,9 +62,13 @@ $this->breadcramb = [
                 </div>
                 
                 <div class="col-12">
-                    <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>  
+                    <entity-related-agents :entity="entity"  title="Agentes Relacionados"></entity-related-agents>  
                 </div>
-                
+
+                <div class="col-12">
+                    <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>
+                </div>
+
                 <div class="col-12">
                     <share-links title="Compartilhar" text="Veja este link:"></share-links>
                 </div>
