@@ -7,7 +7,7 @@ $this->import('theme-logo');
     <div class="main-footer__logo">
 
         <div class="main-footer__logo--img">
-            <theme-logo title="mapa cultural" subtitle="do Pará" ></theme-logo>
+            <theme-logo title="mapa cultural" subtitle="do Pará"></theme-logo>
         </div>
 
         <div class="main-footer__logo--share">
@@ -99,7 +99,7 @@ $this->import('theme-logo');
     <div class="main-footer__reg">
         <div class="main-footer__reg--content">
             <p>
-                plataforma criada pela comunidade <strong>mapas culturais</strong> e desenvolvida por <strong>hacklab<span style="color: red">/</span></strong>
+                plataforma criada pela comunidade <strong><mc-icon name="map"></mc-icon>mapas culturais</strong> e desenvolvida por <strong>hacklab<span style="color: red">/</span></strong>
             </p>
     
             <a class="link" href="https://github.com/mapasculturais"> 
