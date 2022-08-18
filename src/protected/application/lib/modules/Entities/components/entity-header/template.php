@@ -6,7 +6,7 @@ use MapasCulturais\i;
 
     <div class="entity-header__single">
 
-        <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.url) }"></div>
+    <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.transformations?.header.url) }"></div>
 
         <div class="entity-header__single--content">
 
@@ -82,7 +82,7 @@ use MapasCulturais\i;
                 </div>
 
                 <div class="site">
-                    <a><mc-icon :class="entity.__objectType+'__color'"name="link"></mc-icon>{{entity.site}}</a>
+                    <a><mc-icon :class="entity.__objectType+'__color'" name="link"></mc-icon>{{entity.site}}</a>
                 </div>
             </div>
 
