@@ -46,10 +46,10 @@ app.component('entity-related-agents', {
     
     methods: {
         hasGroups() {
-            if (Object.keys(this.entity.relatedAgents).length > 0) {
+            if (Object.keys(this.groups).length > 0) {
                 return true;
             } else {
-                return true;
+                return false;
             }
         },
 
