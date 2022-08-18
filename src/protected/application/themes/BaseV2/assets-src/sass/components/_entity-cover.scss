@@ -18,9 +18,14 @@
     &__cover{
         &--img {
             align-items: center;
+            aspect-ratio: 99 / 16;
+            background-image: var(--url);
+            background-position: center;
+            background-size: cover;
             cursor: pointer;
             display: flex;
             justify-content: center;
+            padding: size(10);
             position: relative;
             width: 100%;
 
@@ -34,6 +39,7 @@
                 padding: size(5) size(10);
                 position: absolute;
                 background-color: rgba(0, 0, 0, .3);
+                z-index: 1;
             }
 
             img{
@@ -41,12 +47,18 @@
             }
             
             &:hover {
+                backdrop-filter: blur(size(1));
+
+                &::after {
+                    content: " ";
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    backdrop-filter: blur(size(2));
+                }
+                
                 .label {
                     display: flex;
-                }
-
-                img {
-                    filter: blur(size(1));
                 }
             }
         }
