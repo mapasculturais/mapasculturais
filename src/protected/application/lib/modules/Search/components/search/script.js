@@ -19,7 +19,7 @@ app.component('search', {
         entityType: {
             type: String,
             required: true
-        }
+        },
     },
 
     data() {

@@ -1,5 +1,6 @@
 <?php
 use MapasCulturais\i;
+$this->import('mapas-breadcrumb');
 ?>
 
 <div class="search">
@@ -18,7 +19,7 @@ use MapasCulturais\i;
             <div class="search__header--content--right">
                 <slot name="create-button"></slot>
             </div>
-        </div>            
+        </div>
     </header>
 
     <slot :query="query" :api="api"></slot>

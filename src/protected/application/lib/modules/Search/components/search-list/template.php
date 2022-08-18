@@ -4,7 +4,7 @@ $this->import('entities mapas-card entity-card');
 ?>
 
 <div class="grid-12 search-list">
-    <entities :type="type" :select="select" :limit="limit">
+    <entities :type="type" :select="select" :query="entitiesQuery" :limit="limit" watch-query>
         <template #header="{entities}">
             <div class="col-3 search-list__filter">
                 <slot name="filter"></slot>
@@ -12,7 +12,7 @@ $this->import('entities mapas-card entity-card');
         </template>
 
         <template #default="{entities}">
-            <div class="col-9" v-for="entity in entities" :key="entity.id">
+            <div class="col-9" v-for="entity in entities" :key="entity.__objectId"> {{entity.__objectId}}
                 <entity-card :entity="entity"></entity-card> 
             </div>
         </template>
