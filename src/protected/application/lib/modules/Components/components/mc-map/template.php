@@ -16,6 +16,9 @@ $this->import('mc-icon')
         <l-tile-layer :url="tileServer"></l-tile-layer>
         <slot></slot>
 
+        <div ref="popup" style="display: none;">
+            <slot v-if="popupEntity" name="popup" :entity="popupEntity"></slot>
+        </div>
         <div ref="agent1" class="agent__background mc-map-marker">
             <mc-icon name="agent-1"></mc-icon>
         </div>
