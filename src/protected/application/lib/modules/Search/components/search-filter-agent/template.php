@@ -3,29 +3,29 @@ use MapasCulturais\i;
 $this->import('search-filter');
 ?>
 
-<search-filter :api="api" :position="position">
+<search-filter :api="api" :position="position" :query="query">
     <form>
         <div class="field">
-            <label for="EntityState"> Status da Entidade </label> 
-            <label><input id="EntityState" type="checkbox"> Entidades oficiais </label>
+            <label><input v-model="query['@verified']" type="checkbox"> <?php i::_e('Somente entidades verificadas') ?> </label>
         </div>  
 
         <div class="field">
-            <label for="EntityType"> Tipo de Entidade </label>
-            <select id="EntityType" name="Entity-type">
-                <option value="" disabled selected> <? i::_e('Selecione o tipo')?> </option>
-                <option value="1"> Agente Individual </option>
-                <option value="2"> Agente Coletivo </option>
-            </select>
+            <label> <?php i::_e('Tipo') ?>
+                <select v-model="query['type']">
+                    <option :value="undefined"> <? i::_e('Todos')?> </option>
+                    <option value="1"> <?php i::_e('Agente Individual') ?> </option>
+                    <option value="2"> <?php i::_e('Agente Coletivo') ?> </option>
+                </select>
+            </label>
         </div>
 
         <div class="field">
-            <label for="entityArea"> Área de Atuação </label>
-            <select id="entityArea" name="entity-area">
-                <option value="" disabled selected> <? i::_e('Selecione as áreas')?> </option>
-                <option value="1"> Danca </option>
-                <option value="2"> Musica </option>
-            </select>
+            <label> <?php i::_e('Área de atuação') ?>
+                <select v-model="query['term:area']" placeholder="<? i::_e('Selecione as áreas')?>">
+                    <option :value="undefined"> <? i::_e('Todos')?> </option>
+                    <option v-for="term in terms" :key="term"> {{term}} </option>
+                </select>
+            </label>
         </div>
     </form>
 </search-filter>
