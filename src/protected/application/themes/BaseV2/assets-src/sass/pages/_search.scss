@@ -1,40 +1,107 @@
 @use '../settings/mixins' as *;
 
 .search {
+    
     &__header {
-        &--tabs{
-            &-label {
-                font-weight: 600;
-                font-size: size(16);
-                line-height: size(22);
-            }
-
-            .tabs-component__header {
-                padding: size(21) 0 size(18);
-            }
-
-            .tabs-component__panels {
-                background-color: var(--mc-gray-100);
-                margin:0;
-
-                .search-list {
-                    main {
-                        grid-row-start: 1;
-                    }
-                    aside {
-                        grid-column-start: 2;
+        background-color: var(--mc-high-500);
+        border: unset;
+        bottom: 0;
+        padding: size(50) 0 0;
+        
+        &--content {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            margin: 0 auto;
+            max-width: size(1170);
+            padding:0 size(16);
+    
+            &-left {
+                align-items: center;
+                display: flex;
+                gap: size(16);
+    
+                &-icon {
+                    align-items: center;
+                    border-radius: 50%;
+                    display:flex;
+                    height: size(48);
+                    justify-content: center;
+                    width: 48px;
+            
+                    .iconify {
+                        font-size: size(15);
                     }
                 }
+    
+                &-label {
+                    line-height: size(65);
+                    font-size: size(48);
+                    font-weight: 700;
+                }
+            }
+        }
+    }
 
+    &__tabs{
+        // label - before - tabs
+        &--before {
+            line-height: size(22);
+            font-size: size(16);
+            font-weight: 600;
+        }
+
+        //header - tabs
+        .tabs-component__header {
+            align-items: flex-end;
+            height: size(87.5);
+            padding: size(21) size(16) size(18);
+            position: relative;
+
+            &--left {
+                bottom: size(8);
+                position: absolute;
             }
 
-            .tabs-component__button {
-                font-weight: 700;
-                font-size: size(14);
-                line-height: size(19);
+            &--right {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                left: 0;
+                position: absolute;
+                width: 100%;
+            }
+        }
 
+        // paineis - tabs
+        .tabs-component__panels {
+            background-color: var(--mc-gray-100);
+            margin: 0;
+            min-height: size(500);
+
+            .search-list {
+                main {
+                    grid-row-start: 1;
+                }
+                aside {
+                    grid-column-start: 2;
+                }
+            }
+
+        }
+
+        // grupo de botões - tabs
+        .tabs-component__buttons {
+            margin: 0;
+
+            .tabs-component__button {
+                font-size: size(14);
+                font-weight: 700;
+                line-height: size(19);
+    
                 a {
-                    margin: 0 size(7);
+                    margin: 0;
+                    padding: size(11) size(13) size(11);
                 }
                 
                 &--active::after {
@@ -42,16 +109,64 @@
                 }
             }
         }
-        &--filter {
-            max-width: size(1170);
+        
+        // tab - list
+        &--list {
             margin: 0 auto;
-            padding: size(16) 0;
+            max-width: size(1170);
+            padding: size(24) size(16);
+            width: 100%;
+            
+            .search-list { 
+                &__filter {
+                    grid-row-start: 1;
+                    grid-column-start: 10;
+                }
+            }
+        }
+
+        // tab - map
+        &--map {
+            position: relative;
+
+            .search-map {    
+                &__filter {
+                    display: flex;
+                    justify-content: flex-end;
+                    margin: 0 auto;
+                    max-width: 1170px;
+            
+                    &--filter {
+                        position: absolute;
+                        width: 328px;
+                        z-index: 1000;
+                    }
+                }
+            }
+
+            .search-filter {
+                grid-column-start: 10;
+            }
+
+            .mc-map {
+                height: 800px;
+            }
+
+            .search-map {
+    
+                &__filter {
+                    display: flex;
+                    justify-content: flex-end;
+                    max-width: 1170px;
+                    margin: 0 auto;
+            
+                    &--filter {
+                        position: absolute;
+                        width: 328px;
+                        z-index: 1000;
+                    }
+                }
+            }
         }
     }
-
-    &__content {
-        background-color: var(--mc-gray-100);
-        display: flow-root;
-    }
-
 }
