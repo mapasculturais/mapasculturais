@@ -2,7 +2,7 @@ app.component('mc-map', {
     template: $TEMPLATES['mc-map'],
 
     // define os eventos que este componente emite
-    emits: ['ready'],
+    emits: ['ready', 'openPopup', 'closePopup'],
 
     components: {
         LMap: VueLeaflet.LMap,
@@ -17,12 +17,11 @@ app.component('mc-map', {
         // LRectangle: VueLeaflet.LRectangle,
     },
 
-    setup() {
+    setup(props, { slots }) {
+        const hasSlot = name => !!slots[name]
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('mc-map');
-        return {
-            text
-        }
+        return { hasSlot, text };
     },
 
     beforeMount() {
@@ -80,6 +79,7 @@ app.component('mc-map', {
             preciseZoom: $MAPAS.config.map.preciseZoom,
             maxZoom: $MAPAS.config.map.maxZoom,
             minZoom: $MAPAS.config.map.minZoom,
+            popupEntity: null,
         };
     },
 
@@ -87,16 +87,42 @@ app.component('mc-map', {
 
     methods: {
         async handleMapSetup () {
-            const leafletObject = Vue.toRaw(this.$refs.map.leafletObject);
-            leafletObject.markersGroup = this.markersGroup;
-            leafletObject.addLayer(leafletObject.markersGroup);
-            this.$emit('ready', leafletObject);
+            const leaflet = Vue.toRaw(this.$refs.map.leafletObject);
+            leaflet.markersGroup = this.markersGroup;
+            leaflet.addLayer(leaflet.markersGroup);
+            this.$emit('ready', leaflet);
         },
 
         createMarker (entity) {
+            const $this = this;
+            const leaflet = Vue.toRaw(this.$refs.map.leafletObject);
             const options = { title: entity.name, clickable: true, draggable: false };
             const marker = L.marker(entity.location, options);
+            
             marker.entity = entity;
+
+            if(this.hasSlot('popup')) {
+                marker.on('click', () => {
+                    const api = new API(entity.__objectType || entity['@entityType']);
+                    const entityPromise = api.findOne(entity.id);
+    
+                    $this.$emit('openPopup', {marker, leaflet, entityPromise, entity});
+    
+                    entityPromise.then((entity) => {
+                        $this.popupEntity = entity;
+                        $this.$nextTick(() => {
+                            L.popup()
+                                .setLatLng(entity.location)
+                                .setContent($this.$refs.popup.innerHTML)
+                                .openOn(leaflet)
+                                .on('remove', () => {
+                                    $this.$emit('closePopup', {marker, leaflet, entity});
+                                });
+    
+                        });
+                    });
+                });
+            }
 
             return marker;
         },
@@ -106,7 +132,6 @@ app.component('mc-map', {
                 agent: 0,
                 space: 0,
                 event: 0,
-                // event: Math.round(Math.random()),
             };
 
             for (let child of cluster._childClusters) {
@@ -146,7 +171,7 @@ app.component('mc-map', {
                             objectType += entity.type.id;
                         }
 
-                        globalThis.MARKER = marker.setIcon(L.divIcon({ className: '', html: icons[objectType]}));
+                        marker.setIcon(L.divIcon({ className: '', html: icons[objectType]}));
 
                         this.currentMarkers[entity.__objectId] = marker;
 
