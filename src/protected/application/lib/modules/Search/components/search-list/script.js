@@ -24,6 +24,10 @@ app.component('search-list', {
         select: {
             type: String,
             default: 'id,name,shortDescription,seals,terms,singleUrl'
+        },
+        api: {
+            type: API,
+            required: true
         }
     },
 

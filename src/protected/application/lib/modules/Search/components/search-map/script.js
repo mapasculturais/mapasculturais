@@ -43,6 +43,10 @@ app.component('search-map', {
         query: {
             type: Object,
             default: {}
+        },
+        api: {
+            type: API,
+            required: true
         }
     },
 
