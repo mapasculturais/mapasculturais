@@ -57,7 +57,7 @@ $this->import('
                 </div>
                 
                 <div class="col-12">
-                    <entity-seals :entity="entity" title="Verificações"></entity-seals>
+                    <entity-seals :entity="entity" title="Verificações" :editable="entity.currentUserPermissions.createSealRelation"></entity-seals>
                 </div>
                 
                 <div class="col-12">
