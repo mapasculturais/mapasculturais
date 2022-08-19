@@ -6,9 +6,7 @@ $this->import('mc-map mc-map-card loading');
 <div class="search-map">
     <div class="search-map__filter">
         <div class="search-map__filter--filter">
-
             <slot name="filter"></slot>
-
         </div>
     </div>
 

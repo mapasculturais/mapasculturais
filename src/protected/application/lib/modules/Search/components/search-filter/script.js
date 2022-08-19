@@ -29,9 +29,7 @@ app.component('search-filter', {
     
     methods: {
         toggleFilter() {
-            if (this.position == 'map') {
-                this.show = !this.show;
-            }
+            this.show = !this.show;
         }
     },
 });
