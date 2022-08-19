@@ -3,7 +3,7 @@ Componente base para os filtros das entidades
   
 ## Propriedades
 - *String **position*** - Posição onde o filtro será implementado (list, map, mobile)
-- *Object **query*** - Query para filtragem dos resultados
+- *Object **pseudoQuery*** - Query para filtragem dos resultados
 
 ## Slots
 - **default** - Para o uso das tabs

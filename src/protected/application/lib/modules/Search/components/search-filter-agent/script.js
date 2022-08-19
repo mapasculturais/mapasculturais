@@ -12,11 +12,7 @@ app.component('search-filter-agent', {
             type: String,
             default: 'list'
         },
-        api: {
-            type: API,
-            required: true
-        },
-        query: {
+        pseudoQuery: {
             type: Object,
             required: true
         }
