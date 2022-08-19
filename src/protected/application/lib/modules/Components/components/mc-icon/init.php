@@ -7,10 +7,10 @@ $iconset = [
     'agent' => 'fa-solid:user-friends',
     'agent-1' => 'fa-solid:user',
     'agent-2' => 'fa-solid:user-friends',
-    'space' => 'clarity:building-line',
-    'event' => 'ant-design:calendar-twotone',
-    'project' => 'ri:file-list-2-line',
-    'opportunity' => 'icons8:idea',
+    'space' => 'clarity:building-solid',
+    'event' => 'bxs:calendar-event',
+    'project' => 'ri:file-list-2-fill',
+    'opportunity' => 'mdi:lightbulb-on',
 
     // redes sociais
     'facebook' => 'brandico:facebook',
@@ -40,7 +40,7 @@ $iconset = [
     'edit' => 'zondicons:edit-pencil',
     'favorite' => 'mdi:star-outline',
     'filter' => 'ic:baseline-filter-alt',
-    'home' => 'fluent:home-12-regular',
+    'home' => 'ci:home-fill',
     'image' => 'bi:image-fill',
     'link' => 'cil:link-alt',
     'list' => 'ci:list-ul',
