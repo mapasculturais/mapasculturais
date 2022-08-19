@@ -3,19 +3,19 @@ app.component('search-list', {
     
     data() {
         return {
-            entitiesQuery: {}
+            query: {}
         }
     },
 
     watch: {
-        query: {
-            handler(query){
+        pseudoQuery: {
+            handler(pseudoQuery){
                 clearTimeout(this.refreshTimeout);
 
                 this.refreshTimeout = setTimeout(() => {
                     const newQuery = {};
-                    for(let k in query) {
-                        let val = query[k];
+                    for(let k in pseudoQuery) {
+                        let val = pseudoQuery[k];
                         if(k == '@verified') {
                             if (val) {
                                 newQuery[k] = '1';
@@ -32,7 +32,7 @@ app.component('search-list', {
                             }
                         }
                     }
-                    this.entitiesQuery = newQuery;
+                    this.query = newQuery;
                 }, 500)
             },
             deep: true,
@@ -52,11 +52,7 @@ app.component('search-list', {
             type: String,
             default: 'id,name,shortDescription,files.avatar,seals,terms,singleUrl'
         },
-        api: {
-            type: API,
-            required: true
-        },
-        query: {
+        pseudoQuery: {
             type: Object,
             required: true
         }

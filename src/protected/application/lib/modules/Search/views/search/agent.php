@@ -10,13 +10,13 @@ $this->breadcramb = [
 ];
 ?>
 
-<search page-title="Agentes" entity-type="agent">    
+<search page-title="Agentes" entity-type="agent" >    
 
     <template #create-button>
         <create-agent></create-agent>
     </template>
 
-    <template #default="{query, api}">
+    <template #default="{pseudoQuery}">
         <tabs class="search__tabs">
             <template  #before-tablist>
                 <label class="search__tabs--before">
@@ -27,9 +27,9 @@ $this->breadcramb = [
             <tab icon="list" label="Lista" slug="list">
                 <div class="search__tabs--list">
 
-                    <search-list type="agent" :api="api">
+                    <search-list :pseudo-query="pseudoQuery" type="agent">
                         <template #filter>
-                            <search-filter-agent :api="api"></search-filter-agent>
+                            <search-filter-agent :pseudo-query="pseudoQuery"></search-filter-agent>
                         </template>
                     </search-list>
 
@@ -39,9 +39,9 @@ $this->breadcramb = [
             <tab icon="map" label="Mapa" slug="map">
                 <div class="search__tabs--map">
 
-                    <search-map type="agent" :api="api">
+                    <search-map type="agent" :pseudo-query="pseudoQuery">
                         <template #filter>
-                            <search-filter-agent :api="api" position="map"></search-filter-agent>
+                            <search-filter-agent :pseudo-query="pseudoQuery" position="map"></search-filter-agent>
                         </template>
                     </search-map>
 
@@ -50,33 +50,3 @@ $this->breadcramb = [
         </tabs>
     </template>
 </search>
-
-<!-- <div class="search">
-
-    <header class="search__header">
-    </header>    
-
-    <tabs class="search__tabs">
-        label
-        <template  #before-tablist>
-            <label class="search__tabs--before">
-                Visualizar como:
-            </label> 
-        </template>
-        
-        list page
-        <tab icon="list" label="Lista" slug="list">
-            <div class="search__tabs--list">
-                <search-list type="agent"></search-list>
-            </div>
-        </tab>
-    
-        map page
-        <tab icon="map" label="Mapa" slug="map">
-            <div class="search__tabs--map">
-                <search-map type="agent"></search-map>
-            </div>
-        </tab>
-    </tabs>
-
-</div> -->

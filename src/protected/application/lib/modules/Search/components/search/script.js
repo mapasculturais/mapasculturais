@@ -7,10 +7,6 @@ app.component('search', {
         return { text }
     },
 
-    created() {
-        this.api = new API(this.entityType);
-    },
-
     props: {
         pageTitle: {
             type: String,
@@ -24,8 +20,7 @@ app.component('search', {
 
     data() {
         return {
-            api: null,
-            query: {},
+            pseudoQuery: {},
         }
     },
 
