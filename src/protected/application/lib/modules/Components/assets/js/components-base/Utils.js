@@ -114,5 +114,28 @@ globalThis.Utils = {
             entity.location = {lat: entity.location.latitude, lng: entity.location.longitude};
         }
         return entity;
+    },
+
+    parsePseudoQuery (pseudoQuery) {
+        const newQuery = {};
+        for(let k in pseudoQuery) {
+            let val = pseudoQuery[k];
+            if(k == '@verified') {
+                if (val) {
+                    newQuery[k] = '1';
+                }
+            } else if(k == '@keyword') {
+                val = val.replace(/ +/g, '%');
+                newQuery[k] = `${val}`;
+            } else if(val) {
+                if (typeof val == 'string') {
+                    newQuery[k] = `EQ(${val})`;
+                } else if (val instanceof Array) {
+                    val = val.join(',');
+                    newQuery[k] = `IIN(${val})`;
+                }
+            }
+        }
+        return newQuery;
     }
 }
