@@ -1,29 +1,30 @@
 app.component('search-map', {
     template: $TEMPLATES['search-map'],
     
-    async created(){
-        
-        this.entityAPI = new API(this.type);
-        
-        const query = this.query;
-        query['@select'] = 'id,name,location';
+    async mounted(){
+        this.api = new API(this.type);
+        this.fetchEntities();
+    },
 
-        if(this.limit) 
-            query['@limit'] = this.limit;
-        
-        query['@order'] = this.order;
-        this.response = await this.entityAPI.find(query);
+    watch: {
+        pseudoQuery: {
+            handler(pseudoQuery){
+                this.entities = [];
+                this.loading = true;
+                clearTimeout(this.refreshTimeout);
+
+                this.refreshTimeout = setTimeout(() => {
+                    this.fetchEntities();
+                }, 500)
+            },
+            deep: true,
+        }
     },
     
     data() {
         return {
-            response: [],
-        }
-    },
-
-    computed: {
-        entities() {
-            return Vue.shallowReactive(this.response);
+            loading: false,
+            entities: [],
         }
     },
     
@@ -32,24 +33,26 @@ app.component('search-map', {
             type: String,
             required: true,
         },
-        limit: {
-            type: Number,
-            default: null
-        },
-        order: {
-            type: String,
-            default: 'createTimestamp DESC'
-        },
-        query: {
+        pseudoQuery: {
             type: Object,
             default: {}
         },
-        api: {
-            type: API,
-            required: true
-        }
     },
 
     methods: {
+        async fetchEntities() {
+            const query = Utils.parsePseudoQuery(this.pseudoQuery);
+            query['@select'] = 'id,type,name,location,singleUrl';
+            query['location'] = query['location'] || '!EQ([0,0])';
+            
+            this.entities = [];
+            this.loading = true;
+            this.entities = await this.api.find(query, null, true);
+            this.loading = false;
+        },
+
+        closePopup() {
+            console.log('close');
+        }
     },
 });
