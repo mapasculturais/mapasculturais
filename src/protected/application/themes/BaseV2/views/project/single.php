@@ -52,10 +52,6 @@ $this->breadcramb = [
         <aside>
             <div class="grid-12">
                 <div class="col-12">
-                    <entity-terms :entity="entity" taxonomy="area" title="Areas de atuação"></entity-terms>
-                </div>
-                
-                <div class="col-12">
                     <entity-social-media :entity="entity"></entity-social-media>
                 </div>
                 
