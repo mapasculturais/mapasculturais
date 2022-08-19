@@ -1011,10 +1011,13 @@ class ApiQuery {
             $permissions = $this->getViewPrivateDataPermissions($entities);
         }
         
-        foreach ($entities as &$entity){
+        foreach ($entities as $index => &$entity){
             // remove location if the location is not public
             if($this->permissionCacheClassName && isset($entity['location']) && isset($entity['publicLocation']) && !$entity['publicLocation']){
                 if(!$permissions[$entity['id']]){
+                    if (isset($this->apiParams['location']) || isset($this->apiParams['_geoLocation'])) {
+                        unset($entities[$index]);
+                    }
                     $entity['location']->latitude = 0;
                     $entity['location']->longitude = 0;
                 }
@@ -1064,6 +1067,8 @@ class ApiQuery {
 
             $entity['@entityType'] = $this->entityController->id ?? strtolower(substr(strrchr($this->entityClassName, "\\"), 1));
         }
+
+        $entities = array_values($entities);
     }
 
     protected function appendMetadata(array &$entities) {
