@@ -75,6 +75,10 @@ app.component('entities', {
         watchDebounce: {
             type: Number,
             default: 500
+        },
+        endpoint: {
+            type: String,
+            default: 'find'
         }
     },
     
@@ -100,7 +104,7 @@ app.component('entities', {
                 query['@page'] = this.page;
             }
             
-            return this.api.find(query, this.entities);
+            return this.api.fetch(this.endpoint, query, {list: this.entities});
         },
         
         refresh() {
