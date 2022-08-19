@@ -37,6 +37,21 @@ app.component('entities', {
         this.entities.refresh = () => this.refresh();
         this.entities.loadMore = () => this.loadMore();
         this.entities.query = this.query;
+        
+        let watchTimeout = null;
+        if (this.watchQuery) {
+            this.$watch('query', (q1,q2) => {
+                if(JSON.stringify(q1) == JSON.stringify(q2)) {
+                    return;
+                }
+                this.entities.loading = true;
+                this.entities.splice(0);
+                clearTimeout(watchTimeout, 100);
+                watchTimeout = setTimeout(() => {
+                    this.entities.refresh();
+                }, this.watchDebounce);
+            }, {deep:true});
+        }
 
         this.refresh();
     },
@@ -55,7 +70,12 @@ app.component('entities', {
         },
         limit: Number,
         order: String,
-        scope: String
+        scope: String,
+        watchQuery: Boolean,
+        watchDebounce: {
+            type: Number,
+            default: 500
+        }
     },
     
     methods: {
