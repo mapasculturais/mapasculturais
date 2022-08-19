@@ -212,6 +212,10 @@
             .mc-map {
                 height: 800px;
 
+                .leaflet-container {
+                    z-index: 0;
+                }
+
                 @media (max-width: size(600)) {
                     height: 600px;
                 }
