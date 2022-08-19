@@ -40,8 +40,8 @@ $this->breadcramb = [
                 <div class="col-12">
                     <entity-gallery :entity="entity"></entity-gallery>
                 </div>
-                <div class="property col-6">
-                    <button class="button button--primary button--md button-large">Reinvindicar Propriedade</button>
+                <div class="property col-12">
+                    <button class="button button--primary button--md">Reinvindicar Propriedade</button>
                 </div>
                 
             </div>

@@ -31,7 +31,7 @@ $this->breadcramb = [
             </template>
             <template #content>                
                 <div class="left">
-                    <div class="grid-12">
+                    <div class="grid-12 v-bottom">
                         <div class="col-12">
                             <entity-cover :entity="entity"></entity-cover>
                         </div>
