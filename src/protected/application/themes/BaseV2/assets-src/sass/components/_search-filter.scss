@@ -23,6 +23,7 @@
                 font-size: size(16);
                 line-height: size(19);
                 margin: 0;
+                min-width: size(395.5);
                 padding: size(13) size(20);
                 width: 100%;
             }
@@ -43,15 +44,21 @@
                     width: size(20.5);
                 }
             }
-
-            @media (max-width: size(900)) {
+        }
+        
+        @media (max-width: size(900)) {
+            //right: size(16);
+            justify-content: flex-end;
+            
+            &--form {
                 &-input {
                     font-weight: 400;
                     font-size: size(16);
                     line-height: size(19);
+                    min-width: unset;
                     padding: size(9) size(16);
                 }
-
+        
                 &-button {
                     padding: size(9) size(16);
                 }
@@ -142,6 +149,10 @@
                         border-radius: var(--mc-border-radius-xs);
                         padding: size(16);
                     }
+                }
+
+                &__actions {
+                    justify-content: flex-end;
                 }
             }
         }
