@@ -14,7 +14,7 @@ $this->import('popover messages main-menu theme-logo');
     <!-- Menu -->
     <ul class="main-header__menu">
         <li> 
-            <a href="<?= $app->createUrl('home', 'index') ?>" class="main-header__menu--item home">
+            <a href="<?= $app->createUrl('site', 'index') ?>" class="main-header__menu--item home">
                 <span class="icon"> <mc-icon name="home"></mc-icon> </span>
                 <p class="label"> <?php i::_e('Home') ?> </p>      
             </a>  
