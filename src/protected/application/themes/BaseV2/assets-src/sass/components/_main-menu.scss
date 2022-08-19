@@ -3,6 +3,10 @@
 .main-menu {
 
     .popover {
+        &__content {
+            padding: 0;
+        }
+
         @media (max-width: 1200px) {
             display: none;
         }   
