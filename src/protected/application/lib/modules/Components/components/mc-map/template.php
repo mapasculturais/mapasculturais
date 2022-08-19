@@ -8,9 +8,7 @@ $this->import('mc-icon')
         :zoom="defaultZoom" 
         :max-zoom="maxZoom" 
         :min-zoom="minZoom"
-        :center="center" 
-        zoom-animation 
-        fade-animation 
+        :center="center"
         use-global-leaflet
         @ready="handleMapSetup()">
         <l-tile-layer :url="tileServer"></l-tile-layer>
