@@ -43,7 +43,7 @@
                 }
             }
 
-            @media (max-width: 900px) {
+            @media (max-width: size(900)) {
                 &-input {
                     font-weight: 400;
                     font-size: size(16);
@@ -66,9 +66,20 @@
         position: absolute;
         width: 100%;
 
-        form {
-            display: grid;
-            gap: 24px;
+        form,
+        .form {
+            &__label {
+                font-weight: 700;
+                font-size: size(18);
+                line-height: size(25);
+                color: var(--mc-primary-500);
+                margin-bottom: size(15);
+                display:inline-block;
+            }
+
+            .field {
+                margin-bottom: size(24);
+            }
         }
     }
 
@@ -136,8 +147,8 @@
 
         @media (max-width: size(900)) {
             .search-filter__actions {
-                top: -74px;
-                margin-right: -16px;
+                top: size(-74);
+                margin-right: size(-16);
             }
         }
 
@@ -145,7 +156,7 @@
             .search-filter__actions {
                 width: 100%;
                 justify-content: center;
-                top: -124px;
+                top: size(-124);
             }
         }
     }   
