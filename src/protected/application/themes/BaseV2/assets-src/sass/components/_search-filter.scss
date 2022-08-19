@@ -4,42 +4,43 @@
     position: relative;
 
     &__actions {
-        position: absolute;
-        display: flex;
-        top: size(-90);
-        right: 0;
-        flex-direction: column;
         align-items: flex-end;
+        display: flex;
+        flex-direction: column;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: size(-90);
 
         &--form {
             display: flex;
 
             &-input {
-                margin: 0;
                 border: var(--mc-border-hairline) var(--mc-gray-500);
+                border-radius: var(--mc-border-radius-pill) 0 0 var(--mc-border-radius-pill);
+                border-right: none;
                 font-weight: 400;
                 font-size: size(16);
                 line-height: size(19);
+                margin: 0;
                 padding: size(13) size(20);
-                border-radius: var(--mc-border-radius-pill) 0 0 var(--mc-border-radius-pill);
-                border-right: none;
                 width: 100%;
             }
     
             &-button {
-                margin: 0;
+                align-items: center;
                 border: var(--mc-border-hairline) var(--mc-gray-500);
-                background-color: var(--mc-high-500);
-                padding: size(13) size(33) size(13) size(20);
-                display: flex;
                 border-radius: 0 var(--mc-border-radius-pill) var(--mc-border-radius-pill) 0;
                 border-left: none;
-                align-items: center;
+                background-color: var(--mc-high-500);
+                display: flex;
                 justify-content: center;
+                margin: 0;
+                padding: size(13) size(33) size(13) size(20);
 
                 .iconify {
-                    width: size(20.5);
                     height: size(20.5);
+                    width: size(20.5);
                 }
             }
 
@@ -69,12 +70,12 @@
         form,
         .form {
             &__label {
+                color: var(--mc-primary-500);
+                display:inline-block;
                 font-weight: 700;
                 font-size: size(18);
                 line-height: size(25);
-                color: var(--mc-primary-500);
                 margin-bottom: size(15);
-                display:inline-block;
             }
 
             .field {
@@ -110,18 +111,18 @@
         }
 
         @media (max-width: size(900)) {
+            left: 0;
             position: absolute;
             top: 0;
-            left: 0;
 
             .search-filter {
                 &__filter {
-                    padding: 0 size(16) size(21);
                     background-color: var(--mc-gray-100);
+                    padding: 0 size(16) size(21);
                     position: absolute;
-                    width: 100%;
                     right: 0;
                     top: size(14);
+                    width: 100%;
                     z-index: 1;
 
                     &>* {
@@ -167,8 +168,8 @@
                 top: size(-66);
 
                 &--formBtn {
-                    position: absolute;
                     bottom: size(-74);
+                    position: absolute;
                 }
 
                 @media (max-width: size(900)) {
@@ -177,12 +178,12 @@
             }
 
             &__filter {
-                padding: 0 size(16) size(21);
                 background-color: var(--mc-gray-100);
+                padding: 0 size(16) size(21);
                 position: absolute;
-                width: 100%;
                 right: 0;
                 top: size(14);
+                width: 100%;
 
                 &>* {
                     clear: both;
@@ -206,9 +207,9 @@
 
             .search-filter {
                 &__actions {
-                    top: size(-100);
-                    position: relative;
                     justify-content: center;
+                    position: relative;
+                    top: size(-100);
                 }
             }
         }

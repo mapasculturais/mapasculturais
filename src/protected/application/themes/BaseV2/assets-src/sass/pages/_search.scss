@@ -8,10 +8,10 @@
     .tab-component{
         &.map {
             .loading {
-                position: fixed;
-                top: 49%;
                 left: 50%;
                 margin-left: -50px;
+                position: fixed;
+                top: 49%;
                 width: 200px;
                 z-index: 1000;
             }
@@ -69,12 +69,6 @@
                     line-height: size(65);
                     font-size: size(48);
                     font-weight: 700;
-
-                    /* @media (max-width: size(700)) {
-                        line-height: size(43);
-                        font-size: size(36);
-                        font-weight: 700;
-                    } */
 
                     @media (max-width: size(500)) {
                         line-height: size(33);
@@ -183,23 +177,17 @@
             .search-list {    
                 &__filter {
                     display: flex;
+                    grid-row-start: 1;
+                    grid-column-start: 10;
                     justify-content: flex-end;
                     max-width: 1170px;
                     padding: 0;
-                    grid-row-start: 1;
-                    grid-column-start: 10;
             
                     &--filter {
                         width: 100%;
                     }
                 }
             }
-            /* .search-list { 
-                &__filter {
-                    grid-row-start: 1;
-                    grid-column-start: 10;
-                }
-            } */
 
             @media (max-width: size(900)) {
                 .col-9 {
@@ -269,11 +257,11 @@
                     }
 
                     &__filter {
-                        width: 100vw !important;
                         height: 100vh !important;
-                        top: 0 !important;
-                        right: 0 !important;
                         position: fixed !important;
+                        right: 0 !important;
+                        top: 0 !important;
+                        width: 100vw !important;
                     }
                 }
 
