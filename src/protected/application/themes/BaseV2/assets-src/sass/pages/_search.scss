@@ -1,7 +1,29 @@
 @use '../settings/mixins' as *;
 
 .search {
-    
+    .loading {
+        color: var(--mc-low-500);
+    }
+
+    .tab-component{
+        &.map {
+            .loading {
+                position: fixed;
+                top: 49%;
+                left: 50%;
+                margin-left: -50px;
+                width: 200px;
+                z-index: 1000;
+            }
+        }
+
+        &.list {
+            .loading {
+                grid-column-end: span 9;
+            }
+        }
+    }
+
     &__header {
         background-color: var(--mc-high-500);
         border: unset;
