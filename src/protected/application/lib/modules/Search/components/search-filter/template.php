@@ -20,7 +20,7 @@ $this->import('mc-icon');
         </div>
 
         <div v-if="show" class="search-filter__filter">     
-            <a v-if="position == 'map'" class="search-filter__filter--close button button--icon" @click="toggleFilter()"><?= i::_e('Fechar') ?> <mc-icon name="close"></mc-icon></a>   
+            <a class="search-filter__filter--close button button--icon" @click="toggleFilter()"><?= i::_e('Fechar') ?> <mc-icon name="close"></mc-icon></a>   
             <slot> Filtros </slot>
         </div>
     </div>

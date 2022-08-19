@@ -7,7 +7,9 @@ $this->import('entities mapas-card entity-card');
     <entities :type="type" :select="select" :query="query" :limit="limit" watch-query>
         <template #header="{entities}">
             <div class="col-3 search-list__filter">
-                <slot name="filter"></slot>
+                <div class="search-list__filter--filter">
+                    <slot name="filter"></slot>
+                </div>
             </div>
         </template>
 
