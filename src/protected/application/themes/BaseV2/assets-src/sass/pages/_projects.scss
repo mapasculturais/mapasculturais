@@ -2,7 +2,7 @@
 
 .controller-project {
     background-color: var(--mc-white);
-    
+
     &.action-edit {
         background-color: var(--mc-gray-100);
 
@@ -15,10 +15,53 @@
                 }
             }
         }
-        
+
         .container{
             main {
-                gap: 40px;
+                gap: size(40);
+            }
+        }
+
+        .divider {
+            width: 100%;
+            border-bottom: size(1) solid;
+        }
+    }
+
+    &.action-single {
+        .container main{
+            gap: size(40);
+            h3 {
+                font-weight: 700;
+                font-size: size(24);
+                line-height: size(28);
+                padding-bottom: size(16);
+            }
+
+            h2 {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 28px;
+            }
+            .property {
+                button {
+                    background-color: var(--mc-danger-300);
+                    color: var(--mc-low-500);
+                    border-color: var(--mc-danger-300);
+                }
+                padding-top: 176px;
+            }
+
+        }
+        .divider {
+            background-color: var(--mc-black);
+            grid-column-end: 3;
+            grid-column-start: 1;
+            height: size(5);
+            width: 100%;
+            
+            @media (max-width: size(800)) {
+                grid-column-end: 2;
             }
         }
     }
