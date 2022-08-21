@@ -1,35 +1,40 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('mapas-breadcrumb mapas-card mapas-container search-list search-header');
+$this->import('
+    search tabs search-list search-map search-filter-project 
+    '); /* create-project */
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Projetos'), 'url' => $app->createUrl('projects')],
 ];
 ?>
 
+<search page-title="Projetos" entity-type="project" >    
 
-<div class="search">
-    <mapas-breadcrumb></mapas-breadcrumb>
-    
-    <search-header class="search__header" type="project">
-        <template #create>
-        </template>
-        <template #actions>
-            <div class="search__header--filter">
-                <input type="text"/>
-            </div>
-        </template>
-    </search-header>
+    <template #create-button>
+        Botão criar projeto<!-- <create-project></create-project> -->
+    </template>
 
-    <div class="search__content">
-        <mapas-container>
-            <main>
-                <search-list type="project"></search-list>
-            </main>
-            <aside>
-                <mapas-card></mapas-card>
-            </aside>
-        </mapas-container>
-    </div>
-</div>
+    <template #default="{pseudoQuery}">
+        <tabs class="search__tabs">
+            <template  #before-tablist>
+                <label class="search__tabs--before">
+                    Visualizar como:
+                </label> 
+            </template>
+            
+            <tab icon="list" label="Lista" slug="list">
+                <div class="search__tabs--list">
+
+                    <search-list :pseudo-query="pseudoQuery" type="project">
+                        <template #filter>
+                            <search-filter-project :pseudo-query="pseudoQuery"></search-filter-project>
+                        </template>
+                    </search-list>
+
+                </div>
+            </tab>
+        </tabs>
+    </template>
+</search>
