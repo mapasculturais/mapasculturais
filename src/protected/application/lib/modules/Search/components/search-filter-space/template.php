@@ -8,7 +8,7 @@ $this->import('search-filter');
     <form class="form">
 
         <label class="form__label">
-            <?= i::_e('Filtros dos espaços') ?>
+            <?= i::_e('Filtros de espaço') ?>
         </label>
 
         <div class="field">
