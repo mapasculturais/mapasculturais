@@ -1,49 +1,52 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('mapas-breadcrumb mapas-card mapas-container search-list search-map search-header tabs');
+$this->import('
+    search tabs search-list search-map search-filter-space 
+    '); /* create-space */
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Espaços'), 'url' => $app->createUrl('spaces')],
 ];
 ?>
 
-<div class="search">
-    <mapas-breadcrumb></mapas-breadcrumb>
+<search page-title="Espaços" entity-type="space" >    
 
-    <search-header class="search__header" type="space">
-        <template #create>
-            <create-agent></create-agent>
-        </template>
-        <template #actions>
-                <tabs class="search__header--tabs">
-                    <template  #before-tablist>
-                        <label class="search__header--tabs-label">
-                        Visualizar como:
-                        </label> 
-                    </template>
-                    
-                    <tab icon="list" label="Lista" slug="list">
-                        <mapas-container>
-                            <main>
-                                <search-list type="space"></search-list>
-                            </main>
-                            <aside>
-                                <mapas-card></mapas-card>
-                            </aside>
-                        </mapas-container>
-                    </tab>
+    <template #create-button>
+        botão criar espaço<!-- <create-space></create-space> -->
+    </template>
 
-                    <tab icon="map" label="Mapa" slug="map">
-                        <search-map type="space"></search-map>
-                    </tab>
-                    
-                    <template #after-tablist>
-                       <div class="search__header--tabs-filter">
-                           <input type="text"/>
-                       </div>
-                    </template>
-                </tabs>
+    <template #default="{pseudoQuery}">
+        <tabs class="search__tabs">
+            <template  #before-tablist>
+                <label class="search__tabs--before">
+                    Visualizar como:
+                </label> 
             </template>
-    </search-header>
-</div>
+            
+            <tab icon="list" label="Lista" slug="list">
+                <div class="search__tabs--list">
+
+                    <search-list :pseudo-query="pseudoQuery" type="space">
+                        <template #filter>
+                            <search-filter-space :pseudo-query="pseudoQuery"></search-filter-space>
+                        </template>
+                    </search-list>
+
+                </div>
+            </tab>
+        
+            <tab icon="map" label="Mapa" slug="map">
+                <div class="search__tabs--map">
+
+                    <search-map type="space" :pseudo-query="pseudoQuery">
+                        <template #filter>
+                            <search-filter-space :pseudo-query="pseudoQuery" position="map"></search-filter-space>
+                        </template>
+                    </search-map>
+
+                </div>
+            </tab>
+        </tabs>
+    </template>
+</search>
