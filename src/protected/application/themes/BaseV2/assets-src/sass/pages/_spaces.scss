@@ -29,59 +29,84 @@
     }
 
     &.action-single {
-        .container main{
-            
-            .placeholder-hour{
-                    label {
+        .tabs {
+            &-component {
+                &__header {
+                    border-bottom: 1px solid;
+                    justify-content: center;
+                }
+                
+                &__buttons {
+                    margin: size(35) 0 0;
+                }
+
+                &__button {
+                    &--active::after {
+                        background-color: var(--mc-primary-500);
+                    }
+                }
+            }
+
+            &__info {
+                .container main{   
+                    gap: size(40);
+
+                    .placeholder-hour{
+                            label {
+                                font-weight: 700;
+                                font-size: 18px;
+                                line-height: 25px;
+                            }
+                            .placeholder-hour--content {
+                                background-color: var(--mc-gray-300);
+                                width: 100%;
+                                height: size(64);
+                            }
+                    }
+
+                    .placeholder-resource {
+                        label {
+                            font-weight: 700;
+                            font-size: 18px;
+                            line-height: 25px;
+                        }
+                        .placeholder-resource--content {
+                            font-weight: 400;
+                            font-size: 16px;
+                            line-height: 22px;
+                        }
+                    }
+
+                    h3 {
                         font-weight: 700;
-                        font-size: 18px;
-                        line-height: 25px;
+                        font-size: size(24);
+                        line-height: size(28);
+                        padding-bottom: size(16);
                     }
-                    .placeholder-hour--content {
-                        background-color: var(--mc-gray-300);
-                        width: 100%;
-                        height: size(64);
+        
+                    h2 {
+                        font-weight: 700;
+                        font-size: 24px;
+                        line-height: 28px;
                     }
-            }
-            .placeholder-resource {
-                label {
-                    font-weight: 700;
-                    font-size: 18px;
-                    line-height: 25px;
-                }
-                .placeholder-resource--content {
-                    font-weight: 400;
-                    font-size: 16px;
-                    line-height: 22px;
-                }
-            }
-            gap: size(40);
-            h3 {
-                font-weight: 700;
-                font-size: size(24);
-                line-height: size(28);
-                padding-bottom: size(16);
-            }
 
-            h2 {
-                font-weight: 700;
-                font-size: 24px;
-                line-height: 28px;
-            }
-            .property {
-                button {
-                    background-color: var(--mc-danger-300);
-                    color: var(--mc-low-500);
-                    border-color: var(--mc-danger-300);
+                    .property {
+                        button {
+                            background-color: var(--mc-danger-300);
+                            color: var(--mc-low-500);
+                            border-color: var(--mc-danger-300);
+                        }
+                        padding-top: 176px;
+                    }        
                 }
-                padding-top: 176px;
-            }
 
-        }
-        .divider {
-            background-color: var(--mc-gray-300);
-            height: size(0.5);
-            width: 100%;
+                .divider {
+                    background-color: var(--mc-gray-300);
+                    grid-column-end: span 3;
+                    height: size(0.5);
+                    width: 100%;
+                }
+            }
         }
     }
 }
