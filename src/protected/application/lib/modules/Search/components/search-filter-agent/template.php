@@ -6,10 +6,11 @@ $this->import('search-filter');
 <search-filter :position="position" :pseudo-query="pseudoQuery">
     <form class="form">
         <label class="form__label">
-            <?= i::_e('Filtros de eventos') ?>
+            <?= i::_e('Filtros de agente') ?>
         </label>
 
         <div class="field">
+            <label> <?php i::_e('Status do agente') ?> </label>
             <label><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Agentes oficiais') ?> </label>
         </div>  
 
