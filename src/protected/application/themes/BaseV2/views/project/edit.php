@@ -5,7 +5,7 @@ $this->import('
         entity-header entity-cover entity-profile mapas-breadcrumb
         entity-field entity-terms entity-social-media entity-actions
         entity-links entity-gallery entity-gallery-video
-        entity-admins entity-related-agents entity-owner
+        entity-admins entity-related-agents entity-owner entity-files-list
         mapas-container mapas-card');
         
 $this->breadcramb = [
@@ -152,6 +152,10 @@ $this->breadcramb = [
                     <div class="grid-12">
                         <div class="col-12">
                             <entity-field :entity="entity" label="<?php i::_e('Descrição')?>" prop="longDescription"></entity-field>
+                        </div>
+
+                        <div class="col-12">
+                            <entity-files-list :entity="entity" group="downloads" title="<?= i::_e('Adicionar arquivos para download')?>" :editable="true"></entity-files-list>
                         </div>
                         
                         <div class="col-12">

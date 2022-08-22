@@ -6,7 +6,7 @@ $this->import('
         entity-field entity-terms entity-social-media 
         entity-links entity-gallery entity-gallery-video
         entity-admins entity-related-agents entity-owner
-        entity-actions
+        entity-actions entity-files-list
         mapas-container mapas-card mapas-breadcrumb
         entity-map');
 
@@ -153,6 +153,10 @@ $this->breadcramb = [
                 </template>
                 <template #content>
                     <div class="grid-12">
+                        <div class="col-12">
+                            <entity-files-list :entity="entity" group="downloads" title="<?= i::_e('Adicionar arquivos para download')?>" :editable="true"></entity-files-list>
+                        </div>
+
                         <div class="col-12">
                             <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
                         </div>
