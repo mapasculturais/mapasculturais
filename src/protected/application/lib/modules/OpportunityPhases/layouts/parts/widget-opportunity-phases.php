@@ -54,6 +54,13 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
 	<?php $this->applyTemplateHook('new-phase-form', 'begin') ?>
     <ul ng-if="data.step == 1" class="evaluation-methods">
 	    <?php $this->applyTemplateHook('new-phase-form-step1', 'begin') ?>
+
+        <li class="evaluation-methods--item">
+            <input type="checkbox" name="phaseDataCollection" id="phaseDataCollection" ng-model="newPhasePostData.phaseDataCollection">
+            <?php i::_e("Fase de coleta de dados"); ?>
+            <p class="evaluation-methods--name"><?php i::_e("Selecione aqui caso seja uma fase de coleta de dados"); ?></p>
+        </li>
+
         <?php foreach($evaluation_methods as $method): ?>
         <label for="evaluationItem-<?php echo $method->slug; ?>">
         <li class="evaluation-methods--item">

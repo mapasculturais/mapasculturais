@@ -508,6 +508,8 @@ class Module extends \MapasCulturais\Module{
                 \MapasCulturais\i::__('Décima fase')
             ];
 
+            $request = $this->data;
+
             $phases = self::getPhases($parent);
 
             $num_phases = count($phases);
@@ -539,6 +541,7 @@ class Module extends \MapasCulturais\Module{
                 $phase->isLastPhase = true;
             }
 
+            $phase->opportunity_data_collection = (isset($request['phaseDataCollection']) && (filter_var($request['phaseDataCollection'], FILTER_SANITIZE_SPECIAL_CHARS) == "true")) ? true : false;
             $evaluation_method = $this->data['evaluationMethod'];
 
             $app->applyHookBoundTo($phase, "module(OpportunityPhases).createNextPhase({$evaluation_method}):before", [&$evaluation_method]);
