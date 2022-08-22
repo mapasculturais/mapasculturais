@@ -57,6 +57,7 @@ $iconset = [
     'sort' => 'mdi:sort',
     'trash' => 'ooui:trash',
     'up' => 'mdi:chevron-up',
+    'upload' => 'ic:baseline-file-upload',
 ];
 
 $app->applyHook('component(mc-icon).iconset', [&$iconset]);
