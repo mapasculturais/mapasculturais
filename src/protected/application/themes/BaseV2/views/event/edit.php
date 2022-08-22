@@ -104,8 +104,8 @@ $this->breadcramb = [
                 <template #content>   
                     <div class="grid-12">
                         <div class="col-6">
+                            <entity-field :entity="entity" label="Total de público" prop="event_attendance"></entity-field>
                         </div>
-
                         <div class="col-6">
                             <entity-field :entity="entity" label="Telefone para informações sobre o evento" prop="telefonePublico"></entity-field>
                         </div>
