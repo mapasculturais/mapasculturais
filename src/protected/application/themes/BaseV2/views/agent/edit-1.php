@@ -7,7 +7,7 @@ $this->import('
     entity-admins entity-header entity-actions entity-owner 
     entity-social-media entity-related-agents entity-links
     entity-gallery entity-gallery-video entity-location
-    entity-map');
+    entity-map entity-files-list');
 
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -151,6 +151,10 @@ $this->breadcramb = [
                     <div class="grid-12">
                         <div class="col-12">
                             <entity-field :entity="entity" prop="longDescription"></entity-field>
+                        </div>
+
+                        <div class="col-12">
+                            <entity-files-list :entity="entity" group="downloads" title="Arquivos para download" :editable="true"></entity-files-list>
                         </div>
                         
                         <div class="col-12">
