@@ -1,26 +1,58 @@
+@use '../settings/mixins' as *;
+
 .files-list {
-    h2 {
-        margin: 0 0 10px 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    &__title {
+        font-weight: 700;
+        font-size: size(18);
+        line-height: size(25);
     }
-    .files {
+
+    &__list {
+        list-style: none;
+        padding: 0;
+        margin: size(10) 0;
         display: flex;
-        flex-direction: column; 
-        justify-content: space-around;
-        flex-wrap: nowrap;
-        a {
-            font-family: var(--mc-font-body);
-            font-style: normal;
-            font-weight: 700;
-            font-size: 18px;
-            line-height: 25px;
-            margin: 7px 5px;
-            color: var(--mc-black);
-            text-decoration: none;
+        flex-direction: column;
+        list-style: none;
+
+        &--item {
             display: flex;
             align-items: center;
-            gap: 5px;
-            svg {
-                margin: 0 5px;
+            gap: size(10);
+            justify-content: space-between;
+
+            &-link {
+                font-family: var(--mc-font-body);
+                font-style: normal;
+                font-weight: 700;
+                font-size: size(18);
+                line-height: size(25);
+                margin: size(7) 0;
+                color: var(--mc-black);
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: size(5);
+
+                .iconify {
+                    margin: 0 size(5);
+                }
+            }
+
+            .edit {
+                display: flex;
+                gap: size(14);
+                line-height: size(25);
+
+                .iconify {
+                    cursor: pointer;
+                    font-size: size(14);
+                }
             }
         }
     }
