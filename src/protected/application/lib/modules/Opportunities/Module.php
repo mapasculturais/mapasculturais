@@ -44,5 +44,12 @@ class Module extends \MapasCulturais\Module{
             if (!isset($controllers['opportunities'])) {
                 $app->registerController('opportunities', Controller::class);
             }
+
+            $this->registerOpportunityMetadata("opportunity_data_collection", [
+                'label'=> "Define se é uma oportunidade de coleta de dados",
+                'type'=>'bool',
+                'private'=> true,
+                'default'=> false,
+            ]);
     }
 }
