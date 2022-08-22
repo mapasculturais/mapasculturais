@@ -123,7 +123,7 @@ $this->breadcramb = [
                         </div>
 
                         <div class="col-12">
-                            <entity-files-list :entity="entity" group="downloads" title="Arquivos para download" :editable="true"></entity-files-list>
+                            <entity-files-list :entity="entity" group="downloads" title="Adicionar arquivos para download" :editable="true"></entity-files-list>
                         </div>
 
                         <div class="col-12">
