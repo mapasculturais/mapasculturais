@@ -8,7 +8,7 @@ $this->import('popover messages main-menu theme-logo');
 
     <!-- Logo -->
     <div class="main-header__logo">
-        <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('panel', 'index') ?>"></theme-logo>
+        <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
     </div>     
     
     <!-- Menu -->
