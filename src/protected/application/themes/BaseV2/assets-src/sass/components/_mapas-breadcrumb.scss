@@ -70,5 +70,29 @@
             color: white;
             padding: size(8) size(10) size(60); 
         }
+        
+        li {
+            &::after {
+                background: url(https://api.iconify.design/fe/arrow-right.svg?color=white) no-repeat center center/contain;
+            }
+        }
+    }
+}
+
+.action-edit {
+    .mapas-breadcrumb {
+        &__hasCover {
+            ul {
+                background: transparent;
+                color: black;
+                padding: size(8) size(10);
+            }
+
+            li {
+                &::after {
+                    background: url(https://api.iconify.design/fe/arrow-right.svg) no-repeat center center/contain;
+                }
+            }
+        }
     }
 }
