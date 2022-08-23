@@ -28,5 +28,35 @@ app.component('search-filter-opportunity', {
     },
     
     methods: {
+        actualDate() {
+            var data = new Date();
+            var dia = String(data.getDate()).padStart(2, '0');
+            var mes = String(data.getMonth() + 1).padStart(2, '0');
+            var ano = data.getFullYear();
+
+            return (ano + '-' + mes + '-' + dia);
+        },
+
+        futureDate() {
+            var date = this.actualDate();
+            var futureDate = new Date(date.replace(/\-/gi, ', '));
+            futureDate.setMonth(futureDate.getMonth() + (1));
+
+            var dia = String(futureDate.getDate()).padStart(2, '0');
+            var mes = String(futureDate.getMonth() + 1).padStart(2, '0');
+            var ano = futureDate.getFullYear();
+
+            return (ano + '-' + mes + '-' + dia);
+        },
+        
+        abertas(event) {
+            if(event.target.checked) {
+                this.pseudoQuery['registrationFrom'] = 'LTE('+this.futureDate()+')';
+                this.pseudoQuery['registrationTo'] = 'GTE('+this.actualDate()+')';
+            } else {
+                delete this.pseudoQuery.registrationFrom;
+                delete this.pseudoQuery.registrationTo;
+            }
+        }
     },
 });
