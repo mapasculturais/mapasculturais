@@ -18,8 +18,10 @@
         }
 
         &.list {
-            .loading {
+            .loading,
+            .panel__row {
                 grid-column-end: span 9;
+                text-align: center;
             }
         }
     }
@@ -280,5 +282,15 @@
                 }
             }
         }
+    }
+}
+
+.action-opportunities,
+.action-projects {
+    .tabs-component__panels{
+        background: var(--mc-gray-100);
+        margin-top: size(87.5);
+        padding-bottom: size(40);
+        margin-bottom: 0;
     }
 }
