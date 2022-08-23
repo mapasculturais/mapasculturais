@@ -13,7 +13,7 @@ $this->import('search-filter');
 
         <div class="field">
             <label> <?php i::_e('Status do espaço') ?> </label>
-            <label> <input v-model="pseudoQuery['acessibilidade']" type="checkbox"> <?php i::_e('Possui acessibilidade') ?> </label>
+            <label> <input v-on:click="acessibilidade($event)" type="checkbox"> <?php i::_e('Possui acessibilidade') ?> </label>
             <label> <input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Espaços oficiais') ?> </label>
         </div>  
 
