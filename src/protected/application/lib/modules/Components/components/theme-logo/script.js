@@ -47,6 +47,10 @@ app.component('theme-logo', {
         color: {
             type: String,
             default: $MAPAS.config.logo.color
+        },
+        href: {
+            type: String,
+            default: null
         }
     },
 
