@@ -1291,14 +1291,6 @@ class Theme extends MapasCulturais\Theme {
                 'unserialize' => function($val){ return json_decode($val); },
             ]);
         });
-
-        $this->registerEventMetadata('event_attendance', array(
-            'label' => 'Público presente',
-            'type' => 'integer',
-            'validations' => [
-                'v::intVal()->positive()' => 'O valor deve ser um número inteiro positivo'
-            ]
-        ));
     }
 
     function head() {
