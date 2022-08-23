@@ -292,5 +292,14 @@
         margin-top: size(87.5);
         padding-bottom: size(40);
         margin-bottom: 0;
+        min-height: size(500);
+    }
+
+    .search__tabs--list {
+        .loading,
+        .panel__row {
+            grid-column-end: span 9;
+            text-align: center;
+        }
     }
 }
