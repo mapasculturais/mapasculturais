@@ -492,4 +492,27 @@ class Entity {
             return this.doCatch(error);
         }
     }
+
+    async changeOwner(ownerId) {
+        this.__processing = this.text('alterando propriedade da entidade');
+        ownerId = ownerId || $MAPAS.userProfile.id;
+
+        if (!ownerId) {
+            return Promise.reject('ownerId indefinido');
+        }
+
+        try {
+            const res = await this.API.POST(this.getUrl('changeOwner'), {ownerId});
+            this.doPromise(res, (data) => {
+
+                console.log(data);
+
+                /* let index;
+                index = this.seals.indexOf(seal);
+                this.seals.splice(index,1); */
+            });
+        } catch (error) {
+            return this.doCatch(error);
+        }
+    }
 }
