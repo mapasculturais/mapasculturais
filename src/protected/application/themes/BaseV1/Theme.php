@@ -1874,8 +1874,7 @@ class Theme extends MapasCulturais\Theme {
 
     protected function _populateJsObject() {
         $app = App::i();
-        $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
-        $this->jsObject['userProfile'] = $app->user->profile; //get standard agent for user
+        
         $this->jsObject['vectorLayersURL'] = $app->baseUrl . 'geojson';
 
         $this->jsObject['request'] = array(
