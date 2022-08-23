@@ -1,0 +1,20 @@
+@use '../settings/mixins' as *;
+
+
+.create-modal {
+    margin: 0;
+    color: black;
+
+    &__buttons {
+        border-radius: var(--mc-border-radius-sm);
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 24px;
+        .button{
+            place-content: center;
+        }
+    }
+}
+
+    
