@@ -4,7 +4,7 @@ $this->layout = 'entity';
 
 
 $this->import('
-    mapas-container mc-map mc-map-marker  mapas-breadcrumb
+    mapas-container  mapas-breadcrumb
     entity-terms share-links entity-files-list entity-links  entity-owner entity-related-agents entity-seals entity-header entity-gallery entity-gallery-video entity-social-media');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
@@ -22,8 +22,6 @@ $this->breadcramb = [
         
         <main>
             <div class="grid-12">
-                
-
                 <div class="col-12">
                         <h2>Descrição Detalhada</h2>
                         <p>{{entity.longDescription}}</p>

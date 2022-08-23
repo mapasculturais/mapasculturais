@@ -6,9 +6,9 @@ $this->import('
         entity-field entity-terms entity-social-media 
         entity-links entity-gallery entity-gallery-video
         entity-admins entity-related-agents entity-owner
-        entity-actions entity-files-list
+        entity-actions entity-files-list 
         mapas-container mapas-card mapas-breadcrumb
-        messages');
+        messages create-ocurrence');
 
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -93,7 +93,7 @@ $this->breadcramb = [
                     <p><?php i::_e("Adicione data, hora e local da ocorrência do seu evento. Você pode várias ocorrências com informações diferentes."); ?></p>
                 </template>
                 <template #content>   
-                
+                    <create-ocurrence></create-ocurrence>
                 </template>   
             </mapas-card>
 
@@ -104,8 +104,8 @@ $this->breadcramb = [
                 <template #content>   
                     <div class="grid-12">
                         <div class="col-6">
+                            <entity-field :entity="entity" label="Total de público" prop="event_attendance"></entity-field>
                         </div>
-
                         <div class="col-6">
                             <entity-field :entity="entity" label="Telefone para informações sobre o evento" prop="telefonePublico"></entity-field>
                         </div>
