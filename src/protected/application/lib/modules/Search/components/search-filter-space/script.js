@@ -28,5 +28,12 @@ app.component('search-filter-space', {
     },
     
     methods: {
+        acessibilidade(event) {
+            if(event.target.checked) {
+                this.pseudoQuery['acessibilidade'] = 'Sim';
+            } else {
+                delete this.pseudoQuery.acessibilidade;
+            }
+        }
     },
 });
