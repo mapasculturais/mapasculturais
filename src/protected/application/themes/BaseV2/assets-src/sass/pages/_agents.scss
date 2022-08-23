@@ -31,6 +31,7 @@
     &.action-single {
         .container main{
             gap: size(40);
+
             h3 {
                 font-weight: 700;
                 font-size: size(24);
@@ -44,11 +45,6 @@
                 line-height: 28px;
             }
             .property {
-                button {
-                    background-color: var(--mc-danger-300);
-                    color: var(--mc-low-500);
-                    border-color: var(--mc-danger-300);
-                }
                 padding-top: 176px;
             }
 
