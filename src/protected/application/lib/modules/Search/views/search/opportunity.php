@@ -17,36 +17,18 @@ $this->breadcramb = [
     </template>
 
     <template #default="{pseudoQuery}">
-        <tabs class="search__tabs">
-            <template  #before-tablist>
-                <label class="search__tabs--before">
-                    Visualizar como:
-                </label> 
-            </template>
-            
-            <tab icon="list" label="Lista" slug="list">
-                <div class="search__tabs--list">
 
-                    <search-list :pseudo-query="pseudoQuery" type="opportunity">
-                        <template #filter>
-                            <search-filter-opportunity :pseudo-query="pseudoQuery"></search-filter-opportunity>
-                        </template>
-                    </search-list>
-
-                </div>
-            </tab>
+        <div class="tabs-component__panels">
+            <div class="search__tabs--list">
+    
+                <search-list :pseudo-query="pseudoQuery" select="id,name,shortDescription,terms,seals,singleUrl" type="opportunity">
+                    <template #filter>
+                        <search-filter-opportunity :pseudo-query="pseudoQuery"></search-filter-opportunity>
+                    </template>
+                </search-list>
+    
+            </div>
+        </div>
         
-            <tab icon="map" label="Mapa" slug="map">
-                <div class="search__tabs--map">
-
-                    <search-map type="opportunity" :pseudo-query="pseudoQuery">
-                        <template #filter>
-                            <search-filter-opportunity :pseudo-query="pseudoQuery" position="map"></search-filter-opportunity>
-                        </template>
-                    </search-map>
-
-                </div>
-            </tab>
-        </tabs>
     </template>
 </search>
