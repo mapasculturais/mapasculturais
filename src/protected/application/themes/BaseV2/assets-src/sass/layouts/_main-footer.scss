@@ -81,6 +81,7 @@
     }
 
     &__links {
+        align-items: flex-start;
         justify-content: space-evenly;
         gap: size(40);
         padding: 0 size(56);
