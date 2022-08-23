@@ -8,7 +8,7 @@ $this->import('popover messages main-menu theme-logo');
 
     <!-- Logo -->
     <div class="main-header__logo">
-        <theme-logo title="mapa cultural" subtitle="do Pará" color="#498200"></theme-logo>
+        <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('panel', 'index') ?>"></theme-logo>
     </div>     
     
     <!-- Menu -->
@@ -57,7 +57,7 @@ $this->import('popover messages main-menu theme-logo');
         <?php if ($app->user->is('guest')): ?>
             
             <div class="main-header__options--loggedOff">
-                <a href="" class="logIn">
+                <a href="<?= $app->createUrl('auth') ?>" class="logIn">
                     <span><mc-icon name="project"></mc-icon></span>
                     <?php i::_e('Entrar') ?>
                 </a>
