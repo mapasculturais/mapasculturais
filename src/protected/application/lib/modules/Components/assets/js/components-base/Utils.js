@@ -127,6 +127,10 @@ globalThis.Utils = {
             } else if(k == '@keyword') {
                 val = val.replace(/ +/g, '%');
                 newQuery[k] = `${val}`;
+            } else if(k == 'registrationFrom' || k == 'registrationTo') {
+                if (val) {
+                    newQuery[k] = val;
+                }
             } else if(val) {
                 if (typeof val == 'string') {
                     newQuery[k] = `EQ(${val})`;
