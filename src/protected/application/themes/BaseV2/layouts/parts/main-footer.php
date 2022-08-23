@@ -68,20 +68,16 @@ $this->import('theme-logo');
             <li>
                 <a href="<?= $app->createUrl('panel', 'spaces') ?>">Meus espaços</a>
             </li>
+            <?php if (!($app->user->is('guest'))): ?>
             <li>
                 <a href="<?= $app->createUrl('auth', 'logout') ?>">Sair</a>
             </li>
+            <?php endif; ?>
         </ul>
 
         <ul class="main-footer__links--group">
             <li>
                 <a>Ajuda e Privacidade</a>
-            </li>
-            <li>
-                <a>Como utilizar o mapa?</a>
-            </li>
-            <li>
-                <a>Dúvidas frequentes (FAQ)</a>
             </li>
             <li>
                 <a>Termos de uso</a>
