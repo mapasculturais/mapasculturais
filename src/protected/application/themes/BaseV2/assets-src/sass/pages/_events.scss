@@ -5,16 +5,6 @@
     
     &.action-edit {
         background-color: var(--mc-gray-100);
-
-        .mapas-breadcrumb {
-            &__hasCover {
-                ul {
-                    background: transparent;
-                    color: black;
-                    padding: size(8) size(10);
-                }
-            }
-        }
         
         .container{
             main {
