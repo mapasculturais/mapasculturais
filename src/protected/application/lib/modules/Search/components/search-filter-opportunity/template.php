@@ -10,12 +10,15 @@ $this->import('search-filter');
         </label>
 
         <div class="field">
-            <label> <?php i::_e('Status da oportunidade') ?> </label>
-            <label><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Oportunidades oficiais') ?> </label>
+            <label> <?php i::_e('Status das oportunidades') ?> </label>
+            <label><input v-on:click="abertas($event)" type="checkbox"> <?php i::_e('Inscrições abertas') ?> </label>
+            <label><input v-model="pseudoQuery['@']" type="checkbox"> <?php i::_e('Inscrições encerradas') ?> </label>
+            <label><input v-model="pseudoQuery['@']" type="checkbox"> <?php i::_e('Inscrições futuras') ?> </label>
+            <label><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Editais oficiais') ?> </label>
         </div>  
 
         <div class="field">
-            <label> <?php i::_e('Tipo') ?></label>
+            <label> <?php i::_e('Tipo de oportunidade') ?></label>
 
             <select v-model="pseudoQuery['type']">
                 <option :value="undefined"> <? i::_e('Todos')?> </option>
@@ -25,7 +28,7 @@ $this->import('search-filter');
         </div>
 
         <div class="field">
-            <label> <?php i::_e('Área de atuação') ?></label>
+            <label> <?php i::_e('Área de interesse') ?></label>
 
             <select v-model="pseudoQuery['term:area']" placeholder="<? i::_e('Selecione as áreas')?>">
                 <option :value="undefined"> <? i::_e('Todos')?> </option>
