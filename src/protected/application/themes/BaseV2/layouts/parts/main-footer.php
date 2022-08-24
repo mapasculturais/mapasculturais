@@ -1,6 +1,7 @@
 <?php 
 use MapasCulturais\i;
 $this->import('theme-logo');
+$config = $app->config['social-media'];
 ?>
 <div class="main-footer">
 
@@ -11,11 +12,9 @@ $this->import('theme-logo');
         </div>
 
         <div class="main-footer__logo--share">
-            <a><mc-icon name="facebook"></mc-icon></a>
-            <a><mc-icon name="twitter"></mc-icon></a>
-            <a><mc-icon name="vimeo"></mc-icon></a>
-            <a><mc-icon name="youtube"></mc-icon></a>
-            
+            <?php foreach($config as $conf): ?>
+                <a target="_blank" href="<?= $conf['link'] ?>"><mc-icon name='<?= $conf['title'] ?>'></mc-icon></a>
+            <?php endforeach; ?>
         </div>
     </div>
 
