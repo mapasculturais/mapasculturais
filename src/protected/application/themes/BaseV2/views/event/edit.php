@@ -6,7 +6,7 @@ $this->import('
         entity-field entity-terms entity-social-media 
         entity-links entity-gallery entity-gallery-video
         entity-admins entity-related-agents entity-owner
-        entity-actions entity-files-list 
+        entity-actions entity-files-list mc-tag-list
         mapas-container mapas-card mapas-breadcrumb
         messages create-ocurrence');
 
@@ -122,7 +122,7 @@ $this->breadcramb = [
                     <label><?php i::_e("Acessibilidade"); ?></label>
                 </template>
                 <template #content>   
-                
+                    <mc-tag-list entity-type="event" :editable="true" :tags="entity.terms?.linguagem"></mc-tag-list>
                 </template>   
             </mapas-card>
 
