@@ -2,6 +2,7 @@
 
 namespace Opportunities;
 
+use DateTime;
 use MapasCulturais\App;
 
 class Module extends \MapasCulturais\Module{
@@ -44,6 +45,14 @@ class Module extends \MapasCulturais\Module{
             if($this->opportunity_data_collection){
                 $data = ['opportunity' => $this];
                 $app->enqueueJob(Jobs\StartPhaseDataCollection::SLUG, $data, $this->registrationFrom->format("Y-m-d H:i:s"));
+            }
+        });
+
+        // Executa Job no momento da publicação automática dos resultados da fase
+        $app->hook("entity(Opportunity).save:finish", function() use ($app){
+            if($this->publish_timestamp){
+                $data = ['opportunity' => $this];            
+                $app->enqueueJob(Jobs\PublisResultPhase::SLUG, $data, $this->publish_timestamp->format("Y-m-d H:i:s"));
             }
         });
     }
