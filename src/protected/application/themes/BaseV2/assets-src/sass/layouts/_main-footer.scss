@@ -73,6 +73,11 @@
             justify-content: center;
             padding: size(34) 0;
             font-size: size(20);
+            a, a:hover, a:active, a:focus, a:visited
+            {
+                color: var(--mc-low-700);
+                text-decoration: none;
+            }
         }
 
         @include mobile {
