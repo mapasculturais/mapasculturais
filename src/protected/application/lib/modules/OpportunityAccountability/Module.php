@@ -353,7 +353,7 @@ class Module extends \MapasCulturais\Module
         //Cria painel de prestação de contas
         $app->hook('GET(panel.accountability)', function() use($app) {
             $this->requireAuthentication();
-            $user = $this->_getUser();
+            $user = $app->user;
 
             $this->render('accountabilitys', ['user' => $user]);
         });
