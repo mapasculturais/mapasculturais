@@ -1745,4 +1745,8 @@ $$
         __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_from timestamp DEFAULT NULL;");
         __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_to timestamp DEFAULT NULL;");
     },
+    "Renomeia colunas registrationFrom e registrationTo da tabela de projetod" => function() use ($conn){
+        __exec("ALTER TABLE project RENAME registration_from TO starts_on;");
+        __exec("ALTER TABLE project RENAME registration_to TO ends_on;");
+    },
 ] + $updates ;
