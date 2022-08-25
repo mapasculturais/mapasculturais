@@ -75,18 +75,31 @@ $config = $app->config['social-media'];
         </ul>
 
         <ul class="main-footer__links--group">
+           <?php var_dump($app->config['module.LGPD']); ?>
+
+            <?php foreach($app->config['module.LGPD'] as $slug => $cfg): ?>
+
             <li>
-                <a>Ajuda e Privacidade</a>
+                <a href="<?= $app->createUrl('lgpd', $slug) ?>">Termos de Uso de Imagem<?= $cfg['image-use'] ?></a>
             </li>
-            <li>
-                <a>Termos de uso</a>
-            </li>
-            <li>
-                <a>Política de privacidade</a>
-            </li>
-            <li>
-                <a>Autorização de uso de imagem</a>
-            </li>
+
+            <?php endforeach ?>
+
+            <?php foreach($app->config['module.LGPD'] as $slug => $cfg): ?>
+
+                <li>
+                    <a href="<?= $app->createUrl('lgpd', $slug) ?>">Termos de Uso<?= $cfg['terms-of-usage'] ?></a>
+                </li>
+
+            <?php endforeach ?>
+
+            <?php foreach($app->config['module.LGPD'] as $slug => $cfg): ?>
+
+                <li>
+                    <a href="<?= $app->createUrl('lgpd', $slug) ?>">Política de Privacidade<?= $cfg['privacy-police'] ?></a>
+                </li>
+
+            <?php endforeach ?>
         </ul>
 
     </div>
