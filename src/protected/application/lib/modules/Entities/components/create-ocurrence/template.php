@@ -3,9 +3,9 @@ use MapasCulturais\i;
 $this->import('modal entity-field entity-terms'); 
 ?>
 
-<modal title="Inserir ocorrencia no evento" classes="create-modal" button-label="Adicionar nova ocorrência" >
+<modal title="Inserir ocorrência no evento" classes="create-modal" button-label="Adicionar nova ocorrência" >
     <template #default>
-        TESTE AOOO
+        
     </template>
     <template #button="modal">
         <slot :modal="modal"></slot>
