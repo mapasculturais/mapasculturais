@@ -21,6 +21,28 @@ $this->breadcramb = [
         <main>
             <div class="grid-12">
                 <div class="col-12">
+                    <div class="age-rating">
+                        <label class="age-rating__label">
+                            <?= i::_e("Classificação Etária"); ?>
+                        </label>
+                        <div class="age-rating__content">
+                            {{entity.classificacaoEtaria}} 
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div v-if="entity.descricaoSonora || entity.traducaoLibras" class="acessibility">
+                        <label class="acessibility__label"><?php i::_e("Acessibilidade"); ?></label>
+                        <div v-if="entity.descricaoSonora" class="acessibility__audio">
+                            <span><?php i::_e("Libras:"); ?></span>{{entity.descricaoSonora}}
+                        </div>
+                        <div v-if="entity.traducaoLibras" class="acessibility__libras">
+                           <span><?php i::_e("Áudio de Descrição:"); ?></span> {{entity.traducaoLibras}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
                     <entity-location :entity="entity"></entity-location>
                 </div>
                 
