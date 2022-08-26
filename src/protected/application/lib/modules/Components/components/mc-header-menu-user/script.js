@@ -1,5 +1,5 @@
-app.component('mc-header-user-menu', {
-    template: $TEMPLATES['mc-header-user-menu'],
+app.component('mc-header-menu-user', {
+    template: $TEMPLATES['mc-header-menu-user'],
     emits: [],
 
     setup(props, { slots }) {

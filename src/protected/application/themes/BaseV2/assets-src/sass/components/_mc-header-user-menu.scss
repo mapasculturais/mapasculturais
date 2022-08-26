@@ -4,7 +4,7 @@
     overflow: hidden;
 }
 
-.mc-header-user-menu {
+.mc-header-menu-user {
 
     .popover {
         &__content {
@@ -14,6 +14,47 @@
         @media (max-width: size(1020)) {
             display: none;
         }   
+    }
+
+    &__user {
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: size(4);
+        padding: size(5) size(20) size(5) size(13);
+
+        &--name {
+            font-weight: 600;
+            font-size: size(14);
+            line-height: size(14);
+            
+            @media (max-width: size(1150)) {
+                display: none;
+            }
+        }
+
+        &--avatar {
+            width: size(40);
+            height: size(40);
+            display: flex;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        &::before {
+            content: "";
+            background: url('https://api.iconify.design/ic/baseline-arrow-drop-down.svg') no-repeat center center / contain;
+            background-size: size(20);
+            height: size(15);
+            position: absolute;
+            right: 0;
+            width: size(15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
 
     &__btn {
