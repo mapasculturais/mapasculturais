@@ -120,23 +120,57 @@ globalThis.Utils = {
         const newQuery = {};
         for(let k in pseudoQuery) {
             let val = pseudoQuery[k];
+            let not = '';
+            if(val.indexOf('!') === 0) {
+                not = '!';
+                val = val.substr(1);
+            }
+
             if(k == '@verified') {
                 if (val) {
                     newQuery[k] = '1';
                 }
             } else if(k == '@keyword') {
                 val = val.replace(/ +/g, '%');
-                newQuery[k] = `${val}`;
-            } else if(k == 'registrationFrom' || k == 'registrationTo') {
-                if (val) {
-                    newQuery[k] = val;
-                }
+                newQuery[k] = `%${val}%`;
+
+            } else if(val.indexOf('>= ') === 0) {
+                val = val.substr(3);
+                newQuery[k] = `${not}GTE(${val})`;
+
+            } else if(val.indexOf('<= ') === 0) {
+                val = val.substr(3);
+                newQuery[k] = `${not}LTE(${val})`;
+
+            } else if(val.indexOf('> ') === 0) {
+                val = val.substr(2);
+                newQuery[k] = `${not}GT(${val})`;
+
+            } else if(val.indexOf('< ') === 0) {
+                val = val.substr(2);
+                newQuery[k] = `${not}LT(${val})`;
+
+            } else if(val.indexOf('bet: ') === 0) {
+                val = val.substr(2);
+                newQuery[k] = `${not}BET(${val})`;
+
+            } else if(val.indexOf('in: ') === 0) {
+                val = val.substr(2);
+                newQuery[k] = `${not}IIN(${val})`;
+
+            } else if(val.indexOf('null:') === 0) {
+                val = val.substr(2);
+                newQuery[k] = `${not}NULL()`;
+
+            } else if(k[0] == '@') {
+                newQuery[k] = val;
+
             } else if(val) {
                 if (typeof val == 'string') {
-                    newQuery[k] = `EQ(${val})`;
+                    newQuery[k] = `${not}EQ(${val})`;
                 } else if (val instanceof Array) {
                     val = val.join(',');
-                    newQuery[k] = `IIN(${val})`;
+                    newQuery[k] = `${not}IIN(${val})`;
                 }
             }
         }

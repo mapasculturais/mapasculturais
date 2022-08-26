@@ -51,8 +51,8 @@ app.component('search-filter-opportunity', {
         
         abertas(event) {
             if(event.target.checked) {
-                this.pseudoQuery['registrationFrom'] = 'LTE('+this.futureDate()+')';
-                this.pseudoQuery['registrationTo'] = 'GTE('+this.actualDate()+')';
+                this.pseudoQuery['registrationFrom'] = '<= ' + this.futureDate();
+                this.pseudoQuery['registrationTo'] = '>= ' + this.actualDate();
             } else {
                 delete this.pseudoQuery.registrationFrom;
                 delete this.pseudoQuery.registrationTo;
