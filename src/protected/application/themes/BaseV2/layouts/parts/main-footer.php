@@ -8,7 +8,7 @@ $config = $app->config['social-media'];
     <div class="main-footer__logo">
 
         <div class="main-footer__logo--img">
-            <theme-logo title="mapa cultural" subtitle="do Pará"></theme-logo>
+            <theme-logo title="<?php i::_e('mapa cultural'); ?>" subtitle="<?php i::_e('do Pará'); ?>"></theme-logo>
         </div>
 
         <div class="main-footer__logo--share">
