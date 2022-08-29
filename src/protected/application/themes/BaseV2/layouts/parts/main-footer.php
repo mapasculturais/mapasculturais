@@ -22,7 +22,7 @@ $config = $app->config['social-media'];
         
         <ul class="main-footer__links--group">
             <li>
-                <a>Acesse</a>
+                <a><?php i::_e("Acesse");?></a>
             </li>
             <li>
                 <a href="<?= $app->createUrl('search', 'opportunities') ?>"> 
@@ -53,19 +53,19 @@ $config = $app->config['social-media'];
         
         <ul class="main-footer__links--group">
             <li>
-                <a href="<?= $app->createUrl('panel', 'index') ?>">Painel</a>
+                <a href="<?= $app->createUrl('panel', 'index') ?>"><?php i::_e('Painel'); ?></a>
             </li>
             <li>
-                <a  href="<?= $app->createUrl('panel', 'opportunities') ?>">Editais e oportunidades</a>
+                <a  href="<?= $app->createUrl('panel', 'opportunities') ?>"><?php i::_e('Editais e oportunidades'); ?></a>
             </li>
             <li>
-                <a href="<?= $app->createUrl('panel', 'events') ?>">Meus eventos</a>
+                <a href="<?= $app->createUrl('panel', 'events') ?>"><?php i::_e('Meus eventos'); ?></a>
             </li>
             <li>
-                <a href="<?= $app->createUrl('panel', 'agents') ?>">Meus agentes</a>
+                <a href="<?= $app->createUrl('panel', 'agents') ?>"><?php i::_e('Meus agentes'); ?></a>
             </li>
             <li>
-                <a href="<?= $app->createUrl('panel', 'spaces') ?>">Meus espaços</a>
+                <a href="<?= $app->createUrl('panel', 'spaces') ?>"><?php i::_e('Meus espaços'); ?></a>
             </li>
             <?php if (!($app->user->is('guest'))): ?>
             <li>
@@ -89,7 +89,7 @@ $config = $app->config['social-media'];
     <div class="main-footer__reg">
         <div class="main-footer__reg--content">
             <p>
-                plataforma criada pela comunidade <strong><mc-icon name="map"></mc-icon>mapas culturais</strong> e desenvolvida por <strong>hacklab<span style="color: red">/</span></strong>
+            <?php i::_e("plataforma criada pela comunidade") ?> <strong><mc-icon name="map"></mc-icon><?php i::_e("mapas culturais"); ?></strong> <?php i::_e("e desenvolvida por "); ?><strong>hacklab<span style="color: red">/</span></strong>
             </p>
     
             <a class="link" href="https://github.com/mapasculturais"> 
