@@ -49,7 +49,7 @@ app.component('search-filter-opportunity', {
             return (ano + '-' + mes + '-' + dia);
         },
         
-        abertas(event) {
+        openForRegistrations(event) {
             if(event.target.checked) {
                 this.pseudoQuery['registrationFrom'] = '<= ' + this.futureDate();
                 this.pseudoQuery['registrationTo'] = '>= ' + this.actualDate();
