@@ -11,7 +11,7 @@ $this->import('search-filter');
 
         <div class="field">
             <label> <?php i::_e('Status das oportunidades') ?> </label>
-            <label><input v-on:click="abertas($event)" type="checkbox"> <?php i::_e('Inscrições abertas') ?> </label>
+            <label><input v-on:click="openForRegistrations($event)" type="checkbox"> <?php i::_e('Inscrições abertas') ?> </label>
             <label><input v-model="pseudoQuery['@']" type="checkbox"> <?php i::_e('Inscrições encerradas') ?> </label>
             <label><input v-model="pseudoQuery['@']" type="checkbox"> <?php i::_e('Inscrições futuras') ?> </label>
             <label><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Editais oficiais') ?> </label>
