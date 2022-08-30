@@ -1,0 +1,224 @@
+@use '../settings/mixins' as *;
+
+.no-scroll {
+    overflow: hidden;
+}
+
+.mc-header-menu-user {
+
+    .popover {
+        &__content {
+            padding: 0;
+        }  
+    }
+
+    &__user {
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: size(4);
+        padding: size(5) size(20) size(5) size(13);
+
+        &--name {
+            font-weight: 600;
+            font-size: size(14);
+            line-height: size(14);
+            
+            @media (max-width: size(1150)) {
+                display: none;
+            }
+        }
+
+        &--avatar {
+            width: size(40);
+            height: size(40);
+            display: flex;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        &::before {
+            content: "";
+            background: url('https://api.iconify.design/ic/baseline-arrow-drop-down.svg') no-repeat center center / contain;
+            background-size: size(20);
+            height: size(15);
+            position: absolute;
+            right: 0;
+            width: size(15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    &__itens {
+        display: flex;
+        flex-direction: column;
+        list-style-type: none;
+        margin: 0;
+        padding: size(16);
+        width: size(328);
+
+        li {
+            color: var(--mc-low-500);
+            display: flex;
+            position: relative;
+            white-space: nowrap;
+            margin: size(3) 0;
+    
+            a {
+                color: var(--mc-low-500);
+                padding: size(10) size(8);
+                text-decoration: none;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: size(28);
+                font-weight: 500;
+                font-size: size(14);
+                line-height: size(19);
+    
+                .iconify {
+                    width: size(20);
+                    height: size(20);
+                }
+            }
+    
+            &.label {
+                font-weight: 860;
+                font-size: size(12);
+                line-height: size(16);
+                display: flex;
+                align-items: center;
+                letter-spacing: 0.07em;
+                text-transform: uppercase;
+                padding: size(16) 0 size(8);
+                cursor: default;
+                
+                &:hover {
+                    background-color: inherit;
+                    color: var(--mc-low-500);
+                }
+            }
+    
+            &:hover {
+                background-color: var(--mc-low-500);
+                color: var(--mc-white);
+                a {
+                    color: var(--mc-white);
+                }
+            }
+        }
+    }
+
+    &__desktop {
+        @media (max-width: size(860)) {
+            display: none !important;
+        }
+    }
+
+    &__mobile {
+        display: none;
+        
+        &--button {
+            position: relative;
+        }
+
+        &--list {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            top: 0;
+            left: 0;
+            padding: 0 size(16);
+            z-index: 100;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        .close {
+            height: 90px;
+
+            align-items: center;
+            display: flex;
+            gap: size(30);
+            height: size(90);
+            justify-content: space-between;
+            max-width: size(1440);
+            width: 100%;
+
+            border-top: none;
+            margin: 0 auto;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;
+            
+            &__btn {
+                cursor: pointer;
+                padding: size(15) size(15);
+                border: none;
+                background: none;
+                
+                .iconify {
+                    font-size: size(25);
+                    right: 0;
+                }
+            }
+
+            &:hover {
+                background-color: white;
+                color: var(--mc-low-500);
+            }
+
+            .theme-logo {
+                max-width: size(379);
+                width: 100%;
+                margin-left: size(43);
+                margin-right: size(18);
+
+                @media (max-width: size(430)){
+                    .theme-logo__text {
+                        font-size: size(11);
+                        line-height: size(15);
+                        letter-spacing: size(3);
+                    }
+                }
+                /* padding: 0px .7% 0 size(43); */       
+
+                /* &__text {
+                    margin: size(1) 0 0 size(1.3);
+                } */
+            }
+        }
+
+        .mc-header-menu-user__itens {
+            /* position: absolute;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            top: 0;
+            left: 0;
+            padding: 0 size(16); */
+            list-style: none;
+            overflow-y: scroll;
+        }
+
+        @media (max-width: size(860)) {
+            display: block;
+        }
+    }
+
+    &.mobile {
+        display: none;
+
+        @media (max-width: size(860)) {
+            display: flex;
+            position: relative;
+            z-index: 99;
+        }
+    }
+}
