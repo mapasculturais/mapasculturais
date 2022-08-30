@@ -2,6 +2,12 @@
 
 .mc-map {
     height: 400px;  
+    
+    .leaflet-container {
+        .leaflet-pane {
+            z-index: 0;
+        }
+    }
 
     .leaflet-marker-icon {
         &:hover {
