@@ -177,8 +177,9 @@ class Entity {
         return this.API.createCacheId(this.id);
     }
 
-    getUrl(action) {
-        return this.API.createUrl(action, [this.id]);
+    getUrl(action, params) {
+        params = {0: this.id, ...params};
+        return this.API.createUrl(action, params);
     }
 
     removeFromLists(skipList) {
