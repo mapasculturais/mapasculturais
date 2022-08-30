@@ -6,7 +6,7 @@ return array(
     'metadata' => array(
         'subTitle' => array(
             'label' => \MapasCulturais\i::__('Sub-Título'),
-            'type' => 'text'
+            'type' => 'string'
         ),
         'registrationInfo' => array(
             'label' => \MapasCulturais\i::__('Inscrições'),
