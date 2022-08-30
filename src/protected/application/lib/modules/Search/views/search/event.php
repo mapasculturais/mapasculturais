@@ -1,41 +1,43 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('mapas-breadcrumb search-header tabs');
+$this->import('mapas-breadcrumb tabs search search-map search-list-events search-filter-event');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Eventos'), 'url' => $app->createUrl('events')],
 ];
+
 ?>
+<search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event">
 
-<div class="search">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <template #create-button>
+        
+    </template>
 
-    <search-header class="search__header" type="event">
-        <template #create>
-            <create-agent></create-agent>
-        </template>
-        <template #actions>
-                <tabs class="search__header--tabs">
-                    <template  #before-tablist>
-                        <label class="search__header--tabs-label">
-                        Visualizar como:
-                        </label> 
-                    </template>
-                    
-                    <tab icon="event" label="Agenda" slug="primary">
-                        <h2>Conteúdo principal</h2>
-                    </tab>
-                    <tab icon="map" label="Mapa" slug="secondary">
-                        <h2>Conteúdo secundário</h2>
-                    </tab>
-                    
-                    <template #after-tablist>
-                       <div class="search__header--tabs-filter">
-                           <input type="text"/>
-                       </div>
-                    </template>
-                </tabs>
+    <template #default="{pseudoQuery}">
+        <tabs class="search__tabs">
+            <template  #before-tablist>
+                <label class="search__tabs--before">
+                    Visualizar como:
+                </label> 
             </template>
-    </search-header>
-</div>
+            
+            <tab icon="list" label="Lista" slug="list">
+                <div class="search__tabs--list">
+                    <search-list-events :pseudo-query="pseudoQuery"></search-list-events>
+                </div>
+            </tab>
+        
+            <tab icon="map" label="Mapa" slug="map">
+                <div class="search__tabs--map">
+                    <search-map type="event" :pseudo-query="pseudoQuery">
+                        <template #filter>
+                            <search-filter-event :pseudo-query="pseudoQuery" position="map"></search-filter-event>
+                        </template>
+                    </search-map>
+
+                </div>
+            </tab>
+        </tabs>
+    </template>
+</search>
