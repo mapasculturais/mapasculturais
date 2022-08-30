@@ -59,7 +59,7 @@ $this->import('popover confirm-button');
             <div v-for="agent in groupAgents" class="agent">
                 <a :href="agent.singleUrl" class="agent__img">
                     <img v-if="agent.files.avatar" :src="agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
-                    <mc-icon v-else name="image"></mc-icon>
+                    <mc-icon v-else name="agent"></mc-icon>
                 </a>
 
                 <div v-if="editable" class="agent__delete">
