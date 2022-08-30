@@ -22,7 +22,7 @@ $this->import('mc-icon');
 
     <li> 
         <a href="<?= $app->createUrl('panel', 'index') ?>" class="mc-header-menu--item painel">
-            <span class="icon"> <mc-icon name="dashboard"> </span>
+            <span class="icon"> <mc-icon name="dashboard"></mc-icon> </span>
             <p class="label"> <?php i::_e('Painel de controle') ?> </p>      
         </a> 
     </li>
