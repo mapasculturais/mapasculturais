@@ -3,7 +3,7 @@ use MapasCulturais\i;
 $this->layout = 'entity'; 
 
 $this->import('
-    mapas-container mc-map mc-map-marker mapas-breadcrumb tabs
+    mapas-container mc-map mc-map-marker mc-box-space mapas-breadcrumb tabs
     entity-terms share-links entity-files-list entity-links
     entity-location entity-owner entity-related-agents entity-seals 
     entity-header entity-gallery entity-gallery-video entity-social-media
@@ -28,22 +28,10 @@ $this->breadcramb = [
                 <mapas-container>        
                     <main>
                         <div class="grid-12">
-                            <div class="placeholder-hour  col-12 ">
-                                <label>Horário de Funcionamento</label>
-                                <div class="placeholder-hour--content">
-                                    &nbsp;
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <entity-location :entity="entity"></entity-location>
-                            </div>
-                            <div class="placeholder-resource col-12">
-                                <label>Recursos de Acessibilidade</label>
-                                <div class="placeholder-resource--content">
-                                    <p>CAPACIDADE DO ESPAÇO:</p>
-                                    <p>TELEFONE:</p>
-                                </div>
-                            </div>
+                           <div class="col-12">
+                                <mc-box-space :entity="entity"></mc-box-space>
+                           </div>
+                            
                             <div class="divider col-12"></div>
                             <div class="col-12">
                                     <h2>Descrição Detalhada</h2>
