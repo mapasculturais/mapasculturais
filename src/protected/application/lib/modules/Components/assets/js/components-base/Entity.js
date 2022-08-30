@@ -33,7 +33,7 @@ class Entity {
             let val = obj[prop];
 
             if (definition.type == 'datetime' && val) {
-                val = new Date(val.date);
+                val = new McDate(val.date);
             }
 
             if (prop == 'location') {

@@ -25,7 +25,8 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueScript('components', 'components-api', 'js/components-base/API.js', ['components-init']);
             $app->view->enqueueScript('components', 'components-entityFile', 'js/components-base/EntityFile.js', ['components-init']);
             $app->view->enqueueScript('components', 'components-entityMetalist', 'js/components-base/EntityMetalist.js', ['components-init']);
-            $app->view->enqueueScript('components', 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api', 'components-entityFile', 'components-entityMetalist']);
+            $app->view->enqueueScript('components', 'components-mcdate', 'js/components-base/McDate.js');
+            $app->view->enqueueScript('components', 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api', 'components-entityFile', 'components-entityMetalist', 'components-mcdate']);
             $app->view->enqueueScript('components', 'components-utils', 'js/components-base/Utils.js', ['components-init']);
             $app->view->enqueueStyle($vendor_group, 'components-carousel', 'css/components-base/carousel.css');
             $app->view->enqueueStyle($vendor_group, 'leaflet', '../node_modules/leaflet/dist/leaflet.css');
