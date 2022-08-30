@@ -22,6 +22,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Distrito Federal - http://mapa.cultura.df.gov.br/
 - Ceará - https://mapacultural.secult.ce.gov.br/
 - Espírito Santo - https://mapa.cultura.es.gov.br/
+- Goiás - https://mapagoiano.cultura.go.gov.br/
 - Maranhão - http://ma.mapas.cultura.gov.br/
 - Mato Grosso - https://mapas.mt.gov.br/
 - Mato Grosso do Sul - https://www.mapacultural.ms.gov.br/
