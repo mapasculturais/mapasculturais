@@ -18,14 +18,13 @@ app.component('search', {
         },
         initialPseudoQuery: {
             type: Object,
-            default: {}
+            default: null
         }
     },
 
     data() {
-        return {
-            pseudoQuery: this.initialPseudoQuery,
-        }
+        const pseudoQuery = this.initialPseudoQuery || $MAPAS.initialPseudoQuery || {};
+        return { pseudoQuery };
     },
 
     computed: {
