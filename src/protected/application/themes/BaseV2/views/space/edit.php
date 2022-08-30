@@ -8,7 +8,7 @@ $this->import('
         entity-admins entity-related-agents entity-owner
         entity-actions entity-files-list
         mapas-container mapas-card mapas-breadcrumb
-        entity-map');
+        entity-location');
 
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -18,13 +18,11 @@ $this->breadcramb = [
 ?>
 
 <div class="main-app">
-
     <mapas-breadcrumb></mapas-breadcrumb>
     
     <entity-header :entity="entity" :editable="true"></entity-header>
-
+    
     <mapas-container>
-
         <mapas-card class="feature">
             <template #title>
                 <label class="card__title--title"><?php i::_e("Informações de Apresentação")?></label>
@@ -78,43 +76,15 @@ $this->breadcramb = [
         <main>         
             <mapas-card>
                 <template #title>
-                    <label ><?php i::_e("Endereço do espaço"); ?></label>
+                    <label><?php i::_e("Endereço do espaço"); ?></label>                    
                 </template>
                 <template #content>   
                     <div class="grid-12">
-                        <div class="col-5">
-                            <entity-field :entity="entity" label="CEP" prop="En_CEP"></entity-field>
-                        </div>
-
-                        <div class="col-7">
-                            <entity-field :entity="entity" label="Rua, avenida, travessa etc." prop="En_Nome_Logradouro"></entity-field>
-                        </div>
-                        
-                        <div class="col-3">
-                            <entity-field :entity="entity" label="Número" prop="En_Num"></entity-field>
-                        </div>
-
-                        <div class="col-9">
-                            <entity-field :entity="entity" label="Complemento" prop="En_Complemento"></entity-field>
-                        </div>
-                        
                         <div class="col-12">
-                            <entity-field :entity="entity" label="Bairro" prop="En_Bairro"></entity-field>
-                        </div>
-                        
-                        <div class="col-6">
-                            <entity-field :entity="entity" label="Município" prop="En_Municipio"></entity-field>
-                        </div>
-
-                        <div class="col-6">
-                            <entity-field :entity="entity" label="Estado" prop="En_Estado"></entity-field>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-map :entity="entity" :editable="true"></entity-map>
+                            <entity-location :entity="entity" editable hide-label></entity-location>
                         </div>
                     </div>
-                </template>   
+                </template>
             </mapas-card>
 
             <mapas-card>
