@@ -31,7 +31,7 @@ use MapasCulturais\i;
                     </div>
 
                     <div class="card__left--img">
-                        <img src="<?php $this->asset('img/home/mapa.jpg') ?>" />
+                        <img src="<?php $this->asset('img/home/home-entities/opportunities.png') ?>" />
                     </div>
                 </div>
 
@@ -59,7 +59,7 @@ use MapasCulturais\i;
                     </div>
 
                     <div class="card__left--img">
-                        <img src="<?php $this->asset('img/home/mapa.jpg') ?>" />
+                        <img src="<?php $this->asset('img/home/home-entities/events.png') ?>" />
                     </div>
                 </div>
 
@@ -89,7 +89,7 @@ use MapasCulturais\i;
                     </div>
 
                     <div class="card__left--img">
-                        <img src="<?php $this->asset('img/home/mapa.jpg') ?>" />
+                        <img src="<?php $this->asset('img/home/home-entities/spaces.png') ?>" />
                     </div>
                 </div>
 
@@ -118,7 +118,7 @@ use MapasCulturais\i;
                     </div>
 
                     <div class="card__left--img">
-                        <img src="<?php $this->asset('img/home/mapa.jpg') ?>" />
+                        <img src="<?php $this->asset('img/home/home-entities/agents.png') ?>" />
                     </div>
                 </div>
 
@@ -146,7 +146,7 @@ use MapasCulturais\i;
                     </div>
 
                     <div class="card__left--img">
-                        <img src="<?php $this->asset('img/home/mapa.jpg') ?>" />
+                        <img src="<?php $this->asset('img/home/home-entities/projects.png') ?>" />
                     </div>
                 </div>
 
