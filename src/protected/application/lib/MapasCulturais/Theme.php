@@ -115,7 +115,10 @@ abstract class Theme extends \Slim\View {
         $this->jsObject['assetURL'] = $app->assetUrl;
         $this->jsObject['maxUploadSize'] = $app->getMaxUploadSize($useSuffix=false);
         $this->jsObject['maxUploadSizeFormatted'] = $app->getMaxUploadSize();
-        $this->jsObject['config'] = [];
+        $this->jsObject['config'] = [
+            'locale' => str_replace('_', '-', $app->config['app.lcode']),
+            'timezone' => date_default_timezone_get()
+        ];
         $this->jsObject['routes'] = $app->config['routes'];
 
         $app->hook('app.init:after', function(){
