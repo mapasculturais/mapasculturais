@@ -1,222 +1,163 @@
 @use '../settings/mixins' as *;
 
+// Define comportamento dos itens do menu de entidades (em todo o sistema)
+.action {
+    &-index {
+        .mc-header-menu--item.home{
+            .icon {
+                background-color: var(--mc-primary-500);
+            }
+            .label {
+                color: var(--mc-primary-500);
+            }
+        } 
+    }
+
+    &-projects {
+        .mc-header-menu--item.project {
+            .icon {
+                background-color: var(--mc-projects-500);
+            }
+            .label {
+                color: var(--mc-projects-500);
+            }
+        }
+    }
+    
+    &-spaces {
+        .mc-header-menu--item.space {
+            .icon {
+                background-color: var(--mc-spaces-500);
+            }
+            .label {
+                color: var(--mc-spaces-500);
+            }
+        }
+    }
+    
+    &-events {
+        .mc-header-menu--item.event {
+            .icon {
+                background-color: var(--mc-events-500);
+            }
+            .label {
+                color: var(--mc-events-500);
+            }
+        }
+    }
+    
+    &-agents {
+        .mc-header-menu--item.agent {
+            .icon {
+                background-color: var(--mc-agents-500);
+            }
+            .label {
+                color: var(--mc-agents-500);
+            }
+        }
+    }   
+    
+    &-opportunities {
+        .mc-header-menu--item.opportunity {
+            .icon {
+                background-color: var(--mc-opportunities-500);
+            }
+            .label {
+                color: var(--mc-opportunities-500);
+            }
+        }
+    }
+}
+
 .main-header {
-    align-items: center;
     background-color: white;
     box-shadow: var(--mc-shadow-lv1);
-    display: flex;
-    height: size(90);
-    justify-content: space-between;
-    padding: 0 size(25);
-    position: relative;
     width: 100%;
-    z-index: 2;
+    z-index: 3;
+    position: relative;
 
-    &__logo {
-        color: var(--mc-primary-500);
-        flex-basis: 500px;
-
-        svg {
-            width: size(350);
-            @media (max-width: 1100px) {
-                width: size(300);
-            }
-            @media (max-width: 500px) {
-                width: size(200);
-            }
-        }
-    }
-
-    &__menu {
+    &__content {        
+        align-items: center;
         display: flex;
-        gap: size(46);
-        list-style: none;
-        padding: 0;
+        gap: size(30);
+        height: size(90);
+        justify-content: space-between;
+        padding: 0 size(16);
+        max-width: size(1440);
+        width: 100%;
+        margin: 0 auto;
 
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-
-        @media (max-width: 1400px) {
-            gap: size(26);
-        }
-
-        @media (max-width: 1200px) {
-            display: none;
-        }
-
-        &, &-mobile {
-            &--item {
-                align-items: center;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                padding: 0 size(5);
-                text-decoration: none;
-    
-                .icon {
-                    align-items: center;
-                    background-color: var(--mc-gray-700);
-                    color: var(--mc-white);
-                    display: flex;
-                    height: size(32);
-                    justify-content: center;
-                    width: size(32);
-                    border-radius: 50%;
-    
-                }
-    
-                .label {
-                    margin: size(4) 0;
-                    font-family: var(--mc-font-body);
-                    font-style: normal;
-                    font-weight: 400;
-                    font-size: size(14);
-                    line-height: size(15);
-                    text-align: center;
-                    color: var(--mc-black);
-                }
-    
-    
-                &.home {
-                    &:hover{
-                        .icon {
-                            background-color: var(--mc-primary-500);
-                        }
-                        .label {
-                            color: var(--mc-primary-500);
-                        }
-                    }
-                }
-    
-                &.project {
-                    &:hover{
-                        .icon {
-                            background-color: var(--mc-projects-500);
-                        }
-                        .label {
-                            color: var(--mc-projects-500);
-                        }
-                    }
-                }
-    
-                &.space {
-                    &:hover{
-                        .icon {
-                            background-color: var(--mc-spaces-500);
-                        }
-                        .label {
-                            color: var(--mc-spaces-500);
-                        }
-                    }
-                }
-    
-                &.event {
-                    &:hover{
-                        .icon {
-                            background-color: var(--mc-events-500);
-                        }
-                        .label {
-                            color: var(--mc-events-500);
-                        }
-                    }
-                }
-    
-                &.agent {
-                    .icon {
-                        font-size: 14px;
-                    }   
-                    
-                    &:hover{
-                        .icon {
-                            background-color: var(--mc-agents-500);
-                        }
-                        .label {
-                            color: var(--mc-agents-500);
-                        }
-                    }
-                }
-    
-                &.opportunity {
-                    &:hover{
-                        .icon {
-                            background-color: var(--mc-opportunities-500);
-                        }
-                        .label {
-                            color: var(--mc-opportunities-500);
-                        }
-                    }
-                }
-                
+        /* .mc-header-logo {
+            .theme-logo {
+                z-index: 999;
             }
-        }
+        } */
 
-    }
-
-    &__options {
-        &--loggedIn {
+        .logIn {
             align-items: center;
+            background:  var(--mc-low-500);
+            border-radius: var(--mc-border-radius-xs);
+            color: var(--mc-white);
             display: flex;
-            gap: 6px;
+            font-size: size(14);
+            font-weight: 600;
+            gap: size(28);
+            line-height: size(20);
+            padding: size(14) size(64);
+            text-decoration: none;
 
-            .notifications {
-                a {
-                    padding: size(13);
-                    display: flex;
-                    gap: size(4);
-                    align-items: center;
-                    font-weight: 600;
-                    font-size: size(14);
-                    line-height: size(14);
-                    text-decoration: none;
-                    color: black;
-                    svg {
-                        font-size: size(24);
-                    }
-                    &.mobile {
-                        display: none;
-                        svg {
-                            font-size: size(20);
-                        }
-                    }
-    
-                    @media (max-width: 1250px) {
-                        &.mobile {
-                            display: flex;
-                        }
-                        &.desk {
-                            display: none;
-                        }
-                    }
+            span {
+                display: flex;
+
+                svg {
+                    transform: matrix(-1, 0, 0, 1, 0, 0);
                 }
-
             }
 
+            @media (max-width: size(1170)) {
+                padding: size(14) size(32);
+            }
         }
 
-        &--loggedOff {
-            display: flex;
-            .logIn {
+        &__options {
+            &--userOptions {
                 align-items: center;
-                background:  var(--mc-gray-700);
-                border-radius: var(--mc-border-radius-sm);
-                color: var(--mc-white);
                 display: flex;
-                font-size: size(14);
-                font-weight: 600;
-                gap: size(28);
-                line-height: size(14);
-                padding: size(13) size(16);
-                text-decoration: none;
-                span {
-                    display: flex;
-                    svg {
-                        transform: matrix(-1, 0, 0, 1, 0, 0);
+                gap: size(30);
+
+                /* .notifications {
+                    a {
+                        padding: size(13);
+                        display: flex;
+                        gap: size(4);
+                        align-items: center;
+                        font-weight: 600;
+                        font-size: size(14);
+                        line-height: size(14);
+                        text-decoration: none;
+                        color: black;
+                        svg {
+                            font-size: size(24);
+                        }
+                        &.mobile {
+                            display: none;
+                            svg {
+                                font-size: size(20);
+                            }
+                        }
+        
+                        @media (max-width: 1250px) {
+                            &.mobile {
+                                display: flex;
+                            }
+                            &.desk {
+                                display: none;
+                            }
+                        }
                     }
-                }
+
+                } */
+
             }
         }
     }
