@@ -8,6 +8,12 @@ app.component('entity-location', {
         return { hasSlot }
     },
 
+    computed: {
+        hasPublicLocation() {
+            return !!this.entity.$PROPERTIES.publicLocation;
+        }
+    },
+
     props: {
         entity: {
             type: Entity,
@@ -16,8 +22,11 @@ app.component('entity-location', {
         editable: {
             type: Boolean,
             default: false,
-        }        
-        
+        },
+        hideLabel: {
+            type: Boolean,
+            default: false,
+        }
     },
 
     methods: {
