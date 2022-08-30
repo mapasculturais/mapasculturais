@@ -1,13 +1,15 @@
 <?php
+
 use MapasCulturais\i;
-$this->import('popover')
+
+$this->import('popover mc-tag-list mc-multiselect')
 ?>
 <div v-if="editable || entity.terms?.[taxonomy].length > 0" class="entity-terms">
 
     <h4 class="entity-terms__title" v-if="title == ''"> {{taxonomy}} </h4>
     <h4 class="entity-terms__title" v-else> {{title}} </h4>
 
-    <popover v-if="editable" openside="down-right" @close="this.filter = ''" @open="loadTerms()">
+    <popover v-if="allowInsert && editable" openside="down-right" @close="this.filter = ''" @open="loadTerms()">
         <template #button="popover">
             <button @click="popover.toggle()" class="button button--rounded button--sm button--icon button--primary" v-if="editable">
                 <?php i::_e("Adicionar nova") ?>
@@ -16,7 +18,7 @@ $this->import('popover')
         </template>
 
         <!-- Modo Tags -->
-        <template v-if="allowInsert" #default="popover">
+        <template #default="popover">
             <div class="entity-terms__tags">
                 <form class="entity-terms__tags--form" @submit="addTerm(filter, popover)">
                     <input type="text" v-model="filter" class="input" placeholder="<?= i::__('Adicione uma nova tag') ?>">
@@ -31,34 +33,13 @@ $this->import('popover')
                 </ul>
             </div>
         </template>
-
-        <!-- Modo Área de Atuação -->
-        <template v-if="!allowInsert" #default="popover">
-            <div class="entity-terms__area">
-                <input type="text" v-model="filter" class="entity-terms__area--input" placeholder="<?= i::__('Filtro') ?>">
-                <ul v-if="terms.length > 0" class="entity-terms__area--list">
-                    <li v-for="term in filteredTerms">
-                        <label class="entity-terms__area--list-item">
-                            <input type="checkbox" 
-                                :checked="entityTerms.indexOf(term) >= 0"
-                                @change="toggleTerm(term)"
-                                class="input" > 
-                            <span class="text" v-html="highlightedTerm(term)"></span>
-                        </label>
-                    </li>
-                </ul>
-
-                <button class="button button--solid button--solid-dark" @click="popover.toggle()">
-                    <?php i::_e('Confirmar')?>
-                </button>
-            </div>
-        </template>
     </popover>
 
-    <ul class="entity-terms__terms">
-        <li :class="[entity.__objectType+'__background', 'entity-terms__terms--term']" v-for="term in entityTerms"> 
-            {{term}}
-            <mc-icon v-if="editable" @click="remove(term)" name="delete"></mc-icon>
-        </li>
-    </ul>
+    <mc-multiselect v-if="!allowInsert && editable" :model="entityTerms" :items="terms" @open="loadTerms()" #default="{popover}">
+        <button @click="popover.toggle()" class="button button--rounded button--sm button--icon button--primary">
+            <?php i::_e("Adicionar nova") ?>
+            <mc-icon name="add"></mc-icon>
+        </button>
+    </mc-multiselect>
+    <mc-tag-list :editable="editable" :classes="entity.__objectType+'__background'" :tags="entityTerms" @remove="remove($event)"></mc-tag-list>
 </div>

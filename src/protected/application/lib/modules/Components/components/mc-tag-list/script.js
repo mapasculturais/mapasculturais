@@ -1,6 +1,6 @@
 app.component('mc-tag-list', {
     template: $TEMPLATES['mc-tag-list'],
-    emits: [],
+    emits: ['remove'],
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -24,9 +24,9 @@ app.component('mc-tag-list', {
             default: [],
             required: true,
         },
-        entityType: {
+        classes: {
             type: String,
-            required: true,
+            required: false,
         }
     },
 
@@ -35,6 +35,11 @@ app.component('mc-tag-list', {
     },
 
     methods: {
-
+        remove(tag) {
+            const tags = this.tags;
+            const indexOf = tags.indexOf(tag);
+            tags.splice(indexOf,1);
+            this.$emit('remove', tag);
+        },
     }
 });
