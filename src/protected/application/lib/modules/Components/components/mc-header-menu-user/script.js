@@ -9,7 +9,7 @@ app.component('mc-header-menu-user', {
 
     data() {
         return {
-            open: false,
+            open: false
         }
     },
 
