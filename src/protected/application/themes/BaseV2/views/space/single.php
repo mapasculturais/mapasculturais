@@ -34,12 +34,12 @@ $this->breadcramb = [
                             
                             <div class="divider col-12"></div>
                             <div class="col-12">
-                                    <h2>Descrição Detalhada</h2>
+                                    <h2><?= i::_e("Descrição Detalhada"); ?></h2>
                                     <p>{{entity.longDescription}}</p>
                             </div>
                                 
                             <div class="col-12">
-                                <entity-files-list :entity="entity" group="downloads" title="Arquivos para download"></entity-files-list>
+                                <entity-files-list :entity="entity" group="downloads" title="<?= i::_e('Arquivos para download'); ?>"></entity-files-list>
                             </div>
 
                             <div v-if="entity" class="col-12">
@@ -50,7 +50,7 @@ $this->breadcramb = [
                                 <entity-gallery :entity="entity"></entity-gallery>
                             </div>
                             <div class="property col-12">
-                                <button class="button button--primary button--md">Reinvindicar Propriedade</button>
+                                <button class="button button--primary button--md">"<?= i::_e('Reinvindicar Propriedade'); ?>"</button>
                             </div>
                             
                         </div>
@@ -67,7 +67,7 @@ $this->breadcramb = [
                             </div>
                             
                             <div class="col-12">
-                                <entity-related-agents :entity="entity"  title="Agentes Relacionados"></entity-related-agents>  
+                                <entity-related-agents :entity="entity"  title="<?= i::_e('Agentes Relacionados'); ?>"></entity-related-agents>  
                             </div>
 
                             <div class="col-12">
@@ -75,11 +75,11 @@ $this->breadcramb = [
                             </div>
 
                             <div class="col-12">
-                                <share-links title="Compartilhar" text="Veja este link:"></share-links>
+                                <share-links title="<?= i::_e('Compartilhar'); ?>" text="<?= i::_e('Veja este link:'); ?>"></share-links>
                             </div>
                             
                             <div class="col-12">
-                                <entity-owner title="Publicado por" :entity="entity"></entity-links>
+                                <entity-owner title="<?= i::_e('Publicado por'); ?>" :entity="entity"></entity-links>
                             </div>
                         </div>
                     </aside>
@@ -93,8 +93,5 @@ $this->breadcramb = [
 
             </div>
         </tab>
-
     </tabs>
-
-    
 </div>
