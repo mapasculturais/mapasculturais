@@ -72,13 +72,13 @@ $this->import('popover messages theme-logo mc-icon
                     <li>
                         <a href="<?= $app->createUrl('auth', 'logout') ?>">
                             <mc-icon name="agent-1"></mc-icon>
-                            <label> <?php i::_e('Meu Perfil') ?> </label>
+                            <?php i::_e('Meu Perfil') ?>
                         </a>
                     </li>
                     <li>
                         <a href="<?= $app->createUrl('auth', 'logout') ?>">
                             <mc-icon name="logout"></mc-icon>
-                            <label> <?php i::_e('Sair da sua conta') ?> </label>
+                            <?php i::_e('Sair da sua conta') ?>
                         </a>
                     </li>
 
@@ -89,25 +89,25 @@ $this->import('popover messages theme-logo mc-icon
                     <li> 
                         <a href="<?= $app->createUrl('panel', 'index') ?>"> 
                             <mc-icon name="dashboard"></mc-icon>
-                            <label> <?php i::_e('Painel de controle') ?> </label>
+                            <?php i::_e('Painel de controle') ?>
                         </a> 
                     </li>
                     <li> 
                         <a href="<?= $app->createUrl('panel', 'agents') ?>"> 
                             <mc-icon name="agent"></mc-icon>
-                            <label> <?php i::_e('Meus agentes') ?> </label>
+                            <?php i::_e('Meus agentes') ?>
                         </a> 
                     </li>
                     <li> 
                         <a href="<?= $app->createUrl('panel', 'events') ?>"> 
                             <mc-icon name="event"></mc-icon>
-                            <label> <?php i::_e('Meus eventos') ?> </label>
+                            <?php i::_e('Meus eventos') ?>
                         </a> 
                     </li>
                     <li> 
                         <a href="<?= $app->createUrl('panel', 'spaces') ?>"> 
                             <mc-icon name="space"></mc-icon>
-                            <label> <?php i::_e('Meus espaços') ?> </label>
+                            <?php i::_e('Meus espaços') ?>
                         </a> 
                     </li>
 
@@ -118,25 +118,25 @@ $this->import('popover messages theme-logo mc-icon
                     <li>
                         <a href="<?= $app->createUrl('panel', 'registrations') ?>"> 
                             <mc-icon name="opportunity"></mc-icon>
-                            <label> <?php i::_e('Minhas inscrições') ?> </label>
+                            <?php i::_e('Minhas inscrições') ?>
                         </a>
                     </li>
                     <li>
                         <a href="<?= $app->createUrl('panel', 'opportunities') ?>"> 
                             <mc-icon name="opportunity"></mc-icon>
-                            <label> <?php i::_e('Minhas oportunidades') ?> </label>
+                            <?php i::_e('Minhas oportunidades') ?>
                         </a>
                     </li>
                     <li>
                         <a href=""> 
                             <mc-icon name="opportunity"></mc-icon>
-                            <label> <?php i::_e('Prestação de contas') ?> </label>
+                            <?php i::_e('Prestação de contas') ?>
                         </a>
                     </li>
                     <li>
                         <a href=""> 
                             <mc-icon name="opportunity"></mc-icon>
-                            <label> <?php i::_e('Minhas avaliações') ?> </label>
+                            <?php i::_e('Minhas avaliações') ?>
                         </a>
                     </li>
                 </template>    
