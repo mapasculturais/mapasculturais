@@ -6,6 +6,9 @@ app.component('search-filter-agent', {
         const text = Utils.getTexts('search-filter-agent')
         return { text }
     },
+    created() {
+        this.pseudoQuery['term:area'] = [];
+    },
 
     props: {
         position: {
