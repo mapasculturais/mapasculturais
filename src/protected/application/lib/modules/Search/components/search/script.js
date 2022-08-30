@@ -16,11 +16,15 @@ app.component('search', {
             type: String,
             required: true
         },
+        initialPseudoQuery: {
+            type: Object,
+            default: {}
+        }
     },
 
     data() {
         return {
-            pseudoQuery: {},
+            pseudoQuery: this.initialPseudoQuery,
         }
     },
 
