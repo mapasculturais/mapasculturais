@@ -1,112 +1,150 @@
 <?php
 use MapasCulturais\App;
 use MapasCulturais\i;
-$this->import('popover messages main-menu theme-logo');
+$this->import('popover messages theme-logo mc-icon
+    mc-header-menu-user
+    mc-header-menu
+
+    ');
 ?>
 
 <header class="main-header">
 
-    <!-- Logo -->
-    <div class="main-header__logo">
-        <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
-    </div>     
-    
-    <!-- Menu -->
-    <ul class="main-header__menu">
-        <li> 
-            <a href="<?= $app->createUrl('site', 'index') ?>" class="main-header__menu--item home">
-                <span class="icon"> <mc-icon name="home"></mc-icon> </span>
-                <p class="label"> <?php i::_e('Home') ?> </p>      
-            </a>  
-        </li>
-        <li>
-            <a href="<?= $app->createUrl('search', 'opportunities') ?>" class="main-header__menu--item opportunity">
-                <span class="icon opportunity__bg-hover"> <mc-icon name="opportunity"></mc-icon> </span>
-                <p class="label"> <?php i::_e('Oportunidades') ?> </p>
-            </a>
-        </li>
-        <li>
-            <a href="<?= $app->createUrl('search', 'agents') ?>" class="main-header__menu--item agent">
-                <span class="icon"> <mc-icon name="agent-2"> </span>
-                <p class="label"> <?php i::_e('Agentes') ?> </p>
-            </a>
-        </li>
-        <li> 
-            <a href="<?= $app->createUrl('search', 'events') ?>" class="main-header__menu--item event">
-                <span class="icon"> <mc-icon name="event"> </span>
-                <p class="label"> <?php i::_e('Eventos') ?> </p>
-            </a>  
-        </li>
-        <li> 
-            <a href="<?= $app->createUrl('search', 'spaces') ?>" class="main-header__menu--item space">
-                <span class="icon"> <mc-icon name="space"> </span>
-                <p class="label"> <?php i::_e('Espaços') ?> </p>       
-            </a> 
-        </li>
-        <li> 
-            <a href="<?= $app->createUrl('search', 'projects') ?>" class="main-header__menu--item project">
-                <span class="icon"> <mc-icon name="project"> </span>
-                <p class="label"> <?php i::_e('Projetos') ?> </p>      
-            </a> 
-        </li>
-    </ul>
+    <div class="main-header__content">
 
-
-    <!-- Options -->
-    <div class="main-header__options">
-        <?php if ($app->user->is('guest')): ?>
-            
-            <div class="main-header__options--loggedOff">
-                <a href="<?= $app->createUrl('auth') ?>" class="logIn">
-                    <span><mc-icon name="project"></mc-icon></span>
-                    <?php i::_e('Entrar') ?>
-                </a>
-            </div>
-            
+        <mc-header-menu>
+            <!-- Logo -->
+            <template #logo>
+                <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
+            </template>
+            <!-- Menu principal -->
+            <template #default>
+                <li> 
+                    <a href="<?= $app->createUrl('site', 'index') ?>" class="mc-header-menu--item home">
+                        <span class="icon"> <mc-icon name="home"></mc-icon> </span>
+                        <p class="label"> <?php i::_e('Home') ?> </p>      
+                    </a>  
+                </li>
+                <li>
+                    <a href="<?= $app->createUrl('search', 'opportunities') ?>" class="mc-header-menu--item opportunity">
+                        <span class="icon opportunity__bg-hover"> <mc-icon name="opportunity"></mc-icon> </span>
+                        <p class="label"> <?php i::_e('Oportunidades') ?> </p>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= $app->createUrl('search', 'agents') ?>" class="mc-header-menu--item agent">
+                        <span class="icon"> <mc-icon name="agent-2"> </span>
+                        <p class="label"> <?php i::_e('Agentes') ?> </p>
+                    </a>
+                </li>
+                <li> 
+                    <a href="<?= $app->createUrl('search', 'events') ?>" class="mc-header-menu--item event">
+                        <span class="icon"> <mc-icon name="event"> </span>
+                        <p class="label"> <?php i::_e('Eventos') ?> </p>
+                    </a>  
+                </li>
+                <li> 
+                    <a href="<?= $app->createUrl('search', 'spaces') ?>" class="mc-header-menu--item space">
+                        <span class="icon"> <mc-icon name="space"> </span>
+                        <p class="label"> <?php i::_e('Espaços') ?> </p>       
+                    </a> 
+                </li>
+                <li> 
+                    <a href="<?= $app->createUrl('search', 'projects') ?>" class="mc-header-menu--item project">
+                        <span class="icon"> <mc-icon name="project"> </span>
+                        <p class="label"> <?php i::_e('Projetos') ?> </p>      
+                    </a> 
+                </li>
+            </template>
+        </mc-header-menu>
+        
+        <!--  -->
+        
+        <?php if ($app->user->is('guest')): ?>   
+            <!-- Botão login -->             
+            <a href="<?= $app->createUrl('auth') ?>" class="logIn">
+                <?php i::_e('Entrar') ?>
+            </a>        
         <?php else: ?>
+            <!-- Menu do usuário -->
+            <mc-header-menu-user>
+                <template #default>
+                    <li>
+                        <a href="<?= $app->createUrl('auth', 'logout') ?>">
+                            <mc-icon name="agent-1"></mc-icon>
+                            <label> <?php i::_e('Meu Perfil') ?> </label>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= $app->createUrl('auth', 'logout') ?>">
+                            <mc-icon name="logout"></mc-icon>
+                            <label> <?php i::_e('Sair da sua conta') ?> </label>
+                        </a>
+                    </li>
 
-            <div class="main-header__options--loggedIn active">
-                <div class="notifications">
-                    <a class="desk" href=""> <?php i::_e('Notificações') ?> <mc-icon name="notification"></mc-icon> </a>
-                    <a class="mobile" href=""> <mc-icon name="notification"></mc-icon> </a>
-                </div>
+                    <li class="label">
+                        <?= i::_e('Menu do painel de controle')?>
+                    </li>
 
-                <main-menu>
                     <li> 
                         <a href="<?= $app->createUrl('panel', 'index') ?>"> 
-                            <p class="label"> <?php i::_e('Painel de controle') ?> </p>
-                        </a> 
-                    </li>
-                    <li> 
-                        <a href="<?= $app->createUrl('panel', 'opportunities') ?>"> 
-                            <p class="label"> <?php i::_e('Editais e Oportunidades') ?> </p>
-                        </a> 
-                    </li>
-                    <li> 
-                        <a href="<?= $app->createUrl('panel', 'events') ?>"> 
-                            <p class="label"> <?php i::_e('Meus eventos') ?> </p>
+                            <mc-icon name="dashboard"></mc-icon>
+                            <label> <?php i::_e('Painel de controle') ?> </label>
                         </a> 
                     </li>
                     <li> 
                         <a href="<?= $app->createUrl('panel', 'agents') ?>"> 
-                            <p class="label"> <?php i::_e('Meus agentes') ?> </p>
+                            <mc-icon name="agent"></mc-icon>
+                            <label> <?php i::_e('Meus agentes') ?> </label>
+                        </a> 
+                    </li>
+                    <li> 
+                        <a href="<?= $app->createUrl('panel', 'events') ?>"> 
+                            <mc-icon name="event"></mc-icon>
+                            <label> <?php i::_e('Meus eventos') ?> </label>
                         </a> 
                     </li>
                     <li> 
                         <a href="<?= $app->createUrl('panel', 'spaces') ?>"> 
-                            <p class="label"> <?php i::_e('Meus espaços') ?> </p>
+                            <mc-icon name="space"></mc-icon>
+                            <label> <?php i::_e('Meus espaços') ?> </label>
                         </a> 
                     </li>
+
+                    <li class="label">
+                        <?= i::_e('Editais e oportunidades')?>
+                    </li>
+
                     <li>
-                        <a href="<?= $app->createUrl('auth', 'logout') ?>">
-                            <p class="label"> <?php i::_e('Sair') ?> </p>
+                        <a href="<?= $app->createUrl('panel', 'registrations') ?>"> 
+                            <mc-icon name="opportunity"></mc-icon>
+                            <label> <?php i::_e('Minhas inscrições') ?> </label>
                         </a>
                     </li>
-                </main-menu>
-            </div>
-
+                    <li>
+                        <a href="<?= $app->createUrl('panel', 'opportunities') ?>"> 
+                            <mc-icon name="opportunity"></mc-icon>
+                            <label> <?php i::_e('Minhas oportunidades') ?> </label>
+                        </a>
+                    </li>
+                    <li>
+                        <a href=""> 
+                            <mc-icon name="opportunity"></mc-icon>
+                            <label> <?php i::_e('Prestação de contas') ?> </label>
+                        </a>
+                    </li>
+                    <li>
+                        <a href=""> 
+                            <mc-icon name="opportunity"></mc-icon>
+                            <label> <?php i::_e('Minhas avaliações') ?> </label>
+                        </a>
+                    </li>
+                </template>    
+            </mc-header-menu-user>
         <?php endif; ?>
+
     </div>
 
 </header>
+
 <messages></messages>
