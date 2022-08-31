@@ -80,7 +80,7 @@ $config = $app->config['social-media'];
 
         <ul class="main-footer__links--group">
             <li>
-                <a>"><?php i::_e('Ajuda e Privacidade'); ?></a>
+                <a><?php i::_e('Ajuda e Privacidade'); ?></a>
             </li>
 
             <?php foreach ($app->config['module.LGPD'] as $slug => $cfg) : ?>
