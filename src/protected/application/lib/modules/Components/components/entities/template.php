@@ -11,7 +11,9 @@ $this->import('loading');
       :refresh="refresh">
 </slot>
 
-<loading :condition="entities.loading"></loading>
+<slot v-if="entities.loading" name="loading" :entities="entities">
+    <loading :condition="entities.loading"></loading>
+</slot>
 <template v-if="!entities.loading">
     <slot v-if="(entities.length > 0) || ('@keyword' in query)"
         :entities="entities"
