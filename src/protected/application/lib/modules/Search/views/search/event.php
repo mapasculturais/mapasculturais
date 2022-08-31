@@ -8,7 +8,7 @@ $this->breadcramb = [
 ];
 
 ?>
-<search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event">
+<search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event" :initial-pseudo-query="{'term:linguagem':[]}">
 
     <template #create-button>
         
