@@ -133,8 +133,7 @@
             left: 0;
             overflow-y: scroll;
             overflow-x: hidden;
-            padding: 0 size(16);
-            position: absolute;
+            position: fixed;
             top: 0;
             width: 100%;
             z-index: 100;
@@ -144,12 +143,14 @@
             align-items: center;
             background-color: white;
             border-top: none;
+            box-shadow: var(--mc-shadow-lv1);
             display: flex;
             gap: size(30);
             height: size(90);
             justify-content: space-between;
             margin: 0 auto;
             max-width: size(1440);
+            padding: 0 size(16);
             position: sticky;
             top: 0;
             width: 100%;
@@ -158,10 +159,12 @@
             &__btn {
                 background: none;
                 border: none;
+                color: var(--mc-low-500);
                 cursor: pointer;
                 display: flex;
                 margin-right: size(21);
                 padding: size(6);
+                text-decoration: none;
                 
                 .iconify {
                     font-size: size(25);
