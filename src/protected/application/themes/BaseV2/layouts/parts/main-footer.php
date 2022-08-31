@@ -88,7 +88,12 @@ $config = $app->config['social-media'];
                     <a href="<?= $app->createUrl('lgpd', $slug) ?>"><?= $cfg['title'] ?></a>
             </li>
             <?php endforeach ?>
-
+            <li>
+                <a href=""><?php i::_e('Política de Privacidade'); ?></a>
+            </li>
+            <li>
+                <a href=""><?php i::_e('Autorização de uso de imagem'); ?></a>
+            </li>
         </ul>
 
     </div>
