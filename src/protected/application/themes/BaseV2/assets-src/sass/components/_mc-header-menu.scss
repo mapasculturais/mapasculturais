@@ -1,12 +1,17 @@
 @use '../settings/mixins' as *;
 
 .mc-header-logo {
-    max-width: size(360);
-    width: 100%;
+    align-items: center;
     display: flex;
     flex-direction: row;
-    align-items: center;
     gap: size(13);
+    max-width: size(360);
+    width: 100%;
+
+    a {
+        color: var(--mc-low-500);
+        text-decoration: none;
+    }
 
     .theme-logo {
         width: 100%;
@@ -15,8 +20,8 @@
     @media (max-width: size(430)){
         .theme-logo__text {
             font-size: size(11);
-            line-height: size(15);
             letter-spacing: size(3);
+            line-height: size(15);
         }
     }
 
@@ -39,18 +44,18 @@
     user-select: none;
 
     &__btn-mobile {
-        display: none;
         align-items: center;
-        justify-content: center;
-        border: none;
         background: none;
-        padding: 0;
+        border: none;
+        display: none;
+        justify-content: center;
         margin: 0;
+        padding: 0;
 
         .iconify {
-            width: size(24);
             height: size(24);
             margin: size(3);
+            width: size(24);
         }
     }
 
@@ -68,15 +73,15 @@
 
 
     &--btn {
-        margin: 0;
-        padding: 0;
         background: none;
         border: none;
         display: flex;
+        margin: 0;
+        padding: 0;
 
         .iconify {
-            width: size(25);
             height: size(25);
+            width: size(25);
         }
     }
 
@@ -91,25 +96,25 @@
         .icon {
             align-items: center;
             background-color: var(--mc-low-500);
+            border-radius: 50%;
             color: var(--mc-white);
             display: flex;
             height: size(32);
             justify-content: center;
             width: size(32);
-            border-radius: 50%;
 
         }
 
         .label {                    
-            margin: size(8) 0 0;
+            color: var(--mc-black);
             font-family: var(--mc-font-body);
+            font-size: size(14);
             font-style: normal;
             font-weight: 700;
-            font-size: size(14);
             letter-spacing: size(0.8);
             line-height: size(15);
+            margin: size(8) 0 0;
             text-align: center;
-            color: var(--mc-black);
         }
 
 
@@ -186,51 +191,111 @@
     }
 
     &.mobile {
-        display: none;
-        position: absolute;
-        top: size(90);
         background: white;
-        margin: 0;
-        left: size(-16);
-        flex-direction: column;
         gap: 0;
-        width: size(336);
-        height: calc(100vh - size(90));
-        padding-left: size(32);
-        border-radius: 0 var(--mc-border-radius-xs) 0 0;
-        box-shadow: inset 8px 4px 8px rgb(0 0 0 / 16%);
-        z-index: 2;
+        height: 100vh;
+        left: 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        padding: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
 
         @media (max-width: size(1070)) {
-            display: flex;
+            display: block;
         }
 
-        li {
-            border-bottom: var(--mc-border-hairline) #BBBBBB;
+        .mc-header-menu__itens {
+            list-style: none;
+            margin: 0;
+            padding: 0 0 0 size(16);
+            width: 100%;
 
-            &:last-child {
-                border-bottom: none;
+            li {
+                border-bottom: var(--mc-border-hairline) #BBBBBB;
+    
+                &:last-child {
+                    border-bottom: none;
+                }
+    
+                .mc-header-menu--item {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 24px;
+                    justify-content: flex-start;
+                    padding: size(12) 0;
+    
+                    .label {
+                        margin: 0;
+                    }
+    
+                    &.painel {
+                        .icon {
+                            background: none;
+                            color: var(--mc-low-500);
+                            .iconify {
+                                width: size(24);
+                                height: size(24);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .close {
+            align-items: center;
+            background-color: white;
+            border-top: none;
+            box-shadow: var(--mc-shadow-lv1);
+            display: flex;
+            flex-direction: row;
+            gap: size(13);
+            height: size(90);
+            margin: 0 auto;
+            padding-left: size(16);
+            padding-right: size(122);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+            
+            &__btn {
+                align-items: center;
+                background: none;
+                border: none;
+                color: var(--mc-low-500);
+                justify-content: center;
+                margin: 0;
+                padding: 0;
+                text-decoration: none;
+
+                cursor: pointer;
+                display: flex;
+                
+                .iconify {
+                    height: size(24);
+                    margin: size(3);
+                    width: size(24);
+                }
             }
 
-            .mc-header-menu--item {
-                display: flex;
-                flex-direction: row;
-                gap: 24px;
-                justify-content: flex-start;
-                padding: size(12) 0;
+            &:hover {
+                background-color: white;
+                color: var(--mc-low-500);
+            }
 
-                .label {
-                    margin: 0;
-                }
+            .theme-logo {
+                max-width: size(379);
+                width: 100%;
 
-                &.painel {
-                    .icon {
-                        background: none;
-                        color: var(--mc-low-500);
-                        .iconify {
-                            width: size(24);
-                            height: size(24);
-                        }
+                @media (max-width: size(430)){
+                    .theme-logo__text {
+                        font-size: size(11);
+                        letter-spacing: size(3);
+                        line-height: size(15);
                     }
                 }
             }
