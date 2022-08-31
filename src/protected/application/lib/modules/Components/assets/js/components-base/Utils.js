@@ -121,7 +121,7 @@ globalThis.Utils = {
         for(let k in pseudoQuery) {
             let val = pseudoQuery[k];
             let not = '';
-            if(val.indexOf('!') === 0) {
+            if(typeof val == 'string' && val.indexOf('!') === 0) {
                 not = '!';
                 val = val.substr(1);
             }
@@ -167,10 +167,14 @@ globalThis.Utils = {
 
             } else if(val) {
                 if (typeof val == 'string') {
-                    newQuery[k] = `${not}EQ(${val})`;
+                    if (val) {
+                        newQuery[k] = `${not}EQ(${val})`;
+                    }
                 } else if (val instanceof Array) {
                     val = val.join(',');
-                    newQuery[k] = `${not}IIN(${val})`;
+                    if (val) {
+                        newQuery[k] = `${not}IIN(${val})`;
+                    }
                 }
             }
         }
