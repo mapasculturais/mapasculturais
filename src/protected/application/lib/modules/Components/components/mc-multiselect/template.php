@@ -3,7 +3,7 @@ use MapasCulturais\i;
 $this->import('popover');
 ?>
 <div class="mc-multiselect">
-    <popover openside="down-right" @close="close()" @open="open()">
+    <popover :openside="openside" @close="close()" @open="open()">
         <template #button="popover">
             <slot :popover="popover"></slot>
         </template>

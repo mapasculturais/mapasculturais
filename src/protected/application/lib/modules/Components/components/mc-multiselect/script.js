@@ -47,6 +47,11 @@ app.component('mc-multiselect', {
             type: Boolean,
             default: false
         },
+
+        openside: {
+            type: String,
+            default: 'down-right'
+        }
     },
 
     computed: {
