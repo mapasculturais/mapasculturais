@@ -7,11 +7,9 @@ app.component('mc-multiselect', {
         const text = Utils.getTexts('mc-multiselect')
         return { text }
     },
-    
-    data() {
-        return {
-            filter:'',
-        };
+
+    created() {
+        this.model.filter = '';
     },
 
     props: {
@@ -34,12 +32,27 @@ app.component('mc-multiselect', {
             type: String,
             required: false,
         },
+
+        closeOnSelect: {
+            type: Boolean,
+            default: true
+        },
+
+        hideFilter: {
+            type: Boolean,
+            default: false
+        },
+
+        hideButton: {
+            type: Boolean,
+            default: false
+        },
     },
 
     computed: {
         filteredItems() {
             return this.items.filter((item) => {
-                const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const _filter = this.model.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 const _item = item.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
                 if(_item.indexOf(_filter) >= 0) {
@@ -52,25 +65,34 @@ app.component('mc-multiselect', {
 
     methods: {
         highlightedItem(item) {
-            const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const _filter = this.model.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const _item = item.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const indexOf = _item.indexOf(_filter);
             if(indexOf >= 0) {
                 const part0 = item.substr(0, indexOf); 
-                const part1 = item.substr(indexOf, this.filter.length); 
-                const part2 = item.substr(indexOf + this.filter.length);
+                const part1 = item.substr(indexOf, this.model.filter.length); 
+                const part2 = item.substr(indexOf + this.model.filter.length);
                 return `${part0}<b><u>${part1}</u></b>${part2}`;
             } else {
                 return item;
             }
         },
 
-        toggleItem(item) {
+        remove(item) {
+            const items = this.items;
+            const indexOf = items.indexOf(item);
+            items.splice(indexOf,1);
+        },
+
+        toggleItem(item, popover) {
             const items = this.model;
             if (items.indexOf(item) >= 0) {
                 this.remove(item);
             } else {
                 items.push(item);
+                if(this.closeOnSelect) {
+                    popover.close();
+                }
             }
         },
         
@@ -80,7 +102,7 @@ app.component('mc-multiselect', {
 
         close() {
             this.$emit('close', this);
-            this.filter = '';
+            this.model.filter = '';
         }
     }
 });
