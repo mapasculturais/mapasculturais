@@ -57,6 +57,8 @@ $iconset = [
     'settings' => 'mdi:cog-outline',
     'sort' => 'mdi:sort',
     'trash' => 'ooui:trash',
+    'triangle-down' => 'entypo:triangle-down',
+    'triangle-up' => 'entypo:triangle-up',
     'up' => 'mdi:chevron-up',
     'upload' => 'ic:baseline-file-upload',
 ];
