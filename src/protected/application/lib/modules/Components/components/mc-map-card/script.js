@@ -19,7 +19,11 @@ app.component('mc-map-card', {
         return {}
     },
 
-    computed: {},
+    computed: {
+        areas() {
+            return (Array.isArray(this.entity.terms.area) ? this.entity.terms.area.join(", ") : false);
+        },
+    },
     
     methods: {},
 });
