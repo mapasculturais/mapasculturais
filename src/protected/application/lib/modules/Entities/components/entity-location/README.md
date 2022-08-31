@@ -3,7 +3,7 @@ O `entity-location`Mostra a localização daquela entidade no mapa e permite a e
   
 ## Propriedades
 - *Entity **entity*** - Entidade (obigatório)
-- *Editable **boolean*** - default: false
+- *Boolean **editable** = false* - exibe o componente em mode de edição
 
 ### Importando componente
 ```PHP
