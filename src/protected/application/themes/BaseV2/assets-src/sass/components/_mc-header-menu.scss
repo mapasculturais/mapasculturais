@@ -186,7 +186,19 @@
     }
 
     &.mobile {
-        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        background: white;
+        top: 0;
+        left: 0;
+        padding: 0;
+        z-index: 100;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        gap: 0;
+
+        /* display: none;
         position: absolute;
         top: size(90);
         background: white;
@@ -199,38 +211,110 @@
         padding-left: size(32);
         border-radius: 0 var(--mc-border-radius-xs) 0 0;
         box-shadow: inset 8px 4px 8px rgb(0 0 0 / 16%);
-        z-index: 2;
+        z-index: 2; */
 
         @media (max-width: size(1070)) {
-            display: flex;
+            display: block;
         }
 
-        li {
-            border-bottom: var(--mc-border-hairline) #BBBBBB;
+        .mc-header-menu__itens {
+            list-style: none;
+            width: 100%;
+            padding: 0 0 0 size(16);
+            margin: 0;
 
-            &:last-child {
-                border-bottom: none;
+            li {
+                border-bottom: var(--mc-border-hairline) #BBBBBB;
+    
+                &:last-child {
+                    border-bottom: none;
+                }
+    
+                .mc-header-menu--item {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 24px;
+                    justify-content: flex-start;
+                    padding: size(12) 0;
+    
+                    .label {
+                        margin: 0;
+                    }
+    
+                    &.painel {
+                        .icon {
+                            background: none;
+                            color: var(--mc-low-500);
+                            .iconify {
+                                width: size(24);
+                                height: size(24);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .close {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: size(13);
+            height: size(90);
+            padding-left: size(16);
+            padding-right: size(122);
+            box-shadow: var(--mc-shadow-lv1);
+
+            /* 
+            display: flex;
+            gap: size(30);
+            justify-content: space-between;
+            max-width: size(1440); */
+
+            border-top: none;
+            margin: 0 auto;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;
+            
+            &__btn {
+                align-items: center;
+                justify-content: center;
+                border: none;
+                background: none;
+                padding: 0;
+                margin: 0;
+
+                cursor: pointer;
+                /* padding: size(6);
+                margin-right: size(21);
+                border: none;
+                background: none; */
+                display: flex;
+                
+                .iconify {
+                    width: size(24);
+                    height: size(24);
+                    margin: size(3);
+                }
             }
 
-            .mc-header-menu--item {
-                display: flex;
-                flex-direction: row;
-                gap: 24px;
-                justify-content: flex-start;
-                padding: size(12) 0;
+            &:hover {
+                background-color: white;
+                color: var(--mc-low-500);
+            }
 
-                .label {
-                    margin: 0;
-                }
+            .theme-logo {
+                max-width: size(379);
+                width: 100%;
 
-                &.painel {
-                    .icon {
-                        background: none;
-                        color: var(--mc-low-500);
-                        .iconify {
-                            width: size(24);
-                            height: size(24);
-                        }
+                @media (max-width: size(430)){
+                    .theme-logo__text {
+                        font-size: size(11);
+                        line-height: size(15);
+                        letter-spacing: size(3);
                     }
                 }
             }

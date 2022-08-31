@@ -17,13 +17,23 @@ $this->import('mc-icon');
     <slot name="default"></slot>
 </ul>
 
-<ul v-if="openMobile" class="mc-header-menu mobile">   
-    <slot name="default"></slot>
+<div v-if="openMobile" class="mc-header-menu mobile">
+    <div class="close"> 
+        <button class="close__btn" @click="toggleMobile()">
+            <mc-icon name="close"></mc-icon> 
+        </button>
 
-    <li> 
-        <a href="<?= $app->createUrl('panel', 'index') ?>" class="mc-header-menu--item painel">
-            <span class="icon"> <mc-icon name="dashboard"></mc-icon> </span>
-            <p class="label"> <?php i::_e('Painel de controle') ?> </p>      
-        </a> 
-    </li>
-</ul>
+        <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
+    </div>
+
+    <ul class="mc-header-menu__itens">
+        <slot name="default"></slot>
+
+        <li> 
+            <a href="<?= $app->createUrl('panel', 'index') ?>" class="mc-header-menu--item painel">
+                <span class="icon"> <mc-icon name="dashboard"></mc-icon> </span>
+                <p class="label"> <?php i::_e('Painel de controle') ?> </p>      
+            </a> 
+        </li>
+    </ul>
+</div>
