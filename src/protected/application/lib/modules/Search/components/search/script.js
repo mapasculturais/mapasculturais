@@ -23,7 +23,12 @@ app.component('search', {
     },
 
     data() {
-        const pseudoQuery = this.initialPseudoQuery || $MAPAS.initialPseudoQuery || {};
+        let pseudoQuery;
+        if(this.initialPseudoQuery && $MAPAS.initialPseudoQuery) {
+            pseudoQuery = {...$MAPAS.initialPseudoQuery, ...this.initialPseudoQuery};
+        } else {
+            pseudoQuery = this.initialPseudoQuery || $MAPAS.initialPseudoQuery || {};
+        }
         return { pseudoQuery };
     },
 
