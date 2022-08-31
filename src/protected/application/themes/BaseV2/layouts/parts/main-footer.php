@@ -80,7 +80,7 @@ $config = $app->config['social-media'];
 
         <ul class="main-footer__links--group">
             <li>
-                <a href="<?= $app->createUrl('panel', 'index') ?>"><?php i::_e('Ajuda e Privacidade'); ?></a>
+                <a>"><?php i::_e('Ajuda e Privacidade'); ?></a>
             </li>
 
             <?php foreach ($app->config['module.LGPD'] as $slug => $cfg) : ?>
@@ -88,12 +88,7 @@ $config = $app->config['social-media'];
                     <a href="<?= $app->createUrl('lgpd', $slug) ?>"><?= $cfg['title'] ?></a>
             </li>
             <?php endforeach ?>
-            <li>
-                <a href=""><?php i::_e('Política de Privacidade'); ?></a>
-            </li>
-            <li>
-                <a href=""><?php i::_e('Autorização de uso de imagem'); ?></a>
-            </li>
+           
         </ul>
 
     </div>
