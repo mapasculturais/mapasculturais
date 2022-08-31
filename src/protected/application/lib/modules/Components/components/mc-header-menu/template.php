@@ -5,9 +5,9 @@ $this->import('mc-icon');
 
 <!-- Logo -->
 <div class="mc-header-logo">
-    <button class="mc-header-menu__btn-mobile" @click="toggleMobile()">
+    <a class="mc-header-menu__btn-mobile" href="#main-app" @click="toggleMobile()">
         <mc-icon name="menu-mobile"></mc-icon>
-    </button>
+    </a>
 
     <slot name="logo"></slot>
 </div>
@@ -17,11 +17,12 @@ $this->import('mc-icon');
     <slot name="default"></slot>
 </ul>
 
+<!-- Menu principal mobile -->
 <div v-if="openMobile" class="mc-header-menu mobile">
     <div class="close"> 
-        <button class="close__btn" @click="toggleMobile()">
+        <a class="close__btn" href="#main-app" @click="toggleMobile()">
             <mc-icon name="close"></mc-icon> 
-        </button>
+        </a>
 
         <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
     </div>
