@@ -58,9 +58,9 @@ $this->import('popover theme-logo');
             <div class="close"> 
                 <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
 
-                <button class="close__btn" @click="toggleMobile()">
+                <a class="close__btn"  href="#main-app" @click="toggleMobile()">
                     <mc-icon name="close"></mc-icon> 
-                </button>
+                </a>
             </div>
 
             <ul class="mc-header-menu-user__itens">
