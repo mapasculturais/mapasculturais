@@ -14,8 +14,7 @@ app.component('mc-header-menu-user', {
     },
 
     methods: {
-        toggleMobile() {            
-            document.body.classList.toggle("no-scroll");
+        toggleMobile() {
             this.open = !this.open;
         }
     }
