@@ -158,7 +158,7 @@ $this->breadcramb = [
                         </div>
                         
                         <div class="col-12">
-                            <entity-links title="<?php i::_e('Adicionar'); ?>" links" :entity="entity" :editable="true"></entity-links>
+                            <entity-links title="<?php i::_e('Adicionar'); ?>" :entity="entity" :editable="true"></entity-links>
                         </div>
                         
                         <div class="col-12">
