@@ -10,7 +10,7 @@ $this->breadcramb = [
 ];
 ?>
 
-<search page-title="Agentes" entity-type="agent" >    
+<search page-title="Agentes" entity-type="agent" :initial-pseudo-query="{'term:area':[]}">    
 
     <template #create-button>
         <create-agent></create-agent>

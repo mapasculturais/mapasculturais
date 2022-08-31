@@ -1,10 +1,10 @@
 <?php
 use MapasCulturais\i;
-$this->import('search-filter mc-multiselect mc-tag-list');
+$this->import('search-filter mc-multiselect mc-tag-list mc-icon');
 ?>
 
 <search-filter :position="position" :pseudo-query="pseudoQuery">
-    <form class="form">
+    <form class="form" @submit="$event.preventDefault()">
         <label class="form__label">
             <?= i::_e('Filtros de agente') ?>
         </label>
@@ -27,12 +27,11 @@ $this->import('search-filter mc-multiselect mc-tag-list');
         <div class="field">
             <label> <?php i::_e('Área de atuação') ?></label>
 
-            <mc-multiselect :model="pseudoQuery['term:area']" :items="terms"></mc-multiselect>
+            <mc-multiselect :model="pseudoQuery['term:area']" :items="terms" #default="{popover}" hide-filter hide-button>
+                <input v-model="pseudoQuery['term:area'].filter" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
+                <mc-icon name='triangle-down'></mc-icon>
+            </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['term:area']"></mc-tag-list>
-            <select v-model="pseudoQuery['term:area']" placeholder="<? i::_e('Selecione as áreas')?>">
-                <option :value="undefined"> <? i::_e('Todos')?> </option>
-                <option v-for="term in terms" :key="term"> {{term}} </option>
-            </select>
         </div>
     </form>
 </search-filter>

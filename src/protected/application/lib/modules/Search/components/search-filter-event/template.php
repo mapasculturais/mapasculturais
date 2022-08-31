@@ -1,10 +1,10 @@
 <?php
 use MapasCulturais\i;
-$this->import('search-filter');
+$this->import('search-filter mc-multiselect mc-tag-list');
 ?>
 
 <search-filter :position="position" :pseudo-query="pseudoQuery">
-    <form class="form">
+    <form class="form" @submit="$event.preventDefault()">
         <label class="form__label">
             <?= i::_e('Filtros de eventos') ?>
         </label>
@@ -16,10 +16,11 @@ $this->import('search-filter');
         <div class="field">
             <label> <?php i::_e('Linguagens') ?></label>
 
-            <select v-model="pseudoQuery['term:linguagem']" placeholder="<? i::_e('Selecione as linguagens')?>">
-                <option :value="undefined"> <? i::_e('Todos')?> </option>
-                <option v-for="term in terms" :key="term"> {{term}} </option>
-            </select>
+            <mc-multiselect :model="pseudoQuery['term:linguagem']" :items="terms" #default="{popover}" hide-filter hide-button>
+                <input v-model="pseudoQuery['term:linguagem'].filter" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as linguagens') ?>">
+                <mc-icon name='triangle-down'></mc-icon>
+            </mc-multiselect>
+            <mc-tag-list editable :tags="pseudoQuery['term:linguagem']"></mc-tag-list>
         </div>
     </form>
 </search-filter>
