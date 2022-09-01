@@ -276,7 +276,6 @@
                         &--filter {
                             position: relative;
                             width: 100%;
-                            z-index: 9000;
                         }
                     }
                 }
@@ -289,10 +288,14 @@
 .action-projects {
     .tabs-component__panels{
         background: var(--mc-gray-100);
-        margin-top: size(87.5);
+        margin-top: size(123);
         padding-bottom: size(40);
         margin-bottom: 0;
         min-height: size(500);
+
+        @media (max-width: 500px) {
+            margin-top: size(130);
+        }
     }
 
     .search__tabs--list {
