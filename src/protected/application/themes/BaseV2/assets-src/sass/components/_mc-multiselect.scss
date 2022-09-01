@@ -1,0 +1,30 @@
+@use '../settings/mixins' as *;
+
+.mc-multiselect {
+    
+    &--input {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/contain;
+        background-color: var(--mc-white);
+        background-size: size(20);
+    }
+
+    &__content {
+        &--list {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            padding: 0 16px;
+            width: max-content;
+        }
+    }
+    
+    // @TODO: refatoração do popover
+    .popover {
+        &__content {
+            padding: 0;
+        }
+    }
+}
