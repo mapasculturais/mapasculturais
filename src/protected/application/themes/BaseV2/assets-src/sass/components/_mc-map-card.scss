@@ -1,0 +1,70 @@
+@use '../settings/mixins' as *;
+
+.leaflet-popup {
+    &-tip-container {
+        display: none;
+    }
+
+    &-content-wrapper {
+        border-radius: unset;
+        box-shadow: unset;
+    }
+
+    .mc-map-card {
+
+        max-width: size(359);
+        width: 100%;
+        background: #FFFFFF;
+        border-radius: var(--mc-border-radius-xs);
+
+        &__header {
+            align-items: center;
+            display: flex;
+            gap: size(12);
+            &--image {
+                overflow: hidden;
+                img {
+                    width: size(48);
+                    height: size(48);
+                    border-radius: var(--mc-border-radius-pill);
+                    background: var(--mc-gray-300);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                }
+            }
+
+            &--title {
+                font-weight: 700;
+                font-size: size(18);
+                line-height: size(25);
+            }
+        }
+
+        &__content {
+
+            &--info {
+
+                .info {
+                    font-size: size(12);
+                    font-weight: 600;
+                    line-height: size(16);
+                    text-transform: uppercase;
+
+                    strong {
+                        text-transform: none;
+                    }
+                }
+            }
+        }
+
+        &__footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+        }
+
+    }
+
+}
