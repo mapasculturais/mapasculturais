@@ -9,12 +9,12 @@ $this->import('popover');
         </template>
 
         <template #default="popover">
-            <div class="entity-terms__area">
-                <input v-if="!hideFilter" type="text" v-model="model.filter" class="entity-terms__area--input" placeholder="<?= i::__('Filtro') ?>">
+            <div class="mc-multiselect__content">
+                <input v-if="!hideFilter" type="text" v-model="model.filter" class="mc-multiselect__content--input" placeholder="<?= i::__('Filtro') ?>">
 
-                <ul v-if="items.length > 0" class="entity-terms__area--list">
+                <ul v-if="items.length > 0" class="mc-multiselect__content--list">
                     <li v-for="item in filteredItems">
-                        <label class="entity-terms__area--list-item">
+                        <label class="mc-multiselect__content--list-item">
                             <input type="checkbox" :checked="model.indexOf(item) >= 0" @change="toggleItem(item, popover)" class="input">
                             <span class="text" v-html="highlightedItem(item)"></span>
                         </label>
