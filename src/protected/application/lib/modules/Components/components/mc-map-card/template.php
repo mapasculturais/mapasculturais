@@ -2,7 +2,7 @@
 
 use MapasCulturais\i;
 
-$this->import('entity-card');
+$this->import('entity-card mc-link');
 ?>
 <div class="mc-map-card">
     <div class="mc-map-card__header">
@@ -37,11 +37,9 @@ $this->import('entity-card');
         </div>
     </div>
 
-    <div class="mc-map-card__footer">
-        <a class="button button--icon button--sm opportunity__color">
-            <?php i::_e('Ver todos') ?>
-            <mc-icon name="access"></mc-icon>
-        </a>
+    <div :class="['mc-map-card__footer',  entity.__objectType+'__color']">
+        <mc-link :entity="entity" icon="access" class="mc-map-card__footer--link" label="<?php i::_e('Acessar') ?>" ></mc-link>
+       
     </div>
 
 </div>
