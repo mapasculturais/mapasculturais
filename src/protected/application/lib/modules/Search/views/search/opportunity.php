@@ -10,25 +10,20 @@ $this->breadcramb = [
 ];
 ?>
 
-<search page-title="Oportunidades" entity-type="opportunity" >    
-
+<search page-title="<?php i::esc_attr_e('Oportunidades') ?>" entity-type="opportunity" > 
     <template #create-button>
-        Botão criar oportunidade<!-- <create-opportunity></create-opportunity> -->
+        <!-- @TODO: Criação e aplicação do componente <create-opportunity> -->
+        <?= i::_e('botão criar oportunidade') ?>
     </template>
-
     <template #default="{pseudoQuery}">
-
         <div class="tabs-component__panels">
             <div class="search__tabs--list">
-    
                 <search-list :pseudo-query="pseudoQuery" select="id,name,shortDescription,terms,seals,singleUrl" type="opportunity">
                     <template #filter>
                         <search-filter-opportunity :pseudo-query="pseudoQuery"></search-filter-opportunity>
                     </template>
                 </search-list>
-    
             </div>
         </div>
-        
     </template>
 </search>
