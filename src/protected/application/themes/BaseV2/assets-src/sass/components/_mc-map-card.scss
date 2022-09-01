@@ -17,6 +17,8 @@
 }
 
 .leaflet-popup {
+    margin-bottom: size(75);
+
     &-tip-container {
         display: none;
     }
@@ -24,7 +26,6 @@
     &-content-wrapper {
         border-radius: unset;
         box-shadow: unset;
-        margin-bottom: 53px;
     }
 
     .mc-map-card {
