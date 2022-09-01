@@ -3,12 +3,13 @@ use MapasCulturais\i;
 $this->import('entities mapas-card occurrence-card loading');
 ?>
 
-<div class="grid-12 search-list">
-    
+<div class="grid-12 search-list">    
     <div class="col-3 search-list__filter">
-        <search-filter-event :pseudo-query="pseudoQuery"></search-filter-event>
+        <div class="search-list__filter--filter">
+            <search-filter-event :pseudo-query="pseudoQuery"></search-filter-event>
+        </div>
     </div>
-    <loading :condition="loading"></loading>
+    <loading :condition="loading"></loading>    
     <div v-if="!loading" class="col-9" v-for="occurrence in occurrences" :key="occurrence._reccurrence_string">
         <div v-if="newDate(occurrence)">
             <h2 v-if="occurrence.starts.isToday()"><?= i::__('Hoje') ?></h2>
@@ -22,5 +23,4 @@ $this->import('entities mapas-card occurrence-card loading');
         </div>
         <occurrence-card :occurrence="occurrence"></occurrence-card> 
     </div>
-
 </div>
