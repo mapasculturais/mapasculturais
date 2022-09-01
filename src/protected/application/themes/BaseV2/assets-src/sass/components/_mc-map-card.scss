@@ -21,15 +21,18 @@
             align-items: center;
             display: flex;
             gap: size(12);
-
             &--image {
-                width: size(48);
-                height: size(48);
-                border-radius: var(--mc-border-radius-pill);
-                background: var(--mc-gray-300);
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                overflow: hidden;
+                img {
+                    width: size(48);
+                    height: size(48);
+                    border-radius: var(--mc-border-radius-pill);
+                    background: var(--mc-gray-300);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                }
             }
 
             &--title {
