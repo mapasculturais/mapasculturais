@@ -20,7 +20,7 @@ app.component('search-filter', {
 
     data() {
         return {
-            show: true,
+            show: false,
         }
     },
 
