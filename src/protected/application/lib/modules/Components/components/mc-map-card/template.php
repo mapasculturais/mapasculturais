@@ -2,7 +2,7 @@
 
 use MapasCulturais\i;
 
-$this->import('entity-card mc-link');
+$this->import('mc-link');
 ?>
 <div class="mc-map-card">
     <div class="mc-map-card__header">
