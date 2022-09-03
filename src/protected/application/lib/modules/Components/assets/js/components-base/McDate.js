@@ -1,8 +1,12 @@
 class McDate {
-    constructor(dateString) {
+    constructor(date) {
         this.timezone = 'UTC';
         this.locale = $MAPAS.config.locale;
-        this._date = new Date(`${dateString} ${this.timezone}`);
+        if (date instanceof Date) {
+            this._date = date;
+        } else {
+            this._date = new Date(`${date} ${this.timezone}`);
+        }
     }
 
     format(config) {
@@ -11,6 +15,14 @@ class McDate {
     }
 
     date(options) {
+        if(options == 'sql') {
+            let year = this._date.getUTCFullYear();
+            let month = String(this._date.getUTCMonth() + 1).padStart(2,0)
+            let day = String(this._date.getUTCDate()).padStart(2,0);
+
+            return `${year}-${month}-${day}`;
+        }
+
         options = options?.split(' ') || ['long'];
         const config = {timeZone: this.timezone, day:'numeric'};
 
@@ -23,6 +35,10 @@ class McDate {
             if(options.indexOf(val) >= 0) {
                 config.month = val;
             }
+        }
+
+        if(config.month == '2-digit' || config.month == 'numeric') {
+            config.day = config.month;
         }
 
         return this.format(config)
