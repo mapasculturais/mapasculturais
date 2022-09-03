@@ -7,6 +7,7 @@ import * as Vue3Carousel from "vue3-carousel";
 import * as VueLeaflet from "@vue-leaflet/vue-leaflet";
 import * as Leaflet from 'leaflet';
 import { MarkerClusterGroup } from 'leaflet.markercluster';
+import Datepicker from '@vuepic/vue-datepicker';
 
 const app = Vue.createApp({})
 const pinia = Pinia.createPinia()
@@ -15,6 +16,7 @@ app.use(pinia)
 app.use(VueFinalModal)
 app.component('Iconify', Icon)
 app.component('Cropper', VueAdvancedCropper)
+app.component('Datepicker', Datepicker);
 
 globalThis.app = app
 globalThis.Pinia = Pinia
@@ -25,6 +27,7 @@ globalThis.Vue3Carousel = Vue3Carousel
 globalThis.VueLeaflet = VueLeaflet
 globalThis.MarkerClusterGroup = MarkerClusterGroup
 globalThis.Leaflet = Leaflet
+globalThis.Datepicker = Datepicker
 
 
 globalThis.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
