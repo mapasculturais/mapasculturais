@@ -25,5 +25,11 @@
         align-items: flex-start;
         flex-direction: column;
         margin-top: size(20);
+
+        &--price {
+            gap: size(6);
+            display: flex;
+            align-items: center;
+        }
     }
 }
