@@ -15,6 +15,6 @@ $this->import('mc-map-card');
 ```HTML
 <!-- utilizaçao básica (dentro de um mc-map) -->
 <mc-map>
-    <mc-map-card :entity="entity"></mc-map-card>
+    <mc-map-card :entity="entity" icon="" class="" label=""></mc-map-card>
 <mc-map>
 ```
