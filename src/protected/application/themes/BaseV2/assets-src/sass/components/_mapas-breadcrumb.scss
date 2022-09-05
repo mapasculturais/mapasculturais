@@ -4,7 +4,7 @@
     margin: 0 auto;
     max-width: 1170px;
     
-    @media (max-width: size(800)) {
+    @include mobile {
         font-size: size(14);
     }
 
@@ -14,14 +14,14 @@
     }
 
     ul {
-        width: 100%;
-        max-width: size(1170);
         align-items: center;
         display: flex;
         flex-wrap: wrap;
         gap: size(5);
+        max-width: size(1170);
         padding: size(8) size(10);
         position: absolute;
+        width: 100%;
         z-index: 1;
     }
 
@@ -29,31 +29,41 @@
         align-items: center;
         display: flex;
         list-style: none;
-        margin-right: size(26);
         position: relative;
-
+        
         @media (max-width: size(800)) {
-            margin-right: size(16);
+            display: none;
+
+            &:nth-last-child(2) {
+                display: flex;
+                font-weight: 600;
+            }
+
+            &::before {
+                content: url('https://api.iconify.design/fe/arrow-left.svg?width=16&height=16');
+                height: size(16);
+                margin-inline-end: size(5);
+                width: size(16);
+            }
         }
 
-        &::after {
-            background: url(https://api.iconify.design/fe/arrow-right.svg) no-repeat center center/contain;
-            content: "";
-            margin-inline-start: size(5);
-            height: size(18);
-            opacity: 0.5;
-            position: absolute;
-            right: size(-26);
-            width: size(18);
+        @media (min-width: size(801)) {
+            &::after {
+                content: url('https://api.iconify.design/fe/arrow-right.svg?width=18&height=18');
+                height: size(18);
+                margin-inline-start: size(5);
+                width: size(18);
+            }
 
-            @media (max-width: size(800)) {
-                right: size(-20);
+            &:last-child::after {
+                display: none;
             }
         }
     }
 
     li:last-child {
         font-weight: bold;
+
         &::after {
             content: none;
         }
@@ -72,13 +82,24 @@
         }
         
         li {
-            &::after {
-                background: url(https://api.iconify.design/fe/arrow-right.svg?color=white) no-repeat center center/contain;
+            @media (max-width: size(800)) {
+                &::before {
+                    content: url('https://api.iconify.design/fe/arrow-left.svg?color=white&width=16&height=16');
+                    margin-inline-end: size(5);
+                }
+            }   
+
+            @media (min-width: size(801)) {
+                &::after {
+                    content: url('https://api.iconify.design/fe/arrow-right.svg?color=white&width=18&height=18');
+                    margin-inline-start: size(5);
+                }
             }
         }
     }
 }
 
+// Comportamento nas páginas de edição das entidades
 .action-edit {
     .mapas-breadcrumb {
         &__hasCover {
@@ -89,8 +110,18 @@
             }
 
             li {
-                &::after {
-                    background: url(https://api.iconify.design/fe/arrow-right.svg) no-repeat center center/contain;
+                @media (max-width: size(800)) {        
+                    &::before {
+                        content: url('https://api.iconify.design/fe/arrow-left.svg?width=16&height=16');
+                        margin-inline-end: size(5);
+                    }
+                }        
+
+                @media (min-width: size(801)) {
+                    &::after {
+                        content: url('https://api.iconify.design/fe/arrow-right.svg?width=18&height=18');
+                        margin-inline-start: size(5);
+                    }
                 }
             }
         }
