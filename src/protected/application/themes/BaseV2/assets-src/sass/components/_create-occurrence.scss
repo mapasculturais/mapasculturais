@@ -1,0 +1,29 @@
+@use '../settings/mixins' as *;
+
+
+.create-occurrence {
+    max-width: 100%;
+    margin-bottom: size(56);
+    border: size(1) solid var(--mc-events-300);
+    border-radius: var(--mc-border-radius-xs);
+    padding: size(24) size(15) size(25) size(24.5);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+
+        &--title {
+            gap: size(6);
+            display: flex;
+
+        }
+    }
+
+    &__content {
+        gap: size(6);
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-top: size(20);
+    }
+}
