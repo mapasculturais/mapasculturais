@@ -1,6 +1,8 @@
-<?php 
+<?php
+
 use MapasCulturais\i;
-$this->layout = 'entity'; 
+
+$this->layout = 'entity';
 $this->import('
         entity-header entity-cover entity-profile 
         entity-field entity-terms entity-social-media 
@@ -8,12 +10,12 @@ $this->import('
         entity-admins entity-related-agents entity-owner
         entity-actions entity-files-list mc-tag-list
         mapas-container mapas-card mapas-breadcrumb
-        messages create-ocurrence');
+        messages create-occurrence');
 
 $this->breadcramb = [
-    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-    ['label'=> i::__('Meus Eventos'), 'url' => $app->createUrl('panel', 'events')],
-    ['label'=> $entity->name, 'url' => $app->createUrl('event', 'edit', [$entity->id])],
+    ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+    ['label' => i::__('Meus Eventos'), 'url' => $app->createUrl('panel', 'events')],
+    ['label' => $entity->name, 'url' => $app->createUrl('event', 'edit', [$entity->id])],
 ];
 ?>
 
@@ -27,17 +29,17 @@ $this->breadcramb = [
 
         <mapas-card class="feature">
             <template #title>
-                <label><?php i::_e("Informações de Apresentação")?></label>
-                <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
+                <label><?php i::_e("Informações de Apresentação") ?></label>
+                <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários") ?></p>
             </template>
             <template #content>
-                
+
                 <div class="left">
                     <div class="grid-12 v-center">
                         <div class="col-12">
                             <entity-cover :entity="entity"></entity-cover>
                         </div>
-                        
+
                         <div class="col-3 sm:col-12">
                             <entity-profile :entity="entity"></entity-profile>
                         </div>
@@ -47,13 +49,13 @@ $this->breadcramb = [
                                 <div class="col-12">
                                     <entity-field :entity="entity" label="Nome do Evento" prop="name"></entity-field>
                                 </div>
-                                
+
                                 <div class="col-12">
                                     <entity-field :entity="entity" label="Subtítulo do evento" prop="subTitle"></entity-field>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-12">
                             <entity-field :entity="entity" prop="shortDescription"></entity-field>
                         </div>
@@ -61,7 +63,7 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-field :entity="entity" label="Link para página ou site do evento" prop="site"></entity-field>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
 
                 <div class="divider"></div>
@@ -71,37 +73,43 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-field :entity="entity" label="Classificação etária" prop="classificacaoEtaria"></entity-field>
                         </div>
-                        
+
                         <div class="col-12">
                             <entity-terms :entity="entity" taxonomy="linguagem" :editable="true" title="Linguagens culturais"></entity-terms>
                         </div>
-                        
+
                         <div class="col-12">
                             <entity-social-media :entity="entity" :editable="true"></entity-social-media>
                         </div>
                     </div>
                 </div>
-                
+
 
             </template>
         </mapas-card>
 
-        <main>         
+        <main>
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Data, hora e local do evento"); ?></label>
                     <p><?php i::_e("Adicione data, hora e local da ocorrência do seu evento. Você pode várias ocorrências com informações diferentes."); ?></p>
+                    
                 </template>
-                <template #content>   
-                    <create-ocurrence></create-ocurrence>
-                </template>   
+                <template #content>
+                <div class="grid-12">
+                        <div class="col-12">
+                            <create-occurrence :entity="entity"></create-occurrence>
+
+                        </div>
+                    </div>
+                </template>
             </mapas-card>
 
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Informações sobre o evento"); ?></label>
                 </template>
-                <template #content>   
+                <template #content>
                     <div class="grid-12">
                         <div class="col-6">
                             <entity-field :entity="entity" label="Total de público" prop="event_attendance"></entity-field>
@@ -109,21 +117,21 @@ $this->breadcramb = [
                         <div class="col-6">
                             <entity-field :entity="entity" label="Telefone para informações sobre o evento" prop="telefonePublico"></entity-field>
                         </div>
-                        
+
                         <div class="col-12">
                             <entity-field :entity="entity" label="Informações sobre a inscrição" prop="registrationInfo"></entity-field>
                         </div>
-                    </div>                
-                </template>   
+                    </div>
+                </template>
             </mapas-card>
 
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Acessibilidade"); ?></label>
                 </template>
-                <template #content>   
+                <template #content>
                     <mc-tag-list entity-type="event" :editable="true" :tags="entity.terms?.linguagem"></mc-tag-list>
-                </template>   
+                </template>
             </mapas-card>
 
             <mapas-card>
@@ -134,23 +142,23 @@ $this->breadcramb = [
                 <template #content>
                     <div class="grid-12">
                         <div class="col-12">
-                            <entity-files-list :entity="entity" group="downloads" title="<?= i::_e('Adicionar arquivos para download')?>" :editable="true"></entity-files-list>
+                            <entity-files-list :entity="entity" group="downloads" title="<?= i::_e('Adicionar arquivos para download') ?>" :editable="true"></entity-files-list>
                         </div>
 
                         <div class="col-12">
                             <entity-links title="<?= i::_e('Adicionar links') ?>" :entity="entity" :editable="true"></entity-links>
                         </div>
-                        
+
                         <div class="col-12">
                             <entity-gallery-video title="<?= i::_e('Adicionar vídeos') ?>" :entity="entity" :editable="true"></entity-gallery-video>
                         </div>
-                        
+
                         <div class="col-12">
                             <entity-gallery title="<?= i::_e('Adicionar fotos na galeria') ?>" :entity="entity" :editable="true"></entity-gallery>
                         </div>
                     </div>
-                </template>  
-            </mapas-card>                
+                </template>
+            </mapas-card>
         </main>
 
         <aside>
@@ -160,7 +168,7 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-admins :entity="entity" :editable="true"></entity-admins>
                         </div>
-                        
+
                         <div class="col-12">
                             <entity-terms :entity="entity" taxonomy="tag" title="Tags" :editable="true"></entity-terms>
                         </div>
@@ -168,7 +176,7 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-related-agents :entity="entity" :editable="true"></entity-related-agents>
                         </div>
-                        
+
                         <div class="col-12">
                             <entity-owner :entity="entity" title="Publicado por" :editable="true"></entity-owner>
                         </div>

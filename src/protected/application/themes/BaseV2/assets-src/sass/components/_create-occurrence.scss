@@ -1,0 +1,77 @@
+@use '../settings/mixins' as *;
+
+
+.create-occurrence {
+    max-width: 100%;
+    border: size(1) solid var(--mc-events-300);
+    border-radius: var(--mc-border-radius-xs);
+    padding: size(24) size(15) size(25) size(24.5);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+
+        &--title {
+            gap: size(6);
+            display: flex;
+        }
+        &--right {
+        display: flex;
+        gap: size(12);
+        &-icon {
+            width: size(16);
+            height: size(16);
+            color: var(--mc-helper-500);
+
+        }
+        }
+    }
+
+    &__content {
+        gap: size(6);
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-top: size(20);
+
+        &--price {
+            gap: size(6);
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+.occurrence-footer {
+
+    &__content {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        gap: size(28);
+        padding-top: size(10);
+        padding-bottom: size(10);
+
+        &--edit,
+        &--trash {
+            display: flex;
+
+            &-icon {
+                margin-right: size(6);
+            }
+
+            &-label {
+                font-weight: 700;
+                font-size: size(14);
+                line-height: size(19);
+            }
+
+        }
+
+        &--trash {
+            &-icon {
+                color: var(--mc-danger-500);
+            }
+        }
+    }
+}

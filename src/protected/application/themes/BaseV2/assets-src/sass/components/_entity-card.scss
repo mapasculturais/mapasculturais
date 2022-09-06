@@ -103,8 +103,52 @@
     }
 
     &__content {
-        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap:size( 8);
         margin: size(16) 0 size(8);
+        text-align: left;
+
+        &--occurrence {
+            &-data {
+                font-weight: 700;
+                font-size: size(14);
+                line-height: size(19);
+                display: flex;
+                align-items: center;
+                gap: size(10);
+                .iconify {
+                    font-size: size(18);
+                }
+            }
+
+            &-space {
+                font-weight: 700;
+                font-size: size(14);
+                line-height: size(19);
+                display: flex;
+                align-items: center;
+                gap: size(10);
+
+                .link {
+                    align-items: center;
+                    display: flex;
+                    gap: size(10);
+                    text-decoration: none;
+                    .iconify {
+                        font-size: size(18);
+                    }
+                }
+            }
+
+            &-info {
+                font-size: size(14);
+                line-height: size(19);
+                display: flex;
+                align-items: center;
+                gap: size(40);
+            }
+        }
 
         &--description {
             font-weight: 400;
