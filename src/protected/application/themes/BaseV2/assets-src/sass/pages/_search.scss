@@ -9,10 +9,10 @@
         &.map {
             .loading {
                 left: 50%;
-                margin-left: -50px;
+                margin-left: size(-50);
                 position: fixed;
                 top: 49%;
-                width: 200px;
+                width: size(200);
                 z-index: 1000;
             }
         }
@@ -182,11 +182,50 @@
                     grid-row-start: 1;
                     grid-column-start: 10;
                     justify-content: flex-end;
-                    max-width: 1170px;
+                    max-width: size(1170);
                     padding: 0;
             
                     &--filter {
                         width: 100%;
+                    }
+                }
+
+                &__cards {
+                    position: relative;
+
+                    &--date {
+
+                        &-info {
+                            display: flex;
+                            flex-direction: column;
+                            position: absolute;
+                            left: -100px;
+                            text-align: right;
+    
+                            .weekend {
+                                font-size: size(13);
+                            }
+                        }
+                    }
+
+                    @media (max-width: size(900)) {
+                        &--date {
+                            display: flex;
+                            align-items: center;
+                            gap: size(8);
+                            margin-bottom: size(20);
+
+                            &-info {
+                                position: relative;
+                                left: 0;
+                            }
+
+                            &-line {
+                                height: size(1);
+                                background: black;
+                                flex-grow: 1;
+                            }
+                        }                        
                     }
                 }
             }
@@ -212,18 +251,18 @@
             }
 
             .mc-map {
-                height: 800px;
+                height: size(800);
 
                 .leaflet-container {
                     z-index: 0;
                 }
 
                 @media (max-width: size(600)) {
-                    height: 600px;
+                    height: size(400);
                 }
 
                 @media (max-width: size(360)) {
-                    height: 400px;
+                    height: size(400);
                 }
             }
 
@@ -231,13 +270,13 @@
                 &__filter {
                     display: flex;
                     justify-content: flex-end;
-                    max-width: 1170px;
+                    max-width: size(1170);
                     margin: 0 auto;
                     padding: 0 size(16);
             
                     &--filter {
                         position: absolute;
-                        width: 328px;
+                        width: size(328);
                         z-index: 1;
                     }
                 }
@@ -293,7 +332,7 @@
         margin-bottom: 0;
         min-height: size(500);
 
-        @media (max-width: 500px) {
+        @media (max-width: size(500)) {
             margin-top: size(130);
         }
     }
