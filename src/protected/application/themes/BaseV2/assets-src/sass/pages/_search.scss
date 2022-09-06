@@ -189,7 +189,10 @@
                         width: 100%;
                     }
                 }
-
+                &__loadMore {
+                        width: size(227);
+                        margin: 0 auto;
+                }    
                 &__cards {
                     position: relative;
 
