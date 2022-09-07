@@ -8,6 +8,8 @@ import * as VueLeaflet from "@vue-leaflet/vue-leaflet";
 import * as Leaflet from 'leaflet';
 import { MarkerClusterGroup } from 'leaflet.markercluster';
 import Datepicker from '@vuepic/vue-datepicker';
+import * as Dates from 'date-fns';
+
 
 const app = Vue.createApp({})
 const pinia = Pinia.createPinia()
@@ -28,6 +30,7 @@ globalThis.VueLeaflet = VueLeaflet
 globalThis.MarkerClusterGroup = MarkerClusterGroup
 globalThis.Leaflet = Leaflet
 globalThis.Datepicker = Datepicker
+globalThis.Dates = Dates;
 
 
 globalThis.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
