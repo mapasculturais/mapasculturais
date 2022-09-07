@@ -54,7 +54,7 @@ class McDate {
     }
 
     year(format) {
-        format = format || 'long';
+        format = format || 'numeric';
 
         return this.format({year: format});
     }
