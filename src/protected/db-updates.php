@@ -1745,6 +1745,13 @@ $$
         __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_from timestamp DEFAULT NULL;");
         __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_to timestamp DEFAULT NULL;");
     },
+
+    'cria funções para o cast automático de ponto para varchar' => function () { 
+        __exec("CREATE FUNCTION pg_catalog.text(point) RETURNS text STRICT IMMUTABLE LANGUAGE SQL AS 'SELECT $1::VARCHAR;';");
+        __exec("CREATE CAST (point AS text) WITH FUNCTION pg_catalog.text(point) AS IMPLICIT;");
+        __exec("COMMENT ON FUNCTION pg_catalog.text(point) IS 'convert point to text';");
+    },
+
     "Renomeia colunas registrationFrom e registrationTo da tabela de projetod" => function() use ($conn){
         __exec("ALTER TABLE project RENAME registration_from TO starts_on;");
         __exec("ALTER TABLE project RENAME registration_to TO ends_on;");
