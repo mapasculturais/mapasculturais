@@ -1785,7 +1785,9 @@ $$
     },
     'corrige metadados criados por erro em inscricoes de fases' => function () use ($conn, $app) {
         $opp_ids = $conn->fetchAll("SELECT id FROM opportunity WHERE parent_id IS NOT NULL");
-        foreach ($opp_ids as $opportunity_id) {
+        foreach ($opp_ids as $opportunity) {
+            $opportunity_id = $opportunity['id'];
+            
             $conn->exec("
                 UPDATE registration_meta 
                 SET key = CONCAT('__BKP__', key) 
