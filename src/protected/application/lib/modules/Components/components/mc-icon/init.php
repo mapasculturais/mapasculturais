@@ -32,6 +32,7 @@ $iconset = [
     'archive' => 'mi:archive',
     'exchange' => 'material-symbols:change-circle-outline',
     'code' => 'fa-solid:code',
+    'copy' => 'ic:baseline-content-copy',
     'close' => 'gg:close',
     'down' => 'mdi:chevron-down',
     'dashboard' => 'ic:round-dashboard',
