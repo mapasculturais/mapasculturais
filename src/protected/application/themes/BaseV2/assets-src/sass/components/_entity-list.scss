@@ -2,16 +2,20 @@
 
 .entity-list {
     margin: 0;
-    list-style-type: none; 
+    list-style-type: none;
     &__owner {
         display: flex;
         flex-direction: column;
-
+        
         &--title {
-            font-size: size(16);
-            line-height: size(22);
+            gap:size(16);
+            font-weight: 700;
+            font-size: 12px;
+            line-height: 16px;
             display: flex;
             align-items: center;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
         }
 
         &--content {
@@ -20,6 +24,7 @@
             a {
                 text-decoration: none;
                 color: black;
+                gap: size(8);
             }
 
             &-img {
@@ -27,11 +32,9 @@
                 overflow: hidden;
                 width: size(40);
                 height: size(40);
-                margin: size(13) size(14) size(13) 0;
             }
 
             &-placeholder {
-
                 .background {
                     border-radius: 50%;
                     display: flex;
@@ -41,7 +44,6 @@
                     overflow: hidden;
                     height: size(40);
                     width: size(40);
-                    margin: size(13) size(14) size(13) 0;
                 }
 
                 svg {
