@@ -10,7 +10,7 @@ use MapasCulturais\i;
 
         <textarea v-if="is('text')" :value="value" :id="propId" :name="prop" @change="change($event)"></textarea>
 
-        <input v-if="is('date') || is('number')" :value="value" :id="propId" :name="prop" :type="fieldType" :min="description.min" :max="description.max" :step="description.step" @change="change($event)">
+        <input v-if="is('date') || is('number') || is('integer')" :value="value" :id="propId" :name="prop" :type="fieldType" :min="description.min" :max="description.max" :step="description.step" @change="change($event)">
 
         <input v-if="is('email') || is('url')" :value="value" :id="propId" :name="prop" :type="fieldType" @change="change($event)">
         
@@ -29,9 +29,16 @@ use MapasCulturais\i;
                 <input :checked="value == optionValue" type="checkbox" :value="optionValue" @change="change($event)"> {{description.options[optionValue]}} 
             </label>
         </template>
+
+        <template v-if="is('boolean')">
+            <select :value="value" :id="propId" :name="prop" @change="change($event)">
+                <option :value='true' :selected="value"> <?= i::_e('Sim')?> </option>
+                <option :value='false' :selected="!value"> <?= i::_e('Não')?>  </option>
+            </select>
+        </template>
     </slot>
-    <small class="field__error" v-if="hasErrors">
-  
+
+    <small class="field__error" v-if="hasErrors">        
         {{errors.join('; ')}}
     </small>
 </div>
