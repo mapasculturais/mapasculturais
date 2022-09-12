@@ -2,46 +2,52 @@
 
 .entity-list {
     margin: 0;
-
-    &__label {
-
-
+   
+    &__owner {
+        display: flex;
+        flex-direction: column;
+        
         &--title {
-            align-items: center;
+            font-size: size(16);
+            line-height: size(22);
             display: flex;
-            text-decoration: none;
-            margin: 0;
+            align-items: center;
         }
+        
+        &--content {
+            &-name{
+                &-label {
+                    text-decoration: none;
+                }
 
-        &--title {
-            margin: 0;
-            align-items: center;
-            display: flex;
-            text-decoration: none;
-
-
+            }
             &-img {
-
                 border-radius: 50%;
                 overflow: hidden;
-                width: size(56);
-                height: size(56);
-                margin: size(13) size(14) size(13) 0;
-
-                
+                width: size(40);
+                height: size(40);
+                margin: size(13) size(14) size(13) 0; 
             }
 
+            &-placeholder {
 
-            .profile {
-                    width: 100%;
-                    height: 100%;
-
+                .background {
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: var(--mc-gray-500);
+                    overflow: hidden;
+                    height: size(40);
+                    width: size(40);
+                    margin: size(13) size(14) size(13) 0; 
                 }
 
-                .placeholder {
-                    background-color: red;
+                svg {
+                    color: var(--mc-high-500);
                 }
-
+            }
         }
+
     }
 }
