@@ -11,8 +11,8 @@
         &--title {
             gap: size(16);
             font-weight: 700;
-            font-size: 12px;
-            line-height: 16px;
+            font-size: size(12);
+            line-height: size(16);
             display: flex;
             align-items: center;
             letter-spacing: 0.07em;
