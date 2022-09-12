@@ -73,7 +73,7 @@ $this->breadcramb = [
                     <share-links title="Compartilhar" text="Veja este link:"></share-links>
                 </div>
                 <div class="col-12">
-                    <label>Propriedades do Agente</label>
+                    <h4>Propriedades do Agente:</h4>
                 </div>
                 <div class="col-12">
                     <entity-list :entity="entity" title="Espaços" property-name="spaces" type="space"></entity-list>
