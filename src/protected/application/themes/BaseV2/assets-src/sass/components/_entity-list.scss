@@ -1,14 +1,16 @@
 @use '../settings/mixins' as *;
 
+
 .entity-list {
-    margin: 0;
+    margin: 0 auto;
     list-style-type: none;
+
     &__owner {
         display: flex;
         flex-direction: column;
-        
+
         &--title {
-            gap:size(16);
+            gap: size(16);
             font-weight: 700;
             font-size: 12px;
             line-height: 16px;
@@ -17,14 +19,19 @@
             letter-spacing: 0.07em;
             text-transform: uppercase;
         }
-
+        
         &--content {
-
+            
             &-name,
             a {
+                color: var(--mc-agents-500);
                 text-decoration: none;
-                color: black;
+                display: flex;
+                flex-wrap: nowrap;
                 gap: size(8);
+                flex-direction: row-reverse;
+                align-items: center;
+                justify-content: flex-end;
             }
 
             &-img {
