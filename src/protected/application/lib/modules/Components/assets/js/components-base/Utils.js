@@ -179,5 +179,10 @@ globalThis.Utils = {
             }
         }
         return newQuery;
+    },
+
+    // string functions 
+    ucfirst(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 }

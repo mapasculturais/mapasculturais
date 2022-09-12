@@ -17,7 +17,8 @@
         "@vue-leaflet/vue-leaflet": "^0.6.1",
         "@types/leaflet": "^1.7.11",
         "leaflet.markercluster": "^1.5.3",
-        "leaflet": "1.7.1"
-        
+        "leaflet": "1.7.1",
+        "@vuepic/vue-datepicker": "^3.4.6",
+        "date-fns": "^2.29.2"
     }
 }

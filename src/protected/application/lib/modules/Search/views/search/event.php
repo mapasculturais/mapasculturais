@@ -7,8 +7,7 @@ $this->breadcramb = [
     ['label'=> i::__('Eventos'), 'url' => $app->createUrl('events')],
 ];
 ?>
-
-<search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event" :initial-pseudo-query="{'term:linguagem':[]}">
+<search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[]}">
     <template #create-button>
         <!-- @TODO: Criação e aplicação do componente <create-event> -->
         <?= i::_e('botão criar evento') ?>

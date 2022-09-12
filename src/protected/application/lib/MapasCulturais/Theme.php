@@ -705,14 +705,32 @@ abstract class Theme extends \Slim\View {
         $entity_class_name = $entity_class_name ?: $this->controller->entityClassName ?? null;
         $entity_id = $entity_id ?: $this->controller->data['id'] ?? null;
         
+        $_entity = $entity_class_name::getHookClassPath();
+
         if ($entity_class_name && $entity_id) {
             $app = App::i();
-            $query = new ApiQuery($entity_class_name, ['@select' => '*,agentRelations', 'id' => "EQ({$entity_id})", '@permissions'=>'view', 'status' => 'GTE(-10)']);
+            $query_params = [
+                '@select' => '*,agentRelations', 
+                'id' => "EQ({$entity_id})", 
+                'status' => 'GTE(-10)',
+                '@permissions'=>'view', 
+            ];
+
+            $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
+
+            $query = new ApiQuery($entity_class_name, $query_params);
             $owner_prop = ($entity_class_name == Entities\Agent::class) ? 'parent' : 'owner';
             $e = $query->findOne();
             
             if ($owner_id = $e[$owner_prop]) {
-                $query = new ApiQuery(Entities\Agent::class, ['@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 'id' => "EQ({$owner_id})", '@permissions'=>'view', 'status' => 'GTE(-10)']);
+                $parent_query_params = [
+                    '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
+                    'id' => "EQ({$owner_id})", 
+                    'status' => 'GTE(-10)',
+                    '@permissions'=>'view', 
+                ];
+                $app->applyHookBoundTo($this,"view.requestedEntity($_entity).owner.params", [&$parent_query_params, $entity_class_name, $entity_id]);
+                $query = new ApiQuery(Entities\Agent::class, $parent_query_params);
                 $owner = $query->findOne();
                 $e[$owner_prop] = $owner;
             }
@@ -730,6 +748,8 @@ abstract class Theme extends \Slim\View {
 
                 $e['currentUserPermissions'] = $permissions;
             }
+
+            $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);
             
             $this->jsObject['requestedEntity'] = $e;
         }
