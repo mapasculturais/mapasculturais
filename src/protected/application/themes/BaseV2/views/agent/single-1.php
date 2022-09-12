@@ -1,34 +1,36 @@
-<?php 
-$this->layout = 'entity'; 
+<?php
+$this->layout = 'entity';
+
 use MapasCulturais\i;
+
 $this->import('
     mapas-container mapas-card mc-map mc-map-marker entity-owner mapas-breadcrumb
-    entity-terms share-links entity-files-list entity-links entity-location  entity-related-agents entity-owner entity-gallery-video entity-seals entity-header entity-gallery entity-social-media');
-    $this->breadcramb = [
-        ['label'=> i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-        ['label'=> i::__('Agentes'), 'url' => $app->createUrl('panel', 'agents')],
-        ['label'=> $entity->name, 'url' => $app->createUrl('agent', 'single', [$entity->id])],
-    ];
+    entity-terms share-links entity-files-list entity-links entity-list entity-location  entity-related-agents entity-owner entity-gallery-video entity-seals entity-header entity-gallery entity-social-media');
+$this->breadcramb = [
+    ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
+    ['label' => i::__('Agentes'), 'url' => $app->createUrl('panel', 'agents')],
+    ['label' => $entity->name, 'url' => $app->createUrl('agent', 'single', [$entity->id])],
+];
 ?>
 
 <div class="main-app single-1">
     <mapas-breadcrumb></mapas-breadcrumb>
-    <entity-header :entity="entity"></entity-header>    
-    
-    <mapas-container>        
+    <entity-header :entity="entity"></entity-header>
+
+    <mapas-container>
         <div class="divider"></div>
-        
+
         <main>
             <div class="grid-12">
                 <div class="col-12">
                     <entity-location :entity="entity"></entity-location>
                 </div>
-                
+
                 <div v-if="entity.longDescription" class="col-12">
                     <h2>Descrição Detalhada</h2>
                     <p>{{entity.longDescription}}</p>
                 </div>
-                
+
                 <div class="col-12">
                     <entity-files-list :entity="entity" group="downloads" title="Arquivos para download"></entity-files-list>
                 </div>
@@ -45,37 +47,49 @@ $this->import('
                 </div>
             </div>
         </main>
-        
-        <aside>         
+
+        <aside>
             <div class="grid-12">
                 <div class="col-12">
                     <entity-terms :entity="entity" taxonomy="area" title="Areas de atuação"></entity-terms>
                 </div>
-                
+
                 <div class="col-12">
                     <entity-social-media :entity="entity"></entity-social-media>
                 </div>
-                
+
                 <div class="col-12">
                     <entity-seals :entity="entity" title="Verificações" :editable="entity.currentUserPermissions.createSealRelation"></entity-seals>
                 </div>
-                
+
                 <div class=col-12>
                     <entity-related-agents :entity="entity" title="Agentes Relacionados"></entity-related-agents>
                 </div>
                 <div class="col-12">
-                    <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>  
+                    <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>
                 </div>
-                
+
                 <div class="col-12">
                     <share-links title="Compartilhar" text="Veja este link:"></share-links>
                 </div>
-
-                <div  class="col-12">
-                    <entity-owner title="Publicado por" :entity="entity"></entity-links>
+                <div class="col-12">
+                    <label>Propriedades do Agente</label>
+                </div>
+                <div class="col-12">
+                    <entity-list :entity="entity" title="Espaços" property-name="spaces" type="space"></entity-list>
+                </div>
+                <div class="col-12">
+                    <entity-list :entity="entity" title="Eventos" property-name="events" type="event"></entity-list>
+                </div>
+                <div class="col-12">
+                    <entity-list :entity="entity" title="Agentes" property-name="children" type="agent"></entity-list>
+                </div>
+                
+                <div class="col-12">
+                    <entity-owner title="Publicado por" :entity="entity"></entity-owner>
                 </div>
             </div>
         </aside>
-        
+
     </mapas-container>
 </div>

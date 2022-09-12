@@ -1,0 +1,53 @@
+@use '../settings/mixins' as *;
+
+.entity-list {
+    margin: 0;
+   
+    &__owner {
+        display: flex;
+        flex-direction: column;
+        
+        &--title {
+            font-size: size(16);
+            line-height: size(22);
+            display: flex;
+            align-items: center;
+        }
+        
+        &--content {
+            &-name{
+                &-label {
+                    text-decoration: none;
+                }
+
+            }
+            &-img {
+                border-radius: 50%;
+                overflow: hidden;
+                width: size(40);
+                height: size(40);
+                margin: size(13) size(14) size(13) 0; 
+            }
+
+            &-placeholder {
+
+                .background {
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: var(--mc-gray-500);
+                    overflow: hidden;
+                    height: size(40);
+                    width: size(40);
+                    margin: size(13) size(14) size(13) 0; 
+                }
+
+                svg {
+                    color: var(--mc-high-500);
+                }
+            }
+        }
+
+    }
+}
