@@ -85,7 +85,7 @@ $this->breadcramb = [
                                 <h4>Propriedades do Espaço</h4>
                             </div>
                             <div class="col-12">
-                                <entity-list :entity="entity" title="Subespaços" property-name="parent" type="parent"></entity-list>
+                                <entity-list :entity="entity" title="Subespaços" property-name="children" type="space"></entity-list>
                             </div>
 
                         </div>
