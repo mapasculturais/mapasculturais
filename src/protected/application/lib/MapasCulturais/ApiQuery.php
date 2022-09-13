@@ -1327,8 +1327,10 @@ class ApiQuery {
         }
         
         $app = App::i();
+
+        $entity_class_name = $this->entityClassMetadata->parentClasses[0] ?? $this->entityClassName;
         
-        $file_groups = $app->getRegisteredFileGroupsByEntity($this->entityClassName);
+        $file_groups = $app->getRegisteredFileGroupsByEntity($entity_class_name);
         
         $where = [];
         foreach($this->_selectingFiles as $select){
