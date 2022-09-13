@@ -76,10 +76,10 @@ $this->breadcramb = [
                     <h4>Propriedades do Projeto</h4>
                 </div>
                 <div class="col-12">
-                    <entity-list :entity="entity" title="Projetos" property-name="parent" type="project"></entity-list>
+                    <entity-list :entity="entity" title="Subprojetos" property-name="children" type="project"></entity-list>
                 </div>
                 <div class="col-12">
-                    <entity-list :entity="entity" title="Oportunidades" property-name="owner" type="opportunity"></entity-list>
+                    <entity-list :entity="entity" title="Oportunidades" property-name="opportunity" type="opportunity"></entity-list>
                 </div>
             </div>
         </aside>
