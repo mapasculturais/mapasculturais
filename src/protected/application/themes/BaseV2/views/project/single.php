@@ -4,7 +4,7 @@ $this->layout = 'entity';
 
 
 $this->import('
-    mapas-container  mapas-breadcrumb
+    mapas-container  mapas-breadcrumb entity-admins
     entity-terms share-links entity-files-list entity-links  entity-list entity-owner entity-related-agents entity-seals entity-header entity-gallery entity-gallery-video entity-social-media');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
@@ -71,6 +71,9 @@ $this->breadcramb = [
                     <entity-owner title="Publicado por" :entity="entity"></entity-links>
                 </div>
 
+                <div class="col-12">
+                    <entity-admins :editable="false" :entity="entity"></entity-admins>
+                </div>
 
                 <div class="col-12">
                     <h4>Propriedades do Projeto</h4>
