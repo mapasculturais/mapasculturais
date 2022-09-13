@@ -5,7 +5,7 @@ $this->layout = 'entity';
 
 $this->import('
     mapas-container  mapas-breadcrumb
-    entity-terms share-links entity-files-list entity-links  entity-owner entity-related-agents entity-seals entity-header entity-gallery entity-gallery-video entity-social-media');
+    entity-terms share-links entity-files-list entity-links  entity-list entity-owner entity-related-agents entity-seals entity-header entity-gallery entity-gallery-video entity-social-media');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label'=> i::__('Projetos'), 'url' => $app->createUrl('panel', 'projects')],
@@ -69,6 +69,17 @@ $this->breadcramb = [
                 
                 <div class="col-12">
                     <entity-owner title="Publicado por" :entity="entity"></entity-links>
+                </div>
+
+
+                <div class="col-12">
+                    <h4>Propriedades do Projeto</h4>
+                </div>
+                <div class="col-12">
+                    <entity-list :entity="entity" title="Projetos" property-name="parent" type="project"></entity-list>
+                </div>
+                <div class="col-12">
+                    <entity-list :entity="entity" title="Oportunidades" property-name="owner" type="opportunity"></entity-list>
                 </div>
             </div>
         </aside>
