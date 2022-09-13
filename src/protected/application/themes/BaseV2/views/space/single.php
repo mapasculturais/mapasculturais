@@ -5,7 +5,7 @@ $this->layout = 'entity';
 $this->import('
     mapas-container mc-map mc-map-marker space-info mapas-breadcrumb tabs
     entity-terms share-links entity-files-list entity-links
-    entity-location entity-owner entity-related-agents entity-seals 
+    entity-location entity-owner entity-admins entity-related-agents entity-seals 
     entity-header entity-list entity-gallery entity-gallery-video entity-social-media
     ');
 
@@ -81,6 +81,11 @@ $this->breadcramb = [
                             <div class="col-12">
                                 <entity-owner title="<?= i::_e('Publicado por'); ?>" :entity="entity"></entity-links>
                             </div>
+
+                            <div class="col-12">
+                                <entity-admins :entity="entity"></entity-admins>
+                            </div>
+
                             <div class="col-12">
                                 <h4>Propriedades do Espaço</h4>
                             </div>
