@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity';
-$this->import('entity-files-list entity-gallery 
+$this->import('entity-files-list entity-gallery entity-list
 entity-location entity-owner entity-gallery-video 
 entity-header entity-request-ownership mapas-breadcrumb mapas-container
 share-links entity-terms entity-related-agents
@@ -93,6 +93,14 @@ $this->breadcramb = [
                     <share-links title="Compartilhar" text="Veja este link:"></share-links>
                 </div>
 
+                <div class="col-12">
+                    <h4>Propriedades do Evento</h4>
+                </div>
+                
+                <div class="col-12">
+                    <entity-list :entity="entity" title="Oportunidades" property-name="opportunities" type="opportunity"></entity-list>
+                </div>
+                
                 <div  class="col-12">
                     <entity-owner title="Publicado por" :entity="entity"></entity-links>
                 </div>
