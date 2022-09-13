@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity';
-$this->import('entity-files-list entity-gallery entity-list
+$this->import('entity-files-list entity-admins entity-gallery entity-list
 entity-location entity-owner entity-gallery-video 
 entity-header entity-request-ownership mapas-breadcrumb mapas-container
 share-links entity-terms entity-related-agents
@@ -91,6 +91,9 @@ $this->breadcramb = [
                 
                 <div class="col-12">
                     <share-links title="Compartilhar" text="Veja este link:"></share-links>
+                </div>
+                <div class="col-12">
+                    <entity-admins :entity="entity"></entity-admins>
                 </div>
 
                 <div class="col-12">
