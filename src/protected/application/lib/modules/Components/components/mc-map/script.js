@@ -145,7 +145,7 @@ app.component('mc-map', {
 
             for (let marker of cluster._markers) {
                 const entity = marker.entity;
-                const entityType = entity.__objectType || entity['@entityType'];
+                const entityType = entity['@icon'] || entity.__objectType || entity['@entityType'];
                 result[entityType]++
             }
             
@@ -170,7 +170,7 @@ app.component('mc-map', {
                 for (let entity of this.entities) {
                     if (!this.currentMarkers[entity.__objectId]) {
                         const marker =  this.createMarker(entity);
-                        let objectType = entity.__objectType || entity['@entityType'];
+                        let objectType = entity['@icon'] || entity.__objectType || entity['@entityType'];
 
                         if(objectType == 'agent') {
                             objectType += entity.type.id;
