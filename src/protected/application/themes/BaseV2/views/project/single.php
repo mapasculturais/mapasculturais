@@ -79,15 +79,13 @@ $this->breadcramb = [
                 </div>
 
                 <div v-if="entity.relatedOpportunities.length>0 || entity.children.length>0" class="col-12">
-                    <h4>Propriedades do Projeto</h4>
+                    <div class="col-12">
+                        <h4>Propriedades do Projeto</h4>
+                    </div>
                     
-                    <div v-if="entity.children.length >0 " class="col-12">
-                        <entity-list :entity="entity" title="Subprojetos" property-name="children" type="project"></entity-list>
-                    </div>
+                        <entity-list  v-if="entity.children.length >0" :entity="entity" title="Subprojetos" property-name="children" type="project"></entity-list>
 
-                    <div v-if="entity.relatedOpportunities.length >0 " class="col-12">
-                        <entity-list :entity="entity" title="Oportunidades" property-name="relatedOpportunities" type="opportunity"></entity-list>
-                    </div>
+                        <entity-list v-if="entity.relatedOpportunities.length >0" :entity="entity" title="Oportunidades" property-name="relatedOpportunities" type="opportunity"></entity-list>
 
                 </div>
             </div>
