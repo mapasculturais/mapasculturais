@@ -77,14 +77,17 @@ $this->breadcramb = [
                     <entity-admins :entity="entity" ></entity-admins>
                 </div>
 
-                <div class="col-12">
+                <div v-if="entity.spaces.length>0 || entity.children.length>0 || entity.events.length>0" class="col-12">
                     <h4>Propriedades do Agente:</h4>
+                    <entity-list :entity="entity" title="Espaços" property-name="spaces" type="space"></entity-list>
+
+                    <entity-list :entity="entity" title="Eventos" property-name="events" type="event"></entity-list>
+
+                    <entity-list :entity="entity" title="Agentes" property-name="children" type="agent"></entity-list>
+
+                    <entity-list :entity="entity" title="Projetos" property-name="children" type="project"></entity-list>
                 </div>
                 
-                <div class="col-12">
-                    <entity-list :entity="entity" title="Espaços" property-name="spaces" type="space"></entity-list>
-                </div>
-
                 <div  class="col-12">
                     <entity-owner title="Publicado por" :entity="entity"></entity-links>
                 </div>
