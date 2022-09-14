@@ -10,7 +10,7 @@ $this->import('
         entity-admins entity-related-agents entity-owner
         entity-actions entity-files-list mc-tag-list
         mapas-container mapas-card mapas-breadcrumb
-        messages create-occurrence');
+        messages entity-occurrence-list');
 
 $this->breadcramb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -90,16 +90,10 @@ $this->breadcramb = [
 
         <main>
             <mapas-card>
-                <template #title>
-                    <label><?php i::_e("Data, hora e local do evento"); ?></label>
-                    <p><?php i::_e("Adicione data, hora e local da ocorrência do seu evento. Você pode várias ocorrências com informações diferentes."); ?></p>
-                    
-                </template>
                 <template #content>
-                <div class="grid-12">
+                    <div class="grid-12">
                         <div class="col-12">
-                            <create-occurrence :entity="entity"></create-occurrence>
-
+                            <entity-occurrence-list :entity="entity"></entity-occurrence-list>
                         </div>
                     </div>
                 </template>
@@ -130,7 +124,7 @@ $this->breadcramb = [
                     <label><?php i::_e("Acessibilidade"); ?></label>
                 </template>
                 <template #content>
-                    <mc-tag-list entity-type="event" :editable="true" :tags="entity.terms?.linguagem"></mc-tag-list>
+                    <mc-tag-list classes="event__background" :editable="true" :tags="entity.terms?.linguagem"></mc-tag-list>
                 </template>
             </mapas-card>
 
