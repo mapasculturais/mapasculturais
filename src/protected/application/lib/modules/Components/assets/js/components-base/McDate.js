@@ -5,7 +5,11 @@ class McDate {
         if (date instanceof Date) {
             this._date = date;
         } else {
-            this._date = new Date(`${date} ${this.timezone}`);
+            if(date.length == '10') {
+                this._date = new Date(`${date} 00:00:00`);
+            } else {
+                this._date = new Date(date);
+            }
         }
     }
 
@@ -16,9 +20,9 @@ class McDate {
 
     date(options) {
         if(options == 'sql') {
-            let year = this._date.getUTCFullYear();
-            let month = String(this._date.getUTCMonth() + 1).padStart(2,0)
-            let day = String(this._date.getUTCDate()).padStart(2,0);
+            let year = this._date.getFullYear();
+            let month = String(this._date.getMonth() + 1).padStart(2,0)
+            let day = String(this._date.getDate()).padStart(2,0);
 
             return `${year}-${month}-${day}`;
         }
