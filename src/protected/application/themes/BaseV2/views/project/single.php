@@ -1,15 +1,17 @@
-<?php 
+<?php
+
 use MapasCulturais\i;
-$this->layout = 'entity'; 
+
+$this->layout = 'entity';
 
 
 $this->import('
     mapas-container  mapas-breadcrumb entity-admins
     entity-terms share-links entity-files-list entity-links  entity-list entity-owner entity-related-agents entity-seals entity-header entity-gallery entity-gallery-video entity-social-media');
 $this->breadcramb = [
-    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-    ['label'=> i::__('Projetos'), 'url' => $app->createUrl('panel', 'projects')],
-    ['label'=> $entity->name, 'url' => $app->createUrl('project', 'single', [$entity->id])],
+    ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
+    ['label' => i::__('Projetos'), 'url' => $app->createUrl('panel', 'projects')],
+    ['label' => $entity->name, 'url' => $app->createUrl('project', 'single', [$entity->id])],
 ];
 ?>
 
@@ -19,14 +21,14 @@ $this->breadcramb = [
 
     <mapas-container class="single-1__content">
         <div class="divider"></div>
-        
+
         <main>
             <div class="grid-12">
                 <div class="col-12">
-                        <h2>Descrição Detalhada</h2>
-                        <p>{{entity.longDescription}}</p>
+                    <h2>Descrição Detalhada</h2>
+                    <p>{{entity.longDescription}}</p>
                 </div>
-                    
+
                 <div class="col-12">
                     <entity-files-list :entity="entity" group="downloads" title="Arquivos para download"></entity-files-list>
                 </div>
@@ -41,22 +43,22 @@ $this->breadcramb = [
                 <div class="property col-12">
                     <button class="button button--primary button--md">Reinvindicar Propriedade</button>
                 </div>
-                
+
             </div>
         </main>
-        
+
         <aside>
             <div class="grid-12">
                 <div class="col-12">
                     <entity-social-media :entity="entity"></entity-social-media>
                 </div>
-                
+
                 <div class="col-12">
                     <entity-seals :entity="entity" title="Verificações"></entity-seals>
                 </div>
-                
+
                 <div class="col-12">
-                    <entity-related-agents :entity="entity"  title="Agentes Relacionados"></entity-related-agents>  
+                    <entity-related-agents :entity="entity" title="Agentes Relacionados"></entity-related-agents>
                 </div>
 
                 <div class="col-12">
@@ -66,9 +68,10 @@ $this->breadcramb = [
                 <div class="col-12">
                     <share-links title="Compartilhar" text="Veja este link:"></share-links>
                 </div>
-                
+
                 <div class="col-12">
-                    <entity-owner title="Publicado por" :entity="entity"></entity-links>
+                    <entity-owner title="Publicado por" :entity="entity">
+                        </entity-links>
                 </div>
 
                 <div class="col-12">
@@ -78,9 +81,14 @@ $this->breadcramb = [
                 <div v-if="entity.relatedOpportunities.length>0 || entity.children.length>0" class="col-12">
                     <h4>Propriedades do Projeto</h4>
                     
-                    <entity-list :entity="entity" title="Subprojetos" property-name="children" type="project"></entity-list>
-                    
-                    <entity-list :entity="entity" title="Oportunidades" property-name="relatedOpportunities" type="opportunity"></entity-list>
+                    <div v-if="entity.children.length >0 " class="col-12">
+                        <entity-list :entity="entity" title="Subprojetos" property-name="children" type="project"></entity-list>
+                    </div>
+
+                    <div v-if="entity.relatedOpportunities.length >0 " class="col-12">
+                        <entity-list :entity="entity" title="Oportunidades" property-name="relatedOpportunities" type="opportunity"></entity-list>
+                    </div>
+
                 </div>
             </div>
         </aside>
