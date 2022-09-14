@@ -64,13 +64,19 @@
                         }
                     }
                 }
-                @media (max-width: size(700)) {
-                    .desktop {
-                        display: none;
-                    }
-                    .mobile {
-                        display: flex;
-                    }
+            }
+        }
+
+        @media (max-width: size(700)) {
+            max-width: size(500);
+            width: 100%;
+
+            .modal__action {
+                .desktop {
+                    display: none;
+                }
+                .mobile {
+                    display: flex;
                 }
             }
         }
