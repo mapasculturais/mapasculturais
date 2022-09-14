@@ -6,7 +6,7 @@ $this->import('select-entity confirm-button');
 
 <div class="entity-related-agents" v-if="editable || group.length > 0">
 
-    <h3><?php i::_e("Administrado por")?></h3>
+    <h3 v-if="group"><?php i::_e("Administrado por")?></h3>
 
     <div class="entity-related-agents__group">
         
