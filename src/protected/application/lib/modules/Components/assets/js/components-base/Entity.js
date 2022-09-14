@@ -15,7 +15,7 @@ class Entity {
 
     }
 
-    populate(obj) {
+    populate(obj, preserveValues) {
         const __properties = this.$PROPERTIES;
         const __relations = this.$RELATIONS;
         const defaultProperties = ['terms', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
@@ -31,6 +31,10 @@ class Entity {
         for (let prop in __properties) {
             let definition = __properties[prop];
             let val = obj[prop];
+
+            if(val === undefined && preserveValues) {
+                val = this[prop];
+            }
 
             if (definition.type == 'datetime' && val) {
                 val = new McDate(val.date);
