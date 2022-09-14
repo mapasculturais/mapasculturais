@@ -10,13 +10,11 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
         </label>
         <div>
             <datepicker 
+                :locale="locale" 
                 :weekStart="0"
                 v-model="date" 
-                locale="pt-BR" 
                 :enableTimePicker='false' 
                 :format="dateFormat"
-                cancelText="<?= i::esc_attr__('Cancelar') ?>" 
-                selectText="<?= i::esc_attr__('Ok') ?>"
                 :presetRanges="presetRanges" 
                 range multiCalendars multiCalendarsSolo autoApply utc></datepicker>
 
@@ -26,6 +24,13 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
 
         <div class="field">
             <label><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Eventos oficiais') ?> </label>
+        </div>
+        <div class="field">
+            <label> <?php i::_e('Classificação Etária') ?></label>
+            <mc-multiselect :model="pseudoQuery['event:classificacaoEtaria']" :items="ageRating" #default="{popover}" hide-filter hide-button>
+                <input class="mc-multiselect--input" v-model="pseudoQuery['event:classificacaoEtaria'].filter" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione') ?>">
+            </mc-multiselect>
+            <mc-tag-list editable :tags="pseudoQuery['event:classificacaoEtaria']" classes="event__background event__color"></mc-tag-list>
         </div>
         <div class="field">
             <label> <?php i::_e('Linguagens') ?></label>
