@@ -197,38 +197,28 @@
                     position: relative;
 
                     &--date {
+                        align-items: center;
+                        display: flex;
+                        gap: size(8);
+                        margin-bottom: size(20);
 
                         &-info {
                             display: flex;
                             flex-direction: column;
-                            position: absolute;
-                            left: -100px;
+                            left: 0;
+                            position: relative;
                             text-align: right;
     
                             .weekend {
                                 font-size: size(13);
                             }
                         }
-                    }
 
-                    @media (max-width: size(900)) {
-                        &--date {
-                            display: flex;
-                            align-items: center;
-                            gap: size(8);
-                            margin-bottom: size(20);
-
-                            &-info {
-                                position: relative;
-                                left: 0;
-                            }
-
-                            &-line {
-                                height: size(1);
-                                background: black;
-                                flex-grow: 1;
-                            }
-                        }                        
+                        &-line {
+                            height: size(1);
+                            background: black;
+                            flex-grow: 1;
+                        }
                     }
                 }
             }
