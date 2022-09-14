@@ -144,6 +144,8 @@ globalThis.Utils = {
             if(typeof val == 'string' && val.indexOf('!') === 0) {
                 not = '!';
                 val = val.substr(1);
+            } else if (typeof val == 'number') {
+                val = String(val);
             }
 
             if(k == '@verified') {
