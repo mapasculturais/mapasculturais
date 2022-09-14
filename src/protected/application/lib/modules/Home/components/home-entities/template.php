@@ -1,5 +1,8 @@
 <?php
 use MapasCulturais\i;
+$this->import('
+    mc-link
+');
 ?>
 <div class="home-entities">
     
@@ -37,10 +40,10 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                     <p>{{opportunityText}}</p>
-                    <a class="button button--icon button--sm opportunity__color">
+                    <mc-link route="search/opportunities" class="button button--icon button--sm opportunity__color">
                         <?php i::_e('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
-                    </a>
+                    </mc-link>
                 </div>
             </div>
 
@@ -64,13 +67,11 @@ use MapasCulturais\i;
                 </div>
 
                 <div class="card__right">
-                    <p>
-                        {{eventText}}
-                    </p>
-                    <a class="button button--icon button--sm event__color">
+                    <p>{{eventText}}</p>
+                    <mc-link route="search/events" class="button button--icon button--sm event__color">
                         <?php i::_e('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
-                    </a>
+                    </mc-link>
                 </div>
             </div>
 
@@ -95,10 +96,10 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                     <p>{{spaceText}}</p>
-                    <a class="button button--icon button--sm space__color">
+                    <mc-link route="search/spaces" class="button button--icon button--sm space__color">
                         <?php i::_e('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
-                    </a>
+                    </mc-link>
                 </div>
 
             </div>
@@ -123,11 +124,11 @@ use MapasCulturais\i;
                 </div>
 
                 <div class="card__right">
-                        <p>{{agentText}}</p>
-                    <a class="button button--icon button--sm agent__color">
+                    <p>{{agentText}}</p>
+                    <mc-link route="search/agents" class="button button--icon button--sm agent__color">
                         <?php i::_e('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
-                    </a>
+                    </mc-link>
                 </div>
             </div>
 
@@ -152,10 +153,10 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                     <p>{{projectText}}</p>
-                    <a class="button button--icon button--sm project__color">
+                    <mc-link route="search/projects" class="button button--icon button--sm project__color">
                         <?php i::_e('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
-                    </a>
+                    </mc-link>
                 </div>
             </div>
         </div>
