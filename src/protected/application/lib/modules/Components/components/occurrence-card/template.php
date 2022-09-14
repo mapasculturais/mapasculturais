@@ -25,7 +25,7 @@ $this->import('mc-icon mc-link');
         <div class="entity-card__content--occurrence-data">
             <mc-icon name="event"></mc-icon> {{occurrence.starts.date('long')}} <?= i::_e('às') ?> {{occurrence.starts.time()}}
         </div>
-        <div class="entity-card__content--occurrence-space">
+        <div v-if="!hideSpace" class="entity-card__content--occurrence-space">
             <mc-link :entity="space" icon="pin" class="link"></mc-link> <span v-if="space.endereco">- {{space.endereco}}</span>
         </div>        
         <div class="entity-card__content--occurrence-info">
