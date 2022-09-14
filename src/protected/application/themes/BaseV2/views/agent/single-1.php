@@ -86,6 +86,8 @@ $this->breadcramb = [
                     <entity-list :entity="entity" title="Agentes" property-name="children" type="agent"></entity-list>
 
                     <entity-list :entity="entity" title="Projetos" property-name="children" type="project"></entity-list>
+                    
+                    <entity-list :entity="entity" title="Oportunidades" property-name="opportunities" type="opportunity"></entity-list>
                 </div>
 
                 <div class="col-12">
