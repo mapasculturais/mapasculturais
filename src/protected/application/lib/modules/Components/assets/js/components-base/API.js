@@ -218,7 +218,13 @@ class API {
             if(raw) {
                 rawProcessor = rawProcessor || Utils.entityRawProcessor;
 
-                result = objs.map(rawProcessor);                
+                result = objs.map(rawProcessor);
+
+                if(list) {
+                    objs.forEach(element => {
+                        list.push(element);
+                    });
+                }
             } else {
                 result = list || [];
     
