@@ -77,7 +77,7 @@ $this->breadcramb = [
                     <entity-admins :entity="entity"></entity-admins>
                 </div>
 
-                <div v-if="entity.spaces.length>0 || entity.children.length>0 || entity.events.length>0 || {opportunities}" class="col-12">
+                <div v-if="entity.spaces.length>0 || entity.children.length>0 || entity.events.length>0 || entity.ownedOpportunities.length > 0 || entity.relatedOpportunities.length >0" class="col-12">
                     <h4>Propriedades do Agente:</h4>
                     <entity-list :entity="entity" title="Espaços" property-name="spaces" type="space"></entity-list>
 
