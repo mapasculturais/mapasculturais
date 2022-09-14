@@ -96,13 +96,10 @@ $this->breadcramb = [
                     <entity-admins :entity="entity"></entity-admins>
                 </div>
 
-                <div class="col-12">
+                <div v-if="entity.opportunities.length>0" class="col-12">
                     <h4>Propriedades do Evento</h4>
-                </div>
                 
-                <div class="col-12">
                     <entity-list :entity="entity" title="Oportunidades" property-name="opportunities" type="opportunity"></entity-list>
-                </div>
                 
                 <div  class="col-12">
                     <entity-owner title="Publicado por" :entity="entity"></entity-links>
