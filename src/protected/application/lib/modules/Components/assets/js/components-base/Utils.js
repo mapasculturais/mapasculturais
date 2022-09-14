@@ -116,6 +116,26 @@ globalThis.Utils = {
         return entity;
     },
 
+    occurrenceRawProcessor (rawData, eventApi, spaceApi) {
+        eventApi = eventApi || new API('event');
+        spaceApi = spaceApi || new API('space');
+
+        const data = rawData;
+        const event = eventApi.getEntityInstance(rawData.event.id); 
+        const space = spaceApi.getEntityInstance(rawData.space.id); 
+
+        event.populate(rawData.event, true);
+        space.populate(rawData.space, true);
+
+        data.event = event;
+        data.space = space;
+
+        data.starts = new McDate(rawData.starts.date);
+        data.ends = new McDate(rawData.ends.date);
+
+        return data;
+    },
+
     parsePseudoQuery (pseudoQuery) {
         const newQuery = {};
         for(let k in pseudoQuery) {
