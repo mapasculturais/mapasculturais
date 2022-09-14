@@ -86,11 +86,12 @@ $this->breadcramb = [
                                 <entity-admins :entity="entity"></entity-admins>
                             </div>
 
-                            <div class="col-12">
+                            <div v-if="entity.children.length >0 || entity.relatedOpportunities >0" class="col-12">
                                 <h4>Propriedades do Espaço</h4>
-                            </div>
-                            <div class="col-12">
+                                
                                 <entity-list :entity="entity" title="Subespaços" property-name="children" type="space"></entity-list>
+
+                                <entity-list :entity="entity" title="Oportunidades" property-name="relatedOpportunities" type="opportunity"></entity-list>
                             </div>
 
                         </div>
