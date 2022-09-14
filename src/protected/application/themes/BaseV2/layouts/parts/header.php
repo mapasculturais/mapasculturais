@@ -18,5 +18,5 @@
         <?php $this->applyTemplateHook('head','end'); ?>
     </head>
 
-    <body <?php $this->bodyProperties() ?> >
+    <body <?php $this->bodyProperties() ?> style="opacity:0" >
         <?php $this->applyTemplateHook('body','begin'); ?>

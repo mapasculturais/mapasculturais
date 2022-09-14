@@ -38,5 +38,15 @@ globalThis.$DESCRIPTIONS = $MAPAS.EntitiesDescription ?? []
 globalThis.$TAXONOMIES = $MAPAS.Taxonomies ?? {}
 
 document.addEventListener('DOMContentLoaded', () => {
-    app.mount('#main-app')
+    app.mount('#main-app');
+    // document.body.style.opacity = 1;
+
+    let opacity = 0.01;
+    globalThis.opacityInterval = setInterval(() => {
+        if(opacity >= 1) {
+            clearInterval(globalThis.opacityInterval);
+        }
+        document.body.style.opacity = opacity;
+        opacity += 0.02;
+    },5);
 })
