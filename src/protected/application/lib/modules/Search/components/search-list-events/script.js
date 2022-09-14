@@ -68,22 +68,7 @@ app.component('search-list-events', {
             
             this.occurrences = await this.eventApi.fetch('occurrences', query, {
                 raw: true,
-                rawProcessor: (rawData) => {
-                    const data = rawData;
-                    const event = this.eventApi.getEntityInstance(rawData.event.id); 
-                    const space = this.spaceApi.getEntityInstance(rawData.space.id); 
-
-                    event.populate(rawData.event);
-                    space.populate(rawData.space);
-
-                    data.event = event;
-                    data.space = space;
-
-                    data.starts = new McDate(rawData.starts.date);
-                    data.ends = new McDate(rawData.ends.date);
-
-                    return data;
-                }
+                rawProcessor: (rawData) => Utils.occurrenceRawProcessor(rawData, this.eventApi, this.spaceApi)
             });
             this.loading = false;
         },

@@ -149,6 +149,8 @@ class Space extends EntityController {
         );
 
         $event_data = ['@select' => 'id'] + $query_data;
+        unset($event_data['location']);
+        unset($event_data['_geoLocation']);
         unset($event_data['@count']);
         $events_repo = App::i()->repo('Event');
 
@@ -165,7 +167,7 @@ class Space extends EntityController {
             if($space_ids){
                 $space_data = ['id' => 'IN(' . implode(',', $space_ids) .')'];
                 foreach($query_data as $key => $val)
-                    if($key[0] === '@' || $key == '_geoLocation')
+                    if($key[0] === '@' || $key == '_geoLocation' || $key == 'location')
                         $space_data[$key] = $val;
 
                 unset($space_data['@keyword']);

@@ -2,7 +2,7 @@
 $this->layout = 'entity'; 
 use MapasCulturais\i;
 $this->import('
-    mapas-container mc-map mc-map-marker  mapas-breadcrumb
+    mapas-container mc-map mc-map-marker  mapas-breadcrumb entity-admins
     entity-terms share-links entity-files-list entity-links entity-location entity-owner entity-related-agents entity-seals entity-header entity-gallery entity-gallery-video entity-social-media');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
@@ -73,6 +73,23 @@ $this->breadcramb = [
                     <share-links title="Compartilhar" text="Veja este link:"></share-links>
                 </div>
                 
+                <div class="col-12">
+                    <entity-admins :entity="entity" ></entity-admins>
+                </div>
+
+                <div v-if="entity.spaces.length>0 || entity.children.length>0 || entity.events.length>0 || entity.ownedOpportunities.length > 0 || entity.relatedOpportunities.length >0" class="col-12">
+                    <h4>Propriedades do Agente:</h4>
+                    <entity-list :entity="entity" title="Espaços" property-name="spaces" type="space"></entity-list>
+
+                    <entity-list :entity="entity" title="Eventos" property-name="events" type="event"></entity-list>
+
+                    <entity-list v-if="entity.children.length>0" :entity="entity" title="Agentes" property-name="children" type="agent"></entity-list>
+
+                    <entity-list v-if="entity.children.length>0" :entity="entity" title="Projetos" property-name="children" type="project"></entity-list>
+                    
+                    <entity-list v-if="{opportunities}>0":entity="entity" title="Oportunidades" property-name="opportunities" type="opportunity"></entity-list>
+                </div>
+
                 <div  class="col-12">
                     <entity-owner title="Publicado por" :entity="entity"></entity-links>
                 </div>

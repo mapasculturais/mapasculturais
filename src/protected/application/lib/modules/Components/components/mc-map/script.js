@@ -90,6 +90,11 @@ app.component('mc-map', {
             const leaflet = Vue.toRaw(this.$refs.map.leafletObject);
             leaflet.markersGroup = this.markersGroup;
             leaflet.addLayer(leaflet.markersGroup);
+            leaflet.on('popupopen', function(e) {
+                var px = leaflet.project(e.target._popup._latlng); // find the pixel location on the map where the popup anchor is
+                px.y -= e.target._popup._container.clientHeight/2; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+                leaflet.panTo(leaflet.unproject(px),{animate: true}); // pan to new center
+            });
             this.$emit('ready', leaflet);
         },
 
@@ -140,7 +145,7 @@ app.component('mc-map', {
 
             for (let marker of cluster._markers) {
                 const entity = marker.entity;
-                const entityType = entity.__objectType || entity['@entityType'];
+                const entityType = entity['@icon'] || entity.__objectType || entity['@entityType'];
                 result[entityType]++
             }
             
@@ -165,7 +170,7 @@ app.component('mc-map', {
                 for (let entity of this.entities) {
                     if (!this.currentMarkers[entity.__objectId]) {
                         const marker =  this.createMarker(entity);
-                        let objectType = entity.__objectType || entity['@entityType'];
+                        let objectType = entity['@icon'] || entity.__objectType || entity['@entityType'];
 
                         if(objectType == 'agent') {
                             objectType += entity.type.id;

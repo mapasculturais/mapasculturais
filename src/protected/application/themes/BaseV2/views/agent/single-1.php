@@ -5,7 +5,7 @@ use MapasCulturais\i;
 
 $this->import('
     mapas-container mapas-card mc-map mc-map-marker entity-owner mapas-breadcrumb
-    entity-terms share-links entity-files-list entity-links entity-list entity-location  entity-related-agents entity-owner entity-gallery-video entity-seals entity-header entity-gallery entity-social-media');
+    entity-terms share-links entity-admins entity-files-list entity-links entity-list entity-location  entity-related-agents entity-owner entity-gallery-video entity-seals entity-header entity-gallery entity-social-media');
 $this->breadcramb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Agentes'), 'url' => $app->createUrl('panel', 'agents')],
@@ -72,19 +72,24 @@ $this->breadcramb = [
                 <div class="col-12">
                     <share-links title="Compartilhar" text="Veja este link:"></share-links>
                 </div>
+
                 <div class="col-12">
-                    <label>Propriedades do Agente</label>
+                    <entity-admins :entity="entity"></entity-admins>
                 </div>
-                <div class="col-12">
+
+                <div v-if="entity.spaces.length>0 || entity.children.length>0 || entity.events.length>0 || entity.ownedOpportunities.length > 0 || entity.relatedOpportunities.length >0" class="col-12">
+                    <h4>Propriedades do Agente:</h4>
                     <entity-list :entity="entity" title="Espaços" property-name="spaces" type="space"></entity-list>
-                </div>
-                <div class="col-12">
+
                     <entity-list :entity="entity" title="Eventos" property-name="events" type="event"></entity-list>
+
+                    <entity-list v-if="entity.children.length>0" :entity="entity" title="Agentes" property-name="children" type="agent"></entity-list>
+
+                    <entity-list v-if="entity.children.length>0" :entity="entity" title="Projetos" property-name="children" type="project"></entity-list>
+                    
+                    <entity-list v-if="{opportunities}":entity="entity" title="Oportunidades" property-name="opportunities" type="opportunity"></entity-list>
                 </div>
-                <div class="col-12">
-                    <entity-list :entity="entity" title="Agentes" property-name="children" type="agent"></entity-list>
-                </div>
-                
+
                 <div class="col-12">
                     <entity-owner title="Publicado por" :entity="entity"></entity-owner>
                 </div>

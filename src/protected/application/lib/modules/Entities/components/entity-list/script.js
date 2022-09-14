@@ -9,7 +9,8 @@ app.component('entity-list', {
     },
 
     data() {
-        const ids = this.entity[this.propertyName]
+        const ids = (this.propertyName=="opportunities") ? this.entity.ownedOpportunities.concat(this.entity.relatedOpportunities) : this.entity[this.propertyName];
+        
         return {
             query: {
                 'id': `IN(${ids})`,

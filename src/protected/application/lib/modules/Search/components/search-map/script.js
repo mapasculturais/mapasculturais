@@ -1,5 +1,8 @@
 app.component('search-map', {
     template: $TEMPLATES['search-map'],
+
+    // define os eventos que este componente emite
+    emits: ['ready', 'openPopup', 'closePopup'],
     
     async mounted(){
         this.api = new API(this.type);
@@ -37,6 +40,14 @@ app.component('search-map', {
             type: Object,
             default: {}
         },
+        endpoint: {
+            type: String,
+            default: 'find'
+        },
+        entityRawProcessor: {
+            type: Function,
+            default: (entity) => Utils.entityRawProcessor(entity) 
+        }
     },
 
     methods: {
@@ -47,12 +58,12 @@ app.component('search-map', {
             
             this.entities = [];
             this.loading = true;
-            this.entities = await this.api.find(query, null, true);
+            
+            this.entities = await this.api.fetch(this.endpoint, query, {
+                raw: true,
+                rawProcessor: this.entityRawProcessor
+            });
             this.loading = false;
-        },
-
-        closePopup() {
-            console.log('close');
         }
     },
 });

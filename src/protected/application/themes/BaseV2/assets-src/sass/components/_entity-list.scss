@@ -1,36 +1,46 @@
 @use '../settings/mixins' as *;
 
 .entity-list {
-    margin: 0;
-   
+    margin: 0 auto;
+    list-style-type: none;
+
     &__owner {
         display: flex;
         flex-direction: column;
-        
+
         &--title {
-            font-size: size(16);
-            line-height: size(22);
+            gap: size(16);
+            font-weight: 700;
+            font-size: size(12);
+            line-height: size(16);
             display: flex;
             align-items: center;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
         }
-        
-        &--content {
-            &-name{
-                &-label {
-                    text-decoration: none;
-                }
 
+        &--content {
+
+            &-name,
+            a {
+                color: var(--mc-agents-500);
+                text-decoration: none;
+                display: flex;
+                flex-wrap: nowrap;
+                gap: size(8);
+                flex-direction: row-reverse;
+                align-items: center;
+                justify-content: flex-end;
             }
+
             &-img {
                 border-radius: 50%;
                 overflow: hidden;
                 width: size(40);
                 height: size(40);
-                margin: size(13) size(14) size(13) 0; 
             }
 
             &-placeholder {
-
                 .background {
                     border-radius: 50%;
                     display: flex;
@@ -40,7 +50,6 @@
                     overflow: hidden;
                     height: size(40);
                     width: size(40);
-                    margin: size(13) size(14) size(13) 0; 
                 }
 
                 svg {
