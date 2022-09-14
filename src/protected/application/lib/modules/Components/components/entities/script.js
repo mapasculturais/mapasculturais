@@ -79,6 +79,10 @@ app.component('entities', {
         endpoint: {
             type: String,
             default: 'find'
+        },
+        rawProcessor: {
+            type: Function,
+            required: false
         }
     },
     
@@ -103,8 +107,12 @@ app.component('entities', {
                 query['@limit'] = this.limit;
                 query['@page'] = this.page;
             }
-            
-            return this.api.fetch(this.endpoint, query, {list: this.entities});
+            const options = {list: this.entities};
+            if (this.rawProcessor) {
+                options.raw = true;
+                options.rawProcessor = this.rawProcessor;
+            };
+            return this.api.fetch(this.endpoint, query, options);
         },
         
         refresh() {

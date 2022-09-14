@@ -18,6 +18,11 @@ app.component('occurrence-card', {
         occurrence: {
             type: Object,
             required: true
+        },
+
+        hideSpace: {
+            type: Boolean,
+            default: false
         }
     },
 

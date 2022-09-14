@@ -1,7 +1,14 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('mapas-breadcrumb tabs search search-map search-list-events search-filter-event');
+$this->import('
+    mapas-breadcrumb 
+    search 
+    search-filter-event
+    search-list-events 
+    search-map-events 
+    tabs 
+');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Eventos'), 'url' => $app->createUrl('events')],
@@ -26,11 +33,7 @@ $this->breadcramb = [
             </tab>
             <tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>" slug="map">
                 <div class="search__tabs--map">
-                    <search-map type="event" :pseudo-query="pseudoQuery">
-                        <template #filter>
-                            <search-filter-event :pseudo-query="pseudoQuery" position="map"></search-filter-event>
-                        </template>
-                    </search-map>
+                    <search-map-events :pseudo-query="pseudoQuery"></search-map-events>
                 </div>
             </tab>
         </tabs>
