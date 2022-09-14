@@ -91,7 +91,9 @@ $this->breadcramb = [
                                 
                                 <entity-list :entity="entity" title="Subespaços" property-name="children" type="space"></entity-list>
 
-                                <entity-list :entity="entity" title="Oportunidades" property-name="relatedOpportunities" type="opportunity"></entity-list>
+                                <div v-if="entity.relatedOpportunities.length > 0"  class="col-12">
+                                    <entity-list :entity="entity" title="Oportunidades" property-name="relatedOpportunities" type="opportunity"></entity-list>
+                                </div>
                             </div>
 
                         </div>
