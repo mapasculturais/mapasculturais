@@ -148,7 +148,7 @@ globalThis.Utils = {
                 val = String(val);
             }
 
-            if(k == '@verified') {
+            if(k == '@verified' || typeof val == 'boolean') {
                 if (val) {
                     newQuery[k] = '1';
                 }
