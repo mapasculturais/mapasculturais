@@ -8,22 +8,26 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
         <label class="form__label">
             <?= i::_e('Filtros de eventos') ?>
         </label>
-        <div>
-            <datepicker 
-                :locale="locale" 
-                :weekStart="0"
-                v-model="date" 
-                :enableTimePicker='false' 
-                :format="dateFormat"
-                :presetRanges="presetRanges" 
-                range multiCalendars multiCalendarsSolo autoApply utc></datepicker>
-
-            <button @click="prevInterval()" class="button button--rounded button--outline"> <mc-icon name="arrow-left"></mc-icon> </button>
-            <button @click="nextInterval()" class="button button--rounded button--outline"> <mc-icon name="arrow-right"></mc-icon> </button>
+        <div class="field">
+            <label> <?php i::_e('Eventos acontecendo') ?></label>
+            <div class="datepicker">
+                <datepicker 
+                    :locale="locale" 
+                    :weekStart="0"
+                    v-model="date" 
+                    :enableTimePicker='false' 
+                    :format="dateFormat"
+                    :presetRanges="presetRanges" 
+                    range multiCalendars multiCalendarsSolo autoApply utc></datepicker>
+    
+                <button @click="prevInterval()" class="button button--rounded button--outline"> <mc-icon name="arrow-left"></mc-icon> </button>
+                <button @click="nextInterval()" class="button button--rounded button--outline"> <mc-icon name="arrow-right"></mc-icon> </button>
+            </div>
         </div>
 
         <div class="field">
-            <label><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Eventos oficiais') ?> </label>
+            <label> <?php i::_e('Status do evento') ?></label>
+            <label class="verified"><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Eventos oficiais') ?> </label>
         </div>
         <div class="field">
             <label> <?php i::_e('Classificação Etária') ?></label>

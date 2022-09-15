@@ -10,7 +10,7 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
         </label>
         <div class="field">
             <label> <?php i::_e('Status do agente') ?> </label>
-            <label><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Agentes oficiais') ?> </label>
+            <label class="verified"><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Agentes oficiais') ?> </label>
         </div>  
         <div class="field">
             <label> <?php i::_e('Tipo') ?></label>

@@ -11,7 +11,7 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
         <div class="field">
             <label> <?php i::_e('Status do espaço') ?> </label>
             <label> <input v-on:click="acessibilidade($event)" type="checkbox"> <?php i::_e('Possui acessibilidade') ?> </label>
-            <label> <input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Espaços oficiais') ?> </label>
+            <label class="verified"> <input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Espaços oficiais') ?> </label>
         </div>  
         <div class="field">
             <label> <?php i::_e('Tipo') ?> </label>
