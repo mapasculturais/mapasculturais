@@ -13,7 +13,7 @@ $this->import('search-filter mc-multiselect mc-tag-list');
             <label><input v-on:click="openForRegistrations($event)" type="checkbox"> <?php i::_e('Inscrições abertas') ?> </label>
             <label><input v-model="pseudoQuery['@']" type="checkbox"> <?php i::_e('Inscrições encerradas') ?> </label>
             <label><input v-model="pseudoQuery['@']" type="checkbox"> <?php i::_e('Inscrições futuras') ?> </label>
-            <label><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Editais oficiais') ?> </label>
+            <label class="verified"><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Editais oficiais') ?> </label>
         </div>  
         <div class="field">
             <label> <?php i::_e('Tipo de oportunidade') ?></label>

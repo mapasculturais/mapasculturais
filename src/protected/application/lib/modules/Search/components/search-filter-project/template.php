@@ -11,7 +11,7 @@ $this->import('search-filter');
 
         <div class="field">
             <label> <?php i::_e('Status do projeto') ?> </label>
-            <label><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Projetos oficiais') ?> </label>
+            <label class="verified"><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Projetos oficiais') ?> </label>
         </div>  
 
         <div class="field">
