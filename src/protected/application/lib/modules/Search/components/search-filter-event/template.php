@@ -27,7 +27,7 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
 
         <div class="field">
             <label> <?php i::_e('Status do evento') ?></label>
-            <label class="verified"><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Eventos oficiais') ?> </label>
+            <label class="verified"><input v-model="pseudoQuery['event:@verified']" type="checkbox"> <?php i::_e('Eventos oficiais') ?> </label>
         </div>
         <div class="field">
             <label> <?php i::_e('Classificação Etária') ?></label>
