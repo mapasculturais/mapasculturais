@@ -3,5 +3,7 @@ use MapasCulturais\i;
 
 return [
     'title' => i::__('Bem-vinde ao Mapas Culturais'),
-    'description' => i::__('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tempor tellus in nulla gravida convallis pellentesque. Rhoncus, at ultrices adipiscing urna mattis a in urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+    'description' => i::__('O Mapas Culturais é uma PODEROSA ferramenta de gestão e agenda cultural.
+    É uma plataforma que digitaliza soluções estratégicas para a cultura.
+    Traga o dia-a-dia da sua secretaria para dentro da plataforma!.')
 ];
