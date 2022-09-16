@@ -4,7 +4,7 @@ use MapasCulturais\i;
 
 $this->import('entities mc-link');
 ?>
-<div class="entity-list">
+<div v-if="this.ids.length>0" class="entity-list">
     <div class="entity-list__owner grid-12">
         <div class="col-12__owner--title">
             <h4>{{title}}</h4>
