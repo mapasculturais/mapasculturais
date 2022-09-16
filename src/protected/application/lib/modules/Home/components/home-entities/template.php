@@ -16,8 +16,8 @@ $this->import('
                     <?php i::_e('Mas para isso, precisamos da sua ajuda!!! Faça parte você também: cadastre seus projetos, espaços e eventos.') ?>
                 </p>
             </label>
-        
         </div>
+        
         <div class="home-entities__content--cards">
             <div class="card">
                 <div class="card__left">
