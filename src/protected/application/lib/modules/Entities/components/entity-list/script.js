@@ -9,40 +9,29 @@ app.component('entity-list', {
     },
 
     data() {
-        const ids = (this.propertyName=="opportunities") ? this.entity.ownedOpportunities.concat(this.entity.relatedOpportunities) : this.entity[this.propertyName];
         
         return {
             query: {
-                'id': `IN(${ids})`,
+                'id': `IN(${this.ids})`,
             },
         };
     },
 
     props: {
-
-        entity: {
-            type: Entity,
-            required: true
-        },
-
+    
         title: {
             type: String,
             required: true,
         },
 
-        editable: {
-            type: Boolean,
-            default: false,
-            
-        },
-        propertyName: {
-            type: String,
-            required: true,
-        },
         type: {
             type: String,
             required: true,
         },
+        ids:{
+            type: Array,
+            required: true,
+        }
 
     },
 
