@@ -5,7 +5,7 @@
         color: var(--mc-low-500);
     }
 
-    .tab-component{
+    .tab-component {
         &.map {
             .loading {
                 left: 50%;
@@ -18,6 +18,7 @@
         }
 
         &.list {
+
             .loading,
             .panel__row {
                 grid-column-end: span 9;
@@ -31,28 +32,28 @@
         border: unset;
         bottom: 0;
         padding: size(50) 0 0;
-        
+
         &--content {
             align-items: center;
             display: flex;
             justify-content: space-between;
             margin: 0 auto;
             max-width: size(1170);
-            padding:0 size(16);
-    
+            padding: 0 size(16);
+
             &-left {
                 align-items: center;
                 display: flex;
                 gap: size(16);
-    
+
                 &-icon {
                     align-items: center;
                     border-radius: 50%;
-                    display:flex;
+                    display: flex;
                     height: size(48);
                     justify-content: center;
                     width: size(48);
-            
+
                     .iconify {
                         font-size: size(15);
                     }
@@ -66,7 +67,7 @@
                         }
                     }
                 }
-    
+
                 &-label {
                     line-height: size(65);
                     font-size: size(48);
@@ -82,7 +83,8 @@
         }
     }
 
-    &__tabs{
+    &__tabs {
+
         // label - before - tabs
         &--before {
             line-height: size(22);
@@ -137,6 +139,7 @@
                 main {
                     grid-row-start: 1;
                 }
+
                 aside {
                     grid-column-start: 2;
                 }
@@ -152,7 +155,7 @@
                 font-size: size(14);
                 font-weight: 700;
                 line-height: size(19);
-    
+
                 a {
                     margin: 0;
                     padding: size(11) size(13) size(11);
@@ -161,22 +164,22 @@
                         padding: size(7) size(13) size(7);
                     }
                 }
-                
+
                 &--active::after {
-                    background-color: var(--mc-primary-500);  
+                    background-color: var(--mc-primary-500);
                 }
             }
         }
-        
+
         // tab - list
         &--list {
             margin: 0 auto;
             max-width: size(1170);
             padding: size(24) size(16);
             width: 100%;
-            
+            //AQUI CARAI
 
-            .search-list {    
+            .search-list {
                 &__filter {
                     display: flex;
                     grid-row-start: 1;
@@ -184,18 +187,21 @@
                     justify-content: flex-end;
                     max-width: size(1170);
                     padding: 0;
-            
+
                     &--filter {
                         width: 100%;
                     }
                 }
+
                 &__loadMore {
-                        width: size(227);
-                        margin: 0 auto;
-                }    
+                    width: size(227);
+                    margin: 0 auto;
+                }
+
                 &__cards {
                     position: relative;
 
+                    //aqui é o estilo do marcador de tempo
                     &--date {
                         align-items: center;
                         display: flex;
@@ -208,7 +214,7 @@
                             left: 0;
                             position: relative;
                             text-align: right;
-    
+
                             .weekend {
                                 font-size: size(13);
                             }
@@ -236,7 +242,9 @@
         }
 
         // tab - map
+        //AQUI TB CARAI
         &--map {
+
             position: relative;
 
             .search-filter {
@@ -259,18 +267,138 @@
                 }
             }
 
-            .search-map {    
+            .search-map {
                 &__filter {
                     display: flex;
                     justify-content: flex-end;
                     max-width: size(1170);
                     margin: 0 auto;
                     padding: 0 size(16);
-            
+
                     &--filter {
                         position: absolute;
                         width: size(328);
                         z-index: 1;
+                    }
+                }
+
+                &__events {
+
+                    overflow-y: auto;
+                    position: absolute;
+                    width: size(360);
+                    background-color: var(--mc-gray-100);
+                    top: 0;
+                    height: 100%;
+                    left: 0;
+                    padding: 0 size(16) size(16);
+
+                    &--close {
+                        float: right;
+                        font-weight: 600;
+                        font-size: size(16);
+                        line-height: size(22);
+                        color: var(--mc-low-700);
+                        
+                        .iconify {
+                            width: size(22);
+                            height: size(22);
+                        }
+                        &:hover {
+                            color: var(--mc-low-500);
+                        }
+                    }
+
+                    &--adress {
+                        display: flex;
+                        align-items: baseline;
+                        justify-content: center;
+                        gap: size(8);
+
+                        .iconify {
+                            background-color: white;
+                            min-width: max-content;
+                        }
+
+                        &-label {
+                            font-weight: 600;
+                            font-size: size(14);
+                            line-height: size(19);
+                        }
+                    }
+
+                    &--spaces {
+                        clear: both;
+                        padding: size(14) size(16) size(21);
+                        background-color: var(--mc-white);
+                        border-radius: var(--mc-border-radius-xs);
+
+                        &-title {
+                            font-weight: 600;
+                            font-size: size(16);
+                            line-height: size(22);
+                        }
+
+                        .space-link {
+                            display: flex;
+                            gap: size(6);
+                            align-items: center;
+
+                            &__icon {
+                                width: size(32);
+                                height: size(32);
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                border-radius: var(--mc-border-radius-pill);
+                                background-color: var(--mc-spaces-500);
+
+                                .iconify {
+                                    color: var(--mc-white);
+                                }
+                            }
+
+                            a {
+                                text-decoration: none;
+                                color: var(--mc-low-500);
+                                margin: size(16) 0;
+                                font-weight: 700;
+                                font-size: size(18);
+                                line-height: size(25);
+                            }
+
+                        }
+
+                    }
+                }
+
+                &__cards {
+                    position: relative;
+
+                    //aqui é o estilo do marcador de tempo
+                    &--date {
+                        align-items: center;
+                        display: flex;
+                        gap: size(8);
+                        margin: size(20) 0;
+
+                        &-info {
+                            display: flex;
+                            flex-direction: column;
+                            left: 0;
+                            position: relative;
+                            text-align: right;
+
+                            .weekend {
+                                font-size: size(13);
+                            }
+                        }
+
+                        &-line {
+                            height: size(1);
+                            background: black;
+                            flex-grow: 1;
+                        }
                     }
                 }
             }
@@ -279,6 +407,7 @@
 
     @media (max-width: size(900)) {
         &__tabs {
+
             &--map,
             &--list {
 
@@ -310,6 +439,7 @@
                             width: 100%;
                         }
                     }
+
                 }
             }
         }
@@ -318,7 +448,7 @@
 
 .action-opportunities,
 .action-projects {
-    .tabs-component__panels{
+    .tabs-component__panels {
         background: var(--mc-gray-100);
         margin-top: size(123);
         padding-bottom: size(40);
@@ -331,6 +461,7 @@
     }
 
     .search__tabs--list {
+
         .loading,
         .panel__row {
             grid-column-end: span 9;

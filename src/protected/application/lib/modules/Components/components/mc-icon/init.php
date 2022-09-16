@@ -54,6 +54,7 @@ $iconset = [
     'login' => 'icon-park-outline:login',
     'logout' => 'icon-park-outline:logout',
     'map' => 'bxs:map-alt',
+    'map-pin' => 'charm:map-pin',
     'menu-mobile' => 'icon-park-outline:hamburger-button',
     'network' => 'grommet-icons:connect',
     'next' => 'ooui:previous-rtl',
