@@ -109,13 +109,14 @@
                     }
 
                     .button {
-                        padding: size(11);
+                        padding: size(7);
+                        width: size(40);
+                        height: size(40);
 
                         .iconify {
                             color: var(--mc-primary-500);
-                            width: size(15);
-                            height: size(15);
-                            font-size: size(15);
+                            width: size(23);
+                            height: size(23);
                         }
                     }
                 }

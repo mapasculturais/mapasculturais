@@ -18,6 +18,7 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
                     :enableTimePicker='false' 
                     :format="dateFormat"
                     :presetRanges="presetRanges" 
+                    :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
                     range multiCalendars multiCalendarsSolo autoApply utc></datepicker>
     
                 <button @click="prevInterval()" class="button button--rounded button--outline"> <mc-icon name="arrow-left"></mc-icon> </button>
