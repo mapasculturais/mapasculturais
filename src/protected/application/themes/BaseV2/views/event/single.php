@@ -1,4 +1,4 @@
-<?php 
+<?php
 use MapasCulturais\i;
 $this->layout = 'entity';
 $this->import('entity-files-list entity-admins entity-gallery entity-list
@@ -7,9 +7,9 @@ entity-header entity-request-ownership mapas-breadcrumb mapas-container
 share-links entity-terms entity-related-agents
 entity-seals entity-social-media');
 $this->breadcramb = [
-    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-    ['label'=> i::__('Meus Eventos'), 'url' => $app->createUrl('panel', 'events')],
-    ['label'=> $entity->name, 'url' => $app->createUrl('event', 'edit', [$entity->id])],
+    ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+    ['label' => i::__('Meus Eventos'), 'url' => $app->createUrl('panel', 'events')],
+    ['label' => $entity->name, 'url' => $app->createUrl('event', 'edit', [$entity->id])],
 ];
 ?>
 <div class="main-app">
@@ -26,7 +26,7 @@ $this->breadcramb = [
                             <?= i::_e("Classificação Etária"); ?>
                         </label>
                         <div class="age-rating__content">
-                            {{entity.classificacaoEtaria}} 
+                            {{entity.classificacaoEtaria}}
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@ $this->breadcramb = [
                             <span><?php i::_e("Libras:"); ?></span>{{entity.descricaoSonora}}
                         </div>
                         <div v-if="entity.traducaoLibras" class="acessibility__libras">
-                           <span><?php i::_e("Áudio de Descrição:"); ?></span> {{entity.traducaoLibras}}
+                            <span><?php i::_e("Áudio de Descrição:"); ?></span> {{entity.traducaoLibras}}
                         </div>
                     </div>
                 </div>
@@ -45,12 +45,12 @@ $this->breadcramb = [
                 <div class="col-12">
                     <entity-location :entity="entity"></entity-location>
                 </div>
-                
+
                 <div v-if="entity.longDescription" class="col-12">
-                    <h2>Descrição Detalhada</h2>
+                    <h2><?php i::_e('Descrição Detalhada');?></h2>
                     <p>{{entity.longDescription}}</p>
                 </div>
-                
+
                 <div class="col-12">
                     <entity-files-list :entity="entity" group="downloads" title="Arquivos para download"></entity-files-list>
                 </div>
@@ -68,44 +68,45 @@ $this->breadcramb = [
             </div>
         </main>
 
-        <aside>         
+        <aside>
             <div class="grid-12">
                 <div class="col-12">
-                    <entity-terms :entity="entity" taxonomy="area" title="Areas de atuação"></entity-terms>
+                    <entity-terms :entity="entity" taxonomy="area" title="<?php i::esc_attr_e('Areas de atuação');?>"></entity-terms>
                 </div>
-                
+
                 <div class="col-12">
                     <entity-social-media :entity="entity"></entity-social-media>
                 </div>
-                
+
                 <div class="col-12">
-                    <entity-seals :entity="entity" title="Verificações" :editable="entity.currentUserPermissions.createSealRelation"></entity-seals>
+                    <entity-seals :entity="entity" title="<?php i::esc_attr_e('Verificações');?>" :editable="entity.currentUserPermissions.createSealRelation"></entity-seals>
                 </div>
-                
+
                 <div class=col-12>
-                    <entity-related-agents :entity="entity" title="Agentes Relacionados"></entity-related-agents>
+                    <entity-related-agents :entity="entity" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
                 </div>
+
                 <div class="col-12">
-                    <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>  
+                    <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>
                 </div>
-                
+
                 <div class="col-12">
-                    <share-links title="Compartilhar" text="Veja este link:"></share-links>
+                    <share-links title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
                 </div>
+
                 <div class="col-12">
                     <entity-admins :entity="entity"></entity-admins>
                 </div>
 
                 <div v-if="entity.relatedOpportunities.length > 0" class="col-12">
-                    <h4>Propriedades do Evento</h4>
-                
-                    <div class="col-12">
-                        <entity-list :entity="entity" title="Oportunidades" property-name="relatedOpportunities" type="opportunity"></entity-list>
-                    </div>
-                
+                    <h4><?php i::_e('Propriedades do Evento');?></h4>
+
+                    <entity-list title="<?php i::esc_attr_e('Oportunidades'); ?>" type="opportunity" :ids="entity.relatedOpportunities"></entity-list>
                 </div>
-                <div  class="col-12">
-                    <entity-owner title="Publicado por" :entity="entity"></entity-links>
+
+                <div class="col-12">
+                    <entity-owner title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity">
+                        </entity-links>
                 </div>
         </aside>
     </mapas-container>

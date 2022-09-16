@@ -25,12 +25,12 @@ $this->breadcramb = [
         <main>
             <div class="grid-12">
                 <div class="col-12">
-                    <h2>Descrição Detalhada</h2>
+                    <h2><?php i::_e('Descrição Detalhada');?></h2>
                     <p>{{entity.longDescription}}</p>
                 </div>
 
                 <div class="col-12">
-                    <entity-files-list :entity="entity" group="downloads" title="Arquivos para download"></entity-files-list>
+                    <entity-files-list :entity="entity" group="downloads" title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                 </div>
 
                 <div v-if="entity" class="col-12">
@@ -41,7 +41,7 @@ $this->breadcramb = [
                     <entity-gallery :entity="entity"></entity-gallery>
                 </div>
                 <div class="property col-12">
-                    <button class="button button--primary button--md">Reinvindicar Propriedade</button>
+                    <button class="button button--primary button--md"><?php i::_e('Reinvindicar Propriedade');?></button>
                 </div>
 
             </div>
@@ -54,11 +54,11 @@ $this->breadcramb = [
                 </div>
 
                 <div class="col-12">
-                    <entity-seals :entity="entity" title="Verificações"></entity-seals>
+                    <entity-seals :entity="entity" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                 </div>
 
                 <div class="col-12">
-                    <entity-related-agents :entity="entity" title="Agentes Relacionados"></entity-related-agents>
+                    <entity-related-agents :entity="entity" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
                 </div>
 
                 <div class="col-12">
@@ -66,11 +66,11 @@ $this->breadcramb = [
                 </div>
 
                 <div class="col-12">
-                    <share-links title="Compartilhar" text="Veja este link:"></share-links>
+                    <share-links title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
                 </div>
 
                 <div class="col-12">
-                    <entity-owner title="Publicado por" :entity="entity">
+                    <entity-owner title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity">
                         </entity-links>
                 </div>
 
@@ -79,14 +79,11 @@ $this->breadcramb = [
                 </div>
 
                 <div v-if="entity.relatedOpportunities.length>0 || entity.children.length>0" class="col-12">
-                    <div class="col-12">
-                        <h4>Propriedades do Projeto</h4>
-                    </div>
-                    
-                        <entity-list  v-if="entity.children.length >0" :entity="entity" title="Subprojetos" property-name="children" type="project"></entity-list>
+                        <h4><?php i::_e('Propriedades do Projeto');?></h4>
 
-                        <entity-list v-if="entity.relatedOpportunities.length >0" :entity="entity" title="Oportunidades" property-name="relatedOpportunities" type="opportunity"></entity-list>
+                        <entity-list title="<?php i::esc_attr_e('Subprojetos');?>" type="project" :ids="entity.children"></entity-list>
 
+                        <entity-list title="<?php i::esc_attr_e('Oportunidades');?>" type="opportunity" :ids="entity.relatedOpportunities"></entity-list>
                 </div>
             </div>
         </aside>

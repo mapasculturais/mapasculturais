@@ -23,11 +23,14 @@ $this->import('
 </search-map>
 
 <div v-if="space" style="max-height:500px; min-height:400px; overflow-y:auto; position:absolute; width:300px; background-color: darkolivegreen; top:50px; left:100px; z-index:1000">
-    <?= i::__('Eventos encontrados no espaço:') ?>
-    <h1><mc-link :entity="space" icon></mc-link></h1>
-    <p v-if="space.endereco">
-        <?= i::__('Onde: ') ?>{{space.endereco}}
-    </p>
+    <div class="col-12">
+        <?= i::__('Eventos encontrados no espaço:') ?>
+        <h1><mc-link :entity="space" icon></mc-link></h1>
+        <p v-if="space.endereco">
+            <?= i::__('Onde: ') ?>{{space.endereco}}
+        </p>
+
+    </div>
     <entities 
         type="event" 
         endpoint="occurrences" 

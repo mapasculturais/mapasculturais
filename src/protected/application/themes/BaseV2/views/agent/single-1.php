@@ -27,12 +27,12 @@ $this->breadcramb = [
                 </div>
 
                 <div v-if="entity.longDescription" class="col-12">
-                    <h2>Descrição Detalhada</h2>
+                    <h2><?php i::_e('Descrição Detalhada');?></h2>
                     <p>{{entity.longDescription}}</p>
                 </div>
 
                 <div class="col-12">
-                    <entity-files-list :entity="entity" group="downloads" title="Arquivos para download"></entity-files-list>
+                    <entity-files-list :entity="entity" group="downloads" title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                 </div>
 
                 <div class="col-12">
@@ -43,7 +43,7 @@ $this->breadcramb = [
                     <entity-gallery :entity="entity"></entity-gallery>
                 </div>
                 <div class="property col-12">
-                    <button class="button button--primary button--md button-large">Reinvindicar Propriedade</button>
+                    <button class="button button--primary button--md button-large"><?php i::_e('Reinvindicar Propriedade');?></button>
                 </div>
             </div>
         </main>
@@ -51,7 +51,7 @@ $this->breadcramb = [
         <aside>
             <div class="grid-12">
                 <div class="col-12">
-                    <entity-terms :entity="entity" taxonomy="area" title="Areas de atuação"></entity-terms>
+                    <entity-terms :entity="entity" taxonomy="area" title="<?php i::esc_attr_e('Areas de atuação');?>"></entity-terms>
                 </div>
 
                 <div class="col-12">
@@ -59,18 +59,18 @@ $this->breadcramb = [
                 </div>
 
                 <div class="col-12">
-                    <entity-seals :entity="entity" title="Verificações" :editable="entity.currentUserPermissions.createSealRelation"></entity-seals>
+                    <entity-seals :entity="entity" title="<?php i::esc_attr_e('Verificações');?>" :editable="entity.currentUserPermissions.createSealRelation"></entity-seals>
                 </div>
 
                 <div class=col-12>
-                    <entity-related-agents :entity="entity" title="Agentes Relacionados"></entity-related-agents>
+                    <entity-related-agents :entity="entity" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
                 </div>
                 <div class="col-12">
                     <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>
                 </div>
 
                 <div class="col-12">
-                    <share-links title="Compartilhar" text="Veja este link:"></share-links>
+                    <share-links title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
                 </div>
 
                 <div class="col-12">
@@ -78,20 +78,20 @@ $this->breadcramb = [
                 </div>
 
                 <div v-if="entity.spaces.length>0 || entity.children.length>0 || entity.events.length>0 || entity.ownedOpportunities.length > 0 || entity.relatedOpportunities.length >0" class="col-12">
-                    <h4>Propriedades do Agente:</h4>
-                    <entity-list :entity="entity" title="Espaços" property-name="spaces" type="space"></entity-list>
+                    <h4><?php i::_e('Propriedades do Agente:');?></h4>
+                    <entity-list title="<?php i::esc_attr_e('Espaços');?>" type="space" :ids="entity.spaces"></entity-list>
 
-                    <entity-list :entity="entity" title="Eventos" property-name="events" type="event"></entity-list>
+                    <entity-list title="<?php i::esc_attr_e('Eventos');?>" type="event" :ids="entity.events"></entity-list>
 
-                    <entity-list v-if="entity.children.length>0" :entity="entity" title="Agentes" property-name="children" type="agent"></entity-list>
+                    <entity-list title="<?php i::esc_attr_e('Agentes');?>" type="agent" :ids="entity.children"></entity-list>
 
-                    <entity-list v-if="entity.children.length>0" :entity="entity" title="Projetos" property-name="children" type="project"></entity-list>
+                    <entity-list title="<?php i::esc_attr_e('Projetos');?>" type="project" :ids="entity.projects"></entity-list>
                     
-                    <entity-list v-if="{opportunities}":entity="entity" title="Oportunidades" property-name="opportunities" type="opportunity"></entity-list>
+                    <entity-list title="<?php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="entity.ownedOpportunities.concat(entity.relatedOpportunities)"></entity-list>
                 </div>
 
                 <div class="col-12">
-                    <entity-owner title="Publicado por" :entity="entity"></entity-owner>
+                    <entity-owner title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
                 </div>
             </div>
         </aside>

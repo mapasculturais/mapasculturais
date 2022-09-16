@@ -62,7 +62,7 @@ $this->breadcramb = [
                             </div>
 
                             <div class="col-12">
-                                <entity-seals :entity="entity" title="Verificações"></entity-seals>
+                                <entity-seals :entity="entity" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                             </div>
 
                             <div class="col-12">
@@ -74,11 +74,11 @@ $this->breadcramb = [
                             </div>
 
                             <div class="col-12">
-                                <share-links title="<?= i::_e('Compartilhar'); ?>" text="<?= i::_e('Veja este link:'); ?>"></share-links>
+                                <share-links title="<?php i::esc_attr_e('Compartilhar');?>" text="<?= i::_e('Veja este link:'); ?>"></share-links>
                             </div>
 
                             <div class="col-12">
-                                <entity-owner title="<?= i::_e('Publicado por'); ?>" :entity="entity">
+                                <entity-owner title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity">
                                     </entity-links>
                             </div>
 
@@ -87,16 +87,11 @@ $this->breadcramb = [
                             </div>
 
                             <div v-if="entity.children.length >0 || entity.relatedOpportunities >0" class="col-12">
+                                <h4><?php i::_e('Propriedades do Espaço');?></h4>
 
-                                <div class="col-12">
-                                    <h4>Propriedades do Espaço</h4>
-                                </div>
-
-                                <entity-list :entity="entity" title="Subespaços" property-name="children" type="space"></entity-list>
-
-                                <div v-if="entity.relatedOpportunities.length > 0" class="col-12">
-                                    <entity-list :entity="entity" title="Oportunidades" property-name="relatedOpportunities" type="opportunity"></entity-list>
-                                </div>
+                                <entity-list  title="<?php i::esc_attr_e('Subespaços');?>" type="space" :ids="entity.children"></entity-list>
+    
+                                <entity-list title="<?php i::esc_attr_e('Oportunidades');?>" type="opportunity" :ids="entity.relatedOpportunities"></entity-list>
                             </div>
 
                         </div>
