@@ -9,11 +9,11 @@ $this->import('
     <div class="home-entities__content">
         <div class="home-entities__content--header">
             <label class="title">
-                <?php i::_e('O que você encontra em Mapas Culturais,') ?>
+                <?php i::_e('Aqui você encontra as informações da cultura de sua região!') ?>
             </label>
             <label class="description">
                 <p>
-                    <?php i::_e('Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum et, rhoncus semper et, nulla. ,') ?>
+                    <?php i::_e('Mas para isso, precisamos da sua ajuda!!! Faça parte você também: cadastre seus projetos, espaços e eventos.') ?>
                 </p>
             </label>
         
