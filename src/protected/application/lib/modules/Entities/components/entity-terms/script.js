@@ -45,6 +45,10 @@ app.component('entity-terms', {
         title: {
             type: String,
             default: ''
+        },
+        classes: {
+            type: [String, Array],
+            default: ''
         }
     },
 

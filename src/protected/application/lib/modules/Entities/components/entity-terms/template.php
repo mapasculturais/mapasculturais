@@ -4,7 +4,7 @@ use MapasCulturais\i;
 
 $this->import('popover mc-tag-list mc-multiselect')
 ?>
-<div v-if="editable || entity.terms?.[taxonomy].length > 0" class="entity-terms">
+<div v-if="editable || entity.terms?.[taxonomy].length > 0" :class="['entity-terms', classes]">
 
     <h4 class="entity-terms__title" v-if="title == ''"> {{taxonomy}} </h4>
     <h4 class="entity-terms__title" v-else> {{title}} </h4>
