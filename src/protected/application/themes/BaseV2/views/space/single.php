@@ -70,7 +70,7 @@ $this->breadcramb = [
                             </div>
 
                             <div class="col-12">
-                                <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>
+                                <entity-terms :entity="entity" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
                             </div>
 
                             <div class="col-12">

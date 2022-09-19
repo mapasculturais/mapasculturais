@@ -52,7 +52,7 @@ $this->breadcramb = [
                 </div>
 
                 <div class="col-12">
-                    <entity-files-list :entity="entity" group="downloads" title="Arquivos para download"></entity-files-list>
+                    <entity-files-list :entity="entity" group="downloads" title="<?php i::esc_attr_e('Arquivos para download') ?>"></entity-files-list>
                 </div>
 
                 <div class="col-12">
@@ -87,7 +87,7 @@ $this->breadcramb = [
                 </div>
 
                 <div class="col-12">
-                    <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>
+                    <entity-terms :entity="entity" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
                 </div>
 
                 <div class="col-12">
