@@ -9,7 +9,6 @@ app.component('create-agent' , {
     },
     
     created() {
-        this.createEntity()
         this.iterationFields()
     },
 
@@ -25,6 +24,15 @@ app.component('create-agent' , {
             type: Boolean,
             default:true
         },
+    },
+
+    computed: {
+        areaErrors() {
+            return this.entity.__validationErrors['term-area'];
+        },
+        areaClasses() {
+            return this.areaErrors ? 'field error' : 'field';
+        }
     },
     
     methods: {
@@ -47,7 +55,8 @@ app.component('create-agent' , {
             })
         },
         createEntity() {
-            this.entity= new Entity('agent');
+            this.entity = Vue.ref(new Entity('agent'));
+            this.entity.type = 1;
             this.entity.terms = {area: []}
         },
         createDraft(modal) {
@@ -65,8 +74,10 @@ app.component('create-agent' , {
                 this.$emit('create',response)
             })
         },
-        cancel(modal) {
-            modal.close()
-        },
+
+        destroyEntity() {
+            // para o conteúdo da modal não sumir antes dela fechar
+            setTimeout(() => this.entity = null, 200);
+        }
     },
 });
