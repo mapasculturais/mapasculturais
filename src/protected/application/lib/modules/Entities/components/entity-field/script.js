@@ -55,9 +55,13 @@ app.component('entity-field', {
             type: String,
             default: null
         },
-        showLabel: {
+        hideLabel: {
             type: Boolean,
-            default: true
+            default: false
+        },
+        hideRequired: {
+            type: Boolean,
+            default: false
         },
         debounce: {
             type: Number,
