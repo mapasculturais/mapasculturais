@@ -27,7 +27,7 @@ app.component('search-list', {
         },
         select: {
             type: String,
-            default: 'id,name,shortDescription,files.avatar,seals,terms,singleUrl'
+            default: 'id,name,type,shortDescription,files.avatar,seals,terms,singleUrl'
         },
         pseudoQuery: {
             type: Object,
