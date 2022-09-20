@@ -3,7 +3,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 $this->import('entity-files-list entity-admins entity-gallery entity-list
 entity-location entity-owner entity-gallery-video 
-entity-header entity-request-ownership mapas-breadcrumb mapas-container
+entity-header mapas-breadcrumb mapas-container
 share-links entity-terms entity-related-agents
 entity-seals entity-social-media');
 $this->breadcramb = [
@@ -61,9 +61,6 @@ $this->breadcramb = [
 
                 <div class="col-12">
                     <entity-gallery :entity="entity"></entity-gallery>
-                </div>
-                <div class="property col-12">
-                    <entity-request-ownership></entity-request-ownership>
                 </div>
             </div>
         </main>
