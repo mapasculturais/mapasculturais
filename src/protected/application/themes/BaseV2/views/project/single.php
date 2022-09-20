@@ -7,7 +7,7 @@ $this->layout = 'entity';
 
 $this->import('
     mapas-container  mapas-breadcrumb entity-admins
-    entity-terms share-links entity-files-list entity-links  entity-list entity-owner entity-related-agents entity-seals entity-header entity-gallery entity-gallery-video entity-social-media');
+    entity-terms entity-parent share-links entity-files-list entity-links  entity-list entity-owner entity-related-agents entity-seals entity-header entity-gallery entity-gallery-video entity-social-media');
 $this->breadcramb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Projetos'), 'url' => $app->createUrl('panel', 'projects')],
@@ -82,6 +82,7 @@ $this->breadcramb = [
 
                         <entity-list title="<?php i::esc_attr_e('Oportunidades');?>" type="opportunity" :ids="entity.relatedOpportunities"></entity-list>
                 </div>
+                <entity-parent :entity="entity" type="project"></entity-parent>
             </div>
         </aside>
     </mapas-container>
