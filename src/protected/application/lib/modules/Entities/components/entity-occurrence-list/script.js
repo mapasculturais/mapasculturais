@@ -11,7 +11,11 @@ app.component('entity-occurrence-list', {
     },
 
     beforeCreate() { },
-    created() { },
+    created() {
+        this.eventApi = new API('event');
+        this.spaceApi = new API('space');
+        this.fetchOccurrences();
+    },
 
     beforeMount() { },
     mounted() { },
@@ -23,15 +27,39 @@ app.component('entity-occurrence-list', {
     unmounted() {},
 
     props: {
+        entity: {
+            type: Entity,
+            required: true,
+        },
     },
 
     data() {
-        return {};
+        return {
+            occurrences: [],
+            loading: false,
+        }
     },
 
     computed: {
     },
     
     methods: {
+        async fetchOccurrences() {
+            const query = Utils.parsePseudoQuery(this.pseudoQuery);
+
+            this.loading = true;
+            if(query['@keyword']) {
+                query['event:@keyword'] = query['@keyword'];
+                delete query['@keyword'];
+            }
+            query['event:@select'] = 'id,name';
+            query['space:@select'] = 'id,name';
+            
+            this.occurrences = await this.eventApi.fetch('occurrences', query, {
+                raw: true,
+                rawProcessor: (rawData) => Utils.occurrenceRawProcessor(rawData, this.eventApi, this.spaceApi)
+            });
+            this.loading = false;
+        },
     },
 });
