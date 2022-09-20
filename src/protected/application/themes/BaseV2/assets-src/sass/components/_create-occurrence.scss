@@ -87,6 +87,12 @@
         flex-direction: column;
         gap: size(16);
 
+        &--title {
+            font-weight: 700;
+            font-size: size(16);
+            line-height: size(22);
+        }
+
         &--link-space {
             display: flex;
             align-items: center;
@@ -94,12 +100,49 @@
             font-size: size(18);
             line-height: size(25);
             flex-wrap: wrap;
-        }
 
-        &--title {
-            font-weight: 700;
-            font-size: size(16);
-            line-height: size(22);
+            &.space-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: size(15);
+            }
+
+            .space-info {
+                &__space {
+                    position: relative;
+                    width: 100%;
+                    border: var(--mc-border-hairline);
+                    border-radius: var(--mc-border-radius-xs);
+                    padding: size(10);
+
+                    &--title {
+                        align-items: center;
+                        display: flex;
+                        font-size: size(18);
+                        font-weight: 800;
+                        line-height: size(25);
+                        gap: size(6);
+
+                        .remove {
+                            position: absolute;
+                            right: size(16);
+                            color: var(--mc-danger-500);
+                            cursor: pointer;
+                        }
+                    }
+
+                    &--address {
+                        color: var(--mc-gray-700);
+                        font-size: size(14);
+                        font-weight: 600;
+                        line-height: size(19);
+                        margin-left: size(16);
+                        p {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
         }
 
         &--fields {
@@ -170,6 +213,10 @@
                         padding: 0;
                     }
                 }
+
+                &.dp__input {
+                    padding: size(9) size(14) size(9) size(36);
+                }
             }
 
             .auto-description {
@@ -186,6 +233,10 @@
                 
                 .button {
                     background-color: var(--mc-gray-100);
+                }
+
+                span {
+                    width: 100%;
                 }
             }
         }        
