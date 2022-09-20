@@ -2,7 +2,7 @@
 use MapasCulturais\i; 
 ?>
 <div class="field" :class="{error: hasErrors}">
-    <label v-if="showLabel" :for="propId">{{label || description.label}} <span v-if="description.required" class="required">*<?php i::_e('obrigatório') ?></span></label> 
+    <label v-if="!hideLabel" :for="propId">{{label || description.label}} <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span></label> 
     
     <slot  name="input" >
         <?php //@todo implementar registro de tipos de campos (#1895) ?>

@@ -3,7 +3,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 $this->import('entity-files-list entity-admins entity-gallery entity-list
 entity-location entity-owner entity-gallery-video 
-entity-header entity-request-ownership mapas-breadcrumb mapas-container
+entity-header mapas-breadcrumb mapas-container
 share-links entity-terms entity-related-agents
 entity-seals entity-social-media');
 $this->breadcramb = [
@@ -52,7 +52,7 @@ $this->breadcramb = [
                 </div>
 
                 <div class="col-12">
-                    <entity-files-list :entity="entity" group="downloads" title="Arquivos para download"></entity-files-list>
+                    <entity-files-list :entity="entity" group="downloads" title="<?php i::esc_attr_e('Arquivos para download') ?>"></entity-files-list>
                 </div>
 
                 <div class="col-12">
@@ -61,9 +61,6 @@ $this->breadcramb = [
 
                 <div class="col-12">
                     <entity-gallery :entity="entity"></entity-gallery>
-                </div>
-                <div class="property col-12">
-                    <entity-request-ownership></entity-request-ownership>
                 </div>
             </div>
         </main>
@@ -87,7 +84,7 @@ $this->breadcramb = [
                 </div>
 
                 <div class="col-12">
-                    <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>
+                    <entity-terms :entity="entity" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
                 </div>
 
                 <div class="col-12">

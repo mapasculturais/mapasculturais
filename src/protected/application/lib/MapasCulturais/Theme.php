@@ -723,16 +723,29 @@ abstract class Theme extends \Slim\View {
             $e = $query->findOne();
             
             if ($owner_id = $e[$owner_prop]) {
-                $parent_query_params = [
+                $owner_query_params = [
                     '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
                     'id' => "EQ({$owner_id})", 
                     'status' => 'GTE(-10)',
                     '@permissions'=>'view', 
                 ];
-                $app->applyHookBoundTo($this,"view.requestedEntity($_entity).owner.params", [&$parent_query_params, $entity_class_name, $entity_id]);
-                $query = new ApiQuery(Entities\Agent::class, $parent_query_params);
+                $app->applyHookBoundTo($this,"view.requestedEntity($_entity).owner.params", [&$owner_query_params, $entity_class_name, $entity_id]);
+                $query = new ApiQuery(Entities\Agent::class, $owner_query_params);
                 $owner = $query->findOne();
                 $e[$owner_prop] = $owner;
+            }
+
+            if($owner_prop != 'parent' && $entity_class_name::usesNested()) {
+                $parent_query_params = [
+                    '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
+                    'id' => "EQ({$e['parent']})", 
+                    'status' => 'GTE(-10)',
+                    '@permissions'=>'view', 
+                ];
+                $app->applyHookBoundTo($this,"view.requestedEntity($_entity).parent.params", [&$parent_query_params, $entity_class_name, $entity_id]);
+                $query = new ApiQuery($entity_class_name, $parent_query_params);
+                $parent = $query->findOne();
+                $e['parent'] = $parent;
             }
             
             $e['controllerId'] = $app->getControllerIdByEntity($entity_class_name);

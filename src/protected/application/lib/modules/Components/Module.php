@@ -41,6 +41,8 @@ class Module extends \MapasCulturais\Module {
             if (isset($app->components->templates)) {
                 $app->components->templates = [];
             }
+
+            $this->import('entity');
         });
 
         $app->hook('mapas.printJsObject:after', function () use($app) {
