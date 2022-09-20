@@ -1,13 +1,25 @@
 globalThis.__ = (key, componentName) => {
     const dict = Utils.getTexts(componentName);
-    return dict(key);
+    const text = dict(key);
+
+    if (!text) {
+        console.error(`TRADUÇÃO FALTANDO "${key}" do componente "${componentName}`);
+    }
+
+    return text || key;
 }
 
 globalThis.Utils = {
     getTexts(componentName) {
         const texts = $MAPAS.gettext?.[`component:${componentName}`] || {};
         return (key) => {
-            return texts[key];
+            const text = texts[key];
+
+            if (!text) {
+                console.error(`TRADUÇÃO FALTANDO "${key}" do componente "${componentName}`);
+            }
+        
+            return text || key;
         };
     },
 

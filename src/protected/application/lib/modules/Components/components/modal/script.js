@@ -14,7 +14,7 @@ app.component('modal', {
             default: ''
         },
         classes: {
-            type: String,
+            type: [String, Array],
             default: '',
         },
         buttonLabel: {

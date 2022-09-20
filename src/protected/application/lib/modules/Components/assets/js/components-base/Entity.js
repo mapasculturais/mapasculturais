@@ -338,6 +338,7 @@ class Entity {
                 let file;
                 if(f[group] instanceof Array) {
                     file = new EntityFile(this, group, f[group][0]);
+                    this.files[group] = this.files[group] || [];
                     this.files[group].push(file);
                 } else {
                     file = new EntityFile(this, group, f[group]);
@@ -359,6 +360,7 @@ class Entity {
 
             this.doPromise(res, (data) => {
                 const metalist = new EntityMetalist(this, group, {title, description, value});
+                this.metalists[group] = this.metalists[group] || [];
                 this.metalists[group].push(metalist);
             });
         } catch (error) {
