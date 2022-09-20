@@ -1,81 +1,64 @@
-app.component('create-occurrence' , {
+app.component('create-occurrence', {
     template: $TEMPLATES['create-occurrence'],
     emits: ['create'],
 
-    setup() { 
-      
-    },
-
-    created() {
-        this.createEntity()
+    setup() {
+        const text = Utils.getTexts('create-occurrence');
+        return {
+            text
+        }
     },
 
     data() {
         var actualDate = new Date();
         return {
+            locale: $MAPAS.config.locale,
             entity: null,
+            space: null,
+            errors: null,
             step: 0,
             autoDescription: '',
             free: false,
-            frequency: '',
+            frequency: 'once',
             eventId: 0,
             spaceId: 0,
-            startsAt: '00:00',
+            startsAt: {
+                hours: new Date().getHours(),
+                minutes: new Date().getMinutes()
+            },
+            endsAt: {
+                hours: new Date().getHours(),
+                minutes: new Date().getMinutes()
+            },
+            dateRange: null,
             duration: 0,
-            endsAt: '00:00',
-            startsOn: actualDate.getFullYear()+'-'+(actualDate.getMonth()+1 < 10 ? '0'+(actualDate.getMonth()+1) : actualDate.getMonth()+1)+'-'+actualDate.getDate(),
+            startsOn: actualDate.getFullYear() + '-' + (actualDate.getMonth() + 1 < 10 ? '0' + (actualDate.getMonth() + 1) : actualDate.getMonth() + 1) + '-' + actualDate.getDate(),
             until: 0,
             description: '',
             price: 0,
             day: [false, false, false, false, false, false, false],
-
         }
     },
 
     props: {
-        /* entity: {
-            type: Entity,
-            required: true
-        }, */
-
-        editable: {
-            type: Boolean,
-            default: false,
-        },
     },
-    
-    methods: {
-        
-        cancel(modal) {
-            modal.close();
-        },
 
-        next() {
-            if(this.step < 5) {
-                if (this.step == 4)
-                    this.updateDescription();
-                ++this.step
-            }
-        },
-
-        prev() {
-            if(this.step > 0) {
-                --this.step;
-            }
-        },
-
-        createEntity() {
-            this.entity = new Entity('new-occurrence');
-        },
+    computed: {
 
         updateDescription() {
+
+            if (this.dateRange) {
+                this.startsOn = this.dateRange[0].substr(0, 4) + '-' + this.dateRange[0].substr(5, 2) + '-' + this.dateRange[0].substr(8, 2)
+                this.until = this.dateRange[1].substr(0, 4) + '-' + this.dateRange[1].substr(5, 2) + '-' + this.dateRange[1].substr(8, 2)
+            }
+
             var description = '';
-            var month = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-            var days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+            var months = __('meses', 'create-occurrence');
+            var days = __('dias', 'create-occurrence');
 
             var weekDays = [];
-            this.day.forEach(function(status, index) {
-                if(status) {
+            this.day.forEach(function (status, index) {
+                if (status) {
                     weekDays.push(index);
                 }
             });
@@ -90,68 +73,132 @@ app.component('create-occurrence' , {
             var endMonth = (endData.getMonth() + 1);
             var endYear = endData.getFullYear();
 
+            /* Tradução pelo texts.php */
             if (this.frequency == 'once') {
-                description += "Dia " + startDay + " de " + month[startMonth] + " de " + startYear;
+                description += __('uma vez', 'create-occurrence');
             } else {
                 if (this.frequency == 'daily') {
-                    description += 'Diariamente, ';
+                    description += __('diariamente', 'create-occurrence');
                 } else if (this.frequency == 'weekly') {
                     if (weekDays[0] == '0' || weekDays[0] == '6') {
-                        description += 'Todo ';
+                        description += __('semanal 1', 'create-occurrence');
                     } else {
-                        description += 'Toda ';
+                        description += __('semanal 2', 'create-occurrence');
                     }
 
                     var count = 1;
-                    weekDays.forEach(function(day, index) {
+                    weekDays.forEach(function (day, index) {
                         description += days[day];
-                        count ++;
+                        count++;
                         if (count == weekDays.length)
-                            description += ' e ';
+                            description += __('e', 'create-occurrence');
                         else if (count < weekDays.length)
-                            description += ', '
+                            description += ', ';
                     });
                 }
 
                 if (startYear != endYear) {
-                    description += ' de ' + startDay + " de " + month[startMonth] + " de " + startYear;
-                    description += ' a ' + endDay + " de " + month[endMonth] + " de " + endYear;
+                    description += __('anos diferentes', 'create-occurrence');
                 } else {
                     if (startMonth != endMonth) {
-                        description += ' de ' + startDay + " de " + month[startMonth] + ' a ' + endDay + " de " + month[endMonth];
+                        description += __('meses diferentes', 'create-occurrence');
                     } else {
-                        description += ' de ' + startDay + ' a ' + endDay + " de " + month[endMonth] + " de " + endYear;
+                        description += __('meses iguais', 'create-occurrence');
                     }
                 }
             }
 
+            description = description.replace("{dia}", startDay);
+            description = description.replace("{mes}", months[startMonth]);
+            description = description.replace("{ano}", startYear);
+            description = description.replace("{diaIni}", startDay);
+            description = description.replace("{mesIni}", months[startMonth]);
+            description = description.replace("{anoIni}", startYear);
+            description = description.replace("{diaFim}", endDay);
+            description = description.replace("{mesFim}", months[endMonth]);
+            description = description.replace("{anoFim}", endYear);
+
             if (this.startsAt) {
-                if (this.startsAt.substring(0,2) == '01')
-                    description += ' à ' + this.startsAt;
+                if (this.startsAt.hours == '1')
+                    description += __('à', 'create-occurrence') + this.startsAt.hours + ':' + this.startsAt.minutes;
                 else
-                    description += ' às ' + this.startsAt;
+                    description += __('às', 'create-occurrence') + this.startsAt.hours + ':' + this.startsAt.minutes;
             }
 
             this.autoDescription = description;
+        }
+    },
+
+    methods: {
+
+        cancel(modal) {
+            modal.close();
+        },
+
+        // Navegação mobile
+        next() {
+            if (this.step < 5) {
+                if (this.step == 4)
+                    this.updateDescription();
+                ++this.step
+            }
+        },
+        prev() {
+            if (this.step > 0) {
+                --this.step;
+            }
+        },
+
+        // Seleção do espaço vinculado
+        selectSpace(space) {
+            this.space = space;
+        },
+        removeSpace() {
+            this.space = null;
+        },
+
+        // Máscara monetária 
+        mascaraMoeda (event) {            
+            const intNum = event.target.value.split("").filter(s => /\d/.test(s)).join("").padStart(3, "0");
+            const floatNum = intNum.slice(0, -2) + "." + intNum.slice(-2);
+            event.target.value = this.FormataValor(floatNum);
+        },
+        FormataValor(valor, locale = 'pt-BR', currency = 'BRL') {
+            return new Intl.NumberFormat(locale, {style: 'currency', currency}).format(valor);
         },
 
         create() {
 
-            /* data = {
-                eventId: this.eventId,
-                spaceId: this.spaceId,
-                startsAt: this.startsAt,
-                duration: this.duration,
-                endsAt: this.endsAt,
-                frequency: this.frequency,
-                startsOn: this.startsOn,
-                until: this.until,
-                day: this.day,
-                description: this.description,
-                price: this.price,
-            } */
+            /*  new entity
+                popular entidade
+                Verificar erros
+                Emitir o evento 'create' em caso de sucesso
+                entity save 
+                Popular o this.errors em caso de fracasso
+            */
+
+            this.entity = new Entity('eventOccurrence');
+
+            /*
+            this.entity.count           =
+            this.entity.event           =
+            this.entity.eventId         =
+            this.entity.frequency       =
+            this.entity.id              =
+            this.entity.rule            =
+            this.entity.separation      =
+            this.entity.space           =
+            this.entity.spaceId         =
+            this.entity.status          =
+            this.entity.timezoneName    =   
+            this.entity._endsAt         =
+            this.entity._endsOn         =
+            this.entity._startsAt       =
+            this.entity._startsOn       =
+            this.entity._until          =
+            */
 
         }
-       
+
     },
 });

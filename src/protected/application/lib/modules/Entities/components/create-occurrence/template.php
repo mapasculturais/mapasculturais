@@ -1,66 +1,58 @@
 <?php 
 use MapasCulturais\i;
-$this->import('modal entity-field'); 
+$this->import('
+    modal 
+    select-entity
+    mc-link
+    ');
 ?>
 
-<modal title="Inserir ocorrência no evento" classes="create-occurrence" button-label="" >
+<modal title="Inserir ocorrência no evento" classes="create-occurrence" :updateDescription="updateDescription">
     <template #default>
-
         <div class="grid-12">
             <div :class="['col-12', 'create-occurrence__section', {'active' : step==0}]">
-                <label class="create-occurrence__section--title"> <?= i::_e('Vincular um espaço para o evento') ?> </label>
+                <label v-if="!space" class="create-occurrence__section--title"> <?= i::_e('Vincular um espaço para o evento') ?> </label>
+                <label v-if="space" class="create-occurrence__section--title"> <?= i::_e('Espaço vinculado:') ?> </label>
 
-                <div class="create-occurrence__section--link-space">
+                <div v-if="!space" class="create-occurrence__section--link-space">
                     <!-- Seletor de entidades - espaços -->
-                    <button class="button button--icon button--text-outline"> <mc-icon name="add"></mc-icon> <?= i::_e('Adicionar') ?> </button>
+                    <select-entity type="space" openside="down-right" @select="selectSpace($event)"> <!-- @select="addAgent(groupName, $event)" :query="queries[groupName]" -->
+                        <template #button="{ toggle }">
+                            <button class="button button--icon button--text-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Adicionar') ?> </button>
+                        </template>
+                    </select-entity>                       
 
                     <?= i::_e('ou') ?>
 
                     <!-- create space -->
                     <button class="button button--icon button--primary-outline"> <mc-icon name="add"></mc-icon> <?= i::_e('Crie um novo espaço') ?> </button>
                 </div>
+
+                <div v-else class="create-occurrence__section--link-space space-info">
+                    <div class="space-info__space">
+                        <div class="space-info__space--title">
+                            <mc-icon name="pin"></mc-icon> {{space.name}}
+                            <a class="remove" @click="removeSpace()"> <mc-icon name="trash"></mc-icon></a>
+                        </div>
+                        <div v-if="space.endereco" class="space-info__space--address">
+                            {{space.endereco}}
+                        </div>
+                        <div class="space-info__space--address">
+                            Sem endereço
+                        </div>
+
+                    </div>
+                    <div class="space-info__new">
+                        <select-entity type="space" openside="down-right" @select="selectSpace($event)">
+                            <template #button="{ toggle }">
+                                <button class="button button--icon button--primary-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Selecionar outro espaço') ?> </button>
+                            </template>
+                        </select-entity>  
+                    </div>
+                </div>
             </div>
 
-            <div :class="['col-12', 'create-occurrence__section', {'active' : step==1}]">
-                <span class="create-occurrence__section--title"> <?= i::_e('Quando o evento ocorrerá?') ?> </span>
-
-                <div class="grid-12">
-                    <div class="col-6 sm:col-12">
-                        <!-- <entity-field :entity="entity" label=<?php i::esc_attr_e("Data inicial:")?> ></entity-field> -->
-                        <div class="create-occurrence__section--field">
-                            <span class="label"><?= i::_e('Data inicial:') ?></span>
-                            <input v-model="startsOn" type="date" />
-                        </div>
-                    </div>
-                    <div class="col-6 sm:col-12">
-                        <div class="create-occurrence__section--field">
-                            <span class="label"><?= i::_e('Data final:') ?></span>
-                            <input v-model="until" type="date" />
-                        </div>
-                    </div>
-                </div>     
-            </div>
-
-            <div :class="['col-6', 'sm:col-12', 'create-occurrence__section', {'active' : step==2}]">
-                <span class="create-occurrence__section--title"> <?= i::_e('Qual o horário do evento?') ?> </span>
-
-                <div class="grid-12">
-                    <div class="col-6 sm:col-12">
-                        <div class="create-occurrence__section--field">
-                            <span class="label"><?= i::_e('Horário inicial:') ?></span>
-                            <input v-model="startsAt" type="time" />
-                        </div>
-                    </div>
-                    <div class="col-6 sm:col-12">
-                        <div class="create-occurrence__section--field">
-                            <span class="label"><?= i::_e('Horário final:') ?></span>
-                            <input v-model="endsAt" type="time" />
-                        </div>
-                    </div>
-                </div>  
-            </div>
-
-            <div :class="['col-6', 'sm:col-12', 'create-occurrence__section', {'active' : step==3}]">
+            <div :class="['col-6', 'sm:col-12', 'create-occurrence__section', {'active' : step==1}]">
                 <span class="create-occurrence__section--title"> <?= i::_e('Qual a frequência do evento?') ?> </span>
 
                 <div class="create-occurrence__section--fields">
@@ -70,7 +62,7 @@ $this->import('modal entity-field');
                 </div>
             </div>
 
-            <div v-if="frequency=='weekly'" :class="['col-12', 'create-occurrence__section', {'active' : step==3}]">
+            <div v-if="frequency=='weekly'" :class="['col-12', 'create-occurrence__section', {'active' : step==1}]">
                 <span class="create-occurrence__section--title"> <?= i::_e('Que dias da semana o evento se repete?') ?> </span>
 
                 <div class="create-occurrence__section--fields">
@@ -82,6 +74,65 @@ $this->import('modal entity-field');
                     <label class="create-occurrence__section--fields-field"><input v-model="day[5]" type="checkbox" name="day[5]"> <?= i::_e('Sexta') ?> </label>
                     <label class="create-occurrence__section--fields-field"><input v-model="day[6]" type="checkbox" name="day[6]"> <?= i::_e('Sabado') ?> </label>
                 </div>
+            </div>
+
+            <div :class="['col-12', 'create-occurrence__section', {'active' : step==2}]">
+                <span class="create-occurrence__section--title"> <?= i::_e('Quando o evento ocorrerá?') ?> </span>
+
+                <div class="grid-12">
+
+                    <div v-if="frequency=='once'" class="col-6 sm:col-12">
+                        <div class="create-occurrence__section--field">
+                            <span class="label"><?= i::_e('Data inicial:') ?></span>
+                            
+                            <datepicker 
+                                :locale="locale" 
+                                :weekStart="0"
+                                v-model="startsOn" 
+                                :enableTimePicker='false' 
+                                :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
+                                multiCalendarsSolo autoApply utc></datepicker>
+                        </div>
+                    </div>
+
+                    <div v-else class="col-6 sm:col-12">
+                        <div class="create-occurrence__section--field">
+                            <span class="label"><?= i::_e('Data inicial - Data final:') ?></span>
+                            
+                            <datepicker 
+                                :locale="locale" 
+                                :weekStart="0"
+                                v-model="dateRange" 
+                                :enableTimePicker='false' 
+                                :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
+                                range multiCalendars multiCalendarsSolo autoApply utc></datepicker>
+                        </div>
+                    </div>
+
+                </div>     
+            </div>
+
+            <div :class="['col-12', 'create-occurrence__section', {'active' : step==3}]">
+                <span class="create-occurrence__section--title"> <?= i::_e('Qual o horário do evento?') ?> </span>
+
+                <div class="grid-12">
+                    <div class="col-6 sm:col-12">                        
+                        <div class="create-occurrence__section--field">
+                            <span class="label"><?= i::_e('Horário inicial:') ?></span>
+                            <datepicker v-model="startsAt" timePicker autoApply></datepicker>
+
+                            <!-- <input v-model="startsAt" type="time" /> -->
+                        </div>
+                    </div>
+                    <div class="col-6 sm:col-12">
+                        <div class="create-occurrence__section--field">
+                            <span class="label"><?= i::_e('Horário final:') ?></span>
+                            <datepicker v-model="endsAt" timePicker autoApply></datepicker>
+                            
+                            <!-- <input v-model="endsAt" type="time" /> -->
+                        </div>
+                    </div>
+                </div>  
             </div>
 
             <div :class="['col-12', 'create-occurrence__section', {'active' : step==4}]">
@@ -99,7 +150,7 @@ $this->import('modal entity-field');
                         <div class="col-6 sm:col-12" v-if="!free">
                             <div class="create-occurrence__section--field">
                                 <span class="label"><?= i::_e('Valor da entrada:') ?></span>
-                                <input v-model="price" type="number" />
+                                <input v-model="price" type="text" @input="mascaraMoeda($event);" />
                             </div>
                         </div>
                         <div class="col-6 sm:col-12">
