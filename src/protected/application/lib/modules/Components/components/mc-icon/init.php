@@ -29,6 +29,7 @@ $iconset = [
     // IMPORTANTE: manter ordem alfabética
     'access' => 'ooui:previous-rtl',
     'add' => 'ps:plus',
+    'app' => 'heroicons-solid:puzzle',
     'archive' => 'mi:archive',
     'arrow-down' => 'akar-icons:arrow-down',
     'arrow-left' => 'akar-icons:arrow-left',
