@@ -1,11 +1,14 @@
 <?php
 use MapasCulturais\App;
 use MapasCulturais\i;
-$this->import('popover messages theme-logo mc-icon
-    mc-header-menu-user
+$this->import('
+    messages 
     mc-header-menu
+    mc-header-menu-user
+    mc-icon
+    theme-logo 
+');
 
-    ');
 ?>
 
 <header class="main-header">
@@ -67,80 +70,7 @@ $this->import('popover messages theme-logo mc-icon
             </a>        
         <?php else: ?>
             <!-- Menu do usuário -->
-            <mc-header-menu-user>
-                <template #default>
-                    <li>
-                        <a href="<?= $app->createUrl('auth', 'logout') ?>">
-                            <mc-icon name="agent-1"></mc-icon>
-                            <?php i::_e('Meu Perfil') ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?= $app->createUrl('auth', 'logout') ?>">
-                            <mc-icon name="logout"></mc-icon>
-                            <?php i::_e('Sair da sua conta') ?>
-                        </a>
-                    </li>
-
-                    <li class="label">
-                        <?= i::_e('Menu do painel de controle')?>
-                    </li>
-
-                    <li> 
-                        <a href="<?= $app->createUrl('panel', 'index') ?>"> 
-                            <mc-icon name="dashboard"></mc-icon>
-                            <?php i::_e('Painel de controle') ?>
-                        </a> 
-                    </li>
-                    <li> 
-                        <a href="<?= $app->createUrl('panel', 'agents') ?>"> 
-                            <mc-icon name="agent"></mc-icon>
-                            <?php i::_e('Meus agentes') ?>
-                        </a> 
-                    </li>
-                    <li> 
-                        <a href="<?= $app->createUrl('panel', 'events') ?>"> 
-                            <mc-icon name="event"></mc-icon>
-                            <?php i::_e('Meus eventos') ?>
-                        </a> 
-                    </li>
-                    <li> 
-                        <a href="<?= $app->createUrl('panel', 'spaces') ?>"> 
-                            <mc-icon name="space"></mc-icon>
-                            <?php i::_e('Meus espaços') ?>
-                        </a> 
-                    </li>
-
-                    <li class="label">
-                        <?= i::_e('Editais e oportunidades')?>
-                    </li>
-
-                    <li>
-                        <a href="<?= $app->createUrl('panel', 'registrations') ?>"> 
-                            <mc-icon name="opportunity"></mc-icon>
-                            <?php i::_e('Minhas inscrições') ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?= $app->createUrl('panel', 'opportunities') ?>"> 
-                            <mc-icon name="opportunity"></mc-icon>
-                            <?php i::_e('Minhas oportunidades') ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href=""> 
-                            <mc-icon name="opportunity"></mc-icon>
-                            <?php i::_e('Prestação de contas') ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href=""> 
-                            <mc-icon name="opportunity"></mc-icon>
-                            <?php i::_e('Minhas avaliações') ?>
-                        </a>
-                    </li>
-                </template>    
-            </mc-header-menu-user>
+            <mc-header-menu-user></mc-header-menu-user>
         <?php endif; ?>
 
     </div>

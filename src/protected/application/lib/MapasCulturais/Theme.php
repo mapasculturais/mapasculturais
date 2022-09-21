@@ -120,7 +120,7 @@ abstract class Theme extends \Slim\View {
             'timezone' => date_default_timezone_get()
         ];
         $this->jsObject['routes'] = $app->config['routes'];
-
+        
         $app->hook('app.init:after', function(){
             $this->view->jsObject['userId'] = $this->user->is('guest') ? null : $this->user->id;
             $this->view->jsObject['userProfile'] = $this->user->profile; //get standard agent for user
@@ -530,6 +530,14 @@ abstract class Theme extends \Slim\View {
     function printJsObject (string $var_name = 'Mapas', bool $print_script_tag = true) {
         $app = App::i();
         $app->applyHookBoundTo($this, 'mapas.printJsObject:before');
+
+        $this->jsObject['route'] = [
+            'route' => "{$this->controller->id}/{$this->controller->action}",
+            'controllerId' => $this->controller->id,
+            'action' => $this->controller->action,
+            'data' => $this->controller->urlData
+        ];
+
         $json = json_encode($this->jsObject);
         $var = "var {$var_name} = {$json};";
         if ($print_script_tag) {

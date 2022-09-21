@@ -39,7 +39,7 @@ app.component('mc-link', {
         },
 
         class: {
-            type: String,
+            type: [String, Array, Object],
             default: ''
         }
     },
