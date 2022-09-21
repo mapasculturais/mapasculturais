@@ -195,7 +195,7 @@ $this->breadcramb = [
                             <entity-owner :entity="entity" title="<?php i::_e('Publicado por')?>" :editable="true"></entity-owner>
                         </div>
                         <div class="col-12">
-                            <entity-parent :entity="entity" type="project" editable></entity-parent>
+                            <entity-parent :entity="entity" type="project" ></entity-parent>
                         </div>
                     </div>
                 </template>   
