@@ -4,14 +4,16 @@
     background-color: var(--mc-white);
     color: var(--mc-black);
     display: grid;
-    grid-template-columns: size(320) 1fr;
+    grid-template-columns: size(305) 1fr;
+    max-width: size(1440);
+    margin: 0 auto;
 
     @include mobile {
         grid-template-columns: 1fr;
     }
 
     &__main {
-        padding: size(40) 0 0;
+        padding: 0;
 
         @include mobile {
             padding: 0;
