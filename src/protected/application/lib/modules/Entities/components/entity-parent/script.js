@@ -12,8 +12,8 @@ app.component('entity-parent', {
     },
 
     computed: {
-        owner() {
-            return this.entity.owner || this.entity.parent || null
+        parent() {
+            return this.entity.parent || null
         }
     },
     
@@ -24,11 +24,7 @@ app.component('entity-parent', {
         },
         title: {
             type: String,
-            default: 'vinculado por'
-        },
-        editable: {
-            type: Boolean,
-            default: false
+            default: __('vinculado','entity-parent'),
         },
         type: {
             type: String,
@@ -37,12 +33,8 @@ app.component('entity-parent', {
     },
 
     methods: {
-        changeOwner(entity) {
-            if (this.entity.__objectType == 'entity.type') {
+        changeParent(entity) {
                 this.entity.parent = entity;
-            } else {
-                this.entity.owner = entity;
-            }
         }
     }
     

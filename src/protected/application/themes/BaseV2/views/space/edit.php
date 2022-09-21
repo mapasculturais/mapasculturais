@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 $this->layout = 'entity'; 
 $this->import('
-        entity-header entity-cover entity-profile 
+        entity-header entity-cover entity-parent entity-profile 
         entity-field entity-terms entity-social-media 
         entity-links entity-gallery entity-gallery-video
         entity-admins entity-related-agents entity-owner
@@ -161,6 +161,9 @@ $this->breadcramb = [
                         
                         <div class="col-12">
                             <entity-owner :entity="entity" title="Publicado por" :editable="true"></entity-owner>
+                        </div>
+                        <div class="col-12">
+                            <entity-parent :entity="entity" type="space"></entity-parent>
                         </div>
                     </div>
                 </template>

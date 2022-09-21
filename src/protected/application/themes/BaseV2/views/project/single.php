@@ -82,7 +82,6 @@ $this->breadcramb = [
 
                         <entity-list title="<?php i::esc_attr_e('Oportunidades');?>" type="opportunity" :ids="entity.relatedOpportunities"></entity-list>
                 </div>
-                <entity-parent :entity="entity" type="project"></entity-parent>
             </div>
         </aside>
     </mapas-container>
