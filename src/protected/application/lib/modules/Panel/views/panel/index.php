@@ -1,7 +1,7 @@
 <?php
 use MapasCulturais\i;
 
-$this->import('panel--entity-tabs panel--entity-card');
+$this->import('panel--entity-tabs panel--entities-summary');
 ?>
 
 <div class="panel-home">
@@ -35,92 +35,9 @@ $this->import('panel--entity-tabs panel--entity-card');
     <tabs class="panel-home__tabs">
         <tab label="<?php i::esc_attr_e('Principal') ?>" slug="main">
             <div class="panel-home__tabs--main">
-                <div class="entity-cards">
-                    
-                    <!-- agentes -->
-                    <div class="entity-cards__card">
-                        <div class="entity-cards__card--header">
-                            <div class="entity-cards__card--header-icon agent__background agent__color"> <mc-icon name="agent-1"></mc-icon> </div>
-                            <div class="entity-cards__card--header-label"> <?= i::_e('Agentes') ?> </div>
-                        </div>
-                        <div class="entity-cards__card--counter">
-                            <div class="entity-cards__card--counter-num"> <?= $count->agents; ?> </div>
-                            <div class="entity-cards__card--counter-label"> <?= i::_e('Agentes') ?> </div>
-                        </div>
-                        <div class="entity-cards__card--create">
-                            <button class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
-                        </div>
-                    </div>
-                    
-                    <!-- oportunidades -->
-                    <div class="entity-cards__card">
-                        <div class="entity-cards__card--header">
-                            <div class="entity-cards__card--header-icon opportunity__background opportunity__color"> <mc-icon name="opportunity"></mc-icon> </div>
-                            <div class="entity-cards__card--header-label"> <?= i::_e('Oportunidades') ?> </div>
-                        </div>
 
-                        <div class="entity-cards__card--counter">
-                            <div class="entity-cards__card--counter-num"> <?= $count->opportunities; ?> </div>
-                            <div class="entity-cards__card--counter-label"> <?= i::_e('Oportunidades') ?> </div>
-                        </div>
+                <panel--entities-summary></panel--entities-summary>
 
-                        <div class="entity-cards__card--create">
-                            <button class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
-                        </div>
-                    </div>
-                    
-                    <!-- eventos -->
-                    <div class="entity-cards__card">
-                        <div class="entity-cards__card--header">
-                            <div class="entity-cards__card--header-icon event__background event__color"> <mc-icon name="event"></mc-icon> </div>
-                            <div class="entity-cards__card--header-label"> <?= i::_e('Eventos') ?> </div>
-                        </div>
-
-                        <div class="entity-cards__card--counter">
-                            <div class="entity-cards__card--counter-num"> <?= $count->events; ?> </div>
-                            <div class="entity-cards__card--counter-label"> <?= i::_e('Eventos') ?> </div>
-                        </div>
-
-                        <div class="entity-cards__card--create">
-                            <button class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
-                        </div>
-                    </div>
-
-                    <!-- espaços -->
-                    <div class="entity-cards__card">
-                        <div class="entity-cards__card--header">
-                            <div class="entity-cards__card--header-icon space__background space__color"> <mc-icon name="space"></mc-icon> </div>
-                            <div class="entity-cards__card--header-label"> <?= i::_e('Espaços') ?> </div>
-                        </div>
-
-                        <div class="entity-cards__card--counter">
-                            <div class="entity-cards__card--counter-num"> <?= $count->spaces; ?> </div>
-                            <div class="entity-cards__card--counter-label"> <?= i::_e('Espaços') ?> </div>
-                        </div>
-
-                        <div class="entity-cards__card--create">
-                            <button class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
-                        </div>
-                    </div>
-
-                    <!-- projetos -->
-                    <div class="entity-cards__card">
-                        <div class="entity-cards__card--header">
-                            <div class="entity-cards__card--header-icon project__background project__color"> <mc-icon name="project"></mc-icon> </div>
-                            <div class="entity-cards__card--header-label"> <?= i::_e('Projetos') ?> </div>
-                        </div>
-
-                        <div class="entity-cards__card--counter">
-                            <div class="entity-cards__card--counter-num"> <?= $count->projects; ?> </div>
-                            <div class="entity-cards__card--counter-label"> <?= i::_e('Projetos') ?> </div>
-                        </div>
-
-                        <div class="entity-cards__card--create">
-                            <button class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
-                        </div>
-                    </div>
-                    
-                </div>
             </div>
         </tab>
     </tabs>
