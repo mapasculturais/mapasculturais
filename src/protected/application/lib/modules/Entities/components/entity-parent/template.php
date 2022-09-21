@@ -5,7 +5,7 @@ use MapasCulturais\i;
 $this->import('select-entity');
 ?>
 <div v-if="parent" class="entity-parent">
-    <h4>{{entity.name}} {{title}}</h4>
+    <h4><?php i::_e('{{entity.name}}')?> <?php i::_e('{{title}}') ?></h4>
     <a class="entity-parent__parent" :href="parent.singleUrl" :title="parent.shortDescription">
         <div class="entity-parent__parent--img">
             <img v-if="parent.files.avatar" class="profile" :src="parent.files?.avatar?.url">
@@ -14,7 +14,7 @@ $this->import('select-entity');
             </div>
         </div>
         <div class="entity-parent__parent--name">
-            {{entity.parent.name}}
+        <?php i::_e('{{entity.parent.name}}') ?>
         </div>
     </a>
 
