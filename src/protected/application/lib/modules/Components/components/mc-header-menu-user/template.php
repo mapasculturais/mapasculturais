@@ -1,6 +1,10 @@
 <?php
 use MapasCulturais\i;
-$this->import('popover theme-logo');
+$this->import('
+    panel--nav
+    popover
+    theme-logo
+');
 ?>
 <div class="mc-header-menu-user">
 
@@ -26,9 +30,15 @@ $this->import('popover theme-logo');
         </template>
 
         <template #default="popover">
-            <ul class="mc-header-menu-user__itens">
-                <slot name="default"></slot>
-            </ul>
+            <panel--nav classes="mc-header-menu-user__itens">
+                <template #begin>
+                    <ul>
+                        <li><mc-link :entity='profile' icon><?= i::__('Meu Perfil') ?></mc-link></li>
+                        <li><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li>
+                    </ul>
+                    <h3><?= i::__('Menu do Painel de controle') ?></h3>
+                </template>
+            </panel--nav>
         </template>
 
     </popover>
@@ -63,9 +73,7 @@ $this->import('popover theme-logo');
                 </a>
             </div>
 
-            <ul class="mc-header-menu-user__itens">
-                <slot name="default"></slot>
-            </ul>
+            <panel--nav classes="mc-header-menu-user__itens"></panel--nav>
         </div>
     </div>
     

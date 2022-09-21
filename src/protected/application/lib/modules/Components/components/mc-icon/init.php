@@ -2,7 +2,7 @@
 // https://icon-sets.iconify.design/
 $iconset = [
     // entidades
-    'app' => 'mdi:puzzle-outlin',
+    'app' => 'heroicons-solid:puzzle',
     'user' => 'fa-solid:user-friends',
     'agent' => 'fa-solid:user-friends',
     'agent-1' => 'fa-solid:user',
@@ -53,7 +53,7 @@ $iconset = [
     'list' => 'ci:list-ul',
     'loading' => 'eos-icons:three-dots-loading',
     'login' => 'icon-park-outline:login',
-    'logout' => 'icon-park-outline:logout',
+    'logout' => 'ri:logout-box-line',
     'map' => 'bxs:map-alt',
     'map-pin' => 'charm:map-pin',
     'menu-mobile' => 'icon-park-outline:hamburger-button',
@@ -62,6 +62,7 @@ $iconset = [
     'notification' => 'eva:bell-outline',
     'pin' => 'ph:map-pin-fill',
     'previous' => 'ooui:previous-ltr',
+    'role'  => 'ri:profile-line',
     'search' => 'ant-design:search-outlined',
     'settings' => 'mdi:cog-outline',
     'sort' => 'mdi:sort',
@@ -70,6 +71,7 @@ $iconset = [
     'triangle-down' => 'entypo:triangle-down',
     'triangle-up' => 'entypo:triangle-up',
     'up' => 'mdi:chevron-up',
+    'user-config' => 'fa-solid:users-cog',
     'upload' => 'ic:baseline-file-upload',
 ];
 
