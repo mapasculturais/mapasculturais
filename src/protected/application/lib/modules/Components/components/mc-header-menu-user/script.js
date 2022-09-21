@@ -9,6 +9,7 @@ app.component('mc-header-menu-user', {
 
     data() {
         return {
+            profile: $MAPAS.userProfile,
             open: false
         }
     },
