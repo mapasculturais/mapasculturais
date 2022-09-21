@@ -24,7 +24,7 @@ app.component('entity-parent', {
         },
         title: {
             type: String,
-            default: 'vinculado a'
+            default: __('vinculado','entity-parent'),
         },
         type: {
             type: String,
