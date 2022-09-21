@@ -4,7 +4,7 @@
     background-color: var(--mc-white);
     color: var(--mc-black);
     display: grid;
-    grid-template-columns: size(305) 1fr;
+    grid-template-columns: size(305) calc(100% - size(305));
     max-width: size(1440);
     margin: 0 auto;
 
