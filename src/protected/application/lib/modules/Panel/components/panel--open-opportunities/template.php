@@ -22,7 +22,7 @@ $this->import('entities entity-card mc-icon');
                                     </div>    
                                 </div>
                                 <div class="card__action">
-                                    <a class="button button--primary button--icon" target="__blank" :href="entity.singleUrl"><mc-icon name="settings"></mc-icon> <?= i::_e('Acessar e acompanhar') ?></a>
+                                    <a class="button button--primary button--icon" target="__blank" :href="entity.singleUrl"><mc-icon name="settings"></mc-icon> <?= i::_e('Configurar e gerir') ?></a>
                                 </div>
                             </div>
                         </slide>
