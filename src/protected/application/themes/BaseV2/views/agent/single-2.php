@@ -23,12 +23,13 @@ $this->breadcramb = [
                     <mapas-container class="single-1__content">
                         
                         <main>
+
                             <div class="grid-12">
+                                
                                 <div class="col-12">
                                     <entity-location :entity="entity"></entity-location>
                                 </div>
-                                
-                                <div class="divider"></div>
+
 
                                 <div class="col-12">
                                         <h2><?php i::_e('Descrição Detalhada');?></h2>

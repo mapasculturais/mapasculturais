@@ -22,8 +22,6 @@ $this->breadcramb = [
             <div class="tabs__info">
 
                 <mapas-container>
-                    <div class="divider"></div>
-
                     <main>
                         <div class="grid-12">
                             <div class="col-12">
