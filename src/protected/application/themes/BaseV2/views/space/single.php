@@ -21,7 +21,7 @@ $this->breadcramb = [
 
     <tabs class="tabs">
 
-        <tab icon="map" label="<?= i::_e('Informações') ?>" slug="info">
+        <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
 
                 <mapas-container>
@@ -30,8 +30,6 @@ $this->breadcramb = [
                             <div class="col-12">
                                 <space-info :entity="entity"></space-info>
                             </div>
-
-                            <div class="divider col-12"></div>
                             <div class="col-12">
                                 <h2><?= i::_e("Descrição Detalhada"); ?></h2>
                                 <p>{{entity.longDescription}}</p>
@@ -94,12 +92,6 @@ $this->breadcramb = [
                         </div>
                     </aside>
                 </mapas-container>
-
-            </div>
-        </tab>
-
-        <tab icon="events" label="<?= i::_e('Agenda') ?>" slug="agenda">
-            <div class="tabs__agenda">
 
             </div>
         </tab>

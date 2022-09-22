@@ -20,6 +20,7 @@ $this->breadcramb = [
 
         <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
+
                 <mapas-container>
                     <main>
                         <div class="grid-12">
@@ -27,7 +28,6 @@ $this->breadcramb = [
                                 <entity-location :entity="entity"></entity-location>
                             </div>
 
-                            <div class="divider"></div>
                             
                             <div v-if="entity.longDescription" class="col-12">
                                 <h2><?php i::_e('Descrição Detalhada');?></h2>
