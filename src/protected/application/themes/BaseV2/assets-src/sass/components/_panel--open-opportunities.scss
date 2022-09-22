@@ -6,27 +6,56 @@
 
         &--title {
             font-weight: 700;
-            font-size: 24px;
-            line-height: 28px;
-            margin-bottom: 16px;
+            font-size: size(24);
+            line-height: size(28);
+            margin-bottom: size(16);
         }
 
         &--cards {
 
             .carousel {
                 &__track {
-                    gap: 24px;
+                    gap: size(24);
+                }
+
+                .actions {
+                    display: flex;
+                    position: absolute;
+                    top: size(-50);
+                    right: 0;
+                    gap: size(18);
+
+                    button.carousel__prev {
+                        background: url(https://api.iconify.design/akar-icons/arrow-left.svg?color=%230074C1) no-repeat center center / size(15);
+                    }
+
+                    button.carousel__next {
+                        background: url(https://api.iconify.design/akar-icons/arrow-right.svg?color=%230074C1) no-repeat center center / size(15);
+                    }
+
+                    button.carousel__prev,
+                    button.carousel__next {
+                        background-color: var(--mc-high-500);
+                        border: none;
+                        border-radius: var(--mc-border-radius-pill);
+                        width: size(40);
+                        height: size(40);
+                    }
+
+                    .carousel__icon {
+                        display: none;
+                    }
                 }
             }
 
             .card {
-                padding: 16px 16px 24px;
+                padding: size(16) size(16) size(24);
                 background-color: var(--mc-high-500);
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 width: 100%;
-                min-height: 229px;
+                min-height: size(229);
                 align-items: flex-start;
 
                 &__content {
@@ -36,8 +65,8 @@
 
                     &--title {
                         font-weight: 700;
-                        font-size: 16px;
-                        line-height: 22px;
+                        font-size: size(16);
+                        line-height: size(22);
                         text-align: left;
                     }
 
@@ -45,7 +74,7 @@
                         display: flex;
                         flex-direction: column;
                         align-items: flex-start;
-                        padding: 8px 4px;
+                        padding:size(8)size(4);
                     }
                 }
 
