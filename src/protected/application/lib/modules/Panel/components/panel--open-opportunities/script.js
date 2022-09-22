@@ -22,7 +22,7 @@ app.component('panel--open-opportunities', {
             // query
             query: {
                 '@order' : 'registrationFrom ASC',
-                '@select' : 'id,name,singleUrl,registrationFrom,registrationTo',
+                '@select' : 'id,name,singleUrl,files.avatar,shortDescription,registrationFrom,registrationTo',
                 '@verified' : '1'
             },
 

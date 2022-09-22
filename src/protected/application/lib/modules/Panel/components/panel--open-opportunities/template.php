@@ -7,7 +7,7 @@ $this->import('entities entity-card mc-icon');
 <div class="panel--open-opportunities">
     <div class="panel--open-opportunities__content">
         <div class="panel--open-opportunities__content--title">
-            <label> <?php i::_e('Inscrições recentes')?> </label>
+            <label> <?php i::_e('Oportunidades abertas')?> </label>
         </div>
         <div class="panel--open-opportunities__content--cards">
             <entities type="opportunity" :query="getQuery">
@@ -16,14 +16,13 @@ $this->import('entities entity-card mc-icon');
                         <slide v-for="entity in entities" :key="entity.id">
                             <div class="card">
                                 <div class="card__content">
-                                    <label class="card__content--title"> {{entity.name}} </label>                                    
-                                    <div class="card__content--inscricao">
-                                        <span><?= i::_e('Data de inscrição:') ?></span>
-                                        <strong> {{formatDate(entity.registrationFrom._date, 'dd/mm/yyyy')}} <?= i::_e('às') ?> {{formatTime(entity.registrationTo._date, 'hh:mm')}}</strong>
-                                    </div>
+                                    <label class="card__content--title"> <img :src="entity.files.avatar.transformations.avatarMedium.url"/> {{entity.name}} </label>              
+                                    <div class="card__content--description">
+                                        {{entity.shortDescription}}
+                                    </div>    
                                 </div>
                                 <div class="card__action">
-                                    <a class="button button--primary button--icon button--large" target="__blank" :href="entity.singleUrl"><?= i::_e('Acessar e acompanhar') ?> <mc-icon name="arrow-right"></mc-icon></a>
+                                    <a class="button button--primary button--icon" target="__blank" :href="entity.singleUrl"><mc-icon name="settings"></mc-icon> <?= i::_e('Acessar e acompanhar') ?></a>
                                 </div>
                             </div>
                         </slide>
