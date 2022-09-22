@@ -49,24 +49,42 @@
             }
 
             .card {
-                padding: size(16) size(16) size(24);
+                padding: size(16);
                 background-color: var(--mc-high-500);
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 width: 100%;
-                min-height: size(229);
+                min-height: size(224);
                 align-items: flex-start;
 
                 &__content {
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
+                    gap: size(16);
+                    margin-bottom: size(16);
 
                     &--title {
                         font-weight: 700;
                         font-size: size(16);
                         line-height: size(22);
+                        text-align: left;
+                        display: flex;
+                        align-items: center;
+                        gap: size(8);
+
+                        img {
+                            width: size(48);
+                            height: size(48);
+                            border-radius: var(--mc-border-radius-pill);
+                        }
+                    }
+
+                    &--description {
+                        font-weight: 400;
+                        font-size: size(12);
+                        line-height: size(16);
                         text-align: left;
                     }
 
@@ -74,12 +92,14 @@
                         display: flex;
                         flex-direction: column;
                         align-items: flex-start;
-                        padding:size(8)size(4);
+                        padding: size(8) size(4);
                     }
                 }
 
                 &__action {
                     width: 100%;
+                    display: flex;
+                    justify-content: flex-end;
                 }
             }
         }
