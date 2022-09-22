@@ -22,7 +22,6 @@ $this->breadcramb = [
 
         <tab icon="project" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
-                <div class="divider"></div>
                 <mapas-container class="single-1__content">
                     <main>
 
