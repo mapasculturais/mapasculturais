@@ -32,10 +32,12 @@ app.component('modal', {
     },
     methods: {
         open () {
+            this.processing = false;
             this.modalOpen = true;
             this.$emit('open', this);
         },
         close () {
+            this.processing = false;
             this.modalOpen = false;
             this.$emit('close', this);
         },
