@@ -45,6 +45,7 @@ $iconset = [
     'delete' => 'gg:close',
     'download' => 'el:download-alt',
     'edit' => 'zondicons:edit-pencil',
+    'exclamation' => 'bi:exclamation-circle-fill',
     'favorite' => 'mdi:star-outline',
     'filter' => 'ic:baseline-filter-alt',
     'home' => 'ci:home-fill',
