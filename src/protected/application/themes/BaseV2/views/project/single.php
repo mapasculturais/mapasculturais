@@ -20,7 +20,7 @@ $this->breadcramb = [
     <entity-header :entity="entity"></entity-header>
     <tabs class="tabs">
 
-        <tab icon="project" label="<?= i::_e('Informações') ?>" slug="info">
+        <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
                 <mapas-container class="single-1__content">
                     <main>
