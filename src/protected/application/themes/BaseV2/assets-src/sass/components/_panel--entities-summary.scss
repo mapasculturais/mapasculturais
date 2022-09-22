@@ -50,12 +50,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin: size(16) 0 size(19);
+            padding: size(16) 0 size(19);
 
             &-num {
                 font-weight: 700;
                 font-size: size(32);
-                line-height: size(44);
+                line-height: size(35);
             }
 
             &-label {
