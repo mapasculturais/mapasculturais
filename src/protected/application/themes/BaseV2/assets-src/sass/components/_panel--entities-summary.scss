@@ -14,6 +14,11 @@
         padding: size(16);
         background-color: var(--mc-high-500);
 
+        a {
+            text-decoration: none;
+            color: var(--mc-low-700);
+        }
+
         &--header {
             display: flex;
             gap: size(8);
