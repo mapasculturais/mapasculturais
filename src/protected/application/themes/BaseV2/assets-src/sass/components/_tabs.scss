@@ -29,7 +29,7 @@
 
     &__buttons {
         display: flex;
-        margin: size(40) 0 0;
+        margin: 0;
         overflow: auto hidden;
         padding: 0;
         transform: rotateX(180deg); // Hack to put scrollbar above content
