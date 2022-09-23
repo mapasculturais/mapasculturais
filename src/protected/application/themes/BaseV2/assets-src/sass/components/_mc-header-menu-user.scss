@@ -60,7 +60,9 @@
         margin: 0;
         padding: size(16);
         width: size(328);
-
+        ul {
+            padding: 0;
+        }
         li {
             color: var(--mc-low-500);
             display: flex;
