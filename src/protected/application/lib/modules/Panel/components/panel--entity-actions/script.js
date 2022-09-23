@@ -1,6 +1,6 @@
 app.component('panel--entity-actions', {
     template: $TEMPLATES['panel--entity-actions'],
-    emits: ['deleted', 'destroyed', 'published', 'archived'],
+    emits: ['deleted', 'destroyed', 'published', 'archived', 'unpublished'],
 
     data(){
         return {
@@ -8,13 +8,14 @@ app.component('panel--entity-actions', {
             deleteButton: this.buttons.indexOf('delete') >= 0,
             destroyButton: this.buttons.indexOf('destroy') >= 0,
             publishButton: this.buttons.indexOf('publish') >= 0,
+            draftButton: this.buttons.indexOf('unpublish') >= 0,
         }
     },
 
     props: {
         buttons: {
             type: String,
-            default: "archive,delete,destroy,publish"
+            default: "archive,delete,destroy,publish,unpublish"
         },
         entity: {
             type: Entity,
@@ -24,6 +25,7 @@ app.component('panel--entity-actions', {
         delete: String,
         destroy: String,
         publish: String,
+        unpublish: String,
     },
     
     methods: {
@@ -63,6 +65,15 @@ app.component('panel--entity-actions', {
             entity.loading = true;
             entity.publish().then(() => {
                 this.$emit('published', {entity, modal});
+                entity.loading = false;
+            });
+        },
+
+        unpublishEntity(modal) {
+            const entity = this.entity;
+            entity.loading = true;
+            entity.unpublish().then(() => {
+                this.$emit('unpublished', {entity, modal});
                 entity.loading = false;
             });
         },

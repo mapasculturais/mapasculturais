@@ -196,6 +196,12 @@ class API {
         }
     }
 
+    async unpublishEntity(entity) {
+        if (entity.id) {
+            return this.POST(entity.getUrl('unpublish'));
+        }
+    }
+
     async findOne(id, select) {
         let url = this.createApiUrl('findOne', {id: `EQ(${id})`, '@select': select || '*'});
         return this.GET(url).then(response => response.json().then(obj => {

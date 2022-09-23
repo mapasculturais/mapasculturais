@@ -324,6 +324,25 @@ class Entity {
         }
     }
 
+    async unpublish(removeFromLists) {
+        this.__processing = this.text('tornando rascunho');
+
+        const messages = useMessages();
+
+        try {
+            const res = await this.API.unpublishEntity(this);
+            return this.doPromise(res, (entity) => {
+                messages.success(this.text('entidade foi tornada rascunho'));
+                this.populate(entity);
+                if(removeFromLists) {
+                    this.removeFromLists();
+                }
+            });
+        } catch (error) {
+            return this.doCatch(error);
+        }
+    }
+
     async upload(file, {group, description}) {
         this.__processing = this.text('subindo arquivo');
 
