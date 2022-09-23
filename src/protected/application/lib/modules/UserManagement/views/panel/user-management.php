@@ -23,10 +23,10 @@ $profile = $app->user->profile;
 
 <entities type="user" name="user:1" :limit="25" select="id,email,status,profile.{id,name,type},roles.{id,name,subsite.{id,name}}">
     <template #header="{entities, query}">
-        <form @submit="entities.refresh(); $event.preventDefault()" class="panel__row">
+        <form @submit="entities.refresh(); $event.preventDefault()" class="panel__row flex">
             <input v-model="query['@keyword']" placeholder="<?= i::esc_attr__('Pesquisar') ?>">
             <label>
-                <?= i::__('Filtrar por função') ?>
+                <?= i::__('Filtrar por função: ') ?>
                 <entities #default="roles" type="system-role" select="name,slug">
                     <select v-model="query['@roles']" @change="query['@roles'] || delete query['@roles']; entities.refresh()">
                         <option :value="undefined"><?= i::__('Exibir todas') ?></option>
