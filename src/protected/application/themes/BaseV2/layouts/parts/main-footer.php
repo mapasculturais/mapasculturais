@@ -11,7 +11,7 @@ $config = $app->config['social-media'];
         <div class="main-footer__content--logo">
     
             <div class="main-footer__content--logo-img">
-                <theme-logo title="<?php i::_e('mapa cultural'); ?>" subtitle="<?php i::_e('do Pará'); ?>"></theme-logo>
+                <theme-logo href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
             </div>
     
             <div class="main-footer__content--logo-share">

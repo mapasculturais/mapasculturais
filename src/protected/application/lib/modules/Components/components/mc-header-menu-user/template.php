@@ -66,7 +66,7 @@ $this->import('
 
         <div v-if="open" class="mc-header-menu-user__mobile--list">
             <div class="close"> 
-                <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
+                <theme-logo href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
 
                 <a class="close__btn"  href="#main-app" @click="toggleMobile()">
                     <mc-icon name="close"></mc-icon> 
