@@ -54,15 +54,13 @@
 
     &__help-link {
         background-color: var(--mc-gray-100);
-        border-radius: size(16);
-        color: var(--mc-black);
+        border-radius: var(--mc-border-radius-pill);
+        color: var(--mc-low-500);
         font-size: size(12);
-        font-weight: bold;
-        padding: size(8) size(16);
-        position: absolute;
-        right: 0;
+        font-weight: 800;
+        line-height: size(16);
+        padding: size(8) size(14);
         text-decoration: none;
-        top: 0;
 
         &:focus, &:hover {
             background-color: var(--mc-gray-300);
@@ -77,39 +75,109 @@
         @include mobile {
             margin: size(16);
         }
+    }
 
-        &.flex {
-            display: flex;
-            gap: size(24);
+
+    // páginas internas
+
+    &-page {
+        &__header {
+            padding: size(50) size(32) size(30);
+
+            &-title {
+                display: flex;
+                justify-content: space-between;
+
+                .title {
+                    align-items: center;
+                    display: flex;
+                    gap: size(16);
+
+                    &__icon {
+                        align-items: center;
+                        border-radius: var(--mc-border-radius-pill);
+                        display: flex;
+                        height: size(40);
+                        justify-content: center;
+                        width: size(40);
+
+                        .iconify {
+                            width: size(22);
+                            height: size(22);
+                            color: var(--mc-high-500);
+                        }
+
+                        &.default {
+                            background-color: var(--mc-low-500);
+                        }
+                    }
+
+                    &__title {
+                        font-size: size(32);
+                        font-weight: 700;
+                        line-height: size(44);
+                    }
+                }
+            }
+            
+            &-subtitle {
+                font-size: size(16);
+                font-weight: 400;
+                line-height: size(22);
+                margin: size(14) 0 size(24);
+            }
         }
 
-        input,
-        select {
-            border: size(1) solid var(--mc-gray-500);
-            border-radius: var(--mc-border-radius-xs);
-            padding: size(10) size(16);
-            background-color: var(--mc-high-500);
-        }
+        &__content {
+            background-color: var(--mc-gray-100);
+            overflow: hidden;
 
-        input {
-            border-radius: var(--mc-border-radius-pill);
-        }
+            &-filter {
+                display: flex;
+                gap: size(24);
+                justify-content: flex-start;
+                padding: size(8) size(15);
+                background-color: var(--mc-high-500);
+                margin: size(16) size(32) size(0);
+                max-width: size(1024);
+                border-radius: var(--mc-border-radius-sm);
 
-        select {
-            font-weight: 600;
-            font-size: size(14);
-            line-height: size(18);
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/contain;
-            background-size: size(20);
-        }
+                input,
+                select {
+                    border: size(1) solid var(--mc-gray-500);
+                    border-radius: var(--mc-border-radius-xs);
+                    padding: size(10) size(16);
+                    background-color: var(--mc-high-500);
+                }
 
-        label {
-            font-weight: 600;
-            font-size: size(14);
-            line-height: size(19);
+                input {
+                    border-radius: var(--mc-border-radius-pill);
+                }
+
+                input.search {
+                    background: url(https://api.iconify.design/ant-design/search-outlined.svg) no-repeat 92% center/contain;
+                    background-size: size(16);
+                    background-color: var(--mc-high-500);
+                }
+
+                select {
+                    font-weight: 600;
+                    font-size: size(14);
+                    line-height: size(18);
+                    appearance: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/contain;
+                    background-size: size(20);
+                    background-color: var(--mc-high-500);
+                }
+
+                label {
+                    font-weight: 600;
+                    font-size: size(14);
+                    line-height: size(19);
+                }
+            }
         }
     }
 }
