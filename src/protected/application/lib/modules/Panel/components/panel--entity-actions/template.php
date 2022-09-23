@@ -16,7 +16,7 @@ $this->import('loading');
     @confirm="publishEntity($event)"
     message="<?php i::esc_attr_e("Você está certo que deseja publicar esta entidade?") ?>"><?php i::_e('Publicar') ?></confirm-button>
 
-<confirm-button v-if="!entity.__processing && archiveButton && entity.status != <?= Entity::STATUS_ARCHIVED ?>"
+<confirm-button v-if="!entity.__processing && archiveButton && entity.status != <?= Entity::STATUS_ARCHIVED ?> && hasStatus('archived')"
     @confirm="archiveEntity($event)"
     button-class="button--text archive button--icon"
     message="<?php i::esc_attr_e("Você está certo que deseja arquivar esta entidade?") ?>">
@@ -24,7 +24,7 @@ $this->import('loading');
         <span><?php i::_e('Arquivar') ?></span>
     </confirm-button>
 
-<confirm-button v-if="!entity.__processing && deleteButton && entity.status != <?= Entity::STATUS_TRASH ?>"
+<confirm-button v-if="!entity.__processing && deleteButton && entity.status != <?= Entity::STATUS_TRASH ?> && hasStatus('trash')"
     @confirm="deleteEntity($event)"
     button-class="button--text delete button--icon"
     message="<?php i::esc_attr_e("Você está certo que deseja excluir esta entidade?") ?>">
