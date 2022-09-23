@@ -1,9 +1,11 @@
 <?php
 namespace UserManagement\Entities;
 
+use MapasCulturais\i;
 use MapasCulturais\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\App;
 
 /**
  * SystemRole
@@ -80,6 +82,47 @@ class SystemRole extends \MapasCulturais\Entity {
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
     protected $status = self::STATUS_ENABLED;
+
+    public static function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return i::__('Funções de usuário');
+        else
+            return i::__('Função de usuário');
+    }
+
+    /**
+     * Retorna um array com as regras de validação
+     * @return string[][] 
+     */
+    static function getValidations() {
+        return [
+            'name' => [
+                'required' => i::__('O nome da função é obrigatório'),
+                'unique' => i::__('O nome da função já está sendo utilizado'),
+            ],
+            'slug' => [
+                'required' => i::__('O slug da função é obrigatório')
+            ],
+            'permissions' => [
+                'v::arrayType()->length(1,null)' => i::__('Ao menos uma permissão deve ser informada')
+            ]
+        ];
+    }
+
+    /**
+     * Define o nome do role.
+     * 
+     * um slug será gerado a partir do nome.
+     * 
+     * @param mixed $name 
+     * @return void 
+     */
+    protected function setName($name) {
+        $app = App::i();
+        $this->name = $name;
+        $this->slug = $app->slugify($name);
+    }
+
 
     /**
      * Verifica se o usuário pode criar a role

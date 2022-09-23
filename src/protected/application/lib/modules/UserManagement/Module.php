@@ -2,6 +2,7 @@
 
 namespace UserManagement;
 
+use MapasCulturais\ApiQuery;
 use MapasCulturais\App;
 use MapasCulturais\Entities as MapasEntities;
 use MapasCulturais\Definitions\Role;
@@ -17,6 +18,9 @@ class Module extends \MapasCulturais\Module {
         $app->hook('view.render(<<*>>):before', function (){
             $this->jsObject['EntitiesDescription']['system-role'] = Entities\SystemRole::getPropertiesMetadata();
             $this->jsObject['EntitiesDescription']['role'] = \MapasCulturais\Entities\Role::getPropertiesMetadata();
+
+            $subsite_query = new ApiQuery(MapasEntities\Subsite::class, ['@select'=>'id,name']);
+            $this->jsObject['subsites'] = array_merge([], $subsite_query->find());
 
             $permission_labels = [
                 '@control' => i::__('*controlar'),
