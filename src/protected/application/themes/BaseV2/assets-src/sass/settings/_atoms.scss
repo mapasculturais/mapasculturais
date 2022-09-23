@@ -62,6 +62,14 @@
             color: var(--mc-agents-500);
         }
     }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-agents-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-agents-500);
+    }
 }
 
 .space {
@@ -76,6 +84,14 @@
         &:hover {
             color: var(--mc-spaces-500);
         }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-spaces-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-spaces-500);
     }
 }
 
@@ -92,6 +108,14 @@
             color: var(--mc-events-500);
         }
     }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-events-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-events-500);
+    }
 }
 
 .project {
@@ -107,6 +131,14 @@
             color: var(--mc-projects-500);
         }
     }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-projects-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-projects-500);
+    }
 }
 
 .opportunity {
@@ -117,7 +149,7 @@
         background-color: var(--mc-opportunities-500);
         color: var(--mc-high-500);
     }
-    /* &__hover {
+    &__hover {
         &:hover {
             color: var(--mc-opportunities-500);
         }
@@ -126,5 +158,59 @@
         &:hover {
             background-color: var(--mc-opportunities-500);
         }
-    } */
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-opportunities-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-opportunities-500);
+    }
+}
+
+.primary {
+    &__color {
+        color: var(--mc-primary-500);
+    }
+    &__background {
+        background-color: var(--mc-primary-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-primary-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-primary-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-primary-500);
+    }
+}
+
+.secondary {
+    &__color {
+        color: var(--mc-secondary-500);
+    }
+    &__background {
+        background-color: var(--mc-secondary-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-secondary-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-secondary-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-secondary-500);
+    }
 }
