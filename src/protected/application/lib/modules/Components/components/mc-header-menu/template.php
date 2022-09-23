@@ -24,7 +24,7 @@ $this->import('mc-icon');
             <mc-icon name="close"></mc-icon> 
         </a>
 
-        <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
+        <theme-logo href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
     </div>
 
     <ul class="mc-header-menu__itens">
