@@ -3,8 +3,9 @@ use MapasCulturais\i;
 $this->layout = 'panel';
 
 $this->import('
-mc-icon
-    panel--entity-card
+    confirm-button
+    mc-icon
+    system-roles--card
     panel--entity-tabs
     system-roles--modal
 ');
@@ -24,13 +25,6 @@ mc-icon
 
 <div class="panel-list panel-main-content">
     <panel--entity-tabs type="system-role" user="" select="id,status,name,slug,permissions" #default={entity}>
-        <panel--entity-card :entity="entity">
-            {{entity.id}} - {{entity.slug}}
-            <code>{{entity.permissions}}</code>
-
-            <template #footer-actions="{entity}">
-                <system-roles--modal :entity="entity"></system-roles--modal>
-            </template>
-        </panel--entity-card>
+        <system-roles--card :entity="entity"></system-roles--card>
     </panel--entity-tabs>
 </div>
