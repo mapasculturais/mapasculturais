@@ -478,17 +478,19 @@ class App extends \Slim\Slim{
             'mode' => $this->_config['app.mode']
         ]);
 
-        foreach($config['plugins'] as $slug => $plugin){
-            $_namespace = $plugin['namespace'];
-            $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
-            $plugin_class_name = "$_namespace\\$_class";
+        if(!env('DISABLE_PLUGINS')) {
+            foreach($config['plugins'] as $slug => $plugin){
+                $_namespace = $plugin['namespace'];
+                $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
+                $plugin_class_name = "$_namespace\\$_class";
 
-            if(class_exists($plugin_class_name)){
-                $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
+                if(class_exists($plugin_class_name)){
+                    $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
 
-                $slug = is_numeric($slug) ? $_namespace : $slug;
+                    $slug = is_numeric($slug) ? $_namespace : $slug;
 
-                $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+                    $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+                }
             }
         }
 
