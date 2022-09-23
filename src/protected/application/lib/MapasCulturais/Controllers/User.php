@@ -1,6 +1,9 @@
 <?php
 namespace MapasCulturais\Controllers;
+
+use MapasCulturais\ApiQuery;
 use MapasCulturais\Controller;
+use MapasCulturais\Entities;
 use MapasCulturais\App;
 use MapasCulturais\i;
 use MapasCulturais\Traits;
@@ -44,6 +47,18 @@ class User extends Controller {
             $this->errorJson(i::__('Permissão negada', 403));
         }
 
+        if($roles = $this->getData['@roles'] ?? null) {
+            $app->hook('API.query(user)', function(ApiQuery $query) use($roles) {
+                $roles_query = new ApiQuery(Entities\Role::class, ['name' => "IN({$roles})"]);
+                $query->addFilterByApiQuery($roles_query, 'userId', 'id');
+            });
+
+        }
+
+        $app->hook('API.find(user).params', function(&$api_params) {
+            unset($api_params['@roles']);
+        });
+        
         $this->__API_find();
     }
 
