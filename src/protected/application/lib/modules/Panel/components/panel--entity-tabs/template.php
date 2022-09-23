@@ -64,10 +64,9 @@ $tabs = $tabs ?? [
                         </template>
                         <template #default="{ entity }">
                             <slot name="card-content" :entity="entity">
-                                <dl v-if="entity.type">
-                                    <dt><?=i::__('Tipo')?></dt>
-                                    <dd>{{ entity.type.name }}</dd>
-                                </dl>
+                                <span v-if="entity.type">
+                                    <?=i::__('Tipo: ')?> <strong>{{ entity.type.name }}</strong>
+                                </span>
                             </slot>
                         </template>
                     </panel--entity-card>
