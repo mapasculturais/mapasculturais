@@ -3,7 +3,7 @@ use MapasCulturais\i;
 $this->import('popover confirm-button');
 ?>
 
-<div v-if="entity.seals.lenght > 0" class="entity-seals">
+<div v-if="entity.seals.lenght > 0 || editable" class="entity-seals">
     <h4 class="entity-seals__title"> {{title}} </h4>
 
     <div class="entity-seals__seals">
