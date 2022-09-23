@@ -11,12 +11,31 @@ use MapasCulturais\Traits;
  *
  */
 class User extends Controller {
-    use Traits\ControllerAPI {
+    use Traits\ControllerSoftDelete,
+        Traits\ControllerAPI {
         API_find as __API_find;
         API_findOne as __API_findOne;
     }
     
     protected $entityClassName = 'MapasCulturais\\Entities\\User';
+
+    function DELETE_single(){
+
+        $app = App::i();
+
+        if($id = $this->urlData['id']) {
+            $entity = $app->repo('User')->find($id);
+    
+            if(!$entity) {
+                $app->pass();
+            }
+        }
+
+        $entity->delete(true);
+
+        $this->json($entity);
+
+    }
 
     function API_find()
     {
