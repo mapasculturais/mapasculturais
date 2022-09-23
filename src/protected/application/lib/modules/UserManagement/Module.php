@@ -141,6 +141,26 @@ class Module extends \MapasCulturais\Module {
             $where .= " (unaccent(lower(e.email)) LIKE unaccent(lower(:keyword)) OR unaccent(lower(a.name)) LIKE unaccent(lower(:keyword)))";
         });
 
+        $app->hook('panel.nav', function(&$group) use($app) {
+            $group['admin']['items'][] = [
+                'route' => 'panel/user-management',
+                'icon' => 'user-config',
+                'label' => i::__('Gestão de usuários'),
+                'condition' => function() use($app) {
+                    return $app->user->is('saasAdmin');
+                }
+            ];
+
+            $group['admin']['items'][] = [
+                'route' => 'panel/system-roles',
+                'icon' => 'role',
+                'label' => i::__('Funções de usuários'),
+                'condition' => function() use($app) {
+                    return $app->user->is('saasAdmin');
+                }
+            ];
+        });
+
         /**
          * Página para gerenciamento de roles no painel
          */
