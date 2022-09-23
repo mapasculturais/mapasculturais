@@ -27,6 +27,10 @@ app.component('panel--entity-actions', {
     },
     
     methods: {
+        hasStatus(name) {
+            return !! $DESCRIPTIONS[this.entity.__objectType].status.options[name];
+        },
+
         archiveEntity(modal) {
             const entity = this.entity;
             entity.loading = true;
@@ -39,7 +43,7 @@ app.component('panel--entity-actions', {
         deleteEntity(modal) {
             const entity = this.entity;
             entity.loading = true;
-            entity.delete().then(() => {
+            entity.delete(true).then(() => {
                 this.$emit('deleted', {entity, modal});
                 entity.loading = false;
             });
