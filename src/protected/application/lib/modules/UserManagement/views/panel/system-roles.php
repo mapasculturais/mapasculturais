@@ -3,24 +3,34 @@ use MapasCulturais\i;
 $this->layout = 'panel';
 
 $this->import('
-    loading,messages
-    tabs,tab
-    entities,field
+mc-icon
+    panel--entity-card
     panel--entity-tabs
-    system-roles--list, system-roles--create-modal
+    system-roles--modal
 ');
 
 ?>
+<div class="panel__row">
+    <h1>
+        <mc-icon name="role"></mc-icon>
+        <?= i::__('Funções de usuários') ?>
+    </h1>
+    <a class="panel__help-link" href="#"><?=i::__('Ajuda')?></a>
+</div>
+<div class="panel__row">
+    <p><?=i::__('Nesta seção você visualiza e gerencia as funções de usuário customizadas.')?></p>
+    <system-roles--modal list="system-role:publish"></system-roles--modal>
+</div>
+
 <div class="panel-list panel-main-content">
-    <header class="panel-header clearfix">
-        <h2><?php i::_e('Papeis do sistema') ?></h2>
-        <div style="float: right;">
-            <system-roles--create-modal list="system-role:publish"><?php i::_e("adicionar novo papel") ?></system-roles--create-modal>
-        </div>
-    </header>
-    
     <panel--entity-tabs type="system-role" user="" select="id,status,name,slug,permissions" #default={entity}>
-        {{entity.id}} - {{entity.slug}}
-        <code>{{entity.permissions}}</code>
+        <panel--entity-card :entity="entity">
+            {{entity.id}} - {{entity.slug}}
+            <code>{{entity.permissions}}</code>
+
+            <template #footer-actions="{entity}">
+                <system-roles--modal :entity="entity"></system-roles--modal>
+            </template>
+        </panel--entity-card>
     </panel--entity-tabs>
 </div>
