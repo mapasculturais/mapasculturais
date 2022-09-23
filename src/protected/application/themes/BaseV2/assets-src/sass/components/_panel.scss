@@ -73,5 +73,39 @@
         @include mobile {
             margin: size(16);
         }
+
+        &.flex {
+            display: flex;
+            gap: size(24);
+        }
+
+        input,
+        select {
+            border: size(1) solid var(--mc-gray-500);
+            border-radius: var(--mc-border-radius-xs);
+            padding: size(10) size(16);
+            background-color: var(--mc-high-500);
+        }
+
+        input {
+            border-radius: var(--mc-border-radius-pill);
+        }
+
+        select {
+            font-weight: 600;
+            font-size: size(14);
+            line-height: size(18);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/contain;
+            background-size: size(20);
+        }
+
+        label {
+            font-weight: 600;
+            font-size: size(14);
+            line-height: size(19);
+        }
     }
 }
