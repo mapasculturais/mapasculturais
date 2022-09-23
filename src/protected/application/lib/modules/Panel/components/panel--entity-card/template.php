@@ -1,41 +1,63 @@
 <?php
 use MapasCulturais\i;
 
-$this->import('panel--entity-actions');
+$this->import('panel--entity-actions mc-icon');
 ?>
 <article class="panel__row panel-entity-card">
     <header class="panel-entity-card__header">
-        <div>
-            <div class="panel-entity-card__picture">
+
+        <div class="left">
+            <div class="panel-entity-card__header--picture">
                 <slot name="picture" :entity="entity">
                     <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarSmall?.url" alt="">
                     <img v-if="!entity.files.avatar" src="<?php $this->asset('img/default-image.svg')?>" alt="">
                 </slot>
             </div>
-            <h2 class="panel-entity-card__title">
-                <slot name="title" :entity="entity">
-                    {{ entity?.name || entity?.email || entity?.number || entity?.id }}
-                </slot>
-            </h2>
+
+            <div class="panel-entity-card__header--info">
+                <h2 class="panel-entity-card__header--info-title">
+                    <slot name="title" :entity="entity">
+                        {{ entity?.name || entity?.email || entity?.number || entity?.id }}
+                    </slot>
+                </h2>
+
+                <p class="panel-entity-card__header--info-subtitle">
+                    <slot :entity="entity"></slot>
+                </p>
+            </div>            
         </div>
-        <div>
+
+        <div class="right">
             <div class="panel-entity-card__header-actions">
-                <slot name="header-actions" :entity="entity"></slot>
+                <slot name="header-actions" :entity="entity"> actions </slot>
             </div>
         </div>
+
     </header>
     <main class="panel-entity-card__main">
-        <slot :entity="entity"></slot>
+        <!-- <slot :entity="entity"></slot> -->
     </main>
     <footer class="panel-entity-card__footer">
         <div class="panel-entity-card__footer-actions">
-            <slot name="footer-actions" :entity="entity">
-                <panel--entity-actions 
-                    :entity="entity" 
-                    @deleted="$emit('deleted', arguments)"
-                    @archived="$emit('archived', arguments)"
-                    @published="$emit('published', arguments)"
-                />
+            <slot name="footer-actions">
+                <slot name="entity-actions-left" :entity="entity">
+                    <panel--entity-actions 
+                        :entity="entity" 
+                        @deleted="$emit('deleted', arguments)"
+                        @archived="$emit('archived', arguments)"
+                        @published="$emit('published', arguments)"
+                    />
+                </slot>
+                
+                <div class="panel-entity-card__footer-actions right">
+                    <slot name="entity-actions-center" >
+                    </slot>
+
+                    <slot name="entity-actions-right" >
+                        <a :href="entity.singleUrl" class="button button--primary-outline button--icon"><?php i::_e('Acessar') ?> <mc-icon name="arrow-right"></mc-icon></a> 
+                        <a v-if="entity.status>=0" :href="entity.editUrl" class="button button--primary button--icon"><mc-icon name="edit"></mc-icon> <?php i::_e('Editar') ?></a>
+                    </slot>
+                </div>
             </slot>
         </div>
     </footer>

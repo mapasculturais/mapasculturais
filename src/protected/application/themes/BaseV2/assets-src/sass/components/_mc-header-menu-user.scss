@@ -60,7 +60,17 @@
         margin: 0;
         padding: size(16);
         width: size(328);
+        ul {
+            padding: 0;
+            
+        }
 
+        ul:first-child {
+            li > a {
+                 color:var(--mc-primary-500)
+            }
+        }
+        
         li {
             color: var(--mc-low-500);
             display: flex;

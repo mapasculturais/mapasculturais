@@ -448,24 +448,26 @@
 
 .action-opportunities,
 .action-projects {
-    .tabs-component__panels {
-        background: var(--mc-gray-100);
-        margin-top: size(123);
-        padding-bottom: size(40);
-        margin-bottom: 0;
-        min-height: size(500);
+    .search {
+        .tabs-component__panels {
+            background: var(--mc-gray-100);
+            margin-top: size(123);
+            padding-bottom: size(40);
+            margin-bottom: 0;
+            min-height: size(500);
 
-        @media (max-width: size(500)) {
-            margin-top: size(130);
+            @media (max-width: size(500)) {
+                margin-top: size(130);
+            }
         }
-    }
 
-    .search__tabs--list {
+        .search__tabs--list {
 
-        .loading,
-        .panel__row {
-            grid-column-end: span 9;
-            text-align: center;
+            .loading,
+            .panel__row {
+                grid-column-end: span 9;
+                text-align: center;
+            }
         }
     }
 }
