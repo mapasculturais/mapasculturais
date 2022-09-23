@@ -35,6 +35,8 @@
         transform: rotateX(180deg); // Hack to put scrollbar above content
         white-space: nowrap;
         width: auto;
+        gap: size(22);
+
     }
 
     &__button {
@@ -43,6 +45,7 @@
         transform: rotateX(180deg);
 
         &--active {
+
             &::after {
                 border-radius: var(--mc-border-radius-sm);
                 background-color: black;
