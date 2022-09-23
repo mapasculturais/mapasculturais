@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\Exceptions\BadRequest;
+use MapasCulturais\Traits;
 /**
  * User
  *
@@ -24,9 +25,10 @@ use MapasCulturais\Exceptions\BadRequest;
  * @ORM\HasLifecycleCallbacks
  */
 class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterface{
-    const STATUS_ENABLED = 1;
+    use Traits\EntityMetadata,
+        Traits\EntitySoftDelete;
 
-    use \MapasCulturais\Traits\EntityMetadata;
+    const STATUS_ENABLED = 1;
 
     protected $__enableMagicGetterHook = true;
 
@@ -133,6 +135,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
+    }
+
+    public static function getPropertiesMetadata($include_column_name = false){
+        $result = parent::getPropertiesMetadata($include_column_name);
+        unset($result['status']['options']['draft']);
+        return $result;
     }
 
     function getIsDeleting(){
