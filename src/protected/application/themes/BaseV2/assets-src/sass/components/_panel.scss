@@ -44,7 +44,11 @@
 
         h2 {
             font-size: size(24);
-            font-weight: normal;
+            //font-weight: normal;
+        }
+
+        .tabs-component__panels {
+            background-color: var(--mc-gray-100);
         }
     }
 
