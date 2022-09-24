@@ -83,6 +83,7 @@
     &-page {
         &__header {
             padding: size(50) size(32) size(30);
+            max-width: size(1088);
 
             &-title {
                 display: flex;

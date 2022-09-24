@@ -6,7 +6,8 @@
         display: flex;
         flex-direction: column;
         gap: size(24);
-        padding: size(29) size(132) size(9) size(31);
+        padding: size(29) size(32) size(9);
+        max-width: size(1088);
 
         &--title {
             label.title {
@@ -38,8 +39,36 @@
                     font-size: size(24);
                     font-weight: 600;
                     line-height: size(33);
-        
                 }
+            }
+
+            @media (max-width: size(700)) {
+
+                &-profile {
+                    .avatar {
+                        display: none;
+                    }
+                    .name {
+                        font-size: size(16);
+                        line-height: size(22);
+                    }
+                }
+                &-button {
+                    .button {
+                        font-size: size(14);
+                        line-height: size(19);
+
+                        .iconify {
+                            display: none;
+                        }                        
+                    }
+                }
+            }
+
+            @media (max-width: size(500)) {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: size(15);
             }
         }
     }
