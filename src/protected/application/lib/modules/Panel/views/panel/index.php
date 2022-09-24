@@ -23,7 +23,7 @@ $this->import('panel--entity-tabs panel--entities-summary panel--open-opportunit
                     <?php endif; ?>
                 </div>
                 <div class="name">
-                    <?= $app->user->profile->name ?>
+                    <?= i::_e('Olá, ') ?> <?= $app->user->profile->name ?>
                 </div>
             </div>
             <div class="panel-home__header--user-button">

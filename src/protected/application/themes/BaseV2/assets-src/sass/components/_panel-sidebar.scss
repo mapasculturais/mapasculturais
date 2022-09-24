@@ -7,6 +7,7 @@
 
     @include mobile {
         border: none;
+        display: none;
         padding: size(24) size(16);
     }
 
