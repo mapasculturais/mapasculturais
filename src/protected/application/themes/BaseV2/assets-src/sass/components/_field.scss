@@ -66,7 +66,7 @@
     }
 
     &.error {
-        input, textarea {
+        input, textarea, select {
             background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red') no-repeat right 20px center / 20px;
             border: size(2) solid #FF0000;
         }
