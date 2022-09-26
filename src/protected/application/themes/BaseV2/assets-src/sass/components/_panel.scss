@@ -180,5 +180,11 @@
                 }
             }
         }
+
+        .tabs-component {
+            &__panels {
+                margin: 0;
+            }
+        }
     }
 }
