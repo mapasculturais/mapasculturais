@@ -27,11 +27,11 @@ app.component('create-event' , {
     },
 
     computed: {
-        areaErrors() {
-            return this.entity.__validationErrors['term-area'];
+        linguagemErrors() {
+            return this.entity.__validationErrors['term-linguagem'];
         },
-        areaClasses() {
-            return this.areaErrors ? 'field error' : 'field';
+        linguagemClasses() {
+            return this.linguagemErrors ? 'field error' : 'field';
         }
     },
     
@@ -58,7 +58,7 @@ app.component('create-event' , {
             this.entity = Vue.ref(new Entity('event'));
             console.log(this.entity);
             this.entity.type = 1;
-            this.entity.terms = {area: []}
+            this.entity.terms = {linguagem: []}
 
         },
         createDraft(modal) {

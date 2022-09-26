@@ -13,9 +13,11 @@ $this->import('
         <label><?php i::_e('Crie um evento com informações básicas')?><br><?php i::_e('e de forma rápida')?></label>
         <div class="create-modal__fields">
             <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Nome ou título")?>  prop="name"></entity-field>
-            <entity-terms :entity="entity" :editable="true" :classes="areaClasses" taxonomy='linguagem' title="Linguagem cultural"></entity-terms>
-            <small class="field__error" v-if="areaErrors">{{areaErrors.join(', ')}}</small>
+            <entity-terms :entity="entity" :editable="true" :classes="linguagemClasses" taxonomy='linguagem' title="<?php i::esc_attr_e("Linguagem cultural") ?>"></entity-terms>
+            <small class="field__error" v-if="linguagemErrors">{{linguagemErrors.join(', ')}}</small>
             <entity-field :entity="entity" hide-required v-for="field in fields" :prop="field"></entity-field>
+            <entity-field :entity="entity" hide-required prop="shortDescription" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Agente")?>"></entity-field>
+
         </div>
     </template>
     <template #button="modal">
