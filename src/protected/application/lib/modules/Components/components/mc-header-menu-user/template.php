@@ -73,7 +73,7 @@ $this->import('
                 </a>
             </div>
 
-            <panel--nav :class="mc-header-menu-user__itens"></panel--nav>
+            <panel--nav classes="mc-header-menu-user__itens"></panel--nav>
         </div>
     </div>
     
