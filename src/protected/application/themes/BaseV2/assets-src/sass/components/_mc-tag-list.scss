@@ -1,6 +1,9 @@
 @use '../settings/mixins' as *;
 
 .mc-tag-list {
+    display: flex;
+    flex-direction: column;
+    gap: size(8);
     margin: 0;
 
     &__title {
@@ -14,22 +17,32 @@
         padding: 0;
         flex-wrap: wrap;
 
-
         &--tag {
             align-items: center;
-            border-radius: size(15);
-            list-style: none;
-            padding: size(9) size(14);
+            border-radius: var(--mc-border-radius-pill);
             display: flex;
-            justify-content: space-between;
-            text-align: center;
-            position: relative;
             font-size: size(13);
             gap: size(10);
+            height: size(33);
+            justify-content: space-between;
+            list-style: none;
             line-height: size(13);
+            padding: size(7) size(14);
+            position: relative;
+            text-align: center;
 
             .iconify {
                 font-size: size(16);
+            }
+
+            a {
+                align-items: center;
+                display: flex;
+                gap: size(10);
+
+                .iconify {
+                    font-size: size(16);
+                }
             }
         }
     }
