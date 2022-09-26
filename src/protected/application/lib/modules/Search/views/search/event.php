@@ -7,6 +7,7 @@ $this->import('
     search-filter-event
     search-list-events 
     search-map-events 
+    create-event
     tabs 
 ');
 $this->breadcramb = [
@@ -17,7 +18,7 @@ $this->breadcramb = [
 <search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[]}">
     <template #create-button>
         <!-- @TODO: Criação e aplicação do componente <create-event> -->
-        <?= i::_e('botão criar evento') ?>
+            <create-event></create-event>
     </template>
     <template #default="{pseudoQuery}">
         <tabs class="search__tabs">
