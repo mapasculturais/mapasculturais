@@ -5,7 +5,6 @@ $this->import('panel--entity-actions mc-icon');
 ?>
 <article class="panel__row panel-entity-card">
     <header class="panel-entity-card__header">
-
         <div class="left">
             <div class="panel-entity-card__header--picture">
                 <slot name="picture" :entity="entity">
@@ -13,29 +12,25 @@ $this->import('panel--entity-actions mc-icon');
                     <img v-if="!entity.files.avatar" src="<?php $this->asset('img/default-image.svg')?>" alt="">
                 </slot>
             </div>
-
             <div class="panel-entity-card__header--info">
                 <h2 class="panel-entity-card__header--info-title">
                     <slot name="title" :entity="entity">
                         {{ entity?.name || entity?.email || entity?.number || entity?.id }}
                     </slot>
                 </h2>
-
                 <p class="panel-entity-card__header--info-subtitle">
-                    <slot :entity="entity"></slot>
+                    <slot name="subtitle" :entity="entity"></slot>
                 </p>
             </div>            
         </div>
-
         <div class="right">
             <div class="panel-entity-card__header-actions">
                 <slot name="header-actions" :entity="entity"> actions </slot>
             </div>
         </div>
-
     </header>
     <main class="panel-entity-card__main">
-        <!-- <slot :entity="entity"></slot> -->
+        <slot :entity="entity"></slot>
     </main>
     <footer class="panel-entity-card__footer">
         <div class="panel-entity-card__footer-actions">
@@ -48,11 +43,9 @@ $this->import('panel--entity-actions mc-icon');
                         @published="$emit('published', arguments)"
                     />
                 </slot>
-                
                 <div class="panel-entity-card__footer-actions right">
                     <slot name="entity-actions-center" >
                     </slot>
-
                     <slot name="entity-actions-right" >
                         <a :href="entity.singleUrl" class="button button--primary-outline button--icon"><?php i::_e('Acessar') ?> <mc-icon name="arrow-right"></mc-icon></a> 
                         <a v-if="entity.status>=0" :href="entity.editUrl" class="button button--primary button--icon"><mc-icon name="edit"></mc-icon> <?php i::_e('Editar') ?></a>
@@ -61,4 +54,5 @@ $this->import('panel--entity-actions mc-icon');
             </slot>
         </div>
     </footer>
+
 </article>

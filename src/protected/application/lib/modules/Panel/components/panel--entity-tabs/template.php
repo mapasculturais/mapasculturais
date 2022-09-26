@@ -62,7 +62,7 @@ $tabs = $tabs ?? [
                                 </button>
                             </slot>
                         </template>
-                        <template #default="{ entity }">
+                        <template #subtitle="{ entity }">
                             <slot name="card-content" :entity="entity">
                                 <span v-if="entity.type">
                                     <?=i::__('Tipo: ')?> <strong>{{ entity.type.name }}</strong>
