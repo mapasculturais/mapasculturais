@@ -33,7 +33,6 @@ app.component('system-roles--card', {
                     }
                 }
             }
-            console.log(Object.values(permissions));
             return Object.values(permissions);
         }
     },
