@@ -1,7 +1,11 @@
 <?php
 use MapasCulturais\i;
 
-$this->import('panel--entity-tabs panel--entities-summary panel--open-opportunities');
+$this->import('
+    panel--entity-tabs 
+    panel--entities-summary 
+    panel--open-opportunities 
+    panel--last-edited');
 ?>
 
 <div class="panel-home">
@@ -39,6 +43,8 @@ $this->import('panel--entity-tabs panel--entities-summary panel--open-opportunit
                 <panel--entities-summary></panel--entities-summary>
 
                 <panel--open-opportunities></panel--open-opportunities>
+
+                <panel--last-edited></panel--last-edited>
 
             </div>
         </tab>
