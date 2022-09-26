@@ -1,0 +1,99 @@
+@use '../settings/mixins' as *;
+
+.panel--last-edited {
+
+    &__content {
+        &-title {
+            font-size: size(24);
+            font-weight: 700;
+            line-height: size(28);
+            margin-bottom: size(16);
+        }
+
+        &-cards {
+            .carousel {           
+                .actions {
+                    display: flex;
+                    gap: size(18);
+                    position: absolute;
+                    right: 0;
+                    top: size(-50);
+
+                    button.carousel__prev {
+                        background: url(https://api.iconify.design/akar-icons/arrow-left.svg?color=%230074C1) no-repeat center center / size(15);
+                    }
+
+                    button.carousel__next {
+                        background: url(https://api.iconify.design/akar-icons/arrow-right.svg?color=%230074C1) no-repeat center center / size(15);
+                    }
+
+                    button.carousel__prev,
+                    button.carousel__next {
+                        background-color: var(--mc-high-500);
+                        border: none;
+                        border-radius: var(--mc-border-radius-pill);
+                        height: size(40);
+                        width: size(40);
+                    }
+
+                    .carousel__icon {
+                        display: none;
+                    }
+                }
+
+        
+                &__slide {
+                    align-items: flex-start;
+                    display: flex;
+
+                    .panel__row {
+                        margin: 0;
+                    }
+        
+                    .panel-entity-card{
+                        border-radius: var(--mc-border-radius-xs);
+                        min-height: size(224);
+                        padding: size(16);
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        margin: 0 size(12);
+
+                        &__header--picture {
+                            img {
+                                width: size(48);
+                                height: size(48);
+                                margin-right: size(8);
+                            }
+                        } 
+
+                        &__main {
+                            font-weight: 400;
+                            font-size: size(12);
+                            line-height: size(16);
+                            text-align: left;
+                        }
+                    }
+                }
+            }
+
+            .card {
+                &-actions {
+                    &--tag {
+                        border-radius: var(--mc-border-radius-pill);
+                        min-width: size(137);
+                        padding: size(6) size(19);
+                        display: block;
+                        text-align: center;
+                        line-height: size(18);
+
+                        .iconify {
+                            float: left;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
