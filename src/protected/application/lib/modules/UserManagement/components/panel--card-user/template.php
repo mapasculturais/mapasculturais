@@ -16,9 +16,13 @@ $this->import('
     <template #header-actions>
         <slot name="card-actions"></slot>
     </template>
+
+    <template #subtitle>
+        <code>ID: {{entity.id}}</code>
+    </template>
+
     <template #default>
         <div class="mc-tag-list">
-            <code>ID: {{entity.id}}</code>
             <h4><?=i::__('Funções do usuário:')?></h4>
             <ul class="mc-tag-list__tagList">
                 <li v-for="role in entity.roles" class="primary__border-solid primary__color mc-tag-list__tagList--tag">
