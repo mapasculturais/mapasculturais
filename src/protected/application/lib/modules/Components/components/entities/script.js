@@ -34,16 +34,17 @@ app.component('entities', {
         this.entities.metadata = {};
         this.entities.loading = false;
         this.entities.loadingMore = false;
-        this.entities.refresh = () => this.refresh();
+        this.entities.refresh = (debounce) => this.refresh(debounce);
         this.entities.loadMore = () => this.loadMore();
         this.entities.query = this.query;
-        
+        this.entities.stringifiedQuery = JSON.stringify(this.entities.query)
         let watchTimeout = null;
         if (this.watchQuery) {
-            this.$watch('query', (q1,q2) => {
-                if(JSON.stringify(q1) == JSON.stringify(q2)) {
+            this.$watch('query', (q1) => {
+                if(this.entities.stringifiedQuery == JSON.stringify(q1)) {
                     return;
                 }
+                this.entities.stringifiedQuery = JSON.stringify(q1);
                 this.entities.loading = true;
                 this.entities.splice(0);
                 clearTimeout(watchTimeout, 100);
@@ -115,14 +116,17 @@ app.component('entities', {
             return this.api.fetch(this.endpoint, query, options);
         },
         
-        refresh() {
+        refresh(debounce) {
+            debounce = debounce || 0;
             this.page = 1;
             this.entities.loading = true;
-
             this.entities.splice(0);
-            this.getDataFromApi().then(() => { 
-                this.entities.loading = false;
-            });
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+                this.getDataFromApi().then(() => { 
+                    this.entities.loading = false;
+                });
+            }, debounce);
         },
 
         loadMore() {
