@@ -71,17 +71,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
 
     /**
-     * Is this an AJAX request?
-     *
-     * @return bool
-     */
-    public function isAjax(){
-        $app = App::i();
-        return $app->request->isAjax() || $app->request()->headers()->get('Content-Type') === 'application/json';
-    }
-
-
-    /**
      * Creates and returns an empty new entity object of the entity class related with this controller.
      *
      * @see \MapasCulturais\Controller::$entityClassName

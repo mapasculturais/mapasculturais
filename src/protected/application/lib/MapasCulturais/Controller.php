@@ -127,6 +127,17 @@ abstract class Controller{
     public static function usesSingleton(){
         return true;
     }
+
+
+    /**
+     * Is this an AJAX request?
+     *
+     * @return bool
+     */
+    public function isAjax(){
+        $app = App::i();
+        return $app->request->isAjax() || $app->request()->headers()->get('Content-Type') === 'application/json';
+    }
     
     // =================== GETTERS ================== //
 
