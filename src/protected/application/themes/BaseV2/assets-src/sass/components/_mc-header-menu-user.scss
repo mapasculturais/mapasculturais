@@ -32,9 +32,12 @@
         }
 
         &--avatar {
+            align-items: center;
+            border: var(--mc-border-hairline) var(--mc-gray-100);
             border-radius: 50%;
             display: flex;
             height: size(40);
+            justify-content: center;
             overflow: hidden;
             width: size(40);
         }
