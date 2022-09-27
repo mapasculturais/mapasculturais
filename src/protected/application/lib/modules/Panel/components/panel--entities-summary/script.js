@@ -24,7 +24,13 @@ app.component('panel--entities-summary', {
     },
 
     data() {
+        console.log($MAPAS.config);
         return {
+            spaces: $MAPAS.config.entitySummary.spaces,
+            agents: $MAPAS.config.entitySummary.agents,
+            events: $MAPAS.config.entitySummary.events,
+            projects: $MAPAS.config.entitySummary.projects,
+            opportunities: $MAPAS.config.entitySummary.opportunities,
         }
     },
 
