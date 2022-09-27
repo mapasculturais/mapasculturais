@@ -29,20 +29,24 @@ $tabs = $tabs ?? [
             :query="queries['<?=$status?>']" 
             :limit="50" watch-query>
 
-            <template v-if="true" #header="{entities}">
+            <template #header="{entities}">
                 <form class="entity-tabs__filters panel__row" @submit="$event.preventDefault();">
-                    <input type="search" class="entity-tabs__search-input"
-                        aria-label="<?=i::__('Palavras-chave')?>"
-                        placeholder="<?=i::__('Buscar por palavras-chave')?>"
-                        v-model="queries['<?=$status?>']['@keyword']">
+                    <slot name="filters">
+                        <input type="search" class="entity-tabs__search-input"
+                            aria-label="<?=i::__('Palavras-chave')?>"
+                            placeholder="<?=i::__('Buscar por palavras-chave')?>"
+                            v-model="queries['<?=$status?>']['@keyword']">
+                        
+                        <slot name="filters-additional" :entities="entities" :query="queries['<?=$status?>']"></slot>
 
-                    <select v-model="queries['<?=$status?>']['@order']">
-                        <option value="name ASC"><?= i::__('ordem alfabética') ?></option>
-                        <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
-                        <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
-                        <option value="updateTimestamp DESC"><?= i::__('modificadas recentemente') ?></option>
-                        <option value="updateTimestamp ASC"><?= i::__('modificadas há mais tempo') ?></option>
-                    </select>
+                        <select v-model="queries['<?=$status?>']['@order']">
+                            <option value="name ASC"><?= i::__('ordem alfabética') ?></option>
+                            <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
+                            <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
+                            <option value="updateTimestamp DESC"><?= i::__('modificadas recentemente') ?></option>
+                            <option value="updateTimestamp ASC"><?= i::__('modificadas há mais tempo') ?></option>
+                        </select>
+                    </slot>
                 </form>
             </template>
 
