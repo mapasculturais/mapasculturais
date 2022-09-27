@@ -28,7 +28,7 @@ app.component('panel--open-opportunities', {
 
             // carousel settings
             settings: {
-                itemsToShow: 1.2,
+                itemsToShow: 1,
                 snapAlign: 'center',
             },
 
@@ -51,7 +51,7 @@ app.component('panel--open-opportunities', {
                     snapAlign: "start"
                 },
                 800: {
-                    itemsToShow: 1.8,
+                    itemsToShow: 1.4,
                     snapAlign: "start"
                 },
                 700: {
