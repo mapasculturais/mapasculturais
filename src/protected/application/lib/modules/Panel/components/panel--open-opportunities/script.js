@@ -23,7 +23,8 @@ app.component('panel--open-opportunities', {
             query: {
                 '@order' : 'registrationFrom ASC',
                 '@select' : 'id,name,singleUrl,files.avatar,shortDescription,registrationFrom,registrationTo',
-                '@verified' : '1'
+                '@verified' : '1',
+                'user' : `EQ(@me)`,
             },
 
             // carousel settings
