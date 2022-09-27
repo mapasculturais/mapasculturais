@@ -31,6 +31,18 @@ app.component('entities', {
             this.api.lists.store(this.name, this.entities);
         }
 
+        if (this.select) {
+            this.query['@select'] = this.select;
+        } 
+
+        if (this.ids) {
+            this.query.id = 'IN(' + this.ids.join(',') + ')'
+        }
+
+        if (this.order) {
+            this.query['@order'] = this.order; 
+        }
+
         this.entities.metadata = {};
         this.entities.loading = false;
         this.entities.loadingMore = false;
@@ -89,19 +101,6 @@ app.component('entities', {
     
     methods: {
         getDataFromApi() {
-            
-            if (this.select) {
-                this.query['@select'] = this.select;
-            } 
-
-            if (this.ids) {
-                this.query.id = 'IN(' + this.ids.join(',') + ')'
-            }
-
-            if (this.order) {
-                this.query['@order'] = this.order; 
-            }
-
             let query = {...this.query};
 
             if (this.limit) {
