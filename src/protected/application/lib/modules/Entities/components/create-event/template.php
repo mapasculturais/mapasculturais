@@ -16,7 +16,7 @@ $this->import('
             <entity-terms :entity="entity" :editable="true" :classes="linguagemClasses" taxonomy='linguagem' title="<?php i::esc_attr_e("Linguagem cultural") ?>"></entity-terms>
             <small class="field__error" v-if="linguagemErrors">{{linguagemErrors.join(', ')}}</small>
             <entity-field :entity="entity" hide-required v-for="field in fields" :prop="field"></entity-field>
-            <entity-field :entity="entity" hide-required prop="shortDescription" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Agente")?>"></entity-field>
+            <entity-field :entity="entity" hide-required prop="shortDescription" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Evento")?>"></entity-field>
 
         </div>
     </template>
