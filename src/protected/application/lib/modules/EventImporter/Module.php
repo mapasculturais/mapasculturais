@@ -3,6 +3,8 @@
 namespace EventImporter;
 
 use MapasCulturais\App;
+use MapasCulturais\Definitions;
+
 class Module extends \MapasCulturais\Module
 {
     function _init()
