@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('search tabs search-list search-map search-filter-space');
+$this->import('search tabs search-list search-map search-filter-space create-space');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Espaços'), 'url' => $app->createUrl('spaces')],
@@ -10,8 +10,7 @@ $this->breadcramb = [
 
 <search page-title="<?php i::esc_attr_e('Espaços') ?>" entity-type="space" :initial-pseudo-query="{'term:area':[]}">    
     <template #create-button>
-        <!-- @TODO: Criação e aplicação do componente <create-espace> -->
-        <?= i::_e('botão criar espaço') ?>
+        <create-space></create-space>
     </template>
     <template #default="{pseudoQuery}">        
         <tabs class="search__tabs">
