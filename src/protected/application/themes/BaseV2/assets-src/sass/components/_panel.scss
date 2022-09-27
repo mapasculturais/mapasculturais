@@ -134,6 +134,7 @@
             overflow: hidden;
 
             &-filter {
+                align-items: center;
                 display: flex;
                 gap: size(24);
                 justify-content: flex-start;
@@ -177,6 +178,21 @@
                     font-weight: 600;
                     font-size: size(14);
                     line-height: size(19);
+                }
+
+                @media (min-width: size(800)) AND (max-width: size(870)) {
+                    flex-direction: column;
+                    input.search {
+                        width: 100%;
+                    }
+                }
+
+                @media (max-width: size(800)) {
+                    flex-direction: column;
+                    margin: size(16) size(16) size(0);
+                    input.search {
+                        width: 100%;
+                    }
                 }
             }
         }
