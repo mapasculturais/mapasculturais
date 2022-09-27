@@ -6,6 +6,11 @@ app.component('panel--entity-card', {
         entity: {
             type: Entity,
             required: true
+        },
+
+        onDeleteRemoveFromLists: {
+            type: Boolean,
+            default: true
         }
     },
 })

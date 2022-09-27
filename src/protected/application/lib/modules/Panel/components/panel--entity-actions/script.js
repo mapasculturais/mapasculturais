@@ -26,6 +26,11 @@ app.component('panel--entity-actions', {
         destroy: String,
         publish: String,
         unpublish: String,
+
+        onDeleteRemoveFromLists: {
+            type: Boolean,
+            default: true
+        }
     },
     
     methods: {
@@ -45,7 +50,7 @@ app.component('panel--entity-actions', {
         deleteEntity(modal) {
             const entity = this.entity;
             entity.loading = true;
-            entity.delete(true).then(() => {
+            entity.delete(this.onDeleteRemoveFromLists).then(() => {
                 this.$emit('deleted', {entity, modal});
                 entity.loading = false;
             });
