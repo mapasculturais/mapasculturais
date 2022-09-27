@@ -66,12 +66,12 @@ app.component('panel--entity-tabs', {
             };
             
             const list = lists.fetch(listnames[status]);
-
+            
             entity.removeFromLists();
 
             if(list instanceof Array) {
                 list.push(entity);
-                entity.__lists.push(list);
+                entity.$LISTS.push(list);
             }
         }
     },
