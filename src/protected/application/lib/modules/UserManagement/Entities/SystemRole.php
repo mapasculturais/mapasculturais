@@ -109,6 +109,12 @@ class SystemRole extends \MapasCulturais\Entity {
         ];
     }
 
+    public static function getPropertiesMetadata($include_column_name = false) {
+        $result = parent::getPropertiesMetadata();
+        unset($result['status']['options']['draft']);
+        return $result;
+    }
+
     /**
      * Define o nome do role.
      * 

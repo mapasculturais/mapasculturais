@@ -1,9 +1,18 @@
 <?php 
 use MapasCulturais\i;
 
-$this->import('panel--entity-card') 
+$this->import('
+    confirm-button
+    mc-icon
+    panel--entity-card
+    system-roles--modal 
+') 
 ?>
-<panel--entity-card :entity="entity">
+<panel--entity-card 
+    :entity="entity"
+    :on-delete-remove-from-lists="false"
+    @deleted="$emit('deleted', $event)"
+    @published="$emit('deleted', $event)">
     <code>ID {{entity.id}}</code>
     <code>slug: {{entity.slug}}</code>
 
@@ -18,18 +27,11 @@ $this->import('panel--entity-card')
         </section>
     </div>
 
-    <template #footer-actions="{entity}">
-        <confirm-button
-            :message="`<?= i::esc_attr__('Deseja excluir a função "${entity.name}"?') ?>`"
-            @confirm="entity.delete(true)">
-            <template #button="modal">
-                <button @click="modal.open()" class="button button--text delete button--icon">
-                    <?= i::__('Excluir') ?>
-                    <mc-icon name='trash'></mc-icon>
-                </button>
-            </template>
-            
-        </confirm-button>
-        <system-roles--modal :entity="entity"></system-roles--modal>
+    <template #entity-actions-right >
+        <system-roles--modal 
+            v-if="entity.status == 1"
+            :entity="entity">
+        </system-roles--modal>
     </template>
+
 </panel--entity-card>
