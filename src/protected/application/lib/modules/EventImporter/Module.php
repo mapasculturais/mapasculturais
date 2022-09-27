@@ -9,11 +9,13 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-       //Inseri parte para upload na sidbar direita
-        $app->hook('template(opportunity.edit.sidebar-right):end',function(){
-           /** @var Theme $this */
-           $entity = $this->controller->requestedEntity; 
-           $this->part('upload-csv-event',['entity' => $entity]);
+        //Inseri parte para upload na sidbar direita
+        $app->hook('template(panel.events.settings-nav):begin', function() use($app) {
+            /** @var Theme $this */
+            $this->controller = $app->controller('agent');
+            $this->part('upload-csv-event',['entity' => $app->user->profile]);
+            $this->controller = $app->controller('panel');
+
         });
     }
 
