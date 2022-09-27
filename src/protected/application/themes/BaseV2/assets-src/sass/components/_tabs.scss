@@ -13,7 +13,9 @@
         justify-content: space-between;
         max-width: size(1170);
         margin: 0 auto;
-        padding: 0 size(16);
+        margin-bottom: size(-10);
+        overflow-x: auto;
+        padding: 0 size(16) size(10);
 
         &--left {
             align-items: baseline;
