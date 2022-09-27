@@ -52,6 +52,7 @@ $tabs = $tabs ?? [
                         @deleted="moveEntity(entity)" 
                         @archived="moveEntity(entity)" 
                         @published="moveEntity(entity)"
+                        :on-delete-remove-from-lists="false"
                         >
                         <template #title="{ entity }">
                             <slot name="card-title" :entity="entity"></slot>

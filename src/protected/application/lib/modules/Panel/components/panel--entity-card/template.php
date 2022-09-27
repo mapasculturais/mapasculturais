@@ -41,6 +41,7 @@ $this->import('panel--entity-actions mc-icon');
                         @deleted="$emit('deleted', arguments)"
                         @archived="$emit('archived', arguments)"
                         @published="$emit('published', arguments)"
+                        :on-delete-remove-from-lists="onDeleteRemoveFromLists"
                     />
                 </slot>
                 <div class="panel-entity-card__footer-actions right">
