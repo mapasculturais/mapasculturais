@@ -24,6 +24,7 @@ app.component('panel--last-edited', {
 
         query['@select'] = 'id,name,shortDescription,location,terms,seals,singleUrl,updateTimestamp,type';
         query['@order'] = 'updateTimestamp DESC';
+        query['user'] = `EQ(@me)`;
 
         if(this.limit) {
             query['@limit'] = this.limit;
