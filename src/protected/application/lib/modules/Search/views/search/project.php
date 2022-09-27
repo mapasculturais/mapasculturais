@@ -10,7 +10,6 @@ $this->breadcramb = [
 
 <search page-title="<?php i::esc_attr_e('Projetos') ?>" entity-type="project" >    
     <template #create-button>
-        <!-- @TODO: Criação e aplicação do componente <create-project> -->
         <create-project></create-project>
     </template>
     <template #default="{pseudoQuery}">
