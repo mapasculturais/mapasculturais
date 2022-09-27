@@ -178,6 +178,12 @@ class API {
         }
     }
 
+    async undeleteEntity(entity) {
+        if (entity.id) {
+            return this.POST(entity.getUrl('undelete'));   
+        }
+    }
+
     async destroyEntity(entity) {
         if (entity.id) {
             return this.DELETE(entity.getUrl('destroy'));   

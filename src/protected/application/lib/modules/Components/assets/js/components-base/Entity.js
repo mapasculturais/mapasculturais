@@ -270,6 +270,28 @@ class Entity {
         }        
     }
 
+    async undelete(removeFromLists) {
+        this.__processing = this.text('recuperando');
+
+        const messages = useMessages();
+
+        try {
+            const res = await this.API.undeleteEntity(this);
+            return this.doPromise(res, (entity) => {
+                messages.success(this.text('entidade recuperada'));
+                
+                if(removeFromLists) {
+                    this.removeFromLists();
+                }
+
+                this.populate(entity);
+            });
+
+        } catch (error) {
+            return this.doCatch(error)
+        }        
+    }
+
     async destroy() {
         this.__processing = this.text('excluindo definitivamente');
 

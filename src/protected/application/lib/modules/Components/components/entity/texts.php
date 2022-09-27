@@ -12,6 +12,7 @@ return [
     'arquivando' => i::__('Arquivando a entidade'),
     'excluindo' => i::__('Excluindo a entidade'),
     'excluindo definitivamente' => i::__('Excluindo a entidade definitivamente'),
+    'recuperando' => i::__('Recuperando a entidade'),
 
     'modificacoes salvas' => i::__('Modificações salvas'), 
     'entidade salva' => i::__('Entidade salva'), 
@@ -19,6 +20,7 @@ return [
     'entidade removida definitivamente' => i::__('Entidade removida definitivamente'), 
     'entidade publicada' => i::__('Entidade publicada'), 
     'entidade arquivada' => i::__('Entidade arquivada'), 
+    'entidade recuperada' => i::__('Entidade recuperada'), 
 
     'subindo arquivo' => i::__('Enviando arquivo'), 
     'removendo arquivo' => i::__('Removendo arquivo'),
