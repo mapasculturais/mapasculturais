@@ -34,32 +34,34 @@ $iconUrl: 'https://api.iconify.design/ic/baseline-arrow-drop-down.svg'+#{$iconCo
 
     &__search {
         &-input {
-            font-weight: 400;
-            font-size: size(14);
-            line-height: size(19);
-            border: var(--mc-border-hairline) var(--mc-gray-500);
-            border-radius: var(--mc-border-radius-pill);
-            padding: size(9) size(16);
             background: url(https://api.iconify.design/ant-design/search-outlined.svg) no-repeat 92% center/contain;
             background-color: var(--mc-white);
             background-size: size(16);
-            height: size(40);
+            border: var(--mc-border-hairline) var(--mc-gray-500);
+            border-radius: var(--mc-border-radius-pill);
             display: flex;
+            font-size: size(14);
+            font-weight: 400;
+            height: size(40);
+            line-height: size(19);
+            max-width: 369px;
+            padding: size(9) size(16);
+            width: 100%;
 
             &:hover, &:focus {
                 background: var(--mc-high-500);
             }
 
             &::-webkit-search-cancel-button{
-                position:relative;
-                right: 0px;  
-                -webkit-appearance: none;
-                width: size(16);
-                height: size(16);
                 background: url(https://api.iconify.design/gg/close.svg) no-repeat 100% center/contain;
                 background-color: transparent;
                 background-size: size(16);
                 display: flex;
+                height: size(16);
+                position:relative;
+                right: 0px;  
+                width: size(16);
+                -webkit-appearance: none;
             }
         }
 
