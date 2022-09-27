@@ -11,6 +11,8 @@ use MapasCulturais\Traits;
  * User Controller
  *
  * By default this controller is registered with the id 'user'.
+ * 
+ * @property-read Entities\User $requestedEntity;
  *
  */
 class User extends Controller {
@@ -22,16 +24,23 @@ class User extends Controller {
     
     protected $entityClassName = 'MapasCulturais\\Entities\\User';
 
+    function getRequestedEntity() {
+        $app = App::i();
+        if($id = $this->urlData['id']) {
+            return $app->repo('User')->find($id);
+        } else {
+            return null;
+        }
+
+    }
+
     function DELETE_single(){
 
         $app = App::i();
-
-        if($id = $this->urlData['id']) {
-            $entity = $app->repo('User')->find($id);
-    
-            if(!$entity) {
-                $app->pass();
-            }
+        $entity = $this->requestedEntity;
+        
+        if(!$entity) {
+            $app->pass();
         }
 
         $entity->delete(true);
