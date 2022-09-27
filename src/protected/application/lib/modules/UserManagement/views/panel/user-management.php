@@ -5,6 +5,7 @@ $this->import('
     loading messages 
     panel--card-user 
     entities mc-icon
+    panel--entity-tabs
 ');
 
 $profile = $app->user->profile;
@@ -27,28 +28,22 @@ $profile = $app->user->profile;
     </header>
     
     <div class="panel-page__content">
-        <entities type="user" name="user:1" :limit="25" select="id,email,status,profile.{id,name,type},roles.{id,name,subsite.{id,name}}">
-            <template #header="{entities, query}">
-                <form @submit="entities.refresh(); $event.preventDefault()" class="panel-page__content-filter"><!-- class="panel__row flex" -->
-                    <input class="search" v-model="query['@keyword']" placeholder="<?= i::esc_attr__('Pesquisar') ?>">
-                    <label>
-                        <?= i::__('Filtrar por função: ') ?>
-                        <entities #default="roles" type="system-role" select="name,slug">
-                            <select v-model="query['@roles']" @change="query['@roles'] || delete query['@roles']; entities.refresh()">
-                                <option :value="undefined"><?= i::__('Exibir todas') ?></option>
-                                <option value="saasSuperAdmin" ><?= i::__('Super Administrador da Rede') ?></option>
-                                <option value="saasAdmin" ><?= i::__('Administrador da Rede') ?></option>
-                                <option value="superAdmin" ><?= i::__('Super Administrador') ?></option>
-                                <option value="admin" ><?= i::__('Administrador') ?></option>
-                                <option v-for="role in roles.entities" v-bind:value="role.slug">{{role.name}}</option>
-                            </select>
-                        </entities>
-                    </label>
-                </form>
+        <panel--entity-tabs type="user" user="" select="id,email,status,profile.{id,name,type},roles.{id,name,subsite.{id,name}}">
+            <template #filters-additional="{query, entities}">
+                <entities #default="roles" type="system-role" select="name,slug">
+                    <select v-model="query['@roles']" @change="query['@roles'] || delete query['@roles'];">
+                        <option :value="undefined"><?= i::__('Exibir todas') ?></option>
+                        <option value="saasSuperAdmin" ><?= i::__('Super Administrador da Rede') ?></option>
+                        <option value="saasAdmin" ><?= i::__('Administrador da Rede') ?></option>
+                        <option value="superAdmin" ><?= i::__('Super Administrador') ?></option>
+                        <option value="admin" ><?= i::__('Administrador') ?></option>
+                        <option v-for="role in roles.entities" v-bind:value="role.slug">{{role.name}}</option>
+                    </select>
+                </entities>
             </template>
-            <template #default="{entities}">
-                <panel--card-user v-for="user in entities" :key="user.__objectId" :entity="user"></panel--card-user>    
+            <template #default="{entity,moveEntity}">
+                <panel--card-user :entity="entity"></panel--card-user>    
             </template>
-        </entities>
+        </panel--entity-tabs>
     </div>
 </div>

@@ -1,6 +1,6 @@
 app.component('system-roles--card', {
     template: $TEMPLATES['system-roles--card'],
-    emits: [],
+    emits: ['deleted', 'published'],
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -38,6 +38,5 @@ app.component('system-roles--card', {
     },
     
     methods: {
-        
     },
 });

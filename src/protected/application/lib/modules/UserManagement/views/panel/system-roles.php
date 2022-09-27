@@ -5,8 +5,8 @@ $this->layout = 'panel';
 $this->import('
     confirm-button
     mc-icon mc-icon
-    system-roles--card
     panel--entity-tabs
+    system-roles--card
     system-roles--modal
 ');
 
@@ -31,7 +31,11 @@ $this->import('
         </div>
     </header>
     
-    <panel--entity-tabs type="system-role" user="" select="id,status,name,slug,permissions" #default={entity}>
-        <system-roles--card :entity="entity"></system-roles--card>
+    <panel--entity-tabs type="system-role" user="" select="id,status,name,slug,permissions" #default="{entity,moveEntity}">
+        <system-roles--card 
+            :entity="entity"
+            @deleted="moveEntity    (entity)" 
+            @published="moveEntity(entity)">
+        </system-roles--card>
     </panel--entity-tabs>
 </div>
