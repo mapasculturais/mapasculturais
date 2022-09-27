@@ -51,7 +51,7 @@ $tabs = $tabs ?? [
             </template>
 
             <template #default="{entities}">
-                <slot v-for="entity in entities" :entity="entity">
+                <slot v-for="entity in entities" :key="entity.__objectId" :entity="entity" :moveEntity="moveEntity">
                     <panel--entity-card :key="entity.id" :entity="entity" 
                         @deleted="moveEntity(entity)" 
                         @archived="moveEntity(entity)" 
