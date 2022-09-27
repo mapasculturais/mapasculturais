@@ -36,7 +36,7 @@ $tabs = $tabs ?? [
                         placeholder="<?=i::__('Buscar por palavras-chave')?>"
                         v-model="queries['<?=$status?>']['@keyword']">
 
-                    <select v-model="queries['<?=$status?>']['@order']">
+                    <select class="entity-tabs__search-select primary__border-solid" v-model="queries['<?=$status?>']['@order']">
                         <option value="name ASC"><?= i::__('ordem alfabética') ?></option>
                         <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
                         <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
