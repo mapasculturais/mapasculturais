@@ -1,4 +1,6 @@
 @use '../settings/mixins' as *;
+$iconColor: var(--mc-primary-500);
+$iconUrl: 'https://api.iconify.design/ic/baseline-arrow-drop-down.svg'+#{$iconColor};
 
 .entity-tabs {
 
@@ -30,9 +32,48 @@
         }
     }
 
-    &__search-input {
-        border: 1px solid var(--mc-gray-500);
-        border-radius: var(--mc-border-radius-sm);
-        padding: size(8) size(16);
+    &__search {
+        &-input {
+            background: url(https://api.iconify.design/ant-design/search-outlined.svg) no-repeat 92% center/contain;
+            background-color: var(--mc-white);
+            background-size: size(16);
+            border: var(--mc-border-hairline) var(--mc-gray-500);
+            border-radius: var(--mc-border-radius-pill);
+            display: flex;
+            font-size: size(14);
+            font-weight: 400;
+            height: size(40);
+            line-height: size(19);
+            max-width: 369px;
+            padding: size(9) size(16);
+            width: 100%;
+
+            &:hover, &:focus {
+                background: var(--mc-high-500);
+            }
+
+            &::-webkit-search-cancel-button{
+                background: url(https://api.iconify.design/gg/close.svg) no-repeat 100% center/contain;
+                background-color: transparent;
+                background-size: size(16);
+                display: flex;
+                height: size(16);
+                position:relative;
+                right: 0px;  
+                width: size(16);
+                -webkit-appearance: none;
+            }
+        }
+
+        &-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: url('https://api.iconify.design/ic/baseline-arrow-drop-down.svg?color=%230074c1') no-repeat 96% center/contain;
+            background-size: size(20);
+            background-color: var(--mc-high-500);
+            padding: size(10) size(26) size(10) size(16);
+            border-radius: var(--mc-border-radius-sm);
+        }
     }
 }

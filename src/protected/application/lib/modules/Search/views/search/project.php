@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('search tabs search-list search-map search-filter-project');
+$this->import('search tabs search-list search-map search-filter-project create-project');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Projetos'), 'url' => $app->createUrl('projects')],
@@ -10,8 +10,7 @@ $this->breadcramb = [
 
 <search page-title="<?php i::esc_attr_e('Projetos') ?>" entity-type="project" >    
     <template #create-button>
-        <!-- @TODO: Criação e aplicação do componente <create-project> -->
-        <?= i::_e('botão criar projeto') ?>
+        <create-project></create-project>
     </template>
     <template #default="{pseudoQuery}">
         <div class="tabs-component__panels">
