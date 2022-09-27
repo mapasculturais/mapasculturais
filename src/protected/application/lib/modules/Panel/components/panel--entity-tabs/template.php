@@ -39,7 +39,7 @@ $tabs = $tabs ?? [
                         
                         <slot name="filters-additional" :entities="entities" :query="queries['<?=$status?>']"></slot>
 
-                        <select v-model="queries['<?=$status?>']['@order']">
+                        <select class="entity-tabs__search-select primary__border-solid" v-model="queries['<?=$status?>']['@order']">
                             <option value="name ASC"><?= i::__('ordem alfabética') ?></option>
                             <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
                             <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>

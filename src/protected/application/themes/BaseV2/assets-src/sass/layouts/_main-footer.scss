@@ -160,9 +160,10 @@
                 width: 100%;
 
                 p {
-                    margin: 0;
                     display: flex;
+                    flex-wrap: wrap;
                     gap: size(5);
+                    margin: 0;
                 }
 
                 a {
@@ -174,18 +175,29 @@
                 }
 
                 .mapas {
+                    align-items: center;
                     display: flex;
                     gap: size(5);
-                    align-items: center;
+                    line-height: size(13);
                     font-weight: 700;
+
+                    .iconify {
+                        width: size(12);
+                        height: size(12);
+                    }
                 }
             }
 
             @media (max-width: size(800)) {
-                &--content {
+                &-content {
                     align-items: center;
                     flex-direction: column;
                     gap: size(14);
+                    justify-content: center;
+
+                    p {
+                        justify-content: center;
+                    }
                 }
             }
         }

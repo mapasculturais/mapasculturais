@@ -28,7 +28,7 @@ $this->import('entities entity-card mc-icon');
                         </slide>
                         <template #addons>
                             <div class="actions">
-                                <navigation :slideWidth="368" />
+                                <navigation :slideWidth="472" />
                             </div>
                         </template>
                     </carousel>

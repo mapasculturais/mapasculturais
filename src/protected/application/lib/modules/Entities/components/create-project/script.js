@@ -1,10 +1,10 @@
-app.component('create-space' , {
-    template: $TEMPLATES['create-space'],
+app.component('create-project' , {
+    template: $TEMPLATES['create-project'],
     emits: ['create'],
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('create-space')
+        const text = Utils.getTexts('create-project')
         return { text }
     },
     
@@ -48,14 +48,14 @@ app.component('create-space' , {
                 '_type', 
                 'userId',
             ];
-            Object.keys($DESCRIPTIONS.space).forEach((item)=>{
-                if(!skip.includes(item) && $DESCRIPTIONS.space[item].required){
+            Object.keys($DESCRIPTIONS.project).forEach((item)=>{
+                if(!skip.includes(item) && $DESCRIPTIONS.project[item].required){
                     this.fields.push(item);
                 }
             })
         },
         createEntity() {
-            this.entity = Vue.ref(new Entity('space'));
+            this.entity = Vue.ref(new Entity('project'));
             console.log(this.entity);
             this.entity.type = 1;
             this.entity.terms = {area: []}
