@@ -37,12 +37,12 @@ app.component('entities', {
             this.query['@page'] = this.page;
         }
 
+        this.entities.query = this.query;
         this.entities.metadata = {};
         this.entities.loading = false;
         this.entities.loadingMore = false;
         this.entities.refresh = (debounce) => this.refresh(debounce);
         this.entities.loadMore = () => this.loadMore();
-        this.entities.query = this.query;
         this.entities.stringifiedQuery = JSON.stringify(this.entities.query)
         let watchTimeout = null;
         if (this.watchQuery) {
