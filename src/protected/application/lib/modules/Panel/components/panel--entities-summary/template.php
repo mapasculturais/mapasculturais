@@ -1,7 +1,7 @@
 <?php
 use MapasCulturais\i;
 
-$this->import('mc-link create-agent');
+$this->import('mc-link create-agent create-space create-event create-project');
 ?>
 
 <div class="panel--entities-summary">                    
@@ -56,7 +56,9 @@ $this->import('mc-link create-agent');
             </div>
         </mc-link>
         <div class="panel--entities-summary__card--create">
-            <button class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
+            <create-event #default="{modal}">
+                <button @click="modal.open()" class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
+            </create-event>
         </div>
     </div>
 
@@ -73,7 +75,9 @@ $this->import('mc-link create-agent');
             </div>
         </mc-link>
         <div class="panel--entities-summary__card--create">
-            <button class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
+            <create-space #default="{modal}">
+                <button @click="modal.open()" class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
+            </create-space>
         </div>
     </div>
 
@@ -90,7 +94,9 @@ $this->import('mc-link create-agent');
             </div>
         </mc-link>
         <div class="panel--entities-summary__card--create">
-            <button class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
+            <create-project #default="{modal}">
+                <button @click="modal.open()" class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
+            </create-project>
         </div>
     </div>
 
