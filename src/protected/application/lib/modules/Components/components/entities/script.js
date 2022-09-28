@@ -1,15 +1,3 @@
-/**
- * uso:
- * 
- * // omitindo o id, pega a entity do Mapas.requestedEntity
- * <entity v-slot='{entity}'>{{entity.id}} - {{entity.name}}</entity>
- * 
- * // passango o id sem select, não faz consulta na api
- * <entity v-slot='{entity}' :type='space' :id='33'>{{entity.id}}</entity>
- * 
- * // passando o id e passando um select, faz a consulta na api
- * <entity v-slot='{entity}' :type='space' :id='33' :select="id,name">{{entity.id}} - {{entity.name}}</entity>
- */
 app.component('entities', {
     template: $TEMPLATES['entities'],
 
@@ -21,9 +9,10 @@ app.component('entities', {
         }
     },
 
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name];
-        return { hasSlot }
+    setup() { 
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('entities')
+        return { text }
     },
 
     created() {
@@ -43,12 +32,17 @@ app.component('entities', {
             this.query['@order'] = this.order; 
         }
 
+        if (this.limit) {
+            this.query['@limit'] = this.limit;
+            this.query['@page'] = this.page;
+        }
+
+        this.entities.query = this.query;
         this.entities.metadata = {};
         this.entities.loading = false;
         this.entities.loadingMore = false;
         this.entities.refresh = (debounce) => this.refresh(debounce);
         this.entities.loadMore = () => this.loadMore();
-        this.entities.query = this.query;
         this.entities.stringifiedQuery = JSON.stringify(this.entities.query)
         let watchTimeout = null;
         if (this.watchQuery) {
@@ -71,20 +65,25 @@ app.component('entities', {
 
     props: {
         name: String,
-        ids: Array,
         type: {
             type: String,
             required: true
         },
         select: String,
+        ids: Array,
         query: {
             type: Object,
-            default: () => ({})
+            default: {}
         },
         limit: Number,
-        order: String,
-        scope: String,
-        watchQuery: Boolean,
+        order: {
+            type: String,
+            default: 'id ASC'
+        },
+        watchQuery: {
+            type: Boolean,
+            default: false
+        },
         watchDebounce: {
             type: Number,
             default: 500
@@ -93,20 +92,14 @@ app.component('entities', {
             type: String,
             default: 'find'
         },
-        rawProcessor: {
-            type: Function,
-            required: false
-        }
+        rawProcessor: Function,
+        scope: String,
     },
     
     methods: {
         getDataFromApi() {
             let query = {...this.query};
 
-            if (this.limit) {
-                query['@limit'] = this.limit;
-                query['@page'] = this.page;
-            }
             const options = {list: this.entities};
             if (this.rawProcessor) {
                 options.raw = true;
