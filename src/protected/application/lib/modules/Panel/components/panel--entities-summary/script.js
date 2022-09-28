@@ -24,7 +24,6 @@ app.component('panel--entities-summary', {
     },
 
     data() {
-        console.log($MAPAS.config);
         return {
             spaces: $MAPAS.config.entitySummary.spaces,
             agents: $MAPAS.config.entitySummary.agents,
