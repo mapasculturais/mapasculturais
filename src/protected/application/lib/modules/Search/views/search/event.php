@@ -17,7 +17,6 @@ $this->breadcramb = [
 ?>
 <search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[]}">
     <template #create-button>
-        <!-- @TODO: Criação e aplicação do componente <create-event> -->
             <create-event></create-event>
     </template>
     <template #default="{pseudoQuery}">
