@@ -16,13 +16,14 @@ app.component('panel--last-edited', {
 
     async created(){
 
+        const agentAPI = new API('agent');
         const spaceAPI = new API('space');
+        const eventAPI = new API('event');
         const projectAPI = new API('project');
-        //const agentAPI = new API('agent');
+        const opportunityAPI = new API('opportunity');
         
         const query = this.query;
-
-        query['@select'] = 'id,name,shortDescription,location,terms,seals,singleUrl,updateTimestamp,type';
+        query['@select'] = 'id,name,shortDescription,singleUrl,updateTimestamp,type';
         query['@order'] = 'updateTimestamp DESC';
         query['user'] = `EQ(@me)`;
 
@@ -31,21 +32,26 @@ app.component('panel--last-edited', {
         }
 
         this.spaces = await spaceAPI.find(query);
+        this.agents = await agentAPI.find(query);
+        this.events = await eventAPI.find(query);
         this.projects = await projectAPI.find(query);
+        this.opportunities = await opportunityAPI.find(query);
     },
     
     data() {
         return{
-            projects: [],
+            query: {},
+            agents: [],
             spaces: [],
+            events: [],
+            projects: [],
+            opportunities: [],
 
             // carousel settings
             settings: {
                 itemsToShow: 2.2,
                 snapAlign: 'center',
             },
-
-            // breakpoints are mobile first
             breakpoints: {
                 1200: {
                     itemsToShow: 2.2,
@@ -85,29 +91,35 @@ app.component('panel--last-edited', {
 
     computed: {
         entities() {
-            const entities = this.spaces.concat(this.projects).sort((a,b) => {
-                if (a.name > b.name) {
-                    return 1;
-                } else if (a.name == b.name) {
-                    return 0
-                } else {
-                    return -1;
-                }
-            });
-            return entities;
+            
+            if (this.projects.metadata && this.spaces.metadata && this.agents.metadata && this.opportunities.metadata && this.events.metadata) {
+
+                const entities = this.projects.concat(this.spaces, this.agents, this.opportunities, this.events)
+                
+                entities.sort((a,b) => {
+                    
+                    let dateA = a.updateTimestamp._date ?? a.updateTimestamp.date;
+                    let dateB = b.updateTimestamp._date ?? b.updateTimestamp.date;
+
+                    if (Date.parse(dateA.toISOString()) > Date.parse(dateB.toISOString())) {
+                        return -1;
+                    } else if (Date.parse(dateA.toISOString()) == Date.parse(dateB.toISOString())) {
+                        return 0
+                    } else {
+                        return 1;
+                    }
+                    
+                });
+    
+                return entities.slice(0, this.limit);;
+            }
         }
     },
     
     props: {
         limit: {
             type: Number,
-            default: 15
-        },
-        query: {
-            type: Object,
-            default: {}
+            default: 5
         }
     },
-    
-    methods: {},
 });

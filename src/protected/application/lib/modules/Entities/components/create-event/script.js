@@ -56,7 +56,6 @@ app.component('create-event' , {
         },
         createEntity() {
             this.entity = Vue.ref(new Entity('event'));
-            console.log(this.entity);
             this.entity.type = 1;
             this.entity.terms = {linguagem: []}
 
@@ -67,18 +66,21 @@ app.component('create-event' , {
         },
         createPublic(modal) {
             //lançar dois eventos
+            
             this.entity.status = 1;
-            this.save(modal);
+                this.save(modal);
         },
         save (modal) {
             modal.loading(true);
             this.entity.save().then((response) => {
                 modal.close();
                 this.$emit('create',response)
+
             }).catch((e) => {
                 modal.loading(false);
             });
         },
+
 
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar

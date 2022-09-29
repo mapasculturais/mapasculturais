@@ -1,7 +1,10 @@
 <?php
 use MapasCulturais\i;
 
-$this->import('panel--entity-actions mc-icon');
+$this->import('
+    mc-icon
+    panel--entity-actions 
+');
 ?>
 <article class="panel__row panel-entity-card">
     <header class="panel-entity-card__header">
