@@ -141,6 +141,7 @@ abstract class Theme extends \Slim\View {
                 "space"         => Entities\Space::getPropertiesMetadata(),
                 "project"       => Entities\Project::getPropertiesMetadata(),
                 "opportunity"   => Entities\Opportunity::getPropertiesMetadata(),
+                "registration"   => Entities\Registration::getPropertiesMetadata(),
                 "subsite"       => Entities\Subsite::getPropertiesMetadata(),
                 "seal"          => Entities\Seal::getPropertiesMetadata()
             ];
