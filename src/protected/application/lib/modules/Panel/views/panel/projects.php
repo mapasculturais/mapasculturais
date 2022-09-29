@@ -1,7 +1,7 @@
 <?php
 use MapasCulturais\i;
 
-$this->import('panel--entity-tabs panel--entity-card mc-icon');
+$this->import('panel--entity-tabs panel--entity-card mc-icon create-project');
 ?>
 
 <div class="panel-page">
@@ -19,7 +19,13 @@ $this->import('panel--entity-tabs panel--entity-card mc-icon');
             <?= i::_e('Nesta seção você pode adicionar e gerenciar seus projetos') ?>
         </p>
         <div class="panel-page__header-actions">
-            <button class="button button--primary button--icon"><mc-icon name="add"></mc-icon> <?= i::_e('Criar projeto') ?> </button>
+
+            <create-project  :editable="true" #default="{modal}"  >
+                <button @click="modal.open()" class="button button--primary button--icon">
+                    <mc-icon name="add"></mc-icon>
+                    <span><?=i::__('Criar Projeto')?></span>
+                </button>
+            </create-project>
         </div>
     </header>
     
