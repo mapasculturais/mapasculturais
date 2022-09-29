@@ -24,7 +24,23 @@ $this->import('
         <slot :modal="modal"></slot>
     </template>
     <template #actions="modal">
-        <button class="button button--primary" @click="createPublic(modal)"><?php i::_e('Criar e Publicar')?></button>
+        
+        <modal title="Evento Criado">
+            <template #default="modalSecond">
+                <div class="label-modal">
+                    <label><?php i::_e('Você pode competar as informações do seu evento ')?><br><?php i::_e('agora ou deixar para depois')?></label>
+                </div>
+            </template>
+            <template #button="modalSecond">
+                <button class="button button--primary" @click="modalSecond.open(); createPublic(modal)"><?php i::_e('Criar e Publicar')?></button>
+            </template>
+            <template #actions="modalSecond">
+                <div class="create-modal__fields">
+                    <a :href="entity.editUrl" class="button button--primary"><?php i::_e('Ver Evento')?></a>
+                </div>
+            </template>
+
+        </modal>
         <button class="button button--solid-dark" @click="createDraft(modal)"><?php i::_e('Criar em Rascunho')?></button>
         <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar')?></button>
     </template>
