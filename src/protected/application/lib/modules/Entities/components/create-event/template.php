@@ -2,6 +2,7 @@
 use MapasCulturais\i;
  
 $this->import('
+    create-occurrence
     entity-field 
     entity-terms
     modal 
@@ -43,5 +44,6 @@ $this->import('
         </modal>
         <button class="button button--solid-dark" @click="createDraft(modal)"><?php i::_e('Criar em Rascunho')?></button>
         <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar')?></button>
+        <create-occurrence></create-occurrence>
     </template>
 </modal>
