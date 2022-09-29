@@ -56,23 +56,39 @@
                         padding: size(16);
                         width: 100%;
                         display: flex;
+                        gap: size(16);
                         flex-direction: column;
                         justify-content: space-between;
                         margin: 0 size(12);
 
                         &__header--picture {
+                            width: size(48);
+                            height: size(48);
+                            margin-right: size(8);
+
                             img {
                                 width: size(48);
                                 height: size(48);
-                                margin-right: size(8);
                             }
                         } 
+
+                        &__header--info {
+                            &-title {
+                                font-size: size(16);
+                                line-height: size(22);
+                            }
+
+                            &-subtitle {
+                                display: none;
+                            }
+                        }
 
                         &__main {
                             font-weight: 400;
                             font-size: size(12);
                             line-height: size(16);
                             text-align: left;
+                            padding: 0;
                         }
                     }
                 }
@@ -85,11 +101,15 @@
                         min-width: size(137);
                         padding: size(6) size(19);
                         display: block;
+                        font-size: size(12);
                         text-align: center;
                         line-height: size(18);
+                        white-space: nowrap;
 
                         .iconify {
                             float: left;
+                            font-size: size(16);
+                            margin-right: size(8);
                         }
                     }
                 }
