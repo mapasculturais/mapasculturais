@@ -1,7 +1,9 @@
 <?php
 use MapasCulturais\i;
 
-$this->import('entity-card');
+$this->import('
+    entity-card
+');
 ?>
 
 <div class="panel--last-edited">
@@ -17,27 +19,21 @@ $this->import('entity-card');
             <carousel :settings="settings" :breakpoints="breakpoints">
                 <slide v-for="entity in entities" :key="entity.id">
 
-                    <panel--entity-card :key="entity.id" :entity="entity">
+                    <panel--entity-card :key="entity.id" :entity="entity" class="card">
 
                         <template #title="{entity}">
                             <slot name="card-title" :entity="entity"></slot>
                         </template>
 
                         <template #header-actions="{entity}">
-                            <span v-if="entity.__objectType=='space'" :class="[entity.__objectType+'__background', 'card-actions--tag']">
-                                <mc-icon :name="entity.__objectType"></mc-icon>
-                                <?= i::_e('Espaço') ?>
-                            </span>
-                            <span v-if="entity.__objectType=='project'" :class="[entity.__objectType+'__background', 'card-actions--tag']">
-                                <mc-icon :name="entity.__objectType"></mc-icon>
-                                <?= i::_e('Projeto') ?>
-                            </span>
-                        </template>
-
-                        <template #subtitle="{entity}">
-                            <span v-if="entity.type">
-                                <?=i::__('Tipo: ')?> <strong>{{ entity.type.name }}</strong>
-                            </span>
+                            <div :class="[entity.__objectType+'__background', 'card-actions--tag']">
+                                <mc-icon :name="entity.__objectType"></mc-icon>    
+                                <span v-if="entity.__objectType=='agent'"> <?= i::_e('Agente') ?> </span>
+                                <span v-if="entity.__objectType=='space'"> <?= i::_e('Espaço') ?> </span>
+                                <span v-if="entity.__objectType=='event'"> <?= i::_e('Evento') ?> </span>
+                                <span v-if="entity.__objectType=='project'"> <?= i::_e('Projeto') ?> </span>
+                                <span v-if="entity.__objectType=='opportunity'"> <?= i::_e('Oportunidade') ?> </span>
+                            </div>
                         </template>
 
                         <template #default="{entity}">
