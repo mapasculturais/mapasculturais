@@ -56,7 +56,6 @@ app.component('create-project' , {
         },
         createEntity() {
             this.entity = Vue.ref(new Entity('project'));
-            console.log(this.entity);
             this.entity.type = 1;
             this.entity.terms = {area: []}
 
@@ -73,8 +72,9 @@ app.component('create-project' , {
         save (modal) {
             modal.loading(true);
             this.entity.save().then((response) => {
-                modal.close();
-                this.$emit('create',response)
+                this.$emit('create',response);
+                modal.loading(false);
+
             }).catch((e) => {
                 modal.loading(false);
             });
