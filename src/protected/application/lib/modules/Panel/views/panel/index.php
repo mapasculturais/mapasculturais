@@ -2,10 +2,12 @@
 use MapasCulturais\i;
 
 $this->import('
-    panel--entity-tabs 
     panel--entities-summary 
-    panel--open-opportunities 
-    panel--last-edited');
+    panel--entity-tabs 
+    panel--last-edited
+    panel--last-registrations
+    panel--open-opportunities
+'); 
 ?>
 
 <div class="panel-home">
@@ -43,6 +45,8 @@ $this->import('
                 <panel--entities-summary></panel--entities-summary>
 
                 <panel--open-opportunities></panel--open-opportunities>
+
+                <panel--last-registrations></panel--last-registrations>
 
                 <panel--last-edited></panel--last-edited>
 
