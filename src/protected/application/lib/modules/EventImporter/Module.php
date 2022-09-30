@@ -38,9 +38,9 @@ class Module extends \MapasCulturais\Module
         $app->registerFileGroup(
             'agent',
             new Definitions\FileGroup(
-                'event-import-file', // nome do grupo
-                ['text/csv','application/zip'], // validação do mime type
-                'O arquivo não e valido' // mensagem de erro quando a validação não passa
+                'event-import-file',
+                ['text/csv','application/zip'],
+                'O arquivo não e valido'
             )
         );
        
