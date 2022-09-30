@@ -23,14 +23,15 @@
      </template>
 
      <template v-if="entity?.id" #default>
-        <div class="">
-        <h4><?php i::_e('Evento Criado') ?><br></h4>
-        <label><?php i::_e('Você pode completar as informações do seu evento agora ou pode deixar para depois. ');?> </label>
+        <div>
+            <h4><?php i::_e('Evento Criado!') ?><br></h4>
+            <label><?php i::_e('Você pode completar as informações do seu evento agora ou pode deixar para depois. '); ?> </label>
 
         </div>
-        <entity-occurrence-list></entity-occurrence-list>
+        <hr><br>
+         <entity-occurrence-list></entity-occurrence-list>
      </template>
-     
+
      <template #button="modal">
          <slot :modal="modal"></slot>
      </template>
@@ -40,10 +41,10 @@
          <button class="button button--solid-dark" @click="createDraft(modal)"><?php i::_e('Criar em Rascunho') ?></button>
          <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar') ?></button>
      </template>
-    
+
      <template v-if="entity?.id" #actions="modal">
-        <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Ver Depois')?></button>
-        <mc-link :entity="entity" class="button button--text button--text-del">Acessar</mc-link>
-        <mc-link :entity="entity" route='edit' class="button button--text button--text-del">Editar</mc-link>
-    </template>
+         <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Ver Depois') ?></button>
+         <mc-link :entity="entity" class="button button--text button--text-del"><?php i::_e('Acessar'); ?></mc-link>
+         <mc-link :entity="entity" route='edit' class="button button--text button--text-del"><?php i::_e('Editar'); ?></mc-link>
+     </template>
  </modal>
