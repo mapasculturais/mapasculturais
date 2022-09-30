@@ -29,7 +29,7 @@ $this->import('
                         </div>    
                     </div>
                     <div class="card__action">
-                        <a class="button button--md button--primary button--icon-right" target="__blank" :href="entity.singleUrl"> <?= i::_e('Acessar e acompanhar') ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
+                        <a class="button button--md button--large button--primary button--icon" target="__blank" :href="entity.singleUrl"> <?= i::_e('Acessar e acompanhar') ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
                     </div>
                 </div>
 
