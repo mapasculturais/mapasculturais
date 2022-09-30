@@ -4,6 +4,7 @@ namespace MapasCulturais;
 
 use Doctrine\ORM\Query;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Types\GeoPoint;
 
 class ApiQuery {
@@ -453,7 +454,7 @@ class ApiQuery {
         
         // para quando se está consultando as oportunidades de uma outra entidade, por exemplo:
         // /api/agent/find?@select=id,name,ownedOpportunities
-        if(strpos($class, 'MapasCulturais\Entities\Opportunity') === 0 && $this->parentQuery){
+        if($class != Opportunity::class && strpos($class, Opportunity::class) === 0 && $this->parentQuery){
             $parent_class = $this->parentQuery->entityClassName;
             if($parent_class != 'MapasCulturais\Entities\Opportunity') {
                 $class = $parent_class::getOpportunityClassName();
