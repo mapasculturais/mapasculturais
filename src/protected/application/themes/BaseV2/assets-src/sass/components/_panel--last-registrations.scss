@@ -12,6 +12,37 @@
         }
 
         &-cards {
+            .carousel {
+                .actions {
+                    display: flex;
+                    gap: size(18);
+                    position: absolute;
+                    right: 0;
+                    top: size(-50);
+
+                    button.carousel__prev {
+                        background: url(https://api.iconify.design/akar-icons/arrow-left.svg?color=%230074C1) no-repeat center center / size(15);
+                    }
+
+                    button.carousel__next {
+                        background: url(https://api.iconify.design/akar-icons/arrow-right.svg?color=%230074C1) no-repeat center center / size(15);
+                    }
+
+                    button.carousel__prev,
+                    button.carousel__next {
+                        background-color: var(--mc-high-500);
+                        border: none;
+                        border-radius: var(--mc-border-radius-pill);
+                        height: size(40);
+                        width: size(40);
+                    }
+
+                    .carousel__icon {
+                        display: none;
+                    }
+                }
+            }
+            
             .card {
                 align-items: flex-start;
                 background-color: var(--mc-high-500);
