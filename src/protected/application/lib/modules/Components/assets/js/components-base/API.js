@@ -67,8 +67,9 @@ globalThis.apiInstances = {};
 
 class API {
     constructor(objectType, scope, fetchOptions) {
-        if (apiInstances[objectType]) {
-            return apiInstances[objectType];
+        const instanceId = `${objectType}:${scope}`;
+        if (apiInstances[instanceId]) {
+            return apiInstances[instanceId];
         } else {
             this.scope = scope;
             this.cache = useEntitiesCache();
@@ -79,7 +80,7 @@ class API {
                 ...fetchOptions
             };
 
-            apiInstances[objectType] = this;
+            apiInstances[instanceId] = this;
         }
     }
 
@@ -281,7 +282,7 @@ class API {
             this.cache.store(entity, this.scope);
             return entity;
         }
-    }
+    }   
 
     getEntityDescription(filter) {
         const description = $DESCRIPTIONS[this.objectType];
