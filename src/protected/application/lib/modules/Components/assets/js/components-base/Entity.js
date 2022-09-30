@@ -15,7 +15,7 @@ class Entity {
 
     }
 
-    populate(obj, preserveValues) {
+    populate(obj, preserveValues = true) {
         const __properties = this.$PROPERTIES;
         const __relations = this.$RELATIONS;
         const defaultProperties = ['terms', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
@@ -36,7 +36,7 @@ class Entity {
                 val = this[prop];
             }
 
-            if (definition.type == 'datetime' && val) {
+            if (definition.type == 'datetime' && val && !(val instanceof McDate)) {
                 val = new McDate(val.date);
             }
 
