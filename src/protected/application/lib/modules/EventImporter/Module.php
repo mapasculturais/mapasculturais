@@ -11,6 +11,7 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
+        $app->view->enqueueStyle('app','assets-file','css/eventimporter.css');
         //Inseri parte para upload na sidbar direita
         $app->hook('template(panel.events.settings-nav):begin', function() use($app) {
             /** @var Theme $this */
