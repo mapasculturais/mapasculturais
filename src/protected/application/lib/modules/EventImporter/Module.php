@@ -28,6 +28,13 @@ class Module extends \MapasCulturais\Module
         //Registro do controloador
         $app->registerController('eventimporter', Controller::class);
 
+        $this->registerAgentMetadata('event_importer_processed_file', [
+            'label' => 'Arquivo de processamento de importação',
+            'type' => 'json',
+            'private' => true,
+            'default_value' => '{}'
+        ]);
+        
         $app->registerFileGroup(
             'agent',
             new Definitions\FileGroup(
