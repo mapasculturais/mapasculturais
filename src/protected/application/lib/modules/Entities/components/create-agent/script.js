@@ -71,8 +71,9 @@ app.component('create-agent' , {
         save (modal) {
             modal.loading(true);
             this.entity.save().then((response) => {
-                modal.close();
-                this.$emit('create',response)
+                this.$emit('create',response);
+                modal.loading(false);
+
             }).catch((e) => {
                 modal.loading(false);
             });
