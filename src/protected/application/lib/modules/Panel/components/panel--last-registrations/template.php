@@ -11,7 +11,7 @@ $this->import('
     <div class="panel--last-registrations__content">
 
         <div class="panel--last-registrations__content-title">
-            <label> <?php i::_e('Editados recentemente')?> </label>
+            <label> <?php i::_e('Inscrições recentes')?> </label>
         </div>
 
         <div class="panel--last-registrations__content-cards">
