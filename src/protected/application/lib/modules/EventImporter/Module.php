@@ -25,7 +25,6 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        //Registro do controloador
         $app->registerController('eventimporter', Controller::class);
 
         $this->registerAgentMetadata('event_importer_processed_file', [
@@ -43,6 +42,5 @@ class Module extends \MapasCulturais\Module
                 'O arquivo não e valido'
             )
         );
-       
     }
 }
