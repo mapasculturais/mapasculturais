@@ -93,24 +93,13 @@ app.component('panel--last-edited', {
         entities() {
             
             if (this.projects.metadata && this.spaces.metadata && this.agents.metadata && this.opportunities.metadata && this.events.metadata) {
-
-                const entities = this.projects.concat(this.spaces, this.agents, this.opportunities, this.events)
-                
+                const entities = this.projects.concat(this.spaces, this.agents, this.opportunities, this.events);                
                 entities.sort((a,b) => {
-                    
-                    let dateA = a.updateTimestamp._date ?? a.updateTimestamp.date;
-                    let dateB = b.updateTimestamp._date ?? b.updateTimestamp.date;
+                    let dateA = a.updateTimestamp.date('sql');
+                    let dateB = b.updateTimestamp.date('sql');
 
-                    if (Date.parse(dateA.toISOString()) > Date.parse(dateB.toISOString())) {
-                        return -1;
-                    } else if (Date.parse(dateA.toISOString()) == Date.parse(dateB.toISOString())) {
-                        return 0
-                    } else {
-                        return 1;
-                    }
-                    
+                    return (dateA.localeCompare(dateB));                    
                 });
-    
                 return entities.slice(0, this.limit);;
             }
         }
