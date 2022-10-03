@@ -32,7 +32,14 @@ app.component('create-space' , {
         },
         areaClasses() {
             return this.areaErrors ? 'field error' : 'field';
-        }
+        },
+        modalTitle() {
+            if(this.entity?.id){
+                return  __('espaçoCriado', 'create-space');
+            } else {
+                return  __('criarEspaço', 'create-space');
+            }
+        },
     },
     
     methods: {

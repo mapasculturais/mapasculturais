@@ -32,7 +32,14 @@ app.component('create-project' , {
         },
         areaClasses() {
             return this.areaErrors ? 'field error' : 'field';
-        }
+        },
+        modalTitle() {
+            if(this.entity?.id){
+                return  __('projetoCriado', 'create-project');
+            } else {
+                return  __('criarProjeto', 'create-project');
+            }
+        },
     },
     
     methods: {
