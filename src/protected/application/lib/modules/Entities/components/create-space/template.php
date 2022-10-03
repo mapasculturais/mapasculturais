@@ -3,10 +3,11 @@ use MapasCulturais\i;
 $this->import('
     entity-field 
     entity-terms
+    mc-link
     modal 
 '); 
 ?>
-<modal title="Criar Espaço" classes="create-modal" button-label="Criar Espaço" @open="createEntity()" @close="destroyEntity()">
+<modal :title="modalTitle" classes="create-modal" button-label="Criar Espaço" @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.id" #default>
         <label><?php i::_e('Crie um espaço com informações básicas')?><br><?php i::_e('e de forma rápida')?></label>
         <div class="create-modal__fields">
@@ -15,12 +16,11 @@ $this->import('
             <entity-terms :entity="entity" :editable="true" :classes="areaClasses" taxonomy='area' title="<?php i::esc_attr_e("Área de Atuação") ?>"></entity-terms>
             <small class="field__error" v-if="areaErrors">{{areaErrors.join(', ')}}</small>
             <entity-field :entity="entity" hide-required prop="shortDescription" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Agente")?>"></entity-field>
-
+            {{entity.id}}
         </div>
     </template>
     
     <template v-if="entity?.id" #default>
-        <h4><strong><?php i::_e('Espaço criado!')?> </strong></h4>
         <label><?php i::_e('Você pode completar as informações do seu espaço agora ou pode deixar para depois.  ');?></label>
     </template>
 
