@@ -118,7 +118,7 @@
         background-color: var(--mc-secondary-500);
         border: size(2) solid var(--mc-secondary-500);
         color: var(--mc-high-500);
-
+        
         &:hover {
             border-color: var(--mc-secondary-700);
             background-color: var(--mc-secondary-700);
@@ -135,6 +135,15 @@
                 color: var(--mc-high-500);
             }
         }
+    }
+    &--secondarylight {
+            background-color: var(--mc-danger-300);
+            border: size(2) solid var(--mc-danger-300);
+
+            &:hover {
+                border-color: var(--mc-danger-700);
+                background-color: var(--mc-danger-700);
+            }
     }
 
     &--highlight {
