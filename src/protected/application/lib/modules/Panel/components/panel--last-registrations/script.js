@@ -82,9 +82,7 @@ app.component('panel--last-registrations', {
             
             if (this.registrations.metadata) {
                 const entities = this.registrations
-                // remover registrations com a opportunity vazia
-                console.log(entities[0].opportunity.registrationFrom.hour());
-                return entities;
+                return entities.filter(x => x.opportunity != undefined);
             }
         }
     },
