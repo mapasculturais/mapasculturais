@@ -9,7 +9,7 @@
 ');
 ?>
 
- <modal title="Criar Evento" classes="create-modal" button-label="Criar Evento" @open="createEntity()" @close="destroyEntity()">
+ <modal :title="modalTitle" classes="create-modal" button-label="Criar Evento" @open="createEntity()" @close="destroyEntity()">
      <template v-if="entity && !entity.id" #default>
          <label><?php i::_e('Crie um evento com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
          <div class="create-modal__fields">
@@ -24,7 +24,6 @@
 
      <template v-if="entity?.id" #default>
         <div>
-            <h4><?php i::_e('Evento Criado!') ?><br></h4>
             <label><?php i::_e('Você pode completar as informações do seu evento agora ou pode deixar para depois. '); ?> </label>
 
         </div>
@@ -43,8 +42,8 @@
      </template>
 
      <template v-if="entity?.id" #actions="modal">
-         <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Ver Depois') ?></button>
-         <mc-link :entity="entity" class="button button--text button--text-del"><?php i::_e('Acessar'); ?></mc-link>
-         <mc-link :entity="entity" route='edit' class="button button--text button--text-del"><?php i::_e('Editar'); ?></mc-link>
+         <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Acessar'); ?></mc-link>
+         <button class="button button--secondarylight button--icon" @click="modal.close()"><?php i::_e('Completar Depois') ?></button>
+         <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações'); ?></mc-link>
      </template>
  </modal>

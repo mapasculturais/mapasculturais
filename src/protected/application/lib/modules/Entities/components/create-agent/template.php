@@ -9,7 +9,7 @@ $this->import('
 '); 
 ?>
 
-<modal title="Criar Agente" classes="create-modal" button-label="Criar Agente" @open="createEntity()" @close="destroyEntity()">
+<modal :title="modalTitle" classes="create-modal" button-label="Criar Agente" @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.id" #default>
         <label><?php i::_e('Crie um agente com informações básicas')?><br><?php i::_e('e de forma rápida')?></label>
         <div class="create-modal__fields">
@@ -24,7 +24,6 @@ $this->import('
     </template>
 
     <template v-if="entity?.id" #default>
-        <h4><strong><?php i::_e('Agente criado!')?> </strong></h4>
         <label><?php i::_e('Você pode completar as informações do seu agente agora ou pode deixar para depois.  ');?></label>
     </template>
 
@@ -38,8 +37,8 @@ $this->import('
     </template>
 
     <template v-if="entity?.id" #actions="modal">
-        <mc-link :entity="entity" class="button button--text button--text-del"><?php i::_e('Ver Agente');?></mc-link>
-        <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
-        <mc-link :entity="entity" route='edit' class="button button--text button--text-del"><?php i::_e('Completar Informações')?></mc-link>
+        <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver Agente');?></mc-link>
+        <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
+        <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
     </template>
 </modal>
