@@ -81,6 +81,7 @@ app.component('create-space' , {
             modal.loading(true);
             this.entity.save().then((response) => {
                 this.$emit('create',response)
+                modal.loading(false);
             }).catch((e) => {
                 modal.loading(false);
             });
