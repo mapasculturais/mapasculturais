@@ -34,8 +34,8 @@ $this->import('
         <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar')?></button>
     </template>
     <template v-if="entity?.id" #actions="modal">
-        <mc-link :entity="entity" class="button button--text button--text-del"><?php i::_e('Ver Espaço');?></mc-link>
-        <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
-        <mc-link :entity="entity" route='edit' class="button button--text button--text-del"><?php i::_e('Completar Informações')?></mc-link>
-    </template>
+        <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver Espaço');?></mc-link>
+        <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
+        <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
+     </template>
 </modal>
