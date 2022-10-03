@@ -32,7 +32,14 @@ app.component('create-event' , {
         },
         linguagemClasses() {
             return this.linguagemErrors ? 'field error' : 'field';
-        }
+        },
+        modalTitle() {
+            if(this.entity?.id){
+                return  __('eventoCriado', 'create-event');
+            } else {
+                return  __('criarEvento', 'create-event');
+            }
+        },
     },
     
     methods: {
