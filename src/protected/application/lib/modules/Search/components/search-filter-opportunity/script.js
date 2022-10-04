@@ -19,8 +19,11 @@ app.component('search-filter-opportunity', {
     },
 
     data() {
+        console.log(Object.values($DESCRIPTIONS.opportunity.type.options));
         return {
             terms: $TAXONOMIES.area.terms,
+            types: Object.values($DESCRIPTIONS.opportunity.type.options),
+            selectedTypes: [],
         }
     },
 
@@ -49,14 +52,19 @@ app.component('search-filter-opportunity', {
             return (ano + '-' + mes + '-' + dia);
         },
         
-        openForRegistrations(event) {
-            if(event.target.checked) {
-                this.pseudoQuery['registrationFrom'] = '<= ' + this.futureDate();
-                this.pseudoQuery['registrationTo'] = '>= ' + this.actualDate();
-            } else {
-                delete this.pseudoQuery.registrationFrom;
-                delete this.pseudoQuery.registrationTo;
-            }
+        openForRegistrations() {
+            this.pseudoQuery['registrationFrom'] = '<= ' + this.futureDate();
+            this.pseudoQuery['registrationTo'] = '>= ' + this.actualDate();
+        },
+
+        closedForRegistrations() {
+            this.pseudoQuery['registrationTo'] = '< ' + this.actualDate();
+            delete this.pseudoQuery.registrationFrom;
+        },
+
+        futureRegistrations() {
+            this.pseudoQuery['registrationFrom'] = '> ' + this.actualDate();
+            delete this.pseudoQuery.registrationTo;
         }
     },
 });

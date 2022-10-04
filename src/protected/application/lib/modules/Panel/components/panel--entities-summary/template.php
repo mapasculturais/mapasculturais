@@ -13,8 +13,8 @@ $this->import('mc-link create-agent create-space create-event create-project');
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Agentes') ?> </div>
             </div>
             <div class="panel--entities-summary__card--counter">
-                <div class="panel--entities-summary__card--counter-num"> {{agents}} </div>
-                <div class="panel--entities-summary__card--counter-label"> <?= i::_e('Agentes') ?> </div>
+                <div class="panel--entities-summary__card--counter-num"> {{agents.count}} </div>
+                <div class="panel--entities-summary__card--counter-label"> {{agents.title}} </div>
             </div>
         </mc-link>
         <div class="panel--entities-summary__card--create">
@@ -34,8 +34,8 @@ $this->import('mc-link create-agent create-space create-event create-project');
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Oportunidades') ?> </div>
             </div>
             <div class="panel--entities-summary__card--counter">
-                <div class="panel--entities-summary__card--counter-num"> {{opportunities}} </div>
-                <div class="panel--entities-summary__card--counter-label"> <?= i::_e('Oportunidades') ?> </div>
+                <div class="panel--entities-summary__card--counter-num"> {{opportunities.count}} </div>
+                <div class="panel--entities-summary__card--counter-label"> {{opportunities.title}} </div>
             </div>
         </mc-link>
         <div class="panel--entities-summary__card--create">
@@ -51,8 +51,8 @@ $this->import('mc-link create-agent create-space create-event create-project');
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Eventos') ?> </div>
             </div>
             <div class="panel--entities-summary__card--counter">
-                <div class="panel--entities-summary__card--counter-num"> {{events}} </div>
-                <div class="panel--entities-summary__card--counter-label"> <?= i::_e('Eventos') ?> </div>
+                <div class="panel--entities-summary__card--counter-num"> {{events.count}} </div>
+                <div class="panel--entities-summary__card--counter-label"> {{events.title}} </div>
             </div>
         </mc-link>
         <div class="panel--entities-summary__card--create">
@@ -70,8 +70,8 @@ $this->import('mc-link create-agent create-space create-event create-project');
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Espaços') ?> </div>
             </div>
             <div class="panel--entities-summary__card--counter">
-                <div class="panel--entities-summary__card--counter-num"> {{spaces}} </div>
-                <div class="panel--entities-summary__card--counter-label"> <?= i::_e('Espaços') ?> </div>
+                <div class="panel--entities-summary__card--counter-num"> {{spaces.count}} </div>
+                <div class="panel--entities-summary__card--counter-label"> {{spaces.title}} </div>
             </div>
         </mc-link>
         <div class="panel--entities-summary__card--create">
@@ -89,8 +89,8 @@ $this->import('mc-link create-agent create-space create-event create-project');
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Projetos') ?> </div>
             </div>
             <div class="panel--entities-summary__card--counter">
-                <div class="panel--entities-summary__card--counter-num"> {{projects}} </div>
-                <div class="panel--entities-summary__card--counter-label"> <?= i::_e('Projetos') ?> </div>
+                <div class="panel--entities-summary__card--counter-num"> {{projects.count}} </div>
+                <div class="panel--entities-summary__card--counter-label"> {{projects.title}} </div>
             </div>
         </mc-link>
         <div class="panel--entities-summary__card--create">

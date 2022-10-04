@@ -32,7 +32,14 @@ app.component('create-project' , {
         },
         areaClasses() {
             return this.areaErrors ? 'field error' : 'field';
-        }
+        },
+        modalTitle() {
+            if(this.entity?.id){
+                return  __('projetoCriado', 'create-project');
+            } else {
+                return  __('criarProjeto', 'create-project');
+            }
+        },
     },
     
     methods: {
@@ -56,7 +63,6 @@ app.component('create-project' , {
         },
         createEntity() {
             this.entity = Vue.ref(new Entity('project'));
-            console.log(this.entity);
             this.entity.type = 1;
             this.entity.terms = {area: []}
 
@@ -73,8 +79,9 @@ app.component('create-project' , {
         save (modal) {
             modal.loading(true);
             this.entity.save().then((response) => {
-                modal.close();
-                this.$emit('create',response)
+                this.$emit('create',response);
+                modal.loading(false);
+
             }).catch((e) => {
                 modal.loading(false);
             });

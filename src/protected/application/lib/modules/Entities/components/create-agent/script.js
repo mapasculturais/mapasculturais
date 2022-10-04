@@ -32,7 +32,14 @@ app.component('create-agent' , {
         },
         areaClasses() {
             return this.areaErrors ? 'field error' : 'field';
-        }
+        },
+        modalTitle() {
+            if(this.entity?.id){
+                return  __('agenteCriado', 'create-agent');
+            } else {
+                return  __('criarAgente', 'create-agent');
+            }
+        },
     },
     
     methods: {
@@ -71,8 +78,9 @@ app.component('create-agent' , {
         save (modal) {
             modal.loading(true);
             this.entity.save().then((response) => {
-                modal.close();
-                this.$emit('create',response)
+                this.$emit('create',response);
+                modal.loading(false);
+
             }).catch((e) => {
                 modal.loading(false);
             });

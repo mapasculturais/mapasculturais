@@ -10,7 +10,7 @@ $this->breadcramb = [
 ];
 ?>
 
-<search page-title="<?php i::esc_attr_e('Oportunidades') ?>" entity-type="opportunity" > 
+<search page-title="<?php i::esc_attr_e('Oportunidades') ?>" entity-type="opportunity" :initial-pseudo-query="{}"> 
     <template #create-button>
         <!-- @TODO: Criação e aplicação do componente <create-opportunity> -->
         <?= i::_e('botão criar oportunidade') ?>

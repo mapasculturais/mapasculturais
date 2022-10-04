@@ -32,7 +32,14 @@ app.component('create-space' , {
         },
         areaClasses() {
             return this.areaErrors ? 'field error' : 'field';
-        }
+        },
+        modalTitle() {
+            if(this.entity?.id){
+                return  __('espaçoCriado', 'create-space');
+            } else {
+                return  __('criarEspaço', 'create-space');
+            }
+        },
     },
     
     methods: {
@@ -73,8 +80,8 @@ app.component('create-space' , {
         save (modal) {
             modal.loading(true);
             this.entity.save().then((response) => {
-                modal.close();
                 this.$emit('create',response)
+                modal.loading(false);
             }).catch((e) => {
                 modal.loading(false);
             });
