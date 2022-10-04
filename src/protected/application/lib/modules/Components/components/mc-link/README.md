@@ -30,7 +30,7 @@ $this->import('mc-link');
 <mc-link :entity="entity">Acessar</mc-link>
 
 <!-- link para página de edição da entidade -->
-<mc-link :entity="entity" route='edit'>Acessar</mc-link>
+<mc-link :entity="entity" route='edit'>Editar</mc-link>
 
 <!-- link para o painel -->
 <mc-link route="panel/index">Painel</mc-link>

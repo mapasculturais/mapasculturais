@@ -84,7 +84,7 @@ app.component('mc-multiselect', {
         },
 
         remove(item) {
-            const items = this.items;
+            const items = this.model;
             const indexOf = items.indexOf(item);
             items.splice(indexOf,1);
         },

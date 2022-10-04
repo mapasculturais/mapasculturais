@@ -32,7 +32,14 @@ app.component('create-event' , {
         },
         linguagemClasses() {
             return this.linguagemErrors ? 'field error' : 'field';
-        }
+        },
+        modalTitle() {
+            if(this.entity?.id){
+                return  __('eventoCriado', 'create-event');
+            } else {
+                return  __('criarEvento', 'create-event');
+            }
+        },
     },
     
     methods: {
@@ -73,8 +80,8 @@ app.component('create-event' , {
         save (modal) {
             modal.loading(true);
             this.entity.save().then((response) => {
-                modal.close();
                 this.$emit('create',response)
+                modal.loading(false);
 
             }).catch((e) => {
                 modal.loading(false);
