@@ -5,6 +5,7 @@ namespace MapasCulturais;
 use Doctrine\ORM\Query;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\User;
 use MapasCulturais\Types\GeoPoint;
 
 class ApiQuery {
@@ -715,8 +716,8 @@ class ApiQuery {
     public function getFindDQL(string $select = null) {
         $select = $select ?: $this->generateSelect();
         $where = $this->generateWhere();
-        $joins = $this->generateJoins();
         $order = $this->generateOrder();
+        $joins = $this->generateJoins();
 
         $dql = "SELECT\n\t{$select}\nFROM \n\t{$this->entityClassName} e {$joins}";
         if ($where) {
@@ -978,6 +979,11 @@ class ApiQuery {
                     $this->joins .= str_replace(['{ALIAS}', '{KEY}'], [$meta_alias, $key], $this->_templateJoinMetadata);
 
                     $order[] = str_replace($key, "$meta_alias.value", $prop);
+
+                // ordenação de usuário pelo nome do agente profile
+                } else if ($this->entityClassName == User::class && $key == 'name') {
+                    $this->joins .= "\n\tLEFT JOIN e.profile __profile__";
+                    $order[] = str_replace($key, "__profile__.name", $prop);
                 }
             }
             return implode(', ', $order);
