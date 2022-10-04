@@ -221,30 +221,5 @@ body.galleryOpen {
                 width: 100%;
             }
         }
-
-        /* &--buttons {
-            display: flex;
-            justify-content: space-between;
-            max-width: size(1380);
-            position: absolute;
-            width: 100%;
-            z-index: 1;
-            
-            & > * {
-                align-items: center;
-                background: rgba(0,0,0,0.2);
-                border-radius: var(--mc-border-radius-xs);
-                color: white;
-                cursor: pointer;
-                display: flex;
-                font-size: size(50);
-                justify-content: center;
-                padding: size(40) size(25);
-
-                &:hover, &:active {
-                    background: rgba(0,0,0,0.4);
-                }
-            }
-        } */
     }
 }
