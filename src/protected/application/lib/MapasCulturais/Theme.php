@@ -719,11 +719,19 @@ abstract class Theme extends \Slim\View {
         if ($entity_class_name && $entity_id) {
             $app = App::i();
             $query_params = [
-                '@select' => '*,agentRelations', 
+                '@select' => '*', 
                 'id' => "EQ({$entity_id})", 
                 'status' => 'GTE(-10)',
                 '@permissions'=>'view', 
             ];
+
+            if ($entity_class_name::usesAgentRelation()) {
+                $query_params['@select'] .= ',agentRelations';
+            }
+
+            if ($entity_class_name == Entities\User::class) {
+                $query_params['@select'] .= ',profile.{name,files.avatar,terms,seals}';
+            }
 
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
 
@@ -731,7 +739,7 @@ abstract class Theme extends \Slim\View {
             $owner_prop = ($entity_class_name == Entities\Agent::class) ? 'parent' : 'owner';
             $e = $query->findOne();
             
-            if ($owner_id = $e[$owner_prop]) {
+            if ($owner_id = $e[$owner_prop] ?? false) {
                 $owner_query_params = [
                     '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
                     'id' => "EQ({$owner_id})", 
