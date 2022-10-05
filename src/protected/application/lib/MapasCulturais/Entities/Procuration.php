@@ -30,7 +30,7 @@ class Procuration extends \MapasCulturais\Entity{
      * @ORM\Column(name="token", type="string", length=32, nullable=false)
      * @ORM\Id
      */
-    protected $_token;
+    protected $id;
 
     /**
      * @var string
@@ -82,7 +82,7 @@ class Procuration extends \MapasCulturais\Entity{
     }
     
     function getToken() {
-        return $this->_token;
+        return $this->id;
     }
 
     function isValid(){
