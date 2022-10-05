@@ -21,7 +21,8 @@
 
      <template v-if="entity?.id" #default>
          <div>
-             <label><?php i::_e('Você pode completar as informações do seu projeto agora ou pode deixar para depois. '); ?> </label>
+             <label><?php i::_e('Você pode completar as informações do seu projeto agora ou pode deixar para depois. '); ?> </label><br><br>
+            <label><?php i::_e('Para completar e publicar seu novo projeto, acesse a área <b>Rascunhos</b> em <b>Meus Projetos</b> no <b>Painel de Controle</b>.  ');?></label>
          </div>
      </template>
 
@@ -35,9 +36,14 @@
          <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar') ?></button>
      </template>
 
-     <template v-if="entity?.id" #actions="modal">
+     <template v-if="entity?.id && entity.status==1" #actions="modal">
         <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver Projeto');?></mc-link>
         <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
         <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
      </template>
+     <template v-if="entity?.id && entity.status==0" #actions="modal">
+        <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver Projeto');?></mc-link>
+        <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
+        <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
+    </template>
  </modal>
