@@ -3,11 +3,12 @@
 namespace EventImporter;
 
 use Exception;
+use MapasCulturais\i;
 use League\Csv\Reader;
 use MapasCulturais\App;
 use League\Csv\Statement;
-use MapasCulturais\Controllers\Space;
 use MapasCulturais\Entities\Event;
+use MapasCulturais\Controllers\Space;
 
 class Controller extends \MapasCulturais\Controller
 {
@@ -49,25 +50,26 @@ class Controller extends \MapasCulturais\Controller
       foreach ($data as $key => $value) {
 
          if(empty($value['NAME']) || $value['NAME'] == ''){
-            throw new Exception("A coluna nome está vazia na linha {$key}");
+            $this->error("A coluna nome está vazia na linha {$key}");
          }
 
          if(empty($value['SHORT_DESCRIPTION']) || $value['SHORT_DESCRIPTION'] == ''){
-            throw new Exception("A coluna descrição curta está vazia na linha {$key}");
+            $this->error("A coluna descrição curta está vazia na linha {$key}");
          }
 
          if(empty($value['CLASSIFICATION']) || $value['CLASSIFICATION'] == ''){
-            throw new Exception("A coluna classificação estária está vazia na linha {$key}");
+            $this->error("A coluna classificação estária está vazia na linha {$key}");
          }
+
          if (!in_array($value['CLASSIFICATION'],$moduleConfig['rating_list'])) {
             $rating_str = implode(', ',$moduleConfig['rating_list']);
-            throw new Exception("A classificação etária é inválida {$key}. As opções aceitas são --{$rating_str}--");
+            $this->error("A classificação etária é inválida {$key}. As opções aceitas são --{$rating_str}--");
          }
 
          //Validação das linguagens
          $languages = explode(',', $value['LANGUAGE']);
          if (!$languages) {
-            throw new Exception("Linguagem está vazia na linha {$key}");
+            $this->error("Linguagem está vazia na linha {$key}");
          }
 
          //Tratamento da lista
@@ -77,7 +79,7 @@ class Controller extends \MapasCulturais\Controller
             $_language = mb_strtolower($language);
 
             if (!in_array($_language, array_keys($languages_list))) {
-               throw new Exception("linguagem{$_language} não existe");
+               $this->error("linguagem{$_language} não existe");
             }
          }
 
@@ -88,18 +90,18 @@ class Controller extends \MapasCulturais\Controller
          }
 
          if (!$projects = $app->repo('Project')->findBy([$collum_proj => $value['PROJECT']])) {
-            throw new Exception("O Projeto Não está cadastrado na linha {$key}");
+            $this->error("O Projeto Não está cadastrado na linha {$key}");
          }
 
          if ($collum_proj == 'name') {
             if (count($projects) > 1){
-               throw new Exception("Existem mais de um projeto com o nome {$value['PROJECT']}, Para proseguir informe o ID do projeto que quer associar ao evento");
+               $this->error("Existem mais de um projeto com o nome {$value['PROJECT']}, Para proseguir informe o ID do projeto que quer associar ao evento");
             }
          }
 
          //Validação do agente responsavel 
          if (!$agent = $app->repo('Agent')->find($value['OWNER'])) {
-            throw new Exception("O a gente não esta cadastrado");
+            $this->error("O a gente não esta cadastrado");
          }
 
          //Validação do espaço
@@ -109,22 +111,22 @@ class Controller extends \MapasCulturais\Controller
          }
 
          if (!$spaces = $app->repo('Space')->findBy([$collum_spa => $value['SPACE']])) {
-            throw new Exception("O espaço não esta cadastrado");
+            $this->error("O espaço não esta cadastrado");
          }
 
          if ($collum_spa == 'name') {
             if (count($spaces) > 1) {
-               throw new Exception("Existem mais de um espaço com o nome {$value['SPACE']}, Para proseguir informe o ID do espaço que quer associar ao evento");
+               $this->error("Existem mais de um espaço com o nome {$value['SPACE']}, Para proseguir informe o ID do espaço que quer associar ao evento");
             }
          }
 
          //Verificação da frequencia
          if(empty($value['FREQUENCY']) || $value['FREQUENCY'] == ''){
-            throw new Exception("A coluna Frequência está vazia na linha {$key}");
+            $this->error("A coluna Frequência está vazia na linha {$key}");
          }
          if (!in_array($value['FREQUENCY'],$moduleConfig['frequence_list'])) {
             $frequence_str = implode(', ',$moduleConfig['frequence_list']);
-            throw new Exception("A Frequência é inválida na linha {$key}. As opções aceitas são --{$frequence_str}-- ");
+            $this->error("A Frequência é inválida na linha {$key}. As opções aceitas são --{$frequence_str}-- ");
          }
          
          //criação do enveto
@@ -137,5 +139,10 @@ class Controller extends \MapasCulturais\Controller
          $event->projectId = $projects[0]->id;
          $event->save(true);
       }
-}
+   }
+
+   public function error($message)
+   {
+      throw new Exception(i::__($message));
+   }
 }
