@@ -116,29 +116,7 @@ MapasCulturais.EventOccurrenceManager = {
                     }
                 } else {
                     $form.find('.danger').not('.alert').remove();
-                    if(response.error){
-                        var $element = null,
-                            message;
-
-                        for(i in response.data) {
-                            message = response.data[i].join(', ').toLowerCase();
-
-                            if(i == 'space') $element = $form.find('.js-space');
-                            else $element = $form.find('[name="'+i+'"]').parents('.grupo-de-campos').find('label');
-                            // $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="'+labels['Erro:']+message+'"/>');
-                            $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="' + labels['Erro'] + ':' + message + '"/>');
-                            //$form.find('[name="'+i+'"]')
-                        }
-                        $form.parent().scrollTop(0);
-                        $form.find('div.alert.danger').html(labels['correctErrors'])
-                            .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
-                            .delay(MapasCulturais.Messages.delayToFadeOut)
-                            .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
-
-                        return;
-
-                    }
-
+                    
                     response.pending = xhr.status === 202;
 
                     var isEditing = $form.data('action') == 'edit';
@@ -179,12 +157,35 @@ MapasCulturais.EventOccurrenceManager = {
             },
             error: function(xhr, textStatus, errorThrown, $form) {
                 $form.parent().scrollTop(0);
-
+                
                 if(xhr.status === 403){
                     $form.find('div.alert.danger').html(labels['notAllowed'])
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
+                        
+                }else if(xhr.responseJSON.error && xhr.responseJSON.data){
+                    var response = xhr.responseJSON;
+                    var $element = null,
+                        message;
+
+                    for(i in response.data) {
+                        message = response.data[i].join(', ').toLowerCase();
+
+                        if(i == 'space') $element = $form.find('.js-space');
+                        else $element = $form.find('[name="'+i+'"]').parents('.grupo-de-campos').find('label');
+                        // $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="'+labels['Erro:']+message+'"/>');
+                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="' + labels['Erro'] + ':' + message + '"/>');
+                        //$form.find('[name="'+i+'"]')
+                    }
+                    $form.parent().scrollTop(0);
+                    $form.find('div.alert.danger').html(labels['correctErrors'])
+                        .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
+                        .delay(MapasCulturais.Messages.delayToFadeOut)
+                        .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
+
+                    return;
+
                 }else{
                     $form.find('div.alert.danger').html(labels['unexpectedError'])
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
