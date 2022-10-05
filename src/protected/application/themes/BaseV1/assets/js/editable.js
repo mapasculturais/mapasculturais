@@ -727,10 +727,13 @@ MapasCulturais.Editables = {
                         }
                     }
                 },
-                success: function(response){
-                    $('.js-pending-project, .js-pending-parent').hide();
-                    $('.js-response-error').remove();
-                    if(response.error){
+                error : function(response){
+                    if(response.status === 401){
+                        MapasCulturais.auth.require(function(){
+                            $submitButton.click();
+                        });
+                    }else if(response.responseJSON.error && response.responseJSON.data){
+                        response = response.responseJSON;
                         var $field = null;
                         var errors = '';
                         var unknow_errors = [];
@@ -785,9 +788,15 @@ MapasCulturais.Editables = {
                                 MapasCulturais.Messages.error(unknow_errors[i]);
                             }
                         }
-
-                    }else{
-
+                    } else {
+                        MapasCulturais.Messages.error(labels['unexpectedError']);
+                    }
+                    $submitButton.data('clicked',false);
+                },
+                success: function(response){
+                    $('.js-pending-project, .js-pending-parent').hide();
+                    $('.js-response-error').remove();
+                    if(!response.error){
                         $('body').trigger('entity-saved', response);
 
                         $('.js-geo-division-address').each(function(){
@@ -830,16 +839,6 @@ MapasCulturais.Editables = {
                         
                     }
                     $submitButton.data('clicked',false);
-                },
-                error : function(response){
-                    $submitButton.data('clicked',false);
-                    if(response.status === 401)
-                        MapasCulturais.auth.require(function(){
-                            $submitButton.click();
-                        });
-                    else{
-                        MapasCulturais.Messages.error(labels['unexpectedError']);
-                    }
                 }
             });
         });
