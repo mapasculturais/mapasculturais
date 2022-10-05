@@ -44,7 +44,6 @@ app.component('create-agent' , {
                 return  __('criarAgente', 'create-agent');
 
             }
-                
         },
     },
     

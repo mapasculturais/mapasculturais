@@ -35,9 +35,14 @@ app.component('create-event' , {
         },
         modalTitle() {
             if(this.entity?.id){
-                return  __('eventoCriado', 'create-event');
+                if(this.entity.status==1){
+                    return  __('eventoCriado', 'create-event');
+                }else {
+                    return  __('criarRascunho', 'create-event');
+                }
             } else {
                 return  __('criarEvento', 'create-event');
+
             }
         },
     },
