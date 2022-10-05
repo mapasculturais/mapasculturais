@@ -7,6 +7,21 @@ use MapasCulturais\Definitions;
 
 class Module extends \MapasCulturais\Module
 {
+
+    function __construct($config = []) 
+    {
+        $app = App::i();
+
+        $config += [
+            'frequence_list' => $app->config['eventimporter.frequence_list'],
+            'rating_list' => $app->config['eventimporter.rating_list'],
+            'days_list_positive' => $app->config['eventimporter.days_list_positive'],
+        ];
+
+        parent::__construct($config);
+
+    }
+
     function _init()
     {
         $app = App::i();
