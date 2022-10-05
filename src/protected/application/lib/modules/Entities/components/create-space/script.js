@@ -35,9 +35,14 @@ app.component('create-space' , {
         },
         modalTitle() {
             if(this.entity?.id){
-                return  __('espaçoCriado', 'create-space');
-            } else {
+                if(this.entity.status==1){
+                    return  __('espaçoCriado', 'create-space');
+                }else {
+                    return  __('criarRascunho', 'create-space');
+                }
+            }else {
                 return  __('criarEspaço', 'create-space');
+
             }
         },
     },
