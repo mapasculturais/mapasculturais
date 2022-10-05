@@ -2325,8 +2325,7 @@ class Theme extends MapasCulturais\Theme {
     	$app = App::i();
     	if (!$app->user->is('guest')) {
     		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
-
-        	if($app->user->is('admin') || $this->jsObject['allowedSeals'] > 0) {
+        	if($app->user->is('admin') || count($this->jsObject['allowedSeals']) > 0) {
         		$this->jsObject['canRelateSeal'] = true;
         	} else {
         		$this->jsObject['canRelateSeal'] = false;
