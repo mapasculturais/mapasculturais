@@ -2,6 +2,7 @@
 
 namespace EventImporter;
 
+use DateTime;
 use Exception;
 use MapasCulturais\i;
 use League\Csv\Reader;
@@ -124,6 +125,7 @@ class Controller extends \MapasCulturais\Controller
          if(empty($value['FREQUENCY']) || $value['FREQUENCY'] == ''){
             $this->error("A coluna Frequência está vazia na linha {$key}");
          }
+
          if (!in_array($value['FREQUENCY'],$moduleConfig['frequence_list'])) {
             $frequence_str = implode(', ',$moduleConfig['frequence_list']);
             $this->error("A Frequência é inválida na linha {$key}. As opções aceitas são --{$frequence_str}-- ");
@@ -138,6 +140,99 @@ class Controller extends \MapasCulturais\Controller
          $event->terms['linguagem'] = $languages;
          $event->projectId = $projects[0]->id;
          $event->save(true);
+
+         $this->createOcurrency($event, $value, $key);
+
+      }
+   }
+
+
+   public function createOcurrency($event, $value, $key)
+   {
+      $app = App::i();
+
+      $starts_at = new DateTime($value['STARTS_AT']);
+      $ends_at = new DateTime($value['STARTS_AT']);
+
+      if(empty($value['STARTS_AT']) || $value['STARTS_AT'] == ''){
+         $this->error("A coluna Hora inícial está vazia na linha {$key}");
+      }   
+
+      if($starts_at->format("H:i") != $value['STARTS_AT']){
+         $this->error("A coluna Hora final é inválida na linha {$key}");
+      }
+
+      if(empty($value['ENDS_AT']) || $value['ENDS_AT'] == ''){
+         $this->error("A coluna Hora final está vazia na linha {$key}");
+      }
+
+      if($ends_at->format("H:i") != $value['ENDS_AT']){
+         $this->error("A coluna Hora final é inválida na linha {$key}");
+      }
+
+      switch (mb_strtolower($value['FREQUENCY'])) {
+         case i::__('diariamente'):
+         case i::__('todos os dias'):
+         case i::__('diario'):
+         case i::__('daily'):
+            $result = function ($value, $key, $app) {
+                $starts_on = new DateTime($value['STARTS_ON']);
+                $ends_on = new DateTime($value['ENDS_ON']);
+
+                if (empty($value['STARTS_ON']) || $value['STARTS_ON'] == "") {
+                    $this->error("A Coluna Data inícial Está vazia na linha {$key}");
+                }
+
+                if (empty($value['ENDS_ON']) || $value['ENDS_ON'] == "") {
+                    $this->error("A Coluna Data Final Está vazia na linha {$key}");
+                }
+
+                if ($starts_on->format("d/m/Y") != $value['STARTS_ON']) {
+                    $this->error("O formato da Data inícial é inválido na linha {$key}. O formato esperado é YYYY/MM/DD");
+                }
+
+                if ($ends_on->format("d/m/Y") != $value['ENDS_ON']) {
+                    $this->error("O formato da Data Final é inválido na linha {$key}. O formato esperado é YYYY/MM/DD");
+                }
+
+                return ['starts_on' => $starts_on, 'ends_on' => $ends_on];
+            };
+            break;
+         case i::__('semanal'):
+         case i::__('toda semana'):
+         case i::__('weekly'):
+            $result = function ($value, $key, $app) {
+               $moduleConfig = $app->modules['EventImporter']->config;
+
+               $week_days = $moduleConfig['week_days'];
+               $days_list_positive = $moduleConfig['days_list_positive'];
+
+               $days = [];
+               foreach ($week_days as $day) {
+                  if (in_array($value[$day], $days_list_positive)) {
+                     $days[] = $day;
+                  }
+               }
+
+               return $days;
+            };
+            break;
+         case i::__('uma vez'):
+         case i::__('once'):
+            $result = function ($value, $key, $app) {
+               $starts_on = new DateTime($value['STARTS_ON']);
+
+               if (empty($value['STARTS_ON']) || $value['STARTS_ON'] == "") {
+                  $this->error("A Coluna Data inícial Está vazia na linha {$key}");
+               }
+
+               if ($starts_on->format("d/m/Y") != $value['STARTS_ON']) {
+                  $this->error("O formato da Data inícial é inválido na linha {$key}. O formato esperado é YYY1Y/MM/DD");
+               }
+
+               return ['starts_on' => $starts_on];
+            };
+            break;
       }
    }
 
@@ -145,4 +240,5 @@ class Controller extends \MapasCulturais\Controller
    {
       throw new Exception(i::__($message));
    }
+  
 }
