@@ -40,6 +40,7 @@ body.galleryOpen {
 
             &-img {
                 aspect-ratio: 1.34/1;
+                border: var(--mc-border-hairline) var(--mc-gray-100);
                 border-radius: var(--mc-border-radius-xs);
                 cursor: pointer;
                 display: flex;
@@ -47,6 +48,10 @@ body.galleryOpen {
                 justify-content: center;
                 overflow: hidden;
                 width: size(139);
+
+                img {
+                    width: 100%;
+                }
             }
 
             &-label {
@@ -150,6 +155,47 @@ body.galleryOpen {
             p {
                 margin: size(20) size(50);
             }
+
+            .btnPrev,
+            .btnNext,
+            .btnClose {
+                align-items: center;
+                background: rgba(0,0,0,0.2);
+                border-radius: var(--mc-border-radius-xs);
+                color: white;
+                cursor: pointer;
+                display: flex;
+                font-size: size(50);
+                justify-content: center;
+                padding: size(40) size(25);
+                width: size(100);
+                height: size(130);
+                opacity: .4;
+
+                &:hover, &:active {
+                    background: rgba(0,0,0,0.4);
+                    opacity: 1;
+                }
+            }
+
+            .btnPrev {
+                position: absolute;
+                left: 0;
+            }
+
+            .btnNext {
+                position: absolute;
+                right: 0;
+            }
+
+            .btnClose {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: size(70);
+                width: size(70);
+                padding: 0;
+            }
         }
 
         &--image {
@@ -159,8 +205,8 @@ body.galleryOpen {
                 font-size: size(50);
                 z-index: 1;
             }
+
             img {
-                z-index: 2;
                 width: 100%;
                 max-height: 80vh;
             }
@@ -172,31 +218,7 @@ body.galleryOpen {
 
             iframe {
                 aspect-ratio: 16/9;
-            }
-        }
-
-        &--buttons {
-            display: flex;
-            justify-content: space-between;
-            max-width: size(1380);
-            position: absolute;
-            width: 100%;
-            z-index: 1;
-            
-            & > * {
-                align-items: center;
-                background: rgba(0,0,0,0.2);
-                border-radius: var(--mc-border-radius-xs);
-                color: white;
-                cursor: pointer;
-                display: flex;
-                font-size: size(50);
-                justify-content: center;
-                padding: size(40) size(25);
-
-                &:hover, &:active {
-                    background: rgba(0,0,0,0.4);
-                }
+                width: 100%;
             }
         }
     }

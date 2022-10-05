@@ -35,10 +35,16 @@ app.component('create-agent' , {
         },
         modalTitle() {
             if(this.entity?.id){
-                return  __('agenteCriado', 'create-agent');
-            } else {
+                if(this.entity.status==1){
+                    return  __('agenteCriado', 'create-agent');
+                }else {
+                    return  __('criarRascunho', 'create-agent');
+                }
+            }else {
                 return  __('criarAgente', 'create-agent');
+
             }
+                
         },
     },
     
