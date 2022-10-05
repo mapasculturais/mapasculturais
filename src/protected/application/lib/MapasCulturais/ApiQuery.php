@@ -907,7 +907,6 @@ class ApiQuery {
     protected function generateSelect() {
         $select = $this->select;
         $class = $this->entityClassName;
-        
         if(!in_array('id', $this->_selectingProperties)){
             $this->_selectingProperties = array_merge(['id'], $this->_selectingProperties);
         }
@@ -1256,8 +1255,15 @@ class ApiQuery {
                     if($select != '*'){
                         $select = "$_target_property,$select";
                     }
-                    
-                    $query = new ApiQuery($target_class, ['@select' => $select], false, $cfg['selectAll'], !$this->_accessControlEnabled, $this);
+
+                    $qdata = ['@select' => $select];
+
+                    if ($this->entityClassName == Entities\User::class && $prop == 'profile') {
+                        $qdata['status'] = 'GTE(0)';
+                        $qdata['@permissions'] = 'view';
+                    }
+
+                    $query = new ApiQuery($target_class, $qdata, false, $cfg['selectAll'], !$this->_accessControlEnabled, $this);
                     
                     $query->name = "{$this->name}->$prop";
 
@@ -2660,6 +2666,12 @@ class ApiQuery {
 
         $uid = uniqid('#sq:');
         
+        foreach($this->_subqueriesSelect as $_uid => $_cfg) {
+            if ($_cfg['property'] == $prop) {
+                return $_uid;
+            }
+        }
+
         $this->_subqueriesSelect[$uid] = [
             'selectAll' => $_select_all,
             'property' => $prop,
