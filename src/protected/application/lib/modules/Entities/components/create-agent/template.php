@@ -19,12 +19,14 @@ $this->import('
             <small class="field__error" v-if="areaErrors">{{areaErrors.join(', ')}}</small>
             <entity-field :entity="entity" hide-required prop="shortDescription" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Agente")?>"></entity-field>
             <entity-field :entity="entity" hide-required v-for="field in fields" :prop="field"></entity-field>
-           {{entity.id}}
         </div>
     </template>
 
     <template v-if="entity?.id" #default>
         <label><?php i::_e('Você pode completar as informações do seu agente agora ou pode deixar para depois.  ');?></label>
+    </template>
+    <template v-if="entity?.id && entity.status==0" #default>
+        <label><?php i::_e('Para completar e publicar seu novo agente, acesse a área Rascunhos em Meus Agentes no Painel de Controle.   ');?></label>
     </template>
 
     <template #button="modal">
@@ -36,9 +38,13 @@ $this->import('
         <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar')?></button>
     </template>
 
-    <template v-if="entity?.id" #actions="modal">
+    <template v-if="entity?.id && entity.status==1" #actions="modal">
         <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver Agente');?></mc-link>
         <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
         <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
+    </template>
+    <template v-if="entity?.id && entity.status==0" #actions="modal">
+        <mc-link :entity="panel" route='panel/agents' class="button button--primary-outline button--icon"><?php i::_e('Ir para o Painel');?></mc-link>
+        <button class="button button--primary button--icon" @click="modal.close()"><?php i::_e('Entendi')?></button>
     </template>
 </modal>
