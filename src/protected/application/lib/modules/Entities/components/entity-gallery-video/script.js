@@ -8,6 +8,26 @@ app.component('entity-gallery-video', {
         return { text }
     },
 
+    created() {
+        window.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'Escape':      this.close();   break;
+                case 'ArrowLeft':   this.prev();    break;
+                case 'ArrowRight':  this.next();    break;
+            }            
+        });
+    },
+
+    data() {
+        return {    
+            videoList: {},
+            galleryOpen: false,
+            actualVideoIndex: null,
+            actualVideo: {},
+            metalist: {},
+        }
+    },
+
     props: {
         entity: {
             type: Entity,
@@ -20,16 +40,6 @@ app.component('entity-gallery-video', {
         editable: {
             type: Boolean,
             default: false
-        }
-    },
-
-    data() {
-        return {    
-            videoList: {},
-            galleryOpen: false,
-            actualVideoIndex: null,
-            actualVideo: {},
-            metalist: {},
         }
     },
 
@@ -78,6 +88,7 @@ app.component('entity-gallery-video', {
             this.galleryOpen = false;
             this.actualVideo = null;
             this.actualVideoIndex = null;
+            
             if (document.querySelector('body').classList.contains('galleryOpen'))
                 document.querySelector('body').classList.remove('galleryOpen');
         },

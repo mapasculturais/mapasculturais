@@ -95,15 +95,15 @@ use MapasCulturais\i;
         <div @click="close" class="entity-gallery__full--overlay"> </div>
 
         <div class="entity-gallery__full--video">
-            <iframe v-if="actualVideo.video?.provider == 'youtube'" :src="'https://www.youtube.com/embed/'+actualVideo.video?.videoID" height="565"></iframe>
+            <iframe v-if="actualVideo?.video?.provider == 'youtube'" :src="'https://www.youtube.com/embed/'+actualVideo.video?.videoID" height="565"></iframe>
             <p v-else> <?php i::_e("Sem vimeo por enquanto.")?> </p>
-            <div class="description">{{actualVideo.title}}</div>
-        </div>
+            <div class="description">{{actualVideo?.title}}</div>
 
-        <div class="entity-gallery__full--buttons">
             <div @click="prev" class="btnPrev"> <mc-icon name="previous"></mc-icon> </div>
             <div @click="next" class="btnNext"> <mc-icon name="next"></mc-icon> </div>
+            <div @click="close" class="btnClose"> <mc-icon name="close"></mc-icon> </div>            
         </div>
+
     </div>
 
 </div>
