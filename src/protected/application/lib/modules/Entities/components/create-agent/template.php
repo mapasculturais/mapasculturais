@@ -26,7 +26,8 @@ $this->import('
         <label><?php i::_e('Você pode completar as informações do seu agente agora ou pode deixar para depois.  ');?></label>
     </template>
     <template v-if="entity?.id && entity.status==0" #default>
-        <label><?php i::_e('Para completar e publicar seu novo agente, acesse a área Rascunhos em Meus Agentes no Painel de Controle.   ');?></label>
+        <label><?php i::_e('Você pode completar as informações do seu agente agora ou pode deixar para depois.');?></label><br><br>
+        <label><?php i::_e('Para completar e publicar seu novo agente, acesse a área <b>Rascunhos</b> em <b>Meus Agentes</b> no <b>Painel de Controle</b>.  ');?></label>
     </template>
 
     <template #button="modal">
@@ -44,7 +45,8 @@ $this->import('
         <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
     </template>
     <template v-if="entity?.id && entity.status==0" #actions="modal">
-        <mc-link :entity="panel" route='panel/agents' class="button button--primary-outline button--icon"><?php i::_e('Ir para o Painel');?></mc-link>
-        <button class="button button--primary button--icon" @click="modal.close()"><?php i::_e('Entendi')?></button>
+        <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver Agente');?></mc-link>
+        <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
+        <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
     </template>
 </modal>
