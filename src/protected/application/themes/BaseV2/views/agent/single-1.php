@@ -59,7 +59,7 @@ $this->breadcramb = [
                             </div>
 
                             <div class="col-12">
-                                <entity-seals :entity="entity" title="<?php i::esc_attr_e('Verificações');?>" :editable="entity.currentUserPermissions.createSealRelation"></entity-seals>
+                                <entity-seals :entity="entity" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                             </div>
 
                             <div class=col-12>
@@ -78,7 +78,8 @@ $this->breadcramb = [
                             </div>
 
                             <div v-if="entity.spaces.length>0 || entity.children.length>0 || entity.events.length>0 || entity.ownedOpportunities.length > 0 || entity.relatedOpportunities.length >0" class="col-12">
-                                <h4><?php i::_e('Propriedades do Agente:');?></h4>
+                                <h4> <?php i::_e('Propriedades do Agente:');?> </h4>
+
                                 <entity-list title="<?php i::esc_attr_e('Espaços');?>" type="space" :ids="entity.spaces"></entity-list>
 
                                 <entity-list title="<?php i::esc_attr_e('Eventos');?>" type="event" :ids="entity.events"></entity-list>

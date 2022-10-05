@@ -1,62 +1,53 @@
 @use '../settings/mixins' as *;
 
 .entity-list {
-    margin: 0 auto;
+    margin: size(16) auto;
     list-style-type: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 
-    &__owner {
+    &__title {
+        font-weight: 700;
+        font-size: size(12);
+        line-height: size(16);
+        display: flex;
+        align-items: center;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+    }
+
+    &__list {
         display: flex;
         flex-direction: column;
+        list-style: none;
+        padding: 0;
+        gap: size(16);
+        margin: size(8) 0;
 
-        &--title {
-            gap: size(16);
-            font-weight: 700;
-            font-size: size(12);
-            line-height: size(16);
-            display: flex;
-            align-items: center;
-            letter-spacing: 0.07em;
-            text-transform: uppercase;
-        }
-
-        &--content {
-
-            &-name,
-            a {
-                color: var(--mc-agents-500);
-                text-decoration: none;
-                display: flex;
-                flex-wrap: nowrap;
-                gap: size(8);
-                flex-direction: row-reverse;
-                align-items: center;
-                justify-content: flex-end;
-            }
-
+        &-item {
             &-img {
                 border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: var(--mc-gray-500);
                 overflow: hidden;
-                width: size(40);
                 height: size(40);
-            }
-
-            &-placeholder {
-                .background {
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: var(--mc-gray-500);
-                    overflow: hidden;
-                    height: size(40);
-                    width: size(40);
-                }
-
-                svg {
+                width: size(40);
+                
+                .iconify {
                     color: var(--mc-high-500);
                 }
             }
-        }
 
+            &-link {
+                display: flex;
+                align-items: center;
+                gap: size(8);
+                color: var(--mc-agents-500);
+                text-decoration: none;
+            }
+        }
     }
 }

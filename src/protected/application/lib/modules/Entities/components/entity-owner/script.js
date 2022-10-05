@@ -29,7 +29,11 @@ app.component('entity-owner', {
         editable: {
             type: Boolean,
             default: false
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
 
     methods: {
