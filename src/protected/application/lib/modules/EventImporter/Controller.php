@@ -32,6 +32,8 @@ class Controller extends \MapasCulturais\Controller
    {
       $app = App::i();
 
+      $moduleConfig = $app->modules['EventImporter']->config;
+
       $stream = fopen($file_dir, 'r');
 
       $csv = Reader::createFromStream($stream);
@@ -40,27 +42,43 @@ class Controller extends \MapasCulturais\Controller
 
       $stm = (new Statement());
       $data = $stm->process($csv);
-      
+
       // Verificar se no csv existe as colunas minimas para cadastrar um evento "Colunas Obrigatorias"
-      
+
       // Mapear as colunas 
       foreach ($data as $key => $value) {
-         
+
+         if(empty($value['NAME']) || $value['NAME'] == ''){
+            throw new Exception("A coluna nome está vazia na linha {$key}");
+         }
+
+         if(empty($value['SHORT_DESCRIPTION']) || $value['SHORT_DESCRIPTION'] == ''){
+            throw new Exception("A coluna descrição curta está vazia na linha {$key}");
+         }
+
+         if(empty($value['CLASSIFICATION']) || $value['CLASSIFICATION'] == ''){
+            throw new Exception("A coluna classificação estária está vazia na linha {$key}");
+         }
+         if (!in_array($value['CLASSIFICATION'],$moduleConfig['rating_list'])) {
+            $rating_str = implode(', ',$moduleConfig['rating_list']);
+            throw new Exception("A classificação etária é inválida {$key}. As opções aceitas são --{$rating_str}--");
+         }
+
          //Validação das linguagens
          $languages = explode(',', $value['LANGUAGE']);
          if (!$languages) {
             throw new Exception("Linguagem está vazia na linha {$key}");
-         } 
-         
-         //Tratamento da lista >>>
+         }
+
+         //Tratamento da lista
          $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
 
-         //Fazer um foreach para percorrer a varialvel $languages 
-         foreach($languages as $language){
-         
-         // 1 - Criar uma variavel $_language e Passar a $language para mb_strtolower($language)
-         // 2 - Verificar se o valor $_language esta presente nas chaves do $languages_list. Pesquisa no google array_key para pegar somente as chaves do $languages_list. Pesquisar também como verificar se um valor existe dentro de um array 
-         // 3 - Se o valor do $_language não existir na lista languages_list deve mostrar um erro na tela falando que a linguagem não existe
+         foreach ($languages as $language) {
+            $_language = mb_strtolower($language);
+
+            if (!in_array($_language, array_keys($languages_list))) {
+               throw new Exception("linguagem{$_language} não existe");
+            }
          }
 
          //Validação do projeto
@@ -68,13 +86,13 @@ class Controller extends \MapasCulturais\Controller
          if (!is_numeric($value['PROJECT'])) {
             $collum_proj = 'name';
          }
-         
+
          if (!$projects = $app->repo('Project')->findBy([$collum_proj => $value['PROJECT']])) {
             throw new Exception("O Projeto Não está cadastrado na linha {$key}");
-         } 
+         }
 
-         if($collum_proj =='name'){
-            if(count($projects) >1){
+         if ($collum_proj == 'name') {
+            if (count($projects) > 1){
                throw new Exception("Existem mais de um projeto com o nome {$value['PROJECT']}, Para proseguir informe o ID do projeto que quer associar ao evento");
             }
          }
@@ -93,13 +111,22 @@ class Controller extends \MapasCulturais\Controller
          if (!$spaces = $app->repo('Space')->findBy([$collum_spa => $value['SPACE']])) {
             throw new Exception("O espaço não esta cadastrado");
          }
-         
+
          if ($collum_spa == 'name') {
             if (count($spaces) > 1) {
                throw new Exception("Existem mais de um espaço com o nome {$value['SPACE']}, Para proseguir informe o ID do espaço que quer associar ao evento");
             }
-
          }
+
+         //Verificação da frequencia
+         if(empty($value['FREQUENCY']) || $value['FREQUENCY'] == ''){
+            throw new Exception("A coluna Frequência está vazia na linha {$key}");
+         }
+         if (!in_array($value['FREQUENCY'],$moduleConfig['frequence_list'])) {
+            $frequence_str = implode(', ',$moduleConfig['frequence_list']);
+            throw new Exception("A Frequência é inválida na linha {$key}. As opções aceitas são --{$frequence_str}-- ");
+         }
+         
          //criação do enveto
          $event = new Event();
          $event->name = $value['NAME'];
@@ -110,5 +137,5 @@ class Controller extends \MapasCulturais\Controller
          $event->projectId = $projects[0]->id;
          $event->save(true);
       }
-   }
+}
 }
