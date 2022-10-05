@@ -1,10 +1,11 @@
 <?php
-use MapasCulturais\i;
+use MapasCulturais\i; 
 
 $this->import('
-    loading messages 
+    entities 
+    mc-icon
+    mc-link
     panel--card-user 
-    entities mc-icon
     panel--entity-tabs
 ');
 
@@ -16,14 +17,14 @@ $profile = $app->user->profile;
         <div class="panel-page__header-title">
             <div class="title">
                 <div class="title__icon default"> <mc-icon name="user-config"></mc-icon> </div>
-                <div class="title__title"> <?= i::_e('Gestão de usuários') ?> </div>
+                <div class="title__title"> <?= i::__('Gestão de usuários') ?> </div>
             </div>
             <div class="help">
-                <a class="panel__help-link" href="#"><?=i::__('Ajuda?')?></a>
+                <a class="panel__help-link" href="#"><?= i::__('Ajuda?') ?></a>
             </div>
         </div>
         <p class="panel-page__header-subtitle">
-            <?= i::_e('Gestão dos usuários do sistema') ?>
+            <?= i::__('Gestão dos usuários do sistema') ?>
         </p>
     </header>
     
