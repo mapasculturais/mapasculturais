@@ -33,7 +33,7 @@ app.component('panel--entity-tabs', {
     props: {
         type: String,
         user: {
-            type: String,
+            type: [String, Number],
             default: '@me'
         },
         select: {

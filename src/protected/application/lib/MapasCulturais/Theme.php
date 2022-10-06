@@ -3,6 +3,7 @@ namespace MapasCulturais;
 
 use ArrayObject;
 use MapasCulturais\App;
+use MapasCulturais\Entities\Agent;
 
 /**
  * This is the default MapasCulturais View class. It extends the \Slim\View class adding a layout layer and the option to render the template partially.
@@ -719,11 +720,19 @@ abstract class Theme extends \Slim\View {
         if ($entity_class_name && $entity_id) {
             $app = App::i();
             $query_params = [
-                '@select' => '*,agentRelations', 
+                '@select' => '*', 
                 'id' => "EQ({$entity_id})", 
                 'status' => 'GTE(-10)',
                 '@permissions'=>'view', 
             ];
+
+            if ($entity_class_name::usesAgentRelation()) {
+                $query_params['@select'] .= ',agentRelations';
+            }
+
+            if ($entity_class_name == Entities\User::class) {
+                $query_params['@select'] .= ',profile.{name,files.avatar,terms,seals}';
+            }
 
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
 
@@ -731,7 +740,7 @@ abstract class Theme extends \Slim\View {
             $owner_prop = ($entity_class_name == Entities\Agent::class) ? 'parent' : 'owner';
             $e = $query->findOne();
             
-            if ($owner_id = $e[$owner_prop]) {
+            if ($owner_id = $e[$owner_prop] ?? false) {
                 $owner_query_params = [
                     '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
                     'id' => "EQ({$owner_id})", 
@@ -769,6 +778,17 @@ abstract class Theme extends \Slim\View {
                 }
 
                 $e['currentUserPermissions'] = $permissions;
+            }
+
+            if ($profile_id = $e['profile']['id'] ?? false) {
+                $entity = $app->repo(Agent::class)->find($profile_id);
+                $permissions_list = Agent::getPermissionsList();
+                $permissions = [];
+                foreach($permissions_list as $action) {
+                    $permissions[$action] = $entity->canUser($action);
+                }
+
+                $e['profile']['currentUserPermissions'] = $permissions;
             }
 
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);

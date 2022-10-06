@@ -41,6 +41,7 @@ $this->import('
                 <slot name="entity-actions-left" :entity="entity">
                     <panel--entity-actions 
                         :entity="entity" 
+                        @undeleted="$emit('undeleted', arguments)"
                         @deleted="$emit('deleted', arguments)"
                         @archived="$emit('archived', arguments)"
                         @published="$emit('published', arguments)"

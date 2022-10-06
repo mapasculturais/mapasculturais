@@ -24,6 +24,10 @@ app.component('tab', {
             type: String,
             required: true
         },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
     setup(props) {
         const cached = Vue.ref(false)
@@ -56,6 +60,7 @@ app.component('tab', {
                 disabled: props.disabled,
                 hash: hash,
                 icon: props.icon,
+                class: props.classes,
                 label: props.label,
                 meta: props.meta,
                 slug: props.slug,

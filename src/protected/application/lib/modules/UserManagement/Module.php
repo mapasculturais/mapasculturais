@@ -6,6 +6,7 @@ use MapasCulturais\ApiQuery;
 use MapasCulturais\App;
 use MapasCulturais\Entities as MapasEntities;
 use MapasCulturais\Definitions\Role;
+use MapasCulturais\Entities\User;
 use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module {
@@ -166,7 +167,6 @@ class Module extends \MapasCulturais\Module {
          */
         $app->hook('GET(panel.system-roles)', function() use($app) {
             $this->requireAuthentication();
-
             $this->render('system-roles');
         });
 
@@ -175,11 +175,17 @@ class Module extends \MapasCulturais\Module {
          */
         $app->hook('GET(panel.user-management)', function() use($app) {
             $this->requireAuthentication();
-
-            $theme = $app->view;
-            $vendor_group = $theme instanceof \MapasCulturais\Themes\BaseV2\Theme ? 'vendor-v2' : 'vendor';
-
             $this->render('user-management');
+        });
+
+        /**
+         * Página para gerenciamento de usuários
+         */
+        $app->hook('GET(panel.user-detail)', function() use($app) {
+            /** @var \MapasCulturais\Controllers\Panel $this */
+            $this->requireAuthentication();
+            $app->view->addRequestedEntityToJs(User::class);
+            $this->render('user-detail');
         });
 
         /**
@@ -191,7 +197,6 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('app.init:after', function () {
             $this->registerController('system-role', Controllers\SystemRole::class);
-            $this->registerController('user-management', Controllers\UserManagement::class);
             $this->registerController('role', Controllers\Role::class);
 
             $roles = $this->repo(Entities\SystemRole::class)->findBy(['status' => 1]);
@@ -215,6 +220,6 @@ class Module extends \MapasCulturais\Module {
     }
 
     function register() {        
-    
+        
     }
 }

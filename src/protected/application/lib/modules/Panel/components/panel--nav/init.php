@@ -69,3 +69,7 @@ foreach ($nav_items as $id => $group) {
 }
 
 $this->jsObject['config']['panelNav'] = $result;
+
+if ($this->activeNav ?? false) {
+    $this->jsObject['activeNav'] = $this->activeNav;
+}

@@ -51,8 +51,10 @@ $tabs = $tabs ?? [
             </template>
 
             <template #default="{entities}">
+                <slot name='before-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
                 <slot v-for="entity in entities" :key="entity.__objectId" :entity="entity" :moveEntity="moveEntity">
                     <panel--entity-card :key="entity.id" :entity="entity" 
+                        @undeleted="moveEntity(entity)" 
                         @deleted="moveEntity(entity)" 
                         @archived="moveEntity(entity)" 
                         @published="moveEntity(entity)"
@@ -78,6 +80,7 @@ $tabs = $tabs ?? [
                         </template>
                     </panel--entity-card>
                 </slot>
+                <slot name='after-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
            </template>
         </entities>
     </tab>
