@@ -6,12 +6,19 @@ use MapasCulturais\i;
     <p><?php i::_e('Configure abaixo os critérios de avaliação técnica') ?>
     <section id="{{section.id}}" ng-repeat="section in data.sections">
         <header>
-            <input ng-model="section.name" placeholder="<?php i::_e('informe o nome da seção') ?>" class="section-name edit" ng-change="save({sections: data.sections})" ng-model-options='{ debounce: data.debounce }'>
+            <input ng-model="section.name" placeholder="<?php i::_e('informe o nome da seção') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
+            <input ng-model="section.weight" type="number" placeholder="<?php i::_e('informe o peso da secão') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
+            <p ng-if="data.registrationCategories.length > 1">
+                <small><?php i::_e("Selecione em quais categorias a seção será utilizada");?>:</small><br>
+                <label><input type="checkbox" onclick="if (!this.checked) return false" ng-click="section.categories = [];save()" ng-checked="allCategoriesSections(section, section.categories)"> <?php i::_e("Todas");?> </label>
+                
+                <label ng-repeat="category in data.registrationCategories">
+                    <input type="checkbox" checklist-model="section.categories" checklist-value="category" ng-click="save()"> {{category}} 
+                </label>
+            </p>
             <button ng-if="section.name.trim().length > 0" ng-click="deleteSection(section)" class="btn btn-danger delete alignright"><?php i::_e('Remover seção') ?></button>
             <button ng-if="section.name.trim().length == 0" ng-click="deleteSection(section)" class="btn btn-default delete alignright"><?php i::_e('Cancelar') ?></button>
-
         </header>
-
         <table>
             <tr>
                 <th class="criterion-title"><?php i::_e('Título do critério') ?></th>
@@ -46,12 +53,12 @@ use MapasCulturais\i;
         <?php i::_e('Se a maioria dos avaliadores considerarem a inabilitação por exequibilidade, a mesma será marcada com o status de inválida para o dono do edital, que ainda assim poderá mudar seu status para válida.'); ?>
     </p>
 
-    <label for="enableViability">
-        <input type="radio" ng-model="data.enableViability" value="true" ng-change="save({enableViability: true})" name="enableViability" /> <?php i::_e('Habilitar'); ?>
+    <label>
+        <input type="radio" ng-model="data.enableViability" ng-value="true" ng-change="save({enableViability: true})" name="enableViability" /> <?php i::_e('Habilitar'); ?>
     </label>
 
-    <label for="enableViability">
-        <input type="radio" ng-model="data.enableViability" value="false" ng-change="save({enableViability: false})" name="enableViability" /> <?php i::_e('Não habilitar'); ?>
+    <label>
+        <input type="radio" ng-model="data.enableViability" ng-value="false" ng-change="save({enableViability: false})" name="enableViability" /> <?php i::_e('Não habilitar'); ?>
     </label>
 </div>
 

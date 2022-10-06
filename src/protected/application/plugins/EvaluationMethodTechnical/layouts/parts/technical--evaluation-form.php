@@ -7,11 +7,15 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
 <?php $this->applyTemplateHook('evaluationForm.technical', 'before', $params); ?>
 <div ng-controller="TechnicalEvaluationMethodFormController" class="technical-evaluation-form">
     <?php $this->applyTemplateHook('evaluationForm.technical', 'begin', $params); ?>
-    <section ng-repeat="section in ::data.sections">
+    <div class="alert-evaluation-load" id="alert-evaluation-load-div">
+        <span id="successEvaluationNote" class="load-evaluation-note">A avaliação foi salva</span>
+    </div>
+    <section ng-repeat="section in ::data.sections" ng-if="section.categories.indexOf(data.registrationCategory) != -1">
         <table>
             <tr>
                 <th colspan="2">
-                    {{section.name}}
+                    {{section.name}}</br>
+                    Peso: {{ section.weight  }}
                 </th>
             </tr>
             <tr ng-repeat="cri in ::data.criteria" ng-if="cri.sid == section.id">
@@ -31,7 +35,7 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
     </label>
     <hr>
     
-    <label ng-show="data.enableViability=='true'">
+    <label ng-if="data.enableViability">
         <strong> <?php i::_e('Exequibilidade Orçamentária'); ?> </strong> <span class="required">*</span> <br>
         <?php i::_e('Esta proposta está adequada ao orçamento apresentado? Os custos orçamentários estão compatíveis com os praticados no mercado?'); ?>
         <br>

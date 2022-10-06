@@ -155,11 +155,17 @@ abstract class File extends \MapasCulturais\Entity
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'mimeType' => [
                 'v::not(v::regex("#.php$#"))' => i::__('Tipo de arquivo não permitido')
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}.validations", [&$validations]);
+
+        return $validations;
     }
 
     /**
@@ -278,8 +284,8 @@ abstract class File extends \MapasCulturais\Entity
         if($files){
             foreach($files as $file){
                 $registeredGroup = $app->getRegisteredFileGroup($file->owner->controllerId, $file->group);
-
-                if($registeredGroup && $registeredGroup->unique || $file->group === 'zipArchive' || strpos($file->group, 'rfc_') === 0){
+                
+                if($registeredGroup && $registeredGroup->unique || $file->group === 'zipArchive'){
                     $result[trim($file->group)] = $file;
                 }else{
                     if(!key_exists($file->group, $result))

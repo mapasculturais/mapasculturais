@@ -1,1 +1,2 @@
-<input ng-required="requiredField(field)" ng-model="entity[fieldName]" ng-blur="saveField(field, entity[fieldName])" >
+<?php use MapasCulturais\i; ?>
+<input ng-required="requiredField(field)" ng-model="entity[fieldName]" ng-blur="saveField(field, entity[fieldName])" class="form-control" placeholder="<?php i::_e('Ex: joao@email.com.br') ?>">
