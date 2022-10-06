@@ -1,10 +1,11 @@
 app.component('panel--entity-actions', {
     template: $TEMPLATES['panel--entity-actions'],
-    emits: ['deleted', 'destroyed', 'published', 'archived', 'unpublished'],
+    emits: ['deleted', 'destroyed', 'undeleted', 'published', 'archived', 'unpublished'],
 
     data(){
         return {
             archiveButton: this.buttons.indexOf('archive') >= 0,
+            undeleteButton: this.buttons.indexOf('undelete') >= 0,
             deleteButton: this.buttons.indexOf('delete') >= 0,
             destroyButton: this.buttons.indexOf('destroy') >= 0,
             publishButton: this.buttons.indexOf('publish') >= 0,
@@ -15,13 +16,14 @@ app.component('panel--entity-actions', {
     props: {
         buttons: {
             type: String,
-            default: "archive,delete,destroy,publish,unpublish"
+            default: "archive,undelete,delete,destroy,publish,unpublish"
         },
         entity: {
             type: Entity,
             default: null
         },
         archive: String,
+        undelete: String,
         delete: String,
         destroy: String,
         publish: String,
@@ -52,6 +54,15 @@ app.component('panel--entity-actions', {
             entity.loading = true;
             entity.delete(this.onDeleteRemoveFromLists).then(() => {
                 this.$emit('deleted', {entity, modal});
+                entity.loading = false;
+            });
+        },
+        
+        undeleteEntity(modal) {
+            const entity = this.entity;
+            entity.loading = true;
+            entity.undelete().then(() => {
+                this.$emit('undeleted', {entity, modal});
                 entity.loading = false;
             });
         },
