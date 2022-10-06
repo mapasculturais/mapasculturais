@@ -21,7 +21,7 @@ $this->import('
             <div class="col-4"><mc-link :entity="entity"></mc-link></div>
             <div class="col-3">{{entity.subsite?.name}}</div>
             <div class="col-3">
-                <mc-link :entity="entity" icon='edit' class="button button--icon"><?= i::__('Editar') ?></mc-link>
+                <mc-link :entity="entity" route="edit" icon='edit' class="button button--icon"><?= i::__('Editar') ?></mc-link>
                 <panel--entity-actions 
                     :entity="entity"
                     @deleted="moveEntity(entity)" 
