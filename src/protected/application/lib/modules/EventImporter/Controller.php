@@ -227,7 +227,7 @@ class Controller extends \MapasCulturais\Controller
                }
 
                if ($starts_on->format("d/m/Y") != $value['STARTS_ON']) {
-                  $this->error("O formato da Data inícial é inválido na linha {$key}. O formato esperado é YYY1Y/MM/DD");
+                  $this->error("O formato da Data inícial é inválido na linha {$key}. O formato esperado é YYYY/MM/DD");
                }
 
                return ['starts_on' => $starts_on];
