@@ -10,8 +10,14 @@ app.component('panel--nav', {
 
     data() {
         return {
-            route: $MAPAS.route.route,
             groups: $MAPAS.config.panelNav
+        }
+    },
+
+    methods: {
+        active(item) {
+            const route = $MAPAS.route.route;
+            return $MAPAS.activeNav == item.route || route == item.route;
         }
     }
 })

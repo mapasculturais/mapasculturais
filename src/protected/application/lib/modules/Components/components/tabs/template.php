@@ -1,5 +1,8 @@
 <?php
-$this->import('tab');
+$this->import('
+    mc-icon
+    tab
+');
 ?>
 <div class="tabs-component">
     <div class="tabs-component__header">
@@ -8,7 +11,7 @@ $this->import('tab');
             <ul class="tabs-component__buttons" role="tablist">
                 <li v-for="tab in tabs" :key="tab.slug"
                     class="tabs-component__button"
-                    :class="[tab.slug, tab.disabled && 'tabs-component__button--disabled', isActive(tab) && 'tabs-component__button--active']"
+                    :class="[tab.slug, tab.class, tab.disabled && 'tabs-component__button--disabled', isActive(tab) && 'tabs-component__button--active']"
                     role="presentation">
                     <a
                         :aria-controls="tab.hash"

@@ -35,9 +35,14 @@ app.component('create-project' , {
         },
         modalTitle() {
             if(this.entity?.id){
-                return  __('projetoCriado', 'create-project');
-            } else {
+                if(this.entity.status==1){
+                    return  __('projetoCriado', 'create-project');
+                }else {
+                    return  __('criarRascunho', 'create-project');
+                }
+            }else {
                 return  __('criarProjeto', 'create-project');
+
             }
         },
     },

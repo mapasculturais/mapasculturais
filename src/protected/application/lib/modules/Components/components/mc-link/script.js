@@ -23,6 +23,11 @@ app.component('mc-link', {
             required: false
         },
 
+        rightIcon: {
+            type: Boolean,
+            default: false
+        },
+
         route: {
             type: String,
             default: 'single'
@@ -51,11 +56,11 @@ app.component('mc-link', {
         queryString = queryString ? `?${queryString}` : queryString;
 
         if (this.entity) {
-            url = this.entity.getUrl(this.route, this.urlParams) + queryString;
+            url = this.entity.getUrl(this.route, this.params) + queryString;
             classes += ` ${this.entity.__objectType}__color` ;
         } else {
             const parts = this.route.split('/');
-            url = Utils.createUrl(parts[0], parts[1], this.urlParams)  + queryString;
+            url = Utils.createUrl(parts[0], parts[1], this.params)  + queryString;
         }
 
         return {url, classes};

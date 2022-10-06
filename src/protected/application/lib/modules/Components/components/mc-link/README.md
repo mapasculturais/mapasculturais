@@ -1,5 +1,5 @@
 # Componente `<mc-link>`
-Wrapper do `<iconify>` com os ícones utilizados nos componentes
+Adiciona um link para uma entidade ou rota
 
 ## Propriedades
 - *Entity **entity** = null* - Entidade

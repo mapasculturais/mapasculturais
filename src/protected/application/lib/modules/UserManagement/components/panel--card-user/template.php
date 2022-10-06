@@ -4,6 +4,7 @@ use MapasCulturais\i;
 
 $this->import('
     confirm-button
+    mc-link
     panel--entity-card 
     user-management--add-role-modal
 ');
@@ -42,5 +43,11 @@ $this->import('
                 </li>
             </ul>
         </div>
+    </template>
+
+    <template #entity-actions-right>
+        <mc-link route="panel/user-detail" :params="[entity.id]" class="button button--primary-outline button--icon" icon="arrow-right" right-icon>
+            <?= i::__('Acessar') ?>
+        </mc-link>
     </template>
 </panel--entity-card>
