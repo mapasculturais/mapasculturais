@@ -1259,7 +1259,7 @@ class ApiQuery {
                     $qdata = ['@select' => $select];
 
                     if ($this->entityClassName == Entities\User::class && $prop == 'profile') {
-                        $qdata['status'] = 'GTE(0)';
+                        $qdata['status'] = 'GTE(-10)';
                         $qdata['@permissions'] = 'view';
                     }
 
