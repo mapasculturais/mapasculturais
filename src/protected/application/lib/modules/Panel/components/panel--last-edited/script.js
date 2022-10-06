@@ -15,7 +15,6 @@ app.component('panel--last-edited', {
     },
 
     async created(){
-
         const agentAPI = new API('agent');
         const spaceAPI = new API('space');
         const eventAPI = new API('event');
@@ -91,7 +90,6 @@ app.component('panel--last-edited', {
 
     computed: {
         entities() {
-            
             if (this.projects.metadata && this.spaces.metadata && this.agents.metadata && this.opportunities.metadata && this.events.metadata) {
                 const entities = this.projects.concat(this.spaces, this.agents, this.opportunities, this.events);                
                 entities.sort((a,b) => {
@@ -101,6 +99,8 @@ app.component('panel--last-edited', {
                     return (dateA.localeCompare(dateB));                    
                 });
                 return entities.slice(0, this.limit);;
+            } else {
+                return {};
             }
         }
     },

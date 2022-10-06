@@ -6,25 +6,18 @@ $this->import('
 ');
 ?>
 
-<div class="panel--last-edited">
-
+<div v-if="entities.length > 0" class="panel--last-edited">
     <div class="panel--last-edited__content">
-
         <div class="panel--last-edited__content-title">
             <label> <?php i::_e('Editados recentemente')?> </label>
         </div>
-
         <div class="panel--last-edited__content-cards">
-
             <carousel :settings="settings" :breakpoints="breakpoints">
                 <slide v-for="entity in entities" :key="entity.id">
-
                     <panel--entity-card :key="entity.id" :entity="entity" class="card">
-
                         <template #title="{entity}">
                             <slot name="card-title" :entity="entity"></slot>
                         </template>
-
                         <template #header-actions="{entity}">
                             <div :class="[entity.__objectType+'__background', 'card-actions--tag']">
                                 <mc-icon :name="entity.__objectType"></mc-icon>    
@@ -35,31 +28,25 @@ $this->import('
                                 <span v-if="entity.__objectType=='opportunity'"> <?= i::_e('Oportunidade') ?> </span>
                             </div>
                         </template>
-
                         <template #default="{entity}">
                             <span v-if="entity.shortDescription">
                                {{entity.shortDescription}}
                             </span>
                         </template>
-                        
                         <template #entity-actions-left="{entity}">
                             &nbsp;
                         </template>
                         <template #entity-actions-center="{entity}">
                             &nbsp;
                         </template>
-
                     </panel--entity-card>
-
-                </slide>                        
-
+                </slide>    
                 <template #addons>
                     <div class="actions">
                         <navigation />
                     </div>
                 </template>
             </carousel>
-            
         </div>
     </div>
 </div>
