@@ -3,6 +3,7 @@ namespace MapasCulturais;
 
 use ArrayObject;
 use MapasCulturais\App;
+use MapasCulturais\Entities\Agent;
 
 /**
  * This is the default MapasCulturais View class. It extends the \Slim\View class adding a layout layer and the option to render the template partially.
@@ -777,6 +778,17 @@ abstract class Theme extends \Slim\View {
                 }
 
                 $e['currentUserPermissions'] = $permissions;
+            }
+
+            if ($profile_id = $e['profile']['id'] ?? false) {
+                $entity = $app->repo(Agent::class)->find($profile_id);
+                $permissions_list = Agent::getPermissionsList();
+                $permissions = [];
+                foreach($permissions_list as $action) {
+                    $permissions[$action] = $entity->canUser($action);
+                }
+
+                $e['profile']['currentUserPermissions'] = $permissions;
             }
 
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);
