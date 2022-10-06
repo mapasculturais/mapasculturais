@@ -12,17 +12,40 @@
     }
 
     &__content {
-        max-height: size(250);
-        overflow-y: scroll;
-        margin: size(16) 0;
+        padding: size(16);
 
-        &--list {
+        &-form {            
+            .input {
+                border: var(--mc-border-hairline) var(--mc-gray-100);
+                border-radius: var(--mc-border-radius-pill);
+                font-weight: 400;
+                font-size: size(16);
+                line-height: size(19);
+                padding: size(10) size(16);
+                width: 100%;
+            }
+        }
+
+        &-list {
             display: flex;
             flex-direction: column;
             list-style: none;
-            padding: 0 16px;
+            overflow-y: scroll;
+            padding: 0;
             width: max-content;
             margin: 0;
+            max-height: size(250);
+            margin: size(16) 0;
+
+            .item {
+                display: flex;
+                gap: size(8);
+            }
+        }
+
+        &-button {
+            display: flex;
+            justify-content: flex-end;
         }
     }
     
