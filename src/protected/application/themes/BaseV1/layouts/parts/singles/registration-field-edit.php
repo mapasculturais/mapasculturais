@@ -22,28 +22,36 @@ foreach ($definitions as $def) {
             (<a class="attachment-template" target="_blank" href="{{::field.template.url}}" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("baixar modelo"); ?></a>)
         </span>
     </div>
-    <a ng-if="field.file" class="attachment-title" href="{{field.file.url}}" target="_blank" rel='noopener noreferrer'>{{field.file.name}}</a>
+    <ul ng-if="!field.multiple && field.file" class="widget-list js-downloads js-slimScroll">
+        <li class="widget-list-item is-editable">
+            <a href="{{field.file.url}}" target="_blank" rel='noopener noreferrer'><span>{{field.file.name}}</span></a>
+            <div class="botoes">
+                <a hltip ng-click="removeFile(field.file)" class="delete hltip" title="<?php \MapasCulturais\i::esc_attr_e("Excluir arquivo");?>"></a>
+            </div>
+        </li>
+    </ul>
 
-    <div>
+    <ul ng-if="field.multiple" ng-repeat="file in field.file track by $index" class="widget-list js-downloads js-slimScroll">
+        <li id="{{file.id}}" class="widget-list-item is-editable">
+            <a href="{{file.url}}" target="_blank" rel='noopener noreferrer'><span>{{file.description}} - {{file.name}}</span></a>
+            <div class="botoes">
+                <a hltip ng-click="removeFile(file)" class="delete hltip" title="<?php \MapasCulturais\i::esc_attr_e("Excluir arquivo");?>"></a>
+            </div>
+        </li>
+    </ul>
+
+    <div class="btn-group" ng-if="::!field.multiple">
         <!-- se já subiu o arquivo-->
         <!-- se não subiu ainda -->
-        <a class="btn btn-default" ng-class="{'send':!field.file,'edit':field.file}" ng-click="openFileEditBox(field.id, $index, $event)" title="{{!field.file ? 'enviar' : 'editar'}} <?php \MapasCulturais\i::_e("anexo"); ?>">{{!field.file ? 'Enviar' : 'Editar'}}</a>
-        <a class="btn btn-default delete" ng-if="!field.required && field.file" ng-click="removeFile(field.id, $index)" title="<?php \MapasCulturais\i::esc_attr_e("excluir anexo"); ?>"><?php \MapasCulturais\i::_e("Excluir"); ?></a>
+        <a class="btn btn-default" ng-class="{'send':!field.file,'edit':field.file}" ng-click="openFileEditBox(field.id, $index, $event)" title="{{!field.file ? '<?php \MapasCulturais\i::_e("enviar") ?>' : '<?php \MapasCulturais\i::_e("editar") ?>'}} <?php \MapasCulturais\i::_e("anexo");?>">{{!field.file ? '<?php \MapasCulturais\i::_e("Enviar") ?>' : '<?php \MapasCulturais\i::_e("Editar") ?>'}}</a>
+    </div>
+    <div class="btn-group" ng-if="::field.multiple">
+        <!-- se já subiu o arquivo-->
+        <!-- se não subiu ainda -->
+        <a class="btn btn-default send" ng-click="openFileEditBox(field.id, $index, $event)" title="<?php \MapasCulturais\i::esc_attr_e("Enviar Anexo") ?>"><?php \MapasCulturais\i::_e("Enviar") ?></a>
     </div>
     <div ng-repeat="error in field.error" class="alert danger">{{error}}</div>
     <edit-box id="editbox-file-{{::field.id}}" position="bottom" title="{{::field.title}} {{::field.required ? '*' : ''}}" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar"); ?>" submit-label="<?php \MapasCulturais\i::esc_attr_e("Enviar anexo"); ?>" loading-label="<?php \MapasCulturais\i::esc_attr_e("Carregando ..."); ?>" on-submit="sendFile" close-on-cancel='true' index="{{$index}}" spinner-condition="data.uploadSpinner">
-
-        <form class="js-ajax-upload" method="post" action="{{uploadUrl}}" data-group="{{::field.groupName}}" enctype="multipart/form-data">
-            <div class="alert danger hidden"></div>
-            <p class="form-help"><?php \MapasCulturais\i::_e("Tamanho máximo do arquivo:"); ?> {{maxUploadSizeFormatted}}</p>
-            <input type="file" name="{{::field.groupName}}" />
-
-            <div class="js-ajax-upload-progress">
-                <div class="progress">
-                    <div class="bar"></div>
-                    <div class="percent">0%</div>
-                </div>
-            </div>
-        </form>
+        <?php $this->part('singles/registration-edit--upload-form') ?>
     </edit-box>
 </div>

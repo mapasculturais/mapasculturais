@@ -4,7 +4,7 @@ use MapasCulturais\i;
 <div ng-controller="TechnicalEvaluationMethodFormController" class="technical-evaluation-form">
     <div ng-if="!data.empty">
         <strong><?php i::_e('Pontuações'); ?>:</strong>
-        <section ng-repeat="section in ::data.sections">
+        <section ng-repeat="section in ::data.sections" ng-if="section.categories.indexOf(data.registrationCategory) != -1">
              {{section.name}}: <strong>{{subtotalSection(section)}}</strong>
         </section>
         <hr>

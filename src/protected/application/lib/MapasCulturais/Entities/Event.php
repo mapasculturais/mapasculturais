@@ -221,7 +221,8 @@ class Event extends \MapasCulturais\Entity
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome do evento é obrigatório')
             ],
@@ -233,6 +234,11 @@ class Event extends \MapasCulturais\Entity
                 '$this->validateProject()' => \MapasCulturais\i::__('Você não pode criar eventos neste projeto.')
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}.validations", [&$validations]);
+
+        return $validations;
     }
 
     function publish($flush = false){

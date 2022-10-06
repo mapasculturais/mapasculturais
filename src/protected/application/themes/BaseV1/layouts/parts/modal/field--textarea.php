@@ -1,5 +1,5 @@
 <?php
-$_placeholder = \MapasCulturais\i::esc_attr__("Insira uma descrição curta");
+$_placeholder = $definition['placeholder'] ?? \MapasCulturais\i::esc_attr__("Insira uma descrição curta");
 $this->part("modal/title", ['title' => $definition['label']]);
 ?>
 <textarea name='<?php echo $field ?>' placeholder='<?php echo $_placeholder;?>'

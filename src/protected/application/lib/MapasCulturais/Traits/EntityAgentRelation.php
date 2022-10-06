@@ -107,10 +107,12 @@ trait EntityAgentRelation {
             if($group){
                 foreach ($group as $groupEntitie) {
                     $entitie = App::i()->repo($entitieType['object_type'])->find($groupEntitie->objectId);
+                    //ADICIONADO OBJECT_TYPE PARA SABER QUAL A INSTANCIA É O GRUPO
                     $groups[] = array(
                         'group'   => $groupEntitie->group,
                         'entitie' => $entitie->name,
-                        'url'     => $entitie->singleUrl
+                        'url'     => $entitie->singleUrl,
+                        'object_type'=> $groupEntitie->owner
                     );
                 }
             }

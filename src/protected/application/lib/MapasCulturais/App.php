@@ -785,7 +785,7 @@ class App extends \Slim\Slim{
         // @TODO veridicar se isto está sendo usado, se não remover
         $this->registerAuthProvider('OpenID');
         $this->registerAuthProvider('logincidadao');
-
+        $this->registerAuthProvider('keycloak');
 
         // register controllers
 
@@ -2946,6 +2946,15 @@ class App extends \Slim\Slim{
             $transport = \Swift_MailTransport::newInstance();
         } else {
             return false;
+        }
+
+        if (isset($this->_config['mailer.streamOptionsVerifyPeer'])) {
+            $transport->setStreamOptions([
+                'ssl' => [
+                    'verify_peer' => $this->_config['mailer.streamOptionsVerifyPeer'],
+                    'verify_peer_name' => $this->_config['mailer.streamOptionsVerifyPeer'],
+                ]
+            ]);
         }
 
         $instance = \Swift_Mailer::newInstance($transport);

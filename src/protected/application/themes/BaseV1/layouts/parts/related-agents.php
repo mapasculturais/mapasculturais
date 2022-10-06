@@ -21,6 +21,7 @@ $this->addRelatedAgentsToJs($entity);
             {{group.name}} 
             <a ng-if="isEditable" class="hltip edit" ng-click="setRenameGroup(group); editbox.open('rename-related-agent-group', $event)" title="<?php \MapasCulturais\i::esc_attr_e("Renomear este grupo");?>"></a>
             <a ng-if="isEditable" class="delete hltip" ng-click="deleteGroup(group)" title="<?php \MapasCulturais\i::esc_attr_e("Remover este grupo");?>"></a>
+            ({{group.relations.length}})
         </h3>
         <div class="agentes clearfix">
             <div class="avatar" ng-repeat="(i, relation) in group.relations" ng-class="{pending: relation.status < 0}">
