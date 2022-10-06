@@ -1,6 +1,10 @@
 <?php
 use MapasCulturais\i;
-$this->import('popover confirm-button');
+$this->import('
+    confirm-button
+    mc-icon
+    select-entity
+');
 ?>
 
 <div v-if="entity.seals.length > 0 || editable" class="entity-seals">
