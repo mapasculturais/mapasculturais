@@ -99,8 +99,12 @@ app.component('entities', {
     methods: {
         getDataFromApi() {
             let query = {...this.query};
-
             const options = {list: this.entities};
+
+            if (this.limit && this.page) {
+                query['@page'] = this.page;
+            }
+            
             if (this.rawProcessor) {
                 options.raw = true;
                 options.rawProcessor = this.rawProcessor;
