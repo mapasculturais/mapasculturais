@@ -5,6 +5,7 @@ $this->activeNav = 'panel/user-management';
 $this->import('
     confirm-button
     entity
+    entity-seals
     panel--entity-actions
     panel--entity-tabs
     tabs
@@ -28,6 +29,8 @@ $this->import('
     </div>
 
     <panel--entity-actions :entity="entity"></panel--entity-actions>
+
+    <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions.createSealRelation"></entity-seals>
 
     <p>ID: {{entity.id}}</p>
     <p><?= i::__('E-mail') ?>: {{entity.email}}</p>
