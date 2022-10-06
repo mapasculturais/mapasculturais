@@ -888,8 +888,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             }
         }
 
-        $this->authUid = 'deleted:' . $this->authUid;
-        $this->email = 'deleted:' . $this->email;
         $this->status = self::STATUS_TRASH;
         $this->save($flush);
         
