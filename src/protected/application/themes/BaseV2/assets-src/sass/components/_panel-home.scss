@@ -28,9 +28,11 @@
                 gap: size(8);
                 
                 .avatar{
+                    align-items: center;
                     border-radius: var(--mc-border-radius-pill);
                     contain: content;
                     display: flex;
+                    justify-content: center;
                     height: size(56);
                     width: size(56);
                 }

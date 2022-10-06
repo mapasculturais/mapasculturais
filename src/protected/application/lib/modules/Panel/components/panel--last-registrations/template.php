@@ -6,19 +6,14 @@ $this->import('
 ');
 ?>
 
-<div class="panel--last-registrations">
-
+<div v-if="entities.length > 0" class="panel--last-registrations">
     <div class="panel--last-registrations__content">
-
         <div class="panel--last-registrations__content-title">
             <label> <?php i::_e('Inscrições recentes')?> </label>
         </div>
-
         <div class="panel--last-registrations__content-cards">
-
             <carousel :settings="settings" :breakpoints="breakpoints">
                 <slide v-for="entity in entities" :key="entity.id">
-
                     <div class="card">
                         <div class="card__content">
                             <label class="card__content--title"> {{entity.opportunity.name}} </label>              
@@ -31,16 +26,13 @@ $this->import('
                             <a class="button button--md button--large button--primary button--icon" target="__blank" :href="entity.singleUrl"> <?= i::_e('Acessar e acompanhar') ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
                         </div>
                     </div>
-
-                </slide>                        
-
+                </slide>
                 <template #addons>
                     <div class="actions">
                         <navigation />
                     </div>
                 </template>
-            </carousel>
-            
+            </carousel>            
         </div>
     </div>
 </div>

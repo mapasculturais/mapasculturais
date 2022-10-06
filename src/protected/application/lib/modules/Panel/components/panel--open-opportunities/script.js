@@ -14,18 +14,32 @@ app.component('panel--open-opportunities', {
         return { text }
     },
 
+    async created(){
+        const opportunityAPI = new API('opportunity');
+        
+        const query = this.query;
+        query['@select'] = 'id,name,singleUrl,files.avatar,shortDescription,registrationFrom,registrationTo';
+        query['@order'] = 'registrationFrom DESC';
+        query['@verified'] = '1';
+        query['user'] = `EQ(@me)`;
+        query['registrationFrom'] = 'LTE('+this.futureDate()+')';
+        query['registrationTo'] = 'GTE('+this.actualDate()+')';
+
+        if(this.limit) {
+            query['@limit'] = this.limit;
+        }
+
+        this.opportunities = await opportunityAPI.find(query);
+    },
+
     props: {
+        
     },
 
     data() {
         return {
-            // query
-            query: {
-                '@order' : 'registrationFrom ASC',
-                '@select' : 'id,name,singleUrl,files.avatar,shortDescription,registrationFrom,registrationTo',
-                '@verified' : '1',
-                'user' : `EQ(@me)`,
-            },
+            query: {},
+            opportunities: [],
 
             // carousel settings
             settings: {
@@ -72,11 +86,18 @@ app.component('panel--open-opportunities', {
     },
 
     computed: {
-        getQuery() {
-            this.query['registrationFrom'] = 'LTE('+this.futureDate()+')';
-            this.query['registrationTo'] = 'GTE('+this.actualDate()+')';
-
-            return this.query;
+        entities() {
+            if (this.opportunities.metadata) {
+                const entities = this.opportunities;                
+                entities.sort((a,b) => {
+                    let dateA = a.updateTimestamp.date('sql');
+                    let dateB = b.updateTimestamp.date('sql');
+                    return (dateA.localeCompare(dateB));                    
+                });
+                return entities.slice(0, this.limit);;
+            } else {
+                return {};
+            }
         }
     },
     

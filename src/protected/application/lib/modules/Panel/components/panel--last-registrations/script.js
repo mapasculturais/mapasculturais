@@ -78,11 +78,12 @@ app.component('panel--last-registrations', {
     },
 
     computed: {
-        entities() {
-            
+        entities() {            
             if (this.registrations.metadata) {
                 const entities = this.registrations
                 return entities.filter(x => x.opportunity != undefined);
+            } else {
+                return {};
             }
         }
     },
