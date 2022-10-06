@@ -151,8 +151,11 @@ class Controller extends \MapasCulturais\Controller
    {
       $app = App::i();
 
-      $starts_at = new DateTime($value['STARTS_AT']);
-      $ends_at = new DateTime($value['STARTS_AT']);
+      $_starts_at = (new DateTime('now'))->format("Y-m-d")." ".$value['STARTS_AT'];
+      $_ends_at = (new DateTime('now'))->format("Y-m-d")." ".$value['ENDS_AT'];
+      
+      $starts_at = new DateTime($_starts_at);
+      $ends_at = new DateTime($_ends_at);
 
       if(empty($value['STARTS_AT']) || $value['STARTS_AT'] == ''){
          $this->error("A coluna Hora inícial está vazia na linha {$key}");
@@ -169,7 +172,7 @@ class Controller extends \MapasCulturais\Controller
       if($ends_at->format("H:i") != $value['ENDS_AT']){
          $this->error("A coluna Hora final é inválida na linha {$key}");
       }
-
+  
       switch (mb_strtolower($value['FREQUENCY'])) {
          case i::__('diariamente'):
          case i::__('todos os dias'):
