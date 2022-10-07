@@ -117,6 +117,16 @@ class Controller extends \MapasCulturais\Controller
          //criação do enveto
          $event = new Event();
          $event->name = $value['NAME'];
+         $event->subTitle = $value['SUBTITLE'];
+         $event->site = $value['SITE'];
+         $event->facebook = $value['FACEBOOK'];
+         $event->twitter = $value['TWITTER'];
+         $event->instagram = $value['INSTAGRAM'];
+         $event->youtube = $value['YOUTUBE'];
+         $event->linkedin = $value['LINKEDIN'];
+         $event->spotify = $value['SPOTIFY'];
+         $event->pinterest = $value['PINTEREST'];
+         $event->registrationInfo = $value['INSCRICOES'];
          $event->shortDescription = $value['SHORT_DESCRIPTION'];
          $event->classificacaoEtaria = $value['CLASSIFICATION'];
          $event->owner = $agent;
