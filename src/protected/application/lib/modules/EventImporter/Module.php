@@ -13,9 +13,12 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         $config += [
-            'frequence_list' => $app->config['eventimporter.frequence_list'],
-            'rating_list' => $app->config['eventimporter.rating_list'],
+            'frequence_list_allowed' => $app->config['eventimporter.frequence_list_allowed'],
+            'rating_list_allowed' => $app->config['eventimporter.rating_list_allowed'],
             'days_list_positive' => $app->config['eventimporter.days_list_positive'],
+            'week_days' => $app->config['eventimporter.week_days'],
+            'use_endsat' => $app->config['eventimporter.use_endsat'],
+            'dic_months' => $app->config['eventimporter.dic_months'],
         ];
 
         parent::__construct($config);
