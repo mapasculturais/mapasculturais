@@ -21,6 +21,7 @@ $this->import('
     share-links 
     tabs
 ');
+
 $this->breadcramb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Projetos'), 'url' => $app->createUrl('panel', 'projects')],

@@ -5,7 +5,7 @@ $this->import('
         entity-header entity-cover entity-parent entity-profile mapas-breadcrumb
         entity-field entity-terms entity-social-media entity-actions
         entity-links entity-gallery entity-gallery-video
-        entity-admins entity-related-agents entity-owner entity-files-list
+        entity-admins entity-related-agents entity-owner entity-files-list link-project
         mapas-container mapas-card');
         
 $this->breadcramb = [
@@ -129,7 +129,7 @@ $this->breadcramb = [
                     <label><?php i::_e("Vincule um evento ao seu projeto"); ?></label>
                 </template>
                 <template #content>   
-                
+                <link-project entity="entity"></link-project>
                 </template>   
             </mapas-card>
 
