@@ -165,11 +165,12 @@ class Controller extends \MapasCulturais\Controller
       $this->checkFrequency($event, $value, $key);
 
       $app->disableAccessControl();
+
       $freq = mb_strtolower($value['FREQUENCY']);
       $ocurrence = new EventOccurrence();
-      $ocurrence->startsOn = (new DateTime($value['STARTS_ON']));
-      $ocurrence->endsOn = (new DateTime($value['ENDS_AT']));
-      $ocurrence->startAt = (new DateTime($value['STARTS_AT']));
+      $ocurrence->startsOn = $this->formatDate("d/m/Y", $value['STARTS_ON']);
+      $ocurrence->endsOn = $this->formatDate("H:i", $value['ENDS_AT']);
+      $ocurrence->startAt = $this->formatDate("H:i", $value['STARTS_AT']);
       $ocurrence->frequency = $moduleConfig['frequence_list_allowed'][$freq];
       $ocurrence->status = EventOccurrence::STATUS_ENABLED;
       $ocurrence->event = $event;
@@ -177,13 +178,66 @@ class Controller extends \MapasCulturais\Controller
       $ocurrence->separation = 1;
       $ocurrence->timezoneName = 'Etc/UTC';
 
-      switch (mb_strtolower($value['FREQUENCY'])) {
+      $duration = function() use ($value){
+         $start = $this->formatDate("H:i", $value['STARTS_AT']);
+         $stop = $this->formatDate("H:i", $value['ENDS_AT']);
+         $diferenca = strtotime($stop) - strtotime($start);
+
+         return ($diferenca / 60);
+      };
+
+      $rule = [
+         "spaceId" => $spaces[0]->id,
+         "startsAt" => $this->formatDate("H:i", $value['STARTS_AT'], "H:i"),
+         "duration" => $duration(),
+         "frequency" => $moduleConfig['frequence_list_allowed'][$freq],
+         "startsOn" => $this->formatDate("d/m/Y", $value['STARTS_ON'], "Y-m-d"),
+         "until" => $this->formatDate("d/m/Y", $value['ENDS_ON'], "Y-m-d"),
+         "price" => $value['PRICE'],
+         "description" => "",
+      ];
+     
+      switch ('semanal') {
          case i::__('diariamente'):
          case i::__('todos os dias'):
          case i::__('diario'):
          case i::__('daily'):
-            $exec = function () use ($ocurrence, $value, $app) {
-               return "AAA";
+            $exec = function () use ($ocurrence, $value, $app, &$rule) {
+               $rule['description'].= "Diariamente";
+
+               $months[$value['STARTS_ON']] = $value['STARTS_ON'];
+               $months[$value['ENDS_ON']] = $value['ENDS_ON'];
+               
+               $_months = array_keys($months);
+            
+               $dateIn = $this->formatDate("d/m/Y", $_months[0], false);
+               $dateFn = $this->formatDate("d/m/Y", $_months[1], false);
+               
+               $years[$dateIn->format("Y")] = $dateIn->format("Y");
+               $years[$dateFn->format("Y")] = $dateFn->format("Y");
+               $_years = array_keys($years);
+
+               $yearIn = null;
+               $yearFn = null;
+               if(count($_years) == 1){
+                  $yearFn = " de ".$this->formatDate("Y", $_years[0], "Y");
+               }else{
+                  if(isset($_years[0]) && isset($_years[0])){
+                     $yearIn = " de ".$this->formatDate("Y", $_years[0], "Y");
+                     $yearFn = " de ".$this->formatDate("Y", $_years[1], "Y");
+                  }else{
+                     $yearFn = " de ".$this->formatDate("Y", $_years[0], "Y");
+                  }
+                 
+               }
+              
+               $start = $this->formatDate("H:i", $value['STARTS_AT'], false);
+               if(count($_months) == 1){
+                  $dateFn = $this->formatDate("d/m/Y", $_months[1], false);
+                  $rule['description'].= " de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearIn}  às {$start->format("H:i")}";
+               }else{
+                  $rule['description'].= " de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}";
+               }
             };
             break;
          case i::__('semanal'):
@@ -193,7 +247,7 @@ class Controller extends \MapasCulturais\Controller
 
                $moduleConfig = $app->modules['EventImporter']->config;
 
-               $week_days = $moduleConfig['week_days'];
+               $week_days = array_keys($moduleConfig['week_days']);
                $days_list_positive = $moduleConfig['days_list_positive'];
 
                $days = [];
@@ -203,31 +257,85 @@ class Controller extends \MapasCulturais\Controller
                   }
                }
 
-               $ocurrence->endsAt = (new DateTime($value['ENDS_AT']));
-               $rule['endsAt'] = (new DateTime($value['ENDS_AT']))->format("H:i");
+               $rule['endsAt'] = $this->formatDate("H:i", $value['ENDS_AT'], "H:i");
                $rule['day'] = $days;
+
+               $count = count($days);
+               $d = array_values($moduleConfig['week_days']);
+               
+               if($days){
+                  $rule['description'] = "Toda ";
+                  foreach($days as $key => $day){
+            
+                     if($count == 1){
+                        $rule['description'].= " e ";
+                     }
+                 
+                     $rule['description'].= $d[$key];
+            
+                     if($count > 2){
+                        $rule['description'].= ", ";
+                     }
+   
+                     $count--;
+                  }
+
+                  $rule['description'].= " ";
+               }
+              
+               $months[$value['STARTS_ON']] = $value['STARTS_ON'];
+               $months[$value['ENDS_ON']] = $value['ENDS_ON'];
+
+               $_months = array_keys($months);
+
+               $dateIn = $this->formatDate("d/m/Y", $_months[0], false);
+               $dateFn = $this->formatDate("d/m/Y", $_months[1], false);
+               
+               $years[$dateIn->format("Y")] = $dateIn->format("Y");
+               $years[$dateFn->format("Y")] = $dateFn->format("Y");
+               $_years = array_keys($years);
+
+               $yearIn = null;
+               $yearFn = null;
+               if(count($_years) == 1){
+                  $yearFn = " de ".$this->formatDate("Y", $_years[0], "Y");
+               }else{
+                  if(isset($_years[0]) && isset($_years[0])){
+                     $yearIn = " de ".$this->formatDate("Y", $_years[0], "Y");
+                     $yearFn = " de ".$this->formatDate("Y", $_years[1], "Y");
+                  }else{
+                     $yearFn = " de ".$this->formatDate("Y", $_years[0], "Y");
+                  }
+                 
+               }
+               
+               $start = $this->formatDate("H:i", $value['STARTS_AT'], false);
+               if(count($_months) == 1){
+                  $rule['description'].= "de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearFn}  às {$start->format("H:i")}";
+               }else{
+                  $dateFn = $this->formatDate("d/m/Y", $_months[1], false);
+                  $rule['description'].= "de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}";
+               }
+
             };
             break;
          case i::__('uma vez'):
          case i::__('once'):
-            $exec = function () use ($ocurrence, $value, $app) {
-               return "CCC";
+            $exec = function () use ($ocurrence, $value, $app, &$rule) {
+               $dateIn = $this->formatDate("d/m/Y", $value['STARTS_ON'], false);
+               $start = $this->formatDate("H:i", $value['STARTS_AT'], false);
+
+               $rule['description'].= "Dia {$dateIn->format("d")} de {$dateIn->format("F")} de {$dateIn->format("Y")} às {$start->format("H:i")}";
             };
             break;
       }
 
       $exec();
-      $rule = [
-            "spaceId" => $spaces[0]->id,
-            "startsAt" => (new DateTime($value['STARTS_AT']))->format("H:i"),
-            "duration" => "120",
-            "frequency" => $moduleConfig['frequence_list_allowed'][$freq],
-            "startsOn" => (new DateTime($value['STARTS_ON']))->format("Y-m-d"),
-            "until" => (new DateTime($value['ENDS_ON']))->format("Y-m-d"),
-            "description" => " de 4 a 18 de outubro de 2022 às 12:00",
-            "price" => $value['PRICE'],
-         ];
-
+      
+      $from = array_keys($moduleConfig['dic_months']);
+      $to = array_values($moduleConfig['dic_months']);
+      $rule['description'] = str_replace($from, $to, $rule['description']);
+      
       $ocurrence->rule = $rule;
       $app->disableAccessControl();
       $ocurrence->save(true);
