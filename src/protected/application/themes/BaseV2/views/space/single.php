@@ -57,7 +57,7 @@ $this->breadcramb = [
                             </div>
 
                             <div class="col-12">
-                                <entity-seals :entity="entity" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
+                                <entity-seals :entity="entity" :editable="entity.currentUserPermissions.createSealRelation" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                             </div>
 
                             <div class="col-12">
