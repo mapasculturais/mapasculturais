@@ -79,7 +79,7 @@ class Controller extends \MapasCulturais\Controller
             $_language = mb_strtolower($language);
 
             if (!in_array($_language, array_keys($languages_list))) {
-               $this->error("linguagem{$_language} não existe");
+               $this->error("A linguagem --{$_language}-- não existe");
             }
          }
 
