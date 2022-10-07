@@ -72,8 +72,7 @@ $this->breadcramb = [
                                 <share-links title="<?php i::esc_attr_e('Compartilhar');?>" text="<?= i::_e('Veja este link:'); ?>"></share-links>
                             </div>
 
-                                <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity">
-                                </entity-owner>
+                            <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
 
                             <div class="col-12">
                                 <entity-admins :entity="entity"></entity-admins>
