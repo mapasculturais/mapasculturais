@@ -1,10 +1,10 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
-$this->import('
+$this->import('create-project
         entity-header entity-cover entity-parent entity-profile mapas-breadcrumb
         entity-field entity-terms entity-social-media entity-actions
-        entity-links entity-gallery entity-gallery-video
+        entity-links entity-gallery entity-gallery-video entity-activity-card
         entity-admins entity-related-agents entity-owner entity-files-list link-project
         mapas-container mapas-card');
         
@@ -100,8 +100,16 @@ $this->breadcramb = [
                     <p><?php i::_e("Crie um projeto com informações básicas e de forma rápida."); ?></p>
                 </template>
                 <template #content>   
-                
-                </template>   
+                    <div class="grid-12">
+                        <div class="col-12">
+                            <create-project :editable="true"></create-project>
+                        </div>
+                        
+                        <div class="col-12">
+                            <entity-activity-card :entity="true" :editable="true"></entity-activity-card>
+                        </div>
+                    </div>
+                    </template>   
             </mapas-card>
 
             <mapas-card>
