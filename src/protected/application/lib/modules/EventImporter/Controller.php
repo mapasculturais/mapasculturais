@@ -47,11 +47,8 @@ class Controller extends \MapasCulturais\Controller
       $stm = (new Statement());
       $data = $stm->process($csv);
      
-      // Verificar se no csv existe as colunas minimas para cadastrar um evento "Colunas Obrigatorias"
-
-      // Mapear as colunas 
       foreach ($data as $key => $value) {
-
+       
          if(empty($value['NAME']) || $value['NAME'] == ''){
             $this->error("A coluna nome está vazia na linha {$key}");
          }
