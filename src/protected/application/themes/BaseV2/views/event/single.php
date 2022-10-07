@@ -105,10 +105,7 @@ $this->breadcramb = [
                                 <entity-list title="<?php i::esc_attr_e('Oportunidades'); ?>" type="opportunity" :ids="entity.relatedOpportunities"></entity-list>
                             </div>
 
-                            <div class="col-12">
-                                <entity-owner title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity">
-                                    </entity-links>
-                            </div>
+                            <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
                     </aside>
                 </mapas-container>
             </div>  
