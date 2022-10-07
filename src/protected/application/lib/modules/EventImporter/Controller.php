@@ -46,7 +46,7 @@ class Controller extends \MapasCulturais\Controller
 
       $stm = (new Statement());
       $data = $stm->process($csv);
-
+     
       // Verificar se no csv existe as colunas minimas para cadastrar um evento "Colunas Obrigatorias"
 
       // Mapear as colunas 
