@@ -349,19 +349,17 @@ class Controller extends \MapasCulturais\Controller
       $moduleConfig = $app->modules['EventImporter']->config;
 
       // Valida a hora inicial
-      $_starts_at = (new DateTime($value['STARTS_ON']))->format("Y-m-d")." ".$value['STARTS_AT'];
-      $starts_at = new DateTime($_starts_at);
+      $starts_at = $this->formatDate("d/m/Y H:i", ($value['STARTS_ON']." ".$value['STARTS_AT']), false);
       if(empty($value['STARTS_AT']) || $value['STARTS_AT'] == ''){
          $this->error("A coluna Hora inícial está vazia na linha {$key}");
       }   
-      
+
       if($starts_at->format("H:i") != $value['STARTS_AT']){
          $this->error("A coluna Hora final é inválida na linha {$key}");
       }
       
       // Valida a hora final
-      $_ends_at = (new DateTime($value['STARTS_ON']))->format("Y-m-d")." ".$value['ENDS_AT'];
-      $ends_at = new DateTime($_ends_at);
+      $ends_at = $this->formatDate("d/m/Y H:i", ($value['STARTS_ON']." ".$value['ENDS_AT']), false);
       if(empty($value['ENDS_AT']) || $value['ENDS_AT'] == ''){
          $this->error("A coluna Hora final está vazia na linha {$key}");
       }
@@ -370,8 +368,9 @@ class Controller extends \MapasCulturais\Controller
          $this->error("A coluna Hora final é inválida na linha {$key}");
       }
       
+    
       // Valida a data inicial
-      $starts_on = new DateTime($value['STARTS_ON']);
+      $starts_on = $this->formatDate("d/m/Y", $value['STARTS_ON'], false);
       if ($starts_on->format("d/m/Y") != $value['STARTS_ON']) {
          $this->error("O formato da Data inícial é inválido na linha {$key}. O formato esperado é YYYY/MM/DD");
       }
@@ -382,7 +381,7 @@ class Controller extends \MapasCulturais\Controller
       
       // Valida a data final
       if(in_array($value['FREQUENCY'], $moduleConfig['use_endsat'])){
-         $ends_on = new DateTime($value['ENDS_ON']);
+         $ends_on = $this->formatDate("d/m/Y", $value['ENDS_ON'], false);
          if (empty($value['ENDS_ON']) || $value['ENDS_ON'] == "") {
             $this->error("A Coluna Data Final Está vazia na linha {$key}");
          }
@@ -397,6 +396,15 @@ class Controller extends \MapasCulturais\Controller
    public function error($message)
    {
       throw new Exception(i::__($message));
+   }
+
+   public function formatDate($formatIn, $date, $formatOut = "Y-m-d H:i")
+   {
+      if($formatOut){
+         return DateTime::createFromFormat($formatIn, $date)->format($formatOut);
+      }
+
+      return DateTime::createFromFormat($formatIn, $date);
    }
   
 }
