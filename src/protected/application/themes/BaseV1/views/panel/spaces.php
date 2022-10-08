@@ -46,7 +46,7 @@ $arquivo_num = count($app->user->archivedSpaces);
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$draft): ?>
-            <div class="alert info"><?php printf(\MapasCulturais\i::__("Você não possui nenhum rascunho de %s"), $this->dict('entities: space'));?>.</div>
+            <div class="alert info"><?php printf(\MapasCulturais\i::__("Você não possui nenhum rascunho de %s"), $this->dict('entities: space', false));?>.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->

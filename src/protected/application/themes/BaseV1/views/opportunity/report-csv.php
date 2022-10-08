@@ -163,13 +163,13 @@ foreach($registrations as $i => $r) {
 
         $_field_val = (isset($field["field_name"])) ? $r->{$field["field_name"]} : "-";
 
+        if (is_object($_field_val)){
+            $_field_val = (array)$_field_val;
+        }
+
         if(is_entity_location_field($field)) {
             $outRow[] = str_replace(';', ',', $_field_val['En_Estado']);
             $outRow[] = str_replace(';', ',', $_field_val['En_Municipio']);
-        }
-
-        if (is_object($_field_val)){
-            $_field_val = (array)$_field_val;
         }
 
         if(isset($_field_val["endereco"]) && $_field_val["endereco"] != null){
