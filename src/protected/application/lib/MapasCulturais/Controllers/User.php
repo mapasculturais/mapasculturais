@@ -17,12 +17,17 @@ use MapasCulturais\Traits;
  */
 class User extends Controller {
     use Traits\ControllerSoftDelete,
+        Traits\ControllerEntity,
+        Traits\ControllerEntityActions,
         Traits\ControllerAPI {
-        API_find as __API_find;
-        API_findOne as __API_findOne;
+            API_find as __API_find;
+            API_findOne as __API_findOne;
     }
     
-    protected $entityClassName = 'MapasCulturais\\Entities\\User';
+    function __construct()
+    {
+        $this->entityClassName = 'MapasCulturais\\Entities\\User';
+    }
 
     function getRequestedEntity() {
         $app = App::i();
@@ -31,7 +36,6 @@ class User extends Controller {
         } else {
             return null;
         }
-
     }
 
     function DELETE_single(){
