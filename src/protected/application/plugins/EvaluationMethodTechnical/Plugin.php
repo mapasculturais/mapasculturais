@@ -383,6 +383,12 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     {
         $app = App::i();
 
+        $reg = $registration;
+        
+        do{
+            $reg->registerFieldsMetadata();
+        } while($reg = $reg->previousPhase);
+        
         $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->affirmativePolicies;
         $affirmativePoliciesRoof = $registration->opportunity->evaluationMethodConfiguration->affirmativePoliciesRoof;
         $isActiveAffirmativePolicies = filter_var($registration->opportunity->evaluationMethodConfiguration->isActiveAffirmativePolicies, FILTER_VALIDATE_BOOL);

@@ -355,7 +355,7 @@ class Module extends \MapasCulturais\Module
             $this->requireAuthentication();
             $user = $app->user;
 
-            $this->render('accountabilitys', ['user' => $user]);
+            $this->render('accountabilitys', []);
         });
 
         //Filtra somente as prestações de contas para exibição no painel
