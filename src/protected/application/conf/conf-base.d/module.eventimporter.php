@@ -34,5 +34,15 @@ return [
         "October" => "Outubro",
         "November" => "Novembro",
         "December" => "Dezembro",
-    ]
+    ],
+    "eventimporter.files_grp_import" => [
+        'AVATAR' => 'avatar', 
+        'HEADER' => 'header',
+        'GALLERY' => 'gallery',
+    ],
+    "eventimporter.metalists_import" => [
+        'DOWNLOADS',
+        'VIDEOS',
+        'LINKS'
+    ],
 ];

@@ -19,6 +19,8 @@ class Module extends \MapasCulturais\Module
             'week_days' => $app->config['eventimporter.week_days'],
             'use_endsat' => $app->config['eventimporter.use_endsat'],
             'dic_months' => $app->config['eventimporter.dic_months'],
+            'files_grp_import' => $app->config['eventimporter.files_grp_import'],
+            'metalists_import' => $app->config['eventimporter.metalists_import'],
         ];
 
         parent::__construct($config);
