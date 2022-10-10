@@ -144,7 +144,6 @@ class Controller extends \MapasCulturais\Controller
 
       $moduleConfig = $app->modules['EventImporter']->config;
 
-
       $collum_spa = 'id';
       if (!is_numeric($value['SPACE'])) {
          $collum_spa = 'name';
@@ -201,7 +200,7 @@ class Controller extends \MapasCulturais\Controller
          case i::__('diario'):
          case i::__('daily'):
             $exec = function () use ($ocurrence, $value, $app, &$rule) {
-               $rule['description'].= "Diariamente";
+               $rule['description'].= i::__('Diariamente');
 
                $months[$value['STARTS_ON']] = $value['STARTS_ON'];
                $months[$value['ENDS_ON']] = $value['ENDS_ON'];
@@ -266,19 +265,19 @@ class Controller extends \MapasCulturais\Controller
                   foreach($days as $key => $day){
             
                      if($count == 1){
-                        $rule['description'].= " e ";
+                        $rule['description'].= i::__(' e ');
                      }
                  
                      $rule['description'].= $d[$key];
             
                      if($count > 2){
-                        $rule['description'].= ", ";
+                        $rule['description'].= i::__(', ');
                      }
    
                      $count--;
                   }
 
-                  $rule['description'].= " ";
+                  $rule['description'].= i::__(' ');
                }
               
                $months[$value['STARTS_ON']] = $value['STARTS_ON'];
@@ -296,23 +295,23 @@ class Controller extends \MapasCulturais\Controller
                $yearIn = null;
                $yearFn = null;
                if(count($_years) == 1){
-                  $yearFn = " de ".$this->formatDate("Y", $_years[0], "Y");
+                  $yearFn = i::__(" de ".$this->formatDate("Y", $_years[0], "Y"));
                }else{
                   if(isset($_years[0]) && isset($_years[0])){
-                     $yearIn = " de ".$this->formatDate("Y", $_years[0], "Y");
-                     $yearFn = " de ".$this->formatDate("Y", $_years[1], "Y");
+                     $yearIn = i::__(" de ".$this->formatDate("Y", $_years[0], "Y"));
+                     $yearFn = i::__(" de ".$this->formatDate("Y", $_years[1], "Y"));
                   }else{
-                     $yearFn = " de ".$this->formatDate("Y", $_years[0], "Y");
+                     $yearFn = i::__(" de ".$this->formatDate("Y", $_years[0], "Y"));
                   }
                  
                }
                
                $start = $this->formatDate("H:i", $value['STARTS_AT'], false);
                if(count($_months) == 1){
-                  $rule['description'].= "de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearFn}  às {$start->format("H:i")}";
+                  $rule['description'].= i::__("de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearFn}  às {$start->format("H:i")}");
                }else{
                   $dateFn = $this->formatDate("d/m/Y", $_months[1], false);
-                  $rule['description'].= "de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}";
+                  $rule['description'].= i::__("de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}");
                }
 
             };
@@ -323,7 +322,7 @@ class Controller extends \MapasCulturais\Controller
                $dateIn = $this->formatDate("d/m/Y", $value['STARTS_ON'], false);
                $start = $this->formatDate("H:i", $value['STARTS_AT'], false);
 
-               $rule['description'].= "Dia {$dateIn->format("d")} de {$dateIn->format("F")} de {$dateIn->format("Y")} às {$start->format("H:i")}";
+               $rule['description'].= i::__("Dia {$dateIn->format("d")} de {$dateIn->format("F")} de {$dateIn->format("Y")} às {$start->format("H:i")}");
             };
             break;
       }
