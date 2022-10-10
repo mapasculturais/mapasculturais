@@ -15,7 +15,6 @@ $template = '
     </div>
 </li>';
 ?>
-
 <div class="widget">
     <h3 class="editando"><?= i::_e('Importação de eventos')?></h3>
     <div>
