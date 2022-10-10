@@ -9,9 +9,7 @@ use League\Csv\Reader;
 use MapasCulturais\App;
 use League\Csv\Statement;
 use MapasCulturais\Entities\Event;
-use MapasCulturais\Controllers\Space;
 use MapasCulturais\Entities\EventOccurrence;
-use MapasCulturais\Entities\RequestEventOccurrence;
 
 class Controller extends \MapasCulturais\Controller
 {
