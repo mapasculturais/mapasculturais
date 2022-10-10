@@ -78,12 +78,13 @@
         }
 
         &.active {
-            background-color: var(--mc-primary-500);
-            color: white;
+            background-color: var(--mc-secondary-300);
+            color: var(    --mc-black);
 
             &:focus, &:hover {
-                background-color: var(--mc-primary-700);
+                background-color: var(--mc-danger-700);
             }
+            
         }
 
         .iconify {
