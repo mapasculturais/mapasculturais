@@ -2,6 +2,7 @@
 
 namespace EventImporter;
 
+use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Definitions;
 
@@ -13,14 +14,64 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         $config += [
-            'frequence_list_allowed' => $app->config['eventimporter.frequence_list_allowed'],
-            'rating_list_allowed' => $app->config['eventimporter.rating_list_allowed'],
-            'days_list_positive' => $app->config['eventimporter.days_list_positive'],
-            'week_days' => $app->config['eventimporter.week_days'],
-            'use_endsat' => $app->config['eventimporter.use_endsat'],
-            'dic_months' => $app->config['eventimporter.dic_months'],
-            'files_grp_import' => $app->config['eventimporter.files_grp_import'],
-            'metalists_import' => $app->config['eventimporter.metalists_import'],
+            "enabled" => function() use ($app){
+                return $app->user->is("admin");
+            },
+            'frequence_list_allowed' => [
+                i::__('uma vez') => 'once',
+                i::__('semanal') => 'weekly',
+                i::__('diariamente') => 'daily',
+                'once' => 'once',
+                'weekly' => 'weekly',
+                'daily' => 'daily',
+            ],
+            'rating_list_allowed' => [
+                i::__('livre'), 
+                i::__('10 anos'), 
+                i::__('12 anos'), 
+                i::__('14 anos'), 
+                i::__('16 anos'), 
+                i::__('18 anos')
+            ],
+            'days_list_positive' => [
+                i::__('sim'), 
+                i::__('x'), 
+                i::__('1')
+            ],
+            'week_days' => [
+                'MODAY' => i::__('seg'),
+                'TUESDAY' => i::__('ter'),
+                'WEDNESDAY' => i::__('qua'),
+                'THURSDAY' => i::__('qui'),
+                'FRIDAY' => i::__('sex'),
+                'SATURDAY' => i::__('sab'),
+                'SUNDAY' => i::__('dom')
+            ],
+            'use_endsat' => [i::__('uma vez'), 'once'],
+            'dic_months' => [
+                "January" => i::__("Janeiro"),
+                "February" => i::__("Fevereiro"),
+                "March" => i::__("Março"),
+                "April" => i::__("Abril"),
+                "May" => i::__("Maio"),
+                "June" => i::__("Junho"),
+                "July" => i::__("Julho"),
+                "August" => i::__("Agosto"),
+                "September" => i::__("Setembro"),
+                "October" => i::__("Outubro"),
+                "November" => i::__("Novembro"),
+                "December" => i::__("Dezembro"),
+            ],
+            'files_grp_import' => [
+                'AVATAR' => 'avatar', 
+                'HEADER' => 'header',
+                'GALLERY' => 'gallery',
+            ],
+            'metalists_import' => [
+                'DOWNLOADS',
+                'VIDEOS',
+                'LINKS'
+            ],
         ];
 
         parent::__construct($config);

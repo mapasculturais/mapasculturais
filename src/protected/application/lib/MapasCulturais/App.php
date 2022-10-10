@@ -2862,6 +2862,9 @@ class App extends \Slim\Slim{
      ************/
 
     function slugify($text) {
+
+        $text = $this->removeAccents($text);
+
         // replace non letter or digits by -
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
 
