@@ -18,6 +18,9 @@ use stdClass;
 class Controller extends \MapasCulturais\Controller
 {
    function GET_downloadExample(){
+
+      $this->requireAuthentication();
+
       $app = App::i();
       $moduleConfig = $app->modules['EventImporter']->config;
 
@@ -46,6 +49,8 @@ class Controller extends \MapasCulturais\Controller
 
    function GET_uploadFile()
    {
+      $this->requireAuthentication();
+
       $app = App::i();
 
       $moduleConfig = $app->modules['EventImporter']->config;
@@ -60,7 +65,7 @@ class Controller extends \MapasCulturais\Controller
       $file_dir = $file->path;
 
       if (file_exists($file_dir)) {
-         $data = $this->processCSV($file_dir);
+         $this->processCSV($file_dir);
       }else{
          throw new Exception("Arquivo CSV não existe. Erro ao processar");
       }
