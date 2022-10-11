@@ -8,6 +8,7 @@ use MapasCulturais\i;
 use League\Csv\Reader;
 use MapasCulturais\App;
 use League\Csv\Statement;
+use League\Csv\Writer;
 use MapasCulturais\Entity;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\EventOccurrence;
@@ -16,6 +17,32 @@ use stdClass;
 
 class Controller extends \MapasCulturais\Controller
 {
+   function GET_downloadExample(){
+      $app = App::i();
+      $moduleConfig = $app->modules['EventImporter']->config;
+
+      $dir = PRIVATE_FILES_PATH . "EventImporter";
+      $file_name = "event-importer-example.csv";
+
+      $path = $dir."/".$file_name;
+
+      if (!is_dir($dir)) {
+         mkdir($dir, 0700, true);
+      }
+
+      $stream = fopen($path, 'w');
+
+      $csv = Writer::createFromStream($stream);
+      $csv->setDelimiter(";");
+      $csv->insertOne($moduleConfig['csv_header_example']);
+
+      header('Content-Type: application/csv');
+      header('Content-Disposition: attachment; filename=' . $file_name);
+      header('Pragma: no-cache');
+      readfile($path);
+      unlink($path);
+
+   }
 
    function GET_uploadFile()
    {
@@ -83,9 +110,9 @@ class Controller extends \MapasCulturais\Controller
 
          $data[$pos] = $tmp;        
       }
-     
+
       foreach ($data as $key => $value) {
-       
+   
          if(empty($value['NAME']) || $value['NAME'] == ''){
             $this->error("A coluna nome está vazia na linha {$key}");
          }

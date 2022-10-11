@@ -5,7 +5,7 @@ $app = MapasCulturais\App::i();
 $url = $app->createUrl('eventimporter','uploadFile');
 $files = $entity->getFiles('event-import-file');
 $filesResumo =$files;
-
+$url_file_example =  $app->createUrl('eventimporter','downloadExample');
 $template = '
 <li id="file-{{id}}" class="widget-list-item">
     <a href="{{url}}" rel="noopener noreferrer">{{description}}</a> 
@@ -18,6 +18,7 @@ $template = '
 <div class="widget">
     <h3 class="editando"><?= i::_e('Importação de eventos')?></h3>
     <div>
+        <a href="<?= $url_file_example?>">Baixar exemplo</a>
         <a class="add js-open-editbox hltip" data-target="#csv-events-file" href="#" title="<?= i::_e('Clique aqui para subir o arquivo')?>"> subir arquivo</a>
     </div>
     <div id="csv-events-file" class="js-editbox mc-left" title="<?= i::_e('Importar CSV de eventos')?>" data-submit-label="Enviar">
