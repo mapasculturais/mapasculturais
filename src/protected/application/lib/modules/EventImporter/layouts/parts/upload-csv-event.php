@@ -25,9 +25,10 @@ $template = '
     </div>
     <ul class="widget-list js-eventImporter js-slimScroll">
         <?php if(is_array($files)): foreach($files as $file): ?>
+            <?php $file_process = json_decode($app->user->profile->event_importer_processed_file)?>
             <li id="file-<?php echo $file->id ?>" class="widget-list-item<?php if($this->isEditable()) echo i::_e(' is-editable'); ?>" >
                 <a href="<?php echo $file->url;?>"><span><?php echo $file->description ? $file->description : $file->name;?></span></a>
-                <?php if($processed_at = $entity->cnab240_processed_files->{$file->name} ?? null): ?>
+                <?php if($processed_at = $file_process->{$file->name} ?? null): ?>
                     - processado em <?= $processed_at ?>
                 <?php else: ?>
                 <div class="botoes">
