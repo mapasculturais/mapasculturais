@@ -169,6 +169,12 @@ class Controller extends \MapasCulturais\Controller
          $this->createMetalists($value, $event);
       }
 
+      $_agent = $app->user->profile;
+      $files = json_decode($_agent->event_importer_processed_file) ?? (new stdClass);
+      $files->{basename($file_dir)} = date('d/m/Y \à\s H:i');
+      $_agent->event_importer_processed_file = json_encode($files);
+      $_agent->save(true);
+      
       $url = $app->createUrl("painel", "eventos");
       $app->redirect($url);
    }
