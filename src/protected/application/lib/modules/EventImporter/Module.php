@@ -133,7 +133,7 @@ class Module extends \MapasCulturais\Module
                 $this->controller = $app->controller('agent');
                 $this->part('upload-csv-event',['entity' => $app->user->profile]);
                 $this->controller = $app->controller('panel');
-
+            }
         });
     }
 
