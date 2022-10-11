@@ -33,7 +33,7 @@ $this->import('
     <panel--entity-actions :entity="entity"></panel--entity-actions>
 
     <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
-{{entity.profile.currentUserPermissions}}
+
     <p>ID: {{entity.id}}</p>
     <p v-if="!entity.editingEmail">
         <?= i::__('E-mail') ?>: {{entity.email}}
