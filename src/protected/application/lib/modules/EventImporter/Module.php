@@ -122,13 +122,17 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
+        $self = $this;
+
         $app->view->enqueueStyle('app','assets-file','css/eventimporter.css');
         //Inseri parte para upload na sidbar direita
-        $app->hook('template(panel.events.settings-nav):begin', function() use($app) {
-            /** @var Theme $this */
-            $this->controller = $app->controller('agent');
-            $this->part('upload-csv-event',['entity' => $app->user->profile]);
-            $this->controller = $app->controller('panel');
+        $app->hook('template(panel.events.settings-nav):begin', function() use($app, $self) {
+            $enabled = $self->config['enabled'];
+            if($enabled()){
+                /** @var Theme $this */
+                $this->controller = $app->controller('agent');
+                $this->part('upload-csv-event',['entity' => $app->user->profile]);
+                $this->controller = $app->controller('panel');
 
         });
     }
