@@ -15,7 +15,7 @@ $this->import('entities mc-link');
 
                 <mc-link class="entity-list__list-item-link" :entity="entity">
 
-                    <div v-else class="entity-list__list-item-img">
+                    <div class="entity-list__list-item-img">
                         
                         <img v-if="entity.files.avatar?.transformations?.avatarSmall?.url" :src="entity.files.avatar?.transformations?.avatarSmall?.url">
                         <mc-icon v-else name="agent-1"></mc-icon>
