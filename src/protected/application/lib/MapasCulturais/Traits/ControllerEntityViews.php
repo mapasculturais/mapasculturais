@@ -54,7 +54,11 @@ trait ControllerEntityViews {
         }
 
         if ($entity->canUser('view')) {
-            $this->render('single', ['entity' => $entity]);
+            if ($app->request()->isAjax()) {
+                $this->json($entity);
+            } else {
+                $this->render('single', ['entity' => $entity]);
+            }
         } else {
             $app->pass();
         }
