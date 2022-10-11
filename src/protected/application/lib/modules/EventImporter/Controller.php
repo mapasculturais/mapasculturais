@@ -12,6 +12,7 @@ use MapasCulturais\Entity;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\EventOccurrence;
 use MapasCulturais\Entities\MetaList;
+use stdClass;
 
 class Controller extends \MapasCulturais\Controller
 {
@@ -45,7 +46,36 @@ class Controller extends \MapasCulturais\Controller
       $csv->setHeaderOffset(0);
 
       $stm = (new Statement());
-      $data = $stm->process($csv);
+      $csv_data = $stm->process($csv);
+      $header_default = $moduleConfig['header_default'];
+
+      $header = [];
+      foreach($header_default as $hdk => $hdv){
+         foreach($hdv as $hk => $hv){
+
+            $header[$hdk][] = $app->slugify($hv);
+
+         }
+      }
+
+      $tmp = [];
+      foreach($csv_data as $pos => $values){
+         $collums = array_keys($values);
+
+         foreach($collums as $collum){
+
+            foreach($header as $key => $alloweds){
+
+               $_collum = $app->slugify($collum);
+               if(in_array(trim($_collum), $alloweds)){
+                  $tmp[$key] = trim($values[$collum]);
+               }
+              
+            }
+         }
+
+         $data[$pos] = $tmp;        
+      }
      
       foreach ($data as $key => $value) {
        
