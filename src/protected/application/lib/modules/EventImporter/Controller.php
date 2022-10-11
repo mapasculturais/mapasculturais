@@ -21,6 +21,13 @@ class Controller extends \MapasCulturais\Controller
    {
       $app = App::i();
 
+      $moduleConfig = $app->modules['EventImporter']->config;
+      $enabled = $moduleConfig['enabled'];
+
+      if(!$enabled()){
+         $this->error("Permissão negada, fale com administrador");
+      }
+
       $request = $this->data;
       $file = $app->repo('File')->find($request['file']);
       $file_dir = $file->path;
