@@ -7,38 +7,42 @@ $files = $entity->getFiles('event-import-file');
 $filesResumo =$files;
 $url_file_example =  $app->createUrl('eventimporter','downloadExample');
 $template = '
-<li id="file-{{id}}" class="widget-list-item">
-    <a href="{{url}}" rel="noopener noreferrer">{{description}}</a> 
+<article id="file-{{id}}" class="objeto">
+    <h1><a href="{{url}}" rel="noopener noreferrer">{{description}}</a></h1> 
     <div class="botoes">
-        <a href="'.$url.'?file={{id}}" class="btn btn-primary hltip js-eventImporter-process" data-hltip-classes="hltip-ajuda" title="Clique para processar o arquivo enviado">processar</a>
-        <a data-href="{{deleteUrl}}" data-target="#file-{{id}}" data-configm-message="Remover este arquivo?" class="icon icon-close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo" rel="noopener noreferrer"></a>
+        <a href="'.$url.'?file={{id}}" class="btn btn-small btn-primary js-eventImporter-process">Processar</a>
+        <a data-href="{{deleteUrl}}" data-target="#file-{{id}}" data-configm-message="Remover este arquivo?" class="btn btn-small btn-danger js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo" rel="noopener noreferrer">Excluir</a>
     </div>
-</li>';
+</article>';
 ?>
-<div class="widget">
-    <h3 class="editando"><?= i::_e('Importação de eventos')?></h3>
-    <div>
-        <a href="<?= $url_file_example?>">Baixar exemplo</a>
-        <a class="add js-open-editbox hltip" data-target="#csv-events-file" href="#" title="<?= i::_e('Clique aqui para subir o arquivo')?>"> subir arquivo</a>
+<div id="event-importer">
+    <div style="margin:1em 0em; text-align: right;">
+        <a class="download" href="<?= $url_file_example?>"><?= i::_e('Baixar modelo')?></a>
+        <a class="add btn btn-default js-open-editbox hltip" data-target="#csv-events-file" href="#"> <?= i::_e('Enviar arquivo para importação')?></a>
     </div>
     <div id="csv-events-file" class="js-editbox mc-left" title="<?= i::_e('Importar CSV de eventos')?>" data-submit-label="Enviar">
-    <?php $this->ajaxUploader($entity, 'event-import-file', 'append', 'ul.js-eventImporter', $template, '', false, false, false)?>
+        <?php $this->ajaxUploader($entity, 'event-import-file', 'append', '.js-eventImporter', $template, '', false, false, false)?>
     </div>
-    <ul class="widget-list js-eventImporter js-slimScroll">
+    <div class="js-eventImporter">
         <?php if(is_array($files)): foreach($files as $file): ?>
             <?php $file_process = json_decode($app->user->profile->event_importer_processed_file)?>
-            <li id="file-<?php echo $file->id ?>" class="widget-list-item<?php if($this->isEditable()) echo i::_e(' is-editable'); ?>" >
-                <a href="<?php echo $file->url;?>"><span><?php echo $file->description ? $file->description : $file->name;?></span></a>
-                <?php if($processed_at = $file_process->{$file->name} ?? null): ?>
-                    - processado em <?= $processed_at ?>
-                <?php else: ?>
-                <div class="botoes">
-                    <a href="<?=$url?>?file=<?=$file->id?>" class="btn btn-primary hltip js-validador-process" data-hltip-classes="hltip-ajuda" title="Clique para processar o arquivo enviado">processar</a>
-                    <a data-href="<?php echo $file->deleteUrl?>" data-target="#file-<?php echo $file->id ?>" data-configm-message="Remover este arquivo?" class="delete hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo. Só é possível fazer esta ação antes do processamento."></a>
+            <article id="file-<?php echo $file->id ?>" class="objeto <?php if($this->isEditable()) echo i::_e(' is-editable'); ?>" >
+                <h1><a href="<?php echo $file->url;?>"><?php echo $file->description ? $file->description : $file->name;?></a></h1>
+                <div class="objeto-meta">
+                    <?php if($processed_at = $file_process->{$file->name} ?? null): ?>                        
+                    <div><span class="label"><?= i::_e('Arquivo:')?> </span> <?=$file->name?></div>
+                    <div><span class="label"><?= i::_e('Data de envio:')?> </span> <?=$file->createTimestamp->format("d/m/Y H:i")?></div>
+                    <div><span class="label"><?= i::_e('processado em:')?> </span> <?=$processed_at?></div>
+                    <?php endif; ?>
+                </div>
+                <?php if(!$processed_at = $file_process->{$file->name} ?? null): ?>
+                <div class="entity-actions">
+                    <a href="<?=$url?>?file=<?=$file->id?>" class="btn btn-small btn-primary js-validador-process"><?= i::_e('Processar')?></a>
+                    <a data-href="<?php echo $file->deleteUrl?>" data-target="#file-<?php echo $file->id ?>" data-configm-message="Remover este arquivo?" class="btn btn-small btn-danger js-remove-item"><?= i::_e('Excluir')?></a>
                 </div>
                 <?php endif; ?>
             
-            </li>
+            </article>
         <?php endforeach; endif;?>
-    </ul>
+    </div>
 </div>
