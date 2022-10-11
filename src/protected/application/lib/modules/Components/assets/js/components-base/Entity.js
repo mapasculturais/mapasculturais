@@ -6,7 +6,7 @@ class Entity {
         this.__objectId = `${objectType}-${id}`;
         this.__validationErrors = {};
         
-        this.__skipDataProperties = ['createTimestamp', 'updateTimestamp'];
+        this.__skipDataProperties = ['id', 'createTimestamp', 'updateTimestamp', 'lastLoginTimestamp'];
 
         this.__processing = false;
 
@@ -51,10 +51,10 @@ class Entity {
             let prop = obj[key];
             if (prop instanceof Array) {
                 for (let i in prop) {
-                    prop[i] = this.parceRelation(prop[i]);
+                    prop[i] = this.parseRelation(prop[i], key);
                 }
             } 
-            this[key] = this.parceRelation(prop);
+            this[key] = this.parseRelation(prop, key);
         }
 
         this.populateFiles(obj.files);
@@ -65,11 +65,12 @@ class Entity {
         return this;
     }
 
-    parceRelation(prop) {
-        if (prop?.['@entityType'] && prop?.id) {
-            const propAPI = new API(prop['@entityType'], this.__scope);
+    parseRelation(prop, key) {
+        const type = prop?.['@entityType'] || $DESCRIPTIONS?.[this.__objectType]?.[key]?.targetEntity.toLocaleLowerCase();
+        if (type && prop?.id) {
+            const propAPI = new API(type, this.__scope);
             const instance = propAPI.getEntityInstance(prop.id);
-            instance.populate(prop);
+            instance.populate(prop, true);
             return instance;
         } else {
             return prop;
@@ -225,7 +226,7 @@ class Entity {
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
     }
 
-    async save() {
+    async save(preserveValues = true) {
         this.__processing = this.text('salvando');
 
         const messages = useMessages();
@@ -239,8 +240,7 @@ class Entity {
                 } else {
                     messages.success(this.text('entidade salva'));
                 }
-    
-                this.populate(entity)
+                this.populate(entity, preserveValues)
             });
 
         } catch (error) {
@@ -499,7 +499,6 @@ class Entity {
 
     async createSealRelation(seal) 
     {   
-        console.log(seal)
         this.__processing = this.text('relacionando selo à entidade');
 
         try{
