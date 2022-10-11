@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\i;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\Exceptions\BadRequest;
 use MapasCulturais\Traits;
@@ -129,6 +130,15 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     protected $_isDeleting = false;
 
+    static function getValidations() {
+        return [
+            'email' => [
+                'unique' => i::__('Este e-mail já está sendo utilizado por outro usuário'),
+                'required' => i::__('O e-mail é obrigatório'),
+                'v::email()' => i::__('O valor informado não é um e-mail válido'),
+            ]
+        ];
+    }
 
     public function __construct() {
         parent::__construct();
