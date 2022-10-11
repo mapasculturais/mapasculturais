@@ -5,7 +5,9 @@ $this->activeNav = 'panel/user-management';
 $this->import('
     confirm-button
     entity
+    entity-field
     entity-seals
+    mc-icon
     panel--entity-actions
     panel--entity-tabs
     tabs
@@ -30,10 +32,22 @@ $this->import('
 
     <panel--entity-actions :entity="entity"></panel--entity-actions>
 
-    <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions.createSealRelation"></entity-seals>
-
+    <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
+{{entity.profile.currentUserPermissions}}
     <p>ID: {{entity.id}}</p>
-    <p><?= i::__('E-mail') ?>: {{entity.email}}</p>
+    <p v-if="!entity.editingEmail">
+        <?= i::__('E-mail') ?>: {{entity.email}}
+        <a @click="entity.editingEmail = true">
+            <mc-icon name="edit"></mc-icon>
+        </a>
+    </p>
+    <form class="grid-12" v-if="entity.editingEmail" @submit="entity.save().then(() => entity.editingEmail = false); $event.preventDefault();">
+        <div class="field col-4">
+            <entity-field :entity="entity" prop="email" hide-required>
+        </div>
+        <button class="col-2 button button-primary"><?php i::_e('Salvar') ?></button>
+        <button class="col-2 button button-secondary" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
+    </form>
     <p><?= i::__('Data de criação') ?>: {{entity.createTimestamp.date('long year')}} <?= i::__('às') ?> {{entity.createTimestamp.time()}}</p>
     <p><?= i::__('Último login') ?>: {{entity.lastLoginTimestamp.date('long year')}} <?= i::__('às') ?> {{entity.lastLoginTimestamp.time()}}</p>
     <p>
