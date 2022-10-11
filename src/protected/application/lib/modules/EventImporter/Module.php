@@ -167,8 +167,8 @@ class Module extends \MapasCulturais\Module
         $self = $this;
 
         $app->view->enqueueStyle('app','assets-file','css/eventimporter.css');
-        //Inseri parte para upload na sidbar direita
-        $app->hook('template(panel.events.settings-nav):begin', function() use($app, $self) {
+        
+        $app->hook('template(panel.events.tabs-contents):end', function() use($app, $self) {
             $enabled = $self->config['enabled'];
             if($enabled()){
                 /** @var Theme $this */
@@ -176,6 +176,10 @@ class Module extends \MapasCulturais\Module
                 $this->part('upload-csv-event',['entity' => $app->user->profile]);
                 $this->controller = $app->controller('panel');
             }
+        });
+
+        $app->hook('template(panel.events.tab-arquivo):after', function() use($app, $self) {
+            $this->part('tab',['id' => "event-importer", "label" => "Importação de eventos"]);
         });
     }
 
