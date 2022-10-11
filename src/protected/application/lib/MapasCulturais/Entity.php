@@ -901,7 +901,9 @@ abstract class Entity implements \JsonSerializable{
      */
     public function jsonSerialize() {
         $app = App::i();
-        $result = [];
+        $result = [
+            '@objectType' => $this->getControllerId()
+        ];
         $allowed_classes = [
             'DateTime',
             'MapasCulturais\Types\GeoPoint',
