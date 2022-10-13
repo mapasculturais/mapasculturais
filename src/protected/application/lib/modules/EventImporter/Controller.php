@@ -47,7 +47,7 @@ class Controller extends \MapasCulturais\Controller
 
    }
 
-   function GET_uploadFile()
+   function GET_processFile()
    {
       $this->requireAuthentication();
 
@@ -65,14 +65,14 @@ class Controller extends \MapasCulturais\Controller
       $file_dir = $file->path;
 
       if (file_exists($file_dir)) {
-         $this->processCSV($file_dir);
+         $this->checkCSV($file_dir);
       }else{
          throw new Exception("Arquivo CSV não existe. Erro ao processar");
       }
    }
 
    //Processa arquivos CSV
-   public function processCSV(string $file_dir)
+   public function checkCSV(string $file_dir)
    {
       $app = App::i();
 
