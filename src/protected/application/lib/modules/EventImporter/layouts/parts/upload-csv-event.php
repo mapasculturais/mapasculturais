@@ -16,7 +16,7 @@ $template = '
 ?>
 <div id="event-importer">
     <div style="margin:1em 0em; text-align: right;">
-        <a class="download" href="<?= $url_file_example?>"><?= i::_e('Baixar modelo')?></a>
+        <a class="download" href="<?= $url_file_example?>" download><?= i::_e('Baixar modelo')?></a>
         <a class="add btn btn-default js-open-editbox hltip" data-target="#csv-events-file" href="#"> <?= i::_e('Enviar arquivo para importação')?></a>
     </div>
     <div id="csv-events-file" class="js-editbox mc-left" title="<?= i::_e('Importar CSV de eventos')?>" data-submit-label="Enviar">
