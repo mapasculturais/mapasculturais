@@ -29,13 +29,13 @@ $this->breadcramb = [
 ];
 ?>
 
-<div class="main-app edit-1">
+<div class="main-app">
 
     <mapas-breadcrumb></mapas-breadcrumb>
             
     <entity-header :entity="entity" :editable="true"></entity-header>
 
-    <mapas-container class="edit-1__content">
+    <mapas-container>
 
         <mapas-card class="feature">
             <template #title>
