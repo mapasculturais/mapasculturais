@@ -2,7 +2,7 @@
 
 use MapasCulturais\i;
 $app = MapasCulturais\App::i();
-$url = $app->createUrl('eventimporter','uploadFile');
+$url = $app->createUrl('eventimporter','processFile');
 $files = $entity->getFiles('event-import-file');
 $filesResumo =$files;
 $url_file_example =  $app->createUrl('eventimporter','downloadExample');
