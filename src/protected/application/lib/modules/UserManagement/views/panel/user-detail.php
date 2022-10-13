@@ -71,14 +71,14 @@ $this->import('
             <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
         </div>
 
-        <div class="editing-email">
+        <div class="editing-email col-12">
             <div class="editing-email__content">
 
                 <label class="editing-email__content--label"><?= i::__('Configurações da conta do usuário') ?></label>
                 <p v-if="!entity.editingEmail">
                     <label class="editing-email__content--email"><?= i::__('E-mail') ?> : {{entity.email}}</label>
-                    <a @click="entity.editingEmail = true">
-                        <mc-icon name="edit"></mc-icon>
+                    <a @click="entity.editingEmail = true" class="editing-email__content--edit">
+                        <mc-icon name="edit"></mc-icon><label class="editing-email__content--edit-label"><?php i::_e('Alterar email')?></label>
                     </a>
                 </p>
                 <form class="grid-12" v-if="entity.editingEmail" @submit="entity.save().then(() => entity.editingEmail = false); $event.preventDefault();">
