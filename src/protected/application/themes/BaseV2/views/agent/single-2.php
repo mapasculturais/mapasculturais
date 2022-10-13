@@ -30,7 +30,7 @@ $this->breadcramb = [
 ];
 ?>
 
-<div class="main-app single-1">
+<div class="main-app">
     <mapas-breadcrumb></mapas-breadcrumb>
     <entity-header :entity="entity"></entity-header>
 
@@ -39,7 +39,7 @@ $this->breadcramb = [
         <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
 
-                    <mapas-container class="single-1__content">
+                    <mapas-container>
                         
                         <main>
 
