@@ -281,7 +281,10 @@ class Controller extends \MapasCulturais\Controller
          $event->classificacaoEtaria = $value['CLASSIFICATION'];
          $event->owner = $agent;
          $event->terms['linguagem'] = $languages;
-         $event->projectId = $projects[0]->id;
+         $event->projectId = $project->id;
+         $event->event_attendance = $value['EVENT_ATTENDANCE'];
+         $event->traducaoLibras = $value['LIBRAS_TRANSLATION'];
+         $event->descricaoSonora = $value['AUDIO_DESCRIPTION'];
          $event->save(true);
      
          $this->createOcurrency($event, $value, $key);
