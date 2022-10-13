@@ -26,7 +26,7 @@ $template = '
         <?php if(is_array($files)): foreach($files as $file): ?>
             <?php $file_process = json_decode($app->user->profile->event_importer_processed_file)?>
             <article id="file-<?php echo $file->id ?>" class="objeto <?php if($this->isEditable()) echo i::_e(' is-editable'); ?>" >
-                <h1><a href="<?php echo $file->url;?>"><?php echo $file->description ? $file->description : $file->name;?></a></h1>
+                <h1><a href="<?php echo $file->url;?>" download><?php echo $file->description ? $file->description : $file->name;?></a></h1>
                 <div class="objeto-meta">
                     <?php if($processed_at = $file_process->{$file->name} ?? null): ?>                        
                     <div><span class="label"><?= i::_e('Arquivo:')?> </span> <?=$file->name?></div>
@@ -34,12 +34,12 @@ $template = '
                     <div><span class="label"><?= i::_e('processado em:')?> </span> <?=$processed_at?></div>
                     <?php endif; ?>
                 </div>
-                <?php if(!$processed_at = $file_process->{$file->name} ?? null): ?>
                 <div class="entity-actions">
+                    <?php if(!$processed_at = $file_process->{$file->name} ?? null): ?>
                     <a href="<?=$url?>?file=<?=$file->id?>" class="btn btn-small btn-primary js-validador-process"><?= i::_e('Processar')?></a>
                     <a data-href="<?php echo $file->deleteUrl?>" data-target="#file-<?php echo $file->id ?>" data-configm-message="Remover este arquivo?" class="btn btn-small btn-danger js-remove-item"><?= i::_e('Excluir')?></a>
+                    <?php endif; ?>
                 </div>
-                <?php endif; ?>
             
             </article>
         <?php endforeach; endif;?>
