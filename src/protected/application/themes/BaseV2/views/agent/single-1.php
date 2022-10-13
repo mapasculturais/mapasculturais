@@ -1,7 +1,6 @@
 <?php
 use MapasCulturais\i;
 $this->layout = 'entity';
-
 $this->import('
     entity-admins
     entity-files-list
@@ -19,8 +18,6 @@ $this->import('
     mapas-breadcrumb
     mapas-card
     mapas-container
-    mc-map
-    mc-map-marker
     share-links
     tabs
 ');

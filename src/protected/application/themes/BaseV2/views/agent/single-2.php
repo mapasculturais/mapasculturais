@@ -1,7 +1,6 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
-
 $this->import('
     entity-admins
     entity-files-list
@@ -23,6 +22,7 @@ $this->import('
     share-links
     tabs
 ');
+
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label'=> i::__('Agentes'), 'url' => $app->createUrl('panel', 'agents')],

@@ -18,8 +18,6 @@ $this->import('
     entity-terms
     mapas-breadcrumb
     mapas-container
-    mc-map
-    mc-map-marker
     share-links
     space-info
     tabs
