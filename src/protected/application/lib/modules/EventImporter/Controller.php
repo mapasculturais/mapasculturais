@@ -264,7 +264,17 @@ class Controller extends \MapasCulturais\Controller
       return $collum;
    }
 
-         //criação do enveto
+
+   public function insertEvent($data, $file_dir, $languages)
+   {
+      $app = App::i();
+
+      foreach ($data as $key => $value) {
+
+         $collum_proj = $this->checkCollum($value['PROJECT']);
+         $project = $app->repo("Project")->findOneBy([$collum_proj => $value['PROJECT']]);
+         $agent = $app->repo('Agent')->find($value['OWNER']);
+
          $event = new Event();
          $event->name = $value['NAME'];
          $event->subTitle = $value['SUBTITLE'];
@@ -292,14 +302,15 @@ class Controller extends \MapasCulturais\Controller
          $this->createMetalists($value, $event);
       }
 
-      $_agent = $app->user->profile;
-      $files = json_decode($_agent->event_importer_processed_file) ?? (new stdClass);
-      $files->{basename($file_dir)} = date('d/m/Y \à\s H:i');
-      $_agent->event_importer_processed_file = json_encode($files);
-      $_agent->save(true);
-      
-      $url = $app->createUrl("painel", "eventos");
-      $app->redirect($url);
+
+         $_agent = $app->user->profile;
+         $files = json_decode($_agent->event_importer_processed_file) ?? (new stdClass);
+         $files->{basename($file_dir)} = date('d/m/Y \à\s H:i');
+         $_agent->event_importer_processed_file = json_encode($files);
+         $_agent->save(true);
+         
+         $url = $app->createUrl("painel", "eventos");
+         $app->redirect($url."#tab=event-importer");
    }
 
 
@@ -308,23 +319,6 @@ class Controller extends \MapasCulturais\Controller
       $app = App::i();
 
       $moduleConfig = $app->modules['EventImporter']->config;
-
-      $collum_spa = 'id';
-      if (!is_numeric($value['SPACE'])) {
-         $collum_spa = 'name';
-      }
-
-      if (!$spaces = $app->repo('Space')->findBy([$collum_spa => $value['SPACE']])) {
-         $this->error("O espaço não esta cadastrado");
-      }
-
-      if ($collum_spa == 'name') {
-         if (count($spaces) > 1) {
-            $this->error("Existem mais de um espaço com o nome {$value['SPACE']}, Para proseguir informe o ID do espaço que quer associar ao evento");
-         }
-      }
-
-      $this->checkFrequency($event, $value, $key);
 
       $freq = mb_strtolower($value['FREQUENCY']);
       $ocurrence = new EventOccurrence();    
@@ -337,8 +331,11 @@ class Controller extends \MapasCulturais\Controller
          return ($diferenca / 60);
       };
 
+      $collum = $this->checkCollum($value['SPACE']);
+      $space = $app->repo("Space")->findOneBy([$collum => $value['SPACE']]);
+
       $rule = [
-         "spaceId" => $spaces[0]->id,
+         "spaceId" => $space->id,
          "startsAt" => $this->formatDate("d/m/Y", $value['STARTS_AT'], "d/m/Y"),
          "duration" => $duration(),
          "frequency" => $moduleConfig['frequence_list_allowed'][$freq],
@@ -494,7 +491,7 @@ class Controller extends \MapasCulturais\Controller
       $ocurrence->frequency = $moduleConfig['frequence_list_allowed'][$freq];
       $ocurrence->status = EventOccurrence::STATUS_ENABLED;
       $ocurrence->event = $event;
-      $ocurrence->space = $spaces[0];
+      $ocurrence->space = $space;
       $ocurrence->separation = 1;
       $ocurrence->timezoneName = 'Etc/UTC';
       $ocurrence->rule = $rule;
@@ -628,10 +625,20 @@ class Controller extends \MapasCulturais\Controller
    public function formatDate($formatIn, $date, $formatOut = "Y-m-d H:i")
    {
       if($formatOut){
-         return DateTime::createFromFormat($formatIn, $date)->format($formatOut);
+         if($date = DateTime::createFromFormat($formatIn, $date)->format($formatOut)){
+            return $date;
+         }
+
+         return (new DateTime('1989-01-01'))->format($formatOut);
+
+      }else{
+         if($date = DateTime::createFromFormat($formatIn, $date)){
+            return $date;
+         }
+
+         return (new DateTime('1989-01-01'));
       }
      
-      return DateTime::createFromFormat($formatIn, $date);
    }
   
 }
