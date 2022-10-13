@@ -21,15 +21,19 @@ $arquivo_num = count($app->user->archivedEvents);
     </header>
     <?php $this->applyTemplateHook('panel-header','after'); ?>
 	
+    
     <ul class="abas clearfix clear">
+        <?php $this->applyTemplateHook("tabs","begin")?>
         <?php $this->part('tab', ['id' => 'ativos', 'label' => i::__("Ativos") . " ($ativos_num)", 'active' => true]) ?>
         <?php $this->part('tab', ['id' => 'permitido', 'label' => i::__("Concedidos") . " ($permitido_num)"]) ?>
         <?php $this->part('tab', ['id' => 'rascunhos', 'label' => i::__("Rascunhos") . " ($rascunhos_num)"]) ?>
         <?php $this->part('tab', ['id' => 'lixeira', 'label' => i::__("Lixeira") . " ($lixeira_num)"]) ?>
         <?php $this->part('tab', ['id' => 'arquivo', 'label' => i::__("Arquivo") . " ($arquivo_num)"]) ?>
+        <?php $this->applyTemplateHook("tabs","end")?>
     </ul>
-    <div id="ativos">
 
+    <?php $this->applyTemplateHook("tabs-contents","begin")?>
+    <div id="ativos">
         <?php $this->part('panel-search', ['meta' => $meta, 'search_entity' => 'event']); ?>
 
         <?php foreach($enabled as $entity): ?>
@@ -78,4 +82,5 @@ $arquivo_num = count($app->user->archivedEvents);
 		<?php endif; ?>
 	</div>
 	<!-- #permitido-->
+    <?php $this->applyTemplateHook("tabs-contents","end")?>
 </div>
