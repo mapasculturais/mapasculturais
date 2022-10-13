@@ -56,6 +56,7 @@ $this->import('
         <div class="panel-page__content-usr">
             <div class="panel-page__content-usr--left">
                 <p>ID: {{entity.id}}</p>
+               
                 <p>
                     <?= i::__('Status') ?>:
                     <span v-if="entity.status == 1"><?= i::__('Ativo') ?></span>
@@ -92,11 +93,7 @@ $this->import('
 
         </div>
 
-        <p>
-            <?= i::__('Status') ?>:
-            <span v-if="entity.status == 1"><?= i::__('Ativo') ?></span>
-            <span v-if="entity.status == -10"><?= i::__('Excluído') ?></span>
-        </p>
+        
 
 
         <h3><?= i::__('Propriedades do usuário') ?></h3>
