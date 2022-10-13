@@ -303,7 +303,10 @@ class Module extends \MapasCulturais\Module
         });
 
         $app->hook('template(panel.events.tab-arquivo):after', function() use($app, $self) {
-            $this->part('tab',['id' => "event-importer", "label" => "Importação de eventos"]);
+            $enabled = $self->config['enabled'];
+            if($enabled()){
+                $this->part('tab',['id' => "event-importer", "label" => "Importação de eventos"]);
+            }
         });
     }
 
