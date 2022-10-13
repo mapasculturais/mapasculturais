@@ -117,8 +117,8 @@ class Module extends \MapasCulturais\Module
             "csv_header_example" => [
                 i::__('NOME'),
                 i::__('SUBTITULO'),
-                i::__('DESCRIAO_CURTA'),
-                i::__('DESCRIAO_LONGA'),
+                i::__('DESCRICAO_CURTA'),
+                i::__('DESCRICAO_LONGA'),
                 i::__('SITE'),
                 i::__('TRADUCAO_LIBRAS'),
                 i::__('AUDIO_DESCRICAO'),
