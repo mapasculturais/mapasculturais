@@ -47,7 +47,7 @@ class Controller extends \MapasCulturais\Controller
 
    }
 
-   function GET_uploadFile()
+   function GET_processFile()
    {
       $this->requireAuthentication();
 
@@ -65,16 +65,18 @@ class Controller extends \MapasCulturais\Controller
       $file_dir = $file->path;
 
       if (file_exists($file_dir)) {
-         $this->processCSV($file_dir);
+         $this->checkCSV($file_dir);
       }else{
          throw new Exception("Arquivo CSV não existe. Erro ao processar");
       }
    }
 
    //Processa arquivos CSV
-   public function processCSV(string $file_dir)
+   public function checkCSV(string $file_dir)
    {
       $app = App::i();
+
+      $conn = $app->em->getConnection();
 
       $moduleConfig = $app->modules['EventImporter']->config;
 
@@ -116,29 +118,30 @@ class Controller extends \MapasCulturais\Controller
          $data[$pos] = $tmp;        
       }
 
+      $errors = [];
       foreach ($data as $key => $value) {
    
          if(empty($value['NAME']) || $value['NAME'] == ''){
-            $this->error("A coluna nome está vazia na linha {$key}");
+            $errors[$key][] = i::__("A coluna nome está vazia");
          }
 
          if(empty($value['SHORT_DESCRIPTION']) || $value['SHORT_DESCRIPTION'] == ''){
-            $this->error("A coluna descrição curta está vazia na linha {$key}");
+            $errors[$key][] = i::__("A coluna descrição curta está vazia");
          }
 
          if(empty($value['CLASSIFICATION']) || $value['CLASSIFICATION'] == ''){
-            $this->error("A coluna classificação estária está vazia na linha {$key}");
+            $errors[$key][] = i::__("A coluna classificação estária está vazia");
          }
 
          if (!in_array($value['CLASSIFICATION'],$moduleConfig['rating_list_allowed'])) {
             $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
-            $this->error("A classificação etária é inválida {$key}. As opções aceitas são --{$rating_str}--");
+            $errors[$key][] = i::__("A coluna classificação etária é inválida. As opções aceitas são --{$rating_str}--");
          }
 
          //Validação das linguagens
          $languages = explode(',', $value['LANGUAGE']);
          if (!$languages) {
-            $this->error("Linguagem está vazia na linha {$key}");
+            $errors[$key][] = i::__("A coluna linguagem está vazia");
          }
 
          //Tratamento da lista
@@ -148,42 +151,130 @@ class Controller extends \MapasCulturais\Controller
             $_language = mb_strtolower(trim($language));
 
             if (!in_array(trim($_language), array_keys($languages_list))) {
-               $this->error("A linguagem --{$_language}-- não existe");
+               $errors[$key][] = i::__("A linguagem --{$_language}-- não existe");
             }
          }
 
          //Validação do projeto
-         $collum_proj = 'id';
-         if (!is_numeric($value['PROJECT'])) {
-            $collum_proj = 'name';
+         $collum = $this->checkCollum($value['PROJECT']);
+         if(!$projects = $conn->fetchAll("SELECT * FROM project WHERE status >= 1 AND {$collum} = {$value['PROJECT']}")) {
+            $errors[$key][] = i::__("O projeto não está cadastrado");
          }
 
-         if (!$projects = $app->repo('Project')->findBy([$collum_proj => $value['PROJECT']])) {
-            $this->error("O Projeto Não está cadastrado na linha {$key}");
-         }
-
-         if ($collum_proj == 'name') {
+         if ($collum == 'name') {
             if (count($projects) > 1){
-               $this->error("Existem mais de um projeto com o nome {$value['PROJECT']}, Para proseguir informe o ID do projeto que quer associar ao evento");
+               $errors[$key][] = i::__("Existe mais de um projeto com o nome --{$value['PROJECT']}--. Para proseguir, informe o ID do projeto que quer associar ao evento");
             }
          }
 
          //Validação do agente responsavel 
-         if (!$agent = $app->repo('Agent')->find($value['OWNER'])) {
-            $this->error("O a gente não esta cadastrado");
+         if(!$conn->fetchAll("SELECT * FROM agent WHERE status >= 1 AND id = {$value['OWNER']}")) {
+            $errors[$key][] = i::__("O a gente não esta cadastrado");
          }
 
          //Verificação da frequencia
          if(empty($value['FREQUENCY']) || $value['FREQUENCY'] == ''){
-            $this->error("A coluna Frequência está vazia na linha {$key}");
+            $errors[$key][] = i::__("A coluna frequência está vazia");
          }
 
          if (!in_array($value['FREQUENCY'], array_keys($moduleConfig['frequence_list_allowed']))) {
             $frequence_str = implode(', ', array_keys($moduleConfig['frequence_list_allowed']));
-            $this->error("A Frequência é inválida na linha {$key}. As opções aceitas são --{$frequence_str}-- ");
+            $errors[$key][] = i::__("A frequência é inválida. As opções aceitas são --{$frequence_str}--");
+         }
+
+         //Verificação do espaço
+         $collum_spa = 'id';
+         if (!is_numeric($value['SPACE'])) {
+            $collum_spa = 'name';
+         }
+
+         $collum = $this->checkCollum($value['PROJECT']);
+         if(!$spaces = $conn->fetchAll("SELECT * FROM space WHERE status >= 1 AND {$collum} = {$value['SPACE']}")) {
+            $errors[$key][] = i::__("O espaço não está cadastrado");
+         }
+
+         if ($collum_spa == 'name') {
+            if (count($spaces) > 1) {
+               $errors[$key][] = i::__("Existe mais de um espaço com o nome --{$value['SPACE']}--. Para proseguir informe o ID do espaço que quer associar ao evento");
+            }
+         }
+
+         // Valida a hora inicial
+         if(empty($value['STARTS_ON']) || $value['STARTS_ON'] == ''){
+            $errors[$key][] = i::__("A coluna Hora inícial está vazia");
+         }   
+         
+         $starts_on = $this->formatDate("H:i", $value['STARTS_ON'], false);
+         if($starts_on->format("H:i") != $value['STARTS_ON']){
+            $errors[$key][] = i::__("A coluna Hora inícial é inválida. O formato esperado é HH:MM Ex.: 12:00");
          }
          
-         //criação do enveto
+         // Valida a hora final
+         if(empty($value['ENDS_ON']) || $value['ENDS_ON'] == ''){
+            $errors[$key][] = i::__("A coluna Hora final está vazia");
+         }
+         
+         $ends_on = $this->formatDate("H:i", $value['ENDS_ON'], false);
+         if($ends_on->format("H:i") != $value['ENDS_ON']){
+            $errors[$key][] = i::__("A coluna Hora final é inválida. O formato esperado é HH:MM Ex.: 12:00");
+         }
+      
+         // Valida a data inicial
+         if (empty($value['STARTS_AT']) || $value['STARTS_AT'] == "") {
+            $errors[$key][] = i::__("A Coluna Data inícial Está vazia");
+         }
+
+         $starts_at = $this->formatDate("d/m/Y", $value['STARTS_AT'], false);
+         if ($starts_at->format("d/m/Y") != $value['STARTS_AT']) {
+            $errors[$key][] = i::__("A coluna data inícial é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
+         }
+         
+         // Valida a data final
+         if(in_array($value['FREQUENCY'], $moduleConfig['use_endsat'])){
+            if (empty($value['ENDS_AT']) || $value['ENDS_AT'] == "") {
+               $errors[$key][] = i::__("A Coluna Data final Está vazia");
+            }
+            
+            $ends_at = $this->formatDate("d/m/Y", $value['ENDS_AT'], false);
+            if ($ends_at->format("d/m/Y") != $value['ENDS_AT']) {
+               $errors[$key][] = i::__("A coluna data final é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
+            }
+         }
+
+         if($value['EVENT_ATTENDANCE'] && !is_numeric($value['EVENT_ATTENDANCE'])){
+            $errors[$key][] = i::__("A coluna total de público é inválida. Essa coluna so aceita números");
+         }
+         
+      }
+
+      if($errors){
+         $this->render("import-erros", ["errors" => $errors, 'filename' => basename($file_dir)]);
+         exit;
+      }
+
+      $this->insertEvent($data, $file_dir, $languages);
+   }
+
+   public function checkCollum($value)
+   {
+      $collum = 'id';
+      if (!is_numeric($value)) {
+         $collum = 'name';
+      }
+      return $collum;
+   }
+
+
+   public function insertEvent($data, $file_dir, $languages)
+   {
+      $app = App::i();
+
+      foreach ($data as $key => $value) {
+
+         $collum_proj = $this->checkCollum($value['PROJECT']);
+         $project = $app->repo("Project")->findOneBy([$collum_proj => $value['PROJECT']]);
+         $agent = $app->repo('Agent')->find($value['OWNER']);
+
          $event = new Event();
          $event->name = $value['NAME'];
          $event->subTitle = $value['SUBTITLE'];
@@ -200,7 +291,10 @@ class Controller extends \MapasCulturais\Controller
          $event->classificacaoEtaria = $value['CLASSIFICATION'];
          $event->owner = $agent;
          $event->terms['linguagem'] = $languages;
-         $event->projectId = $projects[0]->id;
+         $event->projectId = $project->id;
+         $event->event_attendance = $value['EVENT_ATTENDANCE'];
+         $event->traducaoLibras = $value['LIBRAS_TRANSLATION'];
+         $event->descricaoSonora = $value['AUDIO_DESCRIPTION'];
          $event->save(true);
      
          $this->createOcurrency($event, $value, $key);
@@ -208,14 +302,15 @@ class Controller extends \MapasCulturais\Controller
          $this->createMetalists($value, $event);
       }
 
-      $_agent = $app->user->profile;
-      $files = json_decode($_agent->event_importer_processed_file) ?? (new stdClass);
-      $files->{basename($file_dir)} = date('d/m/Y \à\s H:i');
-      $_agent->event_importer_processed_file = json_encode($files);
-      $_agent->save(true);
-      
-      $url = $app->createUrl("painel", "eventos");
-      $app->redirect($url);
+
+         $_agent = $app->user->profile;
+         $files = json_decode($_agent->event_importer_processed_file) ?? (new stdClass);
+         $files->{basename($file_dir)} = date('d/m/Y \à\s H:i');
+         $_agent->event_importer_processed_file = json_encode($files);
+         $_agent->save(true);
+         
+         $url = $app->createUrl("painel", "eventos");
+         $app->redirect($url."#tab=event-importer");
    }
 
 
@@ -224,23 +319,6 @@ class Controller extends \MapasCulturais\Controller
       $app = App::i();
 
       $moduleConfig = $app->modules['EventImporter']->config;
-
-      $collum_spa = 'id';
-      if (!is_numeric($value['SPACE'])) {
-         $collum_spa = 'name';
-      }
-
-      if (!$spaces = $app->repo('Space')->findBy([$collum_spa => $value['SPACE']])) {
-         $this->error("O espaço não esta cadastrado");
-      }
-
-      if ($collum_spa == 'name') {
-         if (count($spaces) > 1) {
-            $this->error("Existem mais de um espaço com o nome {$value['SPACE']}, Para proseguir informe o ID do espaço que quer associar ao evento");
-         }
-      }
-
-      $this->checkFrequency($event, $value, $key);
 
       $freq = mb_strtolower($value['FREQUENCY']);
       $ocurrence = new EventOccurrence();    
@@ -253,8 +331,11 @@ class Controller extends \MapasCulturais\Controller
          return ($diferenca / 60);
       };
 
+      $collum = $this->checkCollum($value['SPACE']);
+      $space = $app->repo("Space")->findOneBy([$collum => $value['SPACE']]);
+
       $rule = [
-         "spaceId" => $spaces[0]->id,
+         "spaceId" => $space->id,
          "startsAt" => $this->formatDate("d/m/Y", $value['STARTS_AT'], "d/m/Y"),
          "duration" => $duration(),
          "frequency" => $moduleConfig['frequence_list_allowed'][$freq],
@@ -410,7 +491,7 @@ class Controller extends \MapasCulturais\Controller
       $ocurrence->frequency = $moduleConfig['frequence_list_allowed'][$freq];
       $ocurrence->status = EventOccurrence::STATUS_ENABLED;
       $ocurrence->event = $event;
-      $ocurrence->space = $spaces[0];
+      $ocurrence->space = $space;
       $ocurrence->separation = 1;
       $ocurrence->timezoneName = 'Etc/UTC';
       $ocurrence->rule = $rule;
@@ -418,56 +499,6 @@ class Controller extends \MapasCulturais\Controller
       $app->disableAccessControl();
       $ocurrence->save(true);
       $app->enableAccessControl();
-   }
-
-   public function checkFrequency($event, $value, $key)
-   {
-      $app = App::i();
-
-      $moduleConfig = $app->modules['EventImporter']->config;
-
-      // Valida a hora inicial
-      $starts_on = $this->formatDate("d/m/Y H:i", ($value['STARTS_AT']." ".$value['STARTS_ON']), false);
-      if(empty($value['STARTS_ON']) || $value['STARTS_ON'] == ''){
-         $this->error("A coluna Hora inícial está vazia na linha {$key}");
-      }   
-
-      if($starts_on->format("H:i") != $value['STARTS_ON']){
-         $this->error("A coluna Hora final é inválida na linha {$key}");
-      }
-      
-      // Valida a hora final
-      $ends_on = $this->formatDate("d/m/Y H:i", ($value['ENDS_AT']." ".$value['ENDS_ON']), false);
-      if(empty($value['ENDS_ON']) || $value['ENDS_ON'] == ''){
-         $this->error("A coluna Hora final está vazia na linha {$key}");
-      }
-      
-      if($ends_on->format("H:i") != $value['ENDS_ON']){
-         $this->error("A coluna Hora final é inválida na linha {$key}");
-      }
-      
-    
-      // Valida a data inicial
-      $starts_at = $this->formatDate("d/m/Y", $value['STARTS_AT'], false);
-      if ($starts_at->format("d/m/Y") != $value['STARTS_AT']) {
-         $this->error("O formato da Data inícial é inválido na linha {$key}. O formato esperado é YYYY/MM/DD");
-      }
-      
-      if (empty($value['STARTS_AT']) || $value['STARTS_AT'] == "") {
-         $this->error("A Coluna Data inícial Está vazia na linha {$key}");
-      }
-      
-      // Valida a data final
-      if(in_array($value['FREQUENCY'], $moduleConfig['use_endsat'])){
-         $ends_at = $this->formatDate("d/m/Y", $value['ENDS_AT'], false);
-         if (empty($value['ENDS_AT']) || $value['ENDS_AT'] == "") {
-            $this->error("A Coluna Data Final Está vazia na linha {$key}");
-         }
-   
-         if ($ends_at->format("d/m/Y") != $value['ENDS_AT']) {
-            $this->error("O formato da Data Final é inválido na linha {$key}. O formato esperado é YYYY/MM/DD");
-         }
-      }
    }
 
    protected function downloadFile(Entity $owner, $value)
@@ -594,10 +625,20 @@ class Controller extends \MapasCulturais\Controller
    public function formatDate($formatIn, $date, $formatOut = "Y-m-d H:i")
    {
       if($formatOut){
-         return DateTime::createFromFormat($formatIn, $date)->format($formatOut);
+         if($date = DateTime::createFromFormat($formatIn, $date)->format($formatOut)){
+            return $date;
+         }
+
+         return (new DateTime('1989-01-01'))->format($formatOut);
+
+      }else{
+         if($date = DateTime::createFromFormat($formatIn, $date)){
+            return $date;
+         }
+
+         return (new DateTime('1989-01-01'));
       }
      
-      return DateTime::createFromFormat($formatIn, $date);
    }
   
 }
