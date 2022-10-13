@@ -1,11 +1,26 @@
 <?php
 use MapasCulturais\i;
 $this->layout = 'entity';
-$this->import('entity-files-list entity-admins entity-gallery entity-list
-entity-location entity-owner entity-gallery-video 
-entity-header mapas-breadcrumb mapas-container
-share-links entity-terms entity-related-agents
-entity-seals entity-social-media tabs');
+
+$this->import('
+    entity-admins
+    entity-files-list
+    entity-gallery
+    entity-gallery-video
+    entity-header
+    entity-list
+    entity-location
+    entity-owner
+    entity-related-agents
+    entity-seals
+    entity-social-media
+    entity-terms
+    mapas-breadcrumb
+    mapas-container
+    share-links
+    tabs
+');
+
 $this->breadcramb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Meus Eventos'), 'url' => $app->createUrl('panel', 'events')],
