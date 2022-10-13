@@ -76,7 +76,7 @@ class Module extends \MapasCulturais\Module
                 'NAME' => [i::__('nome'),'name'],
                 'SUBTITLE' => ['subtitle', i::__('subtítulo')],
                 'SHORT_DESCRIPTION' => ['short_description', i::__('descrição curta'), i::__('descrição_curta')],
-                'DESCRIPTION' => ['description', i::__('descrição')],
+                'LONG_DESCRIPTION' => ['long_description', i::__('descrição longa'), i::__('descrição_longa')],
                 'SITE' => ['site'],
                 'LIBRAS_TRANSLATION' => [i::__('libras_translation'), i::__('tradução libras'), i::__('tradução_libras')],
                 'AUDIO_DESCRIPTION' => [i::__('audio_descricao'), i::__('audio descrição'), i::__('audio_descrição')],

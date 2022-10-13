@@ -288,6 +288,7 @@ class Controller extends \MapasCulturais\Controller
          $event->pinterest = $value['PINTEREST'];
          $event->registrationInfo = $value['INSCRICOES'];
          $event->shortDescription = $value['SHORT_DESCRIPTION'];
+         $event->longDescription = $value['LONG_DESCRIPTION'];
          $event->classificacaoEtaria = $value['CLASSIFICATION'];
          $event->owner = $agent;
          $event->terms['linguagem'] = $languages;
