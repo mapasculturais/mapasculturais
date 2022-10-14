@@ -6,8 +6,6 @@ class Entity {
         this.__objectId = `${objectType}-${id}`;
         this.__validationErrors = {};
         
-        this.__skipDataProperties = ['id', 'createTimestamp', 'updateTimestamp', 'lastLoginTimestamp'];
-
         this.__processing = false;
 
         // as traduções estão no arquivo texts.php do componente <entity>
@@ -81,6 +79,7 @@ class Entity {
         if (this.files) {
             return;
         }
+        
         this.files = {};
         for (let groupName in files) {
             const group = files[groupName];
@@ -120,10 +119,13 @@ class Entity {
     }
 
     data() {
+        const skipProperties = ['id', 'createTimestamp', 'updateTimestamp', 'lastLoginTimestamp'];
+        const skipRelations = ['user', 'subsite'];
+
         const result = {};
 
         for (let prop in this.$PROPERTIES) {
-            if (this.__skipDataProperties.indexOf(prop) > -1) {
+            if (skipProperties.indexOf(prop) > -1) {
                 continue;
             }
 
@@ -134,6 +136,18 @@ class Entity {
             }
 
             result[prop] = val;
+        }
+
+        for (let prop in this.$RELATIONS) {
+            const relation = this.$RELATIONS[prop];
+
+            if (skipRelations.indexOf(prop) > -1 || !relation.isOwningSide) {
+                continue;
+            }
+
+            if(this[prop] != undefined) {
+                result[prop] = this[prop]?.id;
+            }
         }
 
         if(this.terms) {
