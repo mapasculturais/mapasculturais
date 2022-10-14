@@ -14,7 +14,7 @@
             title="Share on Facebook" target="_blank" 
             @click="click('facebook')">
 
-            <mc-icon name="twitter"></mc-icon>
+            <mc-icon name="facebook"></mc-icon>
         </a>
 
         <a  class="fa fa-whatsapp hide-mobile" 

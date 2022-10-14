@@ -12,7 +12,10 @@ app.component('panel--card-user', {
     },
 
     data() {
-        return {}
+        let username = `${this.entity.profile?.name} <${this.entity.email}>`;
+        return {
+            username
+        };
     },
 
     props: {

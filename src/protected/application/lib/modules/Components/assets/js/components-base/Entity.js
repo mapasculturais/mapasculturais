@@ -1,13 +1,11 @@
 class Entity {
     constructor(objectType, id, scope) {
         this.id = id;
-        this.__scope = scope;
+        this.__scope = (scope || 'default');
         this.__objectType = objectType;
         this.__objectId = `${objectType}-${id}`;
         this.__validationErrors = {};
-
-        this.__skipDataProperties = ['createTimestamp', 'updateTimestamp'];
-
+        
         this.__processing = false;
 
         // as traduções estão no arquivo texts.php do componente <entity>
@@ -15,12 +13,15 @@ class Entity {
 
     }
 
-    populate(obj) {
+    populate(obj, preserveValues = true) {
         const __properties = this.$PROPERTIES;
         const __relations = this.$RELATIONS;
         const defaultProperties = ['terms', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
         
         for (const prop of defaultProperties) {
+            if (this[prop] && !obj[prop]) {
+                continue;
+            }
             let _default = prop == 'terms' ? [] : {};
             this[prop] = obj[prop] || _default;
         }
@@ -29,8 +30,12 @@ class Entity {
             let definition = __properties[prop];
             let val = obj[prop];
 
-            if (definition.type == 'datetime' && val) {
-                val = new Date(val.date);
+            if(val === undefined && preserveValues) {
+                val = this[prop];
+            }
+
+            if (definition.type == 'datetime' && val && !(val instanceof McDate)) {
+                val = new McDate(val.date);
             }
 
             if (prop == 'location') {
@@ -44,10 +49,10 @@ class Entity {
             let prop = obj[key];
             if (prop instanceof Array) {
                 for (let i in prop) {
-                    prop[i] = this.parceRelation(prop[i]);
+                    prop[i] = this.parseRelation(prop[i], key);
                 }
             } 
-            this[key] = this.parceRelation(prop);
+            this[key] = this.parseRelation(prop, key);
         }
 
         this.populateFiles(obj.files);
@@ -58,11 +63,12 @@ class Entity {
         return this;
     }
 
-    parceRelation(prop) {
-        if (prop?.['@entityType'] && prop?.id) {
-            const propAPI = new API(prop['@entityType'], this.__scope);
+    parseRelation(prop, key) {
+        const type = prop?.['@entityType'] || $DESCRIPTIONS?.[this.__objectType]?.[key]?.targetEntity.toLocaleLowerCase();
+        if (type && prop?.id) {
+            const propAPI = new API(type, this.__scope);
             const instance = propAPI.getEntityInstance(prop.id);
-            instance.populate(prop);
+            instance.populate(prop, true);
             return instance;
         } else {
             return prop;
@@ -70,10 +76,15 @@ class Entity {
     }
 
     populateFiles(files) {
+        if (this.files) {
+            return;
+        }
+        
         this.files = {};
         for (let groupName in files) {
             const group = files[groupName];
             if (group instanceof Array) {
+                this.files[groupName] = this.files[groupName] || [];
                 this.files[groupName] = group.map((data) => new EntityFile(this, groupName, data));
             } else {
                 this.files[groupName] = new EntityFile(this, groupName, group);
@@ -108,10 +119,13 @@ class Entity {
     }
 
     data() {
+        const skipProperties = ['id', 'createTimestamp', 'updateTimestamp', 'lastLoginTimestamp'];
+        const skipRelations = ['user', 'subsite'];
+
         const result = {};
 
         for (let prop in this.$PROPERTIES) {
-            if (this.__skipDataProperties.indexOf(prop) > -1) {
+            if (skipProperties.indexOf(prop) > -1) {
                 continue;
             }
 
@@ -122,6 +136,18 @@ class Entity {
             }
 
             result[prop] = val;
+        }
+
+        for (let prop in this.$RELATIONS) {
+            const relation = this.$RELATIONS[prop];
+
+            if (skipRelations.indexOf(prop) > -1 || !relation.isOwningSide) {
+                continue;
+            }
+
+            if(this[prop] != undefined) {
+                result[prop] = this[prop]?.id;
+            }
         }
 
         if(this.terms) {
@@ -170,8 +196,9 @@ class Entity {
         return this.API.createCacheId(this.id);
     }
 
-    getUrl(action) {
-        return this.API.createUrl(action, [this.id]);
+    getUrl(action, params) {
+        params = {0: this.id, ...params};
+        return this.API.createUrl(action, params);
     }
 
     removeFromLists(skipList) {
@@ -213,7 +240,7 @@ class Entity {
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
     }
 
-    async save() {
+    async save(preserveValues = true) {
         this.__processing = this.text('salvando');
 
         const messages = useMessages();
@@ -227,8 +254,7 @@ class Entity {
                 } else {
                     messages.success(this.text('entidade salva'));
                 }
-    
-                this.populate(entity)
+                this.populate(entity, preserveValues)
             });
 
         } catch (error) {
@@ -245,6 +271,28 @@ class Entity {
             const res = await this.API.deleteEntity(this);
             return this.doPromise(res, (entity) => {
                 messages.success(this.text('entidade removida'));
+                
+                if(removeFromLists) {
+                    this.removeFromLists();
+                }
+
+                this.populate(entity);
+            });
+
+        } catch (error) {
+            return this.doCatch(error)
+        }        
+    }
+
+    async undelete(removeFromLists) {
+        this.__processing = this.text('recuperando');
+
+        const messages = useMessages();
+
+        try {
+            const res = await this.API.undeleteEntity(this);
+            return this.doPromise(res, (entity) => {
+                messages.success(this.text('entidade recuperada'));
                 
                 if(removeFromLists) {
                     this.removeFromLists();
@@ -312,6 +360,25 @@ class Entity {
         }
     }
 
+    async unpublish(removeFromLists) {
+        this.__processing = this.text('tornando rascunho');
+
+        const messages = useMessages();
+
+        try {
+            const res = await this.API.unpublishEntity(this);
+            return this.doPromise(res, (entity) => {
+                messages.success(this.text('entidade foi tornada rascunho'));
+                this.populate(entity);
+                if(removeFromLists) {
+                    this.removeFromLists();
+                }
+            });
+        } catch (error) {
+            return this.doCatch(error);
+        }
+    }
+
     async upload(file, {group, description}) {
         this.__processing = this.text('subindo arquivo');
 
@@ -326,6 +393,7 @@ class Entity {
                 let file;
                 if(f[group] instanceof Array) {
                     file = new EntityFile(this, group, f[group][0]);
+                    this.files[group] = this.files[group] || [];
                     this.files[group].push(file);
                 } else {
                     file = new EntityFile(this, group, f[group]);
@@ -347,6 +415,7 @@ class Entity {
 
             this.doPromise(res, (data) => {
                 const metalist = new EntityMetalist(this, group, {title, description, value});
+                this.metalists[group] = this.metalists[group] || [];
                 this.metalists[group].push(metalist);
             });
         } catch (error) {
@@ -436,6 +505,72 @@ class Entity {
                 delete this.agentRelations[oldName];
                 delete this.relatedAgents[oldName];
                
+            });
+        } catch (error) {
+            return this.doCatch(error);
+        }
+    }
+
+    async createSealRelation(seal) 
+    {   
+        this.__processing = this.text('relacionando selo à entidade');
+
+        try{
+            const res = await this.API.POST(this.getUrl('createSealRelation'), {sealId: seal.id});
+
+            this.doPromise(res, (r) => {
+
+                const seal = {
+                    sealId: r.seal.id,
+                    sealRelationId: r.id,
+                    singleUrl: Utils.createUrl('sealRelation', 'single', [r.id]),
+                    name: r.seal.name,
+                    createTimestamp: r.createTimestamp,
+                    files: r.seal.files,
+                };          
+                
+                this.seals = this.seals || [];
+                this.seals.push(seal);
+            });
+        } catch (error) {
+            this.doCatch(error);
+        }
+    }
+
+    async removeSealRelation(seal) 
+    {
+        this.__processing = this.text('removendo selo da entidade');
+
+        try {
+            const res = await this.API.POST(this.getUrl('removeSealRelation'), {sealId: seal.sealId});
+            this.doPromise(res, (data) => {
+                let index;
+                
+                index = this.seals.indexOf(seal);
+                this.seals.splice(index,1);
+            });
+        } catch (error) {
+            return this.doCatch(error);
+        }
+    }
+
+    async changeOwner(ownerId) {
+        this.__processing = this.text('alterando propriedade da entidade');
+        ownerId = ownerId || $MAPAS.userProfile.id;
+
+        if (!ownerId) {
+            return Promise.reject('ownerId indefinido');
+        }
+
+        try {
+            const res = await this.API.POST(this.getUrl('changeOwner'), {ownerId});
+            this.doPromise(res, (data) => {
+
+                console.log(data);
+
+                /* let index;
+                index = this.seals.indexOf(seal);
+                this.seals.splice(index,1); */
             });
         } catch (error) {
             return this.doCatch(error);

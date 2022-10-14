@@ -26,30 +26,39 @@ $tabs = $tabs ?? [
     <tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
         <entities :name="type + ':<?=$status?>'" :type="type" 
             :select="select"
-            :query="queries['<?=$status?>']" :limit="50">
+            :query="queries['<?=$status?>']" 
+            :limit="50" watch-query>
 
-            <template v-if="true" #header="{entities}">
-                <div class="entity-tabs__filters panel__row">
-                    <input type="search" class="entity-tabs__search-input"
-                        aria-label="<?=i::__('Palavras-chave')?>"
-                        placeholder="<?=i::__('Buscar por palavras-chave')?>"
-                        v-model="entities.query['@keyword']">
-                    <button type="button" class="button button--solid" @click="entities.refresh()">
-                        <?=i::__('Filtrar')?>
-                    </button>
-                    <button type="button" class="button button--icon button--solid">
-                        <mc-icon name="sort"></mc-icon>
-                        <?=i::__('Ordenar')?>
-                    </button>
-                </div>
+            <template #header="{entities}">
+                <form class="entity-tabs__filters panel__row" @submit="$event.preventDefault();">
+                    <slot name="filters">
+                        <input type="search" class="entity-tabs__search-input"
+                            aria-label="<?=i::__('Palavras-chave')?>"
+                            placeholder="<?=i::__('Buscar por palavras-chave')?>"
+                            v-model="queries['<?=$status?>']['@keyword']">
+                        
+                        <slot name="filters-additional" :entities="entities" :query="queries['<?=$status?>']"></slot>
+
+                        <select class="entity-tabs__search-select primary__border-solid" v-model="queries['<?=$status?>']['@order']">
+                            <option value="name ASC"><?= i::__('ordem alfabética') ?></option>
+                            <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
+                            <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
+                            <option value="updateTimestamp DESC"><?= i::__('modificadas recentemente') ?></option>
+                            <option value="updateTimestamp ASC"><?= i::__('modificadas há mais tempo') ?></option>
+                        </select>
+                    </slot>
+                </form>
             </template>
 
             <template #default="{entities}">
-                <slot v-for="entity in entities" :entity="entity">
+                <slot name='before-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
+                <slot v-for="entity in entities" :key="entity.__objectId" :entity="entity" :moveEntity="moveEntity">
                     <panel--entity-card :key="entity.id" :entity="entity" 
+                        @undeleted="moveEntity(entity)" 
                         @deleted="moveEntity(entity)" 
                         @archived="moveEntity(entity)" 
                         @published="moveEntity(entity)"
+                        :on-delete-remove-from-lists="false"
                         >
                         <template #title="{ entity }">
                             <slot name="card-title" :entity="entity"></slot>
@@ -62,16 +71,16 @@ $tabs = $tabs ?? [
                                 </button>
                             </slot>
                         </template>
-                        <template #default="{ entity }">
+                        <template #subtitle="{ entity }">
                             <slot name="card-content" :entity="entity">
-                                <dl v-if="entity.type">
-                                    <dt><?=i::__('Tipo')?></dt>
-                                    <dd>{{ entity.type.name }}</dd>
-                                </dl>
+                                <span v-if="entity.type">
+                                    <?=i::__('Tipo: ')?> <strong>{{ entity.type.name }}</strong>
+                                </span>
                             </slot>
                         </template>
                     </panel--entity-card>
                 </slot>
+                <slot name='after-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
            </template>
         </entities>
     </tab>

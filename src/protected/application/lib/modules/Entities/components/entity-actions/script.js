@@ -20,5 +20,14 @@ app.component('entity-actions', {
         }
     },
     
-    methods: {},
+    methods: {
+        save() {
+            this.entity.save();
+            if (window.history.length > 2) {
+                window.history.back();
+            } else {
+                window.location.href = $MAPAS.baseURL+'panel';
+            }
+        }
+    },
 });

@@ -5,28 +5,71 @@
 
     &.action-edit {
         background-color: var(--mc-gray-100);
-        .container{
+
+        .container {
             main {
-                gap: 40px;
+                gap: size(40);
             }
         }
 
         .divider {
             width: 100%;
-            border-bottom: 1px solid;
+            border-bottom: size(1) solid;
         }
     }
 
     &.action-single {
-        .divider {
-            background-color: var(--mc-black);
-            grid-column-end: 3;
-            grid-column-start: 1;
-            height: 5px;
-            width: 100%;
-            
-            @media (max-width: size(800)) {
-                grid-column-end: 2;
+        .tabs {
+            &-component {
+                &__header {
+                    border-bottom: 1px solid;
+                    padding: 0;
+                }
+
+                &__buttons {
+                    margin: size(35) 0 0;
+                }
+
+                &__button {
+                    &--active::after {
+                        background-color: var(--mc-primary-500);
+                    }
+                }
+            }
+
+            &__info {
+                .container main {
+                    gap: size(40);
+
+                    h3 {
+                        font-weight: 700;
+                        font-size: size(24);
+                        line-height: size(28);
+                        padding-bottom: size(16);
+                    }
+
+                    h2 {
+                        font-weight: 700;
+                        font-size: 24px;
+                        line-height: 28px;
+                    }
+
+                    .property {
+                        padding-top: 176px;
+                    }
+
+                }
+
+                .divider {
+                    background-color: var(--mc-gray-300);
+                    grid-column-end: span 3;
+                    height: size(0.5);
+                    width: 100%;
+                    
+                    @media (max-width: size(800)) {
+                        grid-column-end: 2;
+                    }
+                }
             }
         }
     }

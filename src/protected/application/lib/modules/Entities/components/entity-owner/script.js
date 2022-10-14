@@ -2,19 +2,10 @@ app.component('entity-owner', {
     template: $TEMPLATES['entity-owner'],
     emits: [],
 
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name]
-        return { hasSlot }
-    },
-
-    data() {
-        return {  }
-    },
-
-    computed: {
-        owner() {
-            return this.entity.owner || this.entity.parent || null
-        }
+    setup() { 
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('entity-owner')
+        return { text }
     },
     
     props: {
@@ -24,11 +15,31 @@ app.component('entity-owner', {
         },
         title: {
             type: String,
-            default: 'Publicado por'
+            default: __('publicado por', 'entity-owner')
         },
         editable: {
             type: Boolean,
             default: false
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
+    },
+
+    data() {
+        return {
+            query: {}
+        }
+    },
+
+    mounted() {
+        this.query.id = `!IN(${this.owner?.id})`;
+    },
+
+    computed: {
+        owner() {
+            return this.entity.owner || this.entity.parent;
         }
     },
 
@@ -39,6 +50,7 @@ app.component('entity-owner', {
             } else {
                 this.entity.owner = entity;
             }
+            this.query.id = `!IN(${this.owner?.id})`;
         }
     }
     

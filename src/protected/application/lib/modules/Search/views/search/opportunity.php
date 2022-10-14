@@ -1,42 +1,29 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('mapas-breadcrumb tabs search-header mc-map create-agent');
+$this->import('
+    search tabs search-list search-map search-filter-opportunity 
+    '); /* create-opportunity */
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
-    ['label'=> i::__('Oportunidades'), 'url' => $app->createUrl('opportunity')],
+    ['label'=> i::__('Oportunidades'), 'url' => $app->createUrl('opportunities')],
 ];
 ?>
 
-
-<div class="search">
-    <mapas-breadcrumb></mapas-breadcrumb>
-    
-    <search-header class="search__header" type="opportunity">
-        <template #create>
-            <create-agent></create-agent>
-        </template>
-        <template #actions>
-                <tabs class="search__header--tabs">
-                    <template  #before-tablist>
-                        <label class="search__header--tabs-label">
-                        Visualizar como:
-                        </label> 
+<search page-title="<?php i::esc_attr_e('Oportunidades') ?>" entity-type="opportunity" :initial-pseudo-query="{}"> 
+    <template #create-button>
+        <!-- @TODO: Criação e aplicação do componente <create-opportunity> -->
+        <?= i::_e('botão criar oportunidade') ?>
+    </template>
+    <template #default="{pseudoQuery}">
+        <div class="tabs-component__panels">
+            <div class="search__tabs--list">
+                <search-list :pseudo-query="pseudoQuery" select="id,name,shortDescription,terms,seals,singleUrl" type="opportunity">
+                    <template #filter>
+                        <search-filter-opportunity :pseudo-query="pseudoQuery"></search-filter-opportunity>
                     </template>
-                    
-                    <tab icon="list" label="Lista" slug="primary">
-                        <h2>Conteúdo principal</h2>
-                    </tab>
-                    <tab icon="map" label="Mapa" slug="secondary">
-                        <h2>Conteúdo secundário</h2>
-                    </tab>
-                    
-                    <template #after-tablist>
-                       <div class="search__header--tabs-filter">
-                           <input type="text"/>
-                       </div>
-                    </template>
-                </tabs>
-            </template>
-    </search-header>
-</div>
+                </search-list>
+            </div>
+        </div>
+    </template>
+</search>

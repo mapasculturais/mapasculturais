@@ -2,7 +2,10 @@
 use MapasCulturais\i; 
 ?>
 <div class="field" :class="{error: hasErrors}">
-    <label v-if="showLabel" :for="propId">{{label || description.label}} <span v-if="description.required" class="required">*<?php i::_e('obrigatório') ?></span></label> 
+    <label v-if="!hideLabel" :for="propId">
+        <slot>{{label || description.label}}</slot>
+        <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
+    </label> 
     
     <slot  name="input" >
         <?php //@todo implementar registro de tipos de campos (#1895) ?>
@@ -10,7 +13,7 @@ use MapasCulturais\i;
 
         <textarea v-if="is('text')" :value="value" :id="propId" :name="prop" @change="change($event)"></textarea>
 
-        <input v-if="is('date') || is('number')" :value="value" :id="propId" :name="prop" :type="fieldType" :min="description.min" :max="description.max" :step="description.step" @change="change($event)">
+        <input v-if="is('date') || is('number') || is('integer')" :value="value" :id="propId" :name="prop" :type="fieldType" :min="description.min" :max="description.max" :step="description.step" @change="change($event)">
 
         <input v-if="is('email') || is('url')" :value="value" :id="propId" :name="prop" :type="fieldType" @change="change($event)">
         
@@ -20,18 +23,25 @@ use MapasCulturais\i;
         
         <template v-if="is('radio')">
             <label v-for="optionValue in description.optionsOrder">
-                <input :value="value" type="radio" :value="optionValue" @change="change($event)"> {{description.options[optionValue]}} 
+                <input :checked="value == optionValue" type="radio" :value="optionValue" @change="change($event)"> {{description.options[optionValue]}} 
             </label>
         </template>
         
         <template v-if="is('multiselect')">
             <label v-for="optionValue in description.optionsOrder">
-                <input :value="value" type="checkbox" :value="optionValue" @change="change($event)"> {{description.options[optionValue]}} 
+                <input :checked="value == optionValue" type="checkbox" :value="optionValue" @change="change($event)"> {{description.options[optionValue]}} 
             </label>
         </template>
+
+        <template v-if="is('boolean')">
+            <select :value="value" :id="propId" :name="prop" @change="change($event)">
+                <option :value='true' :selected="value"> <?= i::_e('Sim')?> </option>
+                <option :value='false' :selected="!value"> <?= i::_e('Não')?>  </option>
+            </select>
+        </template>
     </slot>
-    <small class="field__error" v-if="hasErrors">
-  
+
+    <small class="field__error" v-if="hasErrors">        
         {{errors.join('; ')}}
     </small>
 </div>

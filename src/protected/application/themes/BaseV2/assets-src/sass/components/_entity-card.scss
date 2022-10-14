@@ -103,8 +103,52 @@
     }
 
     &__content {
-        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap:size( 8);
         margin: size(16) 0 size(8);
+        text-align: left;
+
+        &--occurrence {
+            &-data {
+                font-weight: 700;
+                font-size: size(14);
+                line-height: size(19);
+                display: flex;
+                align-items: center;
+                gap: size(10);
+                .iconify {
+                    font-size: size(18);
+                }
+            }
+
+            &-space {
+                font-weight: 700;
+                font-size: size(14);
+                line-height: size(19);
+                display: flex;
+                align-items: center;
+                gap: size(10);
+
+                .link {
+                    align-items: center;
+                    display: flex;
+                    gap: size(10);
+                    text-decoration: none;
+                    .iconify {
+                        font-size: size(18);
+                    }
+                }
+            }
+
+            &-info {
+                font-size: size(14);
+                line-height: size(19);
+                display: flex;
+                align-items: center;
+                gap: size(40);
+            }
+        }
 
         &--description {
             font-weight: 400;
@@ -203,45 +247,55 @@
 .panel-entity-card {
     background-color: var(--mc-white);
     border-radius: var(--mc-border-radius-sm);
+    padding: size(24);
 
     &__header {
-        align-items: center;
-        border-bottom: size(1) solid var(--mc-gray-100);
+        align-items: flex-start;
         display: flex;
         justify-content: space-between;
-        padding: size(8) size(16);
 
         & > :first-child {
             align-items: center;
             display: flex;
         }
-    }
 
-    &__picture {
-        display: inline-block;
-
-        img {
-            border-radius: 50%;
-            height: size(48);
-            margin-right: size(16);
-            width: size(48);
-
-            @include mobile {
-                height: size(32);
-                margin-right: size(8);
-                width: size(32);
+        &--picture {
+            display: inline-block;
+    
+            img {
+                border-radius: 50%;
+                height: size(64);
+                margin-right: size(16);
+                width: size(64);
+    
+                @include mobile {
+                    height: size(32);
+                    margin-right: size(8);
+                    width: size(32);
+                }
             }
         }
-    }
 
-    &__title {
-        display: inline-block;
+        &--info {
+            align-items: flex-start;
+            display: flex;
+            flex-direction: column;
+            gap: size(10);
 
-        h2 {
-            font-size: size(24);
+            &-title {
+                display: inline-block;
+                font-weight: 700;
+                font-size: size(24);
+                line-height: size(28);
+                text-align: left;
+            }
 
-            @include mobile {
-                font-size: size(16);
+            &-subtitle {
+                font-weight: 500;
+                font-size: size(14);
+                line-height: size(19);
+                margin: 0;
+                text-transform: uppercase;
             }
         }
     }
@@ -257,8 +311,10 @@
             border: none;
             border-radius: var(--mc-border-radius-sm);
             display: flex;
-            flex-direction: column;
             padding: size(8);
+            flex-direction: row;
+            align-items: center;
+            gap: size(8);
 
             &:focus, &:hover {
                 background-color: var(--mc-gray-100);
@@ -283,7 +339,8 @@
     &__main {
         display: flex;
         flex-wrap: wrap;
-        padding: size(16) size(16) 0;
+        padding: size(16);
+        min-height: size(57);
 
         dl {
             font-size: size(14);
@@ -310,30 +367,39 @@
     }
 
     &__footer {
-        padding: 0 size(8) size(16);
+        
     }
 
     &__footer-actions {
         display: flex;
-        justify-content: flex-end;
-        gap: size(20);
+        justify-content: space-between;
+        align-items: flex-end;
+
+        &.right {
+            display: flex;
+            gap: size(32);
+        }
 
         button {
             margin-left: size(4);
         }
 
         .button {
-
+            
             &.archive {
-                color: var(--mc-warning);
+                color: var(--mc-low-500);
+
+                .iconify {
+                    color: var(--mc-warning);
+                }
             }
 
             &.delete {
-                color: var(--mc-error);
-            }
+                color: var(--mc-low-500);
 
-            .iconify {
-                margin-right: size(4);
+                .iconify {
+                    color: var(--mc-error);
+                }
             }
 
             @include mobile {

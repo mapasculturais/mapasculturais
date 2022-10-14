@@ -2,6 +2,18 @@
 
 .mc-map {
     height: 400px;  
+    
+    .leaflet-container {
+        .leaflet-pane {
+            z-index: 0;
+        }
+    }
+
+    .leaflet-marker-icon {
+        &:hover {
+            z-index: 1000 !important;
+        }
+    }
 
     &-marker {
         align-items: center;
@@ -22,7 +34,6 @@
             content: '';
             height: 45px;
             position: absolute;
-            transform: rotate(45deg);
             width: 45px;
             z-index: -1;
         }
@@ -40,6 +51,95 @@
             z-index: -1;
             border-top: none;
             border-left: none;
+        }
+    }
+
+    &-cluster {
+        &.agent_space_event__background {
+            background: white;
+            &::before {
+                background-image: conic-gradient(
+                    var(--mc-agents-500) 0deg,
+                    var(--mc-agents-500) 120deg,
+                    var(--mc-spaces-500) 120deg,
+                    var(--mc-spaces-500) 240deg,
+                    var(--mc-events-500) 240deg
+                );
+            }
+            &::after {
+                background: var(--mc-spaces-500);
+            }
+        }
+
+        &.agent_space__background {
+            background: white;
+            &::before {
+                background-image: conic-gradient(
+                    var(--mc-agents-500) 0deg,
+                    var(--mc-agents-500) 180deg,
+                    var(--mc-spaces-500) 180deg
+                );
+            }
+            &::after {
+                background: var(--mc-agents-500);
+            }
+        }
+
+        &.agent_event__background {
+            background: white;
+            &::before {
+                background-image: conic-gradient(
+                    var(--mc-agents-500) 0deg,
+                    var(--mc-agents-500) 180deg,
+                    var(--mc-events-500) 180deg
+                );
+            }
+            &::after {
+                background: var(--mc-agents-500);
+            }
+        }
+
+        &.space_event__background {
+            background: white;
+            &::before {
+                background-image: conic-gradient(
+                    var(--mc-spaces-500) 0deg,
+                    var(--mc-spaces-500) 180deg,
+                    var(--mc-events-500) 180deg
+                );
+            }
+            &::after {
+                background: var(--mc-spaces-500);
+            }
+        }
+
+        &.agent__background {
+            background: white;
+            &::before {
+                background: var(--mc-agents-500);
+            }
+            &::after {
+                background: var(--mc-agents-500);
+            }
+        }
+        &.space__background {
+            background: white;
+            color: var(--mc-low-500);
+            &::before {
+                background: var(--mc-spaces-500);
+            }
+            &::after {
+                background: var(--mc-spaces-500);
+            }
+        }
+        &.event__background {
+            background: white;
+            &::before {
+                background: var(--mc-events-500);
+            }
+            &::after {
+                background: var(--mc-events-500);
+            }
         }
     }
 }

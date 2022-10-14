@@ -13,6 +13,7 @@ app.component('user-management--add-role-modal', {
 
     data() {
         return {
+            subsites: $MAPAS.subsites,
             instance: null,
         }
     },
@@ -27,7 +28,6 @@ app.component('user-management--add-role-modal', {
     methods: {
         create (modal) {
             this.instance.userId = this.user.id;
-            console.log(this.instance)
 
             this.instance.save().then((response) => {
                 this.user.roles.push(this.instance);

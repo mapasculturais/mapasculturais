@@ -23,40 +23,18 @@ app.component('theme-logo', {
         return { text }
     },
 
-    beforeCreate() { },
-    created() { },
-
-    beforeMount() { },
-    mounted() { },
-
-    beforeUpdate() { },
-    updated() { },
-
-    beforeUnmount() {},
-    unmounted() {},
-
     props: {
-        title: {
+        href: {
             type: String,
-            default: 'mapas culturais'
-        },
-        subtitle: {
-            type: String,
-            default: ''
-        },
-        color: {
-            type: String,
-            default: $MAPAS.config.logo.color
+            default: null
         }
     },
 
-    /* data() {
-        return { color1: $MAPAS.config.logo.color1 };
-    }, */
-
-    computed: {
-    },
-    
-    methods: {
+    data() {
+        return {
+            title: $MAPAS.config.logo.title,
+            subtitle: $MAPAS.config.logo.subtitle,
+            color: $MAPAS.config.logo.color
+        }
     },
 });

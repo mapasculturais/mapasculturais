@@ -3,11 +3,11 @@ use MapasCulturais\i;
 ?>
 
 <div class="entity-cover">
-    <image-uploader :entity="entity" group="header" :aspect-ratio="425/96" :circular="false">
+    <image-uploader :entity="entity" group="header" :aspect-ratio="99/16" :circular="false">
         <template #default="modal">
-            <div class="entity-cover__cover">                
-                <div v-if="entity.files.header" class="entity-cover__cover--img">
-                    <img :src="entity.files.header?.transformations?.header?.url" class="img" />
+            <div class="entity-cover__cover">      
+
+                <div v-if="entity.files.header" id="header<?= date("Ymd") ?>" class="entity-cover__cover--img" :style="{ '--url': 'url('+entity.files.header?.transformations?.header.url+')' }">
                     <label class="label" for="header<?= date("Ymd") ?>"> <?php i::_e("Alterar Imagem de Capa")?> </label>
                 </div>
 

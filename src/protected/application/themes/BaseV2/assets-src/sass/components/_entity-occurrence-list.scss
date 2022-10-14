@@ -1,0 +1,100 @@
+@use '../settings/mixins' as *;
+
+ .entity-occurrence-list {
+    display: flex;
+    flex-direction: column;
+    gap: size(21);
+
+    &__editable {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+
+        &--title {
+            font-size: size(24);
+            font-weight: 700;
+            line-height: size(28);
+        }
+
+        &--description {
+            font-weight: 400;
+            font-size: size(18);
+            line-height: size(25);
+            margin: size(18) 0 size(26);
+        }
+    }
+
+    &__occurrences {
+        .occurrence {
+            border: size(1) solid var(--mc-gray-300);
+            border-radius: var(--mc-border-radius-xs);
+            margin-bottom: size(45);
+            padding: size(15) size(20) size(20);
+            position: relative;
+            width: 100%;
+        
+            &__header {
+                display: flex;
+                justify-content: space-between;
+        
+                &--title {
+                    align-items: center;
+                    display: flex;
+                    font-weight: 800;
+                    font-size: size(18);
+                    gap: size(6);
+                    line-height: size(25);
+                }
+    
+                &--link {
+                    align-items: center;
+                    color: var(--mc-primary-500);      
+                    cursor: pointer;      
+                    display: flex;
+                    gap: size(12);
+    
+                    .iconify {
+                        height: size(16);
+                        width: size(16);
+                    }
+                }
+            }
+        
+            &__content {
+                align-items: flex-start;
+                display: flex;
+                flex-direction: column;
+                gap: size(6);
+                margin-top: size(20);
+        
+                &--ticket,
+                &--price {
+                    align-items: center;
+                    display: flex;
+                    gap: size(6);
+                }
+            }
+
+            &__actions {
+                position: absolute;
+                left: size(13);
+                bottom: size(-33);
+                display: flex;
+                gap: size(24);
+                
+                &--edit,
+                &--delete {
+                    align-items: center;
+                    cursor: pointer;
+                    display: flex;
+                    gap: size(8);
+                }
+                &--delete {
+                    .iconify {
+                        color: var(--mc-danger-500);
+                    }
+                }
+            }
+        }
+    }
+}

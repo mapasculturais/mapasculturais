@@ -7,13 +7,9 @@ app.component('entity-social-media', {
         return { hasSlot }
     },
 
-    created() {
-
-    },
-
     data() {
         return {
-            message: 'test'
+            show: !!(this.entity.instagram || this.entity.twitter || this.entity.linkedin || this.entity.facebook || this.entity.youtube || this.entity.spotify || this.entity.pinterest),
         }
     },
 

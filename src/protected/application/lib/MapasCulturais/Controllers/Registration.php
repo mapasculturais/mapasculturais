@@ -18,7 +18,8 @@ use MapasCulturais\Entities\OpportunityMeta;
 class Registration extends EntityController {
     use Traits\ControllerUploads,
         Traits\ControllerAgentRelation,
-    	Traits\ControllerSealRelation;
+    	Traits\ControllerSealRelation,
+        Traits\ControllerAPI;
 
     function __construct() {
         $app = App::i();

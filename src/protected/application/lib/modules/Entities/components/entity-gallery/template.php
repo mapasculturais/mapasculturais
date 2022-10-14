@@ -1,10 +1,10 @@
 <?php 
 use MapasCulturais\i;
 
-$this->import('confirm-button popover modal');
+$this->import('confirm-button popover modal image-uploader');
 ?>
 
-<div class="entity-gallery">
+<div  v-if="editable || images" class="entity-gallery">
 
     <label class="entity-gallery__title"> {{title}} </label>
 
@@ -71,11 +71,10 @@ $this->import('confirm-button popover modal');
             <img v-if="actualImg" :src="actualImg?.url" :imgId="actualImg?.id" :title="actualImg?.description"/>
             <mc-icon v-else name="loading"></mc-icon>
             <div class="description">{{actualImg?.description}}</div>
-        </div>
 
-        <div class="entity-gallery__full--buttons">
             <div @click="prev" class="btnPrev"> <mc-icon name="previous"></mc-icon> </div>
             <div @click="next" class="btnNext"> <mc-icon name="next"></mc-icon> </div>
+            <div @click="close" class="btnClose"> <mc-icon name="close"></mc-icon> </div>
         </div>
     </div>
 

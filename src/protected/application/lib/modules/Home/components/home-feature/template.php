@@ -11,7 +11,7 @@ $this->import('entities entity-card tabs');
         </div>
 
         <div class="home-feature__content--description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum et, rhoncus semper et, nulla.
+        <label><?php i::_e('Saiba tudo que acontece no Mapas Culturais, acesse:')?></label>
         </div>
 
         <div class="home-feature__content--cards">

@@ -41,6 +41,9 @@ trait ControllerAPI{
         $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).params", [&$api_params]);
 
         $query = new ApiQuery($this->entityClassName, $api_params);
+        
+        $app->applyHookBoundTo($this, "API.query($this->id)", [&$query, $api_params]);
+        
         if($counting){
             $result = $query->getCountResult();
         } elseif( $findOne ) {

@@ -8,6 +8,12 @@ app.component('entity-location', {
         return { hasSlot }
     },
 
+    computed: {
+        hasPublicLocation() {
+            return !!this.entity.$PROPERTIES.publicLocation;
+        }
+    },
+
     props: {
         entity: {
             type: Entity,
@@ -15,9 +21,12 @@ app.component('entity-location', {
         },
         editable: {
             type: Boolean,
-            default: true
-        }        
-        
+            default: false,
+        },
+        hideLabel: {
+            type: Boolean,
+            default: false,
+        }
     },
 
     methods: {
@@ -184,7 +193,7 @@ app.component('entity-location', {
                     .then( r => {
                         // Consideramos o primeiro resultado
                         if (r[0] && r[0].lat && r[0].lon) {
-                            this.entity.location = {lat: r[0].lat, lon: r[0].lon};
+                            this.entity.location = {latitude: r[0].lat, longitude: r[0].lon};
                         }
                     } );
             }            

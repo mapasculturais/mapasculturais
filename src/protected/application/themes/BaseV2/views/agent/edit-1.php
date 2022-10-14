@@ -1,13 +1,27 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
+
 $this->import('
-    mapas-container mapas-card mapas-breadcrumb
-    entity-field entity-profile entity-cover entity-terms 
-    entity-admins entity-header entity-actions entity-owner 
-    entity-social-media entity-related-agents entity-links
-    entity-gallery entity-gallery-video entity-location
-    entity-map');
+    entity-actions
+    entity-admins
+    entity-cover
+    entity-field
+    entity-files-list
+    entity-gallery
+    entity-gallery-video
+    entity-header
+    entity-links
+    entity-location
+    entity-owner
+    entity-profile
+    entity-related-agents
+    entity-social-media
+    entity-terms
+    mapas-breadcrumb
+    mapas-card
+    mapas-container
+');
 
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -16,13 +30,13 @@ $this->breadcramb = [
 ];
 ?>
 
-<div class="main-app edit-1">
+<div class="main-app">
 
     <mapas-breadcrumb></mapas-breadcrumb>
             
     <entity-header :entity="entity" :editable="true"></entity-header>
 
-    <mapas-container class="edit-1__content">
+    <mapas-container>
 
         <mapas-card class="feature">
             <template #title>
@@ -59,7 +73,7 @@ $this->breadcramb = [
                 <div class="right">
                     <div class="grid-12">
                         <div class="col-12">
-                            <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Áreas de interesse"></entity-terms>
+                            <entity-terms :entity="entity" taxonomy="area" :editable="true" title="<?php  i::_e('Áreas de interesse'); ?>"></entity-terms>
                         </div>
 
                         <div class="col-12">
@@ -109,7 +123,7 @@ $this->breadcramb = [
                         <div class="col-12 divider"></div>
 
                         <div class="col-12">
-                            <entity-location :entity="entity"></entity-location>
+                            <entity-location :entity="entity" :editable="true"></entity-location>
                         </div>
                     </div>
                 </template>
@@ -152,9 +166,13 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-field :entity="entity" prop="longDescription"></entity-field>
                         </div>
+
+                        <div class="col-12">
+                            <entity-files-list :entity="entity" group="downloads" title= "<?php i::_e('Adicionar arquivos para download'); ?>" :editable="true"></entity-files-list>
+                        </div>
                         
                         <div class="col-12">
-                            <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
+                            <entity-links title="<?php i::_e('Adicionar'); ?>" :entity="entity" :editable="true"></entity-links>
                         </div>
                         
                         <div class="col-12">

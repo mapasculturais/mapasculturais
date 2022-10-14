@@ -2,9 +2,11 @@
 
 namespace UserManagement;
 
+use MapasCulturais\ApiQuery;
 use MapasCulturais\App;
 use MapasCulturais\Entities as MapasEntities;
 use MapasCulturais\Definitions\Role;
+use MapasCulturais\Entities\User;
 use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module {
@@ -17,6 +19,9 @@ class Module extends \MapasCulturais\Module {
         $app->hook('view.render(<<*>>):before', function (){
             $this->jsObject['EntitiesDescription']['system-role'] = Entities\SystemRole::getPropertiesMetadata();
             $this->jsObject['EntitiesDescription']['role'] = \MapasCulturais\Entities\Role::getPropertiesMetadata();
+
+            $subsite_query = new ApiQuery(MapasEntities\Subsite::class, ['@select'=>'id,name']);
+            $this->jsObject['subsites'] = array_merge([], $subsite_query->find());
 
             $permission_labels = [
                 '@control' => i::__('*controlar'),
@@ -137,12 +142,31 @@ class Module extends \MapasCulturais\Module {
             $where .= " (unaccent(lower(e.email)) LIKE unaccent(lower(:keyword)) OR unaccent(lower(a.name)) LIKE unaccent(lower(:keyword)))";
         });
 
+        $app->hook('panel.nav', function(&$group) use($app) {
+            $group['admin']['items'][] = [
+                'route' => 'panel/user-management',
+                'icon' => 'user-config',
+                'label' => i::__('Gestão de usuários'),
+                'condition' => function() use($app) {
+                    return $app->user->is('saasAdmin');
+                }
+            ];
+
+            $group['admin']['items'][] = [
+                'route' => 'panel/system-roles',
+                'icon' => 'role',
+                'label' => i::__('Funções de usuários'),
+                'condition' => function() use($app) {
+                    return $app->user->is('saasAdmin');
+                }
+            ];
+        });
+
         /**
          * Página para gerenciamento de roles no painel
          */
         $app->hook('GET(panel.system-roles)', function() use($app) {
             $this->requireAuthentication();
-
             $this->render('system-roles');
         });
 
@@ -151,11 +175,17 @@ class Module extends \MapasCulturais\Module {
          */
         $app->hook('GET(panel.user-management)', function() use($app) {
             $this->requireAuthentication();
-
-            $theme = $app->view;
-            $vendor_group = $theme instanceof \MapasCulturais\Themes\BaseV2\Theme ? 'vendor-v2' : 'vendor';
-
             $this->render('user-management');
+        });
+
+        /**
+         * Página para gerenciamento de usuários
+         */
+        $app->hook('GET(panel.user-detail)', function() use($app) {
+            /** @var \MapasCulturais\Controllers\Panel $this */
+            $this->requireAuthentication();
+            $app->view->addRequestedEntityToJs(User::class);
+            $this->render('user-detail');
         });
 
         /**
@@ -167,7 +197,6 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('app.init:after', function () {
             $this->registerController('system-role', Controllers\SystemRole::class);
-            $this->registerController('user-management', Controllers\UserManagement::class);
             $this->registerController('role', Controllers\Role::class);
 
             $roles = $this->repo(Entities\SystemRole::class)->findBy(['status' => 1]);
@@ -191,6 +220,6 @@ class Module extends \MapasCulturais\Module {
     }
 
     function register() {        
-    
+        
     }
 }

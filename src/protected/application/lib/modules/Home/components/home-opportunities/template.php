@@ -11,7 +11,7 @@ $this->import('entities entity-card');
         </div>
 
         <div class="home-opportunities__content--description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum et, rhoncus semper et, nulla.
+        <label> <?php i::_e('Cadastre-se, participe de editais e oportunidade e concorra aos benefícios sem sair de casa')?> </label>
         </div>
 
         <div class="home-opportunities__content--cards">

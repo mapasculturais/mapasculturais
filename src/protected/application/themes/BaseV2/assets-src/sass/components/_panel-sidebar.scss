@@ -7,6 +7,7 @@
 
     @include mobile {
         border: none;
+        display: none;
         padding: size(24) size(16);
     }
 
@@ -55,6 +56,9 @@
     ul {
         margin: 0;
         padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
     }
 
     li {
@@ -74,12 +78,13 @@
         }
 
         &.active {
-            background-color: var(--mc-primary-500);
-            color: white;
+            background-color: var(--mc-secondary-300);
+            color: var(    --mc-black);
 
             &:focus, &:hover {
-                background-color: var(--mc-primary-700);
+                background-color: var(--mc-danger-700);
             }
+            
         }
 
         .iconify {

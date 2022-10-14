@@ -141,6 +141,10 @@ abstract class SealRelation extends \MapasCulturais\Entity
         return $this->owner->canUser('createSealRelation', $user) && $can;
     }
 
+    protected function canUserModify($user){
+        return $this->canUserCreate($user);
+    }
+
     protected function canUserRemove($user){
         $app = App::i();
 

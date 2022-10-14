@@ -2,9 +2,12 @@
 
 use MapasCulturais\i;
 
-$this->import('select-entity');
+$this->import('
+    mc-icon
+    select-entity
+');
 ?>
-<div v-if="owner" class="entity-owner">
+<div v-if="owner" class="entity-owner" :class="classes">
     <h4>{{title}}</h4>
     <a class="entity-owner__owner" :href="owner.singleUrl" :title="owner.shortDescription">
         <div class="entity-owner__owner--img">
@@ -19,8 +22,7 @@ $this->import('select-entity');
     </a>
 
     <div v-if="editable" class="entity-owner__edit">
-        
-        <select-entity type="agent" @select="changeOwner($event)" openside="right-down">            
+        <select-entity :query="query" type="agent" @select="changeOwner($event)" openside="up-right">
             <template #button="{ toggle }">
                 <a class="entity-owner__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
                     <mc-icon name="exchange"></mc-icon>
@@ -28,7 +30,5 @@ $this->import('select-entity');
                 </a>
             </template>
         </select-entity>
-
     </div>
-
 </div>

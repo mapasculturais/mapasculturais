@@ -5,7 +5,7 @@ $this->import('entity-field entity-map');
 
 
 <div class="entity-location grid-12">
-    <div class="entity-location__title col-12">
+    <div v-if="!hideLabel" class="entity-location__title col-12">
         <label ><?= i::__('Endereço')?></label>
     </div>
 
@@ -39,7 +39,7 @@ $this->import('entity-field entity-map');
                 <entity-field @change="address()" :entity="entity" prop="En_Estado"></entity-field>
             </div>
 
-            <div class="col-6">
+            <div v-if="hasPublicLocation" class="col-6">
                 <entity-field @change="address()" :entity="entity" prop="publicLocation"></entity-field>
             </div>
         </div>
@@ -47,7 +47,8 @@ $this->import('entity-field entity-map');
 
     <div class="col-12">
         <p class="entity-location__address">
-            <span>{{entity.endereco}}</span>
+            <span v-if="entity.endereco">{{entity.endereco}}</span>
+            <span v-else><?= i::_e("Sem Endereço"); ?></span>
         </p>
         <entity-map :entity="entity" :editable="editable"></entity-map>
     </div>

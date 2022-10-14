@@ -4,8 +4,10 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\i;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\Exceptions\BadRequest;
+use MapasCulturais\Traits;
 /**
  * User
  *
@@ -24,9 +26,10 @@ use MapasCulturais\Exceptions\BadRequest;
  * @ORM\HasLifecycleCallbacks
  */
 class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterface{
-    const STATUS_ENABLED = 1;
+    use Traits\EntityMetadata,
+        Traits\EntitySoftDelete;
 
-    use \MapasCulturais\Traits\EntityMetadata;
+    const STATUS_ENABLED = 1;
 
     protected $__enableMagicGetterHook = true;
 
@@ -127,12 +130,27 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     protected $_isDeleting = false;
 
+    static function getValidations() {
+        return [
+            'email' => [
+                'unique' => i::__('Este e-mail já está sendo utilizado por outro usuário'),
+                'required' => i::__('O e-mail é obrigatório'),
+                'v::email()' => i::__('O valor informado não é um e-mail válido'),
+            ]
+        ];
+    }
 
     public function __construct() {
         parent::__construct();
 
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
+    }
+
+    public static function getPropertiesMetadata($include_column_name = false){
+        $result = parent::getPropertiesMetadata($include_column_name);
+        unset($result['status']['options']['draft']);
+        return $result;
     }
 
     function getIsDeleting(){
@@ -880,8 +898,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             }
         }
 
-        $this->authUid = 'deleted:' . $this->authUid;
-        $this->email = 'deleted:' . $this->email;
         $this->status = self::STATUS_TRASH;
         $this->save($flush);
         

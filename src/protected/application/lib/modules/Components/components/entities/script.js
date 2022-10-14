@@ -1,15 +1,3 @@
-/**
- * uso:
- * 
- * // omitindo o id, pega a entity do Mapas.requestedEntity
- * <entity v-slot='{entity}'>{{entity.id}} - {{entity.name}}</entity>
- * 
- * // passango o id sem select, não faz consulta na api
- * <entity v-slot='{entity}' :type='space' :id='33'>{{entity.id}}</entity>
- * 
- * // passando o id e passando um select, faz a consulta na api
- * <entity v-slot='{entity}' :type='space' :id='33' :select="id,name">{{entity.id}} - {{entity.name}}</entity>
- */
 app.component('entities', {
     template: $TEMPLATES['entities'],
 
@@ -21,9 +9,10 @@ app.component('entities', {
         }
     },
 
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name];
-        return { hasSlot }
+    setup() { 
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('entities')
+        return { text }
     },
 
     created() {
@@ -31,66 +20,114 @@ app.component('entities', {
             this.api.lists.store(this.name, this.entities);
         }
 
+        if (this.select) {
+            this.query['@select'] = this.select;
+        } 
+
+        if (this.ids) {
+            this.query.id = 'IN(' + this.ids.join(',') + ')'
+        }
+
+        if (this.order) {
+            this.query['@order'] = this.order; 
+        }
+
+        if (this.limit) {
+            this.query['@limit'] = this.limit;
+            this.query['@page'] = this.page;
+        }
+
+        if (this.permissions) {
+            this.query['@permissions'] = this.permissions; 
+        }
+
+        this.entities.query = this.query;
         this.entities.metadata = {};
         this.entities.loading = false;
         this.entities.loadingMore = false;
-        this.entities.refresh = () => this.refresh();
+        this.entities.refresh = (debounce) => this.refresh(debounce);
         this.entities.loadMore = () => this.loadMore();
-        this.entities.query = this.query;
+        this.entities.stringifiedQuery = JSON.stringify(this.entities.query)
+        let watchTimeout = null;
+        if (this.watchQuery) {
+            this.$watch('query', (q1) => {
+                if(this.entities.stringifiedQuery == JSON.stringify(q1)) {
+                    return;
+                }
+                this.entities.stringifiedQuery = JSON.stringify(q1);
+                this.entities.loading = true;
+                this.entities.splice(0);
+                clearTimeout(watchTimeout, 100);
+                watchTimeout = setTimeout(() => {
+                    this.entities.refresh();
+                }, this.watchDebounce);
+            }, {deep:true});
+        }
 
         this.refresh();
     },
 
     props: {
         name: String,
-        ids: Array,
         type: {
             type: String,
             required: true
         },
         select: String,
+        ids: Array,
         query: {
             type: Object,
-            default: () => ({})
+            default: {}
         },
         limit: Number,
-        order: String,
-        scope: String
+        permissions: String,
+        order: {
+            type: String,
+            default: 'id ASC'
+        },
+        watchQuery: {
+            type: Boolean,
+            default: false
+        },
+        watchDebounce: {
+            type: Number,
+            default: 500
+        },
+        endpoint: {
+            type: String,
+            default: 'find'
+        },
+        rawProcessor: Function,
+        scope: String,
     },
     
     methods: {
         getDataFromApi() {
-            
-            if (this.select) {
-                this.query['@select'] = this.select;
-            } 
-
-            if (this.ids) {
-                this.query.id = 'IN(' + this.ids.join(',') + ')'
-            }
-
-            if (this.order) {
-                this.query['@order'] = this.order; 
-            }
-
             let query = {...this.query};
+            const options = {list: this.entities};
 
-            if (this.limit) {
-                query['@limit'] = this.limit;
+            if (this.limit && this.page) {
                 query['@page'] = this.page;
             }
             
-            return this.api.find(query, this.entities);
+            if (this.rawProcessor) {
+                options.raw = true;
+                options.rawProcessor = this.rawProcessor;
+            };
+            return this.api.fetch(this.endpoint, query, options);
         },
         
-        refresh() {
+        refresh(debounce) {
+            debounce = debounce || 0;
             this.page = 1;
             this.entities.loading = true;
-
             this.entities.splice(0);
-            this.getDataFromApi().then(() => { 
-                this.entities.loading = false;
-            });
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+                this.getDataFromApi().then(() => { 
+                    this.entities.loading = false;
+                });
+            }, debounce);
         },
 
         loadMore() {

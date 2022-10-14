@@ -6,6 +6,7 @@ use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use Doctrine\ORM\Query\ResultSetMapping;
+use MapasCulturais\ApiQuery;
 
 /**
  * Event Controller
@@ -328,6 +329,259 @@ class Event extends EntityController {
         foreach($result as &$r){
             $r['attendance'] = null;
             $r['_reccurrence_string'] = "{$r['occurrence_id']}.{$r['starts_on']}.{$r['starts_at']}.{$r['ends_on']}.{$r['ends_at']}";
+            $reccurrence_strings[$r['_reccurrence_string']] = &$r;
+        }
+
+        if($reccurrence_strings){
+            if(!is_numeric($event_attendance_user)){
+                $user = $app->repo('User')->getByProcurationToken($event_attendance_user);
+                if($user){
+                    $event_attendance_user = $user->id;
+                } else {
+                    $event_attendance_user = null;
+                }
+            }
+            if($event_attendance_user){
+                $_reccurrence_strings = implode(',', array_keys($reccurrence_strings));
+    
+                $attendances = $app->controller('eventAttendance')->apiQuery([
+                    '@select' => 'id,type,reccurrenceString,user,eventOccurrence,event,space',
+                    'reccurrenceString' => "IN($_reccurrence_strings)",
+                    'user' => "EQ($event_attendance_user)"
+                ]);
+
+                foreach($attendances as $attendance){
+                    $reccurrence_strings[$attendance['reccurrenceString']]['attendance'] = $attendance;
+                }
+            }
+        }
+        
+        return $result;
+    }
+
+    /**
+     * @api {all} /api/event/occurrences Pesquisa de ocorrências
+     * @apiDescription Realizar a pesquisa por ocorrências de eventos em determinado período
+     * @apiGroup EVENT
+     * @apiName occurrences
+     * @apiParam {date} [@from=HOJE] Data inicial do período
+     * @apiParam {date} [@to=HOJE] Data final do período
+     * @apiParam {String} [@limit] Limite para a quantidade de registro
+     * @apiParam {String} [@offset] Offset para desolamento da quantidade de registros
+     * @apiParam {String} [@page] Número da página a ser retornada
+     * @apiParam {String} [space:atributo] Realizar a pesquisa das ocorrências de eventos por espaço.
+     *
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost/api/event/occurrences?@from=2016-05-01&@to=2016-05-31&space:id=EQ(8915)
+     */
+    function API_occurrences(){
+        $result = $this->apiOccurrences($this->getData);
+
+        // @TODO: set headers to
+        $this->apiResponse($result);
+    }
+
+
+    function apiOccurrences($query_data){
+        $app = App::i();
+        $rsm = new ResultSetMapping();
+
+
+        $rsm->addScalarResult('id', 'occurrence_id');
+        $rsm->addScalarResult('event_id', 'event_id');
+        $rsm->addScalarResult('space_id', 'space_id');
+        $rsm->addScalarResult('starts_on', 'starts_on');
+        $rsm->addScalarResult('starts_at', 'starts_at');
+        $rsm->addScalarResult('ends_on', 'ends_on');
+        $rsm->addScalarResult('ends_at', 'ends_at');
+        $rsm->addScalarResult('rule', 'rule');
+
+
+        // find occurrences
+
+        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
+        $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
+        
+        $event_attendance_user = key_exists('@attendanceUser', $query_data) ? $query_data['@attendanceUser'] : $app->user->id;
+        unset($query_data['@attendanceUser']);
+
+        $subsite_sql = '';
+
+        if($subsite = $app->getCurrentSubsite()){
+            $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds(true);
+
+            $subsite_sql = "AND space_id IN ({$space_ids})";
+        }
+
+        $query = $app->em->createNativeQuery("
+            SELECT id, event_id, space_id, starts_on, starts_at::TIME AS starts_at, ends_on, ends_at::TIME AS ends_at, rule
+            FROM recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
+            WHERE status > 0 $subsite_sql
+
+            ORDER BY starts_on, starts_at", $rsm);
+
+        $query->setParameters([
+            'date_from' => $date_from,
+            'date_to' => $date_to
+        ]);
+
+        if($app->config['app.useEventsCache']){
+            $query->useResultCache(true, $app->config['app.eventsCache.lifetime']);
+        }
+
+        $_result = $query->getScalarResult();
+
+        $space_query_params = [];
+        $event_query_params = [];
+
+        // filter spaces
+
+
+        foreach($this->getData as $key => $val){
+            if(strtolower(substr($key, 0, 6)) === 'space:'){
+                $space_query_params[substr($key, 6)] = $val;
+                unset($event_query_params[$key]);
+            }
+        }
+
+        foreach($this->getData as $key => $val){
+            if(strtolower(substr($key, 0, 6)) === 'event:'){
+                $event_query_params[substr($key, 6)] = $val;
+                unset($event_query_params[$key]);
+            }
+        }
+
+        unset(
+                $space_query_params['@limit'],
+                $space_query_params['@offset'],
+                $space_query_params['@page']
+        );
+
+        $space_ids = [-1];
+
+        foreach($_result as $occ){
+            $space_ids[] = $occ['space_id'];
+        }
+
+        $space_ids = implode(',',$space_ids);
+        if(isset($space_query_params['id'])){
+            $space_query_id = $space_query_params['id'];
+            $space_query_params['id'] = "AND({$space_query_id},IN({$space_ids}))";
+        }else{
+            $space_query_params['id'] = "IN({$space_ids})";
+        }
+
+        if(isset($space_query_params['@select'])){
+            $props = explode(',', $space_query_params['@select']);
+            if(array_search('id', $props) === false){
+                $space_query_params['@select'] .= ',id';
+            }
+        }
+
+        $space_query = new ApiQuery(\MapasCulturais\Entities\Space::class, $space_query_params);
+        $spaces = $space_query->find();
+
+        $spaces_by_id = [];
+        foreach($spaces as $space){
+            $spaces_by_id[$space['id']] = $space;
+        }
+
+        $event_ids = [];
+
+        foreach($_result as $occ){
+            if(isset($spaces_by_id[$occ['space_id']])){
+                $event_ids[] = $occ['event_id'];
+            }
+        }
+
+        if($event_ids){
+
+            $event_ids = implode(',',$event_ids);
+
+            if(isset($event_query_params['id'])){
+                $event_query_id = $event_query_params['id'];
+                $event_query_params['id'] = "AND({$event_query_id},IN({$event_ids}))";
+            }else{
+                $event_query_params['id'] = "IN({$event_ids})";
+            }
+            if(isset($event_query_params['@select'])){
+                $props = explode(',', $event_query_params['@select']);
+                if(array_search('id', $props) === false){
+                    $event_query_params['@select'] .= ',id';
+                }
+            }
+            $events = $this->apiQuery($event_query_params);
+
+            $events_by_id = [];
+            foreach($events as $event){
+                $events_by_id[$event['id']] = $event;
+            }
+
+            $result = [];
+
+            foreach($_result as $i => $occ){
+                $occ = (object) $occ;
+
+                $space_id = $occ->space_id;
+                $event_id = $occ->event_id;
+
+                if(!isset($events_by_id[$event_id]))
+                    continue;
+
+
+                unset($occ->space_id);
+                
+                if(isset($spaces_by_id[$space_id]) && isset($events_by_id[$event_id])){
+                    unset($occ->event);
+
+                    $space = $spaces_by_id[$space_id];
+                    $event = $events_by_id[$event_id];
+
+                    $occ->rule = json_decode($occ->rule);
+
+                    $starts = new \DateTime("{$occ->starts_on} {$occ->starts_at}");
+                    $ends = new \DateTime(date('Y-m-d H:i:s', strtotime("+{$occ->rule->duration} minutes", strtotime("{$occ->starts_on} {$occ->starts_at}"))));
+
+                    $result[] = [
+                        'occurrence_id' => $occ->occurrence_id,
+                        'starts' => $starts,
+                        'ends' => $ends,
+                        'duration' => $occ->rule->duration,
+                        'description' => $occ->rule->description,
+                        'price' => $occ->rule->price,
+                        'space' => $space,
+                        'event' => $event,
+                        '_reccurrence_string' => "{$occ->occurrence_id}.{$occ->starts_on}.{$occ->starts_at}.{$occ->ends_on}.{$occ->ends_at}"
+                    ];
+
+                }
+            }
+
+            // pagination
+
+            $offset = isset($this->getData['@offset']) ? $this->getData['@offset'] : null;
+            $limit = isset($this->getData['@limit']) ? $this->getData['@limit'] : null;
+            $page = isset($this->getData['@page']) ? $this->getData['@page'] : null;
+
+            if($page && $limit){
+                $offset = (($page - 1) * $limit);
+                $result = array_slice($result, $offset, $limit);
+            } else if($offset && $limit){
+                $result = array_slice($result, $offset, $limit);
+            } else if ($offset) {
+                $result = array_slice($result, $offset);
+            } else if ($limit) {
+                $result = array_slice($result, 0, $limit);
+            }
+        } else {
+            $result = [];
+        }
+
+
+        $reccurrence_strings = [];
+        foreach($result as &$r){
+            $r['attendance'] = null;
+
             $reccurrence_strings[$r['_reccurrence_string']] = &$r;
         }
 

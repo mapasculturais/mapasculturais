@@ -1,25 +1,26 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('mapas-breadcrumb tabs search-header mc-map create-agent');
+$this->import('search tabs search-list search-map search-filter-project create-project');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Projetos'), 'url' => $app->createUrl('projects')],
 ];
 ?>
 
-
-<div class="search">
-    <mapas-breadcrumb></mapas-breadcrumb>
-    
-    <search-header class="search__header" type="project">
-        <template #create>
-            <create-agent></create-agent>
-        </template>
-        <template #actions>
-        </template>
-    </search-header>
-    <div class="search__content">
-    <!-- verificar com ux se será adicionado o campo de pesquisa -->
-    </div>
-</div>
+<search page-title="<?php i::esc_attr_e('Projetos') ?>" entity-type="project" >    
+    <template #create-button>
+        <create-project></create-project>
+    </template>
+    <template #default="{pseudoQuery}">
+        <div class="tabs-component__panels">
+            <div class="search__tabs--list">
+                <search-list :pseudo-query="pseudoQuery" type="project">
+                    <template #filter>
+                        <search-filter-project :pseudo-query="pseudoQuery"></search-filter-project>
+                    </template>
+                </search-list>
+            </div>
+        </div>
+    </template>
+</search>

@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 ?>
 <div class="entity-links">
-    <h4 class="entity-links__title"> {{title}} </h4>
+    <label class="entity-links__title"> {{title}} </label>
 
     <ul class="entity-links__links">
         <li class="entity-links__links--item" v-for="metalist in entity.metalists.links">
