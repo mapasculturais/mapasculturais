@@ -24,7 +24,7 @@ $this->import('
 ');
 $this->breadcramb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Agentes'), 'url' => $app->createUrl('panel', 'agents')],
+    ['label' => i::__('Agentes'), 'url' => $app->createUrl('search', 'agents')],
     ['label' => $entity->name, 'url' => $app->createUrl('agent', 'single', [$entity->id])],
 ];
 ?>
