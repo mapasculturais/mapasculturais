@@ -45,10 +45,7 @@ use MapasCulturais\i;
                     <h1 class="title"> {{entity.name}} </h1>
                     <div class="metadata">
                         <slot name="metadata">
-                            <dl v-if="entity.__objectType=='event'">
-                                <dd>{{entity.subTitle}}</dd>
-                            </dl>
-                            <dl v-else>
+                            <dl>
                                 <dt><?= i::__('Tipo') ?></dt>
                                 <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
                             </dl>
@@ -84,7 +81,7 @@ use MapasCulturais\i;
                     </slot>
                 </div>
 
-                <div v-if="entity.site && entity.objectType!='event'" class="site">
+                <div v-if="entity.site" class="site">
                     <a><mc-icon :class="entity.__objectType+'__color'" name="link"></mc-icon>{{entity.site}}</a>
                 </div>
             </div>

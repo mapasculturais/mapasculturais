@@ -23,13 +23,19 @@ $this->import('
 
 $this->breadcramb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Meus Eventos'), 'url' => $app->createUrl('panel', 'events')],
+    ['label' => i::__('Meus Eventos'), 'url' => $app->createUrl('search', 'events')],
     ['label' => $entity->name, 'url' => $app->createUrl('event', 'edit', [$entity->id])],
 ];
 ?>
 <div class="main-app">
     <mapas-breadcrumb></mapas-breadcrumb>
-    <entity-header :entity="entity"></entity-header>
+    <entity-header :entity="entity">
+        <template #metadata>
+            <dl>
+                <dd>{{entity.subTitle}}</dd>
+            </dl>
+        </template>
+    </entity-header>
     
     <tabs class="tabs">
 
