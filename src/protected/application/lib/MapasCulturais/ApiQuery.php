@@ -648,7 +648,7 @@ class ApiQuery {
         }
 
         $dql = $this->getFindDQL($select);
-        App::i()->log->debug($dql);
+        
         $q = $this->em->createQuery($dql);
 
         if ($offset = $this->getOffset()) {
