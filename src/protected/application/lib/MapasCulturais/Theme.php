@@ -737,8 +737,25 @@ abstract class Theme extends \Slim\View {
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
 
             $query = new ApiQuery($entity_class_name, $query_params);
-            $owner_prop = ($entity_class_name == Entities\Agent::class) ? 'parent' : 'owner';
             $e = $query->findOne();
+
+            if ($entity_class_name == Entities\Agent::class) {
+                $owner_prop = 'parent';
+                if (!$e['parent']) {
+                    $query = $app->em->createQuery("
+                        SELECT 
+                            IDENTITY(e.profile) AS profile
+                        FROM 
+                            MapasCulturais\\Entities\\User e
+                        WHERE 
+                            e.id = :id");
+                    $query->setParameter('id', $e['user']);
+                    $result = $query->getSingleResult();
+                    $e['parent'] = $result['profile'];
+                }
+            } else {
+                $owner_prop = 'owner';
+            }
             
             if ($owner_id = $e[$owner_prop] ?? false) {
                 $owner_query_params = [
@@ -753,7 +770,7 @@ abstract class Theme extends \Slim\View {
                 $e[$owner_prop] = $owner;
             }
 
-            if($owner_prop != 'parent' && $entity_class_name::usesNested() && $e['parent']) {
+            if($owner_prop != 'parent' && $entity_class_name::usesNested()) {
                 $parent_query_params = [
                     '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
                     'id' => "EQ({$e['parent']})", 
