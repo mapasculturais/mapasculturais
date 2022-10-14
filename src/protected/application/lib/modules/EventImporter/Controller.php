@@ -37,7 +37,7 @@ class Controller extends \MapasCulturais\Controller
       $stream = fopen($path, 'w');
 
       $csv = Writer::createFromStream($stream);
-      $csv->setDelimiter(";");
+      $csv->setDelimiter(",");
       $csv->insertOne(array_keys($csv_header_example));
     
       $csv_data = [];
@@ -68,7 +68,7 @@ class Controller extends \MapasCulturais\Controller
       $moduleConfig = $app->modules['EventImporter']->config;
       $enabled = $moduleConfig['enabled'];
 
-      if(!$enabled()){
+      if (!$enabled()) {
          $this->error("Permissão negada, fale com administrador");
       }
 
