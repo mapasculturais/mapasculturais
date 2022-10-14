@@ -3,17 +3,19 @@
 namespace EventImporter;
 
 use DateTime;
+use stdClass;
 use Exception;
 use MapasCulturais\i;
 use League\Csv\Reader;
-use MapasCulturais\App;
-use League\Csv\Statement;
 use League\Csv\Writer;
+use MapasCulturais\App;
+use Shuchkin\SimpleXLS;
+use Shuchkin\SimpleXLSX;
+use League\Csv\Statement;
 use MapasCulturais\Entity;
 use MapasCulturais\Entities\Event;
-use MapasCulturais\Entities\EventOccurrence;
 use MapasCulturais\Entities\MetaList;
-use stdClass;
+use MapasCulturais\Entities\EventOccurrence;
 
 class Controller extends \MapasCulturais\Controller
 {
@@ -76,15 +78,76 @@ class Controller extends \MapasCulturais\Controller
       $file = $app->repo('File')->find($request['file']);
       $file_dir = $file->path;
 
+
       if (file_exists($file_dir)) {
-         $this->checkCSV($file_dir);
-      }else{
+
+         $info = pathinfo($file_dir);
+         $ext = $info['extension'];
+
+         switch ($ext) {
+            case 'xls':
+            case 'xlsx':
+               $function = "getDataXLS";
+               break;
+            case 'csv':
+               $function = "getDataCSV";
+               break;
+         }
+
+         $data = $this->$function($file_dir);
+         $this->processData($data, $file_dir);
+
+      } else {
          throw new Exception("Arquivo CSV não existe. Erro ao processar");
       }
    }
 
-   //Processa arquivos CSV
-   public function checkCSV(string $file_dir)
+   public function getDataCSV($file)
+   {
+     $stream = fopen($file, 'r');
+
+      $csv = Reader::createFromStream($stream);
+      $csv->setDelimiter(",");
+      $csv->setHeaderOffset(0);
+
+      $stm = (new Statement());
+      $file_data = $stm->process($csv);
+
+      return $file_data;
+   }
+
+   public function getDataXLS($file)
+   {
+      $info = pathinfo($file);
+      $ext = $info['extension'];
+
+      switch ($ext) {
+         case 'xls':
+            $_class = "Shuchkin\\SimpleXLS";
+            break;
+         case 'xlsx':
+            $_class = "Shuchkin\\SimpleXLSX";
+            break;
+      }
+
+      $class = new $_class($file);
+      $xls = $class::parseFile($file);
+      $rows = $xls->rows();
+      $header = $rows[0];
+
+      $file_data = [];
+      foreach($rows as $key => $values){
+         if($key === 0){continue;}
+         
+         $file_data[$key] = array_combine($header, $values);
+      }
+
+      return $file_data;
+   }
+   
+
+   //Processa dados do arquivo
+   public function processData($file_data, string $file_dir)
    {
       $app = App::i();
 
@@ -92,14 +155,6 @@ class Controller extends \MapasCulturais\Controller
 
       $moduleConfig = $app->modules['EventImporter']->config;
 
-      $stream = fopen($file_dir, 'r');
-
-      $csv = Reader::createFromStream($stream);
-      $csv->setDelimiter(";");
-      $csv->setHeaderOffset(0);
-
-      $stm = (new Statement());
-      $csv_data = $stm->process($csv);
       $header_default = $moduleConfig['header_default'];
 
       $header = [];
@@ -112,7 +167,7 @@ class Controller extends \MapasCulturais\Controller
       }
 
       $tmp = [];
-      foreach($csv_data as $pos => $values){
+      foreach($file_data as $pos => $values){
          $collums = array_keys($values);
 
          foreach($collums as $collum){
