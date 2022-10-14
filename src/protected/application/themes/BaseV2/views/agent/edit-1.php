@@ -1,6 +1,7 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
+
 $this->import('
     entity-actions
     entity-admins
