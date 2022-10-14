@@ -6,7 +6,7 @@ use MapasCulturais\i;
 
     <div class="entity-header__single">
 
-    <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.transformations?.header.url) }"></div>
+    <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.transformations?.header?.url) }"></div>
 
         <div class="entity-header__single--content">
 
