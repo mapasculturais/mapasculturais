@@ -101,7 +101,9 @@ class Module extends \MapasCulturais\Module {
             }
             $this->importedComponents[] = $component;
 
-            $app->log->debug("importing component {$component}");
+            if ($app->config['app.log.components']) {
+                $app->log->debug("importing component {$component}");
+            }
 
             $template = $this->componentRender($component, $data);
             $app->components->templates[$component] = $template;
