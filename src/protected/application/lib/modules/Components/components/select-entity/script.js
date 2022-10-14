@@ -13,7 +13,6 @@ app.component('select-entity', {
             itensText: '',
             buttonText: '',
             placeholder: '',
-            icon: '',
             keyword: '',
             close: false
         }
@@ -25,31 +24,26 @@ app.component('select-entity', {
                 this.itensText = this.text('Selecione um dos agentes');
                 this.buttonText = this.text('Crie um novo agente');
                 this.placeholder = this.text('Pesquise por agentes');
-                this.icon = 'fa-solid:user-friends';
                 break;
             case 'space':
                 this.itensText = this.text('Selecione um dos espaços');
                 this.buttonText = this.text('Crie um novo espaço');
                 this.placeholder = this.text('Pesquise por espaços');
-                this.icon = 'clarity:building-line';
                 break;
             case 'event':
                 this.itensText = this.text('Selecione um dos eventos');
                 this.buttonText = this.text('Crie um novo evento');
                 this.placeholder = this.text('Pesquise por eventos');
-                this.icon = 'ant-design:calendar-twotone';
                 break;
             case 'project':
                 this.itensText = this.text('Selecione um dos projetos');
                 this.buttonText = this.text('Crie um novo projeto');
                 this.placeholder = this.text('Pesquise por projetos');
-                this.icon = 'ri:file-list-2-line';
                 break;
             case 'opportunity':
                 this.itensText = this.text('Selecione uma das oportunidades');
                 this.buttonText = this.text('Crie uma nova oportunidade');
                 this.placeholder = this.text('Pesquise por oportunidades');
-                this.icon = 'icons8:idea';
                 break;
         }
     },
@@ -65,7 +59,11 @@ app.component('select-entity', {
         },
         query: {
             type: Object,
-            default: {"@permissions": "@control"}
+            default: {}
+        },
+        permissions: {
+            type: String,
+            default: "@control"
         },
         limit: {
             type: Number,

@@ -13,11 +13,10 @@ use MapasCulturais\i;
 
             <div class="select-entity">
 
-                <entities :type="type" :select="select" :query="query" :limit="limit" :scope="scope">
-
+                <entities :type="type" :select="select" :query="query" :limit="limit" :scope="scope" :permissions="permissions" watch-query>
                     <template #header="{entities}">
                         <form class="select-entity__form" @submit="entities.refresh(); $event.preventDefault();">
-                            <input v-model="query['@keyword']" type="text" class="select-entity__form--input" name="search" :placeholder="placeholder" />
+                            <input v-model="entities.query['@keyword']" type="text" class="select-entity__form--input" name="search" :placeholder="placeholder" />
                             <button type="button" class="select-entity__form--button">
                                 <mc-icon name="search"></mc-icon>
                             </button>
