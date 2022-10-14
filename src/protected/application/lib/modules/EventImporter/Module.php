@@ -324,7 +324,7 @@ class Module extends \MapasCulturais\Module
             'agent',
             new Definitions\FileGroup(
                 'event-import-file',
-                ['text/csv','application/zip'],
+                ['text/csv', 'application/excel'],
                 'O arquivo não e valido'
             )
         );
