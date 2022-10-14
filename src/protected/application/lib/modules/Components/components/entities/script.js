@@ -37,6 +37,10 @@ app.component('entities', {
             this.query['@page'] = this.page;
         }
 
+        if (this.permissions) {
+            this.query['@permissions'] = this.permissions; 
+        }
+
         this.entities.query = this.query;
         this.entities.metadata = {};
         this.entities.loading = false;
@@ -76,6 +80,7 @@ app.component('entities', {
             default: {}
         },
         limit: Number,
+        permissions: String,
         order: {
             type: String,
             default: 'id ASC'
