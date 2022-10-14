@@ -549,11 +549,11 @@
             }
 
             $scope.readableProjectRegistrationDates = function(project){
-                if(!project.registrationFrom)
+                if(!project.startsOn)
                     return false;
 
-                var from = moment(project.registrationFrom.date).format('DD/MM/YYYY');
-                var to = moment(project.registrationTo.date).format('DD/MM/YYYY');
+                var from = moment(project.startsOn.date).format('DD/MM/YYYY');
+                var to = moment(project.endsOn.date).format('DD/MM/YYYY');
 
                 return from !== to ? labels['dateFrom'] + ' ' + from + ' ' + labels['dateTo'] + ' ' + to : from;
             };

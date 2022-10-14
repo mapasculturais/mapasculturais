@@ -322,6 +322,7 @@ class Subsite extends \MapasCulturais\Entity
     function jsonSerialize() {
         $result = [
             'id' => $this->id,
+            'name' => $this->name,
             'createTimestamp' => $this->createTimestamp,
             'status' => $this->status,
             'url' => $this->url,

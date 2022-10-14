@@ -25,6 +25,13 @@ Indica se o botão associado à aba é clicável.
 
 Ícone associado ao botão de seleção da aba. Deve ser uma string compatível com o [Iconify](https://docs.iconify.design/icon-components/vue/#usage).
 
+### `icon`
+
+- Tipo: `String|Array|Object`
+- Opcional
+
+Classes adicionadas ao elemento `<li>` da aba.
+
 ### `label`
 
 - Tipo: `String`

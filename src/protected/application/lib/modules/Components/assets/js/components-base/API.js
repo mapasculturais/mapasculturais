@@ -67,8 +67,9 @@ globalThis.apiInstances = {};
 
 class API {
     constructor(objectType, scope, fetchOptions) {
-        if (apiInstances[objectType]) {
-            return apiInstances[objectType];
+        const instanceId = `${objectType}:${scope}`;
+        if (apiInstances[instanceId]) {
+            return apiInstances[instanceId];
         } else {
             this.scope = scope;
             this.cache = useEntitiesCache();
@@ -79,7 +80,7 @@ class API {
                 ...fetchOptions
             };
 
-            apiInstances[objectType] = this;
+            apiInstances[instanceId] = this;
         }
     }
 
@@ -178,6 +179,12 @@ class API {
         }
     }
 
+    async undeleteEntity(entity) {
+        if (entity.id) {
+            return this.POST(entity.getUrl('undelete'));   
+        }
+    }
+
     async destroyEntity(entity) {
         if (entity.id) {
             return this.DELETE(entity.getUrl('destroy'));   
@@ -196,6 +203,12 @@ class API {
         }
     }
 
+    async unpublishEntity(entity) {
+        if (entity.id) {
+            return this.POST(entity.getUrl('unpublish'));
+        }
+    }
+
     async findOne(id, select) {
         let url = this.createApiUrl('findOne', {id: `EQ(${id})`, '@select': select || '*'});
         return this.GET(url).then(response => response.json().then(obj => {
@@ -204,19 +217,39 @@ class API {
         }));
     }
 
-    async find(query, list) {
-        let url = this.createApiUrl('find', query);
-        return this.GET(url).then(response => response.json().then(objs => {
-            let result = list || [];
-            result.metadata = JSON.parse(response.headers.get('API-Metadata'));
-            
-            objs.forEach(element => {
-                let entity = this.getEntityInstance(element.id);
-                entity.populate(element);
-                result.push(entity);
-                entity.$LISTS.push(result);
-            });
+    async find(query, list, rawProcessor) {
+        const raw = !!rawProcessor;
+        rawProcessor = (typeof rawProcessor == 'function') ? rawProcessor : undefined;
 
+        return this.fetch('find', query, {list, raw, rawProcessor});
+    }
+
+    async fetch(endpoint, query, {list, raw, rawProcessor}) {
+        let url = this.createApiUrl(endpoint, query);
+        return this.GET(url).then(response => response.json().then(objs => {
+            let result;
+            if(raw) {
+                rawProcessor = rawProcessor || Utils.entityRawProcessor;
+
+                result = objs.map(rawProcessor);
+
+                if(list) {
+                    objs.forEach(element => {
+                        list.push(element);
+                    });
+                }
+            } else {
+                result = list || [];
+    
+                objs.forEach(element => {
+                    let entity = this.getEntityInstance(element.id);
+                    entity.populate(element);
+                    result.push(entity);
+                    entity.$LISTS.push(result);
+                });
+            }
+
+            result.metadata = JSON.parse(response.headers.get('API-Metadata'));
             return result;
         }));
     }
@@ -249,7 +282,7 @@ class API {
             this.cache.store(entity, this.scope);
             return entity;
         }
-    }
+    }   
 
     getEntityDescription(filter) {
         const description = $DESCRIPTIONS[this.objectType];

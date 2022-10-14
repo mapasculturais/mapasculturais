@@ -3,6 +3,7 @@ namespace MapasCulturais;
 
 use ArrayObject;
 use MapasCulturais\App;
+use MapasCulturais\Entities\Agent;
 
 /**
  * This is the default MapasCulturais View class. It extends the \Slim\View class adding a layout layer and the option to render the template partially.
@@ -115,8 +116,16 @@ abstract class Theme extends \Slim\View {
         $this->jsObject['assetURL'] = $app->assetUrl;
         $this->jsObject['maxUploadSize'] = $app->getMaxUploadSize($useSuffix=false);
         $this->jsObject['maxUploadSizeFormatted'] = $app->getMaxUploadSize();
-        $this->jsObject['config'] = [];
+        $this->jsObject['config'] = [
+            'locale' => str_replace('_', '-', $app->config['app.lcode']),
+            'timezone' => date_default_timezone_get()
+        ];
         $this->jsObject['routes'] = $app->config['routes'];
+        
+        $app->hook('app.init:after', function(){
+            $this->view->jsObject['userId'] = $this->user->is('guest') ? null : $this->user->id;
+            $this->view->jsObject['userProfile'] = $this->user->profile; //get standard agent for user
+        });
 
         $app->hook('app.register', function() use($app){
             $def = new Definitions\Metadata('sentNotification', ['label' => 'Notificação enviada', 'type' => 'boolean']);
@@ -133,6 +142,7 @@ abstract class Theme extends \Slim\View {
                 "space"         => Entities\Space::getPropertiesMetadata(),
                 "project"       => Entities\Project::getPropertiesMetadata(),
                 "opportunity"   => Entities\Opportunity::getPropertiesMetadata(),
+                "registration"   => Entities\Registration::getPropertiesMetadata(),
                 "subsite"       => Entities\Subsite::getPropertiesMetadata(),
                 "seal"          => Entities\Seal::getPropertiesMetadata(),
                 'evaluationMethodConfiguration' => Entities\EvaluationMethodConfiguration::getPropertiesMetadata(),
@@ -523,6 +533,14 @@ abstract class Theme extends \Slim\View {
     function printJsObject (string $var_name = 'Mapas', bool $print_script_tag = true) {
         $app = App::i();
         $app->applyHookBoundTo($this, 'mapas.printJsObject:before');
+
+        $this->jsObject['route'] = [
+            'route' => "{$this->controller->id}/{$this->controller->action}",
+            'controllerId' => $this->controller->id,
+            'action' => $this->controller->action,
+            'data' => $this->controller->urlData
+        ];
+
         $json = json_encode($this->jsObject);
         $var = "var {$var_name} = {$json};";
         if ($print_script_tag) {
@@ -698,16 +716,72 @@ abstract class Theme extends \Slim\View {
         $entity_class_name = $entity_class_name ?: $this->controller->entityClassName ?? null;
         $entity_id = $entity_id ?: $this->controller->data['id'] ?? null;
         
+        $_entity = $entity_class_name::getHookClassPath();
+
         if ($entity_class_name && $entity_id) {
             $app = App::i();
-            $query = new ApiQuery($entity_class_name, ['@select' => '*,agentRelations', 'id' => "EQ({$entity_id})", '@permissions'=>'view', 'status' => 'GTE(-10)']);
-            $owner_prop = ($entity_class_name == Entities\Agent::class) ? 'parent' : 'owner';
+            $query_params = [
+                '@select' => '*', 
+                'id' => "EQ({$entity_id})", 
+                'status' => 'GTE(-10)',
+                '@permissions'=>'view', 
+            ];
+
+            if ($entity_class_name::usesAgentRelation()) {
+                $query_params['@select'] .= ',agentRelations';
+            }
+
+            if ($entity_class_name == Entities\User::class) {
+                $query_params['@select'] .= ',profile.{name,files.avatar,terms,seals}';
+            }
+
+            $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
+
+            $query = new ApiQuery($entity_class_name, $query_params);
             $e = $query->findOne();
+
+            if ($entity_class_name == Entities\Agent::class) {
+                $owner_prop = 'parent';
+                if (!$e['parent']) {
+                    $query = $app->em->createQuery("
+                        SELECT 
+                            IDENTITY(e.profile) AS profile
+                        FROM 
+                            MapasCulturais\\Entities\\User e
+                        WHERE 
+                            e.id = :id");
+                    $query->setParameter('id', $e['user']);
+                    $result = $query->getSingleResult();
+                    $e['parent'] = $result['profile'];
+                }
+            } else {
+                $owner_prop = 'owner';
+            }
             
-            if ($owner_id = $e[$owner_prop]) {
-                $query = new ApiQuery(Entities\Agent::class, ['@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 'id' => "EQ({$owner_id})", '@permissions'=>'view', 'status' => 'GTE(-10)']);
+            if ($owner_id = $e[$owner_prop] ?? false) {
+                $owner_query_params = [
+                    '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
+                    'id' => "EQ({$owner_id})", 
+                    'status' => 'GTE(-10)',
+                    '@permissions'=>'view', 
+                ];
+                $app->applyHookBoundTo($this,"view.requestedEntity($_entity).owner.params", [&$owner_query_params, $entity_class_name, $entity_id]);
+                $query = new ApiQuery(Entities\Agent::class, $owner_query_params);
                 $owner = $query->findOne();
                 $e[$owner_prop] = $owner;
+            }
+
+            if($owner_prop != 'parent' && $entity_class_name::usesNested()) {
+                $parent_query_params = [
+                    '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
+                    'id' => "EQ({$e['parent']})", 
+                    'status' => 'GTE(-10)',
+                    '@permissions'=>'view', 
+                ];
+                $app->applyHookBoundTo($this,"view.requestedEntity($_entity).parent.params", [&$parent_query_params, $entity_class_name, $entity_id]);
+                $query = new ApiQuery($entity_class_name, $parent_query_params);
+                $parent = $query->findOne();
+                $e['parent'] = $parent;
             }
             
             $e['controllerId'] = $app->getControllerIdByEntity($entity_class_name);
@@ -723,6 +797,19 @@ abstract class Theme extends \Slim\View {
 
                 $e['currentUserPermissions'] = $permissions;
             }
+
+            if ($profile_id = $e['profile']['id'] ?? false) {
+                $entity = $app->repo(Agent::class)->find($profile_id);
+                $permissions_list = Agent::getPermissionsList();
+                $permissions = [];
+                foreach($permissions_list as $action) {
+                    $permissions[$action] = $entity->canUser($action);
+                }
+
+                $e['profile']['currentUserPermissions'] = $permissions;
+            }
+
+            $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);
             
             $this->jsObject['requestedEntity'] = $e;
         }

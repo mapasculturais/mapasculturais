@@ -369,14 +369,13 @@ class Agent extends \MapasCulturais\Entity
         }
     }
 
-    function setOwner(Agent $parent = null){
+    function setOwner($parent = null){
         $this->setParent($parent);
     }
 
 
     function setOwnerId($owner_id){
-        $owner = App::i()->repo('Agent')->find($owner_id);
-        $this->setParent($owner);
+        $this->setParent($owner_id);
     }
 
     private $_newUser = false;
@@ -387,7 +386,13 @@ class Agent extends \MapasCulturais\Entity
             $this->_newParent = $user->profile;
     }
 
-    function setParent(Agent $parent = null){
+    function setParent($parent = null){
+        $app = App::i();
+
+        if (is_integer($parent)) {
+            $parent = $app->repo('Agent')->find($parent);
+        }
+
         if($parent->equals($this->parent)) {
             return true;
         }

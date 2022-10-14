@@ -12,6 +12,7 @@ app.component('panel--entity-tabs', {
 
     data() {
         let query = {
+            '@order': 'name ASC',
             '@permissions': 'view'
         };
         if (this.user) {
@@ -32,7 +33,7 @@ app.component('panel--entity-tabs', {
     props: {
         type: String,
         user: {
-            type: String,
+            type: [String, Number],
             default: '@me'
         },
         select: {
@@ -65,12 +66,12 @@ app.component('panel--entity-tabs', {
             };
             
             const list = lists.fetch(listnames[status]);
-
+            
             entity.removeFromLists();
 
             if(list instanceof Array) {
                 list.push(entity);
-                entity.__lists.push(list);
+                entity.$LISTS.push(list);
             }
         }
     },

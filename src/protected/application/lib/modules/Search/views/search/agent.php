@@ -1,59 +1,44 @@
 <?php 
 use MapasCulturais\i;
  
-$this->import('entities entity-card mapas-breadcrumb mapas-card mapas-container search-map search-header tabs mc-map create-agent');
+$this->import('
+    search tabs search-list search-map search-filter-agent create-agent
+    ');
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Agentes'), 'url' => $app->createUrl('agents')],
 ];
 ?>
 
-
-<div class="search">
-    <mapas-breadcrumb></mapas-breadcrumb>
-        <search-header class="search__header" type="agent">
-            <template #create>
-                <create-agent></create-agent>
-            </template>
-            <template #actions>
-                <tabs class="search__header--tabs">
-                    <template  #before-tablist>
-                        <label class="search__header--tabs-label">
-                        Visualizar como:
-                        </label> 
-                    </template>
-                    
-                    <tab icon="list" label="Lista" slug="list">
-                        <mapas-container>
-                            <main>
-                                <entities type="agent" :query="{'@order' : 'registrationFrom ASC', '@limit' : 20, '@select' : 'id,name,shortDescription,terms,seals,singleUrl'}"> 
-                                    <template #default="{entities}">
-                                        <div class="grid-12">
-                                            <div class="col-12" v-for="entity in entities" :key="entity.id">
-                                                <entity-card :entity="entity"></entity-card> 
-                                            </div>
-                                        </div>
-                                    </template>
-                                </entities>
-                            </main>
-                            <aside>
-                                <mapas-card></mapas-card>
-                            </aside>
-                        </mapas-container>
-                    </tab>
-
-                    <tab icon="map" label="Mapa" slug="map">
-                        <search-map type="agent"></search-map>
-                    </tab>
-                    
-                    <template #after-tablist>
-                       <div class="search__header--tabs-filter">
-                           <input type="text"/>
-                       </div>
-                    </template>
-                </tabs>
-            </template>
-        </search-header>
-</div>
-
-
+<search page-title="<?php i::esc_attr_e('Agentes') ?>" entity-type="agent" :initial-pseudo-query="{'term:area':[]}">    
+    <template #create-button>
+        <create-agent></create-agent>
+    </template>
+    <template #default="{pseudoQuery}">
+        <tabs class="search__tabs">
+            <template  #before-tablist>
+                <label class="search__tabs--before">
+                    <?= i::_e('Visualizar como:') ?>
+                </label> 
+            </template>            
+            <tab icon="list" label="<?php i::esc_attr_e('Lista') ?>" slug="list">
+                <div class="search__tabs--list">
+                    <search-list :pseudo-query="pseudoQuery" type="agent">
+                        <template #filter>
+                            <search-filter-agent :pseudo-query="pseudoQuery"></search-filter-agent>
+                        </template>
+                    </search-list>
+                </div>
+            </tab>        
+            <tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>" slug="map">
+                <div class="search__tabs--map">
+                    <search-map type="agent" :pseudo-query="pseudoQuery">
+                        <template #filter>
+                            <search-filter-agent :pseudo-query="pseudoQuery" position="map"></search-filter-agent>
+                        </template>
+                    </search-map>
+                </div>
+            </tab>
+        </tabs>
+    </template>
+</search>

@@ -23,7 +23,7 @@ app.component('entity-terms', {
             allowInsert: this.definition.allowInsert,
             terms: this.definition.terms || [],
             label: this.title || this.definition.name,
-            entityTerms: this.entity.terms[this.taxonomy],
+            entityTerms: Vue.ref(this.entity.terms[this.taxonomy]),
 
             filter: '',
         };
@@ -44,6 +44,10 @@ app.component('entity-terms', {
         },
         title: {
             type: String,
+            default: ''
+        },
+        classes: {
+            type: [String, Array],
             default: ''
         }
     },
@@ -77,21 +81,6 @@ app.component('entity-terms', {
             }
         },
 
-        remove(term) {
-            const terms = this.entityTerms;
-            const indexOf = terms.indexOf(term);
-            terms.splice(indexOf,1);
-        },
-
-        toggleTerm(term) {
-            const terms = this.entityTerms;
-            if (terms.indexOf(term) >= 0) {
-                this.remove(term);
-            } else {
-                terms.push(term);
-            }
-        },
-
         highlightedTerm(term) {
             const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const _term = term.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -104,6 +93,12 @@ app.component('entity-terms', {
             } else {
                 return term;
             }
+        },
+
+        remove(term) {
+            const terms = this.entityTerms;
+            const indexOf = terms.indexOf(term);
+            terms.splice(indexOf,1);
         },
 
         addTerm(term, popover) {

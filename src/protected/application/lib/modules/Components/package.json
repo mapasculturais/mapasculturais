@@ -5,19 +5,20 @@
         "watch": "mix watch --mix-config=node_modules/@mapas/scripts/webpack.mix.js"
     },
     "devDependencies": {
-        "@mapas/scripts": "workspace:*"
+        "@mapas/scripts": "workspace:0.0.0"
     },
     "dependencies": {
         "@iconify/vue": "^3.2.1",
-        "pinia": "^2.0.13",
-        "vue": "^3.2.33",
-        "vue-final-modal": "^3.4.3",
-        "vue-advanced-cropper": "^2.8.1",
-        "vue3-carousel": "^0.1.40",
-        "@vue-leaflet/vue-leaflet": "^0.6.1",
         "@types/leaflet": "^1.7.11",
+        "@vue-leaflet/vue-leaflet": "^0.6.1",
+        "@vuepic/vue-datepicker": "^3.4.8",
+        "date-fns": "^2.29.3",
+        "leaflet": "1.7.1",
         "leaflet.markercluster": "^1.5.3",
-        "leaflet": "1.7.1"
-        
+        "pinia": "^2.0.22",
+        "vue": "^3.2.39",
+        "vue-advanced-cropper": "^2.8.3",
+        "vue-final-modal": "^3.4.4",
+        "vue3-carousel": "^0.1.46"
     }
 }

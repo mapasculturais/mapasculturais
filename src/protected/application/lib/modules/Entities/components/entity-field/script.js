@@ -16,7 +16,7 @@ app.component('entity-field', {
         let description, 
             value = this.entity[this.prop];
         try{
-             description = this.entity.$PROPERTIES[this.prop];
+            description = this.entity.$PROPERTIES[this.prop];
         } catch (e) {
             console.log(`Propriedade ${this.prop} não existe na entidade`);
             return;
@@ -55,9 +55,13 @@ app.component('entity-field', {
             type: String,
             default: null
         },
-        showLabel: {
+        hideLabel: {
             type: Boolean,
-            default: true
+            default: false
+        },
+        hideRequired: {
+            type: Boolean,
+            default: false
         },
         debounce: {
             type: Number,

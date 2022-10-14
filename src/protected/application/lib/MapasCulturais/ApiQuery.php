@@ -4,6 +4,9 @@ namespace MapasCulturais;
 
 use Doctrine\ORM\Query;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\User;
+use MapasCulturais\Types\GeoPoint;
 
 class ApiQuery {
     use Traits\MagicGetter;
@@ -452,7 +455,7 @@ class ApiQuery {
         
         // para quando se está consultando as oportunidades de uma outra entidade, por exemplo:
         // /api/agent/find?@select=id,name,ownedOpportunities
-        if(strpos($class, 'MapasCulturais\Entities\Opportunity') === 0 && $this->parentQuery){
+        if($class != Opportunity::class && strpos($class, Opportunity::class) === 0 && $this->parentQuery){
             $parent_class = $this->parentQuery->entityClassName;
             if($parent_class != 'MapasCulturais\Entities\Opportunity') {
                 $class = $parent_class::getOpportunityClassName();
@@ -645,7 +648,7 @@ class ApiQuery {
         }
 
         $dql = $this->getFindDQL($select);
-        App::i()->log->debug($dql);
+        
         $q = $this->em->createQuery($dql);
 
         if ($offset = $this->getOffset()) {
@@ -713,8 +716,8 @@ class ApiQuery {
     public function getFindDQL(string $select = null) {
         $select = $select ?: $this->generateSelect();
         $where = $this->generateWhere();
-        $joins = $this->generateJoins();
         $order = $this->generateOrder();
+        $joins = $this->generateJoins();
 
         $dql = "SELECT\n\t{$select}\nFROM \n\t{$this->entityClassName} e {$joins}";
         if ($where) {
@@ -904,7 +907,6 @@ class ApiQuery {
     protected function generateSelect() {
         $select = $this->select;
         $class = $this->entityClassName;
-        
         if(!in_array('id', $this->_selectingProperties)){
             $this->_selectingProperties = array_merge(['id'], $this->_selectingProperties);
         }
@@ -976,6 +978,11 @@ class ApiQuery {
                     $this->joins .= str_replace(['{ALIAS}', '{KEY}'], [$meta_alias, $key], $this->_templateJoinMetadata);
 
                     $order[] = str_replace($key, "$meta_alias.value", $prop);
+
+                // ordenação de usuário pelo nome do agente profile
+                } else if ($this->entityClassName == User::class && $key == 'name') {
+                    $this->joins .= "\n\tLEFT JOIN e.profile __profile__";
+                    $order[] = str_replace($key, "__profile__.name", $prop);
                 }
             }
             return implode(', ', $order);
@@ -1010,10 +1017,13 @@ class ApiQuery {
             $permissions = $this->getViewPrivateDataPermissions($entities);
         }
         
-        foreach ($entities as &$entity){
+        foreach ($entities as $index => &$entity){
             // remove location if the location is not public
             if($this->permissionCacheClassName && isset($entity['location']) && isset($entity['publicLocation']) && !$entity['publicLocation']){
                 if(!$permissions[$entity['id']]){
+                    if (isset($this->apiParams['location']) || isset($this->apiParams['_geoLocation'])) {
+                        unset($entities[$index]);
+                    }
                     $entity['location']->latitude = 0;
                     $entity['location']->longitude = 0;
                 }
@@ -1063,6 +1073,8 @@ class ApiQuery {
 
             $entity['@entityType'] = $this->entityController->id ?? strtolower(substr(strrchr($this->entityClassName, "\\"), 1));
         }
+
+        $entities = array_values($entities);
     }
 
     protected function appendMetadata(array &$entities) {
@@ -1243,8 +1255,15 @@ class ApiQuery {
                     if($select != '*'){
                         $select = "$_target_property,$select";
                     }
-                    
-                    $query = new ApiQuery($target_class, ['@select' => $select], false, $cfg['selectAll'], !$this->_accessControlEnabled, $this);
+
+                    $qdata = ['@select' => $select];
+
+                    if ($this->entityClassName == Entities\User::class && $prop == 'profile') {
+                        $qdata['status'] = 'GTE(-10)';
+                        $qdata['@permissions'] = 'view';
+                    }
+
+                    $query = new ApiQuery($target_class, $qdata, false, $cfg['selectAll'], !$this->_accessControlEnabled, $this);
                     
                     $query->name = "{$this->name}->$prop";
 
@@ -1321,8 +1340,10 @@ class ApiQuery {
         }
         
         $app = App::i();
+
+        $entity_class_name = $this->entityClassMetadata->parentClasses[0] ?? $this->entityClassName;
         
-        $file_groups = $app->getRegisteredFileGroupsByEntity($this->entityClassName);
+        $file_groups = $app->getRegisteredFileGroupsByEntity($entity_class_name);
         
         $where = [];
         foreach($this->_selectingFiles as $select){
@@ -1934,6 +1955,8 @@ class ApiQuery {
                 }
 
                 $this->_relatedSeals[$entity_id][] = [
+                    'sealRelationId' => $relation->relation_id,
+                    'sealId' => $relation->seal_id,
                     'name' => $relation->seal_name,
                     'singleUrl' => $app->createUrl('seal', 'sealRelation', [$relation->relation_id]),
                     'createTimestamp' => $relation->relation_create_timestamp,
@@ -2052,7 +2075,10 @@ class ApiQuery {
         $app = App::i();
         
         if(!is_array($value)){
-            if (trim($value) === '@me') {
+            if (preg_match('#POINT\((\-?[0-9\.]+):(\-?[0-9\.]+)\)#', $value, $matches)) {
+                $value = new GeoPoint($matches[1],$matches[2]);
+                // $value = "({$matches[1]},{$matches[2]})";
+            } else if (trim($value) === '@me') {
                 $value = $app->user->is('guest') ? null : $app->user;
             } elseif (strpos($value, '@me.') === 0) {
                 $v = str_replace('@me.', '', $value);
@@ -2086,6 +2112,10 @@ class ApiQuery {
             $not = $match[1];
             $operator = strtoupper($match[2]);
             $value = $match[3];
+            
+            if (preg_match('#[a-z0-9]+.location#i', $key)) {
+                $value = preg_replace('#\[(\-?[0-9\.]+)\,(\-?[0-9\.]+)\]#', 'POINT($1:$2)', $value);
+            }
 
             if ($operator == 'OR' || $operator == 'AND') {
                 $expressions = $this->parseExpression($value);
@@ -2197,11 +2227,25 @@ class ApiQuery {
                 $dql = $not ?
                         "ST_DWithin($key, ST_MakePoint($longitude,$latitude), $radius) <> TRUE" :
                         "ST_DWithin($key, ST_MakePoint($longitude,$latitude), $radius) = TRUE";
-            }
+                        
+            } elseif ($operator == 'GEOBOUNDING') {
+                $values = $this->splitParam($value);
+                $rexp = '#POINT\((\-?[0-9\.]+):(\-?[0-9\.]+)\)#';
+                if (count($values) !== 2 || !(preg_match($rexp, $values[0], $matches1)) || !(preg_match($rexp, $values[1], $matches2))) {
+                    throw new Exceptions\Api\InvalidArgument('expression GEOBOX expects 2 arguments: point A, point B. ex: GEOBOX([-43.33,-1.55],[-40.33,-2.5])');
+                }
 
-            /*
-             * location=GEO_NEAR([long,lat]) //
-             */
+                $lng1 = $matches1[1];
+                $lat1 = $matches1[2];
+                $lng2 = $matches2[1];
+                $lat2 = $matches2[2];
+
+                $line = $this->addSingleParam("LINESTRING($lng1 $lat1, $lng2 $lat2)");
+
+                $dql = $not ?
+                        "st_covers(st_envelope(st_geomfromtext({$line})), $key) <> TRUE" :
+                        "st_covers(st_envelope(st_geomfromtext({$line})), $key) = TRUE";
+            }
             return $dql;
         }
     }
@@ -2622,6 +2666,12 @@ class ApiQuery {
 
         $uid = uniqid('#sq:');
         
+        foreach($this->_subqueriesSelect as $_uid => $_cfg) {
+            if ($_cfg['property'] == $prop) {
+                return $_uid;
+            }
+        }
+
         $this->_subqueriesSelect[$uid] = [
             'selectAll' => $_select_all,
             'property' => $prop,

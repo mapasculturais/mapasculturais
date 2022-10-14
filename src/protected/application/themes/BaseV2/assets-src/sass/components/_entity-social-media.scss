@@ -44,7 +44,8 @@
             align-items: center;
             display: grid;
             gap: size(15);
-            grid-template-columns: size(24) calc(100% - size(39));
+            grid-template-columns: 1fr 8fr;
+            justify-items: center;
 
             .iconify {
                 color: var(--mc-gray-700);

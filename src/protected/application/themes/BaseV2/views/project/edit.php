@@ -1,12 +1,30 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
+
 $this->import('
-        entity-header entity-cover entity-profile mapas-breadcrumb
-        entity-field entity-terms entity-social-media entity-actions
-        entity-links entity-gallery entity-gallery-video
-        entity-admins entity-related-agents entity-owner
-        mapas-container mapas-card');
+    create-project
+    entity-actions
+    entity-activity-card
+    entity-admins
+    entity-cover
+    entity-field
+    entity-files-list
+    entity-gallery
+    entity-gallery-video
+    entity-header
+    entity-links
+    entity-owner
+    entity-parent
+    entity-profile
+    entity-related-agents
+    entity-social-media
+    entity-terms
+    link-project
+    mapas-breadcrumb
+    mapas-card
+    mapas-container
+');
         
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -84,11 +102,11 @@ $this->breadcramb = [
                 <template #content>   
                     <div class="grid-12">
                         <div class="col-6">
-                            <entity-field :entity="entity" label="<?php i::_e('Data inicial')?>" prop="registrationFrom"></entity-field>
+                            <entity-field :entity="entity" label="<?php i::_e('Data inicial')?>" prop="startsOn"></entity-field>
                         </div>
 
                         <div class="col-6">
-                            <entity-field :entity="entity" label="<?php i::_e('Data Final')?>" prop="registrationTo"></entity-field>
+                            <entity-field :entity="entity" label="<?php i::_e('Data Final')?>" prop="endsOn"></entity-field>
                         </div>
                     </div>
                 </template>   
@@ -100,8 +118,16 @@ $this->breadcramb = [
                     <p><?php i::_e("Crie um projeto com informações básicas e de forma rápida."); ?></p>
                 </template>
                 <template #content>   
-                
-                </template>   
+                    <div class="grid-12">
+                        <div class="col-12">
+                            <create-project :editable="true"></create-project>
+                        </div>
+                        
+                        <div class="col-12">
+                            <entity-activity-card :entity="true" :editable="true"></entity-activity-card>
+                        </div>
+                    </div>
+                    </template>   
             </mapas-card>
 
             <mapas-card>
@@ -129,7 +155,7 @@ $this->breadcramb = [
                     <label><?php i::_e("Vincule um evento ao seu projeto"); ?></label>
                 </template>
                 <template #content>   
-                
+                <link-project entity="entity"></link-project>
                 </template>   
             </mapas-card>
 
@@ -152,6 +178,10 @@ $this->breadcramb = [
                     <div class="grid-12">
                         <div class="col-12">
                             <entity-field :entity="entity" label="<?php i::_e('Descrição')?>" prop="longDescription"></entity-field>
+                        </div>
+
+                        <div class="col-12">
+                            <entity-files-list :entity="entity" group="downloads" title="<?= i::_e('Adicionar arquivos para download')?>" :editable="true"></entity-files-list>
                         </div>
                         
                         <div class="col-12">
@@ -189,6 +219,9 @@ $this->breadcramb = [
                         
                         <div class="col-12">
                             <entity-owner :entity="entity" title="<?php i::_e('Publicado por')?>" :editable="true"></entity-owner>
+                        </div>
+                        <div class="col-12">
+                            <entity-parent :entity="entity" type="project" ></entity-parent>
                         </div>
                     </div>
                 </template>   

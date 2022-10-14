@@ -12,7 +12,7 @@
                     <div class="objeto-meta">
                         <?php $this->applyTemplateHook('list.project.meta','begin'); ?>
                         <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a href="#" rel='noopener noreferrer'>{{project.type.name}}</a></div>
-                        <div ng-if="readableProjectRegistrationDates(project)"><span class="label"><?php \MapasCulturais\i::_e("Inscrições");?>:</span> {{readableProjectRegistrationDates(project)}}</div>
+                        <div ng-if="readableProjectRegistrationDates(project)"><span class="label"><?php \MapasCulturais\i::_e("Período de execução");?>:</span> {{readableProjectRegistrationDates(project)}}</div>
                         <div ng-if="project.terms.tag.length > 0">
                             <span class="label">Tags:</span>
                             <span ng-repeat="tags in project.terms.tag">

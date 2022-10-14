@@ -1,6 +1,9 @@
 <?php
 namespace MapasCulturais\Controllers;
+
+use MapasCulturais\ApiQuery;
 use MapasCulturais\Controller;
+use MapasCulturais\Entities;
 use MapasCulturais\App;
 use MapasCulturais\i;
 use MapasCulturais\Traits;
@@ -8,15 +11,47 @@ use MapasCulturais\Traits;
  * User Controller
  *
  * By default this controller is registered with the id 'user'.
+ * 
+ * @property-read Entities\User $requestedEntity;
  *
  */
 class User extends Controller {
-    use Traits\ControllerAPI {
-        API_find as __API_find;
-        API_findOne as __API_findOne;
+    use Traits\ControllerSoftDelete,
+        Traits\ControllerEntity,
+        Traits\ControllerEntityActions,
+        Traits\ControllerAPI {
+            API_find as __API_find;
+            API_findOne as __API_findOne;
     }
     
-    protected $entityClassName = 'MapasCulturais\\Entities\\User';
+    function __construct()
+    {
+        $this->entityClassName = 'MapasCulturais\\Entities\\User';
+    }
+
+    function getRequestedEntity() {
+        $app = App::i();
+        if($id = $this->urlData['id']) {
+            return $app->repo('User')->find($id);
+        } else {
+            return null;
+        }
+    }
+
+    function DELETE_single(){
+
+        $app = App::i();
+        $entity = $this->requestedEntity;
+        
+        if(!$entity) {
+            $app->pass();
+        }
+
+        $entity->delete(true);
+
+        $this->json($entity);
+
+    }
 
     function API_find()
     {
@@ -25,6 +60,18 @@ class User extends Controller {
             $this->errorJson(i::__('Permissão negada', 403));
         }
 
+        if($roles = $this->getData['@roles'] ?? null) {
+            $app->hook('API.query(user)', function(ApiQuery $query) use($roles) {
+                $roles_query = new ApiQuery(Entities\Role::class, ['name' => "IN({$roles})"]);
+                $query->addFilterByApiQuery($roles_query, 'userId', 'id');
+            });
+
+        }
+
+        $app->hook('API.find(user).params', function(&$api_params) {
+            unset($api_params['@roles']);
+        });
+        
         $this->__API_find();
     }
 

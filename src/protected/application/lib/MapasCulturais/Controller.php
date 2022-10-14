@@ -127,6 +127,17 @@ abstract class Controller{
     public static function usesSingleton(){
         return true;
     }
+
+
+    /**
+     * Is this an AJAX request?
+     *
+     * @return bool
+     */
+    public function isAjax(){
+        $app = App::i();
+        return $app->request->isAjax() || $app->request()->headers()->get('Content-Type') === 'application/json';
+    }
     
     // =================== GETTERS ================== //
 
@@ -388,11 +399,9 @@ abstract class Controller{
      *
      * @TODO Alterar o status padrão para 400. será necessário alterar os js para esperar este retorno.
      */
-    public function errorJson($data, $status = 200){
+    public function errorJson($data, $status = 400){
         $app = App::i();
-
         $app->contentType('application/json');
-
         $app->halt($status, json_encode(['error' => true, 'data' => $data]));
     }
 

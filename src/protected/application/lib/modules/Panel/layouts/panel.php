@@ -1,8 +1,11 @@
+<?php $this->import('panel--nav'); ?>
 <?php $this->part('header', $render_data); ?>
 <?php $this->part('main-header', $render_data) ?>
 <article class="panel">
     <aside class="panel__sidebar">
-        <?php $this->part('panel/nav', $render_data); ?>
+        <div class="panel-sidebar">
+            <panel--nav></panel--nav>
+        </div>
     </aside>
     <main class="panel__main">
         <?= $TEMPLATE_CONTENT ?>

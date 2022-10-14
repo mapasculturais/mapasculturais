@@ -12,7 +12,7 @@
         position: relative;
 
         &--cover {
-            aspect-ratio: 3 / 1;
+            aspect-ratio: 99 / 16;
             background-color: var(--mc-gray-300);
             background-image: var(--url);
             background-position: center;
@@ -35,6 +35,7 @@
             max-width: size(1170);
             margin: 0 auto;
             padding: 0 size(16);
+
             .leftSide {
                 z-index: 1;
     
@@ -60,7 +61,7 @@
             
                     @include mobile {
                         height: size(113);
-                        margin: size(-48) auto size(16) auto;
+                        margin: size(-48) auto size(16);
                         width: size(113);
                     }
             
@@ -75,19 +76,22 @@
             .rightSide {
                 z-index: 1;
 
-                .field {
+                .site {
                     display: flex;
                     flex-direction: column;
+                    margin-top: size(18);
 
-                    svg {
+                    .iconify {
                         margin-right: size(7);
+                        font-size: size(22.5);
                     }
 
-                    h3 {
+                    a {
                         align-items: center;
                         display: flex;
                     }
                 }
+                
                 .title {
                     font-style: normal;
                     font-weight: 700;        
@@ -211,11 +215,9 @@
                 flex-direction: column;
             }
         }
-
     }
 
     &--no-image {
-
         .entity-header {
             &__single {
                 &--content{
@@ -225,6 +227,7 @@
                             margin-left: 0;
                         }
                     }
+
                     .share {
                         margin-left: 0;
                     }
@@ -238,64 +241,10 @@
             }
         }
     }
-   
-
-    // &__cover--no-image {
-    //     background: transparent;
-    // }
-    
-    
-
-    &__breadcrumbs {
-
-        ul, li {
-            margin: 0;
-            padding: 0;
-        }
-
-        ul {
-            align-items: center;
-            display: flex;
-            gap: size(5);
-        }
-
-        li {
-            list-style: none;
-
-            &[aria-current] {
-                font-weight: bold;
-            }
-
-            @include mobile {
-                &:not([aria-current])::before {
-                    content: url('https://api.iconify.design/fa-solid/chevron-left.svg?height=12');
-                    margin-inline-end: size(5);
-                    opacity: 0.5;
-                }
-
-                &[aria-current] {
-                    display: none;
-                }
-            }
-
-            @include desktop {
-                &:not([aria-current])::after {
-                    content: url('https://api.iconify.design/fa-solid/chevron-right.svg?height=12');
-                    margin-inline-start: size(5);
-                    opacity: 0.5;
-                }
-            }
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-    }
 
     &__edit {
         margin: 0 auto;
-        max-width: 1170px;
+        max-width: size(1170);
         position: relative;
 
         &--content {
@@ -343,8 +292,8 @@
 
                     h2 {
                         font-weight: 700;
-                        font-size: 18px;
-                        line-height: 25px;
+                        font-size: size(18);
+                        line-height: size(25);
                     }
                 }
 
@@ -375,6 +324,4 @@
             }
         }    
     }
-    
-
 }

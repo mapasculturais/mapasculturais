@@ -1,13 +1,25 @@
 globalThis.__ = (key, componentName) => {
     const dict = Utils.getTexts(componentName);
-    return dict(key);
+    const text = dict(key);
+
+    if (!text) {
+        console.error(`TRADUÇÃO FALTANDO "${key}" do componente "${componentName}`);
+    }
+
+    return text || key;
 }
 
 globalThis.Utils = {
     getTexts(componentName) {
         const texts = $MAPAS.gettext?.[`component:${componentName}`] || {};
         return (key) => {
-            return texts[key];
+            const text = texts[key];
+
+            if (!text) {
+                console.error(`TRADUÇÃO FALTANDO "${key}" do componente "${componentName}`);
+            }
+        
+            return text || key;
         };
     },
 
@@ -106,5 +118,105 @@ globalThis.Utils = {
             return new URL($MAPAS.baseURL + route);
         }
         
+    },
+
+    entityRawProcessor (entity){
+        entity.__objectId = `${entity['@entityType']}:${entity.id}`;
+        if (entity.location) {
+            entity.location = {lat: entity.location.latitude, lng: entity.location.longitude};
+        }
+        return entity;
+    },
+
+    occurrenceRawProcessor (rawData, eventApi, spaceApi) {
+        eventApi = eventApi || new API('event');
+        spaceApi = spaceApi || new API('space');
+
+        const data = rawData;
+        const event = eventApi.getEntityInstance(rawData.event.id); 
+        const space = spaceApi.getEntityInstance(rawData.space.id); 
+
+        event.populate(rawData.event, true);
+        space.populate(rawData.space, true);
+
+        data.event = event;
+        data.space = space;
+
+        data.starts = new McDate(rawData.starts.date);
+        data.ends = new McDate(rawData.ends.date);
+
+        return data;
+    },
+
+    parsePseudoQuery (pseudoQuery) {
+        const newQuery = {};
+        for(let k in pseudoQuery) {
+            let val = pseudoQuery[k];
+            let not = '';
+            if(typeof val == 'string' && val.indexOf('!') === 0) {
+                not = '!';
+                val = val.substr(1);
+            } else if (typeof val == 'number') {
+                val = String(val);
+            }
+
+            if(k == '@verified' || typeof val == 'boolean') {
+                if (val) {
+                    newQuery[k] = '1';
+                }
+            } else if(k == '@keyword') {
+                val = val.replace(/ +/g, '%');
+                newQuery[k] = `%${val}%`;
+
+            } else if(val.indexOf('>= ') === 0) {
+                val = val.substr(3);
+                newQuery[k] = `${not}GTE(${val})`;
+
+            } else if(val.indexOf('<= ') === 0) {
+                val = val.substr(3);
+                newQuery[k] = `${not}LTE(${val})`;
+
+            } else if(val.indexOf('> ') === 0) {
+                val = val.substr(2);
+                newQuery[k] = `${not}GT(${val})`;
+
+            } else if(val.indexOf('< ') === 0) {
+                val = val.substr(2);
+                newQuery[k] = `${not}LT(${val})`;
+
+            } else if(val.indexOf('bet: ') === 0) {
+                val = val.substr(2);
+                newQuery[k] = `${not}BET(${val})`;
+
+            } else if(val.indexOf('in: ') === 0) {
+                val = val.substr(2);
+                newQuery[k] = `${not}IIN(${val})`;
+
+            } else if(val.indexOf('null:') === 0) {
+                val = val.substr(2);
+                newQuery[k] = `${not}NULL()`;
+
+            } else if(k[0] == '@') {
+                newQuery[k] = val;
+
+            } else if(val) {
+                if (typeof val == 'string') {
+                    if (val) {
+                        newQuery[k] = `${not}EQ(${val})`;
+                    }
+                } else if (val instanceof Array) {
+                    val = val.join(',');
+                    if (val) {
+                        newQuery[k] = `${not}IIN(${val})`;
+                    }
+                }
+            }
+        }
+        return newQuery;
+    },
+
+    // string functions 
+    ucfirst(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 }

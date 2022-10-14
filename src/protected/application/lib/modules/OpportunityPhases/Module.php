@@ -290,10 +290,18 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $field_name) {
+        $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $field_name) use($app) {
+            /** @var Entities\Registration $this */
+
+            if(!$this->canUser('viewPrivateData')) {
+                return;
+            }
             if(empty($value) && ($previous_phase = $this->previousPhase)){
                 $previous_phase->registerFieldsMetadata();
+
+                $app->disableAccessControl();
                 $value = $previous_phase->$field_name;
+                $app->enableAccessControl();
             }
         });
 
@@ -305,7 +313,9 @@ class Module extends \MapasCulturais\Module{
         });
 
         // registra os metadados das inscrićões das fases anteriores
-        $app->hook('<<GET|POST|PUT|PATCH|DELETE>>(registration.<<*>>):before', function() {
+        $app->hook('GET(registration.<<*>>):before', function() {
+            /** @var \MapasCulturais\Controllers\Registration $this */
+            
             $registration = $this->getRequestedEntity();
 
 

@@ -59,7 +59,7 @@ $this->import('popover confirm-button');
             <div v-for="agent in groupAgents" class="agent">
                 <a :href="agent.singleUrl" class="agent__img">
                     <img v-if="agent.files.avatar" :src="agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
-                    <mc-icon v-else name="image"></mc-icon>
+                    <mc-icon v-else name="agent"></mc-icon>
                 </a>
 
                 <div v-if="editable" class="agent__delete">
@@ -77,7 +77,7 @@ $this->import('popover confirm-button');
             
         </div>
     
-        <div class="entity-related-agents__group--actions">
+        <div v-if="editable" class="entity-related-agents__group--actions">
             <select-entity type="agent" @select="addAgent(groupName, $event)" :query="queries[groupName]" openside="down-right">
                 <template #button="{ toggle }">
                     <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()"> 
@@ -91,7 +91,7 @@ $this->import('popover confirm-button');
     </div>
 
 
-    <div class="entity-related-agents__addNew">
+    <div v-if="editable" class="entity-related-agents__addNew">
 
         <popover openside="down-right">
             <template #button="{ toggle }">

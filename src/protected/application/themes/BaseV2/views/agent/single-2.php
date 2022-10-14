@@ -1,40 +1,125 @@
 <?php 
-$this->layout = 'entity'; 
-$this->import('
-    mapas-container 
-    entity-terms share-links entity-files-list entity-links entity-owner entity-seals entity-header entity-gallery entity-social-media');
-?>
-<div class="main-app single-1">
+use MapasCulturais\i;
+$this->layout = 'entity';
 
-    <entity-links :entity="entity" title="Links"></entity-links>
+$this->import('
+    entity-admins
+    entity-files-list
+    entity-gallery
+    entity-gallery-video
+    entity-header
+    entity-links
+    entity-list
+    entity-location
+    entity-owner
+    entity-related-agents
+    entity-seals
+    entity-social-media
+    entity-terms
+    mapas-breadcrumb
+    mapas-container
+    mc-map
+    mc-map-marker
+    share-links
+    tabs
+');
+
+$this->breadcramb = [
+    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
+    ['label'=> i::__('Agentes'), 'url' => $app->createUrl('search', 'agents')],
+    ['label'=> $entity->name, 'url' => $app->createUrl('agent', 'single', [$entity->id])],
+];
+?>
+
+<div class="main-app">
+    <mapas-breadcrumb></mapas-breadcrumb>
     <entity-header :entity="entity"></entity-header>
-    
-    
-    <mapas-container class="single-1__content">
-        
-        <div class="divider"></div>
-        
-        <main>
-            <div class="grid-12">
-                <h3>Endereço</h3>
-                <p>{{entity.En_Nome_Logradouro}}, {{entity.En_Num}}, {{entity.En_Bairro}}, {{entity.En_CEP}}, {{entity.En_Municipio}}, {{entity.En_Estado}}</p>
+
+    <tabs class="tabs">
+
+        <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
+            <div class="tabs__info">
+
+                    <mapas-container>
+                        
+                        <main>
+
+                            <div class="grid-12">
+                                
+                                <div class="col-12">
+                                    <entity-location :entity="entity"></entity-location>
+                                </div>
+
+
+                                <div class="col-12">
+                                        <h2><?php i::_e('Descrição Detalhada');?></h2>
+                                        <p>{{entity.longDescription}}</p>
+                                </div>
+                                    
+                                <div class="col-12">
+                                    <entity-files-list :entity="entity" group="downloads" title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
+                                </div>
+
+                                <div v-if="entity" class="col-12">
+                                    <entity-gallery-video :entity="entity"></entity-gallery-video>
+                                </div>
+
+                                <div class="col-12">
+                                    <entity-gallery :entity="entity"></entity-gallery>
+                                </div>
+                                
+                            </div>
+                        </main>
+                        
+                        <aside>
+                            <div class="grid-12">
+                                <div class="col-12">
+                                    <entity-terms :entity="entity" taxonomy="area" title="<?php i::esc_attr_e('Areas de atuação');?>"></entity-terms>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <entity-social-media :entity="entity"></entity-social-media>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <entity-seals :entity="entity" :editable="entity.currentUserPermissions.createSealRelation" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <entity-related-agents :entity="entity"  title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>  
+                                </div>
+
+                                <div class="col-12">
+                                    <entity-terms :entity="entity" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
+                                </div>
+
+                                <div class="col-12">
+                                    <share-links title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <entity-admins :entity="entity" ></entity-admins>
+                                </div>
+
+                                <div v-if="entity.spaces.length>0 || entity.children.length>0 || entity.events.length>0 || entity.ownedOpportunities.length > 0 || entity.relatedOpportunities.length >0" class="col-12">
+                                    <h4><?php i::_e('Propriedades do Agente:');?></h4>
+                                    <entity-list title="<?php i::esc_attr_e('Espaços');?>" type="space" :ids="entity.spaces"></entity-list>
+
+                                    <entity-list title="<?php i::esc_attr_e('Eventos');?>" type="event" :ids="entity.events"></entity-list>
+
+                                    <entity-list title="<?php i::esc_attr_e('Agentes');?>" type="agent" :ids="entity.children"></entity-list>
+
+                                    <entity-list title="<?php i::esc_attr_e('Projetos');?>" type="project" :ids="entity.projects"></entity-list>
+                                    
+                                    <entity-list title="<?php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="entity.ownedOpportunities.concat(entity.relatedOpportunities)"></entity-list>
+                                </div>
+
+                                <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
+                            </div>
+                        </aside>
+                    </mapas-container>
             </div>
-            <div class="grid-12">
-                <h2>Descrição Detalhada</h2>
-                <p>{{entity.longDescription}}</p>
-            </div>
-            <entity-files-list :entity="entity" group="downloads" title="Arquivos para download"></entity-files-list>
-            <entity-gallery :entity="entity"></entity-gallery>
-        </main>
-        
-        <aside>
-            <entity-terms :entity="entity" taxonomy="area" title="Linguagens culturais"></entity-terms>
-            <entity-social-media :entity="entity"></entity-social-media>
-            <entity-seals :entity="entity" title="Verificações"></entity-seals>
-            <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>  
-            <entity-owner :entity="entity" title="Publicado por"></entity-owner>
-            <share-links title="Compartilhar" text="Veja este link:"></share-links>
-        </aside>
-        
-    </mapas-container>
+        </tab>
+
+    </tabs>   
 </div>

@@ -10,4 +10,5 @@ return [
     // 'app.log.apiCache'      => true,
     // 'app.log.apiDql'        => true,
     // 'app.log.assets'        => true,
+    'app.log.components'       => true, 
 ];

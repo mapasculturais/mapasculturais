@@ -2,6 +2,8 @@
 
 namespace Panel;
 
+use MapasCulturais\App;
+
 class Controller extends \MapasCulturais\Controller
 {
     function __construct()

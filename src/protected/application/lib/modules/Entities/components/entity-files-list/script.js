@@ -13,8 +13,8 @@ app.component('entity-files-list', {
     },
 
     computed: {
-        files: () => {
-            /* return this.entity.files?.[this.group] || [] */
+        files() {
+            return this.entity.files?.[this.group] || []
         }
     },
 
@@ -30,9 +30,43 @@ app.component('entity-files-list', {
         title: {
             type: String,
             required: true
+        },
+        editable: {
+            type: Boolean,
+            default: false
         }
     },
     
+    data() {
+        return {
+            newFile: {}
+        }
+    },
+
     methods: {
+        setFile() {
+            this.newFile = this.$refs.file.files[0];
+            console.log(this.newFile);
+        },
+
+        upload(popover) {
+            let data = {
+                group: this.group, 
+                description: this.newFile.description
+            };
+
+            this.entity.upload(this.newFile, data).then((response) => {
+                console.log(response)
+                this.$emit('uploaded', this);
+                popover.close()
+            });
+
+            return true;
+        },
+
+        rename(file, popopver) {
+            file.description = file.newDescription;
+            file.save().then(() => popopver.close());
+        } 
     },
 });

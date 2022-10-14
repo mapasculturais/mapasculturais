@@ -6,7 +6,7 @@ return array(
     'metadata' => array(
         'subTitle' => array(
             'label' => \MapasCulturais\i::__('Sub-Título'),
-            'type' => 'text'
+            'type' => 'string'
         ),
         'registrationInfo' => array(
             'label' => \MapasCulturais\i::__('Inscrições'),
@@ -108,11 +108,18 @@ return array(
                 "v::url('pinterest.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
-
+        'event_attendance' => array(
+            'label' => 'Público presente',
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->positive()' => 'O valor deve ser um número inteiro positivo'
+            ]
+        ),
     ),
     'items' => array(
         1 =>  array('name' => \MapasCulturais\i::__('Padrão')),
     )
+
     /* EXEMPLOS DE METADADOS:
 
     'cnpj' => array(

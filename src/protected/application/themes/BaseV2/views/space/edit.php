@@ -1,14 +1,28 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
+
 $this->import('
-        entity-header entity-cover entity-profile 
-        entity-field entity-terms entity-social-media 
-        entity-links entity-gallery entity-gallery-video
-        entity-admins entity-related-agents entity-owner
-        entity-actions
-        mapas-container mapas-card mapas-breadcrumb
-        entity-map');
+    entity-actions
+    entity-admins
+    entity-cover
+    entity-field
+    entity-files-list
+    entity-gallery
+    entity-gallery-video
+    entity-header
+    entity-links
+    entity-location
+    entity-owner
+    entity-parent
+    entity-profile
+    entity-related-agents
+    entity-social-media
+    entity-terms
+    mapas-breadcrumb
+    mapas-card
+    mapas-container
+');
 
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -18,13 +32,11 @@ $this->breadcramb = [
 ?>
 
 <div class="main-app">
-
     <mapas-breadcrumb></mapas-breadcrumb>
     
     <entity-header :entity="entity" :editable="true"></entity-header>
-
+    
     <mapas-container>
-
         <mapas-card class="feature">
             <template #title>
                 <label class="card__title--title"><?php i::_e("Informações de Apresentação")?></label>
@@ -78,43 +90,15 @@ $this->breadcramb = [
         <main>         
             <mapas-card>
                 <template #title>
-                    <label ><?php i::_e("Endereço do espaço"); ?></label>
+                    <label><?php i::_e("Endereço do espaço"); ?></label>                    
                 </template>
                 <template #content>   
                     <div class="grid-12">
-                        <div class="col-5">
-                            <entity-field :entity="entity" label="CEP" prop="En_CEP"></entity-field>
-                        </div>
-
-                        <div class="col-7">
-                            <entity-field :entity="entity" label="Rua, avenida, travessa etc." prop="En_Nome_Logradouro"></entity-field>
-                        </div>
-                        
-                        <div class="col-3">
-                            <entity-field :entity="entity" label="Número" prop="En_Num"></entity-field>
-                        </div>
-
-                        <div class="col-9">
-                            <entity-field :entity="entity" label="Complemento" prop="En_Complemento"></entity-field>
-                        </div>
-                        
                         <div class="col-12">
-                            <entity-field :entity="entity" label="Bairro" prop="En_Bairro"></entity-field>
-                        </div>
-                        
-                        <div class="col-6">
-                            <entity-field :entity="entity" label="Município" prop="En_Municipio"></entity-field>
-                        </div>
-
-                        <div class="col-6">
-                            <entity-field :entity="entity" label="Estado" prop="En_Estado"></entity-field>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-map :entity="entity" :editable="true"></entity-map>
+                            <entity-location :entity="entity" editable hide-label></entity-location>
                         </div>
                     </div>
-                </template>   
+                </template>
             </mapas-card>
 
             <mapas-card>
@@ -154,6 +138,10 @@ $this->breadcramb = [
                 <template #content>
                     <div class="grid-12">
                         <div class="col-12">
+                            <entity-files-list :entity="entity" group="downloads" title="<?= i::_e('Adicionar arquivos para download')?>" :editable="true"></entity-files-list>
+                        </div>
+
+                        <div class="col-12">
                             <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
                         </div>
                         
@@ -188,6 +176,9 @@ $this->breadcramb = [
                         <div class="col-12">
                             <entity-owner :entity="entity" title="Publicado por" :editable="true"></entity-owner>
                         </div>
+                        <div class="col-12">
+                            <entity-parent :entity="entity" type="space"></entity-parent>
+                        </div>
                     </div>
                 </template>
             </mapas-card>
@@ -195,6 +186,6 @@ $this->breadcramb = [
 
     </mapas-container>
 
-    <entity-actions :entity="entity" />
+    <entity-actions :entity="entity"></entity-actions>
 
 </div>

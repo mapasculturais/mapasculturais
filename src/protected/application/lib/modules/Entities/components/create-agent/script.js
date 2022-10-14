@@ -9,7 +9,6 @@ app.component('create-agent' , {
     },
     
     created() {
-        this.createEntity()
         this.iterationFields()
     },
 
@@ -24,6 +23,27 @@ app.component('create-agent' , {
         editable: {
             type: Boolean,
             default:true
+        },
+    },
+
+    computed: {
+        areaErrors() {
+            return this.entity.__validationErrors['term-area'];
+        },
+        areaClasses() {
+            return this.areaErrors ? 'field error' : 'field';
+        },
+        modalTitle() {
+            if(this.entity?.id){
+                if(this.entity.status==1){
+                    return  __('agenteCriado', 'create-agent');
+                }else {
+                    return  __('criarRascunho', 'create-agent');
+                }
+            }else {
+                return  __('criarAgente', 'create-agent');
+
+            }
         },
     },
     
@@ -47,7 +67,8 @@ app.component('create-agent' , {
             })
         },
         createEntity() {
-            this.entity= new Entity('agent');
+            this.entity = Vue.ref(new Entity('agent'));
+            this.entity.type = 1;
             this.entity.terms = {area: []}
         },
         createDraft(modal) {
@@ -60,13 +81,19 @@ app.component('create-agent' , {
             this.save(modal);
         },
         save (modal) {
+            modal.loading(true);
             this.entity.save().then((response) => {
-                modal.close();
-                this.$emit('create',response)
-            })
+                this.$emit('create',response);
+                modal.loading(false);
+
+            }).catch((e) => {
+                modal.loading(false);
+            });
         },
-        cancel(modal) {
-            modal.close()
-        },
+
+        destroyEntity() {
+            // para o conteúdo da modal não sumir antes dela fechar
+            setTimeout(() => this.entity = null, 200);
+        }
     },
 });

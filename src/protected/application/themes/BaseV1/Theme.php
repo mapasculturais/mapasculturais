@@ -746,8 +746,9 @@ class Theme extends MapasCulturais\Theme {
 
     protected static function _getTexts(){
         $app = App::i();
+        $class = get_called_class();
 
-        return array_map(function($e) { return $e['text']; }, self::_dict());
+        return array_map(function($e) { return $e['text']; }, $class::_dict());
     }
 
     function getSearchAgentsUrl(){
@@ -1297,14 +1298,6 @@ class Theme extends MapasCulturais\Theme {
                 'unserialize' => function($val){ return json_decode($val); },
             ]);
         });
-
-        $this->registerEventMetadata('event_attendance', array(
-            'label' => 'Público presente',
-            'type' => 'integer',
-            'validations' => [
-                'v::intVal()->positive()' => 'O valor deve ser um número inteiro positivo'
-            ]
-        ));
     }
 
     function head() {
@@ -1888,8 +1881,7 @@ class Theme extends MapasCulturais\Theme {
 
     protected function _populateJsObject() {
         $app = App::i();
-        $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
-        $this->jsObject['userProfile'] = $app->user->profile; //get standard agent for user
+        
         $this->jsObject['vectorLayersURL'] = $app->baseUrl . 'geojson';
 
         $this->jsObject['request'] = array(
@@ -2281,8 +2273,7 @@ class Theme extends MapasCulturais\Theme {
     	$app = App::i();
     	if (!$app->user->is('guest')) {
     		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
-
-        	if($app->user->is('admin') || $this->jsObject['allowedSeals'] > 0) {
+        	if($app->user->is('admin') || count($this->jsObject['allowedSeals']) > 0) {
         		$this->jsObject['canRelateSeal'] = true;
         	} else {
         		$this->jsObject['canRelateSeal'] = false;

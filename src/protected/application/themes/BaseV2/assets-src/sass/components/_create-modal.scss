@@ -1,0 +1,44 @@
+@use '../settings/mixins' as *;
+
+
+.create-modal {
+    margin: 0;
+    color: black;
+
+    .field {
+        margin: size(16) 0 
+    }
+
+    &__buttons {
+        border-radius: var(--mc-border-radius-sm);
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 24px;
+        .button{
+            place-content: center;
+        }
+    }
+
+    .entity-terms.field {
+        &.error {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            button{
+                border: size(2) solid #FF0000;
+            }
+        }
+
+        h4 {
+            font-family: var(--mc-font-headings);
+            font-style: normal;
+            font-weight: 600;
+            font-size: size(14) !important;
+            line-height: size(19);
+            margin: 0 size(5);
+        }
+
+    }
+}
+
+    

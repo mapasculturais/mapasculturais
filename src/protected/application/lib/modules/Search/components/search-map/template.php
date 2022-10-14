@@ -1,9 +1,23 @@
 <?php
 use MapasCulturais\i;
-$this->import('mc-map-markercluster mc-map entities');
+$this->import('mc-map mc-map-card loading');
 ?>
+
 <div class="search-map">
-    <mc-map>
-        <mc-map-markercluster v-for="entity in entities" :key="entity.__objectId" :entity="entity"></mc-map-markercluster>
+    <div class="search-map__filter">
+        <div class="search-map__filter--filter">
+            <slot name="filter"></slot>
+        </div>
+    </div>
+
+    <mc-map 
+        :entities="entities" 
+        @ready="$emit('ready', $event)" 
+        @close-popup="$emit('closePopup', $event)" 
+        @open-popup="$emit('openPopup', $event)">
+        <template #popup="{entity}">
+            <mc-map-card :entity="entity"></mc-map-card>
+        </template>
     </mc-map>
-</div>
+    <loading :condition="loading"></loading>
+</div> 

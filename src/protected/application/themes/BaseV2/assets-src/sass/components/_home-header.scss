@@ -1,7 +1,7 @@
 @use '../settings/mixins' as *;
 
 .home-header {
-    background-color: #0074C1;
+    background-color: var(--mc-primary-500);
     position: relative;
     
     &__content {
@@ -11,7 +11,7 @@
         max-width: size(1440);
 
         &--left {
-            background-color: #0074C1;
+            background-color: var(--mc-primary-500);
             display: flex;
             flex-basis: 50%;
             justify-content: flex-end;
@@ -19,7 +19,7 @@
             position: relative;
     
             &::before {
-                background-color: #0074C1;
+                background-color: var(--mc-primary-500);
                 content: '';
                 height: 100%;
                 position: absolute;

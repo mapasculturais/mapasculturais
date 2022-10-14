@@ -1,8 +1,7 @@
 <?php
 use MapasCulturais\i;
 ?>
-
-<nav class="mapas-breadcrumb" aria-label="<?= i::__('Breadcrumbs') ?>">
+<nav :class="['mapas-breadcrumb', {'mapas-breadcrumb__hasCover': cover}]" aria-label="<?= i::__('Breadcrumbs') ?>">
     <slot name="breadcrumbs">
         <ul>
             <li v-for="item in list">

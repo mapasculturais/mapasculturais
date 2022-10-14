@@ -2,18 +2,20 @@
 
 use MapasCulturais\i;
 ?>
-<vue-final-modal v-model="modalOpen" :classes="['modal-container',classes]" content-class="modal-content">
-    <div class="modal__header">
-        <span v-if="title" class="modal__title">{{title}}</span>
-        <button v-if="closeButton" class="modal__close" @click="close()"> <mc-icon name="close"></mc-icon> </button>
-    </div>
-    <div class="modal__content">
-        <slot :close="close" :open="open" :loading="loading"></slot>
-    </div>
-    <div class="modal__action">
-        <loading :condition="processing"></loading>
-        <slot v-if="!processing" name="actions" :close="close" :open="open" :loading="loading"></slot>
-    </div>
+<vue-final-modal attach="body" v-model="modalOpen" :classes="['modal-container',classes]" content-class="modal-content">
+    <template v-if="modalOpen">
+        <div class="modal__header">
+            <span v-if="title" class="modal__title">{{title}}</span>
+            <button v-if="closeButton" class="modal__close" @click="close()"> <mc-icon name="close"></mc-icon> </button>
+        </div>
+        <div class="modal__content">
+            <slot :close="close" :open="open" :loading="loading"></slot>
+        </div>
+        <div class="modal__action">
+            <loading :condition="processing"></loading>
+            <slot v-if="!processing" name="actions" :close="close" :open="open" :loading="loading"></slot>
+        </div>
+    </template>
 </vue-final-modal>
 
 <slot name="button" :close="close" :open="open" :loading="loading">
