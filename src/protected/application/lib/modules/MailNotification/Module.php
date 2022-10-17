@@ -6,6 +6,18 @@ use MapasCulturais\App;
 class Module extends \MapasCulturais\Module
 {
 
+    function __construct($config = [])
+    {
+        $app = App::i();
+
+        $config += [
+            'enabled' => true,
+            'project_img_url' => "",
+        ];
+
+        parent::__construct($config);
+    }
+
     public function _init()
     {
         $app = App::i();
