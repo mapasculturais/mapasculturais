@@ -36,7 +36,7 @@ class Module extends \MapasCulturais\Module
         $app->hook("entity(Registration).send:after", function () {
         });
 
-        $app->hook("entity(Registration).save:finish", function () use ($self) {
+        $app->hook("entity(Registration).insert:finish", function () use ($self) {
             $self->registrationStart($this);
         });
     }
@@ -49,46 +49,11 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $template = "send-email-registration.html";
-        $send_email_to = $registration->owner->emailPrivado;
-        $subject = i::__("Inscrição iniciada");
-
-        $params = [
-            'siteName' => $app->view->dict('site: name', false),
-            'baseUrl' => $app->getBaseUrl(),
+        $data = [
             'projectImgUrl' => $this->config['project_img_url'],
-            'userName' => $registration->owner->name,
-            'projectName' => $registration->opportunity->name,
             'registrationId' => $registration->id,
-            'statusTitle' => $registration->getStatusNameById($registration->status),
-            'statusNum' => $registration->status
         ];
 
-        $this->sendEmail($template, $send_email_to, $subject, $params);
-    }
-
-    // Faz disparo do E-mail
-    public function sendEmail($template, $send_email_to, $subject, $params)
-    {
-        $app = App::i();
-
-        $filename = $app->view->resolveFilename("templates/pt_BR", $template);
-
-        $_template = file_get_contents($filename);
-
-        $mustache = new \Mustache_Engine();
-
-        $content = $mustache->render($_template, $params);
-
-        $email_params = [
-            'from' => $app->config['mailer.from'],
-            'to' => $send_email_to,
-            'subject' => $subject,
-            'body' => $content,
-        ];
-
-        if ($content) {
-            $app->createAndSendMailMessage($email_params);
-        }
+        $app->enqueueJob(SendMailNotification::SLUG, $data);
     }
 }
