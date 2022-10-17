@@ -61,15 +61,14 @@ class Module extends \MapasCulturais\Module
         $this->sendEmail($template, $send_email_to, $subject, $params);
     }
 
-    public function sendEmail($template, $params = [])
+    // Faz disparo do E-mail
+    public function sendEmail($template, $send_email_to, $subject, $params)
     {
         $app = App::i();
 
         $filename = $app->view->resolveFilename("templates/pt_BR", $template);
-        
+
         $_template = file_get_contents($filename);
-        
-        $params += ['teste' => 'olegario'];
 
         $mustache = new \Mustache_Engine();
 
@@ -77,12 +76,13 @@ class Module extends \MapasCulturais\Module
 
         $email_params = [
             'from' => $app->config['mailer.from'],
-            'to' => "email@email.com.br",
-            'subject' => "Assunto",
+            'to' => $send_email_to,
+            'subject' => $subject,
             'body' => $content,
         ];
 
-        $app->createAndSendMailMessage($email_params);
+        if ($content) {
+            $app->createAndSendMailMessage($email_params);
+        }
     }
-
 }
