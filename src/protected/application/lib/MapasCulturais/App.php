@@ -3059,22 +3059,48 @@ class App extends \Slim\Slim{
             }
         }
 
+        $header = file_get_contents($header_name);
+        $footer = file_get_contents($footer_name);
+        $content = file_get_contents($file_name);
+
+        $matches = [];
+        if(preg_match_all('#\{\{asset:([^\}]+)\}\}#', $header, $matches)){
+            foreach($matches[0] as $i => $tag){
+                $header = str_replace($tag, $this->view->asset($matches[1][$i], false), $header);
+            }
+        }
+
+        $matches = [];
+        if(preg_match_all('#\{\{asset:([^\}]+)\}\}#', $footer, $matches)){
+            foreach($matches[0] as $i => $tag){
+                $footer = str_replace($tag, $this->view->asset($matches[1][$i], false), $footer);
+            }
+        }
+
+        $matches = [];
+        if(preg_match_all('#\{\{asset:([^\}]+)\}\}#', $content, $matches)){
+            foreach($matches[0] as $i => $tag){
+                $content = str_replace($tag, $this->view->asset($matches[1][$i], false), $content);
+            }
+        }
+
+        
         $mustache = new \Mustache_Engine();
 
         $headerData = $templateData;
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).headerData", [&$headerData]);
-        $_header = $mustache->render(file_get_contents($header_name), $headerData);
+        $_header = $mustache->render($header, $headerData);
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).header", [&$_header]);
 
         $footerData = $templateData;
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).footerData", [&$footerData]);
-        $_footer = $mustache->render(file_get_contents($footer_name),$footerData);
+        $_footer = $mustache->render($footer, $footerData);
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).footer", [&$_footer]);
 
         $templateData->_footer = $_footer;
         $templateData->_header = $_header;
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).templateData", [&$templateData]);
-        $content = $mustache->render(file_get_contents($file_name), $templateData);
+        $content = $mustache->render($content, $templateData);
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).content", [&$content]);
 
         return $content;
