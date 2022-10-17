@@ -2,9 +2,12 @@
 
 namespace MailNotification;
 
+require __DIR__ . "/JobTypes/SendMailNotification.php";
+
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Registration;
+use MailNotification\JobTypes\SendMailNotification;
 
 class Module extends \MapasCulturais\Module
 {
@@ -24,6 +27,9 @@ class Module extends \MapasCulturais\Module
     public function _init()
     {
         $app = App::i();
+
+        // Registro do JOB
+        $app->registerJobType(new SendMailNotification(SendMailNotification::SLUG));
 
         $self = $this;
 
