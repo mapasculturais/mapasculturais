@@ -91,6 +91,7 @@ class Module extends \MapasCulturais\Module
                 'EVENT_ATTENDANCE' => [i::__('total_de_publico'), i::__('total de publico')],
                 'INSCRICOES' => [i::__('inscricoes'), i::__('inscrições')],
                 'CLASSIFICATION' => ['classification', 'rating',i::__('clasificação etária'), i::__('faixa etária'), i::__('classificação'),i::__('faixa_etária')],
+                'TAGS' => ['tags', 'tag'],
                 'LANGUAGE' => ['language',i::__('línguagem')],
                 'PROJECT' => ['project',i::__('projeto')],
                 'OWNER' => ['owner',i::__('proprietário')],
@@ -180,13 +181,17 @@ class Module extends \MapasCulturais\Module
                     i::__('texto livre'),
                     i::__('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
                 ],
-                i::__('CLASSIFICATION')  => [
+                i::__('FAIXA_ETARIA')  => [
                     i::__("PREENCHIMENTO OBRIGATÓRIO - Classificação de idade do evento usando as opções Livre, 10 anos, 12 anos, 14 anos, 16 anos, 18 anos"),
                     i::__('Livre')
                 ],
                 i::__('LINGUAGEM') => [
                     i::__('PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as com virgula'),
-                    i::__("Teatro, Música Popular, Livro e Poesia")
+                    i::__("Teatro, Música Popular, Livro e Poesia"),
+                ],
+                i::__('TAGS') => [
+                    i::__('Informar as tags do evento separando-as com virgula'),
+                    i::__("Cultura, Musica, Arte")
                 ],
                 i::__('PROJETO') => [
                     i::__('Informar o nome ou ID do projeto que o evento esta vinculado'),
@@ -324,7 +329,7 @@ class Module extends \MapasCulturais\Module
             'agent',
             new Definitions\FileGroup(
                 'event-import-file',
-                ['text/csv', 'application/excel'],
+                ['text/csv', 'application/excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
                 'O arquivo não e valido'
             )
         );

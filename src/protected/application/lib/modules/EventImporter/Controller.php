@@ -259,6 +259,11 @@ class Controller extends \MapasCulturais\Controller
             }
          }
 
+         // Validação das tags
+         if($value['TAGS']){
+            $tags = explode(',', $value['TAGS']);
+         }
+ 
          //Validação do projeto
          if($value['PROJECT']){
             $collum = $this->checkCollum($value['PROJECT']);
@@ -379,7 +384,7 @@ class Controller extends \MapasCulturais\Controller
          exit;
       }
 
-      $this->insertEvent($data, $file_dir, $languages);
+      $this->insertEvent($data, $file_dir, $languages, $tags);
    }
 
    public function checkCollum($value)
@@ -392,7 +397,7 @@ class Controller extends \MapasCulturais\Controller
    }
 
 
-   public function insertEvent($data, $file_dir, $languages)
+   public function insertEvent($data, $file_dir, $languages, $tags)
    {
       $app = App::i();
 
@@ -423,6 +428,7 @@ class Controller extends \MapasCulturais\Controller
          $event->event_attendance = $value['EVENT_ATTENDANCE'];
          $event->traducaoLibras = $value['LIBRAS_TRANSLATION'];
          $event->descricaoSonora = $value['AUDIO_DESCRIPTION'];
+         $event->terms['tag'] = $tags;
          $event->save(true);
      
          if($value['SPACE']){
