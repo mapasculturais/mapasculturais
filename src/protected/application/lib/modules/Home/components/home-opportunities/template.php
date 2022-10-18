@@ -23,7 +23,7 @@ $this->import('entities entity-card');
                             <entity-card :entity="entity"></entity-card> 
                         </slide>                        
 
-                        <template #addons>
+                        <template v-if="entities.length > 1" #addons>
                             <div class="actions">
                                 <navigation :slideWidth="368" />
                             </div>
