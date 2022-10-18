@@ -51,7 +51,7 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         $data = [
-            'template' => 'send_registration.html',
+            'template' => 'send_registration',
             'registrationId' => $registration->id,
         ];
 
@@ -63,7 +63,7 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         $data = [
-            'template' => 'start_registration.html',
+            'template' => 'start_registration',
             'registrationId' => $registration->id,
         ];
 
