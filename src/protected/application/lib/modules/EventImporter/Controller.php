@@ -3,17 +3,21 @@
 namespace EventImporter;
 
 use DateTime;
+use stdClass;
 use Exception;
 use MapasCulturais\i;
 use League\Csv\Reader;
-use MapasCulturais\App;
-use League\Csv\Statement;
 use League\Csv\Writer;
+use MapasCulturais\App;
+use Shuchkin\SimpleXLS;
+use Shuchkin\SimpleXLSX;
+use League\Csv\Statement;
 use MapasCulturais\Entity;
 use MapasCulturais\Entities\Event;
-use MapasCulturais\Entities\EventOccurrence;
 use MapasCulturais\Entities\MetaList;
-use stdClass;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use MapasCulturais\Entities\EventOccurrence;
 
 class Controller extends \MapasCulturais\Controller
 {
@@ -21,27 +25,65 @@ class Controller extends \MapasCulturais\Controller
 
       $this->requireAuthentication();
 
-      $app = App::i();
-      $moduleConfig = $app->modules['EventImporter']->config;
-      $csv_header_example = $moduleConfig['csv_header_example'];
-
-      $dir = PRIVATE_FILES_PATH . "EventImporter";
-      $file_name = "event-importer-example.csv";
-
-      $path = $dir."/".$file_name;
+      $request = $this->data;
+      $dir = PRIVATE_FILES_PATH. "EventImporter";
+      $file_name = "event-importer-example";
 
       if (!is_dir($dir)) {
          mkdir($dir, 0700, true);
       }
 
+      if($request['type'] == 'csv'){
+         $this->csvExample($dir, $file_name.".csv");
+      }
+    
+      if($request['type'] == 'xls'){
+         $this->xlsExample($dir, $file_name.".xlsx");
+      }
+   }
+
+   public function xlsExample($dir, $file_name)
+   {
+      $this->requireAuthentication();
+
+      $app = App::i();
+      $moduleConfig = $app->modules['EventImporter']->config;
+      $header_example = $moduleConfig['header_example'];
+      $path = $dir."/".$file_name;
+
+      $lines[0] = array_keys($header_example);
+      foreach($header_example as $key => $values){
+         $lines[1][] = $values[0];
+         $lines[2][] = $values[1];
+      }
+     
+      $spreadsheet = new Spreadsheet();
+      $sheet = $spreadsheet->getActiveSheet();
+      $sheet->fromArray($lines, null, "A1");
+
+      $writer = new Xlsx($spreadsheet);
+      $writer->save($path);
+      
+      header('Content-Type: application/excel');
+      $this->dispatch($file_name, $path);
+   }
+
+   public function csvExample($dir, $file_name)
+   {
+      $app = App::i();
+      $moduleConfig = $app->modules['EventImporter']->config;
+      $header_example = $moduleConfig['header_example'];
+
+      $path = $dir."/".$file_name;
+   
       $stream = fopen($path, 'w');
 
       $csv = Writer::createFromStream($stream);
-      $csv->setDelimiter(";");
-      $csv->insertOne(array_keys($csv_header_example));
+      $csv->setDelimiter(",");
+      $csv->insertOne(array_keys($header_example));
     
       $csv_data = [];
-      foreach($csv_header_example as $key => $values){
+      foreach($header_example as $key => $values){
          $csv_data[0][] = $values[0];
          $csv_data[1][] = $values[1];
       }
@@ -52,11 +94,8 @@ class Controller extends \MapasCulturais\Controller
   
 
       header('Content-Type: application/csv');
-      header('Content-Disposition: attachment; filename=' . $file_name);
-      header('Pragma: no-cache');
-      readfile($path);
-      unlink($path);
-
+      $this->dispatch($file_name, $path);
+     
    }
 
    function GET_processFile()
@@ -68,7 +107,7 @@ class Controller extends \MapasCulturais\Controller
       $moduleConfig = $app->modules['EventImporter']->config;
       $enabled = $moduleConfig['enabled'];
 
-      if(!$enabled()){
+      if (!$enabled()) {
          $this->error("Permissão negada, fale com administrador");
       }
 
@@ -76,15 +115,76 @@ class Controller extends \MapasCulturais\Controller
       $file = $app->repo('File')->find($request['file']);
       $file_dir = $file->path;
 
+
       if (file_exists($file_dir)) {
-         $this->checkCSV($file_dir);
-      }else{
+
+         $info = pathinfo($file_dir);
+         $ext = $info['extension'];
+
+         switch ($ext) {
+            case 'xls':
+            case 'xlsx':
+               $function = "getDataXLS";
+               break;
+            case 'csv':
+               $function = "getDataCSV";
+               break;
+         }
+
+         $data = $this->$function($file_dir);
+         $this->processData($data, $file_dir);
+
+      } else {
          throw new Exception("Arquivo CSV não existe. Erro ao processar");
       }
    }
 
-   //Processa arquivos CSV
-   public function checkCSV(string $file_dir)
+   public function getDataCSV($file)
+   {
+     $stream = fopen($file, 'r');
+
+      $csv = Reader::createFromStream($stream);
+      $csv->setDelimiter(",");
+      $csv->setHeaderOffset(0);
+
+      $stm = (new Statement());
+      $file_data = $stm->process($csv);
+
+      return $file_data;
+   }
+
+   public function getDataXLS($file)
+   {
+      $info = pathinfo($file);
+      $ext = $info['extension'];
+
+      switch ($ext) {
+         case 'xls':
+            $_class = "Shuchkin\\SimpleXLS";
+            break;
+         case 'xlsx':
+            $_class = "Shuchkin\\SimpleXLSX";
+            break;
+      }
+
+      $class = new $_class($file);
+      $xls = $class::parseFile($file);
+      $rows = $xls->rows();
+      $header = $rows[0];
+
+      $file_data = [];
+      foreach($rows as $key => $values){
+         if($key === 0){continue;}
+         
+         $file_data[$key] = array_combine($header, $values);
+      }
+
+      return $file_data;
+   }
+   
+
+   //Processa dados do arquivo
+   public function processData($file_data, string $file_dir)
    {
       $app = App::i();
 
@@ -92,14 +192,6 @@ class Controller extends \MapasCulturais\Controller
 
       $moduleConfig = $app->modules['EventImporter']->config;
 
-      $stream = fopen($file_dir, 'r');
-
-      $csv = Reader::createFromStream($stream);
-      $csv->setDelimiter(";");
-      $csv->setHeaderOffset(0);
-
-      $stm = (new Statement());
-      $csv_data = $stm->process($csv);
       $header_default = $moduleConfig['header_default'];
 
       $header = [];
@@ -112,7 +204,7 @@ class Controller extends \MapasCulturais\Controller
       }
 
       $tmp = [];
-      foreach($csv_data as $pos => $values){
+      foreach($file_data as $pos => $values){
          $collums = array_keys($values);
 
          foreach($collums as $collum){
@@ -167,6 +259,11 @@ class Controller extends \MapasCulturais\Controller
             }
          }
 
+         // Validação das tags
+         if($value['TAGS']){
+            $tags = explode(',', $value['TAGS']);
+         }
+ 
          //Validação do projeto
          if($value['PROJECT']){
             $collum = $this->checkCollum($value['PROJECT']);
@@ -287,7 +384,7 @@ class Controller extends \MapasCulturais\Controller
          exit;
       }
 
-      $this->insertEvent($data, $file_dir, $languages);
+      $this->insertEvent($data, $file_dir, $languages, $tags);
    }
 
    public function checkCollum($value)
@@ -300,7 +397,7 @@ class Controller extends \MapasCulturais\Controller
    }
 
 
-   public function insertEvent($data, $file_dir, $languages)
+   public function insertEvent($data, $file_dir, $languages, $tags)
    {
       $app = App::i();
 
@@ -331,6 +428,7 @@ class Controller extends \MapasCulturais\Controller
          $event->event_attendance = $value['EVENT_ATTENDANCE'];
          $event->traducaoLibras = $value['LIBRAS_TRANSLATION'];
          $event->descricaoSonora = $value['AUDIO_DESCRIPTION'];
+         $event->terms['tag'] = $tags;
          $event->save(true);
      
          if($value['SPACE']){
@@ -678,6 +776,14 @@ class Controller extends \MapasCulturais\Controller
          return (new DateTime('1989-01-01'));
       }
      
+   }
+
+   public function dispatch($file_name, $path)
+   {
+      header('Content-Disposition: attachment; filename=' . $file_name);
+      header('Pragma: no-cache');
+      readfile($path);
+      unlink($path);
    }
   
 }
