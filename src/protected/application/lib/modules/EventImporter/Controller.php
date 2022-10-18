@@ -26,31 +26,33 @@ class Controller extends \MapasCulturais\Controller
       $this->requireAuthentication();
 
       $request = $this->data;
-      
+      $dir = PRIVATE_FILES_PATH. "EventImporter";
+      $file_name = "event-importer-example";
+
+      if (!is_dir($dir)) {
+         mkdir($dir, 0700, true);
+      }
+
       if($request['type'] == 'csv'){
-         $this->csvExample();
+         $this->csvExample($dir, $file_name.".csv");
       }
     
       if($request['type'] == 'xls'){
-         $this->xlsExample();
+         $this->xlsExample($dir, $file_name.".xlsx");
       }
-     
-
    }
 
-   public function xlsExample()
+   public function xlsExample($dir, $file_name)
    {
       $this->requireAuthentication();
 
       $app = App::i();
       $moduleConfig = $app->modules['EventImporter']->config;
-      $xls_header_example = $moduleConfig['csv_header_example'];
-      $dir = __DIR__;
-      $file_name = "event-importer-example.xlsx";
+      $header_example = $moduleConfig['header_example'];
       $path = $dir."/".$file_name;
-      
-      $lines[0] = array_keys($xls_header_example);
-      foreach($xls_header_example as $key => $values){
+
+      $lines[0] = array_keys($header_example);
+      foreach($header_example as $key => $values){
          $lines[1][] = $values[0];
          $lines[2][] = $values[1];
       }
@@ -60,38 +62,28 @@ class Controller extends \MapasCulturais\Controller
       $sheet->fromArray($lines, null, "A1");
 
       $writer = new Xlsx($spreadsheet);
-      $writer->save($file_name);
-
-      header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-      header('Content-Disposition: attachment; filename=' . $file_name);
-      header('Pragma: no-cache');
-      readfile($path);
-      unlink($path);
+      $writer->save($path);
+      
+      header('Content-Type: application/excel');
+      $this->dispatch($file_name, $path);
    }
 
-   public function csvExample()
+   public function csvExample($dir, $file_name)
    {
       $app = App::i();
       $moduleConfig = $app->modules['EventImporter']->config;
-      $csv_header_example = $moduleConfig['csv_header_example'];
-
-      $dir = PRIVATE_FILES_PATH . "EventImporter";
-      $file_name = "event-importer-example.csv";
+      $header_example = $moduleConfig['header_example'];
 
       $path = $dir."/".$file_name;
-
-      if (!is_dir($dir)) {
-         mkdir($dir, 0700, true);
-      }
-
+   
       $stream = fopen($path, 'w');
 
       $csv = Writer::createFromStream($stream);
       $csv->setDelimiter(",");
-      $csv->insertOne(array_keys($csv_header_example));
+      $csv->insertOne(array_keys($header_example));
     
       $csv_data = [];
-      foreach($csv_header_example as $key => $values){
+      foreach($header_example as $key => $values){
          $csv_data[0][] = $values[0];
          $csv_data[1][] = $values[1];
       }
@@ -102,10 +94,8 @@ class Controller extends \MapasCulturais\Controller
   
 
       header('Content-Type: application/csv');
-      header('Content-Disposition: attachment; filename=' . $file_name);
-      header('Pragma: no-cache');
-      readfile($path);
-      unlink($path);
+      $this->dispatch($file_name, $path);
+     
    }
 
    function GET_processFile()
@@ -780,6 +770,14 @@ class Controller extends \MapasCulturais\Controller
          return (new DateTime('1989-01-01'));
       }
      
+   }
+
+   public function dispatch($file_name, $path)
+   {
+      header('Content-Disposition: attachment; filename=' . $file_name);
+      header('Pragma: no-cache');
+      readfile($path);
+      unlink($path);
    }
   
 }
