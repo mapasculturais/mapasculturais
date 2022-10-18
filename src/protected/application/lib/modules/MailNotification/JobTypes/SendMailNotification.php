@@ -22,10 +22,9 @@ class SendMailNotification extends JobType
 
         $registration = $app->repo("Registration")->find($job->registrationId);
 
-        $message = $app->renderMailerTemplate('start_registration', [
+        $message = $app->renderMailerTemplate($job->template, [
             'siteName' => $app->view->dict('site: name', false),
             'baseUrl' => $app->getBaseUrl(),
-            'projectImgUrl' => $job->projectImgUrl,
             'userName' => $registration->owner->name,
             'projectName' => $registration->opportunity->name,
             'registrationId' => $registration->id,

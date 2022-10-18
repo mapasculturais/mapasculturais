@@ -33,7 +33,8 @@ class Module extends \MapasCulturais\Module
 
         $self = $this;
 
-        $app->hook("entity(Registration).send:after", function () {
+        $app->hook("entity(Registration).send:after", function () use ($self) {
+            $self->registrationSend($this);
         });
 
         $app->hook("entity(Registration).insert:finish", function () use ($self) {
@@ -44,13 +45,25 @@ class Module extends \MapasCulturais\Module
     public function register()
     {
     }
+    
+    public function registrationSend(Registration $registration)
+    {
+        $app = App::i();
+
+        $data = [
+            'template' => 'send_registration.html',
+            'registrationId' => $registration->id,
+        ];
+
+        $app->enqueueJob(SendMailNotification::SLUG, $data);
+    }
 
     public function registrationStart(Registration $registration)
     {
         $app = App::i();
 
         $data = [
-            'projectImgUrl' => $this->config['project_img_url'],
+            'template' => 'start_registration.html',
             'registrationId' => $registration->id,
         ];
 
