@@ -15,6 +15,8 @@ use League\Csv\Statement;
 use MapasCulturais\Entity;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\MetaList;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use MapasCulturais\Entities\EventOccurrence;
 
 class Controller extends \MapasCulturais\Controller
@@ -23,6 +25,52 @@ class Controller extends \MapasCulturais\Controller
 
       $this->requireAuthentication();
 
+      $request = $this->data;
+      
+      if($request['type'] == 'csv'){
+         $this->csvExample();
+      }
+    
+      if($request['type'] == 'xls'){
+         $this->xlsExample();
+      }
+     
+
+   }
+
+   public function xlsExample()
+   {
+      $this->requireAuthentication();
+
+      $app = App::i();
+      $moduleConfig = $app->modules['EventImporter']->config;
+      $xls_header_example = $moduleConfig['csv_header_example'];
+      $dir = __DIR__;
+      $file_name = "event-importer-example.xlsx";
+      $path = $dir."/".$file_name;
+      
+      $lines[0] = array_keys($xls_header_example);
+      foreach($xls_header_example as $key => $values){
+         $lines[1][] = $values[0];
+         $lines[2][] = $values[1];
+      }
+     
+      $spreadsheet = new Spreadsheet();
+      $sheet = $spreadsheet->getActiveSheet();
+      $sheet->fromArray($lines, null, "A1");
+
+      $writer = new Xlsx($spreadsheet);
+      $writer->save($file_name);
+
+      header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      header('Content-Disposition: attachment; filename=' . $file_name);
+      header('Pragma: no-cache');
+      readfile($path);
+      unlink($path);
+   }
+
+   public function csvExample()
+   {
       $app = App::i();
       $moduleConfig = $app->modules['EventImporter']->config;
       $csv_header_example = $moduleConfig['csv_header_example'];
@@ -58,7 +106,6 @@ class Controller extends \MapasCulturais\Controller
       header('Pragma: no-cache');
       readfile($path);
       unlink($path);
-
    }
 
    function GET_processFile()
