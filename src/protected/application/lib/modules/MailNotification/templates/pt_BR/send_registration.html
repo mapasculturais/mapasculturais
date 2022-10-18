@@ -1,0 +1,30 @@
+{{{_header}}}
+<table role="presentation" class="main">
+
+    <!-- START MAIN CONTENT AREA -->
+    <tr>
+        <td class="wrapper">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <p>Olá, {{userName}}</p>
+
+                        <p>Sua inscrição <strong>{{projectName}}</strong> foi enviada com sucesso!</p>
+
+                        <p>Para acompanhar o andamento, click: <a
+                                href="{{baseUrl}}inscricao/{{registrationId}}"
+                                target="_blank">Aqui</a></p><br>
+                        <div class="status-card status-{{statusNum}}">
+                            <h2 class="status-card--title">{{statusTitle}}</h2>
+                        </div><!-- /.status-card -->
+                        <br><br>
+                        <p>Até mais!</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <!-- END MAIN CONTENT AREA -->
+</table>
+{{{_footer}}}
