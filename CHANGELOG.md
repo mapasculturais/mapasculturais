@@ -7,7 +7,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [5.3.31] - 2022-10-18
 - ### Melhorias
 - Cria módulo para para disparos de e-mails gerais no mapas culturais
-
 ## [5.3.30] - 2022-10-06
 - ### Melhorias
 - Instala LIB league/csv
