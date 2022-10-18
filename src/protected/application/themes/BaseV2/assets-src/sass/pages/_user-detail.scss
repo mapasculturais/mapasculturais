@@ -19,6 +19,8 @@
 
         &--title {
 
+            max-width: size(1088);
+
             .title-header {
                 display: flex;
                 align-items: flex-start;
@@ -52,7 +54,7 @@
                 }
 
                 &__label {
-
+                    width: 100%;
                     margin-left: 34px;
                     font-weight: 700;
                     font-size: 24px;
@@ -70,7 +72,7 @@
                         display: flex;
                         flex-direction: row;
                         justify-content: space-between;
-
+                        max-width: 100%;
                     }
                 }
 
@@ -80,6 +82,7 @@
                     line-height: 19px;
                     display: flex;
                     justify-content: space-between;
+                    margin-right: 260px ;
                 }
             }
         }
@@ -96,7 +99,7 @@
 
         &__content {
 
-            max-width: 100%;
+            max-width: 752px;
             padding-top: 12px;
             padding-left: 16px;
             padding-bottom: 16px;
