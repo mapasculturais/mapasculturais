@@ -1,0 +1,292 @@
+@use '../settings/mixins' as *;
+
+.p-user-detail {
+    padding: size(50) size(32) size(30);
+    max-width: size(1088);
+    background-color: var(--mc-gray-100);
+
+    &__header {
+        .header-top {
+            margin-bottom: size(26);
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: space-between;
+
+        }
+
+
+
+        &--title {
+
+            .title-header {
+                display: flex;
+                align-items: flex-start;
+                flex-direction: row;
+
+                &__content {
+                    max-width: 100%;
+
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+
+                }
+
+                &__icon {
+                    align-items: center;
+                    border-radius: var(--mc-border-radius-pill);
+                    display: flex;
+                    height: size(113);
+                    justify-content: center;
+                    width: size(113);
+                    background-color: var(--mc-gray-500);
+
+                    .iconify {
+                        width: size(58);
+                        height: size(51);
+                        color: var(--mc-high-500);
+                    }
+
+
+                }
+
+                &__label {
+
+                    margin-left: 34px;
+                    font-weight: 700;
+                    font-size: 24px;
+                    line-height: 33px;
+
+                    &--edit {
+
+                        svg {
+                            color: var(--mc-danger-500);
+                            margin-right: 6px;
+                        }
+                    }
+
+                    &--content {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+
+                    }
+                }
+
+                .content-user {
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: 19px;
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+        }
+
+
+
+    }
+
+    .editing-email {
+        background-color: white;
+        width: 970px;
+        height: 194px;
+        margin-bottom: 44px;
+
+        &__content {
+
+            max-width: 100%;
+            padding-top: 12px;
+            padding-left: 16px;
+            padding-bottom: 16px;
+            padding-right: auto;
+
+            &--label {
+
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 25px;
+                margin-bottom: 16px;
+
+
+            }
+
+            &--email {
+                font-style: normal;
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 19px;
+                gap: 9px;
+                padding-right: 18px;
+            }
+
+            &--edit {
+                gap: size(18);
+
+                svg {
+                    color: var(--mc-helper-500);
+                    margin-right: 8px;
+                }
+
+                &-label {
+                    margin-left: size(8px);
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 19px;
+                    color: var(--mc-helper-500);
+
+                }
+
+            }
+        }
+    }
+
+    .content-footer {
+
+        padding-bottom: 40px;
+    }
+
+    // &__title .editing-email {
+    //     margin-left: 50px;
+    //     background-color: white;
+    //     width: 970px;
+    //     height: 194px;
+
+    //     // padding-bottom: 40px;
+    //     &__content {
+
+    //         max-width: 100%;
+    //         padding-top: 12px;
+    //         padding-left: 16px;
+    //         padding-bottom: 16px;
+    //         padding-right: auto;
+
+    //         &--label {
+
+    //             font-weight: 700;
+    //             font-size: 18px;
+    //             line-height: 25px;
+    //             margin-bottom: 16px;
+
+
+    //         }
+
+    //         &--email {
+    //             font-style: normal;
+    //             font-weight: 700;
+    //             font-size: 14px;
+    //             line-height: 19px;
+    //             gap: 9px;
+    //             padding-right: 18px;
+    //         }
+
+    //         &--edit {
+    //             gap: size(18);
+
+    //             svg {
+    //                 color: var(--mc-helper-500);
+    //                 margin-right: 8px;
+    //             }
+
+    //             &-label {
+    //                 margin-left: size(8px);
+    //                 font-weight: 700;
+    //                 font-size: 14px;
+    //                 line-height: 19px;
+    //                 color: var(--mc-helper-500);
+
+    //             }
+
+    //         }
+    //     }
+    // }
+
+    // &__icon-usr {
+    //     align-items: center;
+    //     border-radius: var(--mc-border-radius-pill);
+    //     display: flex;
+    //     height: size(40);
+    //     justify-content: center;
+    //     width: size(40);
+
+    //     .iconify {
+    //         width: size(58);
+    //         height: size(51);
+    //         color: var(--mc-high-500);
+    //     }
+
+    //     &.default-usr {
+    //         width: size(113);
+    //         height: size(113);
+    //         background-color: var(--mc-low-500);
+    //     }
+    // }
+    // &-title {
+    //     display: flex;
+    //     justify-content: space-between;
+
+    //     &-title{
+    //         align-items: flex-start;
+    //         display: flex;
+    //         gap: size(16);
+
+    //         &__icon {
+    //             align-items: center;
+    //             border-radius: var(--mc-border-radius-pill);
+    //             display: flex;
+    //             height: size(40);
+    //             justify-content: center;
+    //             width: size(40);
+
+    //             .iconify {
+    //                 width: size(22);
+    //                 height: size(22);
+    //                 color: var(--mc-high-500);
+    //             }
+
+
+    //             &.default {
+    //                 background-color: var(--mc-low-500);
+    //             }
+
+    //         }
+    //         &__header{
+    //             &__icon-usr {
+    //                 align-items: center;
+    //                 border-radius: var(--mc-border-radius-pill);
+    //                 display: flex;
+    //                 height: size(40);
+    //                 justify-content: center;
+    //                 width: size(40);
+
+    //                 .iconify {
+    //                     width: size(58);
+    //                     height: size(51);
+    //                     color: var(--mc-high-500);
+    //                 }
+
+    //                 &.default-usr {
+    //                     width: size(113);
+    //                     height: size(113);
+    //                     background-color: var(--mc-low-500);
+    //                 }
+    //             }
+    //         }
+    //         &__title {
+    //             font-size: size(32);
+    //             font-weight: 700;
+    //             line-height: size(44);
+    //         }
+    //     }
+    // }
+    .tabs-component--user {
+        background-color: white;
+
+        .tabs-component__panels {
+            background-color: var(--mc-gray-100);
+
+        }
+    }
+
+}
