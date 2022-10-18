@@ -22,20 +22,20 @@ $this->import('
         <div class="panel-main">
             <header class="p-user-detail__header">
                 <div class="header-top grid-12">
-                    <div class="header-top--button col-6">
+                    <div class="header-top--button ">
                         <mc-link route="panel/index" class="button button--icon button--primary-outline">
                             <mc-icon name="arrow-left"></mc-icon>Voltar
                         </mc-link>
                     </div>
-                    <div class="help col-6">
+                    <div class="help ">
                         <a class="panel__help-link" href="#"><?= i::__('Ajuda?') ?></a>
                     </div>
 
 
                 </div>
 
-                <div class="p-user-detail__header--title">
-                    <div class="title-header">
+                <div class="p-user-detail__header--title ">
+                    <div class="title-header ">
                         <div class="title-header__icon ">
                             <mc-icon name="agent-1"></mc-icon>
                         </div>
