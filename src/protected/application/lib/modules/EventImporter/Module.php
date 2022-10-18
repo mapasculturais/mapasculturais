@@ -115,7 +115,7 @@ class Module extends \MapasCulturais\Module
                 'VIDEOS' => [i::__('videos')],
                 'LINKS' => ['links'],
             ],
-            "csv_header_example" => [
+            "header_example" => [
                 i::__('NOME') => [
                     i::__('PREENCHIMENTO OBRIGATÓRIO - Informar nome do evento'),
                     i::__('Show da banda O Tranco')
