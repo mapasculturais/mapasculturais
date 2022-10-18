@@ -6,6 +6,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 - Cria módulo para importação de eventos atrvéz de planilha CSV
+- Cria módulo para para disparos de e-mail gerais no mapas culturais
 ## [5.3.30] - 2022-10-6
 - ### Correções
 - Instala LIB league/csv
