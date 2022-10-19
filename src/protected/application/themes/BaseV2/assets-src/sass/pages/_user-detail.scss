@@ -41,14 +41,13 @@
                     display: flex;
                     justify-content: center;
                     background-color: var(--mc-gray-500);
-                    width: 110px;
-                    height: 110px;
+                    width: 113px;
+                    height: 113px;
                     align-items: center;
-                    max-width: 100%;
 
                     .iconify {
                         width: size(58);
-                        height: size(51);
+                        height: size(58);
                         color: var(--mc-high-500);
                     }
 
