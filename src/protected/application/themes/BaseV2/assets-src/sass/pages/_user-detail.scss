@@ -163,6 +163,7 @@
         padding: 16px;
         padding-bottom: 24px;
 
+
     }
 
 
@@ -170,6 +171,25 @@
         .tabs-component {
             background-color: white;
 
+            .panel--entity-tabs {
+                background-color: var(--mc-high-500);
+            }
+
+            .panel--entity-tabs__content {
+                background-color: var(--mc-gray-100);
+                border-radius: 6px;
+                height: 48px;
+                margin-top: 8px;
+                padding: 14px;
+                .grid-12 {
+                    padding-top: 3px;
+                    
+                }
+                .panel--entity-tabs__content--editable{
+                    
+                  
+                }
+            }
         }
 
         width: 938px;
@@ -195,6 +215,7 @@
         .tabs-component-button--active-agent {
             &::after {
                 background-color: var(--mc-agents-500);
+
             }
         }
 
