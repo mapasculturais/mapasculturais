@@ -190,7 +190,18 @@
 
                 }
 
-                .panel--entity-tabs__content--editable {}
+                .panel--entity-tabs__content--editable {
+                    
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: row;
+                    min-height: max-content;
+                    margin-right: 82px;
+                    .panel__entity-actions--editable {
+                        display: flex;
+                    }
+                }
             }
         }
 
