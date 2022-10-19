@@ -246,6 +246,11 @@ class Controller extends \MapasCulturais\Controller
       $exampleHash = $this->exampleHash();
 
       $errors = [];
+
+      if(empty($data)){
+         $errors[0][] = i::__("O arquivo esta vazio, verifique para continuar");
+      }
+
       foreach ($data as $key => $value) {
 
          $hash = md5(implode(",", $value));
