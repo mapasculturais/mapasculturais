@@ -317,7 +317,7 @@
 
         .tabs-component-button--active-opportunity {
             &::after {
-                background-color: orangered;
+                background-color: var(--mc-opportunities-500);
             }
         }
     }
