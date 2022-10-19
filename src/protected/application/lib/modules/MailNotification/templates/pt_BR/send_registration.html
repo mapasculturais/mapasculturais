@@ -8,14 +8,15 @@
                     <td>
                         <p>Olá, <strong>{{userName}}</strong></p>
 
-                        <p>Sua inscrição <strong>{{projectName}}</strong> foi enviada com sucesso!</p>
+                        <p>Sua inscrição <strong>{{projectName}}</strong> foi enviada com sucesso e o status atual é: {{statusTitle}}!</p>
 
-                        <p>Para acompanhar o andamento <a
-                                href="{{baseUrl}}inscricao/{{registrationId}}"
-                                target="_blank">click aqui</a></p><br>
-                        <div class="status-card status-{{statusNum}}">
-                            <h2 class="status-card--title">Status atual: {{statusTitle}}</h2>
-                        </div>
+                        <p>Para acompanhar o andamento</p>
+                        <br>
+                        <a href="{{baseUrl}}inscricao/{{registrationId}}">
+                            <div class="status-card status-{{statusNum}}">
+                                <h2 class="status-card--title">Clique aqui</h2>
+                            </div>
+                        </a>
                         <br><br>
                         <p>Até mais!</p>
                     </td>
