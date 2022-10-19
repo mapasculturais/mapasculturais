@@ -101,29 +101,32 @@ $this->import('
 
 
 
+        </div>
+        <div class="content-detail">
             <h3><?= i::__('Propriedades do usuário') ?></h3>
+
         </div>
         <div class="tabs-component">
 
             <tabs class="tabs-component tabs-component--user">
 
-                <tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" icon='agent'>
+                <tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" icon='agent' classes="tabs-component-button--active-agent">
                     <user-management--ownership-tabs :user="entity" type="agent"></user-management--ownership-tabs>
                 </tab>
 
-                <tab label="<?= i::esc_attr__('Espaços') ?>" slug="spaces" icon='space'>
+                <tab label="<?= i::esc_attr__('Espaços') ?>" slug="spaces" icon='space' classes="tabs-component-button--active-space">
                     <user-management--ownership-tabs :user="entity" type="space"></user-management--ownership-tabs>
                 </tab>
 
-                <tab label="<?= i::esc_attr__('Eventos') ?>" slug="events" icon='event'>
+                <tab label="<?= i::esc_attr__('Eventos') ?>" slug="events" icon='event' classes="tabs-component-button--active-event">
                     <user-management--ownership-tabs :user="entity" type="event"></user-management--ownership-tabs>
                 </tab>
 
-                <tab label="<?= i::esc_attr__('Projetos') ?>" slug="projects" icon='project'>
+                <tab label="<?= i::esc_attr__('Projetos') ?>" slug="projects" icon='project' classes="tabs-component-button--active-project">
                     <user-management--ownership-tabs :user="entity" type="project"></user-management--ownership-tabs>
                 </tab>
 
-                <tab label="<?= i::esc_attr__('Oportunidades') ?>" slug="opportunities" icon='opportunity'>
+                <tab label="<?= i::esc_attr__('Oportunidades') ?>" slug="opportunities" icon='opportunity' classes="tabs-component-button--active-opportunity">
                     <user-management--ownership-tabs :user="entity" type="opportunity"></user-management--ownership-tabs>
                 </tab>
 
