@@ -332,7 +332,7 @@ class Module extends \MapasCulturais\Module
             'agent',
             new Definitions\FileGroup(
                 'event-import-file',
-                ['text/csv', 'application/excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+                ['text/csv', 'application/excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'],
                 'O arquivo não e valido'
             )
         );
