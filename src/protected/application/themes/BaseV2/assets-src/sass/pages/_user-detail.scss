@@ -169,9 +169,11 @@
 
     .tabs-component--user {
         .tabs-component {
-            background-color: white;
+            .tabs-component__header {
+                background-color: pink;
+            }
 
-            .panel--entity-tabs {
+            .panel--entity-tabs--identify {
                 background-color: var(--mc-high-500);
                 margin-left: 16px;
             }
@@ -182,22 +184,26 @@
                 height: 48px;
                 margin-top: 8px;
                 padding: 14px;
+
                 .grid-12 {
                     padding-top: 3px;
-                    
+
                 }
-                .panel--entity-tabs__content--editable{
-                    
-                  
-                }
+
+                .panel--entity-tabs__content--editable {}
             }
         }
 
         width: 938px;
         background-color: var(--mc-high-500);
         border-radius: 6px;
-
-
+        
+        .tabs-component__header {
+            width: 938px;
+            background-color: var(--mc-high-500);
+            border-radius: 6px;
+            padding-left: 1px;
+        }
         .tabs-component__panels {
             background-color: white;
             width: 938px;
@@ -208,6 +214,7 @@
                 width: 938px;
                 background-color: var(--mc-gray-100);
                 border-radius: 6px;
+                padding-left: 10px;
             }
 
         }
