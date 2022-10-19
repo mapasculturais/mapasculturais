@@ -260,26 +260,26 @@ class Controller extends \MapasCulturais\Controller
          }
 
          if(empty($value['NAME']) || $value['NAME'] == ''){
-            $errors[$key][] = i::__("A coluna nome está vazia");
+            $errors[$key+1][] = i::__("A coluna nome está vazia");
          }
 
          if(empty($value['SHORT_DESCRIPTION']) || $value['SHORT_DESCRIPTION'] == ''){
-            $errors[$key][] = i::__("A coluna descrição curta está vazia");
+            $errors[$key+1][] = i::__("A coluna descrição curta está vazia");
          }
 
          if(empty($value['CLASSIFICATION']) || $value['CLASSIFICATION'] == ''){
-            $errors[$key][] = i::__("A coluna classificação estária está vazia");
+            $errors[$key+1][] = i::__("A coluna classificação estária está vazia");
          }
 
          if (!in_array($value['CLASSIFICATION'],$moduleConfig['rating_list_allowed'])) {
             $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
-            $errors[$key][] = i::__("A coluna classificação etária é inválida. As opções aceitas são --{$rating_str}--");
+            $errors[$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são --{$rating_str}--");
          }
 
          //Validação das linguagens
          $languages = explode(',', $value['LANGUAGE']);
          if (!$languages) {
-            $errors[$key][] = i::__("A coluna linguagem está vazia");
+            $errors[$key+1][] = i::__("A coluna linguagem está vazia");
          }
 
          //Tratamento da lista
@@ -289,11 +289,12 @@ class Controller extends \MapasCulturais\Controller
             $_language = mb_strtolower(trim($language));
 
             if (!in_array(trim($_language), array_keys($languages_list))) {
-               $errors[$key][] = i::__("A linguagem --{$_language}-- não existe");
+               $errors[$key+1][] = i::__("A linguagem --{$_language}-- não existe");
             }
          }
 
          // Validação das tags
+         $tags = [];
          if($value['TAGS']){
             $tags = explode(',', $value['TAGS']);
          }
@@ -302,21 +303,21 @@ class Controller extends \MapasCulturais\Controller
          if($value['PROJECT']){
             $collum = $this->checkCollum($value['PROJECT']);
             if(!$projects = $conn->fetchAll("SELECT * FROM project WHERE status >= 1 AND {$collum} = {$value['PROJECT']}")) {
-               $errors[$key][] = i::__("O projeto não está cadastrado");
+               $errors[$key+1][] = i::__("O projeto não está cadastrado");
             }
    
             if ($collum == 'name') {
                if (count($projects) > 1){
-                  $errors[$key][] = i::__("Existe mais de um projeto com o nome --{$value['PROJECT']}--. Para proseguir, informe o ID do projeto que quer associar ao evento");
+                  $errors[$key+1][] = i::__("Existe mais de um projeto com o nome --{$value['PROJECT']}--. Para proseguir, informe o ID do projeto que quer associar ao evento");
                }
             }
          }
 
          //Validação do agente responsavel 
          if(empty($value['OWNER']) || ($value['OWNER'] == "")){
-            $errors[$key][] = i::__("A coluna agente é obrigatória. Informo o ID do agente responsável");
+            $errors[$key+1][] = i::__("A coluna agente é obrigatória. Informo o ID do agente responsável");
          } else if(!$conn->fetchAll("SELECT * FROM agent WHERE status >= 1 AND id = {$value['OWNER']}")) {
-            $errors[$key][] = i::__("O a gente não esta cadastrado");
+            $errors[$key+1][] = i::__("O a gente não esta cadastrado");
          }
          
          //Caso exista espaço informado significa inserção de ocorrência
@@ -330,23 +331,23 @@ class Controller extends \MapasCulturais\Controller
 
             $collum = $this->checkCollum($value['SPACE']);
             if(!$spaces = $conn->fetchAll("SELECT * FROM space WHERE status >= 1 AND {$collum} = {$value['SPACE']}")) {
-               $errors[$key][] = i::__("O espaço não está cadastrado");
+               $errors[$key+1][] = i::__("O espaço não está cadastrado");
             }
 
             if ($collum_spa == 'name') {
                if (count($spaces) > 1) {
-                  $errors[$key][] = i::__("Existe mais de um espaço com o nome --{$value['SPACE']}--. Para proseguir informe o ID do espaço que quer associar ao evento");
+                  $errors[$key+1][] = i::__("Existe mais de um espaço com o nome --{$value['SPACE']}--. Para proseguir informe o ID do espaço que quer associar ao evento");
                }
             }
 
             //Verificação da frequencia
             if(empty($value['FREQUENCY']) || $value['FREQUENCY'] == ''){
-               $errors[$key][] = i::__("A coluna frequência está vazia");
+               $errors[$key+1][] = i::__("A coluna frequência está vazia");
             }
 
             if (!in_array($value['FREQUENCY'], array_keys($moduleConfig['frequence_list_allowed']))) {
                $frequence_str = implode(', ', array_keys($moduleConfig['frequence_list_allowed']));
-               $errors[$key][] = i::__("A frequência é inválida. As opções aceitas são --{$frequence_str}--");
+               $errors[$key+1][] = i::__("A frequência é inválida. As opções aceitas são --{$frequence_str}--");
             }
 
             if(in_array($value['FREQUENCY'], $moduleConfig['use_week_days'])){
@@ -359,60 +360,60 @@ class Controller extends \MapasCulturais\Controller
                }
 
                if($err){
-                  $errors[$key][] = i::__("para a frequencia semanal, pelomenos um dia da semana deve ser informado");
+                  $errors[$key+1][] = i::__("para a frequencia semanal, pelomenos um dia da semana deve ser informado");
                }
             }
 
               // Valida a hora inicial
             if(empty($value['STARTS_ON']) || $value['STARTS_ON'] == ''){
-               $errors[$key][] = i::__("A coluna Hora inícial está vazia");
+               $errors[$key+1][] = i::__("A coluna Hora inícial está vazia");
             }   
             
             $starts_on = $this->formatDate("H:i", $value['STARTS_ON'], false);
             if($starts_on->format("H:i") != $value['STARTS_ON']){
-               $errors[$key][] = i::__("A coluna Hora inícial é inválida. O formato esperado é HH:MM Ex.: 12:00");
+               $errors[$key+1][] = i::__("A coluna Hora inícial é inválida. O formato esperado é HH:MM Ex.: 12:00");
             }
             
             // Valida a hora final
             if(empty($value['ENDS_ON']) || $value['ENDS_ON'] == ''){
-               $errors[$key][] = i::__("A coluna Hora final está vazia");
+               $errors[$key+1][] = i::__("A coluna Hora final está vazia");
             }
             
             $ends_on = $this->formatDate("H:i", $value['ENDS_ON'], false);
             if($ends_on->format("H:i") != $value['ENDS_ON']){
-               $errors[$key][] = i::__("A coluna Hora final é inválida. O formato esperado é HH:MM Ex.: 12:00");
+               $errors[$key+1][] = i::__("A coluna Hora final é inválida. O formato esperado é HH:MM Ex.: 12:00");
             }
 
              // Valida a data inicial
             if (empty($value['STARTS_AT']) || $value['STARTS_AT'] == "") {
-               $errors[$key][] = i::__("A Coluna Data inícial Está vazia");
+               $errors[$key+1][] = i::__("A Coluna Data inícial Está vazia");
             }
 
             $starts_at = $this->formatDate("d/m/Y", $value['STARTS_AT'], false);
             if ($starts_at->format("d/m/Y") != $value['STARTS_AT']) {
-               $errors[$key][] = i::__("A coluna data inícial é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
+               $errors[$key+1][] = i::__("A coluna data inícial é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
             }
             
             // Valida a data final
             if(in_array($value['FREQUENCY'], $moduleConfig['use_endsat'])){
                if (empty($value['ENDS_AT']) || $value['ENDS_AT'] == "") {
-                  $errors[$key][] = i::__("A Coluna Data final Está vazia");
+                  $errors[$key+1][] = i::__("A Coluna Data final Está vazia");
                }
                
                $ends_at = $this->formatDate("d/m/Y", $value['ENDS_AT'], false);
                if ($ends_at->format("d/m/Y") != $value['ENDS_AT']) {
-                  $errors[$key][] = i::__("A coluna data final é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
+                  $errors[$key+1][] = i::__("A coluna data final é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
                }
             }
 
             if($value['EVENT_ATTENDANCE'] && !is_numeric($value['EVENT_ATTENDANCE'])){
-               $errors[$key][] = i::__("A coluna total de público é inválida. Essa coluna so aceita números");
+               $errors[$key+1][] = i::__("A coluna total de público é inválida. Essa coluna so aceita números");
             }
 
          }
          
       }
-
+    
       if($errors){
          $this->render("import-erros", ["errors" => $errors, 'filename' => basename($file_dir)]);
          exit;
