@@ -108,10 +108,10 @@ $this->import('
         </div>
         <div class="tabs-component">
 
-            <tabs class="tabs-component tabs-component--user">
+            <tabs class="tabs-component  p-user-detail__content-footer tabs-component--user">
 
                 <tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" icon='agent' classes="tabs-component-button--active-agent">
-                    <user-management--ownership-tabs :user="entity" type="agent"></user-management--ownership-tabs>
+                    <user-management--ownership-tabs :user="entity" type="agent" classes="tabs-component__header p-user-detail__content--footer-slot"></user-management--ownership-tabs>
                 </tab>
 
                 <tab label="<?= i::esc_attr__('Espaços') ?>" slug="spaces" icon='space' classes="tabs-component-button--active-space">

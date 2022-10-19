@@ -150,7 +150,8 @@
 
         padding-bottom: 40px;
     }
-    .content-detail{
+
+    .content-detail {
         padding-bottom: 21px;
     }
 
@@ -287,13 +288,23 @@
     //         }
     //     }
     // }
+
+
     .tabs-component--user {
+
+
         background-color: white;
 
         .tabs-component__panels {
             background-color: var(--mc-gray-100);
 
+            .tabs-component__header {
+                background-color: grey;
+                border-radius: 6px;
+            }
+
         }
+
 
         .tabs-component-button--active-agent {
             &::after {
