@@ -182,6 +182,27 @@ class Controller extends \MapasCulturais\Controller
       return $file_data;
    }
    
+   public function exampleHash()
+   {
+      $app = App::i();
+
+      $moduleConfig = $app->modules['EventImporter']->config;
+
+      $header_example = $moduleConfig['header_example'];
+
+      $example = [];
+      foreach($header_example as $key => $values){
+         $example[0][] = $values[0];
+         $example[1][] = $values[1];
+      }
+
+      return [
+         md5(implode(",", $example[0])),
+         md5(implode(",", $example[1])),
+      ];
+     
+   }
+   
 
    //Processa dados do arquivo
    public function processData($file_data, string $file_dir)
@@ -222,9 +243,17 @@ class Controller extends \MapasCulturais\Controller
          $data[$pos] = $tmp;        
       }
 
+      $exampleHash = $this->exampleHash();
+
       $errors = [];
       foreach ($data as $key => $value) {
-   
+
+         $hash = md5(implode(",", $value));
+         if(in_array($hash, $exampleHash)){
+            $errors[$key+1][] = i::__("Linha invalida. Os dados da linha são os dados do exemplo, apague a mesma para continuar");
+            break;
+         }
+
          if(empty($value['NAME']) || $value['NAME'] == ''){
             $errors[$key][] = i::__("A coluna nome está vazia");
          }
