@@ -15,7 +15,7 @@ $this->import('
         </div>
         <div class="panel--open-opportunities__content--cards">
             <carousel v-if="entities.length > 0" :settings="settings" :breakpoints="breakpoints">
-                <slide v-for="entity in entities" :key="entity.id">
+                <slide v-for="entity in entities" :key="entity.__objectId">
                     <div class="card">
                         <div class="card__content">
                             <label class="card__content--title"> <img :src="entity.files.avatar.transformations.avatarMedium.url"/> {{entity.name}} </label>              

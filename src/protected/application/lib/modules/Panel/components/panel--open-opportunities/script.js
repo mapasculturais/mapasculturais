@@ -33,7 +33,10 @@ app.component('panel--open-opportunities', {
     },
 
     props: {
-        
+        limit: {
+            type: Number,
+            default: 0
+        }
     },
 
     data() {
