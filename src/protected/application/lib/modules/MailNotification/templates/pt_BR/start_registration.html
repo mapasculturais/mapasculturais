@@ -7,14 +7,13 @@
                     <td>
                         <p>Olá, <strong>{{userName}}</strong></p>
 
-                        <p>Você acaba de iniciar o processo de inscrição <strong>{{projectName}}</strong>!</p>
-
-                        <p>Acesse o link: <a
-                                href="{{baseUrl}}inscricao/{{registrationId}}"
-                                target="_blank">Status da inscrição</a> para concluir.</p><br>
+                        <p>Você acaba de iniciar o processo de inscrição <strong>{{projectName}}</strong> e o status atual é: {{statusTitle}}!</p>
+                        <p>Falta pouco, para concluir</p><br>
+                        <a href="{{baseUrl}}inscricao/{{registrationId}}"target="_blank">
                         <div class="status-card status-{{statusNum}}">
-                            <h2 class="status-card--title">{{statusTitle}}</h2>
+                            <h2 class="status-card--title">Clique aqui </h2>
                         </div>
+                        </a>
                         <br><br>
                         <p>Até mais!</p>
                     </td>
