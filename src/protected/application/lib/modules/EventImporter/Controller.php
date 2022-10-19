@@ -225,6 +225,7 @@ class Controller extends \MapasCulturais\Controller
       }
 
       $tmp = [];
+      $data = [];
       foreach($file_data as $pos => $values){
          $collums = array_keys($values);
 
