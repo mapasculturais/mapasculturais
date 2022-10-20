@@ -190,16 +190,24 @@
                 }
 
                 .panel--entity-tabs__content--editable {
-                    
+
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     flex-direction: row;
                     min-height: max-content;
                     margin-right: 97px;
+
                     .panel__entity-actions--editable {
                         display: flex;
+
+                        svg {
+
+                            color: red;
+                        }
+
                     }
+
                 }
             }
         }
@@ -207,13 +215,14 @@
         width: 938px;
         background-color: var(--mc-high-500);
         border-radius: 6px;
-        
+
         .tabs-component__header {
             width: 938px;
             background-color: var(--mc-high-500);
             border-radius: 6px;
             padding-left: 1px;
         }
+
         .tabs-component__panels {
             background-color: white;
             width: 938px;
