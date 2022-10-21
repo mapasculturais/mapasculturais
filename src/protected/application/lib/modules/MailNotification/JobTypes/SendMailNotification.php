@@ -26,8 +26,10 @@ class SendMailNotification extends JobType
             'siteName' => $app->view->dict('site: name', false),
             'baseUrl' => $app->getBaseUrl(),
             'userName' => $registration->owner->name,
+            'projectId' => $registration->opportunity->id,
             'projectName' => $registration->opportunity->name,
             'registrationId' => $registration->id,
+            'registrationNumber' => $registration->number,
             'statusTitle' => $registration->getStatusNameById($registration->status),
             'statusNum' => $registration->status,
         ]);

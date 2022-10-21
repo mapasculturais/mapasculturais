@@ -1,0 +1,22 @@
+.btn-process>div {
+    width: 50%;
+    float: left;
+    min-height: 55px;
+    
+}
+.btn-process a{
+    padding: unset !important;
+
+}
+.file-process a{
+    
+    padding-top: 19px !important;
+    padding-left: 5px !important;
+
+}
+.file-process a:hover{
+    color: forestgreen !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+
+}
