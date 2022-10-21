@@ -47,7 +47,7 @@ class Module extends \MapasCulturais\Module
                 'SATURDAY' => i::__('sab'),
                 'SUNDAY' => i::__('dom')
             ],
-            'use_endsat' => [i::__('uma vez'), 'once'],
+            'use_endsat' => [i::__('semanal'),i::__('diariamente'),'weekly','daily'],
             'use_week_days' => [i::__('semanal'), 'weekly'],
             'dic_months' => [
                 "January" => i::__("Janeiro"),
