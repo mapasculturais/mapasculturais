@@ -198,13 +198,28 @@
                     min-height: max-content;
                     margin-right: 97px;
 
+
                     .panel__entity-actions--editable {
                         display: flex;
-
-                        svg {
-
-                            color: var(--mc-danger-500);
+                        margin-right: 8px;
+                        .panel__entity-actions--trash {
+                            svg {
+                                color: var(--mc-danger-500);
+                            }
                         }
+
+                        
+
+                        .panel__entity-actions--archive {
+                            
+                            svg {
+                                color: var(--mc-primary-500);
+                            }
+
+                            padding-right: 3px;
+                        }
+
+
                     }
 
                 }
