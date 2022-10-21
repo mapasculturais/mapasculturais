@@ -4,13 +4,18 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.32] - 2022-10-21
+- ### Melhorias
+- Cria módulo para importação de eventos atrvéz de planilha CSV
+- ### Correções
+- Aplica correções nos layouts de e-mails no novo módulo de disparo de notificações
 ## [5.3.31] - 2022-10-18
 - ### Melhorias
 - Cria módulo para para disparos de e-mails gerais no mapas culturais
-## [5.3.30] - 2022-10-06
-- ### Melhorias
+## [5.3.30] - 2022-10-6
+- ### Correções
 - Instala LIB league/csv
-## [5.3.29] - 2022-10-05
+## [5.3.29] - 2022-10-5
 - ### Correções
 - Corrige erro que permite o agente excluir um selo associado a ele
 ## [5.3.28] - 2022-09-13
