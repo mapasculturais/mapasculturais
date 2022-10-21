@@ -19,7 +19,7 @@ $this->import('loading');
     
     <confirm-button v-if="!entity.__processing && archiveButton && entity.status != <?= Entity::STATUS_ARCHIVED ?> && hasStatus('archived')"
         @confirm="archiveEntity($event)"
-        button-class="button--text archive button--icon button--sm"
+        button-class="button--text archive button--icon button--sm panel__entity-actions--archive"
         message="<?php i::esc_attr_e("Você está certo que deseja arquivar esta entidade?") ?>">
             <mc-icon name="archive"></mc-icon>
             <span><?php i::_e('Arquivar') ?></span>
@@ -27,7 +27,7 @@ $this->import('loading');
     
     <confirm-button v-if="!entity.__processing && deleteButton && entity.status != <?= Entity::STATUS_TRASH ?> && hasStatus('trash')"
         @confirm="deleteEntity($event)"
-        button-class="button--text delete button--icon button--sm"
+        button-class="button--text delete button--icon button--sm panel__entity-actions--trash"
         message="<?php i::esc_attr_e("Você está certo que deseja excluir esta entidade?") ?>">
             <mc-icon name="trash"></mc-icon>
             <span><?php i::_e('Excluir') ?></span>

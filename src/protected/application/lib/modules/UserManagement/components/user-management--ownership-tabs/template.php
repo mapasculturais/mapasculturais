@@ -17,12 +17,12 @@ $this->import('
     </template>
     <template #default="{entity, moveEntity}">
         <div class="grid-12 panel--entity-tabs__content">
-            <div class="col-2"><code>{{entity.id}}</code></div>
-            <div class="col-4"><mc-link :entity="entity"></mc-link></div>
-            <div class="col-3">{{entity.subsite?.name}}</div>
+            <div class="col-2 panel--entity-tabs__content--id"><code>{{entity.id}}</code></div>
+            <div class="col-4 panel--entity-tabs__content--name"><mc-link :entity="entity"></mc-link></div>
+            <div class="col-3 panel--entity-tabs__content--pen">{{entity.subsite?.name}}</div>
             <div class="col-3 panel--entity-tabs__content--editable">
                 
-                <mc-link :entity="entity" route="edit" icon='edit' class="button button--icon panel--entity-tabs__content--editable-edit"><?= i::__('Editar') ?></mc-link>
+                <mc-link :entity="entity" route="edit" icon='edit' class="button button--icon panel--entity-tabs__content--editable-edit"><label class="panel--entity-tabs__content--editable-label"><?= i::__('Editar') ?></label></mc-link>
                 <panel--entity-actions 
                     :entity="entity"
                     @deleted="moveEntity(entity)" 
