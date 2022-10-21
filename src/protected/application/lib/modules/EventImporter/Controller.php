@@ -513,12 +513,12 @@ class Controller extends \MapasCulturais\Controller
          "duration" => $duration(),
          "frequency" => $moduleConfig['frequence_list_allowed'][$freq],
          "startsOn" => $this->formatDate("H:i", $value['STARTS_ON'], "H:i"),
-         "until" => $this->formatDate("d/m/Y", $value['ENDS_AT'], "Y-m-d"),
+         "until" => (!empty($value['ENDS_AT']) && $value['ENDS_AT'] !="")? $this->formatDate("d/m/Y", $value['ENDS_AT'], "Y-m-d") :null,
          "price" => $value['PRICE'],
          "description" => "",
       ];
      
-      switch ('semanal') {
+      switch (mb_strtolower($value['FREQUENCY'])) {
          case i::__('diariamente'):
          case i::__('todos os dias'):
          case i::__('diario'):
