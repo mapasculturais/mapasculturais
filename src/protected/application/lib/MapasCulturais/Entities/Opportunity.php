@@ -284,14 +284,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
     public function getEvaluationMethod() {
         return $this->evaluationMethodConfiguration->getEvaluationMethod();
     }
-
-    function setEvaluationMethodConfiguration(EvaluationMethodConfiguration $eval, $cascade = true){
-        $this->evaluationMethodConfiguration = $eval;
-
-        if($cascade){
-            $eval->setOpportunity($this, false);
-        }
-    }
     
     function setAvaliableEvaluationFields($value) {
         if(!$value || empty($value)){

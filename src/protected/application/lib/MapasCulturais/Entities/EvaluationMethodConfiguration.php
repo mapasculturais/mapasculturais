@@ -92,13 +92,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     protected $__permissionsCache;
 
-    function setOpportunity(Opportunity $opportunity, $cascade = true) {
-        $this->opportunity = $opportunity;
-        if ($cascade) {
-            $opportunity->setEvaluationMethodConfiguration($this, false);
-        }
-    }
-
     function setEvaluationFrom($date){
         if($date instanceof \DateTime){
             $this->evaluationFrom = $date;
