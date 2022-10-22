@@ -20,26 +20,7 @@ app.component('entities', {
             this.api.lists.store(this.name, this.entities);
         }
 
-        if (this.select) {
-            this.query['@select'] = this.select;
-        } 
-
-        if (this.ids) {
-            this.query.id = 'IN(' + this.ids.join(',') + ')'
-        }
-
-        if (this.order) {
-            this.query['@order'] = this.order; 
-        }
-
-        if (this.limit) {
-            this.query['@limit'] = this.limit;
-            this.query['@page'] = this.page;
-        }
-
-        if (this.permissions) {
-            this.query['@permissions'] = this.permissions; 
-        }
+        this.populateQuery(this.query);
 
         this.entities.query = this.query;
         this.entities.metadata = {};
@@ -102,8 +83,33 @@ app.component('entities', {
     },
     
     methods: {
+        populateQuery(query) {
+            if (this.select) {
+                query['@select'] = this.select;
+            } 
+    
+            if (this.ids) {
+                query.id = 'IN(' + this.ids.join(',') + ')'
+            }
+    
+            if (this.order) {
+                query['@order'] = this.order; 
+            }
+    
+            if (this.limit) {
+                query['@limit'] = this.limit;
+                query['@page'] = this.page;
+            }
+    
+            if (this.permissions) {
+                query['@permissions'] = this.permissions; 
+            }
+        },
+
         getDataFromApi() {
             let query = {...this.query};
+            this.populateQuery(query);
+
             const options = {list: this.entities};
 
             if (this.limit && this.page) {
