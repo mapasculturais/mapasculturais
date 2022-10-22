@@ -32,7 +32,7 @@ Lista de los principales softwares que componen la aplicación. Más detalles, v
 - [Ubuntu Server >= 14.04](http://www.ubuntu.com) ou [Debian Server >= 8](https://www.debian.org.)
 - [PHP >= 5.4](http://php.net)
   - [php5-gd](http://php.net/manual/pt_BR/book.image.php)
-  - [php5-cli] (https://packages.debian.org/pt-br/jessie/php5-cli)
+  - [php5-cli](https://packages.debian.org/pt-br/jessie/php5-cli)
   - [php5-json](http://php.net/manual/pt_BR/book.json.php)
   - [php5-curl](http://php.net/manual/pt_BR/book.curl.php)
   - [php5-pgsql](http://php.net/manual/pt_BR/book.pgsql.php)
@@ -45,8 +45,8 @@ Lista de los principales softwares que componen la aplicación. Más detalles, v
   - [NPM](https://www.npmjs.com/)
   - [UglifyJS](https://www.npmjs.com/package/uglify-js)
   - [UglifyCSS](https://www.npmjs.com/package/gulp-uglifycss)
-- [Ruby] (https://www.ruby-lang.org/pt)
-  - [Sass gem] (https://rubygems.org/gems/sass/versions/3.4.22)
+- [Ruby](https://www.ruby-lang.org/pt)
+  - [Sass gem](https://rubygems.org/gems/sass/versions/3.4.22)
 
 ### [Hardware] Requisitos de instalación
 
