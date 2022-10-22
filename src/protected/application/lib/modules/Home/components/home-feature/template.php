@@ -1,7 +1,12 @@
 <?php
 use MapasCulturais\i;
 
-$this->import('entities entity-card tabs');
+$this->import('
+    entities 
+    entity-card 
+    loading
+    tabs
+');
 ?>
 
 <div class="home-feature">
@@ -15,15 +20,15 @@ $this->import('entities entity-card tabs');
         </div>
 
         <div class="home-feature__content--cards">
-
-            <tabs>
+            <loading :condition="!entities.length"></loading>
+            <tabs v-if="entities.length > 0">
                 <tab label="Todos" slug="all">
                     <carousel :settings="settings" :breakpoints="breakpoints">
-                        <slide v-for="entity in entities" :key="entity.id">
+                        <slide v-for="entity in entities" :key="entity.__objectId">
                             <entity-card :entity="entity"></entity-card> 
                         </slide>                        
 
-                        <template #addons>
+                        <template v-if="entities.length > 1" #addons>
                             <div class="actions">
                                 <navigation :slideWidth="368" />
                             </div>
@@ -32,12 +37,12 @@ $this->import('entities entity-card tabs');
                 </tab>
 
                 <tab label="Agentes" slug="agents">
-                    <carousel :settings="settings" :breakpoints="breakpoints">
-                        <slide v-for="entity in agents" :key="entity.id">
+                    <carousel v-if="agents.length > 0" :settings="settings" :breakpoints="breakpoints">
+                        <slide v-for="entity in agents" :key="entity.__objectId">
                             <entity-card :entity="entity"></entity-card> 
                         </slide>                        
 
-                        <template #addons>
+                        <template v-if="agents.length > 1" #addons>
                             <div class="actions">
                                 <navigation :slideWidth="368" />
                             </div>
@@ -46,12 +51,12 @@ $this->import('entities entity-card tabs');
                 </tab>
 
                 <tab label="Espaços" slug="spaces">
-                    <carousel :settings="settings" :breakpoints="breakpoints">
-                        <slide v-for="entity in spaces" :key="entity.id">
+                    <carousel v-if="spaces.length > 0" :settings="settings" :breakpoints="breakpoints">
+                        <slide v-for="entity in spaces" :key="entity.__objectId">
                             <entity-card :entity="entity"></entity-card> 
                         </slide>                        
 
-                        <template #addons>
+                        <template v-if="spaces.length > 1" #addons>
                             <div class="actions">
                                 <navigation :slideWidth="368" />
                             </div>
