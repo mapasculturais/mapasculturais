@@ -52,6 +52,13 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     protected $opportunity;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     */
+    protected $name;
+
          /**
      * @var \DateTime
      *
