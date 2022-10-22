@@ -25,14 +25,18 @@ class Module extends \MapasCulturais\Module{
         $app->hook("entity(Opportunity).save:finish ", function() use ($app){
             $data = ['opportunity' => $this];
 
-            $app->enqueueJob(Jobs\StartRegistrationPhase::SLUG, $data, $this->registrationFrom->format("Y-m-d H:i:s"));
+            if ($this->registrationFrom) {
+                $app->enqueueJob(Jobs\StartRegistrationPhase::SLUG, $data, $this->registrationFrom->format("Y-m-d H:i:s"));
+            }
         });
 
         // Executa Job no início da avaliação
         $app->hook("entity(EvaluationMethodConfiguration).save:finish ", function() use ($app){
             $data = ['opportunity' => $this->opportunity];
 
-            $app->enqueueJob(Jobs\StartEvaluationPhase::SLUG, $data, $this->evaluationFrom->format("Y-m-d H:i:s"));
+            if ($this->evaluationFrom) {
+                $app->enqueueJob(Jobs\StartEvaluationPhase::SLUG, $data, $this->evaluationFrom->format("Y-m-d H:i:s"));
+            }
             
         });
     }
