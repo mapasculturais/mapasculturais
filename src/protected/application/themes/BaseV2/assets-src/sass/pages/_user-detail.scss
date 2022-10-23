@@ -5,7 +5,6 @@
     max-width: size(1088);
     background-color: var(--mc-gray-100);
 
-
     &__header {
         .header-top {
             margin-bottom: size(26);
@@ -16,27 +15,24 @@
 
         }
 
-
-
         &--title {
-
             max-width: size(1088);
 
             .title-header {
                 display: flex;
                 align-items: flex-start;
                 flex-direction: row;
-
+                position: relative;
                 &__content {
                     max-width: 100%;
 
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
-
                 }
 
                 &__icon {
+                    position: absolute;
                     border-radius: 50%;
                     display: flex;
                     justify-content: center;
@@ -45,18 +41,18 @@
                     height: 113px;
                     align-items: center;
 
+                 
+
                     .iconify {
                         width: size(58);
                         height: size(58);
                         color: var(--mc-high-500);
                     }
-
-
                 }
 
                 &__label {
                     width: 100%;
-                    margin-left: 34px;
+                    margin-left: 147px;
                     font-weight: 700;
                     font-size: 24px;
                     line-height: 33px;
@@ -87,9 +83,6 @@
                 }
             }
         }
-
-
-
     }
 
     .editing-email {
@@ -99,7 +92,6 @@
         margin-bottom: 44px;
 
         &__content {
-
             max-width: 752px;
             padding-top: 12px;
             padding-left: 16px;
@@ -112,8 +104,6 @@
                 font-size: 18px;
                 line-height: 25px;
                 margin-bottom: 16px;
-
-
             }
 
             &--email {
@@ -139,9 +129,7 @@
                     font-size: 14px;
                     line-height: 19px;
                     color: var(--mc-helper-500);
-
                 }
-
             }
         }
     }
@@ -161,8 +149,6 @@
         width: 975px;
         padding: 16px;
         padding-bottom: 24px;
-
-
     }
 
 
@@ -204,7 +190,6 @@
                     a {
                         color: var(--mc-low-500);
                         text-decoration: none;
-
                     }
                 }
 
@@ -220,8 +205,6 @@
                 }
 
                 .panel--entity-tabs__content--editable {
-
-
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -253,8 +236,6 @@
                             }
                         }
 
-
-
                         .panel__entity-actions--archive {
 
                             svg {
@@ -263,10 +244,7 @@
 
                             // padding-right: 3px;
                         }
-
-
                     }
-
                 }
             }
         }
@@ -286,22 +264,18 @@
             background-color: white;
             width: 938px;
 
-
-
             .tabs-component__header {
                 width: 938px;
                 background-color: var(--mc-gray-100);
                 border-radius: 6px;
                 padding-left: 10px;
             }
-
         }
 
 
         .tabs-component-button--active-agent {
             &::after {
                 background-color: var(--mc-agents-500);
-
             }
         }
 
@@ -329,5 +303,4 @@
             }
         }
     }
-
 }
