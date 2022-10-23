@@ -31,11 +31,6 @@ $this->breadcramb = [
                     <search-list-events :pseudo-query="pseudoQuery"></search-list-events>
                 </div>
             </tab>
-            <tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>" slug="map">
-                <div class="search__tabs--map">
-                    <search-map-events :pseudo-query="pseudoQuery"></search-map-events>
-                </div>
-            </tab>
         </tabs>
     </template>
 </search>
