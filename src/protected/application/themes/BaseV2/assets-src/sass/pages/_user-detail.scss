@@ -23,6 +23,7 @@
                 align-items: flex-start;
                 flex-direction: row;
                 position: relative;
+
                 &__content {
                     max-width: 100%;
 
@@ -37,11 +38,11 @@
                     display: flex;
                     justify-content: center;
                     background-color: var(--mc-gray-500);
-                    width: 113px;
-                    height: 113px;
+                    width: size(113);
+                    height: size(113);
                     align-items: center;
 
-                 
+
 
                     .iconify {
                         width: size(58);
@@ -52,16 +53,16 @@
 
                 &__label {
                     width: 100%;
-                    margin-left: 147px;
+                    margin-left: size(147);
                     font-weight: 700;
-                    font-size: 24px;
-                    line-height: 33px;
+                    font-size: size(24);
+                    line-height: size(33);
 
                     &--edit {
 
                         svg {
                             color: var(--mc-danger-500);
-                            margin-right: 6px;
+                            margin-right: size(6);
                         }
                     }
 
@@ -75,11 +76,11 @@
 
                 .content-user {
                     font-weight: 600;
-                    font-size: 14px;
-                    line-height: 19px;
+                    font-size: size(14);
+                    line-height: size(19);
                     display: flex;
                     justify-content: space-between;
-                    margin-right: 260px;
+                    margin-right: size(260);
                 }
             }
         }
@@ -87,32 +88,32 @@
 
     .editing-email {
         background-color: white;
-        width: 970px;
-        height: 194px;
-        margin-bottom: 44px;
+        width: size(970);
+        height: size(194);
+        margin-bottom: size(44);
 
         &__content {
-            max-width: 752px;
-            padding-top: 12px;
-            padding-left: 16px;
-            padding-bottom: 16px;
+            max-width: size(752);
+            padding-top: size(12);
+            padding-left: size(16);
+            padding-bottom: size(16);
             padding-right: auto;
 
             &--label {
 
                 font-weight: 700;
-                font-size: 18px;
-                line-height: 25px;
-                margin-bottom: 16px;
+                font-size: size(18);
+                line-height: size(25);
+                margin-bottom: size(16);
             }
 
             &--email {
                 font-style: normal;
                 font-weight: 700;
-                font-size: 14px;
-                line-height: 19px;
-                gap: 9px;
-                padding-right: 18px;
+                font-size: size(14);
+                line-height: size(19);
+                gap: size(9);
+                padding-right: size(18);
             }
 
             &--edit {
@@ -120,14 +121,14 @@
 
                 svg {
                     color: var(--mc-helper-500);
-                    margin-right: 8px;
+                    margin-right: size(8);
                 }
 
                 &-label {
-                    margin-left: size(8px);
+                    margin-left: size(8);
                     font-weight: 700;
-                    font-size: 14px;
-                    line-height: 19px;
+                    font-size: size(14);
+                    line-height: size(19);
                     color: var(--mc-helper-500);
                 }
             }
@@ -135,20 +136,20 @@
     }
 
     .content-footer {
-        padding-bottom: 40px;
+        padding-bottom: size(40);
     }
 
     .content-detail {
-        padding-bottom: 21px;
+        padding-bottom: size(21);
     }
 
 
 
     .footer-content-detail {
         background-color: white;
-        width: 975px;
-        padding: 16px;
-        padding-bottom: 24px;
+        width: size(975);
+        padding: size(16);
+        padding-bottom: size(24);
     }
 
 
@@ -157,7 +158,7 @@
 
             .panel--entity-tabs--identify {
                 background-color: var(--mc-high-500);
-                margin-left: 16px;
+                margin-left: size(16);
 
                 &__name {
                     a {
@@ -170,20 +171,20 @@
 
             .panel--entity-tabs__content {
                 background-color: var(--mc-gray-100);
-                border-radius: 6px;
-                height: 48px;
-                margin-top: 8px;
-                padding: 14px;
+                border-radius: size(6);
+                height: size(48);
+                margin-top: size(8);
+                padding: size(14);
 
                 .grid-12 {
-                    padding-top: 3px;
+                    padding-top: size(3);
 
                 }
 
                 // form - items
                 font-weight: 700;
-                font-size: 14px;
-                line-height: 19px;
+                font-size: size(14);
+                line-height: size(19);
 
                 &--name {
 
@@ -200,7 +201,6 @@
 
                         }
 
-                        svg {}
                     }
                 }
 
@@ -210,7 +210,7 @@
                     align-items: center;
                     flex-direction: row;
                     min-height: max-content;
-                    margin-right: 97px;
+                    margin-right: size(97);
 
                     &-edit {
                         svg {
@@ -222,13 +222,13 @@
                     &-label {
                         color: var(--mc-low-500);
                         font-weight: 700;
-                        font-size: 14px;
-                        line-height: 19px;
+                        font-size: size(14);
+                        line-height: size(19);
                     }
 
                     .panel__entity-actions--editable {
                         display: flex;
-                        margin-right: 8px;
+                        margin-right: size(8);
 
                         .panel__entity-actions--trash {
                             svg {
@@ -249,26 +249,26 @@
             }
         }
 
-        width: 938px;
+        width: size(938);
         background-color: var(--mc-high-500);
-        border-radius: 6px;
+        border-radius: size(6);
 
         .tabs-component__header {
-            width: 938px;
+            width: size(938);
             background-color: var(--mc-high-500);
-            border-radius: 6px;
-            padding-left: 1px;
+            border-radius: size(6);
+            padding-left: size(1);
         }
 
         .tabs-component__panels {
             background-color: white;
-            width: 938px;
+            width: size(938);
 
             .tabs-component__header {
-                width: 938px;
+                width: size(38);
                 background-color: var(--mc-gray-100);
-                border-radius: 6px;
-                padding-left: 10px;
+                border-radius: size(6);
+                padding-left: size(10);
             }
         }
 
