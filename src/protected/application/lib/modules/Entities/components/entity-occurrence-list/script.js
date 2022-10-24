@@ -12,9 +12,6 @@ app.component('entity-occurrence-list', {
 
     beforeCreate() { },
     created() {
-        this.eventApi = new API('event');
-        this.spaceApi = new API('space');
-        this.fetchOccurrences();
     },
 
     beforeMount() { },
@@ -31,35 +28,47 @@ app.component('entity-occurrence-list', {
             type: Entity,
             required: true,
         },
+        editable: {
+            type: Boolean,
+            default: false
+        },
+        pseudoQuery: {
+            type: Object,
+            default: {}
+        },
     },
 
     data() {
         return {
             occurrences: [],
             loading: false,
+            space: this.entity /* Alterar do this.entity para o espaço vinculado */
         }
     },
 
     computed: {
+        spaceQuery() {
+            const query = Utils.parsePseudoQuery({
+                'space:id': this.space.id,
+                ...this.pseudoQuery
+            });
+
+            query['event:@select'] = 'id,name,terms,files.avatar,classificacaoEtaria';
+
+            return query;
+        }
     },
     
     methods: {
-        async fetchOccurrences() {
-            const query = Utils.parsePseudoQuery(this.pseudoQuery);
-
-            this.loading = true;
-            if(query['@keyword']) {
-                query['event:@keyword'] = query['@keyword'];
-                delete query['@keyword'];
-            }
-            query['event:@select'] = 'id,name';
-            query['space:@select'] = 'id,name';
+        spaceRawProcessor (entity) {
+            entity = Utils.entityRawProcessor(entity);
+            entity['@icon'] = 'event';
             
-            this.occurrences = await this.eventApi.fetch('occurrences', query, {
-                raw: true,
-                rawProcessor: (rawData) => Utils.occurrenceRawProcessor(rawData, this.eventApi, this.spaceApi)
-            });
-            this.loading = false;
+            return entity;
+        },
+
+        occurrenceRawProcessor (entity) {
+            return Utils.occurrenceRawProcessor(entity, this.eventApi);
         },
     },
 });
