@@ -148,7 +148,7 @@
         background-color: white;
         width: 975px;
         padding: 16px;
-        padding-bottom: 24px;
+        // padding-bottom: 24px;
     }
 
 
@@ -263,6 +263,7 @@
         .tabs-component__panels {
             background-color: white;
             width: 938px;
+            margin-bottom: 0;
 
             .tabs-component__header {
                 width: 938px;
