@@ -35,8 +35,6 @@ else
     /var/www/scripts/mc-db-updates.sh
 fi
 
-chown -R www-data:www-data /var/www/html/assets /var/www/html/files /var/www/private-files /var/www/html/protected/DoctrineProxies /var/www/SaaS
-
 cd /
 
 touch /nohup.out
