@@ -1752,4 +1752,73 @@ $$
     "Adiciona coluna avaliableEvaluationFields na tabela opportunity" => function() use ($conn){
         __exec("ALTER TABLE opportunity ADD avaliable_evaluation_fields JSON DEFAULT NULL;");
     },
+    "Consede permissão em todos os campo para todos os avaliadores da oportunidade" => function() use ($conn, $app){
+        $opportunity_ids = $conn->fetchAll("SELECT id FROM opportunity WHERE status <> 0 AND status >= -1");
+
+        $fields = [];
+        foreach($opportunity_ids as $key => $id){
+            
+            $cont = $key+1;
+
+            $opp = $app->repo("Opportunity")->findOneBy(['id' => $id['id']]);
+
+            if($opp->avaliableEvaluationFields){
+                $app->log->debug("{$cont} - Oportunidade {$opp->id} já tem configuração definida para os avaliadores");
+                continue;
+            }
+
+            if($opp){
+                $prop = [
+                    'category' => "true",
+                    'projectName' => "true",
+                    'agentsSummary' => "true",
+                    'spaceSummary' => "true",
+                ];
+
+                $fields_conf = $opp->getRegistrationFieldConfigurations();
+                $files_conf = $opp->getRegistrationFileConfigurations();
+
+                foreach($fields_conf as $field){
+                    $fields["field_".$field->id] = "true";
+                }
+
+                foreach($files_conf as $field){
+                    $fields["rfc_".$field->id] = "true";
+                }
+
+                $fields+= $prop;
+
+                $opp->avaliableEvaluationFields = $fields;
+                $opp->save(true);
+                $app->em->clear();
+                $app->log->debug("{$cont} - Configuração de permissão dos avaliadores fetuada na oportunidade {$opp->id}");
+            }
+        
+        }
+
+    },
+    'corrige metadados criados por erro em inscricoes de fases' => function () use ($conn, $app) {
+        $opp_ids = $conn->fetchAll("SELECT id FROM opportunity WHERE parent_id IS NOT NULL");
+        foreach ($opp_ids as $opportunity) {
+            $opportunity_id = $opportunity['id'];
+            
+            $conn->exec("
+                UPDATE registration_meta 
+                SET key = CONCAT('__BKP__', key) 
+                WHERE 
+                    key LIKE 'field_%' AND 
+                    key NOT IN (
+                        SELECT concat('field_',id) 
+                        FROM registration_field_configuration 
+                        WHERE opportunity_id = {$opportunity_id}
+                    ) AND 
+                    object_id IN (
+                        SELECT id 
+                        FROM registration 
+                        WHERE opportunity_id = {$opportunity_id}
+                    );");
+        }
+
+        return false;
+    }
 ] + $updates ;

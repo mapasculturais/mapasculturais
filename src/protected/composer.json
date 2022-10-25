@@ -28,7 +28,10 @@
         "acelaya/doctrine-enum-type": "^2.3",
         "hacklab/bank-account-validator": "1.1.2",
         "mapasculturais/sdk": "dev-master",
-        "phpoffice/phpspreadsheet": "^1.19"
+        "phpoffice/phpspreadsheet": "^1.19",
+        "league/csv": "9.6.0",
+        "shuchkin/simplexls": "^0.10.3",
+        "shuchkin/simplexlsx": "^1.0"
     },
     "require-dev": {
     },

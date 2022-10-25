@@ -667,7 +667,7 @@ class Controller extends \MapasCulturais\Controller
         } else {
             foreach ($result as $item) {
                 
-                $color = $this->getChartColors();
+                $color = $module->getChartColors();
 
                 $color[] = $color[0];
                 $labels[] = $this->generateLabel($item["value0"], $typeA, $em);
@@ -1180,7 +1180,7 @@ class Controller extends \MapasCulturais\Controller
         $generate_colors = [];
         foreach (array_keys($series) as $label) {
 
-            $color = $this->getChartColors();
+            $color = $module->getChartColors();
 
             $current = [
                 "label" => $label,

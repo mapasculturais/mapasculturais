@@ -4,6 +4,53 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.32] - 2022-10-21
+- ### Melhorias
+- Cria módulo para importação de eventos atrvéz de planilha CSV
+- ### Correções
+- Aplica correções nos layouts de e-mails no novo módulo de disparo de notificações
+## [5.3.31] - 2022-10-18
+- ### Melhorias
+- Cria módulo para para disparos de e-mails gerais no mapas culturais
+## [5.3.30] - 2022-10-6
+- ### Correções
+- Instala LIB league/csv
+## [5.3.29] - 2022-10-5
+- ### Correções
+- Corrige erro que permite o agente excluir um selo associado a ele
+## [5.3.28] - 2022-09-13
+- ### Correções
+- Corrige db-update que faz a correção de eros nas inscrições entre fases
+- Faz com que os fields sejam registrados recursivamente ao reconsolidar as avaliações
+## [5.3.27] - 2022-09-09
+- ### Correções
+- Corrige busca recursiva dos fields nos casos de oportunidades multifases
+## [5.3.26] - 2022-08-19
+- ### Melhorias
+- Cria dp-update que define permissão em todos os campos nas permissões dos avaliadores para oportunidades legadas 
+## [5.3.25] - 2022-08-16
+- ### Correções
+- Corrige objeto Module para a chamada do método getChartsColors
+- Corrige exportação do .csv quando existe campos de endereço do agente na inscrição
+- Corrige busca de endereço agente por cep na inscrição
+## [5.3.24] - 2022-08-12
+- ### Correções
+- Ajusta permissão dos avaliadores para nao quebrar quando o formulário estiver sem campos
+## [5.3.23] - 2022-08-01
+- ### Correções
+- Faz com que o método dict, retorne o valor ao invez de imprimir
+- Garante que a pasta SaaS seja sempre criada com a permissão correta
+- Faz com que o método dict, retorne o valor ao invez de imprimir no arquivo space.php
+## [5.3.22] - 2022-07-26
+- ### Correções
+- Corrige redirecionamento do subsite após edição e criação
+- Garante que ao acessar a single do subsite esteja em modo de edição
+## [5.3.21] - 2022-07-25
+- Ajusta local de tipagem para array da variavel $_field_val
+- Ajusta entripoint para setar permissão correta na pasta DoctrineProxies
+## [5.3.20] - 2022-07-21
+### Correções
+- Remove chamadas de função iniexistente
 ## [5.3.19] - 2022-07-12
 ### Correções
 - Corrige erro na contagem de avaliações
