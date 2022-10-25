@@ -19,6 +19,12 @@
     }
 
     &.action-single {
+        .longDescription {
+           p {
+            overflow-wrap: break-word;
+            word-break: break-word;
+           }
+        }
         .tabs {
             &-component {
                 &__header {
