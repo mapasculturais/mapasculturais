@@ -26,7 +26,10 @@ $this->import('
                 <div v-for="occurrence in entities" class="occurrence" :class="{'edit': editable}" :key="occurrence._reccurrence_string">
                     <div class="occurrence__header">
                         <div class="occurrence__header--title">
-                            <mc-icon name="pin"></mc-icon> {{occurrence.space.name}}
+                            <mc-icon name="pin"></mc-icon> 
+                            <span class="title">
+                                {{occurrence.space.name}}
+                            </span>
                         </div>
                         <a class="occurrence__header--link button--icon">
                             <mc-icon name="map"></mc-icon> <?= i::_e('Ver mapa') ?>
