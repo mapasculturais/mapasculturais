@@ -23,7 +23,6 @@
                 align-items: flex-start;
                 flex-direction: row;
                 position: relative;
-
                 &__content {
                     max-width: 100%;
 
@@ -42,7 +41,7 @@
                     height: size(113);
                     align-items: center;
 
-
+                 
 
                     .iconify {
                         width: size(58);
@@ -62,7 +61,7 @@
 
                         svg {
                             color: var(--mc-danger-500);
-                            margin-right: size(6);
+                            margin-right: 6px;
                         }
                     }
 
@@ -76,8 +75,8 @@
 
                 .content-user {
                     font-weight: 600;
-                    font-size: size(14);
-                    line-height: size(19);
+                    font-size:size( 14);
+                    line-height:size( 19);
                     display: flex;
                     justify-content: space-between;
                     margin-right: size(260);
@@ -88,32 +87,32 @@
 
     .editing-email {
         background-color: white;
-        width: size(970);
-        height: size(194);
-        margin-bottom: size(44);
+        width: 970px;
+        height: 194px;
+        margin-bottom: 44px;
 
         &__content {
-            max-width: size(752);
-            padding-top: size(12);
-            padding-left: size(16);
-            padding-bottom: size(16);
+            max-width: 752px;
+            padding-top: 12px;
+            padding-left: 16px;
+            padding-bottom: 16px;
             padding-right: auto;
 
             &--label {
 
                 font-weight: 700;
-                font-size: size(18);
-                line-height: size(25);
-                margin-bottom: size(16);
+                font-size: 18px;
+                line-height: 25px;
+                margin-bottom: 16px;
             }
 
             &--email {
                 font-style: normal;
                 font-weight: 700;
-                font-size: size(14);
-                line-height: size(19);
-                gap: size(9);
-                padding-right: size(18);
+                font-size: 14px;
+                line-height: 19px;
+                gap: 9px;
+                padding-right: 18px;
             }
 
             &--edit {
@@ -121,14 +120,14 @@
 
                 svg {
                     color: var(--mc-helper-500);
-                    margin-right: size(8);
+                    margin-right: 8px;
                 }
 
                 &-label {
-                    margin-left: size(8);
+                    margin-left: size(8px);
                     font-weight: 700;
-                    font-size: size(14);
-                    line-height: size(19);
+                    font-size: 14px;
+                    line-height: 19px;
                     color: var(--mc-helper-500);
                 }
             }
@@ -136,20 +135,20 @@
     }
 
     .content-footer {
-        padding-bottom: size(40);
+        padding-bottom: 40px;
     }
 
     .content-detail {
-        padding-bottom: size(21);
+        padding-bottom: 21px;
     }
 
 
 
     .footer-content-detail {
         background-color: white;
-        width: size(975);
-        padding: size(16);
-        padding-bottom: size(24);
+        width: 975px;
+        padding: 16px;
+        // padding-bottom: 24px;
     }
 
 
@@ -158,7 +157,7 @@
 
             .panel--entity-tabs--identify {
                 background-color: var(--mc-high-500);
-                margin-left: size(16);
+                margin-left: 16px;
 
                 &__name {
                     a {
@@ -171,20 +170,20 @@
 
             .panel--entity-tabs__content {
                 background-color: var(--mc-gray-100);
-                border-radius: size(6);
-                height: size(48);
-                margin-top: size(8);
-                padding: size(14);
+                border-radius: 6px;
+                height: 48px;
+                margin-top: 8px;
+                padding: 14px;
 
                 .grid-12 {
-                    padding-top: size(3);
+                    padding-top: 3px;
 
                 }
 
                 // form - items
                 font-weight: 700;
-                font-size: size(14);
-                line-height: size(19);
+                font-size: 14px;
+                line-height: 19px;
 
                 &--name {
 
@@ -201,6 +200,7 @@
 
                         }
 
+                        svg {}
                     }
                 }
 
@@ -210,7 +210,7 @@
                     align-items: center;
                     flex-direction: row;
                     min-height: max-content;
-                    margin-right: size(97);
+                    margin-right: 97px;
 
                     &-edit {
                         svg {
@@ -222,13 +222,13 @@
                     &-label {
                         color: var(--mc-low-500);
                         font-weight: 700;
-                        font-size: size(14);
-                        line-height: size(19);
+                        font-size: 14px;
+                        line-height: 19px;
                     }
 
                     .panel__entity-actions--editable {
                         display: flex;
-                        margin-right: size(8);
+                        margin-right: 8px;
 
                         .panel__entity-actions--trash {
                             svg {
@@ -249,26 +249,27 @@
             }
         }
 
-        width: size(938);
+        width: 938px;
         background-color: var(--mc-high-500);
-        border-radius: size(6);
+        border-radius: 6px;
 
         .tabs-component__header {
-            width: size(938);
+            width: 938px;
             background-color: var(--mc-high-500);
-            border-radius: size(6);
-            padding-left: size(1);
+            border-radius: 6px;
+            padding-left: 1px;
         }
 
         .tabs-component__panels {
             background-color: white;
-            width: size(938);
+            width: 938px;
+            margin-bottom: 0;
 
             .tabs-component__header {
-                width: size(38);
+                width: 938px;
                 background-color: var(--mc-gray-100);
-                border-radius: size(6);
-                padding-left: size(10);
+                border-radius: 6px;
+                padding-left: 10px;
             }
         }
 
