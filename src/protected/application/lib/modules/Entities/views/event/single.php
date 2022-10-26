@@ -18,7 +18,6 @@ $this->import('
     entity-terms
     mapas-breadcrumb
     mapas-container
-    event-info
     share-links
     tabs
 ');
@@ -61,12 +60,33 @@ $this->breadcramb = [
                             <div class="col-12">
                                 <entity-occurrence-list :entity="entity"></entity-occurrence-list>
                             </div>
-
                             
                             <div class="col-12">
-                                <event-info :entity="entity"></event-info>
+                                <div class="acessibility">
+                                    <span class="acessibility__label"><?php i::_e("Acessibilidade"); ?></label>
+                                    <div v-if="entity.descricaoSonora" class="acessibility__audio">
+                                        <span><?php i::_e("Libras:"); ?></span>{{entity.descricaoSonora}}
+                                    </div>
+                                    <div v-if="entity.traducaoLibras" class="acessibility__libras">
+                                        <span><?php i::_e("Áudio de Descrição:"); ?></span> {{entity.traducaoLibras}}
+                                    </div>
+                                </div>
                             </div>
 
+                            <div class="col-12 acessibility ">
+                                <div v-if="entity.event_attendance || entity.telefonePublico || entity.registrationInfo" class="event_info__infos">
+                                    <span class="acessibility__label"><?php i::_e("Informações adicionais"); ?></span>
+                                    <div v-if="entity.event_attendance" class="acessibility__attendance">
+                                        <span><?php i::_e("Total de público:"); ?></span> {{entity.event_attendance}}
+                                    </div>
+                                    <div v-if="entity.telefonePublico" class="acessibility__phone">
+                                        <span><?php i::_e("telefone:"); ?></span> {{entity.telefonePublico}}
+                                    </div>
+                                    <div v-if="entity.registrationInfo" class="acessibility__infos">
+                                        <span><?php i::_e("Informações sobre a inscrição:"); ?></span> {{entity.registrationInfo}}
+                                    </div>
+                                </div>
+                            </div>
 
                             <div v-if="entity.longDescription" class="col-12 longDescription">
                                 <h2><?php i::_e('Descrição Detalhada');?></h2>
