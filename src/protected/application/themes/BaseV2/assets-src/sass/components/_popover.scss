@@ -1,10 +1,8 @@
-@use '../settings/mixins' as *;
+@use '../settings/mixins'as *;
 
 .popover {
     &__content {
         padding: size(24) size(16);
-        
-        
 
         .field,
         form {
@@ -28,5 +26,5 @@
             display: flex;
             gap: size(10);
         }
-    }   
+    }
 }
