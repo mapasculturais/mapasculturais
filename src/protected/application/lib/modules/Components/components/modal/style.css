@@ -30,7 +30,7 @@
     flex-grow: 1;
     overflow-y: auto;
     margin: 1rem;
-    margin-right: 2px;
+    margin-right: 0;
     padding-right: 1rem;
 }
 .modal__action {
