@@ -6,6 +6,7 @@ use DateTime;
 use stdClass;
 use Exception;
 use MapasCulturais\i;
+use DateTimeImmutable;
 use League\Csv\Reader;
 use League\Csv\Writer;
 use MapasCulturais\App;
@@ -157,14 +158,14 @@ class Controller extends \MapasCulturais\Controller
    {
       $info = pathinfo($file);
       $ext = $info['extension'];
+      $classes = [
+         'xls' => Shuchkin\SimpleXLS::class,
+         'xlsx' => Shuchkin\SimpleXLSX::class,
+      ];
+      $_class = $classes[$ext] ?? null;
 
-      switch ($ext) {
-         case 'xls':
-            $_class = "Shuchkin\\SimpleXLS";
-            break;
-         case 'xlsx':
-            $_class = "Shuchkin\\SimpleXLSX";
-            break;
+      if(!$_class){
+         die("Tipo de arquivo inválido");
       }
 
       $class = new $_class($file);
@@ -685,7 +686,7 @@ class Controller extends \MapasCulturais\Controller
       foreach ($files_grp_import as $key => $grp_import) {
          
          if(!empty($value[$key]) || $value[$key] != ""){
-            if($key == "GALLERY"){
+               if($key == "GALLERY" || $key == "DOWNLOADS"){
                $gallery_list = $this->matches($value[$key]);
    
                foreach($gallery_list as $item){
@@ -796,22 +797,22 @@ class Controller extends \MapasCulturais\Controller
    }
 
    public function formatDate($formatIn, $date, $formatOut = "Y-m-d H:i")
-   {
+   { 
       if($formatOut){
          if($date = DateTime::createFromFormat($formatIn, $date)->format($formatOut)){
             return $date;
          }
-
          return (new DateTime('1989-01-01'))->format($formatOut);
 
       }else{
          if($date = DateTime::createFromFormat($formatIn, $date)){
+         
+            if(date_format($date,'Y-m-d H:i')||$date = date_format($date,'d-m-Y H:i')||$date = date_format($date,'Y/m/d H:i')||$date = date_format($date,'d/m/Y H:i')){
             return $date;
+            }
          }
-
          return (new DateTime('1989-01-01'));
       }
-     
    }
 
    public function dispatch($file_name, $path)
@@ -821,5 +822,4 @@ class Controller extends \MapasCulturais\Controller
       readfile($path);
       unlink($path);
    }
-  
 }
