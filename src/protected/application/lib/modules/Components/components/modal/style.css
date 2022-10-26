@@ -9,7 +9,6 @@
     flex-direction: column;
     max-height: 80%;
     min-width: 200px;
-    max-width: 80%;
     margin: 0 1rem;
     padding: 1rem;
     border: 1px solid #e2e8f0;
@@ -53,7 +52,7 @@
     cursor: pointer;
 }
 
-@media (max-width: 600px)
+@media (max-width: 500px)
 {
     .modal__action .button {
         width: 100%;
