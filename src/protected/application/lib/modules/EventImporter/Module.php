@@ -67,9 +67,9 @@ class Module extends \MapasCulturais\Module
                 'AVATAR' => 'avatar', 
                 'HEADER' => 'header',
                 'GALLERY' => 'gallery',
+                'DOWNLOADS' => 'downloads',
             ],
             'metalists_import' => [
-                'DOWNLOADS',
                 'VIDEOS',
                 'LINKS'
             ],
