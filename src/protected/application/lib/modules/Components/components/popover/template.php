@@ -2,12 +2,13 @@
 use MapasCulturais\i;
 ?>
 
-<div class="popover">
-    <slot name="button" :open="open" :close="close" :toggle="toggle" :active="active">
-        <button @click="toggle()" :class="['button', buttonClasses]">{{buttonLabel || '<?= i::__('Defina a propriedade button-label do componente popover') ?>'}}</button>
+<VDropdown>
+    <slot name="button">
+        <button :class="['button', buttonClasses]">{{buttonLabel || '<?= i::__('Defina a propriedade button-label do componente popover') ?>'}}</button>
     </slot>
-    
-    <div v-if="active" :class="['popover__content', classes, openside]">
-        <slot :open="open" :close="close" :toggle="toggle" :active="active" />
-    </div>
-</div>
+    <template #popper>
+        <div class="popover__content">
+            <slot></slot>
+        </div>
+    </template>
+</VDropdown>
