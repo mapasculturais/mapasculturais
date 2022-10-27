@@ -159,8 +159,8 @@ class Controller extends \MapasCulturais\Controller
       $info = pathinfo($file);
       $ext = $info['extension'];
       $classes = [
-         'xls' => Shuchkin\SimpleXLS::class,
-         'xlsx' => Shuchkin\SimpleXLSX::class,
+         'xls' => \Shuchkin\SimpleXLS::class,
+         'xlsx' => \Shuchkin\SimpleXLSX::class,
       ];
       $_class = $classes[$ext] ?? null;
 
