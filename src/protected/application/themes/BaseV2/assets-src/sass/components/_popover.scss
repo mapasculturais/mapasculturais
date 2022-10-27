@@ -2,7 +2,8 @@
 
 .popover {
     &__content {
-        padding: size(24) size(16);
+        position: relative;
+        padding: size(16) size(16);
 
         .field,
         form {
