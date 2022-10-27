@@ -17,8 +17,8 @@ $this->import('confirm-button popover modal image-uploader');
 
             <div v-if="editable" class="edit">
                 <popover @open="file.newDescription = file.description" openside="down-right">
-                    <template #button="{ toggle, close }">
-                        <a @click="toggle()"> <mc-icon name="edit"></mc-icon> </a>
+                    <template #button>
+                        <a> <mc-icon name="edit"></mc-icon> </a>
                     </template>
                     <template #default="popover">
                         <form @submit="rename(file, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
@@ -30,8 +30,8 @@ $this->import('confirm-button popover modal image-uploader');
                                     </div>
                                 </div>
 
-                                <button class="col-6 button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
-                                <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
+                                <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--primary" type="submit" v-close-popper> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
@@ -52,7 +52,7 @@ $this->import('confirm-button popover modal image-uploader');
     <popover v-if="editable" openside="down-right">
         <template #button="popover">
             <slot name="button"> 
-                <a class="button button--primary button--icon button--primary-outline" @click="popover.toggle()">
+                <a class="button button--primary button--icon button--primary-outline">
                     <mc-icon name="upload"></mc-icon>
                     <?php i::_e("Enviar")?>
                 </a>
@@ -76,8 +76,8 @@ $this->import('confirm-button popover modal image-uploader');
                         </div>
                     </div> 
 
-                    <button class="col-6 button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
-                    <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
+                    <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
+                    <button class="col-6 button button--primary" type="submit" v-close-popper> <?php i::_e("Confirmar") ?> </button>
                 </div>
             </form>
         </template>
