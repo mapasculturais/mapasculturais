@@ -28,7 +28,7 @@
                 height: size(22);
                 justify-content: space-between;
                 width: size(48);
-    
+
                 a {
                     align-items: center;
                     cursor: pointer;
@@ -55,19 +55,21 @@
                 position: relative;
                 width: size(40);
 
-                &__img {
-                    border-radius: 50%;
-                    display: flex;
-                    overflow: hidden;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    background: var(--mc-gray-500);
-
-                    .iconify {
-                        color: var(--mc-high-500);
+                    &__img {
+                        border-radius: 50%;
+                        display: flex;
+                        overflow: hidden;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                        background: var(--mc-gray-500);
+                        &--img {
+                            max-width: 100%;
+                        }
+                        .iconify {
+                            color: var(--mc-high-500);
+                        }
                     }
-                }
 
                 &__delete {
                     align-items: center;
@@ -81,6 +83,7 @@
                     right: size(-5);
                     top: size(-5);
                     width: size(18);
+
                     .iconify {
                         font-size: size(14);
                     }
