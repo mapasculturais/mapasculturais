@@ -39,6 +39,10 @@ $col-columns: 12;
     &.v-bottom {
         align-items: end;
     }
+
+    @media (max-width: size(300)) {
+        gap: size(10) size(14);
+    }
 }
 
 .container {
