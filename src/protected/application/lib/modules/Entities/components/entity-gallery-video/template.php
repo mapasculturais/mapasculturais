@@ -10,7 +10,7 @@ use MapasCulturais\i;
         <div v-if="entity.metalists?.videos" v-for="(metalist, index) in videos" class="entity-gallery__list--video">
             <div>
                 <div class="entity-gallery__list--video-img">
-                    <img @click="openVideo(index); open()" :src="metalist.video.thumbnail" />
+                    <img touch="openVideo(index); open()" :src="metalist.video.thumbnail" />
                 </div>
                 
                 <p @click="openVideo(index); open()" class="entity-gallery__list--video-label"> {{metalist.title}} </p>
@@ -18,12 +18,13 @@ use MapasCulturais\i;
 
 
             <div v-if="editable" class="entity-gallery__list--video-actions">
-                <popover @open="metalist.newData = {...metalist}" openside="down-right">
-                    <template #button="{ toggle, close }">
-                        <a @click="toggle()"> <mc-icon name="edit"></mc-icon> </a>
+                
+                <popover openside="down-right">
+                    <template #button>
+                        <a @click="metalist.newData = {...metalist}"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
-                    <template #default="{close}">
-                        <form @submit="save(metalist).then(close); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                    <template #default>
+                        <form @submit="save(metalist); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
                             
                             <div class="grid-12">
                                 <div class="col-12">
@@ -33,8 +34,8 @@ use MapasCulturais\i;
                                     </div>
                                 </div>
                                 
-                                <button class="col-6 button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
-                                <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
+                                <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--primary" type="submit" v-close-popper> <?php i::_e("Confirmar") ?> </button>
                             </div>                            
 
                         </form>
@@ -56,17 +57,17 @@ use MapasCulturais\i;
 
     <div v-if="editable" class="entity-gallery__addNew">
         <popover v-if="editable" openside="right-up">
-            <template #button="{ toggle }">
-                <slot name="button" :toggle="toggle"> 
-                    <a class="button button--primary button--icon button--primary-outline" @click="toggle()">
+            <template #button>
+                <slot name="button"> 
+                    <a class="button button--primary button--icon button--primary-outline">
                         <mc-icon name="add"></mc-icon>
                         <?php i::_e("Adicionar vídeo")?>
                     </a>
                 </slot>
             </template>
 
-            <template #default="{ close }">
-                <form @submit="create().then(close); $event.preventDefault();">
+            <template #default>
+                <form @submit="create(); $event.preventDefault();">
                     <div class="grid-12">
                         <div class="col-12">
                             <div class="field">
@@ -82,8 +83,8 @@ use MapasCulturais\i;
                             </div>
                         </div>
 
-                        <button class="col-6 button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
-                        <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
+                        <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
+                        <button class="col-6 button button--primary" type="submit" v-close-popper> <?php i::_e("Confirmar") ?> </button>
                     </div>
                     
                 </form>
