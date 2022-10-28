@@ -3,7 +3,7 @@ use MapasCulturais\i;
 
 $this->import('mc-link');
 ?>
-<nav :class="classes">
+<nav class="panel-nav" :class="classes">
     <slot name='begin'></slot>
     <template  v-for="group in groups" :key="group.id">
         <h3 v-if="group.label">{{group.label}}</h3>
