@@ -41,6 +41,10 @@
             justify-content: center;
             overflow: hidden;
             width: size(40);
+            img{
+                max-width: 100%;
+            }
+            
         }
 
         &::before {
