@@ -43,9 +43,9 @@ app.component('popover', {
 
     mounted() {
         document.addEventListener('mousedown', (event) => {
-            if (!event.target.closest('.popover')) {
-                this.close();
-            }
+            const slotPopover = document.getElementsByClassName('v-popper__popper')[0];
+            if (!slotPopover) { return }
+            if (!slotPopover.contains(event.target)) { this.close(); }
         })
     },
 
