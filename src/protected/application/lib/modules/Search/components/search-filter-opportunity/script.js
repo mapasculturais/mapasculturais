@@ -7,6 +7,8 @@ app.component('search-filter-opportunity', {
         return { text }
     },
 
+    beforeMount() { this.pseudoQuery['type'] = [] },
+
     props: {
         position: {
             type: String,
@@ -14,15 +16,14 @@ app.component('search-filter-opportunity', {
         },
         pseudoQuery: {
             type: Object,
-            required: true
+            required: true,
         }
     },
 
     data() {
-        console.log(Object.values($DESCRIPTIONS.opportunity.type.options));
         return {
             terms: $TAXONOMIES.area.terms,
-            types: Object.values($DESCRIPTIONS.opportunity.type.options),
+            types: $DESCRIPTIONS.opportunity.type.options,
             selectedTypes: [],
         }
     },
@@ -31,6 +32,10 @@ app.component('search-filter-opportunity', {
     },
     
     methods: {
+        removeType(event) {
+            console.log(event);
+        },
+
         actualDate() {
             var data = new Date();
             var dia = String(data.getDate()).padStart(2, '0');
