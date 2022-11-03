@@ -2,30 +2,27 @@
 use MapasCulturais\i;
 $this->import('popover');
 ?>
+
 <div class="mc-multiselect">
-    <popover :openside="openside" @close="close()" @open="open()">
+    <popover :openside="openside">
         <template #button="popover">
             <slot :popover="popover"></slot>
         </template>
-
-        <template #default="popover">
+        <template #default>
             <div class="mc-multiselect__content">
-
                 <div class="mc-multiselect__content-form">
                     <input v-if="!hideFilter" type="text" v-model="model.filter" class="input" placeholder="<?= i::__('Filtro') ?>">
                 </div>
-
-                <ul v-if="items.length > 0" class="mc-multiselect__content-list">
-                    <li v-for="item in filteredItems">
+                <ul v-if="items.length > 0 || Object.keys(items).length > 0" class="mc-multiselect__content-list">
+                    <li v-for="(item, key) in filteredItems">
                         <label class="item">
-                            <input type="checkbox" :checked="model.indexOf(item) >= 0" @change="toggleItem(item, popover)" class="input">
+                            <input type="checkbox" :checked="model.indexOf(key) >= 0" @change="toggleItem(key)" class="input">
                             <span class="text" v-html="highlightedItem(item)"></span>
                         </label>
                     </li>
                 </ul>
-                
                 <div class="mc-multiselect__content-button">
-                    <button v-if="!hideButton" class="button button--primary" @click="popover.toggle()">
+                    <button v-if="!hideButton" class="button button--primary" v-close-popper>
                         <?php i::_e('Confirmar') ?>
                     </button>
                 </div>
