@@ -32,10 +32,6 @@ app.component('search-filter-opportunity', {
     },
     
     methods: {
-        removeType(event) {
-            console.log(event);
-        },
-
         actualDate() {
             var data = new Date();
             var dia = String(data.getDate()).padStart(2, '0');
