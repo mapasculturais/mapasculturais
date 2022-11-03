@@ -19,7 +19,7 @@ app.component('mc-multiselect', {
         },
 
         items: {
-            type: Array,
+            type: [Array, Object],
             required: true,
         },
 
@@ -51,25 +51,40 @@ app.component('mc-multiselect', {
         openside: {
             type: String,
             default: 'down-right'
+        },
+    },
+
+    data() {
+        let dataItems = {};        
+        if (Array.isArray(this.items)) {
+            for (let item of this.items) {
+                dataItems[item] = item;
+            }
+        } else {
+            dataItems = Object.assign({}, this.items);
         }
+        return { dataItems };
     },
 
     computed: {
         filteredItems() {
-            return this.items.filter((item) => {
+            const result = {};
+            for (let value in this.dataItems) {
+                const label = this.dataItems[value];
                 const _filter = this.model.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                const _item = item.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const _item = label.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
                 if(_item.indexOf(_filter) >= 0) {
-                    return item;
+                    result[value] = label;
                 }
-            })
-        }
-        
+            }
+            return result;
+        }        
     },
 
     methods: {
         highlightedItem(item) {
+            /* Verificar necessidade de refatoração */
             const _filter = this.model.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const _item = item.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const indexOf = _item.indexOf(_filter);
@@ -83,28 +98,25 @@ app.component('mc-multiselect', {
             }
         },
 
-        remove(item) {
-            const items = this.model;
-            const indexOf = items.indexOf(item);
-            items.splice(indexOf,1);
+        remove(key) {
+            /* Refatorar para adequar às modificações */
+            const indexOf = this.model.indexOf(key);
+            this.model.splice(indexOf,1);
         },
 
-        toggleItem(item, popover) {
-            const items = this.model;
-            if (items.indexOf(item) >= 0) {
-                this.remove(item);
+        toggleItem(key) {
+            /* Refatorar para adequar às modificações */ 
+            if (this.model.indexOf(key) >= 0) {
+                this.remove(key);
             } else {
-                items.push(item);
-                if(this.closeOnSelect) {
-                    popover.close();
-                }
+                this.model.push(key);
             }
-        },
-        
+        },       
+
         open() {
             this.$emit('open', this);
         },
-
+        
         close() {
             this.$emit('close', this);
             this.model.filter = '';
