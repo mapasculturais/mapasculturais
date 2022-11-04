@@ -43,13 +43,23 @@ app.component('popover', {
 
     mounted() {
         document.addEventListener('mousedown', (event) => {
-            const slotPopover = document.getElementsByClassName('v-popper__popper')[0];
-            if (!slotPopover) { return }
-            if (!slotPopover.contains(event.target)) { this.close(); }
+            let contained = false;
+            const slotPopover = document.getElementsByClassName('v-popper__popper');
+            
+            for (let popover of slotPopover) {
+                if (popover.contains(event.target)) { 
+                    contained = true;
+                }
+            };
+
+            if (!contained) { 
+                this.close();
+            };
         })
     },
 
     methods: {
+        
         open() {
             this.active = true;
             this.$emit('open', this);

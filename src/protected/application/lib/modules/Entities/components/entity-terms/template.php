@@ -11,7 +11,7 @@ $this->import('popover mc-tag-list mc-multiselect')
 
     <popover v-if="allowInsert && editable" openside="down-right" @close="this.filter = ''" @open="loadTerms()">
         <template #button="popover">
-            <button class="button button--rounded button--sm button--icon button--primary" v-if="editable">
+            <button @click="popover.open()" class="button button--rounded button--sm button--icon button--primary" v-if="editable">
                 <?php i::_e("Adicionar nova") ?>
                 <mc-icon name="add"></mc-icon>
             </button>
@@ -20,7 +20,7 @@ $this->import('popover mc-tag-list mc-multiselect')
         <!-- Modo Tags -->
         <template #default="popover">
             <div class="entity-terms__tags">
-                <form class="entity-terms__tags--form" @submit="addTerm(filter, popover)">
+                <form class="entity-terms__tags--form" @submit.prevent="addTerm(filter, popover)">
                     <input type="text" v-model="filter" class="input" placeholder="<?= i::__('Adicione uma nova tag') ?>">
                     <button class="button button--primary button--icon entity-terms__tags--form-addBtn" type="submit">
                         <mc-icon name="add"></mc-icon>
@@ -36,10 +36,10 @@ $this->import('popover mc-tag-list mc-multiselect')
     </popover>
 
     <mc-multiselect v-if="!allowInsert && editable" :model="entityTerms" :items="terms" @open="loadTerms()" #default="{popover}">
-        <button class="button button--rounded button--sm button--icon button--primary">
+        <button class="button button--rounded button--sm button--icon button--primary" @click="popover.open()" >
             <?php i::_e("Adicionar nova") ?>
             <mc-icon name="add"></mc-icon>
         </button>
     </mc-multiselect>
-    <mc-tag-list :editable="editable" :classes="entity.__objectType+'__background'" :tags="entityTerms" @remove="remove($event)"></mc-tag-list>
+    <mc-tag-list :editable="editable" :classes="entity.__objectType+'__background'" :tags="entityTerms"></mc-tag-list>
 </div>
