@@ -304,7 +304,7 @@ class Controller extends \MapasCulturais\Controller
          //Validação do projeto
          if($value['PROJECT']){
             $collum = $this->checkCollum($value['PROJECT']);
-            if(!$projects = $conn->fetchAll("SELECT * FROM project WHERE status >= 1 AND {$collum} = {$value['PROJECT']}")) {
+            if(!$projects = $conn->fetchAll("SELECT * FROM project WHERE status >= 1 AND {$collum} = '{$value['PROJECT']}'")) {
                $errors[$key+1][] = i::__("O projeto não está cadastrado");
             }
    
