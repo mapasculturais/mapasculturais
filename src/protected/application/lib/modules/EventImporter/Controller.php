@@ -254,7 +254,11 @@ class Controller extends \MapasCulturais\Controller
       }
 
       foreach ($data as $key => $value) {
-
+         $value['STARTS_AT'] = $this->formatDate($value['STARTS_AT'], "H:i");
+         $value['ENDS_AT'] = $this->formatDate($value['ENDS_AT'], "H:i");
+         $value['STARTS_ON'] = $this->formatDate($value['STARTS_ON'], "Y-m-d");
+         $value['ENDS_ON'] = $this->formatDate($value['ENDS_ON'], "Y-m-d");
+        
          $hash = md5(implode(",", $value));
          if(in_array($hash, $exampleHash)){
             $errors[$key+1][] = i::__("Linha invalida. Os dados da linha são os dados do exemplo, apague a mesma para continuar");
@@ -304,7 +308,7 @@ class Controller extends \MapasCulturais\Controller
          //Validação do projeto
          if($value['PROJECT']){
             $collum = $this->checkCollum($value['PROJECT']);
-            if(!$projects = $conn->fetchAll("SELECT * FROM project WHERE status >= 1 AND {$collum} = {$value['PROJECT']}")) {
+            if(!$projects = $conn->fetchAll("SELECT * FROM project WHERE status >= 1 AND {$collum} = '{$value['PROJECT']}'")) {
                $errors[$key+1][] = i::__("O projeto não está cadastrado");
             }
    
@@ -316,10 +320,14 @@ class Controller extends \MapasCulturais\Controller
          }
 
          //Validação do agente responsavel 
-         if(empty($value['OWNER']) || ($value['OWNER'] == "")){
-            $errors[$key+1][] = i::__("A coluna agente é obrigatória. Informo o ID do agente responsável");
-         } else if(!$conn->fetchAll("SELECT * FROM agent WHERE status >= 1 AND id = {$value['OWNER']}")) {
-            $errors[$key+1][] = i::__("O a gente não esta cadastrado");
+         if(!is_numeric($value['OWNER'])){
+            $errors[$key+1][] = i::__("A coluna proprietário espera o número ID do agente. ");
+         }else{
+            if(empty($value['OWNER']) || ($value['OWNER'] == "")){
+               $errors[$key+1][] = i::__("A coluna agente é obrigatória. Informo o ID do agente responsável");
+            } else if(!$conn->fetchAll("SELECT * FROM agent WHERE status >= 1 AND id = {$value['OWNER']}")) {
+               $errors[$key+1][] = i::__("O a gente não esta cadastrado");
+            }
          }
          
          //Caso exista espaço informado significa inserção de ocorrência
@@ -332,7 +340,7 @@ class Controller extends \MapasCulturais\Controller
             }
 
             $collum = $this->checkCollum($value['SPACE']);
-            if(!$spaces = $conn->fetchAll("SELECT * FROM space WHERE status >= 1 AND {$collum} = {$value['SPACE']}")) {
+            if(!$spaces = $conn->fetchAll("SELECT * FROM space WHERE status >= 1 AND {$collum} = '{$value['SPACE']}'")) {
                $errors[$key+1][] = i::__("O espaço não está cadastrado");
             }
 
@@ -367,43 +375,43 @@ class Controller extends \MapasCulturais\Controller
             }
 
               // Valida a hora inicial
-            if(empty($value['STARTS_ON']) || $value['STARTS_ON'] == ''){
+            if(empty($value['STARTS_AT']) || $value['STARTS_AT'] == ''){
                $errors[$key+1][] = i::__("A coluna Hora inícial está vazia");
             }   
             
-            $starts_on = $this->formatDate("H:i", $value['STARTS_ON'], false);
-            if($starts_on->format("H:i") != $value['STARTS_ON']){
+            $starts_at = $this->formatDate($value['STARTS_AT'], "H:i");
+            if($starts_at != $value['STARTS_AT']){
                $errors[$key+1][] = i::__("A coluna Hora inícial é inválida. O formato esperado é HH:MM Ex.: 12:00");
             }
             
             // Valida a hora final
-            if(empty($value['ENDS_ON']) || $value['ENDS_ON'] == ''){
+            if(empty($value['ENDS_AT']) || $value['ENDS_AT'] == ''){
                $errors[$key+1][] = i::__("A coluna Hora final está vazia");
             }
             
-            $ends_on = $this->formatDate("H:i", $value['ENDS_ON'], false);
-            if($ends_on->format("H:i") != $value['ENDS_ON']){
+            $ends_at = $this->formatDate($value['ENDS_AT'], "H:i");
+            if($ends_at != $value['ENDS_AT']){
                $errors[$key+1][] = i::__("A coluna Hora final é inválida. O formato esperado é HH:MM Ex.: 12:00");
             }
 
              // Valida a data inicial
-            if (empty($value['STARTS_AT']) || $value['STARTS_AT'] == "") {
+            if (empty($value['STARTS_ON']) || $value['STARTS_ON'] == "") {
                $errors[$key+1][] = i::__("A Coluna Data inícial Está vazia");
             }
 
-            $starts_at = $this->formatDate("d/m/Y", $value['STARTS_AT'], false);
-            if ($starts_at->format("d/m/Y") != $value['STARTS_AT']) {
+            $starts_on = $this->formatDate($value['STARTS_ON'], "Y-m-d");
+            if ($starts_on != $value['STARTS_ON']) {
                $errors[$key+1][] = i::__("A coluna data inícial é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
             }
             
             // Valida a data final
-            if(in_array($value['FREQUENCY'], $moduleConfig['use_endsat'])){
-               if (empty($value['ENDS_AT']) || $value['ENDS_AT'] == "") {
+            if(in_array($value['FREQUENCY'], $moduleConfig['use_endson'])){
+               if (empty($value['ENDS_ON']) || $value['ENDS_ON'] == "") {
                   $errors[$key+1][] = i::__("A Coluna Data final Está vazia");
                }
                
-               $ends_at = $this->formatDate("d/m/Y", $value['ENDS_AT'], false);
-               if ($ends_at->format("d/m/Y") != $value['ENDS_AT']) {
+               $ends_on = $this->formatDate($value['ENDS_ON'], "Y-m-d");
+               if ($ends_on != $value['ENDS_ON']) {
                   $errors[$key+1][] = i::__("A coluna data final é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
                }
             }
@@ -498,8 +506,8 @@ class Controller extends \MapasCulturais\Controller
       $ocurrence = new EventOccurrence();    
 
       $duration = function() use ($value){
-         $start = $this->formatDate("H:i", $value['STARTS_ON']);
-         $stop = $this->formatDate("H:i", $value['ENDS_ON']);
+         $start = $this->formatDate($value['STARTS_AT']);
+         $stop = $this->formatDate($value['ENDS_AT']);
          $diferenca = strtotime($stop) - strtotime($start);
 
          return ($diferenca / 60);
@@ -510,11 +518,11 @@ class Controller extends \MapasCulturais\Controller
 
       $rule = [
          "spaceId" => $space->id,
-         "startsAt" => $this->formatDate("d/m/Y", $value['STARTS_AT'], "d/m/Y"),
+         "startsOn" => $this->formatDate($value['STARTS_ON'], "Y-m-d"),
          "duration" => $duration(),
          "frequency" => $moduleConfig['frequence_list_allowed'][$freq],
-         "startsOn" => $this->formatDate("H:i", $value['STARTS_ON'], "H:i"),
-         "until" => (!empty($value['ENDS_AT']) && $value['ENDS_AT'] !="")? $this->formatDate("d/m/Y", $value['ENDS_AT'], "Y-m-d") :null,
+         "startsAt" => $this->formatDate($value['STARTS_AT'], "H:i"),
+         "until" => (!empty($value['ENDS_ON']) && $value['ENDS_ON'] !="")? $this->formatDate($value['ENDS_ON'], "Y-m-d") :null,
          "price" => $value['PRICE'],
          "description" => "",
       ];
@@ -526,16 +534,16 @@ class Controller extends \MapasCulturais\Controller
          case i::__('daily'):
             $exec = function () use (&$ocurrence, $value, $app, &$rule) {
 
-               $ocurrence->endsAt = $this->formatDate("d/m/Y", $value['ENDS_AT'], false);
+               $ocurrence->endsAt = $this->formatDate($value['ENDS_AT'], false);
                $rule['description'].= i::__('Diariamente');
 
-               $months[$value['STARTS_AT']] = $value['STARTS_AT'];
-               $months[$value['ENDS_AT']] = $value['ENDS_AT'];
+               $months[$value['STARTS_ON']] = $value['STARTS_ON'];
+               $months[$value['ENDS_ON']] = $value['ENDS_ON'];
                
                $_months = array_keys($months);
             
-               $dateIn = $this->formatDate("d/m/Y", $_months[0], false);
-               $dateFn = $this->formatDate("d/m/Y", $_months[1], false);
+               $dateIn = $this->formatDate($_months[0], false);
+               $dateFn = $this->formatDate($_months[1], false);
                
                $years[$dateIn->format("Y")] = $dateIn->format("Y");
                $years[$dateFn->format("Y")] = $dateFn->format("Y");
@@ -544,19 +552,19 @@ class Controller extends \MapasCulturais\Controller
                $yearIn = null;
                $yearFn = null;
                if(count($_years) == 1){
-                  $yearFn = " de ".$this->formatDate("Y", $_years[0], "Y");
+                  $yearFn = " de ".$this->formatDate($_years[0], "Y");
                }else{
                   if(isset($_years[0]) && isset($_years[0])){
-                     $yearIn = " de ".$this->formatDate("Y", $_years[0], "Y");
-                     $yearFn = " de ".$this->formatDate("Y", $_years[1], "Y");
+                     $yearIn = " de ".$this->formatDate($_years[0], "Y");
+                     $yearFn = " de ".$this->formatDate($_years[1], "Y");
                   }else{
-                     $yearFn = " de ".$this->formatDate("Y", $_years[0], "Y");
+                     $yearFn = " de ".$this->formatDate($_years[0], "Y");
                   }
                }
               
-               $start = $this->formatDate("H:i", $value['STARTS_ON'], false);
+               $start = $this->formatDate($value['STARTS_AT'], false);
                if(count($_months) == 1){
-                  $dateFn = $this->formatDate("d/m/Y", $_months[1], false);
+                  $dateFn = $this->formatDate($_months[1], false);
                   $rule['description'].= " de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearIn}  às {$start->format("H:i")}";
                }else{
                   $rule['description'].= " de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}";
@@ -568,7 +576,7 @@ class Controller extends \MapasCulturais\Controller
          case i::__('weekly'):
             $exec = function () use ($ocurrence, $value, $app, &$rule) {
 
-               $ocurrence->endsAt = $this->formatDate("d/m/Y", $value['ENDS_AT'], false);
+               $ocurrence->endsOn = $this->formatDate($value['ENDS_ON'], false);
 
                $moduleConfig = $app->modules['EventImporter']->config;
 
@@ -582,7 +590,7 @@ class Controller extends \MapasCulturais\Controller
                   }
                }
 
-               $rule['endsAt'] = $this->formatDate("d/m/Y", $value['ENDS_AT'], "d/m/Y");
+               $rule['endsOn'] = $this->formatDate($value['ENDS_ON'], "Y-m-d");
                $rule['day'] = $days;
 
                $count = count($days);
@@ -608,45 +616,47 @@ class Controller extends \MapasCulturais\Controller
                   $rule['description'].= i::__(' ');
                }
               
-               $months[$value['STARTS_AT']] = $value['STARTS_AT'];
-               $months[$value['ENDS_AT']] = $value['ENDS_AT'];
+               $months[$value['STARTS_ON']] = $value['STARTS_ON'];
+               $months[$value['ENDS_ON']] = $value['ENDS_ON'];
 
                $_months = array_keys($months);
 
-               $dateIn = $this->formatDate("d/m/Y", $_months[0], false);
-               $dateFn = $this->formatDate("d/m/Y", $_months[1], false);
-             
+               $dateIn = $this->formatDate($_months[0], false);
+               $dateFn = $this->formatDate($_months[1], false);
+               
                $years[$dateIn->format("Y")] = $dateIn->format("Y");
                $years[$dateFn->format("Y")] = $dateFn->format("Y");
                $_years = array_keys($years);
-
+              
                $yearIn = null;
                $yearFn = null;
                if(count($_years) == 1){
-                  $yearFn = i::__(" de ".$this->formatDate("Y", $_years[0], "Y"));
+                  $yearFn = i::__(" de ".$this->formatDate($_years[0], "Y"));
                }else{
                   if(isset($_years[0]) && isset($_years[0])){
-                     $yearIn = i::__(" de ".$this->formatDate("Y", $_years[0], "Y"));
-                     $yearFn = i::__(" de ".$this->formatDate("Y", $_years[1], "Y"));
+                     $yearIn = i::__(" de ".$this->formatDate($_years[0], "Y"));
+                     $yearFn = i::__(" de ".$this->formatDate($_years[1], "Y"));
                   }else{
-                     $yearFn = i::__(" de ".$this->formatDate("Y", $_years[0], "Y"));
+                     $yearFn = i::__(" de ".$this->formatDate($_years[0], "Y"));
                   }
                }
-               
-               $start = $this->formatDate("H:i", $value['STARTS_ON'], false);
+            
+               $start = $this->formatDate($value['STARTS_AT'], false);
                if(count($_months) == 1){
                   $rule['description'].= i::__("de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearFn}  às {$start->format("H:i")}");
                }else{
-                  $dateFn = $this->formatDate("d/m/Y", $_months[1], false);
+                  $dateFn = $this->formatDate($_months[1], false);
                   $rule['description'].= i::__("de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}");
                }
+               
             };
             break;
          case i::__('uma vez'):
          case i::__('once'):
             $exec = function () use ($ocurrence, $value, $app, &$rule) {
-               $dateIn = $this->formatDate("d/m/Y", $value['STARTS_AT'], false);
-               $start = $this->formatDate("H:i", $value['STARTS_ON'], false);
+
+               $dateIn = $this->formatDate($value['STARTS_ON'], false);
+               $start = $this->formatDate($value['STARTS_AT'], false);
 
                $rule['description'].= i::__("Dia {$dateIn->format("d")} de {$dateIn->format("F")} de {$dateIn->format("Y")} às {$start->format("H:i")}");
             };
@@ -659,9 +669,9 @@ class Controller extends \MapasCulturais\Controller
       $to = array_values($moduleConfig['dic_months']);
       $rule['description'] = str_replace($from, $to, $rule['description']);
       
-      $ocurrence->startsOn = $this->formatDate("H:i", $value['STARTS_ON'], false);
-      $ocurrence->endsOn = $this->formatDate("H:i", $value['ENDS_ON'], false);
-      $ocurrence->startAt = $this->formatDate("d/m/Y", $value['STARTS_AT'], false);
+      $ocurrence->startsAt = $this->formatDate($value['STARTS_AT'], false);
+      $ocurrence->endsAt = $this->formatDate($value['ENDS_AT'], false);
+      $ocurrence->startOn = $this->formatDate($value['STARTS_ON'], false);
       $ocurrence->frequency = $moduleConfig['frequence_list_allowed'][$freq];
       $ocurrence->status = EventOccurrence::STATUS_ENABLED;
       $ocurrence->event = $event;
@@ -796,22 +806,41 @@ class Controller extends \MapasCulturais\Controller
       throw new Exception(i::__($message));
    }
 
-   public function formatDate($formatIn, $date, $formatOut = "Y-m-d H:i")
-   { 
-      if($formatOut){
-         if($date = DateTime::createFromFormat($formatIn, $date)->format($formatOut)){
-            return $date;
-         }
-         return (new DateTime('1989-01-01'))->format($formatOut);
+   public function formatDate($date, $formatOut = "Y-m-d H:i")
+   {
+      if(!$date){
+         return null;
+      }
 
-      }else{
-         if($date = DateTime::createFromFormat($formatIn, $date)){
-         
-            if(date_format($date,'Y-m-d H:i')||$date = date_format($date,'d-m-Y H:i')||$date = date_format($date,'Y/m/d H:i')||$date = date_format($date,'d/m/Y H:i')){
-            return $date;
-            }
+      $formats = [
+         'd/m/Y',
+         'd/m/Y H',
+         'd/m/Y H:i',
+         'd/m/Y H:i:s',
+         'Y-m-d',
+         'Y-m-d H',
+         'Y-m-d H:i',
+         'Y-m-d H:i:s',
+         'H:i:s',
+         'H:i',
+         'Y'
+      ];
+
+      foreach ($formats as $format) {
+         $objDate = DateTime::createFromFormat($format, $date);
+         if ($objDate !== false) {
+            break;
          }
-         return (new DateTime('1989-01-01'));
+      }
+      
+      if ($objDate === false) {
+         return (new DateTime('1989-01-01'))->format($formatOut);
+      }
+
+      if ($formatOut) {
+         return $objDate->format($formatOut);
+      } else {
+         return $objDate;
       }
    }
 
