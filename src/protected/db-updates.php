@@ -284,6 +284,17 @@ return [
         $conn->executeQuery("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_209C792E166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
     },
 
+
+    'alter registration_file_configuration add metadata and multiple'=> function () use($conn) {
+        if(!__column_exists('registration_file_configuration', 'metadata')){       
+            $conn->executeQuery("ALTER TABLE registration_file_configuration ADD COLUMN metadata json;");
+        }
+
+        if(!__column_exists('registration_file_configuration', 'multiple')){
+            $conn->executeQuery("ALTER TABLE registration_file_configuration ADD COLUMN multiple boolean;");
+        }
+    },
+
     'create saas tables' => function () use($conn) {
         if(__table_exists('saas')){
             return true;
