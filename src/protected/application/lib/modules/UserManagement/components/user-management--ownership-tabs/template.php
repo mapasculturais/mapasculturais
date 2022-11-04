@@ -22,7 +22,7 @@ $this->import('
             <div class="col-3 panel--entity-tabs__content--pen">{{entity.subsite?.name}}</div>
             <div class="col-3 panel--entity-tabs__content--editable">
                 
-                <mc-link :entity="entity" route="edit" icon='edit' class="button button--icon panel--entity-tabs__content--editable-edit"><label class="panel--entity-tabs__content--editable-label"><?= i::__('Editar') ?></label></mc-link>
+                <mc-link :entity="entity" route="edit" icon='edit' class=" button button--text button--sm  panel--entity-tabs__content--editable-edit"><label class="panel--entity-tabs__content--editable-label"><?= i::__('Editar') ?></label></mc-link>
                 <panel--entity-actions 
                     :entity="entity"
                     @deleted="moveEntity(entity)" 

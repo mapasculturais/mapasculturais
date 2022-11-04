@@ -130,7 +130,8 @@ $this->import('
                         <user-management--ownership-tabs :user="entity" type="opportunity"></user-management--ownership-tabs>
                     </tab>
 
-                    <tab label="<?= i::esc_attr__('Inscrições') ?>" slug="registrations" icon='registration'>
+                    <tab label="<?= i::esc_attr__('Inscrições') ?>" slug="registrations" icon='opportunity' classes="tabs-component-button--active-registration">
+                        <user-management--ownership-tabs :user="entity" type="registration"></user-management--ownership-tabs>
                     </tab>
                 </tabs>
             </div>

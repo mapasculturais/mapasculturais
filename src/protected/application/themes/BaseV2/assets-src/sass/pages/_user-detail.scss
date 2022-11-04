@@ -23,6 +23,7 @@
                 align-items: flex-start;
                 flex-direction: row;
                 position: relative;
+
                 &__content {
                     max-width: 100%;
 
@@ -41,7 +42,7 @@
                     height: size(113);
                     align-items: center;
 
-                 
+
 
                     .iconify {
                         width: size(58);
@@ -75,8 +76,8 @@
 
                 .content-user {
                     font-weight: 600;
-                    font-size:size( 14);
-                    line-height:size( 19);
+                    font-size: size(14);
+                    line-height: size(19);
                     display: flex;
                     justify-content: space-between;
                     margin-right: size(260);
@@ -188,7 +189,6 @@
                 &--name {
 
                     a {
-                        color: var(--mc-low-500);
                         text-decoration: none;
                     }
                 }
@@ -213,10 +213,13 @@
                     margin-right: 97px;
 
                     &-edit {
-                        svg {
-                            color: default;
+                        svg, .button-text{
+                                
+                            .iconify, .iconify--zondiconscolor {
+                                color: default;
+                            }
+                                
                         }
-
                     }
 
                     &-label {
@@ -299,6 +302,12 @@
         }
 
         .tabs-component-button--active-opportunity {
+            &::after {
+                background-color: var(--mc-opportunities-500);
+            }
+        }
+
+        .tabs-component-button--active-registration {
             &::after {
                 background-color: var(--mc-opportunities-500);
             }
