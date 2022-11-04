@@ -66,7 +66,6 @@ $this->import('
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
 
@@ -84,7 +83,6 @@ $this->import('
                     <p v-if="!entity.editingEmail">
                         <label class="editing-email__content--email"><?= i::__('E-mail') ?> : {{entity.email}}</label>
                         <a @click="entity.editingEmail = true" class="editing-email__content--edit">
-                            
                         <mc-icon name="edit"></mc-icon><label class="editing-email__content--edit-label"><?php i::_e('Alterar email') ?></label>
                         </a>
                     </p>
@@ -98,11 +96,8 @@ $this->import('
                 </div>
 
             </div>
-
-
-
-
         </div>
+        
         <div class="content-detail">
             <h3><?= i::__('Propriedades do usuário') ?></h3>
 
