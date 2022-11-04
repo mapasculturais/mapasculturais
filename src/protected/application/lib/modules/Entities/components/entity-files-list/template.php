@@ -17,8 +17,8 @@ $this->import('confirm-button popover modal image-uploader');
 
             <div v-if="editable" class="edit">
                 <popover @open="file.newDescription = file.description" openside="down-right">
-                    <template #button>
-                        <a> <mc-icon name="edit"></mc-icon> </a>
+                    <template #button="popover">
+                        <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
                     <template #default="popover">
                         <form @submit="rename(file, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
@@ -52,7 +52,7 @@ $this->import('confirm-button popover modal image-uploader');
     <popover v-if="editable" openside="down-right">
         <template #button="popover">
             <slot name="button"> 
-                <a class="button button--primary button--icon button--primary-outline">
+                <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline">
                     <mc-icon name="upload"></mc-icon>
                     <?php i::_e("Enviar")?>
                 </a>
