@@ -22,7 +22,7 @@ $this->import('confirm-button popover modal image-uploader');
             <div v-if="editable" class="entity-gallery__list--image-actions">
                 <popover @open="img.newDescription = img.description" openside="down-right">
                     <template #button="popover">
-                        <a @click="popover.open()"> <mc-icon name="edit"></mc-icon> </a>
+                        <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
                     <template #default="popover">
                         <form @submit="rename(img, popover); $event.preventDefault()" class="entity-gallery__addNew--newGroup">

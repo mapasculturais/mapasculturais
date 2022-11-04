@@ -12,8 +12,8 @@ use MapasCulturais\i;
             </a>            
             <div v-if="editable" class="edit">
                 <popover openside="down-right">
-                    <template #button>
-                        <a @click="metalist.newData = {...metalist}"> <mc-icon name="edit"></mc-icon> </a>
+                    <template #button="popover">
+                        <a @click="metalist.newData = {...metalist}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
                     <template #default>
                         <form @submit="save(metalist); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
