@@ -316,10 +316,14 @@ class Controller extends \MapasCulturais\Controller
          }
 
          //Validação do agente responsavel 
-         if(empty($value['OWNER']) || ($value['OWNER'] == "")){
-            $errors[$key+1][] = i::__("A coluna agente é obrigatória. Informo o ID do agente responsável");
-         } else if(!$conn->fetchAll("SELECT * FROM agent WHERE status >= 1 AND id = {$value['OWNER']}")) {
-            $errors[$key+1][] = i::__("O a gente não esta cadastrado");
+         if(!is_numeric($value['OWNER'])){
+            $errors[$key+1][] = i::__("A coluna proprietário espera o número ID do agente. ");
+         }else{
+            if(empty($value['OWNER']) || ($value['OWNER'] == "")){
+               $errors[$key+1][] = i::__("A coluna agente é obrigatória. Informo o ID do agente responsável");
+            } else if(!$conn->fetchAll("SELECT * FROM agent WHERE status >= 1 AND id = {$value['OWNER']}")) {
+               $errors[$key+1][] = i::__("O a gente não esta cadastrado");
+            }
          }
          
          //Caso exista espaço informado significa inserção de ocorrência
@@ -332,7 +336,7 @@ class Controller extends \MapasCulturais\Controller
             }
 
             $collum = $this->checkCollum($value['SPACE']);
-            if(!$spaces = $conn->fetchAll("SELECT * FROM space WHERE status >= 1 AND {$collum} = {$value['SPACE']}")) {
+            if(!$spaces = $conn->fetchAll("SELECT * FROM space WHERE status >= 1 AND {$collum} = '{$value['SPACE']}'")) {
                $errors[$key+1][] = i::__("O espaço não está cadastrado");
             }
 
