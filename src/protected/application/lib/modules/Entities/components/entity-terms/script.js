@@ -95,11 +95,6 @@ app.component('entity-terms', {
             }
         },
 
-        remove(term) {
-            const terms = this.entityTerms;
-            const indexOf = terms.indexOf(term);
-            terms.splice(indexOf,1);
-        },
 
         addTerm(term, popover) {
             if (this.entityTerms.indexOf(term) < 0) {
