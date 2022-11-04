@@ -212,14 +212,11 @@
                     min-height: max-content;
                     margin-right: 97px;
 
+                   
+
                     &-edit {
-                        svg, .button-text{
-                                
-                            .iconify, .iconify--zondiconscolor {
-                                color: default;
-                            }
-                                
-                        }
+                        cursor: pointer;
+
                     }
 
                     &-label {
@@ -227,6 +224,14 @@
                         font-weight: 700;
                         font-size: 14px;
                         line-height: 19px;
+
+                    }
+                    &-edit:hover {
+                        
+
+                        border-color: var(--mc-primary-700);
+                        color: var(--mc-primary-700);
+
                     }
 
                     .panel__entity-actions--editable {
