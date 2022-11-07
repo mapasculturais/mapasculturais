@@ -6,7 +6,7 @@
     background-color: var(--mc-gray-100);
 
     &__header {
-        .header-top {
+        &-top {
             margin-bottom: size(26);
             display: flex;
             align-items: center;
@@ -15,25 +15,14 @@
 
         }
 
-        &--title {
+        &-content {
             max-width: size(1088);
+            display: grid;
+            grid-template-columns: size(113) 1fr;
+            gap: size(32);
 
-            .title-header {
-                display: flex;
-                align-items: flex-start;
-                flex-direction: row;
-                position: relative;
-
-                &__content {
-                    max-width: 100%;
-
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                }
-
-                &__icon {
-                    position: absolute;
+            .management {
+                &-icon {
                     border-radius: 50%;
                     display: flex;
                     justify-content: center;
@@ -42,48 +31,54 @@
                     height: size(113);
                     align-items: center;
 
-
-
                     .iconify {
                         width: size(58);
                         height: size(58);
                         color: var(--mc-high-500);
                     }
+
                 }
 
-                &__label {
-                    width: 100%;
-                    margin-left: size(147);
-                    font-weight: 700;
-                    font-size: size(24);
-                    line-height: size(33);
+                &-content {
+                    max-width: 100%;
 
-                    &--edit {
 
-                        svg {
-                            color: var(--mc-danger-500);
-                            margin-right: 6px;
+                    &__label {
+                        display: flex;
+                        justify-content: space-between;
+
+                        width: 100%;
+                        font-weight: 700;
+                        font-size: size(24);
+                        line-height: size(33);
+
+                        &--delete {
+                            svg {
+                                color: var(--mc-danger-500);
+                                margin-right: 6px;
+                            }
                         }
                     }
 
-                    &--content {
+                    &__info {
+                        font-weight: 600;
+                        font-size: size(14);
+                        line-height: size(19);
                         display: flex;
-                        flex-direction: row;
-                        justify-content: space-between;
-                        max-width: 100%;
+                        justify-content: flex-start;
+                        flex-wrap: wrap;
+                        max-width: size(600);
+                        &>* {
+                            min-width: size(260);
+                            flex-basis: 50%;
+                        }
                     }
-                }
-
-                .content-user {
-                    font-weight: 600;
-                    font-size: size(14);
-                    line-height: size(19);
-                    display: flex;
-                    justify-content: space-between;
-                    margin-right: size(260);
                 }
             }
         }
+    }
+    .entity-seals {
+        margin: size(40) 0;
     }
 
     .editing-email {
@@ -136,7 +131,7 @@
     }
 
     .content-footer {
-        padding-bottom: 40px;
+        // padding-bottom: 40px;
     }
 
     .content-detail {
@@ -212,7 +207,7 @@
                     min-height: max-content;
                     margin-right: 97px;
 
-                   
+
 
                     &-edit {
                         cursor: pointer;
@@ -226,8 +221,9 @@
                         line-height: 19px;
 
                     }
+
                     &-edit:hover {
-                        
+
 
                         border-color: var(--mc-primary-700);
                         color: var(--mc-primary-700);
