@@ -68,6 +68,7 @@
                         justify-content: flex-start;
                         flex-wrap: wrap;
                         max-width: size(600);
+
                         &>* {
                             min-width: size(260);
                             flex-basis: 50%;
@@ -76,25 +77,21 @@
                 }
             }
         }
+
+
     }
+
     .entity-seals {
         margin: size(40) 0;
     }
 
-    .editing-email {
+    &__account-config {
         background-color: white;
-        width: 970px;
-        height: 194px;
+        max-width: 970px;
         margin-bottom: 44px;
+        padding: size(12) size(16);
 
-        &__content {
-            max-width: 752px;
-            padding-top: 12px;
-            padding-left: 16px;
-            padding-bottom: 16px;
-            padding-right: auto;
-
-            &--label {
+            &-label {
 
                 font-weight: 700;
                 font-size: 18px;
@@ -102,7 +99,7 @@
                 margin-bottom: 16px;
             }
 
-            &--email {
+            &-email {
                 font-style: normal;
                 font-weight: 700;
                 font-size: 14px;
@@ -111,7 +108,7 @@
                 padding-right: 18px;
             }
 
-            &--edit {
+            &-edit {
                 gap: size(18);
 
                 svg {
@@ -127,12 +124,12 @@
                     color: var(--mc-helper-500);
                 }
             }
-        }
+
     }
 
-    .content-footer {
-        // padding-bottom: 40px;
-    }
+    
+
+    
 
     .content-detail {
         padding-bottom: 21px;
