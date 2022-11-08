@@ -493,9 +493,9 @@ class Controller extends \MapasCulturais\Controller
 
 
          $_agent = $app->user->profile;
-         $files = json_decode($_agent->event_importer_processed_file) ?? (new stdClass);
+         $files = $_agent->event_importer_processed_file;
          $files->{basename($file_dir)} = date('d/m/Y \à\s H:i');
-         $_agent->event_importer_processed_file = json_encode($files);
+         $_agent->event_importer_processed_file = $files;
          $_agent->save(true);
          
          $url = $app->createUrl("painel", "eventos");

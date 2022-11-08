@@ -26,7 +26,7 @@ $template = '
     </div>
     <div class="js-eventImporter">
         <?php if(is_array($files)): foreach($files as $file): ?>
-            <?php $file_process = json_decode($app->user->profile->event_importer_processed_file)?>
+            <?php $file_process = $app->user->profile->event_importer_processed_file?>
             <article id="file-<?php echo $file->id ?>" class="objeto <?php if($this->isEditable()) echo i::_e(' is-editable'); ?>" >
                 <h1><a href="<?php echo $file->url;?>" download><?php echo $file->description ? $file->description : $file->name;?></a></h1>
                 <div class="objeto-meta">
