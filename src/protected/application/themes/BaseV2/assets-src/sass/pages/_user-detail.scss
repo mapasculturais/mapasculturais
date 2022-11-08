@@ -55,7 +55,7 @@
                         &--delete {
                             svg {
                                 color: var(--mc-danger-500);
-                                margin-right: 6px;
+                                margin-right: size(6);
                             }
                         }
                     }
@@ -87,8 +87,8 @@
 
     &__account-config {
         background-color: white;
-        max-width: 970px;
-        margin-bottom: 44px;
+        max-width: size(970);
+        margin-bottom: size(44);
         padding: size(12) size(16);
 
         &-label {
@@ -125,9 +125,28 @@
             }
         }
 
+        &-form {
+
+            margin: 16px 0;
+            align-items: center;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .field {
+                gap: 0;
+
+            }
+        }
+
     }
 
     &__property {
+        &-label {
+            margin: 21px 0;
+        }
+
         &-content {
             background-color: white;
             max-width: 975px;
@@ -233,8 +252,11 @@
                                     font-size: 14px;
                                     line-height: 19px;
 
+                                    @media(max-width: 700px) {
+                                        display: none;
+                                    }
                                 }
-                                
+
 
                                 &-edit:hover {
                                     .panel--entity-tabs__content--editable-label {
@@ -246,23 +268,35 @@
 
                                 }
 
-                                .panel__entity-actions--editable {
-                                    display: flex;
-                                    margin-right: 8px;
+                                .panel__entity-actions {
+                                    &--editable {
+                                        display: flex;
+                                        margin-right: 8px;
 
-                                    .panel__entity-actions--trash {
+
+
+                                    }
+
+                                    @media(max-width: 700px) {
+
+                                        &--trash>span,
+                                        &--archive>span {
+                                            display: none;
+                                        }
+                                    }
+
+                                    &--trash {
+
                                         svg {
                                             color: var(--mc-danger-500);
                                         }
                                     }
 
-                                    .panel__entity-actions--archive {
+                                    &--archive {
 
                                         svg {
                                             color: var(--mc-primary-500);
                                         }
-
-                                        // padding-right: 3px;
                                     }
                                 }
                             }
