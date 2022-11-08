@@ -290,7 +290,7 @@ class Controller extends \MapasCulturais\Controller
          }
 
          //Validação das linguagens
-         $languages = explode('/', $value['LANGUAGE']);
+         $languages = explode(';', $value['LANGUAGE']);
          if (!$languages) {
             $errors[$key+1][] = i::__("A coluna linguagem está vazia");
          }
@@ -309,7 +309,7 @@ class Controller extends \MapasCulturais\Controller
          // Validação das tags
          $tags = [];
          if($value['TAGS']){
-            $tags = explode('/', $value['TAGS']);
+            $tags = explode(';', $value['TAGS']);
          }
  
          //Validação do projeto
