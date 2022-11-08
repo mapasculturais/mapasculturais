@@ -286,7 +286,7 @@ class Controller extends \MapasCulturais\Controller
 
          if (!in_array($value['CLASSIFICATION'],$moduleConfig['rating_list_allowed'])) {
             $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
-            $errors[$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são --{$rating_str}--");
+            $errors[$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são {$rating_str}");
          }
 
          //Validação das linguagens
@@ -302,7 +302,7 @@ class Controller extends \MapasCulturais\Controller
             $_language = mb_strtolower(trim($language));
 
             if (!in_array(trim($_language), array_keys($languages_list))) {
-               $errors[$key+1][] = i::__("A linguagem --{$_language}-- não existe");
+               $errors[$key+1][] = i::__("A linguagem {$_language} não existe");
             }
          }
 
@@ -321,7 +321,7 @@ class Controller extends \MapasCulturais\Controller
    
             if ($collum == 'name') {
                if (count($projects) > 1){
-                  $errors[$key+1][] = i::__("Existe mais de um projeto com o nome --{$value['PROJECT']}--. Para proseguir, informe o ID do projeto que quer associar ao evento");
+                  $errors[$key+1][] = i::__("Existe mais de um projeto com o nome {$value['PROJECT']}. Para proseguir, informe o ID do projeto que quer associar ao evento");
                }
             }
          }
@@ -353,7 +353,7 @@ class Controller extends \MapasCulturais\Controller
 
             if ($collum_spa == 'name') {
                if (count($spaces) > 1) {
-                  $errors[$key+1][] = i::__("Existe mais de um espaço com o nome --{$value['SPACE']}--. Para proseguir informe o ID do espaço que quer associar ao evento");
+                  $errors[$key+1][] = i::__("Existe mais de um espaço com o nome {$value['SPACE']}. Para proseguir informe o ID do espaço que quer associar ao evento");
                }
             }
 
@@ -364,7 +364,7 @@ class Controller extends \MapasCulturais\Controller
 
             if (!in_array($value['FREQUENCY'], array_keys($moduleConfig['frequence_list_allowed']))) {
                $frequence_str = implode(', ', array_keys($moduleConfig['frequence_list_allowed']));
-               $errors[$key+1][] = i::__("A frequência é inválida. As opções aceitas são --{$frequence_str}--");
+               $errors[$key+1][] = i::__("A frequência é inválida. As opções aceitas são {$frequence_str}");
             }
 
             if(in_array($value['FREQUENCY'], $moduleConfig['use_week_days'])){
@@ -617,7 +617,7 @@ class Controller extends \MapasCulturais\Controller
                         $rule['description'].= i::__(', ');
                      }
    
-                     $count--;
+                     $count;
                   }
 
                   $rule['description'].= i::__(' ');
