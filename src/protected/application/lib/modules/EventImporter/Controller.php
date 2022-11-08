@@ -243,7 +243,8 @@ class Controller extends \MapasCulturais\Controller
          }
 
          if(!empty(array_filter($tmp))){
-         $data[$pos] = $tmp;        
+            $data[$pos] = $tmp;        
+         }
       }
 
       $exampleHash = $this->exampleHash();
@@ -253,7 +254,6 @@ class Controller extends \MapasCulturais\Controller
       if(empty($data)){
          $errors[0][] = i::__("O arquivo esta vazio, verifique para continuar");
       }
-
      
       foreach ($data as $key => $value) {
 
