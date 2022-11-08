@@ -91,224 +91,231 @@
         margin-bottom: 44px;
         padding: size(12) size(16);
 
+        &-label {
+
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 25px;
+            margin-bottom: 16px;
+        }
+
+        &-email {
+            font-style: normal;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 19px;
+            gap: 9px;
+            padding-right: 18px;
+        }
+
+        &-edit {
+            gap: size(18);
+
+            svg {
+                color: var(--mc-helper-500);
+                margin-right: 8px;
+            }
+
             &-label {
-
-                font-weight: 700;
-                font-size: 18px;
-                line-height: 25px;
-                margin-bottom: 16px;
-            }
-
-            &-email {
-                font-style: normal;
+                margin-left: size(8px);
                 font-weight: 700;
                 font-size: 14px;
                 line-height: 19px;
-                gap: 9px;
-                padding-right: 18px;
-            }
-
-            &-edit {
-                gap: size(18);
-
-                svg {
-                    color: var(--mc-helper-500);
-                    margin-right: 8px;
-                }
-
-                &-label {
-                    margin-left: size(8px);
-                    font-weight: 700;
-                    font-size: 14px;
-                    line-height: 19px;
-                    color: var(--mc-helper-500);
-                }
-            }
-
-    }
-
-    
-
-    
-
-    .content-detail {
-        padding-bottom: 21px;
-    }
-
-
-
-    .footer-content-detail {
-        background-color: white;
-        width: 975px;
-        padding: 16px;
-        // padding-bottom: 24px;
-    }
-
-
-    .tabs-component--user {
-        .tabs-component {
-
-            .panel--entity-tabs--identify {
-                background-color: var(--mc-high-500);
-                margin-left: 16px;
-
-                &__name {
-                    a {
-                        color: black;
-                        font-style: none;
-                        text-emphasis-style: none;
-                    }
-                }
-            }
-
-            .panel--entity-tabs__content {
-                background-color: var(--mc-gray-100);
-                border-radius: 6px;
-                height: 48px;
-                margin-top: 8px;
-                padding: 14px;
-
-                .grid-12 {
-                    padding-top: 3px;
-
-                }
-
-                // form - items
-                font-weight: 700;
-                font-size: 14px;
-                line-height: 19px;
-
-                &--name {
-
-                    a {
-                        text-decoration: none;
-                    }
-                }
-
-                &--pen {
-                    a {
-                        label {
-                            color: var(--mc-low-500);
-
-                        }
-
-                        svg {}
-                    }
-                }
-
-                .panel--entity-tabs__content--editable {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    flex-direction: row;
-                    min-height: max-content;
-                    margin-right: 97px;
-
-
-
-                    &-edit {
-                        cursor: pointer;
-
-                    }
-
-                    &-label {
-                        color: var(--mc-low-500);
-                        font-weight: 700;
-                        font-size: 14px;
-                        line-height: 19px;
-
-                    }
-
-                    &-edit:hover {
-
-
-                        border-color: var(--mc-primary-700);
-                        color: var(--mc-primary-700);
-
-                    }
-
-                    .panel__entity-actions--editable {
-                        display: flex;
-                        margin-right: 8px;
-
-                        .panel__entity-actions--trash {
-                            svg {
-                                color: var(--mc-danger-500);
-                            }
-                        }
-
-                        .panel__entity-actions--archive {
-
-                            svg {
-                                color: var(--mc-primary-500);
-                            }
-
-                            // padding-right: 3px;
-                        }
-                    }
-                }
+                color: var(--mc-helper-500);
             }
         }
 
-        width: 938px;
-        background-color: var(--mc-high-500);
-        border-radius: 6px;
+    }
 
-        .tabs-component__header {
-            width: 938px;
-            background-color: var(--mc-high-500);
-            border-radius: 6px;
-            padding-left: 1px;
-        }
-
-        .tabs-component__panels {
+    &__property {
+        &-content {
             background-color: white;
-            width: 938px;
-            margin-bottom: 0;
+            max-width: 975px;
+            padding: 16px;
 
-            .tabs-component__header {
-                width: 938px;
-                background-color: var(--mc-gray-100);
-                border-radius: 6px;
-                padding-left: 10px;
+            .tabs-component {
+
+                &__entities {
+                    max-width: size(938);
+                    background-color: var(--mc-high-500);
+                    border-radius: 6px;
+
+                    .tabs-component {
+
+                        &__header {
+                            width: 100%;
+                            background-color: var(--mc-high-500);
+                            border-radius: 6px;
+                            padding-left: 1px;
+                        }
+
+                        &__panels {
+                            background-color: white;
+                            max-width: 938px;
+                            margin-bottom: 0;
+
+                            .tabs-component__header {
+                                max-width: size(938);
+                                background-color: var(--mc-gray-100);
+                                border-radius: 6px;
+                                padding-left: 10px;
+
+                            }
+
+                        }
+
+                        .panel--entity-tabs--identify {
+                            background-color: var(--mc-high-500);
+                            margin-left: 16px;
+
+                            &__name {
+                                a {
+                                    color: black;
+                                    font-style: none;
+                                    text-emphasis-style: none;
+                                }
+                            }
+                        }
+
+                        .panel--entity-tabs__content {
+                            background-color: var(--mc-gray-100);
+                            border-radius: 6px;
+                            height: 48px;
+                            margin-top: 8px;
+                            padding: 14px;
+
+                            .grid-12 {
+                                padding-top: 3px;
+
+                            }
+
+                            // form - items
+                            font-weight: 700;
+                            font-size: 14px;
+                            line-height: 19px;
+
+                            &--name {
+
+                                a {
+                                    text-decoration: none;
+                                }
+                            }
+
+                            &--pen {
+                                a {
+                                    label {
+                                        color: var(--mc-low-500);
+
+                                    }
+
+                                    svg {}
+                                }
+                            }
+
+                            .panel--entity-tabs__content--editable {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                flex-direction: row;
+                                min-height: max-content;
+                                margin-right: 97px;
+
+
+
+                                &-edit {
+                                    cursor: pointer;
+
+                                }
+
+                                &-label {
+                                    color: var(--mc-low-500);
+                                    font-weight: 700;
+                                    font-size: 14px;
+                                    line-height: 19px;
+
+                                }
+                                
+
+                                &-edit:hover {
+                                    .panel--entity-tabs__content--editable-label {
+                                        color: var(--mc-primary-700);
+                                    }
+
+                                    border-color: var(--mc-primary-700);
+                                    color: var(--mc-primary-700);
+
+                                }
+
+                                .panel__entity-actions--editable {
+                                    display: flex;
+                                    margin-right: 8px;
+
+                                    .panel__entity-actions--trash {
+                                        svg {
+                                            color: var(--mc-danger-500);
+                                        }
+                                    }
+
+                                    .panel__entity-actions--archive {
+
+                                        svg {
+                                            color: var(--mc-primary-500);
+                                        }
+
+                                        // padding-right: 3px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+
+                &-button--active {
+                    &-agent {
+                        &::after {
+                            background-color: var(--mc-agents-500);
+                        }
+                    }
+
+                    &-event {
+                        &::after {
+                            background-color: var(--mc-events-500);
+                        }
+                    }
+
+                    &-space {
+                        &::after {
+                            background-color: var(--mc-spaces-500);
+                        }
+                    }
+
+                    &-project {
+                        &::after {
+                            background-color: var(--mc-projects-500);
+                        }
+                    }
+
+                    &-opportunity {
+                        &::after {
+                            background-color: var(--mc-opportunities-500);
+                        }
+                    }
+
+                    &-registration {
+                        &::after {
+                            background-color: var(--mc-opportunities-500);
+                        }
+                    }
+                }
+
+                // padding-bottom: 24px;
             }
         }
 
-
-        .tabs-component-button--active-agent {
-            &::after {
-                background-color: var(--mc-agents-500);
-            }
-        }
-
-        .tabs-component-button--active-event {
-            &::after {
-                background-color: var(--mc-events-500);
-            }
-        }
-
-        .tabs-component-button--active-space {
-            &::after {
-                background-color: var(--mc-spaces-500);
-            }
-        }
-
-        .tabs-component-button--active-project {
-            &::after {
-                background-color: var(--mc-projects-500);
-            }
-        }
-
-        .tabs-component-button--active-opportunity {
-            &::after {
-                background-color: var(--mc-opportunities-500);
-            }
-        }
-
-        .tabs-component-button--active-registration {
-            &::after {
-                background-color: var(--mc-opportunities-500);
-            }
-        }
+        // .content-detail {
+        //     padding-bottom: 21px;
+        // }
     }
 }
