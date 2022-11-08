@@ -62,12 +62,12 @@ $this->import('
                         <mc-icon name="edit"></mc-icon><label class="p-user-detail__account-config-edit-label"><?php i::_e('Alterar email') ?></label>
                     </a>
                 </p>
-                <form class="grid-12" v-if="entity.editingEmail" @submit="entity.save().then(() => entity.editingEmail = false); $event.preventDefault();">
-                    <div class="field col-4">
+                <form class="grid-12 p-user-detail__account-config-form" v-if="entity.editingEmail" @submit="entity.save().then(() => entity.editingEmail = false); $event.preventDefault();">
+                    <div class="col-4">
                         <entity-field :entity="entity" prop="email" hide-required>
                     </div>
-                    <button class="col-2 button button-primary"><?php i::_e('Salvar') ?></button>
-                    <button class="col-2 button button-secondary" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
+                    <button class="col-2 button button--primary button--md"><?php i::_e('Salvar') ?></button>
+                    <button class="col-2 button button--secondary button--md" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
                 </form>
             </div>
         </div>
