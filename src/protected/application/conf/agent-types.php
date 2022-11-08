@@ -14,6 +14,48 @@ return array(
             'available_for_opportunities' => true
         ),
 
+        'nomeSocial' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Nome Social'),
+            'available_for_opportunities' => true,
+        ),
+
+        'funcao' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Função'),
+            'available_for_opportunities' => true,
+        ),
+
+        'mei' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('MEI'),
+            'available_for_opportunities' => true,
+        ),
+
+        'escolaridade' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Escolaridade'),
+            'available_for_opportunities' => true,
+        ),
+
+        'pessoaDeficiente' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Possui alguma deficiência?'),
+            'available_for_opportunities' => true,
+        ),
+
+        'comunidadesTradicionais' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Comunidades tradicionais'),
+            'available_for_opportunities' => true,
+        ),
+
+        'pessoaIdosa' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Pessoa idosa (se tem 60 ou mais)'),
+            'available_for_opportunities' => true,
+        ),
+
         'documento' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF ou CNPJ'),
