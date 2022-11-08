@@ -253,7 +253,13 @@ class Controller extends \MapasCulturais\Controller
          $errors[0][] = i::__("O arquivo esta vazio, verifique para continuar");
       }
 
+     
       foreach ($data as $key => $value) {
+
+         if(empty(array_filter($value))){
+            continue;
+         }
+       
          $value['STARTS_AT'] = $this->formatDate($value['STARTS_AT'], "H:i");
          $value['ENDS_AT'] = $this->formatDate($value['ENDS_AT'], "H:i");
          $value['STARTS_ON'] = $this->formatDate($value['STARTS_ON'], "Y-m-d");
