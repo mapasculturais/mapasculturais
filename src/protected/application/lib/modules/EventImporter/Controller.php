@@ -242,6 +242,7 @@ class Controller extends \MapasCulturais\Controller
             }
          }
 
+         if(!empty(array_filter($tmp))){
          $data[$pos] = $tmp;        
       }
 
