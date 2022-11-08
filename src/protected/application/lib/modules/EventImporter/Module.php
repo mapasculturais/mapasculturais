@@ -186,12 +186,12 @@ class Module extends \MapasCulturais\Module
                     i::__('Livre')
                 ],
                 i::__('LINGUAGEM') => [
-                    i::__('PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as com barra, /'),
-                    i::__("Teatro/Música Popular/Livro e Poesia"),
+                    i::__('PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as com ponto e virgula, ;'),
+                    i::__("Teatro;Música Popular;Livro e Poesia"),
                 ],
                 i::__('TAGS') => [
-                    i::__('Informar as tags do evento separando-as com barra, /'),
-                    i::__("Cultura/Musica/Arte")
+                    i::__('Informar as tags do evento separando-as com ponto e virgula, ;'),
+                    i::__("Cultura;Musica;Arte")
                 ],
                 i::__('PROJETO') => [
                     i::__('Informar o nome ou ID do projeto que o evento esta vinculado'),
