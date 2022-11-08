@@ -28,6 +28,10 @@ $col-columns: 12;
     gap: size(20) size(24);
     width: 100%;
 
+    @media (max-width: size(800)) {
+        gap: size(15) size(19);
+    }
+
     &.v-center {
         align-items: center;
     }
