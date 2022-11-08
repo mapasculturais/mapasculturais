@@ -453,6 +453,7 @@ class Controller extends \MapasCulturais\Controller
    {
       $app = App::i();
 
+      $countProsess = 0;
       foreach ($data as $key => $value) {
 
          $collum_proj = $this->checkCollum($value['PROJECT']);
@@ -489,12 +490,14 @@ class Controller extends \MapasCulturais\Controller
          
          $this->downloadFile($event, $value);
          $this->createMetalists($value, $event);
+         $countProsess++;
       }
 
 
          $_agent = $app->user->profile;
          $files = $_agent->event_importer_processed_file;
          $files->{basename($file_dir)} = date('d/m/Y \à\s H:i');
+         $files->eventsProcess = $countProsess;
          $_agent->event_importer_processed_file = $files;
          $_agent->save(true);
          
