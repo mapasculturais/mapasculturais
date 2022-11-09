@@ -74,6 +74,7 @@ class Module extends \MapasCulturais\Module
                 'LINKS'
             ],
             "header_default" => [
+                'EVENT_ID' => [i::__('id_evento') ,i::__('id evento') ,i::__('evento_id'), i::__('evento'),'id', 'event_id', 'event'],
                 'NAME' => [i::__('nome'),'name'],
                 'SUBTITLE' => ['subtitle', i::__('subtítulo')],
                 'SHORT_DESCRIPTION' => ['short_description', i::__('descrição curta'), i::__('descrição_curta')],
@@ -117,6 +118,10 @@ class Module extends \MapasCulturais\Module
                 'LINKS' => ['links'],
             ],
             "header_example" => [
+                i::__('ID_EVENTO') => [
+                    i::__('PREENCHER SOMENTE CASO QUEIRA EDITAR UM EVENTO EXISTENTE - Informar ID do evento'),
+                    i::__('1')
+                ],
                 i::__('NOME') => [
                     i::__('PREENCHIMENTO OBRIGATÓRIO - Informar nome do evento'),
                     i::__('Show da banda O Tranco')
