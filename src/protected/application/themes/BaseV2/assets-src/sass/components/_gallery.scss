@@ -89,6 +89,10 @@ body.galleryOpen {
 
     &__addNew {
         margin-top: size(16);
+
+        .v-popper {
+            width: fit-content;
+        }
     }
 
     &__full {
