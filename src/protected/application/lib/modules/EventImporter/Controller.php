@@ -460,6 +460,7 @@ class Controller extends \MapasCulturais\Controller
       $app = App::i();
 
       $countProsess = 0;
+      $eventsIdList = [];
       foreach ($data as $key => $value) {
 
          $collum_proj = $this->checkCollum($value['PROJECT']);
@@ -467,6 +468,9 @@ class Controller extends \MapasCulturais\Controller
          $agent = $app->repo('Agent')->find($value['OWNER']);
 
          $event = new Event();
+         if(!empty($value['EVENT_ID'])){
+            $event = $app->repo('Event')->find($value['EVENT_ID']);
+         }
          $event->name = $value['NAME'];
          $event->subTitle = $value['SUBTITLE'];
          $event->site = $value['SITE'];
@@ -497,13 +501,17 @@ class Controller extends \MapasCulturais\Controller
          $this->downloadFile($event, $value);
          $this->createMetalists($value, $event);
          $countProsess++;
+         $eventsIdList[] = $event->id;
       }
 
 
          $_agent = $app->user->profile;
-         $files = $_agent->event_importer_processed_file;
-         $files->{basename($file_dir)} = date('d/m/Y \à\s H:i');
-         $files->eventsProcess = $countProsess;
+         $files = $_agent->event_importer_processed_file ?? new stdClass();
+         $files->{basename($file_dir)} = [
+            'date' => date('d/m/Y \à\s H:i'),
+            'countProsess' => $countProsess,
+            'eventsIdList' => $eventsIdList
+         ];
          $_agent->event_importer_processed_file = $files;
          $_agent->save(true);
          
