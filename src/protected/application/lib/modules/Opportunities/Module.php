@@ -66,7 +66,7 @@ class Module extends \MapasCulturais\Module{
         // 'opportunities' => [
         //     'label' => i::__('Editais e oportunidades'),
         //     'items' => [
-        //         ['route' => 'panel/registrations', 'icon' => 'opportunity', 'label' => i::__('Minhas oportunidades')],
+        //         ['route' => 'panel/opportunities', 'icon' => 'opportunity', 'label' => i::__('Minhas oportunidades')],
         //         ['route' => 'panel/registrations', 'icon' => 'opportunity', 'label' => i::__('Minhas inscrições')],
         //         ['route' => 'panel/accountability', 'icon' => 'opportunity', 'label' => i::__('Prestações de contas')],
         //     ]
