@@ -272,6 +272,12 @@ class Controller extends \MapasCulturais\Controller
             break;
          }
 
+         if(!empty($value['EVENT_ID'])){
+            if(!$conn->fetchAll("SELECT * FROM event WHERE status >= 1 AND id = '{$value['EVENT_ID']}'")) {
+               $errors[$key+1][] = i::__("O evento não está cadastrado");
+            }
+         }
+
          if(empty($value['NAME']) || $value['NAME'] == ''){
             $errors[$key+1][] = i::__("A coluna nome está vazia");
          }
