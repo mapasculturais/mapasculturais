@@ -38,6 +38,15 @@ $canSee = function ($view) use ($entity, $fieldsList) {
 
     return false;
 };
+
+$birthday = null;
+if($entity->dataDeNascimento){
+    $today = new DateTime('now');
+    $calc = (new DateTime($entity->dataDeNascimento))->diff($today);
+    $birthday = ($calc->y >= 60) ? $calc->y : null;
+
+}
+
 ?>
 
 <div class="ficha-spcultura"> 
@@ -51,14 +60,6 @@ $canSee = function ($view) use ($entity, $fieldsList) {
         <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
         <?php if($entity->canUser("viewPrivateData")): ?>
             <?php if($this->isEditable() || $canSee('personalData')):?>
-                <!-- Campo Nome Social -->
-                <p class="privado">
-                    <span class="icon icon-private-info"></span>
-                    <span class="label"><?php \MapasCulturais\i::_e("Sub-área de atuação");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"nomeSocial") && $editEntity? 'required': '');?>" data-edit="nomeSocial" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Sub-área de atuação");?>">
-                        <?php echo $entity->nomeSocial; ?>
-                    </span>
-                </p>
                  <!-- Campo Nome Social -->
                  <p class="privado">
                     <span class="icon icon-private-info"></span>
@@ -79,7 +80,7 @@ $canSee = function ($view) use ($entity, $fieldsList) {
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
                     <span class="label"><?php \MapasCulturais\i::_e("MEI");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"mei") && $editEntity? 'required': '');?>" data-edit="mei" data-original-title="<?php \MapasCulturais\i::esc_attr_e("MEI");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Enquadra-se como MEI?");?>">
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"mei") && $editEntity? 'required': '');?>" data-edit="mei" data-original-title="<?php \MapasCulturais\i::esc_attr_e("MEI");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("CNPJ do MEI");?>">
                         <?php echo $entity->mei; ?>
                     </span>
                 </p>
@@ -95,25 +96,30 @@ $canSee = function ($view) use ($entity, $fieldsList) {
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
                     <span class="label"><?php \MapasCulturais\i::_e("Pessoa com Deficiência");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"pessoaDeficiente") && $editEntity? 'required': '');?>" data-edit="pessoaDeficiente" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Possui alguma deficiência?");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Possui alguma deficiência?");?>">
-                        <?php echo $entity->pessoaDeficiente; ?>
-                    </span>
+                    <editable-multiselect entity-property="pessoaDeficiente" empty-label="Selecione" box-title="Possui alguma deficiência ?" help-text="Selecione abaixo."></editable-multiselect>
+                    
                 </p>
                   <!-- Campo Comunidades tradicionais -->
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
                     <span class="label"><?php \MapasCulturais\i::_e("Comunidades tradicionais");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"comunidadesTradicionais") && $editEntity? 'required': '');?>" data-edit="comunidadesTradicionais" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Pertence alguma comunidade tradicional?");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Pertence alguma comunidade tradicional?");?>">
-                        <?php echo $entity->comunidadesTradicionais; ?>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"comunidadesTradicional") && $editEntity? 'required': '');?>" data-edit="comunidadesTradicional" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Pertence alguma comunidade tradicional?");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Pertence alguma comunidade tradicional?");?>">
+                        <?php echo $entity->comunidadesTradicional; ?>
+                    </span>
+                </p>
+                 <!-- Campo Outras Comunidades tradicionais -->
+                 <p class="privado">
+                    <span class="icon icon-private-info"></span>
+                    <span class="label"><?php \MapasCulturais\i::_e("Sou de outra comunidade tradicional");?>:</span>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"comunidadesTradicionalOutros") && $editEntity? 'required': '');?>" data-edit="comunidadesTradicionalOutros" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Informe outra comunidade tradicional?");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Digite");?>">
+                        <?php echo $entity->comunidadesTradicionalOutros; ?>
                     </span>
                 </p>
                  <!-- Campo Pessoas idosa -->
-                <p class="privado">
-                    <span class="icon icon-private-info"></span>
-                    <span class="label"><?php \MapasCulturais\i::_e("Pessoa idosa (a cima de 60 anos)");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"pessoaIdosa") && $editEntity? 'required': '');?>" data-edit="pessoaIdosa" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Possui acima de 60 anos de idade?");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Possui acima de 60 anos de idade?");?>">
-                        <?php echo $entity->pessoaIdosa; ?>
-                    </span>
+                 <p class="privado">
+                     <span class="icon icon-private-info"></span>
+                     <span class="label"><?php \MapasCulturais\i::_e("Pessoa idosa (a cima de 60 anos)");?>:</span>
+                     <?php $birthday ? \MapasCulturais\i::_e("SIM ({$birthday} anos)") : \MapasCulturais\i::_e("NÂO") ?>
                 </p>
                 <!-- Campo Nome Completo -->
                 <p class="privado">

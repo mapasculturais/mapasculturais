@@ -28,32 +28,66 @@ return array(
 
         'mei' => array(
             'private' => true,
-            'label' => \MapasCulturais\i::__('MEI'),
+            'label' => \MapasCulturais\i::__('CNPJ do MEI'),
+            'validations' => array(
+                'v::oneOf(v::cpf(),v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.')
+             ),
             'available_for_opportunities' => true,
         ),
 
         'escolaridade' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Escolaridade'),
+            'type' => 'select',
+            'options' => array(
+                'Não Formado' => \MapasCulturais\i::__('Não Informar'),
+                'Fundamental Incompleto' => \MapasCulturais\i::__(' Fundamental Incompleto'),
+                'Fundamental Completo' => \MapasCulturais\i::__('Fundamental Completo'),
+                'Médio Incompleto' => \MapasCulturais\i::__('Médio Incompleto'),
+                'Médio Completo' => \MapasCulturais\i::__('Médio Completo'),
+                'Superior Completo' => \MapasCulturais\i::__('Superior Completo'),
+                'Superior Incompleto' => \MapasCulturais\i::__('Superior Incompleto'),
+                'Pós-graduação' => \MapasCulturais\i::__('Pós-graduação'),
+                'Sem formação' => \MapasCulturais\i::__('Sem formação'),
+
+            ),
             'available_for_opportunities' => true,
         ),
 
         'pessoaDeficiente' => array(
-            'private' => true,
-            'label' => \MapasCulturais\i::__('Possui alguma deficiência?'),
-            'available_for_opportunities' => true,
+            'label' => 'Atendimento em outros idiomas',
+                'multiselect',
+                'options' => [
+                    'Visual',
+                    'Mental',
+                    'Física',
+                    'Auditiva',
+                ]
         ),
 
-        'comunidadesTradicionais' => array(
+        'comunidadesTradicional' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Comunidades tradicionais'),
-            'available_for_opportunities' => true,
+            'type' => 'select',
+            'options' => array(
+                'Não Sou' => \MapasCulturais\i::__('Não sou'),
+                'Sou uma pessoa integrante de comunidade extrativista' => \MapasCulturais\i::__('Sou uma pessoa integrante de comunidade extrativista'),
+                'Sou uma pessoa integrante de comunidade ribeirinha' => \MapasCulturais\i::__('Sou uma pessoa integrante de comunidade ribeirinha'),
+                'Sou uma pessoa integrante de comunidade rural' => \MapasCulturais\i::__('Sou uma pessoa integrante de comunidade rural'),
+                'Sou uma pessoa integrante de povos indígenas/originários' => \MapasCulturais\i::__('Sou uma pessoa integrante de povos indígenas/originários'),
+                'Sou uma pessoa integrante de comunidades de pescadores(as) artesanais' => \MapasCulturais\i::__('Sou uma pessoa integrante de comunidades de pescadores(as) artesanais'),
+                'Sou uma pessoa integrante de povos ciganos' => \MapasCulturais\i::__('Sou uma pessoa integrante de povos ciganos'),
+                'Sou uma pessoa integrante de povos de terreiro' => \MapasCulturais\i::__('Sou uma pessoa integrante de povos de terreiro'),
+                'Sou uma pessoa integrante de povos de quilombola' => \MapasCulturais\i::__('Sou uma pessoa integrante de povos de quilombola'),
+
+            ),
+            'available_for_opportunities' => true
         ),
 
-        'pessoaIdosa' => array(
+        'comunidadesTradicionalOutros' => array(
             'private' => true,
-            'label' => \MapasCulturais\i::__('Pessoa idosa (se tem 60 ou mais)'),
-            'available_for_opportunities' => true,
+            'label' => \MapasCulturais\i::__('Digite sua comunidade tradicional'),
+            'available_for_opportunities' => true
         ),
 
         'documento' => array(
@@ -64,7 +98,6 @@ return array(
             ),
             'available_for_opportunities' => true
         ),
-
 
         'raca' => array(
             'private' => true,
