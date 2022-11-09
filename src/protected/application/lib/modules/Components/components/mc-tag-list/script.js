@@ -9,9 +9,7 @@ app.component('mc-tag-list', {
     },
     
     data() {
-        return {
-            
-        };
+        return {}
     },
 
     props: {
@@ -19,19 +17,18 @@ app.component('mc-tag-list', {
             type: Boolean,
             default: false,
         },
-        tags: {
-            type: Array,
-            default: [],
-            required: true,
-        },
         classes: {
             type: String,
             required: false,
+        },
+        tags: {
+            type: [Array, Object],
+            required: true,
+        },
+        labels: {
+            type: [Array, Object],
+            default: null
         }
-    },
-
-    computed: {
-        
     },
 
     methods: {

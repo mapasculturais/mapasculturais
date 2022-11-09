@@ -1,8 +1,5 @@
 app.component('entity-occurrence-list', {
     template: $TEMPLATES['entity-occurrence-list'],
-    
-    // define os eventos que este componente emite
-    emits: ['namesDefined'],
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -10,56 +7,28 @@ app.component('entity-occurrence-list', {
         return { text }
     },
 
-    beforeCreate() { },
-    created() {
-        this.eventApi = new API('event');
-        this.spaceApi = new API('space');
-        this.fetchOccurrences();
-    },
-
-    beforeMount() { },
-    mounted() { },
-
-    beforeUpdate() { },
-    updated() { },
-
-    beforeUnmount() {},
-    unmounted() {},
-
     props: {
         entity: {
             type: Entity,
             required: true,
         },
+        editable: {
+            type: Boolean,
+            default: false
+        },
     },
 
     data() {
-        return {
-            occurrences: [],
-            loading: false,
-        }
+        return {}
     },
 
-    computed: {
-    },
-    
     methods: {
-        async fetchOccurrences() {
-            const query = Utils.parsePseudoQuery(this.pseudoQuery);
-
-            this.loading = true;
-            if(query['@keyword']) {
-                query['event:@keyword'] = query['@keyword'];
-                delete query['@keyword'];
+        formatPrice(price) {
+            if (/^\d+(?:\.\d+)?$/.test(price)) {
+	            return parseFloat(price).toLocaleString('pt-BR', { style: 'currency', currency: __('currency', 'entity-occurrence-list')  });
+            } else {
+                return price;
             }
-            query['event:@select'] = 'id,name';
-            query['space:@select'] = 'id,name';
-            
-            this.occurrences = await this.eventApi.fetch('occurrences', query, {
-                raw: true,
-                rawProcessor: (rawData) => Utils.occurrenceRawProcessor(rawData, this.eventApi, this.spaceApi)
-            });
-            this.loading = false;
         },
     },
 });

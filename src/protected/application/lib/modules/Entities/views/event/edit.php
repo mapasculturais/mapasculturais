@@ -105,7 +105,7 @@ $this->breadcramb = [
                 <template #content>
                     <div class="grid-12">
                         <div class="col-12">
-                            <entity-occurrence-list :entity="entity"></entity-occurrence-list>
+                            <entity-occurrence-list :entity="entity" editable></entity-occurrence-list>
                         </div>
                     </div>
                 </template>

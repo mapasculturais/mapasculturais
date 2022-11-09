@@ -11,12 +11,12 @@ use MapasCulturais\i;
                 {{metalist.title}}
             </a>            
             <div v-if="editable" class="edit">
-                <popover @open="metalist.newData = {...metalist}" openside="down-right">
-                    <template #button="{ toggle, close }">
-                        <a @click="toggle()"> <mc-icon name="edit"></mc-icon> </a>
+                <popover openside="down-right">
+                    <template #button="popover">
+                        <a @click="metalist.newData = {...metalist}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
-                    <template #default="{close}">
-                        <form @submit="save(metalist).then(close); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                    <template #default>
+                        <form @submit="save(metalist); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
                             <div class="grid-12">
                                 <div class="col-12">
                                     <div class="field">
@@ -32,7 +32,7 @@ use MapasCulturais\i;
                                     </div>
                                 </div>
 
-                                <button class="col-6 button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
                                 <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
@@ -53,17 +53,17 @@ use MapasCulturais\i;
     </ul>
 
     <popover v-if="editable" openside="down-right">
-        <template #button="{ toggle }">
-            <slot name="button" :toggle="toggle"> 
-                <a class="button button--primary button--icon button--primary-outline" @click="toggle()">
+        <template #button="popover">
+            <slot name="button"> 
+                <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline">
                     <mc-icon name="add"></mc-icon>
                     <?php i::_e("Adicionar Link")?>
                 </a>
             </slot>
         </template>
 
-        <template #default="{ close }">
-            <form @submit="create().then(close); $event.preventDefault();" class="entity-links__newLink">
+        <template #default>
+            <form @submit="create(); $event.preventDefault();" class="entity-links__newLink">
                 <div class="grid-12">
                     <div class="col-12">
                         <div class="field">
@@ -79,7 +79,7 @@ use MapasCulturais\i;
                         </div>
                     </div> 
 
-                    <button class="col-6 button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                    <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
                     <button class="col-6 button button--solid" type="submit"> <?php i::_e("Confirmar") ?> </button>
                 </div>
             </form>

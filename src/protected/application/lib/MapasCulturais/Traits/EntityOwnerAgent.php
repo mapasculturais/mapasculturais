@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\Entities\Agent;
 
 /**
  * Defines that the owner of the entity is an Agent.
@@ -51,7 +52,7 @@ trait EntityOwnerAgent{
     function setOwnerId($owner_id){
         $owner = App::i()->repo('Agent')->find($owner_id);
 
-        $this->setOwner($owner);
+        $this->_newOwner = $owner;
     }
 
 
@@ -60,8 +61,14 @@ trait EntityOwnerAgent{
      *
      * @param \MapasCulturais\Entities\Agent $owner
      */
-    function setOwner(\MapasCulturais\Entities\Agent $owner){
-        $this->_newOwner = $owner;
+    function setOwner($owner){
+        if (is_int($owner)) {
+            $this->setOwnerId($owner);
+        } else if($owner instanceof Agent) {
+            $this->_newOwner = $owner;
+        } else {
+            throw new \Exception("invalid owner type");
+        }
     }
 
     /**

@@ -25,14 +25,32 @@
     }
 
     &__occurrences {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+
         .occurrence {
             border: size(1) solid var(--mc-gray-300);
             border-radius: var(--mc-border-radius-xs);
-            margin-bottom: size(45);
-            padding: size(15) size(20) size(20);
+            margin-bottom: size(13);
+            padding: size(24) size(20);
             position: relative;
             width: 100%;
-        
+
+            &.edit {
+                margin-bottom: size(45);
+
+                @media (max-width: size(500)) {
+                    padding-bottom: size(56);
+                }
+            }
+            
+            &__title {
+                font-weight: 700;
+                font-size: size(18);
+                line-height: size(25);
+            }
+            
             &__header {
                 display: flex;
                 justify-content: space-between;
@@ -41,9 +59,22 @@
                     align-items: center;
                     display: flex;
                     font-weight: 800;
-                    font-size: size(18);
-                    gap: size(6);
-                    line-height: size(25);
+                    gap: size(10);
+                    
+                    .iconify {
+                        height: size(16);
+                        width: size(16);
+                    }
+                    
+                    .title {
+                        font-size: size(18);
+                        line-height: size(25);
+
+                        @media (max-width: size(500)) {
+                            font-size: size(14);
+                            line-height: size(19);
+                        }
+                    }
                 }
     
                 &--link {
@@ -57,6 +88,26 @@
                         height: size(16);
                         width: size(16);
                     }
+
+                    @media (max-width: size(500)) {
+                        position: absolute;
+                        bottom: size(24);
+                    }
+                }
+            }
+
+            &__address {
+                p {
+                    margin: 0;
+                    font-weight: 500;
+                    font-size: size(14);
+                    line-height: size(19);
+                    color: var(--mc-low-700);
+
+                    @media (max-width: size(500)) {
+                        font-size: size(12);
+                        line-height: size(16);
+                    }
                 }
             }
         
@@ -64,14 +115,30 @@
                 align-items: flex-start;
                 display: flex;
                 flex-direction: column;
-                gap: size(6);
+                gap: size(10);
                 margin-top: size(20);
         
                 &--ticket,
                 &--price {
                     align-items: center;
                     display: flex;
-                    gap: size(6);
+                    gap: size(10);
+                    
+                    .ticket,
+                    .price {
+                        font-weight: 600;
+                        font-size: size(14);
+                        line-height: size(20);
+                        @media (max-width: size(500)) {
+                            font-size: size(12);
+                            line-height: size(18);
+                        }
+                    }
+
+                    .iconify {
+                        width: size(18);
+                        height: size(18);
+                    }
                 }
             }
 

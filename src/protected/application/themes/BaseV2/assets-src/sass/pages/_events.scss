@@ -19,6 +19,12 @@
     }
 
     &.action-single {
+        .longDescription {
+           p {
+            overflow-wrap: break-word;
+            word-break: break-word;
+           }
+        }
         .tabs {
             &-component {
                 &__header {
@@ -69,7 +75,7 @@
                         display: flex;
                         flex-direction: column;
                         gap: size(5);
-
+                        padding-bottom: size(32);
                         &__label {
                             font-weight: 700;
                             font-size: size(18);
@@ -77,19 +83,21 @@
                         }
 
                         &__audio,
-                        &__libras {
+                        &__libras, &__phone, &__infos, &__attendance {
                             align-items: center;
                             display: flex;
-                            font-weight: 400;
+                            font-weight: 500;
                             font-size: size(16);
                             line-height: size(22);
                             color: var(--mc-low-700);
+                            gap: 8px;
 
                             span {
                                 text-transform: uppercase;
                             }
-
+                            
                         }
+                        
                     }
 
                     h3 {

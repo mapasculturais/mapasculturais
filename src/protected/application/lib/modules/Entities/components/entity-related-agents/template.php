@@ -16,11 +16,9 @@ $this->import('popover confirm-button');
             <div v-if="editable" class="act">
                 <!-- renomear grupo -->
                 <popover openside="down-right">
-                    <template #button="{ toggle }">
-                        <slot name="button" :toggle="toggle"> 
-                            <a @click="toggle()"> 
-                                <mc-icon name="edit"></mc-icon>
-                            </a>
+                    <template #button="popover">
+                        <slot name="button"> 
+                            <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                         </slot>
                     </template>
 
@@ -31,7 +29,7 @@ $this->import('popover confirm-button');
                                     <input v-model="groupAgents.newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                                 </div>
 
-                                <button class="col-6 button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
                                 <button class="col-6 button button--primary"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
@@ -94,24 +92,24 @@ $this->import('popover confirm-button');
     <div v-if="editable" class="entity-related-agents__addNew">
 
         <popover openside="down-right">
-            <template #button="{ toggle }">
-                <slot name="button" :toggle="toggle"> 
-                    <button class="button button--primary-outline button--icon" @click="toggle()" > 
+            <template #button="popover">
+                <slot name="button"> 
+                    <button @click="popover.toggle()" class="button button--primary-outline button--icon"> 
                         <mc-icon name="add"></mc-icon>
                         <?php i::_e("Adicionar grupo") ?> 
                     </button>
                 </slot>
             </template>
 
-            <template #default="{ close }">
+            <template #default>
                 <div class="entity-related-agents__addNew--newGroup">
-                    <form @submit="addGroup(newGroupName); close(); $event.preventDefault();">
+                    <form @submit="addGroup(newGroupName); $event.preventDefault();">
                         <div class="grid-12">
                             <div class="col-12">
                                 <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                             </div>
 
-                            <button class="col-6 button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                            <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
                             <button class="col-6 button button--primary"> <?php i::_e("Confirmar") ?> </button>
                         </div>
                     </form>

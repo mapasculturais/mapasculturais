@@ -4,6 +4,8 @@ namespace Opportunities;
 
 use DateTime;
 use MapasCulturais\App;
+use MapasCulturais\i;
+
 
 class Module extends \MapasCulturais\Module{
 
@@ -57,6 +59,36 @@ class Module extends \MapasCulturais\Module{
                 $app->enqueueJob(Jobs\PublisResultPhase::SLUG, $data, $this->publish_timestamp->format("Y-m-d H:i:s"));
             }
         });
+        
+          //Cria painel de prestação de contas
+        $app->hook('GET(panel.opportunities)', function() use($app) {
+            $this->requireAuthentication();
+            $this->render('opportunities', []);
+        });
+
+        $app->hook('GET(panel.registrations)', function() use($app) {
+            $this->requireAuthentication();
+            $this->render('registrations', []);
+        });
+
+        $app->hook('panel.nav', function(&$nav_items){
+            $nav_items['opportunities'] = [ 
+                'label' => i::__('Editais e oportunidades'),
+                'items' => [
+                    ['route' => 'panel/opportunities', 'icon' => 'opportunity', 'label' => i::__('Minhas oportunidades')],
+                    ['route' => 'panel/registrations', 'icon' => 'opportunity', 'label' => i::__('Minhas inscrições')],
+                    ['route' => 'panel/accountability', 'icon' => 'opportunity', 'label' => i::__('Prestações de contas')],
+                ]
+            ];
+        });
+        // 'opportunities' => [
+        //     'label' => i::__('Editais e oportunidades'),
+        //     'items' => [
+        //         ['route' => 'panel/opportunities', 'icon' => 'opportunity', 'label' => i::__('Minhas oportunidades')],
+        //         ['route' => 'panel/registrations', 'icon' => 'opportunity', 'label' => i::__('Minhas inscrições')],
+        //         ['route' => 'panel/accountability', 'icon' => 'opportunity', 'label' => i::__('Prestações de contas')],
+        //     ]
+        // ],
     }
 
     function register(){

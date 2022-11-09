@@ -14,15 +14,6 @@ $nav_items = [
         ]
     ],
 
-    'opportunities' => [
-        'label' => i::__('Editais e oportunidades'),
-        'items' => [
-            ['route' => 'panel/registrations', 'icon' => 'opportunity', 'label' => i::__('Minhas oportunidades')],
-            ['route' => 'panel/registrations', 'icon' => 'opportunity', 'label' => i::__('Minhas inscrições')],
-            ['route' => 'panel/accountability', 'icon' => 'opportunity', 'label' => i::__('Prestações de contas')],
-        ]
-    ],
-
     'more' => [
         'label' => i::__('Outras opções'),
         'items' => [
