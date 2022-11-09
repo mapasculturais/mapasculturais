@@ -42,7 +42,7 @@ class Module extends \MapasCulturais\Module{
             
         });
 
-          //Cria painel de prestação de contas
+        /* == ROTAS DO PAINEL == */
         $app->hook('GET(panel.opportunities)', function() use($app) {
             $this->requireAuthentication();
             $this->render('opportunities', []);
@@ -63,14 +63,6 @@ class Module extends \MapasCulturais\Module{
                 ]
             ];
         });
-        // 'opportunities' => [
-        //     'label' => i::__('Editais e oportunidades'),
-        //     'items' => [
-        //         ['route' => 'panel/opportunities', 'icon' => 'opportunity', 'label' => i::__('Minhas oportunidades')],
-        //         ['route' => 'panel/registrations', 'icon' => 'opportunity', 'label' => i::__('Minhas inscrições')],
-        //         ['route' => 'panel/accountability', 'icon' => 'opportunity', 'label' => i::__('Prestações de contas')],
-        //     ]
-        // ],
     }
 
     function register(){
