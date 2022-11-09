@@ -11,7 +11,7 @@ $this->import('popover mc-tag-list mc-multiselect')
 
     <popover v-if="allowInsert && editable" openside="down-right" @close="this.filter = ''" @open="loadTerms()">
         <template #button="popover">
-            <button @click="popover.open()" class="button button--rounded button--sm button--icon button--primary" v-if="editable">
+            <button @click="popover.toggle()" class="button button--rounded button--sm button--icon button--primary" v-if="editable">
                 <?php i::_e("Adicionar nova") ?>
                 <mc-icon name="add"></mc-icon>
             </button>
@@ -36,7 +36,7 @@ $this->import('popover mc-tag-list mc-multiselect')
     </popover>
 
     <mc-multiselect v-if="!allowInsert && editable" :model="entityTerms" :items="terms" @open="loadTerms()" #default="{popover}">
-        <button class="button button--rounded button--sm button--icon button--primary" @click="popover.open()" >
+        <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
             <?php i::_e("Adicionar nova") ?>
             <mc-icon name="add"></mc-icon>
         </button>

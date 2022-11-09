@@ -57,9 +57,9 @@ use MapasCulturais\i;
 
     <div v-if="editable" class="entity-gallery__addNew">
         <popover v-if="editable" openside="right-up">
-            <template #button>
+            <template #button="popover">
                 <slot name="button"> 
-                    <a class="button button--primary button--icon button--primary-outline">
+                    <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline">
                         <mc-icon name="add"></mc-icon>
                         <?php i::_e("Adicionar vídeo")?>
                     </a>

@@ -16,9 +16,9 @@ $this->import('popover confirm-button');
             <div v-if="editable" class="act">
                 <!-- renomear grupo -->
                 <popover openside="down-right">
-                    <template #button>
+                    <template #button="popover">
                         <slot name="button"> 
-                            <a> <mc-icon name="edit"></mc-icon> </a>
+                            <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                         </slot>
                     </template>
 
@@ -92,9 +92,9 @@ $this->import('popover confirm-button');
     <div v-if="editable" class="entity-related-agents__addNew">
 
         <popover openside="down-right">
-            <template #button>
+            <template #button="popover">
                 <slot name="button"> 
-                    <button class="button button--primary-outline button--icon"> 
+                    <button @click="popover.toggle()" class="button button--primary-outline button--icon"> 
                         <mc-icon name="add"></mc-icon>
                         <?php i::_e("Adicionar grupo") ?> 
                     </button>
