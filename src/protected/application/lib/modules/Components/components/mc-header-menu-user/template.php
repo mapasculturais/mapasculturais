@@ -30,7 +30,7 @@ $this->import('
         </template>
 
         <template #default="popover">
-            <panel--nav classes="mc-header-menu-user__itens">
+            <panel--nav classes="user-menu">
                 <template #begin>
                     <ul>
                         <li><mc-link :entity='profile' icon><?= i::__('Meu Perfil') ?></mc-link></li>
@@ -73,7 +73,7 @@ $this->import('
                 </a>
             </div>
 
-            <panel--nav classes="mc-header-menu-user__itens"></panel--nav>
+            <panel--nav></panel--nav>
         </div>
     </div>
     

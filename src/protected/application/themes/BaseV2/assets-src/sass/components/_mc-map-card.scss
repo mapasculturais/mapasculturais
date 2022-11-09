@@ -36,8 +36,8 @@
         border-radius: var(--mc-border-radius-xs);
 
         &__header {
-            align-items: center;
-            display: flex;
+            display: grid;
+            grid-template-columns: 48px 1fr;
             gap: size(12);
 
             &--image {
@@ -59,6 +59,7 @@
                 font-weight: 700;
                 font-size: size(18);
                 line-height: size(25);
+                word-break: break-word;
             }
         }
 

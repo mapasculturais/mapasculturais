@@ -18,98 +18,67 @@ $this->import('
 ?>
 <entity #default='{entity}'>
     <div class="p-user-detail">
-
         <div class="panel-main">
             <header class="p-user-detail__header">
-                <div class="header-top grid-12">
-                    <div class="header-top--button ">
-                        <mc-link route="panel/index" class="button button--icon button--primary-outline">
-                            <mc-icon name="arrow-left"></mc-icon>Voltar
-                        </mc-link>
-                    </div>
-                    <div class="help ">
-                        <a class="panel__help-link" href="#"><?= i::__('Ajuda?') ?></a>
-                    </div>
 
-
+                <div class="p-user-detail__header-top">
+                    <mc-link route="panel/index" class="button button--icon button--primary-outline">
+                        <mc-icon name="arrow-left"></mc-icon><?= i::__('Voltar') ?>
+                    </mc-link>
+                    <a class="panel__help-link" href="#"><?= i::__('Ajuda?') ?></a>
                 </div>
-
-                <div class="p-user-detail__header--title ">
-                    <div class="title-header ">
-                        <div class="title-header__icon ">
-                            <mc-icon name="agent-1"></mc-icon>
-                        </div>
-
-                        <div class="title-header__label ">
-                            <div class="title-header__label--content">
-
-                                <label>{{entity.profile?.name}}</label>
-                                <div class="title-header__label--edit">
-                                    <panel--entity-actions :entity="entity"></panel--entity-actions>
-                                </div>
-                            </div>
-
-
-                            <div class="content-user">
-                                <div class="content-user__left">
-                                    <p>ID: {{entity.id}}</p>
-
-                                    <p>
-                                        <?= i::__('Status') ?>:
-                                        <span v-if="entity.status == 1"><?= i::__('Ativo') ?></span>
-                                        <span v-if="entity.status == -10"><?= i::__('Excluído') ?></span>
-                                    </p>
-                                    <p><?= i::__('Data de criação') ?>: {{entity.createTimestamp.date('long year')}} <?= i::__('às') ?> {{entity.createTimestamp.time()}}</p>
-                                </div>
-                                <div class="content-user__right">
-                                    <p><?= i::__('Último login') ?>: {{entity.lastLoginTimestamp.date('long year')}} <?= i::__('às') ?> {{entity.lastLoginTimestamp.time()}}</p>
-                                </div>
-                            </div>
-                        </div>
-
+                <div class="p-user-detail__header-content">
+                    <div class="management-icon">
+                        <mc-icon name="agent-1"></mc-icon>
                     </div>
-
-
+                    <div class="management-content ">
+                        <div class="management-content__label">
+                            <label class="management-content__label--name">{{entity.profile?.name}}</label>
+                            <div class="management-content__label--delete">
+                                <panel--entity-actions :entity="entity"></panel--entity-actions>
+                            </div>
+                        </div>
+                        <div class="management-content__info">
+                            <p>ID: {{entity.id}}</p>
+                            <p><?= i::__('Último login') ?>: {{entity.lastLoginTimestamp.date('long year')}} <?= i::__('às') ?> {{entity.lastLoginTimestamp.time()}}</p>
+                            <p>
+                                <?= i::__('Status') ?>:
+                                <span v-if="entity.status == 1"><?= i::__('Ativo') ?></span>
+                                <span v-if="entity.status == -10"><?= i::__('Excluído') ?></span>
+                            </p>
+                            <p><?= i::__('Data de criação') ?>: {{entity.createTimestamp.date('long year')}} <?= i::__('às') ?> {{entity.createTimestamp.time()}}</p>
+                        </div>
+                    </div>
                 </div>
             </header>
+            <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
 
-            <div class="content-footer">
-                <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
+            <div class="p-user-detail__account-config">
+
+                <label class="p-user-detail__account-config-label"><?= i::__('Configurações da conta do usuário') ?></label>
+                <p v-if="!entity.editingEmail">
+                    <label class="p-user-detail__account-config-email"><?= i::__('E-mail') ?> : {{entity.email}}</label>
+                    <a @click="entity.editingEmail = true" class="p-user-detail__account-config-edit">
+                        <mc-icon name="edit"></mc-icon><label class="p-user-detail__account-config-edit-label"><?php i::_e('Alterar email') ?></label>
+                    </a>
+                </p>
+                <form class="grid-12 p-user-detail__account-config-form" v-if="entity.editingEmail" @submit="entity.save().then(() => entity.editingEmail = false); $event.preventDefault();">
+                    <div class="col-4">
+                        <entity-field :entity="entity" prop="email" hide-required>
+                    </div>
+                    <button class="col-2 button button--primary button--md"><?php i::_e('Salvar') ?></button>
+                    <button class="col-2 button button--secondary button--md" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
+                </form>
             </div>
-
-            <div class="editing-email col-12">
-                <div class="editing-email__content">
-
-                    <label class="editing-email__content--label"><?= i::__('Configurações da conta do usuário') ?></label>
-                    <p v-if="!entity.editingEmail">
-                        <label class="editing-email__content--email"><?= i::__('E-mail') ?> : {{entity.email}}</label>
-                        <a @click="entity.editingEmail = true" class="editing-email__content--edit">
-                            
-                        <mc-icon name="edit"></mc-icon><label class="editing-email__content--edit-label"><?php i::_e('Alterar email') ?></label>
-                        </a>
-                    </p>
-                    <form class="grid-12" v-if="entity.editingEmail" @submit="entity.save().then(() => entity.editingEmail = false); $event.preventDefault();">
-                        <div class="field col-4">
-                            <entity-field :entity="entity" prop="email" hide-required>
-                        </div>
-                        <button class="col-2 button button-primary"><?php i::_e('Salvar') ?></button>
-                        <button class="col-2 button button-secondary" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
-                    </form>
-                </div>
-
-            </div>
-
-
-
-
         </div>
-        <div class="content-detail">
+
+        <div class="p-user-detail__property-label">
             <h3><?= i::__('Propriedades do usuário') ?></h3>
-
         </div>
-        <div class="footer-content-detail">
+        <div class="p-user-detail__property-content">
             <div class="tabs-component">
-                <tabs class="tabs-component  p-user-detail__content-footer tabs-component--user">
+                <!-- tabs component p-user-detail__content-footer tabs-component--user -->
+                <tabs class="tabs-component__entities"> 
                     <tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" icon='agent' classes="tabs-component-button--active-agent">
                         <user-management--ownership-tabs :user="entity" type="agent" classes="tabs-component__header footer-content-tabs"></user-management--ownership-tabs>
                     </tab>
@@ -130,12 +99,11 @@ $this->import('
                         <user-management--ownership-tabs :user="entity" type="opportunity"></user-management--ownership-tabs>
                     </tab>
 
-                    <tab label="<?= i::esc_attr__('Inscrições') ?>" slug="registrations" icon='registration'>
+                    <tab label="<?= i::esc_attr__('Inscrições') ?>" slug="registrations" icon='opportunity' classes="tabs-component-button--active-registration">
+                        <user-management--ownership-tabs :user="entity" type="registration"></user-management--ownership-tabs>
                     </tab>
                 </tabs>
             </div>
         </div>
-
     </div>
-
 </entity>

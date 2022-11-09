@@ -36,6 +36,8 @@
         &--content {
             align-items: center;
             display: flex;
+            flex-wrap: wrap;
+            gap: size(10);
             justify-content: space-between;
             margin: 0 auto;
             max-width: size(1170);
@@ -105,8 +107,10 @@
             position: relative;
 
             &--left {
+                align-items: center;
                 bottom: size(8);
                 position: absolute;
+                left: size(16);
             }
 
             &--right {

@@ -3,13 +3,14 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+
     entity-admins
     entity-files-list
     entity-gallery
     entity-gallery-video
     entity-header
     entity-list
-    entity-location
+    entity-occurrence-list
     entity-owner
     entity-related-agents
     entity-seals
@@ -55,9 +56,14 @@ $this->breadcramb = [
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-12">
-                                <div v-if="entity.descricaoSonora || entity.traducaoLibras" class="acessibility">
-                                    <label class="acessibility__label"><?php i::_e("Acessibilidade"); ?></label>
+                                <entity-occurrence-list :entity="entity"></entity-occurrence-list>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="acessibility">
+                                    <span class="acessibility__label"><?php i::_e("Acessibilidade"); ?></label>
                                     <div v-if="entity.descricaoSonora" class="acessibility__audio">
                                         <span><?php i::_e("Libras:"); ?></span>{{entity.descricaoSonora}}
                                     </div>
@@ -67,18 +73,31 @@ $this->breadcramb = [
                                 </div>
                             </div>
 
-                            <div class="col-12">
-                                <entity-location :entity="entity"></entity-location>
+                            <div class="col-12 acessibility ">
+                                <div v-if="entity.event_attendance || entity.telefonePublico || entity.registrationInfo" class="event_info__infos">
+                                    <span class="acessibility__label"><?php i::_e("Informações adicionais"); ?></span>
+                                    <div v-if="entity.event_attendance" class="acessibility__attendance">
+                                        <span><?php i::_e("Total de público:"); ?></span> {{entity.event_attendance}}
+                                    </div>
+                                    <div v-if="entity.telefonePublico" class="acessibility__phone">
+                                        <span><?php i::_e("telefone:"); ?></span> {{entity.telefonePublico}}
+                                    </div>
+                                    <div v-if="entity.registrationInfo" class="acessibility__infos">
+                                        <span><?php i::_e("Informações sobre a inscrição:"); ?></span> {{entity.registrationInfo}}
+                                    </div>
+                                </div>
                             </div>
 
-                            <div v-if="entity.longDescription" class="col-12">
+                            <div v-if="entity.longDescription" class="col-12 longDescription">
                                 <h2><?php i::_e('Descrição Detalhada');?></h2>
                                 <p>{{entity.longDescription}}</p>
                             </div>
-
+                          
                             <div class="col-12">
                                 <entity-files-list :entity="entity" group="downloads" title="<?php i::esc_attr_e('Arquivos para download') ?>"></entity-files-list>
                             </div>
+
+                            
 
                             <div class="col-12">
                                 <entity-gallery-video :entity="entity"></entity-gallery-video>

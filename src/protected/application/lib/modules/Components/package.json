@@ -13,6 +13,7 @@
         "@vue-leaflet/vue-leaflet": "^0.6.1",
         "@vuepic/vue-datepicker": "^3.4.8",
         "date-fns": "^2.29.3",
+        "floating-vue": "^2.0.0-beta.20",
         "leaflet": "1.7.1",
         "leaflet.markercluster": "^1.5.3",
         "pinia": "^2.0.22",

@@ -205,9 +205,16 @@ globalThis.Utils = {
                         newQuery[k] = `${not}EQ(${val})`;
                     }
                 } else if (val instanceof Array) {
+                    const isNum = val.every(function(elem) {
+                        return (!isNaN(parseFloat(elem)) && isFinite(elem));
+                    });
                     val = val.join(',');
                     if (val) {
-                        newQuery[k] = `${not}IIN(${val})`;
+                        if (isNum) {
+                            newQuery[k] = `${not}IN(${val})`;
+                        } else {
+                            newQuery[k] = `${not}IIN(${val})`;
+                        }
                     }
                 }
             }

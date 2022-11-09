@@ -9,6 +9,7 @@ import * as Leaflet from 'leaflet';
 import { MarkerClusterGroup } from 'leaflet.markercluster';
 import Datepicker from '@vuepic/vue-datepicker';
 import * as Dates from 'date-fns';
+import * as FloatingVue from 'floating-vue'
 
 
 const app = Vue.createApp({})
@@ -16,6 +17,7 @@ const pinia = Pinia.createPinia()
 
 app.use(pinia)
 app.use(VueFinalModal)
+app.use(FloatingVue)
 app.component('Iconify', Icon)
 app.component('Cropper', VueAdvancedCropper)
 app.component('Datepicker', Datepicker);
