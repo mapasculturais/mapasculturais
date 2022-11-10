@@ -116,11 +116,13 @@ if($entity->dataDeNascimento){
                     </span>
                 </p>
                  <!-- Campo Pessoas idosa -->
+                 <?php if(!is_null($entity->idoso)):?>
                  <p class="privado">
                      <span class="icon icon-private-info"></span>
                      <span class="label"><?php \MapasCulturais\i::_e("Pessoa idosa (a cima de 60 anos)");?>:</span>
-                     <?php $birthday ? \MapasCulturais\i::_e("SIM ({$birthday} anos)") : \MapasCulturais\i::_e("NÂO") ?>
+                     <?php $entity->idoso ? \MapasCulturais\i::_e("SIM") : \MapasCulturais\i::_e("NÂO") ?>
                 </p>
+                <?php endif;?>
                 <!-- Campo Nome Completo -->
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
