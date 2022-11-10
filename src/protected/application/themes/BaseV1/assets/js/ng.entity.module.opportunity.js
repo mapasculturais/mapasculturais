@@ -123,7 +123,7 @@
                     }
                 });
                 
-                return $http.patch(this.getUrl('single', entity.id), data).
+                return $http.patch(this.getUrl('single', entity.id), data, {headers: {forceSave: true}}).
                     success(function(data, status){
                         MapasCulturais.Messages.success(labels['changesSaved']);
                         $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
@@ -1126,7 +1126,23 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.saveRegistration = function () {
-        return RegistrationService.updateFields($scope.data.editableEntity)
+        var fieldsData = {
+            id: $scope.data.editableEntity.id
+        };
+
+        Object.values($scope.data.fields).forEach(function(value){
+            var field = (value.fieldType == "text") ? "field_"+value.id : "rfc_"+value.id;
+           
+            if($scope.data.editableEntity[field] != (value.unchangedFieldJSON && JSON.parse(value.unchangedFieldJSON))){
+                if($scope.data.editableEntity[field]){
+                    fieldsData[field] = $scope.data.editableEntity[field];
+                }else{
+                    fieldsData[field] = null;
+                }
+            }
+        }); 
+
+        return RegistrationService.updateFields(fieldsData)
             .error(function(r) {
                 $scope.data.errors = r.data;
                 for (var key in r.data) {
