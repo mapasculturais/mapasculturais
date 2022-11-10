@@ -59,8 +59,9 @@
                     &--content {
                         align-items: center;
                         background-color: rgba(0,0,0,.3);
-                        display: flex;
+                        display: grid;
                         flex-direction: row;
+                        grid-template-columns: size(64) 1fr;
                         position: absolute;
                         height: 100%;
                         width: 100%;
@@ -99,10 +100,10 @@
                         height: size(156);
 
                         img {
-                            margin-top: -60px;
                             object-fit: cover;
                             -o-object-fit: cover;
                             width: 100%;
+                            min-height: 100%;
                         }
                     }
                 }

@@ -23,5 +23,5 @@ $this->import('home-search');
             </div>
         </div>
     </div>
-    <home-search></home-search>
+    <!-- <home-search></home-search> -->
 </div>
