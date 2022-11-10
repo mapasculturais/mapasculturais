@@ -26,15 +26,6 @@ return array(
             'available_for_opportunities' => true,
         ),
 
-        'mei' => array(
-            'private' => true,
-            'label' => \MapasCulturais\i::__('CNPJ do MEI'),
-            'validations' => array(
-                'v::oneOf(v::cpf(),v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.')
-             ),
-            'available_for_opportunities' => true,
-        ),
-
         'escolaridade' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Escolaridade'),
@@ -93,10 +84,56 @@ return array(
         'documento' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF ou CNPJ'),
+            'serialize' => function($value, $entity = null){
+                $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
+                    if($entity->type && $entity->type->id == 1){
+                        $entity->cpf = $value;
+                    }else if($entity->type && $entity->type->id == 2){
+                        $entity->cnpj = $value;
+                    }
+               });
+
+                return $value;
+            },
             'validations' => array(
                'v::oneOf(v::cpf(),v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.')
             ),
             'available_for_opportunities' => true
+        ),
+
+        'cnpj' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNPJ'),
+            'serialize' => function($value, $entity = null){
+                $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
+                    if($entity->type && $entity->type->id == 2){
+                        $entity->documento = $value;
+                    }
+                });
+
+                return $value;
+            },
+            'validations' => array(
+                'v::oneOf(v::cnpj())' => \MapasCulturais\i::__('O número de CNPJ informado é inválido.')
+             ),
+            'available_for_opportunities' => true,
+        ),
+        'cpf' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CPF'),
+            'serialize' => function($value, $entity = null){
+                $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
+                    if($entity->type && $entity->type->id == 1){
+                        $entity->documento = $value;
+                    }
+                });
+
+                return $value;
+            },
+            'validations' => array(
+                'v::oneOf(v::cpf())' => \MapasCulturais\i::__('O número de CPF informado é inválido.')
+             ),
+            'available_for_opportunities' => true,
         ),
 
         'raca' => array(
@@ -118,9 +155,33 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Data de Nascimento/Fundação'),
             'type' => 'date',
+            'serialize' => function($value, $entity = null){
+               $this->hook("entity(<<*>>).save:before", function() use ($entity){
+                    /** @var MapasCulturais\Entity $entity */
+                    if($this->equals($entity)){
+                        $this->idoso = 1; 
+                    }
+               });
+               return $value;
+            },
             'validations' => array(
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
             ),
+            'available_for_opportunities' => true
+        ),
+        'idoso' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Pessoa idosa'),
+            'type' => 'readonly',
+            'serialize' => function($value, $entity = null){
+                if($entity->dataDeNascimento){
+                    $today = new DateTime('now');
+                    $calc = (new DateTime($entity->dataDeNascimento))->diff($today);
+                    return ($calc->y >= 60) ? "1" : "0";
+                }else{
+                    return null;
+                }
+            },
             'available_for_opportunities' => true
         ),
 

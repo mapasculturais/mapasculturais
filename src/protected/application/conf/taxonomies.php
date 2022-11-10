@@ -109,5 +109,16 @@ return array(
             i::__('Teatro'),
             i::__('Outros')
         )
+    ),
+    4 => array(
+        'slug' => 'funcao',
+        'required' => i::__("Função"),
+        'entities' => array(
+            'MapasCulturais\Entities\Agent'
+        ),
+
+        'restricted_terms' => array(
+            i::__('Artes Circenses'),
+        )
     )
 );
