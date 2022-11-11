@@ -344,7 +344,6 @@ class Controller extends \MapasCulturais\Controller
          }
          
          //Caso exista espaço informado significa inserção de ocorrência
-         if($value['SPACE'] || $value['FREQUENCY']){
             //Verificação do espaço
 
             $collum_spa = 'id';
@@ -432,8 +431,6 @@ class Controller extends \MapasCulturais\Controller
             if($value['EVENT_ATTENDANCE'] && !is_numeric($value['EVENT_ATTENDANCE'])){
                $errors[$key+1][] = i::__("A coluna total de público é inválida. Essa coluna so aceita números");
             }
-
-         }
          
       }
     
@@ -442,7 +439,50 @@ class Controller extends \MapasCulturais\Controller
          exit;
       }
 
-      $this->insertEvent($data, $file_dir, $languages, $tags);
+      $countNewEvent = 0;
+      $eventsIdList = [];
+      $error_process = false;
+      foreach ($data as $key => $value) {
+         $app->em->beginTransaction();
+         if($event = $this->insertEvent($value)){
+            $ocurrence = $this->createOcurrency($event, $value, $key);
+            $file = $this->downloadFile($event, $value);
+            $metalist = $this->createMetalists($event, $value);
+            if($ocurrence && $file && $metalist){
+               $countNewEvent++;
+               $eventsIdList[] = $event->id;
+               $app->em->commit();
+            }else{
+               $error_process = true;
+               $errors[$key+1][] = i::__("Evento {$event->name} Não foi inserido");
+            }
+            
+         }
+      }
+
+      if($countNewEvent >= 1){
+         $_agent = $app->user->profile;
+         $files = $_agent->event_importer_processed_file ?? new stdClass();
+         $files->{basename($file_dir)} = [
+            'date' => date('d/m/Y \à\s H:i'),
+            'countProsess' => $countNewEvent,
+            'eventsIdList' => $eventsIdList
+         ];
+         $_agent->event_importer_processed_file = $files;
+         $_agent->save(true);
+         
+         if($error_process){
+            $this->render("import-erros", ["errors" => $errors, 'filename' => basename($file_dir)]);
+            exit; 
+         }
+      }else{
+         $this->render("import-erros", ["errors" => $errors, 'filename' => basename($file_dir)]);
+         exit;
+      }
+
+      $url = $app->createUrl("painel", "eventos");
+      $app->redirect($url."#tab=event-importer");
+      
    }
 
    public function checkCollum($value)
@@ -455,17 +495,20 @@ class Controller extends \MapasCulturais\Controller
    }
 
 
-   public function insertEvent($data, $file_dir, $languages, $tags)
+   public function insertEvent($value)
    {
-      $app = App::i();
-
-      $countProsess = 0;
-      $eventsIdList = [];
-      foreach ($data as $key => $value) {
+     try {
+         $app = App::i();
 
          $collum_proj = $this->checkCollum($value['PROJECT']);
          $project = $app->repo("Project")->findOneBy([$collum_proj => $value['PROJECT']]);
          $agent = $app->repo('Agent')->find($value['OWNER']);
+         $languages = explode(';', $value['LANGUAGE']);
+
+         $tags = [];
+         if($value['TAGS']){
+            $tags = explode(';', $value['TAGS']);
+         }
 
          $event = new Event();
          if(!empty($value['EVENT_ID'])){
@@ -493,220 +536,206 @@ class Controller extends \MapasCulturais\Controller
          $event->descricaoSonora = $value['AUDIO_DESCRIPTION'];
          $event->terms['tag'] = $tags;
          $event->save(true);
-     
-         if($value['SPACE']){
-            $this->createOcurrency($event, $value, $key);
-         }
-         
-         $this->downloadFile($event, $value);
-         $this->createMetalists($value, $event);
-         $countProsess++;
-         $eventsIdList[] = $event->id;
-      }
 
-
-         $_agent = $app->user->profile;
-         $files = $_agent->event_importer_processed_file ?? new stdClass();
-         $files->{basename($file_dir)} = [
-            'date' => date('d/m/Y \à\s H:i'),
-            'countProsess' => $countProsess,
-            'eventsIdList' => $eventsIdList
-         ];
-         $_agent->event_importer_processed_file = $files;
-         $_agent->save(true);
-         
-         $url = $app->createUrl("painel", "eventos");
-         $app->redirect($url."#tab=event-importer");
+         return $event;
+     } catch (\Throwable $th) {
+         return false;
+     }         
    }
 
 
    public function createOcurrency($event, $value, $key)
    {
-      $app = App::i();
+      try {
+         $app = App::i();
 
-      $moduleConfig = $app->modules['EventImporter']->config;
-
-      $freq = mb_strtolower($value['FREQUENCY']);
-      $ocurrence = new EventOccurrence();    
-
-      $duration = function() use ($value){
-         $start = $this->formatDate($value['STARTS_AT']);
-         $stop = $this->formatDate($value['ENDS_AT']);
-         $diferenca = strtotime($stop) - strtotime($start);
-
-         return ($diferenca / 60);
-      };
-
-      $collum = $this->checkCollum($value['SPACE']);
-      $space = $app->repo("Space")->findOneBy([$collum => $value['SPACE']]);
-
-      $rule = [
-         "spaceId" => $space->id,
-         "startsOn" => $this->formatDate($value['STARTS_ON'], "Y-m-d"),
-         "duration" => $duration(),
-         "frequency" => $moduleConfig['frequence_list_allowed'][$freq],
-         "startsAt" => $this->formatDate($value['STARTS_AT'], "H:i"),
-         "until" => (!empty($value['ENDS_ON']) && $value['ENDS_ON'] !="")? $this->formatDate($value['ENDS_ON'], "Y-m-d") :null,
-         "price" => $value['PRICE'],
-         "description" => "",
-      ];
-     
-      switch (mb_strtolower($value['FREQUENCY'])) {
-         case i::__('diariamente'):
-         case i::__('todos os dias'):
-         case i::__('diario'):
-         case i::__('daily'):
-            $exec = function () use (&$ocurrence, $value, $app, &$rule) {
-
-               $ocurrence->endsAt = $this->formatDate($value['ENDS_AT'], false);
-               $rule['description'].= i::__('Diariamente');
-
-               $months[$value['STARTS_ON']] = $value['STARTS_ON'];
-               $months[$value['ENDS_ON']] = $value['ENDS_ON'];
+         $moduleConfig = $app->modules['EventImporter']->config;
+   
+         $freq = mb_strtolower($value['FREQUENCY']);
+         $ocurrence = new EventOccurrence();    
+   
+         $duration = function() use ($value){
+            $start = $this->formatDate($value['STARTS_AT']);
+            $stop = $this->formatDate($value['ENDS_AT']);
+            $diferenca = strtotime($stop) - strtotime($start);
+   
+            return ($diferenca / 60);
+         };
+   
+         $collum = $this->checkCollum($value['SPACE']);
+         $space = $app->repo("Space")->findOneBy([$collum => $value['SPACE']]);
+   
+         $rule = [
+            "spaceId" => $space->id,
+            "startsOn" => $this->formatDate($value['STARTS_ON'], "Y-m-d"),
+            "duration" => $duration(),
+            "frequency" => $moduleConfig['frequence_list_allowed'][$freq],
+            "startsAt" => $this->formatDate($value['STARTS_AT'], "H:i"),
+            "until" => (!empty($value['ENDS_ON']) && $value['ENDS_ON'] !="")? $this->formatDate($value['ENDS_ON'], "Y-m-d") :null,
+            "price" => $value['PRICE'],
+            "description" => "",
+         ];
+        
+         switch (mb_strtolower($value['FREQUENCY'])) {
+            case i::__('diariamente'):
+            case i::__('todos os dias'):
+            case i::__('diario'):
+            case i::__('daily'):
+               $exec = function () use (&$ocurrence, $value, $app, &$rule) {
+   
+                  $ocurrence->endsAt = $this->formatDate($value['ENDS_AT'], false);
+                  $rule['description'].= i::__('Diariamente');
+   
+                  $months[$value['STARTS_ON']] = $value['STARTS_ON'];
+                  $months[$value['ENDS_ON']] = $value['ENDS_ON'];
+                  
+                  $_months = array_keys($months);
                
-               $_months = array_keys($months);
-            
-               $dateIn = $this->formatDate($_months[0], false);
-               $dateFn = $this->formatDate($_months[1], false);
-               
-               $years[$dateIn->format("Y")] = $dateIn->format("Y");
-               $years[$dateFn->format("Y")] = $dateFn->format("Y");
-               $_years = array_keys($years);
-
-               $yearIn = null;
-               $yearFn = null;
-               if(count($_years) == 1){
-                  $yearFn = " de ".$this->formatDate($_years[0], "Y");
-               }else{
-                  if(isset($_years[0]) && isset($_years[0])){
-                     $yearIn = " de ".$this->formatDate($_years[0], "Y");
-                     $yearFn = " de ".$this->formatDate($_years[1], "Y");
-                  }else{
-                     $yearFn = " de ".$this->formatDate($_years[0], "Y");
-                  }
-               }
-              
-               $start = $this->formatDate($value['STARTS_AT'], false);
-               if(count($_months) == 1){
+                  $dateIn = $this->formatDate($_months[0], false);
                   $dateFn = $this->formatDate($_months[1], false);
-                  $rule['description'].= " de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearIn}  às {$start->format("H:i")}";
-               }else{
-                  $rule['description'].= " de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}";
-               }
-            };
-            break;
-         case i::__('semanal'):
-         case i::__('toda semana'):
-         case i::__('weekly'):
-            $exec = function () use ($ocurrence, $value, $app, &$rule) {
-
-               $ocurrence->endsOn = $this->formatDate($value['ENDS_ON'], false);
-
-               $moduleConfig = $app->modules['EventImporter']->config;
-
-               $week_days = array_keys($moduleConfig['week_days']);
-               $days_list_positive = $moduleConfig['days_list_positive'];
-
-               $days = [];
-               foreach ($week_days as $key => $day) {
-                  if (in_array($value[$day], $days_list_positive)) {
-                     $days[$key] = "on";
-                  }
-               }
-
-               $rule['endsOn'] = $this->formatDate($value['ENDS_ON'], "Y-m-d");
-               $rule['day'] = $days;
-
-               $count = count($days);
-               $d = array_values($moduleConfig['week_days']);
-               
-               if($days){
-                  $rule['description'] = "Toda ";
-                  foreach($days as $key => $day){
-            
-                     if($count == 1){
-                        $rule['description'].= i::__(' e ');
+                  
+                  $years[$dateIn->format("Y")] = $dateIn->format("Y");
+                  $years[$dateFn->format("Y")] = $dateFn->format("Y");
+                  $_years = array_keys($years);
+   
+                  $yearIn = null;
+                  $yearFn = null;
+                  if(count($_years) == 1){
+                     $yearFn = " de ".$this->formatDate($_years[0], "Y");
+                  }else{
+                     if(isset($_years[0]) && isset($_years[0])){
+                        $yearIn = " de ".$this->formatDate($_years[0], "Y");
+                        $yearFn = " de ".$this->formatDate($_years[1], "Y");
+                     }else{
+                        $yearFn = " de ".$this->formatDate($_years[0], "Y");
                      }
+                  }
                  
-                     $rule['description'].= $d[$key];
-            
-                     if($count > 2){
-                        $rule['description'].= i::__(', ');
+                  $start = $this->formatDate($value['STARTS_AT'], false);
+                  if(count($_months) == 1){
+                     $dateFn = $this->formatDate($_months[1], false);
+                     $rule['description'].= " de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearIn}  às {$start->format("H:i")}";
+                  }else{
+                     $rule['description'].= " de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}";
+                  }
+               };
+               break;
+            case i::__('semanal'):
+            case i::__('toda semana'):
+            case i::__('weekly'):
+               $exec = function () use ($ocurrence, $value, $app, &$rule) {
+   
+                  $ocurrence->endsOn = $this->formatDate($value['ENDS_ON'], false);
+   
+                  $moduleConfig = $app->modules['EventImporter']->config;
+   
+                  $week_days = array_keys($moduleConfig['week_days']);
+                  $days_list_positive = $moduleConfig['days_list_positive'];
+   
+                  $days = [];
+                  foreach ($week_days as $key => $day) {
+                     if (in_array($value[$day], $days_list_positive)) {
+                        $days[$key] = "on";
+                     }
+                  }
+   
+                  $rule['endsOn'] = $this->formatDate($value['ENDS_ON'], "Y-m-d");
+                  $rule['day'] = $days;
+   
+                  $count = count($days);
+                  $d = array_values($moduleConfig['week_days']);
+                  
+                  if($days){
+                     $rule['description'] = "Toda ";
+                     foreach($days as $key => $day){
+               
+                        if($count == 1){
+                           $rule['description'].= i::__(' e ');
+                        }
+                    
+                        $rule['description'].= $d[$key];
+               
+                        if($count > 2){
+                           $rule['description'].= i::__(', ');
+                        }
+      
+                        $count;
                      }
    
-                     $count;
+                     $rule['description'].= i::__(' ');
                   }
-
-                  $rule['description'].= i::__(' ');
-               }
-              
-               $months[$value['STARTS_ON']] = $value['STARTS_ON'];
-               $months[$value['ENDS_ON']] = $value['ENDS_ON'];
-
-               $_months = array_keys($months);
-
-               $dateIn = $this->formatDate($_months[0], false);
-               $dateFn = $this->formatDate($_months[1], false);
-               
-               $years[$dateIn->format("Y")] = $dateIn->format("Y");
-               $years[$dateFn->format("Y")] = $dateFn->format("Y");
-               $_years = array_keys($years);
-              
-               $yearIn = null;
-               $yearFn = null;
-               if(count($_years) == 1){
-                  $yearFn = i::__(" de ".$this->formatDate($_years[0], "Y"));
-               }else{
-                  if(isset($_years[0]) && isset($_years[0])){
-                     $yearIn = i::__(" de ".$this->formatDate($_years[0], "Y"));
-                     $yearFn = i::__(" de ".$this->formatDate($_years[1], "Y"));
-                  }else{
-                     $yearFn = i::__(" de ".$this->formatDate($_years[0], "Y"));
-                  }
-               }
-            
-               $start = $this->formatDate($value['STARTS_AT'], false);
-               if(count($_months) == 1){
-                  $rule['description'].= i::__("de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearFn}  às {$start->format("H:i")}");
-               }else{
+                 
+                  $months[$value['STARTS_ON']] = $value['STARTS_ON'];
+                  $months[$value['ENDS_ON']] = $value['ENDS_ON'];
+   
+                  $_months = array_keys($months);
+   
+                  $dateIn = $this->formatDate($_months[0], false);
                   $dateFn = $this->formatDate($_months[1], false);
-                  $rule['description'].= i::__("de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}");
-               }
+                  
+                  $years[$dateIn->format("Y")] = $dateIn->format("Y");
+                  $years[$dateFn->format("Y")] = $dateFn->format("Y");
+                  $_years = array_keys($years);
+                 
+                  $yearIn = null;
+                  $yearFn = null;
+                  if(count($_years) == 1){
+                     $yearFn = i::__(" de ".$this->formatDate($_years[0], "Y"));
+                  }else{
+                     if(isset($_years[0]) && isset($_years[0])){
+                        $yearIn = i::__(" de ".$this->formatDate($_years[0], "Y"));
+                        $yearFn = i::__(" de ".$this->formatDate($_years[1], "Y"));
+                     }else{
+                        $yearFn = i::__(" de ".$this->formatDate($_years[0], "Y"));
+                     }
+                  }
                
-            };
-            break;
-         case i::__('uma vez'):
-         case i::__('once'):
-            $exec = function () use ($ocurrence, $value, $app, &$rule) {
-
-               $dateIn = $this->formatDate($value['STARTS_ON'], false);
-               $start = $this->formatDate($value['STARTS_AT'], false);
-
-               $rule['description'].= i::__("Dia {$dateIn->format("d")} de {$dateIn->format("F")} de {$dateIn->format("Y")} às {$start->format("H:i")}");
-            };
-            break;
+                  $start = $this->formatDate($value['STARTS_AT'], false);
+                  if(count($_months) == 1){
+                     $rule['description'].= i::__("de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearFn}  às {$start->format("H:i")}");
+                  }else{
+                     $dateFn = $this->formatDate($_months[1], false);
+                     $rule['description'].= i::__("de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}");
+                  }
+                  
+               };
+               break;
+            case i::__('uma vez'):
+            case i::__('once'):
+               $exec = function () use ($ocurrence, $value, $app, &$rule) {
+   
+                  $dateIn = $this->formatDate($value['STARTS_ON'], false);
+                  $start = $this->formatDate($value['STARTS_AT'], false);
+   
+                  $rule['description'].= i::__("Dia {$dateIn->format("d")} de {$dateIn->format("F")} de {$dateIn->format("Y")} às {$start->format("H:i")}");
+               };
+               break;
+         }
+   
+         $exec();
+         
+         $from = array_keys($moduleConfig['dic_months']);
+         $to = array_values($moduleConfig['dic_months']);
+         $rule['description'] = str_replace($from, $to, $rule['description']);
+         
+         $ocurrence->startsAt = $this->formatDate($value['STARTS_AT'], false);
+         $ocurrence->endsAt = $this->formatDate($value['ENDS_AT'], false);
+         $ocurrence->startOn = $this->formatDate($value['STARTS_ON'], false);
+         $ocurrence->frequency = $moduleConfig['frequence_list_allowed'][$freq];
+         $ocurrence->status = EventOccurrence::STATUS_ENABLED;
+         $ocurrence->event = $event;
+         $ocurrence->space = $space;
+         $ocurrence->separation = 1;
+         $ocurrence->timezoneName = 'Etc/UTC';
+         $ocurrence->rule = $rule;
+   
+         $app->disableAccessControl();
+         $ocurrence->save(true);
+         $app->enableAccessControl();
+         return true;
+      } catch (\Throwable $th) {
+         return false;
       }
-
-      $exec();
-      
-      $from = array_keys($moduleConfig['dic_months']);
-      $to = array_values($moduleConfig['dic_months']);
-      $rule['description'] = str_replace($from, $to, $rule['description']);
-      
-      $ocurrence->startsAt = $this->formatDate($value['STARTS_AT'], false);
-      $ocurrence->endsAt = $this->formatDate($value['ENDS_AT'], false);
-      $ocurrence->startOn = $this->formatDate($value['STARTS_ON'], false);
-      $ocurrence->frequency = $moduleConfig['frequence_list_allowed'][$freq];
-      $ocurrence->status = EventOccurrence::STATUS_ENABLED;
-      $ocurrence->event = $event;
-      $ocurrence->space = $space;
-      $ocurrence->separation = 1;
-      $ocurrence->timezoneName = 'Etc/UTC';
-      $ocurrence->rule = $rule;
-
-      $app->disableAccessControl();
-      $ocurrence->save(true);
-      $app->enableAccessControl();
    }
 
    protected function downloadFile(Entity $owner, $value)
@@ -717,6 +746,7 @@ class Controller extends \MapasCulturais\Controller
       
       $files_grp_import = $moduleConfig['files_grp_import'];
       
+      $no_error = true;
       foreach ($files_grp_import as $key => $grp_import) {
          
          if(!empty($value[$key]) || $value[$key] != ""){
@@ -724,87 +754,102 @@ class Controller extends \MapasCulturais\Controller
                $gallery_list = $this->matches($value[$key]);
    
                foreach($gallery_list as $item){
-                  $this->saveFile($item, $owner, $grp_import);
+                  if(!$no_error && !$this->saveFile($item, $owner, $grp_import)){
+                     $no_error = false;
+                  }
                }
             }else{
-               $this->saveFile($value[$key], $owner, $grp_import);
+               if(!$no_error && !$this->saveFile($value[$key], $owner, $grp_import)){
+                  $no_error = false;
+               }
             }
          }
       }
+
+      return $no_error;
    }
 
    public function saveFile($value, $owner, $grp_import)
    {
+      try {
+         $exp = explode(":", $value);
 
-      $exp = explode(":", $value);
+         $_file = $exp[0].":".$exp[1];
+         $description = isset($exp[2]) ? $exp[2] : null;
 
-      $_file = $exp[0].":".$exp[1];
-      $description = isset($exp[2]) ? $exp[2] : null;
+         $basename = basename($_file);
+         $file_data = str_replace($basename, urlencode($basename), $_file);
 
-      $basename = basename($_file);
-      $file_data = str_replace($basename, urlencode($basename), $_file);
+         $ch = curl_init($file_data);
+         $tmp = tempnam("/tmp", "");
+         $handle = fopen($tmp, "wb");
+      
+         if (!$this->urlFileExists($_file)) {
+            fclose($handle);
+            unlink($tmp);
+            return false;
+         }
+   
+         curl_setopt($ch, CURLOPT_FILE, $handle);
 
-      $ch = curl_init($file_data);
-      $tmp = tempnam("/tmp", "");
-      $handle = fopen($tmp, "wb");
-     
-      if (!$this->urlFileExists($_file)) {
+         if (!curl_exec($ch)) {
+            fclose($handle);
+            unlink($tmp);
+            return false;
+         }
+
+         curl_close($ch);
+         $sz = ftell($handle);
          fclose($handle);
-         unlink($tmp);
+
+         $class_name = $owner->fileClassName;
+
+         $file = new $class_name([
+            "name" => $basename,
+            "type" => mime_content_type($tmp),
+            "tmp_name" => $tmp,
+            "error" => 0,
+            "size" => filesize($tmp)
+         ]);
+
+         $file->group = $grp_import;
+         $file->owner = $owner;
+         $file->description = $description;
+         $file->save(true);
+         return true;
+      } catch (\Throwable $th) {
          return false;
       }
- 
-      curl_setopt($ch, CURLOPT_FILE, $handle);
-
-      if (!curl_exec($ch)) {
-         fclose($handle);
-         unlink($tmp);
-         return false;
-      }
-
-      curl_close($ch);
-      $sz = ftell($handle);
-      fclose($handle);
-
-      $class_name = $owner->fileClassName;
-
-      $file = new $class_name([
-         "name" => $basename,
-         "type" => mime_content_type($tmp),
-         "tmp_name" => $tmp,
-         "error" => 0,
-         "size" => filesize($tmp)
-      ]);
-
-      $file->group = $grp_import;
-      $file->owner = $owner;
-      $file->description = $description;
-      $file->save(true);
    }
 
-   public function createMetalists($value, Entity $owner)
+   public function createMetalists(Entity $owner, $value)
    {
-      $app = App::i();
+      try {
+         $app = App::i();
 
-      $moduleConfig = $app->modules['EventImporter']->config;
-      
-      $metalists_import = $moduleConfig['metalists_import'];
-      foreach($metalists_import as $key => $metalist){
-         $lists = $this->matches($value[$metalist]);
-         foreach($lists as $item){
-            $exp = explode(":", $item);
+         $moduleConfig = $app->modules['EventImporter']->config;
+         
+         $metalists_import = $moduleConfig['metalists_import'];
+         foreach($metalists_import as $key => $metalist){
+            $lists = $this->matches($value[$metalist]);
+            foreach($lists as $item){
+               $exp = explode(":", $item);
 
-            $url = $exp[0].":".$exp[1];
-            $title = isset($exp[2]) ? $exp[2] : null;
+               $url = $exp[0].":".$exp[1];
+               $title = isset($exp[2]) ? $exp[2] : null;
 
-            $metaList = new MetaList();
-            $metaList->owner = $owner;
-            $group = (strpos($url, 'youtube') > 0 || strpos($url, 'youtu.be') > 0 || strpos($url, 'vimeo') > 0) ? 'videos' : 'links';
-            $metaList->group = $group;
-            $metaList->title = $title ?? "" ;
-            $metaList->value = $url ?? "";
-            $metaList->save(true);
+               $metaList = new MetaList();
+               $metaList->owner = $owner;
+               $group = (strpos($url, 'youtube') > 0 || strpos($url, 'youtu.be') > 0 || strpos($url, 'vimeo') > 0) ? 'videos' : 'links';
+               $metaList->group = $group;
+               $metaList->title = $title ?? "" ;
+               $metaList->value = $url ?? "";
+               $metaList->save(true);
+            }
          }
+         return true;
+      } catch (\Throwable $th) {
+         return false;
       }
    }
 
