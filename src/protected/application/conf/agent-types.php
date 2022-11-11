@@ -20,12 +20,6 @@ return array(
             'available_for_opportunities' => true,
         ),
 
-        'funcao' => array(
-            'private' => true,
-            'label' => \MapasCulturais\i::__('Função'),
-            'available_for_opportunities' => true,
-        ),
-
         'escolaridade' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Escolaridade'),
