@@ -68,14 +68,6 @@ if($entity->dataDeNascimento){
                         <?php echo $entity->nomeSocial; ?>
                     </span>
                 </p>
-                <!-- Campo Função -->
-                <p class="privado">
-                    <span class="icon icon-private-info"></span>
-                    <span class="label"><?php \MapasCulturais\i::_e("Função");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"funcao") && $editEntity? 'required': '');?>" data-edit="funcao" data-original-title="<?php \MapasCulturais\i::esc_attr_e("função");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe sua função");?>">
-                        <?php echo $entity->funcao; ?>
-                    </span>
-                </p>
                   <!-- Campo Mei -->
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
