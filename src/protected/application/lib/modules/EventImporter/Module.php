@@ -74,6 +74,7 @@ class Module extends \MapasCulturais\Module
                 'LINKS'
             ],
             "header_default" => [
+                'EVENT_ID' => [i::__('id_evento') ,i::__('id evento') ,i::__('evento_id'), i::__('evento'),'id', 'event_id', 'event'],
                 'NAME' => [i::__('nome'),'name'],
                 'SUBTITLE' => ['subtitle', i::__('subtítulo')],
                 'SHORT_DESCRIPTION' => ['short_description', i::__('descrição curta'), i::__('descrição_curta')],
@@ -117,6 +118,10 @@ class Module extends \MapasCulturais\Module
                 'LINKS' => ['links'],
             ],
             "header_example" => [
+                i::__('ID_EVENTO') => [
+                    i::__('PREENCHER SOMENTE CASO QUEIRA EDITAR UM EVENTO EXISTENTE - Informar ID do evento'),
+                    i::__('1')
+                ],
                 i::__('NOME') => [
                     i::__('PREENCHIMENTO OBRIGATÓRIO - Informar nome do evento'),
                     i::__('Show da banda O Tranco')
@@ -186,12 +191,12 @@ class Module extends \MapasCulturais\Module
                     i::__('Livre')
                 ],
                 i::__('LINGUAGEM') => [
-                    i::__('PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as com virgula'),
-                    i::__("Teatro, Música Popular, Livro e Poesia"),
+                    i::__('PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as com ponto e virgula, ;'),
+                    i::__("Teatro;Música Popular;Livro e Poesia"),
                 ],
                 i::__('TAGS') => [
-                    i::__('Informar as tags do evento separando-as com virgula'),
-                    i::__("Cultura, Musica, Arte")
+                    i::__('Informar as tags do evento separando-as com ponto e virgula, ;'),
+                    i::__("Cultura;Musica;Arte")
                 ],
                 i::__('PROJETO') => [
                     i::__('Informar o nome ou ID do projeto que o evento esta vinculado'),
