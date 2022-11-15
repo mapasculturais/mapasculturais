@@ -1,5 +1,5 @@
-app.component('search-list-events', {
-    template: $TEMPLATES['search-list-events'],
+app.component('search-list-event', {
+    template: $TEMPLATES['search-list-event'],
     
     created() {
         this.currentDate = null;
