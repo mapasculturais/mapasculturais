@@ -84,7 +84,6 @@ app.component('mc-multiselect', {
 
     methods: {
         highlightedItem(item) {
-            /* Verificar necessidade de refatoração */
             const _filter = this.model.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const _item = item.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const indexOf = _item.indexOf(_filter);
@@ -99,13 +98,11 @@ app.component('mc-multiselect', {
         },
 
         remove(key) {
-            /* Refatorar para adequar às modificações */
             const indexOf = this.model.indexOf(key);
             this.model.splice(indexOf,1);
         },
 
         toggleItem(key) {
-            /* Refatorar para adequar às modificações */ 
             if (this.model.indexOf(key) >= 0) {
                 this.remove(key);
             } else {
