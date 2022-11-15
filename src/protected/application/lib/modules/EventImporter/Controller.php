@@ -203,6 +203,52 @@ class Controller extends \MapasCulturais\Controller
       ];
      
    }
+
+   public function typeProcessMap($value)
+   {
+      $options = [
+         "create_event" => function() use($value){
+            return (empty($value['EVENT_ID'])) ? true : false;
+         },
+         "edit_event" => function() use($value){
+            if($value["EVENT_ID"]){
+               unset($value["EVENT_ID"]);
+               if(!empty(array_filter($value))){
+                  return true;
+               }
+            }
+
+            return false;
+         },
+         "delete_event" => function() use($value){
+            if($value["EVENT_ID"]){
+               unset($value["EVENT_ID"]);
+               if(empty(array_filter($value))){
+                  return true;
+               }
+            }
+
+            return false;
+         },
+         "create_ocurrence" => function() use($value){
+            return (empty($value['EVENT_ID']) && !empty($value['SPACE'])) ? true : false;
+         },
+         "edit_ocurrence" => function() use($value){
+            return (!empty($value['EVENT_ID']) && !empty($value['SPACE'])) ? true : false;
+         },
+         
+
+      ];
+
+      $result = [];
+      foreach($options as $key => $option){
+         $result[$key] = $option();
+      }
+      
+    
+     return (object)$result;
+
+   }
    
 
    //Processa dados do arquivo
@@ -260,7 +306,9 @@ class Controller extends \MapasCulturais\Controller
          if(empty(array_filter($value))){
             continue;
          }
-       
+
+         $type_process_map = $this->typeProcessMap($value);
+
          $value['STARTS_AT'] = $this->formatDate($value['STARTS_AT'], "H:i");
          $value['ENDS_AT'] = $this->formatDate($value['ENDS_AT'], "H:i");
          $value['STARTS_ON'] = $this->formatDate($value['STARTS_ON'], "Y-m-d");
@@ -278,74 +326,76 @@ class Controller extends \MapasCulturais\Controller
             }
          }
 
-         if(empty($value['NAME']) || $value['NAME'] == ''){
-            $errors[$key+1][] = i::__("A coluna nome está vazia");
-         }
-
-         if(empty($value['SHORT_DESCRIPTION']) || $value['SHORT_DESCRIPTION'] == ''){
-            $errors[$key+1][] = i::__("A coluna descrição curta está vazia");
-         }
-
-         if(empty($value['CLASSIFICATION']) || $value['CLASSIFICATION'] == ''){
-            $errors[$key+1][] = i::__("A coluna classificação estária está vazia");
-         }
-
-         if (!in_array($value['CLASSIFICATION'],$moduleConfig['rating_list_allowed'])) {
-            $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
-            $errors[$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são {$rating_str}");
-         }
-
-         //Validação das linguagens
-         $languages = explode(';', $value['LANGUAGE']);
-         if (!$languages) {
-            $errors[$key+1][] = i::__("A coluna linguagem está vazia");
-         }
-
-         //Tratamento da lista
-         $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
-
-         foreach ($languages as $language) {
-            $_language = mb_strtolower(trim($language));
-
-            if (!in_array(trim($_language), array_keys($languages_list))) {
-               $errors[$key+1][] = i::__("A linguagem {$_language} não existe");
+         if($type_process_map->create_event){
+            if(empty($value['NAME']) || $value['NAME'] == ''){
+               $errors[$key+1][] = i::__("A coluna nome está vazia");
             }
-         }
 
-         // Validação das tags
-         $tags = [];
-         if($value['TAGS']){
-            $tags = explode(';', $value['TAGS']);
-         }
- 
-         //Validação do projeto
-         if($value['PROJECT']){
-            $collum = $this->checkCollum($value['PROJECT']);
-            if(!$projects = $conn->fetchAll("SELECT * FROM project WHERE status >= 1 AND {$collum} = '{$value['PROJECT']}'")) {
-               $errors[$key+1][] = i::__("O projeto não está cadastrado");
+            if(empty($value['SHORT_DESCRIPTION']) || $value['SHORT_DESCRIPTION'] == ''){
+               $errors[$key+1][] = i::__("A coluna descrição curta está vazia");
             }
-   
-            if ($collum == 'name') {
-               if (count($projects) > 1){
-                  $errors[$key+1][] = i::__("Existe mais de um projeto com o nome {$value['PROJECT']}. Para proseguir, informe o ID do projeto que quer associar ao evento");
+
+            if(empty($value['CLASSIFICATION']) || $value['CLASSIFICATION'] == ''){
+               $errors[$key+1][] = i::__("A coluna classificação estária está vazia");
+            }
+
+            if (!in_array($value['CLASSIFICATION'],$moduleConfig['rating_list_allowed'])) {
+               $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
+               $errors[$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são {$rating_str}");
+            }
+
+            //Validação das linguagens
+            $languages = explode(';', $value['LANGUAGE']);
+            if (!$languages) {
+               $errors[$key+1][] = i::__("A coluna linguagem está vazia");
+            }
+
+            //Tratamento da lista
+            $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
+
+            foreach ($languages as $language) {
+               $_language = mb_strtolower(trim($language));
+
+               if (!in_array(trim($_language), array_keys($languages_list))) {
+                  $errors[$key+1][] = i::__("A linguagem {$_language} não existe");
                }
             }
-         }
 
-         //Validação do agente responsavel 
-         if(!is_numeric($value['OWNER'])){
-            $errors[$key+1][] = i::__("A coluna proprietário espera o número ID do agente. ");
-         }else{
-            if(empty($value['OWNER']) || ($value['OWNER'] == "")){
-               $errors[$key+1][] = i::__("A coluna agente é obrigatória. Informo o ID do agente responsável");
-            } else if(!$conn->fetchAll("SELECT * FROM agent WHERE status >= 1 AND id = {$value['OWNER']}")) {
-               $errors[$key+1][] = i::__("O a gente não esta cadastrado");
+            // Validação das tags
+            $tags = [];
+            if($value['TAGS']){
+               $tags = explode(';', $value['TAGS']);
+            }
+ 
+            //Validação do projeto
+            if($value['PROJECT']){
+               $collum = $this->checkCollum($value['PROJECT']);
+               if(!$projects = $conn->fetchAll("SELECT * FROM project WHERE status >= 1 AND {$collum} = '{$value['PROJECT']}'")) {
+                  $errors[$key+1][] = i::__("O projeto não está cadastrado");
+               }
+      
+               if ($collum == 'name') {
+                  if (count($projects) > 1){
+                     $errors[$key+1][] = i::__("Existe mais de um projeto com o nome {$value['PROJECT']}. Para proseguir, informe o ID do projeto que quer associar ao evento");
+                  }
+               }
+            }
+
+            //Validação do agente responsavel 
+            if(!is_numeric($value['OWNER'])){
+               $errors[$key+1][] = i::__("A coluna proprietário espera o número ID do agente. ");
+            }else{
+               if(empty($value['OWNER']) || ($value['OWNER'] == "")){
+                  $errors[$key+1][] = i::__("A coluna agente é obrigatória. Informo o ID do agente responsável");
+               } else if(!$conn->fetchAll("SELECT * FROM agent WHERE status >= 1 AND id = {$value['OWNER']}")) {
+                  $errors[$key+1][] = i::__("O a gente não esta cadastrado");
+               }
             }
          }
          
          //Caso exista espaço informado significa inserção de ocorrência
             //Verificação do espaço
-
+         if( $type_process_map->create_event || $type_process_map->edit_ocurrence){
             $collum_spa = 'id';
             if (!is_numeric($value['SPACE'])) {
                $collum_spa = 'name';
@@ -431,7 +481,7 @@ class Controller extends \MapasCulturais\Controller
             if($value['EVENT_ATTENDANCE'] && !is_numeric($value['EVENT_ATTENDANCE'])){
                $errors[$key+1][] = i::__("A coluna total de público é inválida. Essa coluna so aceita números");
             }
-         
+         }
       }
     
       if($errors){
@@ -439,23 +489,45 @@ class Controller extends \MapasCulturais\Controller
          exit;
       }
 
+   
       $countNewEvent = 0;
       $eventsIdList = [];
       $error_process = false;
+      $clearOcurrence = [];
       foreach ($data as $key => $value) {
          $app->em->beginTransaction();
-         if($event = $this->insertEvent($value)){
-            $ocurrence = $this->createOcurrency($event, $value, $key);
-            $file = $this->downloadFile($event, $value);
-            $metalist = $this->createMetalists($event, $value);
-            if($ocurrence && $file && $metalist){
-               $countNewEvent++;
-               $eventsIdList[] = $event->id;
-               $app->em->commit();
-            }else{
-               $error_process = true;
-               $errors[$key+1][] = i::__("Evento {$event->name} Não foi inserido");
+         if($type_process_map->create_event || $type_process_map->edit_event){
+
+            if($type_process_map->edit_event && !in_array($value['EVENT_ID'], $clearOcurrence)){
+               if($ocurrences = $app->repo("EventOccurrence")->findBy(["eventId" => $value['EVENT_ID']])){
+                  foreach($ocurrences as $ocurrence){
+                     $ocurrence->delete(true);
+                  }
+                  $clearOcurrence[] = $value['EVENT_ID'];
+               }
             }
+            
+            if($event = $this->insertEvent($value)){
+               $ocurrence = $this->createOcurrency($event, $value, $key);
+               $file = $this->downloadFile($event, $value);
+               $metalist = $this->createMetalists($event, $value);
+               if($ocurrence && $file && $metalist){
+                  $countNewEvent++;
+                  $eventsIdList[$event->id] = $event->id;
+                  $app->em->commit();
+               }else{
+                  $error_process = true;
+                  $errors[$key+1][] = i::__("Evento {$event->name} Não foi inserido");
+               }
+               
+            }
+
+         }else if($type_process_map->delete_event){
+            $event = $app->repo('Event')->find($value['EVENT_ID']);
+            $event->delete(true);
+            $countNewEvent++;
+            $eventsIdList[] = $event->id;
+            $app->em->commit();
             
          }
       }
@@ -466,7 +538,8 @@ class Controller extends \MapasCulturais\Controller
          $files->{basename($file_dir)} = [
             'date' => date('d/m/Y \à\s H:i'),
             'countProsess' => $countNewEvent,
-            'eventsIdList' => $eventsIdList
+            'eventsIdList' => $eventsIdList,
+            'typeFile' => ($type_process_map->create_event ? i::__('Criação') : ($type_process_map->edit_event ? i::__('Edição') : ($type_process_map->delete_event ? i::__('Deleção') : i::__('Não definido'))))
          ];
          $_agent->event_importer_processed_file = $files;
          $_agent->save(true);
@@ -500,6 +573,8 @@ class Controller extends \MapasCulturais\Controller
      try {
          $app = App::i();
 
+         $type_process_map = $this->typeProcessMap($value);
+
          $collum_proj = $this->checkCollum($value['PROJECT']);
          $project = $app->repo("Project")->findOneBy([$collum_proj => $value['PROJECT']]);
          $agent = $app->repo('Agent')->find($value['OWNER']);
@@ -511,7 +586,7 @@ class Controller extends \MapasCulturais\Controller
          }
 
          $event = new Event();
-         if(!empty($value['EVENT_ID'])){
+         if($type_process_map->edit_event){
             $event = $app->repo('Event')->find($value['EVENT_ID']);
          }
          $event->name = $value['NAME'];
@@ -548,6 +623,9 @@ class Controller extends \MapasCulturais\Controller
    {
       try {
          $app = App::i();
+         $type_process_map = $this->typeProcessMap($value);
+
+           
 
          $moduleConfig = $app->modules['EventImporter']->config;
    
