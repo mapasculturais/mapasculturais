@@ -70,7 +70,7 @@ $this->breadcramb = [
 
                 <div class="right">
                     <div class="grid-12">
-                        <entity-terms :entity="entity" taxonomy="area" :editable="true" classes="col-12" title="<?php  i::_e('Áreas de interesse'); ?>"></entity-terms>
+                        <entity-terms :entity="entity" taxonomy="area" :editable="true" classes="col-12" title="<?php  i::_e('Áreas de atuação'); ?>"></entity-terms>
                         <entity-social-media :entity="entity" :editable="true" classes="col-12"></entity-social-media>
                     </div>
                 </div>
