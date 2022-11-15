@@ -37,7 +37,7 @@ $template = '
                         <div><span class="label"><?= i::_e('Data de envio:')?> </span> <?=$file->createTimestamp->format("d/m/Y H:i")?></div>
                         <div><span class="label"><?= i::_e('processado em:')?> </span> <?=$processed_file_meta[$file->name]['date']?></div>
                         <div><span class="label"><?= i::_e('Quantidade processada:')?> </span> <?=$processed_file_meta[$file->name]['countProsess']?></div> 
-                        <div><span class="label"><?= i::_e('Tipo:')?> </span> <?=$processed_file_meta[$file->name]['typeFile']?></div><br> <br>
+                        <div><span class="label"><?= i::_e('Tipo:')?> </span> <?=in_array("typeFile", array_keys($processed_file_meta[$file->name])) ? $processed_file_meta[$file->name]['typeFile'] : i::_e('Não definido')?></div><br> <br>
 
                         <span class="label"><?= i::_e('ID dos Eventos:')?></span> <br>
                         <?php foreach($processed_file_meta[$file->name]['eventsIdList'] as $id):?>
