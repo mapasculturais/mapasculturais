@@ -1,9 +1,9 @@
-app.component('search-map-events', {
-    template: $TEMPLATES['search-map-events'],
+app.component('search-map-event', {
+    template: $TEMPLATES['search-map-event'],
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('search-map-events')
+        const text = Utils.getTexts('search-map-event')
         return { text }
     },
 

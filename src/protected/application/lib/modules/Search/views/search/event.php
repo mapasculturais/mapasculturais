@@ -5,8 +5,8 @@ $this->import('
     mapas-breadcrumb 
     search 
     search-filter-event
-    search-list-events 
-    search-map-events 
+    search-list-event 
+    search-map-event 
     create-event
     tabs 
 ');
@@ -28,12 +28,12 @@ $this->breadcramb = [
             </template>
             <tab icon="list" label="<?php i::esc_attr_e('Lista') ?>" slug="list">
                 <div class="search__tabs--list">
-                    <search-list-events :pseudo-query="pseudoQuery"></search-list-events>
+                    <search-list-event :pseudo-query="pseudoQuery"></search-list-event>
                 </div>
             </tab>
             <tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>" slug="map">
                 <div class="search__tabs--map">
-                    <search-map-events :pseudo-query="pseudoQuery"></search-map-events>
+                    <search-map-event :pseudo-query="pseudoQuery"></search-map-event>
                 </div>
             </tab>
         </tabs>

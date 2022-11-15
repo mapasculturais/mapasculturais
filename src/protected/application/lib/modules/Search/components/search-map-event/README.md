@@ -1,4 +1,4 @@
-# Componente `<search-map-events>`
+# Componente `<search-map-event>`
 Exibe o mapa da busca de eventos
 
 ### Eventos
@@ -10,12 +10,12 @@ Exibe o mapa da busca de eventos
 ### Importando componente
 ```PHP
 <?php 
-$this->import('search-map-events');
+$this->import('search-map-event');
 ?>
 ```
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<search-map-events :pseudo-query="pseudoQuery"></search-map-events>
+<search-map-event :pseudo-query="pseudoQuery"></search-map-event>
 
 ```
