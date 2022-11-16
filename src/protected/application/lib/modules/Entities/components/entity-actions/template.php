@@ -35,7 +35,7 @@ $this->import('loading confirm-button');
                 </confirm-button>
             </div>
 
-            <div class="entity-actions__content--groupBtn">
+            <div v-if="editable" class="entity-actions__content--groupBtn">
                 <confirm-button v-if="entity.status == 0" @confirm="">
                     <template #button="modal">
                         <button  @click="modal.open()" class="button button--md button--secondary">
@@ -59,6 +59,12 @@ $this->import('loading confirm-button');
                     <?php i::_e("Concluir Edição e Sair") ?>
                 </button>
             </div>
+
+            <div v-if="!editable" class="entity-actions__content--groupBtn">
+                <a :href="entity.editUrl" class="button button button--md publish">
+                    <?php i::_e('Editar') ?> {{entityType}}
+                </a>
+            </div>      
         </template>
     </div>
 
