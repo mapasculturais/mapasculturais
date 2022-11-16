@@ -14,11 +14,15 @@ $nav_items = [
         ]
     ],
 
+    'opportunities' => [
+        'label' => i::__('Editais e oportunidades'),
+        'items' => []
+    ],
+
     'more' => [
         'label' => i::__('Outras opções'),
         'items' => [
             ['route' => 'panel/apps', 'icon' => 'app', 'label' => i::__('Integrações')],
-
         ]
     ],
 
@@ -27,9 +31,7 @@ $nav_items = [
         'condition' => function () use($app) {
             return $app->user->is('admin');
         },
-        'items' => [
-
-        ]
+        'items' => []
     ]
 ];
 
