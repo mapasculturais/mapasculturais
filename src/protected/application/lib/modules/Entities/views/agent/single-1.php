@@ -17,7 +17,6 @@ $this->import('
     entity-social-media
     entity-terms
     mapas-breadcrumb
-    mapas-card
     mapas-container
     share-links
     tabs
@@ -40,58 +39,36 @@ $this->breadcramb = [
                 <mapas-container>
                     <main>
                         <div class="grid-12">
-                            <div class="col-12">
-                                <entity-location :entity="entity"></entity-location>
-                            </div>
+                            <entity-location :entity="entity" classes="col-12"></entity-location>
 
-                            
                             <div v-if="entity.longDescription" class="col-12">
                                 <h2><?php i::_e('Descrição Detalhada');?></h2>
                                 <p>{{entity.longDescription}}</p>
                             </div>
 
-                            <div class="col-12">
-                                <entity-files-list :entity="entity" group="downloads" title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
-                            </div>
+                            <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
 
-                            <div class="col-12">
-                                <entity-gallery-video :entity="entity"></entity-gallery-video>
-                            </div>
+                            <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
 
-                            <div class="col-12">
-                                <entity-gallery :entity="entity"></entity-gallery>
-                            </div>
+                            <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
                         </div>
                     </main>
 
                     <aside>
                         <div class="grid-12">
-                            <div class="col-12">
-                                <entity-terms :entity="entity" taxonomy="area" title="<?php i::esc_attr_e('Areas de atuação');?>"></entity-terms>
-                            </div>
+                            <entity-terms :entity="entity" classes="col-12" taxonomy="area" title="<?php i::esc_attr_e('Areas de atuação');?>"></entity-terms>
 
-                            <div class="col-12">
-                                <entity-social-media :entity="entity"></entity-social-media>
-                            </div>
+                            <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
 
-                            <div class="col-12">
-                                <entity-seals :entity="entity" :editable="entity.currentUserPermissions.createSealRelation" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
-                            </div>
+                            <entity-seals :entity="entity" classes="col-12" :editable="entity.currentUserPermissions.createSealRelation" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
 
-                            <div class=col-12>
-                                <entity-related-agents :entity="entity" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
-                            </div>
-                            <div class="col-12">
-                                <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>
-                            </div>
+                            <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
+                            
+                            <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="Tags"></entity-terms>
 
-                            <div class="col-12">
-                                <share-links title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
-                            </div>
+                            <share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
 
-                            <div class="col-12">
-                                <entity-admins :entity="entity"></entity-admins>
-                            </div>
+                            <entity-admins :entity="entity" classes="col-12"></entity-admins>
 
                             <div v-if="entity.spaces.length>0 || entity.children.length>0 || entity.events.length>0 || entity.ownedOpportunities.length > 0 || entity.relatedOpportunities.length >0" class="col-12">
                                 <h4> <?php i::_e('Propriedades do Agente:');?> </h4>
