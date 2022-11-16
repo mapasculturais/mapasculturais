@@ -15,7 +15,11 @@ app.component('share-links', {
         text: {
             type: String,
             default: ''
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
 
     methods: {

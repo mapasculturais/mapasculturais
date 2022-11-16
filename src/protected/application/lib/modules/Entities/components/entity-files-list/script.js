@@ -34,7 +34,12 @@ app.component('entity-files-list', {
         editable: {
             type: Boolean,
             default: false
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
+
     },
     
     data() {

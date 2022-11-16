@@ -7,7 +7,7 @@ $this->import('
 ');
 ?>
 
-<div v-if="entity.seals.length > 0 || editable" class="entity-seals">
+<div :class="classes" v-if="entity.seals.length > 0 || editable" class="entity-seals">
     <h4 class="entity-seals__title"> {{title}} </h4>
 
     <div class="entity-seals__seals">

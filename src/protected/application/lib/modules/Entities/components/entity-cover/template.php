@@ -2,7 +2,7 @@
 use MapasCulturais\i; 
 ?>
 
-<div class="entity-cover">
+<div :class = "classes" class="entity-cover">
     <image-uploader :entity="entity" group="header" :aspect-ratio="99/16" :circular="false">
         <template #default="modal">
             <div class="entity-cover__cover">      

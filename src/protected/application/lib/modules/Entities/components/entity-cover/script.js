@@ -10,6 +10,10 @@ app.component('entity-cover', {
         name: {
             type: String,
             default: ''
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
 });

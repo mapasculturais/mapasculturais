@@ -21,7 +21,11 @@ app.component('entity-social-media', {
         editable: {
             type: Boolean,
             default: false
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
     
     methods: {

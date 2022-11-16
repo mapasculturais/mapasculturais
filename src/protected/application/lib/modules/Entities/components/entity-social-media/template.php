@@ -3,7 +3,7 @@ use MapasCulturais\i;
 $this->import('entity-field');
 ?>
 
-<div v-if="editable || show" class="entity-social-media">
+<div :class="classes" v-if="editable || show" class="entity-social-media">
 
     <h4 v-if="!editable" class="entity-social-media__title"> <?php i::_e("Redes sociais") ?> </h4>
 
