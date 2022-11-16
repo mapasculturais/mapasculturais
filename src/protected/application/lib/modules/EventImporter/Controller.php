@@ -236,8 +236,6 @@ class Controller extends \MapasCulturais\Controller
          "edit_ocurrence" => function() use($value){
             return (!empty($value['EVENT_ID']) && !empty($value['SPACE'])) ? true : false;
          },
-         
-
       ];
 
       $result = [];
@@ -301,6 +299,7 @@ class Controller extends \MapasCulturais\Controller
          $errors[0][] = i::__("O arquivo esta vazio, verifique para continuar");
       }
      
+      $clearOcurrenceList = [];
       foreach ($data as $key => $value) {
 
          if(empty(array_filter($value))){
@@ -309,6 +308,11 @@ class Controller extends \MapasCulturais\Controller
 
          $type_process_map = $this->typeProcessMap($value);
 
+         if(!empty($value['EVENT_ID']) && in_array($value['NAME'], $moduleConfig['clear_ocurrence_ref'])){
+            $clearOcurrenceList[] = $value['EVENT_ID'];
+            continue;
+         };
+        
          $value['STARTS_AT'] = $this->formatDate($value['STARTS_AT'], "H:i");
          $value['ENDS_AT'] = $this->formatDate($value['ENDS_AT'], "H:i");
          $value['STARTS_ON'] = $this->formatDate($value['STARTS_ON'], "Y-m-d");
@@ -484,6 +488,7 @@ class Controller extends \MapasCulturais\Controller
          }
       }
     
+
       if($errors){
          $this->render("import-erros", ["errors" => $errors, 'filename' => basename($file_dir)]);
          exit;
@@ -493,17 +498,23 @@ class Controller extends \MapasCulturais\Controller
       $countNewEvent = 0;
       $eventsIdList = [];
       $error_process = false;
-      $clearOcurrence = [];
+      $deletedOcurrences = [];
       foreach ($data as $key => $value) {
+         $type_process_map = $this->typeProcessMap($value);
+
+         if(!empty($value['EVENT_ID']) && in_array($value['NAME'], $moduleConfig['clear_ocurrence_ref'])){
+            continue;
+         };
+
          $app->em->beginTransaction();
          if($type_process_map->create_event || $type_process_map->edit_event){
 
-            if($type_process_map->edit_event && !in_array($value['EVENT_ID'], $clearOcurrence)){
+            if($type_process_map->edit_event && in_array($value['EVENT_ID'], $clearOcurrenceList) && !in_array($value['EVENT_ID'], $deletedOcurrences)){
                if($ocurrences = $app->repo("EventOccurrence")->findBy(["eventId" => $value['EVENT_ID']])){
                   foreach($ocurrences as $ocurrence){
                      $ocurrence->delete(true);
                   }
-                  $clearOcurrence[] = $value['EVENT_ID'];
+                  $deletedOcurrences[] = $value['EVENT_ID'];
                }
             }
             
@@ -623,9 +634,6 @@ class Controller extends \MapasCulturais\Controller
    {
       try {
          $app = App::i();
-         $type_process_map = $this->typeProcessMap($value);
-
-           
 
          $moduleConfig = $app->modules['EventImporter']->config;
    
