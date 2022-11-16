@@ -4,7 +4,7 @@ use MapasCulturais\i;
 $this->import('confirm-button popover modal image-uploader');
 ?>
 
-<div v-if="files || editable" class="files-list">
+<div :class="classes" v-if="files || editable" class="files-list">
     <label class="files-list__title"> {{title}} </label>
 
     <ul class="files-list__list">

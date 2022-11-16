@@ -47,9 +47,9 @@ app.component('entity-terms', {
             default: ''
         },
         classes: {
-            type: [String, Array],
-            default: ''
-        }
+            type: [String, Array, Object],
+            required: false
+        },
     },
 
     computed: {

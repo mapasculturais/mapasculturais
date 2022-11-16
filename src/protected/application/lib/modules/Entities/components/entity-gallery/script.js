@@ -38,7 +38,12 @@ app.component('entity-gallery', {
         editable: {
             type: Boolean,
             default: false
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
+
     },
     
     methods: {

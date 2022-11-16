@@ -9,7 +9,11 @@ app.component('entity-related-agents', {
         editable: {
             type: Boolean,
             default: false
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
 
     data() {

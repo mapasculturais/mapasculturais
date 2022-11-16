@@ -1,4 +1,4 @@
-<div class="share-links">
+<div :class="classes" class="share-links">
 
     <h4 class="share-links--title"> {{title}} </h4>
 

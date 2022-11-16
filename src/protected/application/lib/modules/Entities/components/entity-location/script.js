@@ -26,7 +26,11 @@ app.component('entity-location', {
         hideLabel: {
             type: Boolean,
             default: false,
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
 
     methods: {

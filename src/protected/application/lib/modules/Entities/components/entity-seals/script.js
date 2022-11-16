@@ -26,7 +26,11 @@ app.component('entity-seals', {
         editable: {
             type: Boolean,
             default: false
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
 
     methods: {

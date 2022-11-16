@@ -40,7 +40,12 @@ app.component('entity-gallery-video', {
         editable: {
             type: Boolean,
             default: false
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
+
     },
 
     computed: {

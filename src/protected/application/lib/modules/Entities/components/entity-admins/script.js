@@ -9,7 +9,11 @@ app.component('entity-admins', {
         editable: {
             type: Boolean,
             default: false
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
 
     computed: {

@@ -4,7 +4,7 @@ $this->import('entity-field entity-map');
 ?>
 
 
-<div class="entity-location grid-12">
+<div :class="classes" class="entity-location grid-12">
     <div v-if="!hideLabel" class="entity-location__title col-12">
         <label ><?= i::__('Endereço')?></label>
     </div>
