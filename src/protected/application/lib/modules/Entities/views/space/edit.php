@@ -186,6 +186,6 @@ $this->breadcramb = [
 
     </mapas-container>
 
-    <entity-actions :entity="entity"></entity-actions>
+    <entity-actions :entity="entity" editable></entity-actions>
 
 </div>

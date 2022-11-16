@@ -3,7 +3,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
-
+    entity-actions
     entity-admins
     entity-files-list
     entity-gallery
@@ -148,6 +148,9 @@ $this->breadcramb = [
                             <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
                     </aside>
                 </mapas-container>
+
+                <entity-actions :entity="entity"></entity-actions>
+
             </div>  
         </tab>
     </tabs>        
