@@ -1372,8 +1372,9 @@ class Theme extends MapasCulturais\Theme {
         $image_url = $app->view->asset('img/share.png', false);
         if ($entity) {
             $description = $entity->shortDescription ? $entity->shortDescription : $title;
-            if ($entity->avatar)
+            if ($entity->avatar && $entity->avatar->transform('avatarBig')){
                 $image_url = $entity->avatar->transform('avatarBig')->url;
+            }
         }else {
             $description = $this->dict('site: description', false);
         }
@@ -2485,7 +2486,7 @@ class Theme extends MapasCulturais\Theme {
             $agent = $def->agent;
             if($agent){
                 $def->agent = $agent->simplify('id,name,shortDescription,singleUrl');
-                $def->agent->avatarUrl = $agent->avatar ? $agent->avatar->transform('avatarSmall')->url : null;
+                $def->agent->avatarUrl = ($agent->avatar && $agent->avatar->transform('avatarSmall')) ? $agent->avatar->transform('avatarSmall')->url : null;
                 if($entity->status > 0){ // is sent
                     if(isset($entity->agentsData[$def->agentRelationGroupName])){
                         foreach($entity->agentsData[$def->agentRelationGroupName] as $prop => $val){
