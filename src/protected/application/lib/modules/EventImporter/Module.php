@@ -48,6 +48,7 @@ class Module extends \MapasCulturais\Module
                 'SUNDAY' => i::__('dom')
             ],
             'use_endson' => [i::__('semanal'),i::__('diariamente'),'weekly','daily'],
+            'clear_ocurrence_ref' => [i::__('apagar ocorrencias'), i::__('zerar ocorrencias'), i::__('apagar'), i::__('limpar'), 'clear'],
             'use_week_days' => [i::__('semanal'), 'weekly'],
             'dic_months' => [
                 "January" => i::__("Janeiro"),
