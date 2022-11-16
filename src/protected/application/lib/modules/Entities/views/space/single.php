@@ -3,6 +3,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    entity-actions
     entity-admins
     entity-files-list
     entity-gallery
@@ -104,6 +105,8 @@ $this->breadcramb = [
                         </div>
                     </aside>
                 </mapas-container>
+
+                <entity-actions :entity="entity"></entity-actions>
 
             </div>
         </tab>
