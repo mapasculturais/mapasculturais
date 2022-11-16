@@ -519,9 +519,16 @@ class Controller extends \MapasCulturais\Controller
             }
             
             if($event = $this->insertEvent($value)){
-               $ocurrence = $this->createOcurrency($event, $value, $key);
+
+               $ocurrence = true;
+               if($type_process_map->create_ocurrence){
+                  $ocurrence = $this->createOcurrency($event, $value, $key);
+               }
+
                $file = $this->downloadFile($event, $value);
                $metalist = $this->createMetalists($event, $value);
+
+
                if($ocurrence && $file && $metalist){
                   $countNewEvent++;
                   $eventsIdList[$event->id] = $event->id;
@@ -581,25 +588,50 @@ class Controller extends \MapasCulturais\Controller
 
    public function insertEvent($value)
    {
-     try {
+      try {
          $app = App::i();
 
          $type_process_map = $this->typeProcessMap($value);
 
+         $moduleConfig = $app->modules['EventImporter']->config;
+         
          $collum_proj = $this->checkCollum($value['PROJECT']);
-         $project = $app->repo("Project")->findOneBy([$collum_proj => $value['PROJECT']]);
-         $agent = $app->repo('Agent')->find($value['OWNER']);
-         $languages = explode(';', $value['LANGUAGE']);
+         $project =  null;
+         if($value['PROJECT']){
+            $project = $app->repo("Project")->findOneBy([$collum_proj => $value['PROJECT']]);
+         }
 
+         $agent =  null;
+         if($value['OWNER']){
+            $agent = $app->repo('Agent')->find($value['OWNER']);
+         }
+         $languages = explode(';', $value['LANGUAGE']);
+         
          $tags = [];
          if($value['TAGS']){
             $tags = explode(';', $value['TAGS']);
          }
-
+         // $moduleConfig['fromToEntity']['event']
          $event = new Event();
          if($type_process_map->edit_event){
             $event = $app->repo('Event')->find($value['EVENT_ID']);
+
+            foreach($moduleConfig['fromToEntity']['event'] AS $field => $v){
+
+               if($field == "LANGUAGE"){
+                  $languages = array_merge($event->terms[$v], $languages);
+               }else if($field == "TAGS"){
+                  $tags = array_merge($event->terms[$v], $tags);
+               }else if($field == "OWNER"){
+                  $agent = $agent ?: $event->owner;
+               }else{
+                  $_field = $moduleConfig['fromToEntity']['event'][$field];
+                  $value[$field] = $value[$field] ?: $event->$_field;
+
+               }
+            }
          }
+        
          $event->name = $value['NAME'];
          $event->subTitle = $value['SUBTITLE'];
          $event->site = $value['SITE'];
@@ -614,17 +646,20 @@ class Controller extends \MapasCulturais\Controller
          $event->shortDescription = $value['SHORT_DESCRIPTION'];
          $event->longDescription = $value['LONG_DESCRIPTION'];
          $event->classificacaoEtaria = $value['CLASSIFICATION'];
-         $event->owner = $agent;
          $event->terms['linguagem'] = $languages;
          $event->projectId = $project ? $project->id : null;
          $event->event_attendance = $value['EVENT_ATTENDANCE'];
          $event->traducaoLibras = $value['LIBRAS_TRANSLATION'];
          $event->descricaoSonora = $value['AUDIO_DESCRIPTION'];
          $event->terms['tag'] = $tags;
+         
+         if($agent){
+            $event->owner = $agent;
+         }
+         
          $event->save(true);
-
          return $event;
-     } catch (\Throwable $th) {
+         } catch (\Throwable $th) {
          return false;
      }         
    }
@@ -834,6 +869,10 @@ class Controller extends \MapasCulturais\Controller
       
       $no_error = true;
       foreach ($files_grp_import as $key => $grp_import) {
+
+         if(empty($value[$key])){
+            continue;
+         }
          
          if(!empty($value[$key]) || $value[$key] != ""){
                if($key == "GALLERY" || $key == "DOWNLOADS"){
@@ -917,6 +956,11 @@ class Controller extends \MapasCulturais\Controller
          
          $metalists_import = $moduleConfig['metalists_import'];
          foreach($metalists_import as $key => $metalist){
+
+            if(empty($value[$metalist])){
+               continue;
+            }
+
             $lists = $this->matches($value[$metalist]);
             foreach($lists as $item){
                $exp = explode(":", $item);
