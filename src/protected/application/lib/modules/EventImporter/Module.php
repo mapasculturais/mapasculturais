@@ -118,6 +118,33 @@ class Module extends \MapasCulturais\Module
                 'VIDEOS' => [i::__('videos')],
                 'LINKS' => ['links'],
             ],
+            'fromToEntity' => [
+                'event' => [
+                    'EVENT_ID' => "id",
+                    'NAME' => 'name' ,
+                    'SUBTITLE' => 'subTitle' ,
+                    'SITE' => 'site' ,
+                    'FACEBOOK' => 'facebooK',
+                    'TWITTER' => 'twitte',
+                    'INSTAGRAM' => 'instagram' ,
+                    'YOUTUBE' => 'youtube' ,
+                    'LINKEDIN' => 'linkedin' ,
+                    'SPOTIFY' => 'spotify' ,
+                    'PINTEREST' => 'pinterest' ,
+                    'INSCRICOES' => 'registrationInfo' ,
+                    'SHORT_DESCRIPTION' => 'shortDescription' ,
+                    'LONG_DESCRIPTION' => 'longDescription' ,
+                    'CLASSIFICATION' => 'classificacaoEtaria',
+                    'PROJECT' => 'projectId' ,
+                    'EVENT_ATTENDANCE' => 'event_attendanc',
+                    'LIBRAS_TRANSLATION' => 'traducaoLibra',
+                    'AUDIO_DESCRIPTION' => 'descricaoSonora' ,
+                    'OWNER' => "owner",
+                    'SPACE' => "space",
+                    'TAGS' => "tag",
+                    'LANGUAGE' => "linguagem"
+                ]
+            ],
             "header_example" => [
                 i::__('ID_EVENTO') => [
                     i::__('PREENCHER SOMENTE CASO QUEIRA EDITAR UM EVENTO EXISTENTE - Informar ID do evento'),
