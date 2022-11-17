@@ -312,17 +312,18 @@ class Controller extends \MapasCulturais\Controller
             $clearOcurrenceList[] = $value['EVENT_ID'];
             continue;
          };
-        
-         $value['STARTS_AT'] = $this->formatDate($value['STARTS_AT'], "H:i");
-         $value['ENDS_AT'] = $this->formatDate($value['ENDS_AT'], "H:i");
-         $value['STARTS_ON'] = $this->formatDate($value['STARTS_ON'], "Y-m-d");
-         $value['ENDS_ON'] = $this->formatDate($value['ENDS_ON'], "Y-m-d");
-        
+       
          $hash = md5(implode(",", $value));
          if(in_array($hash, $exampleHash)){
             $errors[$key+1][] = i::__("Linha invalida. Os dados da linha são os dados do exemplo, apague a mesma para continuar");
             break;
          }
+          
+         $value['STARTS_AT'] = $this->formatDate($value['STARTS_AT'], "H:i");
+         $value['ENDS_AT'] = $this->formatDate($value['ENDS_AT'], "H:i");
+         $value['STARTS_ON'] = $this->formatDate($value['STARTS_ON'], "Y-m-d");
+         $value['ENDS_ON'] = $this->formatDate($value['ENDS_ON'], "Y-m-d");
+        
 
          if(!empty($value['EVENT_ID'])){
             if(!$conn->fetchAll("SELECT * FROM event WHERE status >= 1 AND id = '{$value['EVENT_ID']}'")) {
