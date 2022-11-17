@@ -522,7 +522,7 @@ class Controller extends \MapasCulturais\Controller
             if($event = $this->insertEvent($value)){
 
                $ocurrence = true;
-               if($type_process_map->create_ocurrence){
+               if($type_process_map->create_ocurrence || $type_process_map->edit_ocurrence){
                   $ocurrence = $this->createOcurrency($event, $value, $key);
                }
 
