@@ -47,7 +47,8 @@ class Module extends \MapasCulturais\Module
                 'SATURDAY' => i::__('sab'),
                 'SUNDAY' => i::__('dom')
             ],
-            'use_endsat' => [i::__('uma vez'), 'once'],
+            'use_endson' => [i::__('semanal'),i::__('diariamente'),'weekly','daily'],
+            'clear_ocurrence_ref' => [i::__('apagar ocorrencias'), i::__('zerar ocorrencias'), i::__('apagar'), i::__('limpar'), 'clear'],
             'use_week_days' => [i::__('semanal'), 'weekly'],
             'dic_months' => [
                 "January" => i::__("Janeiro"),
@@ -67,13 +68,14 @@ class Module extends \MapasCulturais\Module
                 'AVATAR' => 'avatar', 
                 'HEADER' => 'header',
                 'GALLERY' => 'gallery',
+                'DOWNLOADS' => 'downloads',
             ],
             'metalists_import' => [
-                'DOWNLOADS',
                 'VIDEOS',
                 'LINKS'
             ],
             "header_default" => [
+                'EVENT_ID' => [i::__('id_evento') ,i::__('id evento') ,i::__('evento_id'), i::__('evento'),'id', 'event_id', 'event'],
                 'NAME' => [i::__('nome'),'name'],
                 'SUBTITLE' => ['subtitle', i::__('subtítulo')],
                 'SHORT_DESCRIPTION' => ['short_description', i::__('descrição curta'), i::__('descrição_curta')],
@@ -96,11 +98,11 @@ class Module extends \MapasCulturais\Module
                 'PROJECT' => ['project',i::__('projeto')],
                 'OWNER' => ['owner',i::__('proprietário')],
                 'SPACE' => ['space',i::__('espaço')],
-                'STARTS_AT' => ['starts_on', i::__('data inicial')],
-                'ENDS_AT' => ['ends_on',i::__('data final')],
+                'STARTS_ON' => ['starts_on', i::__('data inicial')],
+                'ENDS_ON' => ['ends_on',i::__('data final')],
                 'FREQUENCY' => ['frequency',i::__('frequência')],
-                'STARTS_ON' => ['starts_at',i::__('hora inicial')],
-                'ENDS_ON' => ['ends_at','hora final'],
+                'STARTS_AT' => ['starts_at',i::__('hora inicial')],
+                'ENDS_AT' => ['ends_at','hora final'],
                 'MODAY' => ['moday',i::__('segunda'),i::__('seg')],
                 'TUESDAY' => ['tuesday',i::__('terça'),i::__('ter')],
                 'WEDNESDAY' => ['wednesday',i::__('quarta'),i::__('qua')],
@@ -116,7 +118,38 @@ class Module extends \MapasCulturais\Module
                 'VIDEOS' => [i::__('videos')],
                 'LINKS' => ['links'],
             ],
+            'fromToEntity' => [
+                'event' => [
+                    'EVENT_ID' => "id",
+                    'NAME' => 'name' ,
+                    'SUBTITLE' => 'subTitle' ,
+                    'SITE' => 'site' ,
+                    'FACEBOOK' => 'facebooK',
+                    'TWITTER' => 'twitte',
+                    'INSTAGRAM' => 'instagram' ,
+                    'YOUTUBE' => 'youtube' ,
+                    'LINKEDIN' => 'linkedin' ,
+                    'SPOTIFY' => 'spotify' ,
+                    'PINTEREST' => 'pinterest' ,
+                    'INSCRICOES' => 'registrationInfo' ,
+                    'SHORT_DESCRIPTION' => 'shortDescription' ,
+                    'LONG_DESCRIPTION' => 'longDescription' ,
+                    'CLASSIFICATION' => 'classificacaoEtaria',
+                    'PROJECT' => 'projectId' ,
+                    'EVENT_ATTENDANCE' => 'event_attendanc',
+                    'LIBRAS_TRANSLATION' => 'traducaoLibra',
+                    'AUDIO_DESCRIPTION' => 'descricaoSonora' ,
+                    'OWNER' => "owner",
+                    'SPACE' => "space",
+                    'TAGS' => "tag",
+                    'LANGUAGE' => "linguagem"
+                ]
+            ],
             "header_example" => [
+                i::__('ID_EVENTO') => [
+                    i::__('PREENCHER SOMENTE CASO QUEIRA EDITAR UM EVENTO EXISTENTE - Informar ID do evento'),
+                    i::__('1')
+                ],
                 i::__('NOME') => [
                     i::__('PREENCHIMENTO OBRIGATÓRIO - Informar nome do evento'),
                     i::__('Show da banda O Tranco')
@@ -186,12 +219,12 @@ class Module extends \MapasCulturais\Module
                     i::__('Livre')
                 ],
                 i::__('LINGUAGEM') => [
-                    i::__('PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as com virgula'),
-                    i::__("Teatro, Música Popular, Livro e Poesia"),
+                    i::__('PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as com ponto e virgula, ;'),
+                    i::__("Teatro;Música Popular;Livro e Poesia"),
                 ],
                 i::__('TAGS') => [
-                    i::__('Informar as tags do evento separando-as com virgula'),
-                    i::__("Cultura, Musica, Arte")
+                    i::__('Informar as tags do evento separando-as com ponto e virgula, ;'),
+                    i::__("Cultura;Musica;Arte")
                 ],
                 i::__('PROJETO') => [
                     i::__('Informar o nome ou ID do projeto que o evento esta vinculado'),
