@@ -633,6 +633,14 @@ class Controller extends \MapasCulturais\Controller
             }
          }
         
+         $_languages = [];
+         if($languages){
+            $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
+            foreach($languages as $language){
+               $_languages[] = $languages_list[$language];
+            }
+         }
+
          $event->name = $value['NAME'];
          $event->subTitle = $value['SUBTITLE'];
          $event->site = $value['SITE'];
@@ -647,7 +655,7 @@ class Controller extends \MapasCulturais\Controller
          $event->shortDescription = $value['SHORT_DESCRIPTION'];
          $event->longDescription = $value['LONG_DESCRIPTION'];
          $event->classificacaoEtaria = $value['CLASSIFICATION'];
-         $event->terms['linguagem'] = $languages;
+         $event->terms['linguagem'] = $_languages;
          $event->projectId = $project ? $project->id : null;
          $event->event_attendance = $value['EVENT_ATTENDANCE'];
          $event->traducaoLibras = $value['LIBRAS_TRANSLATION'];
