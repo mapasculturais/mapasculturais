@@ -71,9 +71,9 @@ if($entity->dataDeNascimento){
                   <!-- Campo Mei -->
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
-                    <span class="label"><?php \MapasCulturais\i::_e("MEI");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"mei") && $editEntity? 'required': '');?>" data-edit="mei" data-original-title="<?php \MapasCulturais\i::esc_attr_e("MEI");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("CNPJ do MEI");?>">
-                        <?php echo $entity->mei; ?>
+                    <span class="label"><?php \MapasCulturais\i::_e("CNPJ MEI");?>:</span>
+                    <span class="js-editable js-mask-cnpj <?php echo ($entity->isPropertyRequired($entity,"cnpj") && $editEntity? 'required': '');?>" data-edit="cnpj" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CNPJ MEI");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("CNPJ do MEI");?>">
+                        <?php echo $entity->cnpj; ?>
                     </span>
                 </p>
                   <!-- Campo Escolaridade -->
@@ -127,7 +127,7 @@ if($entity->dataDeNascimento){
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
                     <span class="label"><?php \MapasCulturais\i::_e("CPF");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"documento") && $editEntity? 'required': '');?>" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu CPF  com pontos, hífens e barras");?>">
+                    <span class="js-editable js-mask-cpf <?php echo ($entity->isPropertyRequired($entity,"documento") && $editEntity? 'required': '');?>" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu CPF  com pontos, hífens e barras");?>">
                         <?php echo $entity->documento; ?>
                     </span>
                 </p>
