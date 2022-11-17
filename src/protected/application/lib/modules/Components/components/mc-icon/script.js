@@ -33,8 +33,7 @@ app.component('mc-icon', {
             const iconset = $MAPAS.config.iconset;
             if (this.entity) {
                 const e = this.entity;
-
-                return iconset[`${e.__objectType}-${e.type?.id}`] || iconset[e.__objectType];
+                return iconset[`${e.__objectType}-${ e.type?.id || e.type}`] || iconset[e.__objectType] || iconset[e.__objectId];
             } else {
 
                 return iconset[this.name];
