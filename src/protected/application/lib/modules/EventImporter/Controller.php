@@ -879,21 +879,23 @@ class Controller extends \MapasCulturais\Controller
       $no_error = true;
       foreach ($files_grp_import as $key => $grp_import) {
 
+      
          if(empty($value[$key])){
             continue;
          }
-         
+     
          if(!empty($value[$key]) || $value[$key] != ""){
                if($key == "GALLERY" || $key == "DOWNLOADS"){
+                 
                $gallery_list = $this->matches($value[$key]);
    
                foreach($gallery_list as $item){
-                  if(!$no_error && !$this->saveFile($item, $owner, $grp_import)){
+                  if(!$this->saveFile($item, $owner, $grp_import) && !$no_error){
                      $no_error = false;
                   }
                }
             }else{
-               if(!$no_error && !$this->saveFile($value[$key], $owner, $grp_import)){
+               if(!$this->saveFile($value[$key], $owner, $grp_import) && !$no_error){
                   $no_error = false;
                }
             }
@@ -905,7 +907,9 @@ class Controller extends \MapasCulturais\Controller
 
    public function saveFile($value, $owner, $grp_import)
    {
+      
       try {
+        
          $exp = explode(":", $value);
 
          $_file = $exp[0].":".$exp[1];
