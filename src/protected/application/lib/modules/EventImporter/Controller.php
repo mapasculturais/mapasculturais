@@ -632,12 +632,13 @@ class Controller extends \MapasCulturais\Controller
                }
             }
          }
-        
+                 
          $_languages = [];
          if($languages){
             $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
-            foreach($languages as $language){
-               $_languages[] = $languages_list[$language];
+            foreach(array_filter($languages) as $language){
+               $_lang = mb_strtolower($language);
+               $_languages[] = $languages_list[$_lang];
             }
          }
 
@@ -668,9 +669,9 @@ class Controller extends \MapasCulturais\Controller
          
          $event->save(true);
          return $event;
-         } catch (\Throwable $th) {
+      } catch (\Throwable $th) {
          return false;
-     }         
+      }         
    }
 
 
