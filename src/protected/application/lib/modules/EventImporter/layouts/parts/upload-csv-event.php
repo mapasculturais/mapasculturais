@@ -5,7 +5,7 @@ $app = MapasCulturais\App::i();
 $url = $app->createUrl('eventimporter','processFile');
 $files = $entity->getFiles('event-import-file');
 $url_file_example =  $app->createUrl('eventimporter','downloadExample');
-$processed_file_meta = json_decode(json_encode($app->user->profile->event_importer_processed_file), true);
+$processed_file_meta = json_decode(json_encode($app->user->profile->event_importer_processed_file), true) ?? [];
 
 $template = '
 <article id="file-{{id}}" class="objeto">
