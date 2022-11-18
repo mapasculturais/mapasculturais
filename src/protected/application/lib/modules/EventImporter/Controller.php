@@ -344,7 +344,7 @@ class Controller extends \MapasCulturais\Controller
                $errors[$key+1][] = i::__("A coluna classificação estária está vazia");
             }
 
-            if (!in_array($value['CLASSIFICATION'],$moduleConfig['rating_list_allowed'])) {
+            if (!in_array($app->slugify($value['CLASSIFICATION']),$moduleConfig['rating_list_allowed'])) {
                $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
                $errors[$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são {$rating_str}");
             }
