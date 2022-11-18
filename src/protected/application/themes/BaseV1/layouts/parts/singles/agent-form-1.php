@@ -60,20 +60,21 @@ if($entity->dataDeNascimento){
         <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
         <?php if($entity->canUser("viewPrivateData")): ?>
             <?php if($this->isEditable() || $canSee('personalData')):?>
-                  <!-- Campo Nome Completo -->
-                <p class="privado">
-                    <span class="icon icon-private-info"></span>
-                    <span class="label"><?php \MapasCulturais\i::_e("Nome Completo");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"nomeCompleto") && $editEntity? 'required': '');?>" data-edit="nomeCompleto" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome Completo ou Razão Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu nome completo ou razão social");?>">
-                        <?php echo $entity->nomeCompleto; ?>
-                    </span>
-                </p>
+                
                  <!-- Campo Nome Social -->
                  <p class="privado">
                     <span class="icon icon-private-info"></span>
                     <span class="label"><?php \MapasCulturais\i::_e("Nome Social");?>:</span>
                     <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"nomeSocial") && $editEntity? 'required': '');?>" data-edit="nomeSocial" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu nome social");?>">
                         <?php echo $entity->nomeSocial; ?>
+                    </span>
+                </p>
+                  <!-- Campo Nome Completo -->
+                  <p class="privado">
+                    <span class="icon icon-private-info"></span>
+                    <span class="label"><?php \MapasCulturais\i::_e("Nome Completo");?>:</span>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"nomeCompleto") && $editEntity? 'required': '');?>" data-edit="nomeCompleto" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome Completo ou Razão Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Preencha o nome de registro");?>">
+                        <?php echo $entity->nomeCompleto; ?>
                     </span>
                 </p>
                   <!-- Campo CPF -->
@@ -87,12 +88,11 @@ if($entity->dataDeNascimento){
                   <!-- Campo Mei -->
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
-                    <span class="label"><?php \MapasCulturais\i::_e("CNPJ MEI");?>:</span>
-                    <span class="js-editable js-mask-cnpj <?php echo ($entity->isPropertyRequired($entity,"cnpj") && $editEntity? 'required': '');?>" data-edit="cnpj" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CNPJ MEI");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("CNPJ do MEI");?>">
+                    <span class="label"><?php \MapasCulturais\i::_e("CNPJ (MEI)");?>:</span>
+                    <span class="js-editable js-mask-cnpj <?php echo ($entity->isPropertyRequired($entity,"cnpj") && $editEntity? 'required': '');?>" data-edit="cnpj" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CNPJ");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Caso seja Micro Empreendedor Individual informe seu CNPJ");?>">
                         <?php echo $entity->cnpj; ?>
                     </span>
                 </p>
-               
                 <!-- E-mail privado-->
                 <p class="privado"><span class="icon icon-private-info"></span>
                     <span class="label"><?php \MapasCulturais\i::_e("Email Privado");?>:</span>
@@ -165,8 +165,8 @@ if($entity->dataDeNascimento){
                 <!-- Campo Outras Comunidades tradicionais -->
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
-                    <span class="label"><?php \MapasCulturais\i::_e("Sou de outra comunidade tradicional");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"comunidadesTradicionalOutros") && $editEntity? 'required': '');?>" data-edit="comunidadesTradicionalOutros" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Informe outra comunidade tradicional?");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Digite");?>">
+                    <span class="label"><?php \MapasCulturais\i::_e("Não encontrou sua comunidade Tradicional?");?>:</span>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"comunidadesTradicionalOutros") && $editEntity? 'required': '');?>" data-edit="comunidadesTradicionalOutros" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Informe outra comunidade tradicional?");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Preencha aqui");?>">
                         <?php echo $entity->comunidadesTradicionalOutros; ?>
                     </span>
                 </p>
@@ -174,7 +174,7 @@ if($entity->dataDeNascimento){
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
                     <span class="label"><?php \MapasCulturais\i::_e("Pessoa com Deficiência");?>:</span>
-                    <editable-multiselect entity-property="pessoaDeficiente" empty-label="Selecione" box-title="Possui alguma deficiência ?" help-text="Selecione abaixo."></editable-multiselect>
+                    <editable-multiselect entity-property="pessoaDeficiente" empty-label="Selecione uma ou mais opções" box-title="Possui alguma deficiência ?" help-text="Selecione abaixo."></editable-multiselect>
                 </p>
                   <!-- Campo Escolaridade -->
                   <p class="privado">
