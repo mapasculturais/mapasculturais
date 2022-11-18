@@ -1,103 +1,112 @@
 @use '../settings/mixins' as *;
 
 .home-opportunities {
-    margin: 0 auto;
-    position: relative;
-    background-color: var(--mc-secondary-300);
-    padding: size(80) size(16);
-    width: 100%;
+	background-color: var(--mc-secondary-300);
+	display: flex;
+	flex-direction: column;
+	gap: size(40);
+	margin: 0 auto;
+	padding: size(80) size(16);
+	position: relative;
+	width: 100%;
 
-    &__content {
-        max-width: size(1170);
-        margin: 0 auto;
+	&__header,
+	&__content {
+		margin: 0 auto;
+		max-width: size(1170);
+		width: 100%;
+	}
 
-        &--title {
-            display: flex;
-            justify-content: space-between;
-            max-width: calc(100% - 130px);
+	&__header {
+		&.title {
+			display: flex;
+			justify-content: space-between;
+			margin: 0;
+			max-width: calc(100% - 130px);
 
-            label {
-                font-weight: 700;
-                font-size: size(32);
-                line-height: size(44);
-                @media (max-width: size(500)) {
-                    font-size: size(24);
-                    line-height: size(28);
-                }
-            }
-        }
+			label {
+				font-size: size(32);
+				font-weight: 700;
+				line-height: size(44);
 
-        &--description {
-            font-weight: 400;
-            font-size: size(16);
-            line-height: size(22);
-            max-width: calc(100% - 130px);
-        }
+				@media (max-width: size(500)) {
+					font-size: size(24);
+					line-height: size(28);
+				}
+			}
+		}
 
-        &--cards {
+		&.description {
+			font-size: size(16);
+			font-weight: 400;
+			line-height: size(22);
+			margin: 0;
+			max-width: calc(100% - 130px);
+		}
+	}
 
-            .carousel__track {
-                align-items: flex-start;
-            }
-            
-            .actions {
-                gap: size(24);
-                display: flex;
-                position: absolute;
-                top: size(-90);
-                right: 0;
-            }
+	&__content {
+		&.cards {
+			.carousel__track {
+				align-items: flex-start;
+			}
+			
+			.actions {
+				display: flex;
+				gap: size(24);
+				position: absolute;
+				right: 0;
+				top: size(-125);
+			}
 
-            .carousel {
-                margin-top: size(20);
+			.carousel {
+				margin-top: size(20);
 
-                &__prev {
-                    background: url('https://api.iconify.design/akar-icons/arrow-left.svg?color=%23d50200') no-repeat center center / size(27);
-                    background-color: var(--mc-white);
-                    cursor: pointer;
+				&__prev {
+					background: url('https://api.iconify.design/akar-icons/arrow-left.svg?color=%23d50200') no-repeat center center / size(27);
+					background-color: var(--mc-white);
+					cursor: pointer;
 
-                    .carousel__icon {
-                        display: none;
-                    }
-                }
+					.carousel__icon {
+						display: none;
+					}
+				}
 
-                &__next {
-                    background: url('https://api.iconify.design/akar-icons/arrow-right.svg?color=%23d50200') no-repeat center center / size(27);
-                    background-color: var(--mc-white);
-                    cursor: pointer;
+				&__next {
+					background: url('https://api.iconify.design/akar-icons/arrow-right.svg?color=%23d50200') no-repeat center center / size(27);
+					background-color: var(--mc-white);
+					cursor: pointer;
 
-                    .carousel__icon {
-                        display: none;
-                    }
-                }
+					.carousel__icon {
+						display: none;
+					}
+				}
 
-                &__prev,
-                &__next {
-                    align-items: center;
-                    border: none;
-                    border-radius: 50%;
-                    display: flex;
-                    height: size(48);
-                    justify-content: center;
-                    width: size(48);
+				&__prev,
+				&__next {
+					align-items: center;
+					border: none;
+					border-radius: 50%;
+					display: flex;
+					height: size(48);
+					justify-content: center;
+					width: size(48);
 
-                    &--in-active {
-                        background-color: var(--mc-gray-100);
-                        cursor: default;
-                    }
-                }
+					&--in-active {
+						background-color: var(--mc-gray-100);
+						cursor: default;
+					}
+				}
 
-                &__viewport {
-                    ol {
-                        li{
-                            justify-content: flex-start;
-                            padding: 0 size(20);
-                        }
-                    }
-                }
-            }
-
-        }
-
-    }
+				&__viewport {
+					ol {
+						li{
+							justify-content: flex-start;
+							padding: 0 size(40) 0 0;
+						}
+					}
+				}
+			}
+		}
+	}
 }
