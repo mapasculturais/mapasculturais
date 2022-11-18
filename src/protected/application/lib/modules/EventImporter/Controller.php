@@ -612,7 +612,12 @@ class Controller extends \MapasCulturais\Controller
          if($value['TAGS']){
             $tags = explode(';', $value['TAGS']);
          }
-         // $moduleConfig['fromToEntity']['event']
+
+         $more_information =  null;
+         if($value['MORE_INFORMATION']){
+            $more_information = preg_replace('/[^0-9]/i', '', $value['MORE_INFORMATION']);
+         }
+
          $event = new Event();
          if($type_process_map->edit_event){
             $event = $app->repo('Event')->find($value['EVENT_ID']);
@@ -660,6 +665,7 @@ class Controller extends \MapasCulturais\Controller
          $event->projectId = $project ? $project->id : null;
          $event->event_attendance = $value['EVENT_ATTENDANCE'];
          $event->traducaoLibras = $value['LIBRAS_TRANSLATION'];
+         $event->telefonePublico = $more_information;
          $event->descricaoSonora = $value['AUDIO_DESCRIPTION'];
          $event->terms['tag'] = $tags;
          
