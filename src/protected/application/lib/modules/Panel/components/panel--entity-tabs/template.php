@@ -10,6 +10,7 @@ $this->import('
 $tabs = $tabs ?? [
     'publish' => i::esc_attr__('Publicados'),
     'draft' => i::esc_attr__('Em rascunho'),
+    'granted' => i::esc_attr__('Concedidos'),
     'archived' => i::esc_attr__('Arquivados'),
     'trash' => i::esc_attr__('Lixeira'),
 ];
