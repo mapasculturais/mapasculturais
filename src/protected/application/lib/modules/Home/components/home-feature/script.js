@@ -10,7 +10,7 @@ app.component('home-feature', {
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('home-opportunities')
+        const text = Utils.getTexts('home-feature');
         return { text }
     },
 
@@ -111,5 +111,9 @@ app.component('home-feature', {
         }
     },
     
-    methods: {},
+    methods: {
+        entityType(type) {
+            return __(type, 'home-feature');
+        },
+    },
 });
