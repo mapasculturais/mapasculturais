@@ -21,6 +21,7 @@ class Module extends \MapasCulturais\Module
                 i::__('uma vez') => 'once',
                 i::__('semanal') => 'weekly',
                 i::__('diariamente') => 'daily',
+                i::__('todos os dias') => 'daily',
                 'once' => 'once',
                 'weekly' => 'weekly',
                 'daily' => 'daily',
@@ -247,7 +248,7 @@ class Module extends \MapasCulturais\Module
                     i::__('13:00')
                 ],
                 i::__('FREQUENCIA') => [
-                    i::__('PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO - Informar a frequência que o evento irá acontecer usando as opções diariamente, semanal ou uma vez'),
+                    i::__('PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO - Informar a frequência que o evento irá acontecer usando as opções todos os dias, semanal ou uma vez'),
                     i::__('semanal')
                 ],
                 i::__('DATA_INICIAL') => [
