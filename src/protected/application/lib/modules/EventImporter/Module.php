@@ -21,6 +21,7 @@ class Module extends \MapasCulturais\Module
                 i::__('uma vez') => 'once',
                 i::__('semanal') => 'weekly',
                 i::__('diariamente') => 'daily',
+                i::__('todos os dias') => 'daily',
                 'once' => 'once',
                 'weekly' => 'weekly',
                 'daily' => 'daily',
@@ -48,7 +49,7 @@ class Module extends \MapasCulturais\Module
                 'SUNDAY' => i::__('dom')
             ],
             'use_endson' => [i::__('semanal'),i::__('diariamente'),'weekly','daily'],
-            'clear_ocurrence_ref' => [i::__('apagar ocorrencias'), i::__('zerar ocorrencias'), i::__('apagar'), i::__('limpar'), 'clear'],
+            'clear_ocurrence_ref' => [i::__('limpar ocorrencias'),i::__('apagar ocorrencias'), i::__('zerar ocorrencias'), i::__('apagar'), i::__('limpar'), 'clear'],
             'use_week_days' => [i::__('semanal'), 'weekly'],
             'dic_months' => [
                 "January" => i::__("Janeiro"),
@@ -82,6 +83,7 @@ class Module extends \MapasCulturais\Module
                 'LONG_DESCRIPTION' => ['long_description', i::__('descrição longa'), i::__('descrição_longa')],
                 'SITE' => ['site'],
                 'LIBRAS_TRANSLATION' => [i::__('libras_translation'), i::__('tradução libras'), i::__('tradução_libras')],
+                'MORE_INFORMATION' => [i::__('mais informações'), i::__('mais info'), 'more_information', i::__('info')],
                 'AUDIO_DESCRIPTION' => [i::__('audio_descricao'), i::__('audio descrição'), i::__('audio_descrição')],
                 'FACEBOOK' => ['facebook'],
                 'INSTAGRAM' => ['instagram'],
@@ -92,7 +94,7 @@ class Module extends \MapasCulturais\Module
                 'PINTEREST' => ['pinterest'],
                 'EVENT_ATTENDANCE' => [i::__('total_de_publico'), i::__('total de publico')],
                 'INSCRICOES' => [i::__('inscricoes'), i::__('inscrições')],
-                'CLASSIFICATION' => ['classification', 'rating',i::__('clasificação etária'), i::__('faixa etária'), i::__('classificação'),i::__('faixa_etária')],
+                'CLASSIFICATION' => ['classification', 'rating',i::__('clasificação etária'), i::__('faixa etária'), i::__('classificação'),i::__('faixa_etária'),i::__('todos os dias')],
                 'TAGS' => ['tags', 'tag'],
                 'LANGUAGE' => ['language',i::__('línguagem')],
                 'PROJECT' => ['project',i::__('projeto')],
@@ -138,6 +140,7 @@ class Module extends \MapasCulturais\Module
                     'PROJECT' => 'projectId' ,
                     'EVENT_ATTENDANCE' => 'event_attendanc',
                     'LIBRAS_TRANSLATION' => 'traducaoLibra',
+                    'MORE_INFORMATION' => 'telefonePublico',
                     'AUDIO_DESCRIPTION' => 'descricaoSonora' ,
                     'OWNER' => "owner",
                     'SPACE' => "space",
@@ -173,6 +176,10 @@ class Module extends \MapasCulturais\Module
                 i::__('TRADUCAO_LIBRAS') => [
                     i::__('Informar se o evento conta com tradução por libras usando SIM ou NÃO'),
                     i::__('Sim')
+                ],
+                i::__('MAIS_INFORMACOES') => [
+                    i::__('Informar número de telefone para mais informações'),
+                    i::__('99 99999-9999')
                 ],
                 i::__('AUDIO_DESCRICAO')=> [
                     i::__('informar se o evento conta com descrição por audio usando SIM ou NÂO'),
@@ -247,7 +254,7 @@ class Module extends \MapasCulturais\Module
                     i::__('13:00')
                 ],
                 i::__('FREQUENCIA') => [
-                    i::__('PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO - Informar a frequência que o evento irá acontecer usando as opções diariamente, semanal ou uma vez'),
+                    i::__('PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO - Informar a frequência que o evento irá acontecer usando as opções todos os dias, semanal ou uma vez'),
                     i::__('semanal')
                 ],
                 i::__('DATA_INICIAL') => [
