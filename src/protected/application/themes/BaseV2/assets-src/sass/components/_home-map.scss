@@ -2,37 +2,51 @@
 
 
 .home-map {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: size(27);
     padding: size(80) size(16);
+    position: relative;
 
-    &__content {
-        max-width: size(1170);
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: size(4);
         margin: 0 auto;
-        position: relative;
-        
-        &--title {
-            font-weight: 700;
+        max-width: size(1170);
+        width: 100%;
+
+        .title {
             font-size: size(32);
-            line-height: size(44);   
+            font-weight: 700;
+            line-height: size(44);  
+
             @media (max-width:size(800)) {
                 font-size: size(24);
                 line-height: size(28);
             }
         }
 
-        &--description {
-            font-weight: 400;
+        .description {
             font-size: size(18);
+            font-weight: 400;
             line-height: size(25);
+
             @media (max-width:size(800)) {
                 font-size: size(14);
                 line-height: size(19);
             }
         }
+    }
 
-        &--img {
-            width: 100%;
-        }
+    &__content {
+        max-width: size(1170);
+        margin: 0 auto;
+        position: relative;
+        width: 100%;      
         
+        .leaflet-container {
+            border-radius: var(--mc-border-radius-sm);
+        }
     } 
 }

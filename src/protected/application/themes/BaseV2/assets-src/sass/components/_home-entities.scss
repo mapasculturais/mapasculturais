@@ -10,10 +10,15 @@
         margin:0 auto;
         
         &--header {
+            display: flex;
+            flex-direction: column;
+            gap: size(8);
+
             .title {
                 font-weight: 700;
                 font-size: size(32);
                 line-height: size(44);
+                
                 @media (max-width: size(800)) {
                     font-weight: 700;
                     font-size: size(24);
@@ -25,6 +30,10 @@
                 font-weight: 400;
                 font-size: size(18);
                 line-height: size(25);
+
+                p {
+                    margin: 0;
+                }
 
                 @media (max-width: size(800)) {
                     font-weight: 400;

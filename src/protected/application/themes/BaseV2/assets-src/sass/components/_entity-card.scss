@@ -212,6 +212,10 @@
 		flex-wrap: nowrap;
 		gap: size(24) 0;
 
+		@media (max-width: size(500)) {
+			flex-direction: column;
+		}
+
 		&--info {
 			min-width: size(200);
 			
@@ -259,6 +263,12 @@
 					float: right;
 				}
 			}
+		}
+	}
+
+	&.portrait {
+		.entity-card__footer {
+			flex-direction: column;
 		}
 	}
 }
