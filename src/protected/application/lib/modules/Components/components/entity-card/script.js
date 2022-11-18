@@ -15,6 +15,10 @@ app.component('entity-card', {
         entity: {
             type: Entity,
             required: true
+        },
+        portrait: {
+            type: Boolean,
+            default: false
         }
     },
 

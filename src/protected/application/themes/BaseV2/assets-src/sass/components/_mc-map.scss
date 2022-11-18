@@ -1,11 +1,41 @@
 @use '../settings/mixins' as *;
 
 .mc-map {
-    height: 400px;  
+    height: size(400);  
     
     .leaflet-container {
         .leaflet-pane {
             z-index: 0;
+        }
+
+        .leaflet-control-container {
+            .leaflet-control-zoom {
+                display: flex;
+                background-clip: unset;
+                border: 0;
+                gap: size(6);
+                margin-left: size(16);
+                margin-top: size(19);
+
+                .leaflet-control-zoom-in,
+                .leaflet-control-zoom-out {
+                    align-items: center;
+                    border: unset;
+                    border-radius: var(--mc-border-radius-sm);
+                    display: flex;
+                    font-size: size(15);
+                    filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.16));
+                    font-weight: 400;
+                    height: size(48);
+                    justify-content: center;
+                    width: size(48);
+
+                    &.leaflet-disabled {
+                        background-color: var(--mc-gray-100);
+                    }
+                }
+
+            }
         }
     }
 
@@ -17,34 +47,34 @@
 
     &-marker {
         align-items: center;
-        border-radius: 50%;
         border: var(--mc-border-hairline) var(--mc-gray-300);
+        border-radius: var(--mc-border-radius-pill);
         display: flex;
         height: size(30);
         justify-content: center;
-        left: -14px;
+        left: size(-14);
         position: absolute;
-        top: -48px;
+        top: size(-48);
         width: size(30);
 
         &::before {
             background: white;
-            border-radius: 50%;
             border: var(--mc-border-hairline) var(--mc-gray-300);
+            border-radius: var(--mc-border-radius-pill);
             content: '';
-            height: 45px;
+            height: size(45);
             position: absolute;
-            width: 45px;
+            width: size(45);
             z-index: -1;
         }
 
         &::after {
-            width: 13px;
-            height: 13px;
+            width: size(13);
+            height: size(13);
             content: '';
             position: absolute;
             background: white;
-            bottom: -14px;
+            bottom: size(-14);
             -webkit-transform: rotate(45deg) skew(20deg, 20deg);
             transform: rotate(45deg) skew(20deg, 20deg);
             border: var(--mc-border-hairline) var(--mc-gray-300);

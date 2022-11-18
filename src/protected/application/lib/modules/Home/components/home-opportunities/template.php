@@ -19,7 +19,7 @@ $this->import('entities entity-card');
 				<template #default="{entities}">                    
 					<carousel v-if="entities.length > 0" :settings="settings" :breakpoints="breakpoints">
 						<slide v-for="entity in entities" :key="entity.id">
-							<entity-card :entity="entity">
+							<entity-card :entity="entity" portrait>
 								<template #labels> 
 									Inscrições abertas
 								</template>

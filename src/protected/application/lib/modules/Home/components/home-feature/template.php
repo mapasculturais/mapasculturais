@@ -25,7 +25,7 @@ $this->import('
 				<tab label="Todos" slug="all">
 					<carousel :settings="settings" :breakpoints="breakpoints">
 						<slide v-for="entity in entities" :key="entity.__objectId">
-							<entity-card :entity="entity">
+							<entity-card :entity="entity" portrait>
 								<template #labels> 
 									<div :class="['entityType',  entity.__objectType+'__background']">
 										<mc-icon :entity="entity"></mc-icon>

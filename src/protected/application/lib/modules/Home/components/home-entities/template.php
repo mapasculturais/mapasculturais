@@ -12,9 +12,7 @@ $this->import('
                 <?php i::_e('Aqui você encontra as informações da cultura de sua região!') ?>
             </label>
             <label class="description">
-                <p>
-                    <?php i::_e('Mas para isso, precisamos da sua ajuda!!! Faça parte você também: cadastre seus projetos, espaços e eventos.') ?>
-                </p>
+                <?php i::_e('Mas para isso, precisamos da sua ajuda!!! Faça parte você também: cadastre seus projetos, espaços e eventos.') ?>
             </label>
         </div>
         
