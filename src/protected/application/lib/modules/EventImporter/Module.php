@@ -92,7 +92,7 @@ class Module extends \MapasCulturais\Module
                 'PINTEREST' => ['pinterest'],
                 'EVENT_ATTENDANCE' => [i::__('total_de_publico'), i::__('total de publico')],
                 'INSCRICOES' => [i::__('inscricoes'), i::__('inscrições')],
-                'CLASSIFICATION' => ['classification', 'rating',i::__('clasificação etária'), i::__('faixa etária'), i::__('classificação'),i::__('faixa_etária')],
+                'CLASSIFICATION' => ['classification', 'rating',i::__('clasificação etária'), i::__('faixa etária'), i::__('classificação'),i::__('faixa_etária'),i::__('todos os dias')],
                 'TAGS' => ['tags', 'tag'],
                 'LANGUAGE' => ['language',i::__('línguagem')],
                 'PROJECT' => ['project',i::__('projeto')],
