@@ -23,11 +23,17 @@ app.component('entity-occurrence-list', {
     },
 
     methods: {
+        toggleMap(event) {
+            const occurrenceMap = event.target.parentElement.parentElement.nextSibling;
+            occurrenceMap.classList.toggle('showMap');
+        },
+
         formatPrice(price) {
-            if (/^\d+(?:\.\d+)?$/.test(price)) {
-	            return parseFloat(price).toLocaleString('pt-BR', { style: 'currency', currency: __('currency', 'entity-occurrence-list')  });
+            let newPrice = price;
+            if (/^\d+(?:\.\d+)?$/.test(newPrice)) {
+	            return parseFloat(newPrice).toLocaleString('pt-BR', { style: 'currency', currency: __('currency', 'entity-occurrence-list')  });
             } else {
-                return price;
+                return newPrice;
             }
         },
     },

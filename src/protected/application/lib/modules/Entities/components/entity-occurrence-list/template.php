@@ -5,6 +5,7 @@ use MapasCulturais\i;
 $this->import('
     create-occurrence
     entities
+    entity-map
     mc-icon
 ');
 ?>
@@ -21,37 +22,46 @@ $this->import('
     </div>
     <div class="entity-occurrence-list__occurrences">
         <label class="occurrence__title">Agenda</label>
-        <entities type="eventOccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar}">
+        <entities type="eventOccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
             <template #default="{entities}">
+                
                 <div v-for="occurrence in entities" class="occurrence" :class="{'edit': editable}" :key="occurrence._reccurrence_string">
-                    <div class="occurrence__header">
-                        <div class="occurrence__header--title">
-                            <mc-icon name="pin"></mc-icon> 
-                            <span class="title">
-                                {{occurrence.space.name}}
+                    
+                    <div class="occurrence__card">
+                        <div class="header">
+                            <div class="header__title">
+                                <mc-icon name="pin"></mc-icon> 
+                                <span class="title">
+                                    {{occurrence.space.name}}
+                                </span>
+                            </div>
+                            <span @click="toggleMap($event)" class="header__link button--icon">
+                                <mc-icon name="map"></mc-icon> <?= i::_e('Ver mapa') ?>
                             </span>
                         </div>
-                        <a class="occurrence__header--link button--icon">
-                            <mc-icon name="map"></mc-icon> <?= i::_e('Ver mapa') ?>
-                        </a>
-                    </div>
-                    <div class="occurrence__address">
-                        <p>{{occurrence.space.endereco}}</p>
-                    </div>
-                    <div class="occurrence__content">
-                        <div class="occurrence__content--ticket">
-                            <mc-icon name="date"></mc-icon>
-                            <span class="ticket">
-                                {{occurrence.rule.startsOn}}
-                            </span>
+                        <div class="address">
+                            <p>{{occurrence.space.endereco}}</p>
                         </div>
-                        <div class="occurrence__content--price">
-                            <mc-icon name="ticket"></mc-icon>
-                            <span class="price">
-                                {{formatPrice(occurrence.rule.price)}}
-                            </span>
+                        <div class="content">
+                            <div class="content__ticket">
+                                <mc-icon name="date"></mc-icon>
+                                <span class="ticket">
+                                    {{occurrence.rule.startsOn}}
+                                </span>
+                            </div>
+                            <div class="content__price">
+                                <mc-icon name="ticket"></mc-icon>
+                                <span class="price">
+                                    {{formatPrice(occurrence.rule.price)}}
+                                </span>
+                            </div>
                         </div>
                     </div>
+
+                    <div v-if="showMap" class="occurrence__map">
+                        <entity-map :entity="occurrence.space"></entity-map>
+                    </div>
+
                     <div v-if="editable" class="occurrence__actions">
                         <a class="occurrence__actions--edit">
                             <mc-icon name="edit"></mc-icon><?= i::_e('Editar') ?>
@@ -61,6 +71,7 @@ $this->import('
                         </a>
                     </div>
                 </div>
+                
             </template>
             <template #loading>
                 <div>
