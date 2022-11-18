@@ -6,7 +6,7 @@ $this->import('
     panel--entity-tabs
 ');
 ?>
-<panel--entity-tabs :type='type' :user="user.id" :select="select">
+<panel--entity-tabs tabs="publish,draft,trash,archived" :type='type' :user="user.id" :select="select">
     <template #before-list>
         <div class="grid-12 panel--entity-tabs--identify">
             <div class="col-1 "><?= i::__('ID') ?></div>
