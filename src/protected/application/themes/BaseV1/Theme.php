@@ -778,6 +778,14 @@ class Theme extends MapasCulturais\Theme {
     protected function _init() {
         $app = App::i();
 
+        $app->hook('template(seal.single.tabs):end',function(){
+            $this->part('tab',['id'=>'seal-config','label'=>'Configuração do selo']);
+        });
+
+        $app->hook('template(seal.single.tabs-content):end',function(){
+            $this->part('seal-config-block');
+        });
+
         if(!$app->user->is('guest') && $app->user->profile->status < 1){
             $app->hook('view.partial(nav-main-user).params', function($params, &$name){
                 $name = 'header-profile-link';
