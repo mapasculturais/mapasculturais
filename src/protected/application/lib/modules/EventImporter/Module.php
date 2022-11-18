@@ -83,6 +83,7 @@ class Module extends \MapasCulturais\Module
                 'LONG_DESCRIPTION' => ['long_description', i::__('descrição longa'), i::__('descrição_longa')],
                 'SITE' => ['site'],
                 'LIBRAS_TRANSLATION' => [i::__('libras_translation'), i::__('tradução libras'), i::__('tradução_libras')],
+                'MORE_INFORMATION' => [i::__('mais informações'), i::__('mais info'), 'more_information', i::__('info')],
                 'AUDIO_DESCRIPTION' => [i::__('audio_descricao'), i::__('audio descrição'), i::__('audio_descrição')],
                 'FACEBOOK' => ['facebook'],
                 'INSTAGRAM' => ['instagram'],
@@ -139,6 +140,7 @@ class Module extends \MapasCulturais\Module
                     'PROJECT' => 'projectId' ,
                     'EVENT_ATTENDANCE' => 'event_attendanc',
                     'LIBRAS_TRANSLATION' => 'traducaoLibra',
+                    'MORE_INFORMATION' => 'telefonePublico',
                     'AUDIO_DESCRIPTION' => 'descricaoSonora' ,
                     'OWNER' => "owner",
                     'SPACE' => "space",
@@ -174,6 +176,10 @@ class Module extends \MapasCulturais\Module
                 i::__('TRADUCAO_LIBRAS') => [
                     i::__('Informar se o evento conta com tradução por libras usando SIM ou NÃO'),
                     i::__('Sim')
+                ],
+                i::__('MAIS_INFORMACOES') => [
+                    i::__('Informar número de telefone para mais informações'),
+                    i::__('99 99999-9999')
                 ],
                 i::__('AUDIO_DESCRICAO')=> [
                     i::__('informar se o evento conta com descrição por audio usando SIM ou NÂO'),
