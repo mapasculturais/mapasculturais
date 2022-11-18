@@ -169,6 +169,9 @@ class Metadata extends \MapasCulturais\Definition{
 
     function getDefaultSerializer() {
         $serializers = [
+            'boolean' => function($value) {
+                return $value ? '1' : '0';
+            },
             'json' => function($value) {
                 return json_encode($value);
             },
@@ -194,6 +197,21 @@ class Metadata extends \MapasCulturais\Definition{
 
     function getDefaultUnserializer() {
         $unserializers = [
+            'boolean' => function($value) {
+                return (bool) $value;
+            },
+            'integer' => function($value) {
+                return (int) $value;
+            },
+            'int' => function($value) {
+                return (int) $value;
+            },
+            'numeric' => function($value) {
+                return (float) $value;
+            },
+            'number' => function($value) {
+                return (float) $value;
+            },
             'json' => function($value) {
                 return json_decode($value);
             },
