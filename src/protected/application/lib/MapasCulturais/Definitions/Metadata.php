@@ -113,7 +113,7 @@ class Metadata extends \MapasCulturais\Definition{
     function __construct($key, $config) {
         $this->key = $key;
 
-        $this->default_value = key_exists('default_value', $config) ? $config['default_value'] : null;
+        $this->default_value = $config['default_value'] ?? $config['default'] ?? null;
 
         $this->label = $config['label'];
 
