@@ -117,6 +117,26 @@ jQuery(function(){
             });
         }
 
+        if ($(this).hasClass('js-mask-cnpj')) {
+            if (MapasCulturais.postalCodeMask === false) return;
+            var masks = MapasCulturais.postalCodeMask ? [MapasCulturais.postalCodeMask] : ['00.000.000/0000-00'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(masks[0], options) ;
+               }
+            });
+        }
+
+        if ($(this).hasClass('js-mask-cpf')) {
+            if (MapasCulturais.postalCodeMask === false) return;
+            var masks = MapasCulturais.postalCodeMask ? [MapasCulturais.postalCodeMask] : ['000.000.000-00'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(masks[0], options) ;
+               }
+            });
+        }
+
         if ($(this).hasClass('js-mask-time')) {
             //Mask
             var masks = ['00:00'];
