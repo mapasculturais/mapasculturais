@@ -12,7 +12,6 @@
     }
 
     &__content {
-        padding: size(16);
 
         &-form {            
             .input {
@@ -35,7 +34,6 @@
             width: max-content;
             margin: 0;
             max-height: size(250);
-            margin: size(16) 0;
 
             .item {
                 display: flex;
