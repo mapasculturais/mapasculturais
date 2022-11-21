@@ -160,9 +160,7 @@
             }
 
             &__actions {
-                position: absolute;
-                left: size(13);
-                bottom: size(-33);
+                padding: size(16);
                 display: flex;
                 gap: size(24);
 
