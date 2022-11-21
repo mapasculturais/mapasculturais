@@ -7,6 +7,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções
 - typo no módulo Notifications 
+### Melhorias
+- Cria novos campos no cadastro do agente
 
 ## [5.3.35] - 2022-11-16
 ### Correções
