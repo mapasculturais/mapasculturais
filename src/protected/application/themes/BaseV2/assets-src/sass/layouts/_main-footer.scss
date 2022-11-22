@@ -7,7 +7,7 @@
     display: flex;
     gap: size(40);
     justify-content: center;
-    padding: size(80) 0;
+    padding: size(80) 0 0;
     position: relative;
     flex-wrap: wrap;
     
@@ -140,10 +140,7 @@
 
         &--reg {
             background: #042A2B;    
-            bottom: 0;
-            left: 0;
             padding: size(14) size(16);    
-            position: absolute;
             width: 100%;
 
             &-content {
