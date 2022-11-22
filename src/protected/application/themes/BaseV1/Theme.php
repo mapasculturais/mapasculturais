@@ -4,6 +4,7 @@ namespace MapasCulturais\Themes\BaseV1;
 
 use MapasCulturais;
 use MapasCulturais\App;
+use MapasCulturais\Controllers\Agent;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
 use Respect\Validation\length;
@@ -778,12 +779,13 @@ class Theme extends MapasCulturais\Theme {
     protected function _init() {
         $app = App::i();
 
-        $app->hook('template(seal.single.tabs):end',function(){
+        $app->hook('template(seal.edit.tabs):end',function(){
             $this->part('tab',['id'=>'seal-config','label'=>'Configuração do selo']);
         });
 
-        $app->hook('template(seal.single.tabs-content):end',function(){
-            $this->part('seal-config-block');
+        $app->hook('template(seal.edit.tabs-content):end',function(){
+            $entity = $this->controller->requestedEntity;
+            $this->part('seal-config-block',['entity'=>$entity]);
         });
 
         if(!$app->user->is('guest') && $app->user->profile->status < 1){
@@ -1351,6 +1353,64 @@ class Theme extends MapasCulturais\Theme {
                 'v::intVal()->positive()' => 'O valor deve ser um número inteiro positivo'
             ]
         ));
+    }
+
+    function getLockedFieldsSeal(){
+        $exclude_list = [
+            'id','_type',
+            'createTimestamp',
+            'status',
+            'userId',
+            'updateTimestamp',
+            '_subsiteId',
+            'geoPais',
+            'geoPais_cod',
+            'geoRegiao',
+            'geoRegiao_cod',
+            'geoEstado',
+            'geoEstado_cod',
+            'geoMesorregiao',
+            'geoMesorregiao_cod',
+            'geoMicrorregiao',
+            'geoMicrorregiao_cod',
+            'geoMunicipio',
+            'geoMunicipio_cod',
+            'geoZona',
+            'geoZona_cod',
+            'geoSubprefeitura',
+            'geoSubprefeitura_cod',
+            'geoDistrito',
+            'geoDistrito_cod',
+            'geoSetor_censitario',
+            'geoSetor_censitario_cod',
+            'event_importer_processed_file',
+            'opportunityTabName',
+            'useOpportunityTab',
+            'sentNotification',
+            'public',
+            'location',
+
+        ];
+
+        $agent_prop = \MapasCulturais\Entities\Agent::getPropertiesMetadata();
+        $props = [
+            'agent' => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
+            'space' => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
+        ];
+
+        $_fields = [];
+        foreach($props as $entity => $values){
+
+            foreach($values as $field => $v){
+
+            if(!$v["isEntityRelation"] && !in_array($field,$exclude_list)){
+                $_fields[$entity][$field] = $v;
+            }
+            }
+        }
+
+        return $_fields;
+        
     }
 
     function head() {
