@@ -55,6 +55,12 @@ app.component('mc-map', {
         this.markersGroup = group;
     },
 
+    created() {
+        if (!this.center.length && this.center.lat !== 0 && this.center.lng !== 0) {
+            this.defaultZoom = 16;
+        }        
+    },
+
     beforeUpdate() {
         this.populateMarkerClusterGroup();
     },
