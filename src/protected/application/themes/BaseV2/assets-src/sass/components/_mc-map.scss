@@ -4,6 +4,8 @@
     height: size(400);  
     
     .leaflet-container {
+        z-index: 1;
+        
         .leaflet-pane {
             z-index: 0;
         }
