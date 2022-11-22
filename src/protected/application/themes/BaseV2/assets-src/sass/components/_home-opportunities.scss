@@ -103,6 +103,10 @@
 						li{
 							justify-content: flex-start;
 							padding: 0 size(40) 0 0;
+
+							@media (max-width: size(600)) {
+								padding: 0 size(20);
+							}
 						}
 					}
 				}
