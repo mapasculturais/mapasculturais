@@ -88,7 +88,8 @@
             z-index: 100;
 
             .panel-nav {
-                display: unset;
+                display: block;
+                height: unset;
                 padding: size(16);
             }
         }
