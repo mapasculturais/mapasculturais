@@ -6,21 +6,25 @@ $this->import('mc-icon mc-link');
 
 <div class="entity-card">
     <div class="entity-card__header">
-        <div class="entity-card__header--image">
-            <img v-if="event.files?.avatar" :src="event.files?.avatar?.transformations?.avatarMedium.url" />
-            <mc-icon v-else name="event"></mc-icon>
-        </div>
-        <div class="entity-card__header--title">
-            <label class="entity-card__header--title-title"> 
-                {{event.name}}
-            </label>
-        </div>
-        <div class="entity-card__header--subTitle">
-            <label class="entity-card__header--title-subTitle"> 
-                {{event.subTitle}}
-            </label>
-        </div>
-    </div>
+		<div class="entity-card__header user-details">    
+			<div class="user-image">
+				<img v-if="event.files?.avatar" :src="event.files?.avatar?.transformations?.avatarMedium.url" />
+				<mc-icon v-else name="event"></mc-icon>
+			</div>            
+			<div class="user-info">
+				<label class="user-info__name"> 
+					{{event.name}}
+				</label>                
+				<div class="user-info__attr">
+					<span> {{event.subTitle}} </span>
+				</div>
+			</div>
+		</div>
+		<div class="entity-card__header user-slot">
+			<slot name="labels"></slot>
+		</div>
+	</div>
+
     <div class="entity-card__content">
         <div class="entity-card__content--occurrence-data">
             <mc-icon name="event"></mc-icon> {{occurrence.starts.date('long')}} <?= i::_e('às') ?> {{occurrence.starts.time()}}
