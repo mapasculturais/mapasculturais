@@ -771,7 +771,7 @@ abstract class Theme extends \Slim\View {
                 $e[$owner_prop] = $owner;
             }
 
-            if($owner_prop != 'parent' && $entity_class_name::usesNested()) {
+            if($owner_prop != 'parent' && $entity_class_name::usesNested() && !empty($e['parent'])) {
                 $parent_query_params = [
                     '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
                     'id' => "EQ({$e['parent']})", 

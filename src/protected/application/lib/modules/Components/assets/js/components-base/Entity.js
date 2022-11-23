@@ -146,7 +146,9 @@ class Entity {
             }
 
             if(this[prop] != undefined) {
-                result[prop] = this[prop]?.id;
+                if(prop !== 'parent' || this.id !== this[prop]?.id) {
+                    result[prop] = this[prop]?.id;
+                }
             }
         }
 
