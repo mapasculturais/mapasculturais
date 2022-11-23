@@ -2,6 +2,10 @@
 .controller-space {
     background-color: var(--mc-white);
 
+    .tabs-component__panels {
+        margin-bottom: 0;
+    }
+
     &.action-edit {
         background-color: var(--mc-gray-100);
 

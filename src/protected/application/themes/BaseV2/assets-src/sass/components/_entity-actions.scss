@@ -9,6 +9,7 @@
     position: -webkit-sticky;
     position: sticky;
     width: 100%;
+    z-index: 1;
 
     &__content {
         display: flex;
