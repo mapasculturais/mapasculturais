@@ -2,7 +2,7 @@
 use MapasCulturais\i;
  
 $this->import('
-    search tabs search-list search-map search-filter-opportunity 
+    search tabs search-list search-map search-filter-opportunity create-opportunity 
     '); /* create-opportunity */
 $this->breadcramb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
@@ -13,7 +13,7 @@ $this->breadcramb = [
 <search page-title="<?php i::esc_attr_e('Oportunidades') ?>" entity-type="opportunity" :initial-pseudo-query="{}"> 
     <template #create-button>
         <!-- @TODO: Criação e aplicação do componente <create-opportunity> -->
-        <?= i::_e('botão criar oportunidade') ?>
+        <create-opportunity></create-opportunity>
     </template>
     <template #default="{pseudoQuery}">
         <div class="tabs-component__panels">
