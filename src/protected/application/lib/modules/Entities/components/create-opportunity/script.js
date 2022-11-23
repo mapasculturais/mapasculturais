@@ -58,7 +58,7 @@ app.component('create-opportunity' , {
                 'status', 
                 'type',
                 '_type', 
-                // 'userId',
+                'userId',
             ];
             Object.keys($DESCRIPTIONS.opportunity).forEach((item)=>{
                 if(!skip.includes(item) && $DESCRIPTIONS.opportunity[item].required){
