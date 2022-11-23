@@ -785,6 +785,7 @@ class Theme extends MapasCulturais\Theme {
 
         $app->hook('template(seal.edit.tabs-content):end',function(){
             $entity = $this->controller->requestedEntity;
+            $this->includeSealAssets();
             $this->part('seal-config-block',['entity'=>$entity]);
         });
 
@@ -1964,6 +1965,11 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['request']['id'] = $entity->id;
 
         $app->applyHookBoundTo($this, 'view.includeAngularEntityAssets:after');
+    }
+
+    function includeSealAssets(){
+        $this->enqueueScript("app","seal-locked-conf","js/seal-locked-conf.js");
+        $this->enqueueStyle("app","seal-locked-conf","css/seal-locked-conf.css");
     }
 
     protected function _printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {

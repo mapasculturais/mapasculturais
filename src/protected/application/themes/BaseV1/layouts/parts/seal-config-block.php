@@ -1,17 +1,7 @@
 <?php
 $props = $this->getLockedFieldsSeal();
 ?>
-<style>
-    .fields {
-        padding: 5px;
-        font-weight: normal;
-    }
 
-    .fields>div {
-        float: left;
-        width: 50%;
-    }
-</style>
 <div id="seal-config">
     <span class="js-editable " style="display:none;" id="locked-fields" type="text" data-edit="lockedFields"></span>
     <form class="js-locked-fields">
@@ -39,18 +29,4 @@ $props = $this->getLockedFieldsSeal();
             <?php endforeach; ?>
         </div>
     </form>
-    <script>
-        (($) => {
-            $(() => {
-                $('.js-locked-fields input').on('change', () => {
-                    const $form = $('.js-locked-fields')
-                    let fields = $(".js-locked-fields input:checkbox:checked").map(function() {
-                        return $(this).val();
-                    }).get(); // <----
-                    $('#locked-fields').editable('setValue', fields)
-
-                })
-            })
-        })(jQuery)
-    </script>
 </div>
