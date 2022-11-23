@@ -6,7 +6,35 @@
     color: black;
 
     .field {
-        margin: size(16) 0 
+        margin: size(16) 0
+    }
+
+    &__fields {
+        &--choice {
+            &-label {
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 19px;
+            }
+
+            &-list {
+                max-width: 520px;
+
+                &-box {
+                    height: 48px;
+                    background: #FFFFFF;
+                    border: 1px solid #313131;
+                    border-radius: 4px;
+
+                    &-label {
+                        margin:size(14) auto size(15) size(40);
+                    }
+                }
+
+                margin-top: 8px;
+            }
+
+        }
     }
 
     &__buttons {
@@ -15,7 +43,8 @@
         flex-direction: column;
         flex-wrap: nowrap;
         gap: 24px;
-        .button{
+
+        .button {
             place-content: center;
         }
     }
@@ -24,7 +53,8 @@
         &.error {
             margin-bottom: 0;
             padding-bottom: 0;
-            button{
+
+            button {
                 border: size(2) solid #FF0000;
             }
         }
@@ -40,5 +70,3 @@
 
     }
 }
-
-    
