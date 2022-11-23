@@ -1,0 +1,10 @@
+
+.fields {
+    padding: 5px;
+    font-weight: normal;
+}
+
+.fields>div {
+    float: left;
+    width: 50%;
+}
