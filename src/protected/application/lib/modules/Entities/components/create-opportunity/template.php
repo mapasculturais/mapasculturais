@@ -14,7 +14,7 @@ $this->import('
         <label><?php i::_e('Crie uma oportunidade com informações básicas')?><br><?php i::_e('e de forma rápida')?></label>
         <div class="create-modal__fields">
             <entity-field :entity="entity" hide-required  :editable="true" label="<?php i::esc_attr_e("Selecione o tipo da oportunidade")?>" prop="type"></entity-field>
-            <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Nome ou título")?>  prop="name"></entity-field>
+            <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Título")?>  prop="name"></entity-field>
             <entity-terms :entity="entity" :editable="true" :classes="areaClasses" taxonomy='area' title="<?php i::esc_attr_e("Área de Atuação") ?>"></entity-terms>
             <small class="field__error" v-if="areaErrors">{{areaErrors.join(', ')}}</small>
             <entity-field :entity="entity" hide-required prop="shortDescription" label="<?php i::esc_attr_e("Adicione uma Descrição curta para a oportunidade")?>"></entity-field>
