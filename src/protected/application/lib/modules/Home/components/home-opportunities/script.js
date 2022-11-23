@@ -23,7 +23,7 @@ app.component('home-opportunities', {
             query: {
                 '@order' : 'registrationFrom ASC',
                 '@select' : 'id,name,shortDescription,terms,seals,singleUrl',
-                '@verified' : '1'
+                ...$MAPAS.home.opportunities.filter,
             },
 
             // carousel settings
