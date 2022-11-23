@@ -107,7 +107,7 @@ app.component('home-feature', {
         },
         query: {
             type: Object,
-            default: {}
+            default: {...$MAPAS.home.featured.filter}
         }
     },
     
