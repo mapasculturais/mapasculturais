@@ -2,6 +2,7 @@
 
 namespace MapasCulturais\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 
@@ -431,6 +432,8 @@ class EventOccurrence extends \MapasCulturais\Entity
     function save($flush = false) {
         try{
             parent::save($flush);
+            $this->event->updateTimestamp = new DateTime();
+            $this->event->save($flush);
 
         }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
             if(!App::i()->isWorkflowEnabled())
@@ -461,6 +464,9 @@ class EventOccurrence extends \MapasCulturais\Entity
             $r->delete($flush);
 
         parent::delete($flush);
+
+        $this->event->updateTimestamp = new DateTime();
+        $this->event->save($flush);
     }
 
     /** @ORM\PreRemove */
