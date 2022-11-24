@@ -28,6 +28,10 @@
                 &__header {
                     border-bottom: 1px solid;
                     padding: 0;
+
+                    @media (max-width: size(1200)) {
+                        margin: 0 size(16);                        
+                    }
                 }
 
                 &__buttons {
