@@ -66,6 +66,10 @@ app.component('entity-field', {
         debounce: {
             type: Number,
             default: 0
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
         }
     },
 
