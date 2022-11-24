@@ -31,13 +31,9 @@ $this->breadcramb = [
 ?>
 
 <div class="main-app">
-
-    <mapas-breadcrumb></mapas-breadcrumb>
-            
-    <entity-header :entity="entity" :editable="true"></entity-header>
-
+    <mapas-breadcrumb></mapas-breadcrumb>            
+    <entity-header :entity="entity" editable></entity-header>
     <mapas-container>
-
         <mapas-card class="feature">
             <template #title>
                 <label><?php i::_e("Informações de Apresentação")?></label>
@@ -46,78 +42,42 @@ $this->breadcramb = [
             <template #content>                
                 <div class="left">
                     <div class="grid-12 v-bottom">
-                        <div class="col-12">
-                            <entity-cover :entity="entity" classes="col-12"></entity-cover>
-                        </div>
-                        
+                        <entity-cover :entity="entity" classes="col-12"></entity-cover>
                         <div class="col-3 sm:col-12">
                             <entity-profile :entity="entity"></entity-profile>
                         </div>
-
-                        <div class="col-9 sm:col-12">
-                            <entity-field :entity="entity" prop="name"></entity-field>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="shortDescription"></entity-field>
-                        </div>
-
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="site"></entity-field>
-                        </div>
+                        <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" prop="site"></entity-field>
                     </div>                      
                 </div>
-
                 <div class="divider"></div>
-
                 <div class="right">
                     <div class="grid-12">
-                        <entity-terms :entity="entity" taxonomy="area" :editable="true" classes="col-12" title="Áreas de atuação"></entity-terms>
-                        <entity-social-media :entity="entity" classes="col-12" :editable="true"></entity-social-media>
+                        <entity-terms :entity="entity" taxonomy="area" editable classes="col-12" title="Áreas de atuação"></entity-terms>
+                        <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
                     </div>
                 </div>
             </template>
         </mapas-card>
-
         <main>
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Dados do Agente Coletivo"); ?></label>
                 </template>
-                <template #content>                
-                    
+                <template #content>
                     <div class="grid-12">
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="documento" label="CNPJ"></entity-field>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="emailPrivado"></entity-field>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="telefonePublico"></entity-field>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="emailPublico"></entity-field>
-                        </div>
-                        
-                        <div class="col-6">
-                            <entity-field :entity="entity" prop="telefone1"></entity-field>
-                        </div>
-
-                        <div class="col-6">
-                            <entity-field :entity="entity" prop="telefone2"></entity-field>
-                        </div>
-                    
-                        <div class="col-12 divider"></div>
-                        
-                        <entity-location :entity="entity" classes="col-12" :editable="true"></entity-location>
+                        <entity-field :entity="entity" classes="col-12" prop="documento" label="CNPJ"></entity-field>                        
+                        <entity-field :entity="entity" classes="col-12" prop="emailPrivado"></entity-field>                        
+                        <entity-field :entity="entity" classes="col-12" prop="telefonePublico"></entity-field>                        
+                        <entity-field :entity="entity" classes="col-12" prop="emailPublico"></entity-field>                        
+                        <entity-field :entity="entity" classes="col-12" prop="telefone1"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" prop="telefone2"></entity-field>                    
+                        <div class="col-12 divider"></div>                        
+                        <entity-location :entity="entity" classes="col-12" editable></entity-location>
                     </div>
                 </template>
             </mapas-card>
-
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Mais informações públicas"); ?></label>
@@ -125,41 +85,29 @@ $this->breadcramb = [
                 </template>
                 <template #content>
                     <div class="grid-12">
+                        <entity-field :entity="entity" classes="col-12" prop="longDescription" label="Descrição"></entity-field>
+                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="Adicionar arquivos para download" editable></entity-files-list>
                         <div class="col-12">
-                            <entity-field :entity="entity" prop="longDescription" label="Descrição"></entity-field>
+                            <entity-links :entity="entity" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>                    
                         </div>
-
-                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="Adicionar arquivos para download" :editable="true"></entity-files-list>
-
-                        <entity-links title="Adicionar links" :entity="entity" classes="col-12" :editable="true"></entity-links>
-                        
-                        <entity-gallery-video title="<?php i::_e('Adicionar vídeos') ?>" :entity="entity" classes="col-12" :editable="true"></entity-gallery-video>
-                        
-                        <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" classes="col-12" :editable="true"></entity-gallery>
+                        <entity-gallery-video title="<?php i::_e('Adicionar vídeos') ?>" :entity="entity" classes="col-12" editable></entity-gallery-video>
+                        <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" classes="col-12" editable></entity-gallery>
                     </div>
                 </template>
             </mapas-card>
         </main>
-
         <aside>
             <mapas-card>
                 <template #content>
                     <div class="grid-12">
-                        <entity-admins :entity="entity" classes="col-12" :editable="true"></entity-admins>
-                    
-                        <entity-terms :entity="entity" taxonomy="tag" classes="col-12" title="Tags" :editable="true"></entity-terms>
-                    
-                        <entity-related-agents :entity="entity" classes="col-12" :editable="true"></entity-related-agents>
-                    
-                        <entity-owner :entity="entity" title="Publicado por" classes="col-12" :editable="true"></entity-owner>
+                        <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
+                        <entity-terms :entity="entity" taxonomy="tag" classes="col-12" title="Tags" editable></entity-terms>
+                        <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
+                        <entity-owner :entity="entity" title="Publicado por" classes="col-12" editable></entity-owner>
                     </div>
-
                 </template>
             </mapas-card>
         </aside>
-        
-    </mapas-container>    
-
+    </mapas-container>
     <entity-actions :entity="entity" editable></entity-actions>
-
 </div>
