@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i; 
 ?>
-<div class="field" :class="{error: hasErrors}">
+<div class="field" :class="[{error: hasErrors}, classes]">
     <label v-if="!hideLabel" :for="propId">
         <slot>{{label || description.label}}</slot>
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
