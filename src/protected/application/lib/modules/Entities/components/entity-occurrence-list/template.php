@@ -35,7 +35,7 @@ $this->import('
                                     {{occurrence.space.name}}
                                 </span>
                             </div>
-                            <span @click="toggleMap($event)" class="header__link button--icon">
+                            <span v-if="occurrence.space.endereco" @click="toggleMap($event)" class="header__link button--icon">
                                 <mc-icon name="map"></mc-icon> <?= i::_e('Ver mapa') ?>
                             </span>
                         </div>
@@ -58,7 +58,7 @@ $this->import('
                         </div>
                     </div>
 
-                    <div v-if="showMap" class="occurrence__map">
+                    <div v-if="occurrence.space.endereco" class="occurrence__map">
                         <entity-map :entity="occurrence.space"></entity-map>
                     </div>
 
