@@ -8,9 +8,7 @@ app.component('create-opportunity' , {
         return { text }
     },
     
-    created() {
-        this.iterationFields()
-    },
+   
 
     data() {
         return {
@@ -48,24 +46,24 @@ app.component('create-opportunity' , {
     },
     
     methods: {
-        iterationFields() {
-            let skip = [
-                'createTimestamp', 
-                'id',
-                'location',
-                'name', 
-                'shortDescription', 
-                'status', 
-                'type',
-                '_type', 
-                'userId',
-            ];
-            Object.keys($DESCRIPTIONS.opportunity).forEach((item)=>{
-                if(!skip.includes(item) && $DESCRIPTIONS.opportunity[item].required){
-                    this.fields.push(item);
-                }
-            })
-        },
+        // iterationFields() {
+        //     let skip = [
+        //         'createTimestamp', 
+        //         'id',
+        //         'location',
+        //         'name', 
+        //         'shortDescription', 
+        //         'status', 
+        //         'type',
+        //         '_type', 
+        //         'userId',
+        //     ];
+        //     Object.keys($DESCRIPTIONS.opportunity).forEach((item)=>{
+        //         if(!skip.includes(item) && $DESCRIPTIONS.opportunity[item].required){
+        //             this.fields.push(item);
+        //         }
+        //     })
+        // },
         createEntity() {
             this.entity = Vue.ref(new Entity('opportunity'));
             this.entity.type = 1;
