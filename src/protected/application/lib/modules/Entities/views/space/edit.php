@@ -32,61 +32,38 @@ $this->breadcramb = [
 ?>
 
 <div class="main-app">
-    <mapas-breadcrumb></mapas-breadcrumb>
-    
-    <entity-header :entity="entity" :editable="true"></entity-header>
-    
+    <mapas-breadcrumb></mapas-breadcrumb>    
+    <entity-header :entity="entity" editable></entity-header>    
     <mapas-container>
         <mapas-card class="feature">
             <template #title>
                 <label class="card__title--title"><?php i::_e("Informações de Apresentação")?></label>
                 <p class="card__title--description"><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
             </template>
-            <template #content>
-                
+            <template #content>                
                 <div class="left">
                     <div class="grid-12 v-center">
-                        <div class="col-12">
-                            <entity-cover :entity="entity"></entity-cover>
-                        </div>
-                        
+                        <entity-cover :entity="entity" classes="col-12"></entity-cover>                        
                         <div class="col-3 sm:col-12">
                             <entity-profile :entity="entity"></entity-profile>
                         </div>
-
                         <div class="col-9 sm:col-12">
                             <div class="grid-12">
-                                <div class="col-12">
-                                    <entity-field :entity="entity" label="Nome do espaço" prop="name"></entity-field>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <entity-field :entity="entity" label="Tipo do espaço" prop="type"></entity-field>
-                                </div>
+                                <entity-field :entity="entity" classes="col-12" label="Nome do espaço" prop="name"></entity-field>
+                                <entity-field :entity="entity" classes="col-12" label="Tipo do espaço" prop="type"></entity-field>
                             </div>
                         </div>
-                        
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="shortDescription"></entity-field>
-                        </div>
-
-                        <div class="col-12">
-                            <entity-field :entity="entity" label="Link para página ou site do espaço" prop="site"></entity-field>
-                        </div>
+                        <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" label="Link para página ou site do espaço" prop="site"></entity-field>
                     </div>                    
                 </div>
-
                 <div class="divider"></div>
-
                 <div class="right">
-                    <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Área de atuação"></entity-terms>
-                    <entity-social-media :entity="entity" :editable="true"></entity-social-media>
+                    <entity-terms :entity="entity" classes="col-12" taxonomy="area" editable title="Área de atuação"></entity-terms>
+                    <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
                 </div>
-                
-
             </template>
         </mapas-card>
-
         <main>         
             <mapas-card>
                 <template #title>
@@ -94,42 +71,24 @@ $this->breadcramb = [
                 </template>
                 <template #content>   
                     <div class="grid-12">
-                        <div class="col-12">
-                            <entity-location :entity="entity" editable hide-label></entity-location>
-                        </div>
+                        <entity-location :entity="entity" classes="col-12" editable hide-label></entity-location>
                     </div>
                 </template>
             </mapas-card>
-
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Informações sobre o espaço"); ?></label>                    
                 </template>
                 <template #content>   
                     <div class="grid-12">
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="emailPublico"></entity-field>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="emailPrivado"></entity-field>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="telefonePublico"></entity-field>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-field :entity="entity" label="Telefone privado 1" prop="telefone1"></entity-field>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-field :entity="entity" label="Telefone privado 2" prop="telefone2"></entity-field>
-                        </div>
+                        <entity-field :entity="entity" classes="col-12" prop="emailPublico"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" prop="emailPrivado"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" prop="telefonePublico"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" label="Telefone privado 1" prop="telefone1"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" label="Telefone privado 2" prop="telefone2"></entity-field>
                     </div>
                 </template>   
-            </mapas-card>
-            
+            </mapas-card>            
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Mais informações públicas"); ?></label>
@@ -137,55 +96,29 @@ $this->breadcramb = [
                 </template>
                 <template #content>
                     <div class="grid-12">
+                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Adicionar arquivos para download')?>" editable></entity-files-list>
                         <div class="col-12">
-                            <entity-files-list :entity="entity" group="downloads" title="<?= i::_e('Adicionar arquivos para download')?>" :editable="true"></entity-files-list>
+                            <entity-links :entity="entity" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>                    
                         </div>
-
-                        <div class="col-12">
-                            <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-gallery-video title="<?php i::_e('Adicionar vídeos') ?>" :entity="entity" :editable="true"></entity-gallery-video>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" :editable="true"></entity-gallery>
-                        </div>
+                        <entity-gallery-video :entity="entity" classes="col-12" title="<?php i::_e('Adicionar vídeos') ?>" editable></entity-gallery-video>
+                        <entity-gallery :entity="entity" classes="col-12" title="<?php i::_e('Adicionar fotos na galeria') ?>" editable></entity-gallery>
                     </div>
                 </template>  
             </mapas-card>
         </main>
-
         <aside>
             <mapas-card>
                 <template #content>
                     <div class="grid-12">
-                        <div class="col-12">
-                            <entity-admins :entity="entity" :editable="true"></entity-admins>
-                        </div>
-
-                        <div class="col-12">
-                            <entity-terms :entity="entity" taxonomy="tag" title="Tags" :editable="true"></entity-terms>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-related-agents :entity="entity" :editable="true"></entity-related-agents>
-                        </div>
-                        
-                        <div class="col-12">
-                            <entity-owner :entity="entity" title="Publicado por" :editable="true"></entity-owner>
-                        </div>
-                        <div class="col-12">
-                            <entity-parent :entity="entity" type="space"></entity-parent>
-                        </div>
+                        <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
+                        <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="Tags" editable></entity-terms>
+                        <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
+                        <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
+                        <entity-parent :entity="entity" classes="col-12" type="space" editable></entity-parent>
                     </div>
                 </template>
             </mapas-card>
         </aside>
-
     </mapas-container>
-
     <entity-actions :entity="entity" editable></entity-actions>
-
 </div>
