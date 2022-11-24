@@ -1,7 +1,7 @@
 <?php
 use MapasCulturais\i;
 
-$this->import('mc-link create-agent create-space create-event create-project');
+$this->import('mc-link create-agent create-space create-event create-project create-opportunity');
 ?>
 
 <div class="panel--entities-summary">                    
@@ -39,7 +39,9 @@ $this->import('mc-link create-agent create-space create-event create-project');
             </div>
         </mc-link>
         <div class="panel--entities-summary__card--create">
-            <button class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
+            <create-opportunity #default="{modal}">
+                <button @click="modal.open()" class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
+            </create-opportunity>
         </div>
     </div>
 
