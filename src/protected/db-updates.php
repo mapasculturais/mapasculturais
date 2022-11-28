@@ -1806,5 +1806,11 @@ $$
         }
 
         return false;
+    },
+
+    'alter seal add column locked_fields ' => function () {
+        if(!__column_exists('seal', 'locked_fields')) {
+            __exec('ALTER TABLE seal ADD locked_fields JSON DEFAULT \'{"agent":[], "space":[]}\'');
+        }
     }
 ] + $updates ;

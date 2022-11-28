@@ -109,6 +109,14 @@ class Seal extends \MapasCulturais\Entity
 
 
     /**
+     * @var object
+     *
+     * @ORM\Column(name="locked_fields", type="json_array", nullable=true, options={"default" : "{agent:[], space:[]}"})
+     */
+    protected $lockedFields;
+
+
+    /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
     protected $__metadata;
