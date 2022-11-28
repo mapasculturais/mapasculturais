@@ -1,10 +1,9 @@
 app.component('entity-terms', {
     template: $TEMPLATES['entity-terms'],
-    emits: [],
-
+    
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('__template__')
+        const text = Utils.getTexts('entity-terms')
         return { text }
     },
     
@@ -30,21 +29,21 @@ app.component('entity-terms', {
     },
 
     props: {
-        editable: {
-            type: Boolean,
-            default: false
-        },
         entity: {
             type: Entity,
-            required: true
-        },
-        taxonomy: {
-            type: String,
             required: true
         },
         title: {
             type: String,
             default: ''
+        },
+        taxonomy: {
+            type: String,
+            required: true
+        },
+        editable: {
+            type: Boolean,
+            default: false
         },
         classes: {
             type: [String, Array, Object],

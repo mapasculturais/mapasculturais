@@ -1,0 +1,21 @@
+# Componente `<entity-actions>`
+Componente com os botões de ações disponíveis para uma entidade
+  
+## Propriedades
+- *Entity **entity*** - Entidade
+- *Boolean **editable*** - Ativa as ações de edição na tela de edição da entidade
+
+### Importando componente
+```PHP
+<?php 
+$this->import('entity-actions');
+?>
+```
+### Exemplos de uso
+```HTML
+<!-- utilizaçao básica -->
+<entity-actions :entity="entity"></entity-actions>
+
+<!-- utilizaçao nas páginas de edição -->
+<entity-actions :entity="entity" editable></entity-actions>
+```

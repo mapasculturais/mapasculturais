@@ -8,8 +8,7 @@ app.component('entity-list', {
         return { text }
     },
 
-    data() {
-        
+    data() {        
         return {
             query: {
                 'id': `IN(${this.ids})`,
@@ -17,13 +16,11 @@ app.component('entity-list', {
         };
     },
 
-    props: {
-    
+    props: {    
         title: {
             type: String,
             required: true,
         },
-
         type: {
             type: String,
             required: true,
@@ -32,11 +29,5 @@ app.component('entity-list', {
             type: Array,
             required: true,
         }
-
-    },
-
-    methods: {
-
-    },
-    
+    },    
 });

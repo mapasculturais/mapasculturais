@@ -1,11 +1,5 @@
 app.component('entity-social-media', {
     template: $TEMPLATES['entity-social-media'],
-    emits: [],
-
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name]
-        return { hasSlot }
-    },
 
     data() {
         return {
@@ -26,11 +20,5 @@ app.component('entity-social-media', {
             type: [String, Array, Object],
             required: false
         },
-    },
-    
-    methods: {
-        doSomething () {
-
-        }
     },
 });

@@ -1,9 +1,9 @@
 # Componente `<entity-admins>`
-O componente `<entity-admins>` serve para listar e editar o grupo de administradores relacionados à entidade.
+Componente para listagem e edição do grupo de administradores relacionados à entidade.
 
 ## Propriedades
-- **entity**: *Entity* (obrigatório) - Entidade 
-- **editable**: *Boolean* (opcional) - Edição
+- *Entity **entity*** - Entidade
+- *Boolean **editable** = false* - Modo de edição do componente
 
 ### Importando componente
 ```PHP
@@ -11,12 +11,12 @@ O componente `<entity-admins>` serve para listar e editar o grupo de administrad
 $this->import('entity-admins');
 ?>
 ```
+
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
 <entity-admins :entity="entity"></entity-admins>
 
 <!-- utilização para edição -->
-<entity-admins :entity="entity" :editable="true"></entity-admins>
-
+<entity-admins :entity="entity" editable></entity-admins>
 ```

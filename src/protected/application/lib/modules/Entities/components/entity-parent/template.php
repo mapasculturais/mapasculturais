@@ -17,9 +17,7 @@ $this->import('select-entity');
         <?php i::_e('{{entity.parent.name}}') ?>
         </div>
     </a>
-
-    <div class="entity-parent__edit">
-        
+    <div class="entity-parent__edit">        
         <select-entity :type="type" @select="changeParent($event)" openside="right-down">            
             <template #button="{ toggle }">
                 <a class="entity-parent__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
@@ -28,7 +26,5 @@ $this->import('select-entity');
                 </a>
             </template>
         </select-entity>
-
     </div>
-
 </div>

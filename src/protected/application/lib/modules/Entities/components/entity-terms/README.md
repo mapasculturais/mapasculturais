@@ -2,11 +2,11 @@
 Componente para exibição e edição dos termos das taxonomias de uma entidade. 
   
 ## Propriedades
-- *Boolean **editable** = false* - Habilita o modo de edição do componente;
-- *Entity **entity*** - Entidade com a propriedade `terms` carregada. Para saber como se obter o objeto entity ver a documentação dos componentes `<entity>` e `<entities>`;
-- *String **taxonomy*** - Slug da taxonomia dos termos;
-- *String **title*** (opcional) - Label do elemento. Se não informado, utilizará o nome da taxonomia registrada na aplicação;
-- *String|Array **classes*** (opcional) - Classes adicionais para o elemento html;
+- *Entity **entity*** - Entidade
+- *String **title*** - Título do componente
+- *String **taxonomy*** - Taxonomia
+- *Boolean **editable** = false* - Modo de edição do componente
+- *String/Array/Object **classes*** - Classes a serem aplicadas no componente
 
 ### Importando componente
 ```PHP
@@ -23,6 +23,10 @@ $this->import('entity-terms');
 <entity-terms :entity="entity" taxonomy="area" ></entity-terms>
 
 <!-- utilizaçao básica para edição das áreas de atuação -->
-<entity-terms :entity="entity" taxonomy="area" :editable="true"></entity-terms>
+<entity-terms :entity="entity" taxonomy="area" editable></entity-terms>
 
+<!-- utilizaçao com classes personalizadas para listagem das áreas de atuação -->
+<entity-terms :entity="entity" taxonomy="area" classes="col-12"></entity-terms>
+
+<entity-terms :entity="entity" taxonomy="area" :classes="['col-12']"></entity-terms>
 ```

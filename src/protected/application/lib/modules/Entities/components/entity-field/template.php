@@ -5,9 +5,8 @@ use MapasCulturais\i;
     <label v-if="!hideLabel" :for="propId">
         <slot>{{label || description.label}}</slot>
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
-    </label> 
-    
-    <slot  name="input" >
+    </label>     
+    <slot name="input" >
         <?php //@todo implementar registro de tipos de campos (#1895) ?>
         <input  v-if="is('string')" :value="value" :id="propId" :name="prop" type="text"  @change="change($event)">
 
@@ -40,7 +39,6 @@ use MapasCulturais\i;
             </select>
         </template>
     </slot>
-
     <small class="field__error" v-if="hasErrors">        
         {{errors.join('; ')}}
     </small>
