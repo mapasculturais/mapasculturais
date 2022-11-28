@@ -24,9 +24,7 @@ $this->import('
         <label class="occurrence__title">Agenda</label>
         <entities type="eventOccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
             <template #default="{entities}">
-                
                 <div v-for="occurrence in entities" class="occurrence" :class="{'edit': editable}" :key="occurrence._reccurrence_string">
-                    
                     <div class="occurrence__card">
                         <div class="header">
                             <div class="header__title">
@@ -57,11 +55,9 @@ $this->import('
                             </div>
                         </div>
                     </div>
-
                     <div v-if="occurrence.space.endereco" class="occurrence__map">
                         <entity-map :entity="occurrence.space"></entity-map>
                     </div>
-
                     <div v-if="editable" class="occurrence__actions">
                         <a class="occurrence__actions--edit">
                             <mc-icon name="edit"></mc-icon><?= i::_e('Editar') ?>
@@ -70,8 +66,7 @@ $this->import('
                             <mc-icon name="trash"></mc-icon><?= i::_e('Excluir') ?>
                         </a>
                     </div>
-                </div>
-                
+                </div>                
             </template>
             <template #loading>
                 <div>

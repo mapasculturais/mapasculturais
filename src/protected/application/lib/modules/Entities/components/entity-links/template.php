@@ -54,12 +54,10 @@ use MapasCulturais\i;
 
     <popover v-if="editable" openside="down-right">
         <template #button="popover">
-            <slot name="button"> 
-                <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline">
-                    <mc-icon name="add"></mc-icon>
-                    <?php i::_e("Adicionar Link")?>
-                </a>
-            </slot>
+            <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline">
+                <mc-icon name="add"></mc-icon>
+                <?php i::_e("Adicionar Link")?>
+            </a>
         </template>
 
         <template #default>

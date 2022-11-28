@@ -1,11 +1,9 @@
 # Componente `<entity-occurrence-list>`
-Componente que lista/cria/edita as ocorrências de um evento
-
-### Eventos
+Componente que lista/edita as ocorrências de um evento
   
 ## Propriedades
-
-## Slots
+- *Entity **entity*** - Entidade
+- *Boolean **editable** = false* - Modo de edição do componente
 
 ### Importando componente
 ```PHP
@@ -16,6 +14,8 @@ $this->import('entity-occurrence-list');
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<entity-occurrence-list></entity-occurrence-list>
+<entity-occurrence-list :entity="entity"></entity-occurrence-list>
 
+<!-- utilizaçao nas telas de edição -->
+<entity-occurrence-list :entity="entity" editable></entity-occurrence-list>
 ```

@@ -7,10 +7,6 @@ app.component('entity-cover', {
             type: Entity,
             required: true
         },
-        name: {
-            type: String,
-            default: ''
-        },
         classes: {
             type: [String, Array, Object],
             required: false

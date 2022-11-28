@@ -1,9 +1,10 @@
 # Componente `<entity-links>`
-Mostra os termos da entidade,
+Componente que lista e edita os links no perfil da entidade
   
 ## Propriedades
-- **entity**: *Entity* - Entidade com a propriedade `metalists.links` carregada. Para saber como se obter o objeto entity ver a documentação dos componentes `<entity>` e `<entities>`;
-- **title**: *String* (opcional) - Label do elemento;
+- *Entity **entity*** - Entidade
+- *String **title*** - Título do componente
+- *Boolean **editable** = false* - Modo de edição do componente
 
 ### Importando componente
 ```PHP
@@ -12,7 +13,10 @@ $this->import('entity-links');
 ?>
 ```
 ### Exemplos de uso
-```PHP
-<!-- utilizaçao básica para listagem dos links -->
-<entity-links title="Links" :entity="entity"> </entity-links>
+```HTML
+<!-- utilizaçao básica -->
+<entity-links :entity="entity" title="Links"></entity-links>
+
+<!-- utilizaçao nas telas de edição  -->
+<entity-links :entity="entity" title="Links" editable></entity-links>
 ```

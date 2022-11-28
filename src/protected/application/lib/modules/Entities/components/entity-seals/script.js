@@ -1,11 +1,5 @@
 app.component('entity-seals', {
     template: $TEMPLATES['entity-seals'],
-    emits: [],
-
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name]
-        return { hasSlot }
-    },
 
     computed: {
         query() {

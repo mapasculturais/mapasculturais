@@ -2,8 +2,10 @@
 Mostra os termos da entidade,
   
 ## Propriedades
-- **entity**: *Entity* - Entidade. Para saber como se obter o objeto entity ver a documentação dos componentes `<entity>` e `<entities>`;
-- **title**: *String* (opcional) - Label do elemento;
+- *Entity **entity*** - Entidade
+- *String **title*** - Titulo do componente
+- *Boolean **editable** = false* - Modo de edição do componente
+- *String/Array/Object **classes*** - Classes a serem aplicadas no componente
 
 ### Importando componente
 ```PHP
@@ -11,8 +13,17 @@ Mostra os termos da entidade,
 $this->import('entity-owner');
 ?>
 ```
+
 ### Exemplos de uso
 ```PHP
-<!-- utilizaçao básica para listagem dos links -->
-<entity-owner title="Publicado por" :entity="entity"></entity-links>
+<!-- utilizaçao básica -->
+<entity-owner :entity="entity" title="Publicado por"></entity-links>
+
+<!-- utilizaçao nas telas de edição -->
+<entity-owner :entity="entity" title="Publicado por" editable></entity-links>
+
+<!-- utilizaçao com classes personalizadas -->
+<entity-owner :entity="entity" title="Publicado por" classes="col-12 sm:col-6"><entity-owner>
+
+<entity-owner :entity="entity" title="Publicado por" classes="['col-12', 'sm:col-6']"><entity-owner>
 ```
