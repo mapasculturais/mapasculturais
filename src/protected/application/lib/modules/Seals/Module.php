@@ -2,6 +2,8 @@
 
 namespace Seals;
 
+use MapasCulturais\App;
+
 class Module extends \MapasCulturais\Module
 {
     function _init()
@@ -10,5 +12,7 @@ class Module extends \MapasCulturais\Module
 
     function register()
     {
+        $app = App::i();
+        $app->registerController('seal', Controller::class);
     }
 }
