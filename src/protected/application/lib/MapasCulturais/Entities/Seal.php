@@ -183,7 +183,10 @@ class Seal extends \MapasCulturais\Entity
         ];
     }
 
-
+    static function getControllerClassName()
+    {
+        return 'Seals\\Controller';
+    }
 
     function validatePeriod($value) {
     	if (!is_numeric($value)) {
