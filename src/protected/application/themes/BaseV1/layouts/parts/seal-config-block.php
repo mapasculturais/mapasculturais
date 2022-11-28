@@ -3,7 +3,7 @@ $props = $this->getLockedFieldsSeal();
 ?>
 
 <div id="seal-config">
-    <span class="js-editable " style="display:none;" id="locked-fields" type="text" data-edit="lockedFields"></span>
+    <span class="js-editable " style="display:none;" id="locked-fields" data-value="[]" type="text" data-edit="lockedFields"></span>
     <form class="js-locked-fields">
         <div class="fields">
             <h2> Agente </h2>

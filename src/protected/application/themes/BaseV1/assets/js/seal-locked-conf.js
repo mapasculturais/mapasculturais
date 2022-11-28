@@ -5,7 +5,8 @@
             let fields = $(".js-locked-fields input:checkbox:checked").map(function() {
                 return $(this).val();
             }).get(); // <----
-            $('#locked-fields').editable('setValue', fields)
+
+            $('#locked-fields').editable('setValue', fields.length ? fields : '')
 
         })
     })
