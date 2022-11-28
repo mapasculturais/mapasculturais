@@ -111,7 +111,7 @@ class Seal extends \MapasCulturais\Entity
     /**
      * @var object
      *
-     * @ORM\Column(name="locked_fields", type="json_array", nullable=true, options={"default" : "{agent:[], space:[]}"})
+     * @ORM\Column(name="locked_fields", type="json_array", nullable=true, options={"default" : "[]"})
      */
     protected $lockedFields;
 
@@ -186,6 +186,15 @@ class Seal extends \MapasCulturais\Entity
     static function getControllerClassName()
     {
         return 'Seals\\Controller';
+    }
+
+    
+    /**
+     * Define o valor de lockedFields parseando o valor
+     * @return void 
+     */
+    protected function setLockedFields($_value) {
+        $this->lockedFields = empty($_value) ? [] : (array) $_value;
     }
 
     function validatePeriod($value) {
