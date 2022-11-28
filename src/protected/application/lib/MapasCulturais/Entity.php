@@ -654,6 +654,12 @@ abstract class Entity implements \JsonSerializable{
         return App::i()->createUrl($this->controllerId, 'delete', [$this->id]);
     }
 
+    static function getControllerClassName() {
+        $class = get_called_class();
+        
+        return preg_replace('#\\\Entities\\\([^\\\]+)$#', '\\Controllers\\\$1', $class::getClassName());
+    }
+
     /**
      * Returns the controller with the same name in the parent namespace if it exists.
      *
