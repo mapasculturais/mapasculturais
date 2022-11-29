@@ -21,7 +21,6 @@ app.component('home-feature', {
         const projectAPI = new API('project');
         const eventAPI = new API('event');
 
-
         const query = this.query;
 
         query['@select'] = 'id,name,shortDescription,location,terms,seals,singleUrl';
@@ -35,7 +34,6 @@ app.component('home-feature', {
         this.agents = await agentAPI.find(query);
         this.projects = await projectAPI.find(query);
         this.events = await eventAPI.find(query);
-
 
     },
 
