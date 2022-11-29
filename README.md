@@ -92,7 +92,7 @@ Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver 
 - [Ubuntu Server >= 18.04](http://www.ubuntu.com) ou [Debian Server >= 10](https://www.debian.org.)
 - [PHP = 7.2](http://php.net)
   - [php-gd](http://php.net/manual/pt_BR/book.image.php)
-  - [php-cli] (https://packages.debian.org/pt-br/jessie/php5-cli)
+  - [php-cli](https://packages.debian.org/pt-br/jessie/php5-cli)
   - [php-json](http://php.net/manual/pt_BR/book.json.php)
   - [php-curl](http://php.net/manual/pt_BR/book.curl.php)
   - [php-pgsql](http://php.net/manual/pt_BR/book.pgsql.php)
@@ -104,8 +104,8 @@ Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver 
   - [NPM](https://www.npmjs.com/)
   - [Terser](https://terser.org/)
   - [UglifyCSS](https://www.npmjs.com/package/gulp-uglifycss)
-- [Ruby] (https://www.ruby-lang.org/pt)
-  - [Sass gem] (https://rubygems.org/gems/sass/versions/3.4.22)
+- [Ruby](https://www.ruby-lang.org/pt)
+  - [Sass gem](https://rubygems.org/gems/sass/versions/3.4.22)
 
 ### [Hardware] Requisitos para instalação
 
