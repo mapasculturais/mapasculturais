@@ -12,7 +12,6 @@ use MapasCulturais\App,
  * @property-read \MapasCulturais\Entities\SealRelation[] $sealRelations
  * @property-read string $sealRelationEntityClassNamerelatedSeals
  * 
- *
  */
 trait EntitySealRelation {
 
@@ -22,6 +21,35 @@ trait EntitySealRelation {
 
     static function getSealRelationEntityClassName(){
         return self::getClassName() . 'SealRelation';
+    }
+
+    function getLockedFields() {
+        /** @var \MapasCulturais\Entity $this */
+
+        $app = App::i();
+
+        $cache_id = "{$this}:lockedFields";
+
+        if($app->rcache->contains($cache_id)) {
+            return $app->rcache->fetch($cache_id);
+        }
+
+        $lockedFields = [];
+
+        foreach($this->sealRelations as $seal_relation) {
+            $seal = $seal_relation->seal;
+            foreach($seal->lockedFields as $entity_field) {
+                if(preg_match("#{$this->controllerId}\.(\w+)#", $entity_field, $match)) {
+                    $lockedFields[] = $match[1];
+                }
+            }
+        }
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.lockedFields", [&$lockedFields]);
+    
+        $app->rcache->save($cache_id, $lockedFields);
+
+        return $lockedFields;
     }
 
     function getSealRelations($include_pending_relations = false){
@@ -147,6 +175,7 @@ trait EntitySealRelation {
     function getRequestSealRelationUrl($idRelation){
         return App::i()->createUrl($this->controllerId, 'requestsealrelation', [$idRelation]);
     }
+
     function getRenewSealRelationUrl($idRelation){
         return App::i()->createUrl($this->controllerId, 'renewsealrelation', [$idRelation]);
     }
