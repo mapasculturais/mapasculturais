@@ -32,6 +32,13 @@ class Module extends \MapasCulturais\Module{
          $app = App::i();
          $module = $this;
          /* === NOTIFICATIONS  === */
+
+
+        // adiciona aba de notificações no dashboard do painel
+        $app->hook('template(panel.index.tabs):end', function() {
+            /** @var \MapasCulturais\Theme $this */
+            $this->part('notifications/panel-dashboard');
+        });
          
         // para todos os requests
         $app->hook('workflow(<<*>>).create', function() use($app, $module) {
