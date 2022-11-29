@@ -16,10 +16,12 @@ use MapasCulturais\Traits;
  *
  */
 class User extends Controller {
-    use Traits\ControllerSoftDelete,
-        Traits\ControllerEntity,
-        Traits\ControllerEntityActions,
-        Traits\ControllerAPI {
+    use Traits\ControllerSoftDelete;
+    use Traits\ControllerEntity;
+    use Traits\ControllerEntityActions {
+        POST_index as __DISABLE_POST_INDEX__;
+    }
+    use Traits\ControllerAPI {
             API_find as __API_find;
             API_findOne as __API_findOne;
     }
@@ -27,6 +29,10 @@ class User extends Controller {
     function __construct()
     {
         $this->entityClassName = 'MapasCulturais\\Entities\\User';
+    }
+
+    function POST_index() {
+        App::i()->pass();
     }
 
     function getRequestedEntity() {
