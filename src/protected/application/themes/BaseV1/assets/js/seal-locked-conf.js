@@ -6,7 +6,7 @@
                 return $(this).val();
             }).get(); // <----
 
-            $('#locked-fields').editable('setValue', fields.length ? fields : '')
+            $('#locked-fields-input').editable('setValue', fields.length ? fields : '')
 
         })
     })
