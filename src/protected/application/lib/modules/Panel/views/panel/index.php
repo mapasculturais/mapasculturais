@@ -1,4 +1,6 @@
 <?php
+/** @var MapasCulturais\Theme $this */
+
 use MapasCulturais\i;
 
 $this->import('
@@ -9,15 +11,46 @@ $this->import('
     panel--open-opportunities
 '); 
 ?>
+<?php $this->applyTemplateHook('main', 'before') ?>
+<div class="main-app single-1">
+    <?php $this->applyTemplateHook('main', 'begin') ?>
+    <mapas-breadcrumb></mapas-breadcrumb>
+    <entity-header :entity="entity"></entity-header>
+
+    <?php $this->applyTemplateHook('tabs', 'before') ?>
+    <tabs class="tabs">
+        <?php $this->applyTemplateHook('tabs', 'begin') ?>
+        <?php $this->applyTemplateHook('tabs-info', 'before') ?>
+        <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
+            <?php $this->applyTemplateHook('tabs-info', 'begin') ?>
+            <!-- conteudo da aba -->
+            <?php $this->applyTemplateHook('tabs-info', 'end') ?>
+        </tab>
+        <?php $this->applyTemplateHook('tabs-info', 'after') ?>
+        <?php $this->applyTemplateHook('tabs', 'end') ?>
+    </tabs>
+    <?php $this->applyTemplateHook('tabs', 'after') ?>
+    <?php $this->applyTemplateHook('main', 'end') ?>
+</div>
+<?php $this->applyTemplateHook('main', 'after') ?>
+
+
 
 <div class="panel-home">
-
+    <?php $this->applyTemplateHook('header', 'before') ?>
     <header class="panel-home__header">
+        <?php $this->applyTemplateHook('header', 'begin') ?>
+        <?php $this->applyTemplateHook('header-title', 'before') ?>
         <div class="panel-home__header--title">
+            <?php $this->applyTemplateHook('header-title', 'begin') ?>
             <label class="title"> <?= i::_e('Painel de controle') ?> </label>
+            <?php $this->applyTemplateHook('header-title', 'end') ?>
         </div>
+        <?php $this->applyTemplateHook('header-title', 'after') ?>
 
+        <?php $this->applyTemplateHook('header-user', 'before') ?>
         <div class="panel-home__header--user">
+            <?php $this->applyTemplateHook('header-user', 'begin') ?>
             <div class="panel-home__header--user-profile">
                 <div class="avatar">
                     <?php if (!$app->user->is('guest')): ?>
@@ -33,12 +66,20 @@ $this->import('
                 </div>
             </div>
             <div class="panel-home__header--user-button">
+                <?php $this->applyTemplateHook('header-user-button', 'before') ?>
                 <button class="button button--primary button--icon"> <mc-icon name="agent-1"></mc-icon> <?= i::_e('Acessar meu perfil') ?> </button>
+                <?php $this->applyTemplateHook('header-user-button', 'after') ?>
             </div>
+            <?php $this->applyTemplateHook('header-user', 'end') ?>
         </div>
+        <?php $this->applyTemplateHook('header-user', 'after') ?>
+        <?php $this->applyTemplateHook('header', 'end') ?>
     </header>
+    <?php $this->applyTemplateHook('header', 'after') ?>
     
+    <?php $this->applyTemplateHook('tabs', 'before') ?>
     <tabs class="panel-home__tabs">
+        <?php $this->applyTemplateHook('tabs', 'begin') ?>
         <tab label="<?php i::esc_attr_e('Principal') ?>" slug="main">
             <div class="panel-home__tabs--main">
 
@@ -52,6 +93,7 @@ $this->import('
 
             </div>
         </tab>
+        <?php $this->applyTemplateHook('tabs', 'end') ?>
     </tabs>
-
+    <?php $this->applyTemplateHook('tabs', 'after') ?>
 </div>
