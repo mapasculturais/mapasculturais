@@ -786,7 +786,7 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('template(seal.edit.tabs-content):end',function(){
             $entity = $this->controller->requestedEntity;
             $this->includeSealAssets();
-            $this->part('seal-config-block',['entity'=>$entity]);
+            $this->part('singles/seal-locked-fields', ['entity'=>$entity]);
         });
 
         if(!$app->user->is('guest') && $app->user->profile->status < 1){
