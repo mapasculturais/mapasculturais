@@ -42,7 +42,7 @@ $this->import('
                         </template>
                     </carousel>
                 </tab>
-                <tab label="Agentes" slug="agents">
+                <tab label="Agentes" slug="agents" v-if="agents.length > 0">
                     <carousel v-if="agents.length > 0" :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in agents" :key="entity.__objectId">
                             <entity-card :entity="entity">
@@ -61,7 +61,6 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                    <h1 v-else>NO AGENTS FOUND</h1>
                 </tab>
                 <tab label="Espaços" slug="spaces">
                     <carousel v-if="spaces.length > 0" :settings="settings" :breakpoints="breakpoints">
@@ -82,7 +81,6 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                    <h1 v-else>NO SPACES FOUND</h1>
                 </tab>
                 <tab label="Projetos" slug="projects">
                     <carousel v-if="projects.length > 0" :settings="settings" :breakpoints="breakpoints">
@@ -103,27 +101,6 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                    <h1 v-else>NO PROJECTS FOUND</h1>
-                </tab>
-                <tab label="Eventos" slug="events">
-                    <carousel v-if="events.length > 0" :settings="settings" :breakpoints="breakpoints">
-                        <slide v-for="entity in events" :key="entity.__objectId">
-                            <entity-card :entity="entity">
-                                <template #labels>
-                                    <div :class="['entityType',  entity.__objectType+'__background']">
-                                        <mc-icon :entity="entity"></mc-icon>
-                                        {{entity.__objectType}}
-                                    </div>
-                                </template>
-                            </entity-card>
-                        </slide>
-                        <template v-if="events.length > 1" #addons>
-                            <div class="actions">
-                                <navigation :slideWidth="368" />
-                            </div>
-                        </template>
-                    </carousel>
-                    <h1 v-else>NO EVENTS FOUND</h1>
                 </tab>
             </tabs>
         </div>

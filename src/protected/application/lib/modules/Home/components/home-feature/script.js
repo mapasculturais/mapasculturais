@@ -19,7 +19,6 @@ app.component('home-feature', {
         const spaceAPI = new API('space');
         const agentAPI = new API('agent');
         const projectAPI = new API('project');
-        const eventAPI = new API('event');
 
         const query = this.query;
 
@@ -33,7 +32,6 @@ app.component('home-feature', {
         this.spaces = await spaceAPI.find(query);
         this.agents = await agentAPI.find(query);
         this.projects = await projectAPI.find(query);
-        this.events = await eventAPI.find(query);
 
     },
 
@@ -42,7 +40,6 @@ app.component('home-feature', {
             agents: [],
             spaces: [],
             projects: [],
-            events:[],
 
             // carousel settings
             settings: {
@@ -90,8 +87,7 @@ app.component('home-feature', {
 
     computed: {
         entities() {
-
-            const entities = this.spaces.concat([...this.agents, ...this.projects, ...this.projects]).sort((a,b) => {
+            const entities = this.spaces.concat([...this.agents, ...this.projects]).sort((a,b) => {
                 if (a.name > b.name) {
                     return 1;
                 } else if (a.name == b.name) {
@@ -100,7 +96,6 @@ app.component('home-feature', {
                     return -1;
                 }
             });
-            console.log(entities);
             return entities;
         }
     },
