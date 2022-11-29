@@ -1,6 +1,8 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use MapasCulturais\App;
+
 /**
  * Defines the magic setter method the be used when trying to set a protected or private property.
  *
@@ -13,6 +15,13 @@ trait MagicSetter{
      * else if the property name doesn't starts with an undercore set the value of the property directly.
      */
     public function __set($name, $value){
+        if(method_exists($this, 'usesSealRelation')) {
+            $app = App::i();
+            if(in_array($name, $this->lockedFields) && $value != $this->$name) {
+                throw new \MapasCulturais\Exceptions\PermissionDenied($app->user, $this, "modify locked field: $name");
+            }
+        }
+
         if(method_exists($this, 'set' . $name)){
             $setter = 'set' . $name;
             $this->$setter($value);
