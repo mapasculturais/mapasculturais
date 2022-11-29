@@ -33,7 +33,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Tocantins - http://mapa.cultura.to.gov.br/
 ### Instalações municipais
 - Ilheus - http://ilheus.ba.mapas.cultura.gov.br/
-- Camaçari - http://camacari.ba.mapas.cultura.gov.br/
+- Camaçari - https://mapacultural.camacari.ba.gov.br/
 - Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/
 - Chorozinho - https://mapacultural.chorozinho.ce.gov.br/
 - Sobral - https://cultura.sobral.ce.gov.br/
