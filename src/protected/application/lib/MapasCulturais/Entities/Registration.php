@@ -293,7 +293,7 @@ class Registration extends \MapasCulturais\Entity
             'projectName' => $this->projectName,
             'number' => $this->number,
             'category' => $this->category,
-            'owner' => $this->owner->simplify('id,name,singleUrl'),
+            'owner' => $this->owner->simplify('id,name,lockedFields,singleUrl'),
             'agentRelations' => [],
             'files' => [],
             'singleUrl' => $this->singleUrl,
