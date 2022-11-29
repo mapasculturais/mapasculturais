@@ -430,6 +430,10 @@ MapasCulturais.Editables = {
         MapasCulturais.Editables.getEditableElements().each(function(){
 
             var field_name = $(this).data(MapasCulturais.Editables.dataSelector);
+            if(MapasCulturais.entity.object.lockedFields && MapasCulturais.entity.object.lockedFields.indexOf(field_name) >= 0) {
+                return;
+            }
+            
             var input_type;
 
             if(!entity[field_name])
