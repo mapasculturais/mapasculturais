@@ -780,7 +780,7 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
 
         $app->hook('template(seal.edit.tabs):end',function(){
-            $this->part('tab',['id'=>'seal-config','label'=>'Configuração do selo']);
+            $this->part('tab',['id'=>'locked-fields', 'label'=> i::__('Bloqueio de campos')]);
         });
 
         $app->hook('template(seal.edit.tabs-content):end',function(){
