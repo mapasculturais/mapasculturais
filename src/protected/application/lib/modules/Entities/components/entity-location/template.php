@@ -8,14 +8,14 @@ $this->import('entity-field entity-map');
     </div>
     <div class="col-12" v-if="editable">
         <div class="grid-12">
-            <entity-field @change="address(); pesquisacep(entity.En_CEP);" :classes="col-4 sm:col-12" :entity="entity" prop="En_CEP"></entity-field>
-            <entity-field @change="address()" :classes="col-8 sm:col-12" :entity="entity" prop="En_Nome_Logradouro"></entity-field>
-            <entity-field @change="address()" :classes="col-2 sm:col-4" :entity="entity" prop="En_Num"></entity-field>
-            <entity-field @change="address()" :classes="col-10 sm:col-8" :entity="entity" prop="En_Bairro"></entity-field>
-            <entity-field @change="address()" :classes="col-12" :entity="entity" prop="En_Complemento"></entity-field>
-            <entity-field @change="address()" :classes="col-6 sm:col-12" :entity="entity" prop="En_Municipio"></entity-field>
-            <entity-field @change="address()" :classes="col-6 sm:col-12" :entity="entity" prop="En_Estado"></entity-field>
-            <entity-field v-if="hasPublicLocation" @change="address()" :classes="col-6" :entity="entity" prop="publicLocation"></entity-field>
+            <entity-field @change="address(); pesquisacep(entity.En_CEP);" classes="col-4 sm:col-12" :entity="entity" prop="En_CEP"></entity-field>
+            <entity-field @change="address()" classes="col-8 sm:col-12" :entity="entity" prop="En_Nome_Logradouro"></entity-field>
+            <entity-field @change="address()" classes="col-2 sm:col-4" :entity="entity" prop="En_Num"></entity-field>
+            <entity-field @change="address()" classes="col-10 sm:col-8" :entity="entity" prop="En_Bairro"></entity-field>
+            <entity-field @change="address()" classes="col-12" :entity="entity" prop="En_Complemento"></entity-field>
+            <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Municipio"></entity-field>
+            <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Estado"></entity-field>
+            <entity-field v-if="hasPublicLocation" @change="address()" classes="col-6" :entity="entity" prop="publicLocation"></entity-field>
         </div>
     </div>
     <div class="col-12">
