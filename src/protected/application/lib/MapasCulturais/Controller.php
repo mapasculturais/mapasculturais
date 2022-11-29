@@ -316,8 +316,9 @@ abstract class Controller{
         }elseif($method !== 'API' && method_exists($this, 'ALL_' . $action_name)){
             $call_method = [$this, 'ALL_' . $action_name];
 
-        // then try to call an action defined outside the controller
-        }elseif($app->getHooks($hook)){
+        }
+        
+        if($app->getHooks($hook)){
             $call_hook = $hook;
 
         }elseif($method !== 'API' && $app->getHooks($ALL_hook)){
@@ -328,10 +329,11 @@ abstract class Controller{
         if($call_method || $call_hook){
             $app->applyHookBoundTo($this, $hook . ':before', $arguments);
 
-            if($call_method)
+            $app->applyHookBoundTo($this, $call_hook, $arguments);
+
+            if($call_method) {
                 $call_method();
-            else
-                $app->applyHookBoundTo($this, $call_hook, $arguments);
+            }
 
             $app->applyHookBoundTo($this, $hook . ':after', $arguments);
         // else pass to 404?
