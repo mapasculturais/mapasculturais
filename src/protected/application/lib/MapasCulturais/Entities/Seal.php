@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\i;
 use MapasCulturais\Traits;
 
 /**
@@ -26,8 +27,7 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
-        Traits\EntityArchive,
-        Traits\EntitySealRelation;
+        Traits\EntityArchive;
         
     protected $__enableMagicGetterHook = true;
 
