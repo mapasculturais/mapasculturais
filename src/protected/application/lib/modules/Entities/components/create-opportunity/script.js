@@ -1,14 +1,14 @@
-app.component('create-opportunity' , {
+app.component('create-opportunity', {
     template: $TEMPLATES['create-opportunity'],
     emits: ['create'],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('create-opportunity')
         return { text }
     },
-    
-   
+
+
 
     data() {
         return {
@@ -20,7 +20,7 @@ app.component('create-opportunity' , {
     props: {
         editable: {
             type: Boolean,
-            default:true
+            default: true
         },
     },
 
@@ -32,42 +32,23 @@ app.component('create-opportunity' , {
             return this.areaErrors ? 'field error' : 'field';
         },
         modalTitle() {
-            if(this.entity?.id){
-                if(this.entity.status==1){
-                    return  __('oportunidadeCriada', 'create-opportunity');
-                }else {
-                    return  __('criarRascunho', 'create-opportunity');
+            if (this.entity?.id) {
+                if (this.entity.status == 1) {
+                    return __('oportunidadeCriada', 'create-opportunity');
+                } else {
+                    return __('criarRascunho', 'create-opportunity');
                 }
-            }else {
-                return  __('criarOportunidade', 'create-opportunity');
+            } else {
+                return __('criarOportunidade', 'create-opportunity');
 
             }
         },
     },
-    
+
     methods: {
-        // iterationFields() {
-        //     let skip = [
-        //         'createTimestamp', 
-        //         'id',
-        //         'location',
-        //         'name', 
-        //         'shortDescription', 
-        //         'status', 
-        //         'type',
-        //         '_type', 
-        //         'userId',
-        //     ];
-        //     Object.keys($DESCRIPTIONS.opportunity).forEach((item)=>{
-        //         if(!skip.includes(item) && $DESCRIPTIONS.opportunity[item].required){
-        //             this.fields.push(item);
-        //         }
-        //     })
-        // },
         createEntity() {
             this.entity = Vue.ref(new Entity('opportunity'));
             this.entity.type = 1;
-            this.entity.terms = {area: []}
         },
         createDraft(modal) {
             this.entity.status = 0;
@@ -78,10 +59,10 @@ app.component('create-opportunity' , {
             this.entity.status = 1;
             this.save(modal);
         },
-        save (modal) {
+        save(modal) {
             modal.loading(true);
             this.entity.save().then((response) => {
-                this.$emit('create',response);
+                this.$emit('create', response);
                 modal.loading(false);
 
             }).catch((e) => {
