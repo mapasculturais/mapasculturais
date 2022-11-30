@@ -1,5 +1,7 @@
  <?php
+
     use MapasCulturais\i;
+
     $this->import('
     entity-field 
     entity-terms
@@ -79,11 +81,15 @@
              <entity-field :entity="entity" hide-required v-for="field in fields" :prop="field"></entity-field>
          </div>
      </template>
+     <!-- <template v-if="entity?.id" #default> -->
 
-     <template v-if="entity?.id" #default>
+     <template v-if="!entity?.id" #default>
          <label><?php i::_e('Você pode completar as informações da sua oportunidade agora ou pode deixar para depois.  '); ?></label>
      </template>
-     <template v-if="entity?.id && entity.status==0" #default>
+     <!-- <template v-if="entity?.id && entity.status==0" #default> -->
+
+     <template v-if="!entity?.id " #default>
+         <!-- #rascunho -->
          <label><?php i::_e('Você pode completar as informações da sua oportunidade agora ou pode deixar para depois.'); ?></label><br><br>
          <label><?php i::_e('Para completar e publicar sua oportunidade, acesse a área <b>Rascunhos</b> em <b>Minhas Oportunidades</b> no <b>Painel de Controle</b>.  '); ?></label>
      </template>
@@ -92,9 +98,9 @@
          <slot :modal="modal"></slot>
      </template>
      <template v-if="!entity?.id" #actions="modal">
-         <button class="button button--primary" @click="createPublic(modal)"><?php i::_e('Criar e Publicar') ?></button>
-         <button class="button button--solid-dark" @click="createDraft(modal)"><?php i::_e('Criar em Rascunho') ?></button>
-         <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar') ?></button>
+        <!-- #Criado em Rascunho -->
+         <button  class="button button--text button--text-del" @click="modal.close()"><?php i::_e('Ir para o painel') ?></button>
+         <button class="button button--primary button--icon " @click="modal.close()"><?php i::_e('Entendi') ?></button>
      </template>
 
      <template v-if="entity?.id && entity.status==1" #actions="modal">
