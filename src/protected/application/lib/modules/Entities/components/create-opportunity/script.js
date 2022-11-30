@@ -47,7 +47,8 @@ app.component('create-opportunity', {
 
     methods: {
         createEntity() {
-            this.entity = Vue.ref(new Entity('opportunity'));
+
+            this.entity = new Entity('opportunity');
             this.entity.type = 1;
         },
         createDraft(modal) {
