@@ -36,10 +36,14 @@ app.component('create-opportunity', {
                 if (this.entity.status == 1) {
                     return __('oportunidadeCriada', 'create-opportunity');
                 } else {
+                    if(!this.entity?.id)
                     return __('criarRascunho', 'create-opportunity');
                 }
             } else {
-                return __('criarOportunidade', 'create-opportunity');
+                if(!this.entity?.id)
+                    return __('criarRascunho', 'create-opportunity');
+                else
+                    return __('criarOportunidade', 'create-opportunity');
 
             }
         },
@@ -69,6 +73,9 @@ app.component('create-opportunity', {
             }).catch((e) => {
                 modal.loading(false);
             });
+        },
+        setEntity(Entity) {
+            this.entity.ownerEntity = Entity;
         },
 
         destroyEntity() {

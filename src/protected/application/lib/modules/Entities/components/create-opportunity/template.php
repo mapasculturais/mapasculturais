@@ -10,6 +10,10 @@
     select-entity
 ');
     ?>
+    <div style="z-index:1000000; position:absolute; top: 0; left: 0;" class="teste">
+        <input v-if="entity" v-model="entity.id">
+        <input v-if="entity" v-model="entity.status">
+    </div>
 
  <modal :title="modalTitle" classes="create-modal" button-label="Criar Oportunidade" @open="createEntity()" @close="destroyEntity()">
      <template v-if="entity && !entity.id" #default>
@@ -20,10 +24,8 @@
              <small class="field__error" v-if="areaErrors">{{areaErrors.join(', ')}}</small>
              <div class="create-modal__fields--choice">
                  <label class="create-modal__fields--choice-label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></label>
-
                  <div class="create-modal__fields--choice-list">
                      <select-entity type="project" @select="setEntity($event)" openside="down-right" class="create-modal__fields--choice-list-box">
-
                          <template #button="{ toggle }">
                              <input type="radio" id="btnAgent" name="inputName" value="valorPadrao"> </input>
 
@@ -31,7 +33,6 @@
                                  <?php i::_e('Projeto') ?>
                              </label>
                              <label class="create-modal__fields--choice-list-box-selection"><?php i::_e('Selecionar') ?> </label>
-
                          </template>
                      </select-entity>
                  </div>
@@ -83,12 +84,13 @@
      </template>
      <!-- <template v-if="entity?.id" #default> -->
 
-     <template v-if="!entity?.id" #default>
+<template v-if="entity?.id" #default> 
          <label><?php i::_e('Você pode completar as informações da sua oportunidade agora ou pode deixar para depois.  '); ?></label>
      </template>
      <!-- <template v-if="entity?.id && entity.status==0" #default> -->
 
-     <template v-if="!entity?.id " #default>
+     <template v-if="entity?.id && entity.status==0" #default>
+       
          <!-- #rascunho -->
          <label><?php i::_e('Você pode completar as informações da sua oportunidade agora ou pode deixar para depois.'); ?></label><br><br>
          <label><?php i::_e('Para completar e publicar sua oportunidade, acesse a área <b>Rascunhos</b> em <b>Minhas Oportunidades</b> no <b>Painel de Controle</b>.  '); ?></label>
@@ -98,17 +100,17 @@
          <slot :modal="modal"></slot>
      </template>
      <template v-if="!entity?.id" #actions="modal">
-        <!-- #Criado em Rascunho -->
-         <button  class="button button--text button--text-del" @click="modal.close()"><?php i::_e('Ir para o painel') ?></button>
+         <!-- #Criado em Rascunho -->
+         <mc-link route="panel/index" class="button button--text button--text-del" @click="modal.close()"><?php i::_e('Ir para o painel') ?></mc-link>
          <button class="button button--primary button--icon " @click="modal.close()"><?php i::_e('Entendi') ?></button>
      </template>
 
-     <template v-if="entity?.id && entity.status==1" #actions="modal">
+     <template v-if="entity?.id" #actions="modal">
          <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver Oportunidade'); ?></mc-link>
          <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois') ?></button>
          <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações') ?></mc-link>
      </template>
-     <template v-if="entity?.id && entity.status==0" #actions="modal">
+     <template v-if="entity?.id " #actions="modal">
          <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver Oportunidade'); ?></mc-link>
          <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois') ?></button>
          <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações') ?></mc-link>
