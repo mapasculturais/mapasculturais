@@ -6,7 +6,10 @@
     color: black;
 
     .field {
-        margin: size(16) 0
+        margin: size(16) 0;
+        label{
+            margin: 0;
+        }
     }
 
     &__fields {
