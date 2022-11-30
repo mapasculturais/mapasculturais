@@ -21,13 +21,26 @@
                 max-width: 520px;
 
                 &-box {
+                    display: flex;
+                    padding-top: 14px;
                     height: 48px;
                     background: #FFFFFF;
                     border: 1px solid #313131;
                     border-radius: 4px;
 
                     &-label {
-                        margin:size(14) auto size(15) size(40);
+                        font-weight: 400;
+                        font-size: 14px;
+                        line-height: 19px;
+                    }
+
+                    &-selection {
+                        padding-left: 310px;
+                        margin-right: 13px;
+                        font-weight: 700;
+                        font-size: 12px;
+                        line-height: 16px;
+                        text-align: center;
                     }
                 }
 

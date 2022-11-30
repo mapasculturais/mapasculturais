@@ -1,7 +1,5 @@
  <?php
-
     use MapasCulturais\i;
-
     $this->import('
     entity-field 
     entity-terms
@@ -25,10 +23,13 @@
                      <select-entity type="project" @select="setEntity($event)" openside="down-right" class="create-modal__fields--choice-list-box">
 
                          <template #button="{ toggle }">
-                             <button type="radio"> </button>
-                             <div class="create-modal__fields--choice-list-box-label" @click="toggle()">
+                             <input type="radio" id="btnAgent" name="inputName" value="valorPadrao"> </input>
+
+                             <label class="create-modal__fields--choice-list-box-label" @click="toggle()">
                                  <?php i::_e('Projeto') ?>
-                             </div>
+                             </label>
+                             <label class="create-modal__fields--choice-list-box-selection"><?php i::_e('Selecionar') ?> </label>
+
                          </template>
                      </select-entity>
                  </div>
@@ -36,10 +37,14 @@
                  <div class="create-modal__fields--choice-list">
                      <select-entity type="event" @select="setEntity($event)" openside="down-right" class="create-modal__fields--choice-list-box">
                          <template #button="{ toggle }">
-                             <button type="radio"> </button>
-                             <div class="create-modal__fields--choice-list-box-label" @click="toggle()">
+
+                             <input type="radio" id="btnAgent" name="inputName" value="valorPadrao"> </input>
+                             <label class="create-modal__fields--choice-list-box-label" @click="toggle()">
                                  <?php i::_e('Evento') ?>
-                             </div>
+                             </label>
+
+                             <label class="create-modal__fields--choice-list-box-selection"><?php i::_e('Selecionar') ?> </label>
+
                          </template>
                      </select-entity>
                  </div>
@@ -47,10 +52,12 @@
 
                      <select-entity type="space" @select="setEntity($event)" openside="down-right" class="create-modal__fields--choice-list-box">
                          <template #button="{ toggle }">
-                             <button type="radio"> </button>
-                             <div class="create-modal__fields--choice-list-box-label" @click="toggle()">
+                             <input type="radio" id="btnAgent" name="inputName" value="valorPadrao"> </input>
+                             <label class="create-modal__fields--choice-list-box-label" @click="toggle()">
                                  <?php i::_e('Espaço') ?>
-                             </div>
+                             </label>
+                             <label class="create-modal__fields--choice-list-box-selection"><?php i::_e('Selecionar') ?> </label>
+
                          </template>
                      </select-entity>
                  </div>
@@ -59,11 +66,11 @@
                      <select-entity type="agent" @select="setEntity($event)" openside="down-right" class="create-modal__fields--choice-list-box">
                          <template #button="{ toggle }">
                              <input type="radio" id="btnAgent" name="inputName" value="valorPadrao">
-                           <label for="btnAgent" class="create-modal__fields--choice-list-box-label" @click="toggle()">
+                             <label for="btnAgent" class="create-modal__fields--choice-list-box-label" @click="toggle()">
                                  <?php i::_e('Agente') ?>
                              </label>
+                             <label class="create-modal__fields--choice-list-box-selection"><?php i::_e('Selecionar') ?> </label>
 
-                             
                          </template>
                      </select-entity>
                  </div>
