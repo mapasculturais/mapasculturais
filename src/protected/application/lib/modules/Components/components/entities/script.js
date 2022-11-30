@@ -57,7 +57,7 @@ app.component('entities', {
         select: String,
         ids: Array,
         query: {
-            type: Object,
+            type: Object || String,
             default: {}
         },
         limit: Number,
