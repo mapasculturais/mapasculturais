@@ -250,6 +250,7 @@ class API {
             }
 
             result.metadata = JSON.parse(response.headers.get('API-Metadata'));
+            console.log(result)
             return result;
         }));
     }
