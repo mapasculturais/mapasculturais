@@ -8,12 +8,13 @@
     mc-link
     modal 
     select-entity
+    entity-owner
 ');
     ?>
-    <div style="z-index:1000000; position:absolute; top: 0; left: 0;" class="teste">
-        <input v-if="entity" v-model="entity.id">
-        <input v-if="entity" v-model="entity.status">
-    </div>
+ <div style="z-index:1000000; position:absolute; top: 0; left: 0;" class="teste">
+     <input v-if="entity" v-model="entity.id">
+     <input v-if="entity" v-model="entity.status">
+ </div>
 
  <modal :title="modalTitle" classes="create-modal" button-label="Criar Oportunidade" @open="createEntity()" @close="destroyEntity()">
      <template v-if="entity && !entity.id" #default>
@@ -22,61 +23,96 @@
              <entity-field :entity="entity" hide-required :editable="true" label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type"></entity-field>
              <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Título") ?> prop="name"></entity-field>
              <small class="field__error" v-if="areaErrors">{{areaErrors.join(', ')}}</small>
-             <div class="create-modal__fields--choice">
-                 <label class="create-modal__fields--choice-label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></label>
-                 <div class="create-modal__fields--choice-list">
-                     <select-entity type="project" @select="setEntity($event)" openside="down-right" class="create-modal__fields--choice-list-box">
+             <div v-if="!entity.ownerEntity" class="create-modal__fields--choice">
+                 <label class="label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></label>
+                 <div class="list">
+                     <select-entity type="project" @select="setEntity($event)" openside="down-right" class="list-box">
                          <template #button="{ toggle }">
-                             <input type="radio" id="btnAgent" name="inputName" value="valorPadrao"> </input>
+                             <div class="input">
+                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="project" />
+                                 <label class="list-box--label">
+                                     <?php i::_e('Projeto') ?>
+                                 </label>
+                             </div>
 
-                             <label class="create-modal__fields--choice-list-box-label" @click="toggle()">
-                                 <?php i::_e('Projeto') ?>
-                             </label>
-                             <label class="create-modal__fields--choice-list-box-selection"><?php i::_e('Selecionar') ?> </label>
+                             <a :class="{'disabled': entityTypeSelected!='project'}" class="list-box-button" @click="toggle()"><?php i::_e('Selecionar') ?> </a>
                          </template>
                      </select-entity>
                  </div>
 
-                 <div class="create-modal__fields--choice-list">
-                     <select-entity type="event" @select="setEntity($event)" openside="down-right" class="create-modal__fields--choice-list-box">
+
+                 <div class="list">
+                     <select-entity type="event" @select="setEntity($event)" openside="down-right" class="list-box">
                          <template #button="{ toggle }">
+                             <div class="input">
+                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="event" />
+                                 <label class="list-box--label">
+                                     <?php i::_e('Evento') ?>
+                                 </label>
+                             </div>
 
-                             <input type="radio" id="btnAgent" name="inputName" value="valorPadrao"> </input>
-                             <label class="create-modal__fields--choice-list-box-label" @click="toggle()">
-                                 <?php i::_e('Evento') ?>
-                             </label>
-
-                             <label class="create-modal__fields--choice-list-box-selection"><?php i::_e('Selecionar') ?> </label>
-
+                             <a :class="{'disabled': entityTypeSelected!='event'}" class="list-box-button" @click="toggle()"><?php i::_e('Selecionar') ?> </a>
                          </template>
                      </select-entity>
                  </div>
-                 <div class="create-modal__fields--choice-list">
 
-                     <select-entity type="space" @select="setEntity($event)" openside="down-right" class="create-modal__fields--choice-list-box">
+                 <div class="list">
+                     <select-entity type="space" @select="setEntity($event)" openside="down-right" class="list-box">
                          <template #button="{ toggle }">
-                             <input type="radio" id="btnAgent" name="inputName" value="valorPadrao"> </input>
-                             <label class="create-modal__fields--choice-list-box-label" @click="toggle()">
-                                 <?php i::_e('Espaço') ?>
-                             </label>
-                             <label class="create-modal__fields--choice-list-box-selection"><?php i::_e('Selecionar') ?> </label>
+                             <div class="input">
+                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="space" />
+                                 <label class="list-box--label">
+                                     <?php i::_e('Espaço') ?>
+                                 </label>
+                             </div>
 
+                             <a :class="{'disabled': entityTypeSelected!='space'}" class="list-box-button" @click="toggle()"><?php i::_e('Selecionar') ?> </a>
                          </template>
                      </select-entity>
                  </div>
-                 <div class="create-modal__fields--choice-list">
 
-                     <select-entity type="agent" @select="setEntity($event)" openside="down-right" class="create-modal__fields--choice-list-box">
+
+                 <div class="list">
+                     <select-entity type="agent" @select="setEntity($event)" openside="down-right" class="list-box">
                          <template #button="{ toggle }">
-                             <input type="radio" id="btnAgent" name="inputName" value="valorPadrao">
-                             <label for="btnAgent" class="create-modal__fields--choice-list-box-label" @click="toggle()">
-                                 <?php i::_e('Agente') ?>
-                             </label>
-                             <label class="create-modal__fields--choice-list-box-selection"><?php i::_e('Selecionar') ?> </label>
+                             <div class="input">
+                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="agent" />
+                                 <label class="list-box--label">
+                                     <?php i::_e('Agente') ?>
+                                 </label>
+                             </div>
 
+                             <a :class="{'disabled': entityTypeSelected!='agent'}" class="list-box-button" @click="toggle()"><?php i::_e('Selecionar') ?> </a>
                          </template>
                      </select-entity>
                  </div>
+             </div>
+             <div v-if="entity.ownerEntity" class="create-modal__fields--selected">
+                 <label class="create-modal__fields--selected-label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></label>
+
+                 <div class="entity-selected">
+                     <div class="entity-selected__entity" :class="[entityTypeSelected + '__border']">
+                         <img v-if="entity.ownerEntity.files?.avatar" :src="entity.ownerEntity.files?.avatar?.transformations.avatarSmall.url" class="img" />
+                         <div v-if="!entity.ownerEntity.files?.avatar" class="img-fake">
+                             <mc-icon :entity="entity.ownerEntity"></mc-icon>
+
+                         </div>
+
+                         <span class="name" :class="[entityTypeSelected + '__color']"><?php i::_e('{{entity.ownerEntity.name}}') ?></span>
+                     </div>
+                     <div class="entity-selected__info">
+                         <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
+                             <template #button="{ toggle }">
+                                 <a class="entity-selected__info--btn" :class="entityTypeSelected + '__color'" @click="toggle()">
+                                     <mc-icon :class="[entityTypeSelected + '__color']" name="exchange"></mc-icon>
+                                     <h4 :class="[entityTypeSelected + '__color']"><?php i::_e('Alterar') ?></h4>
+                                 </a>
+                             </template>
+                         </select-entity>
+                     </div>
+                 </div>
+
+
              </div>
 
              <entity-field :entity="entity" hide-required v-for="field in fields" :prop="field"></entity-field>
@@ -84,13 +120,13 @@
      </template>
      <!-- <template v-if="entity?.id" #default> -->
 
-<template v-if="entity?.id" #default> 
+     <template v-if="entity?.id" #default>
          <label><?php i::_e('Você pode completar as informações da sua oportunidade agora ou pode deixar para depois.  '); ?></label>
      </template>
      <!-- <template v-if="entity?.id && entity.status==0" #default> -->
 
      <template v-if="entity?.id && entity.status==0" #default>
-       
+
          <!-- #rascunho -->
          <label><?php i::_e('Você pode completar as informações da sua oportunidade agora ou pode deixar para depois.'); ?></label><br><br>
          <label><?php i::_e('Para completar e publicar sua oportunidade, acesse a área <b>Rascunhos</b> em <b>Minhas Oportunidades</b> no <b>Painel de Controle</b>.  '); ?></label>
