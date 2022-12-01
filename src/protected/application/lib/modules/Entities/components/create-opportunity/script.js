@@ -14,6 +14,7 @@ app.component('create-opportunity', {
         return {
             entity: null,
             fields: [],
+            entityTypeSelected: null,
         }
     },
 
