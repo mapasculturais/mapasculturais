@@ -33,7 +33,18 @@ $this->breadcramb = [
 
 <div class="main-app">
     <mapas-breadcrumb></mapas-breadcrumb>
-    <entity-header :entity="entity"></entity-header>
+    <entity-header :entity="entity">
+        <template #metadata>
+            <dl>
+                <dt><?= i::__('Tipo') ?></dt>
+                <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
+            </dl>
+            <dl v-if="entity.parent">
+                <dt><?= i::__('Espaço integrante de') ?></dt>
+                <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.parent.name}} </dd>
+            </dl>
+        </template>
+    </entity-header>
     <tabs class="tabs">
         <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
