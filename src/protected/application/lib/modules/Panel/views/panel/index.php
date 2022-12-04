@@ -22,7 +22,6 @@ $this->import('
 <?php $this->applyTemplateHook('main', 'after') ?>
 
 
-
 <div class="panel-home">
     <?php $this->applyTemplateHook('header', 'before') ?>
     <header class="panel-home__header">

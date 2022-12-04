@@ -7,6 +7,7 @@ $this->import('
     mc-header-menu-user
     mc-icon
     theme-logo 
+    view-notification
 ');
 
 ?>
@@ -57,6 +58,18 @@ $this->import('
                         <span class="icon"> <mc-icon name="project"> </span>
                         <p class="label"> <?php i::_e('Projetos') ?> </p>      
                     </a> 
+                </li>
+                <li> 
+                    <!-- <a class="mc-header-menu--item project">
+                        <span class="icon"> <mc-icon name="project"> </span>
+                        <p class="label"></p>      
+                    </a>  -->
+                    <view-notification  :editable="true" #default="{modal}"  >
+                        <button @click="modal.open()" class="button button--primary button--icon">
+                            <mc-icon name="notification"></mc-icon>
+                            <span></span>
+                        </button>
+                    </view-notification>
                 </li>
             </template>
         </mc-header-menu>
