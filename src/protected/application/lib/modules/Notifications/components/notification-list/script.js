@@ -15,20 +15,22 @@
  */
 
 
-app.component('notifications-list', {
-    template: $TEMPLATES['notifications-list'],
+app.component('notification-list', {
+    template: $TEMPLATES['notification-list'],
     
     // define os eventos que este componente emite
     emits: ['namesDefined'],
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('notifications-list')
+        const text = Utils.getTexts('notification-list')
         return { text }
     },
 
     beforeCreate() { },
-    created() { },
+    created() { 
+        this.API = new API('notification');
+    },
 
     beforeMount() { },
     mounted() { },
@@ -43,7 +45,7 @@ app.component('notifications-list', {
         query:{
             type:Object,
             default:{
-                '@select':'*',
+                '@select':'*,request.{requesterUser.profile.files.avatar }',
                 'user':'eq(@me)',
                 '@order':'createTimestamp DESC'
             }
@@ -54,7 +56,7 @@ app.component('notifications-list', {
 
     data() {
         return {
-            
+            currentUserId: $MAPAS.userId
         }
     },
 
@@ -63,6 +65,22 @@ app.component('notifications-list', {
     },
     
     methods: {
+        approve(notification){
+            //console.log(notification);
+            const url = this.API.createUrl('approve',[notification.id]);
+            this.API.POST(url).then((x) => {
+                // 1 - NOTIFICAR O USUÁRIO
+                const messages = useMessages();
+                messages.success(this.text('notificacao aprovada'));   
+                
+                // 2 - REFRESH PAGE
 
+            })
+        },
+
+        reject(notification){
+            console.log(notification);
+            notification.removeFromLists();
+        }
     },
 });

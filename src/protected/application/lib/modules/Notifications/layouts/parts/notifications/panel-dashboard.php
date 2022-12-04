@@ -5,14 +5,14 @@ use Doctrine\ORM\Query\Expr\Select;
 use MapasCulturais\i;
 
 $this->import('
-    tab
-    notifications-list
     mapas-card
+    notification-list
+    tab
 ');
 
 ?>
 
 <tab label="<?php i::esc_attr_e('Notificações') ?>" slug="notifications">
 
-<notifications-list></notifications-list>
+<notification-list></notification-list>
 </tab>
