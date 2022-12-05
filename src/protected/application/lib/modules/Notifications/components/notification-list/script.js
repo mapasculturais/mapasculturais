@@ -65,22 +65,21 @@ app.component('notification-list', {
     },
     
     methods: {
-        approve(notification){
-            //console.log(notification);
+        async approve(notification) {
             const url = this.API.createUrl('approve',[notification.id]);
-            this.API.POST(url).then((x) => {
-                // 1 - NOTIFICAR O USUÁRIO
+            const request = await this.API.POST(url);
+            if(request) {
                 const messages = useMessages();
-                messages.success(this.text('notificacao aprovada'));   
-                
-                // 2 - REFRESH PAGE
-
-            })
+                messages.success(this.text('notificacao_aprovada'));
+            }
         },
-
-        reject(notification){
-            console.log(notification);
+        reject(notification) {
             notification.removeFromLists();
+            const messages = useMessages();
+            messages.success(this.text('notificacao_rejeitada'));
+        },
+        cancel (notification) {
+            console.log(notification)
         }
     },
 });

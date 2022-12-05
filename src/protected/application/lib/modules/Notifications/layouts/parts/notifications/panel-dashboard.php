@@ -13,6 +13,5 @@ $this->import('
 ?>
 
 <tab label="<?php i::esc_attr_e('Notificações') ?>" slug="notifications">
-
-<notification-list></notification-list>
+    <notification-list></notification-list>
 </tab>

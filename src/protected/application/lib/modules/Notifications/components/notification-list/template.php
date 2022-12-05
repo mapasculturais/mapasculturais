@@ -8,26 +8,26 @@ $this->import('
     mapas-card
     confirm-button
 ');
-$this->jsObject['hilario'] = 'TESTE MAPS';
 
 ?>
 
     <entities type="notification" :query='query' #default='{entities}'>
-       {{entities.metadata}} - {{currentUserId}}
         <mapas-card style="margin-bottom: 20px;" v-for="entity in entities" :key="entity.__objectId">
-<!--            <template #title>-->
-<!--                <div v-html='entity.message'></div>-->
-<!--            </template>    -->
-<!--                {{entity}}-->
             <div class="grid-12">
-                <div class="col-1">
-                    <?php $this->asset('avatar.svg') ?>
-                    <mc-icon name='agent-1'></mc-icon>
+                <div class="col-1 notification_icon">
+                    <mc-icon width="36" name='agent-1'></mc-icon>
                 </div>
                 <div class="col-11">
-                    <p style="font-size: 16px;line-height: 22px;" v-html='entity.message'></p>
-                    <p style="font-size: 14px;line-height: 19px;">{{ entity.createTimestamp.date('numeric year') }} - {{ entity.createTimestamp.time() }}</p>
-                    <div class="grid-12">
+                    <p class="notification_title" v-html='entity.message'></p>
+                    <p class="notification_subtitle">{{ entity.createTimestamp.date('numeric year') }} - {{ entity.createTimestamp.time() }}</p>
+                    <div class="grid-12" v-if="entity.user === currentUserId">
+                        <div class="col-2">
+                            <button class="button button--primary-outline" @click="cancel(entity)">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="grid-12" v-else>
                         <div class="col-2">
                             <button class="button button--primary-outline" @click="reject(entity)">
                                 Rejeitar

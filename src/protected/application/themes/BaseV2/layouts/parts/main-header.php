@@ -59,18 +59,15 @@ $this->import('
                         <p class="label"> <?php i::_e('Projetos') ?> </p>      
                     </a> 
                 </li>
-                <li> 
-                    <!-- <a class="mc-header-menu--item project">
-                        <span class="icon"> <mc-icon name="project"> </span>
-                        <p class="label"></p>      
-                    </a>  -->
-                    <view-notification  :editable="true" #default="{modal}"  >
-                        <button @click="modal.open()" class="button button--primary button--icon">
-                            <mc-icon name="notification"></mc-icon>
-                            <span></span>
-                        </button>
-                    </view-notification>
-                </li>
+                <?php if (!$app->user->is('guest')): ?>
+                    <li>
+                        <view-notification :editable="true" #default="{modal}"  >
+                            <button @click="modal.open()" class="button button--primary button--icon">
+                                <mc-icon name="notification"></mc-icon>
+                            </button>
+                        </view-notification>
+                    </li>
+                <?php endif; ?>
             </template>
         </mc-header-menu>
         
