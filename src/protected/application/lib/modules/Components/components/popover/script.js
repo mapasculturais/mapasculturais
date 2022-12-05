@@ -63,7 +63,6 @@ app.component('popover', {
             const inputs = this.$refs.content.getElementsByTagName('input');
             if (inputs.length) {
                 setTimeout(() => {
-                    console.log(inputs[0])
                     inputs[0].focus();
                 }, 100);
             }
