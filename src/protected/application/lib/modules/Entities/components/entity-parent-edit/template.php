@@ -28,3 +28,6 @@ $this->import('select-entity');
         </select-entity>
     </div>
 </div>
+<div v-else>
+    <button class="button button--primary-outline  button--icon">Adicionar Supraespaço</button>
+</div>
