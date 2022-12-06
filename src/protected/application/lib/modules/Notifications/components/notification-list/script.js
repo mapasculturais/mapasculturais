@@ -73,10 +73,14 @@ app.component('notification-list', {
                 messages.success(this.text('notificacao_aprovada'));
             }
         },
-        reject(notification) {
-            notification.removeFromLists();
-            const messages = useMessages();
-            messages.success(this.text('notificacao_rejeitada'));
+        async reject(notification) {
+            const url = this.API.createUrl('reject',[notification.id]);
+            const request = await this.API.POST(url)
+            if(request) {
+                const messages = useMessages();
+                messages.success(this.text('notificacao_recusada'));
+                notification.removeFromLists();
+            }
         },
         cancel (notification) {
             console.log(notification)
