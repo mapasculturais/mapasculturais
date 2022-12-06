@@ -133,8 +133,9 @@ trait EntityTaxonomies{
     function getTaxonomiesValidationErrors(){
         $taxonomies = App::i()->getRegisteredTaxonomies($this);
         $errors = [];
+        $terms = $this->getTerms();
         foreach($taxonomies as $definition){
-            if($definition->required && empty($this->terms[$definition->slug])){
+            if($definition->required && empty($terms[$definition->slug])){
                 $errors['term-'.$definition->slug] = [$definition->required];
             }
         }
