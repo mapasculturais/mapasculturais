@@ -1532,7 +1532,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }, 1000);
 
     $scope.lockedField = function (field) {
-        if (field.config && MapasCulturais.entity.object.owner.lockedFields.indexOf(field.config.entityField) >= 0) {
+        let fname = field.config.entityField.replace('@','');
+        if (field.config && MapasCulturais.entity.object.owner.lockedFields.indexOf(fname) >= 0) {
             return true;
         } else {
             return false;
