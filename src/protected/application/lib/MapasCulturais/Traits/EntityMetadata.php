@@ -314,6 +314,9 @@ trait EntityMetadata{
         if($metadata_object->value != $value){
             $this->__changedMetadata[$meta_key] = ['key'=> $meta_key, 'oldValue'=> $metadata_object->value, 'newValue'=> $value];
             $metadata_object->value = $value;
+            if (property_exists($this, 'updateTimestamp')) {
+                $this->updateTimestamp = new \DateTime;
+            }
         }
     }
 
