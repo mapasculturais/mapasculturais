@@ -407,6 +407,9 @@ MapasCulturais.Editables = {
     },
 
     initTypes: function(){
+        if(MapasCulturais.entity.object.lockedFields && MapasCulturais.entity.object.lockedFields.indexOf('type') >= 0) {
+            return;
+        }
         $('.js-editable-type').each(function(){
             var entity = $(this).data('entity');
             $.each(MapasCulturais.entityTypes[entity], function(i, obj){

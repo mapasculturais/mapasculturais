@@ -17,7 +17,7 @@ $space_taxonomies = $app->getRegisteredTaxonomies(MapasCulturais\Entities\Space:
     <form class="js-locked-fields">
         <div class="fields">
             <h2><?php $this->dict('entities: Agents') ?></h2>
-            <?php foreach ($props['agent'] as  $field => $values) : ?>
+            <?php foreach ($props['agent'] as  $field => $values) : $field = $values['@select'] ?? $field; ?>
                 <div>
                     <label>
                         <input type='checkbox' name='lockedFields[]' value="agent.<?= $field ?>" <?= in_array("agent.{$field}", $entity->lockedFields) ?  "checked" : "" ?>>
