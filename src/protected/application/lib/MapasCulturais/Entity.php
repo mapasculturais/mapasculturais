@@ -805,12 +805,12 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if ($is_new) {
-            $app->applyHookBoundTo($this, "{$hook_prefix}.insert:finish");
+            $app->applyHookBoundTo($this, "{$hook_prefix}.insert:finish", [$flush]);
         } else {
-            $app->applyHookBoundTo($this, "{$hook_prefix}.update:finish");
+            $app->applyHookBoundTo($this, "{$hook_prefix}.update:finish", [$flush]);
         }
 
-        $app->applyHookBoundTo($this, "{$hook_prefix}.save:finish");
+        $app->applyHookBoundTo($this, "{$hook_prefix}.save:finish", [$flush]);
         
     }
 
