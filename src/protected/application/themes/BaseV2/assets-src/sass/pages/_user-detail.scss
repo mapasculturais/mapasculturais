@@ -14,14 +14,42 @@
             justify-content: space-between;
 
             .account {
-                &__privacy {
-                    font-weight: 700;
-                    font-size: 32px;
-                    line-height: 44px;
-                }
 
                 &__left {
-                   background-color: red;
+                    display: flex;
+                    align-items: center;
+
+                    .title {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+
+                        &__background {
+                            display: flex;
+                            background-color: var(--mc-low-500);
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            justify-content: center;
+                            align-items: center;
+
+                            &-icon {
+                                height: 20px;
+                                width: 19.5px;
+                                color: var(--mc-high-500);
+                            }
+                        }
+                    }
+
+                    gap: 16px;
+
+                    &-privacy {
+
+                        font-weight: 700;
+                        font-size: 32px;
+                        line-height: 44px;
+                        max-width: 100%;
+                    }
                 }
             }
         }
