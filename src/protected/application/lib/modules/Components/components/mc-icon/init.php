@@ -28,6 +28,7 @@ $iconset = [
 
     // IMPORTANTE: manter ordem alfabética
     'access' => 'ooui:previous-rtl',
+    'account' => 'mdi:gear',
     'add' => 'ps:plus',
     'app' => 'heroicons-solid:puzzle',
     'archive' => 'mi:archive',
