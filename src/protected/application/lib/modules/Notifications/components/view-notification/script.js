@@ -27,7 +27,13 @@ app.component('view-notification' , {
     },
 
     computed: {
-
+        entities(){
+            const api = new API('notification','default');
+            return api.lists.fetch('notification-list','default')
+        },
+        totalNotification () {
+            return this.entities?.metadata.count || 0
+        }
     },
     
     methods: {

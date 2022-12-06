@@ -7,27 +7,31 @@ $this->import('
     mc-header-menu-user
     mc-icon
     theme-logo 
-    view-notification
 ');
 
 ?>
 
+<?php $this->applyTemplateHook('main-header', 'before') ?>
 <header class="main-header">
+    <?php $this->applyTemplateHook('main-header', 'begin') ?>
 
     <div class="main-header__content">
 
+        <?php $this->applyTemplateHook('mc-header-menu', 'before') ?>
         <mc-header-menu>
+            <?php $this->applyTemplateHook('mc-header-menu', 'begin') ?>
+
             <!-- Logo -->
             <template #logo>
                 <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
             </template>
             <!-- Menu principal -->
             <template #default>
-                <li> 
+                <li>
                     <a href="<?= $app->createUrl('site', 'index') ?>" class="mc-header-menu--item home">
                         <span class="icon"> <mc-icon name="home"></mc-icon> </span>
-                        <p class="label"> <?php i::_e('Home') ?> </p>      
-                    </a>  
+                        <p class="label"> <?php i::_e('Home') ?> </p>
+                    </a>
                 </li>
                 <li>
                     <a href="<?= $app->createUrl('search', 'opportunities') ?>" class="mc-header-menu--item opportunity">
@@ -41,50 +45,47 @@ $this->import('
                         <p class="label"> <?php i::_e('Agentes') ?> </p>
                     </a>
                 </li>
-                <li> 
+                <li>
                     <a href="<?= $app->createUrl('search', 'events') ?>" class="mc-header-menu--item event">
                         <span class="icon"> <mc-icon name="event"> </span>
                         <p class="label"> <?php i::_e('Eventos') ?> </p>
-                    </a>  
+                    </a>
                 </li>
-                <li> 
+                <li>
                     <a href="<?= $app->createUrl('search', 'spaces') ?>" class="mc-header-menu--item space">
                         <span class="icon"> <mc-icon name="space"> </span>
-                        <p class="label"> <?php i::_e('Espaços') ?> </p>       
-                    </a> 
+                        <p class="label"> <?php i::_e('Espaços') ?> </p>
+                    </a>
                 </li>
-                <li> 
+                <li>
                     <a href="<?= $app->createUrl('search', 'projects') ?>" class="mc-header-menu--item project">
                         <span class="icon"> <mc-icon name="project"> </span>
-                        <p class="label"> <?php i::_e('Projetos') ?> </p>      
-                    </a> 
+                        <p class="label"> <?php i::_e('Projetos') ?> </p>
+                    </a>
                 </li>
-                <?php if (!$app->user->is('guest')): ?>
-                    <li>
-                        <view-notification :editable="true" #default="{modal}"  >
-                            <button @click="modal.open()" class="button button--primary button--icon">
-                                <mc-icon name="notification"></mc-icon>
-                            </button>
-                        </view-notification>
-                    </li>
-                <?php endif; ?>
             </template>
+
+            <?php $this->applyTemplateHook('mc-header-menu', 'end') ?>
         </mc-header-menu>
-        
-        <!--  -->
-        
-        <?php if ($app->user->is('guest')): ?>   
-            <!-- Botão login -->             
+        <?php $this->applyTemplateHook('mc-header-menu', 'after') ?>
+
+
+        <?php $this->applyTemplateHook('mc-header-menu-user', 'before') ?>
+        <?php if ($app->user->is('guest')): ?>
+            <!-- Botão login -->
             <a href="<?= $app->createUrl('auth') ?>" class="logIn">
                 <?php i::_e('Entrar') ?>
-            </a>        
+            </a>
         <?php else: ?>
             <!-- Menu do usuário -->
             <mc-header-menu-user></mc-header-menu-user>
         <?php endif; ?>
+        <?php $this->applyTemplateHook('mc-header-menu-user', 'after') ?>
 
     </div>
 
+    <?php $this->applyTemplateHook('main-header', 'end') ?>
 </header>
+<?php $this->applyTemplateHook('main-header', 'after') ?>
 
 <messages></messages>

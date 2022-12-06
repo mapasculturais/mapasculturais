@@ -17,7 +17,7 @@ app.component('entities', {
 
     created() {
         if(this.name) {
-            this.api.lists.store(this.name, this.entities);
+            this.api.lists.store(this.name, this.entities, this.scope || 'default');
         }
 
         this.populateQuery(this.query);
@@ -102,7 +102,7 @@ app.component('entities', {
             }
     
             if (this.permissions) {
-                query['@permissions'] = this.permissions; 
+                query['@permissions'] = this.permissions;
             }
         },
 

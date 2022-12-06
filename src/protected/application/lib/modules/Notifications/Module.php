@@ -33,6 +33,11 @@ class Module extends \MapasCulturais\Module{
          $module = $this;
          /* === NOTIFICATIONS  === */
 
+        // adiciona icone de notificacao no main header
+        $app->hook('template(<<*>>.mc-header-menu):after', function() {
+            /** @var \MapasCulturais\Theme $this */
+            $this->part('notifications/header-notification');
+        });
 
         // adiciona aba de notificações no dashboard do painel
         $app->hook('template(panel.index.tabs):end', function() {
