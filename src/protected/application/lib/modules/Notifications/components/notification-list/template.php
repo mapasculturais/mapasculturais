@@ -11,8 +11,8 @@ $this->import('
 
 ?>
 
-    <entities type="notification" :query='query' #default='{entities}'>
-        <mapas-card style="margin-bottom: 20px;" v-for="entity in entities" :key="entity.__objectId">
+    <entities type="notification" name="notification-list" :query='query' #default='{entities}'>
+        <mapas-card class="notification_card" v-for="entity in entities" :key="entity.__objectId">
             <div class="grid-12">
                 <div class="col-1 notification_icon">
                     <mc-icon width="36" name='agent-1'></mc-icon>
