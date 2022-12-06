@@ -798,7 +798,6 @@ class App extends \Slim\Slim{
 
         $this->registerController('event',          'MapasCulturais\Controllers\Event');
         $this->registerController('agent',          'MapasCulturais\Controllers\Agent');
-        $this->registerController('seal',           'MapasCulturais\Controllers\Seal');
         $this->registerController('space',          'MapasCulturais\Controllers\Space');
         $this->registerController('project',        'MapasCulturais\Controllers\Project');
 
@@ -2322,10 +2321,8 @@ class App extends \Slim\Slim{
     public function getControllerByEntity($entity){
         if(is_object($entity))
             $entity = $entity->getClassName();
-        else if(is_string($entity) && strpos($entity, '\\') === false)
-            $entity = '\MapasCulturais\Entities\\' . $entity;
-
-        $controller_class = preg_replace('#\\\Entities\\\([^\\\]+)$#', '\\Controllers\\\$1', $entity);
+        
+        $controller_class = $entity::getControllerClassName();
         return $this->getControllerByClass($controller_class);
     }
 
@@ -2343,10 +2340,8 @@ class App extends \Slim\Slim{
     public function getControllerIdByEntity($entity){
         if(is_object($entity))
             $entity = $entity->getClassName();
-        else if(is_string($entity) && strpos($entity, '\\') === false)
-            $entity = '\MapasCulturais\Entities\\' . $entity;
 
-        $controller_class = preg_replace('#\\\Entities\\\([^\\\]+)$#', '\\Controllers\\\$1', $entity);
+        $controller_class = $entity::getControllerClassName();
 
         return $this->getControllerId($controller_class);
     }

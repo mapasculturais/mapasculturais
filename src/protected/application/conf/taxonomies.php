@@ -3,8 +3,8 @@ use MapasCulturais\i;
 
 return array(
     1 => array(
-       // 'slug' => i::__('tag'),
-    'slug' => 'tag',
+        'slug' => 'tag',
+        'description' => i::__('Tag'),
         'entities' => array(
             'MapasCulturais\Entities\Space',
             'MapasCulturais\Entities\Agent',
@@ -15,8 +15,8 @@ return array(
     ),
 
     2 => array(
-        //'slug' => i::__('area'),
-'slug' => 'area',
+        'slug' => 'area',
+        'description' => i::__('Área de Atuação'),
         'required' => i::__("Você deve informar ao menos uma área de atuação"),
         'entities' => array(
             'MapasCulturais\Entities\Space',
@@ -83,6 +83,7 @@ return array(
 
     3 => array(
         'slug' => 'linguagem',
+        'description' => i::__('Linguagem'),
         'required' => i::__("Você deve informar ao menos uma linguagem"),
         'entities' => array(
             'MapasCulturais\Entities\Event'

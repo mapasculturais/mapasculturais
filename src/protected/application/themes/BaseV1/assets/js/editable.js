@@ -382,6 +382,11 @@ MapasCulturais.Editables = {
         $('.js-editable-taxonomy').each(function(){
             var taxonomy = $(this).data('taxonomy');
 
+            if(MapasCulturais.entity.object.lockedFields && 
+                MapasCulturais.entity.object.lockedFields.indexOf(`terms:${taxonomy}`) >= 0) {
+                return;
+            }
+
             var select2_option = {
                 tags: [],
                 tokenSeparators: [";",";"],
@@ -422,6 +427,9 @@ MapasCulturais.Editables = {
     },
 
     initTypes: function(){
+        if(MapasCulturais.entity.object.lockedFields && MapasCulturais.entity.object.lockedFields.indexOf('type') >= 0) {
+            return;
+        }
         $('.js-editable-type').each(function(){
             var entity = $(this).data('entity');
             $.each(MapasCulturais.entityTypes[entity], function(i, obj){
@@ -450,6 +458,10 @@ MapasCulturais.Editables = {
         MapasCulturais.Editables.getEditableElements().each(function(){
 
             var field_name = $(this).data(MapasCulturais.Editables.dataSelector);
+            if(MapasCulturais.entity.object.lockedFields && MapasCulturais.entity.object.lockedFields.indexOf(field_name) >= 0) {
+                return;
+            }
+            
             var input_type;
 
             if(!entity[field_name])
