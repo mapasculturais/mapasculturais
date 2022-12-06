@@ -362,6 +362,11 @@ MapasCulturais.Editables = {
         $('.js-editable-taxonomy').each(function(){
             var taxonomy = $(this).data('taxonomy');
 
+            if(MapasCulturais.entity.object.lockedFields && 
+                MapasCulturais.entity.object.lockedFields.indexOf(`terms:${taxonomy}`) >= 0) {
+                return;
+            }
+
             var select2_option = {
                 tags: [],
                 tokenSeparators: [";",";"],

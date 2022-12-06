@@ -1392,8 +1392,7 @@ class Theme extends MapasCulturais\Theme {
             'location',
 
         ];
-
-        $agent_prop = \MapasCulturais\Entities\Agent::getPropertiesMetadata();
+        
         $props = [
             'agent' => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
             'space' => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
@@ -1401,12 +1400,10 @@ class Theme extends MapasCulturais\Theme {
 
         $_fields = [];
         foreach($props as $entity => $values){
-
             foreach($values as $field => $v){
-
-            if(!$v["isEntityRelation"] && !in_array($field,$exclude_list)){
-                $_fields[$entity][$field] = $v;
-            }
+                if(!$v["isEntityRelation"] && !in_array($field,$exclude_list)){
+                    $_fields[$entity][$field] = $v;
+                }
             }
         }
 
