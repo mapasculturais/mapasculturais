@@ -13,6 +13,17 @@
             flex-direction: row;
             justify-content: space-between;
 
+            .account {
+                &__privacy {
+                    font-weight: 700;
+                    font-size: 32px;
+                    line-height: 44px;
+                }
+
+                &__left {
+                   background-color: red;
+                }
+            }
         }
 
         &-content {
