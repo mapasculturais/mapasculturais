@@ -10,9 +10,12 @@ use Doctrine\Common\Collections\Criteria;
  *
  * @property-read array $validationErrors Entity properties and metadata validation errors.
  * @property-read array $propertiesMetadata Properties Metadata
- * @property-read \MapasCulturais\Controller $controller The controller with the class with the same name of this entity class in the parent namespace.
- * @property-read \MapasCulturais\Entities\User $ownerUser The User owner of this entity
+ * @property-read Controller $controller The controller with the class with the same name of this entity class in the parent namespace.
+ * @property-read string $controllerId The controller id for this entity
+ * @property-read Entities\User $ownerUser The User owner of this entity
+ * 
  * @property-read string $hookClassPath
+ * @property-read string $hookPrefix
  *
  *
  * @hook **entity.new** - Executed when the __construct method of any entity is called.
