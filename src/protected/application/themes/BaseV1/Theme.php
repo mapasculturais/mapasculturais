@@ -1358,7 +1358,7 @@ class Theme extends MapasCulturais\Theme {
 
     function getLockedFieldsSeal(){
         $exclude_list = [
-            'id','_type',
+            'id',
             'createTimestamp',
             'status',
             'userId',
