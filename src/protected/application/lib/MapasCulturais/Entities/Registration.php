@@ -250,25 +250,24 @@ class Registration extends \MapasCulturais\Entity
     function consolidateResult($flush = false, $caller = null){
         $app = App::i();
         
-        $ac_on = $app->isAccessControlEnabled();
-        if ($ac_on) $app->disableAccessControl();
+        $app->disableAccessControl();
         
         $em = $this->getEvaluationMethod();
 
         $result = $em->getConsolidatedResult($this);
 
         // para que dentro do hook as permissões funcionem
-        if ($ac_on) $app->enableAccessControl();
+        $app->enableAccessControl();
         
         $app->applyHookBoundTo($this, 'entity(Registration).consolidateResult', [&$result, $caller]);
         
-        if ($ac_on) $app->disableAccessControl();
+        $app->disableAccessControl();
         
         $this->consolidatedResult = $result;
         
         $this->save($flush);
         
-        if($ac_on) $app->enableAccessControl(); 
+        $app->enableAccessControl(); 
     }
 
     static function isPrivateEntity(){
@@ -736,7 +735,6 @@ class Registration extends \MapasCulturais\Entity
 
         $app->enableAccessControl();
         
-        // $app->enqueueEntityToPCacheRecreation($this->opportunity);
         $app->enqueueEntityToPCacheRecreation($this);
 
         $app->applyHookBoundTo($this, "entity($this->hookClassPath).send:after");
