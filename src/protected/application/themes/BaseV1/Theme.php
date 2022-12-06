@@ -4,6 +4,7 @@ namespace MapasCulturais\Themes\BaseV1;
 
 use MapasCulturais;
 use MapasCulturais\App;
+use MapasCulturais\Controllers\Agent;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
 use Respect\Validation\length;
@@ -778,6 +779,16 @@ class Theme extends MapasCulturais\Theme {
     protected function _init() {
         $app = App::i();
 
+        $app->hook('template(seal.edit.tabs):end',function(){
+            $this->part('tab',['id'=>'locked-fields', 'label'=> i::__('Bloqueio de campos')]);
+        });
+
+        $app->hook('template(seal.edit.tabs-content):end',function(){
+            $entity = $this->controller->requestedEntity;
+            $this->includeSealAssets();
+            $this->part('singles/seal-locked-fields', ['entity'=>$entity]);
+        });
+
         if(!$app->user->is('guest') && $app->user->profile->status < 1){
             $app->hook('view.partial(nav-main-user).params', function($params, &$name){
                 $name = 'header-profile-link';
@@ -1345,6 +1356,61 @@ class Theme extends MapasCulturais\Theme {
         ));
     }
 
+    function getLockedFieldsSeal(){
+        $exclude_list = [
+            'id',
+            'createTimestamp',
+            'status',
+            'userId',
+            'updateTimestamp',
+            '_subsiteId',
+            'geoPais',
+            'geoPais_cod',
+            'geoRegiao',
+            'geoRegiao_cod',
+            'geoEstado',
+            'geoEstado_cod',
+            'geoMesorregiao',
+            'geoMesorregiao_cod',
+            'geoMicrorregiao',
+            'geoMicrorregiao_cod',
+            'geoMunicipio',
+            'geoMunicipio_cod',
+            'geoZona',
+            'geoZona_cod',
+            'geoSubprefeitura',
+            'geoSubprefeitura_cod',
+            'geoDistrito',
+            'geoDistrito_cod',
+            'geoSetor_censitario',
+            'geoSetor_censitario_cod',
+            'event_importer_processed_file',
+            'opportunityTabName',
+            'useOpportunityTab',
+            'sentNotification',
+            'public',
+            'location',
+
+        ];
+        
+        $props = [
+            'agent' => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
+            'space' => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
+        ];
+
+        $_fields = [];
+        foreach($props as $entity => $values){
+            foreach($values as $field => $v){
+                if(!$v["isEntityRelation"] && !in_array($field,$exclude_list)){
+                    $_fields[$entity][$field] = $v;
+                }
+            }
+        }
+
+        return $_fields;
+        
+    }
+
     function head() {
         parent::head();
 
@@ -1896,6 +1962,11 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['request']['id'] = $entity->id;
 
         $app->applyHookBoundTo($this, 'view.includeAngularEntityAssets:after');
+    }
+
+    function includeSealAssets(){
+        $this->enqueueScript("app","seal-locked-conf","js/seal-locked-conf.js");
+        $this->enqueueStyle("app","seal-locked-conf","css/seal-locked-conf.css");
     }
 
     protected function _printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {
