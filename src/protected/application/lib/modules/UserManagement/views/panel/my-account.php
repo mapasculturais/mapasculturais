@@ -2,7 +2,7 @@
 
 use MapasCulturais\i;
 
-// $this->activeNav = 'panel/my-account';
+$this->activeNav = 'panel/my-account';
 $this->import('
 confirm-button
 entity
@@ -24,10 +24,12 @@ user-management--ownership-tabs
 
                 <div class="p-user-detail__header-top">
                     <div class="account__left">
-                        <div class="account__left-icon">
-                            <mc-icon name="account"></mc-icon>
+                        <div class="title">
+                            <div class="title__background">
+                                <mc-icon class="title__background-icon" name="account"></mc-icon>
+                            </div>
                         </div>
-                        <label class="account__privacy"><?= i::__('Conta e privacidade') ?></label>
+                        <label class="account__left-privacy"><?= i::__('Conta e privacidade') ?></label>
                     </div>
                     <a class="panel__help-link" href="#"><?= i::__('Ajuda?') ?></a>
                 </div>
@@ -77,7 +79,7 @@ user-management--ownership-tabs
         </div>
 
         <div class="p-user-detail__property-label">
-            <h3><?= i::__('Propriedades do usuário') ?></h3>
+            <h3><?= i::__('Minhas propriedades por entidades') ?></h3>
         </div>
         <div class="p-user-detail__property-content">
             <div class="tabs-component">
