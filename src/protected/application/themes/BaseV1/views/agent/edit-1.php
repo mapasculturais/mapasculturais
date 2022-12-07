@@ -9,6 +9,7 @@ if($this->isEditable()){
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('area');
     $this->addTaxonoyTermsToJs('tag');
+    $this->addTaxonoyTermsToJs('funcao');
 }
 
 $this->includeMapAssets();

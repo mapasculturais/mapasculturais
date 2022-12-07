@@ -3,6 +3,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [Unreleased]
+### Melhorias
+- atualiza o updateTimestamp da entidade quando modifica um metadado
+- opção de bloqueio de campos das entidades seladas
 
 ## [feature/BaseV2]
 
@@ -17,7 +21,29 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Quebra de compatibilidade
 - Não é mais possível selecionar entidades reacionadas utilizando várias vezes o nome da entidade (ex: `@select=owner.id,owner.name`). Deve-se substituir por `@select=owner.{id,name}`
+## [5.3.36] - 2022-11-16
+### Correções
+- typo no módulo Notifications 
+### Melhorias
+- Cria novos campos no cadastro do agente
 
+## [5.3.35] - 2022-11-16
+### Correções
+- Corrige erro ao gerar thumbnails do avatar
+## [5.3.34] - 2022-11-10
+### Correções
+- Corrige erro ao enviar inscrições
+## [5.3.33] - 2022-11-10
+- ### Correções
+- Corrige problema de não salvar a inscrição quando existe campos obrigatórios não preenchidos na ficha
+## [5.3.32] - 2022-10-21
+- ### Melhorias
+- Cria módulo para importação de eventos atrvéz de planilha CSV
+- ### Correções
+- Aplica correções nos layouts de e-mails no novo módulo de disparo de notificações
+## [5.3.31] - 2022-10-18
+- ### Melhorias
+- Cria módulo para para disparos de e-mails gerais no mapas culturais
 ## [5.3.30] - 2022-10-6
 - ### Correções
 - Instala LIB league/csv

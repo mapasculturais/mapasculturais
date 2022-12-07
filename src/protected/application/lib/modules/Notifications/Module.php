@@ -92,7 +92,7 @@ class Module extends \MapasCulturais\Module{
                             $prev = $_prev;
                         }
                         
-                        if($prev->equal($opportunity)){
+                        if($prev->equals($opportunity)){
                             $opportunity_link = "<a href=\"{$opportunity->singleUrl}\">{$opportunity->name}</a>";
                         } else {
                             $opportunity_link = "<a href=\"{$opportunity->singleUrl}\">{$prev->name} &raquo; {$opportunity->name}</a>";
