@@ -4,14 +4,30 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.2.16] - 2022-08-16
-### Melhorias
+## [5.2.22] - 2022-12-06
+- correção no db-update que corrige valores das inscrições
+
+## [5.2.21] - 2022-11-18
+- corrige definição de valores padrão para metadados
+
+## [5.2.20] - 2022-08-16
 - Cria mc-update para atualizar os campos@ após desvinculação do agente Ref:#2152
+
+## [5.2.19] - 2022-08-01
+- ajustes no entrypoint
+
+## [5.2.18] - 2022-07-25
+- correção na exportação de csv de oportunidades
+
+## [5.2.17] - 2022-07-21
+- mudança na configuração de do session_handler
+
 ## [5.2.16] - 2022-07-15
 - Corrige contagem de avaliações
+
 ## [5.2.15] - 2022-07-06
-### Correções
 - Melhora verificação para barrar envio de inscrições de fases excluídas
+
 ## [5.2.14] - 2022-06-08
 - Impede que o proponente envie inscrições que estão em fases excluídas Ref
 - Impede que as avaliações sejam enviadas antes do prazo final da fase Ref
@@ -22,6 +38,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Faz com que o filtro entre datas na listagem de eventos, seja de 1 anos apartir da data atual
 - Limita acesso ao botão de download da planila de agentes a administradores
 - Faz com que o filtro de eventos na gestão de usuários busque todos os eventos independente de existir espaço ou ocorrencias
+
 ## [5.2.13] - 2022-06-07
 ### Correções
 - evita criação duplicada de metadados
