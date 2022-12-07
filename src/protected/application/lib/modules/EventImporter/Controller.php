@@ -473,6 +473,11 @@ class Controller extends \MapasCulturais\Controller
                   $errors[$key+1][] = i::__("A coluna Hora final é inválida. O formato esperado é HH:MM Ex.: 12:00");
                }
                
+               
+               if((new DateTime($value['STARTS_AT'])) > (new DateTime($value['ENDS_AT']))){
+                  $errors[$key+1][] = i::__("A data inicial é maior que a data final.");
+               }
+
                // Valida a data inicial
                if (empty($value['STARTS_ON']) || $value['STARTS_ON'] == "") {
                   $errors[$key+1][] = i::__("A Coluna Data inícial Está vazia");
