@@ -123,7 +123,7 @@
                     }
                 });
                 
-                return $http.patch(this.getUrl('single', entity.id), data).
+                return $http.patch(this.getUrl('single', entity.id), data, {headers: {forceSave: true}}).
                     success(function(data, status){
                         MapasCulturais.Messages.success(labels['changesSaved']);
                         $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
@@ -1530,6 +1530,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             $scope.selectedCategory = value;
         });
     }, 1000);
+
+    $scope.lockedField = function (field) {
+        if(!field.config.entityField){
+            return false;
+        }
+        
+        let fname = field.config.entityField.replace('@','');
+        if (field.config && MapasCulturais.entity.object.owner.lockedFields.indexOf(fname) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     $scope.showField = function(field){
         

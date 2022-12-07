@@ -169,6 +169,9 @@ trait ControllerEntityActions {
             }
 
             if($errors){
+                if($app->request->headers->get("forceSave")){
+                    $entity->save(true);
+                }
                 $this->errorJson($errors, 400);
             }
         }

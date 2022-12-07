@@ -4,6 +4,7 @@ namespace MapasCulturais\Themes\BaseV1;
 
 use MapasCulturais;
 use MapasCulturais\App;
+use MapasCulturais\Controllers\Agent;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
 use Respect\Validation\length;
@@ -779,6 +780,16 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
         $this->bodyClasses[] = 'base-v1';
 
+        $app->hook('template(seal.edit.tabs):end',function(){
+            $this->part('tab',['id'=>'locked-fields', 'label'=> i::__('Bloqueio de campos')]);
+        });
+
+        $app->hook('template(seal.edit.tabs-content):end',function(){
+            $entity = $this->controller->requestedEntity;
+            $this->includeSealAssets();
+            $this->part('singles/seal-locked-fields', ['entity'=>$entity]);
+        });
+
         if(!$app->user->is('guest') && $app->user->profile->status < 1){
             $app->hook('view.partial(nav-main-user).params', function($params, &$name){
                 $name = 'header-profile-link';
@@ -1294,6 +1305,61 @@ class Theme extends MapasCulturais\Theme {
         });
     }
 
+    function getLockedFieldsSeal(){
+        $exclude_list = [
+            'id',
+            'createTimestamp',
+            'status',
+            'userId',
+            'updateTimestamp',
+            '_subsiteId',
+            'geoPais',
+            'geoPais_cod',
+            'geoRegiao',
+            'geoRegiao_cod',
+            'geoEstado',
+            'geoEstado_cod',
+            'geoMesorregiao',
+            'geoMesorregiao_cod',
+            'geoMicrorregiao',
+            'geoMicrorregiao_cod',
+            'geoMunicipio',
+            'geoMunicipio_cod',
+            'geoZona',
+            'geoZona_cod',
+            'geoSubprefeitura',
+            'geoSubprefeitura_cod',
+            'geoDistrito',
+            'geoDistrito_cod',
+            'geoSetor_censitario',
+            'geoSetor_censitario_cod',
+            'event_importer_processed_file',
+            'opportunityTabName',
+            'useOpportunityTab',
+            'sentNotification',
+            'public',
+            'location',
+
+        ];
+        
+        $props = [
+            'agent' => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
+            'space' => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
+        ];
+
+        $_fields = [];
+        foreach($props as $entity => $values){
+            foreach($values as $field => $v){
+                if(!$v["isEntityRelation"] && !in_array($field,$exclude_list)){
+                    $_fields[$entity][$field] = $v;
+                }
+            }
+        }
+
+        return $_fields;
+        
+    }
+
     function head() {
         parent::head();
 
@@ -1321,8 +1387,9 @@ class Theme extends MapasCulturais\Theme {
         $image_url = $app->view->asset('img/share.png', false);
         if ($entity) {
             $description = $entity->shortDescription ? $entity->shortDescription : $title;
-            if ($entity->avatar)
+            if ($entity->avatar && $entity->avatar->transform('avatarBig')){
                 $image_url = $entity->avatar->transform('avatarBig')->url;
+            }
         }else {
             $description = $this->dict('site: description', false);
         }
@@ -1848,6 +1915,21 @@ class Theme extends MapasCulturais\Theme {
 
     function printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {
         parent::printJsObject($var_name, $print_script_tag);
+    }
+    
+    function includeSealAssets(){
+        $this->enqueueScript("app","seal-locked-conf","js/seal-locked-conf.js");
+        $this->enqueueStyle("app","seal-locked-conf","css/seal-locked-conf.css");
+    }
+
+    protected function _printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {
+        if ($print_script_tag)
+            echo "\n<script type=\"text/javascript\">\n";
+
+        echo " var {$var_name} = " . json_encode($this->jsObject) . ';';
+
+        if ($print_script_tag)
+            echo "\n</script>\n";
     }
 
     function ajaxUploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $humanCrop = false, $file_types = '.jpg ou .png') {
@@ -2427,7 +2509,7 @@ class Theme extends MapasCulturais\Theme {
             $agent = $def->agent;
             if($agent){
                 $def->agent = $agent->simplify('id,name,shortDescription,singleUrl');
-                $def->agent->avatarUrl = $agent->avatar ? $agent->avatar->transform('avatarSmall')->url : null;
+                $def->agent->avatarUrl = ($agent->avatar && $agent->avatar->transform('avatarSmall')) ? $agent->avatar->transform('avatarSmall')->url : null;
                 if($entity->status > 0){ // is sent
                     if(isset($entity->agentsData[$def->agentRelationGroupName])){
                         foreach($entity->agentsData[$def->agentRelationGroupName] as $prop => $val){

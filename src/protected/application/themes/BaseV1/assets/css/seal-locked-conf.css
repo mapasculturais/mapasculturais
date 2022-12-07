@@ -1,0 +1,26 @@
+
+.fields {
+    padding: 5px;
+    font-weight: normal;
+}
+
+.fields>div {
+    display: inline-block;
+    width: 45%;
+    min-width: 250px;
+}
+
+.fields h2 {
+    margin-bottom: 5px;
+}
+
+.fields h3 {
+    margin-bottom: 0;
+    margin-top: 5px;
+    font-size: .70rem;
+    line-height: 1.3rem;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}

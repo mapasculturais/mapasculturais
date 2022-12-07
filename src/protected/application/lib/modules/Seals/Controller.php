@@ -1,10 +1,11 @@
 <?php
 
-namespace MapasCulturais\Controllers;
+namespace Seals;
 
 use MapasCulturais\App;
 use MapasCulturais\Traits;
-use MapasCulturais\Entities;
+use MapasCulturais\Entities\Seal;
+use MapasCulturais\Controllers\EntityController;
 
 /**
  * Seal Controller
@@ -14,7 +15,7 @@ use MapasCulturais\Entities;
  *  @property-read \MapasCulturais\Entities\Seal $requestedEntity The Requested Entity
  *
  */
-class Seal extends EntityController {
+class Controller extends EntityController {
     use
     	Traits\ControllerUploads,
     	Traits\ControllerTypes,
@@ -94,6 +95,10 @@ class Seal extends EntityController {
      * @apiName getTypeGroups
      */
 
+    function __construct()
+    {
+        $this->entityClassName = Seal::class;
+    }
 
     /**
      * Creates a new Seal
