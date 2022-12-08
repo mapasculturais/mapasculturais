@@ -78,15 +78,22 @@ user-management--ownership-tabs
             </div>
 
             <div class="p-user-detail__privacy">
-                <label><?= i::__('Aceite de termos') ?></label>
+                <div class="p-user-detail__privacy-title">
+                    <label class="p-user-detail__privacy-title"><?= i::__('Aceite de termos') ?></label>
+
+                </div>
+                <div class="p-user-detail__privacy-accept">
+
+                    <label> Termo aceito em {{entity.lastLoginTimestamp.hour('2-digit')}} </label>
+                </div>
             </div>
 
             <div class="user-function">
                 <label class="user-function__label"><?= i::__('Funções do Usuário') ?></label>
                 <div class="user-function__box">
-                    <label class="user-function__box--label"><?= i::__('Título de Função de usuário em Subsite')?> </label>
+                    <label class="user-function__box--label"><?= i::__('Título de Função de usuário em Subsite') ?> </label>
                     <div class="user-function__box--content">
-                            <label class="user-function__box--content-text" >texto qualquer do subsite</label>
+                        <label class="user-function__box--content-text">texto qualquer do subsite</label>
                     </div>
                 </div>
             </div>
