@@ -11,17 +11,6 @@ $this->import('
     panel--open-opportunities
 '); 
 ?>
-<?php $this->applyTemplateHook('main', 'before') ?>
-<div class="main-app single-1">
-    <?php $this->applyTemplateHook('main', 'begin') ?>
-    <mapas-breadcrumb></mapas-breadcrumb>
-    <entity-header :entity="entity"></entity-header>
-
-    <?php $this->applyTemplateHook('main', 'end') ?>
-</div>
-<?php $this->applyTemplateHook('main', 'after') ?>
-
-
 <div class="panel-home">
     <?php $this->applyTemplateHook('header', 'before') ?>
     <header class="panel-home__header">
