@@ -247,9 +247,31 @@ class Controller extends \MapasCulturais\Controller
      return (object)$result;
 
    }
-   
+   public function ApplySeal($event,$value){
 
-   //Processa dados do arquivo
+      $app = App::i();
+      
+      if($value["SEAL_ID"]){
+         $app->disableAccessControl();
+         $relations = $event->getSealRelations();
+         $seal = $app->repo('Seal')->find($value["SEAL_ID"]);
+         
+         $has_seal = false;
+         foreach($relations as $relation){
+            if($relation->seal->id == $seal->id){
+               $has_seal = true;
+               break;
+            }
+         }
+         
+         if(!$has_seal){
+            $event->createSealRelation($seal);
+         }
+         $app->enableAccessControl();
+       
+      }
+   }
+
    public function processData($file_data, string $file_dir)
    {
       $app = App::i();
@@ -343,6 +365,12 @@ class Controller extends \MapasCulturais\Controller
                }
             }
 
+            if(!empty($value['SEAL_ID'])){
+               if(!$conn->fetchAll("SELECT * FROM seal WHERE status >= 1 AND id = '{$value['SEAL_ID']}'")) {
+                  $errors[$key+1][] = i::__("O selo não está cadastrado");
+               }
+            }
+
             if($type_process_map->create_event){
                if(empty($value['NAME']) || $value['NAME'] == ''){
                   $errors[$key+1][] = i::__("A coluna nome está vazia");
@@ -409,9 +437,7 @@ class Controller extends \MapasCulturais\Controller
                   }
                }
             }
-            
-            //Caso exista espaço informado significa inserção de ocorrência
-               //Verificação do espaço
+       
             if( $type_process_map->create_event || $type_process_map->edit_ocurrence){
                $collum_spa = 'id';
                if (!is_numeric($value['SPACE'])) {
@@ -549,6 +575,7 @@ class Controller extends \MapasCulturais\Controller
                if($ocurrence && $file && $metalist){
                   $countNewEvent++;
                   $eventsIdList[$event->id] = $event->id;
+                  $this->ApplySeal($event,$value);
                   $app->em->commit();
                }else{
                   $error_process = true;

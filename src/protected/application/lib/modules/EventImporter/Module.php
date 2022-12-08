@@ -76,6 +76,7 @@ class Module extends \MapasCulturais\Module
                 'LINKS'
             ],
             "header_default" => [
+                'SEAL_ID' => [i::__('id_selo'),i::__('id_selos'),i::__('selo'),'seal','seal_id','id_seal'],
                 'EVENT_ID' => [i::__('id_evento') ,i::__('id evento') ,i::__('evento_id'), i::__('evento'),'id', 'event_id', 'event'],
                 'NAME' => [i::__('nome'),'name'],
                 'SUBTITLE' => ['subtitle', i::__('subtítulo')],
@@ -149,6 +150,10 @@ class Module extends \MapasCulturais\Module
                 ]
             ],
             "header_example" => [
+                i::__('SEAL ID') => [
+                    i::__('PREENCHER O ID DO SELO, CASO QUEIRA APLICAR UM SELO NO EVENTO - garantir que o selo esteja cadastrado'),
+                    i::__('1')
+                ],
                 i::__('ID_EVENTO') => [
                     i::__('PREENCHER SOMENTE CASO QUEIRA EDITAR UM EVENTO EXISTENTE - Informar ID do evento'),
                     i::__('1')
