@@ -77,12 +77,18 @@ user-management--ownership-tabs
                 </form>
             </div>
 
-            <div class="p-user-detail__account-config-privacy">
+            <div class="p-user-detail__privacy">
                 <label><?= i::__('Aceite de termos') ?></label>
             </div>
 
-            <div class="p-user-detail__account-config-usrfunction">
-                <label><?= i::__('Funções do Usuário') ?></label>
+            <div class="user-function">
+                <label class="user-function__label"><?= i::__('Funções do Usuário') ?></label>
+                <div class="user-function__box">
+                    <label class="user-function__box--label"><?= i::__('Título de Função de usuário em Subsite')?> </label>
+                    <div class="user-function__box--content">
+                            <label class="user-function__box--content-text" >texto qualquer do subsite</label>
+                    </div>
+                </div>
             </div>
         </div>
 

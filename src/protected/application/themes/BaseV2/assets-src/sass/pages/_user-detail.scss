@@ -51,6 +51,7 @@
                         max-width: 100%;
                     }
                 }
+
             }
         }
 
@@ -120,15 +121,61 @@
 
     }
 
+    &__privacy {
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 25px;
+        padding-bottom: 24px;
+    }
+
+    .user-function {
+        max-width: size(970);
+        position: relative;
+
+        &__label {
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 25px;
+        }
+
+
+        &__box {
+            height: 97px;
+            margin-top: 14px;
+            padding-top: 16px;
+            &--label {
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 19px;
+                padding: 16px 0 8px 16px;
+                color: var(--mc-black);
+            }
+
+            background-color: var(--vc-clr-white);
+
+            &--content {
+                &-text {
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 19px;
+                    margin-left: 16px;
+                }
+            }
+        }
+    }
+
     .entity-seals {
         margin: size(40) 0;
     }
 
     &__account-config {
+
+
         background-color: white;
         max-width: size(970);
         margin-bottom: size(44);
         padding: size(12) size(16);
+
 
         &-label {
 
