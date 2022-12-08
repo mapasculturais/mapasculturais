@@ -84,7 +84,7 @@ user-management--ownership-tabs
                 </div>
                 <div class="p-user-detail__privacy-accept">
 
-                    <label> Termo aceito em {{entity.lastLoginTimestamp.hour('2-digit')}} </label>
+                    <label> Termo aceito em {{entity.lastLoginTimestamp.date()}} de {{entity.lastLoginTimestamp.year()}} </label>
                 </div>
             </div>
 
