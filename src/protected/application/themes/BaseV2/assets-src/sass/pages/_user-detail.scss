@@ -126,6 +126,17 @@
         font-size: 18px;
         line-height: 25px;
         padding-bottom: 24px;
+
+        &--accept {
+            
+            &-check {
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 19px;
+                letter-spacing: 0.07em;
+                text-transform: uppercase;
+            }
+        }
     }
 
     .user-function {
@@ -143,6 +154,7 @@
             height: 97px;
             margin-top: 14px;
             padding-top: 16px;
+
             &--label {
                 font-weight: 700;
                 font-size: 14px;
