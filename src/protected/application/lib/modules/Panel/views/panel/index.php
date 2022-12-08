@@ -11,31 +11,6 @@ $this->import('
     panel--open-opportunities
 '); 
 ?>
-<?php $this->applyTemplateHook('main', 'before') ?>
-<div class="main-app single-1">
-    <?php $this->applyTemplateHook('main', 'begin') ?>
-    <mapas-breadcrumb></mapas-breadcrumb>
-    <entity-header :entity="entity"></entity-header>
-
-    <?php $this->applyTemplateHook('tabs', 'before') ?>
-    <tabs class="tabs">
-        <?php $this->applyTemplateHook('tabs', 'begin') ?>
-        <?php $this->applyTemplateHook('tabs-info', 'before') ?>
-        <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
-            <?php $this->applyTemplateHook('tabs-info', 'begin') ?>
-            <!-- conteudo da aba -->
-            <?php $this->applyTemplateHook('tabs-info', 'end') ?>
-        </tab>
-        <?php $this->applyTemplateHook('tabs-info', 'after') ?>
-        <?php $this->applyTemplateHook('tabs', 'end') ?>
-    </tabs>
-    <?php $this->applyTemplateHook('tabs', 'after') ?>
-    <?php $this->applyTemplateHook('main', 'end') ?>
-</div>
-<?php $this->applyTemplateHook('main', 'after') ?>
-
-
-
 <div class="panel-home">
     <?php $this->applyTemplateHook('header', 'before') ?>
     <header class="panel-home__header">
