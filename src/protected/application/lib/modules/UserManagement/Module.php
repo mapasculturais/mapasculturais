@@ -175,6 +175,7 @@ class Module extends \MapasCulturais\Module {
 
             $this->render('system-roles');
         });
+        
 
         /**
          * Página para gerenciamento de usuários

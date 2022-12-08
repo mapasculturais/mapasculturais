@@ -150,4 +150,16 @@ class Controller extends EntityController {
 
     }
 
+    function GET_create(){
+        $this->requireAuthentication();
+
+        $entity = $this->getRequestedEntity();
+        $entity->checkPermission('create');
+        $class = $this->entityClassName;
+
+        $entity->status = $class::STATUS_DRAFT;
+
+        $this->render('create', ['entity' => $entity]);
+    }
+
 }
