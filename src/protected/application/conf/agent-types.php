@@ -172,7 +172,7 @@ return array(
                         $this->idoso = 1; 
                     }
                });
-               return $value;
+               return (new DateTime($value))->format("Y-m-d");
             },
             'validations' => array(
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
