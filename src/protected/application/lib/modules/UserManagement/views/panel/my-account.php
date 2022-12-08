@@ -76,6 +76,14 @@ user-management--ownership-tabs
                     <button class="col-2 button button--secondary button--md" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
                 </form>
             </div>
+
+            <div class="p-user-detail__account-config-privacy">
+                <label><?= i::__('Aceite de termos') ?></label>
+            </div>
+
+            <div class="p-user-detail__account-config-usrfunction">
+                <label><?= i::__('Funções do Usuário') ?></label>
+            </div>
         </div>
 
         <div class="p-user-detail__property-label">
