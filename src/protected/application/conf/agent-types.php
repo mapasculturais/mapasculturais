@@ -40,14 +40,15 @@ return array(
         ),
 
         'pessoaDeficiente' => array(
-            'label' => 'Atendimento em outros idiomas',
-                'multiselect',
-                'options' => [
-                    'Visual',
-                    'Mental',
-                    'Física',
-                    'Auditiva',
-                ]
+            'label' => 'Pessoa com deficiência',
+            'type' => 'multiselect',
+            'options' => [
+                'Visual',
+                'Mental',
+                'Física',
+                'Auditiva',
+            ],
+            'available_for_opportunities' => true
         ),
 
         'comunidadesTradicional' => array(
