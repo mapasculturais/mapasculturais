@@ -79,6 +79,8 @@ $iconset = [
     'up' => 'mdi:chevron-up',
     'user-config' => 'fa-solid:users-cog',
     'upload' => 'ic:baseline-file-upload',
+    'seal' => 'mdi:seal-variant',
+
 ];
 
 $app->applyHook('component(mc-icon).iconset', [&$iconset]);
