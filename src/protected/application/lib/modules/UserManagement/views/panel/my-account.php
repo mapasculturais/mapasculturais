@@ -83,8 +83,7 @@ user-management--ownership-tabs
 
                 </div>
                 <div class="p-user-detail__privacy-accept">
-
-                    <label> Termo aceito em {{entity.lastLoginTimestamp.date()}} de {{entity.lastLoginTimestamp.year()}} </label>
+                    <label>Termo aceito em {{entity.lastLoginTimestamp.date('numeric')}}/{{entity.lastLoginTimestamp.year('numeric')}} às  </label>
                 </div>
             </div>
 
