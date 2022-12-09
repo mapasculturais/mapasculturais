@@ -384,7 +384,7 @@ class Controller extends \MapasCulturais\Controller
                   $errors[$key+1][] = i::__("A coluna classificação estária está vazia");
                }
 
-               if (!in_array(mb_strtolower($value['CLASSIFICATION']),$moduleConfig['rating_list_allowed'])) {
+               if (!in_array($this->lowerStr($value['CLASSIFICATION']),$moduleConfig['rating_list_allowed'])) {
                   $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
                   $errors[$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são {$rating_str}");
                }
@@ -399,7 +399,7 @@ class Controller extends \MapasCulturais\Controller
                $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
 
                foreach ($languages as $language) {
-                  $_language = mb_strtolower(trim($language));
+                  $_language = $this->lowerStr($language);
 
                   if (!in_array(trim($_language), array_keys($languages_list))) {
                      $errors[$key+1][] = i::__("A linguagem {$_language} não existe");
@@ -685,7 +685,7 @@ class Controller extends \MapasCulturais\Controller
          if($languages){
             $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
             foreach(array_filter($languages) as $language){
-               $_lang = mb_strtolower($language);
+               $_lang = $this->lowerStr($language);
                $_languages[] = $languages_list[$_lang];
             }
          }
@@ -731,7 +731,7 @@ class Controller extends \MapasCulturais\Controller
 
          $moduleConfig = $app->modules['EventImporter']->config;
    
-         $freq = mb_strtolower($value['FREQUENCY']);
+         $freq = $this->lowerStr($value['FREQUENCY']);
          $ocurrence = new EventOccurrence();    
    
          $duration = function() use ($value){
@@ -756,7 +756,7 @@ class Controller extends \MapasCulturais\Controller
             "description" => "",
          ];
         
-         switch (mb_strtolower($value['FREQUENCY'])) {
+         switch ($this->lowerStr($value['FREQUENCY'])) {
             case i::__('diariamente'):
             case i::__('todos os dias'):
             case i::__('diario'):
@@ -1104,6 +1104,11 @@ class Controller extends \MapasCulturais\Controller
       } else {
          return $objDate;
       }
+   }
+
+   public function lowerStr($value)
+   {
+      return $value ? trim(mb_strtolower($value)) : "";
    }
 
    public function dispatch($file_name, $path)
