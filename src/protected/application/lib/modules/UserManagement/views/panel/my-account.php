@@ -4,16 +4,17 @@ use MapasCulturais\i;
 
 $this->activeNav = 'panel/my-account';
 $this->import('
-confirm-button
-entity
-entity-field
-entity-seals
-mc-icon
-mc-link
-panel--entity-actions
-panel--entity-tabs
-tabs
-user-management--ownership-tabs
+    confirm-button
+    entity
+    entity-field
+    entity-seals
+    mc-icon
+    mc-link
+    panel--entity-actions
+    panel--entity-tabs
+    tabs
+    user-management--ownership-tabs
+    user-accepted-terms
 ');
 ?>
 <entity #default='{entity}'>
@@ -77,15 +78,7 @@ user-management--ownership-tabs
                 </form>
             </div>
 
-            <div class="p-user-detail__privacy">
-                <div class="p-user-detail__privacy-title">
-                    <label class="p-user-detail__privacy-title"><?= i::__('Aceite de termos') ?></label>
-
-                </div>
-                <div class="p-user-detail__privacy-accept">
-                    <label class="p-user-detail__privacy--accept-check">Termo aceito em  pelo IP  </label>
-                </div>
-            </div>
+            <user-accepted-terms :user="entity"></user-accepted-terms>
 
             <div class="user-function">
                 <label class="user-function__label"><?= i::__('Funções do Usuário') ?></label>
