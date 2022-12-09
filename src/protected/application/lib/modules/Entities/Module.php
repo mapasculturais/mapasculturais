@@ -18,11 +18,5 @@ class Module extends \MapasCulturais\Module{
     }
 
     function register(){
-        
-            $app = App::i();
-            $controllers = $app->getRegisteredControllers();
-            if (!isset($controllers['entities'])) {
-                $app->registerController('entities', Controller::class);
-            }
     }
 }
