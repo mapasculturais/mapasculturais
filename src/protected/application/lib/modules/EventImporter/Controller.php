@@ -685,7 +685,7 @@ class Controller extends \MapasCulturais\Controller
          if($languages){
             $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
             foreach(array_filter($languages) as $language){
-               $_lang = mb_strtolower($language);
+               $_lang = trim(mb_strtolower($language));
                $_languages[] = $languages_list[$_lang];
             }
          }
