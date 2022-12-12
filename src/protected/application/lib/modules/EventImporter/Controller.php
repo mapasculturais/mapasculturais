@@ -341,6 +341,11 @@ class Controller extends \MapasCulturais\Controller
                continue;
             }
 
+            if($err = $this->checkRemoteFile($value, $key)){
+               $this->render("import-erros", ["errors" => $err, 'filename' => basename($file_dir)]);
+               exit;
+            }
+
             $type_process_map = $this->typeProcessMap($value);
 
             if(!empty($value['EVENT_ID']) && in_array($value['NAME'], $moduleConfig['clear_ocurrence_ref'])){
@@ -1010,6 +1015,47 @@ class Controller extends \MapasCulturais\Controller
       } catch (\Throwable $th) {
          return false;
       }
+   }
+
+   public function checkRemoteFile($value, $key)
+   {
+      
+      $check = function($file){
+         $error = false;
+         $basename = basename($file);
+         $file_data = str_replace($basename, urlencode($basename), $file);
+
+         $curl = new Curl;
+         $curl->get($file_data);
+         $curl->close();
+         $response = $curl->response;
+
+         if (mb_strpos($response, 'html')) {
+            $error = true;
+         }
+
+         return $error;
+      };
+
+      $error = [];
+      $alloweds_type = ['AVATAR', 'HEADER', 'GALLERY'];
+      foreach($alloweds_type as $type){
+         if($matches = $this->matches($value[$type])){
+            foreach($matches as $matche){
+               $exp = explode(":", $matche);
+
+               if($check($exp[0])){
+                  $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$exp[0]}");
+               }
+            }
+         }else{
+            if($check($value[$type])){
+               $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$value[$type]}");
+            }
+         }
+      }
+
+      return $error;
    }
 
    public function createMetalists(Entity $owner, $value)
