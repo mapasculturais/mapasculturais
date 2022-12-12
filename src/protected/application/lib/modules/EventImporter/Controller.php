@@ -4,6 +4,7 @@ namespace EventImporter;
 
 use DateTime;
 use stdClass;
+use Curl\Curl;
 use Exception;
 use MapasCulturais\i;
 use DateTimeImmutable;
@@ -247,9 +248,31 @@ class Controller extends \MapasCulturais\Controller
      return (object)$result;
 
    }
-   
+   public function ApplySeal($event,$value){
 
-   //Processa dados do arquivo
+      $app = App::i();
+      
+      if($value["SEAL_ID"]){
+         $app->disableAccessControl();
+         $relations = $event->getSealRelations();
+         $seal = $app->repo('Seal')->find($value["SEAL_ID"]);
+         
+         $has_seal = false;
+         foreach($relations as $relation){
+            if($relation->seal->id == $seal->id){
+               $has_seal = true;
+               break;
+            }
+         }
+         
+         if(!$has_seal){
+            $event->createSealRelation($seal);
+         }
+         $app->enableAccessControl();
+       
+      }
+   }
+
    public function processData($file_data, string $file_dir)
    {
       $app = App::i();
@@ -318,6 +341,11 @@ class Controller extends \MapasCulturais\Controller
                continue;
             }
 
+            if($err = $this->checkRemoteFile($value, $key)){
+               $this->render("import-erros", ["errors" => $err, 'filename' => basename($file_dir)]);
+               exit;
+            }
+
             $type_process_map = $this->typeProcessMap($value);
 
             if(!empty($value['EVENT_ID']) && in_array($value['NAME'], $moduleConfig['clear_ocurrence_ref'])){
@@ -343,6 +371,12 @@ class Controller extends \MapasCulturais\Controller
                }
             }
 
+            if(!empty($value['SEAL_ID'])){
+               if(!$conn->fetchAll("SELECT * FROM seal WHERE status >= 1 AND id = '{$value['SEAL_ID']}'")) {
+                  $errors[$key+1][] = i::__("O selo não está cadastrado");
+               }
+            }
+
             if($type_process_map->create_event){
                if(empty($value['NAME']) || $value['NAME'] == ''){
                   $errors[$key+1][] = i::__("A coluna nome está vazia");
@@ -356,7 +390,7 @@ class Controller extends \MapasCulturais\Controller
                   $errors[$key+1][] = i::__("A coluna classificação estária está vazia");
                }
 
-               if (!in_array(mb_strtolower($value['CLASSIFICATION']),$moduleConfig['rating_list_allowed'])) {
+               if (!in_array($this->lowerStr($value['CLASSIFICATION']),$moduleConfig['rating_list_allowed'])) {
                   $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
                   $errors[$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são {$rating_str}");
                }
@@ -371,7 +405,7 @@ class Controller extends \MapasCulturais\Controller
                $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
 
                foreach ($languages as $language) {
-                  $_language = mb_strtolower(trim($language));
+                  $_language = $this->lowerStr($language);
 
                   if (!in_array(trim($_language), array_keys($languages_list))) {
                      $errors[$key+1][] = i::__("A linguagem {$_language} não existe");
@@ -409,9 +443,7 @@ class Controller extends \MapasCulturais\Controller
                   }
                }
             }
-            
-            //Caso exista espaço informado significa inserção de ocorrência
-               //Verificação do espaço
+       
             if( $type_process_map->create_event || $type_process_map->edit_ocurrence){
                $collum_spa = 'id';
                if (!is_numeric($value['SPACE'])) {
@@ -549,6 +581,7 @@ class Controller extends \MapasCulturais\Controller
                if($ocurrence && $file && $metalist){
                   $countNewEvent++;
                   $eventsIdList[$event->id] = $event->id;
+                  $this->ApplySeal($event,$value);
                   $app->em->commit();
                }else{
                   $error_process = true;
@@ -658,7 +691,7 @@ class Controller extends \MapasCulturais\Controller
          if($languages){
             $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
             foreach(array_filter($languages) as $language){
-               $_lang = mb_strtolower($language);
+               $_lang = $this->lowerStr($language);
                $_languages[] = $languages_list[$_lang];
             }
          }
@@ -704,7 +737,7 @@ class Controller extends \MapasCulturais\Controller
 
          $moduleConfig = $app->modules['EventImporter']->config;
    
-         $freq = mb_strtolower($value['FREQUENCY']);
+         $freq = $this->lowerStr($value['FREQUENCY']);
          $ocurrence = new EventOccurrence();    
    
          $duration = function() use ($value){
@@ -729,7 +762,7 @@ class Controller extends \MapasCulturais\Controller
             "description" => "",
          ];
         
-         switch (mb_strtolower($value['FREQUENCY'])) {
+         switch ($this->lowerStr($value['FREQUENCY'])) {
             case i::__('diariamente'):
             case i::__('todos os dias'):
             case i::__('diario'):
@@ -941,28 +974,29 @@ class Controller extends \MapasCulturais\Controller
          $basename = basename($_file);
          $file_data = str_replace($basename, urlencode($basename), $_file);
 
-         $ch = curl_init($file_data);
+         $curl = new Curl;
+         $curl->get($file_data);
+         $curl->close();
+         $response = $curl->response;
+
          $tmp = tempnam("/tmp", "");
          $handle = fopen($tmp, "wb");
-      
-         if (!$this->urlFileExists($_file)) {
-            fclose($handle);
-            unlink($tmp);
-            return false;
-         }
-   
-         curl_setopt($ch, CURLOPT_FILE, $handle);
 
-         if (!curl_exec($ch)) {
+         if(mb_strpos($response, 'html')){
             fclose($handle);
             unlink($tmp);
             return false;
          }
 
-         curl_close($ch);
-         $sz = ftell($handle);
+         if(!$this->urlFileExists($_file)){
+            fclose($handle);
+            unlink($tmp);
+            return false;
+         }
+
+         fwrite($handle,$response);
          fclose($handle);
-
+         
          $class_name = $owner->fileClassName;
 
          $file = new $class_name([
@@ -981,6 +1015,47 @@ class Controller extends \MapasCulturais\Controller
       } catch (\Throwable $th) {
          return false;
       }
+   }
+
+   public function checkRemoteFile($value, $key)
+   {
+      
+      $check = function($file){
+         $error = false;
+         $basename = basename($file);
+         $file_data = str_replace($basename, urlencode($basename), $file);
+
+         $curl = new Curl;
+         $curl->get($file_data);
+         $curl->close();
+         $response = $curl->response;
+
+         if (mb_strpos($response, 'html')) {
+            $error = true;
+         }
+
+         return $error;
+      };
+
+      $error = [];
+      $alloweds_type = ['AVATAR', 'HEADER', 'GALLERY'];
+      foreach($alloweds_type as $type){
+         if($matches = $this->matches($value[$type])){
+            foreach($matches as $matche){
+               $exp = explode(":", $matche);
+
+               if($check($exp[0])){
+                  $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$exp[0]}");
+               }
+            }
+         }else{
+            if($check($value[$type])){
+               $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$value[$type]}");
+            }
+         }
+      }
+
+      return $error;
    }
 
    public function createMetalists(Entity $owner, $value)
@@ -1006,7 +1081,7 @@ class Controller extends \MapasCulturais\Controller
 
                $metaList = new MetaList();
                $metaList->owner = $owner;
-               $group = (strpos($url, 'youtube') > 0 || strpos($url, 'youtu.be') > 0 || strpos($url, 'vimeo') > 0) ? 'videos' : 'links';
+               $group = mb_strtolower($metalist);
                $metaList->group = $group;
                $metaList->title = $title ?? "" ;
                $metaList->value = $url ?? "";
@@ -1077,6 +1152,11 @@ class Controller extends \MapasCulturais\Controller
       } else {
          return $objDate;
       }
+   }
+
+   public function lowerStr($value)
+   {
+      return $value ? trim(mb_strtolower($value)) : "";
    }
 
    public function dispatch($file_name, $path)
