@@ -42,7 +42,7 @@ $this->import('
             </div>
             <div class="panel-home__header--user-button">
                 <?php $this->applyTemplateHook('header-user-button', 'before') ?>
-                <button class="button button--primary button--icon"> <mc-icon name="agent-1"></mc-icon> <?= i::_e('Acessar meu perfil') ?> </button>
+                <a href="<?= $app->user->profile->singleUrl ?>" class="button button--primary button--icon"> <mc-icon name="agent-1"></mc-icon> <?= i::_e('Acessar meu perfil') ?> </a>
                 <?php $this->applyTemplateHook('header-user-button', 'after') ?>
             </div>
             <?php $this->applyTemplateHook('header-user', 'end') ?>
