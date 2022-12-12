@@ -4,6 +4,7 @@ namespace EventImporter;
 
 use DateTime;
 use stdClass;
+use Curl\Curl;
 use Exception;
 use MapasCulturais\i;
 use DateTimeImmutable;
@@ -968,28 +969,29 @@ class Controller extends \MapasCulturais\Controller
          $basename = basename($_file);
          $file_data = str_replace($basename, urlencode($basename), $_file);
 
-         $ch = curl_init($file_data);
+         $curl = new Curl;
+         $curl->get($file_data);
+         $curl->close();
+         $response = $curl->response;
+
          $tmp = tempnam("/tmp", "");
          $handle = fopen($tmp, "wb");
-      
-         if (!$this->urlFileExists($_file)) {
-            fclose($handle);
-            unlink($tmp);
-            return false;
-         }
-   
-         curl_setopt($ch, CURLOPT_FILE, $handle);
 
-         if (!curl_exec($ch)) {
+         if(mb_strpos($response, 'html')){
             fclose($handle);
             unlink($tmp);
             return false;
          }
 
-         curl_close($ch);
-         $sz = ftell($handle);
+         if(!$this->urlFileExists($_file)){
+            fclose($handle);
+            unlink($tmp);
+            return false;
+         }
+
+         fwrite($handle,$response);
          fclose($handle);
-
+         
          $class_name = $owner->fileClassName;
 
          $file = new $class_name([
