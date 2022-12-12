@@ -32,7 +32,7 @@ class Module extends \MapasCulturais\Module
             //eval(\psy\sh());
             $group['admin']['items'][] = [
                 'route' => 'panel/seals',
-                'icon' => 'loading',
+                'icon' => 'seal',
                 'label' => i::__('Gestão de Selos'),
                 'condition' => function() use($app) {
                     return $app->user->is('admin');
