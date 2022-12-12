@@ -1075,10 +1075,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.data.fieldsRequiredLabel = labels['requiredLabel'];
     $scope.data.fieldsOptionalLabel = labels['optionalLabel'];
 
-    
-
     $scope.data.fields.forEach(function(field) {
         var val = $scope.entity[field.fieldName];
+
+        if(field.fieldType === "agent-owner-field") {
+            var definition = MapasCulturais.EntitiesDescription.agent[field.config.entityField];
+            if(definition?.type == "multiselect" && typeof val == "string"){
+                val = val.split(";");
+            }
+        }
 
         field.unchangedFieldJSON = JSON.stringify(val);        
 
@@ -1099,6 +1104,14 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         id: MapasCulturais.registration.id
     };
     $scope.saveField = function (field, value, delay) {
+        
+        if(field.fieldType === "agent-owner-field") {
+            var definition = MapasCulturais.EntitiesDescription.agent[field.config.entityField];
+            if(definition?.type == "multiselect"){
+                value = value.join(";");
+            }
+        }
+
 
         delete field.error;
 
