@@ -1035,7 +1035,7 @@ class Controller extends \MapasCulturais\Controller
 
                $metaList = new MetaList();
                $metaList->owner = $owner;
-               $group = (strpos($url, 'youtube') > 0 || strpos($url, 'youtu.be') > 0 || strpos($url, 'vimeo') > 0) ? 'videos' : 'links';
+               $group = mb_strtolower($metalist);
                $metaList->group = $group;
                $metaList->title = $title ?? "" ;
                $metaList->value = $url ?? "";
