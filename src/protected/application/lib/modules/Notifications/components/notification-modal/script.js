@@ -1,10 +1,10 @@
-app.component('view-notification' , {
-    template: $TEMPLATES['view-notification'],
+app.component('notification-modal' , {
+    template: $TEMPLATES['notification-modal'],
     emits: ['create'],
 
-    setup() { 
-        // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('view-notification')
+    setup() {
+        // os textos estão localizados no arquivo texts.php deste componente
+        const text = Utils.getTexts('notification-modal')
         return { text }
     },
     
