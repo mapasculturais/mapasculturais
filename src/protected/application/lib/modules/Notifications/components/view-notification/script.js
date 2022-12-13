@@ -9,12 +9,16 @@ app.component('view-notification' , {
     },
     
     created() {
+        globalThis.addEventListener('afterFetch', (e) => {
+            this.notificationsCount = e.detail.headers.get('MC-notifications-count');
+        });
     },
 
     data() {
         return {
             entity: null,
             fields: [],
+            notificationsCount: $MAPAS.notificationsCount || 0
         }
     },
 
@@ -30,9 +34,6 @@ app.component('view-notification' , {
         entities(){
             const api = new API('notification','default');
             return api.lists.fetch('notification-list','default')
-        },
-        totalNotification () {
-            return this.entities?.metadata.count || 0
         }
     },
     

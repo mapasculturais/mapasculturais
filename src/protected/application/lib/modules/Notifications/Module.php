@@ -1,6 +1,7 @@
 <?php 
 namespace Notifications;
 
+use MapasCulturais\ApiQuery;
 use MapasCulturais\App,
     MapasCulturais\i,
     MapasCulturais\Entities,
@@ -32,6 +33,17 @@ class Module extends \MapasCulturais\Module{
          $app = App::i();
          $module = $this;
          /* === NOTIFICATIONS  === */
+
+        // adiciona a contagem de notificações no header e no jsObject
+        $app->hook('mapasculturais.run:before', function () use($app) {
+            if($app->user->is('guest')) {
+                return;
+            }
+            $query = new ApiQuery(Notification::class, ['user'=> "EQ({$app->user->id})"]);
+            $count = $query->count();
+            $app->view->jsObject['notificationsCount'] = $count;
+            header('MC-notifications-count: ' . $count);
+        });
 
         // adiciona icone de notificacao no main header
         $app->hook('template(<<*>>.mc-header-menu):after', function() {

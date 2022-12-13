@@ -15,7 +15,7 @@
                 <h1>Notificações</h1>
             </div>
             <div class="col-6">
-                Você tem <span class="notification--badge">{{ totalNotification }}</span> notificação
+                Você tem <span class="notification--badge">{{ notificationsCount }}</span> notificação
             </div>
             <div class="col-6" style="text-align: right">
                 Marcar todas como lidas
@@ -41,7 +41,7 @@
                         <mc-icon width="18" name='notification'></mc-icon>
                     </div>
                     <div class="notification_header--badge">
-                        <span>{{ totalNotification }}</span>
+                        <span>{{ notificationsCount }}</span>
                     </div>
                 </a>
             </div>
