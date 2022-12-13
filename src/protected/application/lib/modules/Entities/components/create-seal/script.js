@@ -12,7 +12,7 @@ app.component('create-seal' , {
         requirePeriod: {
             handler(item) {
                 if(item) {
-                    this.entity.validPeriod = 1;
+                    this.entity.validPeriod = null;
                 } else {
                     this.entity.validPeriod = 0;
                 }
@@ -33,10 +33,7 @@ app.component('create-seal' , {
     },
 
     props: {
-        editable: {
-            type: Boolean,
-            default:true
-        },
+
     },
 
     computed: {
