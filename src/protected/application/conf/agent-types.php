@@ -40,14 +40,15 @@ return array(
         ),
 
         'pessoaDeficiente' => array(
-            'label' => 'Atendimento em outros idiomas',
-                'multiselect',
-                'options' => [
-                    'Visual',
-                    'Mental',
-                    'Física',
-                    'Auditiva',
-                ]
+            'label' => 'Pessoa com deficiência',
+            'type' => 'multiselect',
+            'options' => [
+                'Visual',
+                'Mental',
+                'Física',
+                'Auditiva',
+            ],
+            'available_for_opportunities' => true
         ),
 
         'comunidadesTradicional' => array(
@@ -79,13 +80,18 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF ou CNPJ'),
             'serialize' => function($value, $entity = null){
-                $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
-                    if($entity->type && $entity->type->id == 1){
-                        $entity->cpf = $value;
-                    }else if($entity->type && $entity->type->id == 2){
-                        $entity->cnpj = $value;
-                    }
-               });
+                /**@var MapasCulturais\App $this */
+                $key = "hook:documento:{$entity}";
+                if(!$this->rcache->contains($key)){
+                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
+                        if($entity->type && $entity->type->id == 1){
+                            $entity->cpf = $value;
+                        }else if($entity->type && $entity->type->id == 2){
+                            $entity->cnpj = $value;
+                        }
+                   });
+                   $this->rcache->save($key, 1);
+                }
 
                 return $value;
             },
@@ -99,11 +105,16 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CNPJ'),
             'serialize' => function($value, $entity = null){
-                $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
-                    if($entity->type && $entity->type->id == 2){
-                        $entity->documento = $value;
-                    }
-                });
+                /**@var MapasCulturais\App $this */
+                $key = "hook:cnpj:{$entity}";
+                if(!$this->rcache->contains($key)){
+                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
+                        if($entity->type && $entity->type->id == 2){
+                            $entity->documento = $value;
+                        }
+                    });
+                    $this->rcache->save($key, 1);
+                }
 
                 return $value;
             },
@@ -116,11 +127,16 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF'),
             'serialize' => function($value, $entity = null){
-                $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
-                    if($entity->type && $entity->type->id == 1){
-                        $entity->documento = $value;
-                    }
-                });
+                $key = "hook:cpf:{$entity}";
+                if(!$this->rcache->contains($key)){
+                    /**@var MapasCulturais\App $this */
+                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
+                        if($entity->type && $entity->type->id == 1){
+                            $entity->documento = $value;
+                        }
+                    });
+                    $this->rcache->save($key, 1);
+                }
 
                 return $value;
             },
@@ -156,7 +172,7 @@ return array(
                         $this->idoso = 1; 
                     }
                });
-               return $value;
+               return (new DateTime($value))->format("Y-m-d");
             },
             'validations' => array(
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
