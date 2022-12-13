@@ -4,15 +4,15 @@ use MapasCulturais\App;
 $app = App::i();
 
 $this->import('
-    view-notification
+    notification-modal
 ');
 
 ?>
 
 <?php $this->applyTemplateHook('header-notification', 'before') ?>
 <?php if (!$app->user->is('guest')): ?>
-    <view-notification #default="{modal}">
+    <notification-modal #default="{modal}">
         <a @click="modal.open">Notificações</a>
-    </view-notification>
+    </notification-modal>
 <?php endif; ?>
 <?php $this->applyTemplateHook('header-notification', 'after') ?>
