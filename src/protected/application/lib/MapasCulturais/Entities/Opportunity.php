@@ -646,8 +646,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newField->title = $field->title;
                 $newField->description = $field->description;
                 $newField->maxSize = $field->maxSize;
-                $newField->mask = $field->mask;
-                $newField->maskOptions = $field->maskOptions;
                 $newField->fieldType = $field->fieldType;
                 $newField->required = $field->required;
                 $newField->categories = $field->categories;
