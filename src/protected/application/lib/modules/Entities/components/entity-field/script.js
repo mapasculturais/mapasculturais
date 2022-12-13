@@ -29,7 +29,12 @@ app.component('entity-field', {
                 value = [value];
             }
         }
-        
+
+        // if ((description.type === 'smallint' || description.type === 'integer' || description.type === 'number') && !(value instanceof Number)) {
+        //     description.min = this.props.min;
+        //     description.max = this.props.max;
+        // }
+
         return {
             __timeout: null,
             description: description,
@@ -70,6 +75,14 @@ app.component('entity-field', {
         classes: {
             type: [String, Array, Object],
             required: false
+        },
+        min: {
+            type: Number,
+            default: 0
+        },
+        max: {
+            type: Number,
+            default: 0
         }
     },
 

@@ -8,6 +8,18 @@ app.component('create-seal' , {
         return { text }
     },
 
+    watch: {
+        requirePeriod: {
+            handler(item) {
+                if(item) {
+                    this.entity.validPeriod = 1;
+                } else {
+                    this.entity.validPeriod = 0;
+                }
+            }
+        }
+    },
+
     created() {
         this.iterationFields()
     },
@@ -16,6 +28,7 @@ app.component('create-seal' , {
         return {
             entity: null,
             fields: [],
+            requirePeriod: null,
         }
     },
 
@@ -29,7 +42,7 @@ app.component('create-seal' , {
     computed: {
         modalTitle() {
             if(this.entity?.id){
-                if(this.entity.status==1){
+                if(this.entity.status == 1){
                     return  __('seloCriado', 'create-seal');
                 }else {
                     return  __('criarRascunho', 'create-seal');
@@ -48,6 +61,7 @@ app.component('create-seal' , {
                 'id',
                 'name',
                 'shortDescription',
+                'validPeriod',
                 'status',
                 '_ownerId',
             ];
@@ -60,6 +74,7 @@ app.component('create-seal' , {
         createEntity() {
             this.entity = Vue.ref(new Entity('seal'));
             this.entity.type = 1;
+            this.entity.validPeriod = 0;
             // this.entity.terms = {area: []}
         },
         createDraft(modal) {
