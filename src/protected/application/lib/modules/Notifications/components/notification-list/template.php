@@ -23,19 +23,19 @@ $this->import('
                     <div class="grid-12" v-if="entity.user === currentUserId">
                         <div class="col-2">
                             <button class="button button--primary-outline" @click="cancel(entity)">
-                                Cancelar
+                                <?php i::esc_attr_e('Cancelar') ?>
                             </button>
                         </div>
                     </div>
                     <div class="grid-12" v-else>
                         <div class="col-2">
                             <button class="button button--primary-outline" @click="reject(entity)">
-                                Rejeitar
+                                <?php i::esc_attr_e('Rejeitar') ?>
                             </button>
                         </div>
                         <div class="col-2">
                             <button class="button button--primary" @click="approve(entity)">
-                                Aceitar
+                                <?php i::esc_attr_e('Aceitar') ?>
                             </button>
                         </div>
                     </div>
