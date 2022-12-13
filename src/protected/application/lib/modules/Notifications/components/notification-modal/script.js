@@ -18,7 +18,8 @@ app.component('notification-modal' , {
         return {
             entity: null,
             fields: [],
-            notificationsCount: $MAPAS.notificationsCount || 0
+            notificationsCount: $MAPAS.notificationsCount || 0,
+            modalTitle: 'Notificações'
         }
     },
 
