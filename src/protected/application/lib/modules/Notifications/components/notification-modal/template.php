@@ -14,8 +14,11 @@
             <div class="col-12">
                 <h1>Notificações</h1>
             </div>
-            <div class="col-6">
+            <div class="col-6" v-if="notificationsCount > 0">
                 Você tem <span class="notification--badge">{{ notificationsCount }}</span> notificação
+            </div>
+            <div v-else class="col-6">
+                Você não possui nenhuma notificação
             </div>
             <div class="col-6" style="text-align: right">
                 Marcar todas como lidas
@@ -25,7 +28,7 @@
             <div class="col-12">
                 <notification-list></notification-list>
             </div>
-            <div class="col-12">
+            <div class="col-12" v-if="notificationsCount > 0">
                 <p style="text-align: center">Ver todas as notificações</p>
             </div>
         </div>
@@ -40,7 +43,7 @@
                     <div>
                         <mc-icon width="18" name='notification'></mc-icon>
                     </div>
-                    <div class="notification_header--badge">
+                    <div v-if="notificationsCount > 0" class="notification_header--badge">
                         <span>{{ notificationsCount }}</span>
                     </div>
                 </a>
