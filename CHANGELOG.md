@@ -4,6 +4,26 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.38] - 2022-11-30
+### Correções
+- Corrige verificação de criação das taxnomias
+## [5.3.37] - 2022-11-18
+### Correções
+- corrige definição de valor default para os metadados
+
+## [5.3.36] - 2022-11-16
+### Correções
+- typo no módulo Notifications 
+
+## [5.3.35] - 2022-11-16
+### Correções
+- Corrige erro ao gerar thumbnails do avatar
+## [5.3.34] - 2022-11-10
+### Correções
+- Corrige erro ao enviar inscrições
+## [5.3.33] - 2022-11-10
+- ### Correções
+- Corrige problema de não salvar a inscrição quando existe campos obrigatórios não preenchidos na ficha
 ## [5.3.32] - 2022-10-21
 - ### Melhorias
 - Cria módulo para importação de eventos atrvéz de planilha CSV

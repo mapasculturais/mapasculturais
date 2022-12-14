@@ -78,7 +78,7 @@ class Taxonomy extends \MapasCulturais\Definition{
         $this->required = $taxonomy_required;
         if(is_array($restrictedTerms))
             foreach($restrictedTerms as $term)
-                $this->restrictedTerms[strtolower (trim($term))] = trim($term);
+                $this->restrictedTerms[mb_strtolower (trim($term))] = trim($term);
         $this->description = $description;
     }
 }

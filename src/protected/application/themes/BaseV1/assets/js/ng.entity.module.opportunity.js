@@ -123,7 +123,7 @@
                     }
                 });
                 
-                return $http.patch(this.getUrl('single', entity.id), data).
+                return $http.patch(this.getUrl('single', entity.id), data, {headers: {forceSave: true}}).
                     success(function(data, status){
                         MapasCulturais.Messages.success(labels['changesSaved']);
                         $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
