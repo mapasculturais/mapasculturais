@@ -3,6 +3,16 @@ app.component('create-occurrence', {
     emits: ['create'],
 
     setup() {
+        $DESCRIPTIONS.eventOccurrence.day = 
+        {
+            "isMetadata": false,
+            "isEntityRelation": false,
+            "required": false,
+            "type": "text",
+            "length": null,
+            "label": ""
+        }
+
         const text = Utils.getTexts('create-occurrence');
         return {
             text
@@ -10,136 +20,144 @@ app.component('create-occurrence', {
     },
 
     data() {
-        var actualDate = new Date();
         return {
             locale: $MAPAS.config.locale,
-            entity: null,
-            space: null,
-            errors: null,
             step: 0,
-            autoDescription: '',
             free: false,
+            space: null,
+            newOccurrence: null,
             frequency: 'once',
-            eventId: 0,
-            spaceId: 0,
-            startsAt: {
-                hours: new Date().getHours(),
-                minutes: new Date().getMinutes()
-            },
-            endsAt: {
-                hours: new Date().getHours(),
-                minutes: new Date().getMinutes()
-            },
+            startsOn: null,
+            startsAt: null,
+            endsAt: null,
+            duration: 0,            
             dateRange: null,
-            duration: 0,
-            startsOn: actualDate.getFullYear() + '-' + (actualDate.getMonth() + 1 < 10 ? '0' + (actualDate.getMonth() + 1) : actualDate.getMonth() + 1) + '-' + actualDate.getDate(),
-            until: 0,
-            description: '',
-            price: 0,
-            day: [false, false, false, false, false, false, false],
+            days: {},
+            until: null,
+            description: null,
+            price: null,
+            priceInfo: null
         }
     },
 
     props: {
+        entity: {
+            type: Entity,
+            required: true
+        }
+    },
+
+    created() {
+        this.newOccurrence = new Entity('eventOccurrence');
     },
 
     computed: {
-
         updateDescription() {
 
-            if (this.dateRange) {
-                this.startsOn = this.dateRange[0].substr(0, 4) + '-' + this.dateRange[0].substr(5, 2) + '-' + this.dateRange[0].substr(8, 2)
-                this.until = this.dateRange[1].substr(0, 4) + '-' + this.dateRange[1].substr(5, 2) + '-' + this.dateRange[1].substr(8, 2)
-            }
+            if (this.dateRange || this.startsOn) {
+                if (this.dateRange) {
+                    let date1 = new McDate(this.dateRange[0]);
+                    let date2 = new McDate(this.dateRange[1]);
+                    this.startsOn = date1.year() + '-' + date1.month('2-digit') + '-' + date1.day('2-digit');
+                    this.until = date2.year() + '-' + date2.month('2-digit') + '-' + date2.day('2-digit');
 
-            var description = '';
-            var months = __('meses', 'create-occurrence');
-            var days = __('dias', 'create-occurrence');
-
-            var weekDays = [];
-            this.day.forEach(function (status, index) {
-                if (status) {
-                    weekDays.push(index);
-                }
-            });
-
-            var startData = new Date(this.startsOn + 'T00:00');
-            var startDay = startData.getDate();
-            var startMonth = (startData.getMonth() + 1);
-            var startYear = startData.getFullYear();
-
-            var endData = new Date(this.until + 'T00:00');
-            var endDay = endData.getDate();
-            var endMonth = (endData.getMonth() + 1);
-            var endYear = endData.getFullYear();
-
-            /* Tradução pelo texts.php */
-            if (this.frequency == 'once') {
-                description += __('uma vez', 'create-occurrence');
-            } else {
-                if (this.frequency == 'daily') {
-                    description += __('diariamente', 'create-occurrence');
-                } else if (this.frequency == 'weekly') {
-                    if (weekDays[0] == '0' || weekDays[0] == '6') {
-                        description += __('semanal 1', 'create-occurrence');
-                    } else {
-                        description += __('semanal 2', 'create-occurrence');
-                    }
-
-                    var count = 1;
-                    weekDays.forEach(function (day, index) {
-                        description += days[day];
-                        count++;
-                        if (count == weekDays.length)
-                            description += __('e', 'create-occurrence');
-                        else if (count < weekDays.length)
-                            description += ', ';
-                    });
-                }
-
-                if (startYear != endYear) {
-                    description += __('anos diferentes', 'create-occurrence');
+                    var startData = new McDate(this.startsOn);
+                    var endData = new McDate(this.until);
                 } else {
-                    if (startMonth != endMonth) {
-                        description += __('meses diferentes', 'create-occurrence');
-                    } else {
-                        description += __('meses iguais', 'create-occurrence');
+                    var startData = new McDate(this.startsOn);
+                }
+
+                let description = '';
+                let monthsName = __('meses', 'create-occurrence');
+                let daysName = __('dias', 'create-occurrence');
+
+                let weekDays = [];                
+                daysName.forEach(function (status, index) {
+                    if (status) {
+                        weekDays.push(index);
+                    }
+                });
+
+
+                switch (this.frequency) {
+                    case 'once':
+                        description += __('uma vez', 'create-occurrence');
+                        break;
+                    case 'daily':
+                        description += __('diariamente', 'create-occurrence');
+                        break;
+                    case 'weekly':
+                        if (weekDays[0] == '0' || weekDays[0] == '6') {
+                            description += __('todo', 'create-occurrence');
+                        } else {
+                            description += __('toda', 'create-occurrence');
+                        }
+                        let count = 1;
+
+                        if (Object.values(this.days).filter(Boolean).length > 0) {
+                            weekDays.forEach(function (day, index) {
+                                description += daysName[day];
+                                count++;
+                                if (count == weekDays.length)
+                                    description += __('e', 'create-occurrence');
+                                else if (count < weekDays.length)
+                                    description += ', ';
+                            });
+                        }
+                        break;
+                }
+
+                if (this.frequency !== 'once') {
+                    if (startData && endData) {
+                        if (startData.year() != endData.year()) {
+                            description += __('anos diferentes', 'create-occurrence');
+                        } else {
+                            if (startData.month('numeric') != endData.month('numeric')) {
+                                description += __('meses diferentes', 'create-occurrence');
+                            } else {
+                                description += __('meses iguais', 'create-occurrence');
+                            }
+                        }
                     }
                 }
+
+                if (startData) {
+                    description = description.replace("{dia}", startData.day('2-digit'));
+                    description = description.replace("{mes}", monthsName[startData.month('numeric')-1]);
+                    description = description.replace("{ano}", startData.year());                    
+                    if (endData) {
+                        description = description.replace("{diaIni}", startData.day('2-digit'));
+                        description = description.replace("{mesIni}", monthsName[startData.month('numeric')-1]);
+                        description = description.replace("{anoIni}", startData.year());
+                    }
+                }
+
+                if (endData) {
+                    description = description.replace("{diaFim}", endData.day('2-digit'));
+                    description = description.replace("{mesFim}", monthsName[endData.month('numeric')-1]);
+                    description = description.replace("{anoFim}", endData.year());
+                }
+
+                if (this.startsAt && this.endsAt) {
+                    description += __('das', 'create-occurrence') + String(this.startsAt.hours).padStart(2, '0') + ':' + String(this.startsAt.minutes).padStart(2, '0');
+                    description += __('às', 'create-occurrence') + String(this.endsAt.hours).padStart(2, '0') + ':' + String(this.endsAt.minutes).padStart(2, '0');
+                } else if (this.startsAt) {
+                    if (this.startsAt.hours == '0' || this.startsAt.hours == '1')
+                        description += __('à', 'create-occurrence') + String(this.startsAt.hours).padStart(2, '0') + ':' + String(this.startsAt.minutes).padStart(2, '0');
+                    else
+                        description += __('às', 'create-occurrence') + String(this.startsAt.hours).padStart(2, '0') + ':' + String(this.startsAt.minutes).padStart(2, '0');
+                }
+
+                this.description = description;
+                return description;                
             }
-
-            description = description.replace("{dia}", startDay);
-            description = description.replace("{mes}", months[startMonth]);
-            description = description.replace("{ano}", startYear);
-            description = description.replace("{diaIni}", startDay);
-            description = description.replace("{mesIni}", months[startMonth]);
-            description = description.replace("{anoIni}", startYear);
-            description = description.replace("{diaFim}", endDay);
-            description = description.replace("{mesFim}", months[endMonth]);
-            description = description.replace("{anoFim}", endYear);
-
-            if (this.startsAt) {
-                if (this.startsAt.hours == '1')
-                    description += __('à', 'create-occurrence') + this.startsAt.hours + ':' + this.startsAt.minutes;
-                else
-                    description += __('às', 'create-occurrence') + this.startsAt.hours + ':' + this.startsAt.minutes;
-            }
-
-            this.autoDescription = description;
         }
     },
 
     methods: {
-
-        cancel(modal) {
-            modal.close();
-        },
-
-        // Navegação mobile
+        // Navegação - mobile
         next() {
             if (this.step < 5) {
-                if (this.step == 4)
-                    this.updateDescription();
                 ++this.step
             }
         },
@@ -158,47 +176,86 @@ app.component('create-occurrence', {
         },
 
         // Máscara monetária 
-        mascaraMoeda (event) {            
-            const intNum = event.target.value.split("").filter(s => /\d/.test(s)).join("").padStart(3, "0");
-            const floatNum = intNum.slice(0, -2) + "." + intNum.slice(-2);
-            event.target.value = this.FormataValor(floatNum);
+        moneyMask(valor, locale = 'pt-BR', currency = 'BRL') {
+            return new Intl.NumberFormat(locale, {style: 'currency', currency: currency}).format(valor);
         },
-        FormataValor(valor, locale = 'pt-BR', currency = 'BRL') {
-            return new Intl.NumberFormat(locale, {style: 'currency', currency}).format(valor);
+        priceMask() {            
+            let intNum = this.price.split("").filter(s => /\d/.test(s)).join("").padStart(3, "0");
+            let floatNum = intNum.slice(0, -2) + "." + intNum.slice(-2);
+            this.price = this.moneyMask(floatNum);
         },
 
-        create() {
+        // Criação da ocorrência
+        create(modal) {
+            this.newOccurrence['eventId'] = this.entity.id;
+            this.newOccurrence['spaceId'] = this.space ? this.space.id : '';
 
-            /*  new entity
-                popular entidade
-                Verificar erros
-                Emitir o evento 'create' em caso de sucesso
-                entity save 
-                Popular o this.errors em caso de fracasso
-            */
+            if (this.frequency) {
+                this.newOccurrence['frequency'] = this.frequency;
 
-            this.entity = new Entity('eventOccurrence');
+                switch (this.frequency) {
+                    case 'once':
+                        if (this.startsOn) {
+                            let startsOn = new McDate(this.startsOn);
+                            console.log(startsOn);
+                            this.newOccurrence['startsOn'] = startsOn.year() +'-'+ (startsOn.month('2-digit')) +'-'+ startsOn.day('2-digit');
+                        }
+                        break;
 
-            /*
-            this.entity.count           =
-            this.entity.event           =
-            this.entity.eventId         =
-            this.entity.frequency       =
-            this.entity.id              =
-            this.entity.rule            =
-            this.entity.separation      =
-            this.entity.space           =
-            this.entity.spaceId         =
-            this.entity.status          =
-            this.entity.timezoneName    =   
-            this.entity._endsAt         =
-            this.entity._endsOn         =
-            this.entity._startsAt       =
-            this.entity._startsOn       =
-            this.entity._until          =
-            */
+                    case 'weekly':
+                        if (Object.values(this.days).filter(Boolean).length > 0) {
+                            this.newOccurrence['day'] = this.days;
+                        }
+                        if (this.dateRange) {
+                            console.log(this.dateRange);
+                            let startsOn = new McDate(this.dateRange['0']);
+                            let endsOn = new McDate(this.dateRange['1']);
+                            this.newOccurrence['startsOn'] = startsOn.year() +'-'+ startsOn.month('2-digit') +'-'+ startsOn.day('2-digit');
+                            this.newOccurrence['endsOn'] = endsOn.year() +'-'+ endsOn.month('2-digit') +'-'+ endsOn.day('2-digit');
+                            this.newOccurrence['until'] = endsOn.year() +'-'+ endsOn.month('2-digit') +'-'+ endsOn.day('2-digit');
+                        } 
+                        break;
 
+                    case 'daily':
+                        if (this.dateRange) {
+                            console.log(this.dateRange);
+                            let startsOn = new McDate(this.dateRange['0']);
+                            let endsOn = new McDate(this.dateRange['1']);
+                            this.newOccurrence['startsOn'] = startsOn.year() +'-'+ startsOn.month('2-digit') +'-'+ startsOn.day('2-digit');
+                            this.newOccurrence['until'] = endsOn.year() +'-'+ endsOn.month('2-digit') +'-'+ endsOn.day('2-digit');
+                        }
+                        break;
+                }
+            }
+
+            if (this.startsAt) {
+                this.newOccurrence['startsAt'] = String(this.startsAt.hours).padStart(2, "0") +':'+ String(this.startsAt.minutes).padStart(2, "0");
+            }
+
+            if (this.endsAt) {
+                this.newOccurrence['endsAt'] = String(this.endsAt.hours).padStart(2, "0") +':'+ String(this.endsAt.minutes).padStart(2, "0");
+            }      
+
+            this.newOccurrence['description'] = this.description ?? '';
+            this.newOccurrence['price'] = this.price ?? 0;
+            this.newOccurrence['priceInfo'] = this.priceInfo ?? '';
+            
+            this.newOccurrence.save().then(
+                modal.close()
+            );
+        },
+
+        cancel(modal) {
+            modal.close();
+        },
+
+        copyDescription() {
+            let description = document.querySelector(".theDescription");
+            if (description) {
+                navigator.clipboard.writeText(description.innerHTML);
+                document.querySelector("input[name='description']").value = description.innerHTML;
+                document.querySelector("input[name='description']").focus();
+            }
         }
-
     },
 });
