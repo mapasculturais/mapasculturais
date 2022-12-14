@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var MapasCulturais\Themes\BaseV2 $this
+ * @var MapasCulturais\App $app
+ */
 use MapasCulturais\i;
 $this->import('
     panel--nav
@@ -6,8 +10,9 @@ $this->import('
     theme-logo
 ');
 ?>
+<?php $this->applyTemplateHook('header-menu-user', 'before') ?>
 <div class="mc-header-menu-user">
-
+    <?php $this->applyTemplateHook('header-menu-user', 'begin') ?>
     <!-- Menu desktop -->
     <popover openside="down-left" class="mc-header-menu-user__desktop">
 
@@ -30,22 +35,29 @@ $this->import('
         </template>
 
         <template #default="popover">
+            <?php $this->applyTemplateHook('header-menu-user--desktop', 'before') ?>
             <panel--nav classes="user-menu">
                 <template #begin>
+                    <?php $this->applyTemplateHook('header-menu-user--desktop', 'begin') ?>
                     <ul>
                         <li><mc-link :entity='profile' icon><?= i::__('Meu Perfil') ?></mc-link></li>
                         <li><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li>
                     </ul>
                     <h3><?= i::__('Menu do Painel de controle') ?></h3>
                 </template>
+
+                <template #end>
+                    <?php $this->applyTemplateHook('header-menu-user--desktop', 'end') ?>
+                </template>
             </panel--nav>
+            <?php $this->applyTemplateHook('header-menu-user--desktop', 'after') ?>
         </template>
 
     </popover>
 
     <!-- Menu mobile -->
     <div class="mc-header-menu-user__mobile">
-
+        
         <div class="mc-header-menu-user__mobile--button">            
             <a href="#main-app" class="mc-header-menu-user__user" @click="toggleMobile()">
                 <div class="mc-header-menu-user__user--name">
@@ -72,9 +84,18 @@ $this->import('
                     <mc-icon name="close"></mc-icon> 
                 </a>
             </div>
-
-            <panel--nav></panel--nav>
+            <?php $this->applyTemplateHook('header-menu-user--mobile', 'before') ?>
+            <panel--nav>
+                <template #begin>
+                    <?php $this->applyTemplateHook('header-menu-user--mobile', 'begin') ?>
+                </template>
+                <template #end>
+                    <?php $this->applyTemplateHook('header-menu-user--mobile', 'end') ?>
+                </template>
+            </panel--nav>
+            <?php $this->applyTemplateHook('header-menu-user--mobile', 'after') ?>
         </div>
     </div>
-    
+    <?php $this->applyTemplateHook('header-menu-user', 'end') ?>
 </div>
+<?php $this->applyTemplateHook('header-menu-user', 'after') ?>
