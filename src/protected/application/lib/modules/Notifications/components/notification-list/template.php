@@ -20,14 +20,26 @@ $this->import('
                 <div class="col-11">
                     <p class="notification_title" v-html='entity.message'></p>
                     <p class="notification_subtitle">{{ entity.createTimestamp.date('numeric year') }} - {{ entity.createTimestamp.time() }}</p>
-                    <div class="grid-12" v-if="entity.user === currentUserId">
+                    <div class="grid-12" v-if="!entity.request">
+                        <div class="col-2">
+                            <button class="button button--primary-outline" @click="delete(entity)">
+                                <?= i::__('Ok') ?>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="grid-12" v-else-if="entity.request?.requesterUser?.id === currentUserId">
                         <div class="col-2">
                             <button class="button button--primary-outline" @click="cancel(entity)">
                                 <?= i::__('Cancelar') ?>
                             </button>
                         </div>
+                        <div class="col-2">
+                            <button class="button button--primary-outline" @click="delete(entity)">
+                                <?= i::__('Ok') ?>
+                            </button>
+                        </div>
                     </div>
-                    <div class="grid-12" v-else>
+                    <div class="grid-12" v-else-if="entity.request?.requesterUser?.id !== currentUserId">
                         <div class="col-2">
                             <button class="button button--primary-outline" @click="reject(entity)">
                                 <?= i::__('Rejeitar') ?>
