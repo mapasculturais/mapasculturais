@@ -183,6 +183,12 @@ trait EntityTaxonomies{
         
         // if this entity uses this taxonomy
         if($definition = $app->getRegisteredTaxonomy($this, $taxonomy_slug)){
+
+              // if not allowed to insert terms, get the term in the way as defined in restrictedTerms
+            if(!$definition->allowInsert){
+                $term = $definition->restrictedTerms[mb_strtolower(trim($term))];
+            }
+
             $t = $app->repo('Term')->findOneBy(['taxonomy' => $definition->slug, 'term' => $term]);
             $tr = $app->repo($this->getTermRelationClassName())->findOneBy(['term' => $t, 'owner' => $this]);
 
@@ -200,11 +206,7 @@ trait EntityTaxonomies{
                 return true;
 
             // else if the term does not exists but the taxonomy definition allow insertion, create de term and the association
-            }elseif($definition->allowInsert || key_exists(strtolower(trim($term)), $definition->restrictedTerms) ){
-
-                // if not allowed to insert terms, get the term in the way as defined in restrictedTerms
-                if(!$definition->allowInsert)
-                    $term = $definition->restrictedTerms[strtolower(trim($term))];
+            }elseif($definition->allowInsert || key_exists(mb_strtolower(trim($term)), $definition->restrictedTerms) ){
 
                 $t = new \MapasCulturais\Entities\Term;
                 $t->term = $term;
