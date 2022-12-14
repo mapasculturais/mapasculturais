@@ -4,9 +4,9 @@ namespace EventImporter;
 
 use DateTime;
 use stdClass;
+use Curl\Curl;
 use Exception;
 use MapasCulturais\i;
-use DateTimeImmutable;
 use League\Csv\Reader;
 use League\Csv\Writer;
 use MapasCulturais\App;
@@ -247,9 +247,31 @@ class Controller extends \MapasCulturais\Controller
      return (object)$result;
 
    }
-   
+   public function ApplySeal($event,$value){
 
-   //Processa dados do arquivo
+      $app = App::i();
+      
+      if($value["SEAL_ID"]){
+         $app->disableAccessControl();
+         $relations = $event->getSealRelations();
+         $seal = $app->repo('Seal')->find($value["SEAL_ID"]);
+         
+         $has_seal = false;
+         foreach($relations as $relation){
+            if($relation->seal->id == $seal->id){
+               $has_seal = true;
+               break;
+            }
+         }
+         
+         if(!$has_seal){
+            $event->createSealRelation($seal);
+         }
+         $app->enableAccessControl();
+       
+      }
+   }
+
    public function processData($file_data, string $file_dir)
    {
       $app = App::i();
@@ -299,201 +321,227 @@ class Controller extends \MapasCulturais\Controller
          $errors[0][] = i::__("O arquivo esta vazio, verifique para continuar");
       }
      
+
+      $not_found = array_diff(array_keys($moduleConfig['header_default']), array_keys($data[1]));
+      if(!empty($not_found)){
+         $coll = [];
+         foreach($not_found as $collum){
+            $coll[] = mb_strtoupper($moduleConfig['header_default'][$collum][0]);
+         }
+         $_coll = implode(", ", $coll);
+         $errors[1][] = i::__("As colunas {$_coll} não foram encontradas na planilha");
+      }
+
       $clearOcurrenceList = [];
-      foreach ($data as $key => $value) {
+      if(empty($not_found)){
+         foreach ($data as $key => $value) {
 
-         if(empty(array_filter($value))){
-            continue;
-         }
-
-         $type_process_map = $this->typeProcessMap($value);
-
-         if(!empty($value['EVENT_ID']) && in_array($value['NAME'], $moduleConfig['clear_ocurrence_ref'])){
-            $clearOcurrenceList[] = $value['EVENT_ID'];
-            continue;
-         };
-        
-         $value['STARTS_AT'] = $this->formatDate($value['STARTS_AT'], "H:i");
-         $value['ENDS_AT'] = $this->formatDate($value['ENDS_AT'], "H:i");
-         $value['STARTS_ON'] = $this->formatDate($value['STARTS_ON'], "Y-m-d");
-         $value['ENDS_ON'] = $this->formatDate($value['ENDS_ON'], "Y-m-d");
-        
-         $hash = md5(implode(",", $value));
-         if(in_array($hash, $exampleHash)){
-            $errors[$key+1][] = i::__("Linha invalida. Os dados da linha são os dados do exemplo, apague a mesma para continuar");
-            break;
-         }
-
-         if(!empty($value['EVENT_ID'])){
-            if(!$conn->fetchAll("SELECT * FROM event WHERE status >= 1 AND id = '{$value['EVENT_ID']}'")) {
-               $errors[$key+1][] = i::__("O evento não está cadastrado");
-            }
-         }
-
-         if($type_process_map->create_event){
-            if(empty($value['NAME']) || $value['NAME'] == ''){
-               $errors[$key+1][] = i::__("A coluna nome está vazia");
+            if(empty(array_filter($value))){
+               continue;
             }
 
-            if(empty($value['SHORT_DESCRIPTION']) || $value['SHORT_DESCRIPTION'] == ''){
-               $errors[$key+1][] = i::__("A coluna descrição curta está vazia");
+            if($err = $this->checkRemoteFile($value, $key)){
+               $this->render("import-erros", ["errors" => $err, 'filename' => basename($file_dir)]);
+               exit;
             }
 
-            if(empty($value['CLASSIFICATION']) || $value['CLASSIFICATION'] == ''){
-               $errors[$key+1][] = i::__("A coluna classificação estária está vazia");
-            }
+            $type_process_map = $this->typeProcessMap($value);
 
-            if (!in_array($value['CLASSIFICATION'],$moduleConfig['rating_list_allowed'])) {
-               $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
-               $errors[$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são {$rating_str}");
-            }
-
-            //Validação das linguagens
-            $languages = explode(';', $value['LANGUAGE']);
-            if (!$languages) {
-               $errors[$key+1][] = i::__("A coluna linguagem está vazia");
-            }
-
-            //Tratamento da lista
-            $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
-
-            foreach ($languages as $language) {
-               $_language = mb_strtolower(trim($language));
-
-               if (!in_array(trim($_language), array_keys($languages_list))) {
-                  $errors[$key+1][] = i::__("A linguagem {$_language} não existe");
-               }
-            }
-
-            // Validação das tags
-            $tags = [];
-            if($value['TAGS']){
-               $tags = explode(';', $value['TAGS']);
-            }
- 
-            //Validação do projeto
-            if($value['PROJECT']){
-               $collum = $this->checkCollum($value['PROJECT']);
-               if(!$projects = $conn->fetchAll("SELECT * FROM project WHERE status >= 1 AND {$collum} = '{$value['PROJECT']}'")) {
-                  $errors[$key+1][] = i::__("O projeto não está cadastrado");
-               }
-      
-               if ($collum == 'name') {
-                  if (count($projects) > 1){
-                     $errors[$key+1][] = i::__("Existe mais de um projeto com o nome {$value['PROJECT']}. Para proseguir, informe o ID do projeto que quer associar ao evento");
-                  }
-               }
-            }
-
-            //Validação do agente responsavel 
-            if(!is_numeric($value['OWNER'])){
-               $errors[$key+1][] = i::__("A coluna proprietário espera o número ID do agente. ");
-            }else{
-               if(empty($value['OWNER']) || ($value['OWNER'] == "")){
-                  $errors[$key+1][] = i::__("A coluna agente é obrigatória. Informo o ID do agente responsável");
-               } else if(!$conn->fetchAll("SELECT * FROM agent WHERE status >= 1 AND id = {$value['OWNER']}")) {
-                  $errors[$key+1][] = i::__("O a gente não esta cadastrado");
-               }
-            }
-         }
+            if(!empty($value['EVENT_ID']) && in_array($value['NAME'], $moduleConfig['clear_ocurrence_ref'])){
+               $clearOcurrenceList[] = $value['EVENT_ID'];
+               continue;
+            };
          
-         //Caso exista espaço informado significa inserção de ocorrência
-            //Verificação do espaço
-         if( $type_process_map->create_event || $type_process_map->edit_ocurrence){
-            $collum_spa = 'id';
-            if (!is_numeric($value['SPACE'])) {
-               $collum_spa = 'name';
+            $hash = md5(implode(",", $value));
+            if(in_array($hash, $exampleHash)){
+               $errors[$key+1][] = i::__("Linha invalida. Os dados da linha são os dados do exemplo, apague a mesma para continuar");
+               break;
             }
+            
+            $value['STARTS_AT'] = $this->formatDate($value['STARTS_AT'], "H:i");
+            $value['ENDS_AT'] = $this->formatDate($value['ENDS_AT'], "H:i");
+            $value['STARTS_ON'] = $this->formatDate($value['STARTS_ON'], "Y-m-d");
+            $value['ENDS_ON'] = $this->formatDate($value['ENDS_ON'], "Y-m-d");
+         
 
-            $collum = $this->checkCollum($value['SPACE']);
-            if(!$spaces = $conn->fetchAll("SELECT * FROM space WHERE status >= 1 AND {$collum} = '{$value['SPACE']}'")) {
-               $errors[$key+1][] = i::__("O espaço não está cadastrado");
-            }
-
-            if ($collum_spa == 'name') {
-               if (count($spaces) > 1) {
-                  $errors[$key+1][] = i::__("Existe mais de um espaço com o nome {$value['SPACE']}. Para proseguir informe o ID do espaço que quer associar ao evento");
+            if(!empty($value['EVENT_ID'])){
+               if(!$conn->fetchAll("SELECT * FROM event WHERE status >= 1 AND id = '{$value['EVENT_ID']}'")) {
+                  $errors[$key+1][] = i::__("O evento não está cadastrado");
                }
             }
 
-            //Verificação da frequencia
-            if(empty($value['FREQUENCY']) || $value['FREQUENCY'] == ''){
-               $errors[$key+1][] = i::__("A coluna frequência está vazia");
+            if(!empty($value['SEAL_ID'])){
+               if(!$conn->fetchAll("SELECT * FROM seal WHERE status >= 1 AND id = '{$value['SEAL_ID']}'")) {
+                  $errors[$key+1][] = i::__("O selo não está cadastrado");
+               }
             }
 
-            if (!in_array($value['FREQUENCY'], array_keys($moduleConfig['frequence_list_allowed']))) {
-               $frequence_str = implode(', ', array_keys($moduleConfig['frequence_list_allowed']));
-               $errors[$key+1][] = i::__("A frequência é inválida. As opções aceitas são {$frequence_str}");
-            }
+            if($type_process_map->create_event){
+               if(empty($value['NAME']) || $value['NAME'] == ''){
+                  $errors[$key+1][] = i::__("A coluna nome está vazia");
+               }
 
-            if(in_array($value['FREQUENCY'], $moduleConfig['use_week_days'])){
-               $err = true;
-               foreach(array_keys($moduleConfig['week_days']) as $day){
-                  if($value[$day]){
-                     $err = false;
-                     break;
+               if(empty($value['SHORT_DESCRIPTION']) || $value['SHORT_DESCRIPTION'] == ''){
+                  $errors[$key+1][] = i::__("A coluna descrição curta está vazia");
+               }
+
+               if(empty($value['CLASSIFICATION']) || $value['CLASSIFICATION'] == ''){
+                  $errors[$key+1][] = i::__("A coluna classificação estária está vazia");
+               }
+
+               if (!in_array($this->lowerStr($value['CLASSIFICATION']),$moduleConfig['rating_list_allowed'])) {
+                  $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
+                  $errors[$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são {$rating_str}");
+               }
+
+               //Validação das linguagens
+               $languages = explode(';', $value['LANGUAGE']);
+               if (!$languages) {
+                  $errors[$key+1][] = i::__("A coluna linguagem está vazia");
+               }
+
+               //Tratamento da lista
+               $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
+
+               foreach ($languages as $language) {
+                  $_language = $this->lowerStr($language);
+
+                  if (!in_array(trim($_language), array_keys($languages_list))) {
+                     $errors[$key+1][] = i::__("A linguagem {$_language} não existe");
                   }
                }
 
-               if($err){
-                  $errors[$key+1][] = i::__("para a frequencia semanal, pelomenos um dia da semana deve ser informado");
+               // Validação das tags
+               $tags = [];
+               if($value['TAGS']){
+                  $tags = explode(';', $value['TAGS']);
+               }
+   
+               //Validação do projeto
+               if($value['PROJECT']){
+                  $collum = $this->checkCollum($value['PROJECT']);
+                  if(!$projects = $conn->fetchAll("SELECT * FROM project WHERE status >= 1 AND {$collum} = '{$value['PROJECT']}'")) {
+                     $errors[$key+1][] = i::__("O projeto não está cadastrado");
+                  }
+         
+                  if ($collum == 'name') {
+                     if (count($projects) > 1){
+                        $errors[$key+1][] = i::__("Existe mais de um projeto com o nome {$value['PROJECT']}. Para proseguir, informe o ID do projeto que quer associar ao evento");
+                     }
+                  }
+               }
+
+               //Validação do agente responsavel 
+               if(!is_numeric($value['OWNER'])){
+                  $errors[$key+1][] = i::__("A coluna proprietário espera o número ID do agente. ");
+               }else{
+                  if(empty($value['OWNER']) || ($value['OWNER'] == "")){
+                     $errors[$key+1][] = i::__("A coluna agente é obrigatória. Informo o ID do agente responsável");
+                  } else if(!$conn->fetchAll("SELECT * FROM agent WHERE status >= 1 AND id = {$value['OWNER']}")) {
+                     $errors[$key+1][] = i::__("O a gente não esta cadastrado");
+                  }
                }
             }
+       
+            if( $type_process_map->create_event || $type_process_map->edit_ocurrence){
+               $collum_spa = 'id';
+               if (!is_numeric($value['SPACE'])) {
+                  $collum_spa = 'name';
+               }
 
-              // Valida a hora inicial
-            if(empty($value['STARTS_AT']) || $value['STARTS_AT'] == ''){
-               $errors[$key+1][] = i::__("A coluna Hora inícial está vazia");
-            }   
-            
-            $starts_at = $this->formatDate($value['STARTS_AT'], "H:i");
-            if($starts_at != $value['STARTS_AT']){
-               $errors[$key+1][] = i::__("A coluna Hora inícial é inválida. O formato esperado é HH:MM Ex.: 12:00");
-            }
-            
-            // Valida a hora final
-            if(empty($value['ENDS_AT']) || $value['ENDS_AT'] == ''){
-               $errors[$key+1][] = i::__("A coluna Hora final está vazia");
-            }
-            
-            $ends_at = $this->formatDate($value['ENDS_AT'], "H:i");
-            if($ends_at != $value['ENDS_AT']){
-               $errors[$key+1][] = i::__("A coluna Hora final é inválida. O formato esperado é HH:MM Ex.: 12:00");
-            }
+               $collum = $this->checkCollum($value['SPACE']);
+               if(!$spaces = $conn->fetchAll("SELECT * FROM space WHERE status >= 1 AND {$collum} = '{$value['SPACE']}'")) {
+                  $errors[$key+1][] = i::__("O espaço não está cadastrado");
+               }
 
-             // Valida a data inicial
-            if (empty($value['STARTS_ON']) || $value['STARTS_ON'] == "") {
-               $errors[$key+1][] = i::__("A Coluna Data inícial Está vazia");
-            }
+               if ($collum_spa == 'name') {
+                  if (count($spaces) > 1) {
+                     $errors[$key+1][] = i::__("Existe mais de um espaço com o nome {$value['SPACE']}. Para proseguir informe o ID do espaço que quer associar ao evento");
+                  }
+               }
 
-            $starts_on = $this->formatDate($value['STARTS_ON'], "Y-m-d");
-            if ($starts_on != $value['STARTS_ON']) {
-               $errors[$key+1][] = i::__("A coluna data inícial é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
-            }
-            
-            // Valida a data final
-            if(in_array($value['FREQUENCY'], $moduleConfig['use_endson'])){
-               if (empty($value['ENDS_ON']) || $value['ENDS_ON'] == "") {
-                  $errors[$key+1][] = i::__("A Coluna Data final Está vazia");
+               //Verificação da frequencia
+               if(empty($value['FREQUENCY']) || $value['FREQUENCY'] == ''){
+                  $errors[$key+1][] = i::__("A coluna frequência está vazia");
+               }
+
+               if (!in_array($value['FREQUENCY'], array_keys($moduleConfig['frequence_list_allowed']))) {
+                  $frequence_str = implode(', ', array_keys($moduleConfig['frequence_list_allowed']));
+                  $errors[$key+1][] = i::__("A frequência é inválida. As opções aceitas são {$frequence_str}");
+               }
+
+               if(in_array($value['FREQUENCY'], $moduleConfig['use_week_days'])){
+                  $err = true;
+                  foreach(array_keys($moduleConfig['week_days']) as $day){
+                     if($value[$day]){
+                        $err = false;
+                        break;
+                     }
+                  }
+
+                  if($err){
+                     $errors[$key+1][] = i::__("para a frequencia semanal, pelomenos um dia da semana deve ser informado");
+                  }
+               }
+
+               // Valida a hora inicial
+               if(empty($value['STARTS_AT']) || $value['STARTS_AT'] == ''){
+                  $errors[$key+1][] = i::__("A coluna Hora inícial está vazia");
+               }   
+               
+               $starts_at = $this->formatDate($value['STARTS_AT'], "H:i");
+               if($starts_at != $value['STARTS_AT']){
+                  $errors[$key+1][] = i::__("A coluna Hora inícial é inválida. O formato esperado é HH:MM Ex.: 12:00");
                }
                
-               $ends_on = $this->formatDate($value['ENDS_ON'], "Y-m-d");
-               if ($ends_on != $value['ENDS_ON']) {
-                  $errors[$key+1][] = i::__("A coluna data final é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
+               // Valida a hora final
+               if(empty($value['ENDS_AT']) || $value['ENDS_AT'] == ''){
+                  $errors[$key+1][] = i::__("A coluna Hora final está vazia");
                }
-            }
+               
+               $ends_at = $this->formatDate($value['ENDS_AT'], "H:i");
+               if($ends_at != $value['ENDS_AT']){
+                  $errors[$key+1][] = i::__("A coluna Hora final é inválida. O formato esperado é HH:MM Ex.: 12:00");
+               }
+               
+               
+               if((new DateTime($value['STARTS_AT'])) > (new DateTime($value['ENDS_AT']))){
+                  $errors[$key+1][] = i::__("A data inicial é maior que a data final.");
+               }
 
-            if($value['EVENT_ATTENDANCE'] && !is_numeric($value['EVENT_ATTENDANCE'])){
-               $errors[$key+1][] = i::__("A coluna total de público é inválida. Essa coluna so aceita números");
+               // Valida a data inicial
+               if (empty($value['STARTS_ON']) || $value['STARTS_ON'] == "") {
+                  $errors[$key+1][] = i::__("A Coluna Data inícial Está vazia");
+               }
+
+               $starts_on = $this->formatDate($value['STARTS_ON'], "Y-m-d");
+               if ($starts_on != $value['STARTS_ON']) {
+                  $errors[$key+1][] = i::__("A coluna data inícial é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
+               }
+               
+               // Valida a data final
+               if(in_array($value['FREQUENCY'], $moduleConfig['use_endson'])){
+                  if (empty($value['ENDS_ON']) || $value['ENDS_ON'] == "") {
+                     $errors[$key+1][] = i::__("A Coluna Data final Está vazia");
+                  }
+                  
+                  $ends_on = $this->formatDate($value['ENDS_ON'], "Y-m-d");
+                  if ($ends_on != $value['ENDS_ON']) {
+                     $errors[$key+1][] = i::__("A coluna data final é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
+                  }
+               }
+
+               if($value['EVENT_ATTENDANCE'] && !is_numeric($value['EVENT_ATTENDANCE'])){
+                  $errors[$key+1][] = i::__("A coluna total de público é inválida. Essa coluna so aceita números");
+               }
             }
          }
       }
-    
 
       if($errors){
          $this->render("import-erros", ["errors" => $errors, 'filename' => basename($file_dir)]);
          exit;
       }
-
    
       $countNewEvent = 0;
       $eventsIdList = [];
@@ -521,7 +569,7 @@ class Controller extends \MapasCulturais\Controller
             if($event = $this->insertEvent($value)){
 
                $ocurrence = true;
-               if($type_process_map->create_ocurrence){
+               if($type_process_map->create_ocurrence || $type_process_map->edit_ocurrence){
                   $ocurrence = $this->createOcurrency($event, $value, $key);
                }
 
@@ -532,6 +580,7 @@ class Controller extends \MapasCulturais\Controller
                if($ocurrence && $file && $metalist){
                   $countNewEvent++;
                   $eventsIdList[$event->id] = $event->id;
+                  $this->ApplySeal($event,$value);
                   $app->em->commit();
                }else{
                   $error_process = true;
@@ -611,7 +660,12 @@ class Controller extends \MapasCulturais\Controller
          if($value['TAGS']){
             $tags = explode(';', $value['TAGS']);
          }
-         // $moduleConfig['fromToEntity']['event']
+
+         $more_information =  null;
+         if($value['MORE_INFORMATION']){
+            $more_information = preg_replace('/[^0-9]/i', '', $value['MORE_INFORMATION']);
+         }
+
          $event = new Event();
          if($type_process_map->edit_event){
             $event = $app->repo('Event')->find($value['EVENT_ID']);
@@ -631,7 +685,16 @@ class Controller extends \MapasCulturais\Controller
                }
             }
          }
-        
+                 
+         $_languages = [];
+         if($languages){
+            $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
+            foreach(array_filter($languages) as $language){
+               $_lang = $this->lowerStr($language);
+               $_languages[] = $languages_list[$_lang];
+            }
+         }
+
          $event->name = $value['NAME'];
          $event->subTitle = $value['SUBTITLE'];
          $event->site = $value['SITE'];
@@ -646,10 +709,11 @@ class Controller extends \MapasCulturais\Controller
          $event->shortDescription = $value['SHORT_DESCRIPTION'];
          $event->longDescription = $value['LONG_DESCRIPTION'];
          $event->classificacaoEtaria = $value['CLASSIFICATION'];
-         $event->terms['linguagem'] = $languages;
+         $event->terms['linguagem'] = $_languages;
          $event->projectId = $project ? $project->id : null;
          $event->event_attendance = $value['EVENT_ATTENDANCE'];
          $event->traducaoLibras = $value['LIBRAS_TRANSLATION'];
+         $event->telefonePublico = $more_information;
          $event->descricaoSonora = $value['AUDIO_DESCRIPTION'];
          $event->terms['tag'] = $tags;
          
@@ -659,9 +723,9 @@ class Controller extends \MapasCulturais\Controller
          
          $event->save(true);
          return $event;
-         } catch (\Throwable $th) {
+      } catch (\Throwable $th) {
          return false;
-     }         
+      }         
    }
 
 
@@ -672,7 +736,7 @@ class Controller extends \MapasCulturais\Controller
 
          $moduleConfig = $app->modules['EventImporter']->config;
    
-         $freq = mb_strtolower($value['FREQUENCY']);
+         $freq = $this->lowerStr($value['FREQUENCY']);
          $ocurrence = new EventOccurrence();    
    
          $duration = function() use ($value){
@@ -697,7 +761,7 @@ class Controller extends \MapasCulturais\Controller
             "description" => "",
          ];
         
-         switch (mb_strtolower($value['FREQUENCY'])) {
+         switch ($this->lowerStr($value['FREQUENCY'])) {
             case i::__('diariamente'):
             case i::__('todos os dias'):
             case i::__('diario'):
@@ -870,21 +934,23 @@ class Controller extends \MapasCulturais\Controller
       $no_error = true;
       foreach ($files_grp_import as $key => $grp_import) {
 
+      
          if(empty($value[$key])){
             continue;
          }
-         
+     
          if(!empty($value[$key]) || $value[$key] != ""){
                if($key == "GALLERY" || $key == "DOWNLOADS"){
+                 
                $gallery_list = $this->matches($value[$key]);
    
                foreach($gallery_list as $item){
-                  if(!$no_error && !$this->saveFile($item, $owner, $grp_import)){
+                  if(!$this->saveFile($item, $owner, $grp_import) && !$no_error){
                      $no_error = false;
                   }
                }
             }else{
-               if(!$no_error && !$this->saveFile($value[$key], $owner, $grp_import)){
+               if(!$this->saveFile($value[$key], $owner, $grp_import) && !$no_error){
                   $no_error = false;
                }
             }
@@ -896,7 +962,9 @@ class Controller extends \MapasCulturais\Controller
 
    public function saveFile($value, $owner, $grp_import)
    {
+      
       try {
+        
          $exp = explode(":", $value);
 
          $_file = $exp[0].":".$exp[1];
@@ -905,28 +973,29 @@ class Controller extends \MapasCulturais\Controller
          $basename = basename($_file);
          $file_data = str_replace($basename, urlencode($basename), $_file);
 
-         $ch = curl_init($file_data);
+         $curl = new Curl;
+         $curl->get($file_data);
+         $curl->close();
+         $response = $curl->response;
+
          $tmp = tempnam("/tmp", "");
          $handle = fopen($tmp, "wb");
-      
-         if (!$this->urlFileExists($_file)) {
-            fclose($handle);
-            unlink($tmp);
-            return false;
-         }
-   
-         curl_setopt($ch, CURLOPT_FILE, $handle);
 
-         if (!curl_exec($ch)) {
+         if(mb_strpos($response, 'html')){
             fclose($handle);
             unlink($tmp);
             return false;
          }
 
-         curl_close($ch);
-         $sz = ftell($handle);
+         if(!$this->urlFileExists($_file)){
+            fclose($handle);
+            unlink($tmp);
+            return false;
+         }
+
+         fwrite($handle,$response);
          fclose($handle);
-
+         
          $class_name = $owner->fileClassName;
 
          $file = new $class_name([
@@ -945,6 +1014,56 @@ class Controller extends \MapasCulturais\Controller
       } catch (\Throwable $th) {
          return false;
       }
+   }
+
+   public function checkRemoteFile($value, $key)
+   {
+      
+      $check = function($file){
+         $basename = basename($file);
+         $file_data = str_replace($basename, urlencode($basename), $file);
+
+         $curl = new Curl;
+         $curl->get($file_data);
+         $curl->close();
+         $response = $curl->response;
+
+         $tmp = tempnam("/tmp", "");
+         $handle = fopen($tmp, "wb");
+         fwrite($handle,$response);
+         fclose($handle);
+
+         $finfo = finfo_open(FILEINFO_MIME_TYPE);
+         $mimetype = finfo_file($finfo, $tmp);
+         if ($mimetype == 'image/jpg' || $mimetype == 'image/jpeg' || $mimetype == 'image/gif' || $mimetype == 'image/png') {
+            $is_image = true;
+         } else {
+            $is_image = false;
+         }
+
+         return $is_image;
+      };
+
+      $error = [];
+      $alloweds_type = ['AVATAR', 'HEADER', 'GALLERY'];
+      foreach($alloweds_type as $type){
+         if($matches = $this->matches($value[$type])){
+            foreach($matches as $matche){
+               $exp = explode(":", $matche);
+               $url = $exp[0].":".$exp[1];
+
+               if(!$check($url)){
+                  $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$url}");
+               }
+            }
+         }else{
+            if(!$check($value[$type])){
+               $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$value[$type]}");
+            }
+         }
+      }
+
+      return $error;
    }
 
    public function createMetalists(Entity $owner, $value)
@@ -970,7 +1089,7 @@ class Controller extends \MapasCulturais\Controller
 
                $metaList = new MetaList();
                $metaList->owner = $owner;
-               $group = (strpos($url, 'youtube') > 0 || strpos($url, 'youtu.be') > 0 || strpos($url, 'vimeo') > 0) ? 'videos' : 'links';
+               $group = mb_strtolower($metalist);
                $metaList->group = $group;
                $metaList->title = $title ?? "" ;
                $metaList->value = $url ?? "";
@@ -1041,6 +1160,11 @@ class Controller extends \MapasCulturais\Controller
       } else {
          return $objDate;
       }
+   }
+
+   public function lowerStr($value)
+   {
+      return $value ? trim(mb_strtolower($value)) : "";
    }
 
    public function dispatch($file_name, $path)
