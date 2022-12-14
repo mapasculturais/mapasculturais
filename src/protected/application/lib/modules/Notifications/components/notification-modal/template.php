@@ -1,14 +1,12 @@
 <?php
-    use MapasCulturais\i;
-    $this->import('
+use MapasCulturais\i;
+$this->import('
     mc-link
     modal 
     notification-list
 ');
 ?>
-
-
-<modal :title="modalTitle" classes="create-modal" button-label="Notificações" @open="" @close="">
+<modal v-if="show" :title="modalTitle" classes="create-modal" button-label="Notificações" @open="" @close="">
     <template #default>
         <div class="grid-12">
             <div class="col-6" v-if="notificationsCount > 0">

@@ -45,7 +45,7 @@ app.component('notification-list', {
         query:{
             type:Object,
             default:{
-                '@select':'*,request.{requesterUser.profile.files.avatar }',
+                '@select':'*,request.{requesterUser.profile.files.avatar}',
                 'user':'eq(@me)',
                 '@order':'createTimestamp DESC'
             }
