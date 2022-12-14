@@ -34,6 +34,10 @@
         .iconify {
             font-size: size(16);
         }
+
+        &-left {
+            flex-direction: row-reverse;
+        }
     }
 
     // larguras
