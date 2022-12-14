@@ -16,19 +16,24 @@ use MapasCulturais\i;
 
             <div class="boxterm">
                 <div v-for="(term, slug) in terms">
-                    <div v-if="term.md5 == privacyPolicy.acceptedmd5" class="boxterm__list">
+                    <!-- {{term}} -->
+                    <!-- <div v-if="user.contains('lgpd_')"> -->
+                    <!-- <div v-if="user.lgpd_+' '" class="vif"></div> -->
 
-                        <label class="boxterm__list-subterm">{{privacyPolicy.slug}}</label> <label class="boxterm__list-term">aceito em {{privacyPolicy.timestamp}} pelo ip {{privacyPolicy.ip}}</label>
-
+                    <div v-for="(value, key) in user" class="entrou">
+                        <div v-if="key.includes('lgpd')">
+                            <div v-for="privacy in key" class="teste">
+                                <div v-for="item in value" class="iteration">
+                                    <div v-for="dentro in value" class="fordedentro">
+                                        <label v-if="dentro == value.md5">tabababbababba</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div v-if="term.md5 == termsOfUsage.acceptedmd5" class="boxterm__list">
-                        <label class="boxterm__list-subterm">{{termsOfUsage.slug}}</label> <label class="boxterm__list-term">aceito em {{termsOfUsage.timestamp}} pelo ip {{termsOfUsage.ip}}</label>
 
+                    <!-- </div> -->
 
-                    </div>
-                    <div v-if="term.md5 == termsUse.acceptedmd5" class="boxterm__list">
-                        <label class="boxterm__list-subterm">{{termsUse.slug}}</label> <label class="boxterm__list-term">aceito em {{termsUse.timestamp}} pelo ip {{termsUse.ip}}</label>
-                    </div>
                 </div>
             </div>
         </div>
