@@ -1830,5 +1830,15 @@ $$
         if(!__column_exists('seal', 'locked_fields')) {
             __exec("ALTER TABLE seal ADD locked_fields JSON DEFAULT '[]'");
         }
-    }
+    },
+
+    'Adiciona a coluna description para a descrição da ocorrência' => function() {
+        __exec("ALTER TABLE event_occurrence ADD description TEXT DEFAULT NULL;");
+    },
+    'Adiciona a coluna price para a o valor de entrada da ocorrência' => function() {
+        __exec("ALTER TABLE event_occurrence ADD price TEXT DEFAULT NULL;");
+    },
+    'Adiciona a coluna priceInfo para a informações sobre o valor de entrada da ocorrência' => function() {
+        __exec("ALTER TABLE event_occurrence ADD priceInfo TEXT DEFAULT NULL;");
+    },
 ] + $updates ;
