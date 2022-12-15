@@ -3,10 +3,27 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+<<<<<<< HEAD
 ## [Unreleased]
 ### Melhorias
 - atualiza o updateTimestamp da entidade quando modifica um metadado
 - opção de bloqueio de campos das entidades seladas
+=======
+
+## [5.4.0] - 2022-12-14
+### Correções
+- Atualiza updateTimestamp das entidades quando modificado um metadado
+
+### Novas Funcionalidade
+- Importação de eventos por planilha
+
+## [5.3.38] - 2022-11-30
+### Correções
+- Corrige verificação de criação das taxnomias
+## [5.3.37] - 2022-11-18
+### Correções
+- corrige definição de valor default para os metadados
+>>>>>>> hotfix/hooks-sendmailnotification
 
 ## [5.3.36] - 2022-11-16
 ### Correções
