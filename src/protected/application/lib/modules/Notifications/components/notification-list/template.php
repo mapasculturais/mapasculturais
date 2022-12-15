@@ -1,7 +1,5 @@
 <?php
 /** @var MapasCulturais\Theme $this */
-
-use Doctrine\ORM\Query\Expr\Select;
 use MapasCulturais\i;
 
 $this->import('
@@ -15,7 +13,8 @@ $this->import('
         <mapas-card class="notification_card" v-for="entity in entities" :key="entity.__objectId">
             <div class="grid-12">
                 <div class="col-1 notification_icon">
-                    <mc-icon width="36" name='agent-1'></mc-icon>
+                    <img v-if="hasAvatar(entity)" :src="avatarUrl(entity)">
+                    <mc-icon v-if="!hasAvatar(entity)" width="36" name='agent-1'></mc-icon>
                 </div>
                 <div class="col-11">
                     <p class="notification_title" v-html='entity.message'></p>
