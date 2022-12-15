@@ -145,6 +145,11 @@ abstract class Request extends \MapasCulturais\Entity{
         $this->requesterUser = App::i()->user;
         parent::__construct();
     }
+
+    public static function getControllerId()
+    {
+        return 'request';
+    }
     
     function getExtraPermissionCacheUsers(){
         if($origin = $this->getOrigin()){
