@@ -724,8 +724,10 @@ abstract class Entity implements \JsonSerializable{
      *
      * @return \MapasCulturais\Controller The controller
      */
-    public function getControllerId(){
-        return App::i()->getControllerIdByEntity($this);
+    public static function getControllerId(){
+        $called_class = get_called_class();
+        $class = $called_class::getClassName();
+        return App::i()->getControllerIdByEntity($class);
     }
 
 
