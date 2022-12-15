@@ -1,0 +1,39 @@
+@use '../settings/mixins' as *;
+
+.user-accepted-terms {
+    &__privacy {
+        &--accept {
+            &-title {
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 25px;
+                margin-bottom: 24px;
+
+                &-box {
+                    margin-top: 24px;
+
+                    .boxterm {
+                        &__list {
+                            margin-top: 12px;
+
+                            &-subterm {
+                                font-weight: 700;
+                                font-size: 14px;
+                                letter-spacing: 0.07em;
+                                text-transform: uppercase;
+                                line-height: 19px;
+                            }
+                            &-term{
+                                font-weight: 600;
+                                font-size: 13px;
+                                letter-spacing: 0.07em;
+                                text-transform: uppercase;
+                                line-height: 19px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

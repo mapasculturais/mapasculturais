@@ -14,11 +14,9 @@
          <div class="create-modal__fields">
              <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Nome ou título") ?> prop="name"></entity-field>
              <entity-field :entity="entity" hide-required prop="shortDescription" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Selo") ?>"></entity-field>
-             <entity-field :entity="entity" hide-required prop="longDescription" label="<?php i::esc_attr_e("Adicione uma Descrição para o Selo") ?>"></entity-field>
              <label><input v-model="requirePeriod" type="checkbox"> <?php i::_e('Este selo possui período de validade?') ?></label>
-             <entity-field v-if="requirePeriod" :entity="entity" hide-required prop="validPeriod" :min="0" :max="1" label="<?php i::esc_attr_e("Período de validade") ?>"></entity-field>
+             <entity-field v-if="requirePeriod" :entity="entity" hide-required prop="validPeriod" :min=1 label="<?php i::esc_attr_e("Numero de meses em que o selo é válido") ?>"></entity-field>
              <entity-field :entity="entity" hide-required v-for="field in fields" :prop="field"></entity-field>
-             {{entity.id}}
          </div>
      </template>
 
@@ -28,8 +26,6 @@
             <label><?php i::_e('Para completar e publicar seu novo selo, acesse a área <b>Rascunhos</b> em <b>Meus Selos</b> no <b>Painel de Controle</b>.  ');?></label>
 
         </div>
-        <hr><br>
-         <entity-occurrence-list></entity-occurrence-list>
      </template>
 
      <template #button="modal">
