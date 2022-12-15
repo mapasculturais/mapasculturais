@@ -12,14 +12,6 @@ app.component('notification-modal' , {
         globalThis.addEventListener('afterFetch', (e) => {
             this.notificationsCount = e.detail.headers.get('MC-notifications-count');
         });
-        const mql = globalThis.matchMedia(`(${this.mediaQuery})`);
-        console.log(mql);
-        console.log(this.mediaQuery);
-        this.show = mql.matches;
-        mql.addEventListener("change", (event) => {
-            this.show = event.matches;
-            
-        });
     },
 
     data() {
@@ -27,8 +19,7 @@ app.component('notification-modal' , {
             entity: null,
             fields: [],
             notificationsCount: $MAPAS.notificationsCount || 0,
-            modalTitle: 'Notificações',
-            show: null
+            modalTitle: 'Notificações'
         }
         
     },
