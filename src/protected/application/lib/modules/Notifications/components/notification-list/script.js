@@ -95,6 +95,9 @@ app.component('notification-list', {
         },
         cancel (notification) {
             console.log(notification)
+        },
+        delete (notification) {
+            console.log(notification)
         }
     },
 });

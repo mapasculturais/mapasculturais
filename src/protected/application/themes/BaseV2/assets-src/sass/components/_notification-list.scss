@@ -11,6 +11,13 @@
   text-align: center;
 }
 
+.notification_icon > img{
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
 .notification_header--link {
   font-weight: 600;
   font-size: 14px;
