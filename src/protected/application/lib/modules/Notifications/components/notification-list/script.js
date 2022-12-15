@@ -65,6 +65,17 @@ app.component('notification-list', {
     },
     
     methods: {
+        hasAvatar(entity) {
+            return !!entity.request?.requesterUser?.profile?.files?.avatar;
+        },
+
+        avatarUrl(entity) {
+            if (this.hasAvatar(entity)) {
+                return entity.request?.requesterUser?.profile?.files?.avatar?.transformations?.avatarSmall?.url ||
+                       entity.request?.requesterUser?.profile?.files?.avatar?.url;
+            }
+        },
+
         async approve(notification) {
             const url = this.API.createUrl('approve',[notification.id]);
             const request = await this.API.POST(url);
