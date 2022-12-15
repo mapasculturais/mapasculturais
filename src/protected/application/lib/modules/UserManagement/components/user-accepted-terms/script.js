@@ -12,6 +12,7 @@ app.component('user-accepted-terms', {
     },
 
     data() {
+        // Termo
         const terms = $MAPAS.config.LGPD;
 
         return {
@@ -24,9 +25,19 @@ app.component('user-accepted-terms', {
             type: Entity,
             required: true
         },
+
     },
-    
-    methods: {
+    computed: {
+        // politica de privacidade
         
+       
+    },
+
+    methods: {
+        formatDate(timestamp){
+            const date = new Date(timestamp*1000);
+            const mcDate = new cDate(date);
+            return mcDate.date('numeric year') + ' - ' + mcDate.time('numeric');
+        }
     },
 });

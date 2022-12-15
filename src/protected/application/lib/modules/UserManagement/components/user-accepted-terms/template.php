@@ -6,21 +6,36 @@ use MapasCulturais\i;
 
 // ');
 ?>
-
+<!-- 1- Verificar se o usuario tem os termos
+     2- Verificar se a hash do termo atualizado existe -->
+<!-- 3 - Verificar Timestamp, ip. -->
 <div class="user-accepted-terms__privacy">
-    <div class="user-accepted-terms__privacy-title">
-        <label class="user-accepted-terms__privacy-title"><?= i::__('Aceite de termos') ?></label>
-       <div v-if="user"class="verified">
+    <div class="user-accepted-terms__privacy--accept">
+        <label class="user-accepted-terms__privacy--accept-title"><?= i::__('Aceite de termos') ?></label>
+        <div v-if="user" class="user-accepted-terms__privacy--accept-title-box">
 
-        <div v-for="(term, slug) in terms" class="for">
-            <label v-if="user.LGPD.lgpd_privacypolicy == term.md5">O usuario aceitou os termos em</label>
-            {{user.LGPD.privacyPolicy}}
-            {{term.title}}
-            {{term.md5}}
+            <div class="boxterm">
+                <div v-for="(term, slug) in terms">
+                    <!-- {{term}} -->
+                    <!-- <div v-if="user.contains('lgpd_')"> -->
+                    <!-- <div v-if="user.lgpd_+' '" class="vif"></div> -->
+
+                    <div v-for="(value, key) in user" class="entrou">
+                        <div v-if="key.includes('lgpd')">
+                            <div v-for="privacy in key" class="teste">
+                                <div v-for="item in value" class="iteration">
+                                    <div v-for="dentro in value" class="fordedentro">
+                                        <label v-if="dentro == value.md5">tabababbababba</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- </div> -->
+
+                </div>
+            </div>
         </div>
-        </div>
-    </div>
-    <div class="user-accepted-terms__privacy-accept">
-        <label class="user-accepted-terms__privacy--accept-check">Termo aceito em pelo IP </label>
     </div>
 </div>

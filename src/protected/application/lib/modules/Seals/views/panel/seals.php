@@ -23,7 +23,7 @@ $this->import('
             <?= i::_e('Nesta seção você visualiza e gerencia seu perfil de usuário e outros selos criados') ?>
         </p>
         <div class="panel-page__header-actions">
-            <create-seal  :editable="true" #default="{modal}"  >
+            <create-seal #default="{modal}"  >
                 <button @click="modal.open()" class="button button--primary button--icon">
                     <mc-icon name="add"></mc-icon>
                     <span><?=i::__('Criar selo')?></span>
