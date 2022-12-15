@@ -5,7 +5,9 @@ use MapasCulturais\ApiQuery;
 use MapasCulturais\App,
     MapasCulturais\i,
     MapasCulturais\Entities,
-    MapasCulturais\Entities\Notification;
+    MapasCulturais\Entities\Notification,
+    MapasCulturais\Entities\Request;
+
 
 class Module extends \MapasCulturais\Module{
     
@@ -33,6 +35,12 @@ class Module extends \MapasCulturais\Module{
          $app = App::i();
          $module = $this;
          /* === NOTIFICATIONS  === */
+
+        // adiciona a descriçào das entidades notification e request ao jsObject
+        $app->hook('app.register:after', function () {
+                $this->view->jsObject['EntitiesDescription']['request'] = Request::getPropertiesMetadata();
+                $this->view->jsObject['EntitiesDescription']['notification'] = Notification::getPropertiesMetadata();
+        }, 100);
 
         // adiciona a contagem de notificações no header e no jsObject
         $app->hook('mapasculturais.run:before', function () use($app) {
