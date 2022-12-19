@@ -146,6 +146,7 @@ abstract class Theme extends \Slim\View {
                 "registration"   => Entities\Registration::getPropertiesMetadata(),
                 "subsite"       => Entities\Subsite::getPropertiesMetadata(),
                 "seal"          => Entities\Seal::getPropertiesMetadata(),
+                "eventOccurrence" => Entities\EventOccurrence::getPropertiesMetadata(), 
             ];
 
             $taxonomies = [];
