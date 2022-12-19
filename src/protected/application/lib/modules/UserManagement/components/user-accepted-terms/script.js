@@ -37,7 +37,7 @@ app.component('user-accepted-terms', {
 
         formatDate(timestamp) {
             let date = new McDate(new Date(timestamp * 1000));
-            return date.date('numeric') + ' - ' + date.time('numeric');
+            return date.date('numeric') +'/'+ date.year('numeric') + ' - ' + date.time('numeric');
         }
     },
 });
