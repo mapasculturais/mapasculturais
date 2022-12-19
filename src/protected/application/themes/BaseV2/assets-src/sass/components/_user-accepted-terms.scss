@@ -18,10 +18,8 @@
 
                             &-subterm {
 
-
-
                                 &-title {
-                                    font-weight: bold;
+                                    font-weight: bolder;
                                     font-size: 14px;
                                     letter-spacing: 0.07em;
                                     text-transform: uppercase;
@@ -36,7 +34,6 @@
                                     line-height: 19px;
                                 }
                             }
-
                         }
 
                         @media (max-width: size(500)) {
