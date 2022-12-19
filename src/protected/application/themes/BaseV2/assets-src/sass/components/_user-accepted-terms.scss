@@ -15,6 +15,7 @@
                     .boxterm {
                         &__list {
                             margin-top: 12px;
+
                             &-subterm {
                                 font-weight: 700;
                                 font-size: 14px;
@@ -22,12 +23,19 @@
                                 text-transform: uppercase;
                                 line-height: 19px;
                             }
-                            &-term{
+
+                            &-term {
                                 font-weight: 600;
                                 font-size: 13px;
                                 letter-spacing: 0.07em;
                                 text-transform: uppercase;
                                 line-height: 19px;
+                            }
+                        }
+
+                        @media (max-width: size(500)) {
+                            .boxterm {
+                                max-width: fit-content;
                             }
                         }
                     }
