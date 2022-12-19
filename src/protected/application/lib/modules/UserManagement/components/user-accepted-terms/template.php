@@ -15,11 +15,10 @@ use MapasCulturais\i;
         <div v-if="user" class="user-accepted-terms__privacy--accept-title-box">
 
             <div class="boxterm">
-                <div v-for="(term, slug) in terms">
-                    <div v-for="(value, key) in user" class="boxterm__term">
+                <div v-for="(term, slug) in terms" class="boxterm__list">
+                    <div v-for="(value, key) in user" class="boxterm__list-term">
                         <div v-if="key.includes('lgpd')">
-                            <div class="boxterm__term"></div>
-                            <div v-for="item in value">
+                            <div v-for="item in value" class="boxterm__list-subterm">
                                 <div v-if="item.md5 == term.md5">
                                  {{term.title}} aceito em {{formatDate(item.timestamp)}} pelo ip {{item.ip}}
                                 </div>
