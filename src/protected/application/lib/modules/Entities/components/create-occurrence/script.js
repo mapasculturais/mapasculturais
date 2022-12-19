@@ -241,8 +241,27 @@ app.component('create-occurrence', {
             this.newOccurrence['priceInfo'] = this.priceInfo ?? '';
             
             this.newOccurrence.save().then(
-                modal.close()
+                modal.close(),
+                this.cleanForm()                
             );
+        },
+
+        cleanForm() {
+            this.step = 0;
+            this.free = false;
+            this.space = null;
+            this.newOccurrence = new Entity('eventOccurrence');
+            this.frequency = 'once';
+            this.startsOn = null;
+            this.startsAt = null;
+            this.endsAt = null;
+            this.duration = 0;
+            this.dateRange = null;
+            this.days = {};
+            this.until = null;
+            this.description = null;
+            this.price = null;
+            this.priceInfo = null;
         },
 
         cancel(modal) {
