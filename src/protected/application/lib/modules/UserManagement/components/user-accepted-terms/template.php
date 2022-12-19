@@ -20,7 +20,7 @@ use MapasCulturais\i;
                         <div v-if="key.includes('lgpd')">
                             <div v-for="item in value" class="boxterm__list-subterm">
                                 <div v-if="item.md5 == term.md5">
-                                 {{term.title}} aceito em {{formatDate(item.timestamp)}} pelo ip {{item.ip}}
+                                <label><?= i::__('{{term.title}} aceitos em {{formatDate(item.timestamp)}} pelo ip {{item.ip}}')?></label> 
                                 </div>
 
                             </div>
