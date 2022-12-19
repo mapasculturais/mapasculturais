@@ -50,12 +50,19 @@ class EventOccurrence extends EntityController {
         $occurrence = new \MapasCulturais\Entities\EventOccurrence;
         $occurrence->event = $event;
         $occurrence->description = $this->postData['description'];
-        $occurrence->price = $this->postData['price'];
-        $occurrence->priceInfo = $this->postData['priceInfo'];
+        
+        if (isset($this->postData['price'])) {
+            $occurrence->price = $this->postData['price'];
+        }
+
+        if (isset($this->postData['priceInfo'])) {
+            $occurrence->priceInfo = $this->postData['priceInfo'];
+        }
         
         if (@$this->postData['spaceId']) {
             $occurrence->space = $app->repo('Space')->find($this->postData['spaceId']);
         }
+        
         $postData = $this->postData;
         unset($postData['eventId']);
         $occurrence->rule = $postData;
