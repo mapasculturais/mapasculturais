@@ -29,15 +29,15 @@ app.component('user-accepted-terms', {
     },
     computed: {
         // politica de privacidade
-        
-       
+
+
     },
 
     methods: {
-        formatDate(timestamp){
-            const date = new Date(timestamp*1000);
-            const mcDate = new cDate(date);
-            return mcDate.date('numeric year') + ' - ' + mcDate.time('numeric');
+
+        formatDate(timestamp) {
+            let date = new McDate(new Date(timestamp * 1000));
+            return date.date('numeric') + ' - ' + date.time('numeric');
         }
     },
 });
