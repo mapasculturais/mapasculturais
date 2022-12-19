@@ -18,21 +18,14 @@ use MapasCulturais\i;
                 <div v-for="(term, slug) in terms">
                     <div v-for="(value, key) in user" class="boxterm__term">
                         <div v-if="key.includes('lgpd')">
+                            <label v-if="term.title== key">{{term.title}} </label>
                             <div class="boxterm__term"></div>
-                            <div v-for="set in value">
-                                <div v-if="set.md5 == term.md5">
-                                O usuario aceitou o termo em {{set.timestamp}} pelo ip {{set.ip}}
+                            <div v-for="item in value">
+                                <div v-if="item.md5 == term.md5">
+                                O {{item.title}}termo em {{formatDate(item.timestamp)}} pelo ip {{item.ip}}
                                 </div>
 
                             </div>
-
-
-                            <!-- <div v-for="privacy in key" class="teste">
-                                <div v-for="item in value" class="iteration">
-                                    <div v-if="term.md5 == item.md5" class="fordedentro">
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                 </div>
