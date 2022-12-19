@@ -16,24 +16,25 @@ use MapasCulturais\i;
 
             <div class="boxterm">
                 <div v-for="(term, slug) in terms">
-                    <!-- {{term}} -->
-                    <!-- <div v-if="user.contains('lgpd_')"> -->
-                    <!-- <div v-if="user.lgpd_+' '" class="vif"></div> -->
-
-                    <div v-for="(value, key) in user" class="entrou">
+                    <div v-for="(value, key) in user" class="boxterm__term">
                         <div v-if="key.includes('lgpd')">
-                            <div v-for="privacy in key" class="teste">
+                            <div class="boxterm__term"></div>
+                            <div v-for="set in value">
+                                <div v-if="set.md5 == term.md5">
+                                O usuario aceitou o termo em {{set.timestamp}} pelo ip {{set.ip}}
+                                </div>
+
+                            </div>
+
+
+                            <!-- <div v-for="privacy in key" class="teste">
                                 <div v-for="item in value" class="iteration">
-                                    <div v-for="dentro in value" class="fordedentro">
-                                        <label v-if="dentro == value.md5">tabababbababba</label>
+                                    <div v-if="term.md5 == item.md5" class="fordedentro">
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
-
-                    <!-- </div> -->
-
                 </div>
             </div>
         </div>
