@@ -18,7 +18,7 @@ $this->import('
         <p class="entity-occurrence-list__editable--description">
             <?= i::_e('Adicione data, hora e local da ocorrência do seu evento. Você pode criar várias ocorrências com informações diferentes.') ?>
         </p>
-        <create-occurrence @create="addToOccurrenceList($event)"></create-occurrence>
+        <create-occurrence :entity="entity" @create="addToOccurrenceList($event)"></create-occurrence>
     </div>
     <div class="entity-occurrence-list__occurrences">
         <label class="occurrence__title">Agenda</label>
@@ -50,7 +50,7 @@ $this->import('
                             <div class="content__price">
                                 <mc-icon name="ticket"></mc-icon>
                                 <span class="price">
-                                    {{formatPrice(occurrence.rule.price)}}
+                                    {{formatPrice(occurrence.price)}}
                                 </span>
                             </div>
                         </div>
