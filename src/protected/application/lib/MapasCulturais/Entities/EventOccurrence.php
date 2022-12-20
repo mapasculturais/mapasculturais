@@ -92,6 +92,27 @@ class EventOccurrence extends \MapasCulturais\Entity
     /**
      * @var string
      *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    protected $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="price", type="text", nullable=true)
+     */
+    protected $price;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="priceInfo", type="text", nullable=true)
+     */
+    protected $priceInfo;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="timezone_name", type="text", nullable=false)
      */
     protected $timezoneName = 'Etc/UTC';
@@ -181,6 +202,9 @@ class EventOccurrence extends \MapasCulturais\Entity
             ],
             'description' => [
                 'required' => \MapasCulturais\i::__('A descrição legível do horário é obrigatória')
+            ],
+            'price' => [
+                'required' => \MapasCulturais\i::__('O valor da entrada é obrigatório')
             ]
 
         ];
@@ -189,6 +213,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     function validateFrequency($value) {
         if ($this->flag_day_on === false) return false;
         if (in_array($value, ['daily', 'weekly', 'monthly'])) {
+        /* if (in_array($value, ['once', 'weekly', 'daily'])) { */
             return !is_null($this->until);
         }
 
@@ -275,15 +300,6 @@ class EventOccurrence extends \MapasCulturais\Entity
         }
     }
 
-    function getDescription(){
-        return isset($this->getRule()->description) ? $this->getRule()->description : "";
-    }
-
-
-    function getPrice(){
-        return key_exists('price', $this->rule) ? $this->rule['price'] : '';
-    }
-
     function setRule($value) {
 
         if ($value === '') {
@@ -291,9 +307,20 @@ class EventOccurrence extends \MapasCulturais\Entity
             return;
         }
         $value = (array) $value;
+        $value += [
+            'startsOn' => null,
+            'startsAt' => null,
+            'endsAt' => null,
+            'until' => null,
+            'duration' => null,
+            'frequency' => null,
+            'day' => null
+        ];
 
-        $this->startsAt = $value['startsOn'] . ' ' . $value['startsAt'];
-        //$this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
+        if (isset($value['startsOn']) && $value['startsAt']) {
+            $this->startsAt = $value['startsOn'] . ' ' . $value['startsAt'];
+            //$this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
+        }
 
         if(!empty($value['duration'])){
             $value['duration'] = intval($value['duration']);
