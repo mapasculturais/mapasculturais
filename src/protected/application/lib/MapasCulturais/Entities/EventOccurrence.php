@@ -240,37 +240,37 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function setStartsOn($value) {
-        $this->_startsOn = self::convert($value, 'Y-m-d');
+        $this->startsOn = self::convert($value, 'Y-m-d');
     }
 
     function getStartsOn() {
-        return $this->_startsOn;
+        return $this->startsOn;
     }
 
     function setEndsOn($value) {
-        $this->_endsOn = self::convert($value, 'Y-m-d');
+        $this->endsOn = self::convert($value, 'Y-m-d');
     }
 
     function getEndsOn() {
-        return $this->_endsOn;
+        return $this->endsOn;
     }
 
 
     function setStartsAt($value) {
-        $this->_startsAt = self::convert($value, 'Y-m-d H:i');
+        $this->startsAt = self::convert($value, 'Y-m-d H:i');
     }
 
     function getStartsAt() {
-        return $this->_startsAt;
+        return $this->startsAt;
     }
 
 
     function setEndsAt($value) {
-        $this->_endsAt = self::convert($value, 'Y-m-d H:i');
+        $this->endsAt = self::convert($value, 'Y-m-d H:i');
     }
 
     function getEndsAt() {
-        return $this->_endsAt;
+        return $this->endsAt;
     }
 
     function getDuration() {
@@ -285,11 +285,11 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function setUntil($value) {
-        $this->_until = self::convert($value, 'Y-m-d');
+        $this->until = self::convert($value, 'Y-m-d');
     }
 
     function getUntil() {
-        return $this->_until;
+        return $this->until;
     }
 
     function getRecurrences() {
@@ -408,6 +408,10 @@ class EventOccurrence extends \MapasCulturais\Entity
 
     function getRule() {
         return json_decode($this->rule);
+    }
+
+    function getControllerId() {
+        return 'eventOccurrence';
     }
 
     function jsonSerialize() {

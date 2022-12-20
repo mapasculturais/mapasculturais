@@ -34,7 +34,7 @@ class Entity {
                 val = this[prop];
             }
 
-            if (definition.type == 'datetime' && val && !(val instanceof McDate)) {
+            if ((definition.type == 'datetime' || definition.type == 'date' ) && val && !(val instanceof McDate)) {
                 val = new McDate(val.date);
             }
 
