@@ -21,14 +21,22 @@ $this->breadcramb = [
     <mapas-breadcrumb></mapas-breadcrumb>
     <entity-header :entity="entity"></entity-header>
     <tabs class="tabs">
-        <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
+        <tab icon="exclamation" label="<?= i::_e('Informações gerais') ?>" slug="info">
             <div class="tabs__info">
                 <mapas-container>
                     <main>
                         <div class="grid-12">
+                            <div v-if="entity.shortDescription" class="col-12">
+                                <h2><?php i::_e('Descrição');?></h2>
+                                <p>{{entity.shortDescription}}</p>
+                            </div>
                             <div v-if="entity.longDescription" class="col-12">
                                 <h2><?php i::_e('Descrição Detalhada');?></h2>
                                 <p>{{entity.longDescription}}</p>
+                            </div>
+                            <div v-if="entity.validPeriod" class="col-12">
+                                <h2><?php i::_e('Período de Validade');?></h2>
+                                <p>{{entity.validPeriod}}</p>
                             </div>
                         </div>
                     </main>
