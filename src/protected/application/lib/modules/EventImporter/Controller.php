@@ -101,6 +101,9 @@ class Controller extends \MapasCulturais\Controller
 
    function GET_processFile()
    {
+      ini_set('max_execution_time', 0);
+      ini_set('memory_limit', '768M');
+      
       $this->requireAuthentication();
 
       $app = App::i();
