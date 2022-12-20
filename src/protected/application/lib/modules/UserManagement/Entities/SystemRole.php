@@ -17,8 +17,7 @@ use MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
 class SystemRole extends \MapasCulturais\Entity {
-    use Traits\EntityRevision,
-        Traits\EntitySoftDelete,
+    use Traits\EntitySoftDelete,
         Traits\EntityDraft;
 
 
