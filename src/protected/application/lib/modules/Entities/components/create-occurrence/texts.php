@@ -25,6 +25,5 @@ return [
     'das' => ' das ',
 
     /* validações */
-    'descrição obrigatória' => 'Descrição legível de data e horário é obrigatória',
-    'preço obrigatório' => 'Valor da entrada é obrigatório',
+    'Gratuito' => 'Gratuito',
 ];

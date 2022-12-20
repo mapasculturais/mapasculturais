@@ -44,11 +44,15 @@ app.component('create-occurrence', {
         entity: {
             type: Entity,
             required: true
+        },
+        occurrence: {
+            type: Entity,
+            default: null
         }
     },
 
     created() {
-        this.newOccurrence = new Entity('eventOccurrence');
+        this.newOccurrence = this.occurrence || new Entity('eventOccurrence');
     },
 
     computed: {
@@ -70,14 +74,7 @@ app.component('create-occurrence', {
                 let description = '';
                 let monthsName = __('meses', 'create-occurrence');
                 let daysName = __('dias', 'create-occurrence');
-
-                let weekDays = [];                
-                daysName.forEach(function (status, index) {
-                    if (status) {
-                        weekDays.push(index);
-                    }
-                });
-
+                let daysLength = Object.values(this.days).filter(Boolean).length;
 
                 switch (this.frequency) {
                     case 'once':
@@ -87,22 +84,25 @@ app.component('create-occurrence', {
                         description += __('diariamente', 'create-occurrence');
                         break;
                     case 'weekly':
-                        if (weekDays[0] == '0' || weekDays[0] == '6') {
+                        if (this.days[0] == 'on' || (this.days[6] == 'on' && daysLength == 1)) {
                             description += __('todo', 'create-occurrence');
                         } else {
                             description += __('toda', 'create-occurrence');
                         }
-                        let count = 1;
 
-                        if (Object.values(this.days).filter(Boolean).length > 0) {
-                            weekDays.forEach(function (day, index) {
-                                description += daysName[day];
-                                count++;
-                                if (count == weekDays.length)
-                                    description += __('e', 'create-occurrence');
-                                else if (count < weekDays.length)
+                        let count = 1;
+                        for (let [key, state] of Object.entries(this.days)) {
+                            if (state) {
+                                description += daysName[key]
+                                ++count;
+
+                                if(daysLength > count) {
                                     description += ', ';
-                            });
+                                }
+                                if(daysLength == count) {
+                                    description += __('e', 'create-occurrence');
+                                }
+                            }
                         }
                         break;
                 }
@@ -187,8 +187,9 @@ app.component('create-occurrence', {
 
         // Criação da ocorrência
         create(modal) {
-            this.newOccurrence['eventId'] = this.entity.id;
-            this.newOccurrence['spaceId'] = this.space ? this.space.id : '';
+            this.newOccurrence.eventId = this.entity.id;
+            this.newOccurrence.spaceId = this.space ? this.space.id : '';
+            this.newOccurrence.space = this.space;
 
             if (this.frequency) {
                 this.newOccurrence['frequency'] = this.frequency;
@@ -197,7 +198,6 @@ app.component('create-occurrence', {
                     case 'once':
                         if (this.startsOn) {
                             let startsOn = new McDate(this.startsOn);
-                            console.log(startsOn);
                             this.newOccurrence['startsOn'] = startsOn.year() +'-'+ (startsOn.month('2-digit')) +'-'+ startsOn.day('2-digit');
                         }
                         break;
@@ -207,7 +207,6 @@ app.component('create-occurrence', {
                             this.newOccurrence['day'] = this.days;
                         }
                         if (this.dateRange) {
-                            console.log(this.dateRange);
                             let startsOn = new McDate(this.dateRange['0']);
                             let endsOn = new McDate(this.dateRange['1']);
                             this.newOccurrence['startsOn'] = startsOn.year() +'-'+ startsOn.month('2-digit') +'-'+ startsOn.day('2-digit');
@@ -218,7 +217,6 @@ app.component('create-occurrence', {
 
                     case 'daily':
                         if (this.dateRange) {
-                            console.log(this.dateRange);
                             let startsOn = new McDate(this.dateRange['0']);
                             let endsOn = new McDate(this.dateRange['1']);
                             this.newOccurrence['startsOn'] = startsOn.year() +'-'+ startsOn.month('2-digit') +'-'+ startsOn.day('2-digit');
@@ -237,13 +235,15 @@ app.component('create-occurrence', {
             }      
 
             this.newOccurrence['description'] = this.description ?? '';
-            this.newOccurrence['price'] = this.price ?? 0;
+            this.newOccurrence['price'] = this.free ? __('Gratuito', 'create-occurrence') : this.price;
             this.newOccurrence['priceInfo'] = this.priceInfo ?? '';
             
-            this.newOccurrence.save().then(
-                modal.close(),
-                this.cleanForm()                
-            );
+            this.newOccurrence.save().then(() => {
+                modal.close();
+                this.$emit('create', this.newOccurrence);
+                this.cleanForm();
+            });
+            
         },
 
         cleanForm() {
