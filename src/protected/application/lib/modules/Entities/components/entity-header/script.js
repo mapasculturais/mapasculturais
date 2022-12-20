@@ -37,6 +37,9 @@ app.component('entity-header', {
             case 'event':
                 this.titleEdit = __('title event', 'entity-header');
                 break;
+            case 'seal':
+                this.titleEdit = __('title seal', 'entity-header');
+                break;
         }
     },
     methods: {
