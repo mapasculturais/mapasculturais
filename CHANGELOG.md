@@ -3,7 +3,9 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
+## [5.4.1] - 2022-12-19
+### Correções
+- Corrige importador de enventos interpretanto Avatar, Banner e Galeria como campos obrigatórios
 ## [5.4.0] - 2022-12-14
 ### Correções
 - Atualiza updateTimestamp das entidades quando modificado um metadado
