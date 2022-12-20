@@ -1047,6 +1047,11 @@ class Controller extends \MapasCulturais\Controller
       $error = [];
       $alloweds_type = ['AVATAR', 'HEADER', 'GALLERY'];
       foreach($alloweds_type as $type){
+         
+         if(empty($value[$type])){
+            continue;
+         }
+
          if($matches = $this->matches($value[$type])){
             foreach($matches as $matche){
                $exp = explode(":", $matche);
