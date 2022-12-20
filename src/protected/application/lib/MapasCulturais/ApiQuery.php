@@ -2031,7 +2031,7 @@ class ApiQuery {
             $app = App::i();
             
             $is_admin = $app->user->is('admin') ;
-            if($is_admin || $app->user->is('guest')){
+            if($is_admin || $app->user->is('guest') || !$this->permissionCacheClassName){
                 foreach($entities as $entity){
                     $this->__viewPrivateDataPermissions[$entity['id']] = $is_admin;
                 }
