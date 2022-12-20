@@ -137,6 +137,7 @@ abstract class Entity implements \JsonSerializable{
 
     function simplify($properties = 'id,name'){
         $e = new \stdClass;
+        $e->{'@entityType'} = $this->getControllerId();
 
         $properties = is_string($properties) ? explode(',',$properties) : $properties;
         if(is_array($properties)){
