@@ -35,6 +35,7 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueStyle($vendor_group, 'leaflet.markercluster', '../node_modules/leaflet.markercluster/dist/MarkerCluster.css');
             $app->view->enqueueStyle($vendor_group, 'leaflet.markercluster.default', '../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css');
             $app->view->assetManager->publishFolder('js/vue-init/', 'js/vue-init/');
+            $app->view->assetManager->publishFolder('js/media-query/', 'js/media-query/');
             
             // Importa componentes globais
             $app->view->import('mc-icon popover entities');

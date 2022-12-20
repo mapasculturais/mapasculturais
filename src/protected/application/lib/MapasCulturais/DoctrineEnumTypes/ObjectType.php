@@ -28,7 +28,8 @@ class ObjectType extends DoctrineEnumType
             'Request' => 'MapasCulturais\Entities\Request',
             'Seal' => 'MapasCulturais\Entities\Seal',
             'Space' => 'MapasCulturais\Entities\Space',
-            'Subsite' => 'MapasCulturais\Entities\Subsite'
+            'Subsite' => 'MapasCulturais\Entities\Subsite',
+            'User' => 'MapasCulturais\Entities\User',
         ];
     }
 }
