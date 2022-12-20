@@ -3,6 +3,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    confirm-button
     create-occurrence
     entities
     entity-map
@@ -22,7 +23,7 @@ $this->import('
     </div>
     <div class="entity-occurrence-list__occurrences">
         <label class="occurrence__title">Agenda</label>
-        <entities type="eventOccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
+        <entities name="occurrenceList" type="eventOccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
             <template #default="{entities}">
                 <div v-for="occurrence in entities" class="occurrence" :class="{'edit': editable}" :key="occurrence._reccurrence_string">
                     <div class="occurrence__card">
@@ -30,21 +31,21 @@ $this->import('
                             <div class="header__title">
                                 <mc-icon name="pin"></mc-icon> 
                                 <span class="title">
-                                    {{occurrence.space.name}}
+                                    {{occurrence.space?.name}}
                                 </span>
                             </div>
-                            <span v-if="occurrence.space.endereco" @click="toggleMap($event)" class="header__link button--icon">
+                            <span v-if="occurrence.space?.endereco" @click="toggleMap($event)" class="header__link button--icon">
                                 <mc-icon name="map"></mc-icon> <?= i::_e('Ver mapa') ?>
                             </span>
                         </div>
                         <div class="address">
-                            <p>{{occurrence.space.endereco}}</p>
+                            <p>{{occurrence.space?.endereco}}</p>
                         </div>
                         <div class="content">
                             <div class="content__ticket">
                                 <mc-icon name="date"></mc-icon>
                                 <span class="ticket">
-                                    {{occurrence.rule.startsOn}}
+                                    {{occurrence.description}} 
                                 </span>
                             </div>
                             <div class="content__price">
@@ -55,16 +56,28 @@ $this->import('
                             </div>
                         </div>
                     </div>
-                    <div v-if="occurrence.space.endereco" class="occurrence__map">
+                    <div v-if="occurrence.space?.endereco" class="occurrence__map">
                         <entity-map :entity="occurrence.space"></entity-map>
                     </div>
                     <div v-if="editable" class="occurrence__actions">
-                        <a class="occurrence__actions--edit">
-                            <mc-icon name="edit"></mc-icon><?= i::_e('Editar') ?>
-                        </a>
-                        <a class="occurrence__actions--delete">
-                            <mc-icon name="trash"></mc-icon><?= i::_e('Excluir') ?>
-                        </a>
+
+                        <!-- Sem edição no momento -->
+                        <!-- <create-occurrence occurrence="ocorrência" editable>
+                            <a class="occurrence__actions--edit">
+                                <mc-icon name="edit"></mc-icon><?= i::_e('Editar') ?>
+                            </a>
+                        </create-occurrence> -->
+
+                        <confirm-button @confirm="occurrence.delete(true)">
+                            <template #button="modal">
+                                <a class="occurrence__actions--delete" @click="modal.open();">
+                                    <mc-icon name="trash"></mc-icon><?= i::_e('Excluir') ?>
+                                </a>
+                            </template> 
+                            <template #message="message">
+                                <?php i::_e('Deseja remover essa ocorrência?') ?>
+                            </template> 
+                        </confirm-button>
                     </div>
                 </div>                
             </template>
