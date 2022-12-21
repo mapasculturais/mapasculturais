@@ -1511,7 +1511,7 @@ class App extends \Slim\Slim{
 
         if ($this->_config['app.log.hook']){
             $conf = $this->_config['app.log.hook'];
-            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#', $name)){
+            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#i', $name)){
                 $this->_logHook($name);
 
             }
@@ -1550,7 +1550,7 @@ class App extends \Slim\Slim{
 
         if ($this->_config['app.log.hook']){
             $conf = $this->_config['app.log.hook'];
-            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#', $name)){
+            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#i', $name)){
                 $this->_logHook($name);
             }
         }
