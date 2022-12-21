@@ -1,6 +1,6 @@
 <?php
 
-namespace MapasCulturais\Entities;
+namespace Apps\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
