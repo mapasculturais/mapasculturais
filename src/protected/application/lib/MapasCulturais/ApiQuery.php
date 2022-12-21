@@ -416,6 +416,11 @@ class ApiQuery {
     protected $_accessControlEnabled = true;
 
     /**
+     * @var string prefixo dos hooks 
+     */
+    protected $hookPrefix;
+
+    /**
      *
      * @var ApiQuery
      */
@@ -447,6 +452,11 @@ class ApiQuery {
      */
     protected function initialize($class, array $api_params) {
         $app = App::i();
+
+        $_hook_class_path = $class::getHookClassPath();
+        $this->hookPrefix = "ApiQuery({$_hook_class_path})";
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.params", [&$api_params]);
         
         $this->__queryNum = self::$queryCounter++;
         
