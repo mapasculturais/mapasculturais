@@ -13,7 +13,9 @@ use MapasCulturais\Traits;
  */
 class UserApp extends EntityController {
 
-    use Traits\ControllerSoftDelete;
+    use Traits\ControllerSoftDelete,
+        Traits\ControllerAPI;
+
 
     /**
      * Returns the entity with the requested id.
