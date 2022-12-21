@@ -210,4 +210,22 @@ return [
         });
     },
 
+    'Atualiza os campos das ocorrencias para o novo padrao' => function(){
+        DB_UPDATE::enqueue('EventOccurrence', 'id > 0', function (MapasCulturais\Entities\EventOccurrence $entity){
+
+            $entity->description = $entity->description ?: $entity->rule->description;
+            $entity->price = $entity->price ?: $entity->rule->price;
+            
+            /* 
+             Validar o price 
+             se for texto gratuito -> verificar se 0/gratis/grátis/Grátis/gratuito/Gratuito/R$ 0,00/R$0  => define o price como 'Gratuito'
+             se for texto !gratuito -> priceInfo
+             se for numérico -> aplicar mascara de moeda
+             */
+            
+            $entity->save(true);
+        });
+        
+    },
+
 ];
