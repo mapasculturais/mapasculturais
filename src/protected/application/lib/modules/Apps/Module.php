@@ -30,6 +30,12 @@ class Module extends \MapasCulturais\Module {
             });
         }
 
+        // adiciona a entidade ao $DESCRIPTIONS
+        $app->hook('mapas.printJsObject:before', function () {
+            /** @var \MapasCulturais\Theme $this */
+            $this->jsObject['EntitiesDescription']['app'] = Entities\UserApp::getPropertiesMetadata();
+        });
+
         // define o subsite como nulo quando apagar um subsite
         $app->hook('entity(Subsite).remove:before', function () use($app) {
             /** @var Subsite $this */
