@@ -35,14 +35,14 @@ class UserApp extends \MapasCulturais\Entity {
      * @ORM\Column(name="public_key", type="string", nullable=false)
      * @ORM\Id
      */
-    protected $_publicKey;
+    protected $publicKey;
 
     /**
      * @var string
      *
      * @ORM\Column(name="private_key", type="string", nullable=false)
      */
-    protected $_privateKey;
+    protected $privateKey;
 
     /**
      * @var \MapasCulturais\Entities\User
@@ -94,22 +94,22 @@ class UserApp extends \MapasCulturais\Entity {
     protected $subsite;
 
     public function __construct() {
-        $this->_publicKey = App::getToken(32);
-        $this->_privateKey = App::getToken(64);
+        $this->publicKey = App::getToken(32);
+        $this->privateKey = App::getToken(64);
         $this->user = App::i()->user;
         parent::__construct();
     }
 
-    function getPublicKey() {
-        return $this->_publicKey;
+    function setPublicKey() {
+        // do nothing
     }
 
-    function getPrivateKey() {
-        return $this->_privateKey;
+    function setPrivateKey() {
+        // do nothing
     }
 
     function getId() {
-        return $this->_publicKey;
+        return $this->publicKey;
     }
     
     protected function canUserView($user){
