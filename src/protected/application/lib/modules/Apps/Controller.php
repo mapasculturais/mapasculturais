@@ -18,7 +18,7 @@ class Controller extends EntityController {
 
     function __construct()
     {
-        $this->entityClassName = 'MapasCulturais\\Entities\\UserApp';
+        $this->entityClassName = Entities\UserApp::class;
     }
 
     /**

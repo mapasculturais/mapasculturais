@@ -3,10 +3,10 @@
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>"><?php \MapasCulturais\i::_e("editar");?></a>
 
-        <?php if($entity->status === \MapasCulturais\Entities\UserApp::STATUS_ENABLED): ?>
+        <?php if($entity->status === \MapasCulturais\Entity::STATUS_ENABLED): ?>
             <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir");?></a>
 
-        <?php elseif ($entity->status === \MapasCulturais\Entities\UserApp::STATUS_DRAFT): ?>
+        <?php elseif ($entity->status === \MapasCulturais\Entity::STATUS_DRAFT): ?>
             <a class="btn btn-small btn-warning" href="<?php echo $entity->publishUrl; ?>"><?php \MapasCulturais\i::_e("publicar");?></a>
             <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir");?></a>
 

@@ -11,6 +11,7 @@ use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\Subsite;
+use Apps\Entities\UserApp;
 
 /**
  * User Panel Controller
@@ -322,8 +323,8 @@ class Panel extends \MapasCulturais\Controller {
     function GET_apps(){
         $this->requireAuthentication();
         $user = $this->_getUser();
-        $enabledApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_ENABLED]);
-        $thrashedApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_TRASH]);
+        $enabledApps = App::i()->repo(UserApp::class)->findBy(['user' => $user, 'status' => UserApp::STATUS_ENABLED]);
+        $thrashedApps = App::i()->repo(UserApp::class)->findBy(['user' => $user, 'status' => UserApp::STATUS_TRASH]);
         $this->render('apps', ['user' => $user, 'enabledApps' => $enabledApps, 'thrashedApps' => $thrashedApps]);
     }
 
