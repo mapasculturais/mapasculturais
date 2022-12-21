@@ -25,13 +25,15 @@ class Module extends \MapasCulturais\Module {
         // reabilita a view create para o BaseV1
         if($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
             $app->hook('GET(app.create)', function() {
+                /** @var Controller $this */
                 $this->render('create');
             });
         }
 
         // define o subsite como nulo quando apagar um subsite
         $app->hook('entity(Subsite).remove:before', function () use($app) {
-            $query = "UPDATE \Apps\Entities\UserApp u SET u.subsite = NULL WHERE u._subsiteId = {$subsite_id}";
+            /** @var Subsite $this */
+            $query = "UPDATE \Apps\Entities\UserApp u SET u.subsite = NULL WHERE u._subsiteId = {$this->id}";
             $q = $app->em->createQuery($query);
             $q->execute();
         });
