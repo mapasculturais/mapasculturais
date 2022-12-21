@@ -88,7 +88,6 @@ app.component('popover', {
         },
         toggle() {
             this.active ? this.close() : this.open();
-            console.log(this.click);
         }
     },
 });
