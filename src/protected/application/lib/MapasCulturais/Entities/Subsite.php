@@ -476,10 +476,6 @@ class Subsite extends \MapasCulturais\Entity
         $q = $app->em->createQuery($query);
         $q->execute();
 
-        $query = "UPDATE \MapasCulturais\Entities\UserApp u SET u.subsite = NULL WHERE u._subsiteId = {$subsite_id}";
-        $q = $app->em->createQuery($query);
-        $q->execute();
-
         $app->em->flush();
     }
 

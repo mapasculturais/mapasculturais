@@ -19,6 +19,13 @@ class Module extends \MapasCulturais\Module {
                 $this->render('create');
             });
         }
+
+        // define o subsite como nulo quando apagar um subsite
+        $app->hook('entity(Subsite).remove:before', function () use($app) {
+            $query = "UPDATE \Apps\Entities\UserApp u SET u.subsite = NULL WHERE u._subsiteId = {$subsite_id}";
+            $q = $app->em->createQuery($query);
+            $q->execute();
+        });
     }
 
     function register()
