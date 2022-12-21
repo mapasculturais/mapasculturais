@@ -821,9 +821,6 @@ class App extends \Slim\Slim{
 
         $this->registerController('subsite',        'MapasCulturais\Controllers\Subsite');
 
-
-        $this->registerController('app',   'MapasCulturais\Controllers\UserApp');
-
         $this->registerController('registration',                   'MapasCulturais\Controllers\Registration');
         $this->registerController('registrationFileConfiguration',  'MapasCulturais\Controllers\RegistrationFileConfiguration');
         $this->registerController('registrationFieldConfiguration', 'MapasCulturais\Controllers\RegistrationFieldConfiguration');

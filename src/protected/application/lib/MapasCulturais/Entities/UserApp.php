@@ -100,6 +100,11 @@ class UserApp extends \MapasCulturais\Entity {
         parent::__construct();
     }
 
+    function getControllerId()
+    {
+        return 'app';
+    }
+
     function setPublicKey() {
         // do nothing
     }

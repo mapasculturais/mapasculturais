@@ -1,8 +1,7 @@
 <?php
+namespace Apps;
 
-namespace MapasCulturais\Controllers;
-
-use MapasCulturais\App;
+use MapasCulturais\Controllers\EntityController;
 use MapasCulturais\Traits;
 
 /**
@@ -11,11 +10,16 @@ use MapasCulturais\Traits;
  * By default this controller is registered with the id 'space'.
  *
  */
-class UserApp extends EntityController {
+class Controller extends EntityController {
 
     use Traits\ControllerSoftDelete,
         Traits\ControllerAPI;
 
+
+    function __construct()
+    {
+        $this->entityClassName = 'MapasCulturais\\Entities\\UserApp';
+    }
 
     /**
      * Returns the entity with the requested id.
