@@ -23,6 +23,8 @@ class Module extends \MapasCulturais\Module {
 
     function register()
     {
-        
+        $app = App::i();
+
+        $app->registerController('app', Controller::class);
     }
 }
