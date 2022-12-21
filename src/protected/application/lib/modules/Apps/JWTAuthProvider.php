@@ -1,11 +1,11 @@
 <?php
-
-namespace MapasCulturais\AuthProviders;
+namespace Apps;
 
 use Apps\Entities\UserApp;
 use MapasCulturais\App;
-use \Firebase\JWT\JWT as FireJWT; 
-class JWT extends \MapasCulturais\AuthProvider {
+use \Firebase\JWT\JWT as FireJWT;
+
+class JWTAuthProvider extends \MapasCulturais\AuthProvider {
 
     protected $__user = null;
     protected $__userApp = null;
