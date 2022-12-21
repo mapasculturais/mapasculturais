@@ -2,11 +2,20 @@
 namespace Apps;
 
 use MapasCulturais\App;
+use MapasCulturais\Entities\Subsite;
 
 class Module extends \MapasCulturais\Module {
     function _init()
     {
         $app = App::i();
+
+        // define o JWT como Auth Provider caso venha um header authorization
+        $app->hook('app.register:after', function () {
+            /** @var App $this */
+            if($token = $this->request()->headers->get('authorization')){
+                $this->_auth = new \Apps\JWTAuthProvider(['token' => $token]);
+            }
+        });
 
         // impossibilita que a API retorne chaves de terceiros
         $app->hook('ApiQuery(UserApp).params', function (&$params) {

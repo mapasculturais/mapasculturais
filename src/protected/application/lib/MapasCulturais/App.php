@@ -554,9 +554,7 @@ class App extends \Slim\Slim{
 
         // =============== AUTH ============== //
 
-        if($token = $this->request()->headers->get('authorization')){
-            $this->_auth = new \Apps\JWTAuthProvider(['token' => $token]);
-        }else{
+        if (!$this->_auth) {
             $auth_class_name = strpos($config['auth.provider'], '\\') !== false ? $config['auth.provider'] : 'MapasCulturais\AuthProviders\\' . $config['auth.provider'];
             $this->_auth = new $auth_class_name($config['auth.config']);
             $this->_auth->setCookies();
