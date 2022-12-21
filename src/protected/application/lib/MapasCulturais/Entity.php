@@ -97,8 +97,13 @@ abstract class Entity implements \JsonSerializable{
             }
         }
 
-        if(property_exists($this, 'createTimestamp'))
-                $this->createTimestamp = new \DateTime;
+        if(property_exists($this, 'createTimestamp')) {
+            $this->createTimestamp = new \DateTime;
+        }
+
+        if(property_exists($this, 'updateTimestamp')) {
+            $this->updateTimestamp = new \DateTime;
+        }
 
         if($this->usesOwnerAgent() && !$app->user->is('guest')){
             $this->setOwner($app->user->profile);
