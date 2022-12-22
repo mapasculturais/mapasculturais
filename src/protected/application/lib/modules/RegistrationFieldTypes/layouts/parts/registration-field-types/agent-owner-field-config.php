@@ -3,7 +3,7 @@ use MapasCulturais\i;
 
 $app = MapasCulturais\App::i();
 $definitions = MapasCulturais\Entities\Agent::getPropertiesMetadata();
-$agent_fields = $app->modules['RegistrationFieldTypes']->config['availableAgentFields'];
+$agent_fields = $app->modules['RegistrationFieldTypes']->getAgentFields();
 
 $fields_options = [];
 $fields_labels = [
@@ -38,6 +38,7 @@ foreach ($agent_fields as $field) {
         $fields_options[$field] = $field;
     }
 }
+// eval(\psy\sh());
 ?>
 <div ng-if="field.fieldType === 'agent-owner-field'" >
     <?php i::_e('Campo do agente responsável:') ?>

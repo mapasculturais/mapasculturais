@@ -20,6 +20,9 @@
                 <div class="edit-card-header-widgets">
                     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
                 </div>
+                <div>
+                    <?php $this->part('widget-functions', array('entity'=>$entity)); ?>
+                </div>
                 <?php if($this->isEditable() && $entity->shortDescription && mb_strlen($entity->shortDescription) > 400): ?>
                     <div class="alert warning">
                         <?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?>

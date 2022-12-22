@@ -4,6 +4,10 @@
  */
 return array(
     'metadata' => array(
+		'lockedFields' => array(
+			'type'=>'json',
+			'label'=>''
+		),
     	'site' => array(
     			'label' => \MapasCulturais\i::__('Site'),
     			'validations' => array(

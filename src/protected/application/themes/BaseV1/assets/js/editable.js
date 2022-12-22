@@ -117,6 +117,26 @@ jQuery(function(){
             });
         }
 
+        if ($(this).hasClass('js-mask-cnpj')) {
+            if (MapasCulturais.postalCodeMask === false) return;
+            var masks = MapasCulturais.postalCodeMask ? [MapasCulturais.postalCodeMask] : ['00.000.000/0000-00'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(masks[0], options) ;
+               }
+            });
+        }
+
+        if ($(this).hasClass('js-mask-cpf')) {
+            if (MapasCulturais.postalCodeMask === false) return;
+            var masks = MapasCulturais.postalCodeMask ? [MapasCulturais.postalCodeMask] : ['000.000.000-00'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(masks[0], options) ;
+               }
+            });
+        }
+
         if ($(this).hasClass('js-mask-time')) {
             //Mask
             var masks = ['00:00'];
@@ -362,6 +382,11 @@ MapasCulturais.Editables = {
         $('.js-editable-taxonomy').each(function(){
             var taxonomy = $(this).data('taxonomy');
 
+            if(MapasCulturais.entity.object.lockedFields && 
+                MapasCulturais.entity.object.lockedFields.indexOf(`terms:${taxonomy}`) >= 0) {
+                return;
+            }
+
             var select2_option = {
                 tags: [],
                 tokenSeparators: [";",";"],
@@ -402,6 +427,9 @@ MapasCulturais.Editables = {
     },
 
     initTypes: function(){
+        if(MapasCulturais.entity.object.lockedFields && MapasCulturais.entity.object.lockedFields.indexOf('type') >= 0) {
+            return;
+        }
         $('.js-editable-type').each(function(){
             var entity = $(this).data('entity');
             $.each(MapasCulturais.entityTypes[entity], function(i, obj){
@@ -430,6 +458,10 @@ MapasCulturais.Editables = {
         MapasCulturais.Editables.getEditableElements().each(function(){
 
             var field_name = $(this).data(MapasCulturais.Editables.dataSelector);
+            if(MapasCulturais.entity.object.lockedFields && MapasCulturais.entity.object.lockedFields.indexOf(field_name) >= 0) {
+                return;
+            }
+            
             var input_type;
 
             if(!entity[field_name])

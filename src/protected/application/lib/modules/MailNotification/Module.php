@@ -50,23 +50,38 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $data = [
-            'template' => 'send_registration',
-            'registrationId' => $registration->id,
-        ];
+        $template = 'send_registration';
+        $enable = $this->config['enabled'];
 
-        $app->enqueueJob(SendMailNotification::SLUG, $data);
+        $app->applyHook("sendMailNotification.registrationSend",[&$registration, &$template, &$enable]);
+
+        if($enable){
+
+            $data = [
+                'template' => $template,
+                'registrationId' => $registration->id,
+            ];
+
+            $app->enqueueJob(SendMailNotification::SLUG, $data);
+        }
     }
 
     public function registrationStart(Registration $registration)
     {
         $app = App::i();
+        
+        $template = 'start_registration';
+        $enable = $this->config['enabled'];
 
-        $data = [
-            'template' => 'start_registration',
-            'registrationId' => $registration->id,
-        ];
+        $app->applyHook("sendMailNotification.registrationStart",[&$registration, &$template, &$enable]);
+        if($enable){
 
-        $app->enqueueJob(SendMailNotification::SLUG, $data);
+            $data = [
+                'template' => $template,
+                'registrationId' => $registration->id,
+            ];
+
+            $app->enqueueJob(SendMailNotification::SLUG, $data);
+        }
     }
 }
