@@ -42,7 +42,7 @@ $this->breadcramb = [
                     <main>
                         <div class="grid-12">
                             <entity-location :entity="entity" classes="col-12"></entity-location>
-                            <div class="col-12 box-cnpj">
+                            <div v-if="entity.cnpj" class="col-12 box-cnpj">
                                 <label>CNPJ do agente</label>
                                 <div class="box-cnpj__box" >
                                     {{entity.cnpj}}
