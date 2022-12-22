@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Remove definição da configuração availableAgentFields no Module registrationFieldTypes
 - Corrige carregamento dos campos @ na tela de configuração de campo garantindo que todos ja tenham sido registrados
+- Corrige erro na tela do certificado que impedia a exibição ao tentar verificar a expiração do selo
 ### Melhorias
 - atualiza o updateTimestamp da entidade quando modifica um metadado
 - opção de bloqueio de campos das entidades seladas
