@@ -1,4 +1,8 @@
 <?php
+
+use MapasCulturais\App;
+use MapasCulturais\i;
+
 return [
     'recreate pcache' => function () {
     $app = \MapasCulturais\App::i();
@@ -208,6 +212,32 @@ return [
                 }
             }
         });
+    },
+
+    'Atualiza os campos das ocorrencias para o novo padrao' => function(){
+        $app = App::i();
+        DB_UPDATE::enqueue('EventOccurrence', 'id > 0', function (MapasCulturais\Entities\EventOccurrence $entity) use ($app) {
+
+            $entity->description = $entity->description ?: $entity->rule->description;
+            $entity->price = $entity->price ?: $entity->rule->price;
+
+            if (!preg_match("/^ *\d+([\.,]\d+)? *$/", $entity->price)) {
+
+                $lowerPrice = strtolower($entity->price);
+                $app->removeAccents($entity->price);
+
+                $freeTypes = ['gratuito', 'gratis', '0', '00', 'r$ 0,00', 'r$0,00', 'r$0', 'r$ 0.00', 'r$0.00', 'r$00', ''];                
+                if (in_array($lowerPrice, $freeTypes)) {
+                    $entity->price = i::__("Gratuito");
+                } else {
+                    $entity->priceInfo = $entity->price;
+                    $entity->price = i::__("Gratuito");
+                }
+            }
+            
+            $entity->save(true);
+        });
+        
     },
 
 ];

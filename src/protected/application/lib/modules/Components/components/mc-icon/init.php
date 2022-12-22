@@ -55,6 +55,7 @@ $iconset = [
     'filter' => 'ic:baseline-filter-alt',
     'home' => 'ci:home-fill',
     'image' => 'bi:image-fill',
+    'info' => 'material-symbols:info-outline-rounded',
     'link' => 'cil:link-alt',
     'list' => 'ci:list-ul',
     'loading' => 'eos-icons:three-dots-loading',

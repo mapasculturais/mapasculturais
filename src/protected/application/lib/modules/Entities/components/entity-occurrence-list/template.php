@@ -29,7 +29,7 @@ $this->import('
                     <div class="occurrence__card">
                         <div class="header">
                             <div class="header__title">
-                                <mc-icon name="pin"></mc-icon> 
+                                <mc-icon name="pin"></mc-icon>
                                 <span class="title">
                                     {{occurrence.space?.name}}
                                 </span>
@@ -45,14 +45,22 @@ $this->import('
                             <div class="content__ticket">
                                 <mc-icon name="date"></mc-icon>
                                 <span class="ticket">
-                                    {{occurrence.description}} 
+                                    {{occurrence.description}}
                                 </span>
                             </div>
                             <div class="content__price">
-                                <mc-icon name="ticket"></mc-icon>
-                                <span class="price">
-                                    {{formatPrice(occurrence.price)}}
-                                </span>
+                                <div class="content__price--value">
+                                    <mc-icon name="ticket"></mc-icon>
+                                    <span class="value">
+                                        {{formatPrice(occurrence.price)}}
+                                    </span>
+                                </div>
+                                <div v-if="occurrence.priceInfo" class="content__price--info">
+                                    <mc-icon name="info"></mc-icon>
+                                    <span class="info">
+                                        {{occurrence.priceInfo}}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -73,13 +81,13 @@ $this->import('
                                 <a class="occurrence__actions--delete" @click="modal.open();">
                                     <mc-icon name="trash"></mc-icon><?= i::_e('Excluir') ?>
                                 </a>
-                            </template> 
+                            </template>
                             <template #message="message">
                                 <?php i::_e('Deseja remover essa ocorrência?') ?>
-                            </template> 
+                            </template>
                         </confirm-button>
                     </div>
-                </div>                
+                </div>
             </template>
             <template #loading>
                 <div>
