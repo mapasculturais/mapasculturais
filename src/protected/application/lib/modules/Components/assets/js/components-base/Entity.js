@@ -35,7 +35,11 @@ class Entity {
             }
 
             if ((definition.type == 'datetime' || definition.type == 'date' ) && val && !(val instanceof McDate)) {
-                val = new McDate(val.date);
+                if (typeof val == 'string') {
+                    val = new McDate(val);
+                } else {
+                    val = new McDate(val.date);
+                }
             }
 
             if (prop == 'location') {
