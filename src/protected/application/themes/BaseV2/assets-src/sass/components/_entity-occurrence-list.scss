@@ -112,13 +112,21 @@
                     margin-top: size(20);
 
                     &__ticket,
-                    &__price {
+                    &__price{
                         align-items: center;
                         display: flex;
                         gap: size(10);
 
+                        &--value,
+                        &--info {
+                            align-items: center;
+                            display: flex;
+                            gap: size(10);
+                        }
+
                         .ticket,
-                        .price {
+                        .value,
+                        .info {
                             font-weight: 600;
                             font-size: size(14);
                             line-height: size(20);
