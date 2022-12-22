@@ -15,6 +15,8 @@ use MapasCulturais\Entities\RegistrationFieldConfiguration;
 
 class Module extends \MapasCulturais\Module
 {
+    protected $entities = [];
+
     public function _init()
     {
         $app = App::i();
@@ -30,6 +32,16 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueScript('app', 'customizable', 'js/customizable.js');
         $app->view->enqueueScript('app', 'flatpickr', 'vendor/flatpickr.js');
         $app->view->enqueueScript('app', 'flatpickr-pt', 'vendor/flatpickr-pt.js', ['flatpickr']);
+
+        $module = $this;
+        $app->hook("entity(Registration).save:finish", function() use($module, $app) {
+            
+            foreach($module->entities as $entity) {
+                if ($entity->changedByRegistration) {
+                    $entity->save();
+                }
+            }
+        });
 
         $app->view->jsObject['flatpickr'] = [
             'altFormat' => env('DATEPICKER_VIEW_FORMAT', i::__("d/m/Y"))
@@ -83,7 +95,6 @@ class Module extends \MapasCulturais\Module
                 };
             }
         });
-        $this->_config['availableAgentFields'] = $this->getAgentFields();
     }
 
     function register_space_field() {
@@ -130,7 +141,6 @@ class Module extends \MapasCulturais\Module
         $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links'];
         
         $definitions = Agent::getPropertiesMetadata();
-        
         foreach ($definitions as $key => $def) {
             $def = (object) $def;
             if ($def->isMetadata && $def->available_for_opportunities) {
@@ -500,12 +510,8 @@ class Module extends \MapasCulturais\Module
                 $entity->publicLocation = !empty($value['publicLocation']);
 
             } else if($entity_field == '@terms:area') {
-                // para forçar o save da entidade. o espaço é removido porsteriormente num trim()
-                $entity->name = $entity->name . ' ';
                 $entity->terms['area'] = $value;
             } else if($entity_field == '@links') {
-
-                $entity->name = $entity->name . ' ';
                 $savedMetaList = $entity->getMetaLists();
 
                 foreach ($savedMetaList as $savedMetaListGroup) {
@@ -548,11 +554,10 @@ class Module extends \MapasCulturais\Module
             } else {
                 $entity->$entity_field = $value;
             }
-            // só salva na entidade se salvou na inscrição
-            $app->hook("entity(RegistrationMeta).save:after", function() use($entity) {
-                $entity->save();
-            });
             
+            // só salva na entidade se salvou na inscrição
+            $entity->changedByRegistration = true;
+            $this->entities["$entity"] = $entity;
         }
 
         return json_encode($value);

@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\i;
 use MapasCulturais\Traits;
 
 /**
@@ -26,8 +27,7 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
-        Traits\EntityArchive,
-        Traits\EntitySealRelation;
+        Traits\EntityArchive;
         
     protected $__enableMagicGetterHook = true;
 
@@ -109,6 +109,14 @@ class Seal extends \MapasCulturais\Entity
 
 
     /**
+     * @var object
+     *
+     * @ORM\Column(name="locked_fields", type="json_array", nullable=true, options={"default" : "[]"})
+     */
+    protected $lockedFields;
+
+
+    /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
     protected $__metadata;
@@ -175,7 +183,19 @@ class Seal extends \MapasCulturais\Entity
         ];
     }
 
+    static function getControllerClassName()
+    {
+        return 'Seals\\Controller';
+    }
 
+    
+    /**
+     * Define o valor de lockedFields parseando o valor
+     * @return void 
+     */
+    protected function setLockedFields($_value) {
+        $this->lockedFields = empty($_value) ? [] : (array) $_value;
+    }
 
     function validatePeriod($value) {
     	if (!is_numeric($value)) {
