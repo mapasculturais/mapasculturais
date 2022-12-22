@@ -18,13 +18,23 @@ class McDate {
         return Intl.DateTimeFormat(this.locale, config).format(this._date);
     }
 
+    sql(options) {
+        let year = this._date.getFullYear();
+        let month = String(this._date.getMonth() + 1).padStart(2,0)
+        let day = String(this._date.getDate()).padStart(2,0);
+        if(options == 'date') {
+            return `${year}-${month}-${day}`;
+        } else if (options == 'time') {
+            return this.time('full');
+        } else {
+            const time = this.time('full');
+            return `${year}-${month}-${day} ${time}`;
+        }
+    }
+
     date(options) {
         if(options == 'sql') {
-            let year = this._date.getFullYear();
-            let month = String(this._date.getMonth() + 1).padStart(2,0)
-            let day = String(this._date.getDate()).padStart(2,0);
-
-            return `${year}-${month}-${day}`;
+            return this.sql('date');
         }
 
         options = options?.split(' ') || ['long'];
@@ -49,6 +59,10 @@ class McDate {
     }
 
     time(option) {
+        if (option == 'sql') {
+            return this.sql('time');
+        }
+
         option = option || 'short';
         const config = {hour: '2-digit', minute: '2-digit'};
         if (option == 'long') {
