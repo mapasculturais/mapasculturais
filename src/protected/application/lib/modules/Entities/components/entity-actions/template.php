@@ -1,15 +1,22 @@
 <?php 
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 use MapasCulturais\i;
 
 $this->import('loading confirm-button');
 ?>
-<div class="entity-actions">
-
+<div v-if="!empty" class="entity-actions">
+    <?php $this->applyTemplateHook('entity-actions', 'before') ?>
     <div class="entity-actions__content">
         <loading :entity="entity"></loading>
         <template v-if="!entity.__processing">
+            <?php $this->applyTemplateHook('entity-actions', 'begin') ?>
             
-            <div class="entity-actions__content--groupBtn rowBtn">
+            <div class="entity-actions__content--groupBtn rowBtn" ref="buttons1">
+                <?php $this->applyTemplateHook('entity-actions--primary', 'begin') ?>
+                
                 <confirm-button v-if="entity.currentUserPermissions?.archive" @confirm="entity.archive()">
                     <template #button="modal">
                         <button  @click="modal.open()" class="button button--icon button--sm arquivar">
@@ -33,9 +40,12 @@ $this->import('loading confirm-button');
                         <?php i::_e('Deseja remover esse agente?') ?>
                     </template> 
                 </confirm-button>
+
+                <?php $this->applyTemplateHook('entity-actions--primary', 'end') ?>
             </div>
 
-            <div v-if="editable" class="entity-actions__content--groupBtn">
+            <div v-if="editable" class="entity-actions__content--groupBtn" ref="buttons2">
+                <?php $this->applyTemplateHook('entity-actions--secondary', 'begin') ?>
                 <confirm-button v-if="entity.status == 0" @confirm="">
                     <template #button="modal">
                         <button  @click="modal.open()" class="button button--md button--secondary">
@@ -58,14 +68,19 @@ $this->import('loading confirm-button');
                 <button v-if="entity.status == 1 && entity.currentUserPermissions?.modify" @click="save()" class="button button--md publish publish-exit">
                     <?php i::_e("Concluir Edição e Sair") ?>
                 </button>
+
+                <?php $this->applyTemplateHook('entity-actions--secondary', 'end') ?>
             </div>
 
-            <div v-if="!editable" class="entity-actions__content--groupBtn">
-                <a :href="entity.editUrl" class="button button button--md publish">
+            <div v-if="!editable" class="entity-actions__content--groupBtn" ref="buttons2">
+                <?php $this->applyTemplateHook('entity-actions--secondary', 'begin') ?>
+                <a v-if="entity.currentUserPermissions?.modify" :href="entity.editUrl" class="button button button--md publish">
                     <?php i::_e('Editar') ?> {{entityType}}
                 </a>
-            </div>      
+                <?php $this->applyTemplateHook('entity-actions--secondary', 'end') ?>
+            </div>
+            <?php $this->applyTemplateHook('entity-actions', 'end') ?>
         </template>
     </div>
-
+    <?php $this->applyTemplateHook('entity-actions', 'after') ?>
 </div>
