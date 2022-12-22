@@ -128,13 +128,25 @@ class Entity {
 
         const result = {};
 
-        for (let prop in this.$PROPERTIES) {
+        const $PROPERTIES = this.$PROPERTIES;
+
+        for (let prop in $PROPERTIES) {
             if (skipProperties.indexOf(prop) > -1) {
                 continue;
             }
 
+            const definition = $PROPERTIES[prop];
+            
             let val = this[prop];
 
+            if(val instanceof McDate) {
+                if (definition.type == 'date') {
+                    val = val.sql('date');
+                } else if (definition.type == 'datetime') {
+                    val = val.time();
+                }
+            }
+            
             if (prop == 'type' && typeof val == 'object') {
                 val = val.id;
             }
