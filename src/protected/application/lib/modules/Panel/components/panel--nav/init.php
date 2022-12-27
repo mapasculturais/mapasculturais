@@ -24,7 +24,7 @@ $nav_items = [
         'items' => [
             ['route' => 'panel/apps', 'icon' => 'app', 'label' => i::__('Integrações')],
             ['route' => 'panel/my-account', 'icon' => 'account', 'label'=> i::__('Conta e Privacidade')],
-            ['route' => 'panel/my-apps', 'icon' => 'app', 'label'=> i::__('Meus apps')],
+            ['route' => 'panel/my-apps', 'icon' => 'app', 'label'=> i::__('Meus aplivativos')],
         ]
     ],
 
