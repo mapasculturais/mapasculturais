@@ -2,6 +2,7 @@
 namespace Apps;
 
 use MapasCulturais\App;
+use MapasCulturais\i;
 use MapasCulturais\Entities\Subsite;
 
 class Module extends \MapasCulturais\Module {
@@ -42,6 +43,25 @@ class Module extends \MapasCulturais\Module {
             $query = "UPDATE \Apps\Entities\UserApp u SET u.subsite = NULL WHERE u._subsiteId = {$this->id}";
             $q = $app->em->createQuery($query);
             $q->execute();
+        });
+
+          /**
+         * Página para gerenciamento dos aplicativos.
+         */
+        $app->hook('GET(panel.apps)', function() use($app) {
+            /** @var \Panel\Controller $this */
+            $this->requireAuthentication();
+
+            $this->render('apps');
+        });
+
+        $app->hook('panel.nav', function(&$group) use($app) {
+            $group['more']['items'][] = [
+                'route' => 'panel/apps',
+                'icon' => 'app',
+                'label' => i::__('Meus aplicativos'),
+                
+            ];
         });
     }
 
