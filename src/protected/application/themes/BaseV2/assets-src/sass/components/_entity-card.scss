@@ -19,6 +19,9 @@
 		flex-wrap: nowrap;
 		justify-content: space-between;
 		position: relative;
+		.cardKey{
+			background-color: red;
+		}
 
 		&.user-details {
 			display: flex;
