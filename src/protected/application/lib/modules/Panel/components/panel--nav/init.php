@@ -22,9 +22,7 @@ $nav_items = [
     'more' => [
         'label' => i::__('Outras opções'),
         'items' => [
-            ['route' => 'panel/apps', 'icon' => 'app', 'label' => i::__('Integrações')],
             ['route' => 'panel/my-account', 'icon' => 'account', 'label'=> i::__('Conta e Privacidade')],
-            ['route' => 'panel/my-apps', 'icon' => 'app', 'label'=> i::__('Meus aplivativos')],
         ]
     ],
 
