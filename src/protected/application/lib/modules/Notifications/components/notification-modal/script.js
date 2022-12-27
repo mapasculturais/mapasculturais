@@ -28,6 +28,10 @@ app.component('notification-modal' , {
         mediaQuery:{
             type:String,
             required:true
+        },
+        typeStyle: {
+            type: String,
+            default: 'normal'
         }
     },
 
