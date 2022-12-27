@@ -1,0 +1,46 @@
+@use '../settings/mixins' as *;
+
+
+.cardKey {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+
+  
+    &__label {
+        margin-right: 125px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 19px;
+        display: flex;
+        align-items: center;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+    }
+
+    &__content {
+        &verified {
+            display: flex;
+        }
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 19px;
+        height: 18px;
+        max-width: 180px;
+        display: block;
+        word-wrap: break-word;
+        &--icon {
+
+            svg {
+                width: 17px;
+                height: 20px;
+
+                path {
+                    color: black;
+                }
+            }
+
+        }
+    }
+}
