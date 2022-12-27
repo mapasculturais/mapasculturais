@@ -59,6 +59,18 @@ class Module extends \MapasCulturais\Module{
             $this->part('notifications/header-notification',['media_query'=>'min-width: 1071px']);
         });
 
+        // adiciona novo item no menu do usuário
+        $app->hook('template(<<*>>.header-menu-user--itens):begin', function() {
+            /** @var \MapasCulturais\Theme $this */
+            $this->part('notifications/menu-item-notification');
+        });
+
+        // adiciona novo item no menu do usuário
+        $app->hook('template(<<*>>.header-menu-user--mobile):begin', function() {
+            /** @var \MapasCulturais\Theme $this */
+            $this->part('notifications/menu-item-notification');
+        });
+
         // adiciona aba de notificações no dashboard do painel
         $app->hook('template(panel.index.tabs):end', function() {
             /** @var \MapasCulturais\Theme $this */
