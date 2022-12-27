@@ -1115,7 +1115,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         delete field.error;
 
-        $scope.data.editableEntity[field.fieldName] = value ? JSON.parse(angular.toJson(value)) : null;
+        $scope.data.editableEntity[field.fieldName] = value !== undefined ? JSON.parse(angular.toJson(value)) : null;
 
         $timeout.cancel(saveTimeout);
         

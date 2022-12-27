@@ -293,6 +293,11 @@ trait EntityMetadata{
      */
     function setMetadata($meta_key, $value){
     	$app = App::i();
+
+        if(is_string($value) && trim($value) === '') {
+            $value = null;
+        }
+
         $metadata_definition = $this->getRegisteredMetadata($meta_key);
         if (is_null($metadata_definition)) {
             $class = $this->getClassName();
@@ -311,7 +316,7 @@ trait EntityMetadata{
             $this->__createdMetadata[$meta_key] = $metadata_object;
         }
 
-        if($metadata_object->value != $value){
+        if($metadata_object->value !== $value){
             $this->__changedMetadata[$meta_key] = ['key'=> $meta_key, 'oldValue'=> $metadata_object->value, 'newValue'=> $value];
             $metadata_object->value = $value;
             if (property_exists($this, 'updateTimestamp')) {
