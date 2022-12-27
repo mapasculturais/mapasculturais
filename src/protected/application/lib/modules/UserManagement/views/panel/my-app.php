@@ -14,14 +14,14 @@ $this->import('
                 <div class="title__icon app__background">
                     <mc-icon name="app"></mc-icon>
                 </div>
-                <div class="title__title"> <?= i::_e('Meus apps') ?> </div>
+                <div class="title__title"> <?= i::_e('Meus aplicativos') ?> </div>
             </div>
             <div class="help">
                 <a class="panel__help-link" href="#"><?= i::__('Ajuda?') ?></a>
             </div>
         </div>
         <p class="panel-page__header-subtitle">
-            <?= i::_e('Nesta seção você pode adicionar e gerenciar seus apps') ?>
+            <?= i::_e('Nesta seção você pode adicionar e gerenciar seus aplicativos') ?>
         </p>
         <div class="panel-page__header-actions">
             
