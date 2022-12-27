@@ -6,13 +6,13 @@ $this->import('
     notification-list
 ');
 ?>
-<modal v-if="$media(mediaQuery)" :title="modalTitle" classes="create-modal" button-label="Notificações" @open="" @close="">
+<modal v-if="notificationsCount > 0 && $media(mediaQuery)" :title="modalTitle" classes="create-modal" button-label="Notificações" @open="" @close="">
     <template #default>
         <div class="grid-12">
             <div class="col-6" v-if="notificationsCount > 0">
-                <?= i::__('Você tem') ?>
+              <?= i::__('Você tem') ?>
                 <span class="notification--badge">{{ notificationsCount }}</span>
-                <?= i::__('notificação') ?>
+              <?= i::__('notificação') ?>
             </div>
         </div>
         <div class="grid-12">
@@ -20,7 +20,7 @@ $this->import('
                 <notification-list></notification-list>
             </div>
             <div class="col-12" v-if="notificationsCount > 0">
-                <p style="text-align: center"><?= i::__('Ver todas as notificações') ?></p>
+                <mc-link route="panel/notifications"><?= i::__('Ver todas as notificações') ?></mc-link>
             </div>
         </div>
     </template>
