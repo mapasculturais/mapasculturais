@@ -62,13 +62,13 @@ class Module extends \MapasCulturais\Module{
         // adiciona novo item no menu do usuário
         $app->hook('template(<<*>>.header-menu-user--itens):begin', function() {
             /** @var \MapasCulturais\Theme $this */
-            $this->part('notifications/menu-item-notification');
+            $this->part('notifications/menu-item-notification',['media_query'=>'min-width: 400px']);
         });
 
         // adiciona novo item no menu do usuário
         $app->hook('template(<<*>>.header-menu-user--mobile):begin', function() {
             /** @var \MapasCulturais\Theme $this */
-            $this->part('notifications/menu-item-notification');
+            $this->part('notifications/menu-item-notification',['media_query'=>'min-width: 400px']);
         });
 
         // adiciona aba de notificações no dashboard do painel

@@ -8,8 +8,7 @@ $this->import('
     notification-modal
 ');
 ?>
-<!---->
-<!--<notification-modal #default="{modal}">-->
-<!--    <a @click="modal.open">--><?//= i::__('Notificações') ?><!--</a>-->
-<!--</notification-modal>-->
-<mc-link route='panel/notifications' icon="notification"><?= i::__('Notificações') ?></mc-link>
+
+<notification-modal type-style="button" media-query="<?= $media_query ?>" #default="{modal}">
+    <a @click="modal.open"><?= i::__('Notificações') ?></a>
+</notification-modal>
