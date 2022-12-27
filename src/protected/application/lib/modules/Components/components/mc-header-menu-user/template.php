@@ -40,8 +40,10 @@ $this->import('
                 <template #begin>
                     <?php $this->applyTemplateHook('header-menu-user--desktop', 'begin') ?>
                     <ul>
+                        <?php $this->applyTemplateHook('header-menu-user--itens', 'begin') ?>
                         <li><mc-link :entity='profile' icon><?= i::__('Meu Perfil') ?></mc-link></li>
                         <li><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li>
+                        <?php $this->applyTemplateHook('header-menu-user--itens', 'end') ?>
                     </ul>
                     <h3><?= i::__('Menu do Painel de controle') ?></h3>
                 </template>
@@ -88,6 +90,8 @@ $this->import('
             <panel--nav>
                 <template #begin>
                     <?php $this->applyTemplateHook('header-menu-user--mobile', 'begin') ?>
+                    <mc-link :entity='profile' icon><?= i::__('Meu Perfil') ?></mc-link>
+                    <mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link>
                 </template>
                 <template #end>
                     <?php $this->applyTemplateHook('header-menu-user--mobile', 'end') ?>
