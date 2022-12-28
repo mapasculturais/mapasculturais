@@ -6,8 +6,8 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    gap: 89px;
 
-  
     &__label {
         margin-right: 125px;
         font-weight: 600;
@@ -20,17 +20,20 @@
     }
 
     &__content {
-        &verified {
-            display: flex;
-        }
+
         font-weight: 700;
         font-size: 14px;
         line-height: 19px;
         height: 18px;
-        max-width: 180px;
-        display: block;
+        // max-width: 180px;
         word-wrap: break-word;
+        display: grid;
+        grid-template-columns: 178px 1fr 1fr;
+        // overflow: hidden;
+        gap: 16.5px;
+
         &--icon {
+            cursor: pointer;
 
             svg {
                 width: 17px;

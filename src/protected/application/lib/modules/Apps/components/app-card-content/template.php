@@ -11,14 +11,14 @@ use MapasCulturais\i;
 
 <div class="cardKey">
     <div class="cardKey__public">
+
         <label class="cardKey__label">Chave Pública:</label>
-        <div class="cardKey__content--verified">
-            <div class="cardKey__content">
-                <span>{{entity.publicKey}}</span>
-                <a class="cardKey__content--icon">
-                    <mc-icon name="copy"></mc-icon>
-                </a>
-            </div>
+        <div class="cardKey__content">
+            <span>{{entity.publicKey}}</span>
+
+            <a class="cardKey__content--icon" @click="copyPublicKey()">
+                <mc-icon name="copy"></mc-icon>
+            </a>
         </div>
     </div>
     <div class="cardKey__private">
@@ -31,7 +31,7 @@ use MapasCulturais\i;
                 <mc-icon name="eye-view"></mc-icon>
             </a>
 
-            <a class="cardKey__content--icon">
+            <a class="cardKey__content--icon" @click="copyPrivateKey()">
                 <mc-icon name="copy"></mc-icon>
             </a>
         </div>
