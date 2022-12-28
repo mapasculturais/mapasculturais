@@ -4,6 +4,8 @@ app.component('app-card-content', {
 
     setup() {
         const messages = useMessages();
+        const text = Utils.getTexts('app-card-content');
+        return { text }
 
     },
 
@@ -45,11 +47,15 @@ app.component('app-card-content', {
             this.showPrivateKey = !this.showPrivateKey;
         },
         copyPublicKey() {
+            messages.success(__('message','app-card-content'));
+
+
             if (this.entity.publicKey) {
                 navigator.clipboard.writeText(this.entity.publicKey);
             }
         },
         copyPrivateKey() {
+            messages.success(__('message','app-card-content'));
             if (this.entity.privateKey) {
                 navigator.clipboard.writeText(this.entity.privateKey);
             }
