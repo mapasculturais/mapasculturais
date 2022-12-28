@@ -45,24 +45,26 @@ class Module extends \MapasCulturais\Module {
             $q->execute();
         });
 
-          /**
-         * Página para gerenciamento dos aplicativos.
-         */
-        $app->hook('GET(panel.apps)', function() use($app) {
-            /** @var \Panel\Controller $this */
-            $this->requireAuthentication();
+        if($app->view instanceof \MapasCulturais\Themes\BaseV2\Theme) {
+            /**
+             * Página para gerenciamento dos aplicativos.
+             */
+            $app->hook('GET(panel.apps)', function() use($app) {
+                /** @var \Panel\Controller $this */
+                $this->requireAuthentication();
 
-            $this->render('apps');
-        });
+                $this->render('apps');
+            });
 
-        $app->hook('panel.nav', function(&$group) use($app) {
-            $group['more']['items'][] = [
-                'route' => 'panel/apps',
-                'icon' => 'app',
-                'label' => i::__('Meus aplicativos'),
-                
-            ];
-        });
+            $app->hook('panel.nav', function(&$group) use($app) {
+                $group['more']['items'][] = [
+                    'route' => 'panel/apps',
+                    'icon' => 'app',
+                    'label' => i::__('Meus aplicativos'),
+                    
+                ];
+            });
+        }
     }
 
     function register()
