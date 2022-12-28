@@ -2404,7 +2404,7 @@ class ApiQuery {
             $app->user;
         $this->_permission = trim($value);
         $class = $this->entityClassName;
-        if($this->_accessControlEnabled && $this->_permission && !$user->is('saasAdmin')){
+        if($this->_accessControlEnabled && $this->_permission && !$user->is('saasAdmin') && $this->usesPermissionCache){
             $alias = $this->getAlias('pcache');
             
             $this->_filteringByPermissions = true;
