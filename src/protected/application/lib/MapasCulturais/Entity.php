@@ -592,6 +592,8 @@ abstract class Entity implements \JsonSerializable{
                 'label' => $class::_getConfiguredPropertyLabel($key),
             ];
 
+            $metadata['isPK'] = $value['id'] ?? false;
+            
             if ($include_column_name && isset($value['columnName'])) {
                 $metadata['columnName'] = $value['columnName'];
             }
