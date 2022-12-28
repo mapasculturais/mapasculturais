@@ -3,6 +3,8 @@ app.component('app-card-content', {
     emits: [''],
 
     setup() {
+        const messages = useMessages();
+
     },
 
     props: {
