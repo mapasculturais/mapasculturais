@@ -19,7 +19,7 @@
 		flex-wrap: nowrap;
 		justify-content: space-between;
 		position: relative;
-
+		
 		&.user-details {
 			display: flex;
 			flex-wrap: wrap;
@@ -310,13 +310,19 @@
 			display: flex;
 			flex-direction: column;
 			gap: size(10);
-
+			
 			&-title {
 				display: inline-block;
 				font-weight: 700;
 				font-size: size(24);
 				line-height: size(28);
 				text-align: left;
+				.icon-app{
+					margin-left:size(17);
+					
+					color:var(--mc-primary-500);
+	
+				}
 			}
 
 			&-subtitle {
