@@ -213,6 +213,8 @@ trait EntityMetadata{
             if(!$def){
                 return null;
             }
+            
+            $default_value = $def->default_value;
 
             if(isset($this->__createdMetadata[$meta_key])){
                 $metadata_object = $this->__createdMetadata[$meta_key];
@@ -230,38 +232,43 @@ trait EntityMetadata{
                     $metadata_object = new $metadata_entity_class;
                     $metadata_object->key = $meta_key;
                     $metadata_object->owner = $this;
+                    
+                    if (isset($default_value)) {
+                        if($default_value instanceof \Closure) {
+                            $callable = \Closure::bind($default_value, $this);
+                            $metadata_object->value = $callable($def); 
+                        } else {
+                            $metadata_object->value = $default_value;
+                        }
+                    }
         
                     $this->__createdMetadata[$meta_key] = $metadata_object;
                 }
             }
 
             if($return_metadata_object){
-                $result = is_object($metadata_object) ? $metadata_object : null;
+                $result = $metadata_object;
             }else{
-                if (is_object($metadata_object)) {
-                    $result = $metadata_object->value; 
-                } else if ($def->default_value) {
-                    if(is_callable($def->default_value)) {
-                        $callable = \Closure::bind($def->default_value, $this);
+                $result = $metadata_object->value; 
+                
+                if (!isset($result) && isset($default_value)) {
+                    if($default_value instanceof \Closure) {
+                        $callable = \Closure::bind($default_value, $this);
                         $result = $callable($def); 
                     } else {
-                        $result = $def->default_value;
+                        $result = $default_value;
                     }
-                } else {
-                    $result = null;
                 }
             }
 
             return $result;
         }else{
             $result = [];
-            foreach (array_merge($this->__metadata->toArray(), $this->__createdMetadata) as $metadata_object){
-                if($return_metadata_object){
-                    $result[$metadata_object->key] = $metadata_object;
-                }else{
-                    $result[$metadata_object->key] = $metadata_object->value;
-                }
+            
+            foreach($this->getRegisteredMetadata(null, true) as $key => $def) {
+                $result[$key] = $this->getMetadata($key, $return_metadata_object);
             }
+
             return $result;
         }
     }
