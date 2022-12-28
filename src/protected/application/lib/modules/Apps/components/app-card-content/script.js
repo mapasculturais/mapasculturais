@@ -15,7 +15,7 @@ app.component('app-card-content', {
     data() {
 
         return {
-           showPrivateKey: false,
+            showPrivateKey: false,
         }
     },
 
@@ -25,12 +25,13 @@ app.component('app-card-content', {
                 if (this.showPrivateKey) {
                     return this.entity.privateKey;
                 } else {
-                    let keyLenght = this.entity.privateKey.length;
+                    let keyLength = this.entity.privateKey.length;
                     let hiddenKey = '';
                     do {
-                        hiddenKey+='*';
-                        keyLenght--;
-                    } while (keyLenght > 0)
+                        hiddenKey += '*';
+                        keyLength--;
+
+                    } while (keyLength > 0)
                     return hiddenKey;
                 }
             }
@@ -41,11 +42,15 @@ app.component('app-card-content', {
         toggleKey() {
             this.showPrivateKey = !this.showPrivateKey;
         },
-        copyDescription() {
-            let description = document.querySelector(".spanComOTexto");
-            if (description) {
-                navigator.clipboard.writeText(description.innerHTML);
+        copyPublicKey() {
+            if (this.entity.publicKey) {
+                navigator.clipboard.writeText(this.entity.publicKey);
             }
         },
+        copyPrivateKey() {
+            if (this.entity.privateKey) {
+                navigator.clipboard.writeText(this.entity.privateKey);
+            }
+        }
     },
 });

@@ -33,10 +33,7 @@ $this->import('
 
     <panel--entity-tabs tabs="publish,trash" select="name,privateKey,publicKey,status" type="app">
         <template #card-title="{entity}">
-            <label>{{entity.name}}</label>
-            <!-- ver se tem como colocar o icone  -->
-            <!-- aqui vai ficar a verificação do editar,flag dentro do entity (aberto ou fechado) -->
-            <!-- desconsiderar o avatar -->
+            <label>{{entity.name}}</label><mc-icon name="edit"></mc-icon>
         </template>
         <template #card-content="{entity}">
             <app-card-content :entity="entity"></app-card-content>
