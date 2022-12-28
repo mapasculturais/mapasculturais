@@ -33,7 +33,8 @@ $this->import('
 
     <panel--entity-tabs tabs="publish,trash" select="name,privateKey,publicKey,status" type="app">
         <template #card-title="{entity}">
-            <label>{{entity.name}}</label><mc-icon name="edit"></mc-icon>
+            <label>{{entity.name}}</label>
+            <mc-icon class="icon-app" name="edit"></mc-icon>
         </template>
         <template #card-content="{entity}">
             <app-card-content :entity="entity"></app-card-content>
