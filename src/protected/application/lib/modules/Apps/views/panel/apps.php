@@ -7,6 +7,7 @@ $this->import('
     mc-icon 
     panel--entity-card
     panel--entity-tabs 
+    create-apps
 ');
 ?>
 
