@@ -176,7 +176,7 @@ abstract class File extends \MapasCulturais\Entity
      *
      * @return \MapasCulturais\Controller The controller
      */
-    public function getControllerId(){
+    public static function getControllerId(){
         return App::i()->getControllerIdByEntity(__CLASS__);
     }
 
