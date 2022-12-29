@@ -55,7 +55,7 @@
         <!-- Data de expiração -->
             <?php if($seal->validPeriod > 0):?>
             <div id="expiration-date">
-                <?php if($seal->isExpired()): ?>
+                <?php if($srelationeal->isExpired()): ?>
                     <?php \MapasCulturais\i::_e('<b>Expirado em:</b>'); ?>
 
                     <?php else:?>

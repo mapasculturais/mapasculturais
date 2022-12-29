@@ -7,7 +7,6 @@ use stdClass;
 use Curl\Curl;
 use Exception;
 use MapasCulturais\i;
-use DateTimeImmutable;
 use League\Csv\Reader;
 use League\Csv\Writer;
 use MapasCulturais\App;
@@ -102,6 +101,9 @@ class Controller extends \MapasCulturais\Controller
 
    function GET_processFile()
    {
+      ini_set('max_execution_time', 0);
+      ini_set('memory_limit', '768M');
+      
       $this->requireAuthentication();
 
       $app = App::i();
@@ -1021,7 +1023,6 @@ class Controller extends \MapasCulturais\Controller
    {
       
       $check = function($file){
-         $error = false;
          $basename = basename($file);
          $file_data = str_replace($basename, urlencode($basename), $file);
 
@@ -1030,26 +1031,41 @@ class Controller extends \MapasCulturais\Controller
          $curl->close();
          $response = $curl->response;
 
-         if (mb_strpos($response, 'html')) {
-            $error = true;
+         $tmp = tempnam("/tmp", "");
+         $handle = fopen($tmp, "wb");
+         fwrite($handle,$response);
+         fclose($handle);
+
+         $finfo = finfo_open(FILEINFO_MIME_TYPE);
+         $mimetype = finfo_file($finfo, $tmp);
+         if ($mimetype == 'image/jpg' || $mimetype == 'image/jpeg' || $mimetype == 'image/gif' || $mimetype == 'image/png') {
+            $is_image = true;
+         } else {
+            $is_image = false;
          }
 
-         return $error;
+         return $is_image;
       };
 
       $error = [];
       $alloweds_type = ['AVATAR', 'HEADER', 'GALLERY'];
       foreach($alloweds_type as $type){
+         
+         if(empty($value[$type])){
+            continue;
+         }
+
          if($matches = $this->matches($value[$type])){
             foreach($matches as $matche){
                $exp = explode(":", $matche);
+               $url = $exp[0].":".$exp[1];
 
-               if($check($exp[0])){
-                  $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$exp[0]}");
+               if(!$check($url)){
+                  $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$url}");
                }
             }
          }else{
-            if($check($value[$type])){
+            if(!$check($value[$type])){
                $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$value[$type]}");
             }
          }

@@ -3,7 +3,7 @@ use MapasCulturais\i;
 
 $app = MapasCulturais\App::i();
 $definitions = MapasCulturais\Entities\Agent::getPropertiesMetadata();
-$agent_fields = $app->modules['RegistrationFieldTypes']->config['availableAgentFields'];
+$agent_fields = $app->modules['RegistrationFieldTypes']->getAgentFields();
 
 $fields_options = [];
 $fields_labels = [
