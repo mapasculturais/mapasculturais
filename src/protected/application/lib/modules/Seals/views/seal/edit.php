@@ -10,11 +10,12 @@ $this->import('
     mapas-breadcrumb
     mapas-card
     mapas-container
+    form-valid-period
 ');
 
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-    ['label'=> i::__('Meus Selos'), 'url' => $app->createUrl('panel', 'seal')],
+    ['label'=> i::__('Meus Selos'), 'url' => $app->createUrl('panel', 'seals')],
     ['label'=> $entity->name, 'url' => $app->createUrl('seal', 'edit', [$entity->id])],
 ];
 ?>
@@ -33,6 +34,7 @@ $this->breadcramb = [
                     <div class="grid-12 v-bottom">
                         <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
+                        <form-valid-period :entity="entity"></form-valid-period>
                     </div>                      
                 </div>
             </template>
