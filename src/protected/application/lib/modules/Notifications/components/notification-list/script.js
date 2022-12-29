@@ -17,9 +17,6 @@
 
 app.component('notification-list', {
     template: $TEMPLATES['notification-list'],
-    
-    // define os eventos que este componente emite
-    emits: ['namesDefined'],
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
