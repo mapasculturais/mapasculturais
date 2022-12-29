@@ -84,6 +84,19 @@ class API {
         }
     }
 
+    get $PK() {
+        const __properties = this.getEntityDescription('!relations');
+        let pk;
+        for (let prop in __properties) {
+            if(__properties[prop].isPK) {
+                pk = prop;
+                break;
+            }
+        }
+
+        return pk || 'id';
+    }
+
     getHeaders(data) {
         if (data instanceof FormData) {
             return {};
@@ -164,7 +177,7 @@ class API {
     }
 
     async persistEntity(entity) {
-        if (!entity.id) {
+        if (!entity[this.$PK]) {
             let url = Utils.createUrl(this.objectType, 'index');
             return this.POST(url, entity.data())
             
@@ -174,37 +187,37 @@ class API {
     }
 
     async deleteEntity(entity) {
-        if (entity.id) {
+        if (entity[this.$PK]) {
             return this.DELETE(entity.singleUrl);   
         }
     }
 
     async undeleteEntity(entity) {
-        if (entity.id) {
+        if (entity[this.$PK]) {
             return this.POST(entity.getUrl('undelete'));   
         }
     }
 
     async destroyEntity(entity) {
-        if (entity.id) {
+        if (entity[this.$PK]) {
             return this.DELETE(entity.getUrl('destroy'));   
         }
     }
 
     async publishEntity(entity) {
-        if (entity.id) {
+        if (entity[this.$PK]) {
             return this.POST(entity.getUrl('publish'));   
         }
     }
 
     async archiveEntity(entity) {
-        if (entity.id) {
+        if (entity[this.$PK]) {
             return this.POST(entity.getUrl('archive'));   
         }
     }
 
     async unpublishEntity(entity) {
-        if (entity.id) {
+        if (entity[this.$PK]) {
             return this.POST(entity.getUrl('unpublish'));
         }
     }
@@ -242,7 +255,7 @@ class API {
                 result = list || [];
     
                 objs.forEach(element => {
-                    let entity = this.getEntityInstance(element.id);
+                    let entity = this.getEntityInstance(element[this.$PK]);
                     entity.populate(element);
                     result.push(entity);
                     entity.$LISTS.push(result);
