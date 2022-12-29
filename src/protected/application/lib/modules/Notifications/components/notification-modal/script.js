@@ -1,6 +1,5 @@
 app.component('notification-modal' , {
     template: $TEMPLATES['notification-modal'],
-    emits: ['create'],
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
@@ -19,7 +18,7 @@ app.component('notification-modal' , {
             entity: null,
             fields: [],
             notificationsCount: $MAPAS.notificationsCount || 0,
-            modalTitle: 'Notificações'
+            modalTitle: this.text('notificacao')
         }
         
     },
