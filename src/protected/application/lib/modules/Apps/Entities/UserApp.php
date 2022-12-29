@@ -129,6 +129,10 @@ class UserApp extends \MapasCulturais\Entity {
         return $user->equals($this->user);
     }
 
+    protected function canUserDestroy ($user) {
+        return $this->canUserView($user);
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
