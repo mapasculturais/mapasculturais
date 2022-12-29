@@ -6,7 +6,7 @@ $this->import('
     notification-list
 ');
 ?>
-<modal v-if="notificationsCount > 0 && $media(mediaQuery)" :title="modalTitle" classes="create-modal" button-label="Notificações" @open="" @close="">
+<modal v-if="notificationsCount > 0" :title="modalTitle" classes="create-modal" button-label="Notificações" @open="" @close="">
     <template #default>
         <div class="grid-12">
             <div class="col-6" v-if="notificationsCount > 0">

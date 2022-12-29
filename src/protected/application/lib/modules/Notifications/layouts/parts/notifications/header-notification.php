@@ -8,8 +8,9 @@ $this->import('
     notification-modal
 ');
 ?>
+
 <?php if (!$app->user->is('guest')): ?>
-    <notification-modal media-query="<?= $media_query ?>" #default="{modal}">
+    <notification-modal v-if="$media('<?=  $media_query ?>')" #default="{modal}">
         <a @click="modal.open"><?= i::__('Notificações') ?></a>
     </notification-modal>
 <?php endif; ?>
