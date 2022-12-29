@@ -9,6 +9,6 @@ $this->import('
 ');
 ?>
 
-<notification-modal type-style="button" media-query="<?= $media_query ?>" #default="{modal}">
+<notification-modal type-style="item" media-query="<?= $media_query ?>" #default="{modal}">
     <a @click="modal.open"><?= i::__('Notificações') ?></a>
 </notification-modal>
