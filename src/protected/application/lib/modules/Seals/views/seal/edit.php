@@ -10,6 +10,7 @@ $this->import('
     mapas-breadcrumb
     mapas-card
     mapas-container
+    form-valid-period
 ');
 
 $this->breadcramb = [
@@ -33,6 +34,7 @@ $this->breadcramb = [
                     <div class="grid-12 v-bottom">
                         <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
+                        <form-valid-period :entity="entity"></form-valid-period>
                     </div>                      
                 </div>
             </template>
