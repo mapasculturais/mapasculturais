@@ -7,6 +7,7 @@ $this->import('
     mc-icon 
     panel--entity-card
     panel--entity-tabs 
+    create-apps
 ');
 ?>
 
@@ -27,13 +28,16 @@ $this->import('
             <?= i::_e('Nesta seção você pode adicionar e gerenciar seus aplicativos') ?>
         </p>
         <div class="panel-page__header-actions">
-
+            <create-apps #default>
+                <button @click="modal.open()" class="button button--primary button--icon"><mc-icon name="add"></mc-icon> <?= i::_e('Criar Aplicativo') ?></button>
+            </create-apps>
         </div>
     </header>
 
     <panel--entity-tabs tabs="publish,trash" select="name,privateKey,publicKey,status" type="app">
         <template #card-title="{entity}">
-            <label>{{entity.name}}</label><mc-icon name="edit"></mc-icon>
+            <label>{{entity.name}}</label>
+            <mc-icon class="icon-app" name="edit"></mc-icon>
         </template>
         <template #card-content="{entity}">
             <app-card-content :entity="entity"></app-card-content>
