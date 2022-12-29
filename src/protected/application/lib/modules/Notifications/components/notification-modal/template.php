@@ -40,20 +40,16 @@ $this->import('
                 </a>
             </div>
         </div>
-        <div class="grid-2" v-else-if="typeStyle == 'button'">
-            <div class="col-6 notification_header--container">
-                <a @click="modal.open">
-                    <div>
-                        <mc-icon width="18" name='notification'></mc-icon>
-                    </div>
-                    <div v-if="notificationsCount > 0" class="notification_header--badge">
+        <div v-else-if="typeStyle == 'item'">
+            <a href="#" @click="modal.open">
+                <div class="notification_header_item--container">
+                    <mc-icon width="18" name='notification'></mc-icon>
+                    <div v-if="notificationsCount > 0" class="notification_header_item--badge">
                         <span>{{ notificationsCount }}</span>
                     </div>
-                </a>
-            </div>
-            <div class="col-6">
-                <a class="notification_header--link" @click="modal.open"><?= i::__('Notificações') ?></a>
-            </div>
+                </div>
+                <?= i::__('Notificações') ?>
+            </a>
         </div>
     </template>
 </modal>

@@ -26,7 +26,7 @@
   cursor: pointer;
 }
 
-.notification_header--container {
+.notification_header--container, .notification_header_item--container {
   position: relative;
 }
 
@@ -40,7 +40,15 @@
   right: -10px;
 }
 
-.notification_header--badge > span, .notification--badge {
+.notification_header_item--badge {
+  position: absolute;
+  top: -10px;
+  right: 25px;
+}
+
+.notification_header--badge > span,
+.notification_header_item--badge > span,
+.notification--badge {
   width: 18px;
   height: 18px;
   text-align: center;
