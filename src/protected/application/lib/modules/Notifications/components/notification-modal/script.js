@@ -24,9 +24,9 @@ app.component('notification-modal' , {
     },
 
     props: {
-        typeStyle: {
+        viewport: {
             type: String,
-            default: 'normal'
+            default: 'desktop'
         }
     },
 

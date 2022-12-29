@@ -25,7 +25,7 @@ $this->import('
         </div>
     </template>
     <template #button="modal">
-        <div class="grid-2" v-if="typeStyle == 'normal'">
+        <div class="grid-2" v-if="viewport == 'desktop'">
             <div class="col-6">
                 <a class="notification_header--link" @click="modal.open"><?= i::__('Notificações') ?></a>
             </div>
@@ -40,7 +40,7 @@ $this->import('
                 </a>
             </div>
         </div>
-        <div v-else-if="typeStyle == 'item'">
+        <div v-else-if="viewport == 'mobile'">
             <a href="#" @click="modal.open">
                 <div class="notification_header_item--container">
                     <mc-icon width="18" name='notification'></mc-icon>
