@@ -1,10 +1,13 @@
 <?php 
 namespace Notifications;
 
+use MapasCulturais\ApiQuery;
 use MapasCulturais\App,
     MapasCulturais\i,
     MapasCulturais\Entities,
-    MapasCulturais\Entities\Notification;
+    MapasCulturais\Entities\Notification,
+    MapasCulturais\Entities\Request;
+
 
 class Module extends \MapasCulturais\Module{
     
@@ -32,6 +35,41 @@ class Module extends \MapasCulturais\Module{
          $app = App::i();
          $module = $this;
          /* === NOTIFICATIONS  === */
+
+        // adiciona a descriçào das entidades notification e request ao jsObject
+        $app->hook('app.register:after', function () {
+                $this->view->jsObject['EntitiesDescription']['request'] = Request::getPropertiesMetadata();
+                $this->view->jsObject['EntitiesDescription']['notification'] = Notification::getPropertiesMetadata();
+        }, 100);
+
+        // adiciona a contagem de notificações no header e no jsObject
+        $app->hook('mapasculturais.run:before', function () use($app) {
+            if($app->user->is('guest')) {
+                return;
+            }
+            $query = new ApiQuery(Notification::class, ['user'=> "EQ({$app->user->id})"]);
+            $count = $query->count();
+            $app->view->jsObject['notificationsCount'] = $count;
+            header('MC-notifications-count: ' . $count);
+        });
+
+        // adiciona icone de notificacao no main header
+        $app->hook('template(<<*>>.mc-header-menu):after', function() {
+            /** @var \MapasCulturais\Theme $this */
+            $this->part('notifications/header-notification',['media_query'=>'min-width: 861px', 'viewport' => 'desktop']);
+        });
+
+        // adiciona novo item no menu do usuário
+        $app->hook('template(<<*>>.header-menu-user--mobile):begin', function() {
+            /** @var \MapasCulturais\Theme $this */
+            $this->part('notifications/header-notification',['media_query'=>'max-width: 861px', 'viewport' => 'mobile']);
+        });
+
+        // adiciona aba de notificações no dashboard do painel
+        $app->hook('template(panel.index.tabs):end', function() {
+            /** @var \MapasCulturais\Theme $this */
+            $this->part('notifications/panel-dashboard');
+        });
          
         // para todos os requests
         $app->hook('workflow(<<*>>).create', function() use($app, $module) {
