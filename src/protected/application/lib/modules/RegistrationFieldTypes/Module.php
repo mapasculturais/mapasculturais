@@ -96,7 +96,6 @@ class Module extends \MapasCulturais\Module
                 };
             }
         });
-        $this->_config['availableAgentFields'] = $this->getAgentFields();
     }
 
     function register_space_field() {
@@ -143,7 +142,6 @@ class Module extends \MapasCulturais\Module
         $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links'];
         
         $definitions = Agent::getPropertiesMetadata();
-        
         foreach ($definitions as $key => $def) {
             $def = (object) $def;
             if ($def->isMetadata && $def->available_for_opportunities) {
