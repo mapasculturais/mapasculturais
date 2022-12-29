@@ -6,11 +6,11 @@ class Entity {
         this.__objectId = `${objectType}-${id}`;
         this.__validationErrors = {};
         
+        this.__messagesEnabled = true;
         this.__processing = false;
 
         // as traduções estão no arquivo texts.php do componente <entity>
         this.text = Utils.getTexts('entity');
-
     }
 
     populate(obj, preserveValues = true) {
@@ -34,8 +34,12 @@ class Entity {
                 val = this[prop];
             }
 
-            if (definition.type == 'datetime' && val && !(val instanceof McDate)) {
-                val = new McDate(val.date);
+            if ((definition.type == 'datetime' || definition.type == 'date' ) && val && !(val instanceof McDate)) {
+                if (typeof val == 'string') {
+                    val = new McDate(val);
+                } else {
+                    val = new McDate(val.date);
+                }
             }
 
             if (prop == 'location') {
@@ -124,13 +128,25 @@ class Entity {
 
         const result = {};
 
-        for (let prop in this.$PROPERTIES) {
+        const $PROPERTIES = this.$PROPERTIES;
+
+        for (let prop in $PROPERTIES) {
             if (skipProperties.indexOf(prop) > -1) {
                 continue;
             }
 
+            const definition = $PROPERTIES[prop];
+            
             let val = this[prop];
 
+            if(val instanceof McDate) {
+                if (definition.type == 'date') {
+                    val = val.sql('date');
+                } else if (definition.type == 'datetime') {
+                    val = val.time();
+                }
+            }
+            
             if (prop == 'type' && typeof val == 'object') {
                 val = val.id;
             }
@@ -198,6 +214,21 @@ class Entity {
         return this.API.createCacheId(this.id);
     }
 
+    sendMessage(message) {
+        if(this.__messagesEnabled) {
+            const messages = useMessages();
+            messages.success(message);
+        }
+    }
+
+    disableMessages() {
+        this.__messagesEnabled = true;
+    }
+
+    enableMessages() {
+        this.__messagesEnabled = false;
+    }
+
     getUrl(action, params) {
         params = {0: this.id, ...params};
         return this.API.createUrl(action, params);
@@ -245,16 +276,14 @@ class Entity {
     async save(preserveValues = true) {
         this.__processing = this.text('salvando');
 
-        const messages = useMessages();
-
         try {
             const res = await this.API.persistEntity(this);
             return this.doPromise(res, (entity) => {
 
                 if (this.id) {
-                    messages.success(this.text('modificacoes salvas'));
+                    this.sendMessage(this.text('modificacoes salvas'));
                 } else {
-                    messages.success(this.text('entidade salva'));
+                    this.sendMessage(this.text('entidade salva'));
                 }
                 this.populate(entity, preserveValues)
             });
@@ -267,12 +296,10 @@ class Entity {
     async delete(removeFromLists) {
         this.__processing = this.text('excluindo');
 
-        const messages = useMessages();
-
         try {
             const res = await this.API.deleteEntity(this);
             return this.doPromise(res, (entity) => {
-                messages.success(this.text('entidade removida'));
+                this.sendMessage(this.text('entidade removida'));
                 
                 if(removeFromLists) {
                     this.removeFromLists();
@@ -289,12 +316,10 @@ class Entity {
     async undelete(removeFromLists) {
         this.__processing = this.text('recuperando');
 
-        const messages = useMessages();
-
         try {
             const res = await this.API.undeleteEntity(this);
             return this.doPromise(res, (entity) => {
-                messages.success(this.text('entidade recuperada'));
+                this.sendMessage(this.text('entidade recuperada'));
                 
                 if(removeFromLists) {
                     this.removeFromLists();
@@ -311,12 +336,10 @@ class Entity {
     async destroy() {
         this.__processing = this.text('excluindo definitivamente');
 
-        const messages = useMessages();
-
         try {
             const res = await this.API.destroyEntity(this);
             return this.doPromise(res, () => {
-                messages.success(this.text('entidade removida definitivamente'));
+                this.sendMessage(this.text('entidade removida definitivamente'));
                 this.removeFromLists()
             });
         } catch (error) {
@@ -327,12 +350,10 @@ class Entity {
     async publish(removeFromLists) {
         this.__processing = this.text('publicando');
 
-        const messages = useMessages();
-
         try {
             const res = await this.API.publishEntity(this);
             return this.doPromise(res, (entity) => {
-                messages.success(this.text('entidade publicada'));
+                this.sendMessage(this.text('entidade publicada'));
                 this.populate(entity);
                 if(removeFromLists) {
                     this.removeFromLists();
@@ -346,12 +367,10 @@ class Entity {
     async archive(removeFromLists) {
         this.__processing = this.text('arquivando');
 
-        const messages = useMessages();
-
         try {
             const res = await this.API.archiveEntity(this);
             return this.doPromise(res, (entity) => {
-                messages.success(this.text('entidade arquivada'));
+                this.sendMessage(this.text('entidade arquivada'));
                 this.populate(entity);
                 if(removeFromLists) {
                     this.removeFromLists();
@@ -365,12 +384,10 @@ class Entity {
     async unpublish(removeFromLists) {
         this.__processing = this.text('tornando rascunho');
 
-        const messages = useMessages();
-
         try {
             const res = await this.API.unpublishEntity(this);
             return this.doPromise(res, (entity) => {
-                messages.success(this.text('entidade foi tornada rascunho'));
+                this.sendMessage(this.text('entidade foi tornada rascunho'));
                 this.populate(entity);
                 if(removeFromLists) {
                     this.removeFromLists();

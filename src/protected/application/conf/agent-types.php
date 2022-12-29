@@ -14,15 +14,135 @@ return array(
             'available_for_opportunities' => true
         ),
 
+        'nomeSocial' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Nome Social'),
+            'available_for_opportunities' => true,
+        ),
+
+        'escolaridade' => array(
+            'private' => false,
+            'label' => \MapasCulturais\i::__('Escolaridade'),
+            'type' => 'select',
+            'options' => array(
+                MapasCulturais\i::__('Não Informar'),
+                MapasCulturais\i::__('Fundamental Incompleto'),
+                MapasCulturais\i::__('Fundamental Completo'),
+                MapasCulturais\i::__('Médio Incompleto'),
+                MapasCulturais\i::__('Médio Completo'),
+                MapasCulturais\i::__('Superior Completo'),
+                MapasCulturais\i::__('Superior Incompleto'),
+                MapasCulturais\i::__('Pós-graduação'),
+                MapasCulturais\i::__('Sem formação'),
+            ),
+            'available_for_opportunities' => true,
+        ),
+
+        'pessoaDeficiente' => array(
+            'label' => 'Pessoa com deficiência',
+            'type' => 'multiselect',
+            'options' => [
+                MapasCulturais\i::__('Visual'),
+                MapasCulturais\i::__('Mental'),
+                MapasCulturais\i::__('Física'),
+                MapasCulturais\i::__('Auditiva'),
+            ],
+            'available_for_opportunities' => true
+        ),
+
+        'comunidadesTradicional' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Comunidades tradicionais'),
+            'type' => 'select',
+            'options' => array(
+                '' => \MapasCulturais\i::__('Não sou'),
+                MapasCulturais\i::__('Comunidade extrativista'),
+                MapasCulturais\i::__('Comunidade ribeirinha'),
+                MapasCulturais\i::__('Comunidade rural'),
+                MapasCulturais\i::__('Povos indígenas/originários'),
+                MapasCulturais\i::__('Comunidades de pescadores(as) artesanais'),
+                MapasCulturais\i::__('Povos ciganos'),
+                MapasCulturais\i::__('Povos de terreiro'),
+                MapasCulturais\i::__('Povos de quilombola'),
+            ),
+            'available_for_opportunities' => true
+        ),
+
+        'comunidadesTradicionalOutros' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Digite sua comunidade tradicional'),
+            'available_for_opportunities' => true
+        ),
+
         'documento' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF ou CNPJ'),
+            'serialize' => function($value, $entity = null){
+                /**@var MapasCulturais\App $this */
+                $key = "hook:documento:{$entity}";
+                if(!$this->rcache->contains($key)){
+                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
+                        if($entity->type && $entity->type->id == 1){
+                            $entity->cpf = $value;
+                        }else if($entity->type && $entity->type->id == 2){
+                            $entity->cnpj = $value;
+                        }
+                   });
+                   $this->rcache->save($key, 1);
+                }
+
+                return $value;
+            },
             'validations' => array(
                'v::oneOf(v::cpf(),v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.')
             ),
             'available_for_opportunities' => true
         ),
 
+        'cnpj' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNPJ'),
+            'serialize' => function($value, $entity = null){
+                /**@var MapasCulturais\App $this */
+                $key = "hook:cnpj:{$entity}";
+                if(!$this->rcache->contains($key)){
+                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
+                        if($entity->type && $entity->type->id == 2){
+                            $entity->documento = $value;
+                        }
+                    });
+                    $this->rcache->save($key, 1);
+                }
+
+                return $value;
+            },
+            'validations' => array(
+                'v::oneOf(v::cnpj())' => \MapasCulturais\i::__('O número de CNPJ informado é inválido.')
+             ),
+            'available_for_opportunities' => true,
+        ),
+        'cpf' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CPF'),
+            'serialize' => function($value, $entity = null){
+                $key = "hook:cpf:{$entity}";
+                if(!$this->rcache->contains($key)){
+                    /**@var MapasCulturais\App $this */
+                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
+                        if($entity->type && $entity->type->id == 1){
+                            $entity->documento = $value;
+                        }
+                    });
+                    $this->rcache->save($key, 1);
+                }
+
+                return $value;
+            },
+            'validations' => array(
+                'v::oneOf(v::cpf())' => \MapasCulturais\i::__('O número de CPF informado é inválido.')
+             ),
+            'available_for_opportunities' => true,
+        ),
 
         'raca' => array(
             'private' => true,
@@ -43,9 +163,33 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Data de Nascimento/Fundação'),
             'type' => 'date',
+            'serialize' => function($value, $entity = null){
+               $this->hook("entity(<<*>>).save:before", function() use ($entity){
+                    /** @var MapasCulturais\Entity $entity */
+                    if($this->equals($entity)){
+                        $this->idoso = 1; 
+                    }
+               });
+               return (new DateTime($value))->format("Y-m-d");
+            },
             'validations' => array(
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
             ),
+            'available_for_opportunities' => true
+        ),
+        'idoso' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Pessoa idosa'),
+            'type' => 'readonly',
+            'serialize' => function($value, $entity = null){
+                if($entity->dataDeNascimento){
+                    $today = new DateTime('now');
+                    $calc = (new DateTime($entity->dataDeNascimento))->diff($today);
+                    return ($calc->y >= 60) ? "1" : "0";
+                }else{
+                    return null;
+                }
+            },
             'available_for_opportunities' => true
         ),
 

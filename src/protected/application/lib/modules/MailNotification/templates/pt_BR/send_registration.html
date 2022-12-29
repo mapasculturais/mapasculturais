@@ -1,0 +1,27 @@
+{{{_header}}}
+<table role="presentation" class="main">
+
+    <tr>
+        <td class="wrapper">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <p>Olá, <strong>{{userName}}</strong></p>
+                        <p> Você acaba de concluir sua inscrição <strong>({{registrationNumber}})</strong> na Oportunidade <strong>{{projectId}} {{projectName}}</strong> deste E-mail.</p>
+                        <p>Acompanhe sua inscrição</p>
+                        <br>
+                        <a href="{{baseUrl}}inscricao/{{registrationId}}">
+                            <div class="status-card status-{{statusNum}}">
+                                <h2 class="status-card--title">Clicando aqui</h2>
+                            </div>
+                        </a>
+                        <br><br>
+                        <p>Até mais!</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+</table>
+{{{_footer}}}

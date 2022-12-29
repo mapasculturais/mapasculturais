@@ -1,7 +1,11 @@
 <?php
 $this->import('entity');
 $this->addRequestedEntityToJs();
-$this->bodyClasses[] = "{$entity->entityType}-{$entity->type->id}";
+if ($entity->usesTypes()) {
+    $this->bodyClasses[] = "{$entity->entityType}-{$entity->type->id}";
+} else {
+    $this->bodyClasses[] = "{$entity->entityType}";
+}
 ?>
 <?php $this->part('header', $render_data) ?>
 <?php $this->part('main-header', $render_data) ?>

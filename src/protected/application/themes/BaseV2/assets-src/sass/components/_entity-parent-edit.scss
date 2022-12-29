@@ -1,15 +1,17 @@
 @use '../settings/mixins' as *;
 
-.entity-parent {
+.entity-parent-edit {
     margin: 0;
 
-    h4 {
+    &__title {
+        
         margin: 0;
     }
     
     &__parent {
         align-items: center;
-        display: flex;
+        display: grid;
+        grid-template-columns: size(70) 1fr;
         text-decoration: none;
         &--img {
             border-radius: 50%;

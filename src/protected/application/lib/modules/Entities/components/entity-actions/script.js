@@ -9,8 +9,15 @@ app.component('entity-actions', {
 
     created() {},
 
+    mounted() {
+        const buttons1 = this.$refs.buttons1?.childElementCount;
+        const buttons2 = this.$refs.buttons2?.childElementCount;
+        this.empty = !(buttons1 || buttons2);
+    },
+
     data() {
-        return {}
+        const empty = false;
+        return {empty}
     },
 
     computed: {

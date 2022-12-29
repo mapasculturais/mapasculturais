@@ -4,10 +4,11 @@ $this->import('
     modal 
     select-entity
     mc-link
+    create-space
     ');
 ?>
 
-<modal title="Inserir ocorrência no evento" classes="create-occurrence" :updateDescription="updateDescription">
+<modal title="Inserir ocorrência no evento" classes="create-occurrence">
     <template #default>
         <div class="grid-12">
             <div :class="['col-12', 'create-occurrence__section', {'active' : step==0}]">
@@ -16,32 +17,34 @@ $this->import('
 
                 <div v-if="!space" class="create-occurrence__section--link-space">
                     <!-- Seletor de entidades - espaços -->
-                    <select-entity type="space" openside="down-right" @select="selectSpace($event)"> <!-- @select="addAgent(groupName, $event)" :query="queries[groupName]" -->
+                    <select-entity type="space" openside="down-right" select="name,files.avatar,endereco,location" @select="selectSpace($event)"> <!-- @select="addAgent(groupName, $event)" :query="queries[groupName]" -->
                         <template #button="{ toggle }">
                             <button class="button button--icon button--text-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Adicionar') ?> </button>
                         </template>
-                    </select-entity>                       
+                    </select-entity>
 
                     <?= i::_e('ou') ?>
 
                     <!-- create space -->
-                    <button class="button button--icon button--primary-outline"> <mc-icon name="add"></mc-icon> <?= i::_e('Crie um novo espaço') ?> </button>
+                    <create-space #default="{modal}">
+                        <button @click="modal.open()" editable class="button button--icon button--primary-outline"> 
+                            <mc-icon name="add"></mc-icon> <?= i::_e('Crie um novo espaço') ?> 
+                        </button>
+                    </create-space>
                 </div>
 
-                <div v-else class="create-occurrence__section--link-space space-info">
+                <div v-if="space" class="create-occurrence__section--link-space space-info">
                     <div class="space-info__space">
                         <div class="space-info__space--title">
                             <mc-icon name="pin"></mc-icon> {{space.name}}
-                            <a class="remove" @click="removeSpace()"> <mc-icon name="trash"></mc-icon></a>
+                            <a class="remove" @click="removeSpace()"> 
+                                <mc-icon name="trash"></mc-icon>
+                            </a>
                         </div>
-                        <div v-if="space.endereco" class="space-info__space--address">
-                            {{space.endereco}}
-                        </div>
-                        <div class="space-info__space--address">
-                            Sem endereço
-                        </div>
-
+                        <div v-if="space.endereco" class="space-info__space--address"> {{space.endereco}} </div>
+                        <div v-if="!space.endereco" z   class="space-info__space--address"> <?= i::_e('Sem endereço') ?> </div>
                     </div>
+
                     <div class="space-info__new">
                         <select-entity type="space" openside="down-right" @select="selectSpace($event)">
                             <template #button="{ toggle }">
@@ -50,6 +53,10 @@ $this->import('
                         </select-entity>  
                     </div>
                 </div>
+
+                <small class="field__error" v-if="this.newOccurrence.__validationErrors['space']">        
+                    {{this.newOccurrence.__validationErrors['space'].join('; ')}}
+                </small>
             </div>
 
             <div :class="['col-6', 'sm:col-12', 'create-occurrence__section', {'active' : step==1}]">
@@ -66,49 +73,61 @@ $this->import('
                 <span class="create-occurrence__section--title"> <?= i::_e('Que dias da semana o evento se repete?') ?> </span>
 
                 <div class="create-occurrence__section--fields">
-                    <label class="create-occurrence__section--fields-field"><input v-model="day[0]" type="checkbox" name="day[0]"> <?= i::_e('Domingo') ?> </label>
-                    <label class="create-occurrence__section--fields-field"><input v-model="day[1]" type="checkbox" name="day[1]"> <?= i::_e('Segunda') ?> </label>
-                    <label class="create-occurrence__section--fields-field"><input v-model="day[2]" type="checkbox" name="day[2]"> <?= i::_e('Terça') ?> </label>
-                    <label class="create-occurrence__section--fields-field"><input v-model="day[3]" type="checkbox" name="day[3]"> <?= i::_e('Quarta') ?> </label>
-                    <label class="create-occurrence__section--fields-field"><input v-model="day[4]" type="checkbox" name="day[4]"> <?= i::_e('Quinta') ?> </label>
-                    <label class="create-occurrence__section--fields-field"><input v-model="day[5]" type="checkbox" name="day[5]"> <?= i::_e('Sexta') ?> </label>
-                    <label class="create-occurrence__section--fields-field"><input v-model="day[6]" type="checkbox" name="day[6]"> <?= i::_e('Sabado') ?> </label>
+                    <label class="create-occurrence__section--fields-field"><input v-model="days[0]" type="checkbox" true-value="on" :false-value="undefined"> <?= i::_e('Domingo') ?> </label>
+                    <label class="create-occurrence__section--fields-field"><input v-model="days[1]" type="checkbox" true-value="on" :false-value="undefined"> <?= i::_e('Segunda') ?> </label>
+                    <label class="create-occurrence__section--fields-field"><input v-model="days[2]" type="checkbox" true-value="on" :false-value="undefined"> <?= i::_e('Terça') ?> </label>
+                    <label class="create-occurrence__section--fields-field"><input v-model="days[3]" type="checkbox" true-value="on" :false-value="undefined"> <?= i::_e('Quarta') ?> </label>
+                    <label class="create-occurrence__section--fields-field"><input v-model="days[4]" type="checkbox" true-value="on" :false-value="undefined"> <?= i::_e('Quinta') ?> </label>
+                    <label class="create-occurrence__section--fields-field"><input v-model="days[5]" type="checkbox" true-value="on" :false-value="undefined"> <?= i::_e('Sexta') ?> </label>
+                    <label class="create-occurrence__section--fields-field"><input v-model="days[6]" type="checkbox" true-value="on" :false-value="undefined"> <?= i::_e('Sabado') ?> </label>
                 </div>
+                <small class="field__error" v-if="this.newOccurrence.__validationErrors['frequency']">        
+                    {{this.newOccurrence.__validationErrors['frequency'].join('; ')}}
+                </small>
             </div>
 
             <div :class="['col-12', 'create-occurrence__section', {'active' : step==2}]">
                 <span class="create-occurrence__section--title"> <?= i::_e('Quando o evento ocorrerá?') ?> </span>
 
                 <div class="grid-12">
-
                     <div v-if="frequency=='once'" class="col-6 sm:col-12">
                         <div class="create-occurrence__section--field">
-                            <span class="label"><?= i::_e('Data inicial:') ?></span>
-                            
+                            <span class="label"><?= i::_e('Data inicial:') ?></span>                            
                             <datepicker 
                                 :locale="locale" 
+                                format="dd/MM/yyyy"
                                 :weekStart="0"
-                                v-model="startsOn" 
                                 :enableTimePicker='false' 
                                 :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
+                                v-model="startsOn"
                                 multiCalendarsSolo autoApply utc></datepicker>
                         </div>
+
+                        <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsOn']">        
+                            {{this.newOccurrence.__validationErrors['startsOn'].join('; ')}}
+                        </small>
                     </div>
 
-                    <div v-else class="col-6 sm:col-12">
+                    <div v-if="frequency!=='once'" class="col-6 sm:col-12">
                         <div class="create-occurrence__section--field">
-                            <span class="label"><?= i::_e('Data inicial - Data final:') ?></span>
-                            
+                            <span class="label"><?= i::_e('Data inicial - Data final:') ?></span>                            
                             <datepicker 
                                 :locale="locale" 
+                                format="dd/MM/yyyy"
                                 :weekStart="0"
                                 v-model="dateRange" 
                                 :enableTimePicker='false' 
                                 :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
                                 range multiCalendars multiCalendarsSolo autoApply utc></datepicker>
                         </div>
-                    </div>
 
+                        <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsOn']">        
+                            {{this.newOccurrence.__validationErrors['startsOn'].join('; ')}}
+                        </small>
+                        <small class="field__error" v-if="this.newOccurrence.__validationErrors['endsOn']">        
+                            {{this.newOccurrence.__validationErrors['endsOn'].join('; ')}}
+                        </small>
+                    </div>
                 </div>     
             </div>
 
@@ -120,18 +139,22 @@ $this->import('
                         <div class="create-occurrence__section--field">
                             <span class="label"><?= i::_e('Horário inicial:') ?></span>
                             <datepicker v-model="startsAt" timePicker autoApply></datepicker>
-
-                            <!-- <input v-model="startsAt" type="time" /> -->
+                            <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsAt']">        
+                                {{this.newOccurrence.__validationErrors['startsAt'].join('; ')}}
+                            </small>
                         </div>
                     </div>
+
                     <div class="col-6 sm:col-12">
                         <div class="create-occurrence__section--field">
                             <span class="label"><?= i::_e('Horário final:') ?></span>
                             <datepicker v-model="endsAt" timePicker autoApply></datepicker>
-                            
-                            <!-- <input v-model="endsAt" type="time" /> -->
+                            <small class="field__error" v-if="this.newOccurrence.__validationErrors['endsAt']">        
+                                {{this.newOccurrence.__validationErrors['endsAt'].join('; ')}}
+                            </small>                            
                         </div>
                     </div>
+
                 </div>  
             </div>
 
@@ -147,16 +170,21 @@ $this->import('
                                 <label class="create-occurrence__section--fields-field"> <input v-model="free" type="radio" name="free" :value="false" /> <?= i::_e('Não') ?> </label>
                             </div>
                         </div>
+
                         <div class="col-6 sm:col-12" v-if="!free">
                             <div class="create-occurrence__section--field">
                                 <span class="label"><?= i::_e('Valor da entrada:') ?></span>
-                                <input v-model="price" type="text" @input="mascaraMoeda($event);" />
+                                <input type="text" @input="priceMask" v-model="price" /> <!-- v-model="entity.rule.price" -->
+                                <small class="field__error" v-if="this.newOccurrence.__validationErrors['price']">        
+                                    {{this.newOccurrence.__validationErrors['price'].join('; ')}}
+                                </small>  
                             </div>
                         </div>
+
                         <div class="col-6 sm:col-12">
                             <div class="create-occurrence__section--field">
                                 <span class="label"><?= i::_e('Informações adicionais sobre a entrada:') ?></span>
-                                <input type="text" />
+                                <input type="text" v-model="priceInfo" />
                             </div>
                         </div>
                     </div>
@@ -172,8 +200,8 @@ $this->import('
                             <div class="create-occurrence__section--field">
                                 <span class="label"><?= i::_e('Descrição legível de data e horário') ?></span>
                                 <div class="auto-description">
-                                    <span>{{autoDescription}}</span>
-                                    <button class="button button--icon button--sm"> <mc-icon name="copy"></mc-icon> copiar </button>
+                                    <span class="theDescription">{{updateDescription}}</span>
+                                    <button class="button button--icon button--sm" @click="copyDescription"> <mc-icon name="copy"></mc-icon> copiar </button>
                                 </div>
                             </div>
                         </div>
@@ -181,6 +209,9 @@ $this->import('
                             <div class="create-occurrence__section--field">
                                 <span class="label"><small><?= i::_e('Você pode usar a descrição gerada pelo sistema OU criar uma descrição customizada prenchendo o campo abaixo') ?></small></span>
                                 <input v-model="description" type="text" name="description" placeholder="<?= i::_e('Preencha aqui o resumo customizado') ?>"/>
+                                <small class="field__error" v-if="this.newOccurrence.__validationErrors['description']">        
+                                    {{this.newOccurrence.__validationErrors['description'].join('; ')}}
+                                </small>  
                             </div>
                         </div>
                     </div>
@@ -195,13 +226,12 @@ $this->import('
     </template>
 
     <template #actions="modal">
-
         <div class="mobile">
             <div class="button-group">
                 <button v-if="step==0" class="button button--text" @click="cancel(modal)"><?php i::_e('Cancelar')?></button>
-                <button v-if="step>0" class="button button--text" @click="prev()"><?php i::_e('Voltar')?></button>
+                <button v-if="step>0" class="button button--text button--icon button--icon-left" @click="prev()"><?php i::_e('Voltar')?><mc-icon name="previous"></mc-icon></button>
                 <button v-if="step<5" class="button button--primary button--icon" @click="next()"><?php i::_e('Próximo')?><mc-icon name="next"></mc-icon></button>
-                <button v-if="step==5" class="button button--primary" @click="create()"><?php i::_e('Concluir')?></button>
+                <button v-if="step==5" class="button button--primary" @click="create(modal)"><?php i::_e('Concluir')?></button>
             </div>
 
             <div class="pagination">
@@ -217,9 +247,8 @@ $this->import('
         <div class="desktop">
             <div class="button-group">
                 <button class="button button--text" @click="cancel(modal)"><?php i::_e('Cancelar')?></button>
-                <button class="button button--primary" @click="create()"><?php i::_e('Inserir ocorrência')?></button>
+                <button class="button button--primary" @click="create(modal)"><?php i::_e('Inserir ocorrência')?></button>
             </div>
         </div>
-
     </template>
 </modal>

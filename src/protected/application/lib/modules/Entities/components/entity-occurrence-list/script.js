@@ -36,5 +36,12 @@ app.component('entity-occurrence-list', {
                 return newPrice;
             }
         },
+
+        addToOccurrenceList(occurrence) {
+            /* const api = new API('eventOccurrence'); */
+            const lists = useEntitiesLists();
+            const occurrences = lists.fetch('occurrenceList', 'default');
+            occurrences.push(occurrence);
+        }
     },
 });

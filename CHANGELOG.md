@@ -3,6 +3,44 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.5.1] - 2022-12-23
+### Correções
+- Cria db-update para setar campos de CPF e CNP nos agentes com base no dados do campo documento
+
+## [.5.5.0] - 2022-12-22
+### Correções
+- Remove definição da configuração availableAgentFields no Module registrationFieldTypes
+- Corrige carregamento dos campos @ na tela de configuração de campo garantindo que todos ja tenham sido registrados
+- Corrige erro na tela do certificado que impedia a exibição ao tentar verificar a expiração do selo
+### Melhorias
+- atualiza o updateTimestamp da entidade quando modifica um metadado
+- opção de bloqueio de campos das entidades seladas
+- Cria hooks no modulo sendMailNotification
+- Possibilita que seja possivel controlar disparo de e-mails de criação e aprovação no modulo sendMailNotification
+### Novas Funcionalidade
+- Bloqueio dos campos através dos selos
+
+## [5.4.2] - 2022-12-20
+### Correções
+- Evita que ao processar a planilha do importador de eventos, caia em timeout
+
+## [5.4.1] - 2022-12-19
+### Correções
+- Corrige importador de enventos interpretanto Avatar, Banner e Galeria como campos obrigatórios
+
+## [5.4.0] - 2022-12-14
+### Correções
+- Atualiza updateTimestamp das entidades quando modificado um metadado
+### Novas Funcionalidade
+- Importação de eventos por planilha
+
+## [5.3.38] - 2022-11-30
+### Correções
+- Corrige verificação de criação das taxnomias
+
+## [5.3.37] - 2022-11-18
+### Correções
+- corrige definição de valor default para os metadados
 
 ## [feature/BaseV2]
 
@@ -17,61 +55,105 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Quebra de compatibilidade
 - Não é mais possível selecionar entidades reacionadas utilizando várias vezes o nome da entidade (ex: `@select=owner.id,owner.name`). Deve-se substituir por `@select=owner.{id,name}`
+## [5.3.36] - 2022-11-16
+### Correções
+- typo no módulo Notifications 
+### Melhorias
+- Cria novos campos no cadastro do agente
+
+## [5.3.35] - 2022-11-16
+### Correções
+- Corrige erro ao gerar thumbnails do avatar
+
+## [5.3.34] - 2022-11-10
+### Correções
+- Corrige erro ao enviar inscrições
+
+## [5.3.33] - 2022-11-10
+### Correções
+- Corrige problema de não salvar a inscrição quando existe campos obrigatórios não preenchidos na ficha
+
+## [5.3.32] - 2022-10-21
+### Melhorias
+- Cria módulo para importação de eventos atrvéz de planilha CSV
+
+### Correções
+- Aplica correções nos layouts de e-mails no novo módulo de disparo de notificações
+
+## [5.3.31] - 2022-10-18
+### Melhorias
+- Cria módulo para para disparos de e-mails gerais no mapas culturais
 
 ## [5.3.30] - 2022-10-6
-- ### Correções
+### Correções
 - Instala LIB league/csv
+
 ## [5.3.29] - 2022-10-5
-- ### Correções
+### Correções
 - Corrige erro que permite o agente excluir um selo associado a ele
+
 ## [5.3.28] - 2022-09-13
-- ### Correções
+### Correções
 - Corrige db-update que faz a correção de eros nas inscrições entre fases
 - Faz com que os fields sejam registrados recursivamente ao reconsolidar as avaliações
+
 ## [5.3.27] - 2022-09-09
-- ### Correções
+### Correções
 - Corrige busca recursiva dos fields nos casos de oportunidades multifases
+
 ## [5.3.26] - 2022-08-19
-- ### Melhorias
+### Melhorias
 - Cria dp-update que define permissão em todos os campos nas permissões dos avaliadores para oportunidades legadas 
+
 ## [5.3.25] - 2022-08-16
-- ### Correções
+### Correções
 - Corrige objeto Module para a chamada do método getChartsColors
 - Corrige exportação do .csv quando existe campos de endereço do agente na inscrição
 - Corrige busca de endereço agente por cep na inscrição
+
 ## [5.3.24] - 2022-08-12
-- ### Correções
+### Correções
 - Ajusta permissão dos avaliadores para nao quebrar quando o formulário estiver sem campos
+
 ## [5.3.23] - 2022-08-01
-- ### Correções
+### Correções
 - Faz com que o método dict, retorne o valor ao invez de imprimir
 - Garante que a pasta SaaS seja sempre criada com a permissão correta
 - Faz com que o método dict, retorne o valor ao invez de imprimir no arquivo space.php
+
 ## [5.3.22] - 2022-07-26
-- ### Correções
+### Correções
 - Corrige redirecionamento do subsite após edição e criação
 - Garante que ao acessar a single do subsite esteja em modo de edição
+
 ## [5.3.21] - 2022-07-25
 - Ajusta local de tipagem para array da variavel $_field_val
 - Ajusta entripoint para setar permissão correta na pasta DoctrineProxies
+
 ## [5.3.20] - 2022-07-21
 ### Correções
 - Remove chamadas de função iniexistente
+
 ## [5.3.19] - 2022-07-12
 ### Correções
 - Corrige erro na contagem de avaliações
+
 ## [5.3.18] - 2022-06-23
 - Revisa condicionais para exibir campos das politicas afirmatrivas para o avaliador e na planilha de inscritos
+
 ## [5.3.17] - 2022-06-10
 - Remove atualização dos metadados dos campos @ do dp-update e passa para o mc-updates
+
 ## [5.3.16] - 2022-06-10
 - Cria termo de autorização de uso de imagem padrão
+
 ## [5.3.15] - 2022-06-10
-- ### Correções
+### Correções
 - Garante que fique visivel campo do projeto para o proponente e o gestor, independente se existe liberação para o avaliador ou não no sistema de permissão dos avaliadores
 - cria db-update que pega os dados relacionados a ficha e salva nos metadados
 - Corrige erro que nao deixa exibir campo permitido ao avaliador, caso a categoria nao esteja liberada
 - Ajusta telas de edição e visualização do cartão de visitas do agente para exibição da label dados pessoais somente se existir dados ou se estiver em modo de edição
+
 ## [5.3.14] - 2022-06-07
 ### Correções
 - Evita criação duplicada de metadados
@@ -91,7 +173,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Faz com que nas politicas afirmativas que a inscrição se enquandar, caso seja um campo multiseleção salve somente o campo correto e não todos
 - Corrige erro de nao deixar associar espaço na tela de edição da inscrição 
 - Corrige erro na política afirmativa que fazia o botão de adicionar administradores nao aparecesse na tela de edição da oportunidade
-
 ### Melhorias
 - Trunca em 80 caractéres o tamanho do título do campo ao exibir no select de configuração das políticas afirmativa
 - Ajusta classe do ID do campo na listagem de campos para liberação para o avaliador padronizando com a configuração do formulário
@@ -99,20 +180,26 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta tabela dos crtérios de avaliação para que nao quebre a estilização com mudanças de resolução
 - Adiciona método para poder filtrar campo na sessão de permissão dos avaliadores
 - Verifica se o arquivo Module.php esta presente antes de setar na lista de módulos ativos
+
 ## [5.3.12] - 2022-06-02
 - Corrige erro ao salvar campo @ quando os mesmos já retornam preenchidos com dados do agente
+
 ## [5.3.11] - 2022-05-25
 ### Correções
 - Define chave ENV para configurar chaves do recaptcha google no módulo CompliantSuggestion
+
 ## [5.3.10] - 2022-05-24
 ### Correções
 - Aplica reverse na máscara do campo caso  o mesmo tenha aclasse  js-mask-currency
+
 ## [5.3.9] - 2022-05-23 
 ### Correções
 - Corrige erro na abertura da tag php
+
 ## [5.3.8] - 2022-05-23 
 ### Melhorias
 - Cria campo no agente chamado Agente agente itinerante
+
 ## [5.3.7] - 2022-05-23 
 ### Correções
 - Ajuste nas fontes dos cartões das entidades
@@ -120,7 +207,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajuste da posição da tag
 - Corrige css do select que define o tipo de um espaço
 - Utiliza função mb_strlen para contar os caractéres da descrição curta, levando em conta que podem existir caracteres multibyte
-
 ### Melhorias
 - Limita acesso ao botão de download da planila de agentes a administradores
 - Informa numero de caracteres preenchidos na descrição curta do agente
@@ -129,6 +215,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - No endpoint apiQueryByLocation, seta que o período de eventos pesquisados sejam de 1 anos apartir da data atual
 - Quando o agente é redirecionado para a tela de edição por nao ter os dados mínimos preenchidos, eexibe opção de sair "Deslogar"
 - Faz com que o filtro de eventos na gestão de usuários busque todos os eventos independente de existir espaço ou ocorrencias
+
 ## [5.3.6] - 2022-05-23 
 - Corrige erro que nao deixava exibir campos condicionados a outros nas configurações das politicas afirmativas
 
@@ -171,6 +258,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [5.3.1] - 2022-05-09
 ### Melhorias
 - Altera mensagem das inscrições enviadas
+
 ## [5.3.0] - 2022-05-09
 ### Novas funcionalidades
 - Implementa sistemas de permissão para os avaliadores
@@ -239,6 +327,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 # [5.1.54] - 2022-03-24
 ### Correções
 - Corrige filtro por categoria na aba de avaliações na tela do avaliador
+
 # [5.1.53] - 2022-03-23
 ### Correções
 - Corrige filtro de categorias no endpoint findEvaluation
@@ -247,47 +336,43 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [5.1.52] - 2022-03-22
 ### Correções
 - Desabilita chamada automárica para api/notification/find para evitar sobrecarga no servidor
+
 ## [5.1.51] - 2022-03-07
 ### Correção
-
 - Corrige mascara campo de moeda
 - Remove chamada de método desnecessário no módulo de relatŕorios
-
 ### Melhorias
 - Insere hook para controlar exibição do botão de download de planilhas nas telas das entidades
 
 ## [5.1.50] - 2022-02-25
 ### Correção
-
 - Corrige verificação de obrigatório nos campos que estão condicionados a outros campos do formulário #1928
 - Aplica máscara de moeda no campo, independentemente do mesmo iniciar oculto ou não no carregamento do formulário #1931
+
 ## [5.1.49] - 2022-02-21
 ### Correção
-
 - Ajusta exportação da planilha de inscritos, para que leve em consideração oportunidades multi-fases
+
 ## [5.1.48] - 2022-02-17
 ### Correção
-
 - Aplica redução no nome do campo para evitar problemas na rename do arquivo de anexo no processo de upload Ref.: #1929
+
 ## [5.1.47] - 2022-02-03
 ### Correção
-
 - Remove recriação de cache da oportunidade quando se envia um inscrição
 - Remove lixos hashKey gerados pelo angularjs na tabela registration_meta
 
 ## [5.1.46] - 2022-02-02
 ### Correção
-
 - Corrige bug na troca de agente responsável na fiche de inscrição
+
 ## [5.1.45] - 2022-01-31
 ### Correção
-
 - Impede que campos obrigatórios sejam enviados com essas sujeiras e interpretados como valores verdadeiros
 
 >>>>>>> develop
 ## [5.1.44] - 2022-01-24
 ### Correção
-
 - Corrige erro no endpoint findEvaluation quando não existe avaliadores cadastrados na oportunidade #1874
 - Evita que quem tenha permissão de edição na inscrição, veja o formulário de enviar prestação de contas #1871
 - Remove o status todas da lista de status da listagem de inscrições #1868
@@ -297,7 +382,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [5.1.43] - 2022-01-19
 ### Correção
-
 - Corrige erro de divisão por zero no módulo de relatórios
 
 ## [5.1.42] - 2022-01-14
@@ -326,10 +410,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Checa se metadado accountabilityPhase existe antes de exibir inscrições de prestação de contas no painel de controle
 - Altera forma de atuação do autosave das avaliações para evitar que registre avaliações dublicadas
-
 ### Novas LIB's php
 - Instala lib spreadsheet para geração de planilhas
-
 ### Melhorias
 - Melhora função createMailMessage para ser capaz de interpetrar mailer.bcc e mailer.replyTo
 
@@ -394,7 +476,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - coloca o template part da seleção de espaços para dentro do controller de oportunidade
 - refatora seleção de agentes e espaço na ficha de inscrição para ficarem dentro do controller de inscrição
 - melhoria no feedback de erro no formulário de inscrição
-
 ### Correções
 - Escapa valores do enum na procedure de exclusão de órfãos
 - Corrige mensagem de erro do botão enviar inscrição

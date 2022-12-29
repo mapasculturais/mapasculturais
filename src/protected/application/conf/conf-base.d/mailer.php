@@ -52,7 +52,15 @@ return [
         'request_relation' => [
             'title' => i::__("Solicitação de requisição"),
             'template' => 'request_relation.html'
-        ]
+        ],
+        'start_registration' => [
+            'title' => i::__("Inscrição iniciada"),
+            'template' => 'start_registration.html'
+        ],
+        'send_registration' => [
+            'title' => i::__("Inscrição enviada"),
+            'template' => 'send_registration.html'
+        ],
 
     ]
 

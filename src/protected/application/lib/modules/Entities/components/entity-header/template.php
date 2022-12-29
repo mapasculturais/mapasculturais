@@ -45,7 +45,7 @@ use MapasCulturais\i;
                     <h1 class="title"> {{entity.name}} </h1>
                     <div class="metadata">
                         <slot name="metadata">
-                            <dl>
+                            <dl v-if="entity.type">
                                 <dt><?= i::__('Tipo') ?></dt>
                                 <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
                             </dl>
