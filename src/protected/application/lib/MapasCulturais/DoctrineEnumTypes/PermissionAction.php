@@ -25,6 +25,7 @@ class PermissionAction extends DoctrineEnumType
             'createEvents' => 'createEvents',
             'createSealRelation' => 'createSealRelation',
             'createSpaceRelation' => 'createSpaceRelation',
+            'deleteAccount' => 'deleteAccount',
             'destroy' => 'destroy',
             'evaluate' => 'evaluate',
             'evaluateRegistrations' => 'evaluateRegistrations',

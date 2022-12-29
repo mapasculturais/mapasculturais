@@ -4,8 +4,10 @@ namespace MapasCulturais\Themes\BaseV2;
 
 use MapasCulturais\i;
 use MapasCulturais\App;
-use MapasCulturais\Exceptions;
 
+/**
+ * @method void import(string $components) Importa lista de componentes Vue. * 
+ */
 class Theme extends \MapasCulturais\Theme
 {
     static function getThemeFolder()

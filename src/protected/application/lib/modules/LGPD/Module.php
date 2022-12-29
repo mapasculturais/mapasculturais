@@ -17,8 +17,17 @@ class Module extends \MapasCulturais\Module{
 
     public function _init() 
     {
-        /** @var App $app */
         $app = App::i();
+
+        $app->hook('mapas.printJsObject:before', function() use($app){
+            /** @var \MapasCulturais\Theme $this */
+            $terms = [];
+            foreach($app->config['module.LGPD'] as $slug => $term) {
+                $term['md5'] = Module::createHash($term['text']);
+                $terms[$slug] = $term;
+            }
+            $this->jsObject['config']['LGPD'] = $terms;
+        });
 
         $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function() use ($app){
 

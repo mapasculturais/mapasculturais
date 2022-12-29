@@ -15,7 +15,7 @@ $this->import('
     entity-header
     entity-links
     entity-owner
-    entity-parent
+    entity-parent-edit
     entity-profile
     entity-related-agents
     entity-social-media
@@ -153,7 +153,7 @@ $this->breadcramb = [
                         <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags')?>" editable></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                         <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por')?>" editable></entity-owner>
-                        <entity-parent :entity="entity" classes="col-12" type="project" ></entity-parent>
+                        <entity-parent-edit :entity="entity" classes="col-12" type="project" ></entity-parent-edit>
                     </div>
                 </template>   
             </mapas-card>            

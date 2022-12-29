@@ -1,0 +1,49 @@
+@use '../settings/mixins' as *;
+
+.user-accepted-terms {
+    &__privacy {
+        &--accept {
+            &-title {
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 25px;
+                margin-bottom: 24px;
+
+                &-box {
+                    margin-top: 24px;
+
+                    .boxterm {
+                        &__list {
+                            margin-top: 12px;
+
+                            &-subterm {
+
+                                &-title {
+                                    font-weight: bolder;
+                                    font-size: 14px;
+                                    letter-spacing: 0.07em;
+                                    text-transform: uppercase;
+                                    line-height: 19px;
+                                }
+
+                                &-content {
+                                    font-weight: 500;
+                                    font-size: 14px;
+                                    letter-spacing: 0.07em;
+                                    text-transform: uppercase;
+                                    line-height: 19px;
+                                }
+                            }
+                        }
+
+                        @media (max-width: size(500)) {
+                            .boxterm {
+                                max-width: fit-content;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -9,7 +9,8 @@ app.component('popover', {
 
     data() {
         return {
-            active: false
+            active: false,
+            click: -1,
         }
     },
 
@@ -51,11 +52,17 @@ app.component('popover', {
                     contained = true;
                 }
             };
-
+            
             if (!contained) { 
+                
                 this.close();
             };
-        })
+        }),
+        document.addEventListener('keydown', (e) => {
+            if((e.key=="27") || (e.key =="Escape")) {
+                this.close();
+            }            
+        });
     },
 
     methods: {
@@ -63,16 +70,19 @@ app.component('popover', {
             const inputs = this.$refs.content.getElementsByTagName('input');
             if (inputs.length) {
                 setTimeout(() => {
-                    console.log(inputs[0])
                     inputs[0].focus();
                 }, 100);
             }
         },
         open() {
-            this.active = true;
-            this.$emit('open', this);
+            if((this.click)%2==0){
+                this.active = true;
+                this.$emit('open', this);
+            }
+
         },
         close() {
+            this.click++;
             this.active = false;
             this.$emit('close', this);
         },

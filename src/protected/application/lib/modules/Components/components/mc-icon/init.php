@@ -28,6 +28,7 @@ $iconset = [
 
     // IMPORTANTE: manter ordem alfabética
     'access' => 'ooui:previous-rtl',
+    'account' => 'mdi:gear',
     'add' => 'ps:plus',
     'app' => 'heroicons-solid:puzzle',
     'archive' => 'mi:archive',
@@ -54,6 +55,7 @@ $iconset = [
     'filter' => 'ic:baseline-filter-alt',
     'home' => 'ci:home-fill',
     'image' => 'bi:image-fill',
+    'info' => 'material-symbols:info-outline-rounded',
     'link' => 'cil:link-alt',
     'list' => 'ci:list-ul',
     'loading' => 'eos-icons:three-dots-loading',
@@ -78,6 +80,8 @@ $iconset = [
     'up' => 'mdi:chevron-up',
     'user-config' => 'fa-solid:users-cog',
     'upload' => 'ic:baseline-file-upload',
+    'seal' => 'mdi:seal-variant',
+
 ];
 
 $app->applyHook('component(mc-icon).iconset', [&$iconset]);

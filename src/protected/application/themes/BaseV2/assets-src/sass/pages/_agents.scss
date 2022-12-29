@@ -13,6 +13,7 @@
         .container {
             main {
                 gap: size(40);
+
             }
         }
 
@@ -23,6 +24,30 @@
     }
 
     &.action-single {
+        .box-cnpj {
+            margin-bottom: size(12);
+            &__box {
+                width: 100%;
+                height: 64px;
+                left: 134px;
+                top: 1259px;
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 25px;
+
+                background: #E8E8E8;
+                border-radius: 4px;
+                padding: size(24)  size(23) size(13);
+                margin-top: size(13)
+            }
+
+            label {
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 25px;
+            }
+        }
+
         .tabs {
             &-component {
                 &__header {
@@ -30,7 +55,7 @@
                     padding: 0;
 
                     @media (max-width: size(1200)) {
-                        margin: 0 size(16);                        
+                        margin: 0 size(16);
                     }
                 }
 
@@ -73,7 +98,7 @@
                     grid-column-end: span 3;
                     height: size(0.5);
                     width: 100%;
-                    
+
                     @media (max-width: size(800)) {
                         grid-column-end: 2;
                     }

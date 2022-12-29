@@ -79,7 +79,11 @@ app.component('entities', {
             default: 'find'
         },
         rawProcessor: Function,
-        scope: String,
+        scope: {
+            type: String,
+            default: 'default'
+        }
+
     },
     
     methods: {

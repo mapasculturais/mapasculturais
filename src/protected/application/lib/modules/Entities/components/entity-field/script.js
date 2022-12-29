@@ -29,7 +29,12 @@ app.component('entity-field', {
                 value = [value];
             }
         }
-        
+
+        // if ((description.type === 'smallint' || description.type === 'integer' || description.type === 'number') && !(value instanceof Number)) {
+        //     description.min = this.props.min;
+        //     description.max = this.props.max;
+        // }
+
         return {
             __timeout: null,
             description: description,
@@ -70,6 +75,14 @@ app.component('entity-field', {
         classes: {
             type: [String, Array, Object],
             required: false
+        },
+        min: {
+            type: Number,
+            default: 0
+        },
+        max: {
+            type: Number,
+            default: 0
         }
     },
 
@@ -97,7 +110,11 @@ app.component('entity-field', {
             let oldValue = this.entity[this.prop];
 
             this.__timeout = setTimeout(() => {
-                this.entity[this.prop] = event.target.value;
+                if(this.is('date')) {
+                    this.entity[this.prop] = new McDate(event.target.value);
+                } else {
+                    this.entity[this.prop] = event.target.value;
+                }
 
                 this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
             }, this.debounce);

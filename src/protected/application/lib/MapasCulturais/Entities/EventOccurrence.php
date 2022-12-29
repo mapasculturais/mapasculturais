@@ -2,6 +2,7 @@
 
 namespace MapasCulturais\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 
@@ -36,14 +37,14 @@ class EventOccurrence extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="starts_on", type="date", nullable=true)
      */
-    protected $_startsOn;
+    protected $startsOn;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="ends_on", type="date", nullable=true)
      */
-    protected $_endsOn;
+    protected $endsOn;
 
 
     /**
@@ -51,14 +52,14 @@ class EventOccurrence extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="starts_at", type="datetime", nullable=true)
      */
-    protected $_startsAt;
+    protected $startsAt;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="ends_at", type="datetime", nullable=true)
      */
-    protected $_endsAt;
+    protected $endsAt;
 
     /**
      * @var frequency
@@ -86,7 +87,28 @@ class EventOccurrence extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="until", type="date", nullable=true)
      */
-    protected $_until;
+    protected $until;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    protected $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="price", type="text", nullable=true)
+     */
+    protected $price;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="priceInfo", type="text", nullable=true)
+     */
+    protected $priceInfo;
 
     /**
      * @var string
@@ -170,7 +192,7 @@ class EventOccurrence extends \MapasCulturais\Entity
             ],
             'until' => [
                 '$value instanceof \DateTime' => \MapasCulturais\i::__('Data final inválida'),
-                '$value >= $this->startsOn' => \MapasCulturais\i::__('Data final antes da inicial')
+                '$value >= $this->getStartsOn()' => \MapasCulturais\i::__('Data final antes da inicial')
             ],
             'event' => [
                 'required' => \MapasCulturais\i::__('Evento é obrigatório')
@@ -180,6 +202,9 @@ class EventOccurrence extends \MapasCulturais\Entity
             ],
             'description' => [
                 'required' => \MapasCulturais\i::__('A descrição legível do horário é obrigatória')
+            ],
+            'price' => [
+                'required' => \MapasCulturais\i::__('O valor da entrada é obrigatório')
             ]
 
         ];
@@ -188,7 +213,8 @@ class EventOccurrence extends \MapasCulturais\Entity
     function validateFrequency($value) {
         if ($this->flag_day_on === false) return false;
         if (in_array($value, ['daily', 'weekly', 'monthly'])) {
-            return !is_null($this->until);
+        /* if (in_array($value, ['once', 'weekly', 'daily'])) { */
+            return !is_null($this->getUntil());
         }
 
         return true;
@@ -214,43 +240,43 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function setStartsOn($value) {
-        $this->_startsOn = self::convert($value, 'Y-m-d');
+        $this->startsOn = self::convert($value, 'Y-m-d');
     }
 
     function getStartsOn() {
-        return $this->_startsOn;
+        return $this->startsOn;
     }
 
     function setEndsOn($value) {
-        $this->_endsOn = self::convert($value, 'Y-m-d');
+        $this->endsOn = self::convert($value, 'Y-m-d');
     }
 
     function getEndsOn() {
-        return $this->_endsOn;
+        return $this->endsOn;
     }
 
 
     function setStartsAt($value) {
-        $this->_startsAt = self::convert($value, 'Y-m-d H:i');
+        $this->startsAt = self::convert($value, 'Y-m-d H:i');
     }
 
     function getStartsAt() {
-        return $this->_startsAt;
+        return $this->startsAt;
     }
 
 
     function setEndsAt($value) {
-        $this->_endsAt = self::convert($value, 'Y-m-d H:i');
+        $this->endsAt = self::convert($value, 'Y-m-d H:i');
     }
 
     function getEndsAt() {
-        return $this->_endsAt;
+        return $this->endsAt;
     }
 
     function getDuration() {
-        if($this->startsAt instanceof \DateTime && $this->endsAt instanceof \DateTime){
-            $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i:s'));
-            $endsAtCopy = new \DateTime($this->endsAt->format('Y-m-d H:i:s'));
+        if($this->getStartsAt() instanceof \DateTime && $this->getEndsAt() instanceof \DateTime){
+            $startsAtCopy = new \DateTime($this->getStartsAt()->format('Y-m-d H:i:s'));
+            $endsAtCopy = new \DateTime($this->getEndsAt()->format('Y-m-d H:i:s'));
             $interval = $endsAtCopy->diff($startsAtCopy);
             return $interval;
         }else{
@@ -259,11 +285,11 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function setUntil($value) {
-        $this->_until = self::convert($value, 'Y-m-d');
+        $this->until = self::convert($value, 'Y-m-d');
     }
 
     function getUntil() {
-        return $this->_until;
+        return $this->until;
     }
 
     function getRecurrences() {
@@ -274,15 +300,6 @@ class EventOccurrence extends \MapasCulturais\Entity
         }
     }
 
-    function getDescription(){
-        return isset($this->getRule()->description) ? $this->getRule()->description : "";
-    }
-
-
-    function getPrice(){
-        return key_exists('price', $this->rule) ? $this->rule['price'] : '';
-    }
-
     function setRule($value) {
 
         if ($value === '') {
@@ -290,32 +307,42 @@ class EventOccurrence extends \MapasCulturais\Entity
             return;
         }
         $value = (array) $value;
+        $value += [
+            'startsOn' => null,
+            'startsAt' => null,
+            'endsAt' => null,
+            'until' => null,
+            'duration' => null,
+            'frequency' => null,
+            'day' => null
+        ];
 
-        $this->startsAt = $value['startsOn'] . ' ' . $value['startsAt'];
-        //$this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
+        if (isset($value['startsOn']) && $value['startsAt']) {
+            $this->setStartsAt($value['startsOn'] . ' ' . $value['startsAt']);
+        }
 
         if(!empty($value['duration'])){
             $value['duration'] = intval($value['duration']);
             $dateString = 'PT'.$value['duration'] .'M';
 
-            if($this->startsAt instanceof \DateTime){
-                $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i'));
-                $this->endsAt = $startsAtCopy->add(new \DateInterval($dateString));
+            if($this->getStartsAt() instanceof \DateTime){
+                $startsAtCopy = new \DateTime($this->getStartsAt()->format('Y-m-d H:i'));
+                $this->setEndsAt($startsAtCopy->add(new \DateInterval($dateString)));
             }
         }else{
             $value['duration'] = 0;
-            $this->endsAt = $this->startsAt; // don't attributing causes the duration to be 1 minute
+            $this->setEndsAt($this->getStartsAt()); // don't attributing causes the duration to be 1 minute
         }
-        if($this->endsAt instanceof \DateTime){
-            $value['endsAt'] = $this->endsAt->format('H:i');
+        if($this->getEndsAt() instanceof \DateTime){
+            $value['endsAt'] = $this->getEndsAt()->format('H:i');
         }
 
-        $this->startsOn = $value['startsOn'];
+        $this->setStartsOn($value['startsOn']);
         $this->frequency = $value['frequency'];
-        $this->until = null;
+        $this->setUntil(null);
 
         if($this->frequency != "once") {
-            $this->until = $value['until'] ? $value['until'] : "none";
+            $this->setUntil($value['until'] ? $value['until'] : "none");
         }
 
         $this->rule = json_encode($value);
@@ -369,7 +396,7 @@ class EventOccurrence extends \MapasCulturais\Entity
                     } else {
                         $rec = new EventOccurrenceRecurrence;
                         $rec->eventOccurrence = $this;
-                        $rec->day = $this->startsOn === null ? 0 : $this->startsOn->format('j');
+                        $rec->day = $this->getStartsOn() === null ? 0 : $this->getStartsOn()->format('j');
                         $rec->week = null;
                         $rec->month = null;
                     }
@@ -383,20 +410,25 @@ class EventOccurrence extends \MapasCulturais\Entity
         return json_decode($this->rule);
     }
 
+    function getControllerId() {
+        return 'eventOccurrence';
+    }
+
     function jsonSerialize() {
         return [
+            '@entityType' => $this->getControllerId(),
             'id' => $this->id,
             'rule'=> $this->getRule(),
-            'startsOn' => $this->startsOn,
-            'startsAt' => $this->startsAt,
-            'endsOn' => $this->endsOn,
-            'endsAt' => $this->endsAt,
+            'startsOn' => $this->getStartsOn(),
+            'startsAt' => $this->getStartsAt(),
+            'endsOn' => $this->getEndsOn(),
+            'endsAt' => $this->getEndsAt(),
             'duration' => $this->duration,
             'frequency' => $this->frequency,
             'separation' =>  $this->separation,
             'recurrences' => $this->getRecurrences(),
             'count' =>  $this->count,
-            'until' =>  $this->until,
+            'until' =>  $this->getUntil(),
             'spaceId' =>  $this->spaceId,
             'space' => $this->space ? $this->space->simplify('id,name,singleUrl,shortDescription,avatar,location,terms') : null,
             'event' => $this->event ? $this->event->simplify('id,name,singleUrl,shortDescription,avatar') : null,
@@ -431,6 +463,8 @@ class EventOccurrence extends \MapasCulturais\Entity
     function save($flush = false) {
         try{
             parent::save($flush);
+            $this->event->updateTimestamp = new DateTime();
+            $this->event->save($flush);
 
         }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
             if(!App::i()->isWorkflowEnabled())
@@ -461,6 +495,9 @@ class EventOccurrence extends \MapasCulturais\Entity
             $r->delete($flush);
 
         parent::delete($flush);
+
+        $this->event->updateTimestamp = new DateTime();
+        $this->event->save($flush);
     }
 
     /** @ORM\PreRemove */

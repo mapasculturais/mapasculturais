@@ -88,16 +88,30 @@ trait EntityTaxonomies{
     }
     
     function setTerms(array $taxonomy_terms){
-        foreach($taxonomy_terms as $taxonomy => $terms){
-            if(!is_array($terms)){
-                if($terms){
-                    $taxonomy_terms[$taxonomy] = [$terms];
-                } else {
-                    $taxonomy_terms[$taxonomy] = [];
+        $app = App::i();
+        $taxonomies = array_keys($app->getRegisteredTaxonomies($this));
+        foreach($taxonomies as $slug){
+            $taxonomy_terms[$slug] = $taxonomy_terms[$slug] ?? [];
+            if(!is_array($taxonomy_terms[$slug])){
+                $taxonomy_terms[$slug] = $taxonomy_terms[$slug] ? [$taxonomy_terms[$slug]] : [];
+            }
+        }
+
+        foreach($taxonomies as $slug) {
+            if (in_array("terms:{$slug}", $this->lockedFields)) {
+                if(is_null($this->terms)){
+                    $this->populateTermsProperty();
+                }
+                
+                $original_values = $this->terms[$slug];
+                $new_values = $taxonomy_terms[$slug];
+
+                if (array_diff($original_values, $new_values) || array_diff($new_values, $original_values)) {
+                    throw new \MapasCulturais\Exceptions\PermissionDenied($app->user, $this, "modify locked taxonomy: $slug");
                 }
             }
         }
-        
+
         $this->terms = $taxonomy_terms;
     }
 
@@ -105,8 +119,9 @@ trait EntityTaxonomies{
      * Populates the terms property with values associated with this entity
      */
     protected function populateTermsProperty(){
-        if(is_null($this->terms))
+        if(is_null($this->terms)) {
             $this->terms = new \ArrayObject();
+        }
         foreach ($this->taxonomyTerms as $taxonomy_slug => $terms){
             $this->terms[$taxonomy_slug] = [];
             foreach($terms as $term)
@@ -118,8 +133,9 @@ trait EntityTaxonomies{
     function getTaxonomiesValidationErrors(){
         $taxonomies = App::i()->getRegisteredTaxonomies($this);
         $errors = [];
+        $terms = $this->getTerms();
         foreach($taxonomies as $definition){
-            if($definition->required && empty($this->terms[$definition->slug])){
+            if($definition->required && empty($terms[$definition->slug])){
                 $errors['term-'.$definition->slug] = [$definition->required];
             }
         }
@@ -139,7 +155,7 @@ trait EntityTaxonomies{
         $app = App::i();
 
         // temporary array
-        $taxonomy = $this->terms;
+        $taxonomy = (array) $this->terms;
         foreach($this->taxonomyTerms as $slug => $terms){
             foreach($terms as $term){
                 // if the term is in the terms property and the association already exists,
@@ -183,6 +199,12 @@ trait EntityTaxonomies{
         
         // if this entity uses this taxonomy
         if($definition = $app->getRegisteredTaxonomy($this, $taxonomy_slug)){
+
+              // if not allowed to insert terms, get the term in the way as defined in restrictedTerms
+            if(!$definition->allowInsert){
+                $term = $definition->restrictedTerms[mb_strtolower(trim($term))];
+            }
+
             $t = $app->repo('Term')->findOneBy(['taxonomy' => $definition->slug, 'term' => $term]);
             $tr = $app->repo($this->getTermRelationClassName())->findOneBy(['term' => $t, 'owner' => $this]);
 
@@ -200,11 +222,7 @@ trait EntityTaxonomies{
                 return true;
 
             // else if the term does not exists but the taxonomy definition allow insertion, create de term and the association
-            }elseif($definition->allowInsert || key_exists(strtolower(trim($term)), $definition->restrictedTerms) ){
-
-                // if not allowed to insert terms, get the term in the way as defined in restrictedTerms
-                if(!$definition->allowInsert)
-                    $term = $definition->restrictedTerms[strtolower(trim($term))];
+            }elseif($definition->allowInsert || key_exists(mb_strtolower(trim($term)), $definition->restrictedTerms) ){
 
                 $t = new \MapasCulturais\Entities\Term;
                 $t->term = $term;

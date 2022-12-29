@@ -12,9 +12,11 @@ use MapasCulturais\i;
 
         <textarea v-if="is('text')" :value="value" :id="propId" :name="prop" @change="change($event)"></textarea>
 
-        <input v-if="is('date') || is('number') || is('integer')" :value="value" :id="propId" :name="prop" :type="fieldType" :min="description.min" :max="description.max" :step="description.step" @change="change($event)">
+        <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @change="change($event)">
 
-        <input v-if="is('email') || is('url')" :value="value" :id="propId" :name="prop" :type="fieldType" @change="change($event)">
+        <input v-if="is('date')" :value="value?.sql('date')" :id="propId" :name="prop" :type="fieldType" :min="min || description.min" :max="max || description.max" :step="description.step" @change="change($event)">
+
+        <input v-if="is('email') || is('url')" :value="value.format" :id="propId" :name="prop" :type="fieldType" @change="change($event)">
         
         <select v-if="is('select')" :value="value" :id="propId" :name="prop" @change="change($event)">
             <option v-for="optionValue in description.optionsOrder" :value="optionValue">{{description.options[optionValue]}}</option>

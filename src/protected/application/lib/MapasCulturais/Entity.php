@@ -10,9 +10,12 @@ use Doctrine\Common\Collections\Criteria;
  *
  * @property-read array $validationErrors Entity properties and metadata validation errors.
  * @property-read array $propertiesMetadata Properties Metadata
- * @property-read \MapasCulturais\Controller $controller The controller with the class with the same name of this entity class in the parent namespace.
- * @property-read \MapasCulturais\Entities\User $ownerUser The User owner of this entity
+ * @property-read Controller $controller The controller with the class with the same name of this entity class in the parent namespace.
+ * @property-read string $controllerId The controller id for this entity
+ * @property-read Entities\User $ownerUser The User owner of this entity
+ * 
  * @property-read string $hookClassPath
+ * @property-read string $hookPrefix
  *
  *
  * @hook **entity.new** - Executed when the __construct method of any entity is called.
@@ -94,8 +97,13 @@ abstract class Entity implements \JsonSerializable{
             }
         }
 
-        if(property_exists($this, 'createTimestamp'))
-                $this->createTimestamp = new \DateTime;
+        if(property_exists($this, 'createTimestamp')) {
+            $this->createTimestamp = new \DateTime;
+        }
+
+        if(property_exists($this, 'updateTimestamp')) {
+            $this->updateTimestamp = new \DateTime;
+        }
 
         if($this->usesOwnerAgent() && !$app->user->is('guest')){
             $this->setOwner($app->user->profile);
@@ -134,6 +142,7 @@ abstract class Entity implements \JsonSerializable{
 
     function simplify($properties = 'id,name'){
         $e = new \stdClass;
+        $e->{'@entityType'} = $this->getControllerId();
 
         $properties = is_string($properties) ? explode(',',$properties) : $properties;
         if(is_array($properties)){
@@ -710,6 +719,12 @@ abstract class Entity implements \JsonSerializable{
         return App::i()->createUrl($this->controllerId, 'delete', [$this->id]);
     }
 
+    static function getControllerClassName() {
+        $class = get_called_class();
+        
+        return preg_replace('#\\\Entities\\\([^\\\]+)$#', '\\Controllers\\\$1', $class::getClassName());
+    }
+
     /**
      * Returns the controller with the same name in the parent namespace if it exists.
      *
@@ -854,12 +869,12 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if ($is_new) {
-            $app->applyHookBoundTo($this, "{$hook_prefix}.insert:finish");
+            $app->applyHookBoundTo($this, "{$hook_prefix}.insert:finish", [$flush]);
         } else {
-            $app->applyHookBoundTo($this, "{$hook_prefix}.update:finish");
+            $app->applyHookBoundTo($this, "{$hook_prefix}.update:finish", [$flush]);
         }
 
-        $app->applyHookBoundTo($this, "{$hook_prefix}.save:finish");
+        $app->applyHookBoundTo($this, "{$hook_prefix}.save:finish", [$flush]);
         
     }
 
@@ -955,6 +970,10 @@ abstract class Entity implements \JsonSerializable{
             $result['deleteUrl'] = $this->getDeleteUrl();
             $result['editUrl'] = $this->getEditUrl();
             $result['singleUrl'] = $this->getSingleUrl();
+        }
+
+        if($this->usesSealRelation()) {
+            $result['lockedFields'] = $this->lockedFields;
         }
         
         unset(Entity::$_jsonSerializeNestedObjects[$_uid]);

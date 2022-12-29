@@ -1,5 +1,5 @@
-app.component('entity-parent', {
-    template: $TEMPLATES['entity-parent'],
+app.component('entity-parent-edit', {
+    template: $TEMPLATES['entity-parent-edit'],
     emits: [],
 
     setup(props, { slots }) {
@@ -24,12 +24,21 @@ app.component('entity-parent', {
         },
         title: {
             type: String,
-            default: __('vinculado','entity-parent'),
+            default: __('vinculado','entity-parent-edit'),
         },
         type: {
             type: String,
             required: true
         },
+        editable: {
+            type: Boolean,
+            default: false
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
+
     },
 
     methods: {

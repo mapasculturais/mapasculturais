@@ -136,16 +136,17 @@ abstract class Theme extends \Slim\View {
         
         $app->hook('app.register:after', function () use($app) {
             $this->view->jsObject['EntitiesDescription'] = [
-                "user"              => Entities\User::getPropertiesMetadata(),
-                "agent"             => Entities\Agent::getPropertiesMetadata(),
-                "event"             => Entities\Event::getPropertiesMetadata(),
-                "eventOccurrence"   => Entities\EventOccurrence::getPropertiesMetadata(),
-                "space"             => Entities\Space::getPropertiesMetadata(),
-                "project"           => Entities\Project::getPropertiesMetadata(),
-                "opportunity"       => Entities\Opportunity::getPropertiesMetadata(),
-                "registration"      => Entities\Registration::getPropertiesMetadata(),
-                "subsite"           => Entities\Subsite::getPropertiesMetadata(),
-                "seal"              => Entities\Seal::getPropertiesMetadata(),
+                "user"         => Entities\User::getPropertiesMetadata(),
+                "agent"         => Entities\Agent::getPropertiesMetadata(),
+                "event"         => Entities\Event::getPropertiesMetadata(),
+                "eventOccurrence" => Entities\EventOccurrence::getPropertiesMetadata(),
+                "space"         => Entities\Space::getPropertiesMetadata(),
+                "project"       => Entities\Project::getPropertiesMetadata(),
+                "opportunity"   => Entities\Opportunity::getPropertiesMetadata(),
+                "registration"   => Entities\Registration::getPropertiesMetadata(),
+                "subsite"       => Entities\Subsite::getPropertiesMetadata(),
+                "seal"          => Entities\Seal::getPropertiesMetadata(),
+                "eventOccurrence" => Entities\EventOccurrence::getPropertiesMetadata(), 
             ];
 
             $taxonomies = [];

@@ -25,6 +25,10 @@ $secondary-300: color.change($secondary-500, $lightness: $lightness-300) !defaul
 $secondary-700: color.change($secondary-500, $lightness: $lightness-700) !default;
 
 // Entities colors
+$seals-500: #1E1E1E !default;
+$seals-300: color.change($seals-500, $lightness: $lightness-300) !default;
+$seals-700: color.change($seals-500, $lightness: $lightness-700) !default;
+
 $agents-500: #EF7B45 !default;
 $agents-300: color.change($agents-500, $lightness: $lightness-300) !default;
 $agents-700: color.change($agents-500, $lightness: $lightness-700) !default;
@@ -94,6 +98,9 @@ $shadow-lv-1-up: 0px -4px 8px rgba(0, 0, 0, 0.16);
     --mc-agents-300: #{$agents-300};
     --mc-agents-500: #{$agents-500};
     --mc-agents-700: #{$agents-700};
+    --mc-seals-300: #{$seals-300};
+    --mc-seals-500: #{$seals-500};
+    --mc-seals-700: #{$seals-700};
     --mc-black: #{$black};
     --mc-border-solid: #{$border-solid};
     --mc-border-hairline: #{$border-hairline};

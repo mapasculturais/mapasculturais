@@ -123,7 +123,7 @@
                     }
                 });
                 
-                return $http.patch(this.getUrl('single', entity.id), data).
+                return $http.patch(this.getUrl('single', entity.id), data, {headers: {forceSave: true}}).
                     success(function(data, status){
                         MapasCulturais.Messages.success(labels['changesSaved']);
                         $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
@@ -1075,10 +1075,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.data.fieldsRequiredLabel = labels['requiredLabel'];
     $scope.data.fieldsOptionalLabel = labels['optionalLabel'];
 
-    
-
     $scope.data.fields.forEach(function(field) {
         var val = $scope.entity[field.fieldName];
+
+        if(field.fieldType === "agent-owner-field") {
+            var definition = MapasCulturais.EntitiesDescription.agent[field.config.entityField];
+            if(definition?.type == "multiselect" && typeof val == "string"){
+                val = val.split(";");
+            }
+        }
 
         field.unchangedFieldJSON = JSON.stringify(val);        
 
@@ -1099,6 +1104,14 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         id: MapasCulturais.registration.id
     };
     $scope.saveField = function (field, value, delay) {
+        
+        if(field.fieldType === "agent-owner-field") {
+            var definition = MapasCulturais.EntitiesDescription.agent[field.config.entityField];
+            if(definition?.type == "multiselect"){
+                value = value.join(";");
+            }
+        }
+
 
         delete field.error;
 
@@ -1530,6 +1543,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             $scope.selectedCategory = value;
         });
     }, 1000);
+
+    $scope.lockedField = function (field) {
+        if(!field.config?.entityField){
+            return false;
+        }
+        
+        let fname = field.config.entityField.replace('@','');
+        if (field.config && MapasCulturais.entity.object.owner.lockedFields.indexOf(fname) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     $scope.showField = function(field){
         

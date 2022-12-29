@@ -7,6 +7,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entities as MapasEntities;
 use MapasCulturais\Definitions\Role;
 use MapasCulturais\Entities\User;
+use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module {
@@ -148,7 +149,7 @@ class Module extends \MapasCulturais\Module {
                 'icon' => 'user-config',
                 'label' => i::__('Gestão de usuários'),
                 'condition' => function() use($app) {
-                    return $app->user->is('saasAdmin');
+                    return $app->user->is('admin');
                 }
             ];
 
@@ -167,14 +168,25 @@ class Module extends \MapasCulturais\Module {
          */
         $app->hook('GET(panel.system-roles)', function() use($app) {
             $this->requireAuthentication();
+
+            if (!$app->user->is('saasAdmin')) {
+                throw new PermissionDenied($app->user, null, i::__('Gerenciar Funções de Usuário'));
+            }
+
             $this->render('system-roles');
         });
+        
 
         /**
          * Página para gerenciamento de usuários
          */
         $app->hook('GET(panel.user-management)', function() use($app) {
             $this->requireAuthentication();
+            
+            if (!$app->user->is('admin')) {
+                throw new PermissionDenied($app->user, null, i::__('Gerenciar Usuários'));
+            }
+
             $this->render('user-management');
         });
 
@@ -184,8 +196,27 @@ class Module extends \MapasCulturais\Module {
         $app->hook('GET(panel.user-detail)', function() use($app) {
             /** @var \MapasCulturais\Controllers\Panel $this */
             $this->requireAuthentication();
-            $app->view->addRequestedEntityToJs(User::class);
+            $user = $app->repo('User')->find($this->data['id'] ?? -1);
+            if (!$user) {
+                $app->pass();
+            }
+
+            if (!$app->user->is('admin')) {
+                throw new PermissionDenied($app->user, null, i::__('Gerenciar Usuários'));
+            }
+
+            $app->view->addRequestedEntityToJs(User::class, $this->data['id']);
             $this->render('user-detail');
+        });
+
+        /**
+         * Página de Conta e privacidade
+         */
+        $app->hook('GET(panel.my-account)', function() use($app) {
+            /** @var \MapasCulturais\Controllers\Panel $this */
+            $this->requireAuthentication();
+            $app->view->addRequestedEntityToJs(User::class, $app->user->id);
+            $this->render('my-account');
         });
 
         /**
