@@ -73,11 +73,17 @@ $tabs = $tabs ?? [
                             </slot>
                         </template>
                         <template #subtitle="{ entity }">
-                            <slot name="card-content" :entity="entity">
+                            <slot name="card-content"  :entity="entity">
                                 <span v-if="entity.type">
                                     <?=i::__('Tipo: ')?> <strong>{{ entity.type.name }}</strong>
                                 </span>
                             </slot>
+                        </template>
+                        <template #entity-actions-center>
+                            <slot name="entity-actions-center" :entity="entity"></slot>
+                        </template>
+                        <template #entity-actions-right>
+                            <slot name="entity-actions-right" :entity="entity"></slot>
                         </template>
                     </panel--entity-card>
                 </slot>
