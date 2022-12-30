@@ -1,8 +1,15 @@
 <?php
 use MapasCulturais\i;
-$this->import('entity-field entity-map');
+
+$this->import('
+    entity-field
+    entity-map
+');
 ?>
+
+<?php $this->applyTemplateHook('entity-location','before'); ?>
 <div :class="classes" class="entity-location grid-12">
+    <?php $this->applyTemplateHook('entity-location','begin'); ?>
     <div v-if="!hideLabel" class="entity-location__title col-12">
         <label ><?= i::__('Endereço')?></label>
     </div>
@@ -21,8 +28,10 @@ $this->import('entity-field entity-map');
     <div class="col-12">
         <p class="entity-location__address">
             <span v-if="entity.endereco">{{entity.endereco}}</span>
-            <span v-else><?= i::_e("Sem Endereço"); ?></span>
+            <span v-if="!entity.endereco"><?= i::_e("Sem Endereço"); ?></span>
         </p>
         <entity-map :entity="entity" :editable="editable"></entity-map>
     </div>
+    <?php $this->applyTemplateHook('entity-location','end'); ?>
 </div>
+<?php $this->applyTemplateHook('entity-location','after'); ?>
