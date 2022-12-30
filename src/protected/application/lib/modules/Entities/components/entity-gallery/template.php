@@ -1,24 +1,26 @@
-<?php 
+<?php
 use MapasCulturais\i;
 
-$this->import('confirm-button popover modal image-uploader');
+$this->import('
+    confirm-button 
+    image-uploader
+    modal 
+    popover 
+');
 ?>
 
+<?php $this->applyTemplateHook('entity-gallery','before'); ?>
 <div :class="classes" v-if="editable || images" class="entity-gallery">
-
+    <?php $this->applyTemplateHook('entity-gallery','begin'); ?>
     <label class="entity-gallery__title"> {{title}} </label>
-
     <div class="entity-gallery__list" v-if="images">   
-
         <div class="entity-gallery__list--image" v-for="(img, index) in images">
             <div>
                 <div @click="open" class="entity-gallery__list--image-img" >
                     <img @click="openImg(index)" :src="img.transformations.galleryFull?.url" :imgId="img.id" :title="img.description"/>
-                </div>
-    
+                </div>    
                 <p @click="openImg(index); open()" class="entity-gallery__list--image-label"> {{img.description}} </p>
             </div>
-
             <div v-if="editable" class="entity-gallery__list--image-actions">
                 <popover @open="img.newDescription = img.description" openside="down-right">
                     <template #button="popover">
@@ -32,14 +34,12 @@ $this->import('confirm-button popover modal image-uploader');
                                         <input v-model="img.newDescription" type="text" placeholder="<?php i::esc_attr_e("Informe a descrição da imagem") ?>"/>
                                     </div>
                                 </div>
-
                                 <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
                                 <button class="col-6 button button--primary" type="submit" v-close-popper> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
                 </popover>
-
                 <confirm-button @confirm="img.delete()">
                     <template #button="modal">
                         <a @click="modal.open()"> <mc-icon name="trash"></mc-icon> </a>
@@ -49,10 +49,8 @@ $this->import('confirm-button popover modal image-uploader');
                     </template> 
                 </confirm-button>
             </div>
-        </div>
-    
-    </div>
-    
+        </div>    
+    </div>    
     <div v-if="editable" class="entity-gallery__addNew">
         <image-uploader :useDescription="true" :entity="entity" group="gallery" :circular="false">
             <template #default='uploader'>
@@ -63,22 +61,20 @@ $this->import('confirm-button popover modal image-uploader');
             </template>
         </image-uploader>
     </div>
-
     <div class="entity-gallery__full" v-if="images" :class="{ 'active': galleryOpen }">
         <div @click="close" class="entity-gallery__full--overlay"> </div>
-
         <div class="entity-gallery__full--image">
             <img v-if="actualImg" :src="actualImg?.url" :imgId="actualImg?.id" :title="actualImg?.description"/>
-            <mc-icon v-else name="loading"></mc-icon>
+            <mc-icon v-if="!actualImg" name="loading"></mc-icon>
             <div class="description">{{actualImg?.description}}</div>
-
             <div @click="prev" class="btnPrev"> <mc-icon name="previous"></mc-icon> </div>
             <div @click="next" class="btnNext"> <mc-icon name="next"></mc-icon> </div>
             <div @click="close" class="btnClose"> <mc-icon name="close"></mc-icon> </div>
         </div>
     </div>
-
+    <?php $this->applyTemplateHook('entity-gallery','end'); ?>
 </div>
+<?php $this->applyTemplateHook('entity-gallery','after'); ?>
 
 
 
