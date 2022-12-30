@@ -48,27 +48,32 @@ globalThis.useEntitiesLists = Pinia.defineStore('entitiesLists', {
 
     actions: {
         store(name, list, scope) {
+            scope = scope || 'default';
             list.__name = name;
             this[scope] = this[scope] || {};
             this[scope][name] = list;
         },
 
         remove(name, scope) {
+            scope = scope || 'default';
             this[scope] = this[scope] || {};
             delete this[scope][name];
         },
         
         fetch(name, scope) {
+            scope = scope || 'default';
             this[scope] = this[scope] || {};
             return this[scope][name];
         },
 
         fetchAll(scope) {
+            scope = scope || 'default';
             this[scope] = this[scope] || {};
             return this[scope];
         },
 
         fetchEntityLists(entity, scope) {
+            scope = scope || 'default';
             this[scope] = this[scope] || {};
             this[scope].ENTITY_LISTS = this[scope].ENTITY_LISTS || {};
 
