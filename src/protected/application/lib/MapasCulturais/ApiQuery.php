@@ -1071,7 +1071,8 @@ class ApiQuery {
                 }
             }
 
-            $entity['@entityType'] = $this->entityController->id ?? strtolower(substr(strrchr($this->entityClassName, "\\"), 1));
+            $class = $this->entityClassName;
+            $entity['@entityType'] = $this->entityController->id ?? $class::getControllerId();
         }
 
         $entities = array_values($entities);

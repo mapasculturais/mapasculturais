@@ -3,10 +3,44 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [Unreleased]
+## [5.5.1] - 2022-12-23
+### Correções
+- Cria db-update para setar campos de CPF e CNP nos agentes com base no dados do campo documento
+
+## [.5.5.0] - 2022-12-22
+### Correções
+- Remove definição da configuração availableAgentFields no Module registrationFieldTypes
+- Corrige carregamento dos campos @ na tela de configuração de campo garantindo que todos ja tenham sido registrados
+- Corrige erro na tela do certificado que impedia a exibição ao tentar verificar a expiração do selo
 ### Melhorias
 - atualiza o updateTimestamp da entidade quando modifica um metadado
 - opção de bloqueio de campos das entidades seladas
+- Cria hooks no modulo sendMailNotification
+- Possibilita que seja possivel controlar disparo de e-mails de criação e aprovação no modulo sendMailNotification
+### Novas Funcionalidade
+- Bloqueio dos campos através dos selos
+
+## [5.4.2] - 2022-12-20
+### Correções
+- Evita que ao processar a planilha do importador de eventos, caia em timeout
+
+## [5.4.1] - 2022-12-19
+### Correções
+- Corrige importador de enventos interpretanto Avatar, Banner e Galeria como campos obrigatórios
+
+## [5.4.0] - 2022-12-14
+### Correções
+- Atualiza updateTimestamp das entidades quando modificado um metadado
+### Novas Funcionalidade
+- Importação de eventos por planilha
+
+## [5.3.38] - 2022-11-30
+### Correções
+- Corrige verificação de criação das taxnomias
+
+## [5.3.37] - 2022-11-18
+### Correções
+- corrige definição de valor default para os metadados
 
 ## [feature/BaseV2]
 
