@@ -97,7 +97,12 @@ class Controller extends EntityController {
 
     function __construct()
     {
+        $app = App::i();
         $this->entityClassName = Seal::class;
+
+        if ($app->view instanceof \MapasCulturais\Themes\BaseV2\Theme) {
+            $this->layout = 'entity';
+        }
     }
 
     /**
@@ -122,16 +127,27 @@ class Controller extends EntityController {
     public function GET_sealRelation()
     {
         $app = App::i();
+
         $id = $this->data['id'];
         $relation = $app->repo('SealRelation')->find($id);
+        $mensagemPrintSealRelation = $relation->getCertificateText(true);
+
         if (!$relation) {
             $app->pass();
+        }        
+
+        if ($app->view instanceof \MapasCulturais\Themes\BaseV2\Theme) {
+            $this->layout = 'seal-relation';
+            $this->render('sealrelation', [
+                'relation' => $relation
+            ]);
+        } else {
+            $this->render('sealrelation', [
+                'relation' => $relation,
+                'printSeal' => $mensagemPrintSealRelation,
+                'seal' => $relation->seal
+            ]);
         }
-        $mensagemPrintSealRelation = $relation->getCertificateText(true);
-        $this->render('sealrelation', [
-            'relation' => $relation,
-            'printSeal' => $mensagemPrintSealRelation,
-            'seal' => $relation->seal]);
     }
 
     public function GET_printSealRelation(){
@@ -146,8 +162,13 @@ class Controller extends EntityController {
 
         $rel->checkPermission('print');
 
-    	$this->render('printsealrelation', ['relation' => $rel]);
-
+        if ($app->view instanceof \MapasCulturais\Themes\BaseV2\Theme) {
+            $this->layout = 'seal-relation';
+        }
+    	
+        $this->render('printsealrelation', [
+            'relation' => $rel
+        ]);
     }
 
     function GET_create(){
