@@ -188,11 +188,10 @@ abstract class EntityController extends \MapasCulturais\Controller{
     function finish($data, $status = 200, $isAjax = false){
         $app = App::i();
 
-        if($app->request->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
-            $this->json($data, $status);
-
-        }elseif(isset($this->getData['redirectTo'])){
+        if(isset($this->getData['redirectTo'])){
             $app->redirect($this->getData['redirectTo'], $status);
+        }elseif($app->request->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
+            $this->json($data, $status);
         }else{
             $app->redirect($app->request()->getReferer(), $status);
         }

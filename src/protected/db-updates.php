@@ -1812,5 +1812,63 @@ $$
         if(!__column_exists('seal', 'locked_fields')) {
             __exec("ALTER TABLE seal ADD locked_fields JSON DEFAULT '[]'");
         }
+    },
+    'Definição dos cammpos cpf e cnpj com base no documento' => function () use ($conn, $app) {
+        if ($agents_id = $conn->fetchAll("SELECT id from agent WHERE status > 0")) {
+            $txt = "AGENTE_ID | NOME |NOME_COMPLETO | EMAIL_PRIVADO | TIPO_ATUAL| OPERACAO \n";
+            $_types = [
+                1 => "individual",
+                2 => "coletivo",
+            ];
+
+            foreach ($agents_id as $value) {
+                if ($agent = $app->repo("Agent")->find($value['id'])) {
+                    if (!$agent->documento) {
+                        $op = "Agente sem documento definido";
+                        $txt .= "{$agent->id} | {$agent->name} | {$agent->nomeCompleto} | {$agent->emailPrivado} | {$_types[$agent->type->id]} | {$op} \n";
+                        $app->log->debug($agent->id . " " . $op);
+                        continue;
+                    }
+
+                    $doc = preg_replace('/[^0-9]/i', '', $agent->documento);
+                    $type = (strlen($doc) > 11) ? "CNPJ" : "CPF";
+
+                    if ($type == "CPF") {
+                        $validate = \MapasCulturais\Validator::cpf()->validate($agent->documento);
+                    } else {
+                        $validate = \MapasCulturais\Validator::cnpj()->validate($agent->documento);
+                    }
+
+                    if ($validate) {
+                        $agent->$type = $agent->documento;
+
+                        $op = "Definido {$type} para o agente";
+                        $txt .= "{$agent->id} | {$agent->name} | {$agent->nomeCompleto} | {$agent->emailPrivado} | {$_types[$agent->type->id]} | {$op} \n";
+                        $app->log->debug($agent->id . " " . $op);
+
+                        $app->disableAccessControl();
+                        $agent->save(true);
+                        $app->enableAccessControl();
+                    } else {
+                        $op = "{$type} do agente é inválido";
+                        $txt .= "{$agent->id} | {$agent->name} | {$agent->nomeCompleto} | {$agent->emailPrivado} | {$_types[$agent->type->id]} | {$op} \n";
+                        $app->log->debug($agent->id . " " . $op);
+                    }
+                }
+
+                $app->em->clear();
+            }
+
+            $fileName = "dbupdate1_documento.txt";
+            $dir = PRIVATE_FILES_PATH . "dbupdate_documento";
+            if (!file_exists($dir)) {
+                mkdir($dir, 775);
+            }
+
+            $path = $dir . "/" . $fileName;
+            $fp = fopen($path, "wb");
+            fwrite($fp, $txt);
+            fclose($fp);
+        }
     }
 ] + $updates ;

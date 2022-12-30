@@ -21,20 +21,19 @@ return array(
         ),
 
         'escolaridade' => array(
-            'private' => true,
+            'private' => false,
             'label' => \MapasCulturais\i::__('Escolaridade'),
             'type' => 'select',
             'options' => array(
-                'Não Formado' => \MapasCulturais\i::__('Não Informar'),
-                'Fundamental Incompleto' => \MapasCulturais\i::__(' Fundamental Incompleto'),
-                'Fundamental Completo' => \MapasCulturais\i::__('Fundamental Completo'),
-                'Médio Incompleto' => \MapasCulturais\i::__('Médio Incompleto'),
-                'Médio Completo' => \MapasCulturais\i::__('Médio Completo'),
-                'Superior Completo' => \MapasCulturais\i::__('Superior Completo'),
-                'Superior Incompleto' => \MapasCulturais\i::__('Superior Incompleto'),
-                'Pós-graduação' => \MapasCulturais\i::__('Pós-graduação'),
-                'Sem formação' => \MapasCulturais\i::__('Sem formação'),
-
+                MapasCulturais\i::__('Não Informar'),
+                MapasCulturais\i::__('Fundamental Incompleto'),
+                MapasCulturais\i::__('Fundamental Completo'),
+                MapasCulturais\i::__('Médio Incompleto'),
+                MapasCulturais\i::__('Médio Completo'),
+                MapasCulturais\i::__('Superior Completo'),
+                MapasCulturais\i::__('Superior Incompleto'),
+                MapasCulturais\i::__('Pós-graduação'),
+                MapasCulturais\i::__('Sem formação'),
             ),
             'available_for_opportunities' => true,
         ),
@@ -43,10 +42,10 @@ return array(
             'label' => 'Pessoa com deficiência',
             'type' => 'multiselect',
             'options' => [
-                'Visual',
-                'Mental',
-                'Física',
-                'Auditiva',
+                MapasCulturais\i::__('Visual'),
+                MapasCulturais\i::__('Mental'),
+                MapasCulturais\i::__('Física'),
+                MapasCulturais\i::__('Auditiva'),
             ],
             'available_for_opportunities' => true
         ),
@@ -56,16 +55,15 @@ return array(
             'label' => \MapasCulturais\i::__('Comunidades tradicionais'),
             'type' => 'select',
             'options' => array(
-                'Não Sou' => \MapasCulturais\i::__('Não sou'),
-                'Sou uma pessoa integrante de comunidade extrativista' => \MapasCulturais\i::__('Sou uma pessoa integrante de comunidade extrativista'),
-                'Sou uma pessoa integrante de comunidade ribeirinha' => \MapasCulturais\i::__('Sou uma pessoa integrante de comunidade ribeirinha'),
-                'Sou uma pessoa integrante de comunidade rural' => \MapasCulturais\i::__('Sou uma pessoa integrante de comunidade rural'),
-                'Sou uma pessoa integrante de povos indígenas/originários' => \MapasCulturais\i::__('Sou uma pessoa integrante de povos indígenas/originários'),
-                'Sou uma pessoa integrante de comunidades de pescadores(as) artesanais' => \MapasCulturais\i::__('Sou uma pessoa integrante de comunidades de pescadores(as) artesanais'),
-                'Sou uma pessoa integrante de povos ciganos' => \MapasCulturais\i::__('Sou uma pessoa integrante de povos ciganos'),
-                'Sou uma pessoa integrante de povos de terreiro' => \MapasCulturais\i::__('Sou uma pessoa integrante de povos de terreiro'),
-                'Sou uma pessoa integrante de povos de quilombola' => \MapasCulturais\i::__('Sou uma pessoa integrante de povos de quilombola'),
-
+                '' => \MapasCulturais\i::__('Não sou'),
+                MapasCulturais\i::__('Comunidade extrativista'),
+                MapasCulturais\i::__('Comunidade ribeirinha'),
+                MapasCulturais\i::__('Comunidade rural'),
+                MapasCulturais\i::__('Povos indígenas/originários'),
+                MapasCulturais\i::__('Comunidades de pescadores(as) artesanais'),
+                MapasCulturais\i::__('Povos ciganos'),
+                MapasCulturais\i::__('Povos de terreiro'),
+                MapasCulturais\i::__('Povos de quilombola'),
             ),
             'available_for_opportunities' => true
         ),
@@ -83,21 +81,17 @@ return array(
                 /**@var MapasCulturais\App $this */
                 $key = "hook:documento:{$entity}";
                 if(!$this->rcache->contains($key)){
-                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
-                        if($entity->type && $entity->type->id == 1){
-                            $entity->cpf = $value;
-                        }else if($entity->type && $entity->type->id == 2){
-                            $entity->cnpj = $value;
-                        }
-                   });
+                    if($entity->type && $entity->type->id == 1){
+                        $entity->cpf = $value;
+                    }else if($entity->type && $entity->type->id == 2){
+                        $entity->cnpj = $value;
+
+                    }
                    $this->rcache->save($key, 1);
                 }
 
                 return $value;
             },
-            'validations' => array(
-               'v::oneOf(v::cpf(),v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.')
-            ),
             'available_for_opportunities' => true
         ),
 
@@ -108,18 +102,15 @@ return array(
                 /**@var MapasCulturais\App $this */
                 $key = "hook:cnpj:{$entity}";
                 if(!$this->rcache->contains($key)){
-                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
-                        if($entity->type && $entity->type->id == 2){
-                            $entity->documento = $value;
-                        }
-                    });
+                    if($entity->type && $entity->type->id == 2){
+                        $entity->documento = $value;
+                    }
                     $this->rcache->save($key, 1);
                 }
-
                 return $value;
             },
             'validations' => array(
-                'v::oneOf(v::cnpj())' => \MapasCulturais\i::__('O número de CNPJ informado é inválido.')
+                'v::cnpj()' => \MapasCulturais\i::__('O número de CNPJ informado é inválido.')
              ),
             'available_for_opportunities' => true,
         ),
@@ -130,18 +121,15 @@ return array(
                 $key = "hook:cpf:{$entity}";
                 if(!$this->rcache->contains($key)){
                     /**@var MapasCulturais\App $this */
-                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
-                        if($entity->type && $entity->type->id == 1){
-                            $entity->documento = $value;
-                        }
-                    });
+                    if($entity->type && $entity->type->id == 1){
+                        $entity->documento = $value;
+                    }
                     $this->rcache->save($key, 1);
                 }
-
                 return $value;
             },
             'validations' => array(
-                'v::oneOf(v::cpf())' => \MapasCulturais\i::__('O número de CPF informado é inválido.')
+                'v::cpf()' => \MapasCulturais\i::__('O número de CPF informado é inválido.')
              ),
             'available_for_opportunities' => true,
         ),
