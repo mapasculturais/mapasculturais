@@ -3,6 +3,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [5.5.2] - 2022-12-27
+### Correções
+- Corrige validação e definição de campos nulos
+- Formulário de inscrição envia valores falsos não nulos
+- Validação de campos numéricos obrigatórios vazios
+
 ## [5.5.1] - 2022-12-23
 ### Correções
 - Cria db-update para setar campos de CPF e CNP nos agentes com base no dados do campo documento

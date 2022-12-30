@@ -81,21 +81,17 @@ return array(
                 /**@var MapasCulturais\App $this */
                 $key = "hook:documento:{$entity}";
                 if(!$this->rcache->contains($key)){
-                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
-                        if($entity->type && $entity->type->id == 1){
-                            $entity->cpf = $value;
-                        }else if($entity->type && $entity->type->id == 2){
-                            $entity->cnpj = $value;
-                        }
-                   });
+                    if($entity->type && $entity->type->id == 1){
+                        $entity->cpf = $value;
+                    }else if($entity->type && $entity->type->id == 2){
+                        $entity->cnpj = $value;
+
+                    }
                    $this->rcache->save($key, 1);
                 }
 
                 return $value;
             },
-            'validations' => array(
-               'v::oneOf(v::cpf(),v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.')
-            ),
             'available_for_opportunities' => true
         ),
 
@@ -106,18 +102,15 @@ return array(
                 /**@var MapasCulturais\App $this */
                 $key = "hook:cnpj:{$entity}";
                 if(!$this->rcache->contains($key)){
-                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
-                        if($entity->type && $entity->type->id == 2){
-                            $entity->documento = $value;
-                        }
-                    });
+                    if($entity->type && $entity->type->id == 2){
+                        $entity->documento = $value;
+                    }
                     $this->rcache->save($key, 1);
                 }
-
                 return $value;
             },
             'validations' => array(
-                'v::oneOf(v::cnpj())' => \MapasCulturais\i::__('O número de CNPJ informado é inválido.')
+                'v::cnpj()' => \MapasCulturais\i::__('O número de CNPJ informado é inválido.')
              ),
             'available_for_opportunities' => true,
         ),
@@ -128,18 +121,15 @@ return array(
                 $key = "hook:cpf:{$entity}";
                 if(!$this->rcache->contains($key)){
                     /**@var MapasCulturais\App $this */
-                    $this->hook("entity(<<*>>).save:before", function() use ($entity, $value){
-                        if($entity->type && $entity->type->id == 1){
-                            $entity->documento = $value;
-                        }
-                    });
+                    if($entity->type && $entity->type->id == 1){
+                        $entity->documento = $value;
+                    }
                     $this->rcache->save($key, 1);
                 }
-
                 return $value;
             },
             'validations' => array(
-                'v::oneOf(v::cpf())' => \MapasCulturais\i::__('O número de CPF informado é inválido.')
+                'v::cpf()' => \MapasCulturais\i::__('O número de CPF informado é inválido.')
              ),
             'available_for_opportunities' => true,
         ),
