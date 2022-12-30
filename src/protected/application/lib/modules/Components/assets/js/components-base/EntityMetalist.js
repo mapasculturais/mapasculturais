@@ -1,5 +1,6 @@
 class EntityMetalist {
     constructor(owner, group, data) {
+        this.$PK = 'id';
         this.id = data.id;
         this.title = data.title;
         this.description = data.description;

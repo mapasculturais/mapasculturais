@@ -105,6 +105,7 @@
                     display: flex;
                     gap: size(16);
 
+
                     &__icon {
                         align-items: center;
                         border-radius: var(--mc-border-radius-pill);
@@ -112,6 +113,10 @@
                         height: size(40);
                         justify-content: center;
                         width: size(40);
+
+                        &.app__background {
+                            background-color: var(--mc-low-500);
+                        }
 
                         .iconify {
                             width: size(22);
@@ -126,7 +131,7 @@
 
                     }
 
-                    
+
 
                     &__title {
                         font-size: size(32);

@@ -240,4 +240,11 @@ return [
         
     },
 
+    
+    'create permission cache for users' => function(){
+        DB_UPDATE::enqueue('User', 'id > 0', function (MapasCulturais\Entities\User $user){
+            $user->createPermissionsCacheForUsers();
+        });
+        
+    },
 ];
