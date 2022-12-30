@@ -410,7 +410,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         return json_decode($this->rule);
     }
 
-    function getControllerId() {
+    static function getControllerId() {
         return 'eventOccurrence';
     }
 
