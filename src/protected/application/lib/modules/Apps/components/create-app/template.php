@@ -22,12 +22,8 @@ $this->import('
     </template>
 
     <template v-if="entity?.id" #default>
-        <label><?php i::_e('Você pode completar as informações do seu aplicativo agora ou pode deixar para depois.  ');?></label>
+        <label><?php i::_e('{{entity.name}}');?></label>
         <app-card-content :entity="entity"></app-card-content>
-    </template>
-    <template v-if="entity?.id && entity.status==0" #default>
-        <label><?php i::_e('Você pode completar as informações do seu aplicativo agora ou pode deixar para depois.');?></label><br><br>
-        <label><?php i::_e('Para completar e publicar seu novo aplicativo, acesse a área <b>Rascunhos</b> em <b>Meus Agentes</b> no <b>Painel de Controle</b>.  ');?></label>
     </template>
 
     <template #button="modal">
@@ -36,19 +32,11 @@ $this->import('
         </slot>
     </template>
     <template v-if="!entity?.id" #actions="modal">
-        <button class="button button--primary" @click="createPublic(modal)"><?php i::_e('Criar e Publicar')?></button>
-        <button class="button button--solid-dark" @click="createDraft(modal)"><?php i::_e('Criar em Rascunho')?></button>
+        <button class="button button--primary" @click="createPublic(modal)"><?php i::_e('Criar aplicativo')?></button>
         <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar')?></button>
     </template>
 
     <template v-if="entity?.id && entity.status==1" #actions="modal">
-        <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver aplicativo');?></mc-link>
-        <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
-        <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
-    </template>
-    <template v-if="entity?.id && entity.status==0" #actions="modal">
-        <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver aplicativo');?></mc-link>
-        <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
-        <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
+        <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('ok');?></mc-link>
     </template>
 </modal>
