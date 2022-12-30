@@ -100,7 +100,7 @@ class UserApp extends \MapasCulturais\Entity {
         parent::__construct();
     }
 
-    function getControllerId()
+    static function getControllerId()
     {
         return 'app';
     }
