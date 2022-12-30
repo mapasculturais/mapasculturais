@@ -35,7 +35,11 @@ class Entity {
             }
 
             if ((definition.type == 'datetime' || definition.type == 'date' ) && val && !(val instanceof McDate)) {
-                val = new McDate(val.date);
+                if (typeof val == 'string') {
+                    val = new McDate(val);
+                } else {
+                    val = new McDate(val.date);
+                }
             }
 
             if (prop == 'location') {
@@ -124,13 +128,25 @@ class Entity {
 
         const result = {};
 
-        for (let prop in this.$PROPERTIES) {
+        const $PROPERTIES = this.$PROPERTIES;
+
+        for (let prop in $PROPERTIES) {
             if (skipProperties.indexOf(prop) > -1) {
                 continue;
             }
 
+            const definition = $PROPERTIES[prop];
+            
             let val = this[prop];
 
+            if(val instanceof McDate) {
+                if (definition.type == 'date') {
+                    val = val.sql('date');
+                } else if (definition.type == 'datetime') {
+                    val = val.time();
+                }
+            }
+            
             if (prop == 'type' && typeof val == 'object') {
                 val = val.id;
             }

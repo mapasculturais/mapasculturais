@@ -1,3 +1,19 @@
+globalThis.originalFetch = globalThis.fetch;
+
+globalThis.fetch = async (...args) => {
+    let [resource, config ] = args;
+
+    const before = new CustomEvent('beforeFetch', { detail: {resource, config} });
+    globalThis.dispatchEvent(before);
+
+    const response = await globalThis.originalFetch(resource, config);
+    
+    const after = new CustomEvent('afterFetch', { detail: response });
+    globalThis.dispatchEvent(after);
+    
+    return response;
+};
+
 globalThis.useEntitiesCache = Pinia.defineStore('entitiesCache', {
     state: () => {
         return {
@@ -250,6 +266,7 @@ class API {
             }
 
             result.metadata = JSON.parse(response.headers.get('API-Metadata'));
+            
             return result;
         }));
     }

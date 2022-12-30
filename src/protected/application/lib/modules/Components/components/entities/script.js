@@ -17,7 +17,7 @@ app.component('entities', {
 
     created() {
         if(this.name) {
-            this.api.lists.store(this.name, this.entities, this.scope);
+            this.api.lists.store(this.name, this.entities, this.scope || 'default');
         }
 
         this.populateQuery(this.query);
@@ -57,7 +57,7 @@ app.component('entities', {
         select: String,
         ids: Array,
         query: {
-            type: Object,
+            type: Object || String,
             default: {}
         },
         limit: Number,
@@ -106,7 +106,7 @@ app.component('entities', {
             }
     
             if (this.permissions) {
-                query['@permissions'] = this.permissions; 
+                query['@permissions'] = this.permissions;
             }
         },
 

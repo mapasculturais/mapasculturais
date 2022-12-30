@@ -3,6 +3,10 @@ namespace MapasCulturais;
 
 use MapasCulturais\Traits;
 
+/**
+ * @property-read array $config array de configuração
+ * @package MapasCulturais
+ */
 abstract class Module {
     use Traits\MagicGetter,
         Traits\MagicSetter,
