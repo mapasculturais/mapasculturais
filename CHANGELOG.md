@@ -4,6 +4,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.5.4] - 2022-12-30
+### Correções
+- corrige validação de CNPJ e CPF após criação dos novos metadados
+
+## [5.5.3] - 2022-12-28
+### Correções
+- corrige redirecionamento após criação de apps
+
 ## [5.5.2] - 2022-12-27
 ### Correções
 - Corrige validação e definição de campos nulos
