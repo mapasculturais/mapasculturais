@@ -20,10 +20,7 @@ app.component('create-app' , {
     },
 
     props: {
-        // editable: {
-        //     type: Boolean,
-        //     default:true
-        // },
+       
     },
 
     computed: {
@@ -36,12 +33,12 @@ app.component('create-app' , {
         modalTitle() {
             if(this.entity?.id){
                 if(this.entity.status==1){
-                    return  __('appCriado', 'create-agent');
+                    return  __('appCriado', 'create-app');
                 }else {
-                    return  __('criarRascunho', 'create-agent');
+                    return  __('criarRascunho', 'create-app');
                 }
             }else {
-                return  __('criarApp', 'create-agent');
+                return  __('criarApp', 'create-app');
 
             }
         },
@@ -55,6 +52,8 @@ app.component('create-app' , {
                 'name', 
                 'status', 
                 'userId',
+                'publicKey',
+                'privateKey',
             ];
             Object.keys($DESCRIPTIONS.app).forEach((item)=>{
                 if(!skip.includes(item) && $DESCRIPTIONS.app[item].required){
