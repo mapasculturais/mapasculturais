@@ -4,9 +4,9 @@ namespace EventImporter;
 
 use DateTime;
 use stdClass;
+use Curl\Curl;
 use Exception;
 use MapasCulturais\i;
-use DateTimeImmutable;
 use League\Csv\Reader;
 use League\Csv\Writer;
 use MapasCulturais\App;
@@ -101,6 +101,9 @@ class Controller extends \MapasCulturais\Controller
 
    function GET_processFile()
    {
+      ini_set('max_execution_time', 0);
+      ini_set('memory_limit', '768M');
+      
       $this->requireAuthentication();
 
       $app = App::i();
@@ -340,6 +343,11 @@ class Controller extends \MapasCulturais\Controller
                continue;
             }
 
+            if($err = $this->checkRemoteFile($value, $key)){
+               $this->render("import-erros", ["errors" => $err, 'filename' => basename($file_dir)]);
+               exit;
+            }
+
             $type_process_map = $this->typeProcessMap($value);
 
             if(!empty($value['EVENT_ID']) && in_array($value['NAME'], $moduleConfig['clear_ocurrence_ref'])){
@@ -384,7 +392,7 @@ class Controller extends \MapasCulturais\Controller
                   $errors[$key+1][] = i::__("A coluna classificação estária está vazia");
                }
 
-               if (!in_array(mb_strtolower($value['CLASSIFICATION']),$moduleConfig['rating_list_allowed'])) {
+               if (!in_array($this->lowerStr($value['CLASSIFICATION']),$moduleConfig['rating_list_allowed'])) {
                   $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
                   $errors[$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são {$rating_str}");
                }
@@ -399,7 +407,7 @@ class Controller extends \MapasCulturais\Controller
                $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
 
                foreach ($languages as $language) {
-                  $_language = mb_strtolower(trim($language));
+                  $_language = $this->lowerStr($language);
 
                   if (!in_array(trim($_language), array_keys($languages_list))) {
                      $errors[$key+1][] = i::__("A linguagem {$_language} não existe");
@@ -685,7 +693,7 @@ class Controller extends \MapasCulturais\Controller
          if($languages){
             $languages_list = $app->getRegisteredTaxonomyBySlug('linguagem')->restrictedTerms;
             foreach(array_filter($languages) as $language){
-               $_lang = mb_strtolower($language);
+               $_lang = $this->lowerStr($language);
                $_languages[] = $languages_list[$_lang];
             }
          }
@@ -731,7 +739,7 @@ class Controller extends \MapasCulturais\Controller
 
          $moduleConfig = $app->modules['EventImporter']->config;
    
-         $freq = mb_strtolower($value['FREQUENCY']);
+         $freq = $this->lowerStr($value['FREQUENCY']);
          $ocurrence = new EventOccurrence();    
    
          $duration = function() use ($value){
@@ -756,7 +764,7 @@ class Controller extends \MapasCulturais\Controller
             "description" => "",
          ];
         
-         switch (mb_strtolower($value['FREQUENCY'])) {
+         switch ($this->lowerStr($value['FREQUENCY'])) {
             case i::__('diariamente'):
             case i::__('todos os dias'):
             case i::__('diario'):
@@ -968,28 +976,29 @@ class Controller extends \MapasCulturais\Controller
          $basename = basename($_file);
          $file_data = str_replace($basename, urlencode($basename), $_file);
 
-         $ch = curl_init($file_data);
+         $curl = new Curl;
+         $curl->get($file_data);
+         $curl->close();
+         $response = $curl->response;
+
          $tmp = tempnam("/tmp", "");
          $handle = fopen($tmp, "wb");
-      
-         if (!$this->urlFileExists($_file)) {
-            fclose($handle);
-            unlink($tmp);
-            return false;
-         }
-   
-         curl_setopt($ch, CURLOPT_FILE, $handle);
 
-         if (!curl_exec($ch)) {
+         if(mb_strpos($response, 'html')){
             fclose($handle);
             unlink($tmp);
             return false;
          }
 
-         curl_close($ch);
-         $sz = ftell($handle);
+         if(!$this->urlFileExists($_file)){
+            fclose($handle);
+            unlink($tmp);
+            return false;
+         }
+
+         fwrite($handle,$response);
          fclose($handle);
-
+         
          $class_name = $owner->fileClassName;
 
          $file = new $class_name([
@@ -1008,6 +1017,61 @@ class Controller extends \MapasCulturais\Controller
       } catch (\Throwable $th) {
          return false;
       }
+   }
+
+   public function checkRemoteFile($value, $key)
+   {
+      
+      $check = function($file){
+         $basename = basename($file);
+         $file_data = str_replace($basename, urlencode($basename), $file);
+
+         $curl = new Curl;
+         $curl->get($file_data);
+         $curl->close();
+         $response = $curl->response;
+
+         $tmp = tempnam("/tmp", "");
+         $handle = fopen($tmp, "wb");
+         fwrite($handle,$response);
+         fclose($handle);
+
+         $finfo = finfo_open(FILEINFO_MIME_TYPE);
+         $mimetype = finfo_file($finfo, $tmp);
+         if ($mimetype == 'image/jpg' || $mimetype == 'image/jpeg' || $mimetype == 'image/gif' || $mimetype == 'image/png') {
+            $is_image = true;
+         } else {
+            $is_image = false;
+         }
+
+         return $is_image;
+      };
+
+      $error = [];
+      $alloweds_type = ['AVATAR', 'HEADER', 'GALLERY'];
+      foreach($alloweds_type as $type){
+         
+         if(empty($value[$type])){
+            continue;
+         }
+
+         if($matches = $this->matches($value[$type])){
+            foreach($matches as $matche){
+               $exp = explode(":", $matche);
+               $url = $exp[0].":".$exp[1];
+
+               if(!$check($url)){
+                  $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$url}");
+               }
+            }
+         }else{
+            if(!$check($value[$type])){
+               $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$value[$type]}");
+            }
+         }
+      }
+
+      return $error;
    }
 
    public function createMetalists(Entity $owner, $value)
@@ -1033,7 +1097,7 @@ class Controller extends \MapasCulturais\Controller
 
                $metaList = new MetaList();
                $metaList->owner = $owner;
-               $group = (strpos($url, 'youtube') > 0 || strpos($url, 'youtu.be') > 0 || strpos($url, 'vimeo') > 0) ? 'videos' : 'links';
+               $group = mb_strtolower($metalist);
                $metaList->group = $group;
                $metaList->title = $title ?? "" ;
                $metaList->value = $url ?? "";
@@ -1104,6 +1168,11 @@ class Controller extends \MapasCulturais\Controller
       } else {
          return $objDate;
       }
+   }
+
+   public function lowerStr($value)
+   {
+      return $value ? trim(mb_strtolower($value)) : "";
    }
 
    public function dispatch($file_name, $path)

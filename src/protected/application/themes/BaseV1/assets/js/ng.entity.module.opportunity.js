@@ -1115,7 +1115,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         delete field.error;
 
-        $scope.data.editableEntity[field.fieldName] = value ? JSON.parse(angular.toJson(value)) : null;
+        $scope.data.editableEntity[field.fieldName] = value !== undefined ? JSON.parse(angular.toJson(value)) : null;
 
         $timeout.cancel(saveTimeout);
         
@@ -1545,7 +1545,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }, 1000);
 
     $scope.lockedField = function (field) {
-        if(!field.config.entityField){
+        if(!field.config?.entityField){
             return false;
         }
         
