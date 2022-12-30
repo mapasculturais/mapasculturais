@@ -59,8 +59,8 @@ $canSee = function ($view) use ($entity, $fieldsList) {
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
                     <span class="label"><?php  \MapasCulturais\i::_e("CNPJ");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"documento") && $editEntity? 'required': '');?>" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu CNPJ com pontos, hífens e barras");?>">
-                        <?php echo $entity->documento; ?>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"cnpj") && $editEntity? 'required': '');?>" data-edit="cnpj" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu CNPJ com pontos, hífens e barras");?>">
+                        <?php echo $entity->cnpj; ?>
                     </span>
                 </p>
                 
