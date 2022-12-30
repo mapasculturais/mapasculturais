@@ -12,7 +12,7 @@ $this->import('
             <div class="panel-entity-card__header--picture">
                 <slot name="picture" :entity="entity">
                     <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarSmall?.url" alt="">
-                    <img v-if="!entity.files.avatar" src="<?php $this->asset('img/default-image.svg')?>" alt="">
+                     <mc-icon v-if="!entity.files.avatar" :entity="entity" ></mc-icon>
                 </slot>
             </div>
             <div class="panel-entity-card__header--info">
