@@ -28,7 +28,7 @@ $this->import('
     <div class="col-12">
         <p class="entity-location__address">
             <span v-if="entity.endereco">{{entity.endereco}}</span>
-            <span v-else><?= i::_e("Sem Endereço"); ?></span>
+            <span v-if="!entity.endereco"><?= i::_e("Sem Endereço"); ?></span>
         </p>
         <entity-map :entity="entity" :editable="editable"></entity-map>
     </div>
