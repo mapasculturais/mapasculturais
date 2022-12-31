@@ -218,6 +218,15 @@ class Module extends \MapasCulturais\Module {
             $app->view->addRequestedEntityToJs(User::class, $app->user->id);
             $this->render('my-account');
         });
+        /**
+         * Página de apps
+         */
+        $app->hook('GET(panel.my-app)', function() use($app) {
+            /** @var \MapasCulturais\Controllers\Panel $this */
+            $this->requireAuthentication();
+            $app->view->addRequestedEntityToJs(User::class, $app->user->id);
+            $this->render('my-app');
+        });
 
         /**
          * Atualiza o ENUM de object_types adicionando a classe UserManagement\Entities\SystemRole

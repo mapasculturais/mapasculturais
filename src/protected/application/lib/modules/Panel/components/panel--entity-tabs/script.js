@@ -22,13 +22,18 @@ app.component('panel--entity-tabs', {
         return {
             description: $DESCRIPTIONS[this.type],
             queries: {
-                publish: {status: 'EQ(1)', ...query},
-                draft: {status: 'EQ(0)', ...query},
-                granted: {'@Permissions': '@control', ...query, user: '!EQ(@me)'},
-                trash: {status: 'EQ(-10)', ...query},
-                archived: {status: 'EQ(-2)', ...query},
-            }
+                publish: { status: 'EQ(1)', ...query },
+                draft: { status: 'EQ(0)', ...query },
+                granted: { '@Permissions': '@control', ...query, user: '!EQ(@me)' },
+                trash: { status: 'EQ(-10)', ...query },
+                archived: { status: 'EQ(-2)', ...query },
+            },
+            showPrivateKey: false,
+
         }
+    },
+    computed: {
+        
     },
 
     props: {
@@ -45,13 +50,15 @@ app.component('panel--entity-tabs', {
             type: String,
             default: "publish,draft,granted,trash,archived"
         },
+
     },
 
     methods: {
-        showTab (status) {
+        
+        showTab(status) {
             const tabs = this.tabs.split(',');
 
-            if ( tabs.indexOf(status) === -1 ) {
+            if (tabs.indexOf(status) === -1) {
                 return false;
             }
 
@@ -68,21 +75,21 @@ app.component('panel--entity-tabs', {
             }
         },
 
-        moveEntity (entity) {
+        moveEntity(entity) {
             const lists = useEntitiesLists();
             const status = `${entity.status}`;
 
             const listnames = {
                 '1': `${this.type}:publish`,
-                '-10':  `${this.type}:trash`,
-                '-2':  `${this.type}:archived`,
+                '-10': `${this.type}:trash`,
+                '-2': `${this.type}:archived`,
             };
-            
+
             const list = lists.fetch(listnames[status]);
-            
+
             entity.removeFromLists();
 
-            if(list instanceof Array) {
+            if (list instanceof Array) {
                 list.push(entity);
                 entity.$LISTS.push(list);
             }

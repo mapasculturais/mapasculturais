@@ -1,9 +1,8 @@
 class Entity {
     constructor(objectType, id, scope) {
         this.id = id;
-        this.__scope = (scope || 'default');
         this.__objectType = objectType;
-        this.__objectId = `${objectType}-${id}`;
+        this.__scope = (scope || 'default');
         this.__validationErrors = {};
         
         this.__messagesEnabled = true;
@@ -18,6 +17,8 @@ class Entity {
         const __relations = this.$RELATIONS;
         const defaultProperties = ['terms', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
         
+        this.populateId(obj);
+
         for (const prop of defaultProperties) {
             if (this[prop] && !obj[prop]) {
                 continue;
@@ -27,6 +28,9 @@ class Entity {
         }
 
         for (let prop in __properties) {
+            if(prop == this.$PK) {
+                continue;
+            }
             let definition = __properties[prop];
             let val = obj[prop];
 
@@ -77,6 +81,10 @@ class Entity {
         } else {
             return prop;
         }
+    }
+
+    populateId(obj) {
+        this.id = obj[this.$PK];
     }
 
     populateFiles(files) {
@@ -181,6 +189,39 @@ class Entity {
 
     get $PROPERTIES() {
         return this.API.getEntityDescription('!relations');
+    }
+
+    get $PK() {
+        const __properties = this.$PROPERTIES;
+        let pk;
+        for (let prop in __properties) {
+            if(__properties[prop].isPK) {
+                pk = prop;
+                break;
+            }
+        }
+
+        return pk;
+    }
+
+    get id() {
+        let pk = this.$PK;
+        if (pk == 'id') {
+            pk = '_id';
+        } 
+        return this[pk];
+    }
+
+    set id (value) {
+        let pk = this.$PK;
+        if (pk == 'id') {
+            pk = '_id';
+        } 
+        this[pk] = value;
+    }
+
+    get __objectId() {
+        return `${this.__objectType}-${this.id}`;
     }
 
     get $RELATIONS() {

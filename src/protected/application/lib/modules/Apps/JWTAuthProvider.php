@@ -1,10 +1,11 @@
 <?php
+namespace Apps;
 
-namespace MapasCulturais\AuthProviders;
-
+use Apps\Entities\UserApp;
 use MapasCulturais\App;
-use \Firebase\JWT\JWT as FireJWT; 
-class JWT extends \MapasCulturais\AuthProvider {
+use \Firebase\JWT\JWT as FireJWT;
+
+class JWTAuthProvider extends \MapasCulturais\AuthProvider {
 
     protected $__user = null;
     protected $__userApp = null;
@@ -21,7 +22,7 @@ class JWT extends \MapasCulturais\AuthProvider {
             if (isset($jwt_data->pk)) {
                 $pk = $jwt_data->pk;
 
-                $userapp = $app->repo('UserApp')->find($pk); // pegar da tabela de apps
+                $userapp = $app->repo(UserApp::class)->find($pk); // pegar da tabela de apps
 
                 if(!$userapp){
                     http_response_code(401);

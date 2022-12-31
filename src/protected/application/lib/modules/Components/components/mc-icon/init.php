@@ -50,6 +50,7 @@ $iconset = [
     'delete' => 'gg:close',
     'download' => 'el:download-alt',
     'edit' => 'zondicons:edit-pencil',
+    'eye-view' => 'ic:baseline-remove-red-eye',
     'exclamation' => 'bi:exclamation-circle-fill',
     'favorite' => 'mdi:star-outline',
     'filter' => 'ic:baseline-filter-alt',
