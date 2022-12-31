@@ -1,5 +1,6 @@
 class EntityFile {
     constructor(owner, group, data) {
+        this.$PK = 'id';
         this.id = data.id;
         this.name = data.name;
         this.description = data.description;

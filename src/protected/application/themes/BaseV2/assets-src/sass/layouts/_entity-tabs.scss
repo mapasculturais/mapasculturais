@@ -1,9 +1,13 @@
 @use '../settings/mixins' as *;
 $iconColor: var(--mc-primary-500);
-$iconUrl: 'https://api.iconify.design/ic/baseline-arrow-drop-down.svg'+#{$iconColor};
+$iconUrl: 'https://api.iconify.design/ic/baseline-arrow-drop-down.svg' +#{$iconColor};
 
 .entity-tabs {
+    .panel__row {
+        max-width: 100%;
+    }
 
+    
     .tabs-component__button {
 
         &.archived {
@@ -27,7 +31,7 @@ $iconUrl: 'https://api.iconify.design/ic/baseline-arrow-drop-down.svg'+#{$iconCo
         display: flex;
         flex-wrap: wrap;
 
-        & > * {
+        &>* {
             margin: 0 size(8) size(8) 0;
         }
     }
@@ -48,18 +52,19 @@ $iconUrl: 'https://api.iconify.design/ic/baseline-arrow-drop-down.svg'+#{$iconCo
             padding: size(9) size(16);
             width: 100%;
 
-            &:hover, &:focus {
+            &:hover,
+            &:focus {
                 background: var(--mc-high-500);
             }
 
-            &::-webkit-search-cancel-button{
+            &::-webkit-search-cancel-button {
                 background: url(https://api.iconify.design/gg/close.svg) no-repeat 100% center/contain;
                 background-color: transparent;
                 background-size: size(16);
                 display: flex;
                 height: size(16);
-                position:relative;
-                right: 0px;  
+                position: relative;
+                right: 0px;
                 width: size(16);
                 -webkit-appearance: none;
             }
