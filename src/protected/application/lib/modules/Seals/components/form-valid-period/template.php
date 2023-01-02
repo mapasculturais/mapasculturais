@@ -7,11 +7,8 @@ $this->import('
 ');
 ?>
 
-<div>
-  <mapas-card>
-      <template #content>
-          <label><input v-model="requiredPeriod" type="checkbox"> <?php i::_e('Este selo possui período de validade?') ?></label>
-          <entity-field v-if="requiredPeriod" :entity="entity" hide-required prop="validPeriod" :min=1 label="<?php i::esc_attr_e("Numero de meses em que o selo é válido") ?>"></entity-field>
-      </template>
-  </mapas-card>
+<div :class="classes">
+    <label><input v-model="requiredPeriod" type="checkbox"> <?php i::_e('Habilitar selo com validade') ?></label>
+    <entity-field v-if="requiredPeriod" :entity="entity" hide-required prop="validPeriod" min="1"
+                  label="<?php i::_e("Insira o número de meses que o certificado do selo deve ser válido") ?>"></entity-field>
 </div>
