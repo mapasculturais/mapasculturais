@@ -12,7 +12,7 @@ $this->import('
 ');
 $this->breadcramb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Selos'), 'url' => $app->createUrl('search', 'seals')],
+    ['label' => i::__('Meus Selos'), 'url' => $app->createUrl('panel', 'seals')],
     ['label' => $entity->name, 'url' => $app->createUrl('seal', 'single', [$entity->id])],
 ];
 ?>
