@@ -8,7 +8,7 @@ $this->import('
 ?>
 <modal v-if="notificationsCount > 0" :title="modalTitle" classes="create-modal" button-label="Notificações" @open="" @close="">
     <template #default>
-        <div class="grid-12">
+        <div class="grid-12 notification_header--text">
             <div class="col-6" v-if="notificationsCount > 0">
               <?= i::__('Você tem') ?>
                 <span class="notification--badge">{{ notificationsCount }}</span>
@@ -17,9 +17,9 @@ $this->import('
         </div>
         <div class="grid-12">
             <div class="col-12">
-                <notification-list></notification-list>
+                <notification-list styleCss='divider'></notification-list>
             </div>
-            <div class="col-12" v-if="notificationsCount > 0">
+            <div class="col-12 notification_content " v-if="notificationsCount > 0">
                 <mc-link route="panel/notifications"><?= i::__('Ver todas as notificações') ?></mc-link>
             </div>
         </div>
