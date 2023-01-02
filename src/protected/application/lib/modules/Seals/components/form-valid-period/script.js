@@ -5,6 +5,10 @@ app.component('form-valid-period', {
             type: Entity,
             required: true
         },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
     watch: {
         entity: {
@@ -15,25 +19,6 @@ app.component('form-valid-period', {
             }
         }
     },
-    // mounted() {
-    //     if(this.props.entity && this.props.entity.validPeriod > 0) {
-    //         this.requiredPeriod = true
-    //     }
-    //
-    // },
-    // computed: {
-    //     requiredPeriod: {
-    //         // getter
-    //         get() {
-    //             return this.props.entity && this.props.entity.validPeriod >= 0
-    //         },
-    //         // setter
-    //         set(newValue) {
-    //             [this.firstName, this.lastName] = newValue.split(' ')
-    //
-    //         }
-    //     }
-    // },
     data () {
         return {
             requiredPeriod: false
