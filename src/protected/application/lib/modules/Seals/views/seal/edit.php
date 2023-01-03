@@ -15,6 +15,7 @@ $this->import('
     mapas-container
     form-valid-period
     form-block-fields
+    form-information-seal
     tabs
 ');
 
@@ -33,24 +34,7 @@ $this->breadcramb = [
             <div class="tabs__info">
                 <mapas-container>
                     <main>
-                        <mapas-card class="feature">
-                            <template #title>
-                                <label><?php i::_e("Informações de selos")?></label>
-                                <p><?php i::_e("Texto exemplo de texto")?></p>
-                            </template>
-                            <template #content>
-                                <div class="left">
-                                    <div class="grid-12">
-                                        <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name"></entity-field>
-                                        <div class="col-12">
-                                            <h3>Validade do certificado do selo</h3>
-                                            <form-valid-period classes="col-12" :entity="entity"></form-valid-period>
-                                        </div>
-                                        <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
-                                    </div>
-                                </div>
-                            </template>
-                        </mapas-card>
+                        <form-information-seal :entity="entity"></form-information-seal>
                     </main>
                     <aside>
                         <mapas-card>
