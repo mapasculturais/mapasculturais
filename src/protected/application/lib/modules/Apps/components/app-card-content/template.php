@@ -13,7 +13,7 @@ use MapasCulturais\i;
     <div class="cardKey__public">
         <div class="cardKey__public--header">
             <div class="label"><?= i::__('Chave Pública:') ?></div>
-            <a class="copy" @click="copyPrivateKey()">
+            <a class="copy" @click="copyPublicKey()">
                 <mc-icon name="copy"></mc-icon>
             </a>
 
