@@ -277,6 +277,9 @@ class Controller extends \MapasCulturais\Controller
 
    public function processData($file_data, string $file_dir)
    {
+      ini_set('max_execution_time', 0);
+      ini_set('memory_limit', '768M');
+      
       $app = App::i();
 
       $conn = $app->em->getConnection();
@@ -341,11 +344,6 @@ class Controller extends \MapasCulturais\Controller
 
             if(empty(array_filter($value))){
                continue;
-            }
-
-            if($err = $this->checkRemoteFile($value, $key)){
-               $this->render("import-erros", ["errors" => $err, 'filename' => basename($file_dir)]);
-               exit;
             }
 
             $type_process_map = $this->typeProcessMap($value);
@@ -1019,60 +1017,6 @@ class Controller extends \MapasCulturais\Controller
       }
    }
 
-   public function checkRemoteFile($value, $key)
-   {
-      
-      $check = function($file){
-         $basename = basename($file);
-         $file_data = str_replace($basename, urlencode($basename), $file);
-
-         $curl = new Curl;
-         $curl->get($file_data);
-         $curl->close();
-         $response = $curl->response;
-
-         $tmp = tempnam("/tmp", "");
-         $handle = fopen($tmp, "wb");
-         fwrite($handle,$response);
-         fclose($handle);
-
-         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-         $mimetype = finfo_file($finfo, $tmp);
-         if ($mimetype == 'image/jpg' || $mimetype == 'image/jpeg' || $mimetype == 'image/gif' || $mimetype == 'image/png') {
-            $is_image = true;
-         } else {
-            $is_image = false;
-         }
-
-         return $is_image;
-      };
-
-      $error = [];
-      $alloweds_type = ['AVATAR', 'HEADER', 'GALLERY'];
-      foreach($alloweds_type as $type){
-         
-         if(empty($value[$type])){
-            continue;
-         }
-
-         if($matches = $this->matches($value[$type])){
-            foreach($matches as $matche){
-               $exp = explode(":", $matche);
-               $url = $exp[0].":".$exp[1];
-
-               if(!$check($url)){
-                  $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$url}");
-               }
-            }
-         }else{
-            if(!$check($value[$type])){
-               $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$value[$type]}");
-            }
-         }
-      }
-
-      return $error;
-   }
 
    public function createMetalists(Entity $owner, $value)
    {
