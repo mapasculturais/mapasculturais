@@ -277,9 +277,6 @@ class Controller extends \MapasCulturais\Controller
 
    public function processData($file_data, string $file_dir)
    {
-      ini_set('max_execution_time', 0);
-      ini_set('memory_limit', '768M');
-      
       $app = App::i();
 
       $conn = $app->em->getConnection();
@@ -638,9 +635,6 @@ class Controller extends \MapasCulturais\Controller
 
    public function insertEvent($value)
    {
-      ini_set('max_execution_time', 0);
-      ini_set('memory_limit', '768M');
-      
       try {
          $app = App::i();
 
