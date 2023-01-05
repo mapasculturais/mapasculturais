@@ -129,4 +129,11 @@ class McDate {
         now.setDate(now.getDate() - 1);
         return now.toDateString() == this._date.toDateString();
     }
+
+    addDays (days) {
+        const now = this._date;
+        now.setDate(now.getDate() + days);
+        const config = { timeZone: this.timezone,  year: 'numeric', month: 'long', day: 'numeric' };
+        return Intl.DateTimeFormat(this.locale, config).format(now);
+    }
 }
