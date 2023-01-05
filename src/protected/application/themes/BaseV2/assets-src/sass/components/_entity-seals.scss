@@ -122,4 +122,18 @@
             text-decoration: none;
         }
     }
+
+    &__valid {
+        &--label {
+            color: #1E1E1E;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 28px
+        }
+        &--content {
+            background: #E8E8E8;
+            border-radius: 4px;
+            padding: 10px;
+        }
+    }
 }
