@@ -1,34 +1,34 @@
 @use '../settings/mixins' as *;
 
 .notify-menu {
-  gap: 7px;
-  width: 60px;
+  display: flex;
+  justify-content: baseline;
+  position: relative;
 
-
-
-  a {
-    display: flex;
-    justify-content: baseline;
-    position: relative;
+  .notification__header--container {
 
     svg {
-      width: 17.5px;
-      height: 20px;
-
-    }
-
-    &.notification__header--badge {
-      background-color: blue;
+      width: 18px;
+      height: 18px;
     }
   }
+
+  .notification__header--badge {
+    top: -12px;
+    left: -10px;
+    position: relative;
+  
+  }
 }
+
 
 .cont-info {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  &__btn{
-    display:inline-flex;
+
+  &__btn {
+    display: inline-flex;
   }
 }
 
@@ -55,7 +55,7 @@
     font-size: 14px;
     line-height: 19px;
     margin: 0 0 16px 0;
-    
+
   }
 
   &__title {

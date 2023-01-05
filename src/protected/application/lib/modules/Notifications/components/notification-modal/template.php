@@ -33,7 +33,7 @@ $this->import('
             </div>
             <div class="col-1 notification__header--container">
                 <a @click="modal.open">
-                    <mc-icon name='notification'></mc-icon>
+                    <mc-icon class="notify-menu__icon" name='notification'></mc-icon>
                     <div v-if="notificationsCount" class="notification__header--badge">
                         <span>{{ notificationsCount }}</span>
                     </div>
@@ -44,7 +44,7 @@ $this->import('
             <a href="#" @click="modal.open">
                 <div class="notification__header--item-container">
                     <mc-icon class="alert" name='notification'></mc-icon>
-                    <div v-if="notificationsCount" class="notification__header--item-badge">
+                    <div v-if="notificationsCount" class="notification__header--item-badge badge-red">
                         <span>{{ notificationsCount }}</span>
                     </div>
                 </div>
