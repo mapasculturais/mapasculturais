@@ -1,16 +1,23 @@
-<?php 
+<?php
 use MapasCulturais\i;
-$this->layout = 'entity'; 
+$this->layout = 'entity';
 
 $this->import('
     entity-actions
+    entity-admins
+    entity-cover
     entity-field
     entity-header
     entity-owner
+    entity-profile
     mapas-breadcrumb
     mapas-card
     mapas-container
     form-valid-period
+    form-block-fields
+    form-information-seal
+    tabs
+    entity-related-agents
 ');
 
 $this->breadcrumb = [
@@ -21,33 +28,53 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
-    <mapas-breadcrumb></mapas-breadcrumb>
-    <entity-header :entity="entity" editable></entity-header>
-    <mapas-container>
-        <mapas-card class="feature">
-            <template #title>
-                <label><?php i::_e("Informações de selos")?></label>
-                <p><?php i::_e("Texto exemplo de texto")?></p>
-            </template>
-            <template #content>
-                <div class="left">
-                    <div class="grid-12 v-bottom">
-                        <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name"></entity-field>
-                        <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
-                        <form-valid-period :entity="entity"></form-valid-period>
-                    </div>                      
-                </div>
-            </template>
-        </mapas-card>
-        <aside>
-            <mapas-card>
-                <template #content>
-                    <div class="grid-12">
-                        <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
-                    </div>
-                </template>
-            </mapas-card>
-        </aside>
-    </mapas-container>
-    <entity-actions :entity="entity" editable></entity-actions>
+  <mapas-breadcrumb></mapas-breadcrumb>
+  <entity-header :entity="entity" editable></entity-header>
+    <tabs class="tabs">
+        <tab label="<?= i::__('Informações gerais') ?>" slug="info">
+            <div class="tabs__info">
+                <mapas-container>
+                    <main>
+                        <form-information-seal :entity="entity"></form-information-seal>
+                    </main>
+                    <aside>
+                        <mapas-card>
+                            <template #content>
+                                <div class="grid-12">
+                                    <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
+                                    <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por')?>" editable></entity-owner>
+                                    <entity-parent-edit :entity="entity" classes="col-12" type="project" ></entity-parent-edit>
+                                    <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
+                                    <div class="col-12">
+                                        <h4><?= i::__('Histórico de alterações') ?></h4>
+                                        <div>
+                                            <p class="entity-seals__history--title">30/05/2022</p>
+                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
+                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
+                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
+                                        </div>
+                                        <div>
+                                            <p class="entity-seals__history--title">30/05/2022</p>
+                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </mapas-card>
+                    </aside>
+                </mapas-container>
+            </div>
+        </tab>
+        <tab label="<?= i::__('Bloqueio de campos') ?>" slug="info_block">
+            <div class="tabs__info">
+                <mapas-container>
+                    <mapas-card class="feature">
+                        <form-block-fields classes="col-12" :entity="entity"></form-block-fields>
+                    </mapas-card>
+                </mapas-container>
+            </div>
+        </tab>
+    </tabs>
+
+  <entity-actions :entity="entity" editable></entity-actions>
 </div>

@@ -46,9 +46,11 @@ app.component('notification-list', {
                 'user':'eq(@me)',
                 '@order':'createTimestamp DESC'
             }
+        },
+        styleCss: {
+            type: String,
+            default: 'card'
         }
-
-
     },
 
     data() {
