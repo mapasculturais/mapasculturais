@@ -2,8 +2,9 @@
 
 .notify-menu {
   display: flex;
-  justify-content: baseline;
+  justify-content: flex-end;
   position: relative;
+  flex-direction: row;
 
   .notification__header--container {
 
@@ -14,7 +15,7 @@
   }
 
   .notification__header--container {
-    
+
 
     .notification__header--badge {
       top: -12px;
