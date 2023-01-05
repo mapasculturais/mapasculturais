@@ -27,11 +27,11 @@ $this->import('
         </div>
     </template>
     <template #button="modal">
-        <div class="grid-2" v-if="viewport == 'desktop'">
-            <div class="col-6">
+        <div class="grid-2 notify-menu" v-if="viewport == 'desktop'">
+            <div class="col-1">
                 <a class="notification__header--link" @click="modal.open"><?= i::__('Notificações') ?></a>
             </div>
-            <div class="col-6 notification__header--container">
+            <div class="col-1 notification__header--container">
                 <a @click="modal.open">
                     <mc-icon name='notification'></mc-icon>
                     <div v-if="notificationsCount" class="notification__header--badge">
