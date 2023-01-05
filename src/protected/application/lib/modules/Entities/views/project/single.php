@@ -24,7 +24,7 @@ $this->import('
     tabs
 ');
 
-$this->breadcramb = [
+$this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Projetos'), 'url' => $app->createUrl('search', 'projects')],
     ['label' => $entity->name, 'url' => $app->createUrl('project', 'single', [$entity->id])],

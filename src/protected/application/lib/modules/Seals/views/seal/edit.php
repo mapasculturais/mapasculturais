@@ -13,7 +13,7 @@ $this->import('
     form-valid-period
 ');
 
-$this->breadcramb = [
+$this->breadcrumb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
     ['label'=> i::__('Meus Selos'), 'url' => $app->createUrl('panel', 'seals')],
     ['label'=> $entity->name, 'url' => $app->createUrl('seal', 'edit', [$entity->id])],

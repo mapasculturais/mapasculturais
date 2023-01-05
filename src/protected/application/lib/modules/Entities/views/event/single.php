@@ -22,7 +22,7 @@ $this->import('
     tabs
 ');
 
-$this->breadcramb = [
+$this->breadcrumb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Meus Eventos'), 'url' => $app->createUrl('search', 'events')],
     ['label' => $entity->name, 'url' => $app->createUrl('event', 'edit', [$entity->id])],

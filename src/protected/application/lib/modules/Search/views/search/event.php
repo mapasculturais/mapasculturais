@@ -10,7 +10,7 @@ $this->import('
     create-event
     tabs 
 ');
-$this->breadcramb = [
+$this->breadcrumb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Eventos'), 'url' => $app->createUrl('events')],
 ];

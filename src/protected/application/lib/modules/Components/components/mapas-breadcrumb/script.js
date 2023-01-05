@@ -3,7 +3,7 @@ app.component('mapas-breadcrumb', {
     
     data() {
         return {
-            list: $MAPAS.breadcramb,
+            list: $MAPAS.breadcrumb,
             cover: !!$MAPAS.requestedEntity?.files?.header,
         }
     },
