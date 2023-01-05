@@ -1,8 +1,39 @@
 @use '../settings/mixins' as *;
 
-.notification-content {}
+.notify-menu {
+  gap: 7px;
+  width: 60px;
+
+
+
+  a {
+    display: flex;
+    justify-content: baseline;
+    position: relative;
+
+    svg {
+      width: 17.5px;
+      height: 20px;
+
+    }
+
+    &.notification__header--badge {
+      background-color: blue;
+    }
+  }
+}
+
+.cont-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  &__btn{
+    display:inline-flex;
+  }
+}
 
 .notification {
+
   &__content {
     text-align: center;
 
@@ -23,11 +54,14 @@
   &__subtitle {
     font-size: 14px;
     line-height: 19px;
+    margin: 0 0 16px 0;
+    
   }
 
   &__title {
     font-size: 16px;
     line-height: 22px;
+    margin-bottom: 0;
   }
 
   &__title>a {
@@ -142,8 +176,7 @@
 // // }
 
 // .notification__header--link {
-//   font-weight: 600;
-//   font-size: 14px;
+//   font-weight: 600;//   font-size: 14px;
 //   line-height: 104.19%;
 //   margin-right: 8px;
 //   cursor: pointer;

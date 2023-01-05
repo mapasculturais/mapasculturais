@@ -59,11 +59,11 @@ $this->import('
                     <img v-if="hasAvatar(entity)" :src="avatarUrl(entity)">
                     <mc-icon v-if="!hasAvatar(entity)" class="notification__icon--avatar" name='agent-1'></mc-icon>
                 </div>
-                <div class="col-11">
+                <div class="col-11 cont-info">
                     <p class="notification__title" v-html='entity.message'></p>
                     <p class="notification__subtitle">{{ entity.createTimestamp.date('numeric year') }} - {{ entity.createTimestamp.time() }}</p>
                     <div class="grid-12" v-if="!entity.request">
-                        <div class="col-2">
+                        <div class="col-2 cont-info__btn">
                             <button class="button button--primary-outline" @click="delete(entity)">
                               <?= i::__('Ok') ?>
                             </button>
