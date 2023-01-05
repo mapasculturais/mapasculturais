@@ -278,6 +278,16 @@ class Module extends \MapasCulturais\Module{
             $value = $query->getResult();
         });
 
+        $app->hook('entity(Opportunity).get(countRegistrationsByStatus)', function(&$value) use ($app) {
+            $query = $app->em->createQuery("SELECT o.status, COUNT(o.status) AS qtd FROM MapasCulturais\\Entities\\Registration o  WHERE o.opportunity = :opp GROUP BY o.status");
+
+            $query->setParameters([
+                "opp" => $this,
+            ]);
+
+            $value = $query->getResult();
+        });
+
         $app->hook('entity(Opportunity).get(lastCreatedPhase)', function(&$value) {
             $first_phase = $this->firstPhase;
             $value = Module::getLastCreatedPhase($first_phase);
