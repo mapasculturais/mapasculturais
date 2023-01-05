@@ -21,7 +21,7 @@ $this->import('
     share-links
     tabs
 ');
-$this->breadcramb = [
+$this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Agentes'), 'url' => $app->createUrl('search', 'agents')],
     ['label' => $entity->name, 'url' => $app->createUrl('agent', 'single', [$entity->id])],

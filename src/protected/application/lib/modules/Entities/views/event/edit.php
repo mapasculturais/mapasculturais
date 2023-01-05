@@ -24,7 +24,7 @@ $this->import('
         mc-tag-list
 ');
 
-$this->breadcramb = [
+$this->breadcrumb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Meus Eventos'), 'url' => $app->createUrl('panel', 'events')],
     ['label' => $entity->name, 'url' => $app->createUrl('event', 'edit', [$entity->id])],

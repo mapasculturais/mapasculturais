@@ -10,7 +10,7 @@ $this->import('
     mapas-container
     tabs
 ');
-$this->breadcramb = [
+$this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Selos'), 'url' => $app->createUrl('search', 'seals')],
     ['label' => $entity->name, 'url' => $app->createUrl('seal', 'single', [$entity->id])],

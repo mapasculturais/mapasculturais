@@ -4,7 +4,7 @@ use MapasCulturais\i;
 $this->import('
     search tabs search-list search-map search-filter-opportunity create-opportunity 
     '); /* create-opportunity */
-$this->breadcramb = [
+$this->breadcrumb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
     ['label'=> i::__('Oportunidades'), 'url' => $app->createUrl('opportunities')],
 ];

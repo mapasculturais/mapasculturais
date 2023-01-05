@@ -24,7 +24,7 @@ $this->import('
     mapas-container
 ');
 
-$this->breadcramb = [
+$this->breadcrumb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
     ['label'=> i::__('Meus Espaços'), 'url' => $app->createUrl('panel', 'spaces')],
     ['label'=> $entity->name, 'url' => $app->createUrl('space', 'edit', [$entity->id])],
