@@ -13,11 +13,15 @@
     }
   }
 
-  .notification__header--badge {
-    top: -12px;
-    left: -10px;
-    position: relative;
-  
+  .notification__header--container {
+    width:17px;
+    height: 17px;
+
+    .notification__header--badge {
+      top: -12px;
+      left: -10px;
+      position: relative;
+    }
   }
 }
 
