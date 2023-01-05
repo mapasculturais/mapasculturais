@@ -70,6 +70,7 @@ $iconset = [
     'notification' => 'eva:bell-outline',
     'pin' => 'ph:map-pin-fill',
     'previous' => 'ooui:previous-ltr',
+    'question' => 'fe:question',
     'role'  => 'ri:profile-line',
     'search' => 'ant-design:search-outlined',
     'settings' => 'bxs:cog',
