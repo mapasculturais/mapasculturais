@@ -20,6 +20,33 @@ $col-columns: 12;
     }
 }
 
+.grid-2{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: size(20) size(24);
+    width: 100%;
+
+    @media (max-width: size(800)) {
+        gap: size(15) size(19);
+    }
+
+    &.v-center {
+        align-items: center;
+    }
+
+    &.v-top {
+        align-items: start;
+    }
+
+    &.v-bottom {
+        align-items: end;
+    }
+
+    @media (max-width: size(300)) {
+        gap: size(10) size(14);
+    }
+}
+
 
 
 .grid-12{

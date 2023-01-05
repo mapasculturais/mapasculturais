@@ -72,6 +72,7 @@
 @import 'components/tabs';
 @import 'components/theme-logo';
 @import 'components/notification-list';
+@import 'components/form_block_field';
 @import 'components/user-accepted-terms';
 
 // LAYOUTS
@@ -81,6 +82,7 @@
 
 // PAGES
 @import 'pages/agents';
+@import 'pages/seals';
 @import 'pages/events';
 @import 'pages/projects';
 @import 'pages/search';
