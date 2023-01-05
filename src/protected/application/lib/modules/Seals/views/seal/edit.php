@@ -17,6 +17,7 @@ $this->import('
     form-block-fields
     form-information-seal
     tabs
+    entity-related-agents
 ');
 
 $this->breadcramb = [
@@ -30,7 +31,7 @@ $this->breadcramb = [
   <mapas-breadcrumb></mapas-breadcrumb>
   <entity-header :entity="entity" editable></entity-header>
     <tabs class="tabs">
-        <tab label="<?= i::_e('Informações gerais') ?>" slug="info">
+        <tab label="<?= i::__('Informações gerais') ?>" slug="info">
             <div class="tabs__info">
                 <mapas-container>
                     <main>
@@ -43,6 +44,20 @@ $this->breadcramb = [
                                     <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
                                     <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por')?>" editable></entity-owner>
                                     <entity-parent-edit :entity="entity" classes="col-12" type="project" ></entity-parent-edit>
+                                    <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
+                                    <div class="col-12">
+                                        <h4><?= i::__('Histórico de alterações') ?></h4>
+                                        <div>
+                                            <p class="entity-seals__history--title">30/05/2022</p>
+                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
+                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
+                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
+                                        </div>
+                                        <div>
+                                            <p class="entity-seals__history--title">30/05/2022</p>
+                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
+                                        </div>
+                                    </div>
                                 </div>
                             </template>
                         </mapas-card>
@@ -50,7 +65,7 @@ $this->breadcramb = [
                 </mapas-container>
             </div>
         </tab>
-        <tab label="<?= i::_e('Bloqueio de campos') ?>" slug="info_block">
+        <tab label="<?= i::__('Bloqueio de campos') ?>" slug="info_block">
             <div class="tabs__info">
                 <mapas-container>
                     <mapas-card class="feature">
