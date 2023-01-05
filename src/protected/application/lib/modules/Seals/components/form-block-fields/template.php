@@ -16,7 +16,7 @@ $this->import('
         <h3><?php i::_e("Agentes") ?></h3>
         <div class="grid-12">
             <div v-for="(item, index) in agents" class="col-3">
-                <input type="checkbox" v-model="item.value" /> {{ item.label }}
+                <input type="checkbox" @input="val => saveValueAgentLockedFields(val.target._value)" :value="item.value" /> {{ item.label }}
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@ $this->import('
         <h3><?php i::_e("Espaços") ?></h3>
         <div class="grid-12">
             <div v-for="(item, index) in spaces" class="col-3">
-                <input type="checkbox" v-model="item.value" /> {{ item.label }}
+                <input type="checkbox" @input="val => saveValueSpaceLockedFields(val.target._value)" :value="item.value" /> {{ item.label }}
             </div>
         </div>
     </div>
