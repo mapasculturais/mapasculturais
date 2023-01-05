@@ -372,6 +372,13 @@ class Module extends \MapasCulturais\Module
             'private' => true,
             'default_value' => '{}'
         ]);
+
+        $this->registerAgentMetadata('event_importer_files_processed', [
+            'label' => 'O arquivo ja foi processado',
+            'type' => 'array',
+            'private' => true,
+            'default_value' => '{}',
+        ]);
         
         $app->registerFileGroup(
             'agent',
