@@ -268,6 +268,16 @@ class Module extends \MapasCulturais\Module{
             $value = $query->getResult();
         });
 
+        $app->hook('entity(Opportunity).get(allPhases)', function(&$value) use ($app) {
+            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE o.parent = :parent OR o.id = :parent ORDER BY o.registrationFrom ASC");
+
+            $query->setParameters([
+                "parent" => $this->firstPhase,
+            ]);
+
+            $value = $query->getResult();
+        });
+
         $app->hook('entity(Opportunity).get(lastCreatedPhase)', function(&$value) {
             $first_phase = $this->firstPhase;
             $value = Module::getLastCreatedPhase($first_phase);
