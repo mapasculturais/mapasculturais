@@ -38,33 +38,39 @@ class Opportunity extends EntityController {
     {
         $app = App::i();
 
-        $classes = [
-            'agent' => Entities\AgentOpportunity::class,
-            'event' => Entities\EventOpportunity::class,
-            'space' => Entities\SpaceOpportunity::class,
-            'project' => Entities\ProjectOpportunity::class,
-        ];
+        if ($app->view instanceof \MapasCulturais\Themes\BaseV2\Theme) {
+                // @TODO o entityClassName deve vir dinamicamente do front, deve ser corrigido o envio dos dados para a captura dos mesmos aqui no back
+                $this->entityClassName =  Entities\ProjectOpportunity::class;
+                parent::POST_index($this->data);
+        } else {
+            $classes = [
+                'agent' => Entities\AgentOpportunity::class,
+                'event' => Entities\EventOpportunity::class,
+                'space' => Entities\SpaceOpportunity::class,
+                'project' => Entities\ProjectOpportunity::class,
+            ];
 
-        $class = $classes[$this->data['objectType']] ?? null;
+            $class = $classes[$this->data['objectType']] ?? null;
 
-        // objectType é agent,space,project ou event
-        if($class){
+            // objectType é agent,space,project ou event
+            if ($class) {
 
-            $self = $this;
-            $app->hook('entity(Opportunity).insert:after', function () use($self, $app) {
+                $self = $this;
+                $app->hook('entity(Opportunity).insert:after', function () use ($self, $app) {
 
-                $definition = $app->getRegisteredEvaluationMethodBySlug($self->data['evaluationMethod']);
+                    $definition = $app->getRegisteredEvaluationMethodBySlug($self->data['evaluationMethod']);
 
-                $emconfig = new Entities\EvaluationMethodConfiguration;
+                    $emconfig = new Entities\EvaluationMethodConfiguration;
 
-                $emconfig->opportunity = $this;
+                    $emconfig->opportunity = $this;
 
-                $emconfig->type = $definition->slug;
+                    $emconfig->type = $definition->slug;
 
-                $emconfig->save(true);
-            });
-            $this->entityClassName = $class;
-            parent::POST_index($data);
+                    $emconfig->save(true);
+                });
+                $this->entityClassName = $class;
+                parent::POST_index($data);
+            }
         }
     }
 
