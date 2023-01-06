@@ -380,9 +380,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
 	        'ownerEntity' => [
 		        'required' => \MapasCulturais\i::__('A entidade é obrigatória'),
 	        ],
-	        'evaluationMethod' => [
-		        'required' => \MapasCulturais\i::__('Defina um método de avaliação'),
-	        ]
         ];
 
         $hook_class = self::getHookClassPath();
@@ -965,7 +962,17 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     protected function canUserViewEvaluations($user){
-        return $this->evaluationMethodConfiguration->canUser('@control');
+        $app = App::i();
+
+        if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme){
+            return $this->evaluationMethodConfiguration->canUser('@control');
+        }else{
+            if($this->canUser("@control", $user)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /** @ORM\PreRemove */
