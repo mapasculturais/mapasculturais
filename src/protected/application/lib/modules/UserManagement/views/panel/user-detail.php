@@ -13,6 +13,7 @@ $this->import('
     panel--entity-actions
     panel--entity-tabs
     tabs
+    user-mail
     user-management--ownership-tabs
 ');
 ?>
@@ -53,23 +54,7 @@ $this->import('
             </header>
             <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
 
-            <div class="p-user-detail__account-config">
-
-                <label class="p-user-detail__account-config-label"><?= i::__('Configurações da conta do usuário') ?></label>
-                <p v-if="!entity.editingEmail">
-                    <label class="p-user-detail__account-config-email"><?= i::__('E-mail') ?> : {{entity.email}}</label>
-                    <a @click="entity.editingEmail = true" class="p-user-detail__account-config-edit">
-                        <mc-icon name="edit"></mc-icon><label class="p-user-detail__account-config-edit-label"><?php i::_e('Alterar email') ?></label>
-                    </a>
-                </p>
-                <form class="grid-12 p-user-detail__account-config-form" v-if="entity.editingEmail" @submit="entity.save().then(() => entity.editingEmail = false); $event.preventDefault();">
-                    <div class="col-4">
-                        <entity-field :entity="entity" prop="email" hide-required>
-                    </div>
-                    <button class="col-2 button button--primary button--md"><?php i::_e('Salvar') ?></button>
-                    <button class="col-2 button button--secondary button--md" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
-                </form>
-            </div>
+            <user-mail :entity="entity"></user-mail>
         </div>
 
         <div class="p-user-detail__property-label">
