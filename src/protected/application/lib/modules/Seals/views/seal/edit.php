@@ -18,6 +18,7 @@ $this->import('
     form-information-seal
     tabs
     entity-related-agents
+    entity-parent-edit
 ');
 
 $this->breadcrumb = [
@@ -29,7 +30,7 @@ $this->breadcrumb = [
 
 <div class="main-app">
   <mapas-breadcrumb></mapas-breadcrumb>
-  <entity-header :entity="entity" editable></entity-header>
+  <entity-header :entity="entity"></entity-header>
     <tabs class="tabs">
         <tab label="<?= i::__('Informações gerais') ?>" slug="info">
             <div class="tabs__info">
@@ -43,7 +44,7 @@ $this->breadcrumb = [
                                 <div class="grid-12">
                                     <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
                                     <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por')?>" editable></entity-owner>
-                                    <entity-parent-edit :entity="entity" classes="col-12" type="project" ></entity-parent-edit>
+                                    <entity-parent-edit :entity="entity" classes="col-12" type="seal" ></entity-parent-edit>
                                     <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                                     <div class="col-12">
                                         <h4><?= i::__('Histórico de alterações') ?></h4>
@@ -68,9 +69,7 @@ $this->breadcrumb = [
         <tab label="<?= i::__('Bloqueio de campos') ?>" slug="info_block">
             <div class="tabs__info">
                 <mapas-container>
-                    <mapas-card class="feature">
-                        <form-block-fields classes="col-12" :entity="entity"></form-block-fields>
-                    </mapas-card>
+                    <form-block-fields classes="col-12" :entity="entity"></form-block-fields>
                 </mapas-container>
             </div>
         </tab>
