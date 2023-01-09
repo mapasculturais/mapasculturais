@@ -1120,7 +1120,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         $timeout.cancel(saveTimeout);
         
         saveTimeout = $timeout(function(){
-            $scope.saveRegistration();
+            if(MapasCulturais.isEditable){
+                $scope.saveRegistration();
+            }
         }, MapasCulturais.registrationAutosaveTimeout);
     }
 
