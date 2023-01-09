@@ -1,7 +1,7 @@
 <?php $this->applyTemplateHook('avatar','before'); ?>
 <div class="avatar <?php if($entity->avatar): ?>com-imagem<?php endif; ?>">
     <?php if($avatar = $entity->avatar): ?>
-        <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
+        <img src="<?php echo $avatar->transform('avatarBig') ? $avatar->transform('avatarBig')->url : ""; ?>" alt="" class="js-avatar-img" />
     <?php else: ?>
         <img class="js-avatar-img" src="<?php $this->asset($default_image); ?>" />
     <?php endif; ?>
