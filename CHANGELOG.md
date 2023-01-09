@@ -3,6 +3,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.4.5] - 2023-01-09
+### Correções
+- Evita que autosave execute na ficha de inscrição após a mesma estar enviada
+- Corrige erros de carregamento do thumbnail do avatar nos templates referente ao agente caso nao encontre o avatar
+- Corrige problema de duplicidade ao processar a planilha de importação de eventos
 ## [5.4.4] - 2022-12-28
 - Corrige redirecionamento após criação de App
 
