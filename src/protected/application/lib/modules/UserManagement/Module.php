@@ -9,7 +9,6 @@ use MapasCulturais\Definitions\Role;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\i;
-
 class Module extends \MapasCulturais\Module {
     function _init() {
         $app = App::i();
@@ -17,11 +16,11 @@ class Module extends \MapasCulturais\Module {
         /**
          * Adiciona a descrição da entiade ao jsObject
          */
-        $app->hook('view.render(<<*>>):before', function (){
+        $app->hook('view.render(<<*>>):before', function () {
             $this->jsObject['EntitiesDescription']['system-role'] = Entities\SystemRole::getPropertiesMetadata();
             $this->jsObject['EntitiesDescription']['role'] = \MapasCulturais\Entities\Role::getPropertiesMetadata();
 
-            $subsite_query = new ApiQuery(MapasEntities\Subsite::class, ['@select'=>'id,name']);
+            $subsite_query = new ApiQuery(MapasEntities\Subsite::class, ['@select' => 'id,name']);
             $this->jsObject['subsites'] = array_merge([], $subsite_query->find());
 
             $permission_labels = [
@@ -40,7 +39,7 @@ class Module extends \MapasCulturais\Module {
                 'archive' => i::__('arquivar'),
                 'viewPrivateData' => i::__('visualizar dados privados'),
                 'viewPrivateFiles' => i::__('visualizar arquivos privados'),
-                
+
                 'createAgentRelation' => i::__('relacionar agentes'),
                 'removeAgentRelation' => i::__('remover agentes relacionados'),
 
@@ -49,7 +48,7 @@ class Module extends \MapasCulturais\Module {
 
                 'createAgentRelationWithControl' => i::__('adicionar adiministradores'),
                 'removeAgentRelationWithControl' => i::__('remover administradores'),
-                
+
                 'createSealRelation' => i::__('aplicar selos'),
                 'removeSealRelation' => i::__('remover selos'),
 
@@ -65,7 +64,7 @@ class Module extends \MapasCulturais\Module {
 
                 'reopenValuerEvaluations' => i::__('reabrir avaliações dos avaliadores'),
                 'evaluateRegistrations' => i::__('avaliar inscrições'),
-                
+
                 'viewConsolidatedResult' => i::__('visualizar resultado'),
                 'changeStatus' => i::__('modificar status'),
                 'requestEventRelation' => i::__('solicitar evento relacionado'),
@@ -74,7 +73,7 @@ class Module extends \MapasCulturais\Module {
             $permission_descriptions = [
                 'requestEventRelation' => 'O usuário poderá solicitar que o evento que está criando/editando seja relacionado aos projetos'
             ];
-            
+
             $entity_classes = [
                 'user' => MapasEntities\User::class,
                 'agent' => MapasEntities\Agent::class,
@@ -92,7 +91,7 @@ class Module extends \MapasCulturais\Module {
                 $private_entity = $class::isPrivateEntity();
                 $rs = [];
                 foreach ($class::getPermissionsList() as $permission) {
-                    if($permission == 'view' && !$private_entity) {
+                    if ($permission == 'view' && !$private_entity) {
                         continue;
                     }
                     $rs[$permission] = [
@@ -100,20 +99,19 @@ class Module extends \MapasCulturais\Module {
                         'label' => $permission_labels[$permission] ?? '',
                         'description' => $permission_descriptions[$permission] ?? '',
                     ];
-
                 }
                 $result[$slug] = [];
 
                 // adiciona as permissões na ordem definida no array $permission_labels
-                foreach(array_keys($permission_labels) as $permission) {
-                    if(isset($rs[$permission])) {
+                foreach (array_keys($permission_labels) as $permission) {
+                    if (isset($rs[$permission])) {
                         $result[$slug][] = $rs[$permission];
                     }
                 }
 
                 // se alguma permissão não estava na lista, adiciona
-                if(count($result[$slug]) < count($rs)) {
-                    foreach($rs as $permission) {
+                if (count($result[$slug]) < count($rs)) {
+                    foreach ($rs as $permission) {
                         if (!$permission['label']) {
                             $result[$slug][] = $permission;
                         }
@@ -122,13 +120,12 @@ class Module extends \MapasCulturais\Module {
             }
 
             $this->jsObject['EntityPermissionsList'] = $result;
-
         });
 
         /**
          * Faz JOIN com a tabela Agent para poder fitrar por nome nas keyowrds
          */
-        $app->hook('repo(User).getIdsByKeywordDQL.join', function(&$joins, $keyword){
+        $app->hook('repo(User).getIdsByKeywordDQL.join', function (&$joins, $keyword) {
             $joins .= "
                 LEFT JOIN 
                     MapasCulturais\\Entities\\Agent a 
@@ -139,16 +136,16 @@ class Module extends \MapasCulturais\Module {
         /**
          * Filtra usuários por palavras chaves na view user-management
          */
-        $app->hook('repo(User).getIdsByKeywordDQL.where', function(&$where, $keyword){
+        $app->hook('repo(User).getIdsByKeywordDQL.where', function (&$where, $keyword) {
             $where .= " (unaccent(lower(e.email)) LIKE unaccent(lower(:keyword)) OR unaccent(lower(a.name)) LIKE unaccent(lower(:keyword)))";
         });
 
-        $app->hook('panel.nav', function(&$group) use($app) {
+        $app->hook('panel.nav', function (&$group) use ($app) {
             $group['admin']['items'][] = [
                 'route' => 'panel/user-management',
                 'icon' => 'user-config',
                 'label' => i::__('Gestão de usuários'),
-                'condition' => function() use($app) {
+                'condition' => function () use ($app) {
                     return $app->user->is('admin');
                 }
             ];
@@ -157,7 +154,7 @@ class Module extends \MapasCulturais\Module {
                 'route' => 'panel/system-roles',
                 'icon' => 'role',
                 'label' => i::__('Funções de usuários'),
-                'condition' => function() use($app) {
+                'condition' => function () use ($app) {
                     return $app->user->is('saasAdmin');
                 }
             ];
@@ -166,7 +163,7 @@ class Module extends \MapasCulturais\Module {
         /**
          * Página para gerenciamento de roles no painel
          */
-        $app->hook('GET(panel.system-roles)', function() use($app) {
+        $app->hook('GET(panel.system-roles)', function () use ($app) {
             $this->requireAuthentication();
 
             if (!$app->user->is('saasAdmin')) {
@@ -175,14 +172,14 @@ class Module extends \MapasCulturais\Module {
 
             $this->render('system-roles');
         });
-        
+
 
         /**
          * Página para gerenciamento de usuários
          */
-        $app->hook('GET(panel.user-management)', function() use($app) {
+        $app->hook('GET(panel.user-management)', function () use ($app) {
             $this->requireAuthentication();
-            
+
             if (!$app->user->is('admin')) {
                 throw new PermissionDenied($app->user, null, i::__('Gerenciar Usuários'));
             }
@@ -193,7 +190,7 @@ class Module extends \MapasCulturais\Module {
         /**
          * Página para gerenciamento de usuários
          */
-        $app->hook('GET(panel.user-detail)', function() use($app) {
+        $app->hook('GET(panel.user-detail)', function () use ($app) {
             /** @var \MapasCulturais\Controllers\Panel $this */
             $this->requireAuthentication();
             $user = $app->repo('User')->find($this->data['id'] ?? -1);
@@ -212,16 +209,23 @@ class Module extends \MapasCulturais\Module {
         /**
          * Página de Conta e privacidade
          */
-        $app->hook('GET(panel.my-account)', function() use($app) {
+        $app->hook('GET(panel.my-account)', function () use ($app) {
             /** @var \MapasCulturais\Controllers\Panel $this */
             $this->requireAuthentication();
             $app->view->addRequestedEntityToJs(User::class, $app->user->id);
             $this->render('my-account');
         });
         /**
+         * Componente user-mail
+         */
+        $app->hook('template(panel.my-account.entity-seals):after', function () use ($app) {
+            /** @var \MapasCulturais\Theme $this */
+            $this->part('userMail/user-mail');
+        });
+        /**
          * Página de apps
          */
-        $app->hook('GET(panel.my-app)', function() use($app) {
+        $app->hook('GET(panel.my-app)', function () use ($app) {
             /** @var \MapasCulturais\Controllers\Panel $this */
             $this->requireAuthentication();
             $app->view->addRequestedEntityToJs(User::class, $app->user->id);
@@ -231,7 +235,7 @@ class Module extends \MapasCulturais\Module {
         /**
          * Atualiza o ENUM de object_types adicionando a classe UserManagement\Entities\SystemRole
          */
-        $app->hook('doctrine.emum(object_type).values', function(&$values) {
+        $app->hook('doctrine.emum(object_type).values', function (&$values) {
             $values['SystemRole'] = Entities\SystemRole::class;
         });
 
@@ -240,17 +244,17 @@ class Module extends \MapasCulturais\Module {
             $this->registerController('role', Controllers\Role::class);
 
             $roles = $this->repo(Entities\SystemRole::class)->findBy(['status' => 1]);
-            
-            foreach($roles as $role) {
+
+            foreach ($roles as $role) {
                 $definition = new Role($role->slug, $role->name, $role->name, $role->subsiteContext, function ($user) {
                     return $user->is('saasAdmin');
                 });
-    
+
                 $this->registerRole($definition);
-    
+
                 foreach ($role->permissions as $permission) {
                     $this->hook("can($permission)", function ($user, &$result) use ($role) {
-                        if($user->is($role->slug)) {
+                        if ($user->is($role->slug)) {
                             $result = true;
                         }
                     });
@@ -259,7 +263,7 @@ class Module extends \MapasCulturais\Module {
         });
     }
 
-    function register() {        
-        
+    function register()
+    {
     }
 }
