@@ -49,6 +49,9 @@ $this->breadcrumb = [
                     </main>
                     <aside>
                         <div class="grid-12">
+                            <div class="col-12">
+                                <a href="<?= $app->createUrl('seal', 'sealrelation', [$entity->id]) ?>">Exemplo selo</a>
+                            </div>
                             <entity-terms :entity="entity" classes="col-12" taxonomy="area" title="<?php i::esc_attr_e('Areas de atuação');?>"></entity-terms>
                             <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
                             <entity-seals :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
