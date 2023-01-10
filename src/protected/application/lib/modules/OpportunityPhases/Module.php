@@ -213,10 +213,18 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('GET(opportunity.findPhasesById)', function() use($app) {
             
-            $opportunity_phases = [];
+            $result = [];
             $opportunity = $app->repo('Opportunity')->find($this->data['id']);
-            $opportunity_phases = $opportunity->allPhases;
-           
+            if($opportunity_phases = $opportunity->allPhases){
+                foreach($opportunity_phases as $key => $opportunity){
+                    $resgistration_status = $opportunity->countRegistrationsByStatus;
+                    $result[] = [
+                        'opportunity_phase' => ($key+1),
+                        'registrations_status' => $resgistration_status
+                    ];
+                }
+            }
+
         });
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
