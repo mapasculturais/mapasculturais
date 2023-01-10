@@ -8,10 +8,10 @@ $this->import('
     notification-list
 ');
 ?>
-<modal v-if="notificationsCount" :title="modalTitle" classes="create-modal notification-modal" button-label="Notificações" @open="" @close="">
+<modal v-if="notificationsCount>0" :title="modalTitle" classes="create-modal notification-modal" button-label="Notificações" @open="" @close="">
     <template #default>
         <div class="grid-12 notification-modal__header">
-            <div class="col-6 " v-if="notificationsCount">
+            <div class="col-6 " v-if="notificationsCount>0">
                 <label class="count">
                     <?= i::__('Você tem') ?>
                     <span class="count-counter">{{ notificationsCount }}</span>
@@ -34,7 +34,7 @@ $this->import('
             <label class="label" @click="modal.open"><?= i::__('Notificações') ?></label>
             <div class="icon">
                 <mc-icon name='notification'></mc-icon>
-                <span v-if="notificationsCount" class="count">{{notificationsCount}}</span>
+                <span v-if="notificationsCount>0" class="count">{{notificationsCount}}</span>
             </div>
         </div>
 
@@ -42,7 +42,7 @@ $this->import('
         <a v-if="viewport=='mobile'" class="notification-modal__menu-mobile" @click="modal.open">
             <div class="icon">
                 <mc-icon name='notification'></mc-icon>
-                <span v-if="notificationsCount" class="count">{{notificationsCount}}</span>
+                <span v-if="notificationsCount>0" class="count">{{notificationsCount}}</span>
             </div>
             <label class="label" @click="modal.open"><?= i::__('Notificações') ?></label>
         </a>
