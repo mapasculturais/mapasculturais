@@ -60,11 +60,9 @@ $this->import('
                 </div>
             </header>
             <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
-
-            <!-- <user-mail :entity="entity"></user-mail> -->
-
+            
             <user-accepted-terms :user="entity"></user-accepted-terms>
-
+            
             <div class="user-function">
                 <label class="user-function__label"><?= i::__('Funções do Usuário') ?></label>
                 <div class="user-function__box">
