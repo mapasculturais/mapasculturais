@@ -293,7 +293,14 @@ class Module extends \MapasCulturais\Module{
                 "opp" => $this,
             ]);
 
-            $value = $query->getResult();
+            $status_list = \MapasCulturais\Entities\Registration::getStatusesNames();
+            $result = array_map(function($item) use($status_list){
+                $status= $status_list[$item['status']];
+                $_result[$status] = $item['qtd'];
+                return $_result;
+            }, $query->getResult());
+
+            $value = $result;
         });
 
         $app->hook('entity(Opportunity).get(countRegistrations)', function(&$value) use ($app) {
