@@ -4,14 +4,13 @@ app.component('create-agent', {
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
-
-
         const text = Utils.getTexts('create-agent')
         return { text }
     },
 
     created() {
         this.iterationFields()
+        var stat = 'publish';
     },
 
     data() {
@@ -76,41 +75,11 @@ app.component('create-agent', {
         createDraft(modal) {
             this.entity.status = 0;
             this.save(modal);
-
         },
         createPublic(modal) {
             //lançar dois eventos
-            const lists = useEntitiesLists();
             this.entity.status = 1;
             this.save(modal);
-            const list = lists.fetch('agent:publish'); // obtém a lista de agentes publicados
-            if (list) {
-                list.push(this.entity);  // adiciona a entidade na lista
-
-            }
-        },
-        addEntity(Entity) {
-            // let status
-            // switch (Entity.status) {
-            //     case 0:
-            //         status = 'draft'
-            //         break;
-            //     case 1:
-            //         status = 'publish'
-            //         break;
-            //     case -10:
-            //         status = 'trash'
-            //         break;
-
-            //     default:
-            //         break;
-            // }
-
-            // const entityList = lists.fetch(Entity.entityType + ':' + 'publish'); // obtém a lista de agentes publicados
-            // if (entityList) {
-            //     entityList.push(this.entity);  // adiciona a entidade na lista
-
-            // }
         },
         save(modal) {
             const lists = useEntitiesLists(); // obtem o storage de listas de entidades
@@ -119,28 +88,8 @@ app.component('create-agent', {
             this.entity.save().then((response) => {
                 this.$emit('create', response);
                 modal.loading(false);
-                // let status
-                // switch (response.status) {
-                //     case 0:
-                //         status = 'draft'
-                //         break;
-                //     case 1:
-                //         status = 'publish'
-                //         break;
-                //     case -10:
-                //         status = 'trash'
-                //         break;
-
-                //     default:
-                //         break;
-                // }
-
-                const list = lists.fetch(response+ ':' + response.status); // obtém a lista de agentes publicados
-                if (list) {
-                    list.push(response);  // adiciona a entidade na lista
-                }
-                console.log(response)
-                console.log(list);
+                stat = this.entity.status;
+               this.addAgent(stat);
             }).catch((e) => {
                 modal.loading(false);
 
@@ -150,6 +99,22 @@ app.component('create-agent', {
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
-        }
+        },
+        addEntity(stat) {
+            if (stat == 1) {
+                const lists = useEntitiesLists(); // obtem o storage de listas de entidades
+                const list = lists.fetch('agent:publish'); // obtém a lista de agentes publicados
+                if (list) {
+                    list.push(this.entity);  // adiciona a entidade na lista
+                }
+            }
+            if(stat == 0){
+                const lists = useEntitiesLists(); // obtem o storage de listas de entidades
+                const list = lists.fetch('agent:draft'); // obtém a lista de agentes publicados
+                if (list) {
+                    list.push(this.entity);  // adiciona a entidade na lista
+                }
+            }
+        },
     },
 });

@@ -1,15 +1,16 @@
-app.component('create-app' , {
+app.component('create-app', {
     template: $TEMPLATES['create-app'],
     emits: ['create'],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('create-app')
         return { text }
     },
-    
+
     created() {
-        this.iterationFields()
+        this.iterationFields();
+        var stat = 'publish';
     },
 
     data() {
@@ -20,7 +21,7 @@ app.component('create-app' , {
     },
 
     props: {
-       
+
     },
 
     computed: {
@@ -31,32 +32,32 @@ app.component('create-app' , {
             // return this.areaErrors ? 'field error' : 'field';
         },
         modalTitle() {
-            if(this.entity?.id){
-                if(this.entity.status==1){
-                    return  __('appCriado', 'create-app');
-                }else {
-                    return  __('criarRascunho', 'create-app');
+            if (this.entity?.id) {
+                if (this.entity.status == 1) {
+                    return __('appCriado', 'create-app');
+                } else {
+                    return __('criarRascunho', 'create-app');
                 }
-            }else {
-                return  __('criarApp', 'create-app');
+            } else {
+                return __('criarApp', 'create-app');
 
             }
         },
     },
-    
+
     methods: {
         iterationFields() {
             let skip = [
-                'createTimestamp', 
+                'createTimestamp',
                 'id',
-                'name', 
-                'status', 
+                'name',
+                'status',
                 'userId',
                 'publicKey',
                 'privateKey',
             ];
-            Object.keys($DESCRIPTIONS.app).forEach((item)=>{
-                if(!skip.includes(item) && $DESCRIPTIONS.app[item].required){
+            Object.keys($DESCRIPTIONS.app).forEach((item) => {
+                if (!skip.includes(item) && $DESCRIPTIONS.app[item].required) {
                     this.fields.push(item);
                 }
             })
@@ -64,7 +65,7 @@ app.component('create-app' , {
         createEntity() {
             this.entity = Vue.ref(new Entity('app'));
             this.entity.type = 1;
-            this.entity.terms = {area: []}
+            this.entity.terms = { area: [] }
         },
         createDraft(modal) {
             this.entity.status = 0;
@@ -75,20 +76,39 @@ app.component('create-app' , {
             this.entity.status = 1;
             this.save(modal);
         },
-        save (modal) {
+        save(modal) {
             modal.loading(true);
             this.entity.save().then((response) => {
-                this.$emit('create',response);
+                this.$emit('create', response);
                 modal.loading(false);
+                stat = this.entity.status;
+                this.addEntity(stat);
 
             }).catch((e) => {
                 modal.loading(false);
             });
         },
 
+
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
-        }
+        },
+        addEntity(stat) {
+            if (stat == 1) {
+                const lists = useEntitiesLists(); // obtem o storage de listas de entidades
+                const list = lists.fetch('app:publish'); // obtém a lista de agentes publicados
+                if (list) {
+                    list.push(this.entity);  // adiciona a entidade na lista
+                }
+            }
+            if(stat == 0){
+                const lists = useEntitiesLists(); // obtem o storage de listas de entidades
+                const list = lists.fetch('app:draft'); // obtém a lista de agentes publicados
+                if (list) {
+                    list.push(this.entity);  // adiciona a entidade na lista
+                }
+            }
+        },
     },
 });
