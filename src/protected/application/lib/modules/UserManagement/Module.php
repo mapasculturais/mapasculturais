@@ -222,6 +222,15 @@ class Module extends \MapasCulturais\Module {
             /** @var \MapasCulturais\Theme $this */
             $this->part('userMail/user-mail');
         });
+
+
+        /**
+         * Componente user -mail - user-detail
+         */
+        $app->hook('template(panel.user-detail.entity-seals):after', function () use ($app) {
+            /** @var \MapasCulturais\Theme $this */
+            $this->part('userMail/user-mail');
+        });
         /**
          * Página de apps
          */
