@@ -61,7 +61,7 @@ $this->import('
             </header>
             <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
 
-            <user-mail :entity="entity"></user-mail>
+            <!-- <user-mail :entity="entity"></user-mail> -->
 
             <user-accepted-terms :user="entity"></user-accepted-terms>
 

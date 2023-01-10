@@ -7,8 +7,10 @@ $this->import('
     mc-icon
 ');
 ?>
+<?php $this->applyTemplateHook('user-mail', 'before'); ?>
 
 <div class="user-mail__account-config">
+    <?php $this->applyTemplateHook('user-mail', 'begin'); ?>
 
     <label class="user-mail__account-config-label"><?= i::__('Configurações da conta do usuário') ?></label>
     <p v-if="!entity.editingEmail">
@@ -24,4 +26,6 @@ $this->import('
         <button class="col-2 button button--primary button--md"><?php i::_e('Salvar') ?></button>
         <button class="col-2 button button--secondary button--md" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
     </form>
+    <?php $this->applyTemplateHook('user-mail', 'end'); ?>
 </div>
+<?php $this->applyTemplateHook('user-mail', 'after'); ?>
