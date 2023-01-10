@@ -1,15 +1,16 @@
-app.component('create-space' , {
+app.component('create-space', {
     template: $TEMPLATES['create-space'],
     emits: ['create'],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('create-space')
         return { text }
     },
-    
+
     created() {
-        this.iterationFields()
+        this.iterationFields();
+        var stat = 'publish';
     },
 
     data() {
@@ -22,7 +23,7 @@ app.component('create-space' , {
     props: {
         editable: {
             type: Boolean,
-            default:true
+            default: true
         },
     },
 
@@ -34,43 +35,42 @@ app.component('create-space' , {
             return this.areaErrors ? 'field error' : 'field';
         },
         modalTitle() {
-            if(this.entity?.id){
-                if(this.entity.status==1){
-                    return  __('espaçoCriado', 'create-space');
-                }else {
-                    return  __('criarRascunho', 'create-space');
+            if (this.entity?.id) {
+                if (this.entity.status == 1) {
+                    return __('espaçoCriado', 'create-space');
+                } else {
+                    return __('criarRascunho', 'create-space');
                 }
-            }else {
-                return  __('criarEspaço', 'create-space');
+            } else {
+                return __('criarEspaço', 'create-space');
 
             }
         },
     },
-    
+
     methods: {
         iterationFields() {
             let skip = [
-                'createTimestamp', 
+                'createTimestamp',
                 'id',
                 'location',
-                'name', 
-                'shortDescription', 
-                'status', 
+                'name',
+                'shortDescription',
+                'status',
                 'type',
-                '_type', 
+                '_type',
                 'userId',
             ];
-            Object.keys($DESCRIPTIONS.space).forEach((item)=>{
-                if(!skip.includes(item) && $DESCRIPTIONS.space[item].required){
+            Object.keys($DESCRIPTIONS.space).forEach((item) => {
+                if (!skip.includes(item) && $DESCRIPTIONS.space[item].required) {
                     this.fields.push(item);
                 }
             })
         },
         createEntity() {
             this.entity = Vue.ref(new Entity('space'));
-            console.log(this.entity);
             this.entity.type = 1;
-            this.entity.terms = {area: []}
+            this.entity.terms = { area: [] }
 
         },
         createDraft(modal) {
@@ -82,11 +82,13 @@ app.component('create-space' , {
             this.entity.status = 1;
             this.save(modal);
         },
-        save (modal) {
+        save(modal) {
             modal.loading(true);
             this.entity.save().then((response) => {
-                this.$emit('create',response)
+                this.$emit('create', response)
                 modal.loading(false);
+                stat = this.entity.status;
+                this.addEntity(stat);
             }).catch((e) => {
                 modal.loading(false);
             });
@@ -95,6 +97,22 @@ app.component('create-space' , {
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
-        }
+        },
+        addEntity(stat) {
+            if (stat == 1) {
+                const lists = useEntitiesLists();
+                const list = lists.fetch('space:publish');
+                if (list) {
+                    list.push(this.entity);
+                }
+            }
+            if (stat == 0) {
+                const lists = useEntitiesLists();
+                const list = lists.fetch('space:draft');
+                if (list) {
+                    list.push(this.entity);
+                }
+            }
+        },
     },
 });
