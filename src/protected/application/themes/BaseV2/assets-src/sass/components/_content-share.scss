@@ -13,11 +13,12 @@
 			display: flex;
 			flex-direction: row;
 			.icon {
-				align-content: center;
 				border: 0.5px solid #666666;
 				border-radius: size(4);
 				padding: size(8);
 				margin-right: size(24);
+				display: flex;
+				align-self: center;
 			}
 		}
 	}
