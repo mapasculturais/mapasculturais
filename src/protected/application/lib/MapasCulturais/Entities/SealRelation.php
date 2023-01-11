@@ -209,7 +209,10 @@ abstract class SealRelation extends \MapasCulturais\Entity
 
         parent::delete($flush);
     }
-    
+
+    function generateLink($url, $texto){
+      return '<a href=' . $url . ' rel="noopener noreferrer"><i>' . $texto .'</i></a>';
+    }
     
     /**
      * Retorna a mensagem de impressão do certificado. Se uma mensagem não foi definida pelo usuário, retorna uma mensagem padrão com todos os campos
@@ -219,20 +222,16 @@ abstract class SealRelation extends \MapasCulturais\Entity
      */
     public function getCertificateText($addLinks = false){
         
-        function generateLink($url, $texto){
-            return '<a href=' . $url . ' rel="noopener noreferrer"><i>' . $texto .'</i></a>';
-        }
-        
         $app = App::i();
         $mensagem = $this->seal->certificateText;
         $entity = $this->seal;
-        $nomeSelo = $addLinks ? generateLink($app->createUrl('seal', 'single', ['id'=>$this->seal->id], 
+        $nomeSelo = $addLinks ? $this->generateLink($app->createUrl('seal', 'single', ['id'=>$this->seal->id],
                     $this->seal->name), $this->seal->name) : $this->seal->name;
 
-        $donoSelo = $addLinks ? generateLink($this->seal->owner->getSingleUrl(), 
+        $donoSelo = $addLinks ? $this->generateLink($this->seal->owner->getSingleUrl(),
                     $this->seal->owner->name) : $this->owner->name;
 
-        $nomeEntidade = $addLinks ? generateLink($this->owner->getSingleUrl(), 
+        $nomeEntidade = $addLinks ? $this->generateLink($this->owner->getSingleUrl(),
         $this->owner->name) : $this->owner->name;
 
         $dateInicio = $this->createTimestamp->format("d/m/Y");
