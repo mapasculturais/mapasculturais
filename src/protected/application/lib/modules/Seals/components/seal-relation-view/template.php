@@ -3,6 +3,7 @@ use MapasCulturais\i;
 $this->import('
     confirm-button
     mc-icon
+    content-share
 ');
 ?>
 
@@ -47,7 +48,7 @@ $this->import('
     </div>
     <div class="seal-relation-view__actions">
         <button class="button button--primary">
-          <?= i::__('Compartilhar') ?>
+          <content-share></content-share>
         </button>
         <button class="button button--primary">
           <?= i::__('Imprimir') ?>
