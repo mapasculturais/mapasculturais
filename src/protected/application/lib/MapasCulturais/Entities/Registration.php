@@ -1140,7 +1140,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if(new DateTime('now') < $this->opportunity->evaluateFrom || new DateTime('now') > $this->opportunity->evaluateTo){
+        if(new DateTime('now') < $this->opportunity->evaluationMethodConfiguration->evaluationFrom || new DateTime('now') > $this->opportunity->evaluationMethodConfiguration->evaluationTo){
             return false;
         }
         
