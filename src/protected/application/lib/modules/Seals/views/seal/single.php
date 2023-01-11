@@ -12,7 +12,6 @@ $this->import('
     entity-related-agents
     entity-links
     entity-request-ownership
-    seal-relation-view
     tabs
 ');
 $this->breadcrumb = [
@@ -51,9 +50,6 @@ $this->breadcrumb = [
                 <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
             </div>
         </aside>
-        <main>
-            <seal-relation-view :entity="entity"></seal-relation-view>
-        </main>
     </mapas-container>
     <entity-actions :entity="entity"></entity-actions>
 </div>
