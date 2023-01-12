@@ -1,9 +1,9 @@
-app.component('content-share' , {
-    template: $TEMPLATES['content-share'],
+app.component('seal-content-share' , {
+    template: $TEMPLATES['seal-content-share'],
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
-        const text = Utils.getTexts('content-share')
+        const text = Utils.getTexts('seal-content-share')
         return { text }
     },
     data() {
