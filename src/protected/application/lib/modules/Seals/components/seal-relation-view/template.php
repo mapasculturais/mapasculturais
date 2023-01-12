@@ -42,7 +42,7 @@ $this->import('
             <button class="button button--primary">
                 <seal-content-share></seal-content-share>
             </button>
-            <button class="button button--primary">
+            <button class="button button--primary" @click="print">
               <?= i::__('Imprimir') ?>
             </button>
         </div>
