@@ -34,5 +34,10 @@ app.component('seal-relation-view', {
           const validDate = new Date(validDateString)
           return validDate.getTime() > now.getTime()
       }
+    },
+    methods: {
+        print () {
+            window.print()
+        }
     }
 });
