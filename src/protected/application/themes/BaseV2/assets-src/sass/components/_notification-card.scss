@@ -1,12 +1,8 @@
 @use '../settings/mixins' as *;
 
 .notifications {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    
     .notification-card {
-
+        margin-bottom: size(32);
 
         .mapas-card__title {
             display: none;
@@ -73,163 +69,21 @@
             }
 
         }
+
+        &.divider {
+            border-top: 1px solid var(--mc-low-300);
+            padding: 16px 0;
+            margin: 8px 0;
+            border-radius: 0;
+
+            &__divider:last-child {
+                border-bottom: 1px solid #000;
+                margin-bottom: 0;
+            }
+
+            .mapas-card__content {
+                gap: size(0) size(12);
+            }
+        }
     }
-
 }
-
-
-// &__content {
-//     text-align: center;
-
-//     a {
-
-//         text-decoration: none;
-//         font-weight: bold;
-//         color: #000;
-//         text-transform: none;
-//     }
-
-// }
-
-// &__card {
-//     margin: 10px 0;
-//     border: 1px solid var(--mc-gray-100);
-
-//     .mapas-card__title {
-//         display: none;
-
-//     }
-// }
-
-// &__subtitle {
-//     font-size: 14px;
-//     line-height: 19px;
-//     margin: size(8) 0 0 0;
-
-// }
-
-// &__title {
-//     display: flex;
-//     flex-direction: column;
-//     gap: size(8);
-
-//     .title {
-//         font-size: 16px;
-//         line-height: 22px;
-//         margin: 0;
-
-//         a {
-//             text-decoration: none;
-//             color: var(--mc-low-500);
-//             font-weight: bold;
-//         }
-//     }
-
-//     .subtitle {
-//         font-size: 14px;
-//         line-height: 19px;
-//         margin: 0;
-//     }
-// }
-
-// &__title>a {
-//     text-decoration: none;
-//     color: var(--mc-low-500);
-//     font-weight: bold;
-// }
-
-// &__divider {
-//     border-top: 1px solid var(--mc-low-300);
-//     padding: 16px 0;
-//     margin: 8px 0;
-
-//     &__divider:last-child {
-//         border-bottom: 1px solid #000;
-//     }
-// }
-
-// &__icon {
-//     width: size(32);
-//     height: size(32);
-//     border-radius: 50%;
-//     background-color: var(--mc-gray-100);
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     margin-top: 16px;
-
-//     &--avatar {
-
-//         svg {
-
-//             path {
-//                 width: size(16);
-
-//             }
-
-//         }
-//     }
-
-// }
-
-// &__header {
-
-//     display: inline-flex;
-//     gap: 6px;
-
-//     &--text {
-//         font-weight: bold;
-//     }
-
-//     &--badge {
-//         width: 18px;
-//         height: 18px;
-//         text-align: center;
-//         display: inline-flex;
-//         align-items: center;
-//         justify-content: center;
-//         border-radius: 50%;
-//         background-color: var(--mc-danger-500);
-//         color: #FFFFFF;
-//         font-weight: normal;
-//         font-size: 12px;
-//     }
-
-//     &--link {
-//         font-weight: 600;
-//         font-size: 14px;
-//         line-height: 104.19%;
-//         margin-right: 8px;
-//         cursor: pointer;
-
-//     }
-
-//     &--container {
-
-//         // .notify-menu {
-//         // 	display: flex;
-//         // 	justify-content: flex-end;
-//         // 	position: relative;
-//         // 	flex-direction: row;
-
-//         // 	.notification {
-//         // 		&__header {
-//         // 			&--container {
-
-//         // 				svg {
-//         // 					width: 18px;
-//         // 					height: 18px;
-//         // 				}
-//         // 			}
-//         // 		}
-//         // 	}
-//         // }
-
-//     }
-
-//     &--container>a {
-//         cursor: pointer;
-//     }
-// }
-
-// }
