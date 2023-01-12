@@ -14,17 +14,17 @@ $this->import('
               <?= i::__("Nas redes sociais") ?>
             </p>
             <div class="content-share__socialnetwork--icons">
-                <div class="icon">
-                    <mc-icon width="24px" name="instagram"></mc-icon>
+                <div class="icon" v-if="socialNetworks.instagram">
+                    <a :href="socialNetworks.instagram"><mc-icon width="24px" name="instagram"></mc-icon></a>
                 </div>
-                <div class="icon">
-                    <mc-icon width="24px" name="twitter"></mc-icon>
+                <div class="icon" v-if="socialNetworks.twitter">
+                    <a :href="socialNetworks.twitter"><mc-icon width="24px" name="twitter"></mc-icon></a>
                 </div>
-                <div class="icon">
-                    <mc-icon width="24px" name="whatsapp"></mc-icon>
+                <div class="icon" v-if="socialNetworks.whatsapp">
+                    <a :href="socialNetworks.whatsapp"><mc-icon width="24px" name="whatsapp"></mc-icon></a>
                 </div>
-                <div class="icon">
-                    <mc-icon width="24px" name="telegram"></mc-icon>
+                <div class="icon" v-if="socialNetworks.telegram">
+                    <a :href="socialNetworks.telegram"><mc-icon width="24px" name="telegram"></mc-icon></a>
                 </div>
             </div>
         </div>
