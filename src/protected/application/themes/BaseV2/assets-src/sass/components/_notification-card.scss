@@ -1,6 +1,10 @@
 @use '../settings/mixins' as *;
 
 .notifications {
+    &.notifications-panel{
+        background-color: var(--mc-gray-100);
+        padding: size(32) size(16);
+    }
     .notification-card {
         margin-bottom: size(32);
 
