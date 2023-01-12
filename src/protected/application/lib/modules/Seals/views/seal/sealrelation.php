@@ -9,11 +9,5 @@ $this->import('
 ?>
 
 <div class="main-app">
-    <mapas-container>
-        <mapas-card class="feature">
-            <div class="grid-12">
-                <seal-relation-view :entity="relation" classes="col-12"></seal-relation-view>
-            </div>
-        </mapas-card>
-    </mapas-container>
+    <seal-relation-view :entity="relation"></seal-relation-view>
 </div>
