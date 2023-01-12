@@ -1,18 +1,12 @@
 <?php
-
 /** @var MapasCulturais\Theme $this */
-
 use MapasCulturais\i;
 
 $this->import('
     mapas-card
     confirm-button
 ');
-
 ?>
-
-
-
 <entities type="notification" name="notification-list" :query='query' #default='{entities}'>
 
     <mapas-card :class="['notification-card', styleCss]" v-for="entity in entities" :key="entity.__objectId">
@@ -59,7 +53,5 @@ $this->import('
                 </div>
             </div>
         </div>
-        
     </mapas-card>
-   
 </entities>

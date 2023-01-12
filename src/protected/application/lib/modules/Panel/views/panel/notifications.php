@@ -4,7 +4,7 @@ use MapasCulturais\i;
 $this->import('notification-list mc-icon mapas-card');
 ?>
 
-<div class="panel-page notifications">
+<div class="panel-page">
     <header class="panel-page__header">
         <div class="panel-page__header-title">
             <div class="title">
@@ -19,7 +19,7 @@ $this->import('notification-list mc-icon mapas-card');
             <?= i::__('Nesta seção você visualiza e gerencia suas notificações') ?>
         </p>
     </header>
-    <mapas-card class="notifications">
+    <div class="notifications notifications-panel">
         <notification-list></notification-list>
-    </mapas-card>
+    </div>
 </div>
