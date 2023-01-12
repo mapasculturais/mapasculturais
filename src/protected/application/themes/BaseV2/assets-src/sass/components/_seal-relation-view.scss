@@ -2,17 +2,26 @@
 
 .seal-relation-view {
 
+	&__main {
+		width: size(1170);
+		margin: size(80) auto;
+	}
+
 	&__backlink {
+		display: flex;
+		align-items: center;
 		a {
 			text-decoration: none;
 			font-weight: bold;
 			color: #0A66C2;
 			text-transform: none;
 		}
+		&--icon {
+			color: #0074C1;
+		}
 	}
 
 	&__content {
-		margin: 20px;
 		background: #FFFFFF;
 		border-radius: 8px;
 		width: 100%;
@@ -29,6 +38,8 @@
 			left: 50%;
 			transform: translate(-50%);
 			bottom: -50px;
+			border-radius: 50%;
+			overflow: hidden;
 		}
 
 		&--bottom {
