@@ -24,7 +24,7 @@ $this->import('
                 </div>
                 <div class="mc-header-menu-user__user--avatar">
                     <?php if (!$app->user->is('guest')): ?>
-                        <?php if ($app->user->profile->avatar): ?>
+                        <?php if ($app->user->profile && $app->user->profile->avatar && $app->user->profile->avatar->transform('avatarSmall')): ?>
                             <img src="<?php echo $app->user->profile->avatar->transform('avatarSmall')->url; ?>" />
                         <?php else: ?>
                             <mc-icon name="user"></mc-icon>
@@ -68,7 +68,7 @@ $this->import('
                 </div>
                 <div class="mc-header-menu-user__user--avatar">
                     <?php if (!$app->user->is('guest')): ?>
-                        <?php if ($app->user->profile->avatar): ?>
+                        <?php if ($app->user->profile && $app->user->profile->avatar): ?>
                             <img src="<?php echo $app->user->profile->avatar->transform('avatarSmall')->url; ?>" />
                         <?php else: ?>
                             <mc-icon name="user"></mc-icon>
