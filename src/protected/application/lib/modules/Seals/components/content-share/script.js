@@ -6,13 +6,6 @@ app.component('content-share' , {
         const text = Utils.getTexts('content-share')
         return { text }
     },
-
-    // created() {
-    //     globalThis.addEventListener('afterFetch', (e) => {
-    //         this.notificationsCount = e.detail.headers.get('MC-notifications-count');
-    //     });
-    // },
-
     data() {
         return {
             entity: null,
@@ -21,15 +14,15 @@ app.component('content-share' , {
         }
 
     },
-
-    // computed: {
-    //     entities(){
-    //         const api = new API('notification','default');
-    //         return api.lists.fetch('notification-list','default')
-    //     }
-    // },
-
-    methods: {
-
-    },
+    computed: {
+        socialNetworks () {
+            const agent = $MAPAS.requestedEntity?.agent
+            return {
+                instagram: 'http://instagram/' + agent.instagram,
+                twitter: agent.twitter,
+                whatsapp: agent.whatsapp,
+                telegram: agent.telegram
+            }
+        },
+    }
 });
