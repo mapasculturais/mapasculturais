@@ -88,17 +88,17 @@ class Module extends \MapasCulturais\Module{
 
     function register(){
         
-            $app = App::i();
-            $controllers = $app->getRegisteredControllers();
-            if (!isset($controllers['opportunities'])) {
-                $app->registerController('opportunities', Controller::class);
-            }
+        $app = App::i();
+        $controllers = $app->getRegisteredControllers();
+        if (!isset($controllers['opportunities'])) {
+            $app->registerController('opportunities', Controller::class);
+        }
 
-            $this->registerOpportunityMetadata('is_collect_data_phase',[
-                'label' => i::__('Possue avaliação tecnica'),
-                'type' => 'boolean',
-                'default' => false,
-            ]);
-
+        $this->registerOpportunityMetadata('is_collect_data_phase',[
+            'label' => i::__('Possue avaliação técnica'),
+            'type' => 'boolean',
+            'default' => false,
+        ]);
+        
     }
 }
