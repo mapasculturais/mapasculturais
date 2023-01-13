@@ -364,6 +364,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return \MapasCulturais\i::__('Oportunidade');
     }
 
+    public static function validateShortDescription()
+    {
+        $app = App::i();
+        if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
+            $validate =  [
+                'required' => \MapasCulturais\i::__('A introdução é obrigatória'),
+            ];
+        }else{
+            $validate = [];
+        }
+
+        return $validate;
+    }
+
     static function getValidations() {
         $app = App::i();
 
@@ -371,9 +385,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome da oportunidade é obrigatório')
             ],
-            'shortDescription' => [
-                'required' => \MapasCulturais\i::__('A introdução é obrigatória'),
-            ],
+            'shortDescription' => self::validateShortDescription(),
             'type' => [
                 'required' => \MapasCulturais\i::__('O tipo da oportunidade é obrigatório'),
             ],
