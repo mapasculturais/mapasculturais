@@ -286,12 +286,15 @@ class Module extends \MapasCulturais\Module{
             ]);
 
             $status_list = \MapasCulturais\Entities\Registration::getStatusesNames();
-            $result = array_map(function($item) use($status_list){
-                $status= $status_list[$item['status']];
-                $_result[$status] = $item['qtd'];
-                return $_result;
-            }, $query->getResult());
-
+            
+            $result = [];
+            if($result = $query->getResult()){
+                foreach($query->getResult() as $value){
+                    $status = $status_list[$value['status']];
+                    $result[$status] = $value['qtd'];
+                }
+            }
+            
             $value = $result;
         });
 
