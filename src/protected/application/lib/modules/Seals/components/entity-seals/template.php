@@ -15,9 +15,14 @@ $this->import('
     <h4 class="entity-seals__title"> {{title}} </h4>
     <div class="entity-seals__seals">
         <div class="entity-seals__seals--seal" v-for="seal in entity.seals">
-            <div v-if="seal.files?.avatar" class="image">
-                <img :src="seal.files.avatar?.transformations?.avatarSmall?.url">
-            </div>
+            <a :href="seal.singleUrl" class="link">
+                <div v-if="seal.files?.avatar" class="image">
+                    <img :src="seal.files.avatar?.transformations?.avatarSmall?.url">
+                </div>
+                <div v-if="!(seal.files?.avatar)">
+                    <mc-icon name="seal" width="28"></mc-icon>
+                </div>
+            </a>
             <div v-if="editable" class="icon">
                 <confirm-button @confirm="removeSeal(seal)">
                     <template #button="modal">

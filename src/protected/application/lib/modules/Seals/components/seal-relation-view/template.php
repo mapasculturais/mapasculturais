@@ -4,6 +4,7 @@ $this->import('
     confirm-button
     mc-icon
     seal-content-share
+    theme-logo
 ');
 ?>
 
@@ -27,15 +28,7 @@ $this->import('
                 </p>
             </div>
             <div class="seal-relation-view__footer">
-                <a class="theme-logo" href="#" title="mapa cultural" subtitle="do Pará" style="--logo-color:var(--mc-primary-500);">
-                    <div class="theme-logo__logo">
-                        <div class="theme-logo__logo--part1"></div>
-                        <div class="theme-logo__logo--part2"></div>
-                        <div class="theme-logo__logo--part1"></div>
-                        <div class="theme-logo__logo--part2"></div>
-                    </div>
-                    <div class="theme-logo__text"><span class="theme-logo__text--title">Mapas</span><small class="theme-logo__text--subtitle">Culturais</small></div>
-                </a>
+                <theme-logo title="mapa cultural" subtitle="do Pará" color="#000000"></theme-logo>
             </div>
         </div>
         <div class="seal-relation-view__actions">

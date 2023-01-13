@@ -19,7 +19,7 @@ $this->import('notification-list mc-icon mapas-card');
             <?= i::__('Nesta seção você visualiza e gerencia suas notificações') ?>
         </p>
     </header>
-    <mapas-card>
+    <div class="notifications notifications-panel">
         <notification-list></notification-list>
-    </mapas-card>
+    </div>
 </div>
