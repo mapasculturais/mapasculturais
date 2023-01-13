@@ -295,6 +295,18 @@ class Module extends \MapasCulturais\Module{
             $value = $result;
         });
 
+        $app->hook('entity(Opportunity).get(countEvaluations)', function(&$value) use ($app) {
+            $conn = $app->em->getConnection();
+
+            $v = 0;
+            if($result = $conn->fetchAll( "SELECT COUNT(*) AS qtd FROM evaluations WHERE opportunity_id = {$this->id}")){
+                $v = $result[0]['qtd'];
+            }
+
+            $value = $v;
+            
+        });
+
         $app->hook('entity(Opportunity).get(countRegistrations)', function(&$value) use ($app) {
             $query = $app->em->createQuery("SELECT  COUNT(o.opportunity) AS qtd FROM MapasCulturais\\Entities\\Registration o  WHERE o.opportunity = :opp GROUP BY o.opportunity");
 
