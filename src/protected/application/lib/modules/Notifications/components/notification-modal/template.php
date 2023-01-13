@@ -20,7 +20,7 @@ $this->import('
             </div>
         </div>
         <div class="grid-12 notification-modal__content">
-            <div class="col-12">
+            <div class="col-12  notifications">
                 <notification-list styleCss='divider'></notification-list>
             </div>
             <div class="col-12 link" v-if="notificationsCount">
