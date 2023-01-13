@@ -38,17 +38,18 @@ class Opportunity extends EntityController {
     {
         $app = App::i();
 
+        $classes = [
+            'agent' => Entities\AgentOpportunity::class,
+            'event' => Entities\EventOpportunity::class,
+            'space' => Entities\SpaceOpportunity::class,
+            'project' => Entities\ProjectOpportunity::class,
+        ];
+
         if ($app->view instanceof \MapasCulturais\Themes\BaseV2\Theme) {
-                // @TODO o entityClassName deve vir dinamicamente do front, deve ser corrigido o envio dos dados para a captura dos mesmos aqui no back
-                $this->entityClassName =  Entities\ProjectOpportunity::class;
-                parent::POST_index($this->data);
+            $this->entityClassName =  $classes[$this->data['objectType']];
+            parent::POST_index($this->data);
         } else {
-            $classes = [
-                'agent' => Entities\AgentOpportunity::class,
-                'event' => Entities\EventOpportunity::class,
-                'space' => Entities\SpaceOpportunity::class,
-                'project' => Entities\ProjectOpportunity::class,
-            ];
+            
 
             $class = $classes[$this->data['objectType']] ?? null;
 
