@@ -93,5 +93,12 @@ class Module extends \MapasCulturais\Module{
             if (!isset($controllers['opportunities'])) {
                 $app->registerController('opportunities', Controller::class);
             }
+
+            $this->registerOpportunityMetadata('is_collect_data_phase',[
+                'label' => i::__('Possue avaliação tecnica'),
+                'type' => 'boolean',
+                'default' => false,
+            ]);
+
     }
 }
