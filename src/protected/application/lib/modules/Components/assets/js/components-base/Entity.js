@@ -172,6 +172,7 @@ class Entity {
             if(this[prop] != undefined) {
                 if(prop !== 'parent' || this.id !== this[prop]?.id) {
                     result[prop] = this[prop]?.id;
+                    result['objectType'] = this[prop].__objectType;
                 }
             }
         }
