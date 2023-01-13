@@ -99,6 +99,12 @@ class Module extends \MapasCulturais\Module{
             'type' => 'boolean',
             'default' => false,
         ]);
+
+        $this->registerOpportunityMetadata('active_evaluation_phase',[
+            'label' => i::__('Faze de avaliação ativa'),
+            'type' => 'boolean',
+            'default' => false,
+        ]);
         
     }
 }
