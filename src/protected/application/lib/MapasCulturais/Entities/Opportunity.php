@@ -987,9 +987,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
         if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme){
             return $this->evaluationMethodConfiguration->canUser('@control');
         }else{
+
             if($this->canUser("@control", $user)){
                 return true;
             }
+
+            if($this->evaluationMethodConfiguration){
+                return $this->evaluationMethodConfiguration->canUser('@control');
+            }
+            
         }
 
         return false;
