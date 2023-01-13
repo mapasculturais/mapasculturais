@@ -24,7 +24,7 @@ $this->import('
                 <notification-list styleCss='divider'></notification-list>
             </div>
             <div class="col-12 link" v-if="notificationsCount">
-                <mc-link route="panel/notifications"><?= i::__('Ver todas as notificações') ?></mc-link>
+                <mc-link route="panel/notifications" hash="notifications"><?= i::__('Ver todas as notificações') ?></mc-link>
             </div>
         </div>
     </template>
