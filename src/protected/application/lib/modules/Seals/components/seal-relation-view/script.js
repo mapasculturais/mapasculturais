@@ -37,7 +37,29 @@ app.component('seal-relation-view', {
     },
     methods: {
         print () {
-            window.print()
+            const prtHtml = document.getElementById('print').innerHTML;
+
+            let stylesHtml = '';
+            for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+                stylesHtml += node.outerHTML;
+            }
+
+            const WinPrint = window.open('', '', 'left=0,top=0,width=300,height=300,toolbar=0,scrollbars=0,status=0');
+
+            WinPrint.document.write(`<!DOCTYPE html>
+                                       <html>
+                                         <head>
+                                           ${stylesHtml}
+                                         </head>
+                                         <body>
+                                           ${prtHtml}
+                                         </body>
+                                       </html>`);
+
+            WinPrint.document.close();
+            WinPrint.focus();
+            WinPrint.print();
+            WinPrint.close();
         }
     }
 });
