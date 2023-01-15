@@ -7,6 +7,12 @@
 		margin: size(80) auto;
 	}
 
+	@media (max-width: 50rem) {
+		&__main {
+			width: auto;
+		}
+	}
+
 	&__backlink {
 		display: flex;
 		align-items: center;
