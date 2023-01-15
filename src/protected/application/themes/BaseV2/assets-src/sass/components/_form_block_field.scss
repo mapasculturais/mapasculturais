@@ -1,4 +1,17 @@
+.tabs-seal-edit > .tabs-component__header {
+  background-color: #FFFFFF !important;
+}
+
+.tabs-seal-edit {
+  max-width: 1170px;
+  margin: 0 auto;
+}
+
 .form_block_field {
+  &__header  {
+    background-color: #FFFFFF;
+  }
+
   &__title {
     font-weight: 700;
     font-size: 16px;

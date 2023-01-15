@@ -31,7 +31,7 @@ $this->breadcrumb = [
 <div class="main-app">
   <mapas-breadcrumb></mapas-breadcrumb>
   <entity-header :entity="entity"></entity-header>
-    <tabs class="tabs">
+    <tabs class="tabs tabs-seal-edit">
         <tab label="<?= i::__('Informações gerais') ?>" slug="info">
             <div class="tabs__info">
                 <mapas-container>
@@ -68,9 +68,7 @@ $this->breadcrumb = [
         </tab>
         <tab label="<?= i::__('Bloqueio de campos') ?>" slug="info_block">
             <div class="tabs__info">
-                <mapas-container>
-                    <form-block-fields classes="col-12" :entity="entity"></form-block-fields>
-                </mapas-container>
+                <form-block-fields classes="tabs-seal-edit" :entity="entity"></form-block-fields>
             </div>
         </tab>
     </tabs>

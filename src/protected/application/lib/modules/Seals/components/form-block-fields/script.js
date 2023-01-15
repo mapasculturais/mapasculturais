@@ -35,6 +35,31 @@ app.component('form-block-fields', {
     mounted () {
         this.iterationAgentFields()
         this.iterationSpaceFields()
+
+        const lockedFields = [...$MAPAS.requestedEntity.lockedFields]
+        if(lockedFields.length > 0) {
+            lockedFields.forEach(item => {
+                const lockedFieldSplit = item.split('.')
+                const entity = lockedFieldSplit[0]
+                const entityValue = lockedFieldSplit[1]
+                if(entity == 'agent') {
+                    const agents = [...this.agents]
+                    const agent = agents.find(agent => agent.item === entityValue)
+                    if(agent) {
+                        agent.value = true
+                    }
+                }
+                if(entity == 'space') {
+                    const spaces = [...this.spaces]
+                    const space = spaces.find(space => space.item == entityValue)
+                    if(space) {
+                        space.value = true
+                    }
+                }
+            })
+
+        }
+
     },
     methods: {
         iterationAgentFields() {
@@ -68,6 +93,7 @@ app.component('form-block-fields', {
                 'userId',
                 'public'
             ];
+
             Object.keys($DESCRIPTIONS.space).forEach((item)=>{
                 if(!skip.includes(item) && $DESCRIPTIONS.space[item].required){
                     this.spaces.push({ value: false, label: $DESCRIPTIONS.space[item].label, item });
@@ -82,7 +108,7 @@ app.component('form-block-fields', {
         buildLockedFields () {
             const agentsSelected = this.agents.filter(agent => agent.value)?.map(agent => 'agent.' + agent.item) || []
             const spacesSelected = this.spaces.filter(space => space.value)?.map(space => 'space.' + space.item) || []
-            $MAPAS.requestedEntity.lockedFields = [...agentsSelected, ...spacesSelected]
+            this.entity.lockedFields = [...agentsSelected, ...spacesSelected]
         }
     }
 });
