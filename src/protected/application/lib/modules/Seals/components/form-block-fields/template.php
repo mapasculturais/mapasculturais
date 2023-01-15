@@ -20,7 +20,7 @@ $this->import('
         <template #content>
             <div class="form_block_field__container">
                 <div class="grid-12">
-                    <div v-for="(item, index) in agents" class="col-3">
+                    <div v-for="(item, index) in agents" class="sm:col-6 col-3">
                         <input type="checkbox" v-model="item.value" /> {{ item.label }}
                     </div>
                 </div>
@@ -28,7 +28,7 @@ $this->import('
             <div class="form_block_field__container">
                 <h5><?php i::_e("Taxonomias") ?></h5>
                 <div class="grid-12">
-                    <div v-for="(item, index) in taxonomiesAgents" class="col-3">
+                    <div v-for="(item, index) in taxonomiesAgents" class="sm:col-6 col-3">
                         <input type="checkbox" v-model="item.value" /> {{ item.label }}
                     </div>
                 </div>
@@ -44,18 +44,23 @@ $this->import('
         <template #content>
             <div class="form_block_field__container">
                 <div class="grid-12">
-                    <div v-for="(item, index) in spaces" class="col-3">
-                        <input type="checkbox"  v-model="item.value" /> {{ item.label }}
+                    <div class="col-12">
+                        <div class="grid-12">
+                            <div v-for="(item, index) in spaces" class="sm:col-6 col-3">
+                                <input type="checkbox"  v-model="item.value" /> {{ item.label }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <h5><?php i::_e("Taxonomias") ?></h5>
+                        <div class="grid-12">
+                            <div v-for="(item, index) in taxonomiesSpaces" class="sm:col-6 col-3">
+                                <input type="checkbox" v-model="item.value" /> {{ item.label }}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form_block_field__container">
-                <h5><?php i::_e("Taxonomias") ?></h5>
-                <div class="grid-12">
-                    <div v-for="(item, index) in taxonomiesSpaces" class="col-3">
-                        <input type="checkbox" v-model="item.value" /> {{ item.label }}
-                    </div>
-                </div>
+
             </div>
         </template>
     </mapas-card>
