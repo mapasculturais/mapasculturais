@@ -29,34 +29,34 @@ class Module extends \MapasCulturais\Module{
             $this->jsObject['config']['LGPD'] = $terms;
         });
 
-        $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function() use ($app){
+        // $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function() use ($app){
 
-            if($app->user->is('guest'))
-                return;
+        //     if($app->user->is('guest'))
+        //         return;
             
-            $skip_routes = [
-                ["lgpd", "accept"],
-                ["site", "search"]
-            ];
+        //     $skip_routes = [
+        //         ["lgpd", "accept"],
+        //         ["site", "search"]
+        //     ];
 
-            $route = [$this->id, $this->action];
+        //     $route = [$this->id, $this->action];
 
-            if(!in_array($route, $skip_routes) && !$app->request()->isAjax()){
-                $_SESSION[self::key] = $_SERVER['REQUEST_URI'] ?? "";
-            }
+        //     if(!in_array($route, $skip_routes) && !$app->request()->isAjax()){
+        //         $_SESSION[self::key] = $_SERVER['REQUEST_URI'] ?? "";
+        //     }
       
-            $user = $app->user;
-            $config = $app->config['module.LGPD'];
+        //     $user = $app->user;
+        //     $config = $app->config['module.LGPD'];
             
-            foreach($config as $key => $value){
-                $term_hash = self::createHash($value['text']);
-                $accept_terms = $user->{"lgpd_{$key}"};
-                if(!isset($accept_terms->$term_hash)){
-                    $url =  $app->createUrl('lgpd', 'accept', [$key]);
-                    $app->redirect($url);
-                }
-            }
-        });
+        //     foreach($config as $key => $value){
+        //         $term_hash = self::createHash($value['text']);
+        //         $accept_terms = $user->{"lgpd_{$key}"};
+        //         if(!isset($accept_terms->$term_hash)){
+        //             $url =  $app->createUrl('lgpd', 'accept', [$key]);
+        //             $app->redirect($url);
+        //         }
+        //     }
+        // });
         
     }
 
