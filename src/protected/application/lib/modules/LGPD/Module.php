@@ -53,10 +53,7 @@ class Module extends \MapasCulturais\Module
             foreach ($config as $key => $value) {
                 $term_hash = self::createHash($value['text']);
                 $accept_terms = $user->{"lgpd_{$key}"};
-                eval(\psy\sh());
                 if (!isset($accept_terms->$term_hash)) {
-
-
                     if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
                         $url =  $app->createUrl('lgpd', 'accept', [$key]);
                     } else {
