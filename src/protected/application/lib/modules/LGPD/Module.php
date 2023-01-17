@@ -90,12 +90,10 @@ class Module extends \MapasCulturais\Module
         if ($terms = $conn->fetchAll("SELECT * FROM user_meta WHERE key LIKE '%lgpd_%' AND object_id={$app->user->id}")) {
             foreach ($terms as $term) {
                 foreach (json_decode($term['value'], true) as $value) {
-                    // var_dump($value['md5']);
                     $result[] = $value['md5'];
                 }
             }
         }
-        // array_push($app->user->lgpd)
         return $result;
     }
 
