@@ -20,6 +20,24 @@
     font-display: swap;
     font-family: 'Open Sans';
     font-style: normal;
+    font-weight: 600;
+    src: url('/assets/fonts/OpenSans-Semibold-webfont.woff') format('woff'),
+         url('/assets/fonts/OpenSans-Semibold-webfont.ttf') format('truetype');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-style: italic;
+    font-weight: 600;
+    src: url('/assets/fonts/OpenSans-SemiboldItalic-webfont.woff') format('woff'),
+         url('/assets/fonts/OpenSans-SemiboldItalic-webfont.ttf') format('truetype');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-style: normal;
     font-weight: bold;
     src: url('/assets/fonts/OpenSans-Bold-webfont.woff') format('woff'),
          url('/assets/fonts/OpenSans-Bold-webfont.ttf') format('truetype');
