@@ -127,5 +127,5 @@ class Controller  extends \MapasCulturais\Controller
 		}
 		// array_push($app->user->lgpd)
 		var_dump($result);
-	}
+    }
 }
