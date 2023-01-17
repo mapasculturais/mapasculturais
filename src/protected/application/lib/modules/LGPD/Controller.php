@@ -100,27 +100,5 @@ class Controller  extends \MapasCulturais\Controller
                 'redirect' => $url 
             ]);
         }
- 
-
-    }
-	public function GET_teste(){
-		/** @var App $app */
-        $app = App::i();
-		$acceptedsHash =[];
-		$conn = $app->em->getConnection();
-		
-		$result=[];
-		if($terms = $conn->fetchAll("SELECT * FROM user_meta WHERE key LIKE '%lgpd_%' AND object_id={$app->user->id}")){
-			foreach($terms as $term){
-				foreach(json_decode($term['value'], true) as $value){
-					var_dump($value['md5']);
-						$result[]= $value['md5'];
-				}
-
-			}
-
-		}
-		// array_push($app->user->lgpd)
-		var_dump($result);
     }
 }
