@@ -87,6 +87,10 @@ app.component('entity-field', {
         fieldDescription: {
             type: String,
             default: null
+        },
+        maskType: {
+            type: String,
+            default: null
         }
     },
 
@@ -104,6 +108,12 @@ app.component('entity-field', {
         },
         value() {
             return this.entity[this.prop];
+        },
+        isMask () {
+            return this.maskType !== null
+        },
+        valueMasked () {
+            return this.mask(this.maskType)
         }
     },
     
@@ -120,12 +130,55 @@ app.component('entity-field', {
                     this.entity[this.prop] = event.target.value;
                 }
 
-                this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
+                if(this.isMask) {
+                    const valueWithoutMask = event.target.value.replace(/\./g, '').replace(/-/g, '').replace(/\(/g, '').replace(/\)/g, '');
+                    const oldValueWithoutMask = oldValue.replace(/\./g, '').replace(/-/g, '').replace(/\(/g, '').replace(/\)/g, '');
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValueWithoutMask, newValue: valueWithoutMask});
+                } else {
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
+                }
+
             }, this.debounce);
         },
 
         is(type) {
             return this.fieldType == type;
+        },
+
+        removeMask (value) {
+          return value.replace(/\./g, '').replace(/-/g, '').replace(/\(/g, '').replace(/\)/g, '');
+        },
+
+        mask (type) {
+            let value = this.entity[this.prop];
+            console.log(value);
+            value = this.removeMask(value);
+            console.log(value);
+            const regexInt = /^-?[0-9]+$/;
+            if(type == 'cpf') {
+                if(value.length > 11) {
+                    value = value.slice(0, 11);
+                }
+                if (regexInt.test(value)) {
+                    return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, '$1.$2.$3-$4');
+                }
+                return value
+            } else if(type == 'cnpj') {
+                if (regexInt.test(value)) {
+                    return value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g, '$1.$2.$3/$4-$5');
+                }
+                return value
+            } else if(type == 'telephone') {
+                if (regexInt.test(value)) {
+                    return value.replace(/(\d{2})(\d{5})(\d{4})/g, '($1) $2-$3');
+                }
+                return value
+            } else if(type == 'cep') {
+                if(regexInt.test(value)) {
+                    return value.replace(/\D/g, '').replace(/^(\d{5})(\d{3})+?$/, '$1-$2');
+                }
+                return value;
+            }
         }
     },
 });
