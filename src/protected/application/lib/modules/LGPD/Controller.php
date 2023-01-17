@@ -92,13 +92,20 @@ class Controller  extends \MapasCulturais\Controller
         if (!isset($_accept_lgpd->$index)) {
             $_accept_lgpd->$index = $accept_terms;
             $user->$meta = $_accept_lgpd;
-            // $user->save();
+            $user->save();
         }
 
-        // /** @todo Redirecionar pra url original */
-        // $url = $_SESSION[Module::key] ?? "/";
-        // $app->redirect($url);
-		$this->_finishRequest([true]);
+        $url = $_SESSION[Module::key] ?? "/";
+        if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
+            /** @todo Redirecionar pra url original */
+            $app->redirect($url);
+        }else{
+            
+            $this->_finishRequest([
+                'redirect' => $url 
+            ]);
+        }
+ 
 
     }
 	public function GET_teste(){
