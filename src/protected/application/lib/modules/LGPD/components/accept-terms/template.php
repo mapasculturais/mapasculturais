@@ -15,7 +15,7 @@ use MapasCulturais\i;
     </header>
 
     <tabs class="tabs mapas-terms__content">
-        <tab v-for="(term, slug) in terms" :label="term.title" :slug="slug">
+        <tab  v-for="(term, slug) in terms" :label="term.title" :slug="slug">
             <template #default>
                 <mapas-card>
                     <template #content>
@@ -26,9 +26,9 @@ use MapasCulturais\i;
                     </template>
 
                 </mapas-card>
-                <div class="btn">
+                <div  v-if="showButton(term.md5)"  class="btn">
                     <button class="button button--text back" @click="cancel()">Voltar</button>
-                    <button class="button button--primary button--md accept" @click="acceptTerm(slug)">{{term.buttonText}}</button>
+                    <button class="button button--primary button--md accept" @click="acceptTerm(slug,term.md5)">{{term.buttonText}}</button>
                  </div>
             </template>
         </tab>
