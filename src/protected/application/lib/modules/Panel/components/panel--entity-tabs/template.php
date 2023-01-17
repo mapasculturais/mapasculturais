@@ -66,10 +66,12 @@ $tabs = $tabs ?? [
                         </template>
                         <template #header-actions="{ entity }">
                             <slot name="card-actions">
-                                <button class="entity-card__header-action">
+                                <!-- <button class="entity-card__header-action">
                                     <mc-icon name="favorite"></mc-icon>
-                                    <span><?=i::__('Favoritar')?></span>
-                                </button>
+                                    <span>< ?=i::__('Favoritar')?></span>
+                                </button> -->
+                                <?php $this->applyTemplateHook('entity-tabs-card-action', 'begin'); ?>
+                                <?php $this->applyTemplateHook('entity-tabs-card-action', 'end'); ?>
                             </slot>
                         </template>
                         <template #subtitle="{ entity }">
