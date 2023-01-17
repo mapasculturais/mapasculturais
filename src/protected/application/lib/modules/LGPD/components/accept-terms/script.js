@@ -3,20 +3,14 @@ app.component('accept-terms', {
     emits: [],
    
     data() {
-        const steps = [];
         const terms = $MAPAS.config.LGPD;
         let accepteds = $MAPAS.hashAccepteds;
         return {
             terms, accepteds,
-
         };
     },
 
-    props: {
-
-// inicia o componente <componente :entity = "entity"></componente>
-
-    },
+    props: {},
     methods: {
 
         formatDate(timestamp) {
@@ -26,13 +20,6 @@ app.component('accept-terms', {
         acceptTerm(slug, hash) {
             let url = Utils.createUrl('lgpd', 'accept');
             let api = new API();
-            let teste = {};
-
-            // api.GET($MAPAS.baseURL + 'api/user/findOne?@select=*&id=EQ(' + $MAPAS.userId + ')').then(response => response.json().then(validations => {
-            //     teste = validations[0];
-            //     console.log(validations[0]);
-
-            // }));
             
             api.POST(url, [slug]).then(async function (response) {
                 console.log(response);
