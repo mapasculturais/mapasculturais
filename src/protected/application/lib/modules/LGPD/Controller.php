@@ -15,10 +15,11 @@ class Controller  extends \MapasCulturais\Controller
     public function GET_accept()
     {
         $app = App::i();
+        $config_lgpd = $app->config['module.LGPD'];
         if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
             $term_slug = $this->data[0] ?? null;
             /** @todo Verificar term_slug */
-            $config = $app->config['module.LGPD'][$term_slug];
+            $config = $config_lgpd[$term_slug];
     
             $url = $this->createUrl('accept', [$term_slug]);
             $title = $config['title'];
@@ -38,19 +39,13 @@ class Controller  extends \MapasCulturais\Controller
                 }
             }
     
-            if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
-                $this->layout = 'lgpd';
-                $app->view->enqueueStyle('app', 'lgpd-file', 'css/lgpd.css');
-                $this->render('accept', ['url' => $url, 'title' => $title, 'text' => $text, 'accepted' => $accepted]);
-            } else {
-                $this->layout = 'lgpdV2';
-                $this->render('terms', ['terms' => $app->config['module.LGPD']]);
-            }
+            $this->layout = 'lgpd';
+            $app->view->enqueueStyle('app', 'lgpd-file', 'css/lgpd.css');
+            $this->render('accept', ['url' => $url, 'title' => $title, 'text' => $text, 'accepted' => $accepted]);
         } else {
             $this->layout = 'lgpdV2';
-            $this->render('terms', ['terms' => $app->config['module.LGPD']]);
+            $this->render('terms', ['terms' => $config_lgpd]);
         }
-        exit;
        
     }
 
