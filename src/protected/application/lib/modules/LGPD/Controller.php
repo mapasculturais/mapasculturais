@@ -71,6 +71,7 @@ class Controller  extends \MapasCulturais\Controller
             'userAgent' => $app->request()->getUserAgent(),
 
         ];
+
         $this->verifiedTerms("lgpd_{$term_slug}", $accept_terms);
 
     }
@@ -88,16 +89,36 @@ class Controller  extends \MapasCulturais\Controller
         $user = $app->user;
         $_accept_lgpd = $user->$meta ?: (object)[];
         $index = $accept_terms['md5'];
-
         if (!isset($_accept_lgpd->$index)) {
             $_accept_lgpd->$index = $accept_terms;
             $user->$meta = $_accept_lgpd;
-            $user->save();
+            // $user->save();
         }
 
-        /** @todo Redirecionar pra url original */
-        $url = $_SESSION[Module::key] ?? "/";
-        $app->redirect($url);
+        // /** @todo Redirecionar pra url original */
+        // $url = $_SESSION[Module::key] ?? "/";
+        // $app->redirect($url);
+		$this->_finishRequest([true]);
 
     }
+	public function GET_teste(){
+		/** @var App $app */
+        $app = App::i();
+		$acceptedsHash =[];
+		$conn = $app->em->getConnection();
+		
+		$result=[];
+		if($terms = $conn->fetchAll("SELECT * FROM user_meta WHERE key LIKE '%lgpd_%' AND object_id={$app->user->id}")){
+			foreach($terms as $term){
+				foreach(json_decode($term['value'], true) as $value){
+					var_dump($value['md5']);
+						$result[]= $value['md5'];
+				}
+
+			}
+
+		}
+		// array_push($app->user->lgpd)
+		var_dump($result);
+	}
 }
