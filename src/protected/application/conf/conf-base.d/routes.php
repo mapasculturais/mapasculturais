@@ -25,9 +25,9 @@ return [
             'busca'             => ['site', 'search'],
             'sobre'             => ['site', 'page', ['sobre']],
             'como-usar'         => ['site', 'page', ['como-usar']],
-            // 'termos-de-uso'     => ['lgpd', 'accept', ['termsOfUsage']], 
-            // 'uso-de-imagem'      =>['lgpd', 'accept', ['images-use']],
-            // 'politica-de-privacidade' => ['lgpd','accept', ['privacyPolicy']],
+            'termos-de-uso'     => ['lgpd', 'accept', ['termsOfUsage']], 
+            'uso-de-imagem'      =>['lgpd', 'accept', ['images-use']],
+            'politica-de-privacidade' => ['lgpd','accept', ['privacyPolicy']],
             'termos-e-condicoes' => ['lgpd','accept'],
             // workflow actions
             'aprovar-notificacao' => ['notification', 'approve'],
