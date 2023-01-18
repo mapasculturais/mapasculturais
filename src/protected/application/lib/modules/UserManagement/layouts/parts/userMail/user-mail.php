@@ -7,4 +7,3 @@ $this->import('
 ');
 ?>
 <user-mail :entity="entity"></user-mail>
-hsauihuiahuiai
