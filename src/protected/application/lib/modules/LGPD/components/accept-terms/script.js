@@ -23,7 +23,7 @@ app.component('accept-terms', {
             
             api.POST(url, [slug])
             this.accepteds.push(hash);
-                console.log(hash);
+            window.location.href = $MAPAS.lgpdRedirectReferer;
         
         },
         showButton(hash) {
