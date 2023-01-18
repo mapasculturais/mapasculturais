@@ -16,6 +16,7 @@ $this->import('
     user-mail
     user-management--ownership-tabs
     user-accepted-terms
+    user-management--delete
 ');
 ?>
 <entity #default='{entity}'>
@@ -43,7 +44,7 @@ $this->import('
                         <div class="management-content__label">
                             <label class="management-content__label--name">{{entity.profile?.name}}</label>
                             <div class="management-content__label--delete">
-                                <panel--entity-actions :entity="entity"></panel--entity-actions>
+                                <user-management--delete :user="entity"></user-management--delete>
                             </div>
                         </div>
                         <div class="management-content__info">
