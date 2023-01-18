@@ -1,5 +1,5 @@
 <?php
-
+$this->import('mc-icon');
 use MapasCulturais\i;
 ?>
 <?php $this->applyTemplateHook('accepted-terms', 'before'); ?>
@@ -14,7 +14,7 @@ use MapasCulturais\i;
         </div>
     </header>
 
-    <tabs class="tabs mapas-terms__content"  :defaultTab="step">
+    <tabs class="tabs mapas-terms__content" :defaultTab="step" iconPosition="right">
         <tab  v-for="(term, slug) in terms" :label="term.title" :slug="slug" :icon="showIconAccepted(term.md5)">
             <template #default>
                 <mapas-card>
