@@ -44,7 +44,7 @@ $this->import('
                         <div class="management-content__label">
                             <label class="management-content__label--name">{{entity.profile?.name}}</label>
                             <div class="management-content__label--delete">
-                                <user-management--delete :user="entity"></user-management--delete>
+                                <mc-link icon="trash" route='panel/deleteAccount'><?=i::__('Excluir')?></mc-link>
                             </div>
                         </div>
                         <div class="management-content__info">
