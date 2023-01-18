@@ -83,6 +83,7 @@ $iconset = [
     'user-config' => 'fa-solid:users-cog',
     'upload' => 'ic:baseline-file-upload',
     'seal' => 'mdi:seal-variant',
+    'circle-checked' => 'material-symbols:check-circle-rounded'
 
 ];
 
