@@ -4,36 +4,39 @@ namespace LGPD;
 
 use MapasCulturais\App;
 
-class Module extends \MapasCulturais\Module{
-   
+class Module extends \MapasCulturais\Module
+{
+
     const key = "lgpd_redirect_referer";
 
-    function __construct($config = []) 
+    function __construct($config = [])
     {
         $config += [];
 
         parent::__construct($config);
     }
 
-    public function _init() 
+    public function _init()
     {
         $app = App::i();
-
-        $app->hook('mapas.printJsObject:before', function() use($app){
+        $self  = $this;
+        $app->hook('mapas.printJsObject:before', function () use ($app, $self) {
             /** @var \MapasCulturais\Theme $this */
             $terms = [];
-            foreach($app->config['module.LGPD'] as $slug => $term) {
+            foreach ($app->config['module.LGPD'] as $slug => $term) {
                 $term['md5'] = Module::createHash($term['text']);
                 $terms[$slug] = $term;
             }
             $this->jsObject['config']['LGPD'] = $terms;
+            $this->jsObject['hashAccepteds'] = $self->hashAccepteds();
+            $this->jsObject['lgpdRedirectReferer'] = $_SESSION[self::key];
         });
 
-        $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function() use ($app){
+        $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function () use ($app) {
 
-            if($app->user->is('guest'))
+            if ($app->user->is('guest'))
                 return;
-            
+
             $skip_routes = [
                 ["lgpd", "accept"],
                 ["site", "search"]
@@ -41,23 +44,26 @@ class Module extends \MapasCulturais\Module{
 
             $route = [$this->id, $this->action];
 
-            if(!in_array($route, $skip_routes) && !$app->request()->isAjax()){
+            if (!in_array($route, $skip_routes) && !$app->request()->isAjax()) {
                 $_SESSION[self::key] = $_SERVER['REQUEST_URI'] ?? "";
             }
-      
+
             $user = $app->user;
             $config = $app->config['module.LGPD'];
-            
-            foreach($config as $key => $value){
+
+            foreach ($config as $key => $value) {
                 $term_hash = self::createHash($value['text']);
                 $accept_terms = $user->{"lgpd_{$key}"};
-                if(!isset($accept_terms->$term_hash)){
-                    $url =  $app->createUrl('lgpd', 'accept', [$key]);
+                if (!isset($accept_terms->$term_hash)) {
+                    if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
+                        $url =  $app->createUrl('lgpd', 'accept', [$key]);
+                    } else {
+                        $url =  $app->createUrl("termos-e-condicoes#{$key}");
+                    }
                     $app->redirect($url);
                 }
             }
         });
-        
     }
 
     /**
@@ -73,20 +79,38 @@ class Module extends \MapasCulturais\Module{
         $text = strtolower($text);
         return md5($text);
     }
-    
-    public function register() 
+
+    public function hashAccepteds()
     {
-        $app= App::i();
+        /** @var App $app */
+        $app = App::i();
+        $acceptedsHash = [];
+        $conn = $app->em->getConnection();
+
+        $result = [];
+        if ($terms = $conn->fetchAll("SELECT * FROM user_meta WHERE key LIKE '%lgpd_%' AND object_id={$app->user->id}")) {
+            foreach ($terms as $term) {
+                foreach (json_decode($term['value'], true) as $value) {
+                    $result[] = $value['md5'];
+                }
+            }
+        }
+        return $result;
+    }
+
+
+    public function register()
+    {
+        $app = App::i();
         $app->registerController('lgpd', Controller::class);
         $config = $app->config['module.LGPD'];
-        foreach($config as $key => $value){
+        foreach ($config as $key => $value) {
             $this->registerUserMetadata("lgpd_{$key}", [
-                'label'=> $value['title'],
-                'type'=>'json',
-                'private'=> true,
-                'default'=> '{}',
+                'label' => $value['title'],
+                'type' => 'json',
+                'private' => true,
+                'default' => '{}',
             ]);
         }
     }
-
 }
