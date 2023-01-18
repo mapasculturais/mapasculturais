@@ -29,6 +29,7 @@ class Module extends \MapasCulturais\Module
             }
             $this->jsObject['config']['LGPD'] = $terms;
             $this->jsObject['hashAccepteds'] = $self->hashAccepteds();
+            $this->jsObject['lgpdRedirectReferer'] = $_SESSION[self::key];
         });
 
         $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function () use ($app) {
