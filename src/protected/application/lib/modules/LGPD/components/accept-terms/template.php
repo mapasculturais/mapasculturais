@@ -14,8 +14,8 @@ use MapasCulturais\i;
         </div>
     </header>
 
-    <tabs class="tabs mapas-terms__content">
-        <tab  v-for="(term, slug) in terms" :label="term.title" :slug="slug">
+    <tabs class="tabs mapas-terms__content"  :defaultTab="step">
+        <tab  v-for="(term, slug) in terms" :label="term.title" :slug="slug" :icon="showIconAccepted(term.md5)">
             <template #default>
                 <mapas-card>
                     <template #content>
