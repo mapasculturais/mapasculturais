@@ -69,7 +69,7 @@
         .iconify {
             color: var(--mc-gray-700);
             font-size: size(20);
-            margin-right: size(6);
+            margin: 0 size(6);
         }
 
         &.is-active {
