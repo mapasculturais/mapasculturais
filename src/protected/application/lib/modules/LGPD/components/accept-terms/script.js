@@ -21,10 +21,7 @@ app.component('accept-terms', {
             let url = Utils.createUrl('lgpd', 'accept');
             let api = new API();
             
-            api.POST(url, [slug]).then(async function (response) {
-                console.log(response);
-                
-            });
+            api.POST(url, [slug])
             this.accepteds.push(hash);
                 console.log(hash);
         
