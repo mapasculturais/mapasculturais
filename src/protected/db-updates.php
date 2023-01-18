@@ -1870,5 +1870,31 @@ $$
             fwrite($fp, $txt);
             fclose($fp);
         }
+    },
+    'Corrige config dos campos na entidade registration_fields_configurarion' => function() use ($conn, $app){
+
+        $registration_fields_Types = $app->getRegisteredRegistrationFieldTypes();
+
+        $field_types = [];
+        foreach($registration_fields_Types as $type => $values){
+            if(preg_match('/^@[a-zA-Z0-9\- ]{1,90}/', $values->name)){
+                $field_types[] = "'".trim($values->slug)."'";
+            }
+        }
+        $_field_types = implode(",", $field_types);
+    
+        $fields = $conn->fetchAll("SELECT * FROM registration_field_configuration WHERE field_type NOT IN ({$_field_types}) AND config LIKE '%entityField%'");
+        
+        foreach($fields as $field){
+            $_field = $app->repo("RegistrationFieldConfiguration")->find($field['id']);
+            $config = $_field->config;
+            unset($config['entityField']);
+            array_filter($config);
+            $_field->config = $config;
+            $_field->save(true);
+            $app->log->debug("db-update executado no campo field_{$_field->id}");
+            $app->em->clear();
+            
+        }
     }
 ] + $updates ;
