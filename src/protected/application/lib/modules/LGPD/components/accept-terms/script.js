@@ -4,9 +4,10 @@ app.component('accept-terms', {
    
     data() {
         const terms = $MAPAS.config.LGPD;
-        let accepteds = $MAPAS.hashAccepteds;
+        const accepteds = $MAPAS.hashAccepteds;
+        const step = this.getStep();
         return {
-            terms, accepteds,
+            terms, accepteds,step
         };
     },
 
