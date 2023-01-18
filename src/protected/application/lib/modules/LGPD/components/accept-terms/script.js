@@ -40,6 +40,11 @@ app.component('accept-terms', {
             if (this.accepteds.includes(hash)) {
                 return "circle-checked";
             }
+        },
+        getStep(){
+            if(window.location.href.match(/[a-zA-z./0-9]?#([a-zA-z]{1,61})[0-9]?/)){
+                return window.location.href.match(/[a-zA-z./0-9]?#([a-zA-z]{1,61})[0-9]?/)[1];
+            }
         }
     },
 });
