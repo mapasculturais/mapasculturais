@@ -501,6 +501,20 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.editFieldConfiguration = function(attrs) {
             var model = $scope.data.fields[attrs.index];
+           
+            var field_types_entity_list = [];
+            Object.values(MapasCulturais.registrationFieldTypes).forEach(function(item){
+                if(item.name.match(/^@[a-zA-Z0-9\- ]{1,90}/)){
+                    field_types_entity_list.push(item.slug)
+                }
+            })
+
+            if(!field_types_entity_list.includes(model.fieldType)){
+                delete model.config.entityField;
+                if(Object.keys(model.config).length == 0){
+                    model.config = "";
+                }
+            }
 
             if(model.config.hasOwnProperty("require") && model.config.require.condition  && (!model.config.require.field)){
                 MapasCulturais.Messages.error("Informe a qual campo quer condicionar a obrigatoriedade");
