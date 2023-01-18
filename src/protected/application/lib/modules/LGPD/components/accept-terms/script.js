@@ -36,6 +36,10 @@ app.component('accept-terms', {
             return true;
 
         },
-
+        showIconAccepted(hash) {
+            if (this.accepteds.includes(hash)) {
+                return "circle-checked";
+            }
+        }
     },
 });
