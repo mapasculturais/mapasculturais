@@ -174,6 +174,13 @@ class Module extends \MapasCulturais\Module {
         });
 
 
+        // página do painel de apagar a conta
+        $app->hook('GET(panel.deleteAccount)', function(){
+          $this->requireAuthentication();
+          $this->render('delete-account');
+        });
+
+
         /**
          * Página para gerenciamento de usuários
          */
