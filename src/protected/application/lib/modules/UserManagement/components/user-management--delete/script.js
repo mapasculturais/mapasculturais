@@ -1,6 +1,5 @@
 app.component('user-management--delete', {
     template: $TEMPLATES['user-management--delete'],
-    emits: ['delete'],
 
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name]
@@ -24,15 +23,8 @@ app.component('user-management--delete', {
     },
     
     methods: {
-        delete (modal) {
-            this.instance.userId = this.user.id;
-
-            this.instance.delete().then((response) => {
-                modal.close();
-            })
-            .catch((error) => {
-                this.__processing = false;
-            });
+        switchUser (user) {
+            console.log(user)
         }
     },
 });
