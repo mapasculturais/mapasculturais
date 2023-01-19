@@ -20,6 +20,6 @@ $this->import('modal loading panel--entity-actions select-entity mapas-card');
         </select-entity>
     </div>
     <div>
-        <panel--entity-actions :entity="user"></panel--entity-actions>
+        <!-- <panel--entity-actions :entity="user"></panel--entity-actions> -->
     </div>
 </mapas-card>
