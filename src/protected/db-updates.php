@@ -1885,16 +1885,28 @@ $$
     
         $fields = $conn->fetchAll("SELECT * FROM registration_field_configuration WHERE field_type NOT IN ({$_field_types}) AND config LIKE '%entityField%'");
         
+        $txt = "";
         foreach($fields as $field){
             $_field = $app->repo("RegistrationFieldConfiguration")->find($field['id']);
             $config = $_field->config;
+            $txt.='['.$_field->id.' => '.serialize($_field->config).']\n';
             unset($config['entityField']);
             array_filter($config);
             $_field->config = $config;
             $_field->save(true);
             $app->log->debug("db-update executado no campo field_{$_field->id}");
             $app->em->clear();
-            
         }
+
+        $fileName = "dbupdate_RegistrationFieldConfiguration.txt";
+        $dir = PRIVATE_FILES_PATH . "dbupdate_documento";
+        if (!file_exists($dir)) {
+            mkdir($dir, 775);
+        }
+
+        $path = $dir . "/" . $fileName;
+        $fp = fopen($path, "wb");
+        fwrite($fp, $txt);
+        fclose($fp);
     }
 ] + $updates ;
