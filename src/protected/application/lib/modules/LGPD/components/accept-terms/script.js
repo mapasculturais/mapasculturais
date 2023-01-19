@@ -12,15 +12,8 @@ app.component('accept-terms', {
             terms, accepteds, step, user
         };
     },
-    async created(){
-        let api = new API('user');
-        let userId = $MAPAS.userId;
-        let query = {
-            '@select': '*',
-            'id': `EQ(`+userId+`)`
-        };
-
-        this.user = await api.find(query);
+    created(){
+       this.getCurrentUser();
     },
 
     props: {},
@@ -54,6 +47,16 @@ app.component('accept-terms', {
             if(window.location.href.match(/[a-zA-z./0-9]?#([a-zA-z]{1,61})[0-9]?/)){
                 return window.location.href.match(/[a-zA-z./0-9]?#([a-zA-z]{1,61})[0-9]?/)[1];
             }
+        }, 
+        async getCurrentUser(){
+            let api = new API('user');
+            let userId = $MAPAS.userId;
+            let query = {
+                '@select': '*',
+                'id': `EQ(`+userId+`)`
+            };
+    
+            this.user = await api.find(query);
         }
     },
 });
