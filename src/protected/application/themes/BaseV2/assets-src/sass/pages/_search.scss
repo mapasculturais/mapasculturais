@@ -57,7 +57,8 @@
                     width: size(48);
 
                     .iconify {
-                        font-size: size(15);
+                        font-size: size(20);
+                    
                     }
 
                     @media (max-width: size(500)) {
@@ -66,6 +67,7 @@
 
                         .iconify {
                             font-size: size(10);
+
                         }
                     }
                 }
@@ -301,11 +303,12 @@
                         font-size: size(16);
                         line-height: size(22);
                         color: var(--mc-low-700);
-                        
+
                         .iconify {
                             width: size(22);
                             height: size(22);
                         }
+
                         &:hover {
                             color: var(--mc-low-500);
                         }
