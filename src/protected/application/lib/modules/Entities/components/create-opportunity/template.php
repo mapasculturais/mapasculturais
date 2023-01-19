@@ -138,7 +138,7 @@
      <template v-if="!entity?.id" #actions="modal">
          <!-- #Criado em Rascunho -->
          <mc-link route="panel/index" class="button button--text button--text-del" @click="modal.close()"><?php i::_e('Ir para o painel') ?></mc-link>
-         <button class="button button--primary button--icon " @click="modal.close()"><?php i::_e('Entendi') ?></button>
+         <button class="button button--primary button--icon " @click="createDraft(modal)"><?php i::_e('Criar') ?></button>
      </template>
 
      <template v-if="entity?.id" #actions="modal">
