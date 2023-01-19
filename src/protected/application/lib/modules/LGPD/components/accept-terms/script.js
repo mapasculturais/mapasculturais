@@ -21,11 +21,10 @@ app.component('accept-terms', {
         acceptTerm(slug, hash) {
             let url = Utils.createUrl('lgpd', 'accept');
             let api = new API();
-            
-            api.POST(url, [slug])
-            this.accepteds.push(hash);
-            window.location.href = $MAPAS.lgpdRedirectReferer;
-        
+            api.POST(url, [slug]).then(res => res.json()).then(data => {
+                window.location.href = data.redirect;
+                this.accepteds.push(hash);
+            })
         },
         showButton(hash) {
             if (this.accepteds.includes(hash)) {
