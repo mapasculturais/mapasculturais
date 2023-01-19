@@ -33,6 +33,9 @@ use MapasCulturais\i;
                     <button class="button button--text back" @click="cancel()">Voltar</button>
                     <button class="button button--primary button--md accept" @click="acceptTerm(slug,term.md5)">{{term.buttonText}}</button>
                  </div>
+                 <div v-if="!showButton(term.md5)">
+                    <user-accepted-terms :user="user[0]"></user-accepted-terms>
+                 </div>
             </template>
         </tab>
     </tabs>
