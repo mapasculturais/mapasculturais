@@ -6,9 +6,21 @@ app.component('accept-terms', {
         const terms = $MAPAS.config.LGPD;
         const accepteds = $MAPAS.hashAccepteds;
         const step = this.getStep();
+        var user = {};
+
         return {
-            terms, accepteds,step
+            terms, accepteds, step, user
         };
+    },
+    async created(){
+        let api = new API('user');
+        let userId = $MAPAS.userId;
+        let query = {
+            '@select': '*',
+            'id': `EQ(`+userId+`)`
+        };
+
+        this.user = await api.find(query);
     },
 
     props: {},
