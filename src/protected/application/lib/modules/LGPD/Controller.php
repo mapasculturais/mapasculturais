@@ -95,10 +95,7 @@ class Controller  extends \MapasCulturais\Controller
             /** @todo Redirecionar pra url original */
             $app->redirect($url);
         }else{
-            
-            $this->_finishRequest([
-                'redirect' => $url 
-            ]);
+            $this->json(['redirect' =>  $url]);
         }
     }
 }
