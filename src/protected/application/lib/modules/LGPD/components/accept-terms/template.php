@@ -1,5 +1,8 @@
 <?php
-$this->import('mc-icon');
+$this->import('
+    mc-icon
+    user-accepted-terms
+');
 use MapasCulturais\i;
 ?>
 <?php $this->applyTemplateHook('accepted-terms', 'before'); ?>
