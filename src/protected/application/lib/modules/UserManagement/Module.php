@@ -188,6 +188,20 @@ class Module extends \MapasCulturais\Module {
         });
 
         /**
+         * Página para deletar conta de usuário
+         */
+        $app->hook('GET(panel.delete-account)', function () use ($app) {
+            /** @var \MapasCulturais\Controllers\Panel $this */
+            $this->requireAuthentication();
+
+            if (!$app->user->is('admin')) {
+                throw new PermissionDenied($app->user, null, i::__('Gerenciar Usuários'));
+            }
+
+            $this->render('delete-account');
+        });
+
+        /**
          * Página para gerenciamento de usuários
          */
         $app->hook('GET(panel.user-detail)', function () use ($app) {
