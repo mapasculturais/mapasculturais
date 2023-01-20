@@ -51,24 +51,24 @@ class Controller  extends \MapasCulturais\Controller
 
     public function POST_accept()
     {
-        $app = App::i();
-        $term_slug = $this->data[0] ?? null;
-
-        /** @todo Verificar term_slug*/
-        $config = $app->config['module.LGPD'][$term_slug];
-        $text = $config['text'];
-
-        $accept_terms = [
-            'timestamp' => (new DateTime())->getTimestamp(),
-            'md5' => Module::createHash($text),
-            'text' => $text,
-            'ip' => $app->request()->getIp(),
-            'userAgent' => $app->request()->getUserAgent(),
-
-        ];
-
-        $this->verifiedTerms("lgpd_{$term_slug}", $accept_terms);
-
+        $app = App::i();        
+        $term_slug = null;
+        $term_slug = !is_array($this->data[0]) ? [$this->data[0]] : $this->data[0];
+        $id = $this->data[1] ?? null;
+        $accept_terms = [];
+        foreach ($term_slug as $slug) {
+            $config = $app->config['module.LGPD'][$slug];
+            $text = $config['text'];
+    
+            $accept_terms["lgpd_{$slug}"] = [
+                'timestamp' => (new DateTime())->getTimestamp(),
+                'md5' => Module::createHash($text),
+                'text' => $text,
+                'ip' => $app->request()->getIp(),
+                'userAgent' => $app->request()->getUserAgent(),
+            ];
+        }
+        $this->verifiedTerms($accept_terms, $id);
     }
 
     /**
@@ -76,19 +76,28 @@ class Controller  extends \MapasCulturais\Controller
      * @param array $accept_terms
      * @return void
      */
-    private function verifiedTerms($meta, $accept_terms)
+    private function verifiedTerms($accept_terms, $id = null)
     {
         /** @var App $app */
         $app = App::i();
 
-        $user = $app->user;
-        $_accept_lgpd = $user->$meta ?: (object)[];
-        $index = $accept_terms['md5'];
-        if (!isset($_accept_lgpd->$index)) {
-            $_accept_lgpd->$index = $accept_terms;
-            $user->$meta = $_accept_lgpd;
-            $user->save();
+        if ($id) {
+            $user = $app->repo('User')->find($id);
+        } else {
+            $user = $app->user;
         }
+
+        foreach ($accept_terms as $meta=>$values) {
+            $_accept_lgpd = $user->$meta ?: (object)[];
+            $index = $values['md5'];
+            if (!isset($_accept_lgpd->$index)) {
+                $_accept_lgpd->$index = $values;
+                $user->$meta = $_accept_lgpd;
+            }
+        }
+        $app->disableAccessControl();
+        $user->save();
+        $app->enableAccessControl();
 
         $url = $_SESSION[Module::key] ?? "/";
         if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
