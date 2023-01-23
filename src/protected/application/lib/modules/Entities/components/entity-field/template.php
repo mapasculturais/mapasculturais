@@ -10,7 +10,7 @@ use MapasCulturais\i;
         <?php //@todo implementar registro de tipos de campos (#1895) ?>
         <input  v-if="is('string') && !isMask" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
 
-        <input  v-if="is('string') && isMask" :value="valueMasked" :id="propId" :name="prop" type="text"  @change="change($event)">
+        <input  v-if="is('string') && isMask" :value="valueMasked" :id="propId" :name="prop" type="text" @change="change($event)">
 
         <textarea v-if="is('text')" :value="value" :id="propId" :name="prop" @change="change($event)"></textarea>
 

@@ -151,9 +151,7 @@ app.component('entity-field', {
 
         mask (type) {
             let value = this.entity[this.prop];
-            console.log(value);
             value = this.removeMask(value);
-            console.log(value);
             const regexInt = /^-?[0-9]+$/;
             if(type == 'cpf') {
                 if(value.length > 11) {
