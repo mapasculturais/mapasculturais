@@ -25,7 +25,7 @@ $this->import('
                 <entity-profile :entity="entity"></entity-profile>
             </div>
             <div class="col-9 sm:col-12">
-                <entity-field :entity="entity" prop="name" maskType="cpf"></entity-field>
+                <entity-field :entity="entity" prop="name"></entity-field>
                 <div>
                     <h3>Validade do certificado do selo</h3>
                     <form-valid-period :entity="entity"></form-valid-period>
