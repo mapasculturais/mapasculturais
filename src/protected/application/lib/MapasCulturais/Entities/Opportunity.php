@@ -817,6 +817,35 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $relation->status === EvaluationMethodConfigurationAgentRelation::STATUS_SENT;
     }
 
+    /**
+     * Retorna um resumo do número de inscrições de uma oportunidade
+     * 
+     * @return array
+     */
+    public function sumary()
+    {
+        $app = App::i();
+
+        $query = $app->em->createQuery("SELECT o.status, COUNT(o.status) AS qtd FROM MapasCulturais\\Entities\\Registration o  WHERE o.opportunity = :opp GROUP BY o.status");
+
+        $query->setParameters([
+            "opp" => $this,
+        ]);
+
+        $data = [];
+        $total_registrations = 0;
+        $status_list = \MapasCulturais\Entities\Registration::getStatuses();
+        if($result = $query->getResult()){
+            foreach($result as $value){
+                $status = $status_list[$value['status']];
+                $total_registrations += $value['qtd'];
+                $data[$status] = $value['qtd'];
+            }
+        }
+        $data['registrations'] = $total_registrations;
+        return $data;
+    }
+
     function registerRegistrationMetadata(){
        
         $app = App::i();
