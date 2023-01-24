@@ -211,6 +211,22 @@ class Module extends \MapasCulturais\Module{
 
         $app->view->enqueueStyle('app', 'plugin-opportunity-phases', 'css/opportunity-phases.css');
 
+        $app->hook('GET(opportunity.findPhasesById)', function() use($app) {
+            
+            $result = [];
+            $opportunity = $app->repo('Opportunity')->find($this->data['id']);
+            if($opportunity_phases = $opportunity->allPhases){
+                foreach($opportunity_phases as $key => $opportunity){
+                    $resgistration_status = $opportunity->countRegistrationsByStatus;
+                    $result[] = [
+                        'opportunity_phase' => ($key+1),
+                        'registrations_status' => $resgistration_status
+                    ];
+                }
+            }
+
+        });
+
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->jsObject['angularAppDependencies'][] = 'OpportunityPhases';
             $app->view->enqueueScript('app', 'ng.opportunityPhases', 'js/ng.opportunityPhases.js', ['mapasculturais']);
