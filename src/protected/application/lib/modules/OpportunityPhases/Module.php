@@ -216,12 +216,18 @@ class Module extends \MapasCulturais\Module{
             $opportunity = $app->repo('Opportunity')->find($this->data['@opportunity']);
             if($opportunity_phases = $opportunity->allPhases){
                 foreach($opportunity_phases as $key => $opportunity){
-                    $resgistration_status = $opportunity->countRegistrationsByStatus;
                     $result[] = [
-                        'opportunity_phase' => ($key+1),
-                        'total_registration' => $opportunity->countRegistrations['qtd'],
-                        'registrations_status' => $resgistration_status,
-                        'evaluations' => $opportunity->countEvaluations,
+                        '@entityType' => $opportunity->entityType,
+                        'id' => $opportunity->id,
+                        'type' => $opportunity->type->id,
+                        'name' => $opportunity->name,
+                        "registrationFrom" => $opportunity->registrationFrom,
+                        "registrationTo"=> $opportunity->registrationTo,
+                        "publishedRegistrations"=> $opportunity->publishedRegistrations,
+                        "publishTimestamp"=> $opportunity->publishTimestamp,
+                        "isFirstPhase" => ($opportunity->firstPhase->id == $opportunity->id) ? true : false,
+                        "isLastPhase" => $opportunity->isLastPhase,
+                        'sumary' => $opportunity->sumary()
                     ];
                 }
             }
