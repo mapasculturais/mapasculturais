@@ -1,7 +1,9 @@
 @use '../settings/mixins' as *;
 
 .panel-home {
-
+    min-height: 100%;
+    background-color: var(--mc-gray-100);
+    
     &__header {
         display: flex;
         flex-direction: column;
