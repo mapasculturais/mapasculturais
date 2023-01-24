@@ -79,8 +79,8 @@
                         content: '';
                         background: url('https://api.iconify.design/akar-icons/circle-check-fill.svg?color=%23008240') no-repeat center center / contain;
                         margin-left: size(10);
-                        width: size(15);
-                        height: size(15);
+                        width: size(18);
+                        height: size(18);
 
                         .iconify {
                             color: var(--mc-success-500);
@@ -175,8 +175,8 @@
                 }
 
                 &--close {
+                    color: var(--mc-low-500);
                     float: right;
-                    padding-right: 0;
                 }
 
                 form {

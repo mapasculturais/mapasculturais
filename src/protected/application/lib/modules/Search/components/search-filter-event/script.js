@@ -158,6 +158,19 @@ app.component('search-filter-event', {
     },
 
     methods: {
+        clearFilters() {
+            console.log(this.pseudoQuery);
+            const d0 = new McDate(new Date(date[0]));
+            const d1 = new McDate(new Date(date[1]));
+            this.pseudoQuery['@from'] = d0.date('sql');
+            this.pseudoQuery['@to'] = d1.date('sql');
+            // delete this.pseudoQuery['@verified'];
+            // delete this.pseudoQuery['type'];
+            // this.pseudoQuery['term:area'].length = 0;
+            // @  event:classificacaoEtaria
+            // delete this.pseudoQuery['@from'];
+        
+        },
         dateFormat(date) {
             const d0 = new Date(date[0]);
             const d1 = new Date(date[1]);
