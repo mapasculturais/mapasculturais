@@ -667,6 +667,26 @@ class Registration extends \MapasCulturais\Entity
         return $statuses;
     }
 
+    /**
+     * Retorna array com os nomes dos status
+     *
+     * @return array
+     */
+    public static function getStatuses() {
+        $statuses[self::STATUS_ARCHIVED] = i::__('Archived');
+        $statuses[self::STATUS_DISABLED] = i::__('Disabled');
+        $statuses[self::STATUS_DRAFT] = i::__('Draft');
+        $statuses[self::STATUS_ENABLED] = i::__('Enabled');
+        $statuses[self::STATUS_TRASH] = i::__('Trash');
+        $statuses[self::STATUS_SENT] = i::__('Sent');
+        $statuses[self::STATUS_INVALID] = i::__('Invalid');
+        $statuses[self::STATUS_NOTAPPROVED] = i::__('Notapproved');
+        $statuses[self::STATUS_WAITLIST] = i::__('Waitlist');
+        $statuses[self::STATUS_APPROVED] = i::__('Approved');
+
+        return $statuses;
+    }
+
     function setStatusToDraft(){
         $this->_setStatusTo(self::STATUS_DRAFT);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(draft)');
