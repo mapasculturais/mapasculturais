@@ -61,6 +61,13 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     protected $opportunity;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     */
+    protected $name;
+
          /**
      * @var \DateTime
      *
@@ -93,11 +100,44 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
+    
+    static function getValidations() {
+        $app = App::i();
 
-    function setOpportunity(Opportunity $opportunity, $cascade = true) {
-        $this->opportunity = $opportunity;
-        if ($cascade) {
-            $opportunity->setEvaluationMethodConfiguration($this, false);
+        $validations = [
+            'name' => [
+                'required' => \MapasCulturais\i::__('O nome da fase de avaliação é obrigatório')
+            ],
+            'evaluationFrom' => [
+                '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
+                '!empty($this->evaluationTo)' => \MapasCulturais\i::__('Data final obrigatória caso data inicial preenchida')
+            ],
+            'evaluationTo' => [
+                '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
+                '$this->validateEvaluationDates()' => \MapasCulturais\i::__('A data final das avaliações deve ser maior ou igual a data inicial')
+            ]
+        ];
+
+        $hook_class = self::getHookClassPath();
+
+        $app->applyHook("entity($hook_class).validations", [&$validations]);
+
+        return $validations;
+    }
+
+    function validateDate($value){
+        return !$value || $value instanceof \DateTime;
+    }
+
+    function validateEvaluationDates() {
+        if($this->registrationFrom && $this->registrationTo){
+            return $this->registrationFrom <= $this->registrationTo;
+
+        }elseif($this->registrationFrom || $this->registrationTo){
+            return false;
+
+        }else{
+            return true;
         }
     }
 

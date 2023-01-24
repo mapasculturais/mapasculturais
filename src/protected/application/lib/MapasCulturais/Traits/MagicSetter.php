@@ -36,9 +36,20 @@ trait MagicSetter{
             return $this->__metadata__set($name, $value);
 
         }elseif($name[0] !== '_'){
+
+            if ($name != 'hookClassPath' && $name != 'hookPrefix' && $this->__enableMagicSetterHook ?? false) {
+                $app = App::i();
+                $hookPrefix = self::getHookPrefix();
+                $hook_name =  "{$hookPrefix}.set({$name})";
+                $app->applyHookBoundTo($this, $hook_name, [&$value, $name]);
+            }
+
             $this->$name = $value;
             return true;
         }
+
+       
+
     }
 
     /**
