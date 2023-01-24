@@ -800,6 +800,12 @@ class Theme extends MapasCulturais\Theme {
             });
         }
 
+        $app->hook('entity(Opportunity).set(evaluation<<From|To>>)', function($value, $property_name) use($app){
+            /** @var Entities\Opportunity $this */
+            $this->evaluationMethodConfiguration->$property_name = $value;
+            $this->evaluationMethodConfiguration->save(true);
+        });
+
         $app->hook('mapasculturais.body:before', function() use($app) {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->
