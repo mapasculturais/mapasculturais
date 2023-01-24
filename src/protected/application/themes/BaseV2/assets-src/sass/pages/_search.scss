@@ -156,6 +156,12 @@
         // grupo de botões - tabs
         .tabs-component__buttons {
             margin: 0;
+            z-index: 1;
+
+            // resolve a sobreposição dos filtros no tabs.
+            .search-filter .map .search-filter__actions {
+                z-index: 0;
+            }
 
             .tabs-component__button {
                 font-size: size(14);
@@ -217,7 +223,7 @@
                     }
                 }
 
-                .entity-card{
+                .entity-card {
                     .user-info__attr {
                         font-weight: 600;
                         font-size: size(14);
