@@ -147,6 +147,7 @@ abstract class Theme extends \Slim\View {
                 "subsite"       => Entities\Subsite::getPropertiesMetadata(),
                 "seal"          => Entities\Seal::getPropertiesMetadata(),
                 "eventOccurrence" => Entities\EventOccurrence::getPropertiesMetadata(), 
+                'evaluationMethodConfiguration' => Entities\EvaluationMethodConfiguration::getPropertiesMetadata(),
             ];
 
             $taxonomies = [];

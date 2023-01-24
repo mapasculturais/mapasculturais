@@ -2,6 +2,7 @@
 
 namespace Opportunities;
 
+use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\i;
 
@@ -22,6 +23,7 @@ class Module extends \MapasCulturais\Module{
         // Registro de Jobs
         $app->registerJobType(new Jobs\StartEvaluationPhase(Jobs\StartEvaluationPhase::SLUG));
         $app->registerJobType(new Jobs\StartRegistrationPhase(Jobs\StartRegistrationPhase::SLUG));
+        $app->registerJobType(new Jobs\StartPhaseDataCollection(Jobs\StartPhaseDataCollection::SLUG));
 
         // Executa Job no início da fase
         $app->hook("entity(Opportunity).save:finish ", function() use ($app){
@@ -67,6 +69,23 @@ class Module extends \MapasCulturais\Module{
         });
 
         /* == ROTAS DO PAINEL == */
+        // Executa Job no início de uma fase de coleta de dados
+        $app->hook("module(OpportunityPhases).createNextPhase(<<*>>):after", function() use ($app){
+            if($this->opportunity_data_collection){
+                $data = ['opportunity' => $this];
+                $app->enqueueJob(Jobs\StartPhaseDataCollection::SLUG, $data, $this->registrationFrom->format("Y-m-d H:i:s"));
+            }
+        });
+
+        // Executa Job no momento da publicação automática dos resultados da fase
+        $app->hook("entity(Opportunity).save:finish", function() use ($app){
+            if($this->publish_timestamp){
+                $data = ['opportunity' => $this];            
+                $app->enqueueJob(Jobs\PublisResultPhase::SLUG, $data, $this->publish_timestamp->format("Y-m-d H:i:s"));
+            }
+        });
+        
+          //Cria painel de prestação de contas
         $app->hook('GET(panel.opportunities)', function() use($app) {
             $this->requireAuthentication();
             $this->render('opportunities', []);
@@ -88,23 +107,17 @@ class Module extends \MapasCulturais\Module{
 
     function register(){
         
-        $app = App::i();
-        $controllers = $app->getRegisteredControllers();
-        if (!isset($controllers['opportunities'])) {
-            $app->registerController('opportunities', Controller::class);
-        }
+            $app = App::i();
+            $controllers = $app->getRegisteredControllers();
+            if (!isset($controllers['opportunities'])) {
+                $app->registerController('opportunities', Controller::class);
+            }
 
-        $this->registerOpportunityMetadata('is_collect_data_phase',[
-            'label' => i::__('Possue avaliação técnica'),
-            'type' => 'boolean',
-            'default' => false,
-        ]);
-
-        $this->registerOpportunityMetadata('active_evaluation_phase',[
-            'label' => i::__('Faze de avaliação ativa'),
-            'type' => 'boolean',
-            'default' => false,
-        ]);
-        
+            $this->registerOpportunityMetadata("opportunity_data_collection", [
+                'label'=> "Define se é uma oportunidade de coleta de dados",
+                'type'=>'bool',
+                'private'=> true,
+                'default'=> false,
+            ]);
     }
 }

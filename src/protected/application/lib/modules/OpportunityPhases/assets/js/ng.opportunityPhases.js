@@ -42,6 +42,7 @@
             $scope.newPhasePostData = {
                 evaluationMethod: null,
                 isLastPhase: '',
+                phaseDataCollection: false
             };
 
             $scope.newPhaseEditBoxSubmit = function () {
