@@ -3,6 +3,8 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\Controller;
+use MapasCulturais\Entities\EvaluationMethodConfiguration as EvaluationMethodConfigurationEntity;
 use MapasCulturais\Traits;
 
 // use MapasCulturais\Entities\EvaluationMethodConfiguration;
@@ -15,34 +17,14 @@ use MapasCulturais\Traits;
  * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $requestedEntity
  *
  */
-class EvaluationMethodConfiguration extends EntityController {
+class EvaluationMethodConfiguration extends Controller {
     use Traits\ControllerTypes,
-        Traits\ControllerAgentRelation;
-
-    public function GET_create() {
-        App::i()->pass();
-    }
-    
-    public function GET_delete() {
-        App::i()->pass();
-    }
-    
-    public function GET_edit() {
-        App::i()->pass();
-    }
-    
-    public function GET_index() {
-        App::i()->pass();
-    }
-    
-    public function GET_single() {
-        App::i()->pass();
-    }
+        Traits\ControllerAgentRelation,
+        Traits\ControllerEntity,
+        Traits\ControllerEntityActions;
         
-    public function DELETE_single() {
-        App::i()->pass();
-    }
-    
+    protected $entityClassName = EvaluationMethodConfigurationEntity::class;
+
     protected function _setPermissionCacheUsers(){
         $app = App::i();
         
