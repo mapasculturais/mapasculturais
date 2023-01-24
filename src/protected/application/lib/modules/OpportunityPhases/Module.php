@@ -302,26 +302,6 @@ class Module extends \MapasCulturais\Module{
             $value = $query->getResult();
         });
 
-        $app->hook('entity(Opportunity).get(countRegistrationsByStatus)', function(&$value) use ($app) {
-            $query = $app->em->createQuery("SELECT o.status, COUNT(o.status) AS qtd FROM MapasCulturais\\Entities\\Registration o  WHERE o.opportunity = :opp GROUP BY o.status");
-
-            $query->setParameters([
-                "opp" => $this,
-            ]);
-
-            $status_list = \MapasCulturais\Entities\Registration::getStatusesNames();
-            
-            $result = [];
-            if($result = $query->getResult()){
-                foreach($query->getResult() as $value){
-                    $status = $status_list[$value['status']];
-                    $result[$status] = $value['qtd'];
-                }
-            }
-            
-            $value = $result;
-        });
-
         $app->hook('entity(Opportunity).get(countEvaluations)', function(&$value) use ($app) {
             $conn = $app->em->getConnection();
 
@@ -333,17 +313,7 @@ class Module extends \MapasCulturais\Module{
             $value = $v;
             
         });
-
-        $app->hook('entity(Opportunity).get(countRegistrations)', function(&$value) use ($app) {
-            $query = $app->em->createQuery("SELECT  COUNT(o.opportunity) AS qtd FROM MapasCulturais\\Entities\\Registration o  WHERE o.opportunity = :opp GROUP BY o.opportunity");
-
-            $query->setParameters([
-                "opp" => $this,
-            ]);
-
-            $value = $query->getSingleResult();
-        });
-
+    
         $app->hook('entity(Opportunity).get(lastCreatedPhase)', function(&$value) {
             $first_phase = $this->firstPhase;
             $value = Module::getLastCreatedPhase($first_phase);
