@@ -28,5 +28,6 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['term:area']" classes="space__background space__color"></mc-tag-list>
         </div>
+        <a @click="clearFilters()">Limpar todos os filtros</a><mc-icon  name="close"></mc-icon>
     </form>
 </search-filter>
