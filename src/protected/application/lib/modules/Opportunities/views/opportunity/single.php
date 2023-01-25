@@ -14,6 +14,7 @@ $this->import('
     entity-seals
     entity-related-agents
     entity-owner
+    timeline
 ');
 $this->breadcrumb = [
   ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
@@ -54,9 +55,20 @@ $this->breadcrumb = [
         <aside>
             <div class="grid-12">
                 <div class="col-12 opportunity__phases">
-                    <div v-for="item in [1,2,3]">
-                        <p class="opportunity__phases--title"><?= i::__("Avaliação documental") ?></p>
-                        <p class="opportunity__phases--description"><?= i::__("de 05/03/2022 a 21/03/2022 às 12:00") ?></p>
+                    <div>
+                        <timeline
+                            :timeline-items="[{
+                                from: new Date(2017, 5, 2),
+                                title: 'Name',
+                                description:
+                                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius earum architecto dolor, vitae magnam voluptate accusantium assumenda numquam error mollitia, officia facere consequuntur reprehenderit cum voluptates, ea tempore beatae unde.',
+                                color: '#2ecc71',
+                                showDayAndMonth: true
+                                }]"
+                            :message-when-no-items="'NO'"
+                            :unique-year="true"
+                            order="asc">
+                        </timeline>
                     </div>
                 </div>
                 <div class="col-12">

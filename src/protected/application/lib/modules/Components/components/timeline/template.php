@@ -1,7 +1,7 @@
 <?php
 $this->import('timeline-item');
 ?>
-<template>
+
   <section class="timeline">
     <div v-if="hasItems" class="wrapper-timeline">
       <div
@@ -14,13 +14,13 @@ $this->import('timeline-item');
             {{ getYear(timelineContent) }}
           </p>
         </div>
-        <TimelineItem
+        <timeline-item
           :item-timeline="timelineContent"
           :date-locale="dateLocale"
           :color-dots="colorDots"
-        />
+          >
+        </timeline-item>
       </div>
     </div>
     <p v-else>{{ messageWhenNoItems }}</p>
   </section>
-</template>
