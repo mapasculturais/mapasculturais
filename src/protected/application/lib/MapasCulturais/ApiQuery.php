@@ -348,6 +348,8 @@ class ApiQuery {
     protected $_selectingIsVerfied = false;
     
     protected $_selectingVerfiedSeals = false;
+
+    protected $_selectingSeals = false;
     
     /**
      * Subqueries configuration
@@ -571,8 +573,13 @@ class ApiQuery {
         
     }
 
+    protected $_findingIds = false;
+
     public function findIds() {
-        $result = $this->getFindResult("e.{$this->pk}");
+        $this->_findingIds = true;
+        $pk = $this->pk ?: 'id';
+        $result = $this->getFindResult("e.{$pk}");
+        $this->_findingIds = false;
 
         return array_map(function ($row) {
             return $row[$this->pk];
@@ -688,8 +695,9 @@ class ApiQuery {
                 $result[] = $r;
             }
         }
-        
-        $this->processEntities($result);
+        if(!$this->_findingIds) {
+            $this->processEntities($result);
+        }
 
         return $result;
     }
@@ -1267,7 +1275,7 @@ class ApiQuery {
                     } else {
                         $_subquery_where_id_in = $this->getSubqueryInIdentities($entities, $this->pk);
 
-                        $_target_property = $mapping['mappedBy'];
+                        $_target_property = $mapping['mappedBy'] ?: 'id';
                     }
                     
                     if(!$_subquery_where_id_in){
@@ -1288,8 +1296,9 @@ class ApiQuery {
                     $query = new ApiQuery($target_class, $qdata, false, $cfg['selectAll'], !$this->_accessControlEnabled, $this);
                     
                     $query->name = "{$this->name}->$prop";
-
-                    $query->where = (empty($query->where)) ? "e.{$_target_property} IN ({$_subquery_where_id_in})" : $query->where. " AND e.{$_target_property} IN ({$_subquery_where_id_in})";
+                    $query->where = (empty($query->where)) ? 
+                        "e.{$_target_property} IN ({$_subquery_where_id_in})" : 
+                        $query->where. " AND e.{$_target_property} IN ({$_subquery_where_id_in})";
                     
                     if($this->_usingSubquery){
                         foreach($this->_dqlParams as $k => $v){
@@ -1300,7 +1309,6 @@ class ApiQuery {
                     $cfg['query'] = $query;
                     $cfg['query_result'] = [];
                     $subquery_result = $query->getFindResult();
-                    
                     if($mtype == 2) {
                         foreach ($subquery_result as &$r) {
                             if($original_select === $this->pk){
@@ -1315,14 +1323,16 @@ class ApiQuery {
                         }
                     } else {
                         foreach ($subquery_result as &$r) {
-                            if(!isset($subquery_result_index[$r[$_target_property]])){
-                                $subquery_result_index[$r[$_target_property]] = [];
+                            // não consegui identificar em qua situação o $r[$_target_property] é um array, mas não deveria ser...
+                            $__tgt = is_array($r[$_target_property]) ? $r[$_target_property][0] : $r[$_target_property];
+                            if(!isset($subquery_result_index[$__tgt])){
+                                $subquery_result_index[$__tgt] = [];
                             }
                             if($original_select === $this->pk){
-                                $subquery_result_index[$r[$_target_property]][] = $r[$this->pk];
+                                $subquery_result_index[$__tgt][] = $r[$this->pk];
 
                             } else {
-                                $subquery_result_index[$r[$_target_property]][] = &$r;
+                                $subquery_result_index[$__tgt][] = &$r;
                                 if(!in_array($_target_property, $query->_selecting)){
                                     unset($r[$_target_property]);
                                 }
@@ -2545,11 +2555,14 @@ class ApiQuery {
             return $e[0] == '_' ? substr($e, 1) : $e;
         }, $properties);
                 
-        
         return $properties;
     }
     
     protected function _parseSelect($select) {
+        if($select == '*' && $this->entityClassName == Opportunity::class) {
+            $select .= ',ownerEntity';
+        }
+        $select = preg_replace('#ownerEntity([^\.]?)#','ownerEntity.{id,name}$1',$select);
         $select = str_replace(' ', '', $select);
         
         if(strpos($select, '*') === 0){
