@@ -1,0 +1,76 @@
+@use '../settings/mixins' as *;
+
+.opportunity {
+
+  button {
+    width: 100%;
+    padding: 16px 0;
+  }
+
+  &__period {
+    &--title {
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 33px;
+      color: #1E1E1E;
+    }
+    &--content {
+      background: #E8E8E8;
+      border-radius: 4px;
+      padding: 1px;
+    }
+    &--description {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 25px;
+      text-align: center;
+      color: #1E1E1E;
+    }
+  }
+
+  &__subscription {
+    &--title {
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 33px;
+      color: #1E1E1E;
+    }
+    &--description {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 22px;
+      color: #1E1E1E;
+    }
+    &--button {
+      background: #0074C1;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 33px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #FFFFFF;
+    }
+  }
+
+  &__phases {
+    background: #E8E8E8;
+    border-radius: 4px;
+    padding: 24px;
+    &--title {
+      font-weight: 800;
+      font-size: 12px;
+      line-height: 16px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #1E1E1E;
+    }
+    &--description {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      color: #1E1E1E;
+    }
+  }
+}
