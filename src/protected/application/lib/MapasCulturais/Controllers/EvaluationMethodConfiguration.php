@@ -23,7 +23,10 @@ class EvaluationMethodConfiguration extends Controller {
         Traits\ControllerEntity,
         Traits\ControllerEntityActions;
         
-    protected $entityClassName = EvaluationMethodConfigurationEntity::class;
+    function __construct()
+    {
+        $this->entityClassName = EvaluationMethodConfigurationEntity::class;
+    }
 
     protected function _setPermissionCacheUsers(){
         $app = App::i();
