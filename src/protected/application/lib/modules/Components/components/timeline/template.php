@@ -9,11 +9,6 @@ $this->import('timeline-item');
         :key="timelineIndex"
         :class="wrapperItemClass(timelineIndex)"
       >
-        <div class="section-year">
-          <p v-if="hasYear(timelineContent)" class="year">
-            {{ getYear(timelineContent) }}
-          </p>
-        </div>
         <timeline-item
           :item-timeline="timelineContent"
           :date-locale="dateLocale"

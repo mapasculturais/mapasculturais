@@ -62,10 +62,8 @@ $this->breadcrumb = [
                         <timeline
                             :timeline-items="[{
                                 from: new Date(2017, 5, 2),
-                                title: 'Name',
-                                description:
-                                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius earum architecto dolor, vitae magnam voluptate accusantium assumenda numquam error mollitia, officia facere consequuntur reprehenderit cum voluptates, ea tempore beatae unde.',
-                                color: '#2ecc71',
+                                title: 'Inscrições',
+                                description: 'de 05/03/2022 a 21/03/2022 às 12:00',
                                 showDayAndMonth: true
                                 }]"
                             :message-when-no-items="'NO'"
