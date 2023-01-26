@@ -356,7 +356,7 @@ class Registration extends \MapasCulturais\Entity
                             $values[$k] = $v;
                         }
                     }else{
-                        if($this->canSee($k)){
+                        if($this->canSee($k) || $this->opportunity->canUser("@control")){
                             $values[$k] = $v;
                         }
                     }
