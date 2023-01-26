@@ -12,8 +12,8 @@ $this->breadcrumb = [
     <template #create-button>
         <create-space></create-space>
     </template>
-    <template #default="{pseudoQuery}">        
-        <tabs class="search__tabs">
+    <template #default="{pseudoQuery, changeTab}">        
+        <tabs @changed="changeTab($event)" class="search__tabs">
             <template  #before-tablist>
                 <label class="search__tabs--before">
                     <?= i::_e('Visualizar como:') ?>
