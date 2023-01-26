@@ -608,7 +608,7 @@ class Module extends \MapasCulturais\Module{
                 $phase->isLastPhase = true;
             }
 
-            $phase->opportunity_data_collection = (isset($request['phaseDataCollection']) && (filter_var($request['phaseDataCollection'], FILTER_SANITIZE_SPECIAL_CHARS) == "true")) ? true : false;
+            $phase->isDataCollection = (isset($request['phaseDataCollection']) && (filter_var($request['phaseDataCollection'], FILTER_SANITIZE_SPECIAL_CHARS) == "true")) ? true : false;
             $evaluation_method = $this->data['evaluationMethod'];
 
             $app->applyHookBoundTo($phase, "module(OpportunityPhases).createNextPhase({$evaluation_method}):before", [&$evaluation_method]);
@@ -870,7 +870,7 @@ class Module extends \MapasCulturais\Module{
             'default' => false
         ]);
         
-        $this->registerOpportunityMetadata("opportunity_data_collection", [
+        $this->registerOpportunityMetadata("isDataCollection", [
             'label'=> "Define se é uma oportunidade de coleta de dados",
             'type'=>'bool',
             'private'=> true,

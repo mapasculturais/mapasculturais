@@ -47,7 +47,7 @@ class Module extends \MapasCulturais\Module{
         /* == ROTAS DO PAINEL == */
         // Executa Job no início de uma fase de coleta de dados
         $app->hook("module(OpportunityPhases).createNextPhase(<<*>>):after", function() use ($app){
-            if($this->opportunity_data_collection){
+            if($this->isDataCollection){
                 $data = ['opportunity' => $this];
                 $app->enqueueJob(Jobs\StartPhaseDataCollection::SLUG, $data, $this->registrationFrom->format("Y-m-d H:i:s"));
             }
