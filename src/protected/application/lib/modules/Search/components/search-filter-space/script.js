@@ -30,20 +30,12 @@ app.component('search-filter-space', {
     methods: {
         clearFilters() {
 
-            console.log(this.pseudoQuery)
             delete this.pseudoQuery['@verified'];
             delete this.pseudoQuery['type'];
             this.pseudoQuery['term:area'].length = 0;
 
-            // delete this.pseudoQuery['acessibilidade'];
+            delete this.pseudoQuery['acessibilidade'];
             
         },
-        acessibilidade(event) {
-            if (event.target.checked) {
-                this.pseudoQuery['acessibilidade'] = 'Sim';
-            } else {
-                delete this.pseudoQuery['@acessibilidade'];
-            }
-        }
     },
 });

@@ -55,6 +55,17 @@
         position: absolute;
         width: 100%;
 
+        .content {
+            .clear-filter {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: bold;
+                font-size: 16px;
+
+            }
+        }
+
         form,
         .form {
             &__label {
@@ -170,6 +181,8 @@
                 top: size(14);
                 width: 100%;
 
+
+
                 &>* {
                     clear: both;
                 }
@@ -183,6 +196,7 @@
                     background: #FFFFFF;
                     border-radius: var(--mc-border-radius-xs);
                     padding: size(16);
+
                 }
             }
         }
