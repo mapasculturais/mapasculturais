@@ -14,7 +14,10 @@ $this->import('
     entity-seals
     entity-related-agents
     entity-owner
+    entity-terms
     timeline
+    entity-actions
+    entity-request-ownership
 ');
 $this->breadcrumb = [
   ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
@@ -23,10 +26,10 @@ $this->breadcrumb = [
 ];
 ?>
 
-<div class="main-app single opportunity">
+<div class="main-app single">
   <mapas-breadcrumb></mapas-breadcrumb>
   <entity-header :entity="entity"></entity-header>
-    <mapas-container>
+    <mapas-container class="opportunity">
         <main>
             <div class="grid-12">
                 <div class="col-12">
@@ -92,19 +95,32 @@ $this->breadcrumb = [
                         <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                         <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                         <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
+                        <div class="col-12">
+                            <entity-request-ownership></entity-request-ownership>
+                        </div>
+                        <div class="col-12 opportunity__helpers">
+                            <button class="button button--primary-outline">Denúncia</button>
+                            <button class="button button--primary">Contato</button>
+                        </div>
                     </div>
                 </main>
                 <aside>
                     <div class="grid-12">
+                        <entity-terms :entity="entity" taxonomy="area" classes="col-12" title="<?php i::esc_attr_e('Áreas de interesse'); ?>"></entity-terms>
                         <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
                         <entity-seals :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
+                        <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags')?>"></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
-                        <entity-owner classes="col-12"  title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
+                        <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
                         <share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
                     </div>
                 </aside>
             </mapas-container>
         </tab>
+        <tab label="<?= i::__('Projetos contemplados') ?>" slug="project">
+        </tab>
+        <tab label="<?= i::__('Suporte') ?>" slug="support">
+        </tab>
     </tabs>
-
+    <entity-actions :entity="entity"></entity-actions>
 </div>

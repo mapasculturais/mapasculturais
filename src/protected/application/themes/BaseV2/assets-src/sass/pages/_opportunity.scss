@@ -73,4 +73,9 @@
       color: #1E1E1E;
     }
   }
+
+  &__helpers {
+    display: flex;
+    gap: 10px
+  }
 }
