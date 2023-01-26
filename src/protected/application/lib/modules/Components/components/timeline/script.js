@@ -12,7 +12,7 @@ app.component('timeline', {
         },
         colorDots: {
           type: String,
-          default: '#2da1bf'
+          default: '#1E1E1E'
         },
         uniqueTimeline: {
           type: Boolean,
