@@ -3,7 +3,7 @@ use MapasCulturais\i;
  
 $this->import('search tabs search-list search-map search-filter-space create-space');
 $this->breadcrumb = [
-    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
+    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
     ['label'=> i::__('Espaços'), 'url' => $app->createUrl('spaces')],
 ];
 ?>
