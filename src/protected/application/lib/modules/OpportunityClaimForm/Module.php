@@ -8,6 +8,14 @@ use MapasCulturais\App,
 class Module extends \MapasCulturais\Module{
     function _init(){
         $app = App::i();
+        $app->hook('template(registration.view.registration-sidebar-rigth):end',function(){
+            $registration = $this->controller->requestedEntity;
+            $opportunity = $registration->opportunity;
+
+                if($registration->canUser('sendClaimMessage')){
+                    $this->part('claim-form',['registration' => $registration, 'opportunity' => $opportunity],['opportunity' => $this->controller->requestedEntity]);
+                };
+        });
 
         $app->hook('mapasculturais.head', function() use($app){
             $app->view->jsObject['angularAppDependencies'][] = 'ng.opportunity-claim';
@@ -103,6 +111,8 @@ class Module extends \MapasCulturais\Module{
     }
 
     function register(){
+        $app = App::i();
+        
 
         $this->registerOpportunityMetadata('claimDisabled', [
             'label' => i::__('Desabilitar formulário de recursos'),
@@ -119,5 +129,7 @@ class Module extends \MapasCulturais\Module{
                 'v::email()' => \MapasCulturais\i::__('Email inválido')
             ]
         ]);
+
+        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('formClaimUpload',['application/pdf'], 'O formato do arquivo é inválido', false, null, true));
     }
 }

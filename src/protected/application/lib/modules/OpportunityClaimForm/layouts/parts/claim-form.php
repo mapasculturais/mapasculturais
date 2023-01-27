@@ -1,4 +1,6 @@
 <?php
+
+use MapasCulturais\Controllers\Registration;
 use MapasCulturais\i;
 $app = \MapasCulturais\App::i();
 $user = $app->user;
@@ -13,6 +15,7 @@ $user = $app->user;
         <?php i::_e("Mensagem");?>:<br />
         <textarea ng-model="data.message" type="text" rows="5" cols="30" name="message"></textarea>
     </p>
+    <?php $this->part('claim-form-upload',['entity' => $registration])?>
     <p>
 
         <button class="js-submit-button opportunity-claim-form"
