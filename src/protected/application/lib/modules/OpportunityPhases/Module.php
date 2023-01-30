@@ -213,24 +213,20 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('API(opportunity.phases)', function() use($app) {
             $result = [];
+            $app->disableAccessControl();
             $opportunity = $app->repo('Opportunity')->find($this->data['@opportunity']);
             if($opportunity_phases = $opportunity->allPhases){
                 foreach($opportunity_phases as $key => $opportunity){
-                    $result[] = [
-                        '@entityType' => $opportunity->entityType,
-                        'id' => $opportunity->id,
-                        'type' => $opportunity->type->id,
-                        'name' => $opportunity->name,
-                        "registrationFrom" => $opportunity->registrationFrom,
-                        "registrationTo"=> $opportunity->registrationTo,
-                        "publishedRegistrations"=> $opportunity->publishedRegistrations,
-                        "publishTimestamp"=> $opportunity->publishTimestamp,
-                        "isFirstPhase" => ($opportunity->firstPhase->id == $opportunity->id) ? true : false,
-                        "isLastPhase" => $opportunity->isLastPhase,
-                        'sumary' => $opportunity->sumary()
-                    ];
+                    if($opportunity->isDataCollection || $opportunity->isFirstPhase){
+                        $result[] = $opportunity->simplify('id,type,name,registrationFrom,registrationTo,publishedRegistrations,publishTimestamp,isFirstPhase,isLastPhase,summary');
+                    }
+
+                    if($opportunity->evaluationMethodConfiguration){
+                        $result[] = $opportunity->evaluationMethodConfiguration->simplify('id,ownerId,type,status,name,evaluationFrom,evaluationTo,publishedRegistrations,publishTimestamp');
+                    }
                 }
             }
+            $app->enableAccessControl();
 
             $this->json($result);
         });
