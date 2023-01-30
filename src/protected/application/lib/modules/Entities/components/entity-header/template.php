@@ -72,7 +72,7 @@ use MapasCulturais\i;
                 </slot>
             </div>
             <div v-if="entity.site" class="site">
-                <a><mc-icon :class="entity.__objectType+'__color'" name="link"></mc-icon>{{entity.site}}</a>
+                <a :href="entity.site" target="_blank"><mc-icon :class="entity.__objectType+'__color'" name="link"></mc-icon>{{entity.site}}</a>
             </div>
         </div>
     </div>
