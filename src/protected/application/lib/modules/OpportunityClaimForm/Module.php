@@ -2,6 +2,7 @@
 namespace OpportunityClaimForm;
 
 use MapasCulturais\App,
+    MapasCulturais\Definitions,
     MapasCulturais\i;
 
 
