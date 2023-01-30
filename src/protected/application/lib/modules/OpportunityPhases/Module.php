@@ -615,15 +615,17 @@ class Module extends \MapasCulturais\Module{
             $phase->save(true);
             $app->applyHookBoundTo($phase, "module(OpportunityPhases).createNextPhase({$evaluation_method}):after", [&$evaluation_method]);
 
-            $definition = $app->getRegisteredEvaluationMethodBySlug($evaluation_method);
+            if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
+                $definition = $app->getRegisteredEvaluationMethodBySlug($evaluation_method);
 
-            $emconfig = new Entities\EvaluationMethodConfiguration;
+                $emconfig = new Entities\EvaluationMethodConfiguration;
 
-            $emconfig->opportunity = $phase;
+                $emconfig->opportunity = $phase;
 
-            $emconfig->type = $definition->slug;
-            
-            $emconfig->save(true);
+                $emconfig->type = $definition->slug;
+                
+                $emconfig->save(true);
+            }
 
             $this->json($phase);
         });
