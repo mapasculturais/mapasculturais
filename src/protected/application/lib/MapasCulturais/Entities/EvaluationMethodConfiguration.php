@@ -10,8 +10,13 @@ use Doctrine\ORM\Mapping as ORM;
  * EvaluationMethodConfiguration
  *
  * @property \MapasCulturais\Entities\Opportunity $opportunity Opportunity
+ * 
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
  * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
+ * @property int $opportunity ownerId
+ * @property-read \MapasCulturais\Entities\Opportunity owner
+ * @property-read boolean publishedRegistration
+ * @property-read DateTime publishTimestamp
  *
  * @ORM\Table(name="evaluation_method_configuration")
  * @ORM\Entity
@@ -205,6 +210,29 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     function getOwner() {
         return $this->opportunity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOwnerId()
+    {
+        return $this->opportunity->id;
+    }
+    /**
+     * @return bool
+     */
+    public function getPublishedRegistration()
+    {
+        return $this->opportunity->publishedRegistration;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getPublishTimestamp()
+    {
+        return $this->opportunity->publishTimestamp;
     }
 
     protected function canUserCreate($user){
