@@ -8,7 +8,16 @@ use MapasCulturais\App,
 class Module extends \MapasCulturais\Module{
     function _init(){
         $app = App::i();
-        $app->hook('template(registration.view.registration-sidebar-rigth):end',function(){
+
+        // Define a permissão de modificação da inscrição true apoos enviada caso o upload de arquivo seja do recurso
+        $app->hook('can(RegistrationFile.<<*>>)', function($user, &$result){
+            /** @var \MapasCulturais\Entities\RegistrationFile $this */
+            if($this->group === "formClaimUpload" && $this->owner->opportunity->publishedRegistrations && $this->owner->owner->canUser('@control') ){
+                $result = true;
+            }
+        });
+
+        $app->hook('template(registration.view.registration-sidebar-rigth):end', function () {
             $registration = $this->controller->requestedEntity;
             $opportunity = $registration->opportunity;
 
