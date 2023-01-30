@@ -822,7 +822,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * 
      * @return array
      */
-    public function sumary()
+    public function getSummary()
     {
         $app = App::i();
 
