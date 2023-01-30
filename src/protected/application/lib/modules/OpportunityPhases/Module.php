@@ -874,7 +874,7 @@ class Module extends \MapasCulturais\Module{
             'label'=> "Define se é uma oportunidade de coleta de dados",
             'type'=>'bool',
             'private'=> true,
-            'default'=> false,
+            'default'=> true,
         ]);
 
     }
