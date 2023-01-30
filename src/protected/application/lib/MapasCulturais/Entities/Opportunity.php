@@ -826,11 +826,16 @@ abstract class Opportunity extends \MapasCulturais\Entity
     {
         $app = App::i();
 
-        $query = $app->em->createQuery("SELECT o.status, COUNT(o.status) AS qtd FROM MapasCulturais\\Entities\\Registration o  WHERE o.opportunity = :opp GROUP BY o.status");
+        $params = ["opp" => $this];
 
-        $query->setParameters([
-            "opp" => $this,
-        ]);
+        $complement = "";
+        if($this->evaluationMethodConfiguration){
+            $complement.= " AND o.status IN (0,1)";
+        }
+
+        $query = $app->em->createQuery("SELECT o.status, COUNT(o.status) AS qtd FROM MapasCulturais\\Entities\\Registration o  WHERE o.opportunity = :opp {$complement} GROUP BY o.status");
+
+        $query->setParameters($params);
 
         $data = [];
         $total_registrations = 0;
