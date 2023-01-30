@@ -15,6 +15,7 @@ use MapasCulturais\Definitions\Metadata as MetadataDefinition;
  * @property-read int $status
  * @property-read \DateTime $createTimestamp
  * @property-read \DateTime $updateTimestamp
+ * @property-read array $summary
  * 
  * @property string $name
  * @property string $shortDescription
