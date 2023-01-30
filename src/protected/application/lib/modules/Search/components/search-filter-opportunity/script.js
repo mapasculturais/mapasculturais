@@ -1,7 +1,7 @@
 app.component('search-filter-opportunity', {
     template: $TEMPLATES['search-filter-opportunity'],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('search-filter-opportunity')
         return { text }
@@ -25,13 +25,21 @@ app.component('search-filter-opportunity', {
             terms: $TAXONOMIES.area.terms,
             types: $DESCRIPTIONS.opportunity.type.options,
             selectedTypes: [],
+
         }
     },
 
     computed: {
     },
-    
+
     methods: {
+        clearFilters() {
+            this.pseudoQuery.type.length = 0;
+            delete this.pseudoQuery['@verified'];
+            delete this.pseudoQuery.registrationFrom;
+            delete this.pseudoQuery.registrationTo;
+            this.$refs.form.reset();
+        },
         actualDate() {
             var data = new Date();
             var dia = String(data.getDate()).padStart(2, '0');
@@ -52,7 +60,7 @@ app.component('search-filter-opportunity', {
 
             return (ano + '-' + mes + '-' + dia);
         },
-        
+
         openForRegistrations() {
             this.pseudoQuery['registrationFrom'] = '<= ' + this.futureDate();
             this.pseudoQuery['registrationTo'] = '>= ' + this.actualDate();
