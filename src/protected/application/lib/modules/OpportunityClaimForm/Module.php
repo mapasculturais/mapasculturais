@@ -139,6 +139,13 @@ class Module extends \MapasCulturais\Module{
             ]
         ]);
 
-        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('formClaimUpload',['application/pdf'], 'O formato do arquivo é inválido', false, null, true));
+        $app->registerFileGroup(
+            'registration',
+            new Definitions\FileGroup(
+                'formClaimUpload',
+                ['^application/pdf'],
+                'O arquivo não e valido'
+            )
+        );
     }
 }
