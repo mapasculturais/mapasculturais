@@ -19,11 +19,9 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('template(registration.view.registration-sidebar-rigth):end', function () {
             $registration = $this->controller->requestedEntity;
-            $opportunity = $registration->opportunity;
-
-                if($registration->canUser('sendClaimMessage')){
-                    $this->part('claim-form',['registration' => $registration, 'opportunity' => $opportunity],['opportunity' => $this->controller->requestedEntity]);
-                };
+            if ($registration->canUser('sendClaimMessage')) {
+                $this->part('claim-form-upload', ['entity' => $registration]);
+            };
         });
 
         $app->hook('mapasculturais.head', function() use($app){
