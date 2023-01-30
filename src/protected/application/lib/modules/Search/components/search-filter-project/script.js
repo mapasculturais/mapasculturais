@@ -6,6 +6,8 @@ app.component('search-filter-project', {
         const text = Utils.getTexts('search-filter-project')
         return { text }
     },
+    
+    beforeMount() { this.pseudoQuery['type'] = [] },
 
     props: {
         position: {
@@ -20,7 +22,7 @@ app.component('search-filter-project', {
 
     data() {
         return {
-            terms: $TAXONOMIES.area.terms,
+            types: $DESCRIPTIONS.project.type.options,
         }
     },
 

@@ -17,10 +17,10 @@ $this->import('search-filter');
         <div class="field">
             <label> <?php i::_e('Tipos de projetos') ?></label>
 
-            <select placeholder="<? i::_e('Selecione as áreas')?>"> <!-- v-model="pseudoQuery['term:area']" -->
-                <option :value="undefined"> <? i::_e('Todos')?> </option>
-                <option v-for="term in terms" :key="term"> {{term}} </option>
-            </select>
+            <mc-multiselect :model="pseudoQuery['type']" :items="types" #default="{popover}" hide-filter hide-button>
+                <input class="mc-multiselect--input" v-model="pseudoQuery['type'].filter" @focus="popover.toggle()" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>">
+            </mc-multiselect>
+            <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" classes="opportunity__background opportunity__color"></mc-tag-list>
         </div>
     </form>
 </search-filter>

@@ -8,7 +8,7 @@ $this->breadcrumb = [
 ];
 ?>
 
-<search page-title="<?php i::esc_attr_e('Projetos') ?>" entity-type="project" >    
+<search page-title="<?php i::esc_attr_e('Projetos') ?>" entity-type="project" :initial-pseudo-query="{}">    
     <template #create-button>
         <create-project></create-project>
     </template>
