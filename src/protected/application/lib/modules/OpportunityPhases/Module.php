@@ -236,6 +236,10 @@ class Module extends \MapasCulturais\Module{
             $app->view->enqueueScript('app', 'ng.opportunityPhases', 'js/ng.opportunityPhases.js', ['mapasculturais']);
         },1000);
 
+        $app->hook('entity(Opportunity).get(isFirstPhase)', function(&$value) {
+           $value = !$this->parent;
+        });
+
         $app->hook('entity(Opportunity).get(firstPhase)', function(&$value) {
             if ($this->isOpportunityPhase) {
                 $value = $this->parent;
