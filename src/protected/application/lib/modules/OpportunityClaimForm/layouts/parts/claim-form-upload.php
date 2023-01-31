@@ -40,10 +40,11 @@ $template = '
     <ul class="js-formClaimUpload">
         <?php if(is_array($files)):?>
             <?php foreach($files as $file): ?>
-                <article id="file-<?php echo $file->id ?>" class="objeto <?php if($this->isEditable()) echo i::_e(' is-editable'); ?>" >
-                    <h1><a href="<?php echo $file->url;?>" download><?php echo $file->description ? $file->description : $file->name;?></a></h1>
-                
-                </article>
+
+                <li id="file-<?php echo $file->id ?>" class="objeto <?php if($this->isEditable()) echo i::_e(' is-editable'); ?>" >
+                    <a href="<?php echo $file->url.'?id='.$file->id;?>" download><?php echo $file->description ? $file->description :  mb_substr(pathinfo($file->name,PATHINFO_FILENAME),0,20).'... .'.pathinfo($file->name,PATHINFO_EXTENSION);?></a>
+                    <a data-href="<?php echo $file->deleteUrl?>" data-target="#file-<?php echo $file->id ?>" data-configm-message="Remover este arquivo?" class="delete-right delete hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo. Só é possível fazer esta ação antes do processamento."><?php \MapasCulturais\i::_e("Excluir");?></a>
+                </li>
             <?php endforeach;?>
         <?php endif;?>
 
