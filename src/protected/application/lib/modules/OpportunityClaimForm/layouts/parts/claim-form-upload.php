@@ -6,12 +6,10 @@ $url = "";
 $files = $entity->getFiles('formClaimUpload');
 
 $template = '
-<article id="file-{{id}}" class="objeto">
-    <h1><a href="{{url}}" rel="noopener noreferrer">{{description}}</a></h1> 
-    <div class="botoes">
-        <a data-href="{{deleteUrl}}" data-target="#file-{{id}}" data-configm-message="Remover este arquivo?" class="btn btn-small btn-danger js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo" rel="noopener noreferrer">Excluir</a>
-    </div>
-</article>';
+<li id="file-{{id}}" class="objeto">
+    <a href="{{url}}" rel="noopener noreferrer">{{description}}</a> 
+        <a data-href="{{deleteUrl}}" data-target="#file-{{id}}" data-configm-message="Remover este arquivo?" class="delete-right delete hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo">Excluir</a>
+</li';
 ?>
 <div id="claim-form" class="widget">
     <div style="margin:1em 0em; text-align: right;">
