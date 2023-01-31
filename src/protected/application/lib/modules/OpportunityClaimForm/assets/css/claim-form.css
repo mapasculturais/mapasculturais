@@ -1,0 +1,10 @@
+.delete-right{
+    display: block;
+    float: right;
+    margin-right: 10px;
+}
+
+ul{
+    list-style: none;
+}
+
