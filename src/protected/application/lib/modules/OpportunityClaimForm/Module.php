@@ -20,6 +20,9 @@ class Module extends \MapasCulturais\Module{
         $app->hook('template(registration.view.registration-sidebar-rigth):end', function () use($app) {
             $registration = $this->controller->requestedEntity;
             if ($registration->canUser('sendClaimMessage')) {
+                /** @var App $app */
+                $app->view->enqueueStyle('app', 'claim-form', 'css/claim-form.css');
+
                 $this->part('claim-form-upload', ['entity' => $registration]);
             };
         });
