@@ -7,8 +7,6 @@ app.component('search-filter-opportunity', {
         return { text }
     },
 
-    beforeMount() { this.pseudoQuery['type'] = [] },
-
     props: {
         position: {
             type: String,
