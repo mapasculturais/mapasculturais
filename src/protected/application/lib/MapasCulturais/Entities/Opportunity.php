@@ -293,14 +293,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $this->avaliableEvaluationFields = $value;
         }
     }
-
-    function setEvaluationFrom($date){
-        $this->evaluationMethodConfiguration->evaluationFrom = $date;
-    }
-
-    function setEvaluationTo($date){
-        $this->evaluationMethodConfiguration->evaluationTo = $date;
-    }
     
     function getEvaluationCommittee($return_relation = true){
         $app = App::i();
