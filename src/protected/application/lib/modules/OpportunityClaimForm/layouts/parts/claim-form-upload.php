@@ -21,7 +21,23 @@ $template = '
     <div id="editbox-formClaimUpload-file" class="js-editbox mc-left" title="<?= i::_e('Vincular aqruivo ao recurso')?>" data-submit-label="Enviar">
         <?php $this->ajaxUploader($entity, 'formClaimUpload', 'append', 'ul.js-formClaimUpload', $template, '', false, false, false)?>
     </div>
-    <div class="js-formClaimUpload">
+
+    <edit-box id="form-claim" position="left" title="<?php \MapasCulturais\i::_e("Formulário de recurso");?>" cancel-label="Cancelar" close-on-cancel="true">
+        <div ng-controller="OpportunityClaimController">
+            <p>
+                <?php i::_e("Mensagem");?>:<br />
+                <textarea ng-model="data.message" type="text" rows="5" cols="30" name="message"></textarea>
+            </p>
+
+            <p>
+                <button class="js-submit-button opportunity-claim-form" ng-click="send(<?php echo $entity->id?>); form[<?php echo $entity->id?>] = false;">
+                    <?php i::_e("Enviar");?>
+                </button>
+            </p>
+        </div>
+    </edit-box>
+
+    <ul class="js-formClaimUpload">
         <?php if(is_array($files)):?>
             <?php foreach($files as $file): ?>
                 <article id="file-<?php echo $file->id ?>" class="objeto <?php if($this->isEditable()) echo i::_e(' is-editable'); ?>" >
