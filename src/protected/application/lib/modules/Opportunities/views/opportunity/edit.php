@@ -20,6 +20,7 @@ $this->import('
     entity-gallery-video
     entity-gallery
     entity-links
+    entity-log
 ');
 
 $this->breadcrumb = [
@@ -73,6 +74,7 @@ $this->breadcrumb = [
                         <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags')?>" editable></entity-terms>
                         <entity-related-agents editable :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>" editable></entity-related-agents>
                         <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
+                        <entity-log :entity="entity" classes="col-12"></entity-log>
                     </div>
                 </aside>
             </mapas-container>
