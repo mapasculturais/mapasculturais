@@ -19,7 +19,7 @@ app.component('search', {
         },
         initialPseudoQuery: {
             type: Object,
-            default: null
+            required: true
         }
     },
 
