@@ -1,7 +1,47 @@
-.form_block_field__container {
-  padding: 8px;
+.tabs-seal-edit > .tabs-component__header {
+  background-color: #FFFFFF !important;
 }
 
-.form_block_field__container > h3 {
-  padding: 8px 0;
+.tabs-seal-edit {
+  max-width: 1170px;
+  margin: 0 auto;
+}
+
+.form_block_field {
+  &__header  {
+    background-color: #FFFFFF;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    margin: 8px 0;
+  }
+
+  &__card {
+    margin: 20px 0;
+  }
+
+  &__container {
+    padding: 8px;
+
+    h3 {
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 25px;
+    }
+
+    h4 {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 22px;
+    }
+
+    h5 {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 19px;
+    }
+  }
 }

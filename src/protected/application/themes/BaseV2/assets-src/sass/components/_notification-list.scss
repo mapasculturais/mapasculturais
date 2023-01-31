@@ -1,148 +1,139 @@
 @use '../settings/mixins' as *;
 
-.notify-menu {
-  display: flex;
-  justify-content: flex-end;
-  position: relative;
-  flex-direction: row;
+// .notification {
+	
+// 	display: flex;
+// 	flex-direction: column;
+// 	gap: 32px;
 
-  .notification__header--container {
+// 	&__content {
+// 		text-align: center;
 
-    svg {
-      width: 18px;
-      height: 18px;
-    }
-  }
+// 		a {
 
-  .notification__header--container {
+// 			text-decoration: none;
+// 			font-weight: bold;
+// 			color: #000;
+// 			text-transform: none;
+// 		}
+// 	}
 
+// 	&__card {
+// 		margin: 10px 0;
+// 		border: 1px solid #e0e0e0;
+// 	}
 
-    .notification__header--badge {
-      top: -12px;
-      left: -10px;
-      position: relative;
-    }
-  }
-}
+// 	&__subtitle {
+// 		font-size: 14px;
+// 		line-height: 19px;
+// 		margin: 0 0 16px 0;
 
+// 	}
 
-.cont-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+// 	&__title {
+// 		font-size: 16px;
+// 		line-height: 22px;
+// 		margin-bottom: 0;
+// 	}
 
-  &__btn {
-    display: inline-flex;
-  }
-}
+// 	&__title>a {
+// 		text-decoration: none;
+// 		color: var(--mc-low-500);
+// 		font-weight: bold;
+// 	}
 
-.notification {
+// 	&__divider {
+// 		border-top: 1px solid var(--mc-low-300);
+// 		padding: 16px 0;
+// 		margin: 8px 0;
 
-  &__content {
-    text-align: center;
+// 		&__divider:last-child {
+// 			border-bottom: 1px solid #000;
+// 		}
+// 	}
 
-    a {
+// 	&__icon {
+// 		width: size(32);
+// 		height: size(32);
+// 		border-radius: 50%;
+// 		background-color: var(--mc-gray-100);
+// 		display: flex;
+// 		align-items: center;
+// 		justify-content: center;
+// 		margin-top: 16px;
 
-      text-decoration: none;
-      font-weight: bold;
-      color: #000 !important;
-      text-transform: none;
-    }
-  }
+// 		&--avatar {
 
-  &__card {
-    margin: 10px 0;
-    border: 1px solid #e0e0e0;
-  }
+// 			svg {
 
-  &__subtitle {
-    font-size: 14px;
-    line-height: 19px;
-    margin: 0 0 16px 0;
+// 				path {
+// 					width: size(16);
 
-  }
+// 				}
 
-  &__title {
-    font-size: 16px;
-    line-height: 22px;
-    margin-bottom: 0;
-  }
+// 			}
+// 		}
 
-  &__title>a {
-    text-decoration: none;
-    color: var(--mc-low-500);
-    font-weight: bold;
-  }
+// 	}
 
-  &__divider {
-    border-top: 1px solid var(--mc-low-300);
-    padding: 16px 0;
-    margin: 8px 0;
+// 	&__header {
 
-    &__divider:last-child {
-      border-bottom: 1px solid #000;
-    }
-  }
+// 		display: inline-flex;
+// 		gap: 6px;
 
-  &__icon {
-    width: size(32);
-    height: size(32);
-    border-radius: 50%;
-    background-color: var(--mc-gray-100);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 16px;
+// 		&--text {
+// 			font-weight: bold;
+// 		}
 
-    &--avatar {
+// 		&--badge {
+// 			width: 18px;
+// 			height: 18px;
+// 			text-align: center;
+// 			display: inline-flex;
+// 			align-items: center;
+// 			justify-content: center;
+// 			border-radius: 50%;
+// 			background-color: var(--mc-danger-500);
+// 			color: #FFFFFF;
+// 			font-weight: normal;
+// 			font-size: 12px;
+// 		}
 
-      svg {
+// 		&--link {
+// 			font-weight: 600;
+// 			font-size: 14px;
+// 			line-height: 104.19%;
+// 			margin-right: 8px;
+// 			cursor: pointer;
 
-        path {
-          width: size(16);
+// 		}
 
-        }
+// 		&--container {
 
-      }
-    }
+// 			// .notify-menu {
+// 			// 	display: flex;
+// 			// 	justify-content: flex-end;
+// 			// 	position: relative;
+// 			// 	flex-direction: row;
 
-  }
+// 			// 	.notification {
+// 			// 		&__header {
+// 			// 			&--container {
 
-  &__header {
+// 			// 				svg {
+// 			// 					width: 18px;
+// 			// 					height: 18px;
+// 			// 				}
+// 			// 			}
+// 			// 		}
+// 			// 	}
+// 			// }
 
-    display: inline-flex;
-    gap: 6px;
+// 		}
 
-    &--text {
-      font-weight: bold;
-    }
+// 		&--container>a {
+// 			cursor: pointer;
+// 		}
+// 	}
 
-    &--badge {
-      width: 18px;
-      height: 18px;
-      text-align: center;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background-color: var(--mc-danger-500);
-      color: #FFFFFF;
-      font-weight: normal;
-      font-size: 12px;
-    }
-
-    &--link {
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 104.19%;
-      margin-right: 8px;
-      cursor: pointer;
-
-    }
-
-    &--container>a {
-      cursor: pointer;
-    }
-  }
-
-}
+// }

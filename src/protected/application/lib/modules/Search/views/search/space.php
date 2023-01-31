@@ -3,7 +3,7 @@ use MapasCulturais\i;
  
 $this->import('search tabs search-list search-map search-filter-space create-space');
 $this->breadcrumb = [
-    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
+    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
     ['label'=> i::__('Espaços'), 'url' => $app->createUrl('spaces')],
 ];
 ?>
@@ -12,8 +12,8 @@ $this->breadcrumb = [
     <template #create-button>
         <create-space></create-space>
     </template>
-    <template #default="{pseudoQuery}">        
-        <tabs class="search__tabs">
+    <template #default="{pseudoQuery, changeTab}">        
+        <tabs @changed="changeTab($event)" class="search__tabs">
             <template  #before-tablist>
                 <label class="search__tabs--before">
                     <?= i::_e('Visualizar como:') ?>

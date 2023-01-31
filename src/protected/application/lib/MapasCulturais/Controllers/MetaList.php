@@ -1,6 +1,8 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use MapasCulturais\Traits;
+
 /**
  * File Controller
  *
@@ -8,23 +10,6 @@ namespace MapasCulturais\Controllers;
  *
  */
 class MetaList extends EntityController {
-    public function POST_index($data = null) {
-        App::i()->pass();
-    }
-
-    function GET_create() {
-        App::i()->pass();
-    }
-
-    function GET_edit() {
-        App::i()->pass();
-    }
-
-    function GET_index() {
-        App::i()->pass();
-    }
-
-    function GET_single() {
-        App::i()->pass();
-    }
+    use Traits\ControllerEntity,
+        Traits\ControllerEntityActions;
 }

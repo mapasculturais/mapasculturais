@@ -8,6 +8,8 @@ $this->import('
     image-uploader
     entity-files-list
     entity-links
+    entity-profile
+    entity-cover
 ');
 ?>
 
@@ -17,15 +19,19 @@ $this->import('
         <p><?= i::__("Texto exemplo de texto")?></p>
     </template>
     <template #content>
-        <div class="left">
-            <div class="grid-12">
-                <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name"></entity-field>
-                <div class="col-12">
-                    <h3>Validade do certificado do selo</h3>
-                    <form-valid-period classes="col-12" :entity="entity"></form-valid-period>
-                </div>
-                <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
+        <div class="grid-12 v-bottom">
+            <entity-cover :entity="entity" classes="col-12"></entity-cover>
+            <div class="col-3 sm:col-12">
+                <entity-profile :entity="entity"></entity-profile>
             </div>
+            <div class="col-9 sm:col-12">
+                <entity-field :entity="entity" prop="name"></entity-field>
+                <div>
+                    <h3>Validade do certificado do selo</h3>
+                    <form-valid-period :entity="entity"></form-valid-period>
+                </div>
+            </div>
+            <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
         </div>
     </template>
 </mapas-card>

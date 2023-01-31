@@ -11,11 +11,13 @@ $this->import('
     tabs 
 ');
 $this->breadcrumb = [
-    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
+    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
     ['label'=> i::__('Eventos'), 'url' => $app->createUrl('events')],
 ];
 ?>
-<search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[]}">
+<search page-title="<?php i::esc_attr_e('Eventos') ?>" 
+        entity-type="event" 
+        :initial-pseudo-query="{'event:term:linguagem':[],'event:term:linguagem':[], 'event:classificacaoEtaria': []}">
     <template #create-button>
             <create-event></create-event>
     </template>

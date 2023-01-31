@@ -35,6 +35,7 @@
 @import 'components/entity-terms';
 @import 'components/field';
 @import 'components/files-list';
+@import 'components/form_block_field';
 @import 'components/gallery';
 @import 'components/home-entities';
 @import 'components/home-feature';
@@ -57,6 +58,9 @@
 @import 'components/mc-tag-list';
 @import 'components/messages';
 @import 'components/navbar';
+@import 'components/notification-card';
+@import 'components/notification-list';
+@import 'components/notification-modal';
 @import 'components/panel';
 @import 'components/panel--entities-summary';
 @import 'components/panel--last-edited';
@@ -72,9 +76,12 @@
 @import 'components/stack';
 @import 'components/tabs';
 @import 'components/theme-logo';
-@import 'components/notification-list';
-@import 'components/form_block_field';
 @import 'components/user-accepted-terms';
+@import 'components/user-mail';
+@import 'components/user-management';
+@import 'components/seal-relation-view';
+@import 'components/seal-content-share';
+
 
 // LAYOUTS
 @import 'layouts/entity-tabs';
@@ -89,4 +96,5 @@
 @import 'pages/projects';
 @import 'pages/search';
 @import 'pages/spaces';
+@import 'pages/terms';
 @import 'pages/user-detail';
