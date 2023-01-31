@@ -44,15 +44,19 @@ $this->breadcrumb = [
                                     <div class="col-3 sm:col-12">
                                         <entity-profile :entity="entity"></entity-profile>
                                     </div>
-                                    <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name"></entity-field>
+                                    <div class="col-9 sm:col-12">
+                                        <entity-field :entity="entity" prop="name"></entity-field>
+                                        <entity-field :entity="entity" editable label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type"></entity-field>
+                                    </div>
                                     <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
+                                    <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Adicionar regulamento');?>" editable></entity-files-list>
                                 </div>
                             </div>
                         </template>
                     </mapas-card>
                     <mapas-card>
                         <div class="grid-12">
-                            <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>" editable></entity-files-list>
+                            <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Adicionar arquivos');?>" editable></entity-files-list>
                             <div class="col-12">
                                 <entity-links :entity="entity" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
                             </div>
