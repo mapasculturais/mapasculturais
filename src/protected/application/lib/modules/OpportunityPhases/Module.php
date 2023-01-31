@@ -222,7 +222,7 @@ class Module extends \MapasCulturais\Module{
                     }
 
                     if($opportunity->evaluationMethodConfiguration){
-                        $result[] = $opportunity->evaluationMethodConfiguration->simplify('id,ownerId,type,status,name,evaluationFrom,evaluationTo,publishedRegistrations,publishTimestamp');
+                        $result[] = $opportunity->evaluationMethodConfiguration->simplify('id,ownerId,type,status,name,evaluationFrom,evaluationTo,publishedRegistrations,publishTimestamp,summary');
                     }
                 }
             }
