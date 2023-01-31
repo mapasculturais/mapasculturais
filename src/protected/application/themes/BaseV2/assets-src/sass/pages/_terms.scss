@@ -1,0 +1,55 @@
+@use '../settings/mixins' as *;
+
+
+.mapas-terms {
+    &__header {
+        max-width: size(1170);
+        width: 100%;
+        margin: 0 auto;
+        border-radius: size(4);
+
+        &-title {
+            margin: size(75) 0 size(48);
+
+            .title {
+                &__title {
+                    font-weight: 700;
+                    font-size: size(32);
+                    line-height: size(44);
+                }
+            }
+        }
+    }
+
+    &__content {
+
+        background: var(--mc-gray-100);
+        margin: 0 auto;
+        padding: size(24) size(16);
+        width: 100%;
+
+        .mapas-card {
+            &__title {
+                display: none;
+            }
+        }
+
+        .mapas-card,
+        .btn {
+            max-width: size(1170);
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: flex;
+            justify-content: space-evenly;
+            margin: size(46) auto;
+        }
+
+        .accept,
+        .back {
+            max-width: size(473);
+            width: 100%;
+        }
+    }
+}

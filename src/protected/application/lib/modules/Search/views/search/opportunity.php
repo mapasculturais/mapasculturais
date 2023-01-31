@@ -5,12 +5,12 @@ $this->import('
     search tabs search-list search-map search-filter-opportunity create-opportunity 
     '); /* create-opportunity */
 $this->breadcrumb = [
-    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
+    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
     ['label'=> i::__('Oportunidades'), 'url' => $app->createUrl('opportunities')],
 ];
 ?>
 
-<search page-title="<?php i::esc_attr_e('Oportunidades') ?>" entity-type="opportunity" :initial-pseudo-query="{}"> 
+<search page-title="<?php i::esc_attr_e('Oportunidades') ?>" entity-type="opportunity" :initial-pseudo-query="{type:[]}"> 
     <template #create-button>
         <!-- @TODO: Criação e aplicação do componente <create-opportunity> -->
         <create-opportunity></create-opportunity>
