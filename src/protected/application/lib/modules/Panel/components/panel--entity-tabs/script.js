@@ -12,7 +12,7 @@ app.component('panel--entity-tabs', {
 
     data() {
         let query = {
-            '@order': 'name ASC',
+            '@order': 'none',
             '@permissions': 'view'
         };
         if (this.user) {

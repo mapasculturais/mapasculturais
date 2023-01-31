@@ -12,7 +12,7 @@ $this->import('
 ?>
 
 <?php $this->applyTemplateHook('main-header', 'before') ?>
-<header class="main-header">
+<header class="main-header" id="main-header">
     <?php $this->applyTemplateHook('main-header', 'begin') ?>
 
     <div class="main-header__content">

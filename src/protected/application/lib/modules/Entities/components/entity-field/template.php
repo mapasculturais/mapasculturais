@@ -41,6 +41,7 @@ use MapasCulturais\i;
             </select>
         </template>
     </slot>
+    <small class="field__description" v-if="fieldDescription"> {{fieldDescription}} </small>
     <small class="field__error" v-if="hasErrors">        
         {{errors.join('; ')}}
     </small>

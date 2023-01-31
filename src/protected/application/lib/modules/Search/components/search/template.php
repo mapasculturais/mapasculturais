@@ -22,5 +22,5 @@ $this->import('mapas-breadcrumb');
         </div>
     </header>
     
-    <slot :pseudo-query="pseudoQuery"></slot>
+    <slot :pseudo-query="pseudoQuery" :changeTab="changeTab"></slot>
 </div>

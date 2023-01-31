@@ -1,10 +1,11 @@
 app.component('search', {
     template: $TEMPLATES['search'],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('search')
-        return { text }
+        const text = Utils.getTexts('search');
+        const globalState = useGlobalState();
+        return { text, globalState }
     },
 
     props: {
@@ -18,14 +19,14 @@ app.component('search', {
         },
         initialPseudoQuery: {
             type: Object,
-            default: null
+            required: true
         }
     },
 
     data() {
         let pseudoQuery;
-        if(this.initialPseudoQuery && $MAPAS.initialPseudoQuery) {
-            pseudoQuery = {...$MAPAS.initialPseudoQuery, ...this.initialPseudoQuery};
+        if (this.initialPseudoQuery && $MAPAS.initialPseudoQuery) {
+            pseudoQuery = { ...$MAPAS.initialPseudoQuery, ...this.initialPseudoQuery };
         } else {
             pseudoQuery = this.initialPseudoQuery || $MAPAS.initialPseudoQuery || {};
         }
@@ -34,7 +35,14 @@ app.component('search', {
 
     computed: {
     },
-    
+
     methods: {
+        changeTab(tab) {
+            if (tab.tab.slug == 'map') {
+                this.globalState.hideFooter();
+            } else {
+                this.globalState.showFooter();
+            }
+        }
     },
 });

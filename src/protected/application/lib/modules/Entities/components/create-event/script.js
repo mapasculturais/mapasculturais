@@ -1,15 +1,16 @@
-app.component('create-event' , {
+app.component('create-event', {
     template: $TEMPLATES['create-event'],
     emits: ['create'],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('create-event')
         return { text }
     },
-    
+
     created() {
-        this.iterationFields()
+        this.iterationFields();
+        var stat = 'publish';
     },
 
     data() {
@@ -22,7 +23,7 @@ app.component('create-event' , {
     props: {
         editable: {
             type: Boolean,
-            default:true
+            default: true
         },
     },
 
@@ -34,34 +35,34 @@ app.component('create-event' , {
             return this.linguagemErrors ? 'field error' : 'field';
         },
         modalTitle() {
-            if(this.entity?.id){
-                if(this.entity.status==1){
-                    return  __('eventoCriado', 'create-event');
-                }else {
-                    return  __('criarRascunho', 'create-event');
+            if (this.entity?.id) {
+                if (this.entity.status == 1) {
+                    return __('eventoCriado', 'create-event');
+                } else {
+                    return __('criarRascunho', 'create-event');
                 }
             } else {
-                return  __('criarEvento', 'create-event');
+                return __('criarEvento', 'create-event');
 
             }
         },
     },
-    
+
     methods: {
         iterationFields() {
             let skip = [
-                'createTimestamp', 
+                'createTimestamp',
                 'id',
                 'location',
-                'name', 
-                'shortDescription', 
-                'status', 
+                'name',
+                'shortDescription',
+                'status',
                 'type',
-                '_type', 
+                '_type',
                 'userId',
             ];
-            Object.keys($DESCRIPTIONS.event).forEach((item)=>{
-                if(!skip.includes(item) && $DESCRIPTIONS.event[item].required){
+            Object.keys($DESCRIPTIONS.event).forEach((item) => {
+                if (!skip.includes(item) && $DESCRIPTIONS.event[item].required) {
                     this.fields.push(item);
                 }
             })
@@ -69,7 +70,7 @@ app.component('create-event' , {
         createEntity() {
             this.entity = Vue.ref(new Entity('event'));
             this.entity.type = 1;
-            this.entity.terms = {linguagem: []}
+            this.entity.terms = { linguagem: [] }
 
         },
         createDraft(modal) {
@@ -78,16 +79,17 @@ app.component('create-event' , {
         },
         createPublic(modal) {
             //lançar dois eventos
-            
+
             this.entity.status = 1;
-                this.save(modal);
+            this.save(modal);
         },
-        save (modal) {
+        save(modal) {
             modal.loading(true);
             this.entity.save().then((response) => {
-                this.$emit('create',response)
+                this.$emit('create', response)
                 modal.loading(false);
-
+                stat = this.entity.status;
+                this.addEntity(stat);
             }).catch((e) => {
                 modal.loading(false);
             });
@@ -95,8 +97,24 @@ app.component('create-event' , {
 
 
         destroyEntity() {
-            // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
-        }
+        },
+        addEntity(stat) {
+            if (stat == 1) {
+                const lists = useEntitiesLists();
+                const list = lists.fetch('event:publish');
+                if (list) {
+                    list.push(this.entity);
+                }
+            }
+            if (stat == 0) {
+                const lists = useEntitiesLists();
+                const list = lists.fetch('event:draft');
+                if (list) {
+                    list.push(this.entity);
+                }
+            }
+        },
+
     },
 });

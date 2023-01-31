@@ -46,7 +46,13 @@ app.component('mc-link', {
         class: {
             type: [String, Array, Object],
             default: ''
+        },
+
+        hash: {
+            type: String,
+            default: null
         }
+
     },
 
     data() {
@@ -61,6 +67,10 @@ app.component('mc-link', {
         } else {
             const parts = this.route.split('/');
             url = Utils.createUrl(parts[0], parts[1], this.params)  + queryString;
+        }
+
+        if (this.hash) {
+            url = url+'#'+this.hash;
         }
 
         return {url, classes};

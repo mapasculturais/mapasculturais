@@ -1,10 +1,10 @@
 <?php
 $this->import('entity');
 $this->jsObject['requestedEntity'] = $relation;
-if ($entity->usesTypes()) {
-    $this->bodyClasses[] = "{$entity->entityType}-{$entity->type->id}";
+if ($relation->usesTypes()) {
+    $this->bodyClasses[] = "{$relation->entityType}-{$relation->type->id}";
 } else {
-    $this->bodyClasses[] = "{$entity->entityType}";
+    $this->bodyClasses[] = "{$relation->entityType}";
 }
 ?>
 <?php $this->part('header', $render_data) ?>

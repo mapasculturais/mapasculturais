@@ -151,6 +151,11 @@
             }
         }
 
+        // Lista lateral de ranges
+        &__preset_ranges {
+            display: none;
+        }
+
         // Parte dos calendários
         &__flex_display {
             flex-direction: column;

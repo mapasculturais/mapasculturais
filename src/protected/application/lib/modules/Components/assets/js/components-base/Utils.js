@@ -1,3 +1,5 @@
+
+
 globalThis.__ = (key, componentName) => {
     const dict = Utils.getTexts(componentName);
     const text = dict(key);
@@ -8,6 +10,24 @@ globalThis.__ = (key, componentName) => {
 
     return text || key;
 }
+
+globalThis.useGlobalState = Pinia.defineStore('globalState', {
+    state: () => {
+        return {
+            visibleFooter: true
+        }
+    },
+
+    actions: {
+        showFooter() {
+            this.visibleFooter = true
+        },
+
+        hideFooter() {
+            this.visibleFooter = false
+        },
+    }
+});
 
 globalThis.Utils = {
     getTexts(componentName) {
@@ -153,6 +173,9 @@ globalThis.Utils = {
         for(let k in pseudoQuery) {
             let val = pseudoQuery[k];
             let not = '';
+            if(typeof val == 'undefined') {
+                continue;
+            }
             if(typeof val == 'string' && val.indexOf('!') === 0) {
                 not = '!';
                 val = val.substr(1);
