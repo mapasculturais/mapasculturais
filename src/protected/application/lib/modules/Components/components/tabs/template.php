@@ -20,9 +20,11 @@ $this->import('
                         role="tab"
                         @click="selectTab(tab.slug, $event)">
                         <slot name="header" :tab="tab">
-                            <mc-icon v-if="tab.icon" :name="tab.icon"></mc-icon>
+                            <mc-icon v-if="tab.icon && iconPosition=='left'" :name="tab.icon"></mc-icon>
                             <span>{{ tab.label }}</span>
+                            <mc-icon v-if="tab.icon && iconPosition=='right'" :name="tab.icon"></mc-icon>
                         </slot>
+                        
                     </a>
                 </li>
             </ul>

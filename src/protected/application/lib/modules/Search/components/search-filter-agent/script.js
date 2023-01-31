@@ -28,5 +28,10 @@ app.component('search-filter-agent', {
     },
     
     methods: {
+        clearFilters() {
+            delete this.pseudoQuery['@verified'];
+            delete this.pseudoQuery['type'];
+            this.pseudoQuery['term:area'].length = 0;
+        }
     },
 });

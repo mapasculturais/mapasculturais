@@ -11,6 +11,7 @@ $this->import('
     entity-files-list
     entity-related-agents
     entity-links
+    entity-request-ownership
     tabs
 ');
 $this->breadcrumb = [
@@ -37,6 +38,9 @@ $this->breadcrumb = [
                 <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                 <div class="col-12">
                     <entity-links :entity="entity" title="<?php i::_e('Links'); ?>"></entity-links>
+                </div>
+                <div class="col-12">
+                    <entity-request-ownership :entity="entity"></entity-request-ownership>
                 </div>
             </div>
         </main>

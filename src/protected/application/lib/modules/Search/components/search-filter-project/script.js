@@ -1,7 +1,7 @@
 app.component('search-filter-project', {
     template: $TEMPLATES['search-filter-project'],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('search-filter-project')
         return { text }
@@ -20,13 +20,17 @@ app.component('search-filter-project', {
 
     data() {
         return {
-            terms: $TAXONOMIES.area.terms,
+            types: $DESCRIPTIONS.project.type.options,
         }
     },
 
     computed: {
     },
-    
+
     methods: {
+        clearFilters() {
+            delete this.pseudoQuery['@verified'];
+            this.pseudoQuery['type'].length = 0;
+        }
     },
 });

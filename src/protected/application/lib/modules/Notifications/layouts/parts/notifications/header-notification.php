@@ -10,7 +10,7 @@ $this->import('
 ?>
 
 <?php if (!$app->user->is('guest')): ?>
-    <notification-modal viewport="<?=  $viewport ?>" v-if="$media('<?=  $media_query ?>')" #default="{modal}">
+    <notification-modal viewport="<?=  $viewport ?>" #default="{modal}">
         <a @click="modal.open"><?= i::__('Notificações') ?></a>
     </notification-modal>
 <?php endif; ?>

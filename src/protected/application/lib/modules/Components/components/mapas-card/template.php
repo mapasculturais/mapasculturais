@@ -1,3 +1,7 @@
+<?php
+
+use MapasCulturais\i;
+?>
 <div class="mapas-card">
     <div class="mapas-card__title">
         <slot name="title"></slot>

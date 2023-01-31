@@ -9,6 +9,7 @@
 	padding: size(80) size(16);
 	position: relative;
 	width: 100%;
+	
 
 	&__header,
 	&__content {
@@ -46,7 +47,10 @@
 	}
 
 	&__content {
-		&.cards {            
+		&.cards {   
+			.tabs-component__buttons{
+				gap: size(48);
+			}  
 			.actions {
 				display: flex;
 				gap: size(24);

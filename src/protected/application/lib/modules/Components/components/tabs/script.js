@@ -10,6 +10,10 @@ app.component('tabs', {
             type: Boolean,
             default: true
         },
+        iconPosition:{
+            type: String,
+            default: "left"
+        }
     },
 
     emits: ['changed', 'clicked'],
