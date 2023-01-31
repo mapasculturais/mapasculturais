@@ -14,7 +14,8 @@ $template = '
 <div id="claim-form" class="widget">
     <h3>Solicitar recurso</h3>
     <div style="margin:1em 0em; text-align: right;">
-        <a class="add btn btn-default js-open-editbox hltip" data-target="#editboc-formClaimUpload-file" href="#"> <?= i::_e('Vincular arquivo')?></a>
+        <a class="add btn btn-default "  ng-click="editbox.open('form-claim', $event)" rel="noopener noreferrer"><?= i::_e('Formulário de recurso')?></a>
+        <a class="add btn btn-default js-open-editbox hltip" data-target="#editbox-formClaimUpload-file" href="#"> <?= i::_e('Vincular arquivo')?></a>
     </div>
     <div id="editboc-formClaimUpload-file" class="js-editbox mc-left" title="<?= i::_e('Vincular aqruivo ao recurso')?>" data-submit-label="Enviar">
         <?php $this->ajaxUploader($entity, 'formClaimUpload', 'append', 'ul.js-formClaimUpload', $template, '', false, false, false)?>
