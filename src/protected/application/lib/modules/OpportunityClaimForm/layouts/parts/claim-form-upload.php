@@ -12,6 +12,7 @@ $template = '
 </li';
 ?>
 <div id="claim-form" class="widget">
+    <h3>Solicitar recurso</h3>
     <div style="margin:1em 0em; text-align: right;">
         <a class="add btn btn-default js-open-editbox hltip" data-target="#editboc-formClaimUpload-file" href="#"> <?= i::_e('Vincular arquivo')?></a>
     </div>
