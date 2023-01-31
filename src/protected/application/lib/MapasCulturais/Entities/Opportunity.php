@@ -825,7 +825,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     public function getSummary()
     {
+        /** @var App $app */
         $app = App::i();
+
+        $cache_key = __METHOD__ . ':' . $this->id; 
+        if($cache = $app->cache->fetch($cache_key)){
+            return $cache;
+        }
 
         $params = ["opp" => $this];
 
@@ -849,6 +855,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
             }
         }
         $data['registrations'] = $total_registrations;
+
+        $app->cache->save($cache_key, $data, 30);
         return $data;
     }
 

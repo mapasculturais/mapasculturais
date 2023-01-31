@@ -244,7 +244,13 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     public function getSummary()
     {
+        /** @var App $app */
         $app = App::i();
+
+        $cache_key = __METHOD__ . ':' . $this->id; 
+        if($cache = $app->cache->fetch($cache_key)){
+            return $cache;
+        }
 
         $conn = $app->em->getConnection();
         $opportunity = $this->owner;
@@ -285,6 +291,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             }
         }
 
+        $app->cache->save($cache_key, $data, 30);
         return $data;
     }
     
