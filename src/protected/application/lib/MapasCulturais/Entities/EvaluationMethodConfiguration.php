@@ -51,15 +51,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     protected $_type;
 
-     /**
-     * The Evaluation Method Slug
-     *
-     * @var string
-     *
-     * @ORM\Column(name="evaluation_phase_name", type="string", length=255, nullable=true)
-     */
-    protected $evaluationPhaseName;
-
     /**
      * @var \MapasCulturais\Entities\Opportunity
      *
