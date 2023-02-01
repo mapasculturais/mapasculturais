@@ -41,7 +41,7 @@ $template = '
         <?php if(is_array($files)):?>
                 <?php foreach($files as $file): ?>
                     <li id="file-<?php echo $file->id ?>" class="objeto <?php if($this->isEditable()) echo i::_e(' is-editable'); ?>" >
-                        <a href="<?php echo $file->url.'?id='.$file->id;?>" download><?php echo $file->description ? $file->description :  mb_substr(pathinfo($file->name,PATHINFO_FILENAME),0,20).'... .'.pathinfo($file->name,PATHINFO_EXTENSION);?></a>
+                        <a href="<?php echo $file->url.'?id='.$file->id;?>" download><?php echo $file->description ? $file->description :  mb_substr(pathinfo($file->name,PATHINFO_FILENAME),0,20).'.'.pathinfo($file->name,PATHINFO_EXTENSION);?></a>
                         <a data-href="<?php echo $file->deleteUrl?>" data-target="#file-<?php echo $file->id ?>" data-configm-message="Remover este arquivo?" class="deleteRight delete hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo. Só é possível fazer esta ação antes do processamento."><span class="configdelete"><?php \MapasCulturais\i::_e("Excluir");?></span></a>
                     </li>
                 <?php endforeach;?>
