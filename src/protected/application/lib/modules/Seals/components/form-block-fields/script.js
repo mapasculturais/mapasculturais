@@ -63,17 +63,9 @@ app.component('form-block-fields', {
     },
     methods: {
         iterationAgentFields() {
-            let skip = [
-                'createTimestamp',
-                'id',
-                'location',
-                'type',
-                '_type',
-                'userId',
-                'public'
-            ];
+            const skip = $MAPAS.config.sealLockedSkipedFields.agents;
             Object.keys($DESCRIPTIONS.agent).forEach((item)=>{
-                if(!skip.includes(item) && $DESCRIPTIONS.agent[item].required){
+                if(!skip.includes(item) && !$DESCRIPTIONS.agent[item].isEntityRelation ){
                     this.agents.push({ value: false, label: $DESCRIPTIONS.agent[item].label, item });
                 }
             })
@@ -84,18 +76,10 @@ app.component('form-block-fields', {
             })
         },
         iterationSpaceFields() {
-            let skip = [
-                'createTimestamp',
-                'id',
-                'location',
-                'type',
-                '_type',
-                'userId',
-                'public'
-            ];
+            const skip = $MAPAS.config.sealLockedSkipedFields.spaces;
 
             Object.keys($DESCRIPTIONS.space).forEach((item)=>{
-                if(!skip.includes(item) && $DESCRIPTIONS.space[item].required){
+                if(!skip.includes(item) && !$DESCRIPTIONS.space[item].isEntityRelation){
                     this.spaces.push({ value: false, label: $DESCRIPTIONS.space[item].label, item });
                 }
             })
