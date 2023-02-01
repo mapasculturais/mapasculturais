@@ -83,6 +83,10 @@ app.component('entity-field', {
         max: {
             type: Number,
             default: 0
+        },
+        fieldDescription: {
+            type: String,
+            default: null
         }
     },
 

@@ -21,7 +21,12 @@
             height: size(48);
             justify-content: center;
             position: relative;
-            width: size(48);   
+            width: size(48);
+
+            .link {
+                text-decoration: none;
+                color: inherit;
+            }
 
             .image {
                 align-items: center;

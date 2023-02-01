@@ -39,9 +39,9 @@ class Module extends \MapasCulturais\Module
                 ];
             });
 
-            /* $app->hook('app.register:after', function () use($app) {
-                $this->view->jsObject['EntitiesDescription'] = $this->spaceRelations;
-            }); */
+            $app->hook('app.register:after', function () use($app) {
+                $this->view->jsObject['EntitiesDescription']['sealRelation'] = \MapasCulturais\Entities\SealRelation::getPropertiesMetadata();
+            }); 
         }
     }
 

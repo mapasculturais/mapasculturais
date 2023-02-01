@@ -1,0 +1,93 @@
+@use '../settings/mixins' as *;
+
+.notifications {
+    &.notifications-panel{
+        background-color: var(--mc-gray-100);
+        padding: size(32) size(16);
+    }
+    .notification-card {
+        margin-bottom: size(32);
+
+        .mapas-card__title {
+            display: none;
+        }
+
+        .mapas-card__content {
+            display: grid;
+            gap: size(0) size(6);
+            grid-template-columns: size(32) 1fr;
+        }
+
+        .avatar {
+            width: size(32);
+            height: size(32);
+            border-radius: 50%;
+            background-color: var(--mc-gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+
+            svg {
+                font-size: size(16);
+
+            }
+
+
+
+        }
+
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: size(29);
+
+            &__header {
+                display: flex;
+                flex-direction: column;
+                gap: size(8);
+
+                .title {
+                    font-size: 16px;
+                    line-height: 22px;
+                    margin: 0;
+
+                    a {
+                        text-decoration: none;
+                        color: var(--mc-low-500);
+                        font-weight: bold;
+                    }
+                }
+
+                .subtitle {
+                    font-size: 14px;
+                    line-height: 19px;
+                    margin: 0;
+                }
+            }
+
+            &__groupButtons {
+                display: flex;
+                gap: size(16);
+            }
+
+        }
+
+        &.divider {
+            border-top: 1px solid var(--mc-low-300);
+            padding: 16px 0;
+            margin: 8px 0;
+            border-radius: 0;
+
+            &__divider:last-child {
+                border-bottom: 1px solid #000;
+                margin-bottom: 0;
+            }
+
+            .mapas-card__content {
+                gap: size(0) size(12);
+            }
+        }
+    }
+}

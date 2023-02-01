@@ -54,12 +54,13 @@ app.component('entity-actions', {
     
     methods: {
         save() {
-            this.entity.save();
-            if (window.history.length > 2) {
-                window.history.back();
-            } else {
-                window.location.href = $MAPAS.baseURL+'panel';
-            }
+            this.entity.save().then(() => {
+                if (window.history.length > 2) {
+                    window.history.back();
+                } else {
+                    window.location.href = $MAPAS.baseURL+'panel';
+                }
+            });
         }
     },
 });

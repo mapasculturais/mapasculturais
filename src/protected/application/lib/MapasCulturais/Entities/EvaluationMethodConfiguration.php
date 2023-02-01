@@ -2,6 +2,7 @@
 
 namespace MapasCulturais\Entities;
 
+use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property-read \MapasCulturais\Entities\Opportunity owner
  * @property-read boolean publishedRegistration
  * @property-read DateTime publishTimestamp
+ * @property-read array summary
  *
  * @ORM\Table(name="evaluation_method_configuration")
  * @ORM\Entity
@@ -48,15 +50,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      * @ORM\Column(name="type", type="string", length=255, nullable=false)
      */
     protected $_type;
-
-     /**
-     * The Evaluation Method Slug
-     *
-     * @var string
-     *
-     * @ORM\Column(name="evaluation_phase_name", type="string", length=255, nullable=true)
-     */
-    protected $evaluationPhaseName;
 
     /**
      * @var \MapasCulturais\Entities\Opportunity
@@ -233,6 +226,91 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     public function getPublishTimestamp()
     {
         return $this->opportunity->publishTimestamp;
+    }
+
+      /**
+     * Retorna um resumo do número de inscrições de uma oportunidade
+     * 
+     * @return array
+     */
+    public function getSummary()
+    {
+        /** @var App $app */
+        $app = App::i();
+
+        $cache_key = __METHOD__ . ':' . $this->id; 
+        if($cache = $app->cache->fetch($cache_key)){
+            return $cache;
+        }
+
+        $conn = $app->em->getConnection();
+        $opportunity = $this->owner;
+        $data = [];
+        
+        $buildQuery = function($colluns = "*", $params = "", $type = "fetchAll") use ($conn, $opportunity){
+            return $conn->$type("SELECT {$colluns} FROM evaluations e WHERE opportunity_id = {$opportunity->id} {$params}");
+        };
+
+        $registrations_ids = array_map(function($evaluation){
+            return $evaluation['registration_id'];
+        }, $buildQuery());
+        $reg_ids = implode(',', $registrations_ids);
+        
+        // Conta as inscrições enviadas
+        if($reg_ids){
+            if($count_reg = $conn->fetchAssoc("SELECT count(r.status) as qtd FROM registration r WHERE r.id IN ({$reg_ids}) AND r.status > 0"));
+            $data['registrations'] = $count_reg['qtd'];
+        }
+
+        // Conta as inscrições avaliadas
+        $evaluated = $buildQuery("DISTINCT count(e.registration_id) as qtd", "AND e.evaluation_status > 0", "fetchAssoc");
+        $data['evaluated'] = $evaluated['qtd'];
+
+        // Conta as inscrições avaliadas por status
+        $query = $app->em->createQuery("SELECT r.consolidatedResult as status, count(r.consolidatedResult) as qtd FROM MapasCulturais\\Entities\\Registration r  WHERE r.opportunity = :opp AND r.consolidatedResult > :status_evaluate AND r.id IN (:reg_ids) GROUP BY r.consolidatedResult");
+
+        $query->setParameters([
+            "opp" => $opportunity,
+            "reg_ids" => $registrations_ids,
+            'status_evaluate' => 0
+        ]);
+        
+        if($result = $query->getResult()){
+            foreach($result as $values){
+                $status = $this->getStatuses($values['status']);
+                $data[$status] = $values['qtd'];
+            }
+        }
+
+        $app->cache->save($cache_key, $data, 30);
+        return $data;
+    }
+    
+    /**
+     * @param int $status
+     * @return string
+     */
+    public function getStatuses($status)
+    {
+        $em = $this->owner->getEvaluationMethod();
+        $status = $em->valueToString($status);
+
+        switch ($status) {
+            case 'Inválida':
+                return i::__('invalid');
+                break;
+            case 'Não selecionada':
+                return i::__('notapproved');
+                break;
+            case 'Suplente':
+                return i::__('waitlist');
+                break;
+            case 'Selecionada':
+                return i::__('approved');
+                break;
+            default:
+                return $status ?: '';
+        }
     }
 
     protected function canUserCreate($user){

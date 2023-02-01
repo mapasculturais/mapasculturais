@@ -57,7 +57,8 @@
                     width: size(48);
 
                     .iconify {
-                        font-size: size(15);
+                        font-size: size(20);
+
                     }
 
                     @media (max-width: size(500)) {
@@ -66,6 +67,7 @@
 
                         .iconify {
                             font-size: size(10);
+
                         }
                     }
                 }
@@ -108,7 +110,7 @@
 
             &--left {
                 align-items: center;
-                bottom: size(8);
+                bottom: size(0);
                 position: absolute;
                 left: size(16);
             }
@@ -154,6 +156,12 @@
         // grupo de botões - tabs
         .tabs-component__buttons {
             margin: 0;
+            z-index: 1;
+
+            // resolve a sobreposição dos filtros no tabs.
+            .search-filter .map .search-filter__actions {
+                z-index: 0;
+            }
 
             .tabs-component__button {
                 font-size: size(14);
@@ -167,12 +175,31 @@
                     @media (max-width: size(800)) {
                         padding: size(7) size(13) size(7);
                     }
+
+                    .iconify,
+                    span {
+                        color: var(--mc-gray-500);
+                    }
+                }
+
+                &--active {
+                    a {
+
+                        .iconify,
+                        span {
+                            color: var(--mc-gray-700);
+                        }
+                    }
                 }
 
                 &--active::after {
                     background-color: var(--mc-primary-500);
                 }
+
+
+
             }
+
         }
 
         // tab - list
@@ -181,7 +208,6 @@
             max-width: size(1170);
             padding: size(24) size(16);
             width: 100%;
-            //AQUI CARAI
 
             .search-list {
                 &__filter {
@@ -194,6 +220,21 @@
 
                     &--filter {
                         width: 100%;
+                    }
+                }
+
+                .entity-card {
+                    .user-info__attr {
+                        font-weight: 600;
+                        font-size: size(14);
+
+                        .upper {
+                            text-transform: uppercase;
+                        }
+
+                        .event__color {
+                            display: none;
+                        }
                     }
                 }
 
@@ -246,7 +287,6 @@
         }
 
         // tab - map
-        //AQUI TB CARAI
         &--map {
 
             position: relative;
@@ -303,11 +343,12 @@
                         font-size: size(16);
                         line-height: size(22);
                         color: var(--mc-low-700);
-                        
+
                         .iconify {
                             width: size(22);
                             height: size(22);
                         }
+
                         &:hover {
                             color: var(--mc-low-500);
                         }

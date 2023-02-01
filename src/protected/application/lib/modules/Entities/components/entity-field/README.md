@@ -13,6 +13,7 @@ Componente que renderiza os campos de uma entidade
 - *Boolean **hideRequired** = false* - Esconde o label de campo obrigatório
 - *Number **debounce** = 0* - 
 - *String/Array/Object **classes*** - Classes a serem aplicadas no componente
+- *String **fieldDescription*** - Descrição do campo
 
 ## Slots
 - **default**: label do campo
