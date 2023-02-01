@@ -3,14 +3,6 @@
 .controller-opportunity {
   background-color: var(--mc-white);
 
-  &__container {
-    width: size(1200);
-    display: flex;
-    align-items: center;
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
-
   .tabs-component__panels {
     margin-bottom: 0;
   }
