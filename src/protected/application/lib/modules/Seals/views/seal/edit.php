@@ -46,19 +46,6 @@ $this->breadcrumb = [
                                     <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por')?>" editable></entity-owner>
                                     <entity-parent-edit :entity="entity" classes="col-12" type="seal" ></entity-parent-edit>
                                     <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
-                                    <div class="col-12">
-                                        <h4><?= i::__('Histórico de alterações') ?></h4>
-                                        <div>
-                                            <p class="entity-seals__history--title">30/05/2022</p>
-                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
-                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
-                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
-                                        </div>
-                                        <div>
-                                            <p class="entity-seals__history--title">30/05/2022</p>
-                                            <p><a href="#" class="entity-seals__history--link">Alterações realizadas 13:34:44</a></p>
-                                        </div>
-                                    </div>
                                 </div>
                             </template>
                         </mapas-card>
