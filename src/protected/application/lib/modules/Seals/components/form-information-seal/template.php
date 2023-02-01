@@ -45,29 +45,7 @@ $this->import('
         <div class="left">
             <div class="grid-12">
                 <div class="col-12">
-                    <seal-activity-card :entity="entity">
-                        <template #title>
-                            <h4><?= i::__("Texto do certificado") ?></h4>
-                        </template>
-                        <template #content>
-                            <p>
-                                <?= i::__("Certificamos que ") ?>
-                                <input class="code" type="text" value="[EntityName]" :size="'EntityName'.length" />
-                                <?= i::__(" na condição de ") ?>
-                                <input class="code" type="text" value="[EntityDefinition]"  :size="'EntityDefinition'.length"/>
-                                <?= i::__(" recebeu o selo ") ?>
-                                <input class="code" type="text" value="[SealName]"  :size="'SealName'.length"/>
-                                <?= i::__(" no dia ") ?>
-                                <input class="code" type="text" value="[DateIni]"  :size="'DateIni'.length"/>
-                                <?= i::__(" referente a sua participação em ") ?>
-                                <input class="code" type="text" value="[SealShortDescription]"  :size="'SealShortDescription'.length"/>.
-                                <?= i::__("Esta certificação tem validade até o dia ") ?>
-                                <input class="code" type="text" value="[DateFin]"  :size="'DateFin'.length"/>.
-                                <?= i::__("Agradecemos sua participação. Atenciosamente, ") ?>
-                                <input class="code" type="text" value="[SealOwner]"  :size="'SealOwner'.length"/>
-                            </p>
-                        </template>
-                    </seal-activity-card>
+                    <entity-field :entity="entity" classes="col-12" prop="certificateText"></entity-field>
                 </div>
                 <div class="col-12">
                     <h4><?= i::__("Palavras-chaves disponíveis:") ?></h4>
