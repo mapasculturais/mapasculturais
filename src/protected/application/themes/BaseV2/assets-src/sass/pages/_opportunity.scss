@@ -153,4 +153,8 @@
     display: flex;
     gap: size(10);
   }
+
+  &__full {
+    width: 100%;
+  }
 }
