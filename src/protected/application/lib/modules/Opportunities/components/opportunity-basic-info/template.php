@@ -25,7 +25,7 @@ $this->import('
         </template>
         <template #content>
             <div class="grid-12">
-                <div class="col-4">
+                <div class="col-4 sm:col-12">
                     <p class="opportunity-basic-info__label">Data de início das inscrições<span class="opportunity-basic-info__hint">*obrigatório</span></p>
                     <datepicker
                             :locale="locale"
@@ -36,7 +36,7 @@ $this->import('
                             autoApply utc>
                     </datepicker>
                 </div>
-                <div class="col-4">
+                <div class="col-4 sm:col-12">
                     <p class="opportunity-basic-info__label">Data de termino das inscrições <span class="opportunity-basic-info__hint">*obrigatório</span></p>
                     <datepicker
                             :locale="locale"
@@ -49,7 +49,7 @@ $this->import('
                 </div>
             </div>
             <div class="grid-12">
-                <div class="col-5">
+                <div class="col-5 sm:col-12">
                     <p class="opportunity-basic-info__label">Publicação final de resultados (data e hora)<span class="opportunity-basic-info__hint">*obrigatório</span></p>
                     <datepicker
                             :locale="locale"
@@ -60,7 +60,7 @@ $this->import('
                             autoApply utc>
                     </datepicker>
                 </div>
-                <div class="col-4">
+                <div class="col-4 sm:col-12">
                     <p class="opportunity-basic-info__label">Haverá prestação de contas?</p>
                     <input v-model="accountability" type="radio" id="yes" value="true">
                     <label for="yes">Sim</label>
