@@ -4,3 +4,16 @@
 <div>
     <font face="tahoma, sans-serif" color="#666666">Mensagem: {{message}}<br><br></font>
 </div>
+
+{{#enableFile}}
+<div>
+   Existem arquivos anexados a este recurso.<br>
+   Abaixo links pra visulizar os arquivos.<br><br>
+</div>
+{{/enableFile}}
+
+{{#files}}
+<div>
+   {{.}}  
+</div>
+{{/files}}

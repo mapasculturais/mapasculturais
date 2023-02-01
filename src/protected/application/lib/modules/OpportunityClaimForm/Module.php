@@ -78,6 +78,13 @@ class Module extends \MapasCulturais\Module{
 
             $opportunity = $registration->opportunity;
 
+            $file_urls = [];
+            if($files = $registration->getFiles('formClaimUpload')){
+                foreach($files as $file){
+                    $file_urls[] = $file->url;
+                }
+            };
+
             $dataValue = [
                 'opportunityName' => $opportunity->name,
                 'opportunityUrl' => $opportunity->singleUrl,
@@ -87,6 +94,8 @@ class Module extends \MapasCulturais\Module{
                 'message' => $this->data['message'],
                 'userName' => $app->user->profile->name,
                 'userUrl' => $app->user->profile->url,
+                'files' => $file_urls,
+                'enableFile' => $file_urls ? true : false,
             ];
 
             $message = $app->renderMailerTemplate('opportunity_claim', $dataValue);
