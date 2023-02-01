@@ -809,7 +809,7 @@ class ApiQuery {
                 }
             }
             if(!$identity){
-                $result = "'-1'";
+                $result = null;
             } else {
                 $result = implode(',', $identity);
             }
@@ -1110,12 +1110,11 @@ class ApiQuery {
     protected function appendMetadata(array &$entities) {
         $app = App::i();
         $metadata = [];
-        $definitions = $app->getRegisteredMetadata($this->entityClassName);
+        $definitions = $app->getRegisteredMetadata($this->entityClassMetadata->rootEntityName ?? $this->entityClassName);
 
         if ($this->_selectingMetadata && count($entities) > 0) {
             
             $permissions = $this->getViewPrivateDataPermissions($entities);
-
             $meta_keys = [];
             foreach ($this->_selectingMetadata as $meta) {
                 $meta_keys[uniqid('p')] = $meta;
@@ -1124,6 +1123,10 @@ class ApiQuery {
             $keys = ':' . implode(',:', array_keys($meta_keys));
 
             $in_entities_dql = $this->getSubqueryInIdentities($entities);
+
+            if (!$in_entities_dql) {
+                return;
+            }
 
             $dql = "
                 SELECT
@@ -1393,66 +1396,68 @@ class ApiQuery {
             }
         }
 
-        $sub = $this->getSubqueryInIdentities($entities);
-        
-        $where = implode(' OR ', $where);
-
-        $dql = "
-            SELECT
-                f.id,               
-                f.name,
-                f.mimeType,
-                f.description,
-                f._path,
-                f.group as file_group,
-                fp.id as parent_id,
-                f.private,
-                fp.group as parent_group,
-                IDENTITY(f.owner) AS owner_id,
-                f.private
-            FROM
-                {$this->fileClassName} f
-                    LEFT JOIN f.parent fp
-            WHERE
-                f.owner IN ({$sub}) AND ({$where})
-            ORDER BY f.id ASC";
-                
-                
-        $query = $this->em->createQuery($dql);
-
-        if($this->_usingSubquery){
-            $query->setParameters($this->_dqlParams);
-        }
-        
-        $restul = $query->getResult(Query::HYDRATE_ARRAY);
-        
         $files = [];
-        
-        foreach($restul as $f){
-            $owner_id = $f['owner_id'];
-            if(!isset($files[$owner_id])){
-                $files[$owner_id] = [];
-            }
 
-            if ($f['private'] === TRUE) {
-               $f['url'] = $app->storage->getPrivateUrlById($f['id']);
-            } else {
-                $f['url'] = $app->storage->getUrlFromRelativePath($f['_path']);
-            }
+        $sub = $this->getSubqueryInIdentities($entities);
 
-            if($f['parent_group']) {
-                $f['transformed'] = true;
-                $f['mainGroup'] = $f['parent_group'];
-                $f['group'] = $f['parent_group'] . '.' . str_replace('img:', '', $f['file_group']);
-            } else {
-                $f['transformed'] = false;
-                $f['mainGroup'] = $f['file_group'];
-                $f['group'] = $f['file_group'];
+        if ($sub) {
+            $where = implode(' OR ', $where);
+
+            $dql = "
+                SELECT
+                    f.id,               
+                    f.name,
+                    f.mimeType,
+                    f.description,
+                    f._path,
+                    f.group as file_group,
+                    fp.id as parent_id,
+                    f.private,
+                    fp.group as parent_group,
+                    IDENTITY(f.owner) AS owner_id,
+                    f.private
+                FROM
+                    {$this->fileClassName} f
+                        LEFT JOIN f.parent fp
+                WHERE
+                    f.owner IN ({$sub}) AND ({$where})
+                ORDER BY f.id ASC";
+                    
+                    
+            $query = $this->em->createQuery($dql);
+
+            if($this->_usingSubquery){
+                $query->setParameters($this->_dqlParams);
             }
-                        
-            $files[$owner_id][] = $f;
+            
+            $restul = $query->getResult(Query::HYDRATE_ARRAY);
+                
+            foreach($restul as $f){
+                $owner_id = $f['owner_id'];
+                if(!isset($files[$owner_id])){
+                    $files[$owner_id] = [];
+                }
+
+                if ($f['private'] === TRUE) {
+                $f['url'] = $app->storage->getPrivateUrlById($f['id']);
+                } else {
+                    $f['url'] = $app->storage->getUrlFromRelativePath($f['_path']);
+                }
+
+                if($f['parent_group']) {
+                    $f['transformed'] = true;
+                    $f['mainGroup'] = $f['parent_group'];
+                    $f['group'] = $f['parent_group'] . '.' . str_replace('img:', '', $f['file_group']);
+                } else {
+                    $f['transformed'] = false;
+                    $f['mainGroup'] = $f['file_group'];
+                    $f['group'] = $f['file_group'];
+                }
+                            
+                $files[$owner_id][] = $f;
+            }
         }
-        
+
         foreach($entities as &$entity){
             $id = $entity[$this->pk];
             $entity['files'] = [];
@@ -1555,52 +1560,54 @@ class ApiQuery {
             }
         }
 
+        $metalists = [];
+
         $sub = $this->getSubqueryInIdentities($entities);
         
-        if ($all) {
-            $where = '1 = 1';
-        } else {
-            $where = "ml.group IN (" . implode(',', $where) . ')';
-        }
+        if($sub) {
+            if ($all) {
+                $where = '1 = 1';
+            } else {
+                $where = "ml.group IN (" . implode(',', $where) . ')';
+            }
 
-        $dql = "
-            SELECT
-                ml.id,               
-                ml.objectId AS ownerId,
-                ml.group,
-                ml.title,
-                ml.description,
-                ml.value
-            FROM
-                MapasCulturais\Entities\MetaList ml
-            WHERE
-                ml.objectType = '{$this->entityClassName}' AND 
-                ml.objectId IN ({$sub}) AND ({$where})
-            ORDER BY ml.id ASC";
+            $dql = "
+                SELECT
+                    ml.id,               
+                    ml.objectId AS ownerId,
+                    ml.group,
+                    ml.title,
+                    ml.description,
+                    ml.value
+                FROM
+                    MapasCulturais\Entities\MetaList ml
+                WHERE
+                    ml.objectType = '{$this->entityClassName}' AND 
+                    ml.objectId IN ({$sub}) AND ({$where})
+                ORDER BY ml.id ASC";
+                    
+            
+            $this->logDql($dql, __FUNCTION__);
+            
+            $query = $this->em->createQuery($dql);
+
+            if($this->_usingSubquery){
+                $query->setParameters($this->_dqlParams);
+            }
+            
+            $restult = $query->getResult(Query::HYDRATE_ARRAY);
+                    
+            foreach($restult as $ml){
+                $ownerId = $ml['ownerId'];
+                $group = $ml['group'];
                 
-        
-        $this->logDql($dql, __FUNCTION__);
-        
-        $query = $this->em->createQuery($dql);
-
-        if($this->_usingSubquery){
-            $query->setParameters($this->_dqlParams);
-        }
-        
-        $restult = $query->getResult(Query::HYDRATE_ARRAY);
-        
-        $metalists = [];
-        
-        foreach($restult as $ml){
-            $ownerId = $ml['ownerId'];
-            $group = $ml['group'];
-            
-            $metalists[$ownerId] = $metalists[$ownerId] ?? [];
-            $metalists[$ownerId][$group] = $metalists[$ownerId][$group] ?? [];
-            
-            unset($ml['ownerId'], $ml['group']);
-                        
-            $metalists[$ownerId][$group][] = $ml;
+                $metalists[$ownerId] = $metalists[$ownerId] ?? [];
+                $metalists[$ownerId][$group] = $metalists[$ownerId][$group] ?? [];
+                
+                unset($ml['ownerId'], $ml['group']);
+                            
+                $metalists[$ownerId][$group][] = $ml;
+            }
         }
         
         foreach($entities as &$entity){
@@ -1632,6 +1639,10 @@ class ApiQuery {
 
         $sub = $this->getSubqueryInIdentities($entities);
         
+        if(!$sub) {
+            return;
+        }
+
         if ($all) {
             $where = '1 = 1';
         } else {
@@ -1727,6 +1738,10 @@ class ApiQuery {
         }
 
         $sub = $this->getSubqueryInIdentities($entities);
+
+        if(!$sub) {
+            return;
+        }
         
         if ($all) {
             $where = '1 = 1';
@@ -1817,49 +1832,50 @@ class ApiQuery {
         $permission_list = $entity_class_name::getPermissionsList();
         
         $dql_in = $this->getSubqueryInIdentities($entities);
-
-        $where = [];
-        $all = false;
-        foreach($this->_selectingCurrentUserPermissions as $select){
-            if ($select == '*') {
-                $all = true;
-                break;
-            } else {
-                $where[] = "'{$select}'";
+        if($dql_in) {
+            $where = [];
+            $all = false;
+            foreach($this->_selectingCurrentUserPermissions as $select){
+                if ($select == '*') {
+                    $all = true;
+                    break;
+                } else {
+                    $where[] = "'{$select}'";
+                }
             }
-        }
 
-        $where_action = '';
-        if (!$all) {
-            $where_action = "pc.action IN (" . implode(',', $where) . ') AND';
-            $permission_list = $this->_selectingCurrentUserPermissions;
-        }
+            $where_action = '';
+            if (!$all) {
+                $where_action = "pc.action IN (" . implode(',', $where) . ') AND';
+                $permission_list = $this->_selectingCurrentUserPermissions;
+            }
 
-        $dql = "
-        SELECT
-            pc.action,
-            IDENTITY(pc.owner) AS owner_id
-        FROM 
-            {$permission_cache_class_name} as pc
-        WHERE 
-            $where_action
-            pc.owner IN ($dql_in) AND
-            pc.userId = {$user_id}"; 
+            $dql = "
+            SELECT
+                pc.action,
+                IDENTITY(pc.owner) AS owner_id
+            FROM 
+                {$permission_cache_class_name} as pc
+            WHERE 
+                $where_action
+                pc.owner IN ($dql_in) AND
+                pc.userId = {$user_id}"; 
 
-        $query = $this->em->createQuery($dql);
+            $query = $this->em->createQuery($dql);
 
-        if($this->_usingSubquery){
-            $query->setParameters($this->_dqlParams);
-        }
+            if($this->_usingSubquery){
+                $query->setParameters($this->_dqlParams);
+            }
 
-        $result = $query->getResult(Query::HYDRATE_ARRAY);
-        $permissions_by_entity = [];
+            $result = $query->getResult(Query::HYDRATE_ARRAY);
+            $permissions_by_entity = [];
 
-        foreach ($result as $item) {
-            $owner_id = $item['owner_id'];
-            $action = (string)$item['action'];
-            $permissions_by_entity[$owner_id] = $permissions_by_entity[$owner_id] ?? [];
-            $permissions_by_entity[$owner_id][$action] = true;
+            foreach ($result as $item) {
+                $owner_id = $item['owner_id'];
+                $action = (string)$item['action'];
+                $permissions_by_entity[$owner_id] = $permissions_by_entity[$owner_id] ?? [];
+                $permissions_by_entity[$owner_id][$action] = true;
+            }
         }
 
         foreach ($entities as &$entity) {
@@ -1891,50 +1907,53 @@ class ApiQuery {
         $term_relation_class_name = $this->termRelationClassName;
         if($term_relation_class_name && in_array('terms', $this->_selecting)){
             $app = App::i();
-            $dql_in = $this->getSubqueryInIdentities($entities);
             
             $taxonomies = [];
             $skel = [];
+            $terms_by_entity = [];
+
             foreach($app->getRegisteredTaxonomies($class) as $slug => $def){
                 $taxonomies[$def->slug] = $slug;
                 $skel[$slug] = [];
             }
             // --------------------
+
+            $dql_in = $this->getSubqueryInIdentities($entities);
             
-            $dql = "
-                SELECT
-                    t.term,
-                    t.taxonomy,
-                    IDENTITY(tr.owner) AS owner_id
-                FROM {$term_relation_class_name} tr
-                    JOIN tr.term t
-                WHERE
-                    tr.owner IN ($dql_in)";
+            if ($dql_in) {
+                $dql = "
+                    SELECT
+                        t.term,
+                        t.taxonomy,
+                        IDENTITY(tr.owner) AS owner_id
+                    FROM {$term_relation_class_name} tr
+                        JOIN tr.term t
+                    WHERE
+                        tr.owner IN ($dql_in)";
+                    
+                $query = $this->em->createQuery($dql);
                 
-            $query = $this->em->createQuery($dql);
-            
-            if($this->_usingSubquery){
-                $query->setParameters($this->_dqlParams);
-            }
-            
-            $result = $query->getResult(Query::HYDRATE_ARRAY);
-            
-            $terms_by_entity = [];
-            
-            foreach($result as $term){
-                if(!isset($taxonomies[$term['taxonomy']])){
-                    continue;
+                if($this->_usingSubquery){
+                    $query->setParameters($this->_dqlParams);
                 }
                 
-                $owner_id = $term['owner_id'];
-                $taxonomy = $term['taxonomy'];
-                $term = $term['term'];
-                
-                if(!isset($terms_by_entity[$owner_id])){
-                    $terms_by_entity[$owner_id] = $skel;
-                }
-                if(!in_array($term, $terms_by_entity[$owner_id][$taxonomy])){
-                    $terms_by_entity[$owner_id][$taxonomy][] = $term;
+                $result = $query->getResult(Query::HYDRATE_ARRAY);
+                            
+                foreach($result as $term){
+                    if(!isset($taxonomies[$term['taxonomy']])){
+                        continue;
+                    }
+                    
+                    $owner_id = $term['owner_id'];
+                    $taxonomy = $term['taxonomy'];
+                    $term = $term['term'];
+                    
+                    if(!isset($terms_by_entity[$owner_id])){
+                        $terms_by_entity[$owner_id] = $skel;
+                    }
+                    if(!in_array($term, $terms_by_entity[$owner_id][$taxonomy])){
+                        $terms_by_entity[$owner_id][$taxonomy][] = $term;
+                    }
                 }
             }
             
@@ -1951,8 +1970,13 @@ class ApiQuery {
     protected function _fetchRelatedSeals(array &$entities){
         if(is_null($this->_relatedSeals)){
             $app = App::i();
+            $this->_relatedSeals = [];
 
             $dql_in = $this->getSubqueryInIdentities($entities);
+            if(!$dql_in) {
+                return;
+            }
+
             $dql = "
                 SELECT
                     IDENTITY(sr.owner) as entity_id,
@@ -1976,7 +2000,6 @@ class ApiQuery {
 
             $relations = $query->getResult(Query::HYDRATE_ARRAY);
 
-            $this->_relatedSeals = [];
             foreach($relations as $relation){
                 $relation = (object) $relation;
                 
@@ -2057,7 +2080,7 @@ class ApiQuery {
     private $__viewPrivateDataPermissions = null;
     
     protected function getViewPrivateDataPermissions(array $entities){
-        if(is_null($this->__viewPrivateDataPermissions)){
+        if(is_null($this->__viewPrivateDataPermissions) && count($entities) > 0){
             $this->__viewPrivateDataPermissions = [];
             
             $app = App::i();
@@ -2070,15 +2093,19 @@ class ApiQuery {
             } else {
                 $dql_in = $this->getSubqueryInIdentities($entities);
                 
-                $dql = "SELECT IDENTITY(pc.owner) as entity_id FROM {$this->permissionCacheClassName} pc WHERE pc.owner IN ($dql_in) AND pc.user = {$app->user->id}";
-
-                $query = $this->em->createQuery($dql);
-
-                if($this->_usingSubquery){
-                    $query->setParameters($this->_dqlParams);
+                if ($dql_in) {
+                    $dql = "SELECT IDENTITY(pc.owner) as entity_id FROM {$this->permissionCacheClassName} pc WHERE pc.owner IN ($dql_in) AND pc.user = {$app->user->id}";
+    
+                    $query = $this->em->createQuery($dql);
+    
+                    if($this->_usingSubquery){
+                        $query->setParameters($this->_dqlParams);
+                    }
+    
+                    $qr = $query->getResult(Query::HYDRATE_ARRAY);
+                } else {
+                    $qr = [];
                 }
-
-                $qr = $query->getResult(Query::HYDRATE_ARRAY);
 
                 
                 foreach($entities as $entity){
