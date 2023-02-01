@@ -36,7 +36,7 @@ $this->breadcrumb = [
         </main>
         <aside>
             <div class="grid-12">
-                <div class="col-12 opportunity__phases">
+                <div class="col-12 controller-opportunity__phases">
                     <div>
                         <timeline
                             :timeline-items="[{
@@ -75,7 +75,7 @@ $this->breadcrumb = [
                         <div class="col-12">
                             <entity-request-ownership></entity-request-ownership>
                         </div>
-                        <div class="col-12 opportunity__helpers">
+                        <div class="col-12 controller-opportunity__helpers">
                             <button class="button button--primary-outline">Denúncia</button>
                             <button class="button button--primary">Contato</button>
                         </div>

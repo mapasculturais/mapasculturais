@@ -1,0 +1,25 @@
+@use '../settings/mixins' as *;
+
+.opportunity-basic-info {
+  &__container {
+    max-width: size(1200);
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  &__label {
+    font-weight: 600;
+    font-size: size(14);
+    line-height: size(19);
+    color: var(--mc-low-500);
+  }
+
+  &__hint {
+    font-weight: 700;
+    font-size: size(12);
+    line-height: size(16);
+    color: var(--mc-opportunities-500);
+  }
+}
