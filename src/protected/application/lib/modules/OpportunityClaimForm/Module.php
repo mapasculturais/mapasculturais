@@ -98,6 +98,18 @@ class Module extends \MapasCulturais\Module{
                 'enableFile' => $file_urls ? true : false,
             ];
 
+            $index = md5(json_encode($dataValue));
+            $claimMessage = $registration->claimMessage ?: (object)[];
+            
+            $app->disableAccessControl();
+            if(!isset($claimMessage->$index)){
+                $claimMessage->$index = $dataValue;
+                $registration->claimMessage = $claimMessage;
+                $registration->save(true);
+            }
+            
+            $app->enableAccessControl();
+
             $message = $app->renderMailerTemplate('opportunity_claim', $dataValue);
 
             $email_to = $opportunity->claimEmail;
@@ -157,5 +169,12 @@ class Module extends \MapasCulturais\Module{
                 'O arquivo não e valido'
             )
         );
+
+        $this->registerRegistrationMetadata('claimMessage', [
+            'label' => \MapasCulturais\i::__('Mensagens do recurso'),
+            'required' => true,
+            'type' => 'json',
+            'default' => '{}',
+        ]);
     }
 }
