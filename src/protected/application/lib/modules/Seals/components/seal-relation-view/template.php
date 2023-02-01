@@ -22,11 +22,7 @@ $this->import('
                 </div>
                 <div class="seal-relation-view__content--bottom">
                     <h3>{{ seal.name }}</h3>
-                    <p>
-                        Certificamos que <b>{{ agent.name }}</b> na condição de <b>AGENTE</b> recebeu o selo <b>{{ seal.name }}</b> no dia <b>{{ dateCreated }}</b>
-                        referente a sua participação em {{ seal.shortDescription }}. Esta certificação tem validade até o dia {{ dateValidFormatted }}. Agradecemos sua participação.
-                        Atenciosamente, <b>SECRETARIA DE CULTURA DE MUNICIPIO</b>
-                    </p>
+                    <p v-html="certificateText"></p>
                 </div>
                 <div class="seal-relation-view__footer">
                     <theme-logo title="mapa cultural" subtitle="do Pará" color="#000000"></theme-logo>
