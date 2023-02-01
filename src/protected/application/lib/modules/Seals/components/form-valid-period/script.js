@@ -11,13 +11,14 @@ app.component('form-valid-period', {
         },
     },
     watch: {
-        entity: {
-            handler(entity) {
-                if(entity && entity.validPeriod > 0) {
-                    this.requiredPeriod = true
-                }
-            }
-        }
+      'entity': {
+          handler(newValue) {
+              if(newValue.validPeriod > 0) {
+                  this.requiredPeriod = true
+              }
+          },
+          immediate: true
+      }
     },
     data () {
         return {

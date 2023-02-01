@@ -15,7 +15,9 @@ $this->import('entities mapas-card entity-card');
 
         <template #default="{entities}">
             <div class="col-9" v-for="entity in entities" :key="entity.__objectId">
-                <entity-card :entity="entity"></entity-card> 
+                <entity-card :entity="entity">
+                    <template  #type> <span >{{typeText}} <span :class="['upper', entity.__objectType+'__color']">{{entity.type.name}}</span></span></template>
+                </entity-card> 
             </div>
         </template>
     </entities>

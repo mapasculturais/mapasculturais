@@ -1,30 +1,33 @@
 <?php
+
 use MapasCulturais\i;
 
 $this->import('mc-icon');
 ?>
 
-<div :class="['entity-card', {'portrait':portrait}]">    
+<div :class="['entity-card', {'portrait':portrait}]">
 	<div class="entity-card__header">
-		<div class="entity-card__header user-details">    
+		<div class="entity-card__header user-details">
 			<div class="user-image">
 				<img v-if="entity.files?.avatar" :src="entity.files?.avatar?.transformations?.avatarMedium.url" />
 				<mc-icon v-else :entity="entity"></mc-icon>
-			</div>            
+			</div>
 			<div class="user-info">
-				<label class="user-info__name"> 
+				<label class="user-info__name">
 					{{entity.name}}
-				</label>                
+				</label>
 				<div class="user-info__attr">
-					<span v-if="entity.type"> <?php i::_e('Tipo:') ?> {{entity.type.name}} </span>
+					<slot name="type">
+						<span v-if="entity.type"> <?php i::_e('Tipo:') ?> {{entity.type.name}} </span>
+					</slot>
 				</div>
 			</div>
 		</div>
 		<div class="entity-card__header user-slot">
 			<slot name="labels"></slot>
 		</div>
-	</div>    
-	
+	</div>
+
 	<div class="entity-card__content">
 		<div class="entity-card__content--description">
 			{{entity.shortDescription}}
@@ -35,7 +38,7 @@ $this->import('mc-icon');
 					<?php i::_e('Áreas de atuação:') ?> ({{entity.terms.area.length}}):
 				</label>
 				<p :class="['terms', entity.__objectType+'__color']"> {{areas}} </p>
-			</div>            
+			</div>
 			<div v-if="tags" class="entity-card__content--terms-tag">
 				<label class="tag__title">
 					<?php i::_e('Tags:') ?> ({{entity.terms.tag.length}}):
@@ -54,7 +57,7 @@ $this->import('mc-icon');
 	<div class="entity-card__footer">
 		<div class="entity-card__footer--info">
 			<div v-if="seals" class="seals">
-				<label class="seals__title"> 
+				<label class="seals__title">
 					<?php i::_e('Selos') ?> ({{entity.seals.length}}):
 				</label>
 				<div v-for="seal in seals" class="seals__seal"></div>
@@ -62,9 +65,9 @@ $this->import('mc-icon');
 			</div>
 		</div>
 		<div class="entity-card__footer--action">
-			<a :href="entity.singleUrl" class="button button--primary button--large button--icon"> 
-				<?php i::_e('Acessar') ?> 
-				<mc-icon name="access"></mc-icon> 
+			<a :href="entity.singleUrl" class="button button--primary button--large button--icon">
+				<?php i::_e('Acessar') ?>
+				<mc-icon name="access"></mc-icon>
 			</a>
 		</div>
 	</div>
