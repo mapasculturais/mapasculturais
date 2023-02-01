@@ -19,10 +19,27 @@ app.component('opportunity-basic-info' , {
         }
     },
 
+    mounted() {
+        this.dateStart = $MAPAS.requestedEntity.registrationFrom.date;
+        this.dateEnd = $MAPAS.requestedEntity.registrationTo.date;
+    },
+
+    watch: {
+      dateStart: {
+          handler (val) {
+              $MAPAS.requestedEntity.registrationFrom.date = val;
+          }
+      },
+      dateEnd: {
+          handler (val) {
+              $MAPAS.requestedEntity.registrationTo.date = val;
+          }
+      }
+    },
+
     methods: {
         dateFormat(date) {
-            console.log(date);
-            return '';
+            return new Date(date).toLocaleString();
         }
     }
 });
