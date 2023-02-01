@@ -18,7 +18,7 @@ $this->breadcrumb = [
     <template #default="{pseudoQuery}">
         <div class="tabs-component__panels">
             <div class="search__tabs--list">
-                <search-list :pseudo-query="pseudoQuery" select="id,name,shortDescription,terms,seals,singleUrl" type="opportunity">
+                <search-list :pseudo-query="pseudoQuery" type="opportunity">
                     <template #filter>
                         <search-filter-opportunity :pseudo-query="pseudoQuery"></search-filter-opportunity>
                     </template>
