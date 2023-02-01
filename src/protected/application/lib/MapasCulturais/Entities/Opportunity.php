@@ -1011,23 +1011,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     protected function canUserViewEvaluations($user){
-        $app = App::i();
+        $em = $this->evaluationMethodConfiguration;
 
-        if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme){
+        if($em) {
             return $this->evaluationMethodConfiguration->canUser('@control');
-        }else{
-
-            if($this->canUser("@control", $user)){
-                return true;
-            }
-
-            if($this->evaluationMethodConfiguration){
-                return $this->evaluationMethodConfiguration->canUser('@control');
-            }
-            
+        } else {
+            return false;
         }
-
-        return false;
     }
 
     /** @ORM\PreRemove */

@@ -806,6 +806,27 @@ class Theme extends MapasCulturais\Theme {
             $this->evaluationMethodConfiguration->save(true);
         });
 
+        /**
+         * Cria o método de avaliação na criação da oportunidade
+         */
+        $app->hook('POST(opportunity.index):before', function () use($app) {
+            /** @var \MapasCulturais\Controllers\Opportunity $this */
+            $data = $this->data;
+            $app->hook('entity(Opportunity).insert:after', function () use ($data, $app) {
+                /** @var Entities\Opportunity $this */
+
+                $definition = $app->getRegisteredEvaluationMethodBySlug($data['evaluationMethod']);
+
+                $emconfig = new Entities\EvaluationMethodConfiguration;
+
+                $emconfig->opportunity = $this;
+
+                $emconfig->type = $definition->slug;
+
+                $emconfig->save(true);
+            });
+        });
+
         $app->hook('mapasculturais.body:before', function() use($app) {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->
