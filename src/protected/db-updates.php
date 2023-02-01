@@ -1935,9 +1935,5 @@ $$
             fwrite($fp, $txt);
             fclose($fp);
         }
-    },
-    "Adiciona coluna evaluation_phase_name na tabela evaluation_method_configuration" => function() use ($conn){
-        __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_phase_name VARCHAR(255) NULL;");
-    },
-
+    }
 ] + $updates ;

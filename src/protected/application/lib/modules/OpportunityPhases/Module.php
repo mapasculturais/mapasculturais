@@ -215,14 +215,22 @@ class Module extends \MapasCulturais\Module{
             $result = [];
             $app->disableAccessControl();
             $opportunity = $app->repo('Opportunity')->find($this->data['@opportunity']);
+            
+            $mout_symplyfy = "id,type,publishedRegistrations,name,publishTimestamp,summary";
             if($opportunity_phases = $opportunity->allPhases){
                 foreach($opportunity_phases as $key => $opportunity){
+
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase){
-                        $result[] = $opportunity->simplify('id,type,name,registrationFrom,registrationTo,publishedRegistrations,publishTimestamp,isFirstPhase,isLastPhase,summary');
+                        $result[] = $opportunity->simplify("{$mout_symplyfy}registrationFrom,registrationTo,isFirstPhase,isLastPhase");
                     }
 
                     if($opportunity->evaluationMethodConfiguration){
-                        $result[] = $opportunity->evaluationMethodConfiguration->simplify('id,ownerId,type,status,name,evaluationFrom,evaluationTo,publishedRegistrations,publishTimestamp');
+
+                        if($opportunity->isDataCollection){
+                            $mout_symplyfy.="ownerId";
+                        }
+
+                        $result[] = $opportunity->evaluationMethodConfiguration->simplify("{$mout_symplyfy}status,evaluationFrom,evaluationTo");
                     }
                 }
             }
@@ -615,15 +623,17 @@ class Module extends \MapasCulturais\Module{
             $phase->save(true);
             $app->applyHookBoundTo($phase, "module(OpportunityPhases).createNextPhase({$evaluation_method}):after", [&$evaluation_method]);
 
-            $definition = $app->getRegisteredEvaluationMethodBySlug($evaluation_method);
+            if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
+                $definition = $app->getRegisteredEvaluationMethodBySlug($evaluation_method);
 
-            $emconfig = new Entities\EvaluationMethodConfiguration;
+                $emconfig = new Entities\EvaluationMethodConfiguration;
 
-            $emconfig->opportunity = $phase;
+                $emconfig->opportunity = $phase;
 
-            $emconfig->type = $definition->slug;
-            
-            $emconfig->save(true);
+                $emconfig->type = $definition->slug;
+                
+                $emconfig->save(true);
+            }
 
             $this->json($phase);
         });
