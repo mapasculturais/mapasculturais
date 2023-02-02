@@ -221,16 +221,16 @@ class Module extends \MapasCulturais\Module{
                 foreach($opportunity_phases as $key => $opportunity){
 
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase){
-                        $result[] = $opportunity->simplify("{$mout_symplyfy}registrationFrom,registrationTo,isFirstPhase,isLastPhase");
+                        $result[] = $opportunity->simplify("{$mout_symplyfy},registrationFrom,registrationTo,isFirstPhase,isLastPhase");
                     }
 
                     if($opportunity->evaluationMethodConfiguration){
 
                         if($opportunity->isDataCollection){
-                            $mout_symplyfy.="ownerId";
+                            $mout_symplyfy.=",ownerId";
                         }
 
-                        $result[] = $opportunity->evaluationMethodConfiguration->simplify("{$mout_symplyfy}status,evaluationFrom,evaluationTo");
+                        $result[] = $opportunity->evaluationMethodConfiguration->simplify("{$mout_symplyfy},status,evaluationFrom,evaluationTo");
                     }
                 }
             }
