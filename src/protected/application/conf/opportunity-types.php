@@ -72,6 +72,13 @@ return array(
                 "v::url('pinterest.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
+        'instagram' => array(
+            'label' => \MapasCulturais\i::__('Instagram'),
+            'validations' => array(
+                "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
+            ),
+            'available_for_opportunities' => true
+        ),
 
         'registrationSeals' => array(
                 'label' => \MapasCulturais\i::__('Selos'),

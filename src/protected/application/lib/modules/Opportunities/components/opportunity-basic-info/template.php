@@ -85,7 +85,7 @@ $this->import('
                         <entity-field :entity="entity" editable label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type"></entity-field>
                     </div>
                     <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
-                    <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Adicionar regulamento');?>" editable></entity-files-list>
+                    <!-- <entity-files-list :entity="entity" classes="col-12" group="rules"  title="<?php i::esc_attr_e('Adicionar regulamento');?>" editable></entity-files-list> -->
                     <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Adicionar arquivos');?>" editable></entity-files-list>
                     <div class="col-12">
                         <entity-links :entity="entity" title="<?php i::esc_attr_e('Adicionar links'); ?>" editable></entity-links>
@@ -100,10 +100,10 @@ $this->import('
         <mapas-card>
             <div class="grid-12">
                 <entity-terms :entity="entity" taxonomy="area" classes="col-12" title="<?php i::esc_attr_e('Áreas de interesse'); ?>" editable></entity-terms>
-<!--                <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>-->
+               <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
                 <entity-seals :entity="entity" editable classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                 <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags')?>" editable></entity-terms>
-                <entity-related-agents editable :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>" editable></entity-related-agents>
+                <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>" editable></entity-related-agents>
                 <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
                 <entity-log :entity="entity" classes="col-12"></entity-log>
             </div>
