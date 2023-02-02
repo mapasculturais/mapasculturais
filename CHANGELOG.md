@@ -6,6 +6,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Melhorias
 - Muda formulario de recurso para a tela da ficha de inscrição
+### Correções
+- seta como vazio campo escolaridade do agent caso esteja com valor não informado
 
 ## [5.5.7] - 2023-01-26
 ### Correções
