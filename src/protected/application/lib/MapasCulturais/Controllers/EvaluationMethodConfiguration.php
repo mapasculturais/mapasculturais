@@ -21,7 +21,10 @@ class EvaluationMethodConfiguration extends Controller {
     use Traits\ControllerTypes,
         Traits\ControllerAgentRelation,
         Traits\ControllerEntity,
-        Traits\ControllerEntityActions;
+        Traits\ControllerEntityActions {
+            Traits\ControllerEntityActions::PATCH_single as _PATCH_single;
+            Traits\ControllerEntityActions::POST_single as _POST_single;
+        }
         
     function __construct()
     {
@@ -59,14 +62,14 @@ class EvaluationMethodConfiguration extends Controller {
     function PATCH_single($data = null) {
         $this->_setPermissionCacheUsers();
         
-        parent::PATCH_single();
+        $this->_PATCH_single();
     }
     
     
     function POST_single($data = null) {
         $this->_setPermissionCacheUsers();
         
-        parent::POST_single();
+        parent::_POST_single();
     }
 
     protected function _getValuerAgentRelation() {
