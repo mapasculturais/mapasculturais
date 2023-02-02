@@ -1,6 +1,8 @@
-<?php 
+<?php
+
 use MapasCulturais\i;
-$this->layout = 'entity'; 
+
+$this->layout = 'entity';
 
 $this->import('
     entity-actions
@@ -25,25 +27,25 @@ $this->import('
 ');
 
 $this->breadcrumb = [
-    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-    ['label'=> i::__('Meus Espaços'), 'url' => $app->createUrl('panel', 'spaces')],
-    ['label'=> $entity->name, 'url' => $app->createUrl('space', 'edit', [$entity->id])],
+    ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+    ['label' => i::__('Meus Espaços'), 'url' => $app->createUrl('panel', 'spaces')],
+    ['label' => $entity->name, 'url' => $app->createUrl('space', 'edit', [$entity->id])],
 ];
 ?>
 
 <div class="main-app">
-    <mapas-breadcrumb></mapas-breadcrumb>    
-    <entity-header :entity="entity" editable></entity-header>    
+    <mapas-breadcrumb></mapas-breadcrumb>
+    <entity-header :entity="entity" editable></entity-header>
     <mapas-container>
         <mapas-card class="feature">
             <template #title>
-                <label class="card__title--title"><?php i::_e("Informações de Apresentação")?></label>
-                <p class="card__title--description"><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
+                <label class="card__title--title"><?php i::_e("Informações de Apresentação") ?></label>
+                <p class="card__title--description"><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários") ?></p>
             </template>
-            <template #content>                
+            <template #content>
                 <div class="left">
                     <div class="grid-12 v-center">
-                        <entity-cover :entity="entity" classes="col-12"></entity-cover>                        
+                        <entity-cover :entity="entity" classes="col-12"></entity-cover>
                         <div class="col-3 sm:col-12">
                             <entity-profile :entity="entity"></entity-profile>
                         </div>
@@ -55,7 +57,7 @@ $this->breadcrumb = [
                         </div>
                         <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
                         <entity-field :entity="entity" classes="col-12" label="Link para página ou site do espaço" prop="site"></entity-field>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="divider"></div>
                 <div class="right">
@@ -64,12 +66,12 @@ $this->breadcrumb = [
                 </div>
             </template>
         </mapas-card>
-        <main>         
+        <main>
             <mapas-card>
                 <template #title>
-                    <label><?php i::_e("Endereço do espaço"); ?></label>                    
+                    <label><?php i::_e("Endereço do espaço"); ?></label>
                 </template>
-                <template #content>   
+                <template #content>
                     <div class="grid-12">
                         <entity-location :entity="entity" classes="col-12" editable hide-label></entity-location>
                     </div>
@@ -77,9 +79,9 @@ $this->breadcrumb = [
             </mapas-card>
             <mapas-card>
                 <template #title>
-                    <label><?php i::_e("Informações sobre o espaço"); ?></label>                    
+                    <label><?php i::_e("Informações sobre o espaço"); ?></label>
                 </template>
-                <template #content>   
+                <template #content>
                     <div class="grid-12">
                         <entity-field :entity="entity" classes="col-12" prop="emailPublico"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="emailPrivado"></entity-field>
@@ -87,8 +89,8 @@ $this->breadcrumb = [
                         <entity-field :entity="entity" classes="col-12" label="Telefone privado 1" prop="telefone1"></entity-field>
                         <entity-field :entity="entity" classes="col-12" label="Telefone privado 2" prop="telefone2"></entity-field>
                     </div>
-                </template>   
-            </mapas-card>            
+                </template>
+            </mapas-card>
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Mais informações públicas"); ?></label>
@@ -96,14 +98,18 @@ $this->breadcrumb = [
                 </template>
                 <template #content>
                     <div class="grid-12">
-                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Adicionar arquivos para download')?>" editable></entity-files-list>
+                        <label class="col-12 long-description"><?php i::_e('Apresente melhor o seu Espaço. 
+                         Adicione documentos, links, vídeos e imagens que contem a sua história.')?></label>
+                        <entity-field :entity="entity" classes="col-12" prop="longDescription" label="<?php i::_e('Descrição'); ?>"></entity-field>
+
+                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Adicionar arquivos para download') ?>" editable></entity-files-list>
                         <div class="col-12">
-                            <entity-links :entity="entity" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>                    
+                            <entity-links :entity="entity" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
                         </div>
                         <entity-gallery-video :entity="entity" classes="col-12" title="<?php i::_e('Adicionar vídeos') ?>" editable></entity-gallery-video>
                         <entity-gallery :entity="entity" classes="col-12" title="<?php i::_e('Adicionar fotos na galeria') ?>" editable></entity-gallery>
                     </div>
-                </template>  
+                </template>
             </mapas-card>
         </main>
         <aside>

@@ -6,6 +6,12 @@
     flex-direction: column;
     align-items: flex-start;
 
+    .button-up {
+        svg {
+            font-size: size(18.5);
+        }
+    }
+
     &__title {
         font-weight: 700;
         font-size: size(18);

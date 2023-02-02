@@ -18,46 +18,76 @@
             flex-direction: row;
             justify-content: space-between;
 
-            .account {
+            .left {
 
-                &__left {
+                display: grid;
+                gap: size(16);
+                align-items: center;
+                grid-template-columns: size(40) 1fr;
+
+                &-icon {
+                    width: size(40);
+                    height: size(40);
                     display: flex;
+                    justify-content: center;
                     align-items: center;
+                    border-radius: var(--mc-border-radius-pill);
+                    background-color: var(--mc-low-500);
 
-                    .title {
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
+                    .icon {
+                        font-size: size(20);
+                        color: var(--mc-high-500);
+                    }
+                }
 
-                        &__background {
-                            display: flex;
-                            background-color: var(--mc-low-500);
-                            width: 40px;
-                            height: 40px;
-                            border-radius: 50%;
-                            justify-content: center;
-                            align-items: center;
+                &-title {
+                    font-weight: 700;
+                    font-size: size(32);
+                    line-height: size(44);
+                }
 
-                            &-icon {
-                                height: 20px;
-                                width: 19.5px;
-                                color: var(--mc-high-500);
-                            }
+
+            }
+
+            .right {
+                &-help {
+                    background-color: var(--mc-gray-300);
+                    border-radius: var(--mc-border-radius-pill);
+                    padding: size(7) size(11);
+                    font-weight: bold;
+                    font-size: size(12);
+                    line-height: size(16);
+                    text-decoration: none;
+                    color: var(--mc-low-500);
+
+                }
+
+            }
+
+            @include mobile {
+                .left {
+                    grid-template-columns: size(32) 1fr;
+
+                    gap: size(8);
+
+                    &-icon {
+                        width: size(32);
+                        height: size(32);
+
+                        .icon {
+                            font-size: size(16);
                         }
                     }
 
-                    gap: 16px;
-
-                    &-privacy {
-
+                    &-title {
                         font-weight: 700;
-                        font-size: 32px;
-                        line-height: 44px;
-                        max-width: 100%;
+                        font-size: size(18);
+                        line-height: size(25);
                     }
                 }
 
             }
+
         }
 
         &-content {
@@ -65,10 +95,8 @@
             display: grid;
             grid-template-columns: size(113) 1fr;
             gap: size(32);
-            
-            @include mobile {
-                grid-template-columns: 1fr;
-            }
+
+
 
             .management {
                 &-icon {
@@ -127,6 +155,30 @@
                         &>* {
                             // min-width: size(260);
                             flex-basis: 50%;
+                        }
+                    }
+                }
+            }
+
+            @include mobile {
+                grid-template-columns: 1fr;
+
+                .management {
+                    &-icon {
+                        justify-self: center;
+
+                        .iconify {}
+                    }
+
+                    &-content {
+                        &__label {
+                            margin-bottom: size(16);
+                        }
+                        &__info {
+                            p {
+                                flex-basis: 100%;
+                                margin: 0 0 size(16);
+                            }
                         }
                     }
                 }
@@ -207,7 +259,7 @@
 
                 @include mobile {
                     padding-inline: 0;
-                    max-width: calc(100vw - 29px);
+                    max-width: calc(100vw - 85px);
                     // max-width: 100%;
                 }
 
