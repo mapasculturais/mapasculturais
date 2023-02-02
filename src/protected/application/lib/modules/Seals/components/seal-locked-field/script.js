@@ -1,5 +1,5 @@
-app.component('form-block-fields', {
-    template: $TEMPLATES['form-block-fields'],
+app.component('seal-locked-field', {
+    template: $TEMPLATES['seal-locked-field'],
     props: {
         entity: {
             type: Entity,
