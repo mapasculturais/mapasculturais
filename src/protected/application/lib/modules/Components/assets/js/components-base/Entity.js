@@ -1,7 +1,7 @@
 class Entity {
     constructor(objectType, id, scope) {
-        this.id = id;
         this.__objectType = objectType;
+        this.id = id;
         this.__scope = (scope || 'default');
         this.__validationErrors = {};
         
