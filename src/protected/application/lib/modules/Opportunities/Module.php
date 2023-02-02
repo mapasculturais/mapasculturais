@@ -79,6 +79,16 @@ class Module extends \MapasCulturais\Module{
                 ['route' => 'panel/accountability', 'icon' => 'opportunity', 'label' => i::__('Prestações de contas')],
             ];
         });
+
+        $app->hook('Theme::useOpportunityAPI', function () use ($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            $this->enqueueScript('components', 'opportunities-api', 'js/OpportunitiesAPI.js', ['components-api']);
+        });
+
+        $app->hook('mapas.printJsObject:before', function() use($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            $this->jsObject['config']['evaluationMethods'] = $app->getRegisteredEvaluationMethods();
+        });
     }
 
     function register(){

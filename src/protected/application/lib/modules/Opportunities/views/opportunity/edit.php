@@ -8,6 +8,7 @@ $this->import('
     entity-header
     tabs
     opportunity-basic-info
+    opportunity-phases-config
 ');
 
 $this->breadcrumb = [
@@ -18,13 +19,14 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
-  <mapas-breadcrumb></mapas-breadcrumb>
-  <entity-header :entity="entity" editable></entity-header>
+    <mapas-breadcrumb></mapas-breadcrumb>
+    <entity-header :entity="entity" editable></entity-header>
     <tabs class="tabs">
         <tab label="<?= i::__('Informações') ?>" slug="info">
             <opportunity-basic-info :entity="entity"></opportunity-basic-info>
         </tab>
         <tab label="<?= i::__('Configuração de fases') ?>" slug="config">
+            <opportunity-phases-config :entity="entity"></opportunity-phases-config>
         </tab>
         <tab label="<?= i::__('Inscrições e Resultados') ?>" slug="subs_result">
         </tab>
