@@ -1,5 +1,5 @@
-app.component('form-valid-period', {
-    template: $TEMPLATES['form-valid-period'],
+app.component('seal-form-valid-period', {
+    template: $TEMPLATES['seal-form-valid-period'],
     props: {
         entity: {
             type: Entity,
