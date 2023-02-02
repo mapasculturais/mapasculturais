@@ -3,13 +3,13 @@
 .panel-home {
     min-height: 100%;
     background-color: var(--mc-gray-100);
-    
+
     &__header {
+        background-color: var(--mc-high-500);
         display: flex;
         flex-direction: column;
         gap: size(24);
-        padding: size(29) size(32) size(9);
-        max-width: size(1088);
+        padding: size(29) size(48) size(9) size(32);
 
         &--title {
             label.title {
@@ -28,8 +28,8 @@
                 align-items: center;
                 display: flex;
                 gap: size(8);
-                
-                .avatar{
+
+                .avatar {
                     align-items: center;
                     border-radius: var(--mc-border-radius-pill);
                     contain: content;
@@ -38,7 +38,7 @@
                     height: size(56);
                     width: size(56);
                 }
-    
+
                 .name {
                     font-size: size(24);
                     font-weight: 600;
@@ -52,11 +52,13 @@
                     .avatar {
                         display: none;
                     }
+
                     .name {
                         font-size: size(16);
                         line-height: size(22);
                     }
                 }
+
                 &-button {
                     .button {
                         font-size: size(14);
@@ -64,7 +66,7 @@
 
                         .iconify {
                             display: none;
-                        }                        
+                        }
                     }
                 }
             }
@@ -78,16 +80,18 @@
     }
 
     &__tabs {
-        .tab-component{
+        .tab-component {
             padding: size(32) size(40);
             background-color: var(--mc-gray-100);
         }
 
-        .tabs-component{
-            &__header{
+        .tabs-component {
+            &__header {
                 padding: 0 size(31);
+                background-color: var(--mc-high-500);
+
             }
-    
+
             &__buttons {
                 margin: 0;
             }
@@ -98,5 +102,5 @@
             flex-direction: column;
             gap: size(60);
         }
-    }    
+    }
 }
