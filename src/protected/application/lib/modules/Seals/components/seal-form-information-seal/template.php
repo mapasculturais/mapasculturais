@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 $this->import('
     mapas-card
-    form-valid-period
+    seal-form-valid-period
     entity-field
     seal-activity-card
     image-uploader
@@ -28,7 +28,7 @@ $this->import('
                 <entity-field :entity="entity" prop="name"></entity-field>
                 <div>
                     <h3>Validade do certificado do selo</h3>
-                    <form-valid-period :entity="entity"></form-valid-period>
+                    <seal-form-valid-period :entity="entity"></seal-form-valid-period>
                 </div>
             </div>
             <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>

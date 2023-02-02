@@ -1,5 +1,5 @@
-app.component('form-information-seal', {
-    template: $TEMPLATES['form-information-seal'],
+app.component('seal-form-information-seal', {
+    template: $TEMPLATES['seal-form-information-seal'],
     props: {
         entity: {
             type: Entity,
@@ -11,7 +11,7 @@ app.component('form-information-seal', {
         },
     },
     setup() {
-        const text = Utils.getTexts('form-information-seal')
-        return { text }
+        const text = Utils.getTexts('seal-form-information-seal');
+        return { text };
     }
 });

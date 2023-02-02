@@ -1,10 +1,14 @@
 @use '../settings/mixins' as *;
 
 .p-user-detail {
-    padding: size(50) size(32) size(30);
+    padding: size(50) 0 size(30);
     max-width: size(1088);
     background-color: var(--mc-gray-100);
-    height:100%;
+    height: 100%;
+
+    &>* {
+        padding-inline: 2rem;
+    }
 
     &__header {
         &-top {
@@ -61,6 +65,10 @@
             display: grid;
             grid-template-columns: size(113) 1fr;
             gap: size(32);
+            
+            @include mobile {
+                grid-template-columns: 1fr;
+            }
 
             .management {
                 &-icon {
@@ -98,6 +106,7 @@
                                 color: var(--mc-danger-500);
                                 margin-right: size(6);
                             }
+
                             a {
                                 color: var(--mc-primary-500);
                                 font-size: 14px;
@@ -116,7 +125,7 @@
                         max-width: size(600);
 
                         &>* {
-                            min-width: size(260);
+                            // min-width: size(260);
                             flex-basis: 50%;
                         }
                     }
@@ -196,6 +205,12 @@
 
             .tabs-component {
 
+                @include mobile {
+                    padding-inline: 0;
+                    max-width: calc(100vw - 29px);
+                    // max-width: 100%;
+                }
+
                 &__entities {
                     max-width: size(938);
                     background-color: var(--mc-high-500);
@@ -227,7 +242,6 @@
 
                         .panel--entity-tabs--identify {
                             background-color: var(--mc-high-500);
-                            margin-left: 16px;
 
                             &__name {
                                 a {

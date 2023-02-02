@@ -158,10 +158,11 @@ abstract class AssetManager{
         $pathinfo = pathinfo($asset_filename);
         $ftime = filemtime($asset_filename);
         $hash = crc32($asset_filename);
+        $folder_name = basename($pathinfo['dirname']);
         if ($include_hash_in_filename) {
-            return "{$pathinfo['filename']}-{$hash}-{$ftime}.{$pathinfo['extension']}";
+            return "{$pathinfo['filename']}--{$folder_name}--{$hash}-{$ftime}.{$pathinfo['extension']}";
         } else {
-            return "{$pathinfo['filename']}.{$pathinfo['extension']}";
+            return "{$pathinfo['filename']}--{$folder_name}--.{$pathinfo['extension']}";
         }
     }
 
