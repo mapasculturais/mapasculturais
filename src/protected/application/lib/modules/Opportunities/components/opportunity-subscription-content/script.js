@@ -15,6 +15,12 @@ app.component('opportunity-subscription-content' , {
     computed: {
         isLogged () {
             return $MAPAS.userId != null
+        },
+        dateStart () {
+            return new Date($MAPAS.requestedEntity.registrationFrom.date).toLocaleDateString();
+        },
+        dateEnd () {
+            return new Date($MAPAS.requestedEntity.registrationTo.date).toLocaleString();
         }
     }
 });

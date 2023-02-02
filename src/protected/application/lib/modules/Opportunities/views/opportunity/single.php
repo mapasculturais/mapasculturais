@@ -15,10 +15,10 @@ $this->import('
     entity-related-agents
     entity-owner
     entity-terms
-    timeline
     entity-actions
     entity-request-ownership
     opportunity-subscription-content
+    opportunity-timeline-phases
 ');
 $this->breadcrumb = [
   ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
@@ -36,21 +36,7 @@ $this->breadcrumb = [
         </main>
         <aside>
             <div class="grid-12">
-                <div class="col-12 controller-opportunity__phases">
-                    <div>
-                        <timeline
-                            :timeline-items="[{
-                                from: new Date(2017, 5, 2),
-                                title: 'Inscrições',
-                                description: 'de 05/03/2022 a 21/03/2022 às 12:00',
-                                showDayAndMonth: true
-                                }]"
-                            :message-when-no-items="'NO'"
-                            :unique-year="true"
-                            order="asc">
-                        </timeline>
-                    </div>
-                </div>
+                <opportunity-timeline-phases></opportunity-timeline-phases>
                 <div class="col-12">
                     <button class="button button--primary-outline">
                       <?= i::__("Baixar regulamento") ?>
@@ -70,6 +56,9 @@ $this->breadcrumb = [
                             <p>{{ entity.shortDescription }}</p>
                         </div>
                         <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
+                        <div class="col-12">
+                            <entity-links :entity="entity" title="<?php i::esc_attr_e('Links'); ?>"></entity-links>
+                        </div>
                         <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                         <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
                         <div class="col-12">

@@ -10,7 +10,7 @@ use MapasCulturais\i;
         </p>
         <div class="controller-opportunity__period--content">
             <p class="controller-opportunity__period--description">
-              <?= i::__("Inscrições abertas de 05/03/2022 a 21/03/2022 às 12:00") ?>
+              <?= i::__("Inscrições abertas de") ?> {{ dateStart }} <?= i::__(" a "); ?> {{ dateEnd }}
             </p>
         </div>
     </div>
