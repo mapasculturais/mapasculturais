@@ -1,5 +1,12 @@
 @use '../settings/mixins' as *;
 
+.controller-panel {
+    &.action-index {
+        background: linear-gradient(90deg, white, white 50%, var(--mc-gray-100) 50%, var(--mc-gray-100));
+    }
+}
+
+
 .panel {
     background-color: var(--mc-white);
     color: var(--mc-black);
