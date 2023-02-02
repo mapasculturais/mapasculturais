@@ -3,7 +3,7 @@ app.component('create-occurrence', {
     emits: ['create'],
 
     setup() {
-        $DESCRIPTIONS.eventOccurrence.day = 
+        $DESCRIPTIONS.eventoccurrence.day = 
         {
             "isMetadata": false,
             "isEntityRelation": false,
@@ -52,7 +52,7 @@ app.component('create-occurrence', {
     },
 
     created() {
-        this.newOccurrence = this.occurrence || new Entity('eventOccurrence');
+        this.newOccurrence = this.occurrence || new Entity('eventoccurrence');
     },
 
     computed: {
@@ -250,7 +250,7 @@ app.component('create-occurrence', {
             this.step = 0;
             this.free = false;
             this.space = null;
-            this.newOccurrence = new Entity('eventOccurrence');
+            this.newOccurrence = new Entity('eventoccurrence');
             this.frequency = 'once';
             this.startsOn = null;
             this.startsAt = null;
