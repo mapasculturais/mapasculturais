@@ -10,7 +10,7 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
         </label>
         <div class="field">
             <label> <?php i::_e('Status do espaço') ?> </label>
-            <label> <input v-on:click="acessibilidade($event)" type="checkbox"> <?php i::_e('Possui acessibilidade') ?> </label>
+            <label> <input v-model="pseudoQuery['acessibilidade']" true-value="Sim" :false-value="undefined" type="checkbox"> <?php i::_e('Possui acessibilidade') ?> </label>
             <label class="verified"> <input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Espaços oficiais') ?> </label>
         </div>  
         <div class="field">
@@ -28,5 +28,6 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['term:area']" classes="space__background space__color"></mc-tag-list>
         </div>
+        <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros')?><mc-icon  name="close"></mc-icon></a>
     </form>
 </search-filter>

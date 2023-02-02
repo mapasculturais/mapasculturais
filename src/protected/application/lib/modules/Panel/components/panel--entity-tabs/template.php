@@ -28,8 +28,9 @@ $tabs = $tabs ?? [
         <entities :name="type + ':<?=$status?>'" :type="type" 
             :select="select"
             :query="queries['<?=$status?>']" 
-            :limit="50" watch-query>
-
+            :limit="50" 
+            :order="queries['<?=$status?>']['@order']"
+            watch-query>
             <template #header="{entities}">
                 <form class="entity-tabs__filters panel__row" @submit="$event.preventDefault();">
                     <slot name="filters">
@@ -41,12 +42,14 @@ $tabs = $tabs ?? [
                         <slot name="filters-additional" :entities="entities" :query="queries['<?=$status?>']"></slot>
 
                         <select class="entity-tabs__search-select primary__border-solid" v-model="queries['<?=$status?>']['@order']">
+                            <option value="none" selected><?= i::__('Ordenar por') ?></option>
                             <option value="name ASC"><?= i::__('ordem alfabética') ?></option>
                             <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
                             <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
                             <option value="updateTimestamp DESC"><?= i::__('modificadas recentemente') ?></option>
                             <option value="updateTimestamp ASC"><?= i::__('modificadas há mais tempo') ?></option>
                         </select>
+
                     </slot>
                 </form>
             </template>
