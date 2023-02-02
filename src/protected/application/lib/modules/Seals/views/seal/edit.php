@@ -13,9 +13,8 @@ $this->import('
     mapas-breadcrumb
     mapas-card
     mapas-container
-    form-valid-period
-    form-block-fields
-    form-information-seal
+    seal-locked-field
+    seal-form-information-seal
     tabs
     entity-related-agents
     entity-parent-edit
@@ -36,7 +35,7 @@ $this->breadcrumb = [
             <div class="tabs__info">
                 <mapas-container>
                     <main>
-                        <form-information-seal :entity="entity"></form-information-seal>
+                        <seal-form-information-seal :entity="entity"></seal-form-information-seal>
                     </main>
                     <aside>
                         <mapas-card>
@@ -55,7 +54,7 @@ $this->breadcrumb = [
         </tab>
         <tab label="<?= i::__('Bloqueio de campos') ?>" slug="info_block">
             <div class="tabs__info">
-                <form-block-fields classes="tabs-seal-edit" :entity="entity"></form-block-fields>
+                <seal-locked-field classes="tabs-seal-edit" :entity="entity"></seal-locked-field>
             </div>
         </tab>
     </tabs>
