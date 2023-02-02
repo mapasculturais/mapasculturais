@@ -20,6 +20,7 @@
         "vue": "^3.2.39",
         "vue-advanced-cropper": "^2.8.3",
         "vue-final-modal": "^3.4.4",
-        "vue3-carousel": "^0.1.46"
+        "vue3-carousel": "^0.1.46",
+        "vue-recaptcha": "^2.0.3"
     }
 }
