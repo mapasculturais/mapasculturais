@@ -5,7 +5,7 @@ $this->import('
     search tabs search-list search-map search-filter-agent create-agent
     ');
 $this->breadcrumb = [
-    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('index')],
+    ['label'=> i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
     ['label'=> i::__('Agentes'), 'url' => $app->createUrl('agents')],
 ];
 ?>

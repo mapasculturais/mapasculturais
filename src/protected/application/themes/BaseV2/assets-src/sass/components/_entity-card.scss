@@ -182,6 +182,7 @@
 			line-height: size(16);
 			margin-bottom: size(16);
 			color: var(--mc-low-700);
+			word-break: break-all;
 		}
 
 		&--terms {
