@@ -20,24 +20,6 @@ app.component('__template__', {
     // define os eventos que este componente emite
     emits: ['namesDefined'],
 
-    setup() { 
-        // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('__template__')
-        return { text }
-    },
-
-    beforeCreate() { },
-    created() { },
-
-    beforeMount() { },
-    mounted() { },
-
-    beforeUpdate() { },
-    updated() { },
-
-    beforeUnmount() {},
-    unmounted() {},
-
     props: {
         entity: {
             type: Entity,
@@ -68,6 +50,24 @@ app.component('__template__', {
         },
 
     },
+
+    setup() { 
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('__template__')
+        return { text }
+    },
+
+    beforeCreate() { },
+    created() { },
+
+    beforeMount() { },
+    mounted() { },
+
+    beforeUpdate() { },
+    updated() { },
+
+    beforeUnmount() {},
+    unmounted() {},
 
     data() {
         return {
