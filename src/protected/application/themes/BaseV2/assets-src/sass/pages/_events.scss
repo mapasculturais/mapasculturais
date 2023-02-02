@@ -16,6 +16,17 @@
             }
         }
 
+        .long-field {
+            .field {
+                label {
+                    font-weight: 700;
+                    font-size: 18px;
+                    line-height: 25px;
+                    color: var(--mc-high-700);
+                }
+            }
+        }
+
         .divider {
             width: 100%;
             border-bottom: size(1) solid;
@@ -24,11 +35,12 @@
 
     &.action-single {
         .longDescription {
-           p {
-            overflow-wrap: break-word;
-            word-break: break-word;
-           }
+            p {
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
         }
+
         .tabs {
             &-component {
                 &__header {
@@ -36,7 +48,7 @@
                     padding: 0;
 
                     @media (max-width: size(1200)) {
-                        margin: 0 size(16);                        
+                        margin: 0 size(16);
                     }
                 }
 
@@ -84,6 +96,7 @@
                         flex-direction: column;
                         gap: size(5);
                         padding-bottom: size(32);
+
                         &__label {
                             font-weight: 700;
                             font-size: size(18);
@@ -91,7 +104,10 @@
                         }
 
                         &__audio,
-                        &__libras, &__phone, &__infos, &__attendance {
+                        &__libras,
+                        &__phone,
+                        &__infos,
+                        &__attendance {
                             align-items: center;
                             display: flex;
                             font-weight: 500;
@@ -103,9 +119,9 @@
                             span {
                                 text-transform: uppercase;
                             }
-                            
+
                         }
-                        
+
                     }
 
                     h3 {

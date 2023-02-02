@@ -98,9 +98,9 @@ $this->breadcrumb = [
                 </template>
                 <template #content>
                     <div class="grid-12">
-                        <label class="col-12"><?php i::_e('Apresente melhor o seu Espaço. 
+                        <label class="col-12 long-description"><?php i::_e('Apresente melhor o seu Espaço. 
                          Adicione documentos, links, vídeos e imagens que contem a sua história.')?></label>
-                        <entity-field :entity="entity" classes="col-12" prop="longDescription" title="<?php i::_e('Descrição'); ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" prop="longDescription" label="<?php i::_e('Descrição'); ?>"></entity-field>
 
                         <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Adicionar arquivos para download') ?>" editable></entity-files-list>
                         <div class="col-12">
