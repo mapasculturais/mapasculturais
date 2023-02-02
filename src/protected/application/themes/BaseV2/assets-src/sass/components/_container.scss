@@ -71,6 +71,18 @@ $col-columns: 12;
         align-items: end;
     }
 
+    &.h-center {
+        justify-self: center;
+    }
+
+    &.h-left {
+        justify-self: left;
+    }
+
+    &.h-right {
+        justify-self: right;
+    }
+
     @media (max-width: size(300)) {
         gap: size(10) size(14);
     }
