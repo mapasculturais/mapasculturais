@@ -12,7 +12,6 @@ $this->import('
     entity-links
     entity-list
     entity-owner
-    entity-parent
     entity-related-agents
     entity-seals
     entity-social-media

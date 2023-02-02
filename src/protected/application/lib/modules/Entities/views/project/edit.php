@@ -1,6 +1,8 @@
-<?php 
+<?php
+
 use MapasCulturais\i;
-$this->layout = 'entity'; 
+
+$this->layout = 'entity';
 
 $this->import('
     create-project
@@ -25,11 +27,11 @@ $this->import('
     mapas-card
     mapas-container
 ');
-        
+
 $this->breadcrumb = [
-    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-    ['label'=> i::__('Meus Projetos'), 'url' => $app->createUrl('panel', 'projects')],
-    ['label'=> $entity->name, 'url' => $app->createUrl('project', 'edit', [$entity->id])],
+    ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+    ['label' => i::__('Meus Projetos'), 'url' => $app->createUrl('panel', 'projects')],
+    ['label' => $entity->name, 'url' => $app->createUrl('project', 'edit', [$entity->id])],
 ];
 ?>
 
@@ -39,8 +41,8 @@ $this->breadcrumb = [
     <mapas-container>
         <mapas-card class="feature">
             <template #title>
-                <label><?php i::_e("Informações de Apresentação")?></label>
-                <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
+                <label><?php i::_e("Informações de Apresentação") ?></label>
+                <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários") ?></p>
             </template>
             <template #content>
                 <div class="left">
@@ -57,12 +59,12 @@ $this->breadcrumb = [
                         </div>
                         <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
                         <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Link para página ou site do projeto") ?>" prop="site"></entity-field>
-                    </div>                       
+                    </div>
                 </div>
                 <div class="divider"></div>
                 <div class="right">
                     <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
-                </div>  
+                </div>
             </template>
         </mapas-card>
         <main>
@@ -70,19 +72,19 @@ $this->breadcrumb = [
                 <template #title>
                     <label><?php i::_e("Período de execução do projeto"); ?></label>
                 </template>
-                <template #content>   
+                <template #content>
                     <div class="grid-12">
-                        <entity-field :entity="entity" classes="col-12" label="<?php i::_e('Data inicial')?>" prop="startsOn"></entity-field>
-                        <entity-field :entity="entity" classes="col-12" label="<?php i::_e('Data Final')?>" prop="endsOn"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" label="<?php i::_e('Data inicial') ?>" prop="startsOn"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" label="<?php i::_e('Data Final') ?>" prop="endsOn"></entity-field>
                     </div>
-                </template>   
+                </template>
             </mapas-card>
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Adicione atividades para o seu projeto"); ?></label>
                     <p><?php i::_e("Crie um projeto com informações básicas e de forma rápida."); ?></p>
                 </template>
-                <template #content>   
+                <template #content>
                     <div class="grid-12">
                         <div class="col-12">
                             <create-project editable></create-project>
@@ -91,41 +93,41 @@ $this->breadcrumb = [
                             <entity-activity-card :entity="true" editable></entity-activity-card>
                         </div>
                     </div>
-                </template>   
+                </template>
             </mapas-card>
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Adicione um projeto que integrará este**"); ?></label>
                     <p><?php i::_e("Selecione um projeto para que o seu projeto atual seja vinculado como integrante"); ?></p>
                 </template>
-                <template #content>   
-                
-                </template>   
+                <template #content>
+
+                </template>
             </mapas-card>
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Adicione um subprojeto"); ?></label>
                     <p><?php i::_e("Adicione um projeto que será vinculado a este"); ?></p>
                 </template>
-                <template #content>   
-                
-                </template>   
+                <template #content>
+
+                </template>
             </mapas-card>
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Vincule um evento ao seu projeto"); ?></label>
                 </template>
-                <template #content>   
+                <template #content>
                     <link-project entity="entity"></link-project>
-                </template>   
+                </template>
             </mapas-card>
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Contatos do projeto"); ?></label>
                 </template>
-                <template #content>   
-                
-                </template>   
+                <template #content>
+
+                </template>
             </mapas-card>
             <mapas-card>
                 <template #title>
@@ -134,29 +136,29 @@ $this->breadcrumb = [
                 </template>
                 <template #content>
                     <div class="grid-12">
-                        <entity-field :entity="entity" label="<?php i::_e('Descrição')?>" prop="longDescription"></entity-field>
-                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Adicionar arquivos para download')?>" editable></entity-files-list>
+                        <entity-field :entity="entity" classes="col-12" label="<?php i::_e('Descrição') ?>" prop="longDescription"></entity-field>
+                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Adicionar arquivos para download') ?>" editable></entity-files-list>
                         <div class="col-12">
-                            <entity-links :entity="entity" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>                    
+                            <entity-links :entity="entity" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
                         </div>
                         <entity-gallery-video :entity="entity" classes="col-12" title="<?php i::_e('Adicionar vídeos') ?>" editable></entity-gallery-video>
                         <entity-gallery :entity="entity" classes="col-12" title="<?php i::_e('Adicionar fotos na galeria') ?>" editable></entity-gallery>
                     </div>
                 </template>
-            </mapas-card>            
+            </mapas-card>
         </main>
-        <aside>            
+        <aside>
             <mapas-card>
-                <template #content>   
+                <template #content>
                     <div class="grid-12">
                         <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
-                        <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags')?>" editable></entity-terms>
+                        <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags') ?>" editable></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
-                        <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por')?>" editable></entity-owner>
-                        <entity-parent-edit :entity="entity" classes="col-12" type="project" ></entity-parent-edit>
+                        <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por') ?>" editable></entity-owner>
+                        <entity-parent-edit :entity="entity" classes="col-12" type="project"></entity-parent-edit>
                     </div>
-                </template>   
-            </mapas-card>            
+                </template>
+            </mapas-card>
         </aside>
     </mapas-container>
     <entity-actions :entity="entity" editable></entity-actions>
