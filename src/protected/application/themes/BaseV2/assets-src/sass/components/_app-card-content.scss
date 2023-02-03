@@ -45,3 +45,8 @@
     }
 
 }
+@include mobile{
+    .cardKey{
+        gap: 22px;
+    }
+}
