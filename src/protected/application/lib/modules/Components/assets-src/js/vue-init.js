@@ -11,7 +11,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 import * as Dates from 'date-fns';
 import * as FloatingVue from 'floating-vue'
 import MediaQuery from './media-query'
-
+import vMaska from 'maska'
 const app = Vue.createApp({})
 const pinia = Pinia.createPinia()
 
@@ -21,7 +21,9 @@ app.use(FloatingVue)
 app.component('Iconify', Icon)
 app.component('Cropper', VueAdvancedCropper)
 app.component('Datepicker', Datepicker);
+// app.component('vMaska', vMaska);
 app.use(MediaQuery)
+
 
 globalThis.app = app
 globalThis.Pinia = Pinia
@@ -34,6 +36,7 @@ globalThis.MarkerClusterGroup = MarkerClusterGroup
 globalThis.Leaflet = Leaflet
 globalThis.Datepicker = Datepicker
 globalThis.Dates = Dates;
+// globalThis.vMaska = vMaska;
 
 
 globalThis.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
