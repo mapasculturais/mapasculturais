@@ -14,7 +14,11 @@ use MapasCulturais\i;
 
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @change="change($event)">
 
-        <input v-if="is('date')" :value="value?.sql('date')" :id="propId" :name="prop" :type="fieldType" :min="min || description.min" :max="max || description.max" :step="description.step" @change="change($event)">
+        <datepicker v-if="is('date')" v-model="entity[prop]" :enable-time-picker="false" :locale="locale" :weekStart="0" :format="dateFormat" :dayNames="dayNames" autoApply :id="propId" :name="prop"></datepicker>
+
+        <datepicker v-if="is('datetime')" v-model="entity[prop]" :locale="locale" :weekStart="0" :format="dateFormat" :dayNames="dayNames" autoApply :id="propId" :name="prop"></datepicker>
+
+        <datepicker v-if="is('time')" v-model="entity[prop]" :locale="locale" time-picker mode-height="120" autoApply :id="propId" :name="prop"></datepicker>
 
         <input v-if="is('email') || is('url')" :value="value.format" :id="propId" :name="prop" :type="fieldType" @change="change($event)">
         
