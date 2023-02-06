@@ -59,7 +59,12 @@
             }
         }
 
-        @include mobile {
+
+    }
+
+    @media (max-width: size(800)) {
+        .user-mail__account-config {
+
             margin-inline: 16px;
 
             p {
