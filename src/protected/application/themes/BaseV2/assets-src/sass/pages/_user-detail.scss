@@ -204,7 +204,8 @@
     }
 
     .user-function {
-        max-width: size(970);
+
+        // max-width: size(970);
         position: relative;
         padding-top: size(24);
 
@@ -216,9 +217,12 @@
 
 
         &__box {
-            height: 100%;
+            width: size(970);
+            max-height: 100%;
             margin-top: 14px;
             padding-top: 16px;
+            // max-width: 970px;
+            // width: 100%;
 
             &--label {
                 font-weight: 700;
@@ -240,6 +244,14 @@
                 }
             }
         }
+    }
+    @media(max-width: 1200px) {
+        .user-function {
+            &__box{
+                width: 100%;
+            }
+        }
+        
     }
 
     .entity-seals {
