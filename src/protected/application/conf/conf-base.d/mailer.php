@@ -61,6 +61,10 @@ return [
             'title' => i::__("Inscrição enviada"),
             'template' => 'send_registration.html'
         ],
+        'claim_form' => [
+            'title' => i::__("Solicitação de recurso"),
+            'template' => 'claim_form.html'
+        ],
 
     ]
 

@@ -1910,18 +1910,20 @@ $$
         fclose($fp);
     },
     "seta como vazio campo escolaridade do agent caso esteja com valor não informado" => function() use ($conn, $app){
-
-           /** @var App $app */
-           $app= App::i();
-           $conn = $app->em->getConnection();
-           if($agent_ids = $conn->fetchAll("SELECT am.object_id as id  FROM agent_meta am WHERE am.key = 'escolaridade' AND am.value = 'Não Informar'")){
-               $app->disableAccessControl();
-               foreach($agent_ids as $value){
-                   $agent = $app->repo("Agent")->find($value['id']);
-                   $agent->escolaridade =  null;
-                   $agent->save(true);
-               }
-               $app->enableAccessControl();
-           }
+        /** @var App $app */
+        $app= App::i();
+        $conn = $app->em->getConnection();
+        if($agent_ids = $conn->fetchAll("SELECT am.object_id as id  FROM agent_meta am WHERE am.key = 'escolaridade' AND am.value = 'Não Informar'")){
+            $app->disableAccessControl();
+            foreach($agent_ids as $value){
+                $agent = $app->repo("Agent")->find($value['id']);
+                $agent->escolaridade =  null;
+                $agent->save(true);
+            }
+            $app->enableAccessControl();
+        }
+    },
+    'altera tipo da coluna description na tabela file' => function() use ($conn, $app){
+        $conn->executeQuery("ALTER TABLE file ALTER COLUMN description TYPE text;");
     }
 ] + $updates ;
