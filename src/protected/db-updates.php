@@ -1908,5 +1908,8 @@ $$
         $fp = fopen($path, "wb");
         fwrite($fp, $txt);
         fclose($fp);
+    },
+    'altera tipo da coluna description na tabela file' => function() use ($conn, $app){
+        $conn->executeQuery("ALTER TABLE file ALTER COLUMN description TYPE text;");
     }
 ] + $updates ;
