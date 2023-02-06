@@ -174,6 +174,7 @@
                         &__label {
                             margin-bottom: size(16);
                         }
+
                         &__info {
                             p {
                                 flex-basis: 100%;
@@ -205,7 +206,7 @@
 
     .user-function {
 
-       margin-right: auto;
+        margin-right: auto;
         position: relative;
         padding-top: size(24);
 
@@ -236,6 +237,7 @@
             &--content {
                 margin-left: 16px;
                 word-break: break-word;
+
                 &-text {
                     font-weight: 400;
                     font-size: 14px;
@@ -244,10 +246,12 @@
             }
         }
     }
+
     @media(max-width: 1200px) {
         .user-function {
-            &__box{
+            &__box {
                 width: 100%;
+
                 &--label {
                     word-wrap: break-word;
                     display: inline-block;
@@ -257,11 +261,13 @@
                     padding: 16px 0 8px 16px;
                     color: var(--mc-black);
                 }
+
                 &--content {
                     padding: size(8) 0 size(16) size(16);
                     margin-left: auto;
                     max-width: 100%;
                     word-break: break-word;
+
                     &-text {
                         font-weight: 400;
                         font-size: 14px;
@@ -269,10 +275,10 @@
                     }
                 }
             }
-            
+
 
         }
-        
+
     }
 
     .entity-seals {
@@ -285,7 +291,7 @@
         }
 
         &-content {
-            background-color: white;
+            background-color: var(--mc-high-500);
             max-width: 975px;
             padding: 16px;
 
@@ -328,15 +334,34 @@
 
                         .panel--entity-tabs--identify {
                             background-color: var(--mc-high-500);
-                            width: 40px;
+                            margin: 10px;
 
                             &__name {
-                                
+
                                 a {
                                     color: black;
                                     font-style: none;
                                     text-emphasis-style: none;
                                 }
+                            }
+
+
+                        }
+
+                        @media (max-width: 700px) {
+                            .panel--entity-tabs--identify {
+                                .subsite-form {
+                                    display: none;
+                                }
+
+                                .action-form {
+                                    padding-left: size(40);
+                                }
+
+                                .name-form {
+                                    padding-left: 24px;
+                                }
+
                             }
                         }
 
@@ -356,6 +381,7 @@
                             font-weight: 700;
                             font-size: 14px;
                             line-height: 19px;
+
                             &--id {
                                 width: 40px;
                             }
@@ -364,6 +390,11 @@
 
                                 a {
                                     text-decoration: none;
+                                }
+
+                                @media (max-width: 700px) {
+                                     white-space: nowrap;
+                                    display: inline-block;
                                 }
                             }
 
@@ -386,8 +417,9 @@
                                 min-height: max-content;
                                 margin-right: 97px;
 
-
-
+                                @media(max-width: 700px) {
+                                    gap: 6px;
+                                }
                                 &-edit {
                                     cursor: pointer;
 
@@ -420,16 +452,17 @@
                                         display: flex;
                                         margin-right: 8px;
 
-
-
                                     }
 
                                     @media(max-width: 700px) {
-
+                                        &--editable {
+                                            margin: 0;
+                                        }
                                         &--trash>span,
                                         &--archive>span {
                                             display: none;
                                         }
+
                                     }
 
                                     &--trash {
