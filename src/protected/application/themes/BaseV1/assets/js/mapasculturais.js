@@ -950,16 +950,21 @@ MapasCulturais.AjaxUploader = {
                                 break;
 
                             case 'append':
-                                for (var i in response[group]) {
-
-                                    if (!response[group][i].description)
-                                        response[group][i].description = response[group][i].name;
-
-                                    var html = Mustache.render(template, response[group][i]);
+                                if(response[group].length > 0){
+                                    for (var i in response[group]) {
+                                        if (!response[group][i].description)
+                                            response[group][i].description = response[group][i].name;
+    
+                                        var html = Mustache.render(template, response[group][i]);
+                                        $target.append(html);
+                                    }
+                                }else{
+                                    var html = Mustache.render(template, response[group]);
                                     $target.append(html);
                                 }
                                 break;
-
+                            default:
+                                break;
                         }
                     }
                     $form.trigger('ajaxForm.success', [response]);
