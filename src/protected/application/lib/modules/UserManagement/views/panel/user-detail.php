@@ -55,12 +55,12 @@ $this->import('
             <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
         </div>
 
-        <div class="p-user-detail__property-label">
+     <div class="p-user-detail__property-label">
             <h3><?= i::__('Propriedades do usuário') ?></h3>
         </div>
         <div class="p-user-detail__property-content">
             <div class="tabs-component">
-                <!-- tabs component p-user-detail__content-footer tabs-component--user -->
+                
                 <tabs class="tabs-component__entities"> 
                     <tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" icon='agent' classes="tabs-component-button--active-agent">
                         <user-management--ownership-tabs :user="entity" type="agent" classes="tabs-component__header footer-content-tabs"></user-management--ownership-tabs>
@@ -87,6 +87,6 @@ $this->import('
                     </tab>
                 </tabs>
             </div>
-        </div>
+        </div> 
     </div>
 </entity>

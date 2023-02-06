@@ -9,10 +9,10 @@ $this->import('
 <panel--entity-tabs tabs="publish,draft,trash,archived" :type='type' :user="user.id" :select="select">
     <template #before-list>
         <div class="grid-12 panel--entity-tabs--identify">
-            <div class="col-1 "><?= i::__('ID') ?></div>
-            <div class="col-4"><?= i::__('Nome') ?></div>
-            <div class="col-4"><?= i::__('Subsite') ?></div>
-            <div class="col-3 "><?= i::__('Ações') ?></div>
+            <div class="col-1  id-form"><?= i::__('ID') ?></div>
+            <div class="col-4 name-form"><?= i::__('Nome') ?></div>
+            <div class="col-4 subsite-form"><?= i::__('Subsite') ?></div>
+            <div class="col-3 action-form"><?= i::__('Ações') ?></div>
         </div>
     </template>
     <template #default="{entity, moveEntity}">
