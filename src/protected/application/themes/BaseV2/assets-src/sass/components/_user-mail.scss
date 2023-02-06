@@ -2,14 +2,13 @@
 
 .user-mail {
     &__account-config {
-
-
-        background-color: white;
+        
+        padding: size(12) 0 size(24) size(16);
+        background-color: var(--mc-high-500);
         max-width: size(970);
         margin-bottom: size(44);
-        padding: size(12) size(16);
-
-
+        margin-left: size(31);
+    
         &-label {
 
             font-weight: 700;
@@ -64,8 +63,7 @@
 
     @media (max-width: size(800)) {
         &__account-config {
-
-            margin-inline: 16px;
+            margin-inline: size(16);
 
             p {
                 display: flex;
