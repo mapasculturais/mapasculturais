@@ -3,6 +3,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.5.8] - 2023-02-06
+### Melhorias
+- Cria hooks que possibilitam manipular sidebar direito na ficha de inscrição
+- Cria novo template de e-mail para o recurso usando padrão header+footer+imagem
+### Correções
+- seta como vazio campo escolaridade do agent caso esteja com valor não informado
+- Corrige função append do ajaxUpload para entender quando o registro do grupo do arquivo for para um único arquivo
+
 ## [5.5.7] - 2023-01-26
 ### Correções
 - Corrige jsonSerialize da registration para quando a ficha é acessada por um gestor da oportunidade o mesmo poça ter acesso aos campos sem necessidade de liberação na permissão dos avaliadores
