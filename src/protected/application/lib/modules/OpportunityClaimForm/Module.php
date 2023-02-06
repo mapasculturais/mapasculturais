@@ -2,30 +2,12 @@
 namespace OpportunityClaimForm;
 
 use MapasCulturais\App,
-    MapasCulturais\Definitions,
     MapasCulturais\i;
 
 
 class Module extends \MapasCulturais\Module{
     function _init(){
         $app = App::i();
-
-        // Define a permissão de modificação da inscrição true apoos enviada caso o upload de arquivo seja do recurso
-        $app->hook('can(RegistrationFile.<<*>>)', function($user, &$result){
-            /** @var \MapasCulturais\Entities\RegistrationFile $this */
-            if($this->group === "formClaimUpload" && $this->owner->opportunity->publishedRegistrations && $this->owner->owner->canUser('@control') ){
-                $result = true;
-            }
-        });
-        $app->hook('template(registration.view.registration-sidebar-rigth):end', function () use($app) {
-            $registration = $this->controller->requestedEntity;
-            if ($registration->canUser('sendClaimMessage')) {
-                /** @var App $app */
-                $app->view->enqueueStyle('app', 'claim-form', 'css/claim-form.css');
-
-                $this->part('claim-form-upload', ['entity' => $registration]);
-            };
-        });
 
         $app->hook('mapasculturais.head', function() use($app){
             $app->view->jsObject['angularAppDependencies'][] = 'ng.opportunity-claim';
@@ -78,13 +60,6 @@ class Module extends \MapasCulturais\Module{
 
             $opportunity = $registration->opportunity;
 
-            $file_urls = [];
-            if($files = $registration->getFiles('formClaimUpload')){
-                foreach($files as $file){
-                    $file_urls[] = $file->url;
-                }
-            };
-
             $dataValue = [
                 'opportunityName' => $opportunity->name,
                 'opportunityUrl' => $opportunity->singleUrl,
@@ -94,21 +69,7 @@ class Module extends \MapasCulturais\Module{
                 'message' => $this->data['message'],
                 'userName' => $app->user->profile->name,
                 'userUrl' => $app->user->profile->url,
-                'files' => $file_urls,
-                'enableFile' => $file_urls ? true : false,
             ];
-
-            $index = md5(json_encode($dataValue));
-            $claimMessage = $registration->claimMessage ?: (object)[];
-            
-            $app->disableAccessControl();
-            if(!isset($claimMessage->$index)){
-                $claimMessage->$index = $dataValue;
-                $registration->claimMessage = $claimMessage;
-                $registration->save(true);
-            }
-            
-            $app->enableAccessControl();
 
             $message = $app->renderMailerTemplate('opportunity_claim', $dataValue);
 
@@ -142,8 +103,6 @@ class Module extends \MapasCulturais\Module{
     }
 
     function register(){
-        $app = App::i();
-        
 
         $this->registerOpportunityMetadata('claimDisabled', [
             'label' => i::__('Desabilitar formulário de recursos'),
@@ -159,22 +118,6 @@ class Module extends \MapasCulturais\Module{
             'validations' => [
                 'v::email()' => \MapasCulturais\i::__('Email inválido')
             ]
-        ]);
-
-        $app->registerFileGroup(
-            'registration',
-            new Definitions\FileGroup(
-                'formClaimUpload',
-                ['^application/pdf'],
-                'O arquivo não e valido'
-            )
-        );
-
-        $this->registerRegistrationMetadata('claimMessage', [
-            'label' => \MapasCulturais\i::__('Mensagens do recurso'),
-            'required' => true,
-            'type' => 'json',
-            'default' => '{}',
         ]);
     }
 }
