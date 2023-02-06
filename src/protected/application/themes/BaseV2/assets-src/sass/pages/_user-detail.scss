@@ -231,6 +231,7 @@
             background-color: var(--vc-clr-white);
 
             &--content {
+                word-break: break-word;
                 &-text {
                     font-weight: 400;
                     font-size: 14px;
