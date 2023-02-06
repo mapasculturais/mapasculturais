@@ -294,7 +294,6 @@
                 @include mobile {
                     padding-inline: 0;
                     max-width: calc(100vw - 85px);
-                    // max-width: 100%;
                 }
 
                 &__entities {
@@ -305,6 +304,7 @@
                     .tabs-component {
 
                         &__header {
+
                             width: 100%;
                             background-color: var(--mc-high-500);
                             border-radius: 6px;
@@ -328,8 +328,10 @@
 
                         .panel--entity-tabs--identify {
                             background-color: var(--mc-high-500);
+                            width: 40px;
 
                             &__name {
+                                
                                 a {
                                     color: black;
                                     font-style: none;
@@ -341,7 +343,7 @@
                         .panel--entity-tabs__content {
                             background-color: var(--mc-gray-100);
                             border-radius: 6px;
-                            height: 48px;
+                            height: 45px;
                             margin-top: 8px;
                             padding: 14px;
 
@@ -354,6 +356,9 @@
                             font-weight: 700;
                             font-size: 14px;
                             line-height: 19px;
+                            &--id {
+                                width: 40px;
+                            }
 
                             &--name {
 
