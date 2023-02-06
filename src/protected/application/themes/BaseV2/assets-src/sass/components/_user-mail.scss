@@ -59,5 +59,13 @@
             }
         }
 
+        @include mobile {
+            margin-inline: 16px;
+
+            p {
+                display: flex;
+                flex-direction: column;
+            }
+        }
     }
 }
