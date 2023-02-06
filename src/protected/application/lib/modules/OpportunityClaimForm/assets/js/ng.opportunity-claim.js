@@ -39,7 +39,7 @@
             },
 
             send: function(message, registration_id) {
-                return $http.post(MapasCulturais.createUrl('opportunity','sendOpportunityClaimMessage'), {message: message, registration_id: registration_id}).
+                return $http.post(this.getUrl('sendOpportunityClaimMessage'), {message: message, registration_id: registration_id}).
                     success(function(data, status){
                         MapasCulturais.Messages.success(labels.claimSended);
                     }).
