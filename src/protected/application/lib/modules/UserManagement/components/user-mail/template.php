@@ -21,7 +21,7 @@ $this->import('
     </p>
     <form class="grid-12 user-mail__account-config-form" v-if="entity.editingEmail" @submit="entity.save().then(() => entity.editingEmail = false); $event.preventDefault();">
         <div class="col-4">
-            <entity-field :entity="entity" prop="email" hide-required>
+            <entity-field :entity="entity" prop="email" hide-required></entity-field>
         </div>
         <button class="col-2 button button--primary button--md"><?php i::_e('Salvar') ?></button>
         <button class="col-2 button button--secondary button--md" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
