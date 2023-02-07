@@ -6,23 +6,11 @@ app.component('user-mail', {
         const hasSlot = name => !!slots[name]
         return { hasSlot }
     },
-
-    created() {
-
-    },
-
-    data() {
-      
-    },
-
+   
     props: {
         entity: {
             type: Entity,
             required: true
         }
-    },
-    
-    methods: {
-        
     },
 });
