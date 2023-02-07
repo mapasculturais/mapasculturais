@@ -28,7 +28,7 @@ $this->import('
         </div>
         <div class="right">
             <div class="panel-entity-card__header-actions">
-                <slot name="header-actions" :entity="entity"> actions </slot>
+                <slot name="header-actions" :entity="entity"></slot>
             </div>
         </div>
     </header>
