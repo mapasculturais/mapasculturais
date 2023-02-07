@@ -58,24 +58,23 @@ $this->import('
                 </div>
             </div>
         </header>
-        <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
-            
-             <user-accepted-terms :user="entity"></user-accepted-terms> 
+        <entity-seals :entity="entity.profile"></entity-seals>
+
+        <user-accepted-terms :user="entity"></user-accepted-terms>
 
         <div class="user-function">
-                <label class="user-function__label"><?= i::__('Funções do Usuário') ?></label>
-                <div class="user-function__box">
-                    <label class="user-function__box--label"><?= i::__('Título de Função de usuário em Subsite') ?> </label>
-                    <div class="user-function__box--content">
-                        <label class="user-function__box--content-text">texto qualquer do subsite</label>
-                    </div>
+            <label class="user-function__label"><?= i::__('Funções do Usuário') ?></label>
+            <div class="user-function__box">
+                <label class="user-function__box--label"><?= i::__('Título de Função de usuário em Subsite') ?> </label>
+                <div class="user-function__box--content">
+                    <label class="user-function__box--content-text">texto qualquer do subsite</label>
                 </div>
             </div>
-
-        <div class="p-user-detail__property-label">
-            <h3><?= i::__('Minhas propriedades por entidades') ?></h3>
         </div>
-        <div class="p-user-detail__property-content">
+        <!-- <div class="p-user-detail__property-label">
+            <h3><?= i::__('Minhas propriedades por entidades') ?></h3>
+        </div> -->
+        <!-- <div class="p-user-detail__property-content">
             <div class="tabs-component">
                 <tabs class="tabs-component__entities">
                     <tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" icon='agent' classes="tabs-component-button--active-agent">
@@ -103,6 +102,6 @@ $this->import('
                     </tab>
                 </tabs>
             </div>
-        </div>
+        </div> -->
     </div>
 </entity>
