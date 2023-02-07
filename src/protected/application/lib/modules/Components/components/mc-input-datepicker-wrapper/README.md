@@ -1,5 +1,5 @@
 # Componente `<mc-input-datepicker-wrapper>`
-Adiciona um campo de input com máscara
+Adiciona um campo de input de data
 
 ## Propriedades
 - *Entity **entity** = null* - Entidade
