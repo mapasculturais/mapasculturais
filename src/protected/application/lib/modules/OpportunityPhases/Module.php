@@ -239,6 +239,14 @@ class Module extends \MapasCulturais\Module{
             $this->json($result);
         });
 
+        $app->hook('API(opportunity.phase)', function() use($app) {
+
+            $opportunity = $app->repo('Opportunity')->find($this->data['@opportunity']);
+            $result = $opportunity->simplify('summary','publishedRegistrations');
+            $result->evaluationOpen = $opportunity->evaluationMethodConfiguration->evaluationOpen;
+            $this->json($result);
+        });
+
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->jsObject['angularAppDependencies'][] = 'OpportunityPhases';
             $app->view->enqueueScript('app', 'ng.opportunityPhases', 'js/ng.opportunityPhases.js', ['mapasculturais']);
