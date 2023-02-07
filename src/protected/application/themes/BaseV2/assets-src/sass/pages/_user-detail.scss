@@ -394,13 +394,8 @@
                                 }
 
                                 @media (max-width: 700px) {
-                                    //  white-space: nowrap;
-                                    display: inline-block;
-                                    margin-right: 100px;
-                                    background-color: red;
-                                }
-                                @media (max-width: 400px) {
-                                    background-color: blue;
+                                     white-space: nowrap;
+                                    display: block;
                                 }
                             }
 
@@ -424,6 +419,7 @@
                                 margin-right: 97px;
 
                                 @media(max-width: 700px) {
+                                    display: block;
                                     gap: 6px;
                                 }
                                 &-edit {
@@ -491,10 +487,7 @@
                             }
 
                         }
-                        @media(max-width:700px) {
-                            width: 100%;
-    max-width: 100%;
-                        }
+                       
                     }
 
 
