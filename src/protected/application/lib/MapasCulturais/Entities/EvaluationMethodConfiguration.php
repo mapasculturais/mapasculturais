@@ -2,6 +2,7 @@
 
 namespace MapasCulturais\Entities;
 
+use DateTime;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
@@ -19,7 +20,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @property-read boolean publishedRegistration
  * @property-read DateTime publishTimestamp
  * @property-read array summary
- *
+ * @property-read boolean evaluationOpen
+ * 
  * @ORM\Table(name="evaluation_method_configuration")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
@@ -284,6 +286,19 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         $app->cache->save($cache_key, $data, 30);
         return $data;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getEvaluationOpen(){
+
+        $today = new DateTime('now');
+        if($today >= $this->evaluationFrom && $today <= $this->evaluationTo ){
+            return true;
+        }
+
+        return false;
     }
     
     /**
