@@ -395,7 +395,7 @@
 
                                 @media (max-width: 700px) {
                                      white-space: nowrap;
-                                    display: block;
+                                    display: inline-block;
                                 }
                             }
 
@@ -419,12 +419,11 @@
                                 margin-right: 97px;
 
                                 @media(max-width: 700px) {
-                                    display: block;
                                     gap: 6px;
                                 }
                                 &-edit {
                                     cursor: pointer;
-                                    max-width: fit-content;
+
                                 }
 
                                 &-label {
@@ -485,9 +484,7 @@
                                     }
                                 }
                             }
-
                         }
-                       
                     }
 
 
