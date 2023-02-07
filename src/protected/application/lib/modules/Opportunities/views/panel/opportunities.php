@@ -1,9 +1,10 @@
 <?php
 use MapasCulturais\i;
 $this->import('
+    create-opportunity
     mc-icon 
     panel--entity-card
-    panel--entity-tabs 
+    panel--entity-tabs
 ');
 ?>
 
@@ -24,16 +25,12 @@ $this->import('
             <?= i::_e('Nesta seção você pode adicionar e gerenciar suas oportunidades') ?>
         </p>
         <div class="panel-page__header-actions">
-            <button @click="modal.open()" class="button button--primary button--icon">
-                <mc-icon name="add"></mc-icon>
-                <span><?= i::__('Criar Oportunidade') ?></span>
-            </button>
-            <!-- <create-project  :editable="true" #default="{modal}"  >
+            <create-opportunity  :editable="true" #default="{modal}"  >
                 <button @click="modal.open()" class="button button--primary button--icon">
                     <mc-icon name="add"></mc-icon>
                     <span><?= i::__('Criar Oportunidade') ?></span>
                 </button>
-            </create-project> -->
+            </create-project>
         </div>
     </header>
 
