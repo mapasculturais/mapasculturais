@@ -89,6 +89,10 @@ app.component('entity-field', {
         fieldDescription: {
             type: String,
             default: null
+        },
+        mask: {
+            type: Boolean,
+            default: false
         }
     },
 

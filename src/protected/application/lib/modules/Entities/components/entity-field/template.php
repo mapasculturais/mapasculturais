@@ -1,14 +1,20 @@
 <?php 
-use MapasCulturais\i; 
+use MapasCulturais\i;
+$this->import('
+    mc-input-mask-wrapper
+')
 ?>
 <div class="field" :class="[{error: hasErrors}, classes]">
     <label v-if="!hideLabel" :for="propId">
         <slot>{{label || description.label}}</slot>
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
-    </label>     
+    </label>
     <slot name="input" >
         <?php //@todo implementar registro de tipos de campos (#1895) ?>
-        <input  v-if="is('string')" :value="value" :id="propId" :name="prop" type="text"  @change="change($event)">
+
+        <mc-input-mask-wrapper v-if="is('string') && mask" :entity="entity" :prop="prop"></mc-input-mask-wrapper>
+
+        <input  v-if="is('string') && !mask" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
 
         <textarea v-if="is('text')" :value="value" :id="propId" :name="prop" @change="change($event)"></textarea>
 
