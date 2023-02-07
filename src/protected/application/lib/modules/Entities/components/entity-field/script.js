@@ -39,9 +39,7 @@ app.component('entity-field', {
             __timeout: null,
             description: description,
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
-            fieldType: this.type || description.input_type || description.type,
-            locale: $MAPAS.config.locale,
-            dayNames: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
+            fieldType: this.type || description.input_type || description.type
         }
     },
 
@@ -116,8 +114,6 @@ app.component('entity-field', {
     methods: {
         change(event) {
 
-            console.log({ val: event.target.value, event });
-
             clearTimeout(this.__timeout);
 
             let oldValue = this.entity[this.prop];
@@ -133,15 +129,8 @@ app.component('entity-field', {
             }, this.debounce);
         },
 
-        input (value) {
-            console.log(value);
-        },
-
         is(type) {
             return this.fieldType == type;
-        },
-        dateFormat(date) {
-            return new Date(date).toLocaleString();
         }
     },
 });
