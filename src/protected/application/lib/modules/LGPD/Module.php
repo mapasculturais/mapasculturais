@@ -76,7 +76,7 @@ class Module extends \MapasCulturais\Module
          * @var App $app
          */
         $app = App::i();
-        $user ?? $app->user;
+        $user = $user ?: $app->user;
 
         foreach ($slugs as $slug) {
             $config = $app->config['module.LGPD'][$slug];
@@ -100,16 +100,6 @@ class Module extends \MapasCulturais\Module
         }
 
         $user->save();
-
-        /**
-         * @todo verificar link para retorno
-         */
-
-        /**
-         * @var \MapasCulturais\Controller $this
-         */
-        /* $url = $_SESSION[Module::key] ?? "/";
-        $this->json(['redirect' =>  $url]); */
     }
 
     /**
