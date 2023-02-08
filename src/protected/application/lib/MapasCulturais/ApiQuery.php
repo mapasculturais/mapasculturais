@@ -428,7 +428,8 @@ class ApiQuery {
      */
     protected $parentQuery;
 
-    protected $__cacheTLS = 15;
+    protected $__cacheTLS;
+    protected $__useDQLCache;
     
     public function __construct($entity_class_name, $api_params, $is_subsite_filter = false, $select_all = false, $disable_access_control = false, $parentQuery = null) {
         if($disable_access_control){
@@ -438,7 +439,7 @@ class ApiQuery {
         if($parentQuery){
             $this->parentQuery = $parentQuery;
         }
-        
+
         $this->_subsiteId = $is_subsite_filter;
         
         $this->_selectAll = $select_all;
@@ -457,6 +458,9 @@ class ApiQuery {
     protected function initialize($class, array $api_params) {
         $app = App::i();
 
+        $this->__useDQLCache = $app->config['app.useApiCache'];
+        $this->__cacheTLS = $app->config['app.apiCache.lifetime'];
+        
         $_hook_class_path = $class::getHookClassPath();
         $this->hookPrefix = "ApiQuery({$_hook_class_path})";
 
@@ -603,7 +607,10 @@ class ApiQuery {
         $dql = $this->getFindDQL();
 
         $q = $this->em->createQuery($dql);
-        $q->enableResultCache($this->__cacheTLS);
+
+        if($this->__useDQLCache){
+            $q->enableResultCache($this->__cacheTLS);
+        }
 
         if ($offset = $this->getOffset()) {
             $q->setFirstResult($offset);
@@ -674,7 +681,9 @@ class ApiQuery {
         $dql = $this->getFindDQL($select);
         
         $q = $this->em->createQuery($dql);
-        $q->enableResultCache($this->__cacheTLS);
+        if($this->__useDQLCache){
+            $q->enableResultCache($this->__cacheTLS);
+        }
 
         if ($offset = $this->getOffset()) {
             $q->setFirstResult($offset);
@@ -715,7 +724,9 @@ class ApiQuery {
         $dql = $this->getCountDQL();
 
         $q = $this->em->createQuery($dql);
-        $q->enableResultCache($this->__cacheTLS);
+        if($this->__useDQLCache){
+            $q->enableResultCache($this->__cacheTLS);
+        }
         
         $params = $this->getDqlParams();
 
@@ -1146,7 +1157,9 @@ class ApiQuery {
                 ORDER BY e.{$this->pk}";
 
             $q = $this->em->createQuery($dql);
-            $q->enableResultCache($this->__cacheTLS);
+            if($this->__useDQLCache){
+                $q->enableResultCache($this->__cacheTLS);
+            }
 
             if($this->_usingSubquery){
                 $q->setParameters($meta_keys + $this->_dqlParams);
@@ -1259,6 +1272,7 @@ class ApiQuery {
                 } else {
                     continue;
                 }
+
                 $skip = isset($cfg['skip']) && $cfg['skip'];
                 $selected = isset($cfg['selected']) && $cfg['selected'];
                 $mtype = $mapping['type'];
@@ -1431,7 +1445,9 @@ class ApiQuery {
                     
                     
             $query = $this->em->createQuery($dql);
-            $query->enableResultCache($this->__cacheTLS);
+            if($this->__useDQLCache){
+                $query->enableResultCache($this->__cacheTLS);
+            }
 
             if($this->_usingSubquery){
                 $query->setParameters($this->_dqlParams);
@@ -1597,7 +1613,9 @@ class ApiQuery {
             $this->logDql($dql, __FUNCTION__);
             
             $query = $this->em->createQuery($dql);
-            $query->enableResultCache($this->__cacheTLS);
+            if($this->__useDQLCache){
+                $query->enableResultCache($this->__cacheTLS);
+            }
 
             if($this->_usingSubquery){
                 $query->setParameters($this->_dqlParams);
@@ -1680,7 +1698,9 @@ class ApiQuery {
         $this->logDql($dql, __FUNCTION__);
     
         $query = $this->em->createQuery($dql);
-        $query->enableResultCache($this->__cacheTLS);
+        if($this->__useDQLCache){
+            $query->enableResultCache($this->__cacheTLS);
+        }
 
         if($this->_usingSubquery){
             $query->setParameters($this->_dqlParams);
@@ -1777,7 +1797,9 @@ class ApiQuery {
         $this->logDql($dql, __FUNCTION__);
     
         $query = $this->em->createQuery($dql);
-        $query->enableResultCache($this->__cacheTLS);
+        if($this->__useDQLCache){
+            $query->enableResultCache($this->__cacheTLS);
+        }
 
         if($this->_usingSubquery){
             $query->setParameters($this->_dqlParams);
@@ -1872,7 +1894,9 @@ class ApiQuery {
                 pc.userId = {$user_id}"; 
 
             $query = $this->em->createQuery($dql);
-            $query->enableResultCache($this->__cacheTLS);
+            if($this->__useDQLCache){
+                $query->enableResultCache($this->__cacheTLS);
+            }
 
             if($this->_usingSubquery){
                 $query->setParameters($this->_dqlParams);
@@ -1943,7 +1967,9 @@ class ApiQuery {
                         tr.owner IN ($dql_in)";
                     
                 $query = $this->em->createQuery($dql);
-                $query->enableResultCache($this->__cacheTLS);
+                if($this->__useDQLCache){
+                    $query->enableResultCache($this->__cacheTLS);
+                }
                 
                 if($this->_usingSubquery){
                     $query->setParameters($this->_dqlParams);
@@ -2005,7 +2031,9 @@ class ApiQuery {
                     s.status >= 0";
 
             $query = $this->em->createQuery($dql);
-            $query->enableResultCache($this->__cacheTLS);
+            if($this->__useDQLCache){
+                $query->enableResultCache($this->__cacheTLS);
+            }
             
             if($this->_usingSubquery){
                 $query->setParameters($this->_dqlParams);
@@ -2110,7 +2138,9 @@ class ApiQuery {
                     $dql = "SELECT IDENTITY(pc.owner) as entity_id FROM {$this->permissionCacheClassName} pc WHERE pc.owner IN ($dql_in) AND pc.user = {$app->user->id}";
     
                     $query = $this->em->createQuery($dql);
-                    $query->enableResultCache($this->__cacheTLS);
+                    if($this->__useDQLCache){
+                        $query->enableResultCache($this->__cacheTLS);
+                    }
     
                     if($this->_usingSubquery){
                         $query->setParameters($this->_dqlParams);
