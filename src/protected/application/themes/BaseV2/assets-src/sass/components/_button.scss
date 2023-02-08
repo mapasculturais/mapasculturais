@@ -143,10 +143,12 @@
     &--secondarylight {
             background-color: var(--mc-danger-300);
             border: size(2) solid var(--mc-danger-300);
+            color: var(--mc-low-500);
 
             &:hover {
                 border-color: var(--mc-danger-700);
                 background-color: var(--mc-danger-700);
+                color: var(--mc-high-500);
             }
     }
 
