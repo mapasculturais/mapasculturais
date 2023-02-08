@@ -30,6 +30,9 @@ $this->import('create-agent panel--entity-tabs panel--entity-actions panel--enti
     </header>
 
     <panel--entity-tabs type="agent">
+        <template #entity-actions-left={entity}>
+            <panel--entity-actions :entity="entity" buttons="delete" delete="<?php i::esc_attr_e('Excluir')?>"></panel--entity-actions>
+        </template>
 
         <template #entity-actions-right={entity}>
             <a :href="entity.singleUrl" class="button button--primary-outline button--icon"><?php i::_e('Acessar') ?> <mc-icon name="arrow-right"></mc-icon></a>
