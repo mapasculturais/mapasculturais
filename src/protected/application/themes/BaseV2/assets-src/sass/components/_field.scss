@@ -28,10 +28,12 @@
     }
 
     label {
+        display: flex;
         font-family: var(--mc-font-headings);
         font-style: normal;
         font-weight: 600;
         font-size: size(14);
+        gap: size(5);
         line-height: size(19);
         margin: 0 size(5);
     }
