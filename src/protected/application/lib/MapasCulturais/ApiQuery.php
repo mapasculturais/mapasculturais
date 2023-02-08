@@ -990,7 +990,7 @@ class ApiQuery {
             } else if(isset($this->entityRelations['_' . $prop])) {
                 $mapping = $this->entityRelations['_' . $prop];
             }
-            if ($mapping && $mapping['type'] === 2 && $mapping['isOwningSide']) {
+            if ($mapping && ($mapping['type'] === 2 || $mapping['type'] === 1) && $mapping['isOwningSide']) {
                 $select .= ", IDENTITY(e.{$prop}) AS $prop";
                 $cfg['selected'] = true;
 
@@ -1287,6 +1287,9 @@ class ApiQuery {
                     if(isset($mapping['users'])){
                         $_subquery_where_id_in = implode($mapping['users']);
                         $_target_property = $this->pk;
+                    }else if ($mtype === 1) {
+                        $_subquery_where_id_in = $this->getSubqueryInIdentities($entities, $prop);
+                        $_target_property = $mapping['joinColumns'][0]['referencedColumnName'] ?? $this->pk;
                     }else if ($mtype === 2) {
                         if ($selected) {
                             $_subquery_where_id_in = $this->getSubqueryInIdentities($entities, $prop);
@@ -1323,7 +1326,7 @@ class ApiQuery {
                         "e.{$_target_property} IN ({$_subquery_where_id_in})" : 
                         $query->where. " AND e.{$_target_property} IN ({$_subquery_where_id_in})";
                     
-                    if($this->_usingSubquery){
+                    if(str_contains($_subquery_where_id_in, 'SELECT')){
                         foreach($this->_dqlParams as $k => $v){
                             $query->_dqlParams[$k] = $v;
                         }
@@ -1331,8 +1334,10 @@ class ApiQuery {
 
                     $cfg['query'] = $query;
                     $cfg['query_result'] = [];
+                    
                     $subquery_result = $query->getFindResult();
-                    if($mtype == 2) {
+                    
+                    if($mtype === 2 || $mtype == 1) {
                         foreach ($subquery_result as &$r) {
                             if($original_select === $this->pk){
                                 $subquery_result_index[$r[$_target_property]] = $r[$this->pk];
