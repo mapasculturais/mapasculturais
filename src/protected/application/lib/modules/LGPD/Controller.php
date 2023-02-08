@@ -55,5 +55,8 @@ class Controller  extends \MapasCulturais\Controller
         $terms_slug = null;
         $terms_slug = !is_array($this->data[0]) ? [$this->data[0]] : $this->data[0];
         $app->modules['LGPD']->acceptTerms($terms_slug);
+
+        $url = $_SESSION[Module::key] ?? "/";
+        $this->json(['redirect' =>  $url]);
     }
 }
