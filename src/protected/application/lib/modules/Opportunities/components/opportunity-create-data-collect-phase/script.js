@@ -3,6 +3,7 @@ app.component('opportunity-create-data-collect-phase' , {
 
     data () {
         return {
+            phase: null,
             locale: $MAPAS.config.locale,
             dateStart: '',
             dateEnd: '',
@@ -13,7 +14,7 @@ app.component('opportunity-create-data-collect-phase' , {
     },
 
     props: {
-        entity: {
+        opportunity: {
             type: Entity,
             required: true
         }
@@ -40,6 +41,17 @@ app.component('opportunity-create-data-collect-phase' , {
     methods: {
         dateFormat(date) {
             return new Date(date).toLocaleString();
-        }
+        },
+        createEntity() {
+            this.phase = Vue.ref(new Entity('opportunity'));
+            this.phase.type = this.opportunity.type;
+            this.phase.status = -1;
+            this.phase.parent = this.opportunity;
+
+        },
+        destroyEntity() {
+            // para o conteúdo da modal não sumir antes dela fechar
+            setTimeout(() => this.entity = null, 200);
+        },
     }
 });
