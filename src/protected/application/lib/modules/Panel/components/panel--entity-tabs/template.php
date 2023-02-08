@@ -84,6 +84,9 @@ $tabs = $tabs ?? [
                                 </span>
                             </slot>
                         </template>
+                        <template #entity-actions-left>
+                            <slot name="entity-actions-left" :entity="entity"></slot>
+                        </template>
                         <template #entity-actions-center>
                             <slot name="entity-actions-center" :entity="entity"></slot>
                         </template>

@@ -11,6 +11,7 @@ Componente que renderiza os campos de uma entidade
 - *String **type*** - Tipo do campo
 - *Boolean **hiddenLabel** = false* - Esconde o label do campo
 - *Boolean **hideRequired** = false* - Esconde o label de campo obrigatório
+- *Boolean **mask** = false* - Esconde a mascara do campo
 - *Number **debounce** = 0* - 
 - *String/Array/Object **classes*** - Classes a serem aplicadas no componente
 - *String **fieldDescription*** - Descrição do campo
@@ -43,4 +44,7 @@ $this->import('entity-field');
 <entity-field :entity="entity" prop="name" classes="classe-unica"></entity-field>
 
 <entity-field :entity="entity" prop="name" :classes="['classe-um', 'classe-dois']"></entity-field>
+
+<!-- utilização com mascara -->
+<entity-field :entity="entity" mask classes="col-12" prop="cpf"></entity-field>
 ```
