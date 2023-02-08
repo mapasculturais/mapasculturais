@@ -471,7 +471,8 @@
 				padding: size(8);
 
 				span {
-					@include sr-only;
+					// @include sr-only;
+					
 				}
 			}
 		}

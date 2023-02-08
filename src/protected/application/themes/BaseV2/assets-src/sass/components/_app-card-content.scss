@@ -45,3 +45,9 @@
     }
 
 }
+@media (max-width:size(500)) {
+    .cardKey{
+        gap: 22px;
+        flex-direction: column;
+    }
+}

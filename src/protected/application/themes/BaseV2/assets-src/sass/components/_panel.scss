@@ -147,6 +147,43 @@
                         line-height: size(44);
                     }
                 }
+
+                
+            }
+            @include mobile {
+                &-title {
+                    .title{
+
+                        &__icon {
+                            align-items: center;
+                            border-radius: var(--mc-border-radius-pill);
+                            display: flex;
+                            height: size(32);
+                            justify-content: center;
+                            width: size(32);
+    
+                            &.app__background {
+                                background-color: var(--mc-low-500);
+                            }
+    
+                            .iconify {
+                                width: size(16);
+                                height: size(16);
+                                color: var(--mc-high-500);
+                            }
+    
+    
+                            &.default {
+                                background-color: var(--mc-low-500);
+                            }
+    
+                        }
+                        &__title{
+                            font-size: size(18);
+
+                        }
+                    }
+                }
             }
 
             &-subtitle {

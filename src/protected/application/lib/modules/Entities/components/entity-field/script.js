@@ -87,6 +87,10 @@ app.component('entity-field', {
         fieldDescription: {
             type: String,
             default: null
+        },
+        mask: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -109,6 +113,7 @@ app.component('entity-field', {
     
     methods: {
         change(event) {
+
             clearTimeout(this.__timeout);
 
             let oldValue = this.entity[this.prop];

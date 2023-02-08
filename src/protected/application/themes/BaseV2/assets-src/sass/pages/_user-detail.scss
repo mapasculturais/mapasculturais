@@ -136,6 +136,7 @@
                             }
 
                             a {
+                                text-decoration: none;
                                 color: var(--mc-primary-500);
                                 font-size: 14px;
                                 color: var(--mc-low-500);
@@ -174,6 +175,7 @@
                         &__label {
                             margin-bottom: size(16);
                         }
+
                         &__info {
                             p {
                                 flex-basis: 100%;
@@ -204,7 +206,8 @@
     }
 
     .user-function {
-        max-width: size(970);
+
+        margin-right: auto;
         position: relative;
         padding-top: size(24);
 
@@ -216,7 +219,10 @@
 
 
         &__box {
-            height: 97px;
+            background-color: var(--vc-clr-white);
+
+            width: size(970);
+            max-height: 100%;
             margin-top: 14px;
             padding-top: 16px;
 
@@ -228,17 +234,52 @@
                 color: var(--mc-black);
             }
 
-            background-color: var(--vc-clr-white);
 
             &--content {
+                margin-left: 16px;
+                word-break: break-word;
+
                 &-text {
                     font-weight: 400;
                     font-size: 14px;
                     line-height: 19px;
-                    margin-left: 16px;
                 }
             }
         }
+    }
+
+    @media(max-width: 1200px) {
+        .user-function {
+            &__box {
+                width: 100%;
+
+                &--label {
+                    word-wrap: break-word;
+                    display: inline-block;
+                    font-weight: 700;
+                    font-size: 13px;
+                    line-height: 15px;
+                    padding: 16px 0 8px 16px;
+                    color: var(--mc-black);
+                }
+
+                &--content {
+                    padding: size(8) 0 size(16) size(16);
+                    margin-left: auto;
+                    max-width: 100%;
+                    word-break: break-word;
+
+                    &-text {
+                        font-weight: 400;
+                        font-size: 14px;
+                        line-height: 19px;
+                    }
+                }
+            }
+
+
+        }
+
     }
 
     .entity-seals {
@@ -251,7 +292,7 @@
         }
 
         &-content {
-            background-color: white;
+            background-color: var(--mc-high-500);
             max-width: 975px;
             padding: 16px;
 
@@ -260,7 +301,6 @@
                 @include mobile {
                     padding-inline: 0;
                     max-width: calc(100vw - 85px);
-                    // max-width: 100%;
                 }
 
                 &__entities {
@@ -271,6 +311,7 @@
                     .tabs-component {
 
                         &__header {
+
                             width: 100%;
                             background-color: var(--mc-high-500);
                             border-radius: 6px;
@@ -278,7 +319,7 @@
                         }
 
                         &__panels {
-                            background-color: white;
+                            background-color: var(--mc-gray-100);
                             max-width: 938px;
                             margin-bottom: 0;
 
@@ -294,20 +335,41 @@
 
                         .panel--entity-tabs--identify {
                             background-color: var(--mc-high-500);
+                            margin: 10px;
 
                             &__name {
+
                                 a {
                                     color: black;
                                     font-style: none;
                                     text-emphasis-style: none;
                                 }
                             }
+
+
+                        }
+
+                        @media (max-width: 700px) {
+                            .panel--entity-tabs--identify {
+                                .subsite-form {
+                                    display: none;
+                                }
+
+                                .action-form {
+                                    padding-left: size(40);
+                                }
+
+                                .name-form {
+                                    padding-left: 24px;
+                                }
+
+                            }
                         }
 
                         .panel--entity-tabs__content {
                             background-color: var(--mc-gray-100);
                             border-radius: 6px;
-                            height: 48px;
+                            height: 45px;
                             margin-top: 8px;
                             padding: 14px;
 
@@ -321,10 +383,19 @@
                             font-size: 14px;
                             line-height: 19px;
 
+                            &--id {
+                                width: 40px;
+                            }
+
                             &--name {
 
                                 a {
                                     text-decoration: none;
+                                }
+
+                                @media (max-width: 700px) {
+                                     white-space: nowrap;
+                                    display: inline-block;
                                 }
                             }
 
@@ -347,8 +418,9 @@
                                 min-height: max-content;
                                 margin-right: 97px;
 
-
-
+                                @media(max-width: 700px) {
+                                    gap: 6px;
+                                }
                                 &-edit {
                                     cursor: pointer;
 
@@ -381,16 +453,20 @@
                                         display: flex;
                                         margin-right: 8px;
 
-
-
                                     }
 
                                     @media(max-width: 700px) {
-
+                                        &--editable, &--trash, &archive {
+                                            margin-left: 8px;
+                                        }
+                                        &--editable {
+                                            margin: 0;
+                                        }
                                         &--trash>span,
                                         &--archive>span {
                                             display: none;
                                         }
+
                                     }
 
                                     &--trash {
