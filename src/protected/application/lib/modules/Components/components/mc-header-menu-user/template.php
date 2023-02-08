@@ -69,7 +69,7 @@ $this->import('
                 <div class="mc-header-menu-user__user--avatar">
                     <?php if (!$app->user->is('guest')): ?>
                         <?php if ($app->user->profile && $app->user->profile->avatar): ?>
-                            <img src="<?php echo $app->user->profile->avatar->transform('avatarSmall')->url; ?>" />
+                            <img :src="profile.files?.avatar?.transformations?.avatarSmall?.url" />
                         <?php else: ?>
                             <mc-icon name="user"></mc-icon>
                         <?php endif; ?>
