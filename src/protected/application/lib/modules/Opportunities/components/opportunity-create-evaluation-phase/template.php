@@ -5,24 +5,25 @@ $this->import('
 ');
 ?>
 
-<modal title="<?= i::__("Adicionar Fase de Avaliação") ?>">
+<modal title="<?= i::__("Adicionar Fase de Avaliação") ?>" @open="createEntity()" @close="destroyEntity()">
     <template #default="modal">
         <div class="grid-12">
             <div class="col-12">
-                <entity-field :entity="entity" prop="type"></entity-field>
+                <entity-field :entity="phase" prop="type"></entity-field>
             </div>
             <div class="col-12">
-                <entity-field :entity="entity" prop="name"></entity-field>
+                <entity-field :entity="phase" prop="name"></entity-field>
             </div>
             <div class="col-6">
-                <datepicker
-                        :locale="locale"
-                        :weekStart="0"
-                        v-model="dateStart"
-                        :format="dateFormat"
-                        :dayNames="dayNames"
-                        autoApply utc>
-                </datepicker>
+                <entity-field :entity="phase" prop="createTimestamp"></entity-field>
+<!--                <datepicker-->
+<!--                        :locale="locale"-->
+<!--                        :weekStart="0"-->
+<!--                        v-model="dateStart"-->
+<!--                        :format="dateFormat"-->
+<!--                        :dayNames="dayNames"-->
+<!--                        autoApply utc>-->
+<!--                </datepicker>-->
             </div>
             <div class="col-6">
                 <datepicker

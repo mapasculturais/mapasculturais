@@ -26,26 +26,10 @@ $this->import('
         <template #content>
             <div class="grid-12">
                 <div class="col-4 sm:col-12">
-                    <p class="opportunity-basic-info__label">Data de início das inscrições<span class="opportunity-basic-info__hint">*obrigatório</span></p>
-                    <datepicker
-                            :locale="locale"
-                            :weekStart="0"
-                            v-model="dateStart"
-                            :format="dateFormat"
-                            :dayNames="dayNames"
-                            autoApply utc>
-                    </datepicker>
+                    <entity-field :entity="entity" prop="registrationFrom" :min-date="entity.createTimestamp._date"></entity-field>
                 </div>
                 <div class="col-4 sm:col-12">
-                    <p class="opportunity-basic-info__label">Data de termino das inscrições <span class="opportunity-basic-info__hint">*obrigatório</span></p>
-                    <datepicker
-                            :locale="locale"
-                            :weekStart="0"
-                            v-model="dateEnd"
-                            :format="dateFormat"
-                            :dayNames="dayNames"
-                            autoApply utc>
-                    </datepicker>
+                    <entity-field :entity="entity" prop="registrationTo" :min-date="entity.registrationFrom._date"></entity-field>
                 </div>
             </div>
             <div class="grid-12">

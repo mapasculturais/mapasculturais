@@ -44,9 +44,12 @@ app.component('opportunity-create-evaluation-phase' , {
         },
         createEntity() {
             this.phase = Vue.ref(new Entity('evaluationmethodconfiguration'));
+
             this.phase.type = this.opportunity.type;
             this.phase.status = -1;
             this.phase.parent = this.opportunity;
+            this.phase.registrationFrom = this.opportunity.registrationFrom;
+            this.phase.registrationTo = this.opportunity.registrationTo;
 
         },
         destroyEntity() {
