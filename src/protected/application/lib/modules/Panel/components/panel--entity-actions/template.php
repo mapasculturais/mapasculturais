@@ -37,10 +37,10 @@ $this->import('loading');
         @confirm="destroyEntity($event)"
         message="<?php i::esc_attr_e("Você está certo que deseja excluir definitivamente esta entidade?") ?>"><?php i::_e('Excluir permanentemente') ?></confirm-button>
     
-    <confirm-button v-if="!entity.__processing && archiveButton && entity.status != <?= Entity::STATUS_ARCHIVED ?> && hasStatus('draft')"
+    <confirm-button v-if="!entity.__processing && archiveButton && entity.status != <?= Entity::STATUS_ARCHIVED ?> && !hasStatus('draft')"
         @confirm="draftEntity($event)"
         button-class="button--text archive button--icon button--sm"
         message="<?php i::esc_attr_e("Você está certo que deseja transformar esta entidade em rascunho?") ?>">
             <span><?php i::_e('Tornar rascunho') ?></span>
-        </confirm-button>
+    </confirm-button>
 </div>
