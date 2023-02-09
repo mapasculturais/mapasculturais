@@ -39,7 +39,6 @@ app.component('mc-input-datepicker-wrapper', {
 
     mounted () {
         this.model = this.entity[this.prop]?._date;
-        console.log(this.entity[this.prop])
     },
 
     data () {
