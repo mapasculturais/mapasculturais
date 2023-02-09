@@ -16,6 +16,14 @@ app.component('mc-input-datepicker-wrapper', {
         fieldType: {
             type: String,
             required: true
+        },
+        minDate: {
+            type: String,
+            default: null
+        },
+        maxDate: {
+            type: String,
+            default: null
         }
     },
 
@@ -42,6 +50,9 @@ app.component('mc-input-datepicker-wrapper', {
     },
 
     computed: {
+        isMinDate () {
+            return this.minDate !== null || this.maxDate !== null;
+        }
     },
 
     methods: {
