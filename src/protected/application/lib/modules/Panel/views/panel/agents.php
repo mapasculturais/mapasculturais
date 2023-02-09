@@ -31,7 +31,13 @@ $this->import('create-agent panel--entity-tabs panel--entity-actions panel--enti
 
     <panel--entity-tabs type="agent">
         <template #entity-actions-left={entity}>
-            <panel--entity-actions :entity="entity" buttons="delete" delete="<?php i::esc_attr_e('Excluir')?>"></panel--entity-actions>
+            <div class="actions-left">
+                <panel--entity-actions v-if="entity.status!=-2" :entity="entity" buttons="archive" archive="<?php i::esc_attr_e('Arquivar') ?>"></panel--entity-actions>
+                <panel--entity-actions v-if="entity.status!=0 && entity.status!=-2" :entity=" entity" buttons="unpublish" unpublish="<?php i::esc_attr_e('Tornar Rascunho') ?>"></panel--entity-actions>
+                <panel--entity-actions :entity="entity" buttons="delete" delete="<?php i::esc_attr_e('Excluir') ?>"></panel--entity-actions>
+
+
+            </div>
         </template>
 
         <template #entity-actions-right={entity}>
