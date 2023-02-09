@@ -43,6 +43,7 @@ $this->import('
                         :entity="entity" 
                         @undeleted="$emit('undeleted', arguments)"
                         @deleted="$emit('deleted', arguments)"
+                        @unpublished="$emit('unpublished', arguments)"
                         @archived="$emit('archived', arguments)"
                         @published="$emit('published', arguments)"
                         :on-delete-remove-from-lists="onDeleteRemoveFromLists"
