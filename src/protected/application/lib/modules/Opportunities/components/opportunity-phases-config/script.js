@@ -31,6 +31,9 @@ app.component('opportunity-phases-config', {
     },
 
     computed: {
+        phaseEvaluation () {
+            return this.phases.find(item => item.__objectType === 'evaluationmethodconfiguration') || null;
+        }
     },
     
     methods: {
