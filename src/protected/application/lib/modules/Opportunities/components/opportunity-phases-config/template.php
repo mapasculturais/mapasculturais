@@ -25,9 +25,7 @@ $this->import('
             <?= i::__('Tipo') ?>: {{item.type.name}}
         </p>
     </template>
-
     <template #default="{index, item}">
-        {{ item.__objectType }}
         <div v-if="index > 0">
             <entity-field :entity="item" prop="name" hide-required></entity-field>
         </div>
@@ -43,7 +41,7 @@ $this->import('
     <template #after-li="{index, item}">
         <div v-if="index==1" class="grid-12">
             <div class="col-12">
-                <opportunity-create-evaluation-phase :opportunity="phaseEvaluation"></opportunity-create-evaluation-phase>
+                <opportunity-create-evaluation-phase :opportunity="item"></opportunity-create-evaluation-phase>
             </div>
             <div class="col-12">
                 <opportunity-create-data-collect-phase :opportunity="item"></opportunity-create-data-collect-phase>
