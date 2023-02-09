@@ -15,25 +15,10 @@ $this->import('
                 <entity-field :entity="phase" prop="name"></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="phase" prop="createTimestamp"></entity-field>
-<!--                <datepicker-->
-<!--                        :locale="locale"-->
-<!--                        :weekStart="0"-->
-<!--                        v-model="dateStart"-->
-<!--                        :format="dateFormat"-->
-<!--                        :dayNames="dayNames"-->
-<!--                        autoApply utc>-->
-<!--                </datepicker>-->
+                <entity-field :entity="phase" prop="evaluationTo" :min-date="evaluationTo"></entity-field>
             </div>
             <div class="col-6">
-                <datepicker
-                        :locale="locale"
-                        :weekStart="0"
-                        v-model="dateEnd"
-                        :format="dateFormat"
-                        :dayNames="dayNames"
-                        autoApply utc>
-                </datepicker>
+            <entity-field :entity="phase" prop="evaluationTo" :min-date="evaluationTo"></entity-field>
             </div>
         </div>
     </template>
