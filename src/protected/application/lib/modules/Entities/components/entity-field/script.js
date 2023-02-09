@@ -91,6 +91,14 @@ app.component('entity-field', {
         mask: {
             type: Boolean,
             default: false
+        },
+        minDate: {
+            type: String,
+            default: null
+        },
+        maxDate: {
+            type: String,
+            default: null
         }
     },
 
