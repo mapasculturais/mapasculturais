@@ -1,0 +1,27 @@
+{{{_header}}}
+<table role="presentation" class="main">
+    <tr>
+        <td class="wrapper">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <p>Olá {{userName}}</p>
+                        <p>Informamos que recebemos sua solicitação de recurso para a oportunidade <a href="{{opportunityUrl}}" rel='noopener noreferrer'>{{opportunityName}}</a> </p>
+                        <p>Segue abaixo dados de sua solicitação.</p>
+                        <p>
+                            <strong>Inscrição: </strong> <a href="{{registrationUrl}}" rel='noopener noreferrer'>{{registrationNumber}}</a> <br><br>
+                            <strong>Mensagem: </strong> {{message}}
+                        </p>
+                        <p>
+                            <div>
+                                Arquivo em anexo.<br><br>
+                                {{file}}
+                            </div>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{{{_footer}}}
