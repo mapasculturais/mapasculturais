@@ -3,6 +3,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.5.9] - 2023-02-09
+### Melhorias
+- Cria template de e-mail para enviar certificado de solicitação de recurso ao proponente
+
 ## [5.5.8] - 2023-02-06
 ### Melhorias
 - Cria hooks que possibilitam manipular sidebar direito na ficha de inscrição
