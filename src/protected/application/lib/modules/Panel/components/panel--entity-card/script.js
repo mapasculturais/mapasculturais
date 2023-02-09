@@ -1,6 +1,6 @@
 app.component('panel--entity-card', {
     template: $TEMPLATES['panel--entity-card'],
-    emits: ['deleted', 'destroyed', 'published', 'archived'],
+    emits: ['deleted', 'destroyed', 'published', 'unpublished', 'archived' ],
 
     props: {
         entity: {
