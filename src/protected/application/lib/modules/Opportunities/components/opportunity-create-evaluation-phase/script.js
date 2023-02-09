@@ -28,12 +28,12 @@ app.component('opportunity-create-evaluation-phase' , {
     watch: {
       dateStart: {
           handler (val) {
-              $MAPAS.requestedEntity.registrationFrom.date = val;
+              $MAPAS.requestedEntity.evaluationTo = val;
           }
       },
       dateEnd: {
           handler (val) {
-              $MAPAS.requestedEntity.registrationTo.date = val;
+              $MAPAS.requestedEntity.evaluationTo = val;
           }
       }
     },
@@ -55,6 +55,20 @@ app.component('opportunity-create-evaluation-phase' , {
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
+        },
+        save(modal) {
+            const lists = useEntitiesLists(); // obtem o storage de listas de entidades
+
+            modal.loading(true);
+            this.phase.save().then((response) => {
+                this.$emit('create', response);
+                modal.loading(false);
+                stat = this.phase.status;
+               //this.addAgent(stat);
+            }).catch((e) => {
+                modal.loading(false);
+
+            });
         },
     }
 });
