@@ -1,0 +1,102 @@
+@use '../settings/mixins' as *;
+
+.stepper {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    max-width: size(1170);
+    position: relative;
+    width: 100%;
+
+    .step {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        position: relative;
+        width: 100%;
+
+        &:first-child {
+            &::before {
+                content: unset;
+            }
+            .count {
+                background-color: var(--mc-secondary-500);
+            }
+        }
+
+        &::before {
+            background: var(--mc-gray-100);
+            content: '';
+            height: size(2);
+            position: absolute;
+            right: 50%;
+            transition: 
+                background-color 300ms linear,
+                color 300ms;
+            top: size(20);
+            width: 100%;
+        }
+
+        .count {
+            align-items: center;
+            background-color: var(--mc-gray-100);
+            border-radius: 50%;
+            color: var(--mc-gray-300);
+            display: flex;
+            font-size: size(24);
+            font-weight: 700;
+            height: size(40);
+            justify-content: center;
+            line-height: size(28);
+            transition: 
+                background-color 300ms linear,
+                color 300ms;
+            width: size(40);
+            z-index: 1;
+        }
+
+        &.passedby {
+            .count {
+                background-color: var(--mc-secondary-500);
+                color: var(--mc-high-500);
+            }
+            &::before {
+                background-color: var(--mc-secondary-500);
+            }
+        }
+    }
+    
+
+    &.small {
+        .step {
+            .count {
+                height: size(24);
+                margin: size(8) 0;
+                width: size(24);
+            }
+
+            .label {
+                font-weight: 400;
+                font-size: size(14);
+                line-height: size(19);
+                text-align: center;
+
+                &.active {
+                    color: var(--mc-secondary-500);
+                    font-weight: 700;
+                }
+            }
+
+            &.passedby {
+                &.active {
+                    .count {
+                        height: size(40);
+                        margin: 0;
+                        width: size(40);
+                    }
+                }
+            }
+        }
+    }
+}
