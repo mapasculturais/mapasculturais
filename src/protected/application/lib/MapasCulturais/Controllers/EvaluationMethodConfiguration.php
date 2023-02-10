@@ -22,8 +22,7 @@ class EvaluationMethodConfiguration extends Controller {
         Traits\ControllerAgentRelation,
         Traits\ControllerEntity,
         Traits\ControllerEntityActions {
-            Traits\ControllerEntityActions::PATCH_single as _PATCH_single;
-            Traits\ControllerEntityActions::POST_single as _POST_single;
+            Traits\ControllerEntityActions::POST_index as _POST_index;
         }
         
     function __construct()
@@ -31,46 +30,9 @@ class EvaluationMethodConfiguration extends Controller {
         $this->entityClassName = EvaluationMethodConfigurationEntity::class;
     }
 
-    protected function _setPermissionCacheUsers(){
-        $app = App::i();
-        
-        $entity = $this->requestedEntity;
-
-        $entity_fetch = $entity->fetch ? $entity->fetch : new \stdClass ;
-        $entity_fetch_categories = $entity->fetchCategories ? $entity->fetchCategories : new \stdClass;
-
-        $data_fetch = isset($this->data['fetch']) ? (object) $this->data['fetch'] : new \stdClass;
-        $data_fetch_categories = isset($this->data['fetchCategories']) ? (object) $this->data['fetchCategories'] : new \stdClass;
-        
-        $user_ids = [];
-
-        if($data_fetch){
-            foreach($data_fetch as $id => $val){
-                if(!isset($entity_fetch->$id) || $entity_fetch->$id != $val){
-                    $user_ids[] = $id;
-                }
-            }
-
-            foreach($entity_fetch as $id => $val){
-                if(!isset($data_fetch->$id)){
-                    $user_id[] = $id;
-                }
-            }
-        }
-    }
-    
-    function PATCH_single($data = null) {
-        $this->_setPermissionCacheUsers();
-        
-        $this->_PATCH_single();
-    }
-    
-    
-    function POST_single($data = null) {
-        $this->_setPermissionCacheUsers();
-        
-        parent::_POST_single();
-    }
+    function POST_index($data = null) {
+        $this->_POST_index();
+    } 
 
     protected function _getValuerAgentRelation() {
         $this->requireAuthentication();
