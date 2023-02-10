@@ -14,7 +14,9 @@ globalThis.__ = (key, componentName) => {
 globalThis.useGlobalState = Pinia.defineStore('globalState', {
     state: () => {
         return {
-            visibleFooter: true
+            visibleFooter: true,
+            userProfile: $MAPAS.userProfile || null,
+            userId: $MAPAS.userId || null,
         }
     },
 
