@@ -18,12 +18,16 @@ app.component('mc-input-datepicker-wrapper', {
             required: true
         },
         minDate: {
-            type: String,
+            type: Date,
             default: null
         },
         maxDate: {
-            type: String,
+            type: Date,
             default: null
+        },
+        propId: {
+            type: String,
+            default: ''
         }
     },
 
