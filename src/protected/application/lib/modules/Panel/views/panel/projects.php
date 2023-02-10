@@ -33,11 +33,14 @@ $this->import('panel--entity-tabs panel--entity-card mc-icon create-project');
     <panel--entity-tabs type="project">
         <template #entity-actions-left={entity}>
             <div class="actions-left">
-                <panel--entity-actions v-if="entity.status!=-2" :entity="entity" buttons="archive" archive="<?php i::esc_attr_e('Arquivar') ?>"></panel--entity-actions>
-                <panel--entity-actions v-if="entity.status!=0 && entity.status!=-2" :entity=" entity" buttons="unpublish" unpublish="<?php i::esc_attr_e('Tornar Rascunho') ?>"></panel--entity-actions>
-                <panel--entity-actions :entity="entity" buttons="delete" delete="<?php i::esc_attr_e('Excluir') ?>"></panel--entity-actions>
+                <div class="actions-left__before">
+                    <panel--entity-actions v-if="entity.status!=-2" :entity="entity" buttons="archive" archive="<?php i::esc_attr_e('Arquivar') ?>"></panel--entity-actions>
+                    <panel--entity-actions v-if="entity.status!=0 && entity.status!=-2 && entity.status!=-10" :entity=" entity" buttons="unpublish" unpublish="<?php i::esc_attr_e('Tornar Rascunho') ?>"></panel--entity-actions>
+                </div>
+                <div class="actions-left__before">
 
-
+                    <panel--entity-actions v-if="entity.status!=-10" :entity="entity" buttons="delete" delete="<?php i::esc_attr_e('Excluir') ?>"></panel--entity-actions>
+                </div>
             </div>
         </template>
 
