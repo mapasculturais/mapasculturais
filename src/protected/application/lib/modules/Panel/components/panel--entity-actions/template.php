@@ -10,11 +10,13 @@ $this->import('loading');
     <loading :entity="entity"></loading>
     
     <confirm-button v-if="!entity.__processing && publishButton && entity.status == <?= Entity::STATUS_TRASH ?>"
-        @confirm="undeleteEntity($event)"
+        @confirm="undeleteEntity($event)" 
+        button-class="button unpublish button--primary button--icon"
         message="<?php i::esc_attr_e("Você está certo que deseja recuperar esta entidade da lixeira?") ?>"><?php i::_e('Recuperar') ?></confirm-button>
     
     <confirm-button v-if="!entity.__processing && publishButton && entity.status != <?= Entity::STATUS_TRASH ?> && entity.status != <?= Entity::STATUS_ENABLED ?>"
         @confirm="publishEntity($event)"
+        button-class="button publish button--primary button--icon"
         message="<?php i::esc_attr_e("Você está certo que deseja publicar esta entidade?") ?>"><?php i::_e('Publicar') ?></confirm-button>
     
     <confirm-button v-if="!entity.__processing && archiveButton && entity.status != <?= Entity::STATUS_ARCHIVED ?> && hasStatus('archived')"
