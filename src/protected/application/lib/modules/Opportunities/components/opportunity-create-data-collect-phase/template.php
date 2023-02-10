@@ -5,31 +5,17 @@ $this->import('
 ');
 ?>
 
-<modal title="<?= i::__("Adicionar fase de Coleta de Dados") ?>">
+<modal title="<?= i::__("Adicionar fase de Coleta de Dados") ?>" @open="createEntity()" @close="destroyEntity()">
     <template #default="modal">
         <div class="grid-12">
             <div class="col-12">
-                <entity-field :entity="entity" prop="type"></entity-field>
+                <entity-field :entity="phase" prop="name"></entity-field>
             </div>
             <div class="col-6">
-                <datepicker
-                        :locale="locale"
-                        :weekStart="0"
-                        v-model="dateStart"
-                        :format="dateFormat"
-                        :dayNames="dayNames"
-                        autoApply utc>
-                </datepicker>
+               <entity-field :entity="phase" prop="evaluationFrom"></entity-field>
             </div>
             <div class="col-6">
-                <datepicker
-                        :locale="locale"
-                        :weekStart="0"
-                        v-model="dateEnd"
-                        :format="dateFormat"
-                        :dayNames="dayNames"
-                        autoApply utc>
-                </datepicker>
+               <entity-field :entity="phase" prop="evaluationTo" :min-date="evaluationFrom"></entity-field>
             </div>
         </div>
     </template>

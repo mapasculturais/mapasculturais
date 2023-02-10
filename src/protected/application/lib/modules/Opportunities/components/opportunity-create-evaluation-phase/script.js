@@ -3,13 +3,7 @@ app.component('opportunity-create-evaluation-phase' , {
 
     data () {
         return {
-            phase:null,
-            locale: $MAPAS.config.locale,
-            dateStart: '',
-            dateEnd: '',
-            dateFinalResult: '',
-            dayNames: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            accountability: false
+            phase: null
         };
     },
 
@@ -21,21 +15,6 @@ app.component('opportunity-create-evaluation-phase' , {
     },
 
     mounted() {
-        this.dateStart = $MAPAS.requestedEntity.registrationFrom.date;
-        this.dateEnd = $MAPAS.requestedEntity.registrationTo.date;
-    },
-
-    watch: {
-      dateStart: {
-          handler (val) {
-              $MAPAS.requestedEntity.registrationFrom.date = val;
-          }
-      },
-      dateEnd: {
-          handler (val) {
-              $MAPAS.requestedEntity.registrationTo.date = val;
-          }
-      }
     },
 
     methods: {
@@ -55,6 +34,20 @@ app.component('opportunity-create-evaluation-phase' , {
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
+        },
+        save(modal) {
+            const lists = useEntitiesLists(); // obtem o storage de listas de entidades
+
+            modal.loading(true);
+            this.phase.save().then((response) => {
+                this.$emit('create', response);
+                modal.loading(false);
+                stat = this.phase.status;
+               //this.addAgent(stat);
+            }).catch((e) => {
+                modal.loading(false);
+
+            });
         },
     }
 });

@@ -3,13 +3,7 @@ app.component('opportunity-create-data-collect-phase' , {
 
     data () {
         return {
-            phase: null,
-            locale: $MAPAS.config.locale,
-            dateStart: '',
-            dateEnd: '',
-            dateFinalResult: '',
-            dayNames: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            accountability: false
+            phase: null
         };
     },
 
@@ -17,25 +11,23 @@ app.component('opportunity-create-data-collect-phase' , {
         opportunity: {
             type: Entity,
             required: true
+        },
+        previousPhase:{
+            type: Entity,
+            required: true
+        },
+        lastPhase:{
+            type:Entity,
+            required: true
         }
     },
 
     mounted() {
-        this.dateStart = $MAPAS.requestedEntity.registrationFrom.date;
-        this.dateEnd = $MAPAS.requestedEntity.registrationTo.date;
+        // pegar as datas do previous phase
+        // se this.previousfase.__objectType == 'opportunity' then previousphase.evaluationfrom e to else registrofrom e to
     },
 
     watch: {
-      dateStart: {
-          handler (val) {
-              $MAPAS.requestedEntity.registrationFrom.date = val;
-          }
-      },
-      dateEnd: {
-          handler (val) {
-              $MAPAS.requestedEntity.registrationTo.date = val;
-          }
-      }
     },
 
     methods: {
@@ -44,14 +36,30 @@ app.component('opportunity-create-data-collect-phase' , {
         },
         createEntity() {
             this.phase = Vue.ref(new Entity('opportunity'));
+            console.log(this.phase);
             this.phase.type = this.opportunity.type;
             this.phase.status = -1;
             this.phase.parent = this.opportunity;
-
+            this.phase.evaluationFrom = this.opportunity.evaluationFrom;
+            this.phase.evaluationTo = this.opportunity.evaluationTo;
         },
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
+        },
+        save(modal) {
+            const lists = useEntitiesLists(); // obtem o storage de listas de entidades
+
+            modal.loading(true);
+            this.phase.save().then((response) => {
+                this.$emit('create', response);
+                modal.loading(false);
+                stat = this.phase.status;
+                //this.addAgent(stat);
+            }).catch((e) => {
+                modal.loading(false);
+
+            });
         },
     }
 });
