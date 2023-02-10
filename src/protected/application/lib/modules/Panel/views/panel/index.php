@@ -9,6 +9,7 @@ $this->import('
     panel--last-edited
     panel--last-registrations
     panel--open-opportunities
+    user-profile-avatar
 '); 
 ?>
 <div class="panel-home">
@@ -28,13 +29,7 @@ $this->import('
             <?php $this->applyTemplateHook('header-user', 'begin') ?>
             <div class="panel-home__header--user-profile">
                 <div class="avatar">
-                    <?php if (!$app->user->is('guest')): ?>
-                        <?php if ($app->user->profile->avatar): ?>
-                            <img src="<?= $app->user->profile->avatar->transform('avatarSmall')->url ?>" />
-                        <?php else: ?>
-                            <mc-icon name="user"></mc-icon>
-                        <?php endif; ?>
-                    <?php endif; ?>
+                    <user-profile-avatar></user-profile-avatar>
                 </div>
                 <div class="name">
                     <?= i::_e('Olá, ') ?> <?= $app->user->profile->name ?>
