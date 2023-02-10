@@ -41,10 +41,10 @@ $this->import('
     <template #after-li="{index, item}">
         <div v-if="index==1" class="grid-12">
             <div class="col-12">
-                <opportunity-create-evaluation-phase :opportunity="item"></opportunity-create-evaluation-phase>
+                <opportunity-create-evaluation-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]"></opportunity-create-evaluation-phase>
             </div>
             <div class="col-12">
-                <opportunity-create-data-collect-phase :opportunity="item"></opportunity-create-data-collect-phase>
+                <opportunity-create-data-collect-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]"></opportunity-create-data-collect-phase>
             </div>
         </div>
     </template>
