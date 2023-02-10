@@ -3,13 +3,7 @@ app.component('opportunity-create-evaluation-phase' , {
 
     data () {
         return {
-            phase:null,
-            locale: $MAPAS.config.locale,
-            dateStart: '',
-            dateEnd: '',
-            dateFinalResult: '',
-            dayNames: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            accountability: false
+            phase: null
         };
     },
 
@@ -21,21 +15,6 @@ app.component('opportunity-create-evaluation-phase' , {
     },
 
     mounted() {
-        this.dateStart = $MAPAS.requestedEntity.registrationFrom.date;
-        this.dateEnd = $MAPAS.requestedEntity.registrationTo.date;
-    },
-
-    watch: {
-      dateStart: {
-          handler (val) {
-              $MAPAS.requestedEntity.evaluationTo = val;
-          }
-      },
-      dateEnd: {
-          handler (val) {
-              $MAPAS.requestedEntity.evaluationTo = val;
-          }
-      }
     },
 
     methods: {
