@@ -7,6 +7,8 @@ $this->import('
 
 <modal title="<?= i::__("Adicionar Fase de Avaliação") ?>" @open="createEntity()" @close="destroyEntity()">
     <template #default="modal">
+        {{ phase }}
+        {{ opportunity }}
         <div class="grid-12">
             <div class="col-12">
                 <entity-field :entity="phase" prop="type"></entity-field>
