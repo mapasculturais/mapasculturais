@@ -7,17 +7,15 @@ $this->import('
 
 <modal title="<?= i::__("Adicionar fase de Coleta de Dados") ?>" @open="createEntity()" @close="destroyEntity()">
     <template #default="modal">
-        {{ phase }}
-        {{ opportunity }}
         <div class="grid-12">
             <div class="col-12">
                 <entity-field :entity="phase" prop="name"></entity-field>
             </div>
             <div class="col-6">
-<!--                <entity-field :entity="phase" prop="evaluationFrom"></entity-field>-->
+               <entity-field :entity="phase" prop="evaluationFrom"></entity-field>
             </div>
             <div class="col-6">
-<!--                <entity-field :entity="phase" prop="evaluationTo" :min-date="evaluationFrom"></entity-field>-->
+               <entity-field :entity="phase" prop="evaluationTo" :min-date="evaluationFrom"></entity-field>
             </div>
         </div>
     </template>

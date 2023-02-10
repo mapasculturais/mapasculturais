@@ -11,10 +11,20 @@ app.component('opportunity-create-data-collect-phase' , {
         opportunity: {
             type: Entity,
             required: true
+        },
+        previousPhase:{
+            type: Entity,
+            required: true
+        },
+        lastPhase:{
+            type:Entity,
+            required: true
         }
     },
 
     mounted() {
+        // pegar as datas do previous phase
+        // se this.previousfase.__objectType == 'opportunity' then previousphase.evaluationfrom e to else registrofrom e to
     },
 
     watch: {
@@ -26,6 +36,8 @@ app.component('opportunity-create-data-collect-phase' , {
         },
         createEntity() {
             this.phase = Vue.ref(new Entity('opportunity'));
+            console.log(this.phase);
+            this.phase.type = this.opportunity.type;
             this.phase.status = -1;
             this.phase.parent = this.opportunity;
             this.phase.evaluationFrom = this.opportunity.evaluationFrom;

@@ -6,10 +6,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim \
         sudo 
 
-RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
+#RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
+
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get install -y nodejs
-
+RUN npm install -g pnpm
 RUN rm -rf /var/lib/apt/lists
 
 ENV PNPM_HOME=/root/.local/share/pnpm
@@ -42,7 +43,7 @@ RUN pecl install imagick-beta \
     && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini
 
 # Install xdebug
-RUN yes | pecl install xdebug \
+RUN yes | pecl install xdebug-2.7.2 \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
