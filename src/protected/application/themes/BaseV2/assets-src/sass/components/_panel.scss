@@ -267,22 +267,29 @@
         }
 
         .actions-left {
-        display: flex;
-            &-before {
-                // background-color: red;
-            }
+            display: inline-flex;
+            .panel__entity-actions:first-of-type {
 
-            &-after {
-                // background-color: blue;
+                display: flex;
+                flex-direction: row-reverse;
             }
+        
 
+        &-before {
+            // background-color: red;
         }
 
-        .tabs-component {
-            &__panels {
-                margin: 0;
-            }
-
+        &-after {
+            // background-color: blue;
         }
+
     }
+
+    .tabs-component {
+        &__panels {
+            margin: 0;
+        }
+
+    }
+}
 }
