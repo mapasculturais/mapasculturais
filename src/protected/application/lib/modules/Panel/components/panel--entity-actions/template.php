@@ -12,7 +12,6 @@ $this->import('loading');
     <confirm-button v-if="!entity.__processing && publishButton && entity.status == <?= Entity::STATUS_TRASH ?>"
         @confirm="undeleteEntity($event)" 
         button-class="button unpublish button--primary button--icon"
-        
         message="<?php i::esc_attr_e("Você está certo que deseja recuperar esta entidade da lixeira?") ?>"><?php i::_e('Recuperar') ?></confirm-button>
     
     <confirm-button v-if="!entity.__processing && publishButton && entity.status != <?= Entity::STATUS_TRASH ?> && entity.status != <?= Entity::STATUS_ENABLED ?>"
