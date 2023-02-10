@@ -8,6 +8,7 @@ $this->import('
     panel--nav
     popover
     theme-logo
+    user-profile-avatar
 ');
 ?>
 <?php $this->applyTemplateHook('header-menu-user', 'before') ?>
@@ -23,13 +24,7 @@ $this->import('
                     <?= i::_e('Minha conta') ?>
                 </div>
                 <div class="mc-header-menu-user__user--avatar">
-                    <?php if (!$app->user->is('guest')): ?>
-                        <?php if ($app->user->profile && $app->user->profile->avatar && $app->user->profile->avatar->transform('avatarSmall')): ?>
-                            <img src="<?php echo $app->user->profile->avatar->transform('avatarSmall')->url; ?>" />
-                        <?php else: ?>
-                            <mc-icon name="user"></mc-icon>
-                        <?php endif; ?>
-                    <?php endif; ?>
+                    <user-profile-avatar></user-profile-avatar>
                 </div>
             </a>
         </template>
@@ -67,13 +62,7 @@ $this->import('
                     <?= i::_e('Minha conta') ?>
                 </div>
                 <div class="mc-header-menu-user__user--avatar">
-                    <?php if (!$app->user->is('guest')): ?>
-                        <?php if ($app->user->profile && $app->user->profile->avatar): ?>
-                            <img :src="profile.files?.avatar?.transformations?.avatarSmall?.url" />
-                        <?php else: ?>
-                            <mc-icon name="user"></mc-icon>
-                        <?php endif; ?>
-                    <?php endif; ?>
+                    <user-profile-avatar></user-profile-avatar>
                 </div>
             </a>
         </div>
