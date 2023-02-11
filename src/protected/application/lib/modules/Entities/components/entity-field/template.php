@@ -1,7 +1,6 @@
 <?php 
 use MapasCulturais\i;
 $this->import('
-    mc-input-mask-wrapper
     mc-input-datepicker-wrapper
 ')
 ?>
@@ -13,9 +12,13 @@ $this->import('
     <slot name="input" >
         <?php //@todo implementar registro de tipos de campos (#1895) ?>
 
-        <mc-input-mask-wrapper v-if="is('string') && mask" :entity="entity" :prop="prop"></mc-input-mask-wrapper>
+        <!-- masked fields -->
+        <input  v-if="is('cpf')" v-maska data-maska="###.###.###-##" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
+        <input  v-if="is('cnpj')" v-maska data-maska="##.###.###/####-##" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
+        <input  v-if="is('brPhone')" v-maska data-maska="(##) ####0-####" data-maska-tokens="0:[0-9]:optional" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
+        <input  v-if="is('cep')" v-maska data-maska="#####-###" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
 
-        <input  v-if="is('string') && !mask" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
+        <input  v-if="is('string')" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
 
         <textarea v-if="is('text')" :value="value" :id="propId" :name="prop" @change="change($event)"></textarea>
 
