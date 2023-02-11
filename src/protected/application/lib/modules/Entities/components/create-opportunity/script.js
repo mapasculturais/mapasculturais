@@ -70,7 +70,7 @@ app.component('create-opportunity', {
             this.entity.save().then((response) => {
                 this.$emit('create', response);
                 modal.loading(false);
-
+                Utils.pushEntityToList(this.entity);
             }).catch((e) => {
                 modal.loading(false);
             });

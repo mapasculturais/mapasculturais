@@ -87,8 +87,7 @@ app.component('create-project' , {
             this.entity.save().then((response) => {
                 this.$emit('create',response);
                 modal.loading(false);
-                stat = this.entity.status;
-                this.addEntity(stat);
+                Utils.pushEntityToList(this.entity);
 
             }).catch((e) => {
                 modal.loading(false);
@@ -98,22 +97,6 @@ app.component('create-project' , {
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
-        },
-        addEntity(stat) {
-            if (stat == 1) {
-                const lists = useEntitiesLists();
-                const list = lists.fetch('project:publish');
-                if (list) {
-                    list.push(this.entity);
-                }
-            }
-            if (stat == 0) {
-                const lists = useEntitiesLists();
-                const list = lists.fetch('project:draft');
-                if (list) {
-                    list.push(this.entity);
-                }
-            }
-        },
+        }
     },
 });

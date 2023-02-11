@@ -88,8 +88,7 @@ app.component('create-event', {
             this.entity.save().then((response) => {
                 this.$emit('create', response)
                 modal.loading(false);
-                stat = this.entity.status;
-                this.addEntity(stat);
+                Utils.pushEntityToList(this.entity);
             }).catch((e) => {
                 modal.loading(false);
             });
@@ -99,22 +98,5 @@ app.component('create-event', {
         destroyEntity() {
             setTimeout(() => this.entity = null, 200);
         },
-        addEntity(stat) {
-            if (stat == 1) {
-                const lists = useEntitiesLists();
-                const list = lists.fetch('event:publish');
-                if (list) {
-                    list.push(this.entity);
-                }
-            }
-            if (stat == 0) {
-                const lists = useEntitiesLists();
-                const list = lists.fetch('event:draft');
-                if (list) {
-                    list.push(this.entity);
-                }
-            }
-        },
-
     },
 });

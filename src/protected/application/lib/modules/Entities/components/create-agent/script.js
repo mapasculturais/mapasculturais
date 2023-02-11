@@ -88,8 +88,7 @@ app.component('create-agent', {
             this.entity.save().then((response) => {
                 this.$emit('create', response);
                 modal.loading(false);
-                stat = this.entity.status;
-               this.addAgent(stat);
+                Utils.pushEntityToList(this.entity);
             }).catch((e) => {
                 modal.loading(false);
 
@@ -99,22 +98,6 @@ app.component('create-agent', {
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
-        },
-        addEntity(stat) {
-            if (stat == 1) {
-                const lists = useEntitiesLists(); // obtem o storage de listas de entidades
-                const list = lists.fetch('agent:publish'); // obtém a lista de agentes publicados
-                if (list) {
-                    list.push(this.entity);  // adiciona a entidade na lista
-                }
-            }
-            if(stat == 0){
-                const lists = useEntitiesLists(); // obtem o storage de listas de entidades
-                const list = lists.fetch('agent:draft'); // obtém a lista de agentes publicados
-                if (list) {
-                    list.push(this.entity);  // adiciona a entidade na lista
-                }
-            }
         },
     },
 });
