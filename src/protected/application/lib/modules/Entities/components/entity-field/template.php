@@ -26,7 +26,7 @@ $this->import('
 
         <mc-input-datepicker-wrapper v-if="is('time') || is('datetime') || is('date')" :entity="entity" :prop="prop" :field-type="fieldType"></mc-input-datepicker-wrapper>
 
-        <input v-if="is('email') || is('url')" :value="value.format" :id="propId" :name="prop" :type="fieldType" @change="change($event)">
+        <input v-if="is('email') || is('url')" :value="value" :id="propId" :name="prop" :type="fieldType" @change="change($event)">
         
         <select v-if="is('select')" :value="value" :id="propId" :name="prop" @change="change($event)">
             <option v-for="optionValue in description.optionsOrder" :value="optionValue">{{description.options[optionValue]}}</option>
