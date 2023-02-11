@@ -50,6 +50,13 @@ class Entity {
                 val = {lat: parseFloat(val?.latitude), lng: parseFloat(val?.longitude)};
             }
 
+            if(prop == 'type' && typeof val == 'number') {
+                val = {
+                    id: val, 
+                    name: __properties['type']?.options?.[val]
+                };
+            }
+
             this[prop] = val;
         }
 
