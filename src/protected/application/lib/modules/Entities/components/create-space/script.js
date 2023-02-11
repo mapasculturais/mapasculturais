@@ -87,8 +87,9 @@ app.component('create-space', {
             this.entity.save().then((response) => {
                 this.$emit('create', response)
                 modal.loading(false);
-                stat = this.entity.status;
-                this.addEntity(stat);
+                Utils.pushEntityToList(this.entity);
+                console.log(response);
+
             }).catch((e) => {
                 modal.loading(false);
             });
@@ -97,22 +98,6 @@ app.component('create-space', {
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
-        },
-        addEntity(stat) {
-            if (stat == 1) {
-                const lists = useEntitiesLists();
-                const list = lists.fetch('space:publish');
-                if (list) {
-                    list.push(this.entity);
-                }
-            }
-            if (stat == 0) {
-                const lists = useEntitiesLists();
-                const list = lists.fetch('space:draft');
-                if (list) {
-                    list.push(this.entity);
-                }
-            }
-        },
+        }
     },
 });
