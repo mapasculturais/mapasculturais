@@ -250,5 +250,23 @@ globalThis.Utils = {
     // string functions 
     ucfirst(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+    },
+
+    pushEntityToList(entity, listName) {
+        const lists = useEntitiesLists(); // obtem o storage de listas de entidades
+        const listNames = {
+            '0': `${entity.__objectType}:draft`,
+            '1': `${entity.__objectType}:publish`,
+            '-2': `${entity.__objectType}:archived`,
+            '-10': `${entity.__objectType}:trash`,
+        };
+
+        listName = listName || listNames[`${entity.status}`];
+
+        const list = lists.fetch(listName); // obtém a lista de agentes publicados
+        
+        if (list) {
+            list.push(entity);  // adiciona a entidade na lista
+        }
+    },
 }
