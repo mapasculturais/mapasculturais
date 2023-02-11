@@ -255,6 +255,8 @@ abstract class SealRelation extends \MapasCulturais\Entity
 
             if($entity->validPeriod > 0){
                 $mensagem = str_replace("[dateFin]",$dateFim,$mensagem);
+            } else {
+                $mensagem = str_replace("[dateFin]",'',$mensagem);
             }
             
             $mensagem = preg_replace('/\v+|\\\r\\\n/','<br/>',$mensagem);
