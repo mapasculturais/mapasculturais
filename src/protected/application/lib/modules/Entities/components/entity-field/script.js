@@ -39,7 +39,7 @@ app.component('entity-field', {
             __timeout: null,
             description: description,
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
-            fieldType: this.type || description.input_type || description.type
+            fieldType: this.type || description.field_type || description.type
         }
     },
 
@@ -87,10 +87,6 @@ app.component('entity-field', {
         fieldDescription: {
             type: String,
             default: null
-        },
-        mask: {
-            type: Boolean,
-            default: false
         }
     },
 
