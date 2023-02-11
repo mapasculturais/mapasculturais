@@ -164,11 +164,26 @@ trait EntitySealRelation {
 
     protected function canUserCreateSealRelation($user){
         $result = $this->canUser('@control', $user);
-        return $result;
+        return $user->is('admin') || $result && $user->hasControlSeals;
     }
 
     function canUserRemoveSealRelation($user){
-        $result = $this->canUser('@control', $user);
+        if ($user->is('admin')) {
+            return true;
+        }
+        
+        $result = false;
+        if($this->canUser('@control', $user)){
+            if($entity_seals = $this->relatedSeals){
+                $user_seals = $user->hasControlSeals;
+
+                foreach($user_seals as $seal) {
+                    if(array_search($seal, $entity_seals) !== false) {
+                        $result = true;
+                    }
+                }
+            }
+        }
         return $result;
     }
 
