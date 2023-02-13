@@ -4,11 +4,11 @@
 
     &__privacy {
 
-    
+
 
         &--accept {
             max-width: 970px;
-            max-height: 195px;
+            max-height: 100%;
             background-color: var(--mc-high-500);
             border-radius: var(--mc-border-radius-xs);
             padding: 16px 16px 24px 16px;
@@ -29,20 +29,22 @@
                             margin-top: 12px;
 
                             &-subterm {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 4px;
 
                                 &-title {
-                                    font-weight: bolder;
-                                    font-size: 14px;
-                                    letter-spacing: 0.07em;
-                                    text-transform: uppercase;
-                                    line-height: 19px;
+                                    font-weight: 700;
+                                    font-size: 16px;
+                                    line-height: 22px;
+                                    font-style: normal;
                                 }
 
                                 &-content {
-                                    font-weight: 500;
+                                    font-family: 'Open Sans';
+                                    font-style: normal;
+                                    font-weight: 600;
                                     font-size: 14px;
-                                    letter-spacing: 0.07em;
-                                    text-transform: uppercase;
                                     line-height: 19px;
                                 }
                             }
