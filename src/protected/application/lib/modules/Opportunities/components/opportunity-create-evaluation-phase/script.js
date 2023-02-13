@@ -3,7 +3,9 @@ app.component('opportunity-create-evaluation-phase' , {
 
     data () {
         return {
-            phase: null
+            phase: null,
+            dateStart: '',
+            dateEnd: ''
         };
     },
 
@@ -24,11 +26,19 @@ app.component('opportunity-create-evaluation-phase' , {
 
     computed: {
         maxDate () {
-          return this.previousPhase.evaluationTo._date;
+            return this.dateEnd;
         },
         minDate () {
-          return this.opportunity.registrationTo._date || this.lastPhase.evaluationTo._date;
+            return this.dateStart;
+        },
+        minDateEvaluationTo () {
+            return this.phase.evaluationFrom?._date || '';
         }
+    },
+
+    mounted () {
+        this.dateStart = $MAPAS.requestedEntity.registrationFrom.date;
+        this.dateEnd = $MAPAS.requestedEntity.registrationTo.date;
     },
 
     methods: {
