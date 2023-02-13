@@ -1,8 +1,18 @@
 @use '../settings/mixins' as *;
 
 .user-accepted-terms {
+
     &__privacy {
+
+    
+
         &--accept {
+            max-width: 970px;
+            max-height: 195px;
+            background-color: var(--mc-high-500);
+            border-radius: var(--mc-border-radius-xs);
+            padding: 16px 16px 24px 16px;
+
             &-title {
                 font-weight: 700;
                 font-size: 18px;
@@ -13,6 +23,8 @@
                     margin-top: 24px;
 
                     .boxterm {
+                        padding-bottom: 24px;
+
                         &__list {
                             margin-top: 12px;
 
