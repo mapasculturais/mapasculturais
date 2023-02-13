@@ -22,12 +22,13 @@ app.component('opportunity-create-data-collect-phase' , {
         }
     },
 
-    mounted() {
-        // pegar as datas do previous phase
-        // se this.previousfase.__objectType == 'opportunity' then previousphase.evaluationfrom e to else registrofrom e to
-    },
-
-    watch: {
+    computed: {
+        maxDate () {
+            return this.previousPhase.evaluationTo._date;
+        },
+        minDate () {
+            return this.opportunity.registrationTo._date || this.lastPhase.evaluationTo._date;
+        }
     },
 
     methods: {
@@ -36,26 +37,24 @@ app.component('opportunity-create-data-collect-phase' , {
         },
         createEntity() {
             this.phase = Vue.ref(new Entity('opportunity'));
+            console.log(this.opportunity);
+            this.phase.ownerEntity = this.opportunity.ownerEntity;
             console.log(this.phase);
             this.phase.type = this.opportunity.type;
             this.phase.status = -1;
             this.phase.parent = this.opportunity;
-            this.phase.evaluationFrom = this.opportunity.evaluationFrom;
-            this.phase.evaluationTo = this.opportunity.evaluationTo;
+
         },
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
         },
         save(modal) {
-            const lists = useEntitiesLists(); // obtem o storage de listas de entidades
-
             modal.loading(true);
             this.phase.save().then((response) => {
                 this.$emit('create', response);
                 modal.loading(false);
-                stat = this.phase.status;
-                //this.addAgent(stat);
+                modal.close();
             }).catch((e) => {
                 modal.loading(false);
 
