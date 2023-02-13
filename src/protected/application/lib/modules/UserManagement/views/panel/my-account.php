@@ -63,45 +63,14 @@ $this->import('
         <user-accepted-terms :user="entity"></user-accepted-terms>
 
         <div class="user-function">
-            <label class="user-function__label"><?= i::__('Funções do Usuário') ?></label>
+            <label class="user-function__label"><?= i::__('Funções da pessoa usuária') ?></label>
             <div class="user-function__box">
-                <label class="user-function__box--label"><?= i::__('Título de Função de usuário em Subsite') ?> </label>
+                <label class="user-function__box--label"><?= i::__('Função de usuário em Subsite') ?> </label>
                 <div class="user-function__box--content">
                     <label class="user-function__box--content-text">texto qualquer do subsite</label>
                 </div>
             </div>
         </div>
-        <!-- <div class="p-user-detail__property-label">
-            <h3><?= i::__('Minhas propriedades por entidades') ?></h3>
-        </div> -->
-        <!-- <div class="p-user-detail__property-content">
-            <div class="tabs-component">
-                <tabs class="tabs-component__entities">
-                    <tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" icon='agent' classes="tabs-component-button--active-agent">
-                        <user-management--ownership-tabs :user="entity" type="agent" classes="tabs-component__header footer-content-tabs"></user-management--ownership-tabs>
-                    </tab>
-
-                    <tab label="<?= i::esc_attr__('Espaços') ?>" slug="spaces" icon='space' classes="tabs-component-button--active-space">
-                        <user-management--ownership-tabs :user="entity" type="space"></user-management--ownership-tabs>
-                    </tab>
-
-                    <tab label="<?= i::esc_attr__('Eventos') ?>" slug="events" icon='event' classes="tabs-component-button--active-event">
-                        <user-management--ownership-tabs :user="entity" type="event"></user-management--ownership-tabs>
-                    </tab>
-
-                    <tab label="<?= i::esc_attr__('Projetos') ?>" slug="projects" icon='project' classes="tabs-component-button--active-project">
-                        <user-management--ownership-tabs :user="entity" type="project"></user-management--ownership-tabs>
-                    </tab>
-
-                    <tab label="<?= i::esc_attr__('Oportunidades') ?>" slug="opportunities" icon='opportunity' classes="tabs-component-button--active-opportunity">
-                        <user-management--ownership-tabs :user="entity" type="opportunity"></user-management--ownership-tabs>
-                    </tab>
-
-                    <tab label="<?= i::esc_attr__('Inscrições') ?>" slug="registrations" icon='opportunity' classes="tabs-component-button--active-registration">
-                        <user-management--ownership-tabs :user="entity" type="registration"></user-management--ownership-tabs>
-                    </tab>
-                </tabs>
-            </div>
-        </div> -->
+        
     </div>
 </entity>
