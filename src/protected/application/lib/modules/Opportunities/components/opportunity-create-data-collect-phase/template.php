@@ -12,10 +12,10 @@ $this->import('
                 <entity-field :entity="phase" prop="name"></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="phase" prop="registrationFrom" :max-date="maxDate"></entity-field>
+                <entity-field :entity="phase" prop="registrationFrom" :min-date="minDate" :max-date="maxDate"></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="phase" prop="registrationTo" :min-date="minDate"></entity-field>
+                <entity-field :entity="phase" prop="registrationTo" :min-date="minDateRegistrationTo" :max-date="maxDate"></entity-field>
             </div>
         </div>
     </template>
