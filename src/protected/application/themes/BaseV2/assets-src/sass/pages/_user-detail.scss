@@ -130,6 +130,8 @@
                         line-height: size(33);
 
                         &--delete {
+                            display: block;
+
                             svg {
                                 color: var(--mc-danger-500);
                                 margin-right: size(6);
@@ -206,10 +208,14 @@
     }
 
     .user-function {
-
-        margin-right: auto;
-        position: relative;
-        padding-top: size(24);
+        margin-top: 24px;
+        margin-inline: 2rem;
+        background-color: var(--vc-clr-white);
+        max-width: 970px;
+        max-height: 290px;
+        background-color: var(--mc-high-500);
+        border-radius: var(--mc-border-radius-xs);
+        padding: 16px 16px 22px 16px;
 
         &__label {
             font-weight: 700;
@@ -219,18 +225,19 @@
 
 
         &__box {
-            background-color: var(--vc-clr-white);
-
-            width: size(970);
-            max-height: 100%;
-            margin-top: 14px;
-            padding-top: 16px;
+            border-radius: 4px;
+            // border-color:var(--mc-gray-100);
+            border: 1px solid var(--mc-gray-100);
+            // max-width: size(970);
+            // max-height: 100%;
+            margin-top: 8px;
+            // padding-top: 16px;
 
             &--label {
                 font-weight: 700;
                 font-size: 14px;
                 line-height: 19px;
-                padding: 16px 0 8px 16px;
+                padding: 16px 16px 8px 16px;
                 color: var(--mc-black);
             }
 
@@ -394,7 +401,7 @@
                                 }
 
                                 @media (max-width: 700px) {
-                                     white-space: nowrap;
+                                    white-space: nowrap;
                                     display: inline-block;
                                 }
                             }
@@ -421,6 +428,7 @@
                                 @media(max-width: 700px) {
                                     gap: 6px;
                                 }
+
                                 &-edit {
                                     cursor: pointer;
 
@@ -456,12 +464,17 @@
                                     }
 
                                     @media(max-width: 700px) {
-                                        &--editable, &--trash, &archive {
+
+                                        &--editable,
+                                        &--trash,
+                                        &archive {
                                             margin-left: 8px;
                                         }
+
                                         &--editable {
                                             margin: 0;
                                         }
+
                                         &--trash>span,
                                         &--archive>span {
                                             display: none;
