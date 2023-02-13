@@ -11,10 +11,24 @@ app.component('opportunity-create-evaluation-phase' , {
         opportunity: {
             type: Entity,
             required: true
+        },
+        previousPhase: {
+            type: Entity,
+            required: true
+        },
+        lastPhase: {
+            type:Entity,
+            required: true
         }
     },
 
-    mounted() {
+    computed: {
+        maxDate () {
+          return this.previousPhase.evaluationTo._date;
+        },
+        minDate () {
+          return this.opportunity.registrationTo._date || this.lastPhase.evaluationTo._date;
+        }
     },
 
     methods: {
@@ -23,30 +37,20 @@ app.component('opportunity-create-evaluation-phase' , {
         },
         createEntity() {
             this.phase = Vue.ref(new Entity('evaluationmethodconfiguration'));
-
-            this.phase.type = this.opportunity.type;
-            this.phase.status = -1;
-            this.phase.parent = this.opportunity;
-            this.phase.registrationFrom = this.opportunity.registrationFrom;
-            this.phase.registrationTo = this.opportunity.registrationTo;
-
+            this.phase.opportunity = this.opportunity;
         },
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
         },
         save(modal) {
-            const lists = useEntitiesLists(); // obtem o storage de listas de entidades
-
             modal.loading(true);
             this.phase.save().then((response) => {
                 this.$emit('create', response);
                 modal.loading(false);
-                stat = this.phase.status;
-               //this.addAgent(stat);
+                modal.close();
             }).catch((e) => {
                 modal.loading(false);
-
             });
         },
     }

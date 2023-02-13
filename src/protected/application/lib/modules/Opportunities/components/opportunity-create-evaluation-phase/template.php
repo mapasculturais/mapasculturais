@@ -7,8 +7,6 @@ $this->import('
 
 <modal title="<?= i::__("Adicionar Fase de Avaliação") ?>" @open="createEntity()" @close="destroyEntity()">
     <template #default="modal">
-        {{ phase }}
-        {{ opportunity }}
         <div class="grid-12">
             <div class="col-12">
                 <entity-field :entity="phase" prop="type"></entity-field>
@@ -17,10 +15,10 @@ $this->import('
                 <entity-field :entity="phase" prop="name"></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="phase" prop="evaluationFrom" :max-date="evaluationTo"></entity-field>
+                <entity-field :entity="phase" prop="evaluationFrom" :max-date="maxDate"></entity-field>
             </div>
             <div class="col-6">
-            <entity-field :entity="phase" prop="evaluationTo" :min-date="evaluationFrom"></entity-field>
+                <entity-field :entity="phase" prop="evaluationTo" :min-date="minDate"></entity-field>
             </div>
         </div>
     </template>
