@@ -54,7 +54,7 @@ app.component('mc-input-datepicker-wrapper', {
     },
 
     computed: {
-        isMinDate () {
+        ifDateLimitation () {
             return this.minDate !== null || this.maxDate !== null;
         }
     },
