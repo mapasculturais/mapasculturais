@@ -993,6 +993,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return false;
         }
 
+        if (!$this->evaluationMethodConfiguration) {
+            return false;
+        }
+        
         $relation = $this->evaluationMethodConfiguration->getUserRelation($user);
 
         return $relation && $relation->status === AgentRelation::STATUS_ENABLED;
