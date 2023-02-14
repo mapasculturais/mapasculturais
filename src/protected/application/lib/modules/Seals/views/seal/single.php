@@ -39,9 +39,6 @@ $this->breadcrumb = [
                 <div class="col-12">
                     <entity-links :entity="entity" title="<?php i::_e('Links'); ?>"></entity-links>
                 </div>
-                <div class="col-12">
-                    <entity-request-ownership :entity="entity"></entity-request-ownership>
-                </div>
             </div>
         </main>
         <aside>
