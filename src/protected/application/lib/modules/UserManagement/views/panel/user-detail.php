@@ -52,41 +52,45 @@ $this->import('
                     </div>
                 </div>
             </header>
-            <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
-        </div>
-
-     <div class="p-user-detail__property-label">
-            <h3><?= i::__('Propriedades do usuário') ?></h3>
-        </div>
-        <div class="p-user-detail__property-content">
-            <div class="tabs-component">
-                
-                <tabs class="tabs-component__entities"> 
-                    <tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" icon='agent' classes="tabs-component-button--active-agent">
-                        <user-management--ownership-tabs :user="entity" type="agent" classes="tabs-component__header footer-content-tabs"></user-management--ownership-tabs>
-                    </tab>
-
-                    <tab label="<?= i::esc_attr__('Espaços') ?>" slug="spaces" icon='space' classes="tabs-component-button--active-space">
-                        <user-management--ownership-tabs :user="entity" type="space"></user-management--ownership-tabs>
-                    </tab>
-
-                    <tab label="<?= i::esc_attr__('Eventos') ?>" slug="events" icon='event' classes="tabs-component-button--active-event">
-                        <user-management--ownership-tabs :user="entity" type="event"></user-management--ownership-tabs>
-                    </tab>
-
-                    <tab label="<?= i::esc_attr__('Projetos') ?>" slug="projects" icon='project' classes="tabs-component-button--active-project">
-                        <user-management--ownership-tabs :user="entity" type="project"></user-management--ownership-tabs>
-                    </tab>
-
-                    <tab label="<?= i::esc_attr__('Oportunidades') ?>" slug="opportunities" icon='opportunity' classes="tabs-component-button--active-opportunity">
-                        <user-management--ownership-tabs :user="entity" type="opportunity"></user-management--ownership-tabs>
-                    </tab>
-
-                    <tab label="<?= i::esc_attr__('Inscrições') ?>" slug="registrations" icon='opportunity' classes="tabs-component-button--active-registration">
-                        <user-management--ownership-tabs :user="entity" type="registration"></user-management--ownership-tabs>
-                    </tab>
-                </tabs>
+            <?php $this->applyTemplateHook('p-user-details__seals', 'before'); ?>
+            <div class="p-user-detail__seals">
+                <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
             </div>
-        </div> 
-    </div>
+            <?php $this->applyTemplateHook('p-user-details__seals', 'after'); ?>
+
+
+            <div class="p-user-detail__property-label">
+                <h3><?= i::__('Propriedades do usuário') ?></h3>
+            </div>
+            <div class="p-user-detail__property-content">
+                <div class="tabs-component">
+
+                    <tabs class="tabs-component__entities">
+                        <tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" icon='agent' classes="tabs-component-button--active-agent">
+                            <user-management--ownership-tabs :user="entity" type="agent" classes="tabs-component__header footer-content-tabs"></user-management--ownership-tabs>
+                        </tab>
+
+                        <tab label="<?= i::esc_attr__('Espaços') ?>" slug="spaces" icon='space' classes="tabs-component-button--active-space">
+                            <user-management--ownership-tabs :user="entity" type="space"></user-management--ownership-tabs>
+                        </tab>
+
+                        <tab label="<?= i::esc_attr__('Eventos') ?>" slug="events" icon='event' classes="tabs-component-button--active-event">
+                            <user-management--ownership-tabs :user="entity" type="event"></user-management--ownership-tabs>
+                        </tab>
+
+                        <tab label="<?= i::esc_attr__('Projetos') ?>" slug="projects" icon='project' classes="tabs-component-button--active-project">
+                            <user-management--ownership-tabs :user="entity" type="project"></user-management--ownership-tabs>
+                        </tab>
+
+                        <tab label="<?= i::esc_attr__('Oportunidades') ?>" slug="opportunities" icon='opportunity' classes="tabs-component-button--active-opportunity">
+                            <user-management--ownership-tabs :user="entity" type="opportunity"></user-management--ownership-tabs>
+                        </tab>
+
+                        <tab label="<?= i::esc_attr__('Inscrições') ?>" slug="registrations" icon='opportunity' classes="tabs-component-button--active-registration">
+                            <user-management--ownership-tabs :user="entity" type="registration"></user-management--ownership-tabs>
+                        </tab>
+                    </tabs>
+                </div>
+            </div>
+        </div>
 </entity>
