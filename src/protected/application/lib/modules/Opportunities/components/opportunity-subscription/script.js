@@ -1,19 +1,39 @@
 app.component('opportunity-subscription' , {
     template: $TEMPLATES['opportunity-subscription'],
 
-    data () {
-        return {
-            agent: null,
-            categories: $MAPAS.requestedEntity.registrationCategories,
-            dateStart: new McDate($MAPAS.requestedEntity.registrationFrom.date),
-            dateEnd: new McDate($MAPAS.requestedEntity.registrationTo.date),
-        }
-    },
-
     props: {
         entity: {
             type: Entity,
             required: true
+        }
+    },
+
+    setup() {
+        $MAPAS.config.opportunitySubscription.agents = $MAPAS.config.opportunitySubscription.agents.map((agent) => {
+            if (agent instanceof Entity) {
+                return agent;
+            } else {
+                const entity = new Entity('agent', agent.id);
+                entity.populate(agent);
+                return entity;
+            }             
+        });
+    },
+
+    data () {
+        let agent = null;
+
+        if ($MAPAS.config.opportunitySubscription.agents.length == 1) {
+            agent = $MAPAS.config.opportunitySubscription.agents[0];
+        }
+
+        return {
+            agent,
+            categories: $MAPAS.requestedEntity.registrationCategories,
+            dateStart: new McDate($MAPAS.requestedEntity.registrationFrom.date),
+            dateEnd: new McDate($MAPAS.requestedEntity.registrationTo.date),
+            entities: {},
+            entitiesLength: $MAPAS.config.opportunitySubscription.agents.length,
         }
     },
 
@@ -33,12 +53,18 @@ app.component('opportunity-subscription' , {
     },
 
     methods: {
-        // Seleção do espaço vinculado
         selectAgent(agent) {
             this.agent = agent;
         },
         removeAgent() {
             this.agent = null;
         },
+        fetch(entities) {
+            this.entities = entities;
+
+            if (this.entities.length == 1) {
+                this.selectAgent(this.entities[0]);
+            }
+        }
     }
 });
