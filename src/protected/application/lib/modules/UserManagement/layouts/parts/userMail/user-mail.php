@@ -6,4 +6,7 @@ $this->import('
     user-mail
 ');
 ?>
-<user-mail :entity="entity"></user-mail>
+<div class="account-config">
+    <user-mail :entity="entity"></user-mail>
+</div>
+
