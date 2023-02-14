@@ -211,10 +211,50 @@ class Module extends \MapasCulturais\Module{
 
         $app->view->enqueueStyle('app', 'plugin-opportunity-phases', 'css/opportunity-phases.css');
 
+        $app->hook('API(opportunity.phases)', function() use($app) {
+            $result = [];
+            $app->disableAccessControl();
+            $opportunity = $app->repo('Opportunity')->find($this->data['@opportunity']);
+            
+            $mout_symplyfy = "id,type,publishedRegistrations,name,publishTimestamp,summary";
+            if($opportunity_phases = $opportunity->allPhases){
+                foreach($opportunity_phases as $key => $opportunity){
+
+                    if($opportunity->isDataCollection || $opportunity->isFirstPhase){
+                        $result[] = $opportunity->simplify("{$mout_symplyfy},registrationFrom,registrationTo,isFirstPhase,isLastPhase");
+                    }
+
+                    if($opportunity->evaluationMethodConfiguration){
+
+                        if($opportunity->isDataCollection){
+                            $mout_symplyfy.=",ownerId";
+                        }
+
+                        $result[] = $opportunity->evaluationMethodConfiguration->simplify("{$mout_symplyfy},status,evaluationFrom,evaluationTo");
+                    }
+                }
+            }
+            $app->enableAccessControl();
+
+            $this->json($result);
+        });
+
+        $app->hook('API(opportunity.phase)', function() use($app) {
+
+            $opportunity = $app->repo('Opportunity')->find($this->data['@opportunity']);
+            $result = $opportunity->simplify('summary','publishedRegistrations');
+            $result->evaluationOpen = $opportunity->evaluationMethodConfiguration->evaluationOpen;
+            $this->json($result);
+        });
+
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->jsObject['angularAppDependencies'][] = 'OpportunityPhases';
             $app->view->enqueueScript('app', 'ng.opportunityPhases', 'js/ng.opportunityPhases.js', ['mapasculturais']);
         },1000);
+
+        $app->hook('entity(Opportunity).get(isFirstPhase)', function(&$value) {
+           $value = !$this->parent;
+        });
 
         $app->hook('entity(Opportunity).get(firstPhase)', function(&$value) {
             if ($this->isOpportunityPhase) {
@@ -257,6 +297,39 @@ class Module extends \MapasCulturais\Module{
             $value = $query->getOneOrNullResult();
         });
 
+        $app->hook('entity(Opportunity).get(nextPhases)', function(&$value) use ($app) {
+            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE o.parent = :parent AND o.registrationFrom > :rfrom ORDER BY o.registrationFrom ASC");
+
+            $query->setParameters([
+                "parent" => $this->firstPhase,
+                "rfrom" => $this->registrationFrom,
+            ]);
+
+            $value = $query->getResult();
+        });
+
+        $app->hook('entity(Opportunity).get(allPhases)', function(&$value) use ($app) {
+            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE o.parent = :parent OR o.id = :parent ORDER BY o.registrationFrom ASC");
+
+            $query->setParameters([
+                "parent" => $this->firstPhase,
+            ]);
+
+            $value = $query->getResult();
+        });
+
+        $app->hook('entity(Opportunity).get(countEvaluations)', function(&$value) use ($app) {
+            $conn = $app->em->getConnection();
+
+            $v = 0;
+            if($result = $conn->fetchAll( "SELECT COUNT(*) AS qtd FROM evaluations WHERE opportunity_id = {$this->id}")){
+                $v = $result[0]['qtd'];
+            }
+
+            $value = $v;
+            
+        });
+    
         $app->hook('entity(Opportunity).get(lastCreatedPhase)', function(&$value) {
             $first_phase = $this->firstPhase;
             $value = Module::getLastCreatedPhase($first_phase);
@@ -518,6 +591,8 @@ class Module extends \MapasCulturais\Module{
                 \MapasCulturais\i::__('Décima fase')
             ];
 
+            $request = $this->data;
+
             $phases = self::getPhases($parent);
 
             $num_phases = count($phases);
@@ -549,21 +624,24 @@ class Module extends \MapasCulturais\Module{
                 $phase->isLastPhase = true;
             }
 
+            $phase->isDataCollection = (isset($request['phaseDataCollection']) && (filter_var($request['phaseDataCollection'], FILTER_SANITIZE_SPECIAL_CHARS) == "true")) ? true : false;
             $evaluation_method = $this->data['evaluationMethod'];
 
             $app->applyHookBoundTo($phase, "module(OpportunityPhases).createNextPhase({$evaluation_method}):before", [&$evaluation_method]);
             $phase->save(true);
             $app->applyHookBoundTo($phase, "module(OpportunityPhases).createNextPhase({$evaluation_method}):after", [&$evaluation_method]);
 
-            $definition = $app->getRegisteredEvaluationMethodBySlug($evaluation_method);
+            if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
+                $definition = $app->getRegisteredEvaluationMethodBySlug($evaluation_method);
 
-            $emconfig = new Entities\EvaluationMethodConfiguration;
+                $emconfig = new Entities\EvaluationMethodConfiguration;
 
-            $emconfig->opportunity = $phase;
+                $emconfig->opportunity = $phase;
 
-            $emconfig->type = $definition->slug;
-            
-            $emconfig->save(true);
+                $emconfig->type = $definition->slug;
+                
+                $emconfig->save(true);
+            }
 
             $this->json($phase);
         });
@@ -809,6 +887,14 @@ class Module extends \MapasCulturais\Module{
             'type' => 'boolean',
             'default' => false
         ]);
+        
+        $this->registerOpportunityMetadata("isDataCollection", [
+            'label'=> "Define se é uma oportunidade de coleta de dados",
+            'type'=>'bool',
+            'private'=> true,
+            'default'=> true,
+        ]);
+
     }
 
 

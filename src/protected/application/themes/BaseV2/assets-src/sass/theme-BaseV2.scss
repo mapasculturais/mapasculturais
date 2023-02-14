@@ -22,6 +22,7 @@
 @import 'components/entity-links';
 @import 'components/entity-list';
 @import 'components/entity-location';
+@import 'components/entity-log';
 @import 'components/entity-occurrence-list';
 @import 'components/entity-owner';
 @import 'components/entity-parent-edit';
@@ -56,6 +57,9 @@
 @import 'components/mc-tag-list';
 @import 'components/messages';
 @import 'components/navbar';
+@import 'components/opportunity-basic-info';
+@import 'components/opportunity-subscription-list';
+@import 'components/opportunity-subscription';
 @import 'components/notification-card';
 @import 'components/notification-list';
 @import 'components/notification-modal';
@@ -92,6 +96,7 @@
 @import 'pages/agents';
 @import 'pages/seals';
 @import 'pages/events';
+@import 'pages/opportunity';
 @import 'pages/projects';
 @import 'pages/search';
 @import 'pages/spaces';

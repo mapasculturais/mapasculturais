@@ -1,0 +1,90 @@
+@use '../settings/mixins'as *;
+
+.opportunity-subscription {
+
+    p {
+        margin: 0;
+    }
+
+    /* generic title */
+    .title {
+        color: var(--mc-black);
+        font-size: size(24);
+        font-weight: 700;
+        line-height: size(33);
+        margin: size(16) 0;
+    }
+
+    &__info {
+        .content {
+            background: var(--mc-gray-100);
+            border-radius: size(4);
+            padding: size(1);
+
+            &__description {
+                color: var(--mc-black);
+                font-size: size(18);
+                font-weight: 600;
+                line-height: size(25);
+                margin: 0;
+                padding: size(32) size(47);
+
+                span {
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
+    &__subscription {
+        .logged, .loggedOut {
+            &__description {
+                color: var(--mc-black);
+                font-size: size(16);
+                font-weight: 400;
+                line-height: size(22);
+                margin: size(16) 0;
+            }
+
+            &__form {
+                .fakeInput {
+                    border: size(1) solid var(--mc-gray-500);
+                    border-radius: var(--mc-border-radius-xs);
+                    display: flex;
+                    font-size: size(16);
+                    padding: size(5) size(14);
+                    width: 100%;
+                    align-items: center;
+                    gap: 16px;
+
+                    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/contain;
+                    background-color: var(--mc-white);
+                    background-size: 1.25rem;
+
+                    .iconify {
+                        font-size: 20px;
+                    }
+                    
+                    &__img {
+                        width: 36px;
+                        height: 36px;
+                        background-color: var(--mc-gray-500);
+                        border-radius: var(--mc-border-radius-pill);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        overflow: hidden;
+
+                        .iconify {
+                            color: var(--mc-high-500);
+                        }
+
+                        img {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

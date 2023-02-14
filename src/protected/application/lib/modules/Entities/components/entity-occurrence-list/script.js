@@ -38,7 +38,7 @@ app.component('entity-occurrence-list', {
         },
 
         addToOccurrenceList(occurrence) {
-            /* const api = new API('eventOccurrence'); */
+            /* const api = new API('eventoccurrence'); */
             const lists = useEntitiesLists();
             const occurrences = lists.fetch('occurrenceList', 'default');
             occurrences.push(occurrence);

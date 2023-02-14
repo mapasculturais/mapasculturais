@@ -193,14 +193,15 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         // passa os dados de configuração das políticas afirmativas para JS
         $app->hook('GET(opportunity.edit):before', function() use ($app, $plugin){
             $entity = $this->requestedEntity;
-
-            $app->view->jsObject['affirmativePoliciesFieldsList'] = $plugin->getFieldsAllPhases($entity);
-           
-            $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
-
-            $app->view->jsObject['isActiveAffirmativePolicies'] = $evaluationMethodConfiguration->isActiveAffirmativePolicies;
-            $app->view->jsObject['affirmativePolicies'] = $evaluationMethodConfiguration->affirmativePolicies;
-            $app->view->jsObject['affirmativePoliciesRoof'] = $evaluationMethodConfiguration->affirmativePoliciesRoof;
+            if($entity->evaluationMethodConfiguration){
+                $app->view->jsObject['affirmativePoliciesFieldsList'] = $plugin->getFieldsAllPhases($entity);
+               
+                $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
+    
+                $app->view->jsObject['isActiveAffirmativePolicies'] = $evaluationMethodConfiguration->isActiveAffirmativePolicies;
+                $app->view->jsObject['affirmativePolicies'] = $evaluationMethodConfiguration->affirmativePolicies;
+                $app->view->jsObject['affirmativePoliciesRoof'] = $evaluationMethodConfiguration->affirmativePoliciesRoof;
+            }
         });
 
         $app->hook('evaluationsReport(technical).sections', function(Entities\Opportunity $opportunity, &$sections){

@@ -73,6 +73,7 @@ $iconset = [
     'question' => 'fe:question',
     'role'  => 'ri:profile-line',
     'search' => 'ant-design:search-outlined',
+    'selected' => 'grommet-icons:radial-selected',
     'settings' => 'bxs:cog',
     'sort' => 'mdi:sort',
     'trash' => 'ooui:trash',

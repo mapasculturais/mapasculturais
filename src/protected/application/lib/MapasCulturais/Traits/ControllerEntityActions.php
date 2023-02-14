@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\Entity;
 
 /**
  * Define as rotas POST, PUT, PATCH e DELETE para as entidades.

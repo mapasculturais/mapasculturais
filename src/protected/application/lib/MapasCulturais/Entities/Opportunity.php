@@ -15,6 +15,7 @@ use MapasCulturais\Definitions\Metadata as MetadataDefinition;
  * @property-read int $status
  * @property-read \DateTime $createTimestamp
  * @property-read \DateTime $updateTimestamp
+ * @property-read array $summary
  * 
  * @property string $name
  * @property string $shortDescription
@@ -68,6 +69,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityArchive;
         
     protected $__enableMagicGetterHook = true;
+    protected $__enableMagicSetterHook = true;
+
 
     /**
      * @var integer
@@ -282,14 +285,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
     public function getEvaluationMethod() {
         return $this->evaluationMethodConfiguration->getEvaluationMethod();
     }
-
-    function setEvaluationMethodConfiguration(EvaluationMethodConfiguration $eval, $cascade = true){
-        $this->evaluationMethodConfiguration = $eval;
-
-        if($cascade){
-            $eval->setOpportunity($this, false);
-        }
-    }
     
     function setAvaliableEvaluationFields($value) {
         if(!$value || empty($value)){
@@ -356,6 +351,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return \MapasCulturais\i::__('Oportunidade');
     }
 
+    public static function validateShortDescription()
+    {
+        $app = App::i();
+        if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
+            $validate =  [
+                'required' => \MapasCulturais\i::__('A introdução é obrigatória'),
+            ];
+        }else{
+            $validate = [];
+        }
+
+        return $validate;
+    }
+
     static function getValidations() {
         $app = App::i();
 
@@ -363,9 +372,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome da oportunidade é obrigatório')
             ],
-            'shortDescription' => [
-                'required' => \MapasCulturais\i::__('A introdução é obrigatória'),
-            ],
+            'shortDescription' => self::validateShortDescription(),
             'type' => [
                 'required' => \MapasCulturais\i::__('O tipo da oportunidade é obrigatório'),
             ],
@@ -380,9 +387,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
 	        'ownerEntity' => [
 		        'required' => \MapasCulturais\i::__('A entidade é obrigatória'),
 	        ],
-	        'evaluationMethod' => [
-		        'required' => \MapasCulturais\i::__('Defina um método de avaliação'),
-	        ]
         ];
 
         $hook_class = self::getHookClassPath();
@@ -806,6 +810,48 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $relation->status === EvaluationMethodConfigurationAgentRelation::STATUS_SENT;
     }
 
+    /**
+     * Retorna um resumo do número de inscrições de uma oportunidade
+     * 
+     * @return array
+     */
+    public function getSummary()
+    {
+        /** @var App $app */
+        $app = App::i();
+
+        $cache_key = __METHOD__ . ':' . $this->id; 
+        if($cache = $app->cache->fetch($cache_key)){
+            return $cache;
+        }
+
+        $params = ["opp" => $this];
+
+        $complement = "";
+        if($this->evaluationMethodConfiguration){
+            $complement.= " AND o.status IN (0,1)";
+        }
+
+        $query = $app->em->createQuery("SELECT o.status, COUNT(o.status) AS qtd FROM MapasCulturais\\Entities\\Registration o  WHERE o.opportunity = :opp {$complement} GROUP BY o.status");
+
+        $query->setParameters($params);
+
+        $data = [];
+        $total_registrations = 0;
+        $status_list = \MapasCulturais\Entities\Registration::getStatuses();
+        if($result = $query->getResult()){
+            foreach($result as $value){
+                $status = $status_list[$value['status']];
+                $total_registrations += $value['qtd'];
+                $data[$status] = $value['qtd'];
+            }
+        }
+        $data['registrations'] = $total_registrations;
+
+        $app->cache->save($cache_key, $data, 30);
+        return $data;
+    }
+
     function registerRegistrationMetadata(){
        
         $app = App::i();
@@ -947,6 +993,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return false;
         }
 
+        if (!$this->evaluationMethodConfiguration) {
+            return false;
+        }
+        
         $relation = $this->evaluationMethodConfiguration->getUserRelation($user);
 
         return $relation && $relation->status === AgentRelation::STATUS_ENABLED;
@@ -965,7 +1015,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     protected function canUserViewEvaluations($user){
-        return $this->evaluationMethodConfiguration->canUser('@control');
+        $em = $this->evaluationMethodConfiguration;
+
+        if($em) {
+            return $this->evaluationMethodConfiguration->canUser('@control');
+        } else {
+            return false;
+        }
     }
 
     /** @ORM\PreRemove */
