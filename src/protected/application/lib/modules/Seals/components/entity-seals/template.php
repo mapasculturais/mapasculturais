@@ -14,25 +14,29 @@ $this->import('
     <?php $this->applyTemplateHook('entity-seals', 'begin'); ?>
     <h4 class="entity-seals__title"> {{title}} </h4>
     <div class="entity-seals__seals">
+
         <div class="entity-seals__seals--seal" v-for="seal in entity.seals">
-            <a :href="seal.singleUrl" class="link">
-                <div v-if="seal.files?.avatar" class="image">
-                    <img :src="seal.files.avatar?.transformations?.avatarSmall?.url">
+            <div class="seal-icon">
+                <a :href="seal.singleUrl" class="link ">
+                    <div v-if="seal.files?.avatar" class="image">
+                        <img :src="seal.files.avatar?.transformations?.avatarSmall?.url">
+                    </div>
+                    <div v-if="!(seal.files?.avatar)">
+                        <mc-icon name="seal"></mc-icon>
+                    </div>
+                </a>
+                <div v-if="editable" class="icon">
+                    <confirm-button @confirm="removeSeal(seal)">
+                        <template #button="modal">
+                            <mc-icon @click="modal.open()" name="delete"></mc-icon>
+                        </template>
+                        <template #message="message">
+                            <?php i::_e('Remover selo?') ?>
+                        </template>
+                    </confirm-button>
                 </div>
-                <div v-if="!(seal.files?.avatar)">
-                    <mc-icon name="seal" width="28"></mc-icon>
-                </div>
-            </a>
-            <div v-if="editable" class="icon">
-                <confirm-button @confirm="removeSeal(seal)">
-                    <template #button="modal">
-                        <mc-icon @click="modal.open()" name="delete"></mc-icon>
-                    </template>
-                    <template #message="message">
-                        <?php i::_e('Remover selo?') ?>
-                    </template>
-                </confirm-button>
             </div>
+            <span class="seal-label" v-if="showName">{{seal.name}}</span>
         </div>
         <select-entity v-if="editable" type="seal" @select="addSeal($event)" :query="query" openside="down-right">
             <template #button="{ toggle }">
