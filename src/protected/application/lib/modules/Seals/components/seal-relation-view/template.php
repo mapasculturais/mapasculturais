@@ -16,7 +16,7 @@ $this->import('
             </div>
             <div class="seal-relation-view__content">
                 <div class="seal-relation-view__content--top">
-                    <div class="seal-relation-view__content--image">
+                    <div class="seal-relation-view__content--image" v-if="seal.avatar && seal.avatar.avatarMedium && seal.avatar.avatarMedium.url">
                         <img :src="seal.avatar.avatarMedium.url" />
                     </div>
                 </div>
@@ -29,13 +29,13 @@ $this->import('
                 </div>
             </div>
         </div>
-        <div class="seal-relation-view__actions">
-            <button class="button button--primary">
-                <seal-content-share></seal-content-share>
-            </button>
-            <button class="button button--primary" @click="print">
-              <?= i::__('Imprimir') ?>
-            </button>
-        </div>
+<!--        <div class="seal-relation-view__actions">-->
+<!--            <button class="button button--primary">-->
+<!--                <seal-content-share></seal-content-share>-->
+<!--            </button>-->
+<!--            <button class="button button--primary" @click="print">-->
+<!--              --><?//= i::__('Imprimir') ?>
+<!--            </button>-->
+<!--        </div>-->
     </div>
 </div>
