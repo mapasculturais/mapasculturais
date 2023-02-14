@@ -48,10 +48,22 @@
 
     // tamanhos
 
+    &--xbg {
+        font-size: size(24);
+        font-weight: 700;
+        line-height: size(28);
+        padding: size(20) size(32);
+
+        .iconify {
+            font-size: size(18);
+        }
+    }
+
     &--bg {
         font-size: size(18);
         font-weight: 700;
-        padding: size(20) size(32);
+        line-height: size(25);
+        padding: size(17.5) size(32);
 
         .iconify {
             font-size: size(18);
