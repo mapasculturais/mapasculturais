@@ -37,7 +37,7 @@ app.component('panel--entity-actions', {
     
     methods: {
         hasStatus(name) {
-            return !! $DESCRIPTIONS[this.entity.__objectType].status.options[name];
+            return $DESCRIPTIONS[this.entity.__objectType].status.options[name] !== undefined;
         },
 
         archiveEntity(modal) {
