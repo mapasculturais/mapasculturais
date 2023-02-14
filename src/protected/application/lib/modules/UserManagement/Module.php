@@ -232,7 +232,7 @@ class Module extends \MapasCulturais\Module {
         /**
          * Componente user-mail
          */
-        $app->hook('template(panel.my-account.entity-seals):after', function () use ($app) {
+        $app->hook('template(panel.my-account.p-user-details__seals):after', function () use ($app) {
             /** @var \MapasCulturais\Theme $this */
             $this->part('userMail/user-mail');
         });
@@ -241,7 +241,7 @@ class Module extends \MapasCulturais\Module {
         /**
          * Componente user -mail - user-detail
          */
-        $app->hook('template(panel.user-detail.entity-seals):after', function () use ($app) {
+        $app->hook('template(panel.user-detail.p-user-details__seals):after', function () use ($app) {
             /** @var \MapasCulturais\Theme $this */
             $this->part('userMail/user-mail');
         });
