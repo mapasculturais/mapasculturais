@@ -189,6 +189,28 @@
             }
         }
     }
+// escopo user-detail
+    &__seals {
+        margin: 24px 0;
+
+        .entity-seals {
+            background-color: var(--mc-high-500);
+            padding: 16px;
+
+            margin: 0;
+
+            &__seals--seal {
+                flex-direction: row;
+                gap: size(8);
+
+                .seal-label {
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 19px;
+                }
+            }
+        }
+    }
 
     &__privacy {
         font-weight: 700;
@@ -289,9 +311,7 @@
 
     }
 
-    .entity-seals {
-        margin: size(40) 0;
-    }
+
 
     &__property {
         &-label {
