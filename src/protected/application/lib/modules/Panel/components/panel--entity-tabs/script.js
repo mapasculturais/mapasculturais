@@ -12,7 +12,7 @@ app.component('panel--entity-tabs', {
 
     data() {
         let query = {
-            '@order': 'none',
+            '@order': 'updateTimestamp DESC',
             '@permissions': 'view'
         };
         if (this.user) {

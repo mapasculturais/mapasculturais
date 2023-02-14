@@ -40,15 +40,15 @@ $tabs = $tabs ?? [
                             v-model="queries['<?=$status?>']['@keyword']">
                         
                         <slot name="filters-additional" :entities="entities" :query="queries['<?=$status?>']"></slot>
-
-                        <select class="entity-tabs__search-select primary__border-solid" v-model="queries['<?=$status?>']['@order']">
-                            <option value="none" selected><?= i::__('Ordenar por') ?></option>
-                            <option value="name ASC"><?= i::__('ordem alfabética') ?></option>
-                            <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
-                            <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
-                            <option value="updateTimestamp DESC"><?= i::__('modificadas recentemente') ?></option>
-                            <option value="updateTimestamp ASC"><?= i::__('modificadas há mais tempo') ?></option>
-                        </select>
+                        <label> <?= i::__ ("Ordernar por:") ?>
+                            <select class="entity-tabs__search-select primary__border-solid" v-model="queries['<?=$status?>']['@order']">
+                                <option value="name ASC"><?= i::__('ordem alfabética') ?></option>
+                                <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
+                                <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
+                                <option value="updateTimestamp DESC" selected><?= i::__('modificadas recentemente') ?></option>
+                                <option value="updateTimestamp ASC"><?= i::__('modificadas há mais tempo') ?></option>
+                            </select>
+                        </label>
 
                     </slot>
                 </form>
