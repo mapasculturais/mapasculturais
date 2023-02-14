@@ -3,11 +3,19 @@ app.component('entity-seals', {
 
     computed: {
         query() {
+
             const ids = this.entity.seals.map((item) => item.sealId).join(',');
-            return ids ? {id: `!IN(${ids})`} : {};
+            return ids ? { id: `!IN(${ids})` } : {};
         }
     },
 
+    data() {
+        // const nameSeal = $MAPAS.requestedEntity.seal;
+        // return nameSeal;
+
+
+
+    },
     props: {
         entity: {
             type: Entity,
@@ -15,7 +23,7 @@ app.component('entity-seals', {
         },
         title: {
             type: String,
-            default: __('verificacoes','entity-seals'),
+            default: __('verificacoes', 'entity-seals'),
         },
         editable: {
             type: Boolean,
@@ -24,6 +32,10 @@ app.component('entity-seals', {
         classes: {
             type: [String, Array, Object],
             required: false
+        },
+        showName: {
+            type: Boolean,
+            default: false
         },
     },
 
