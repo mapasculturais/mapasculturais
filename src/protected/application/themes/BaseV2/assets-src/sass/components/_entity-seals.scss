@@ -13,52 +13,71 @@
         flex-wrap: wrap;
 
         &--seal {
-            align-items: center;
-            background: #C4C4C4;
-            border-radius: var(--mc-border-radius-xs);
-            cursor: pointer;
             display: flex;
-            height: size(48);
-            justify-content: center;
-            position: relative;
-            width: size(48);
+            flex-direction: column;
+            align-items: center;
 
-            .link {
-                text-decoration: none;
-                color: inherit;
+            .seal-label {
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 19px;
             }
 
-            .image {
+            .seal-icon {
                 align-items: center;
+                background: #C4C4C4;
                 border-radius: var(--mc-border-radius-xs);
+                cursor: pointer;
                 display: flex;
-                height: 100%;
+                height: size(48);
                 justify-content: center;
-                overflow: hidden;
-                width: 100%;
+                position: relative;
+                width: size(48);
 
-                img {
-                    max-height: 100%;
+                .link {
+                    text-decoration: none;
+                    color: inherit;
+
+                    .iconify {
+                        font-size: size(28);
+                    }
+                }
+
+                .image {
+                    align-items: center;
+                    border-radius: var(--mc-border-radius-xs);
+                    display: flex;
+                    height: 100%;
+                    justify-content: center;
+                    overflow: hidden;
+                    width: 100%;
+
+                    img {
+                        max-height: 100%;
+                    }
+                }
+
+                .icon {
+                    align-items: center;
+                    background-color: red;
+                    border-radius: 50%;
+                    color: white;
+                    cursor: pointer;
+                    display: flex;
+                    font-size: size(13);
+                    height: size(16);
+                    justify-content: center;
+                    position: absolute;
+                    top: size(-8);
+                    right: size(-8);
+                    width: size(16);
                 }
             }
 
-            .icon {
-                align-items: center;
-                background-color: red;
-                border-radius: 50%;
-                color: white;
-                cursor: pointer;
-                display: flex;
-                font-size: size(13);
-                height: size(16);
-                justify-content: center;
-                position: absolute;
-                top: size(-8);
-                right: size(-8);
-                width: size(16);
-            }
+
+
         }
-        
+
         &--addSeal {
             align-items: center;
             border: size(1) solid;
@@ -119,6 +138,7 @@
             line-height: 16px;
             color: #000000;
         }
+
         &--link {
             font-weight: 700;
             font-size: 16px;
@@ -135,6 +155,7 @@
             font-size: 24px;
             line-height: 28px
         }
+
         &--content {
             background: #E8E8E8;
             border-radius: 4px;
