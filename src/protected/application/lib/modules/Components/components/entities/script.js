@@ -1,5 +1,6 @@
 app.component('entities', {
     template: $TEMPLATES['entities'],
+    emits: ['fetch'],
 
     data() {
         return {
@@ -124,7 +125,14 @@ app.component('entities', {
                 options.raw = true;
                 options.rawProcessor = this.rawProcessor;
             };
-            return this.api.fetch(this.endpoint, query, options);
+
+            const result = this.api.fetch(this.endpoint, query, options);
+
+            result.then((entities) => {
+                this.$emit('fetch', entities);
+            })
+
+            return result;
         },
         
         refresh(debounce) {
