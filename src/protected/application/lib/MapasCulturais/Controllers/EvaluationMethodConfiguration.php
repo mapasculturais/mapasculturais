@@ -3,6 +3,8 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\Controller;
+use MapasCulturais\Entities\EvaluationMethodConfiguration as EvaluationMethodConfigurationEntity;
 use MapasCulturais\Traits;
 
 // use MapasCulturais\Entities\EvaluationMethodConfiguration;
@@ -15,74 +17,22 @@ use MapasCulturais\Traits;
  * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $requestedEntity
  *
  */
-class EvaluationMethodConfiguration extends EntityController {
+class EvaluationMethodConfiguration extends Controller {
     use Traits\ControllerTypes,
-        Traits\ControllerAgentRelation;
-
-    public function GET_create() {
-        App::i()->pass();
-    }
-    
-    public function GET_delete() {
-        App::i()->pass();
-    }
-    
-    public function GET_edit() {
-        App::i()->pass();
-    }
-    
-    public function GET_index() {
-        App::i()->pass();
-    }
-    
-    public function GET_single() {
-        App::i()->pass();
-    }
-        
-    public function DELETE_single() {
-        App::i()->pass();
-    }
-    
-    protected function _setPermissionCacheUsers(){
-        $app = App::i();
-        
-        $entity = $this->requestedEntity;
-
-        $entity_fetch = $entity->fetch ? $entity->fetch : new \stdClass ;
-        $entity_fetch_categories = $entity->fetchCategories ? $entity->fetchCategories : new \stdClass;
-
-        $data_fetch = isset($this->data['fetch']) ? (object) $this->data['fetch'] : new \stdClass;
-        $data_fetch_categories = isset($this->data['fetchCategories']) ? (object) $this->data['fetchCategories'] : new \stdClass;
-        
-        $user_ids = [];
-
-        if($data_fetch){
-            foreach($data_fetch as $id => $val){
-                if(!isset($entity_fetch->$id) || $entity_fetch->$id != $val){
-                    $user_ids[] = $id;
-                }
-            }
-
-            foreach($entity_fetch as $id => $val){
-                if(!isset($data_fetch->$id)){
-                    $user_id[] = $id;
-                }
-            }
+        Traits\ControllerAgentRelation,
+        Traits\ControllerEntity,
+        Traits\ControllerEntityActions {
+            Traits\ControllerEntityActions::POST_index as _POST_index;
         }
-    }
-    
-    function PATCH_single($data = null) {
-        $this->_setPermissionCacheUsers();
         
-        parent::PATCH_single();
+    function __construct()
+    {
+        $this->entityClassName = EvaluationMethodConfigurationEntity::class;
     }
-    
-    
-    function POST_single($data = null) {
-        $this->_setPermissionCacheUsers();
-        
-        parent::POST_single();
-    }
+
+    function POST_index($data = null) {
+        $this->_POST_index();
+    } 
 
     protected function _getValuerAgentRelation() {
         $this->requireAuthentication();

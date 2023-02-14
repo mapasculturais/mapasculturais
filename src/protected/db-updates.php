@@ -1745,6 +1745,42 @@ $$
         __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_from timestamp DEFAULT NULL;");
         __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_to timestamp DEFAULT NULL;");
     },
+    
+    "adiciona coluna name na tabela evaluation_method_configuration" => function () use($conn) {
+        __exec("ALTER TABLE evaluation_method_configuration ADD name VARCHAR(255) DEFAULT NULL;");
+    },
+
+    "popula as colunas name, evaluation_from e evaluation_to da tabela evaluation_method_configuration" => function () use ($conn, $app){
+        if (empty($app->getRegisteredEvaluationMethods())) {
+            return false;
+        }
+
+        $rs = $conn->fetchAll("
+            SELECT e.id, e.type, op.name, op.registration_from, op.registration_to 
+            FROM evaluation_method_configuration e LEFT JOIN opportunity op ON op.id = e.opportunity_id
+        ");
+        
+        $num = count($rs);
+        foreach ($rs as $i => $r) {
+            $data = ['name' => $r['name']];
+            if ($method = $app->getRegisteredEvaluationMethodBySlug($r['type'])) {
+                $data['name'] = $r['type'] == 'simple' ? i::__('Avaliação') : $method->name;
+            }
+
+            if ($r['registration_from']) {
+                $data['evaluation_from'] = $r['registration_from'];
+            }
+
+            if ($r['registration_to']) {
+                $data['evaluation_to'] = $r['registration_to'];
+            }
+            echo "\n({$i}/{$num}) populando tabela evaluation_method_configuration ({$r['id']}): ";
+            print_r($data);
+            echo "\n----------------------";
+            $conn->update('evaluation_method_configuration', $data, ['id' => $r['id']]);
+        }
+        return false;
+    },
 
     'cria funções para o cast automático de ponto para varchar' => function () { 
         __exec("CREATE FUNCTION pg_catalog.text(point) RETURNS text STRICT IMMUTABLE LANGUAGE SQL AS 'SELECT $1::VARCHAR;';");

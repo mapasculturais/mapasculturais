@@ -36,8 +36,6 @@ class Opportunity extends EntityController {
 
     function POST_index($data = null)
     {
-        $app = App::i();
-
         $classes = [
             'agent' => Entities\AgentOpportunity::class,
             'event' => Entities\EventOpportunity::class,
@@ -45,27 +43,8 @@ class Opportunity extends EntityController {
             'project' => Entities\ProjectOpportunity::class,
         ];
 
-        $class = $classes[$this->data['objectType']] ?? null;
-
-        // objectType é agent,space,project ou event
-        if($class){
-
-            $self = $this;
-            $app->hook('entity(Opportunity).insert:after', function () use($self, $app) {
-
-                $definition = $app->getRegisteredEvaluationMethodBySlug($self->data['evaluationMethod']);
-
-                $emconfig = new Entities\EvaluationMethodConfiguration;
-
-                $emconfig->opportunity = $this;
-
-                $emconfig->type = $definition->slug;
-
-                $emconfig->save(true);
-            });
-            $this->entityClassName = $class;
-            parent::POST_index($data);
-        }
+        $this->entityClassName =  $classes[$this->data['objectType']];
+        parent::POST_index($this->data);
     }
 
     function ALL_sendEvaluations(){

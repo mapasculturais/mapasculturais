@@ -42,7 +42,11 @@
         font-size: 16px;
         padding: 14px;
         width: 100%;
+        &.dp__input {
+            padding-left: size(35);
+        }
     }
+
 
     input[type="checkbox"],
     input[type="radio"] {

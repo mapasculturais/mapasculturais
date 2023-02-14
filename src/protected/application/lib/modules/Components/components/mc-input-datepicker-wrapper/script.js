@@ -16,6 +16,18 @@ app.component('mc-input-datepicker-wrapper', {
         fieldType: {
             type: String,
             required: true
+        },
+        minDate: {
+            type: Date,
+            default: null
+        },
+        maxDate: {
+            type: Date,
+            default: null
+        },
+        propId: {
+            type: String,
+            default: ''
         }
     },
 
@@ -30,7 +42,7 @@ app.component('mc-input-datepicker-wrapper', {
     },
 
     mounted () {
-        this.model = this.entity[this.prop]._date;
+        this.model = this.entity[this.prop]?._date;
     },
 
     data () {
@@ -42,6 +54,9 @@ app.component('mc-input-datepicker-wrapper', {
     },
 
     computed: {
+        isMinDate () {
+            return this.minDate !== null || this.maxDate !== null;
+        }
     },
 
     methods: {

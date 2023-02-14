@@ -40,4 +40,12 @@ class EvaluationMethod extends \MapasCulturais\Definition {
 
         $this->internal = $evaluation_method->internal ?? false;
     }
+
+    function jsonSerialize() {
+        return [
+            'slug' => $this->slug,
+            'name' => $this->name,
+            'description' => $this->description,
+        ];
+    }
 }

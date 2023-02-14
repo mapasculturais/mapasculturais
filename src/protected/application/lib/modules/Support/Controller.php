@@ -80,6 +80,44 @@ class Controller extends \MapasCulturais\Controller
         $this->json($agent_relation);
     }
 
+    public function GET_settings(){
+
+        $this->requireAuthentication();
+
+        $app = App::i();
+        
+        $data = $this->data;
+        $result = []; 
+        if($opportunity = $app->repo("Opportunity")->find($data['id'])){
+
+            $opportunity->checkPermission("@control");
+
+            $relation_groups = $opportunity->getAgentRelationsGrouped();
+
+             foreach($relation_groups[Module::SUPPORT_GROUP] as $relation){
+            
+                if(in_array("registrationPermissions",array_keys($relation->metadata))){
+                    
+                    $_permissions = [];
+                    foreach($relation->metadata['registrationPermissions'] as $field => $permission){
+                        $_permissions[$field] = [
+                            $permission => ($permission === "ro") ? "Vizualizar" : "Modificar",
+                        ];
+                    }
+
+                    $result[$relation->agent->name] = [
+                        "agentId" => $relation->agent->id,
+                        "permissions" => $_permissions,
+                    ];
+
+                }
+            }
+        }
+
+        $this->apiResponse($result);
+    
+    }
+
     /**
      * Pega a oportunidade
      */

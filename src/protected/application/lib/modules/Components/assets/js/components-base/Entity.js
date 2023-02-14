@@ -176,10 +176,10 @@ class Entity {
                 continue;
             }
 
-            if(this[prop] != undefined) {
-                if(prop !== 'parent' || this.id !== this[prop]?.id) {
-                    result[prop] = this[prop]?.id;
-                }
+            // para a criação de oportunidades
+            if(prop == 'ownerEntity' && this[prop]) {
+                result[prop] = this[prop]?.id;
+                result['objectType'] = this[prop]?.__objectType;
             }
         }
 
