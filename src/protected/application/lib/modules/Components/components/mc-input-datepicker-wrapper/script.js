@@ -64,7 +64,7 @@ app.component('mc-input-datepicker-wrapper', {
             return val === this.fieldType;
         },
         dateFormat(date) {
-            return new Date(date).toLocaleString();
+            return new Date(date).toLocaleString(this.locale);
         }
     }
 });
