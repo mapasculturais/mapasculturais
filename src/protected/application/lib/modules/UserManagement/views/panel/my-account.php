@@ -57,7 +57,12 @@ $this->import('
                 </div>
             </div>
         </header>
-        <entity-seals :entity="entity.profile"></entity-seals>
+        
+        <?php $this->applyTemplateHook('p-user-details__seals', 'before'); ?>
+        <div class="p-user-detail__seals">
+            <entity-seals :entity="entity.profile" title="<?= i::__('Verificações da pessoa usuária') ?>" show-name></entity-seals>
+        </div>
+        <?php $this->applyTemplateHook('p-user-details__seals', 'after'); ?>
 
         <user-accepted-terms :user="entity"></user-accepted-terms>
 
@@ -70,6 +75,6 @@ $this->import('
                 </div>
             </div>
         </div>
-        
+
     </div>
 </entity>
