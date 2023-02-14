@@ -17,7 +17,8 @@ $this->import('
     entity-terms
     entity-actions
     entity-request-ownership
-    opportunity-subscription-content
+    opportunity-subscription
+    opportunity-subscription-list
     opportunity-timeline-phases
 ');
 $this->breadcrumb = [
@@ -31,8 +32,9 @@ $this->breadcrumb = [
   <mapas-breadcrumb></mapas-breadcrumb>
   <entity-header :entity="entity"></entity-header>
     <mapas-container class="opportunity">
-        <main>
-            <opportunity-subscription-content :entity="entity"></opportunity-subscription-content>
+        <main class="grid-12">
+            <opportunity-subscription class="col-12" :entity="entity"></opportunity-subscription>
+            <opportunity-subscription-list class="col-12"></opportunity-subscription-list>
         </main>
         <aside>
             <div class="grid-12">
