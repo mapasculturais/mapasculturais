@@ -299,11 +299,13 @@ class Registration extends EntityController {
     }
 
     function GET_single(){
-        App::i()->pass();
+        $app = App::i();
+        $app->redirect($this->createUrl('view', [$this->data['id']]));
     }
 
     function GET_edit(){
-        App::i()->pass();
+        $app = App::i();
+        $app->redirect($this->createUrl('view', [$this->data['id']]));
     }
 
     function POST_setStatusTo(){
