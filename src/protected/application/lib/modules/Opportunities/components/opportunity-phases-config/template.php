@@ -57,8 +57,26 @@ $this->import('
         </template>
 
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
-            <entity-field :entity="item" prop="evaluationFrom" hide-required></entity-field>
-            <entity-field :entity="item" prop="evaluationTo" hide-required></entity-field>
+            <mapas-card>
+                <div class="grid-12">
+                    <div class="col-12">
+                        <h3><?= i::__("Configuração da fase") ?></h3>
+                    </div>
+                    <entity-field :entity="item" prop="evaluationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
+                    <entity-field :entity="item" prop="evaluationTo" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
+                    <div class="col-12">
+                        <h5>
+                            <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
+                        </h5>
+                    </div>
+                    <div class="add-phase col-12">
+                        <button class="button--primary button"><?= i::__("Configurar formulário") ?></button>
+                    </div>
+                    <div class="add-phase col-12">
+                        <a href="#"><mc-icon name="trash"></mc-icon><?= i::__("Excluir etapa de fase") ?></a>
+                    </div>
+                </div>
+            </mapas-card>
         </template>
     </template>
     <template #after-li="{index, item}">
