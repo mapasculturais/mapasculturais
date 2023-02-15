@@ -1,5 +1,6 @@
 app.component('opportunity-create-evaluation-phase' , {
     template: $TEMPLATES['opportunity-create-evaluation-phase'],
+    emits: ['create'],
 
     data () {
         return {
@@ -55,8 +56,6 @@ app.component('opportunity-create-evaluation-phase' , {
         },
         save(modal) {
             modal.loading(true);
-            this.phase.evaluationFrom = this.phase.evaluationFrom._date;
-            this.phase.evaluationTo = this.phase.evaluationTo._date;
             this.phase.save().then((response) => {
                 this.$emit('create', response);
                 modal.loading(false);
