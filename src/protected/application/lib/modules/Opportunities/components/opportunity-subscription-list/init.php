@@ -13,7 +13,7 @@ if ($app->user->is('admin')) {
 $qa = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Agent::class, $qa_params);
 
 $q = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Registration::class, [
-    '@select' => 'id,number,category,status,owner.{id,name,files.avatar}', 
+    '@select' => 'id,number,category,status,createTimestamp,owner.{id,name,files.avatar,}', 
     'status' => 'GTE(0)',
     '@permissions' => 'view',
 ]);
