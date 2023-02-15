@@ -66,7 +66,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
-        Traits\EntityArchive;
+        Traits\EntityArchive{
+            Traits\EntityNested::setParent as nestedSetParent;
+        }
         
     protected $__enableMagicGetterHook = true;
     protected $__enableMagicSetterHook = true;
@@ -286,6 +288,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $this->evaluationMethodConfiguration->getEvaluationMethod();
     }
     
+    function setParent($parent = null) {
+        $this->nestedSetParent($parent); 
+        if($parent){
+            $this->ownerEntity = $this->getParent()->ownerEntity;
+        }else{
+            $this->ownerEntity = null;
+        }
+    }
+
     function setAvaliableEvaluationFields($value) {
         if(!$value || empty($value)){
             $this->avaliableEvaluationFields = [];

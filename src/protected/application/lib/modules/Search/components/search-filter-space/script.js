@@ -21,6 +21,7 @@ app.component('search-filter-space', {
     data() {
         return {
             terms: $TAXONOMIES.area.terms,
+            types: $DESCRIPTIONS.space.type.options,
         }
     },
 
@@ -31,7 +32,7 @@ app.component('search-filter-space', {
         clearFilters() {
 
             delete this.pseudoQuery['@verified'];
-            delete this.pseudoQuery['type'];
+            this.pseudoQuery['type'].length = 0;
             this.pseudoQuery['term:area'].length = 0;
 
             delete this.pseudoQuery['acessibilidade'];
