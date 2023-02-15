@@ -1,28 +1,93 @@
 @use '../settings/mixins' as *;
 
 .mc-stepper-vertical {
+    .add-phase {
+        margin-inline: 50%;
+    }
 
-    list-style: none;
-    padding: 46px 25px auto 139px;
-
-    li {
+    li::step-active {
+        background-color: red;
         position: relative;
         margin-bottom: 20px;
     }
-
+    li::marker {
+        background-color: red;
+    }
     li::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background-color: red;
-        transform: translateX(-50%);
+        counter-increment: li;
+
+        &li::marker {
+            width: 56px;
+            color: red;
+        }
+
     }
-    .stepper-header{
-        background-color: blue;
-        margin-left: 220px
+
+
+    .stepper-header {
+        background-color: white;
+        padding: 25px;
+        border-radius: 4px;
+        margin-left: 45px;
+        display: grid;
+        grid-template-columns: 1fr 52px;
+        max-width: 970px;
+
+        .phase-stepper {
+
+            max-width: 1086px;
+
+            &__period {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 28px;
+            }
+
+            &__type {
+
+                &--name {
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: 19px;
+                }
+
+                &--label {
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 19px;
+
+                }
+
+                &--item {
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 19px;
+                }
+
+            }
+
+            &__label {}
+
+            &__name {}
+        }
+
+        .expand-stepper {
+            display: flex;
+            align-items: center;
+            padding-right: 165px;
+
+            color: var(--mc-primary-500);
+
+            label {
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 19px;
+
+            }
+
+            .iconify {}
+        }
     }
 }
