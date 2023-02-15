@@ -9,33 +9,43 @@ app.component('registration-card', {
             type: Entity,
             required: true
         },
+        border: {
+            type: Boolean,
+            default: false
+        }
     },
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('registration-card')
+        const text = Utils.getTexts('registration-card');
         return { text }
     },
 
-    beforeCreate() { },
-    created() { },
-
-    beforeMount() { },
-    mounted() { },
-
-    beforeUpdate() { },
-    updated() { },
-
-    beforeUnmount() {},
-    unmounted() {},
-
-    data() {
-        return {
-        }
-    },
-
     computed: {
-        
+        status() {
+            let status = '';
+            switch (this.entity.status) {
+                case 0:
+                    status = this.text('Rascunho');
+                    break;
+                case 1:
+                    status = this.text('Pendente');
+                    break;
+                case 2:
+                    status = this.text('Inválida');
+                    break;
+                case 3:
+                    status = this.text('Não selecionada');
+                    break;
+                case 8:
+                    status = this.text('Suplente');
+                    break;
+                case 10:
+                    status = this.text('Selecionada');
+                    break;
+            }
+            return status;
+        },
     },
     
     methods: { 
