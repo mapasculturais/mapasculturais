@@ -13,4 +13,27 @@ app.component('panel--entity-card', {
             default: true
         }
     },
+
+    computed: {
+        leftButtons() {
+            let buttons = 'archive,delete,destroy';
+
+            if(this.entity.status === 0) {
+                buttons += ',publish';
+            }
+
+            return buttons;
+        },
+
+        rightButtons() {
+            const status = this.entity.status;
+
+            if (status == -10) {
+                return 'undelete';
+
+            } else if (status == -2) {
+                return 'publish';
+            }
+        }
+    }
 })
