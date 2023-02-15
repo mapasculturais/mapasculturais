@@ -16,7 +16,7 @@ app.component('panel--entity-actions', {
     props: {
         buttons: {
             type: String,
-            default: "archive,undelete,delete,destroy,publish,unpublish"
+            default: "archive,undelete,delete,destroy,publish"
         },
         entity: {
             type: Entity,
