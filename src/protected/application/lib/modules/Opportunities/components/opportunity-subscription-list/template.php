@@ -1,6 +1,8 @@
 <?php
 use MapasCulturais\i;
-/* $this->import(''); */
+$this->import('
+	registration-card
+');
 ?>
 
 <div v-if="isLogged && registrations.length > 0" class="grid-12 opportunity-subscription-list">	
@@ -13,8 +15,8 @@ use MapasCulturais\i;
 		</p>
 	</div>
 	<div class="opportunity-subscription-list__content col-12 grid-12">
-		<a v-for="registration in registrations" :href="registration.singleUrl.href" class="col-12 button button--bg button--primary button--large">
-			<span> <?= i::__("Acompanhar inscrição") ?> {{registration.number}} <span v-if="registration.category"> <?= i::__("na categoria") ?> {{registration.category}}</span> </span>
-		</a>
+
+		<registration-card v-for="registration in registrations" class="col-12" :entity="registration" :border></registration-card>
+		
 	</div>
 </div>
