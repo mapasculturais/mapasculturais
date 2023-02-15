@@ -19,6 +19,5 @@ app.component('opportunity-timeline-phases' , {
     async created () {
         this.API = new API('opportunity');
         this.phases = await this.API.GET(`/api/opportunity/phases?@opportunity=${this.id}`);
-        console.log(this.phases);
     }
 });
