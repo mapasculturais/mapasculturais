@@ -35,11 +35,17 @@ app.component('entity-field', {
         //     description.max = this.props.max;
         // }
 
+        let fieldType = this.type || description.field_type || description.type;
+
+        if(this.type == 'textarea' || (description.type == 'text' && description.field_type === undefined)) {
+            fieldType = 'textarea';
+        }
+
         return {
             __timeout: null,
             description: description,
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
-            fieldType: this.type || description.field_type || description.type
+            fieldType
         }
     },
 
