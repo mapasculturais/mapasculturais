@@ -6,7 +6,6 @@
     display: grid;
     gap: size(32);
     grid-template-columns: size(74) 1fr;
-    margin: size(24) size(30);
     padding: size(24) size(23);
 
     &.border {
