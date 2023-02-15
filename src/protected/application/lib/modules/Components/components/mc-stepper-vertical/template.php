@@ -13,11 +13,11 @@ $this->import('mc-icon')
     <template v-for="(step, index) in steps">
         <li :class="{active: step.active}">
             <header class="stepper-header">
-                <slot name="header" :index="index" :step="step" :item="step.item">
+                <slot class="stepper-header-title" name="header" :index="index" :step="step" :item="step.item">
                     <slot name="header-title" :index="index" :step="step" :item="step.item">{{step.item.name || step.item.title || step.item.label}}</slot>
                     <slot name="header-actions" :index="index" :step="step" :item="step.item">
-                        <a v-if="step.active" @click="step.close()"><?= i::__('fechar') ?> <mc-icon name="arrowPoint-up"></mc-icon></a>
-                        <a v-if="!step.active" @click="step.open()"><?= i::__('expandir') ?> <mc-icon name="arrowPoint-down"></mc-icon></a>
+                        <a class="expand-stepper" v-if="step.active" @click="step.close()"><label ><?= i::__('Fechar') ?></label><mc-icon name="arrowPoint-up"></mc-icon></a>
+                        <a class="expand-stepper" v-if="!step.active" @click="step.open()"><label ><?= i::__('Expandir') ?></label> <mc-icon name="arrowPoint-down"></mc-icon></a>
                     </slot>
                 </slot>
             </header> 
