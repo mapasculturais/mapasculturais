@@ -1,5 +1,6 @@
 app.component('opportunity-create-data-collect-phase' , {
     template: $TEMPLATES['opportunity-create-data-collect-phase'],
+    emits: ['create'],
 
     data () {
         return {
@@ -61,8 +62,6 @@ app.component('opportunity-create-data-collect-phase' , {
         },
         save(modal) {
             modal.loading(true);
-            this.phase.registrationFrom = this.phase.registrationFrom._date;
-            this.phase.registrationTo = this.phase.registrationTo._date;
             this.phase.save().then((response) => {
                 this.$emit('create', response);
                 modal.loading(false);
