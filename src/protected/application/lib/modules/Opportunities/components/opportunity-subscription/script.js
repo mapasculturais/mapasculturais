@@ -29,9 +29,9 @@ app.component('opportunity-subscription' , {
 
         return {
             agent,
-            categories: $MAPAS.requestedEntity.registrationCategories,
-            dateStart: new McDate($MAPAS.requestedEntity.registrationFrom.date),
-            dateEnd: new McDate($MAPAS.requestedEntity.registrationTo.date),
+            categories: this.entity.registrationCategories,
+            dateStart: this.entity.registrationFrom, 
+            dateEnd: this.entity.registrationTo,
             entities: {},
             entitiesLength: $MAPAS.config.opportunitySubscription.agents.length,
         }
@@ -41,15 +41,44 @@ app.component('opportunity-subscription' , {
         isLogged() {
             return $MAPAS.userId != null
         },
+
+        infoRegistration() {
+            let description = ''
+
+            let registrationStatus = this.registrationStatus(this.dateStart, this.dateEnd);
+
+            switch (registrationStatus) {
+                case 'open':
+                    description = 'Inscrições abertas de {startAt} a {endAt}  às {endHour}';
+                    break;
+                case 'closed':
+                    description = 'As inscrições estão encerradas'
+                    break;
+                case 'will open':
+                    description = 'As inscrições ainda não estão abertas. O período de inscrições começará a partir do dia {startAt} às {startHour}'
+                    break;
+            }
+
+            description = description.replace("{startAt}", this.startAt);
+            description = description.replace("{startHour}", this.startHour);
+            description = description.replace("{endAt}", this.endAt);
+            description = description.replace("{endHour}", this.endHour);
+
+            return description;
+        },
+
         startAt() {
-            return this.dateStart.day('numeric') + '/' + this.dateStart.month('numeric') + '/' + this.dateStart.year('numeric');
+            return this.dateStart.day('2-digit') + '/' + this.dateStart.month('2-digit') + '/' + this.dateStart.year('numeric');
         },
         endAt() {
-            return this.dateEnd.day('numeric') + '/' + this.dateEnd.month('numeric') + '/' + this.dateEnd.year('numeric');
+            return this.dateEnd.day('2-digit') + '/' + this.dateEnd.month('2-digit') + '/' + this.dateEnd.year('numeric');
         },
-        hourEnd() {
+        startHour() {
+            return this.dateStart.time();
+        },
+        endHour() {
             return this.dateEnd.time();
-        }
+        },
     },
 
     methods: {
@@ -65,6 +94,25 @@ app.component('opportunity-subscription' , {
             if (this.entities.length == 1) {
                 this.selectAgent(this.entities[0]);
             }
-        }
+        },
+        registrationStatus(dateStart, dateEnd) {
+            let _actualDate = new Date();
+
+            let _dateStart = dateStart.year('numeric') + '/' + dateStart.month('2-digit') + '/' + dateStart.day('2-digit') + ', ' + dateStart.hour('2-digit') + ':' + dateStart.minute('2-digit') + ':' + dateStart.second('2-digit');
+            _dateStart = new Date(_dateStart);
+
+            let _dateEnd = dateEnd.year('numeric') + '/' + dateEnd.month('2-digit') + '/' + dateEnd.day('2-digit') + ', ' + dateEnd.hour('2-digit') + ':' + dateEnd.minute('2-digit') + ':' + dateEnd.second('2-digit');
+            _dateEnd = new Date(_dateEnd);
+
+            if (_dateStart > _actualDate) {
+                return 'will open';
+            } else {
+                if (_dateEnd > _actualDate) {
+                    return 'open';
+                } else {
+                    return 'closed';
+                }
+            }     
+        },
     }
 });
