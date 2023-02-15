@@ -9,12 +9,12 @@ use MapasCulturais\i;
 			<?= i::__("Você tem inscrições neste edital") ?>
 		</p>	
 		<p class="description">
-			<?= i::__("Escolha um Agente Cultural e uma categoria para fazer a inscrição.") ?>
+			<?= i::__("Acompanhe suas inscrições e saiba o andamento da Oportunidade.") ?>
 		</p>
 	</div>
 	<div class="opportunity-subscription-list__content col-12 grid-12">
 		<a v-for="registration in registrations" :href="registration.singleUrl.href" class="col-12 button button--bg button--primary button--large">
-			<?= i::__("Acompanhar inscrição ") ?>{{registration.number}}
+			<span> <?= i::__("Acompanhar inscrição") ?> {{registration.number}} <span v-if="registration.category"> <?= i::__("na categoria") ?> {{registration.category}}</span> </span>
 		</a>
 	</div>
 </div>

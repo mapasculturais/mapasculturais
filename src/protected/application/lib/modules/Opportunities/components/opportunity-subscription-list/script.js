@@ -21,7 +21,6 @@ app.component('opportunity-subscription-list' , {
     },
 
     data() {
-        console.log($MAPAS.config.opportunitySubscriptionList.registrations);
         return {
             registrations: $MAPAS.config.opportunitySubscriptionList.registrations,
         }
