@@ -1,5 +1,5 @@
 <div>
-    <div v-if="isMinDate">
+    <div v-if="ifDateLimitation">
         <datepicker v-if="is('date')" v-model="model" :min-date="minDate" :max-date="maxDate" :enable-time-picker="false" :locale="locale" :weekStart="0" :format="dateFormat" :dayNames="dayNames" autoApply :id="propId" :name="prop"></datepicker>
 
         <datepicker v-if="is('datetime')" v-model="model" :min-date="minDate" :max-date="maxDate" :locale="locale" :weekStart="0" :format="dateFormat" :dayNames="dayNames" autoApply :id="propId" :name="prop"></datepicker>

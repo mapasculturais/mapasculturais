@@ -16,7 +16,7 @@ app.component('panel--entity-actions', {
     props: {
         buttons: {
             type: String,
-            default: "archive,undelete,delete,destroy,publish,unpublish"
+            default: "archive,undelete,delete,destroy,publish"
         },
         entity: {
             type: Entity,
@@ -37,7 +37,7 @@ app.component('panel--entity-actions', {
     
     methods: {
         hasStatus(name) {
-            return !! $DESCRIPTIONS[this.entity.__objectType].status.options[name];
+            return $DESCRIPTIONS[this.entity.__objectType].status.options[name] !== undefined;
         },
 
         archiveEntity(modal) {
