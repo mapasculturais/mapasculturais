@@ -101,6 +101,11 @@ app.component('opportunity-phases-config', {
             } else {
                 return undefined;
             }
+        },
+        addInPhases (phase) {
+            console.log(phase)
+            this.phases.splice(this.phases.length - 1, 0, phase);
+            console.log(this.phases)
         }
     },
 });
