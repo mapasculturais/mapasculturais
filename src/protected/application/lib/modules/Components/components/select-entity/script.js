@@ -1,6 +1,6 @@
 app.component('select-entity', {
     template: $TEMPLATES['select-entity'],
-    emits: ['select'],
+    emits: ['select', 'fetch'],
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -94,8 +94,12 @@ app.component('select-entity', {
         selectEntity(entity, close) {
             this.$emit('select', entity);
             close();
+        },
+        
+        fetch(entities) {
+            console.log(entities);
+            this.$emit('fetch', entities);
         }
-
         
     },
 });

@@ -157,8 +157,10 @@ class Entity {
             if(val instanceof McDate) {
                 if (definition.type == 'date') {
                     val = val.sql('date');
-                } else if (definition.type == 'datetime') {
+                } else if (definition.type == 'time') {
                     val = val.time();
+                } else if (definition.type == 'datetime') {
+                    val = val.sql('date') + ' ' + val.time();
                 }
             }
             
@@ -180,6 +182,9 @@ class Entity {
             if(prop == 'ownerEntity' && this[prop]) {
                 result[prop] = this[prop]?.id;
                 result['objectType'] = this[prop]?.__objectType;
+            }
+            if(prop == 'parent' && this[prop]) {
+                result[prop] = this[prop]?.id;
             }
         }
 

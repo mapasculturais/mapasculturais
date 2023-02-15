@@ -41,9 +41,18 @@ class Opportunity extends EntityController {
             'event' => Entities\EventOpportunity::class,
             'space' => Entities\SpaceOpportunity::class,
             'project' => Entities\ProjectOpportunity::class,
-        ];
+        ]; 
 
-        $this->entityClassName =  $classes[$this->data['objectType']];
+        if(isset($this->data['objectType']) ){
+            $this->entityClassName = $classes[$this->data['objectType']];    
+        } elseif(isset($this->data['parent'])){
+            $parent = $this->repo()->find($this->data['parent']);
+            if($parent){
+                $this->entityClassName = get_class($parent);   
+            }
+        }
+
+
         parent::POST_index($this->data);
     }
 

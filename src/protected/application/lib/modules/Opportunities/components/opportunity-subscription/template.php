@@ -33,16 +33,16 @@ $this->import('
 	<div class="col-12 opportunity-subscription__subscription">
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
-		<div v-if="userID" class="logged">
-			<p class="logged__description">
-				<?= i::__("Escolha um Agente Cultural e uma categoria para fazer a inscrição.") ?>
-			</p>
+		<div v-if="isLogged" class="logged">
+			<p v-if="categories && entitiesLength > 1" class="logged__description"> <?= i::__("Escolha um Agente Cultural e uma categoria para fazer a inscrição.") ?> </p>			
+			<p v-if="!categories && entitiesLength > 1" class="logged__description"> <?= i::__("Escolha um Agente Cultural para fazer a inscrição.") ?> </p>
+			<p v-if="categories && entitiesLength == 1" class="logged__description"> <?= i::__("Escolha uma categoria para fazer a inscrição.") ?> </p>
+			<p v-if="!categories && entitiesLength == 1" class="logged__description"> <?= i::__("Clique no botão abaixo para fazer a inscrição.") ?> </p>
 
 			<!-- Logado -->
 			<form class="logged__form grid-12">
-				<select-entity type="agent" class="col-6" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @select="selectAgent($event)">
+				<select-entity v-if="entitiesLength > 1" type="agent" class="col-6" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)">
 					<template #button="{ toggle }">
-						{{entity.length}}
 						<span v-if="!agent" class="fakeInput" @click="toggle()">
 							<div class="fakeInput__img">
 								<mc-icon name="image"></mc-icon>
@@ -58,10 +58,6 @@ $this->import('
 							{{agent.name}}
 						</span>
 
-					</template>
-
-					<template #default="{entities}">
-						{{entities.lenght}}
 					</template>
 				</select-entity>
 
@@ -79,7 +75,7 @@ $this->import('
 		</div>
 
 		<!-- Deslogado -->
-		<div v-if="!userID" class="loggedOut">
+		<div v-if="!isLogged" class="loggedOut">
 			<p class="loggedOut__description">
 				<?= i::__("Você precisa acessar sua conta ou  criar uma cadastro na plataforma para poder se inscrever em editais ou oportunidades") ?>
 			</p>

@@ -12,6 +12,7 @@ $this->import('
     mc-stepper-vertical
     opportunity-create-evaluation-phase
     opportunity-create-data-collect-phase
+    mc-link
 ');
 ?>
 <mc-stepper-vertical :items="phases" allow-multiple>
@@ -29,8 +30,28 @@ $this->import('
         <div v-if="index > 0">
             <entity-field :entity="item" prop="name" hide-required></entity-field>
         </div>
-        <template v-if="item.__objectType == 'opportunity'">
 
+        <template v-if="item.__objectType == 'opportunity'">
+            <mapas-card>
+                <div class="grid-12">
+                    <div class="col-12">
+                        <h3><?= i::__("Configuração da fase") ?></h3>
+                    </div>
+                    <entity-field :entity="item" prop="registrationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
+                    <entity-field :entity="item" prop="registrationTo" classes="col-6 sm:col-12"></entity-field>
+                    <div class="col-12">
+                        <h5>
+                            <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
+                        </h5>
+                    </div>
+                    <div class="col-12">
+                        <button class="button--primary button"><?= i::__("Configurar formulário") ?></button>
+                    </div>
+                    <div class="col-12">
+                        <a href="#"><mc-icon name="trash"></mc-icon><?= i::__("Excluir etapa de fase") ?></a>
+                    </div>
+                </div>
+            </mapas-card>
         </template>
 
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">

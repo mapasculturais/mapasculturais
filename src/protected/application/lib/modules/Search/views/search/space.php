@@ -8,7 +8,7 @@ $this->breadcrumb = [
 ];
 ?>
 
-<search page-title="<?php i::esc_attr_e('Espaços') ?>" entity-type="space" :initial-pseudo-query="{'term:area':[]}">    
+<search page-title="<?php i::esc_attr_e('Espaços') ?>" entity-type="space" :initial-pseudo-query="{'term:area':[], type:[]}">    
     <template #create-button>
         <create-space></create-space>
     </template>
