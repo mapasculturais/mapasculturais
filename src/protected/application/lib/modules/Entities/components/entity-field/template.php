@@ -18,9 +18,9 @@ $this->import('
         <input  v-if="is('brPhone')" v-maska data-maska="(##) ####0-####" data-maska-tokens="0:[0-9]:optional" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
         <input  v-if="is('cep')" v-maska data-maska="#####-###" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
 
-        <input  v-if="is('string')" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
-
-        <textarea v-if="is('text')" :value="value" :id="propId" :name="prop" @change="change($event)"></textarea>
+        <input  v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" @change="change($event)">
+    
+        <textarea v-if="is('textarea')" :value="value" :id="propId" :name="prop" @change="change($event)"></textarea>
 
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @change="change($event)">
 
