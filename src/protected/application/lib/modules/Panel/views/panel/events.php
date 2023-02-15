@@ -29,20 +29,5 @@ $this->import('panel--entity-tabs panel--entity-card mc-icon create-event');
         </div>
     </header>
 
-    <panel--entity-tabs type="event">
-        <template #entity-actions-left={entity}>
-            <div class="actions-left">
-                <panel--entity-actions v-if="entity.status!=-2" :entity="entity" buttons="archive" archive="<?php i::esc_attr_e('Arquivar') ?>"></panel--entity-actions>
-                <panel--entity-actions v-if="entity.status!=0 && entity.status!=-2" :entity=" entity" buttons="unpublish" unpublish="<?php i::esc_attr_e('Tornar Rascunho') ?>"></panel--entity-actions>
-                <panel--entity-actions :entity="entity" buttons="delete" delete="<?php i::esc_attr_e('Excluir') ?>"></panel--entity-actions>
-
-
-            </div>
-        </template>
-
-        <template #entity-actions-right={entity}>
-            <a :href="entity.singleUrl" class="button button--primary-outline button--icon"><?php i::_e('Acessar') ?> <mc-icon name="arrow-right"></mc-icon></a>
-            <panel--entity-actions :entity="entity" buttons="publish" publish="<?php i::esc_attr_e('Publicar') ?>"></panel--entity-actions>
-        </template>
-    </panel--entity-tabs>
+    <panel--entity-tabs type="event"></panel--entity-tabs>
 </div>

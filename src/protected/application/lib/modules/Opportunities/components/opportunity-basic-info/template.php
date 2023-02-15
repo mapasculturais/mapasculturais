@@ -26,10 +26,10 @@ $this->import('
         <template #content>
             <div class="grid-12">
                 <div class="col-4 sm:col-12">
-                    <entity-field :entity="entity" prop="registrationFrom" :min-date="entity.createTimestamp._date"></entity-field>
+                    <entity-field :entity="entity" prop="registrationFrom" :min="entity.createTimestamp._date"></entity-field>
                 </div>
                 <div class="col-4 sm:col-12">
-                    <entity-field :entity="entity" prop="registrationTo" :min-date="entity.registrationFrom._date"></entity-field>
+                    <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom._date"></entity-field>
                 </div>
             </div>
             <div class="grid-12">

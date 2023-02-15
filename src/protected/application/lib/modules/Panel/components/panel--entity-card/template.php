@@ -47,14 +47,26 @@ $this->import('
                         @archived="$emit('archived', arguments)"
                         @published="$emit('published', arguments)"
                         :on-delete-remove-from-lists="onDeleteRemoveFromLists"
-                    />
+                        :buttons="leftButtons"
+                    ></panel--entity-actions>
                 </slot>
                 <div class="panel-entity-card__footer-actions right">
                     <slot name="entity-actions-center" >
                     </slot>
                     <slot name="entity-actions-right" >
-                        <a :href="entity.singleUrl" class="button button--primary-outline button--icon"><?php i::_e('Acessar') ?> <mc-icon name="arrow-right"></mc-icon></a> 
+                        <a :href="entity.singleUrl" class="button button--primary-outline button--icon"><?php i::_e('Acessar') ?> <mc-icon name="arrowPoint-right"></mc-icon></a> 
                         <a v-if="entity.status>=0" :href="entity.editUrl" class="button button--primary button--icon"><mc-icon name="edit"></mc-icon> <?php i::_e('Editar') ?></a>
+                        <panel--entity-actions 
+                            v-if="rightButtons"
+                            :entity="entity" 
+                            @undeleted="$emit('undeleted', arguments)"
+                            @deleted="$emit('deleted', arguments)"
+                            @unpublished="$emit('unpublished', arguments)"
+                            @archived="$emit('archived', arguments)"
+                            @published="$emit('published', arguments)"
+                            :on-delete-remove-from-lists="onDeleteRemoveFromLists"
+                            :buttons="rightButtons"
+                        ></panel--entity-actions>
                     </slot>
                 </div>
             </slot>
