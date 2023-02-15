@@ -40,7 +40,7 @@ $this->import('
                         <h3><?= i::__("Configuração da fase") ?></h3>
                     </div>
                     <entity-field :entity="item" prop="registrationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
-                    <entity-field :entity="item" prop="registrationTo" classes="col-6 sm:col-12"></entity-field>
+                    <entity-field :entity="item" prop="registrationTo" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
                     <div class="col-12">
                         <h5>
                             <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
