@@ -1,32 +1,130 @@
 @use '../settings/mixins' as *;
 
-.mc-stepper-vertical {
-    .add-phase {
-        margin-inline: 50%;
-    }
+.mc-stepper-vertical-wrapper {
 
-    list-style: none;
-    padding: 46px 25px auto 139px;
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 56px;
 
-    li {
-        position: relative;
-        margin-bottom: 20px;
-    }
-
-    li::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background-color: red;
-        transform: translateX(-50%);
-    }
-    .stepper-header{
-        background-color: blue;
-        margin-left: 220px
-    }
 }
 
+ol.mc-stepper-vertical {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-left: 28px;
+
+}
+
+ol.mc-stepper-vertical li {
+    position: relative;
+    counter-increment: item;
+    padding-left: 20px;
+    border-left: 3px solid red;
+
+    &:last-child {
+        border-left: 0;
+    }
+
+}
+
+ol.mc-stepper-vertical li::before {
+    content: counters(item, ".") "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: bold;
+    color: var(--mc-high-500);
+    width: size(56);
+    height: size(56);
+    background-color: var(--mc-secondary-500);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-left: -28px;
+    border: 3px solid var(--mc-gray-100);
+
+}
+
+ol.mc-stepper-vertical li.active::before {
+    background-color: white;
+    color: red;
+}
+
+
+
+.mc-stepper-vertical {
+    .stepper-step {
+        max-width: 1096px;
+        width: 100%;
+        margin-left: 25px;
+
+    }
+
+
+
+    .stepper-header {
+
+        background-color: white;
+        padding: 16px;
+        border-radius: 4px;
+        display: grid;
+        grid-template-columns: 1fr 52px;
+
+
+        .phase-stepper {
+
+            &__period {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 28px;
+            }
+
+            &__type {
+
+                &--name {
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: 19px;
+                }
+
+                &--label {
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 19px;
+
+                }
+
+                &--item {
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 19px;
+                }
+
+            }
+
+            &__label {}
+
+            &__name {}
+        }
+
+        .expand-stepper {
+            display: flex;
+            align-items: center;
+            padding-right: 165px;
+
+            color: var(--mc-primary-500);
+
+            label {
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 19px;
+
+            }
+
+            .iconify {}
+        }
+    }
+}
