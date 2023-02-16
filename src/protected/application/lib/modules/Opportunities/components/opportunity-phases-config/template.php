@@ -21,8 +21,12 @@ $this->import('
             <h2 class="phase-stepper__name" v-if="index">{{item.name}}</h2>
             <h2 class="phase-stepper__period" v-if="!index"><?= i::__('Período de inscrição') ?></h2>
             <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity'">
+<<<<<<< Updated upstream
                 <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
                 <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
+=======
+                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label class="phase-stepper__type--label">: <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
+>>>>>>> Stashed changes
             </p>
             <p class="" v-if="item.__objectType == 'evaluationmethodconfiguration'">
                 <?= i::__('Tipo') ?>: {{item.type.name}}
@@ -50,8 +54,13 @@ $this->import('
                     <div class="col-12">
                         <button class="button--primary button"><?= i::__("Configurar formulário") ?></button>
                     </div>
+<<<<<<< Updated upstream
                     <div class="phase-delete col-12">
                         <a class="phase-delete__trash " href="#"><mc-icon name="trash"></mc-icon><label class="delete-phase__label"><?= i::__("Excluir etapa de fase") ?></label></a>
+=======
+                    <div class="col-12">
+                        <a href="#"><mc-icon name="trash"></mc-icon><?= i::__("Excluir etapa de fase") ?></a>
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </mapas-card>
@@ -112,7 +121,11 @@ $this->import('
             <div class="add-phase__evaluation col-12">
                 <opportunity-create-evaluation-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-evaluation-phase>
             </div>
+<<<<<<< Updated upstream
             <p><label class="add-phase__collection"><?= i::__("ou") ?></label></p>
+=======
+            <p><label class="add-phase"><?= i::__("ou") ?></label></p>
+>>>>>>> Stashed changes
             <div class="add-phase__collection col-12">
                 <opportunity-create-data-collect-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-data-collect-phase>
             </div>
