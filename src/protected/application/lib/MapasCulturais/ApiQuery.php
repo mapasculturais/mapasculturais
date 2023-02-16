@@ -827,7 +827,7 @@ class ApiQuery {
             if(!$identity){
                 $result = null;
             } else {
-                $result = implode(',', $identity);
+                $result = implode(',', array_unique($identity));
             }
         }
         
@@ -1351,8 +1351,17 @@ class ApiQuery {
                         }
                     } else {
                         foreach ($subquery_result as &$r) {
-                            // não consegui identificar em qua situação o $r[$_target_property] é um array, mas não deveria ser...
-                            $__tgt = is_array($r[$_target_property]) ? $r[$_target_property][0] : $r[$_target_property];
+
+                            if (is_array($r[$_target_property])) {
+                                if (isset($r[$_target_property][0])) {
+                                    $__tgt = $r[$_target_property][0];
+                                } else {
+                                    $__tgt = $r[$_target_property]['id'];
+                                }
+                            } else {
+                                $__tgt = $r[$_target_property];
+                            }
+
                             if(!isset($subquery_result_index[$__tgt])){
                                 $subquery_result_index[$__tgt] = [];
                             }
