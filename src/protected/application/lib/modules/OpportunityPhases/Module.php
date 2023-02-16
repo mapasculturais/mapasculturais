@@ -849,7 +849,8 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('POST(registration.index):before', function() use($app) {
-            $opportunity = $app->repo('Opportunity')->find($this->data['opportunityId']);
+            $opportunity_id = $this->data['opportunityId'] ?? $this->data['opportunity'] ?? -1;
+            $opportunity = $app->repo('Opportunity')->find($opportunity_id);
 
             if($opportunity->isOpportunityPhase){
                 throw new Exceptions\PermissionDenied($app->user, $opportunity, 'register');
