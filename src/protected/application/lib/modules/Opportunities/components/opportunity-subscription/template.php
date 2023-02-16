@@ -16,20 +16,10 @@ $this->import('
 		</p>
 
 		<div class="content">
-			<p class="content__description">
-				<?= i::__("Inscrições abertas de") ?>
-				<span>{{ startAt }}</span> <?= i::__('a'); ?> <span>{{ endAt }}</span>
-				<?= i::__('às') ?> <span>{{ hourEnd }}</span>
-			</p>
+			<p class="content__description"> {{infoRegistration}} </p>
 		</div>
 	</div>
 
-
-	<?php
-	/**
-	 * @todo parte de inscrições (logado/deslogado)
-	 */
-	?>
 	<div class="col-12 opportunity-subscription__subscription">
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 

@@ -1,13 +1,28 @@
 <?php
 use MapasCulturais\i;
+
+$querySent = "";
+$queryNotSent = "";
+
+if ($app->user->is('admin')) {
+    $querySent = "{'status': 'GT(0)', '@permissions': 'view', 'user': 'EQ(@me)'}";
+    $queryNotSent = "{'status': 'EQ(0)', '@permissions': 'view', 'user': 'EQ(@me)'}";  
+} else {
+    $querySent = "{'status': 'GT(0)', '@permissions': '@control'}";
+    $queryNotSent = "{'status': 'EQ(0)', '@permissions': '@control'}";;
+}
+
+
 $this->import('
     mc-icon 
     panel--entity-card
     panel--entity-tabs 
+    mc-icon
+    registration-card
 ');
 ?>
 
-<div class="panel-page">
+<div class="panel-page registrations">
     <header class="panel-page__header">
         <div class="panel-page__header-title">
             <div class="title">
@@ -28,5 +43,65 @@ $this->import('
         </div>
     </header>
 
-    <panel--entity-tabs type="registration"></panel--entity-tabs>
+    <tabs class="tabs">
+        <tab label="<?= i::_e('Enviadas') ?>" class="tabs_sent" slug="sent">
+            
+            <div class="registrations__filter">
+                <form class="form">
+                    <div class="search">
+                        <input type="text" class="input" />
+                        <button class="button button--icon">
+                            <mc-icon name="search"></mc-icon>
+                        </button>
+                    </div>
+
+                    <select class="order primary__border-solid">
+                        <option selected disabled>Ordenar</option>
+                    </select>
+                </form>
+            </div>
+
+            <entities name="registrationsList" type="registration" endpoint="find" :query="<?= $querySent ?>" select="*">
+                <template #default="{entities}">
+
+                    <div class="registrations__list">
+                        <registration-card v-for="registration in entities" :entity="registration"></registration-card>
+                    </div>
+
+                </template>
+            </entities>
+
+        </tab>    
+
+        <tab label="<?= i::_e('Não enviadas') ?>" slug="notSent">
+            <div class="registrations__filter">
+                <form class="form">
+                    <div class="search">
+                        <input type="text" class="input" />
+                        <button class="button button--icon">
+                            <mc-icon name="search"></mc-icon>
+                        </button>
+                    </div>
+
+                    <select class="order primary__border-solid">
+                        <option value="name ASC">ordem alfabética</option>
+                        <option value="createTimestamp DESC">mais recentes primeiro</option>
+                        <option value="createTimestamp ASC">mais antigas primeiro</option>
+                        <option value="updateTimestamp DESC">modificadas recentemente</option>
+                        <option value="updateTimestamp ASC">modificadas há mais tempo</option>
+                    </select>
+                </form>
+            </div>
+
+            <entities name="registrationsList" type="registration" endpoint="find" :query="<?= $queryNotSent ?>" select="*">
+                <template #default="{entities}">
+
+                    <div class="registrations__list">
+                        <registration-card v-for="registration in entities" :entity="registration"></registration-card>
+                    </div>
+
+                </template>
+            </entities>
+        </tab> 
+    </tabs>
 </div>
