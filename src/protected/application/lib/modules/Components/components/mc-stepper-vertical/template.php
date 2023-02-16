@@ -27,6 +27,6 @@ $this->import('mc-icon')
                 </slot>
             </main>
         </li>
-        <slot name="after-li" :index="index" :step="step" :item="step.item"></slot>
+        <slot name="after-li"  :step="step" :item="step.item"></slot>
     </template>
 </ol>
