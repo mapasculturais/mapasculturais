@@ -23,9 +23,6 @@ $this->import('
             <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity'">
 <<<<<<< Updated upstream
                 <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
-                <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
-=======
-                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label class="phase-stepper__type--label">: <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
 >>>>>>> Stashed changes
             </p>
             <p class="" v-if="item.__objectType == 'evaluationmethodconfiguration'">
