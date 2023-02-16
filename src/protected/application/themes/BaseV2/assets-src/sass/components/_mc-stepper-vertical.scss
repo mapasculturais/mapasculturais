@@ -1,96 +1,142 @@
 @use '../settings/mixins' as *;
 
-.mc-stepper-vertical {
-    .add-phase {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        align-items: center;
-    }
 
-    li::step-active {
-        background-color: red;
-        position: relative;
-        margin-bottom: 20px;
-    }
-    li::marker {
-        background-color: red;
-    }
-    li::before {
-        content: '';
-        position: absolute;
-        counter-increment: li;
 
-        &li::marker {
-            width: 56px;
-            color: red;
+ol.mc-stepper-vertical {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+.stepper-header {
+    background-color: white;
+    padding: 25px;
+    border-radius: 4px;
+    margin-left: 45px;
+    display: grid;
+    grid-template-columns: 1fr 52px;
+    max-width: 970px;
+
+    .phase-stepper {
+
+        max-width: 1086px;
+
+        &__period {
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 28px;
         }
 
-    }
+        &__type {
 
-
-    .stepper-header {
-        background-color: white;
-        padding: 25px;
-        border-radius: 4px;
-        margin-left: 45px;
-        display: grid;
-        grid-template-columns: 1fr 52px;
-        max-width: 970px;
-
-        .phase-stepper {
-
-            max-width: 1086px;
-
-            &__period {
-                font-weight: 700;
-                font-size: 24px;
-                line-height: 28px;
+            &--name {
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 19px;
             }
 
-            &__type {
-
-                &--name {
-                    font-weight: 600;
-                    font-size: 14px;
-                    line-height: 19px;
-                }
-
-                &--label {
-                    font-weight: 700;
-                    font-size: 14px;
-                    line-height: 19px;
-
-                }
-
-                &--item {
-                    font-weight: 700;
-                    font-size: 14px;
-                    line-height: 19px;
-                }
-
-            }
-
-            &__label {}
-
-            &__name {}
-        }
-
-        .expand-stepper {
-            display: flex;
-            align-items: center;
-            padding-right: 165px;
-
-            color: var(--mc-primary-500);
-
-            label {
+            &--label {
                 font-weight: 700;
                 font-size: 14px;
                 line-height: 19px;
 
             }
 
-            .iconify {}
+            &--item {
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 19px;
+            }
+
         }
+
+        &__label {}
+
+        &__name {}
+    }
+
+    .expand-stepper {
+        display: flex;
+        align-items: center;
+        padding-right: 165px;
+
+        color: var(--mc-primary-500);
+
+        label {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 19px;
+
+        }
+
+        .iconify {}
     }
 }
+
+    .add-phase {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+}
+
+ol.mc-stepper-vertical li {
+    position: relative;
+    counter-increment: item;
+    padding-left: 20px;
+}
+
+ol.mc-stepper-vertical li::before {
+    content: counters(item, ".") "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: bold;
+    width: 56px;
+    height: 56px;
+    background-color: red;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+// .active::marker {
+//         background-color: red;
+//         width: 56px;
+//         border-radius: 50%;
+//         color: green;
+
+// }
+// .add-phase {
+//     display: flex;
+//     flex-direction: column;
+//     flex-wrap: wrap;
+//     align-items: center;
+// }
+
+// li::active {
+//     background-color: red;
+//     position: relative;
+//     margin-bottom: 20px;
+// }
+
+// li::marker {
+//     background-color: red;
+// }
+
+// li::before {
+//     content: '';
+//     position: absolute;
+//     counter-increment: li;
+
+//     // &li::marker {
+//     //     width: 56px;
+//     //     color: red;
+//     // }
+
+// }
+
