@@ -31,7 +31,9 @@ $this->import('mc-icon')
                     </main>
                 </section>
             </li>
-            <slot name="after-li" :step="step" :item="step.item"></slot>
+            <div class="add-phase">
+                <slot name="after-li" :index="index" :step="step" :item="step.item"></slot>
+            </div>
         </template>
     </ol>
 </div>

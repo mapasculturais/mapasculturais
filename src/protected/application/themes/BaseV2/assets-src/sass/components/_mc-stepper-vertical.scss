@@ -23,10 +23,31 @@ ol.mc-stepper-vertical li {
     padding-left: 20px;
     border-left: 3px solid red;
 
-    &:last-child {
+    mapas-card {
+
+
+        .avaliation-step {
+            &__line {
+                background-color: red;
+            }
+        }
+    }
+
+    &:last-of-type {
         border-left: 0;
     }
 
+}
+
+.phase-delete {
+    &__trash {
+        .iconify {
+            svg {
+                font-size: 20px;
+                color: red;
+            }
+        }
+    }
 }
 
 ol.mc-stepper-vertical li::before {
@@ -35,10 +56,10 @@ ol.mc-stepper-vertical li::before {
     left: 0;
     top: 0;
     font-weight: bold;
-    color: var(--mc-high-500);
+    color: var(--mc-secondary-500);
     width: size(56);
     height: size(56);
-    background-color: var(--mc-secondary-500);
+    background-color: var(--mc-high-500);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,13 +70,58 @@ ol.mc-stepper-vertical li::before {
 }
 
 ol.mc-stepper-vertical li.active::before {
-    background-color: white;
-    color: red;
+    background-color: var(--mc-secondary-500);
+    color: var(--mc-high-500);
 }
 
 
+.phase-delete {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    &__trash {
+        svg {
+            color: var(--mc-secondary-500);
+            font-size: 18px;
+        }
+    }
+
+    &__label {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 19px;
+            color: black;
+            text-decoration: none;
+    }
+}
 
 .mc-stepper-vertical {
+    .add-phase {
+        border-left: 3px solid red;
+        padding-left: 25px;
+        display: flex;
+        padding-left: 25px;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+
+        &.add-phase.grid-12 {
+            border-left: none;
+
+        }
+
+
+        &__evaluation {
+            margin-top: 25px;
+        }
+
+        &__collection {
+            margin-bottom: 25px;
+
+        }
+    }
+
     .stepper-step {
         max-width: 1096px;
         width: 100%;
