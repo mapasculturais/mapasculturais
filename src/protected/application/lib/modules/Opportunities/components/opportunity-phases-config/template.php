@@ -19,8 +19,8 @@ $this->import('
     <template #header-title="{index, item}">
         <div class="phase-stepper">
             <h2 class="phase-stepper__name" v-if="index">{{item.name}}</h2>
-            <h2  class="phase-stepper__period" v-if="!index"><?= i::__('Período de inscrição') ?></h2>
-            <p class="phase-stepper__type"v-if="item.__objectType == 'opportunity'">
+            <h2 class="phase-stepper__period" v-if="!index"><?= i::__('Período de inscrição') ?></h2>
+            <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity'">
                 <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label class="phase-stepper__type--label">: <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
             </p>
             <p class="" v-if="item.__objectType == 'evaluationmethodconfiguration'">
@@ -46,10 +46,10 @@ $this->import('
                             <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
                         </h5>
                     </div>
-                    <div class="add-phase col-12">
+                    <div class="col-12">
                         <button class="button--primary button"><?= i::__("Configurar formulário") ?></button>
                     </div>
-                    <div class="add-phase col-12">
+                    <div class="col-12">
                         <a href="#"><mc-icon name="trash"></mc-icon><?= i::__("Excluir etapa de fase") ?></a>
                     </div>
                 </div>
@@ -104,7 +104,7 @@ $this->import('
             <div class="add-phase__evaluation col-12">
                 <opportunity-create-evaluation-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-evaluation-phase>
             </div>
-            <p><label class="add-phase"><?= i::__("ou")?></label></p>
+            <p><label class="add-phase"><?= i::__("ou") ?></label></p>
             <div class="add-phase__collection col-12">
                 <opportunity-create-data-collect-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-data-collect-phase>
             </div>
