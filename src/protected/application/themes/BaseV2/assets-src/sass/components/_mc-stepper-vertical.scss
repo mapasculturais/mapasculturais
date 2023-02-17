@@ -22,6 +22,7 @@ ol.mc-stepper-vertical li {
     counter-increment: item;
     padding-left: 20px;
     border-left: 3px solid red;
+    padding-bottom: 20px;
 
     mapas-card {
 
@@ -66,6 +67,7 @@ ol.mc-stepper-vertical li::before {
     border-radius: 50%;
     margin-left: -28px;
     border: 3px solid var(--mc-gray-100);
+    margin-bottom: 19px;
 
 }
 
