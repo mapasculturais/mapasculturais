@@ -33,18 +33,18 @@ $this->import('
         </div>
         <template v-if="item.__objectType == 'opportunity'">
             <mapas-card>
-                <div class="grid-12">
-                    <div class="col-12">
-                        <h3><?= i::__("Configuração da fase") ?></h3>
+                <div class="config-phase grid-12">
+                    <div class="config-phase__title col-12">
+                        <h3 class="config-phase"><?= i::__("Configuração da fase") ?></h3>
                     </div>
                     <entity-field :entity="item" prop="registrationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
                     <entity-field :entity="item" prop="registrationTo" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
-                    <div class="col-12">
-                        <h5>
+                    <div class="config-phase__info col-12">
+                        <h5 class="config-phase__info--message">
                             <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
                         </h5>
                     </div>
-                    <div class="col-12">
+                    <div class="config-phase__info-button col-12">
                         <button class="button--primary button"><?= i::__("Configurar formulário") ?></button>
                     </div>
                     <div class="phase-delete col-12">
