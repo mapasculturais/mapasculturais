@@ -1560,13 +1560,22 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         });
     }, 1000);
 
+    $scope.lockedEntityField = function(field){
+
+        if (MapasCulturais.entity.object.owner.lockedFields.indexOf(field) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     $scope.lockedField = function (field) {
         if(!field.config?.entityField){
             return false;
         }
         
         let fname = field.config.entityField.replace('@','');
-        if (field.config && MapasCulturais.entity.object.owner.lockedFields.indexOf(fname) >= 0) {
+        if (field.config && $scope.lockedEntityField(fname)) {
             return true;
         } else {
             return false;
