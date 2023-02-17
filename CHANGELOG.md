@@ -3,6 +3,15 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [5.5.12] - 2023-02-17
+### Correções
+- Faz correção do bloqueio dos campos atravéz dos selos, caso seja bloqueado campos do tipo location
+
+## [5.5.11] - 2023-02-16
+### Melhorias
+- Melhora performance da criação de revisões de agentes com muitas propriedades
+
 ## [5.5.10] - 2023-02-10
 ### Correções
 - Corrige erro da acentuação no upload de arquivos
