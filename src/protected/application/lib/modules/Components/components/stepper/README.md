@@ -5,10 +5,10 @@ Componente para listar um passo-a-passo
 - 
   
 ## Propriedades
-- *Number **totalSteps** obrigatório* - Total de steps
-- *Number **stepped** = 1* - Step atual
-- *String **actualLabel*** - Label do step atual
-- *String **lastLabel*** - Label do último step
+- *Array/Object **steps*** - Steps a serem listados
+- *Number **actualStep** = 1* - Step atual
+- *Boolean **onlyActiveLabel** = false* - Mostra apenas os labels dos steps ativos
+- *Boolean **noLabels** = false* - Não lista nenhuma label 
 - *Boolean **small** = false* - Modifica o estilo do stepper
 
 ## Slots
@@ -23,15 +23,17 @@ $this->import('stepper');
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<stepper :total-steps="5"></stepper>
+<stepper :steps="['step 1', 'step 2', 'step 3', ...]"></stepper>
 
 <!-- Utilização com step definido -->
-<stepper :total-steps="5" :stepped="2"></stepper>
+<stepper :steps="['step 1', 'step 2', 'step 3', ...]" :stepped="2"></stepper>
 
 <!-- Utilização com a versão small -->
-<stepper :total-steps="5" small></stepper>
+<stepper :steps="['step 1', 'step 2', 'step 3', ...]" small></stepper>
 
-<!-- Utilização com labels -->
-<stepper :total-steps="5" actual-label="step atual" last-label="último step"></stepper>
+<!-- Utilização apenas com labels ativas -->
+<stepper :steps="['step 1', 'step 2', 'step 3', ...]" only-active-label></stepper>
 
+<!-- Utilização sem labels -->
+<stepper :steps="['step 1', 'step 2', 'step 3', ...]" no-labels></stepper>
 ```
