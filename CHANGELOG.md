@@ -3,6 +3,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+## [5.4.7] - 2023-02-16
+- melhora performance da criação de revisões de agentes com muitas propriedades
+
 ## [5.4.6] - 2023-01-26
 ### Correções
 - Corrige jsonSerialize da registration para quando a ficha é acessada por um gestor da oportunidade o mesmo poça ter acesso aos campos sem necessidade de liberação na permissão dos avaliadores
@@ -33,6 +38,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Novas Funcionalidade
 - Importação de eventos por planilha
+
+## [5.3.42] - 2023-02-16
+- melhora performance da criação de revisões de agentes com muitas propriedades
+
+## [5.3.41] - 2023-01-26
+### Correções
+- Corrige jsonSerialize da registration para quando a ficha é acessada por um gestor da oportunidade o mesmo poça ter acesso aos campos sem necessidade de liberação na permissão dos avaliadores
+
+## [5.3.39] - 2022-12-27
+### Correções
+- Corrige validação e definição de campos nulos
+- Formulário de inscrição envia valores falsos não nulos
+- Validação de campos numéricos obrigatórios vazios
 
 ## [5.3.38] - 2022-11-30
 ### Correções
