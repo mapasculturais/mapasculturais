@@ -70,6 +70,13 @@
 
     &.small {
         .step {
+
+            &:hover {
+                .label {
+                    opacity: 1;
+                }
+            }
+
             .count {
                 height: size(24);
                 margin: size(8) 0;
@@ -81,10 +88,16 @@
                 font-size: size(14);
                 line-height: size(19);
                 text-align: center;
+                transition: opacity 300ms;
+                opacity: 0;
 
                 &.active {
                     color: var(--mc-secondary-500);
                     font-weight: 700;
+                }
+
+                &.show {
+                    opacity: 1;
                 }
             }
 
