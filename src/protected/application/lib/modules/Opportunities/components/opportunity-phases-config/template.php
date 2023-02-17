@@ -8,8 +8,8 @@ use MapasCulturais\i;
 $this->import('
     entity-field
     mc-stepper-vertical
-    mc-link
     opportunity-create-evaluation-phase
+    mc-link
     opportunity-create-data-collect-phase
 ');
 ?>
@@ -18,11 +18,12 @@ $this->import('
         <div class="phase-stepper">
             <h2 v-if="index" class="phase-stepper__name">{{item.name}}</h2>
             <h2 v-if="!index" class="phase-stepper__period" ><?= i::__('Período de inscrição') ?></h2>
-            <p v-if="item.__objectType == 'opportunity'" class="phase-stepper__type">
+            <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity'">
                 <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
+                <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
             </p>
             <p  v-if="item.__objectType == 'evaluationmethodconfiguration'" class="">
-                <?= i::__('Tipo') ?>: {{item.type.name}}
+                <label class="phase-stepper__type--name"></label><?= i::__('Tipo') ?>: <label class="phase-stepper__type--item">{{item.type.name}}</label>
             </p>
         </div>
     </template>
