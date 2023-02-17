@@ -52,6 +52,7 @@ $iconset = [
     'edit' => 'zondicons:edit-pencil',
     'eye-view' => 'ic:baseline-remove-red-eye',
     'exclamation' => 'bi:exclamation-circle-fill',
+    'external'  =>  'charm:link-external',
     'favorite' => 'mdi:star-outline',
     'filter' => 'ic:baseline-filter-alt',
     'home' => 'ci:home-fill',
