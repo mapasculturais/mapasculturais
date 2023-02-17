@@ -1,46 +1,176 @@
 @use '../settings/mixins' as *;
 
+.mc-stepper-vertical-wrapper {
+
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 56px;
+
+}
+
+ol.mc-stepper-vertical {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-left: 28px;
+
+}
+
+ol.mc-stepper-vertical li {
+    position: relative;
+    counter-increment: item;
+    padding-left: 20px;
+    border-left: 3px solid red;
+    padding-bottom: 20px;
+
+    mapas-card {
+
+
+        .avaliation-step {
+            &__line {
+                background-color: red;
+            }
+        }
+    }
+
+    &:last-of-type {
+        border-left: 0;
+    }
+
+}
+
+.config-phase {
+    &__title {
+        &--title {
+            font-weight: 700;
+            font-size: size(24);
+            line-height: size(28);
+
+        }
+    }
+
+    &__info {
+        &--message {
+            align-items: center;
+            gap: size(10);
+            display: flex;
+            font-weight: 400;
+            font-size: size(16);
+            line-height: size(22);
+
+            .iconify {
+                font-size: size(20);
+            }
+        }
+    }
+
+    .phase-delete {
+        &__trash {
+            .iconify {
+                svg {
+                    font-size: 20px;
+                    color: red;
+                }
+            }
+        }
+    }
+
+}
+
+ol.mc-stepper-vertical li::before {
+    content: counters(item, ".") "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: bold;
+    color: var(--mc-secondary-500);
+    width: size(56);
+    height: size(56);
+    background-color: var(--mc-high-500);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-left: -28px;
+    border: 3px solid var(--mc-gray-100);
+    margin-bottom: 19px;
+
+}
+
+ol.mc-stepper-vertical li.active::before {
+    background-color: var(--mc-secondary-500);
+    color: var(--mc-high-500);
+}
+
+
+.phase-delete {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+
+    &__trash {
+        svg {
+            color: var(--mc-secondary-500);
+            font-size: 18px;
+        }
+    }
+
+    &__label {
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 19px;
+        color: black;
+        text-decoration: none;
+    }
+}
+
 .mc-stepper-vertical {
     .add-phase {
+        border-left: 3px solid red;
+        padding-left: 25px;
         display: flex;
+        padding-left: 25px;
         flex-direction: column;
         flex-wrap: wrap;
         align-items: center;
-    }
 
-    li::step-active {
-        background-color: red;
-        position: relative;
-        margin-bottom: 20px;
-    }
-    li::marker {
-        background-color: red;
-    }
-    li::before {
-        content: '';
-        position: absolute;
-        counter-increment: li;
+        &.add-phase.grid-12 {
+            border-left: none;
 
-        &li::marker {
-            width: 56px;
-            color: red;
         }
 
+
+        &__evaluation {
+            margin-top: 25px;
+        }
+
+        &__collection {
+            margin-bottom: 25px;
+
+        }
     }
+
+    .stepper-step {
+        max-width: 1096px;
+        width: 100%;
+        margin-left: 25px;
+
+    }
+
 
 
     .stepper-header {
+
         background-color: white;
-        padding: 25px;
+        padding: 16px;
         border-radius: 4px;
-        margin-left: 45px;
         display: grid;
         grid-template-columns: 1fr 52px;
-        max-width: 970px;
+
 
         .phase-stepper {
-
-            max-width: 1086px;
 
             &__period {
                 font-weight: 700;

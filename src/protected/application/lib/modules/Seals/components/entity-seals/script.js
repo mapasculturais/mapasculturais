@@ -3,19 +3,11 @@ app.component('entity-seals', {
 
     computed: {
         query() {
-
             const ids = this.entity.seals.map((item) => item.sealId).join(',');
             return ids ? { id: `!IN(${ids})` } : {};
         }
     },
 
-    data() {
-        // const nameSeal = $MAPAS.requestedEntity.seal;
-        // return nameSeal;
-
-
-
-    },
     props: {
         entity: {
             type: Entity,
