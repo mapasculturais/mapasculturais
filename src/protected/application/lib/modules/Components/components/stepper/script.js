@@ -9,41 +9,36 @@ app.component('stepper', {
 
 
     props: {
-        totalSteps: {
-            type: Number,
-            required: true
+        steps: {
+            type: [Array, Object],
+            default: null,
         },
-        stepped: {
+        actualStep: {
             type: Number,
-            default: 1
+            default: 1,
         },
-        small: {
+        onlyActiveLabel: {
+            type: Boolean,
+            default: false,
+        },
+        noLabels: {
             type: Boolean,
             default: false
         },
-        actualLabel: {
-            type: String,
-            default: null
-        },
-        lastLabel: {
-            type: String,
-            default: null
-        },
-        
-        /* for debugging purposes */
-        showButtons: {
+        small: {
             type: Boolean,
-            required: false
-        }
-    },
-
-    data() {
-        return {
-            actualStep: this.stepped
-        }
+            default: false,
+        },
     },
 
     computed: {
+        totalSteps() {
+            if (this.steps instanceof Object) {
+                return Object.keys(this.steps).length;
+            } else if (this.steps instanceof Array) {
+                return this.steps.length;
+            }
+        },
         step () {
             if (this.actualStep >= this.totalSteps) {
                 this.actualStep = this.totalSteps;
@@ -54,7 +49,7 @@ app.component('stepper', {
             }
 
             return this.actualStep;
-        }
+        },
     },
     
     methods: {
@@ -66,6 +61,6 @@ app.component('stepper', {
         },
         goToStep(step) {
             this.actualStep = step;
-        }
+        },
     },
 });

@@ -20,8 +20,7 @@ use MapasCulturais\i;
             <span v-if="!small"> {{n}} </span>
             <span v-if="small && step==n"> {{n}} </span>
         </div>
-        <span v-if="actualLabel && step==n && n!==totalSteps" :class="['label', {'active' : step==n}]"> {{actualLabel}} {{n}} </span>
-        <span v-if="lastLabel && n==totalSteps" :class="['label', {'active' : step==n}]"> {{lastLabel}} </span>
+        <span v-show="steps && !noLabels" :class="['label', {'active' : step==n}, {'show' : (onlyActiveLabel && (step==n || n==totalSteps)) || !onlyActiveLabel }]"> {{steps[n-1]}} </span>
     </div>
 </div>
 
