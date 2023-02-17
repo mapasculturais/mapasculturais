@@ -35,7 +35,7 @@ $this->import('
             <mapas-card>
                 <div class="config-phase grid-12">
                     <div class="config-phase__title col-12">
-                        <h3 class="config-phase"><?= i::__("Configuração da fase") ?></h3>
+                        <h3 class="config-phase__title--title"><?= i::__("Configuração da fase") ?></h3>
                     </div>
                     <entity-field :entity="item" prop="registrationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
                     <entity-field :entity="item" prop="registrationTo" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
