@@ -97,7 +97,6 @@ app.component('select-entity', {
         },
         
         fetch(entities) {
-            console.log(entities);
             this.$emit('fetch', entities);
         }
         

@@ -51,7 +51,6 @@ app.component('entity-files-list', {
     methods: {
         setFile() {
             this.newFile = this.$refs.file.files[0];
-            console.log(this.newFile);
         },
 
         upload(popover) {
