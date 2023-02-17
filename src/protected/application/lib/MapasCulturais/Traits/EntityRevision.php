@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\Entities;
 use MapasCulturais\i;
 use MapasCulturais\Entities\EntityRevision as Revision;
 
@@ -20,12 +21,38 @@ trait EntityRevision{
         return true;
     }
 
+    protected function _getRevisionIds($entity_class, $entities) {
+        $ids = [];
+        foreach($entities as $entity) {
+            $ids[] = $entity->id;
+        }
+
+        $ids = implode(',', $ids);
+
+        $conn = App::i()->em->getConnection();
+        $rs = $conn->fetchAll("
+            SELECT 
+                MAX(id) as revision_id, object_id
+            FROM 
+                entity_revision
+            WHERE 
+                object_type = '{$entity_class}' AND object_id in ({$ids}) 
+            GROUP BY object_id
+        ");
+        $result = [];
+        foreach($rs as $r) {
+            $result[$r['object_id']] = $r['revision_id'];
+        }
+        return $result;
+    }
+
     public function _getRevisionData() {
         $app = App::i();
         $class_metadata = $app->em->getClassMetadata($this->getClassName());
         $fields = $class_metadata->getFieldNames();
         $removedFields = ['id','_geoLocation','userId'];
         $entity_data = null;
+        $revisionData = [];
         foreach($fields as $field) {
             if(!in_array($field,$removedFields)) {
                 $revisionData[$field] = $this->$field;
@@ -55,17 +82,20 @@ trait EntityRevision{
         }
 
         if(array_key_exists("_spaces",$relations) && count($this->_spaces) > 0) {
+            $revisions = $this->_getRevisionIds(Entities\Space::class, $this->_spaces);
+
             foreach($this->_spaces as $space) {
                 $entity_data = $space->simplify("id,name");
-                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($space->getClassName(),$entity_data->id);
+                $entity_data->{'revision'} = $revisions[$space->id];
                 $revisionData['_spaces'][] = $entity_data;
             }
         }
 
         if(array_key_exists("_events",$relations) && count($this->_events) > 0) {
+            $revisions = $this->_getRevisionIds(Entities\Event::class, $this->_events);
             foreach($this->_events as $event) {
                 $entity_data = $event->simplify("id,name");
-                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($event->getClassName(),$entity_data->id);
+                $entity_data->{'revision'} = $revisions[$event->id];
                 $revisionData['_events'][] = $entity_data;
             }
         }
@@ -79,16 +109,26 @@ trait EntityRevision{
         if($this->usesSealRelation()) {
             foreach($this->__sealRelations as $sealRelation) {
                 $entity_data = $sealRelation->seal->simplify();
-                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($sealRelation->seal->getClassName(),$entity_data->id);
                 $revisionData['_seals'][] = $entity_data;
             }
         }
 
         if($this->usesAgentRelation()) {
-            foreach($this->__agentRelations as $agentRelation) {
-                $entity_data = $agentRelation->agent->simplify();
-                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($agentRelation->agent->getClassName(),$entity_data->id);
-                $revisionData['_agents'][$agentRelation->group][] = $entity_data;
+            if($related_agents = $this->relatedAgents){
+                $all_agents = [];
+                foreach($related_agents as $agents) {
+                    $all_agents = array_merge($all_agents, $agents);
+                }
+                $revisions = $this->_getRevisionIds(Entities\Agent::class, $all_agents);
+    
+                foreach($related_agents as $group => $agents) {
+                    $revisionData['_agents'][$group] = [];
+                    foreach($agents as $agent) {
+                        $entity_data = $agent->simplify();
+                        $entity_data->{'revision'} = $revisions[$agent->id];
+                        $revisionData['_agents'][$group][] = $entity_data;
+                    }
+                }
             }
         }
 
