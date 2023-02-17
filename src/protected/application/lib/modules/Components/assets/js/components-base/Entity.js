@@ -182,8 +182,11 @@ class Entity {
             if(prop == 'ownerEntity' && this[prop]) {
                 result[prop] = this[prop]?.id;
                 result['objectType'] = this[prop]?.__objectType;
-            }
-            if(prop == 'parent' && this[prop]) {
+            } else if(prop == 'parent' && this[prop]) {
+                if (this[prop]?.id != this.id) {
+                    result[prop] = this[prop]?.id;
+                }
+            } else {
                 result[prop] = this[prop]?.id;
             }
         }

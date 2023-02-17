@@ -400,9 +400,13 @@ class Registration extends \MapasCulturais\Entity
 
     protected $_ownerChanged = false;
 
-    function setOwner(Agent $agent){
-        $this->_ownerChanged = true;
-        $this->owner = $agent;
+    function setOwner($agent){
+        if (is_numeric($agent)) {
+            $this->setOwnerId($agent);
+        } else {
+            $this->_ownerChanged = true;
+            $this->owner = $agent;
+        }
     }
 
     function validateOwnerLimit(){
@@ -420,8 +424,24 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function setOpportunityId($id){
-        $agent = App::i()->repo('Opportunity')->find($id);
-        $this->opportunity = $agent;
+        if(!$this->isNew()) {
+            return;
+        }
+
+        $opportunity = App::i()->repo('Opportunity')->find($id);
+        $this->opportunity = $opportunity;
+    }
+
+    function setOpportunity($opportunity) {
+        if(!$this->isNew()) {
+            return;
+        }
+
+        if(is_numeric($opportunity)) {
+            $this->setOpportunityId($opportunity);
+        } else {
+            $this->opportunity = $opportunity;   
+        }
     }
     
     /**
