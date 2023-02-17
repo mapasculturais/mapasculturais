@@ -50,7 +50,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Cria db-update para setar campos de CPF e CNP nos agentes com base no dados do campo documento
 
-## [.5.5.0] - 2022-12-22
+## [5.5.0] - 2022-12-22
 ### Correções
 - Remove definição da configuração availableAgentFields no Module registrationFieldTypes
 - Corrige carregamento dos campos @ na tela de configuração de campo garantindo que todos ja tenham sido registrados
@@ -62,6 +62,28 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Possibilita que seja possivel controlar disparo de e-mails de criação e aprovação no modulo sendMailNotification
 ### Novas Funcionalidade
 - Bloqueio dos campos através dos selos
+
+
+## [5.4.7] - 2023-02-16
+- melhora performance da criação de revisões de agentes com muitas propriedades
+
+## [5.4.6] - 2023-01-26
+### Correções
+- Corrige jsonSerialize da registration para quando a ficha é acessada por um gestor da oportunidade o mesmo poça ter acesso aos campos sem necessidade de liberação na permissão dos avaliadores
+
+## [5.4.5] - 2023-01-09
+### Correções
+- Evita que autosave execute na ficha de inscrição após a mesma estar enviada
+- Corrige erros de carregamento do thumbnail do avatar nos templates referente ao agente caso nao encontre o avatar
+- Corrige problema de duplicidade ao processar a planilha de importação de eventos
+## [5.4.4] - 2022-12-28
+- Corrige redirecionamento após criação de App
+
+## [5.4.3] - 2022-12-27
+### Correções
+- Corrige validação e definição de campos nulos
+- Formulário de inscrição envia valores falsos não nulos
+- Validação de campos numéricos obrigatórios vazios
 
 ## [5.4.2] - 2022-12-20
 ### Correções
@@ -76,6 +98,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Atualiza updateTimestamp das entidades quando modificado um metadado
 ### Novas Funcionalidade
 - Importação de eventos por planilha
+
+## [5.3.42] - 2023-02-16
+- melhora performance da criação de revisões de agentes com muitas propriedades
+
+## [5.3.41] - 2023-01-26
+### Correções
+- Corrige jsonSerialize da registration para quando a ficha é acessada por um gestor da oportunidade o mesmo poça ter acesso aos campos sem necessidade de liberação na permissão dos avaliadores
+
+## [5.3.39] - 2022-12-27
+### Correções
+- Corrige validação e definição de campos nulos
+- Formulário de inscrição envia valores falsos não nulos
+- Validação de campos numéricos obrigatórios vazios
 
 ## [5.3.38] - 2022-11-30
 ### Correções
