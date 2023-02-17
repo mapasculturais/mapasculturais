@@ -1,31 +1,27 @@
 <?php
-
 /**
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  * @var MapasCulturais\App $app
  */
-
 use MapasCulturais\i;
 
 $this->import('
     entity-field
     mc-stepper-vertical
+    mc-link
     opportunity-create-evaluation-phase
     opportunity-create-data-collect-phase
-    mc-link
 ');
 ?>
 <mc-stepper-vertical :items="phases" allow-multiple>
     <template #header-title="{index, item}">
         <div class="phase-stepper">
-            <h2 class="phase-stepper__name" v-if="index">{{item.name}}</h2>
-            <h2 class="phase-stepper__period" v-if="!index"><?= i::__('Período de inscrição') ?></h2>
-            <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity'">
-<<<<<<< Updated upstream
+            <h2 v-if="index" class="phase-stepper__name">{{item.name}}</h2>
+            <h2 v-if="!index" class="phase-stepper__period" ><?= i::__('Período de inscrição') ?></h2>
+            <p v-if="item.__objectType == 'opportunity'" class="phase-stepper__type">
                 <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
->>>>>>> Stashed changes
             </p>
-            <p class="" v-if="item.__objectType == 'evaluationmethodconfiguration'">
+            <p  v-if="item.__objectType == 'evaluationmethodconfiguration'" class="">
                 <?= i::__('Tipo') ?>: {{item.type.name}}
             </p>
         </div>
@@ -34,7 +30,6 @@ $this->import('
         <div v-if="index > 0">
             <entity-field :entity="item" prop="name" hide-required></entity-field>
         </div>
-
         <template v-if="item.__objectType == 'opportunity'">
             <mapas-card>
                 <div class="grid-12">
@@ -97,10 +92,10 @@ $this->import('
                             <textarea v-model="infos[category]" style="width: 100%" rows="10"></textarea>
                         </label>
                     </div>
-                    <div  class="col-12">
+                    <div class="col-12">
                         <a class="phase-delete">
-                            <div class="phase-delete__trash"><mc-icon name="trash" ></mc-icon></div>
-                            
+                            <div class="phase-delete__trash"><mc-icon name="trash"></mc-icon></div>
+
                             <div class="delete-phase__label"><label><?= i::__("Excluir etapa de fase") ?></label></div>
                         </a>
                     </div>
