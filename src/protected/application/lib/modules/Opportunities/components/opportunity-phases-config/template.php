@@ -44,8 +44,8 @@ $this->import('
                             <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
                         </h5>
                     </div>
-                    <div class="config-phase__info-button col-12">
-                        <button class="button--primary button"><?= i::__("Configurar formulário") ?></button>
+                    <div class="col-12">
+                        <button class="config-phase__info--button button--primary button"><label class="config-phase__info-button--label"><?= i::__("Configurar formulário") ?></label><mc-icon class="config-phase__info-button--icon" name="external"></mc-icon></button>
                     </div>
                     <div class="phase-delete col-12">
                         <a class="phase-delete__trash " href="#"><mc-icon name="trash"></mc-icon><label class="delete-phase__label"><?= i::__("Excluir etapa de fase") ?></label></a>
