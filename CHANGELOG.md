@@ -4,6 +4,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.24] - 2023-02-16
+- melhora performance da criação de revisões e assim o salvamento das entidades
+
+## [5.2.23] - 2022-12-28
+- corrige redirecionamento após criação de entidades quando é enviado o parâmetro redirectTo
+
 ## [5.2.22] - 2022-12-06
 - correção no db-update que corrige valores das inscrições
 
