@@ -26,7 +26,7 @@ $this->import('loading confirm-button');
                         </button>
                     </template>
                     <template #message="message">
-                        <?php i::_e('Deseja arquivar esse agente?') ?>
+                        <?php i::_e('Você está certo qeu deseja arquivar?') ?>
                     </template>
                 </confirm-button>
                 <confirm-button v-if="entity.currentUserPermissions?.remove" @confirm="entity.delete()">
@@ -37,7 +37,7 @@ $this->import('loading confirm-button');
                         </button>
                     </template>
                     <template #message="message">
-                        <?php i::_e('Deseja remover esse agente?') ?>
+                        <?php i::_e('Você está certo qeu deseja excluir?') ?>
                     </template>
                 </confirm-button>
 

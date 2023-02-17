@@ -18,6 +18,9 @@ app.component('opportunity-subscription' , {
                 return entity;
             }             
         });
+
+        const text = Utils.getTexts('opportunity-subscription')
+        return { text }
     },
 
     data () {
@@ -29,11 +32,13 @@ app.component('opportunity-subscription' , {
 
         return {
             agent,
+            category: null,
             categories: this.entity.registrationCategories,
             dateStart: this.entity.registrationFrom, 
             dateEnd: this.entity.registrationTo,
             entities: {},
             entitiesLength: $MAPAS.config.opportunitySubscription.agents.length,
+            processing: false
         }
     },
 
@@ -114,5 +119,33 @@ app.component('opportunity-subscription' , {
                 }
             }     
         },
+        subscribe() {
+            const messages = useMessages();
+
+            if (!this.agent && this.categories?.length && !this.category) {
+                messages.error(this.text('selecione agente e categoria'));
+                return;
+            } else if (!this.agent) {
+                messages.error(this.text('selecione agente'));
+                return;
+            } else if (this.categories?.length && !this.category) {
+                messages.error(this.text('selecione categoria'));
+                return;
+            }
+
+            this.processing = true;
+
+            const registration = new Entity('registration');
+            registration.opportunity = this.entity;
+            registration.owner = this.agent;
+            if (this.category) {
+                registration.category = this.category;
+            }
+
+            registration.disableMessages();
+            registration.save().then(() => {
+                window.location.href = registration.editUrl;
+            });
+        }
     }
 });
