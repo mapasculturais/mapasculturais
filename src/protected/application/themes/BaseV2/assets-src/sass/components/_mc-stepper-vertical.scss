@@ -63,6 +63,12 @@ ol.mc-stepper-vertical li {
                 font-size: size(20);
             }
         }
+        &--button {
+            display: flex;
+            gap:size(22);
+            align-items: center;
+
+        }
     }
 
     .phase-delete {
