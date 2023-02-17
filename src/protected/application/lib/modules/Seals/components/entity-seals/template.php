@@ -1,5 +1,4 @@
 <?php
-
 use MapasCulturais\i;
 
 $this->import('
@@ -46,6 +45,6 @@ $this->import('
             </template>
         </select-entity>
     </div>
-
+    <?php $this->applyTemplateHook('entity-seals', 'end'); ?>
 </div>
 <?php $this->applyTemplateHook('entity-seals', 'after'); ?>

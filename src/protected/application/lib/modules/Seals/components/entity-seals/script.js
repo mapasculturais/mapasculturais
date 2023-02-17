@@ -8,13 +8,6 @@ app.component('entity-seals', {
         }
     },
 
-    data() {
-        // const nameSeal = $MAPAS.requestedEntity.seal;
-        // return nameSeal;
-
-
-
-    },
     props: {
         entity: {
             type: Entity,
