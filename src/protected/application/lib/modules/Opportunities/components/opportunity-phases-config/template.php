@@ -60,15 +60,16 @@ $this->import('
 
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
             <mapas-card>
-                <div class="grid-12">
+                <div class="evaluation-step grid-12">
+                    
                     <entity-field :entity="item" prop="evaluationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
                     <entity-field :entity="item" prop="evaluationTo" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
                     <div class="avaliation-step col-12">
                         <div class="evaluation-step__line">
 
                         </div>
-                        <h2><?= i::__("Configuração da avaliação") ?></h2>
-                        <span><?= i::__("A avaliação simplificada consiste num select box com os status possíveis para uma inscrição.") ?></span>
+                        <h2 class="avaliation-step__title"><?= i::__("Configuração da avaliação") ?></h2>
+                        <span class="avaliation-step__content"><?= i::__("A avaliação simplificada consiste num select box com os status possíveis para uma inscrição.") ?></span>
                     </div>
                     <div class="col-12">
                         <h3><?= i::__("Comissão de avaliação simplificada") ?></h3>
