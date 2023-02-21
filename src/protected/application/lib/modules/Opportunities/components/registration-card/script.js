@@ -9,7 +9,11 @@ app.component('registration-card', {
             type: Entity,
             required: true
         },
-        border: {
+        hasBorder: {
+            type: Boolean,
+            default: false
+        },
+        pictureCard: {
             type: Boolean,
             default: false
         }
@@ -24,25 +28,10 @@ app.component('registration-card', {
     computed: {
         status() {
             let status = '';
-            switch (this.entity.status) {
-                case 0:
-                    status = this.text('Rascunho');
-                    break;
-                case 1:
-                    status = this.text('Pendente');
-                    break;
-                case 2:
-                    status = this.text('Inválida');
-                    break;
-                case 3:
-                    status = this.text('Não selecionada');
-                    break;
-                case 8:
-                    status = this.text('Suplente');
-                    break;
-                case 10:
-                    status = this.text('Selecionada');
-                    break;
+            if (this.entity.status == 0) {
+                status = this.text('Não enviada');
+            } else {
+                status = this.text('Enviada');
             }
             return status;
         },
