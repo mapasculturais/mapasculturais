@@ -1,61 +1,162 @@
 @use '../settings/mixins' as *;
 
-.registrations {
-    &__filter {
-        padding: size(24) size(30) 0;
-        
-        .form {
+.controller-registration {
+
+    .registration {
+        background-color: var(--mc-gray-100);
+
+        .container {
+            grid-template-columns: 74.36% 23.08%;
+            gap: size(32) 2.56%;
+
+            main {
+                gap: size(40) size(24);
+            }
+        }
+
+        &__content {
             width: 100%;
-            display: flex;
-            gap: size(24);
-            align-items: center;
+            margin: 0 auto;
+            position: relative;
 
-            .search {
-                max-width: size(370);
+            &>* {
+                max-width: size(1170);
+                margin: 0 auto;
+            }
+
+            &--title {
+                font-weight: 700;
+                font-size: size(48);
+                line-height: size(65);
+                margin-block: size(26);
+            }
+
+            &--steps {
+                padding: size(24) 0;
                 width: 100%;
-                position: relative;
-                display: flex;
-                align-items: center;
+                background: white;
+                max-width: unset;
+                margin-bottom: size(60);
+                position: sticky;
+                top: 0;
+                overflow-x: scroll;
 
-                .input {
-                    border: var(--mc-border-hairline) var(--mc-gray-500);
-                    border-radius: var(--mc-border-radius-pill);
-                    font-weight: 400;
-                    font-size: size(16);
-                    line-height: size(19);                    
-                    margin: 0;
-                    padding: size(10) size(20);
-                    width: 100%;
+                .stepper {
+                    margin: 0 auto;
+                }
+            }
+
+            .info {
+                .title {
+                    font-weight: 700;
+                    font-size: size(24);
+                    line-height: size(28);
+                    margin: 0 0 size(13);
                 }
 
-                .button {
-                    background: unset;
-                    border-radius: 0 var(--mc-border-radius-pill) var(--mc-border-radius-pill) 0;
-                    padding: size(7.5) size(20);
-                    position: absolute;
-                    right: 0;
+                .content {
+                    display: flex;
+                    gap: size(60);
+                    background: var(--mc-high-500);
+                    padding: size(10) size(24);
 
-                    .iconify {
-                        font-size: size(22);
+                    &__info {
+                        display: flex;
+                        flex-direction: column;
+
+                        p {
+                            margin: 0;
+                        }
+
+                        .title {
+                            font-weight: 600;
+                            font-size: size(14);
+                            line-height: size(19);
+                        }
+
+                        .info {
+                            font-weight: 700;
+                            font-size: size(18);
+                            line-height: size(25);
+                            color: var(--mc-opportunities-500);
+                        }
                     }
                 }
             }
 
-            .order {
-                appearance: none;
-                background: url('https://api.iconify.design/ic/baseline-arrow-drop-down.svg?color=%230074c1') no-repeat 96% center/contain;
-                background-size: size(20);
-                background-color: var(--mc-high-500);
-                padding: size(10) size(26) size(10) size(16);
-                border-radius: var(--mc-border-radius-sm);
+            .section {
+                &__title {
+                    font-weight: 700;
+                    font-size: size(32);
+                    line-height: size(44);
+                    margin-bottom: size(24);
+                }
+
+                &__content {
+                    display: flex;
+                    flex-direction: column;
+                    gap: size(32);
+
+                    .card {
+                        background-color: var(--mc-high-500);
+                        border-radius: var(--mc-border-radius-sm);
+                        padding: size(16);
+
+                        &.owner {
+                            padding: size(16) size(24);
+                        }
+
+                        &__title {
+                            font-weight: 700;
+                            font-size: size(18);
+                            line-height: size(25);
+                        }
+
+                        &__subtitle {
+                            font-weight: 400;
+                            font-size: size(12);
+                            line-height: size(16);
+                        }
+
+                        &__content {
+                            margin-top: size(16);
+                            display: flex;
+
+                            .owner {
+                                display: flex;
+                                align-items: center;
+                                gap: size(9);
+
+                                &__image {
+                                    width: size(40);
+                                    height: size(40);
+                                    background-color: var(--mc-gray-500);
+                                    border-radius: var(--mc-border-radius-pill);
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    overflow: hidden;
+
+                                    .iconify {
+                                        font-size: size(19);
+                                        color: var(--mc-high-500);
+                                    }
+
+                                    img {
+                                        width: 100%;
+                                    }
+                                }
+
+                                &__name {
+                                    font-weight: 700;
+                                    font-size: size(14);
+                                    line-height: size(19);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
-    }
-
-    &__list {
-        display: flex;
-        flex-direction: column;
-        gap: size(24);
-        padding: size(30);
     }
 }
