@@ -6,13 +6,10 @@ Componente para listar um passo-a-passo
   
 ## Propriedades
 - *Array/Object **steps*** - Steps a serem listados
-- *Number **actualStep** = 1* - Step atual
-- *Boolean **onlyActiveLabel** = false* - Mostra apenas os labels dos steps ativos
-- *Boolean **noLabels** = false* - Não lista nenhuma label 
+- *Number **actual-step** = 1* - Step atual
+- *Boolean **only-active-label** = false* - Mostra apenas os labels dos steps ativos
+- *Boolean **no-labels** = false* - Não lista nenhuma label 
 - *Boolean **small** = false* - Modifica o estilo do stepper
-
-## Slots
-- 
 
 ### Importando componente
 ```PHP
