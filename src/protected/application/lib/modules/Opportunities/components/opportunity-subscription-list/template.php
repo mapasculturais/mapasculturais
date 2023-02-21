@@ -15,8 +15,6 @@ $this->import('
 		</p>
 	</div>
 	<div class="opportunity-subscription-list__content col-12 grid-12">
-
-		<registration-card v-for="registration in registrations" class="col-12" :entity="registration" :border></registration-card>
-		
+		<registration-card v-for="registration in registrations" class="col-12" :entity="registration" has-border></registration-card>		
 	</div>
 </div>
