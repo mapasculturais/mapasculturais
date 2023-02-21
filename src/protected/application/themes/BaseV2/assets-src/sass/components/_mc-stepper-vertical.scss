@@ -63,16 +63,47 @@ ol.mc-stepper-vertical li {
                 font-size: size(20);
             }
         }
+
+        &--button {
+            display: flex;
+            gap: size(22);
+            align-items: center;
+
+        }
+    }
+
+    &__line {
+        max-width: size(1038);
+        
+        &-up {
+            border-bottom: 1px solid var(--mc-gray-100);
+            height: 0;
+        }
+        &-bottom{
+        border-bottom: 1px solid var(--mc-gray-100);
+
+            padding-bottom: size(34);
+            padding-top: size(53px);
+        }
     }
 
     .phase-delete {
+
         &__trash {
+            display: flex;
+            gap: size(11);
+            text-decoration: none;
+
             .iconify {
                 svg {
                     font-size: 20px;
                     color: red;
                 }
             }
+        }
+
+        &__label {
+            text-decoration: none;
         }
     }
 
@@ -156,6 +187,9 @@ ol.mc-stepper-vertical li.active::before {
         max-width: 1096px;
         width: 100%;
         margin-left: 25px;
+        .mapas-card{
+            margin-bottom: 0;
+        }
 
     }
 
