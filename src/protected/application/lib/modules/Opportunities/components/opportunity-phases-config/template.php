@@ -34,6 +34,7 @@ $this->import('
         <template v-if="item.__objectType == 'opportunity'">
             <mapas-card>
                 <div class="config-phase grid-12">
+                <div class="config-phase__line-up col-12 "></div>
                     <div class="config-phase__title col-12">
                         <h3 class="config-phase__title--title"><?= i::__("Configuração da fase") ?></h3>
                     </div>
@@ -44,11 +45,14 @@ $this->import('
                             <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
                         </h5>
                     </div>
-                    <div class="config-phase__info-button col-12">
-                        <button class="button--primary button"><?= i::__("Configurar formulário") ?></button>
+                    <div class="col-12">
+                        <button class="config-phase__info--button button--primary button"><label class="config-phase__info-button--label"><?= i::__("Configurar formulário") ?></label><mc-icon class="config-phase__info-button--icon" name="external"></mc-icon></button>
                     </div>
+
+                    <div class="config-phase__line-bottom col-12 "></div>
+
                     <div class="phase-delete col-12">
-                        <a class="phase-delete__trash " href="#"><mc-icon name="trash"></mc-icon><label class="delete-phase__label"><?= i::__("Excluir etapa de fase") ?></label></a>
+                        <a class="phase-delete__trash " href="#"><mc-icon name="trash"></mc-icon><label class="phase-delete__label"><?= i::__("Excluir etapa de fase") ?></label></a>
                     </div>
                 </div>
             </mapas-card>
