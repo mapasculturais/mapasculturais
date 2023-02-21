@@ -1,13 +1,6 @@
 app.component('opportunity-subscription-list' , {
     template: $TEMPLATES['opportunity-subscription-list'],
 
-    data () {
-        return {}
-    },
-
-    props: {
-    },
-
     setup() {
         $MAPAS.config.opportunitySubscriptionList.registrations = $MAPAS.config.opportunitySubscriptionList.registrations.map((registration) => {
             if (registration instanceof Entity) {
