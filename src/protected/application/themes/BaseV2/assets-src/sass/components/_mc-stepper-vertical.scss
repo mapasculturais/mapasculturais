@@ -40,74 +40,86 @@ ol.mc-stepper-vertical li {
 
 }
 
-.config-phase {
-    &__title {
-        &--title {
-            font-weight: 700;
-            font-size: size(24);
-            line-height: size(28);
-
+.config {
+    &-input {
+        background-color: var(--mc-high-500);
+        margin: 0;
+        padding-left: 16px;
+        input {
+            max-width: 822px;
+            border-radius: 4px;
         }
     }
 
-    &__info {
-        &--message {
-            align-items: center;
-            gap: size(10);
-            display: flex;
-            font-weight: 400;
-            font-size: size(16);
-            line-height: size(22);
+    &-phase {
+        &__title {
+            &--title {
+                font-weight: 700;
+                font-size: size(24);
+                line-height: size(28);
 
-            .iconify {
-                font-size: size(20);
             }
         }
 
-        &--button {
-            display: flex;
-            gap: size(22);
-            align-items: center;
+        &__info {
+            &--message {
+                align-items: center;
+                gap: size(10);
+                display: flex;
+                font-weight: 400;
+                font-size: size(16);
+                line-height: size(22);
 
-        }
-    }
-
-    &__line {
-        max-width: size(1038);
-
-        &-up {
-            border-bottom: 1px solid var(--mc-gray-100);
-            height: 0;
-        }
-
-        &-bottom {
-            border-bottom: 1px solid var(--mc-gray-100);
-
-            padding-bottom: size(34);
-            padding-top: size(53px);
-        }
-    }
-
-    .phase-delete {
-
-        &__trash {
-            display: flex;
-            gap: size(11);
-            text-decoration: none;
-
-            .iconify {
-                svg {
-                    font-size: 20px;
-                    color: red;
+                .iconify {
+                    font-size: size(20);
                 }
             }
+
+            &--button {
+                display: flex;
+                gap: size(22);
+                align-items: center;
+
+            }
         }
 
-        &__label {
-            text-decoration: none;
+        &__line {
+            max-width: size(1038);
+
+            &-up {
+                border-bottom: 1px solid var(--mc-gray-100);
+                height: 0;
+            }
+
+            &-bottom {
+                border-bottom: 1px solid var(--mc-gray-100);
+
+                padding-bottom: size(34);
+                padding-top: size(53px);
+            }
         }
+
+        .phase-delete {
+
+            &__trash {
+                display: flex;
+                gap: size(11);
+                text-decoration: none;
+
+                .iconify {
+                    svg {
+                        font-size: 20px;
+                        color: red;
+                    }
+                }
+            }
+
+            &__label {
+                text-decoration: none;
+            }
+        }
+
     }
-
 }
 
 ol.mc-stepper-vertical li::before {
@@ -147,7 +159,7 @@ ol.mc-stepper-vertical li.active::before {
             line-height: size(44);
             padding-bottom: size(8);
         }
-        
+
         &__content {
             color: var(--mc-gray-700);
             font-weight: 400;
