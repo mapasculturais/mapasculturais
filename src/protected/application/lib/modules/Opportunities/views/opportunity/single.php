@@ -3,23 +3,24 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
-    entity-header
-    mapas-breadcrumb
-    tabs
-    entity-files-list
-    share-links
-    entity-gallery-video
-    entity-gallery
-    entity-social-media
-    entity-seals
-    entity-related-agents
-    entity-owner
-    entity-terms
     entity-actions
+    entity-files-list
+    entity-gallery
+    entity-gallery-video
+    entity-header
+    entity-links
+    entity-owner
+    entity-related-agents
     entity-request-ownership
+    entity-seals
+    entity-social-media
+    entity-terms
+    mapas-breadcrumb
     opportunity-subscription
     opportunity-subscription-list
     opportunity-timeline-phases
+    share-links
+    tabs
 ');
 $this->breadcrumb = [
   ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
