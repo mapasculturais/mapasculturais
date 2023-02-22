@@ -1,8 +1,10 @@
 <?php
+
 /**
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  * @var MapasCulturais\App $app
  */
+
 use MapasCulturais\i;
 
 $this->import('
@@ -17,24 +19,24 @@ $this->import('
     <template #header-title="{index, item}">
         <div class="phase-stepper">
             <h2 v-if="index" class="phase-stepper__name">{{item.name}}</h2>
-            <h2 v-if="!index" class="phase-stepper__period" ><?= i::__('Período de inscrição') ?></h2>
+            <h2 v-if="!index" class="phase-stepper__period"><?= i::__('Período de inscrição') ?></h2>
             <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity'">
                 <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
                 <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
             </p>
-            <p  v-if="item.__objectType == 'evaluationmethodconfiguration'" class="">
+            <p v-if="item.__objectType == 'evaluationmethodconfiguration'" class="">
                 <label class="phase-stepper__type--name"></label><?= i::__('Tipo') ?>: <label class="phase-stepper__type--item">{{item.type.name}}</label>
             </p>
         </div>
     </template>
     <template #default="{index, item}">
-        <div v-if="index > 0">
-            <entity-field :entity="item" prop="name" hide-required></entity-field>
+        <div v-if="index > 0" class="config-input">
+            <entity-field :entity="item" prop="name" label="Título" hide-required></entity-field>
         </div>
         <template v-if="item.__objectType == 'opportunity'">
             <mapas-card>
                 <div class="config-phase grid-12">
-                <div class="config-phase__line-up col-12 "></div>
+                    <div class="config-phase__line-up col-12 "></div>
                     <div class="config-phase__title col-12">
                         <h3 class="config-phase__title--title"><?= i::__("Configuração da fase") ?></h3>
                     </div>
@@ -59,9 +61,10 @@ $this->import('
         </template>
 
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
+
             <mapas-card>
                 <div class="evaluation-step grid-12">
-                    
+
                     <entity-field :entity="item" prop="evaluationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
                     <entity-field :entity="item" prop="evaluationTo" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
                     <div class="avaliation-step col-12">
