@@ -309,6 +309,11 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
                     return json_decode($val);
                 }
             ]);
+            $this->registerEvaluationMethodConfigurationMetadata('infos', [
+                'label' => i::__('Textos informativos para os avaliadores'),
+                'type' => 'json',
+                'default' => '{}'
+            ]);
         }
 
     }
