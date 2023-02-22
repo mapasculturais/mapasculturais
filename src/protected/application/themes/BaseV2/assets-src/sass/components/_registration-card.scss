@@ -24,6 +24,7 @@
         .left {
             .registerImage {
                 align-items: center;
+                background-color: var(--mc-gray-300);
                 border-radius: var(--mc-border-radius-pill);
                 display: flex;
                 height: size(64);
@@ -38,6 +39,11 @@
                 
                 img {
                     width: 100%;
+                }
+
+                .iconify {
+                    font-size: size(30);
+                    color: var(--mc-gray-700);
                 }
             }
         }
