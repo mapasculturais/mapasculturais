@@ -150,6 +150,8 @@ ol.mc-stepper-vertical li.active::before {
 .evaluation-step {
     &__line {
         border-top: 3px solid var(--mc-gray-100);
+        margin-top: size(20);
+        margin-bottom: size(26);
     }
 
     .avaliation-step {
