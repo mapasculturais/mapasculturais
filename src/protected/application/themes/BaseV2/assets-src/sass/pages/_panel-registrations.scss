@@ -1,27 +1,47 @@
 @use '../settings/mixins' as *;
 
 .registrations {
+
+    .tabs-component {
+        &.hasDrafts {
+            .notSent {
+                margin-right: size(10);
+
+                &::before {
+                    background-color: #FF9F1C;
+                    border-radius: var(--mc-border-radius-pill);
+                    content: '';
+                    height: size(10);
+                    position: absolute;
+                    top: 0;
+                    right: size(-10);
+                    width: size(10);
+                }
+            }
+        }
+    }
+
     &__filter {
         padding: size(24) size(30) 0;
         
         .form {
-            width: 100%;
+            align-items: center;
             display: flex;
             gap: size(24);
-            align-items: center;
+            width: 100%;
 
             .search {
-                max-width: size(370);
-                width: 100%;
-                position: relative;
-                display: flex;
                 align-items: center;
+                display: flex;
+                max-width: size(370);
+                position: relative;
+                width: 100%;
 
                 .input {
-                    border: var(--mc-border-hairline) var(--mc-gray-500);
                     border-radius: var(--mc-border-radius-pill);
-                    font-weight: 400;
+                    border: var(--mc-border-hairline) var(--mc-gray-500);
                     font-size: size(16);
+                    font-weight: 400;
                     line-height: size(19);                    
                     margin: 0;
                     padding: size(10) size(20);
@@ -44,10 +64,45 @@
             .order {
                 appearance: none;
                 background: url('https://api.iconify.design/ic/baseline-arrow-drop-down.svg?color=%230074c1') no-repeat 96% center/contain;
-                background-size: size(20);
                 background-color: var(--mc-high-500);
-                padding: size(10) size(26) size(10) size(16);
+                background-size: size(20);
                 border-radius: var(--mc-border-radius-sm);
+                padding: size(10) size(26) size(10) size(16);
+            }
+        }
+
+        .alert {
+            background: #FFCF8F;
+            border-radius: var(--mc-border-radius-xs);
+            display: flex;
+            justify-content: space-between;
+            margin-top: size(24);
+            padding: size(18);
+
+            &__message {
+                align-items: center;
+                display: flex;
+                gap: size(10);
+
+                .text {
+                    font-size: size(16);
+                    font-weight: 400;
+                    line-height: size(22);
+                    margin: 0;
+                }
+
+                .iconify {
+                    font-size: size(21);
+                }
+            }
+
+            &__button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: size(14);
+                font-weight: 700;
+                line-height: size(19);
             }
         }
     }
