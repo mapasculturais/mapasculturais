@@ -42,6 +42,9 @@ app.component('opportunity-phases-config', {
         },
         maxDateLastPhase () {
             return this.getLastPhase().registrationTo?._date ?? this.getLastPhase().evaluationTo?._date ?? '';
+        },
+        categories(){
+            return this.entity.registrationCategories instanceof Array ?  this.entity.registrationCategories : [];
         }
     },
     
@@ -54,12 +57,12 @@ app.component('opportunity-phases-config', {
             }
 
             if (phase === 'opportunity') {
-                return previousPhase.registrationTo._date || previousPhase.evaluationTo._date;
+                return previousPhase.registrationTo?._date || previousPhase.evaluationTo?._date;
             } else if (phase === 'evaluationmethodconfiguration') {
                 if(previousPhase.__objectType === 'evaluationmethodconfiguration') {
-                    return previousPhase.registrationTo._date;
+                    return previousPhase.registrationTo?._date;
                 } else if(previousPhase.__objectType === 'opportunity') {
-                    return previousPhase.registrationFrom._date;
+                    return previousPhase.registrationFrom?._date;
                 }
             }
 
