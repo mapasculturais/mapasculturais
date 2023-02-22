@@ -54,13 +54,13 @@ app.component('opportunity-subscription' , {
 
             switch (registrationStatus) {
                 case 'open':
-                    description = 'Inscrições abertas de {startAt} a {endAt}  às {endHour}';
+                    description = this.text('inscrições abertas');
                     break;
                 case 'closed':
-                    description = 'As inscrições estão encerradas'
+                    description = this.text('inscrições fechadas');
                     break;
                 case 'will open':
-                    description = 'As inscrições ainda não estão abertas. O período de inscrições começará a partir do dia {startAt} às {startHour}'
+                    description = this.text('inscrições irão abrir');
                     break;
             }
 
@@ -70,6 +70,14 @@ app.component('opportunity-subscription' , {
             description = description.replace("{endHour}", this.endHour);
 
             return description;
+        },
+
+        isOpen() {
+            if (this.registrationStatus(this.dateStart, this.dateEnd) == 'open') {
+                return true;
+            } else {
+                return false;
+            }
         },
 
         startAt() {

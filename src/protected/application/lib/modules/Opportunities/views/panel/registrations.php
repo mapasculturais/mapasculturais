@@ -61,11 +61,11 @@ $this->import('
                 </form>
             </div>
 
-            <entities name="registrationsList" type="registration" endpoint="find" :query="<?= $querySent ?>" select="*">
+            <entities name="registrationsList" type="registration" endpoint="find" :query="<?= $querySent ?>" select="*,owner.{name, files.avatar}">
                 <template #default="{entities}">
 
                     <div class="registrations__list">
-                        <registration-card v-for="registration in entities" :entity="registration"></registration-card>
+                        <registration-card v-for="registration in entities" :entity="registration" picture-card></registration-card>
                     </div>
 
                 </template>
@@ -93,11 +93,11 @@ $this->import('
                 </form>
             </div>
 
-            <entities name="registrationsList" type="registration" endpoint="find" :query="<?= $queryNotSent ?>" select="*">
+            <entities name="registrationsList" type="registration" endpoint="find" :query="<?= $queryNotSent ?>" select="*,owner.{name, files.avatar}">
                 <template #default="{entities}">
 
                     <div class="registrations__list">
-                        <registration-card v-for="registration in entities" :entity="registration"></registration-card>
+                        <registration-card v-for="registration in entities" :entity="registration" pictureCard></registration-card>
                     </div>
 
                 </template>
