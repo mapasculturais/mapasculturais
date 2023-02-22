@@ -14,7 +14,7 @@ use MapasCulturais\i;
         <div v-if="pictureCard" class="left">
             <div class="registerImage">
                 <img v-if="entity.owner?.files?.avatar" :src="entity.owner?.files?.avatar?.transformations?.avatarMedium?.url" />
-                <mc-icon name="picture" v-if="!entity.owner?.files?.avatar"></mc-icon>
+                <mc-icon name="image" v-if="!entity.owner?.files?.avatar"></mc-icon>
             </div>
         </div>
 
