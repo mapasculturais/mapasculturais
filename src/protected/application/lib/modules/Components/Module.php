@@ -47,6 +47,35 @@ class Module extends \MapasCulturais\Module {
             $this->import('entity');
         });
 
+        $app->hook('mapas.printJsObject:before', function () use($app) {
+            $roles = [];
+
+            if (!$app->user->is('guest')) {
+                foreach($app->user->roles as $role){
+                    $roles[] = $role->name;
+                }
+
+                $user = $app->user;
+                if ($user->is('admin')) {
+                    $roles[] = 'admin';
+                }
+
+                if ($user->is('superAdmin')) {
+                    $roles[] = 'superAdmin';
+                }
+
+                if ($user->is('sassAdmin')) {
+                    $roles[] = 'sassAdmin';
+                }
+
+                if ($user->is('superSassAdmin')) {
+                    $roles[] = 'superSassAdmin';
+                }
+            }
+            
+            $this->jsObject['currentUserRoles'] = $roles;
+        }); 
+
         $app->hook('mapas.printJsObject:after', function () use($app) {
             $templates = json_encode($app->components->templates);
             echo "\n<script>window.\$TEMPLATES = $templates</script>";
