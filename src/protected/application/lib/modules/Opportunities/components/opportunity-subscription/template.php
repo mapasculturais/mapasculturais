@@ -17,11 +17,11 @@ $this->import('
 		</p>
 
 		<div class="content">
-			<p class="content__description"> {{infoRegistration}} </p>
+			<p class="content__description" v-html="infoRegistration"></p>
 		</div>
 	</div>
 
-	<div class="col-12 opportunity-subscription__subscription">
+	<div v-if="isOpen" class="col-12 opportunity-subscription__subscription">
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
 		<div v-if="isLogged" class="logged">
@@ -54,7 +54,7 @@ $this->import('
 
 				<div v-if="categories" class="col-6 field">
 					<select name="category" v-model="category">
-						<option disabled selected> <?= i::__('Categoria') ?> </option>
+						<option value="null" disabled selected> <?= i::__('Categoria') ?> </option>
 						<option v-for="category in categories" :value="category"> {{category}} </option>
 					</select>
 				</div>

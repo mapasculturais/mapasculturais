@@ -8,45 +8,64 @@
 use MapasCulturais\i;
 ?>
 
-<div :class="['registration-card', {'border': border}]">
-    <div class="registration-card__image">
-        <div class="image">
-            <mc-icon name="image"></mc-icon>
+<div :class="['registration-card', {'border': hasBorder}, {'picture': pictureCard}]">
+    <div class="registration-card__content">    
+
+        <div v-if="pictureCard" class="left">
+            <div class="registerImage">
+                <img v-if="entity.owner?.files?.avatar" :src="entity.owner?.files?.avatar?.transformations?.avatarMedium?.url" />
+                <mc-icon name="picture" v-if="!entity.owner?.files?.avatar"></mc-icon>
+            </div>
+        </div>
+
+        <div class="right">            
+            <div class="header">
+                <div v-if="pictureCard" class="title"> <strong>{{entity.owner?.name}}</strong> </div>
+                <div v-if="!pictureCard" class="title"> <?= i::__('Número de inscrição:') ?> <strong>{{entity.number}}</strong> </div>
+                <div class="actions"></div>
+            </div>
+
+            <div class="content">
+                <div v-if="pictureCard" class="registerData">
+                    <p class="title"> <?= i::__("Inscrição") ?> </p>
+                    <p class="data"> {{entity.number}} </p>
+                </div>
+
+                <div v-if="!pictureCard" class="registerData">
+                    <p class="title"> <?= i::__("Categoria") ?> </p>
+                    <p v-if="entity.category" class="data"> {{entity.category}} </p>
+                    <p v-if="!entity.category" class="data"> <?= i::__('Sem categoria') ?> </p>
+                </div>
+
+                <div class="registerData">
+                    <p class="title"> <?= i::__("Data de inscrição") ?> </p>
+                    <p class="data"> {{registerDate(entity.createTimestamp)}} <?= i::__("às") ?> {{registerHour(entity.createTimestamp)}} </p>
+                </div>
+
+                <div v-if="pictureCard" class="registerData">
+                    <p class="title"> <?= i::__("Categoria") ?> </p>
+                    <p v-if="entity.category" class="data"> {{entity.category}} </p>
+                    <p v-if="!entity.category" class="data"> <?= i::__('Sem categoria') ?> </p>
+                </div>
+
+                <div v-if="!pictureCard" class="registerData">
+                    <p class="title"> <?= i::__("Agente inscrito") ?> </p>
+                    <p class="data"> {{entity.owner?.name}} </p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="registration-card__content">
-        <div class="header">
-            <div class="header__title"> Título da entidade ou oportunidade </div>
-            <div class="header__actions"></div>
-        </div>
 
-        <div class="content">
-            <div class="content__register">
-                <p class="title"> <?= i::__("Inscrição:") ?> </p>
-                <p class="data"> {{entity.number}} </p>
-            </div>
-            <div class="content__registerDate">
-                <p class="title"> <?= i::__("Data de inscrição:") ?> </p>
-                <p class="data"> {{registerDate(entity.createTimestamp)}} <?= i::__("às") ?> {{registerHour(entity.createTimestamp)}} </p>
-            </div>
 
-            <div v-if="entity.category" class="content__registerCategory">
-                <p class="title"> <?= i::__("Categoria:") ?> </p>
-                <p class="data"> {{entity.category}} </p>
+    <div class="registration-card__footer">
+        <div class="left">
+            <div class="status">
+                {{status}}
             </div>
         </div>
-
-        <div class="footer">
-            <div class="footer__left">
-                <div class="status">
-                    {{status}}
-                </div>
-            </div>
-            <div class="footer__right">
-                <button class="button button--sm button--text-danger"> <?= i::__("Excluir inscrição") ?> </button>
-                <a class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Acompanhar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
-            </div>
+        <div class="right">
+            <a class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Acompanhar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
         </div>
     </div>
 </div>

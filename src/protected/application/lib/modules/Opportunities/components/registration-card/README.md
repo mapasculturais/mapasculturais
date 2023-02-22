@@ -3,7 +3,8 @@ Cards da tela 'minhas inscrições'
   
 ## Propriedades
 - *Entity **entity*** - Entidade
-- *Booleano **border*** - Adiciona uma borda no card (para lugares onde o card é inserido em uma tela com fundo de mesma cor)
+- *Booleano **has-border** = false* - Adiciona uma borda no card (para lugares onde o card é inserido em uma tela com fundo de mesma cor)
+- *Booleano **picture-card** = false* - Renderiza o card com imagem do agente inscrito
 
 ### Importando componente
 ```PHP
@@ -15,5 +16,11 @@ $this->import('registration-card');
 ```HTML
 <!-- utilizaçao básica -->
 <registration-card :entity="registration"></registration-card>
+
+<!-- utilizaçao com o modo imagem -->
+<registration-card :entity="registration" picture-card></registration-card>
+
+<!-- utilizaçao do card com bordas -->
+<registration-card :entity="registration" has-border></registration-card>
 
 ```

@@ -31,25 +31,27 @@ $this->breadcrumb = [
 <div class="main-app single">
   <mapas-breadcrumb></mapas-breadcrumb>
   <entity-header :entity="entity"></entity-header>
-    <mapas-container class="opportunity">
-        <main class="grid-12">
-            <opportunity-subscription class="col-12" :entity="entity"></opportunity-subscription>
-            <opportunity-subscription-list class="col-12"></opportunity-subscription-list>
-        </main>
-        <aside>
-            <div class="grid-12">
-                <opportunity-timeline-phases></opportunity-timeline-phases>
-                <div class="col-12">
-                    <button class="button button--primary-outline">
-                      <?= i::__("Baixar regulamento") ?>
-                    </button>
-                </div>
-            </div>
-        </aside>
-    </mapas-container>
 
     <tabs class="tabs">
+
         <tab label="<?= i::__('Informações') ?>" slug="info">
+            <mapas-container class="opportunity">
+                <main class="grid-12">
+                    <opportunity-subscription class="col-12" :entity="entity"></opportunity-subscription>
+                    <opportunity-subscription-list class="col-12"></opportunity-subscription-list>
+                </main>
+                <aside>
+                    <div class="grid-12">
+                        <opportunity-timeline-phases></opportunity-timeline-phases>
+                        <div class="col-12">
+                            <button class="button button--primary-outline">
+                            <?= i::__("Baixar regulamento") ?>
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+            </mapas-container>
+
             <mapas-container>
                 <main>
                     <div class="grid-12">
@@ -85,10 +87,13 @@ $this->breadcrumb = [
                 </aside>
             </mapas-container>
         </tab>
+
         <tab label="<?= i::__('Projetos contemplados') ?>" slug="project">
         </tab>
+
         <tab label="<?= i::__('Suporte') ?>" slug="support">
         </tab>
+
     </tabs>
     <entity-actions :entity="entity"></entity-actions>
 </div>
