@@ -215,6 +215,14 @@ ol.mc-stepper-vertical li.active::before {
         }
     }
 
+    .evaluation-open {
+        &__button {
+            display: flex;
+            align-items: center;
+            gap: 1.375rem;
+        }
+    }
+
     .evaluation-simple {
         display: flex;
         flex-direction: column;
@@ -302,7 +310,8 @@ ol.mc-stepper-vertical li.active::before {
             max-width: 100%;
             padding-top: 0;
             border-top-left-radius: 0;
-            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            padding-left: 16px;
 
 
             &__title {
