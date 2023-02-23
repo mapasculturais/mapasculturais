@@ -53,8 +53,15 @@ $this->import('
 
                     <div class="config-phase__line-bottom col-12 "></div>
 
-                    <div class="phase-delete col-6">
-                        <a class="phase-delete__trash " href="#"><mc-icon name="trash"></mc-icon><label class="phase-delete__label"><?= i::__("Excluir etapa de fase") ?></label></a>
+                    <div class="phase-delete col-6" v-if="!isLastPhase(index) && !isFirstPhase(index)">
+                        <confirm-button message="Confirma a execução da ação?" @confirm="deletePhase($event, item, index)">
+                            <template #button="modal">
+                                <a class="phase-delete__trash" @click="modal.open()">
+                                    <mc-icon name="trash"></mc-icon>
+                                  <?= i::__("Excluir fase de coleta de dados") ?>
+                                </a>
+                            </template>
+                        </confirm-button>
                     </div>
                     <div class="phase-delete col-6">
                         <a @click="item.save()" class="phase-delete__trash " href="#"><mc-icon name="upload"></mc-icon><label class="phase-delete__label"><?= i::__("Salvar") ?></label></a>
@@ -105,8 +112,15 @@ $this->import('
                         </label>
                     </div>
                     <div class="config-phase__line-bottom col-12"></div>
-                    <div class="phase-delete col-6">
-                        <a class="phase-delete__trash " href="#"><mc-icon name="trash"></mc-icon><label class="phase-delete__label"><?= i::__("Excluir etapa de fase") ?></label></a>
+                    <div class="phase-delete col-6" v-if="!isLastPhase(index) && !isFirstPhase(index)">
+                        <confirm-button message="Confirma a execução da ação?" @confirm="deletePhase($event, item, index)">
+                            <template #button="modal">
+                                <a class="phase-delete__trash" @click="modal.open()">
+                                  <mc-icon name="trash"></mc-icon>
+                                  <?= i::__("Excluir fase de avaliação") ?>
+                                </a>
+                            </template>
+                        </confirm-button>
                     </div>
                     <div class="phase-delete col-6">
                         <a @click="item.save()" class="phase-delete__trash " href="#"><mc-icon name="upload"></mc-icon><label class="phase-delete__label"><?= i::__("Salvar") ?></label></a>
