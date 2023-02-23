@@ -74,9 +74,9 @@ $this->import('
                         <h2 class="avaliation-step__title"><?= i::__("Configuração da avaliação") ?></h2>
                         <span class="avaliation-step__content"><?= i::__("A avaliação simplificada consiste num select box com os status possíveis para uma inscrição.") ?></span>
                     </div>
-                    <div class="col-12">
-                        <h3><?= i::__("Comissão de avaliação simplificada") ?></h3>
-                        <span><?= i::__("Defina os agentes que serão avaliadores desta fase.") ?></span>
+                    <div class="avaliation-simple col-12">
+                        <h3 class="avaliation-simple__title"><?= i::__("Comissão de avaliação simplificada") ?></h3>
+                        <span class="avaliation-simple__text"><?= i::__("Defina os agentes que serão avaliadores desta fase.") ?></span>
                     </div>
                     <div class="col-12">
                         <button class="button--primary button"><?= i::__("Adicionar pessoa avaliadora") ?></button>
