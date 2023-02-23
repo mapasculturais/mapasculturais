@@ -1,24 +1,5 @@
-/**
- * Vue Lifecycle
- * 1. setup
- * 2. beforeCreate
- * 3. created
- * 4. beforeMount
- * 5. mounted
- * 
- * // sempre que há modificação nos dados
- *  - beforeUpdate
- *  - updated
- * 
- * 6. beforeUnmount
- * 7. unmounted                  
- */
-
 app.component('mc-stepper-vertical', {
     template: $TEMPLATES['mc-stepper-vertical'],
-    
-    // define os eventos que este componente emite
-    emits: [],
 
     props: {
         items: {
