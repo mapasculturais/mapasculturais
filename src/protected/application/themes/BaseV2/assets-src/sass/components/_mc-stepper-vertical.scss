@@ -103,7 +103,7 @@ ol.mc-stepper-vertical li {
                 border-bottom: 1px solid var(--mc-gray-100);
 
                 padding-bottom: size(34);
-                padding-top: size(53px);
+                padding-top: size(53);
             }
         }
 
@@ -147,11 +147,12 @@ ol.mc-stepper-vertical li::before {
     margin-left: -28px;
     border: 3px solid var(--mc-gray-100);
     margin-bottom: 19px;
-
+    font-size: 25px;
 }
 
 ol.mc-stepper-vertical li.active::before {
     background-color: var(--mc-secondary-500);
+    font-size: 25px;
     color: var(--mc-high-500);
 }
 
@@ -249,7 +250,10 @@ ol.mc-stepper-vertical li.active::before {
 
         }
 
-        &__line {}
+        &__line {
+            max-width: size(1033);
+            border: 1px solid var(--mc-gray-100);
+        }
     }
 }
 
