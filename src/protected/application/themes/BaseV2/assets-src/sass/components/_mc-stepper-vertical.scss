@@ -27,10 +27,16 @@ ol.mc-stepper-vertical li {
     mapas-card {
 
         padding-top: 16px;
-        padding-inline: 24px;
+        padding-left: 16px;
+        padding-right: 16px;
         padding-bottom: 24px;
+
         .evaluation-box {
             &__line {
+                max-width: size(1038);
+                border-bottom: 1px solid var(--mc-gray-100);
+                height: 1px;
+                padding-top: 2px;
                 background-color: red;
             }
         }
@@ -234,6 +240,8 @@ ol.mc-stepper-vertical li.active::before {
             line-height: size(22);
 
         }
+
+        &__line {}
     }
 }
 
@@ -293,12 +301,13 @@ ol.mc-stepper-vertical li.active::before {
             margin-bottom: 0;
             max-width: 100%;
             padding-top: 0;
+            // border-top: 1px solid 0;
+
             &__title {
             display: none;
             }
         }
     }
-
 
 
     .stepper-header {
@@ -323,6 +332,7 @@ ol.mc-stepper-vertical li.active::before {
             &__type {
                 margin-top: 4px;
                 margin-bottom: 4px;
+
                 &--name {
                     font-weight: 600;
                     font-size: 14px;
@@ -341,7 +351,7 @@ ol.mc-stepper-vertical li.active::before {
                     font-weight: 700;
                     font-size: 14px;
                     line-height: 19px;
-                    
+
                 }
 
             }
