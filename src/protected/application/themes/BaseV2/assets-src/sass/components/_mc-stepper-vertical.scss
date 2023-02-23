@@ -301,10 +301,12 @@ ol.mc-stepper-vertical li.active::before {
             margin-bottom: 0;
             max-width: 100%;
             padding-top: 0;
-            // border-top: 1px solid 0;
+            border-top-left-radius: 0;
+            border-top-left-radius: 0;
+
 
             &__title {
-            display: none;
+                display: none;
             }
         }
     }
