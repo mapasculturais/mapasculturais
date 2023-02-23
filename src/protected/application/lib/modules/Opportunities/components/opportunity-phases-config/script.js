@@ -108,9 +108,6 @@ app.component('opportunity-phases-config', {
         isLastPhase (index) {
             return index === this.phases.length - 1;
         },
-        isFirstPhase (index) {
-            return index === 0;
-        },
         getPreviousPhase (currentIndex) {
             if(this.phases[currentIndex - 1]) {
                 return this.phases[currentIndex - 1];
