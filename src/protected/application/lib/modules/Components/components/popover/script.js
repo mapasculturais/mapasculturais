@@ -10,7 +10,6 @@ app.component('popover', {
     data() {
         return {
             active: false,
-            click: -1,
         }
     },
 
@@ -30,31 +29,24 @@ app.component('popover', {
         openside: {
             type: String,
             default: '',
-            validator: (value) => {
-                return [
-                    'up-right','up-left',
-                    'down-right', 'down-left',
-                    'left-up', 'left-down',
-                    'right-up', 'right-down',
-                ].indexOf(value) >= 0;
-            }
         }
     },
     
-
     mounted() {
         document.addEventListener('mousedown', (event) => {
             let contained = false;
             const slotPopover = document.getElementsByClassName('v-popper__popper');
-            
+
             for (let popover of slotPopover) {
-                if (popover.contains(event.target)) { 
+                let buttonAriaDescribedby = event.target.getAttribute("aria-describedby") ?? (event.target.closest("a") ? event.target.closest("a").getAttribute("aria-describedby") : null);
+                let popoverId = popover.getAttribute("id");
+
+                if (buttonAriaDescribedby === popoverId || popover.contains(event.target)) {
                     contained = true;
                 }
             };
             
             if (!contained) { 
-                
                 this.close();
             };
         }),
@@ -70,24 +62,22 @@ app.component('popover', {
             const inputs = this.$refs.content.getElementsByTagName('input');
             if (inputs.length) {
                 setTimeout(() => {
-                    inputs[0].focus();
+                    if (inputs[0].getAttribute("type") == 'text') {
+                        inputs[0].focus();
+                    }
                 }, 100);
             }
         },
         open() {
-            if((this.click)%2==0){
-                this.active = true;
-                this.$emit('open', this);
-            }
-
+            this.active = true;
+            this.$emit('open', this);
         },
         close() {
-            this.click++;
             this.active = false;
             this.$emit('close', this);
         },
         toggle() {
             this.active ? this.close() : this.open();
-        }
+        },
     },
 });
