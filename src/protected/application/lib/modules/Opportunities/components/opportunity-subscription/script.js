@@ -81,16 +81,16 @@ app.component('opportunity-subscription' , {
         },
 
         startAt() {
-            return this.dateStart.day('2-digit') + '/' + this.dateStart.month('2-digit') + '/' + this.dateStart.year('numeric');
+            return this.dateStart?.date('2-digit year');
         },
         endAt() {
-            return this.dateEnd.day('2-digit') + '/' + this.dateEnd.month('2-digit') + '/' + this.dateEnd.year('numeric');
+            return this.dateEnd?.date('2-digit year');
         },
         startHour() {
-            return this.dateStart.time();
+            return this.dateStart?.time();
         },
         endHour() {
-            return this.dateEnd.time();
+            return this.dateEnd?.time();
         },
     },
 
@@ -111,16 +111,10 @@ app.component('opportunity-subscription' , {
         registrationStatus(dateStart, dateEnd) {
             let _actualDate = new Date();
 
-            let _dateStart = dateStart.year('numeric') + '/' + dateStart.month('2-digit') + '/' + dateStart.day('2-digit') + ', ' + dateStart.hour('2-digit') + ':' + dateStart.minute('2-digit') + ':' + dateStart.second('2-digit');
-            _dateStart = new Date(_dateStart);
-
-            let _dateEnd = dateEnd.year('numeric') + '/' + dateEnd.month('2-digit') + '/' + dateEnd.day('2-digit') + ', ' + dateEnd.hour('2-digit') + ':' + dateEnd.minute('2-digit') + ':' + dateEnd.second('2-digit');
-            _dateEnd = new Date(_dateEnd);
-
-            if (_dateStart > _actualDate) {
+            if (dateStart?._date > _actualDate) {
                 return 'will open';
             } else {
-                if (_dateEnd > _actualDate) {
+                if (dateEnd?._date > _actualDate) {
                     return 'open';
                 } else {
                     return 'closed';
