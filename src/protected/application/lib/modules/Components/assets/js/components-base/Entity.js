@@ -282,6 +282,7 @@ class Entity {
     }
 
     enableMessages() {
+        console.log('teste');
         this.__messagesEnabled = false;
     }
 
@@ -319,6 +320,17 @@ class Entity {
 
         this.__processing = false;
         return result;
+    }
+
+    async POST(action, {callback, data}) {        
+        const res = await this.API.POST(this.getUrl(action));
+        callback = callback || (() => {});
+
+        try {
+            return this.doPromise(res, callback);
+        } catch(error) {
+            return this.doCatch(error);
+        }
     }
 
     async doCatch(error) {
