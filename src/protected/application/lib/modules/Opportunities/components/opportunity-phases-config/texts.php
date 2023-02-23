@@ -1,4 +1,6 @@
 <?php
 use MapasCulturais\i;
 
-return [];
+return [
+    'nao foi possivel remover fase' => i::__('Não foi possível remover a fase')
+];

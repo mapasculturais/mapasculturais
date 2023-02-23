@@ -49,9 +49,15 @@ app.component('opportunity-phases-config', {
     },
     
     methods: {
-        deletePhase (event, item, index) {
-            this.phases.splice(index, 1);
-            item.delete();
+        async deletePhase (event, item, index) {
+            const messages = useMessages();
+            try{
+                await item.destroy();
+                this.phases.splice(index, 1);
+            }catch{
+                messages.error(this.text('nao foi possivel remover fase'))
+            }
+
         },
 
         getMinDate (phase, index) {
