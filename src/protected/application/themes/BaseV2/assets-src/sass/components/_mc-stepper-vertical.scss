@@ -152,6 +152,25 @@ ol.mc-stepper-vertical li.active::before {
         margin-bottom: size(26);
     }
 
+    &__btn {
+
+        &--secondary {
+            max-width: 368px;
+            width: 100%;
+            height: size(78);
+        }
+    }
+
+    .evaluation-simple {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+
+        &__title {}
+
+        &__text {}
+    }
+
     .evaluation-box {
         &__title {
             font-weight: 700;
@@ -239,7 +258,7 @@ ol.mc-stepper-vertical li.active::before {
         justify-content: space-between;
         flex-direction: row;
         align-items: flex-start;
-        
+
         .phase-stepper {
 
             &__period {
