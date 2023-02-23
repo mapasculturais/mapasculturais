@@ -53,8 +53,11 @@ $this->import('
 
                     <div class="config-phase__line-bottom col-12 "></div>
 
-                    <div class="phase-delete col-12">
+                    <div class="phase-delete col-6">
                         <a class="phase-delete__trash " href="#"><mc-icon name="trash"></mc-icon><label class="phase-delete__label"><?= i::__("Excluir etapa de fase") ?></label></a>
+                    </div>
+                    <div class="phase-delete col-6">
+                        <a @click="item.save()" class="phase-delete__trash " href="#"><mc-icon name="upload"></mc-icon><label class="phase-delete__label"><?= i::__("Salvar") ?></label></a>
                     </div>
                 </div>
             </mapas-card>
@@ -96,17 +99,17 @@ $this->import('
                             <textarea v-model="infos['general']" style="width: 100%" rows="10"></textarea>
                         </label>
                     </div>
-                    <div class="col-12" v-for="category in phases[0].registrationCategories">
+                    <div class="col-6 sm:col-12" v-for="category in categories">
                         <label> {{ category }}
                             <textarea v-model="infos[category]" style="width: 100%" rows="10"></textarea>
                         </label>
                     </div>
-                    <div class="col-12">
-                        <a class="phase-delete">
-                            <div class="phase-delete__trash"><mc-icon name="trash"></mc-icon></div>
-
-                            <div class="delete-phase__label"><label><?= i::__("Excluir etapa de fase") ?></label></div>
-                        </a>
+                    <div class="config-phase__line-bottom col-12"></div>
+                    <div class="phase-delete col-6">
+                        <a class="phase-delete__trash " href="#"><mc-icon name="trash"></mc-icon><label class="phase-delete__label"><?= i::__("Excluir etapa de fase") ?></label></a>
+                    </div>
+                    <div class="phase-delete col-6">
+                        <a @click="item.save()" class="phase-delete__trash " href="#"><mc-icon name="upload"></mc-icon><label class="phase-delete__label"><?= i::__("Salvar") ?></label></a>
                     </div>
                 </div>
             </mapas-card>
