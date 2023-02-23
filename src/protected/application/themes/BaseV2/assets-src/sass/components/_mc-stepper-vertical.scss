@@ -25,8 +25,6 @@ ol.mc-stepper-vertical li {
     padding-bottom: 20px;
 
     mapas-card {
-
-
         .evaluation-box {
             &__line {
                 background-color: red;
@@ -37,7 +35,6 @@ ol.mc-stepper-vertical li {
     &:last-of-type {
         border-left: 0;
     }
-
 }
 
 .config {
@@ -45,6 +42,7 @@ ol.mc-stepper-vertical li {
         background-color: var(--mc-high-500);
         margin: 0;
         padding-left: 16px;
+
         input {
             max-width: 822px;
             border-radius: 4px;
@@ -209,7 +207,6 @@ ol.mc-stepper-vertical li.active::before {
 
         }
 
-
         &__evaluation {
             margin-top: 25px;
         }
@@ -228,23 +225,21 @@ ol.mc-stepper-vertical li.active::before {
         .mapas-card {
             margin-bottom: 0;
         }
-
     }
 
 
 
     .stepper-header {
 
-    background-color: white;
-    padding: 16px;
-    border-radius: 4px;
-    display: flex;
-    gap: 100px;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: flex-start;
-
-
+        background-color: white;
+        padding: 16px;
+        border-radius: 4px;
+        display: flex;
+        gap: 100px;
+        justify-content: space-between;
+        flex-direction: row;
+        align-items: flex-start;
+        
         .phase-stepper {
 
             &__period {
