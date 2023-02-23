@@ -19,7 +19,7 @@ app.component('entity-field', {
             description = this.entity.$PROPERTIES[this.prop];
         } catch (e) {
             console.log(`Propriedade ${this.prop} não existe na entidade`);
-            return;
+            return {};
         }
         
         if (description.type == 'array' && !(value instanceof Array)) {
