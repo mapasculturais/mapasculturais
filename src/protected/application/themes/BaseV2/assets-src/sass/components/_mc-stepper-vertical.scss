@@ -159,13 +159,32 @@ ol.mc-stepper-vertical li.active::before {
             width: 100%;
             height: size(78);
         }
+        margin-bottom: size(20);
+
+    }
+
+    .evaluation-view {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+
+        &__title {
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 28px;
+        }
+
+        &__text {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 22px;
+        }
     }
 
     .evaluation-simple {
         display: flex;
         flex-direction: column;
         gap: size(8);
-
         &__title {}
 
         &__text {}

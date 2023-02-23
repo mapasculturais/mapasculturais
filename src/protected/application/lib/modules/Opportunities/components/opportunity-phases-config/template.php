@@ -91,9 +91,9 @@ $this->import('
                     <div class="col-12">
                         <button class="button--primary button"><?= i::__("Adicionar pessoa avaliadora") ?></button>
                     </div>
-                    <div class="col-12">
-                        <h2><?= i::__("Configurar campos visíveis para os avaliadores") ?></h2>
-                        <span><?= i::__("Defina quais campos serão habilitados para avaliação.") ?></span>
+                    <div class="evaluation-view col-12">
+                        <h2 class="evaluation-view__title"><?= i::__("Configurar campos visíveis para os avaliadores") ?></h2>
+                        <span class="evaluation-view__text"><?= i::__("Defina quais campos serão habilitados para avaliação.") ?></span>
                     </div>
                     <div class="evaluation-step__btn col-12">
                         <button class="evaluation-step__btn--secondary  button--secondarylight button"><?= i::__("Abrir lista de campos") ?></button>
