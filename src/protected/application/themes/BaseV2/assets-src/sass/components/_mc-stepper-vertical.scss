@@ -25,6 +25,10 @@ ol.mc-stepper-vertical li {
     padding-bottom: 20px;
 
     mapas-card {
+
+        padding-top: 16px;
+        padding-inline: 24px;
+        padding-bottom: 24px;
         .evaluation-box {
             &__line {
                 background-color: red;
@@ -159,8 +163,32 @@ ol.mc-stepper-vertical li.active::before {
             width: 100%;
             height: size(78);
         }
+
         margin-bottom: size(20);
 
+    }
+
+    .evaluation-config {
+        label {
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 25px;
+            margin-bottom: size(4);
+        }
+
+        &__area {
+            max-width: 100%;
+        }
+    }
+
+    .evaluation-text {
+        h3 {
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 28px;
+        }
+
+        margin-bottom: size(4);
     }
 
     .evaluation-view {
@@ -185,6 +213,7 @@ ol.mc-stepper-vertical li.active::before {
         display: flex;
         flex-direction: column;
         gap: size(8);
+
         &__title {}
 
         &__text {}
@@ -262,6 +291,11 @@ ol.mc-stepper-vertical li.active::before {
 
         .mapas-card {
             margin-bottom: 0;
+            max-width: 100%;
+            padding-top: 0;
+            &__title {
+            display: none;
+            }
         }
     }
 
@@ -287,7 +321,8 @@ ol.mc-stepper-vertical li.active::before {
             }
 
             &__type {
-
+                margin-top: 4px;
+                margin-bottom: 4px;
                 &--name {
                     font-weight: 600;
                     font-size: 14px;
@@ -302,9 +337,11 @@ ol.mc-stepper-vertical li.active::before {
                 }
 
                 &--item {
+
                     font-weight: 700;
                     font-size: 14px;
                     line-height: 19px;
+                    
                 }
 
             }
