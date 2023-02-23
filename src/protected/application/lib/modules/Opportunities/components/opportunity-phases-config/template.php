@@ -58,7 +58,7 @@ $this->import('
                             <template #button="modal">
                                 <a class="phase-delete__trash" @click="modal.open()">
                                     <mc-icon name="trash"></mc-icon>
-                                  <?= i::__("Excluir fase de coleta de dados") ?>
+                                    <?= i::__("Excluir fase de coleta de dados") ?>
                                 </a>
                             </template>
                         </confirm-button>
@@ -98,13 +98,13 @@ $this->import('
                     <div class="evaluation-step__btn col-12">
                         <button class="evaluation-step__btn--secondary  button--secondarylight button"><?= i::__("Abrir lista de campos") ?></button>
                     </div>
-                    <div class="col-12">
+                    <div class="evaluation-text col-12">
                         <h3><?= i::__("Adicionar textos explicativos das avaliações") ?></h3>
                     </div>
-                    <div class="col-12 field">
+                    <div class="evaluation-config col-12 field">
                         <label> <?= i::__("Texto configuração geral") ?>
-                            <textarea v-model="infos['general']" style="width: 100%" rows="10"></textarea>
                         </label>
+                        <textarea v-model="infos['general']" class="evaluation-config__area" rows="10"></textarea>
                     </div>
                     <div class="col-6 sm:col-12" v-for="category in categories">
                         <label> {{ category }}
@@ -116,8 +116,8 @@ $this->import('
                         <confirm-button message="Confirma a execução da ação?" @confirm="deletePhase($event, item, index)">
                             <template #button="modal">
                                 <a class="phase-delete__trash" @click="modal.open()">
-                                  <mc-icon name="trash"></mc-icon>
-                                  <?= i::__("Excluir fase de avaliação") ?>
+                                    <mc-icon name="trash"></mc-icon>
+                                    <?= i::__("Excluir fase de avaliação") ?>
                                 </a>
                             </template>
                         </confirm-button>
