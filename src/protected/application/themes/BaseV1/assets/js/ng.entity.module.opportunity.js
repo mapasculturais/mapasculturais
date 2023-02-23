@@ -1155,8 +1155,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.saveRegistration = function () {
-        return RegistrationService.updateFields($scope.data.editableEntity)
-            .error(function(r) {
+        RegistrationService.updateFields($scope.data.editableEntity)
+        .success(function(r){
+            $scope.validateRegistration();
+        })
+        .error(function(r) {
                 $scope.data.errors = r.data;
                 for (var key in r.data) {
                     $scope.data.fields.forEach(function(field) {
@@ -1165,7 +1168,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                         }
                     });
                 }
-
+                $scope.validateRegistration();
                 MapasCulturais.Messages.error(labels['correctErrors']);
             });
     }
