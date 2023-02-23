@@ -77,16 +77,16 @@ $this->import('
 
                     <entity-field :entity="item" prop="evaluationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
                     <entity-field :entity="item" prop="evaluationTo" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
-                    <div class="avaliation-step col-12">
-                        <div class="evaluation-step__line">
+                    <div class="evaluation-box col-12">
+                        <div class="evaluation-box__line">
 
                         </div>
-                        <h2 class="avaliation-step__title"><?= i::__("Configuração da avaliação") ?></h2>
-                        <span class="avaliation-step__content"><?= i::__("A avaliação simplificada consiste num select box com os status possíveis para uma inscrição.") ?></span>
+                        <h2 class="evaluation-box__title"><?= i::__("Configuração da avaliação") ?></h2>
+                        <span class="evaluation-box__content"><?= i::__("A avaliação simplificada consiste num select box com os status possíveis para uma inscrição.") ?></span>
                     </div>
-                    <div class="avaliation-simple col-12">
-                        <h3 class="avaliation-simple__title"><?= i::__("Comissão de avaliação simplificada") ?></h3>
-                        <span class="avaliation-simple__text"><?= i::__("Defina os agentes que serão avaliadores desta fase.") ?></span>
+                    <div class="evaluation-simple col-12">
+                        <h3 class="evaluation-simple__title"><?= i::__("Comissão de avaliação simplificada") ?></h3>
+                        <span class="evaluation-simple__text"><?= i::__("Defina os agentes que serão avaliadores desta fase.") ?></span>
                     </div>
                     <div class="col-12">
                         <button class="button--primary button"><?= i::__("Adicionar pessoa avaliadora") ?></button>
