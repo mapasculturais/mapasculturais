@@ -27,7 +27,7 @@ ol.mc-stepper-vertical li {
     mapas-card {
 
 
-        .avaliation-step {
+        .evaluation-box {
             &__line {
                 background-color: red;
             }
@@ -154,7 +154,7 @@ ol.mc-stepper-vertical li.active::before {
         margin-bottom: size(26);
     }
 
-    .avaliation-step {
+    .evaluation-box {
         &__title {
             font-weight: 700;
             font-size: size(32);
