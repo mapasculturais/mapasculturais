@@ -24,8 +24,8 @@ $this->import('
                 <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
                 <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
             </p>
-            <p v-if="item.__objectType == 'evaluationmethodconfiguration'" class="">
-                <label class="phase-stepper__type--name"></label><?= i::__('Tipo') ?>: <label class="phase-stepper__type--item">{{item.type.name}}</label>
+            <p v-if="item.__objectType == 'evaluationmethodconfiguration'" class="phase-stepper__type">
+                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>: <label class="phase-stepper__type--item">{{item.type.name}}</label>
             </p>
         </div>
     </template>
@@ -88,8 +88,8 @@ $this->import('
                         <h3 class="evaluation-simple__title"><?= i::__("Comissão de avaliação simplificada") ?></h3>
                         <span class="evaluation-simple__text"><?= i::__("Defina os agentes que serão avaliadores desta fase.") ?></span>
                     </div>
-                    <div class="col-12">
-                        <button class="button--primary button"><?= i::__("Adicionar pessoa avaliadora") ?></button>
+                    <div class="evaluation-open col-12">
+                        <button class="evaluation-open__button button--primary button"><mc-icon name="add"></mc-icon><label><?= i::__("Adicionar pessoa avaliadora") ?></label></button>
                     </div>
                     <div class="evaluation-view col-12">
                         <h2 class="evaluation-view__title"><?= i::__("Configurar campos visíveis para os avaliadores") ?></h2>
