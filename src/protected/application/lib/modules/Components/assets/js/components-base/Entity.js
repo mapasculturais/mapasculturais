@@ -282,7 +282,6 @@ class Entity {
     }
 
     enableMessages() {
-        console.log('teste');
         this.__messagesEnabled = false;
     }
 
