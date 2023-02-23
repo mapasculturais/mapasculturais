@@ -4,11 +4,12 @@ $this->layout = 'entity';
 
 $this->import('
     entity-actions
-    mapas-breadcrumb
     entity-header
-    tabs
+    entity-links
+    mapas-breadcrumb
     opportunity-basic-info
     opportunity-phases-config
+    tabs
 ');
 
 $this->breadcrumb = [
