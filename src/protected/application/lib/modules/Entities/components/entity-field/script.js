@@ -19,7 +19,7 @@ app.component('entity-field', {
             description = this.entity.$PROPERTIES[this.prop];
         } catch (e) {
             console.log(`Propriedade ${this.prop} não existe na entidade`);
-            return;
+            return {};
         }
         
         if (description.type == 'array' && !(value instanceof Array)) {
@@ -83,11 +83,11 @@ app.component('entity-field', {
             required: false
         },
         min: {
-            type: [ Number, Date ],
+            type: [ Number, String, Date ],
             default: 0 || null
         },
         max: {
-            type: [ Number, Date ],
+            type: [ Number, String, Date ],
             default: 0 || null
         },
         fieldDescription: {
