@@ -235,11 +235,14 @@ ol.mc-stepper-vertical li.active::before {
 
     .stepper-header {
 
-        background-color: white;
-        padding: 16px;
-        border-radius: 4px;
-        display: grid;
-        grid-template-columns: 1fr 52px;
+    background-color: white;
+    padding: 16px;
+    border-radius: 4px;
+    display: flex;
+    gap: 100px;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: flex-start;
 
 
         .phase-stepper {
@@ -281,8 +284,6 @@ ol.mc-stepper-vertical li.active::before {
         .expand-stepper {
             display: flex;
             align-items: center;
-            padding-right: 165px;
-
             color: var(--mc-primary-500);
 
             label {
