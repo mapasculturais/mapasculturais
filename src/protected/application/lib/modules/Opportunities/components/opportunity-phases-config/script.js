@@ -78,7 +78,7 @@ app.component('opportunity-phases-config', {
             const currentPhase = this.phases[index];
 
             if(this.isLastPhase(index)) {
-                return lastPhase.publishTimestamp._date;
+                return lastPhase.publishTimestamp?._date;
             }
 
             if(nextPhase.__objectType === 'opportunity') {
