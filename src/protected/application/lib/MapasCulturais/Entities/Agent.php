@@ -309,6 +309,16 @@ class Agent extends \MapasCulturais\Entity
         ];
     }
 
+    public function setType($type)
+    {
+        if($this->isNew() && $this->owner){
+            $this->_type = 2;
+        }else{
+            $this->_type = $type;
+        }
+
+    }
+
     function setAsUserProfile(){
         $this->checkPermission('setAsUserProfile');
 
