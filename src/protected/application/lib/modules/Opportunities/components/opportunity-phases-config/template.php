@@ -52,13 +52,12 @@ $this->import('
                     </div>
 
                     <div class="config-phase__line-bottom col-12 "></div>
-
-                    <div class="phase-delete col-6" v-if="!isLastPhase(index) && !isFirstPhase(index)">
+                    <div class="phase-delete col-6" v-if="!item.isLastPhase && !item.isFirstPhase">
                         <confirm-button message="Confirma a execução da ação?" @confirm="deletePhase($event, item, index)">
                             <template #button="modal">
                                 <a class="phase-delete__trash" @click="modal.open()">
                                     <mc-icon name="trash"></mc-icon>
-                                    <?= i::__("Excluir fase de coleta de dados") ?>
+                                    <label class="phase-delete__label">{{ text('excluir_fase_coleta_dados') }}</label>
                                 </a>
                             </template>
                         </confirm-button>
@@ -106,18 +105,18 @@ $this->import('
                         </label>
                         <textarea v-model="infos['general']" class="evaluation-config__area" rows="10"></textarea>
                     </div>
-                    <div class="col-6 sm:col-12" v-for="category in categories">
+                    <div class="col-6 sm:col-12 field" v-for="category in categories">
                         <label> {{ category }}
                             <textarea v-model="infos[category]" style="width: 100%" rows="10"></textarea>
                         </label>
                     </div>
                     <div class="config-phase__line-bottom col-12"></div>
-                    <div class="phase-delete col-6" v-if="!isLastPhase(index) && !isFirstPhase(index)">
+                    <div class="phase-delete col-6" v-if="!item.isLastPhase && !item.isFirstPhase">
                         <confirm-button message="Confirma a execução da ação?" @confirm="deletePhase($event, item, index)">
                             <template #button="modal">
                                 <a class="phase-delete__trash" @click="modal.open()">
                                     <mc-icon name="trash"></mc-icon>
-                                    <?= i::__("Excluir fase de avaliação") ?>
+                                    <label class="phase-delete__label">{{ text('excluir_fase_avaliacao') }}</label>
                                 </a>
                             </template>
                         </confirm-button>

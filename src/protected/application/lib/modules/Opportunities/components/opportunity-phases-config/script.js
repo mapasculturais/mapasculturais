@@ -49,9 +49,15 @@ app.component('opportunity-phases-config', {
     },
     
     methods: {
-        deletePhase (event, item, index) {
-            this.phases.splice(index, 1);
-            item.delete();
+        async deletePhase (event, item, index) {
+            const messages = useMessages();
+            try{
+                await item.destroy();
+                this.phases.splice(index, 1);
+            }catch{
+                messages.error(this.text('nao foi possivel remover fase'))
+            }
+
         },
 
         getMinDate (phase, index) {
@@ -102,9 +108,6 @@ app.component('opportunity-phases-config', {
         isLastPhase (index) {
             return index === this.phases.length - 1;
         },
-        isFirstPhase (index) {
-            return index === 0;
-        },
         getPreviousPhase (currentIndex) {
             if(this.phases[currentIndex - 1]) {
                 return this.phases[currentIndex - 1];
@@ -120,9 +123,7 @@ app.component('opportunity-phases-config', {
             }
         },
         addInPhases (phase) {
-            console.log(phase)
             this.phases.splice(this.phases.length - 1, 0, phase);
-            console.log(this.phases)
         }
     },
 });
