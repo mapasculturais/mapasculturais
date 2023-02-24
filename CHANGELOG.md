@@ -3,6 +3,19 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+[unreleased]
+### Novas Funcionalidade
+- No formulário de inscrição, exibe os erros de preenchimento no final da página para facilitar identificação dos campos com erros
+### Melhorias
+- Garante que todo agente principal seja criado como agente individual
+- Faz com que somente administradores possam alterar o tipo do agente
+- Remove opção de troca de perfil principal para evitar que sejam atribuidos perfis do tipo colitico como agente principal para atender LGPD
+
+## [5.5.13] - 2023-02-24
+### Correções
+- Verifica se a taxnomia função existe antes de utilizar seus atributos
+
 ## [5.5.12] - 2023-02-17
 ### Correções
 - Faz correção do bloqueio dos campos atravéz dos selos, caso seja bloqueado campos do tipo location
