@@ -124,16 +124,16 @@ class Entity {
     }
 
     catchErrors(res, data) {
-        const messages = useMessages();
+        
         if (res.status >= 500 && res.status <= 599) {
-            messages.error(this.text('erro inesperado'));
+            this.sendMessage(this.text('erro inesperado'), 'error');
         } else if(res.status == 400) {
             if (data.error) {
                 this.__validationErrors = data.data;
-                messages.error(this.text('erro de validacao'));
+                this.sendMessage(this.text('erro de validacao'), 'error');
             }
         } else if(res.status == 403) {
-            messages.error(this.text('permissao negada'));
+            this.sendMessage(this.text('permissao negada'), 'error');
         }
     }
 
@@ -270,10 +270,11 @@ class Entity {
         return this.API.createCacheId(this.id);
     }
 
-    sendMessage(message) {
+    sendMessage(message, type) {
+        type = type || 'success';
         if(this.__messagesEnabled) {
             const messages = useMessages();
-            messages.success(message);
+            messages[type](message);
         }
     }
 
@@ -322,10 +323,8 @@ class Entity {
     }
 
     async doCatch(error) {
-        const messages = useMessages();
-
         this.__processing = false;
-        messages.error(this.text('erro inesperado'));
+        this.sendMessage(this.text('erro inesperado'), 'error');
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
     }
 
