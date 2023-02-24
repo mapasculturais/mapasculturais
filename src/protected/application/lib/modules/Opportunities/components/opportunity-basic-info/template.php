@@ -34,7 +34,7 @@ $this->import('
             </div>
             <div class="grid-12">
                 <div class="col-5 sm:col-12">
-                    <p class="opportunity-basic-info__label">Publicação final de resultados (data e hora)<span class="opportunity-basic-info__hint">*obrigatório</span></p>
+                    <p class="opportunity-basic-info__label"><?= i::__("Publicação final de resultados (data e hora)")?><span class="opportunity-basic-info__hint"><?= i::__("*obrigatório") ?></span></p>
                     <datepicker
                             :locale="locale"
                             :weekStart="0"
@@ -45,11 +45,11 @@ $this->import('
                     </datepicker>
                 </div>
                 <div class="col-4 sm:col-12">
-                    <p class="opportunity-basic-info__label">Haverá prestação de contas?</p>
+                    <p class="opportunity-basic-info__label"><?= i::__("Haverá prestação de contas?") ?></p>
                     <input v-model="accountability" type="radio" id="yes" value="true">
-                    <label for="yes">Sim</label>
+                    <label for="yes"><?= i::__("Sim") ?></label>
                     <input v-model="accountability" type="radio" id="no" value="false">
-                    <label for="no">Não</label>
+                    <label for="no"><?= i::__("Não") ?></label>
                 </div>
             </div>
         </template>
