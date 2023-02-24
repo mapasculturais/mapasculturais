@@ -48,9 +48,7 @@ app.component('opportunity-create-data-collect-phase' , {
         },
         createEntity() {
             this.phase = Vue.ref(new Entity('opportunity'));
-            console.log(this.opportunity);
             this.phase.ownerEntity = this.opportunity.ownerEntity;
-            console.log(this.phase);
             this.phase.type = this.opportunity.type;
             this.phase.status = -1;
             this.phase.parent = this.opportunity;
