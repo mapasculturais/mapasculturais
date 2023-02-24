@@ -83,11 +83,11 @@ app.component('entity-field', {
             required: false
         },
         min: {
-            type: [ Number, Date ],
+            type: [ Number, String, Date ],
             default: 0 || null
         },
         max: {
-            type: [ Number, Date ],
+            type: [ Number, String, Date ],
             default: 0 || null
         },
         fieldDescription: {

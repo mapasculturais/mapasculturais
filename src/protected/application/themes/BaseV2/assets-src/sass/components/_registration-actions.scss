@@ -1,0 +1,23 @@
+@use '../settings/mixins'as *;
+
+.registration-actions {
+    display: flex;
+    flex-direction: column;
+    gap: size(56);
+    position: sticky;
+    top: size(167);
+
+    &__primary {
+
+    }
+
+    &__secondary {
+        display: flex;
+        flex-direction: column;
+        gap: size(24);
+
+        .button {
+            background-color: var(--mc-high-500);
+        }
+    }
+}
