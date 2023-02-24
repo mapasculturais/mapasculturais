@@ -10,11 +10,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Garante que todo agente principal seja criado como agente individual
 - Faz com que somente administradores possam alterar o tipo do agente
-- Remove opção de troca de perfil principal para evitar que sejam atribuidos perfis do tipo colitico como agente principal para atender LGPD
+- Remove opção de troca de perfil principal para evitar que sejam atribuídos perfis do tipo coletivo como agente principal para atender LGPD
 
 ## [5.5.13] - 2023-02-24
 ### Correções
-- Verifica se a taxnomia função existe antes de utilizar seus atributos
+- Verifica se a taxonomia função existe antes de utilizar seus atributos
 
 ## [5.5.12] - 2023-02-17
 ### Correções
