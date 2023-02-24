@@ -449,6 +449,17 @@ class Agent extends \MapasCulturais\Entity
         }
     }
 
+    protected function canUserChangeType($user){
+        if($user->is('admin')){
+            return true;
+        }
+
+        if(!$this->parent && $this->type->id != 1){
+            return true;
+        }
+        return false;
+    }
+
     protected function canUserRemove($user){
 
         if($this->isUserProfile){
