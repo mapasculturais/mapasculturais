@@ -33,14 +33,14 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
         <div class="field">
             <label> <?php i::_e('Classificação Etária') ?></label>
             <mc-multiselect :model="pseudoQuery['event:classificacaoEtaria']" :items="ageRating" #default="{popover}" hide-filter hide-button>
-                <input class="mc-multiselect--input" v-model="pseudoQuery['event:classificacaoEtaria'].filter" @focus="popover.toggle()" :triggers="['click']" placeholder="<?= i::esc_attr__('Selecione') ?>">
+                <input class="mc-multiselect--input" v-model="pseudoQuery['event:classificacaoEtaria'].filter" @focus="popover.open()" :triggers="['click']" placeholder="<?= i::esc_attr__('Selecione') ?>">
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['event:classificacaoEtaria']" classes="event__background event__color"></mc-tag-list>
         </div>
         <div class="field">
             <label> <?php i::_e('Linguagens') ?></label>
             <mc-multiselect :model="pseudoQuery['event:term:linguagem']" :items="terms" #default="{popover}" hide-filter hide-button>
-                <input class="mc-multiselect--input" v-model="pseudoQuery['event:term:linguagem'].filter" @focus="popover.toggle()" :triggers="['click']" placeholder="<?= i::esc_attr__('Selecione as linguagens') ?>">
+                <input class="mc-multiselect--input" v-model="pseudoQuery['event:term:linguagem'].filter" @focus="popover.open()" :triggers="['click']" placeholder="<?= i::esc_attr__('Selecione as linguagens') ?>">
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['event:term:linguagem']" classes="event__background event__color"></mc-tag-list>
         </div>
