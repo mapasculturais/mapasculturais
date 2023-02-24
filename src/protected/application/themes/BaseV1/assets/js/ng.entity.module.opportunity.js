@@ -1155,7 +1155,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.saveRegistration = function () {
-        RegistrationService.updateFields($scope.data.editableEntity)
+       return RegistrationService.updateFields($scope.data.editableEntity)
         .success(function(r){
             $scope.validateRegistration();
         })
