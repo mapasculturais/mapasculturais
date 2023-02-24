@@ -13,7 +13,7 @@ $_type = is_object($entity->type) ? $entity->type->name : "";
             <a class="icon icon-agent hltip active js-disable" title="<?php \MapasCulturais\i::esc_attr_e("Este é seu perfil.");?>"></a>
             <span style="float: right;font-size: 15px;"><?php \MapasCulturais\i::esc_attr_e("Meu Perfil");?></span>
         <?php elseif($entity->status === Agent::STATUS_ENABLED && $can_edit): ?>
-            <a class="icon icon-agent hltip" title="<?php \MapasCulturais\i::esc_attr_e("Definir este agente como seu perfil.");?>" href="<?php echo $app->createUrl('agent', 'setAsUserProfile', array($entity->id)); ?>"></a>
+            <a class="icon icon-agent hltip" title="<?php \MapasCulturais\i::esc_attr_e("Agente secundário");?>" href="javascript:void(0);"></a>
         <?php endif; ?>
 
         <a href="<?php if($can_edit) echo $entity->singleUrl; else echo "http://culturaviva.gov.br/cadastrar"; ?>"><?php echo htmlentities($entity->name); ?></a>
