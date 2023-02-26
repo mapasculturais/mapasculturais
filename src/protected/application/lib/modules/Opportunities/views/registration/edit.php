@@ -99,7 +99,7 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
             </main>
 
             <aside>
-                <registration-actions :entity="entity"></registration-actions>
+                <registration-actions :registration="entity"></registration-actions>
             </aside>
         </mapas-container>
     </div>
