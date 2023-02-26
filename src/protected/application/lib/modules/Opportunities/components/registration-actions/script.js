@@ -9,6 +9,24 @@ app.component('registration-actions', {
     },
     
     methods: {
+        fieldName(field) {
+            console.log(field.slice(0, 6));
+
+            if (field == 'agent_instituicao') {
+                return 'Instituição responsável'; 
+            }
+
+            if (field == 'agent_coletivo') {
+                return 'Agente coletivo';
+            }
+
+            if (field.slice(0, 6) == 'field_') {
+                return 'Campo no formulário';
+            }
+
+            return 'Campo não identificado';
+
+        },
         async send() {
             const data = {id: this.registration.id};
             if (this.registration.category) {

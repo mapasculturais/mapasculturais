@@ -39,9 +39,6 @@ app.component('registration-related-space', {
             
             api.POST(this.registration.getUrl('createSpaceRelation'), {id: space.id}).then((response) => {
                 const messages = useMessages();
-                /**
-                 * @todo criar arquivo de traduções
-                 */
                 messages.success('Espaço vinculado.');
             });
         },
