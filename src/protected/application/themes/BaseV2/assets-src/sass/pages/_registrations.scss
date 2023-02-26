@@ -146,6 +146,16 @@
                             font-weight: 700;
                             font-size: size(18);
                             line-height: size(25);
+                            display: flex;
+                            gap: size(10);
+                            align-items: center;
+
+                            .obrigatory {
+                                font-weight: 700;
+                                font-size: size(12);
+                                line-height: size(16);
+                                color: var(--mc-error);
+                            }
                         }
 
                         &__subtitle {
@@ -190,6 +200,15 @@
                                 }
                             }
                         }
+
+                    }
+                    
+                    .errors {
+                        width: 100%;
+                        margin-top: 10px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: var(--mc-error);
                     }
                     
                     .registration-select-entity {
