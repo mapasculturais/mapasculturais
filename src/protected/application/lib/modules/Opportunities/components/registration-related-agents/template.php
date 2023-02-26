@@ -10,7 +10,8 @@ use MapasCulturais\i;
 <mapas-card v-for="relation in agentRelations">
     <template #title>
         <div class="card__title"> 
-            {{relation.label}}
+            {{relation.label}} 
+            <div v-if="relation.required" class="obrigatory"> <?= i::__('* Obrigatório') ?> </div>
         </div>
         <div class="card__subtitle">
             {{relation.description}}
@@ -47,5 +48,8 @@ use MapasCulturais\i;
                 </button>
             </template>
         </select-entity>
+        <div v-if="registration.__validationErrors[`agent_${relation.agentRelationGroupName}`]" class="errors">
+            <span>{{registration.__validationErrors[`agent_${relation.agentRelationGroupName}`].join('; ')}}</span>
+        </div>
     </template>
 </mapas-card>

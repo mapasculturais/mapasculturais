@@ -24,28 +24,28 @@ use MapasCulturais\i;
         <div class="registration-select-entity">
             <div class="registration-select-entity__entity">
                 <div class="image">
-                    <!-- <img v-if="registration.relatedAgents[relation.agentRelationGroupName][0].files.avatar" :src="registration.relatedAgents[relation.agentRelationGroupName][0].files?.avatar?.transformations?.avatarMedium.url" /> -->
-                    <mc-icon name="image"></mc-icon> <!-- v-if="!registration.relatedAgents[relation.agentRelationGroupName][0].files.avatar" -->
+                    <!-- <img v-if="registration.relatedSpaces[relation.spaceRelationGroupName][0].files.avatar" :src="registration.relatedSpaces[relation.spaceRelationGroupName][0].files?.avatar?.transformations?.avatarMedium.url" /> -->
+                    <mc-icon name="image"></mc-icon> <!-- v-if="!registration.relatedSpaces[relation.spaceRelationGroupName][0].files.avatar" -->
                 </div>
                 <div class="name">
-                    <!-- {{registration.relatedAgents[relation.agentRelationGroupName][0].name}} -->
+                    <!-- {{registration.relatedSpaces[relation.spaceRelationGroupName][0].name}} -->
                 </div>
             </div>
             <div class="registration-select-entity__actions">
-                <select-entity type="agent" :query="{'type': `EQ(${relation.type})`}" @select="selectAgent()">
+                <select-entity type="space" @select="selectSpace()">
                     <template #button="{toggle}">
                         <button class="button button--text button--icon button--sm change" @click="toggle()"> 
                             <mc-icon name="exchange"></mc-icon> <?= i::__('Trocar') ?> 
                         </button>
                     </template>
                 </select-entity>
-                <button class="button button--text button--icon button--sm delete" @click="removeAgent()"> 
+                <button class="button button--text button--icon button--sm delete" @click="removeSpace()"> 
                     <mc-icon name="trash"></mc-icon> <?= i::__('Excluir') ?> 
                 </button>
             </div>
         </div>
         <!-- v-if="!hasRelations()" -->
-        <select-entity  type="agent" :query="{'type': `EQ(${relation.type})`}" @select="selectAgent($event, relation)">
+        <select-entity type="space" @select="selectSpace($event)">
             <template #button="{toggle}">
                 <button class="button button--primary-outline button--icon button--md" @click="toggle()"> 
                     <mc-icon name="add"></mc-icon> <?= i::__('Adicionar') ?> 
