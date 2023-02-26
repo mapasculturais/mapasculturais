@@ -369,6 +369,8 @@ class Registration extends \MapasCulturais\Entity
             $values = $json;
         }
 
+        $values['spaceRelation'] = $this->getSpaceRelation();
+
         return $values;
     }
 
