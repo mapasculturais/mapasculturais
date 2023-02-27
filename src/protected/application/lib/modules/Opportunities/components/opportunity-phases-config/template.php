@@ -15,6 +15,7 @@ $this->import('
     opportunity-create-data-collect-phase
 ');
 ?>
+{{ phases }}
 <mc-stepper-vertical :items="phases" allow-multiple>
     <template #header-title="{index, item}">
         <div class="phase-stepper">
