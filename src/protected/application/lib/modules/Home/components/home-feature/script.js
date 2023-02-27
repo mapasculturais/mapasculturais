@@ -116,9 +116,7 @@ app.component('home-feature', {
     },
 
     methods: {
-        // entityType(type) {
-        //     return __(type, 'home-feature');
-        // },
+     
         entityTypeReturn(type) {
             if (type == "project") { 
                 this.type = 'Projetos'
