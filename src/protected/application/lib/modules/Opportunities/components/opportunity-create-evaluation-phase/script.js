@@ -38,8 +38,8 @@ app.component('opportunity-create-evaluation-phase' , {
     },
 
     mounted () {
-        this.dateStart = $MAPAS.requestedEntity.registrationFrom.date;
-        this.dateEnd = $MAPAS.requestedEntity.registrationTo.date;
+        this.dateStart = $MAPAS.requestedEntity.registrationFrom?.date;
+        this.dateEnd = $MAPAS.requestedEntity.registrationTo?.date;
     },
 
     methods: {
