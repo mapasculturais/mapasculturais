@@ -5,17 +5,16 @@ use MapasCulturais\i;
 $this->layout = 'registrations';
 
 $this->import('
-    entity-header
     mapas-breadcrumb
     mapas-card
     mapas-container
     mc-icon
-    select-entity
-    stepper
-
     registration-actions
+    registration-header
     registration-related-agents
     registration-related-space
+    select-entity
+    stepper
 ');
 
 $this->breadcrumb = [
@@ -31,9 +30,9 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
  */
 ?>
 
-<div class="main-app registration single">
+<div class="main-app registration edit">
     <mapas-breadcrumb></mapas-breadcrumb>
-    <entity-header :entity="entity"></entity-header>
+    <registration-header :registration="entity"></registration-header>
 
     <div class="registration__content">
         <div class="registration__content--title">
