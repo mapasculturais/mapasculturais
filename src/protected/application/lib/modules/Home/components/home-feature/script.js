@@ -116,8 +116,35 @@ app.component('home-feature', {
     },
 
     methods: {
-        entityType(type) {
-            return __(type, 'home-feature');
-        },
+        // entityType(type) {
+        //     return __(type, 'home-feature');
+        // },
+        entityTypeReturn(type) {
+            if (type == "project") { 
+                this.type = 'Projetos'
+                return __(type, 'home-feature');
+
+            }
+            if (type == "event") { 
+                this.type = 'Eventos'
+                return __(type, 'home-feature');
+
+            }
+            if (type == "agent") { 
+                type = 'Agentes'
+                return __(type, 'home-feature');
+
+            }
+            if (type == "space") { 
+                this.type = 'Espaços'
+                return __(type, 'home-feature');
+
+            }
+            if (type == "opportunity") { 
+                this.type = 'Oportunidades'
+                return __(type, 'home-feature');
+
+            }
+        }
     },
 });
