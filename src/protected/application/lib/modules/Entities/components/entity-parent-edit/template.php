@@ -28,7 +28,7 @@ $this->import('select-entity');
         </select-entity>
     </div>
 </div>
-<div v-if="!parent">
+<div v-if="!parent" class="col-12">
     <select-entity :type="type" @select="changeParent($event)" openside="right-down">            
         <template #button="{ toggle }">
             <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
