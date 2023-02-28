@@ -4,7 +4,7 @@ use MapasCulturais\i;
 
 $this->import('select-entity');
 ?>
-<div v-if="parent" :class="['entity-parentss-edit' ,classes]">
+<div v-if="parent" :class="['entity-parents-edit' ,classes]">
     <h4 class="entity-parentss-edit__title">{{entity.name}} {{title}}</h4>
     <a class="entity-parent-edit__parent" :href="parent.singleUrl" :title="parent.shortDescription">
         <div class="entity-parent-edit__parent--img">
@@ -32,7 +32,7 @@ $this->import('select-entity');
     <select-entity :type="type" @select="changeParent($event)" openside="right-down">            
         <template #button="{ toggle }">
             <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
-                <button class="button button--primary-outline  button--icon">Adicionar Supraespaço</button>
+                <button class="button button--primary-outline  button--icon">{{label}}</button>
             </a>
         </template>
     </select-entity>
