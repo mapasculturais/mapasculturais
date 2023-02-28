@@ -90,7 +90,7 @@ $this->breadcrumb = [
                             <create-project editable></create-project>
                         </div>
                         <div class="col-12">
-                            <entity-activity-card :entity="true" editable></entity-activity-card>
+                            <entity-activity-card :entity="entity" editable></entity-activity-card>
                         </div>
                     </div>
                 </template>
@@ -118,7 +118,7 @@ $this->breadcrumb = [
                     <label><?php i::_e("Vincule um evento ao seu projeto"); ?></label>
                 </template>
                 <template #content>
-                    <link-project entity="entity"></link-project>
+                    <link-project :entity="entity"></link-project>
                 </template>
             </mapas-card>
             <mapas-card>
@@ -152,7 +152,7 @@ $this->breadcrumb = [
                 <template #content>
                     <div class="grid-12">
                         <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
-                        <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags') ?>" editable></entity-terms>
+                        <entity-terms :entity="entity" editable classes="col-12" taxonomy="tag" title="<?php i::_e('Tags') ?>" ></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                         <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por') ?>" editable></entity-owner>
                         <entity-parent-edit :entity="entity" classes="col-12" type="project"></entity-parent-edit>
