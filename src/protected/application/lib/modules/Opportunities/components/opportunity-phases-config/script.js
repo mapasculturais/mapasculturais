@@ -83,18 +83,19 @@ app.component('opportunity-phases-config', {
             const nextPhase = this.getNextPhase(index);
             const currentPhase = this.phases[index];
 
-            if(this.isLastPhase(index)) {
-                return lastPhase.publishTimestamp?._date;
-            }
-
-            if(nextPhase.__objectType === 'opportunity') {
-                return nextPhase.registrationFrom._date;
-            } else if(nextPhase.__objectType === 'evaluationmethodconfiguration') {
-                if(currentPhase.__objectType === 'opportunity') {
+            if(nextPhase==lastPhase){
+                return lastPhase.publishTimestamp?._date
+            }else if(nextPhase.__objectType === 'opportunity'){
+                return nextPhase.registrationFrom;
+            }else if(nextPhase.__objectType === 'evaluationmethodconfiguration'){
+                if(currentPhase.__objectType === 'opportunity'){
                     return nextPhase.evaluationTo._date;
-                } else if(currentPhase.__objectType === 'evaluationmethodconfiguration') {
-                    return nextPhase.evaluationFrom._date;
                 }
+                if(currentPhase.__objectType === 'evaluationmethodconfiguration'){
+                    return nextPhase.evalutaionFrom._date;
+                }
+
+
             }
 
         },
