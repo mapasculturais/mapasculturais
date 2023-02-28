@@ -155,7 +155,7 @@ $this->breadcrumb = [
                         <entity-terms :entity="entity" editable classes="col-12" taxonomy="tag" title="<?php i::_e('Tags') ?>" ></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                         <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por') ?>" editable></entity-owner>
-                        <entity-parent-edit :entity="entity" classes="col-12" type="project"></entity-parent-edit>
+                        <entity-parent-edit :entity="entity" classes="col-12" type="project" label="<?php i::esc_attr_e('Adicionar Supra Projeto')?>"></entity-parent-edit') ?>">
                     </div>
                 </template>
             </mapas-card>
