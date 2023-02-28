@@ -57,7 +57,7 @@ $this->import('loading confirm-button');
                         <?php i::_e('Deseja sair?') ?>
                     </template>
                 </confirm-button>
-                <button v-if="entity.currentUserPermissions?.modify" @click="entity.save()" class="button button--md button--secondary">
+                <button v-if="entity.currentUserPermissions?.modify" @click="entity.save()" class="button button--md publish publish-exit">
                     <?php i::_e("Salvar") ?>
                 </button>
                 <button v-if="entity.status == 0 && entity.currentUserPermissions?.publish" @click="entity.publish()" class="button button--md publish">
