@@ -20,7 +20,7 @@ $this->import('
         <div class="phase-stepper">
             <h2 v-if="index" class="phase-stepper__name">{{item.name}}</h2>
             <h2 v-if="!index" class="phase-stepper__period"><?= i::__('Período de inscrição') ?></h2>
-            <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity'">
+            <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
                 <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
                 <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
             </p>
@@ -33,7 +33,7 @@ $this->import('
         <div v-if="index > 0" class="config-input">
             <entity-field :entity="item" prop="name" label="Título" hide-required></entity-field>
         </div>
-        <template v-if="item.__objectType == 'opportunity'">
+        <template v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
             <mapas-card>
                 <div class="config-phase grid-12">
                     <div class="config-phase__line-up col-12 "></div>
@@ -64,6 +64,26 @@ $this->import('
                     </div>
                     <div class="phase-delete col-6">
                         <a @click="item.save()" class="phase-delete__trash " href="#"><mc-icon name="upload"></mc-icon><label class="phase-delete__label"><?= i::__("Salvar") ?></label></a>
+                    </div>
+                </div>
+            </mapas-card>
+
+        </template>
+
+        <template v-if="item.isLastPhase">
+            <mapas-card>
+                <div class="config-phase grid-12">
+                    <div class="col-12">
+                        <div class="col-6">
+                            <entity-field :entity="item" prop="registrationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
+                        </div>
+                    </div>
+                    <div class="config-phase__line-bottom col-12 "></div>
+                    <div class="col-6">
+                        <a href="#"><?= i::__("Acessar lista de pessoas inscritas") ?><mc-icon name="upload"></mc-icon></a>
+                    </div>
+                    <div class="col-6">
+                        <a href="#"><?= i::__("Publicar Resultados") ?><mc-icon name="upload"></mc-icon></a>
                     </div>
                 </div>
             </mapas-card>
