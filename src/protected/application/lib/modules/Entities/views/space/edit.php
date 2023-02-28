@@ -120,7 +120,7 @@ $this->breadcrumb = [
                         <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="Tags" editable></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                         <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
-                        <entity-parent-edit :entity="entity" classes="col-12" type="space" editable></entity-parent-edit>
+                        <entity-parent-edit :entity="entity" classes="col-12" type="space" editable label="<?php i::esc_attr_e('Adicionar Supra Espaço')?>"></entity-parent-edit>
                     </div>
                 </template>
             </mapas-card>
