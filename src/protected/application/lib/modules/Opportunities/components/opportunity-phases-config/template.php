@@ -15,7 +15,6 @@ $this->import('
     opportunity-create-data-collect-phase
 ');
 ?>
-{{ phases }}
 <mc-stepper-vertical :items="phases" allow-multiple>
     <template #header-title="{index, item}">
         <div class="phase-stepper">
@@ -42,7 +41,7 @@ $this->import('
                         <h3 class="config-phase__title--title"><?= i::__("Configuração da fase") ?></h3>
                     </div>
                     <entity-field :entity="item" prop="registrationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
-                    <entity-field :entity="item" prop="registrationTo" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
+                    <entity-field :entity="item" prop="registrationTo" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index) || item.registrationFrom._date" :max="getMaxDate(item.__objectType, index)"></entity-field>
                     <div class="config-phase__info col-12">
                         <h5 class="config-phase__info--message">
                             <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
