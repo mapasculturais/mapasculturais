@@ -73,17 +73,27 @@ $this->import('
         <template v-if="item.isLastPhase">
             <mapas-card>
                 <div class="config-phase grid-12">
-                    <div class="col-12">
+
+                    <template v-if="item.publishedRegistrations">
                         <div class="col-6">
-                            <entity-field :entity="item" prop="registrationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
+                            <button class="button button--text button--text-danger"><?= i::__("Despublicar") ?></button>
                         </div>
-                    </div>
+                    </template>
+                    <template v-else>
+                        <div class="col-6">
+                            <entity-field :entity="item" prop="publishTimestamp" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
+                        </div>
+                        <div class="col-6">
+                            <input type="checkbox" v-model="item.autoPublish"><?= i::__("Publicar resultados automaticamente"); ?>
+                        </div>
+                    </template>
+
                     <div class="config-phase__line-bottom col-12 "></div>
                     <div class="col-6">
-                        <a href="#"><?= i::__("Acessar lista de pessoas inscritas") ?><mc-icon name="upload"></mc-icon></a>
+                        <button class="button button--text"><?= i::__("Acessar lista de pessoas inscritas") ?><mc-icon name="upload"></mc-icon></button>
                     </div>
                     <div class="col-6">
-                        <a href="#"><?= i::__("Publicar Resultados") ?><mc-icon name="upload"></mc-icon></a>
+                        <button class="button button--primary" :disabled="isBlockedPublish(index)"><?= i::__("Publicar Resultados") ?><mc-icon name="upload"></mc-icon></button>
                     </div>
                 </div>
             </mapas-card>

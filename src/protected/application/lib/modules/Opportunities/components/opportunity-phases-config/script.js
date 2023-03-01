@@ -49,6 +49,12 @@ app.component('opportunity-phases-config', {
     },
     
     methods: {
+        isBlockedPublish (index) {
+          const previousPhase = this.getPreviousPhase(index);
+          const dtFinal = previousPhase.registrationTo?._date || null;
+          return dtFinal > new Date();
+        },
+
         async deletePhase (event, item, index) {
             const messages = useMessages();
             try{
