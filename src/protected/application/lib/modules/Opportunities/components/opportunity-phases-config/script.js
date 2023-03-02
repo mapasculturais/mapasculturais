@@ -49,6 +49,15 @@ app.component('opportunity-phases-config', {
     },
     
     methods: {
+        addPublishRegistrations (phase) {
+            phase.POST('publishRegistrations');
+        },
+        isBlockedPublish (index) {
+          const previousPhase = this.getPreviousPhase(index);
+          const dtFinal = previousPhase.evaluationTo?._date || null;
+          return dtFinal > new Date();
+        },
+
         async deletePhase (event, item, index) {
             const messages = useMessages();
             try{
@@ -87,12 +96,15 @@ app.component('opportunity-phases-config', {
                 return lastPhase.publishTimestamp?._date;
             }
 
-            if(nextPhase.__objectType === 'opportunity') {
-                return nextPhase.registrationFrom._date;
-            } else if(nextPhase.__objectType === 'evaluationmethodconfiguration') {
-                if(currentPhase.__objectType === 'opportunity') {
+            if(nextPhase === lastPhase){
+                return lastPhase.publishTimestamp?._date;
+            }else if(nextPhase && nextPhase.__objectType === 'opportunity'){
+                return nextPhase.registrationFrom;
+            }else if(nextPhase && nextPhase.__objectType === 'evaluationmethodconfiguration'){
+                if(currentPhase.__objectType === 'opportunity'){
                     return nextPhase.evaluationTo._date;
-                } else if(currentPhase.__objectType === 'evaluationmethodconfiguration') {
+                }
+                if(currentPhase.__objectType === 'evaluationmethodconfiguration'){
                     return nextPhase.evaluationFrom._date;
                 }
             }

@@ -67,7 +67,7 @@
 
 			.carousel {
 				margin-top: size(20);
-
+				
 				&__prev {
 					background: url('https://api.iconify.design/akar-icons/arrow-left.svg?color=%23d50200') no-repeat center center / size(27);
 					background-color: var(--mc-white);
@@ -114,6 +114,9 @@
 								padding: 0 size(20);
 							}
 						}
+					}
+					.entity-card__footer {
+						flex-direction: column;
 					}
 				}
 

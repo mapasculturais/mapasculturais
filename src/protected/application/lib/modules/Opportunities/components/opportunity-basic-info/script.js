@@ -27,12 +27,17 @@ app.component('opportunity-basic-info' , {
     watch: {
       dateStart: {
           handler (val) {
-              $MAPAS.requestedEntity.registrationFrom.date = val;
+              if($MAPAS.requestedEntity.registrationFrom){
+                $MAPAS.requestedEntity.registrationFrom.date = val;
+              }
           }
       },
+
       dateEnd: {
           handler (val) {
-              $MAPAS.requestedEntity.registrationTo.date = val;
+            if($MAPAS.requestedEntity.registrationTo){
+                $MAPAS.requestedEntity.registrationTo.date = val;
+            }  
           }
       }
     },

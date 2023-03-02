@@ -8,20 +8,19 @@
 use MapasCulturais\i;
 
 $this->import('
-    entity-field
+    confirm-button
     mc-stepper-vertical
-    opportunity-create-evaluation-phase
     mc-link
+    opportunity-create-evaluation-phase
     opportunity-create-data-collect-phase
 ');
 ?>
-{{ phases }}
 <mc-stepper-vertical :items="phases" allow-multiple>
     <template #header-title="{index, item}">
         <div class="phase-stepper">
             <h2 v-if="index" class="phase-stepper__name">{{item.name}}</h2>
             <h2 v-if="!index" class="phase-stepper__period"><?= i::__('Período de inscrição') ?></h2>
-            <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity'">
+            <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
                 <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
                 <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
             </p>
@@ -34,7 +33,7 @@ $this->import('
         <div v-if="index > 0" class="config-input">
             <entity-field :entity="item" prop="name" label="Título" hide-required></entity-field>
         </div>
-        <template v-if="item.__objectType == 'opportunity'">
+        <template v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
             <mapas-card>
                 <div class="config-phase grid-12">
                     <div class="config-phase__line-up col-12 "></div>
@@ -42,7 +41,7 @@ $this->import('
                         <h3 class="config-phase__title--title"><?= i::__("Configuração da fase") ?></h3>
                     </div>
                     <entity-field :entity="item" prop="registrationFrom" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
-                    <entity-field :entity="item" prop="registrationTo" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
+                    <entity-field :entity="item" prop="registrationTo" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index) || item.registrationFrom._date" :max="getMaxDate(item.__objectType, index)"></entity-field>
                     <div class="config-phase__info col-12">
                         <h5 class="config-phase__info--message">
                             <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
@@ -65,6 +64,48 @@ $this->import('
                     </div>
                     <div class="phase-delete col-6">
                         <a @click="item.save()" class="phase-delete__trash " href="#"><mc-icon name="upload"></mc-icon><label class="phase-delete__label"><?= i::__("Salvar") ?></label></a>
+                    </div>
+                </div>
+            </mapas-card>
+
+        </template>
+
+        <template v-if="item.isLastPhase">
+            <mapas-card>
+                <div class="config-phase grid-12">
+
+                    <template v-if="item.publishedRegistrations">
+                        <div class="col-12">
+                            <button class="button button--text button--text-danger"><?= i::__("Despublicar") ?></button>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div class="col-6 sm:col-12">
+                            <entity-field :entity="item" prop="publishTimestamp" classes="col-6 sm:col-12" :min="getMinDate(item.__objectType, index)" :max="getMaxDate(item.__objectType, index)"></entity-field>
+                        </div>
+                        <div class="col-6 sm:col-12 phase-publish__auto">
+                            <input type="checkbox" v-model="item.autoPublish"><?= i::__("Publicar resultados automaticamente"); ?>
+                        </div>
+                    </template>
+
+                    <div class="config-phase__line-bottom col-12 "></div>
+
+                    <div class="col-6 phase-publish__subscribers">
+                        <button class="button button--text"><?= i::__("Acessar lista de pessoas inscritas") ?><mc-icon name="upload"></mc-icon></button>
+                    </div>
+                    <div class="col-6 phase-publish__confirm">
+                        <confirm-button :message="text('confirmar_publicacao')" @confirm="addPublishRegistrations(item)">
+                                <template #button="modal">
+                                    <button v-if='isBlockedPublish(index)' class="button" disabled>
+                                      <?= i::__("Publicar Resultados") ?>
+                                        <mc-icon name="upload"></mc-icon>
+                                    </button>
+                                    <button v-else class="button button--primary" @click="modal.open">
+                                        <?= i::__("Publicar Resultados") ?>
+                                        <mc-icon name="upload"></mc-icon>
+                                    </button>
+                                </template>
+                        </confirm-button>
                     </div>
                 </div>
             </mapas-card>
