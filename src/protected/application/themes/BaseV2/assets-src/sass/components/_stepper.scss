@@ -10,6 +10,7 @@
 
     .step {
         align-items: center;
+        cursor: pointer;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -82,6 +83,10 @@
             }
         }
 
+        &.active {
+            cursor: default;
+        }
+        
         &.passedby {
             .label {
                 color: var(--mc-secondary-500);
