@@ -7,52 +7,56 @@
     width: 100%;
 
     &__content {
-        align-items: center;
+        align-items: start;
         display: grid;
         gap: size(18);
-        grid-template-columns: size(72) calc(100% - size(90));
+        grid-template-columns: size(72) 1fr;
         margin: 0 auto;
         max-width: size(1170);
-        padding: size(74) size(16) size(61);
+        padding: size(83) size(16) size(76);
         position: relative;
 
         .image {
-            .icon {
-                align-items: center;
-                background-color: var(--mc-gray-500);
-                border-radius: 50%;
-                display: flex;
-                height: size(72);
-                justify-content: center;
-                width: size(72);
+            align-items: center;
+            background-color: var(--mc-gray-500);
+            border-radius: 50%;
+            display: flex;
+            height: size(72);
+            justify-content: center;
+            overflow: hidden;
+            width: size(72);
+            
+            .iconify {
+                color: var(--mc-white);
+                font-size: size(40);
+            }
 
-                .iconify {
-                    color: var(--mc-white);
-                    font-size: size(40);
-                }
+            img {
+                width: 100%;
             }
         }
 
         .title {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: size(6);
 
             &__title {
-                font-size: 32px;
+                font-size: size(32);
                 font-weight: 700;
-                line-height: 44px;
+                line-height: size(44);
             }
 
             &__info {
-            display: flex;
-            gap: 50px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: size(8) size(50);
 
                 .data {
                     display: flex;
-                    font-size: 14px;
-                    gap: 5px;
-                    line-height: 19px;
+                    font-size: size(14);
+                    gap: size(5);
+                    line-height: size(19);
 
                     &__title {
                         font-weight: 600;
@@ -61,6 +65,45 @@
 
                     &__info {
                         font-weight: 700;
+                    }
+                }
+            }
+        }
+    }
+
+    @include mobile {
+        &__content {
+            grid-template-columns: size(40) 1fr;
+            padding: size(47) size(16) size(16);
+
+            .image {
+                height: size(40);
+                width: size(40);
+                
+                .iconify {
+                    font-size: size(19);
+                }
+            }
+
+            .title {
+                &__title {
+                    font-size: size(18);
+                    line-height: size(25);
+                }
+
+                &__info {
+                    flex-direction: column;
+                    gap: size(8) size(20);
+                    text-transform: uppercase;
+
+                    .data {
+                        font-size: size(10);
+                        line-height: size(14);
+
+                        &__info {
+                            font-size: size(12);
+                            line-height: size(14);
+                        }
                     }
                 }
             }
