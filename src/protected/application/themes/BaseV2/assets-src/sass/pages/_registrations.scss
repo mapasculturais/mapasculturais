@@ -1,4 +1,4 @@
-@use '../settings/mixins' as *;
+@use '../settings/mixins'as *;
 
 .controller-registration {
 
@@ -6,8 +6,8 @@
         background-color: var(--mc-gray-100);
 
         .container {
-            grid-template-columns: 74.36% 23.08%;
             gap: size(32) 2.56%;
+            grid-template-columns: 74.36% 23.08%;
 
             @include mobile {
                 grid-template-columns: 1fr;
@@ -19,264 +19,582 @@
         }
 
         &__content {
-            width: 100%;
             margin: 0 auto;
             position: relative;
+            width: 100%;
 
             &>* {
-                max-width: size(1170);
                 margin: 0 auto;
-            }
-
-            &--title {
-                font-weight: 700;
-                font-size: size(48);
-                line-height: size(65);
-                margin-block: size(26);
-                padding: 0 size(16);
-
-                @include mobile {
-                    font-size: size(24);
-                    line-height: size(33);
-                }
-            }
-
-            &--steps {
-                padding: size(24) 0;
+                max-width: size(1170);
                 width: 100%;
-                background: white;
-                max-width: unset;
-                margin-bottom: size(60);
-                position: sticky;
-                top: 0;
-                overflow-x: auto;
+            }
+        }
 
-                .stepper {
-                    margin: 0 auto;
-                }
+        &.single {
+            .tabs-component {
+                margin-top: size(-40);
             }
 
-            .info {
-                .title {
-                    font-weight: 700;
-                    font-size: size(24);
-                    line-height: size(28);
-                    margin: 0 0 size(13);
-
-                    @include mobile {
-                        font-size: size(18);
-                        line-height: size(28);
-                    }
-                }
-
-                .content {
+            .registration {
+                &__content {
                     display: flex;
-                    gap: size(60);
-                    background: var(--mc-high-500);
-                    padding: size(10) size(24);
-                    border-radius: var(--mc-border-radius-xs);
+                    flex-direction: column;
+                    gap: size(35);
+                    margin: size(32) auto;
+                    padding: 0 size(16);
 
-                    &__info {
+                    .mapas-card {
+                        border-radius: var(--mc-border-radius-xs);
+                        padding: size(17) size(24);
+                    }
+
+                    .registration-info {
                         display: flex;
                         flex-direction: column;
+                        gap: size(16);
+                        width: 100%;
 
-                        p {
-                            margin: 0;
+                        &__header {
+                            display: flex;
+                            justify-content: space-between;
+                            width: 100%;
+
+                            .left {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: size(16) size(64);
+
+                                .agent {
+                                    align-items: center;
+                                    display: grid;
+                                    gap: size(16);
+                                    grid-template-columns: size(48) 1fr;
+
+                                    &__image {
+                                        align-items: center;
+                                        background-color: var(--mc-gray-500);
+                                        border-radius: var(--mc-border-radius-pill);
+                                        display: flex;
+                                        height: size(48);
+                                        justify-content: center;
+                                        overflow: hidden;
+                                        width: size(48);
+
+                                        .iconify {
+                                            color: var(--mc-high-500);
+                                            font-size: size(25);
+                                        }
+
+                                        img {
+                                            width: 100%;
+                                        }
+                                    }
+
+                                    &__name {
+                                        color: var(--mc-gray-700);
+                                        font-size: size(18);
+                                        font-weight: 700;
+                                        line-height: size(25);
+                                    }
+                                }
+
+                                .metadata {
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                    gap: size(64);
+
+                                    .reg,
+                                    .category {
+                                        display: flex;
+                                        flex-direction: column;
+                                        font-size: size(14);
+                                        gap: size(4);
+                                        justify-content: center;
+                                        line-height: size(19);
+
+                                        &__label {
+                                            font-weight: 400;
+                                        }
+
+                                        &__info {
+                                            font-size: size(18);
+                                            font-weight: 700;
+                                        }
+                                    }
+
+                                    .reg {
+                                        &__label {
+                                            text-transform: uppercase;
+                                        }
+                                    }
+                                }
+                            }
                         }
 
-                        .title {
-                            font-weight: 600;
-                            font-size: size(14);
-                            line-height: size(19);
+                        &__footer {
+                            align-items: flex-end;
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: size(24);
+                            justify-content: space-between;
+                            width: 100%;
+
+                            .left {
+                                .project {
+                                    &__label {
+                                        font-size: size(14);
+                                        font-weight: 400;
+                                        line-height: size(19);
+                                    }
+
+                                    &__name {
+                                        font-size: size(18);
+                                        font-weight: 700;
+                                        line-height: size(24);
+                                    }
+                                }
+                            }
+
+                            .right {
+                                align-items: flex-start;
+                                display: flex;
+                                flex-direction: column;
+
+                                .status {
+                                    display: none;
+                                }
+
+                                .sentDate {
+                                    color: var(--mc-low-700);
+                                    font-size: size(18);
+                                    font-weight: 600;
+                                    line-height: size(25);
+                                }
+                            }
                         }
+
+                        .status {
+                            background-color: var(--mc-low-700);
+                            border-radius: var(--mc-border-radius-pill);
+                            color: var(--mc-high-500);
+                            font-size: size(12);
+                            font-weight: 700;
+                            line-height: size(16);
+                            padding: size(8) size(30);
+                        }
+                    }
+
+                    .registered-info {
+                        display: flex;
+                        flex-direction: column;
+                        gap: size(16);
 
                         .info {
-                            font-weight: 700;
                             font-size: size(18);
                             line-height: size(25);
-                            color: var(--mc-opportunities-500);
+                            word-break: break-all;
+                        }
+                    }
+
+                    .space {
+                        align-items: center;
+                        background: var(--mc-low-300);
+                        border-radius: var(--mc-border-radius-xs);
+                        display: flex;
+                        gap: size(16);
+                        padding: size(11) size(24);
+                        width: 100%;
+
+                        .image {
+                            align-items: center;
+                            background: var(--mc-gray-500);
+                            border-radius: var(--mc-border-radius-pill);
+                            display: flex;
+                            height: size(40);
+                            justify-content: center;
+                            width: size(40);
+
+                            .iconify {
+                                color: var(--mc-high-500);
+                                font-size: size(18);
+                            }
+                        }
+
+                        .name {
+                            color: var(--mc-low-500);
+                            font-size: size(16);
+                            font-weight: 700;
+                            line-height: size(22);
                         }
                     }
                 }
             }
 
-            .section {
-                &__title {
-                    font-weight: 700;
-                    font-size: size(32);
-                    line-height: size(44);
-                    margin-bottom: size(24);
+            @include mobile {
+                .registration {
+                    &__content {
+                        .mapas-card {
+                            padding: size(16);
+                        }
 
-                    @include mobile {
-                        font-size: size(24);
-                        line-height: size(28);
+                        .registration-info {
+                            &__header {
+                                .left {
+                                    .metadata {
+                                        gap: size(24);
+
+                                        .reg,
+                                        .category {
+                                            font-size: size(10);
+                                            gap: 0;
+
+                                            &__label {
+                                                font-weight: 600;
+                                            }
+
+                                            &__info {
+                                                font-size: size(14);
+                                                font-weight: 700;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .right {
+                                    .status {
+                                        display: none;
+                                    }
+                                }
+                            }
+
+                            &__footer {
+                                align-items: flex-start;
+                                flex-direction: column;
+
+                                .left {
+                                    .project {
+                                        &__label {
+                                            font-size: size(10);
+                                            line-height: size(15);
+                                        }
+
+                                        &__name {
+                                            font-size: size(14);
+                                            line-height: size(20);
+                                        }
+                                    }
+                                }
+
+                                .right {
+                                    gap: size(5);
+
+                                    .status {
+                                        display: block;
+                                    }
+
+                                    .sentDate {
+                                        font-size: size(14);
+                                        line-height: size(19);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.edit {
+            .registration {
+                &__title {
+                    font-size: size(48);
+                    font-weight: 700;
+                    line-height: size(65);
+                    margin: size(26) auto;
+                    max-width: size(1170);
+                    padding: 0 size(16);
+                    width: 100%;
+                }
+
+                &__steps {
+                    background: white;
+                    margin-bottom: size(60);
+                    max-width: unset;
+                    overflow-x: auto;
+                    padding: size(24) 0;
+                    position: sticky;
+                    top: 0;
+                    width: 100%;
+                    z-index: 2;
+
+                    .stepper {
+                        margin: 0 auto;
                     }
                 }
 
                 &__content {
-                    display: flex;
-                    flex-direction: column;
-                    gap: size(32);
-
-                    .mapas-card {
-                        padding: size(16);
-                    }
-
-                    .card {
-                        background-color: var(--mc-high-500);
-                        border-radius: var(--mc-border-radius-sm);
-                        padding: size(16);
-
-                        &.owner {
-                            padding: size(16) size(24);
-
-                            .card__title {
-                                @include mobile {
-                                    font-size: size(12);
-                                    line-height: size(16);
-                                }
-                            }
-
-                            .card__content {
-                                margin-top: size(10);
-                            }
-                        }
-
+                    .registration-info {
                         &__title {
+                            font-size: size(24);
                             font-weight: 700;
-                            font-size: size(18);
-                            line-height: size(25);
-                            display: flex;
-                            gap: size(10);
-                            align-items: center;
-
-                            .obrigatory {
-                                font-weight: 700;
-                                font-size: size(12);
-                                line-height: size(16);
-                                color: var(--mc-error);
-                            }
-                        }
-
-                        &__subtitle {
-                            font-weight: 400;
-                            font-size: size(12);
-                            line-height: size(16);
+                            line-height: size(28);
+                            margin: 0 0 size(13);
                         }
 
                         &__content {
-                            margin-top: size(16);
+                            background: var(--mc-high-500);
+                            border-radius: var(--mc-border-radius-xs);
                             display: flex;
+                            gap: size(60);
+                            padding: size(10) size(24);
 
-                            .owner {
+                            .data {
                                 display: flex;
-                                align-items: center;
-                                gap: size(9);
+                                flex-direction: column;
 
-                                &__image {
-                                    width: size(40);
-                                    height: size(40);
-                                    background-color: var(--mc-gray-500);
-                                    border-radius: var(--mc-border-radius-pill);
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    overflow: hidden;
-
-                                    .iconify {
-                                        font-size: size(19);
-                                        color: var(--mc-high-500);
-                                    }
-
-                                    img {
-                                        width: 100%;
-                                    }
+                                p {
+                                    margin: 0;
                                 }
 
-                                &__name {
-                                    font-weight: 700;
+                                &__title {
                                     font-size: size(14);
+                                    font-weight: 600;
                                     line-height: size(19);
                                 }
-                            }
-                        }
 
-                    }
-                    
-                    .errors {
-                        width: 100%;
-                        margin-top: 10px;
-                        font-size: 14px;
-                        font-weight: 600;
-                        color: var(--mc-error);
-                    }
-                    
-                    .registration-select-entity {
-                        width: 100%;
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        gap: size(5);
-
-                        &__entity {
-                            max-width: size(520);
-                            width: 100%;
-                            display: flex;
-                            align-items: center;
-                            padding: size(8);
-                            gap: size(15);
-                            border-radius: var(--mc-border-radius-xs);
-                            border: var(--mc-border-hairline);
-                            border-color: var(--mc-primary-500);
-                            
-
-                            .image {
-                                width: size(40);
-                                height: size(40);
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                overflow: hidden;
-                                border-radius: var(--mc-border-radius-pill);
-                                background-color: var(--mc-gray-500);
-
-                                img {
-                                    width: 100%;
-                                }
-
-                                .iconify {
-                                    font-size: size(20);
-                                    color: var(--mc-high-500);
+                                &__info {
+                                    color: var(--mc-opportunities-500);
+                                    font-size: size(18);
+                                    font-weight: 700;
+                                    line-height: size(25);
                                 }
                             }
+                        }
+                    }
 
-                            .name {
-                                font-weight: 600;
-                                font-size: size(14);
-                                line-height: size(19);
-                                color: var(--mc-primary-500);
-                            }
+                    .section {
+                        &__title {
+                            font-size: size(32);
+                            font-weight: 700;
+                            line-height: size(44);
+                            margin-bottom: size(24);
                         }
 
-                        &__actions {
+                        &__content {
                             display: flex;
-                            flex-direction: row;
-                            align-items: center;
-                            gap: size(5);
+                            flex-direction: column;
+                            gap: size(32);
 
-                            .button {
-                                &.change {
-                                    color: var(--mc-primary-500);
+                            .mapas-card {
+                                padding: size(16);
+                            }
 
-                                    .iconify {
-                                        font-size: size(20);
+                            .card {
+                                background-color: var(--mc-high-500);
+                                border-radius: var(--mc-border-radius-sm);
+                                padding: size(16);
+
+                                &.owner {
+                                    padding: size(16) size(24);
+
+                                    .card__content {
+                                        margin-top: size(10);
                                     }
                                 }
 
-                                &.delete {
-                                    .iconify {
-                                        font-size: size(18);
-                                        color: var(--mc-danger-500);
+                                &__title {
+                                    align-items: center;
+                                    display: flex;
+                                    font-size: size(18);
+                                    font-weight: 700;
+                                    gap: size(10);
+                                    line-height: size(25);
+
+                                    .obrigatory {
+                                        color: var(--mc-error);
+                                        font-size: size(12);
+                                        font-weight: 700;
+                                        line-height: size(16);
+                                    }
+                                }
+
+                                &__subtitle {
+                                    font-size: size(12);
+                                    font-weight: 400;
+                                    line-height: size(16);
+                                }
+
+                                &__content {
+                                    display: flex;
+                                    margin-top: size(16);
+
+                                    .owner {
+                                        align-items: center;
+                                        display: flex;
+                                        gap: size(9);
+
+                                        &__image {
+                                            align-items: center;
+                                            background-color: var(--mc-gray-500);
+                                            border-radius: var(--mc-border-radius-pill);
+                                            display: flex;
+                                            height: size(40);
+                                            justify-content: center;
+                                            overflow: hidden;
+                                            width: size(40);
+
+                                            .iconify {
+                                                color: var(--mc-high-500);
+                                                font-size: size(19);
+                                            }
+
+                                            img {
+                                                width: 100%;
+                                            }
+                                        }
+
+                                        &__name {
+                                            font-size: size(14);
+                                            font-weight: 700;
+                                            line-height: size(19);
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            .errors {
+                                color: var(--mc-error);
+                                font-size: size(14);
+                                font-weight: 600;
+                                margin-top: size(10);
+                                width: 100%;
+                            }
+
+                            .registration-select-entity {
+                                align-items: center;
+                                display: flex;
+                                flex-direction: row;
+                                gap: size(5);
+                                width: 100%;
+
+                                &__entity {
+                                    align-items: center;
+                                    border-color: var(--mc-primary-500);
+                                    border-radius: var(--mc-border-radius-xs);
+                                    border: var(--mc-border-hairline);
+                                    display: flex;
+                                    gap: size(15);
+                                    max-width: size(520);
+                                    padding: size(8);
+                                    width: 100%;
+
+                                    .image {
+                                        align-items: center;
+                                        background-color: var(--mc-gray-500);
+                                        border-radius: var(--mc-border-radius-pill);
+                                        display: flex;
+                                        height: size(40);
+                                        justify-content: center;
+                                        overflow: hidden;
+                                        width: size(40);
+
+                                        img {
+                                            width: 100%;
+                                        }
+
+                                        .iconify {
+                                            color: var(--mc-high-500);
+                                            font-size: size(20);
+                                        }
+                                    }
+
+                                    .name {
+                                        color: var(--mc-primary-500);
+                                        font-size: size(14);
+                                        font-weight: 600;
+                                        line-height: size(19);
+                                    }
+                                }
+
+                                &__actions {
+                                    align-items: center;
+                                    display: flex;
+                                    flex-direction: row;
+                                    gap: size(5);
+
+                                    .button {
+                                        &.change {
+                                            color: var(--mc-primary-500);
+
+                                            .iconify {
+                                                font-size: size(20);
+                                            }
+                                        }
+
+                                        &.delete {
+                                            .iconify {
+                                                color: var(--mc-danger-500);
+                                                font-size: size(18);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @include mobile {
+                .registration {
+                    &__title {
+                        font-size: size(24);
+                        line-height: size(33);
+                    }
+
+                    &__content {
+                        .registration-info {
+                            &__title {
+                                font-size: size(18);
+                                line-height: size(28);
+                            }
+
+                            &__content {
+                                gap: size(28);
+    
+                                .data {
+    
+                                    &__title {
+                                        font-size: size(12);
+                                        font-weight: 600;
+                                        line-height: size(16);
+                                    }
+    
+                                    &__info {
+                                        font-size: size(14);
+                                        font-weight: 700;
+                                        line-height: size(22);
+                                    }
+                                }
+                            }
+                        }
+
+                        .section {
+                            &__title {
+                                font-size: size(24);
+                                line-height: size(28);
+                            }
+    
+                            &__content {
+                                gap: size(24);
+
+                                .card {
+                                    &.owner {
+                                        .card__title {
+                                            font-size: size(12);
+                                            line-height: size(16);
+                                        }
                                     }
                                 }
                             }
