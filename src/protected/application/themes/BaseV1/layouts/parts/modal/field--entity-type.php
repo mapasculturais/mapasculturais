@@ -19,7 +19,7 @@ $_title = empty($definition['label']) ? \MapasCulturais\i::esc_attr__("Tipo") : 
 <select name='type'>
     <?php foreach ($types as $_type) {
 
-        if($isAgentTypes && $_type->id == 1){
+        if(!$app->user->is('admin') && $isAgentTypes && $_type->id == 1){
             continue;
         }
 
