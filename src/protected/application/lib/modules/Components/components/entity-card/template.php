@@ -6,7 +6,7 @@ $this->import('mc-icon');
 ?>
 
 <div :class="['entity-card', {'portrait':portrait}]">
-	<div class="entity-card__header">
+	<div class="entity-card__header" :class="{'with-labels': hasSlot('labels'), 'without-labels': !hasSlot('labels')}">
 		<div class="entity-card__header user-details">
 			<div class="user-image">
 				<img v-if="entity.files?.avatar" :src="entity.files?.avatar?.transformations?.avatarMedium.url" />
