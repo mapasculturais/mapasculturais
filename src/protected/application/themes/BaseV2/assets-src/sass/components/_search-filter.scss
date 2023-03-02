@@ -185,11 +185,14 @@
 
                 &>* {
                     clear: both;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
                 }
 
                 &--close {
                     color: var(--mc-low-500);
-                    float: right;
+                    // float: right;
                 }
 
                 form {
