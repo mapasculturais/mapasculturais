@@ -10,6 +10,10 @@ use MapasCulturais\App;
  */
 class Theme extends \MapasCulturais\Theme
 {
+    function getVersion() {
+        return 2;
+    }
+
     static function getThemeFolder()
     {
         return __DIR__;
