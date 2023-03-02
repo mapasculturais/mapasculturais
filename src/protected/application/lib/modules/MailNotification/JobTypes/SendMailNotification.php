@@ -41,6 +41,6 @@ class SendMailNotification extends JobType
             'body' => $message['body'],
         ];
 
-        $app->createAndSendMailMessage($email_params);
+        return $app->createAndSendMailMessage($email_params);
     }
 }
