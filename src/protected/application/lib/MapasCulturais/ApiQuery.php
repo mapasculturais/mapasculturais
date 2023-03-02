@@ -428,8 +428,8 @@ class ApiQuery {
      */
     protected $parentQuery;
 
-    protected $__cacheTLS;
-    protected $__useDQLCache;
+    public $__cacheTLS;
+    public $__useDQLCache;
     
     public function __construct($entity_class_name, $api_params, $is_subsite_filter = false, $select_all = false, $disable_access_control = false, $parentQuery = null) {
         if($disable_access_control){
@@ -457,9 +457,6 @@ class ApiQuery {
      */
     protected function initialize($class, array $api_params) {
         $app = App::i();
-
-        $this->__useDQLCache = $app->config['app.useApiCache'];
-        $this->__cacheTLS = $app->config['app.apiCache.lifetime'];
         
         $_hook_class_path = $class::getHookClassPath();
         $this->hookPrefix = "ApiQuery({$_hook_class_path})";
@@ -482,6 +479,8 @@ class ApiQuery {
             }
         }
 
+        $controller =  $app->getControllerByEntity($class::getClassName());
+
         $this->entityClassName = $class;
         $this->entityClassMetadata = $this->em->getClassMetadata($this->entityClassName);
         
@@ -490,7 +489,7 @@ class ApiQuery {
         $this->entityProperties = array_keys($this->entityClassMetadata->fieldMappings);
         $this->entityRelations = $this->entityClassMetadata->associationMappings;
         
-        $this->entityController = $app->getControllerByEntity($class::getClassName());
+        $this->entityController = $controller;
         $this->entityRepository = $app->repo($this->entityClassName);
         
         $this->usesFiles = $class::usesFiles();
@@ -548,6 +547,13 @@ class ApiQuery {
                 }
             }
         }
+
+        $controller_id = $controller->id ?? -1;
+        $this->__useDQLCache = $app->config['app.useApiCache'];
+        $this->__cacheTLS = $app->config['app.apiCache.lifetimeByController'][$controller_id] ?? $app->config['app.apiCache.lifetime'];
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.init:after");
+
     }
     
     protected function getAlias($name){

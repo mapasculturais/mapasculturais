@@ -39,10 +39,9 @@ return [
     'app.subsiteIdsCache.lifetime'          => env('CACHE_SUBSITE_ID', 120),
     'app.permissionsCache.lifetime'         => env('CACHE_PERMISSIONS', 120),
     'app.registerCache.lifeTime'            => env('CACHE_REGISTER', 600),
-    'app.apiCache.lifetime'                 => env('CACHE_API', 120),
+    'app.apiCache.lifetime'                 => env('CACHE_API', 30),
 
     'app.apiCache.lifetimeByController' => [
-        'notification'  => env('CACHE_API_NOTIFICATION', 0),
-        'event'         => env('CACHE_API_EVENT', 25),
+        'notification'  => env('CACHE_API_NOTIFICATION', 10)
     ],
 ];
