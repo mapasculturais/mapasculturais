@@ -10,7 +10,12 @@ $this->breadcrumb = [
 
 <search page-title="<?php i::esc_attr_e('Projetos') ?>" entity-type="project" :initial-pseudo-query="{type:[]}">
     <template #create-button>
-        <create-project></create-project>
+        <create-project>
+            <button @click="modal.open()" class="button button--primary button--icon">
+                        <mc-icon name="add"></mc-icon>
+                        <span><?= i::__('Criar Projeto') ?></span>
+            </button>
+        </create-project>
     </template>
     <template #default="{pseudoQuery}">
         <div class="tabs-component__panels">
