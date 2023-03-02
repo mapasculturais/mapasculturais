@@ -1,10 +1,12 @@
 app.component('entity-card', {
     template: $TEMPLATES['entity-card'],
 
-    setup() { 
+    setup(props, { slots }) {
+        const hasSlot = name => !!slots[name];
+        
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('entity-card')
-        return { text }
+        return { text, hasSlot }
     },
 
     data() {
