@@ -34,49 +34,44 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
     <mapas-breadcrumb></mapas-breadcrumb>
     <registration-header :registration="entity"></registration-header>
 
+    <div class="registration__title">
+        <?= i::__('Formulário de inscrição') ?>
+    </div>
+
+    <div class="registration__steps">
+        <stepper :steps="<?= $stepsLabels ?>" :actual-step="3" only-active-label small></stepper>
+    </div>
+
     <div class="registration__content">
-        <div class="registration__content--title">
-            <?= i::__('Formulário de inscrição') ?>
-        </div>
-
-        <div class="registration__content--steps">
-            <stepper :steps="<?= $stepsLabels ?>" :actual-step="3" only-active-label small></stepper>
-        </div>
-
         <mapas-container>
             <main class="grid-12">
-
-                <div class="col-12 info">
-                    <p class="title"> <?= i::__('Informações da inscrição') ?> </p>
-
-                    <div class="content">
-                        <div class="content__info">
-                            <p class="title"> <?= i::__('Inscrição') ?> </p>
-                            <p class="info">on-63348175</p>
+                <div class="col-12 registration-info">
+                    <p class="registration-info__title"> <?= i::__('Informações da inscrição') ?> </p>
+                    <div class="registration-info__content">
+                        <div class="data">
+                            <p class="data__title"> <?= i::__('Inscrição') ?> </p>
+                            <p class="data__info">on-63348175</p>
                         </div>
-                        <div class="content__info">
-                            <p class="title"> <?= i::__('Data') ?> </p>
-                            <p class="info">06/04/2022</p>
+                        <div class="data">
+                            <p class="data__title"> <?= i::__('Data') ?> </p>
+                            <p class="data__info">06/04/2022</p>
                         </div>
-                        <div class="content__info">
-                            <p class="title"> <?= i::__('Categoria') ?> </p>
-                            <p v-if="entity.category" class="info">{{entity.category}}</p>
-                            <p v-if="!entity.category" class="info">Sem categoria</p>
+                        <div class="data">
+                            <p class="data__title"> <?= i::__('Categoria') ?> </p>
+                            <p v-if="entity.category" class="data__info">{{entity.category}}</p>
+                            <p v-if="!entity.category" class="data__info">Sem categoria</p>
                         </div>
                     </div>
                 </div>
-
                 <section class="section">
                     <div class="section__title">
                         <?= i::__('Título da seção') ?>
                     </div>
-                    <div class="section__content"> 
-                        
+                    <div class="section__content">                         
                         <div class="card owner">                            
                             <div class="card__title"> 
                                 <?= i::__('Agente responsável') ?> 
                             </div>
-
                             <div class="card__content">
                                 <div class="owner">
                                     <div class="owner__image">
@@ -89,10 +84,8 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
                                 </div>
                             </div>
                         </div>
-
                         <registration-related-agents :registration="entity"></registration-related-agents>
                         <registration-related-space :registration="entity"></registration-related-space>
-
                     </div>
                 </section>
             </main>
@@ -102,5 +95,4 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
             </aside>
         </mapas-container>
     </div>
-
 </div>
