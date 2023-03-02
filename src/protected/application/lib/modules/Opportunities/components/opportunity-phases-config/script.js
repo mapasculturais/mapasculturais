@@ -49,9 +49,12 @@ app.component('opportunity-phases-config', {
     },
     
     methods: {
+        addPublishRegistrations (phase) {
+            phase.POST('publishRegistrations');
+        },
         isBlockedPublish (index) {
           const previousPhase = this.getPreviousPhase(index);
-          const dtFinal = previousPhase.registrationTo?._date || null;
+          const dtFinal = previousPhase.evaluationTo?._date || null;
           return dtFinal > new Date();
         },
 
