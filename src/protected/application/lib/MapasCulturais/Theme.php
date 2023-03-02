@@ -739,6 +739,8 @@ abstract class Theme extends \Slim\View {
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
 
             $query = new ApiQuery($entity_class_name, $query_params);
+            $query->__useDQLCache = false;
+
             $e = $query->findOne();
 
             if ($entity_class_name == Entities\Agent::class) {
@@ -768,6 +770,7 @@ abstract class Theme extends \Slim\View {
                 ];
                 $app->applyHookBoundTo($this,"view.requestedEntity($_entity).owner.params", [&$owner_query_params, $entity_class_name, $entity_id]);
                 $query = new ApiQuery(Entities\Agent::class, $owner_query_params);
+                $query->__useDQLCache = false;
                 $owner = $query->findOne();
                 $e[$owner_prop] = $owner;
             }
@@ -781,6 +784,7 @@ abstract class Theme extends \Slim\View {
                 ];
                 $app->applyHookBoundTo($this,"view.requestedEntity($_entity).parent.params", [&$parent_query_params, $entity_class_name, $entity_id]);
                 $query = new ApiQuery($entity_class_name, $parent_query_params);
+                $query->__useDQLCache = false;
                 $parent = $query->findOne();
                 $e['parent'] = $parent;
             }
