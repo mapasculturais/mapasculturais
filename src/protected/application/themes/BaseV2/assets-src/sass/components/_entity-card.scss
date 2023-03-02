@@ -33,17 +33,18 @@
 				background-color: var(--mc-gray-300);
 				border-radius: 50%;
 				display: flex;
-				height: size(48);
+				height: size(80);
 				justify-content: center;
-				min-width: size(48);
+				min-width: size(80);
 				overflow: hidden;
-				width: size(48);
+				width: size(80);
 
 				img {
 					width: 100%;
 				}
 
 				.iconify {
+					font-size: size(36);
 					color: var(--mc-gray-700);
 				}
 			}
@@ -54,7 +55,13 @@
 				flex-direction: column;
 				gap: size(10);
 				margin: size(4) 0;
-				max-width: size(430);
+
+				&.with-labels {
+					max-width: size(430);
+				}
+				&.without-labels {
+					max-width: size(700);
+				}
 				width: 100%;
 
 				&__name {
@@ -62,7 +69,7 @@
 					display: flex;
 					font-size: size(32);
 					font-weight: 700;
-					line-height: size(25);
+					line-height: size(43);
 				}
 
 				&__attr {
@@ -84,6 +91,7 @@
 			height: 100%;
 			position: absolute;
 			right: 0;
+			max-width: size(280);
 
 			.entityType {
 				align-items: center;

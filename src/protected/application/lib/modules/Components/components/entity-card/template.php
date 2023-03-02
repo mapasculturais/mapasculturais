@@ -12,7 +12,7 @@ $this->import('mc-icon');
 				<img v-if="entity.files?.avatar" :src="entity.files?.avatar?.transformations?.avatarMedium.url" />
 				<mc-icon v-else :entity="entity"></mc-icon>
 			</div>
-			<div class="user-info">
+			<div class="user-info" :class="{'with-labels': hasSlot('labels'), 'without-labels': !hasSlot('labels')}">
 				<label class="user-info__name">
 					{{entity.name}}
 				</label>
