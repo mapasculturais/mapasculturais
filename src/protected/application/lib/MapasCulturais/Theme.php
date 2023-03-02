@@ -20,6 +20,8 @@ use MapasCulturais\Entities\Agent;
  *
  * @property-read \MapasCulturais\AssetManager $assetManager The asset manager
  * 
+ * @property-read int $version Theme version 
+ * 
  *
  * @hook **view.render:before ($template_name)** - executed before the render of the template and the layout
  * @hook **view.render({$template_name}):before ($template_name)** - executed before the render of the template and the layout
@@ -99,6 +101,7 @@ abstract class Theme extends \Slim\View {
 
     abstract function register();
 
+    abstract function getVersion();
 
     public function __construct(AssetManager $asset_manager) {
         parent::__construct();
