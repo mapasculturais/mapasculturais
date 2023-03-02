@@ -14,9 +14,8 @@ use MapasCulturais\i;
 
     <div class="registration-header__content">
         <div class="image">
-            <div class="icon">
-                <mc-icon name="image"></mc-icon>
-            </div>
+            <img v-if="registration.opportunity.files?.avatar" :src="registration.opportunity.files?.avatar?.transformations?.avatarMedium?.url" />
+            <mc-icon v-if="!registration.opportunity.files?.avatar" name="image"></mc-icon>
         </div>
         <div class="title">
             <span class="title__title">{{registration.opportunity.name}}</span>
