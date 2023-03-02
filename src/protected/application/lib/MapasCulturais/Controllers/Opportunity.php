@@ -1014,4 +1014,27 @@ class Opportunity extends EntityController {
         }
 
     }
+
+  function GET_formBuilder() {
+    $this->requireAuthentication();
+    $app = App::i();
+
+    $entity = $this->requestedEntity;
+
+    if (!$entity) {
+      $app->pass();
+    }
+
+    $entity->checkPermission('modify');
+
+    if($entity->usesNested()){
+
+      $child_entity_request = $app->repo('RequestChildEntity')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+
+      $this->render('form-builder', ['entity' => $entity, 'child_entity_request' => $child_entity_request]);
+
+    }else{
+      $this->render('form-builder', ['entity' => $entity]);
+    }
+  }
 }
