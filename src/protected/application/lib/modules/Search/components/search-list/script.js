@@ -11,7 +11,10 @@ app.component('search-list', {
 
     created() {
         if (this.type == "agent") {
-            this.typeText = __("Este agente atua de forma: ");
+            this.typeText = __('text', 'search-list');
+        }else {
+            this.typeText = __('label', 'search-list');
+
         }
     },
     watch: {

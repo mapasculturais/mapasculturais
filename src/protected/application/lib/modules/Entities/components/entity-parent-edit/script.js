@@ -38,6 +38,10 @@ app.component('entity-parent-edit', {
             type: [String, Array, Object],
             required: false
         },
+        label: {
+            type: String,
+            required: true
+        }
 
     },
 

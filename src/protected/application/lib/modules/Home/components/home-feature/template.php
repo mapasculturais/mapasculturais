@@ -29,7 +29,7 @@ $this->import('
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        {{entityType(entity.__objectType)}}
+                                        <?php i::_e('{{entityType(entity.__objectType)}}')?>
                                     </div>
                                 </template>
                             </entity-card>
@@ -49,7 +49,8 @@ $this->import('
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        {{entity.__objectType}}
+                                        <?php i::_e('{{entityType(entity.__objectType)}}')?>
+
                                     </div>
                                 </template>
                             </entity-card>
@@ -69,7 +70,8 @@ $this->import('
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        {{entity.__objectType}}
+                                        <?php i::_e('{{entityType(entity.__objectType)}}')?>
+
                                     </div>
                                 </template>
                             </entity-card>
@@ -89,7 +91,8 @@ $this->import('
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        {{entity.__objectType}}
+                                        <?php i::_e('{{entityType(entity.__objectType)}}')?>
+
                                     </div>
                                 </template>
                             </entity-card>
