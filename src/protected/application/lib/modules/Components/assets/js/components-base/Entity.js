@@ -95,7 +95,7 @@ class Entity {
     }
 
     populateFiles(files) {
-        if (this.files) {
+        if (this.files && Object.keys(this.files).length) {
             return;
         }
         
@@ -279,11 +279,11 @@ class Entity {
     }
 
     disableMessages() {
-        this.__messagesEnabled = true;
+        this.__messagesEnabled = false;
     }
 
     enableMessages() {
-        this.__messagesEnabled = false;
+        this.__messagesEnabled = true;
     }
 
     getUrl(action, params) {
