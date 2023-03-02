@@ -30,7 +30,7 @@ $this->import('
                     <mc-icon name="add"></mc-icon>
                     <span><?= i::__('Criar Oportunidade') ?></span>
                 </button>
-            </create-project>
+            </create-opportunity>
         </div>
     </header>
 
