@@ -22,7 +22,7 @@ $this->import('select-entity');
             <template #button="{ toggle }">
                 <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
                     <mc-icon name="exchange"></mc-icon>
-                    <h4><?php i::_e('Alterar Supraespaço') ?></h4>    
+                    <h4><?php i::_e("{{label}}") ?></h4>    
                 </a>
             </template>
         </select-entity>

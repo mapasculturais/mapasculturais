@@ -157,4 +157,51 @@
   &__full {
     width: 100%;
   }
+
+  .form-builder {
+    background-color: var(--mc-gray-100);
+
+    .subtitle {
+      font-size: size(12);
+      font-weight: normal;
+      color: var(--mc-gray-500);
+    }
+
+    &__title {
+      font-size: size(22);
+      margin: auto 0 auto size(16);
+    }
+
+    &__period {
+      margin: auto 0;
+    }
+
+    &__content {
+      max-width: size(1200);
+      margin: 0 auto;
+      padding: size(20) 0;
+      p {
+        font-weight: bold;
+      }
+
+      .period_label {
+        font-size: size(14);
+        font-weight: bolder;
+        color: var(--mc-gray-500);
+      }
+    }
+    &__bg-content {
+      background-color: var(--mc-white);
+      margin: size(20) 0;
+      &--spacing {
+        padding: size(16);
+        div {
+          margin-bottom: size(16);
+        }
+      }
+    }
+    &__label-btn {
+      margin: size(20) 0;
+    }
+  }
 }
