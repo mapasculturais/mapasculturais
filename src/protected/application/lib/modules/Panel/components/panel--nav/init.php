@@ -6,7 +6,7 @@ $nav_items = [
     'main' => [
         'label' => '',
         'items' => [
-            ['route' => 'panel/index', 'icon' => 'dashboard', 'label' => i::__('Visão geral')],
+            ['route' => 'panel/index', 'icon' => 'dashboard', 'label' => i::__('Painel de Controle')],
             ['route' => 'panel/agents', 'icon' => 'agent', 'label' => i::__('Meus Agentes')],
             ['route' => 'panel/spaces', 'icon' => 'space', 'label' => i::__('Meus Espaços')],
             ['route' => 'panel/events', 'icon' => 'event', 'label' => i::__('Meus Eventos')],
