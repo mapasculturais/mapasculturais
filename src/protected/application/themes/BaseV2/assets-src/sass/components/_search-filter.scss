@@ -52,10 +52,8 @@
         box-shadow: var(--mc-shadow-lv1);
         border-radius: var(--mc-border-radius-xs);
         padding: size(16);
-        position: absolute;
+        position: relative;
         width: 100%;
-
-        .content {
             .clear-filter {
                 display: flex;
                 align-items: center;
@@ -64,7 +62,6 @@
                 font-size: 16px;
 
             }
-        }
 
         form,
         .form {
