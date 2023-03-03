@@ -186,10 +186,10 @@
             &__filter {
                 background-color: var(--mc-gray-100);
                 padding: 0 size(16) size(21);
-                position: absolute;
+                position: relative;
                 right: 0;
                 top: size(14);
-                width: 100%;
+                max-width: 100%;
                 .content {
                     .clear-filter {
                         display: flex;
