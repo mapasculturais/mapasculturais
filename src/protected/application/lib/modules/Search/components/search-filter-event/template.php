@@ -44,7 +44,7 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['event:term:linguagem']" classes="event__background event__color"></mc-tag-list>
         </div>
-        <a @click="clearFilters()">Limpar todos os filtros <mc-icon name="close"></mc-icon></a>
+        <a @click="clearFilters()" class="clear-filter"><?php i::_e('Limpar todos os filtros')?> <mc-icon name="close"></mc-icon></a>
 
     </form>
 </search-filter>
