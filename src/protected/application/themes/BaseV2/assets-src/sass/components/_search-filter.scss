@@ -156,6 +156,16 @@
                 &--close {
                     display: none;
                 }
+                .content {
+                    .clear-filter {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        font-weight: bold;
+                        font-size: 16px;
+        
+                    }
+                }
             }
 
         }
@@ -180,16 +190,26 @@
                 right: 0;
                 top: size(14);
                 width: 100%;
-
-
-
+                .content {
+                    .clear-filter {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        font-weight: bold;
+                        font-size: 16px;
+        
+                    }
+                }
                 &>* {
                     clear: both;
+                    display: flex;
+                    flex-direction: column;
                 }
 
                 &--close {
                     color: var(--mc-low-500);
-                    float: right;
+                    align-self: flex-end;
+                    left: 20px;
                 }
 
                 form {
@@ -197,7 +217,10 @@
                     border-radius: var(--mc-border-radius-xs);
                     padding: size(16);
 
+                    
                 }
+
+
             }
         }
     }

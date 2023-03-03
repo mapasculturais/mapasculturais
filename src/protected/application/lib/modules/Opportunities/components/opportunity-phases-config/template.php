@@ -8,6 +8,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-link
     confirm-button
     mc-stepper-vertical
     mc-link
@@ -47,8 +48,10 @@ $this->import('
                             <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
                         </h5>
                     </div>
-                    <div class="col-12">
-                        <button class="config-phase__info--button button--primary button"><label class="config-phase__info-button--label"><?= i::__("Configurar formulário") ?></label><mc-icon class="config-phase__info-button--icon" name="external"></mc-icon></button>
+                    <div class="col-6 sm:col-12">
+                        <mc-link :entity="item" route='formBuilder' class="config-phase__info--button button--primary button" icon="external">
+                          <?= i::__("Configurar formulário") ?>
+                        </mc-link>
                     </div>
 
                     <div class="config-phase__line-bottom col-12 "></div>

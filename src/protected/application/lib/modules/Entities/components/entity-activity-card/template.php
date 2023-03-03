@@ -12,10 +12,10 @@ $this->import('
     </div>
     <div class="entity-activity-card__content ">
         <div class="entity-activity-card__content--header">
-            <label>fechoNome da Entidade Inserida</label>
+            <label></label>
         </div>
         <div class="entity-activity-card__content--info">
-            ahsuihasihauhuiashuiashuiahuihsauihushasuihasuihsuisahuiasuias
+            
         </div>
     </div>
     <div class="entity-activity-card__aside">

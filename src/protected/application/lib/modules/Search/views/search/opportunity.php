@@ -13,7 +13,12 @@ $this->breadcrumb = [
 <search page-title="<?php i::esc_attr_e('Oportunidades') ?>" entity-type="opportunity" :initial-pseudo-query="{type:[]}"> 
     <template #create-button>
         <!-- @TODO: Criação e aplicação do componente <create-opportunity> -->
-        <create-opportunity></create-opportunity>
+        <create-opportunity>
+            <button @click="modal.open()" class="button button--primary button--icon">
+                    <mc-icon name="add"></mc-icon>
+                    <span><?= i::__('Criar Oportunidade') ?></span>
+            </button>
+        </create-opportunity>
     </template>
     <template #default="{pseudoQuery}">
         <div class="tabs-component__panels">
