@@ -5,12 +5,19 @@ app.component('panel--nav', {
         classes: {
             type: [Array, String],
             default: ''
-        }
+        },
+        // entity: {
+        //     type: Entity,
+        //     required: true
+        // }
+
     },
 
     data() {
         return {
+            entity: $MAPAS.userProfile,
             groups: $MAPAS.config.panelNav
+
         }
     },
 
