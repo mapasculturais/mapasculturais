@@ -33,7 +33,7 @@ $this->import('
         </template>
         <template #default="popover">
             <?php $this->applyTemplateHook('header-menu-user--desktop', 'before') ?>
-            <panel--nav classes="user-menu">
+            <panel--nav classes="user-menu" :entity="profile">
                 <template #begin>
                     <?php $this->applyTemplateHook('header-menu-user--desktop', 'begin') ?>
                     <ul>
@@ -42,7 +42,6 @@ $this->import('
 
                         <?php $this->applyTemplateHook('header-menu-user--itens', 'end') ?>
                     </ul>
-                    <!-- <h3><?= i::__('Menu do Painel de controle') ?></h3> -->
                 </template>
 
                 <template #end>
@@ -79,16 +78,15 @@ $this->import('
                 </a>
             </div>
             <?php $this->applyTemplateHook('header-menu-user--mobile', 'before') ?>
-            <panel--nav>
+            <panel--nav :entity="profile">
                 <template #begin>
+
                     <?php $this->applyTemplateHook('header-menu-user--mobile', 'begin') ?>
                 </template>
 
                 <template #end>
-                    <div class=" header-menu-user--mobile-profile">
-                        <mc-link :entity='profile' icon><label><?= i::__('Meu Perfil') ?></label></mc-link>
-                        <mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link>
-                    </div>
+                    <mc-link :entity='profile' icon><label><?= i::__('Meu Perfil') ?></label></mc-link>
+                    <mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link>
                     <?php $this->applyTemplateHook('header-menu-user--mobile', 'end') ?>
                 </template>
             </panel--nav>
