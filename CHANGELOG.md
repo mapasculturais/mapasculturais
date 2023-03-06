@@ -14,6 +14,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Faz com que Job SendMailNotification retorne o status do disparo de e-mail para concluir o processo do Job e evitar erros
 
+## [5.5.15] - 2023-03-06
+### Correções
+- Evita que ao importar inscrições entre fases, não seja disparado e-mail de notificação da criação da inscrição
+
 ## [5.5.14] - 2023-03-06
 ### Correções
 - Evita que ao importar inscrições entre fases, não seja disparado e-mail de notificação da criação da inscrição
