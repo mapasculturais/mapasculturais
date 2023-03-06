@@ -527,6 +527,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
     }
 
+    /**
+     * Indica se as inscrições estão abertas
+     * @return bool 
+     */
     function isRegistrationOpen(){
         $cdate = new \DateTime;
         return $cdate >= $this->registrationFrom && $cdate <= $this->registrationTo;
