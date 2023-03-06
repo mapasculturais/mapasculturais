@@ -1,7 +1,7 @@
         <header id="project-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'project'">
             <div class="clearfix">
                 <h1><span class="icon icon-project"></span> <?php \MapasCulturais\i::_e("Projetos");?></h1>
-                <a class="btn btn-accent add" href="<?php echo $app->createUrl('project', 'create') ?>"><?php \MapasCulturais\i::_e("Adicionar projeto");?></a>
+                <?php $this->renderModalFor('project', false, \MapasCulturais\i::__("Adicionar projeto"), "btn btn-accent add"); ?>
             </div>
         </header>
         
