@@ -3,6 +3,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.5.14] - 2023-03-06
+### Correções
+- Evita que ao importar inscrições entre fases, não seja disparado e-mail de notificação da criação da inscrição
+
 ## [5.5.13] - 2023-02-24
 ### Correções
 - Verifica se a taxnomia função existe antes de utilizar seus atributos
