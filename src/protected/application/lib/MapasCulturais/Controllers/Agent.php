@@ -128,6 +128,8 @@ class Agent extends EntityController {
         if(!$agent)
             $app->pass();
 
+        $app->user->profile->checkPermission('changeUserProfile');
+
         $success = $agent->setAsUserProfile();
 
         if($this->isAjax()){

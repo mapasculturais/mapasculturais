@@ -448,3 +448,36 @@ article.opportunity .editable-buttons button {
         min-height: 75px;
     }
 }
+
+.validation-fields-errors{
+    
+    .title{
+        text-align: center;
+        font-size: 14px;
+        font-weight: bolder;
+        font-family: Open Sans,Helvetica,Arial,sans-serif;
+        color: red;
+    }
+    .text{
+        text-align: center;
+        font-size: 16px;
+        font-weight: 150;
+        font-family: Open Sans,Helvetica,Arial,sans-serif;
+        color: red;
+    }
+    a span{
+        font-size: 12px;
+        font-weight: 100;
+        cursor: pointer;
+        font-weight: bolder;
+        display:inline-block;
+        color: red
+    }
+    
+    a span:hover{
+    text-decoration:underline;
+    text-decoration-color: red;
+    color: red;
+    }
+
+}

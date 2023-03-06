@@ -3,18 +3,33 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [5.5.16] - 2023-03-06
+### Novas Funcionalidade
+- No formulário de inscrição, exibe os erros de preenchimento no final da página para facilitar identificação dos campos com erros
+### Melhorias
+- Garante que todo agente principal seja criado como agente individual
+- Faz com que somente administradores possam alterar o tipo do agente
+- Remove opção de troca de perfil principal para evitar que sejam atribuídos perfis do tipo coletivo como agente principal para atender LGPD
+### Correções
+- Faz com que Job SendMailNotification retorne o status do disparo de e-mail para concluir o processo do Job e evitar erros
+
 ## [5.5.15] - 2023-03-06
 ### Correções
 - Evita que ao importar inscrições entre fases, não seja disparado e-mail de notificação da criação da inscrição
 
-## [5.5.14] - 2023-03-06
 ### Correções
 - Evita que ao importar inscrições entre fases, não seja disparado e-mail de notificação da criação da inscrição
 - Evita que quebre quando existe dados do lockedFields
 
+## [5.5.14] - 2023-03-06
+### Correções
+- Evita que ao importar inscrições entre fases, não seja disparado e-mail de notificação da criação da inscrição
+- Evita que quebre quando não existe dados do lockedFields
+
 ## [5.5.13] - 2023-02-24
 ### Correções
-- Verifica se a taxnomia função existe antes de utilizar seus atributos
+- Verifica se a taxonomia função existe antes de utilizar seus atributos
 
 ## [5.5.12] - 2023-02-17
 ### Correções
@@ -53,7 +68,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Evita que autosave execute na ficha de inscrição após a mesma estar enviada
 - Corrige erros de carregamento do thumbnail do avatar nos templates referente ao agente caso nao encontre o avatar
 - Corrige problema de duplicidade ao processar a planilha de importação de eventos
-
 ## [5.5.4] - 2022-12-30
 ### Correções
 - corrige validação de CNPJ e CPF após criação dos novos metadados

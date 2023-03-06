@@ -1922,7 +1922,6 @@ $$
         fclose($fp);
     },
     "seta como vazio campo escolaridade do agent caso esteja com valor não informado" => function() use ($conn, $app){
-
         /** @var App $app */
         $app= App::i();
         $conn = $app->em->getConnection();
