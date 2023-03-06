@@ -22,7 +22,7 @@ $this->import('search-filter');
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" classes="project__background project__color"></mc-tag-list>
         </div>
-        <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros')?><mc-icon  name="close"></mc-icon></a>
+        <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
 
     </form>
 </search-filter>
