@@ -38,7 +38,7 @@ trait EntitySealRelation {
 
         foreach($this->sealRelations as $seal_relation) {
             $seal = $seal_relation->seal;
-            foreach($seal->lockedFields ?? [] as $entity_field) {
+            foreach($seal->lockedFields ?: [] as $entity_field) {
                 if(preg_match("#{$this->controllerId}\.(.*)#", $entity_field, $match)) {
                     $lockedFields[] = $match[1];
                 }
