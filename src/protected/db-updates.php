@@ -1813,8 +1813,13 @@ $$
             __exec("ALTER TABLE seal ADD locked_fields JSON DEFAULT '[]'");
         }
     },
+    'Apaga registro do db-update de "Definição dos cammpos cpf e cnpj com base no documento" para que rode novamente' => function() use ($conn, $app){
+        if($conn->fetchAll("SELECT * FROM db_update WHERE name = 'Definição dos cammpos cpf e cnpj com base no documento'")){
+            $conn->executeQuery("DELETE FROM db_update WHERE name = 'Definição dos cammpos cpf e cnpj com base no documento'");
+        }
+    },
     'Definição dos cammpos cpf e cnpj com base no documento' => function () use ($conn, $app) {
-        if ($agents_id = $conn->fetchAll("SELECT id from agent WHERE status > 0")) {
+        if ($agents_id = $conn->fetchAll("SELECT id from agent WHERE status >= 0")) {
             $txt = "AGENTE_ID | NOME |NOME_COMPLETO | EMAIL_PRIVADO | TIPO_ATUAL| OPERACAO \n";
             $_types = [
                 1 => "individual",
@@ -1840,13 +1845,20 @@ $$
                     }
 
                     if ($validate) {
-                        $agent->$type = $agent->documento;
+                        $_type = strtolower($type);
+                        $agent->$_type = $agent->documento;
 
                         $op = "Definido {$type} para o agente";
                         $txt .= "{$agent->id} | {$agent->name} | {$agent->nomeCompleto} | {$agent->emailPrivado} | {$_types[$agent->type->id]} | {$op} \n";
                         $app->log->debug($agent->id . " " . $op);
 
                         $app->disableAccessControl();
+
+                        if(!$agent->getRevisions()){
+                            $agent->_newCreatedRevision();
+                            $app->log->debug("Revision do agente {$agent->id} Criada");
+                        }
+
                         $agent->save(true);
                         $app->enableAccessControl();
                     } else {
