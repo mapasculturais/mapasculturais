@@ -36,10 +36,6 @@ class Controller extends \MapasCulturais\Controller
         $this->render('events');
     }
 
-    function GET_notifications() {
-        $this->requireAuthentication();
-        $this->render('notifications');
-    }
     function GET_terms() {
         $this->requireAuthentication();
         $this->render('terms');
