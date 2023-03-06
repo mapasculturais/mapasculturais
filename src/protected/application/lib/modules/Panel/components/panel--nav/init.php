@@ -3,17 +3,22 @@
 use MapasCulturais\i;
 
 $nav_items = [
+    'panel-menu' => [
+        'label' => i::__('Menu do Painel de Controle'),
+        'items' =>[
+            ['route' => 'panel/index', 'icon' => 'dashboard', 'label' => i::__('Painel de Controle')]
+        ]
+    ],
     'main' => [
-        'label' => '',
+        'label' => 'Entidades',
         'items' => [
-            ['route' => 'panel/index', 'icon' => 'dashboard', 'label' => i::__('Painel de Controle')],
             ['route' => 'panel/agents', 'icon' => 'agent', 'label' => i::__('Meus Agentes')],
             ['route' => 'panel/spaces', 'icon' => 'space', 'label' => i::__('Meus Espaços')],
             ['route' => 'panel/events', 'icon' => 'event', 'label' => i::__('Meus Eventos')],
             ['route' => 'panel/projects', 'icon' => 'project', 'label' => i::__('Meus Projetos')],
         ]
     ],
-
+ 
     'opportunities' => [
         'label' => i::__('Editais e oportunidades'),
         'items' => []
