@@ -47,10 +47,10 @@ $this->breadcrumb = [
                                             <div class="category__label"> <?= i::__('Categoria de inscrição') ?> </div>
                                             <div class="category__info"> {{entity.category}} </div>
                                         </div>
-                                    </div>                    
+                                    </div>
                                 </div>
                                 <div class="right">
-                                    <div class="status"> 
+                                    <div class="status">
                                         <span v-if="entity.status == 0"> <?= i::__('Não enviada') ?> </span>
                                         <span v-if="entity.status > 0"> <?= i::__('Enviada') ?> </span>
                                     </div>
@@ -64,7 +64,7 @@ $this->breadcrumb = [
                                     </div>
                                 </div>
                                 <div class="right">
-                                    <div class="status"> 
+                                    <div class="status">
                                         <span v-if="entity.status == 0"> <?= i::__('Não enviada') ?> </span>
                                         <span v-if="entity.status > 0"> <?= i::__('Enviada') ?> </span>
                                     </div>
@@ -77,22 +77,14 @@ $this->breadcrumb = [
 
                 <mapas-card no-title>
                     <template #content>
-                        <timeline   :timeline-items="[{
-                                                from: new Date(2017, 5, 2),
-                                                title: 'Fase de inscrições',
-                                                description: 'de 05/03/2022 a 21/03/2022 às 12:00',
-                                                showDayAndMonth: true
-                                                }]"
-                                    :message-when-no-items="'NO'"
-                                    :unique-year="true"
-                                    order="asc">
-                        </timeline>
+
+                        <timeline big></timeline>
                     </template>
-                </mapas-card>   
+                </mapas-card>
             </div>
         </tab>
 
-        <tab label="<?= i::_e('Ficha de inscrição') ?>" slug="ficha">        
+        <tab label="<?= i::_e('Ficha de inscrição') ?>" slug="ficha">
             <div class="registration__content">
                 <mapas-card no-title>
                     <template #content>
@@ -102,11 +94,11 @@ $this->breadcrumb = [
                             <span class="info"> <strong> <?= i::__('Descrição curta') ?>: </strong> {{entity.owner.shortDescription}} </span>
                             <span class="info"> <strong> <?= i::__('CPF ou CNPJ') ?>: </strong> {{entity.owner.document}} </span>
                             <span class="info"> <strong> <?= i::__('Data de nascimento ou fundação') ?>: </strong> <!-- {{entity.owner.dataDeNascimento.date('2-digit year')}} --> </span>
-                            <span class="info"> <strong> <?= i::__('Email') ?>: </strong> {{entity.owner.emailPublico}} </span> 
+                            <span class="info"> <strong> <?= i::__('Email') ?>: </strong> {{entity.owner.emailPublico}} </span>
                             <span class="info"> <strong> <?= i::__('Raça') ?>: </strong> {{entity.owner.raca}} </span>
                             <span class="info"> <strong> <?= i::__('Genero') ?>: </strong> {{entity.owner.genero}} </span>
                             <span class="info"> <strong> <?= i::__('Endereço') ?>: </strong> {{entity.owner.endereco}} </span>
-                            <span class="info"> <strong> <?= i::__('CEP') ?>: </strong> {{entity.owner.En_CEP}} </span> 
+                            <span class="info"> <strong> <?= i::__('CEP') ?>: </strong> {{entity.owner.En_CEP}} </span>
                         </div>
                     </template>
                 </mapas-card>
@@ -128,5 +120,5 @@ $this->breadcrumb = [
                 </mapas-card>
             </div>
         </tab>
-    </tabs>        
+    </tabs>
 </div>
