@@ -1,39 +1,39 @@
 @use '../settings/mixins'as *;
 
 .timeline {
-    text-align: left;
-    position: relative;
     display: flex;
     flex-direction: column;
     margin: size(16) auto;
+    position: relative;
+    text-align: left;
 
     .item {
         display: grid;
-        grid-template-columns: size(24) 1fr;
-        position: relative;
-        padding-bottom: size(28);
         gap: size(5);
+        grid-template-columns: size(24) 1fr;
+        padding-bottom: size(28);
+        position: relative;
 
         &__dot {
-            display: flex;
             align-items: flex-start;
+            display: flex;
             justify-content: center;
 
             &::before {
+                background-color: var(--mc-gray-700);
                 content: "";
+                height: 100%;
                 position: absolute;
                 width: size(2);
-                height: 100%;
-                background-color: var(--mc-gray-700);
             }
 
             .dot {
-                width: size(24);
-                height: size(24);
                 background-color: var(--mc-gray-700);
                 border-radius: var(--mc-border-radius-pill);
                 border: size(4) solid var(--mc-high-500);
+                height: size(24);
                 position: relative;
+                width: size(24);
             }
         }
 
@@ -44,14 +44,14 @@
             margin-top: size(4);
 
             &--title {
-                font-weight: 700;
                 font-size: size(12);
+                font-weight: 700;
                 line-height: size(16);
             }
 
             &--description {
-                font-weight: 600;
                 font-size: size(12);
+                font-weight: 600;
                 line-height: size(16);
             }
         }
@@ -67,15 +67,15 @@
 
     &.big {
         .item {
+            gap: 0;
             grid-template-columns: size(70) 1fr;
             padding-bottom: size(41);
-            gap: 0;
     
             &__dot {        
                 .dot {
-                    width: size(42);
-                    height: size(42);
                     border: size(7) solid var(--mc-high-500);
+                    height: size(42);
+                    width: size(42);
                 }
             }
     
@@ -99,15 +99,19 @@
                     margin-top: size(5);
                 }
             }
+
+            &:last-child {
+                padding: 0;
+            }
     
             &.active {    
                 .item {
                     &__dot {
     
                         .dot {
-                            width: size(70);
-                            height: size(70);
                             background-color: var(--mc-opportunities-500);
+                            height: size(70);
+                            width: size(70);
                         }
                     }
     
