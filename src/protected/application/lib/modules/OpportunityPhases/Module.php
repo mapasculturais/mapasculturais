@@ -363,7 +363,7 @@ class Module extends \MapasCulturais\Module{
             $app->disableAccessControl();
 
             $firstPhase = $this->firstPhase;
-            eval(\psy\sh());
+            
             $mout_symplyfy = "id,type,publishedRegistrations,name,publishTimestamp,summary";
             if($opportunity_phases = $firstPhase->allPhases){
                 foreach($opportunity_phases as $key => $opportunity){
