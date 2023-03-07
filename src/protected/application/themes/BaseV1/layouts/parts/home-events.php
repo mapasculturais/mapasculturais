@@ -60,7 +60,6 @@ $url_search_events = $this->searchEventsUrl;
             </div>
         </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('event', 'create') ?>"><?php \MapasCulturais\i::_e("Adicionar evento");?></a>
         <a class="btn btn-accent btn-large" href="<?php echo $url_search_events ?>"><?php \MapasCulturais\i::_e("Ver tudo");?></a>
     </div>
     <?php $this->applyTemplateHook('home-events','end'); ?>
