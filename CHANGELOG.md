@@ -6,6 +6,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [5.5.17] - 2023-03-07
 ### Melhorias
 - Coloca scroll na modal de criação rapida de entidades
+- Remove botões de criação de entidades da home
 
 ## [5.5.16] - 2023-03-06
 ### Novas Funcionalidade
