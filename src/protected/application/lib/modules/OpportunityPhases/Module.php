@@ -357,13 +357,13 @@ class Module extends \MapasCulturais\Module{
         /**
          * retorna a lista de fases de coleta de dados e avaliação
          */
-        $app->hook('entity(Opportunity).get(phases)', function () use($app) {
+        $app->hook('entity(Opportunity).get(phases)', function (&$value) use($app) {
             /** @var Opportunity $this */
             $result = [];
             $app->disableAccessControl();
 
             $firstPhase = $this->firstPhase;
-            
+            eval(\psy\sh());
             $mout_symplyfy = "id,type,publishedRegistrations,name,publishTimestamp,summary";
             if($opportunity_phases = $firstPhase->allPhases){
                 foreach($opportunity_phases as $key => $opportunity){
@@ -383,8 +383,8 @@ class Module extends \MapasCulturais\Module{
                 }
             }
             $app->enableAccessControl();
-
-            return $result;
+            
+            $value = $result;
         });
 
         /**
@@ -393,7 +393,7 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('API(opportunity.phases)', function() use($app) {
             /** @var \MapasCulturais\Controller $this */
-            
+
             $opportunity = $app->repo('Opportunity')->find($this->data['@opportunity']);
             $result = $opportunity->phases;
 
@@ -490,6 +490,29 @@ class Module extends \MapasCulturais\Module{
                 throw new Exceptions\PermissionDenied($app->user, $opportunity, 'register');
             }
         });
+
+        // hooks específicos para os novos temas
+        if ($app->view->version >= 2) {
+            // cria a fase de publicaçao de resultado na criação de novas oportunidades
+            $app->hook('entity(Opportunity).insert:after', function() use ($app) {
+                /** @var Opportunity $this */
+                if ($this->parent) {
+                    return;
+                }
+
+                $class = get_class($this);
+
+                /** @var Opportunity $last_phase */
+                $last_phase = new $class;
+                $last_phase->status = -1;
+                $last_phase->parent = $this;
+                $last_phase->name = i::__('Publicação final do resultado');
+                $last_phase->type = $this->type;
+                $last_phase->isLastPhase = true;
+                $last_phase->isOpportunityPhase = true;
+                $last_phase->save(true);
+            });
+        }
     }
 
     function register () {
