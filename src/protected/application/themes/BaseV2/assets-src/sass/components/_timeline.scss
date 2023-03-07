@@ -1,0 +1,129 @@
+@use '../settings/mixins'as *;
+
+.timeline {
+    text-align: left;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: size(16) auto;
+
+    .item {
+        display: grid;
+        grid-template-columns: size(24) 1fr;
+        position: relative;
+        padding-bottom: size(28);
+        gap: size(5);
+
+        &__dot {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+
+            &::before {
+                content: "";
+                position: absolute;
+                width: size(2);
+                height: 100%;
+                background-color: var(--mc-gray-700);
+            }
+
+            .dot {
+                width: size(24);
+                height: size(24);
+                background-color: var(--mc-gray-700);
+                border-radius: var(--mc-border-radius-pill);
+                border: size(4) solid var(--mc-high-500);
+                position: relative;
+            }
+        }
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            gap: size(4);
+            margin-top: size(4);
+
+            &--title {
+                font-weight: 700;
+                font-size: size(12);
+                line-height: size(16);
+            }
+
+            &--description {
+                font-weight: 600;
+                font-size: size(12);
+                line-height: size(16);
+            }
+        }
+
+        &:last-child {
+            padding: 0;
+
+            .item__dot::before {
+                content: unset;
+            }
+        }
+    }
+
+    &.big {
+        .item {
+            grid-template-columns: size(70) 1fr;
+            padding-bottom: size(41);
+            gap: 0;
+    
+            &__dot {        
+                .dot {
+                    width: size(42);
+                    height: size(42);
+                    border: size(7) solid var(--mc-high-500);
+                }
+            }
+    
+            &__content {
+                gap: size(8);
+                margin-top: size(10);
+    
+                &--title {
+                    font-size: size(18);
+                    line-height: size(24);
+                }
+    
+                &--description {
+                    font-size: size(16);
+                    line-height: size(22);
+                }
+            }
+
+            &:first-child {
+                .item__content {
+                    margin-top: size(5);
+                }
+            }
+    
+            &.active {    
+                .item {
+                    &__dot {
+    
+                        .dot {
+                            width: size(70);
+                            height: size(70);
+                            background-color: var(--mc-opportunities-500);
+                        }
+                    }
+    
+                    &__content {
+                        &--title {
+                            font-size: size(24);
+                            line-height: size(33);
+                        }
+    
+                        &--description {
+                            font-size: size(24);
+                            line-height: size(33);
+                        }
+                    }
+                }    
+            }
+        }
+    }
+}
