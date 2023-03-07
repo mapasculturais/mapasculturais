@@ -7,68 +7,75 @@
     width: 100%;
 
     &__content {
-        align-items: start;
-        display: grid;
-        gap: size(18);
-        grid-template-columns: size(72) 1fr;
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
         margin: 0 auto;
         max-width: size(1170);
         padding: size(83) size(16) size(76);
         position: relative;
+        
+        .left{
+            align-items: start;
+            display: grid;
+            gap: size(18);
+            grid-template-columns: size(72) 1fr;
 
-        .image {
-            align-items: center;
-            background-color: var(--mc-gray-500);
-            border-radius: 50%;
-            display: flex;
-            height: size(72);
-            justify-content: center;
-            overflow: hidden;
-            width: size(72);
-            
-            .iconify {
-                color: var(--mc-white);
-                font-size: size(40);
-            }
-
-            img {
-                width: 100%;
-            }
-        }
-
-        .title {
-            display: flex;
-            flex-direction: column;
-            gap: size(6);
-
-            &__title {
-                font-size: size(32);
-                font-weight: 700;
-                line-height: size(44);
-            }
-
-            &__info {
+            .image {
+                align-items: center;
+                background-color: var(--mc-gray-500);
+                border-radius: 50%;
                 display: flex;
-                flex-wrap: wrap;
-                gap: size(8) size(50);
-
-                .data {
-                    display: flex;
-                    font-size: size(14);
-                    gap: size(5);
-                    line-height: size(19);
-
-                    &__title {
-                        font-weight: 600;
-                        text-transform: uppercase;
-                    }
-
-                    &__info {
-                        font-weight: 700;
-                    }
+                height: size(72);
+                justify-content: center;
+                overflow: hidden;
+                width: size(72);
+                
+                .iconify {
+                    color: var(--mc-white);
+                    font-size: size(40);
+                }
+    
+                img {
+                    width: 100%;
                 }
             }
+    
+            .title {
+                display: flex;
+                flex-direction: column;
+                gap: size(6);
+    
+                &__title {
+                    font-size: size(32);
+                    font-weight: 700;
+                    line-height: size(44);
+                }
+    
+                &__info {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: size(8) size(50);
+    
+                    .data {
+                        display: flex;
+                        font-size: size(14);
+                        gap: size(5);
+                        line-height: size(19);
+    
+                        &__title {
+                            font-weight: 600;
+                            text-transform: uppercase;
+                        }
+    
+                        &__info {
+                            font-weight: 700;
+                        }
+                    }
+                }
+            }            
         }
+
     }
 
     @include mobile {

@@ -191,6 +191,15 @@
 			margin-bottom: size(16);
 			color: var(--mc-low-700);
 			word-break: break-all;
+			
+			
+
+			&-adress{
+				color: var(--mc-low-500);
+				font-weight: 600;
+				font-size: 12px;
+				line-height: 22px;
+			}
 		}
 
 		&--terms {

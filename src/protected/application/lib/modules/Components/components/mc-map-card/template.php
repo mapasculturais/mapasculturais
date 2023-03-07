@@ -11,7 +11,7 @@ $this->import('mc-link');
             <mc-icon v-else :entity="entity"></mc-icon>
         </div>
         <div class="mc-map-card__header--title">
-            {{entity.name}}
+            <?php i::_e("{{entity.name}}") ?>
         </div>
     </div>
 
@@ -29,7 +29,17 @@ $this->import('mc-link');
                 <strong v-else><?= i::_e("Sem Endereço"); ?></strong>
             </p>
         </div>
+        <div v-if="areas" class="mc-map-card__content--info">
+            <p class="info">
+            <?= i::_e('ACESSIBILIDADE:') ?>
+                <strong v-if="entity.acessibility">
+                   <strong><?= i::_e('Oferece: ') ?></strong>
+                </strong>
+                <strong v-else> <?= i::_e('Não') ?> {{entity.acessibility}}
+                </strong>
 
+            </p>
+        </div>
         <div v-if="areas" class="mc-map-card__content--info">
             <p class="info">
                 <?= i::_e('Áreas de atuação:') ?> ({{entity.terms.area.length}}): <strong>{{areas}}</strong>
@@ -38,8 +48,8 @@ $this->import('mc-link');
     </div>
 
     <div :class="['mc-map-card__footer',  entity.__objectType+'__color']">
-        <mc-link :entity="entity" icon="access" class="mc-map-card__footer--link" label="<?php i::_e('Acessar') ?>" ></mc-link>
-       
+        <mc-link :entity="entity" icon="access" class="mc-map-card__footer--link" label="<?php i::_e('Acessar') ?>"></mc-link>
+
     </div>
 
 </div>
