@@ -270,6 +270,9 @@ class Module extends \MapasCulturais\Module{
             $value = $query->getResult();
         });
 
+        /**
+         * Retornar a lista de fases de coleta de dados, independentemente de se a coleta de dados está ou não habilitada.
+         */
         $app->hook('entity(Opportunity).get(allPhases)', function(&$value) use ($app) {
             $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE o.parent = :parent OR o.id = :parent ORDER BY o.registrationFrom ASC");
 
@@ -351,18 +354,18 @@ class Module extends \MapasCulturais\Module{
 
         });
 
-
         /**
-         * NOVAS ROTAS
+         * retorna a lista de fases de coleta de dados e avaliação
          */
-
-        $app->hook('API(opportunity.phases)', function() use($app) {
+        $app->hook('entity(Opportunity).get(phases)', function () use($app) {
+            /** @var Opportunity $this */
             $result = [];
             $app->disableAccessControl();
-            $opportunity = $app->repo('Opportunity')->find($this->data['@opportunity']);
+
+            $firstPhase = $this->firstPhase;
             
             $mout_symplyfy = "id,type,publishedRegistrations,name,publishTimestamp,summary";
-            if($opportunity_phases = $opportunity->allPhases){
+            if($opportunity_phases = $firstPhase->allPhases){
                 foreach($opportunity_phases as $key => $opportunity){
 
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase){
@@ -380,6 +383,19 @@ class Module extends \MapasCulturais\Module{
                 }
             }
             $app->enableAccessControl();
+
+            return $result;
+        });
+
+        /**
+         * NOVAS ROTAS
+         */
+
+        $app->hook('API(opportunity.phases)', function() use($app) {
+            /** @var \MapasCulturais\Controller $this */
+            
+            $opportunity = $app->repo('Opportunity')->find($this->data['@opportunity']);
+            $result = $opportunity->phases;
 
             $this->json($result);
         });
@@ -410,9 +426,9 @@ class Module extends \MapasCulturais\Module{
         });
 
         /**
-         * Perissões
+         * Permissões
          */
-        
+
         $app->hook('entity(Opportunity).canUser(view)', function($user, &$result){
             if($this->isOpportunityPhase && $this->status === -1){
                 $result = true;
