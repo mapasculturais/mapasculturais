@@ -64,9 +64,9 @@
             border: var(--mc-border-hairline) var(--mc-gray-300);
             border-radius: var(--mc-border-radius-pill);
             content: '';
-            height: size(45);
+            height: size(38);
             position: absolute;
-            width: size(45);
+            width: size(38);
             z-index: -1;
         }
 
@@ -76,7 +76,7 @@
             content: '';
             position: absolute;
             background: white;
-            bottom: size(-14);
+            bottom: size(-11);
             -webkit-transform: rotate(45deg) skew(20deg, 20deg);
             transform: rotate(45deg) skew(20deg, 20deg);
             border: var(--mc-border-hairline) var(--mc-gray-300);
