@@ -70,7 +70,6 @@ $url_search_agents = $this->searchAgentsUrl;
             </div>
         </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('agent', 'create') ?>"><?php \MapasCulturais\i::_e("Adicionar agente");?></a>
         <a class="btn btn-accent btn-large" href="<?php echo $url_search_agents ?>"><?php \MapasCulturais\i::_e("Ver tudo");?></a>
     </div>
     <?php $this->applyTemplateHook('home-agents','end'); ?>
