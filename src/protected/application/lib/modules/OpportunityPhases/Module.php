@@ -283,6 +283,39 @@ class Module extends \MapasCulturais\Module{
             $value = $query->getResult();
         });
 
+        /**
+         * retorna a lista de fases de coleta de dados e avaliação
+         */
+        $app->hook('entity(Opportunity).get(phases)', function (&$value) use($app) {
+            /** @var Opportunity $this */
+            $result = [];
+            $app->disableAccessControl();
+
+            $firstPhase = $this->firstPhase;
+            
+            $mout_symplyfy = "id,type,publishedRegistrations,name,publishTimestamp,summary";
+            if($opportunity_phases = $firstPhase->allPhases){
+                foreach($opportunity_phases as $key => $opportunity){
+
+                    if($opportunity->isDataCollection || $opportunity->isFirstPhase){
+                        $result[] = $opportunity->simplify("{$mout_symplyfy},registrationFrom,registrationTo,isFirstPhase,isLastPhase");
+                    }
+
+                    if($opportunity->evaluationMethodConfiguration){
+
+                        if($opportunity->isDataCollection){
+                            $mout_symplyfy.=",ownerId";
+                        }
+
+                        $result[] = $opportunity->evaluationMethodConfiguration->simplify("{$mout_symplyfy},infos,status,evaluationFrom,evaluationTo");
+                    }
+                }
+            }
+            $app->enableAccessControl();
+            
+            $value = $result;
+        });
+
         $app->hook('entity(Opportunity).get(countEvaluations)', function(&$value) use ($app) {
             $conn = $app->em->getConnection();
 
@@ -352,39 +385,6 @@ class Module extends \MapasCulturais\Module{
 
             $value = $registration_repository->findOneBy(['opportunity' => $opportunity->firstPhase, 'number' => $this->number]);
 
-        });
-
-        /**
-         * retorna a lista de fases de coleta de dados e avaliação
-         */
-        $app->hook('entity(Opportunity).get(phases)', function (&$value) use($app) {
-            /** @var Opportunity $this */
-            $result = [];
-            $app->disableAccessControl();
-
-            $firstPhase = $this->firstPhase;
-            
-            $mout_symplyfy = "id,type,publishedRegistrations,name,publishTimestamp,summary";
-            if($opportunity_phases = $firstPhase->allPhases){
-                foreach($opportunity_phases as $key => $opportunity){
-
-                    if($opportunity->isDataCollection || $opportunity->isFirstPhase){
-                        $result[] = $opportunity->simplify("{$mout_symplyfy},registrationFrom,registrationTo,isFirstPhase,isLastPhase");
-                    }
-
-                    if($opportunity->evaluationMethodConfiguration){
-
-                        if($opportunity->isDataCollection){
-                            $mout_symplyfy.=",ownerId";
-                        }
-
-                        $result[] = $opportunity->evaluationMethodConfiguration->simplify("{$mout_symplyfy},infos,status,evaluationFrom,evaluationTo");
-                    }
-                }
-            }
-            $app->enableAccessControl();
-            
-            $value = $result;
         });
 
         /**
