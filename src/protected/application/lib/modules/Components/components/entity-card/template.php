@@ -30,8 +30,9 @@ $this->import('mc-icon');
 	</div>
 
 	<div class="entity-card__content">
-		<div v-if="entity.endereco" class="entity-card__content--description">
-			<label class="entity-card__content--description-local"><?= i::_e('ONDE: ')?></label> <strong class="entity-card__content--description-adress">{{entity.endereco}}</strong> 
+		<div v-if="entity.__objectType=='space'" class="entity-card__content--description">
+			
+		<label v-if="entity.endereco" class="entity-card__content--description-local"><?= i::_e('ONDE: ')?></label> <strong class="entity-card__content--description-adress">{{entity.endereco}}</strong> 
 		</div>
 		<div class="entity-card__content--description">
 
