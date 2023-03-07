@@ -20,6 +20,7 @@ $this->import('mc-icon');
 					<slot name="type">
 						<span v-if="entity.type"> <?php i::_e('Tipo:') ?> {{entity.type.name}} </span>
 					</slot>
+
 				</div>
 			</div>
 		</div>
@@ -29,8 +30,18 @@ $this->import('mc-icon');
 	</div>
 
 	<div class="entity-card__content">
+		<div v-if="entity.endereco" class="entity-card__content--description">
+			<label class="entity-card__content--description-local"><?= i::_e('ONDE: ')?></label> <strong class="entity-card__content--description-adress">{{entity.endereco}}</strong> 
+		</div>
 		<div class="entity-card__content--description">
-			{{entity.shortDescription}}
+
+			<label><?= i::_e('ACESSIBILIDADE:') ?>
+				<strong v-if="entity.acessibility">
+					<strong><?= i::_e('Oferece: ') ?></strong>
+				</strong>
+				<strong v-else> <?= i::_e('Não') ?> {{entity.acessibility}}
+				</strong>
+			</label>
 		</div>
 		<div class="entity-card__content--terms">
 			<div v-if="areas" class="entity-card__content--terms-area">
@@ -45,6 +56,8 @@ $this->import('mc-icon');
 				</label>
 				<p :class="['terms', entity.__objectType+'__color']"> {{tags}} </p>
 			</div>
+
+
 			<div v-if="linguagens" class="entity-card__content--terms-linguagem">
 				<label class="linguagem__title">
 					<?php i::_e('linguagens:') ?> ({{entity.terms.linguagem.length}}):
