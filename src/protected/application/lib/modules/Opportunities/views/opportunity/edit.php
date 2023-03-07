@@ -9,6 +9,7 @@ $this->import('
     mapas-breadcrumb
     opportunity-basic-info
     opportunity-phases-config
+    opportunity-subscribe-results
     tabs
 ');
 
@@ -30,6 +31,7 @@ $this->breadcrumb = [
             <opportunity-phases-config :entity="entity"></opportunity-phases-config>
         </tab>
         <tab label="<?= i::__('Inscrições e Resultados') ?>" slug="subs_result">
+            <opportunity-subscribe-results :entity="entity"></opportunity-subscribe-results>
         </tab>
         <tab label="<?= i::__('Relatórios') ?>" slug="report">
         </tab>
