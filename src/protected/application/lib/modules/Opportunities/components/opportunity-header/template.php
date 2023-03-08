@@ -32,7 +32,7 @@ use MapasCulturais\i;
             </div>
         </div>
         <div class="righ">
-            <slot name="button" :historyBack="historyBack"></slot>  
+            <slot name="button"></slot>
         </div>
         
     </div>
