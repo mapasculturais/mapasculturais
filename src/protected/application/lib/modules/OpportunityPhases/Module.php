@@ -273,25 +273,30 @@ class Module extends \MapasCulturais\Module{
         /**
          * Retornar a lista de fases de coleta de dados, independentemente de se a coleta de dados está ou não habilitada.
          */
-        $app->hook('entity(Opportunity).get(allPhases)', function(&$value) use ($app) {
-            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE o.parent = :parent OR o.id = :parent ORDER BY o.registrationFrom ASC");
+        $app->hook('entity(Opportunity).get(allPhases)', function(&$values) use ($app) {
+            $first_phase = $this->firstPhase;
+            $values = [$first_phase];
+            $query = $app->em->createQuery("
+                SELECT o 
+                FROM MapasCulturais\\Entities\\Opportunity o 
+                WHERE o.parent = :parent 
+                ORDER BY o.registrationFrom ASC, o.id ASC");
 
             $query->setParameters([
-                "parent" => $this->firstPhase,
+                "parent" => $first_phase,
             ]);
 
             $last_phase = null;
-            $value = [];
             foreach($query->getResult() as $opp) {
                 if($opp->isLastPhase) {
                     $last_phase = $opp;
                 } else {
-                    $value[] = $opp;
+                    $values[] = $opp;
                 }
             }
 
             if($last_phase) {
-                $value[] = $last_phase;
+                $values[] = $last_phase;
             }
 
         });
