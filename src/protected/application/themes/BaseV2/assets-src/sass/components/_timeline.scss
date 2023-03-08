@@ -3,9 +3,13 @@
 .timeline {
     display: flex;
     flex-direction: column;
-    margin: size(16) auto;
+    margin: size(16) 0;
     position: relative;
     text-align: left;
+
+    &.center {
+        margin: size(16) auto;
+    }
 
     .item {
         display: grid;
