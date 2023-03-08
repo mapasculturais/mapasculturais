@@ -27,3 +27,22 @@ if ($MAPAS.opportunity) {
         $MAPAS.requestedEntity.opportunity = opportunity;
     } 
 }
+
+if ($MAPAS.opportunityPhases) {
+    const APIs = {
+        opportunity: new API('opportunity'), 
+        evaluationmethodconfiguration: new API('evaluationmethodconfiguration'), 
+    }
+
+    const rawProcessor = (item) => {
+        const entityType = item['@entityType'];
+        const api = APIs[entityType];
+        const instance = api.getEntityInstance(item.id);
+        instance.populate(item);
+        return instance;
+    };
+
+    $MAPAS.opportunityPhases = $MAPAS.opportunityPhases.map(rawProcessor);
+
+    $MAPAS.opportunityPhases[0].isFirstPhase = true;
+}
