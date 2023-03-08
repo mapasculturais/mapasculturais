@@ -1,22 +1,9 @@
 <?php
-
 use MapasCulturais\i;
-
-$this->import('timeline-item');
 ?>
 
-<!-- <section class="timeline">
-    <div v-if="hasItems" class="wrapper-timeline">
-        <div v-for="(timelineContent, timelineIndex) in dataTimeline" :key="timelineIndex" :class="wrapperItemClass(timelineIndex)">
-            <timeline-item :item-timeline="timelineContent" :date-locale="dateLocale" :color-dots="colorDots">
-            </timeline-item>
-        </div>
-    </div>
-    <p v-else>{{ messageWhenNoItems }}</p>
-</section> -->
 
 <section :class="['timeline', {'center': center}, {'big': big}]">
-
     <div v-for="item in phases" :class="['item', {'active': isActive(item.id)}]">
         <div class="item__dot"> <span class="dot"></span> </div>
 
@@ -31,5 +18,4 @@ $this->import('timeline-item');
             </div>
         </div>
     </div>
-
 </section>
