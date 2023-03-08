@@ -2,6 +2,9 @@
 use MapasCulturais\i;
 $this->layout = 'entity';
 
+$this->addOpportunityPhasesToJs();
+$this->useOpportunityAPI();
+
 $this->import('
     entity-actions
     entity-files-list
@@ -18,10 +21,11 @@ $this->import('
     mapas-breadcrumb
     opportunity-subscription
     opportunity-subscription-list
-    opportunity-timeline-phases
+    opportunity-phases-timeline
     share-links
     tabs
 ');
+
 $this->breadcrumb = [
   ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
   ['label' => i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
@@ -43,7 +47,7 @@ $this->breadcrumb = [
                 </main>
                 <aside>
                     <div class="grid-12">
-                        <opportunity-timeline-phases></opportunity-timeline-phases>
+                        <opportunity-phases-timeline class="col-12"></opportunity-phases-timeline>
                         <div class="col-12">
                             <button class="button button--primary-outline">
                             <?= i::__("Baixar regulamento") ?>

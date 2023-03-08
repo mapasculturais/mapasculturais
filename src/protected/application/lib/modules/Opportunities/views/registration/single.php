@@ -4,12 +4,14 @@ use MapasCulturais\i;
 
 $this->layout = 'registrations';
 
+$this->addOpportunityPhasesToJs();
+
 $this->import('
     mapas-breadcrumb
     mapas-card
     opportunity-header
     tabs
-    timeline
+    opportunity-phases-timeline
 ');
 
 $this->breadcrumb = [
@@ -78,7 +80,8 @@ $this->breadcrumb = [
                 <mapas-card no-title>
                     <template #content>
 
-                        <timeline big></timeline>
+                        <opportunity-phases-timeline center big></opportunity-phases-timeline>
+
                     </template>
                 </mapas-card>
             </div>
