@@ -141,6 +141,15 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
     }
 
+    function setOpportunity($value) {
+        if($value instanceof Opportunity) {
+            $this->opportunity = $value;
+        } else {
+            $app = App::i();
+            $this->opportunity = $app->repo('Opportunity')->find($value);
+        }
+    }
+
     function setEvaluationFrom($date){
         if($date instanceof \DateTime){
             $this->evaluationFrom = $date;
