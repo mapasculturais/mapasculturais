@@ -14,7 +14,7 @@ $this->import('mc-map mc-map-card loading');
         :entities="entities" 
         @ready="$emit('ready', $event)" 
         @close-popup="$emit('closePopup', $event)" 
-        @open-popup="$emit('openPopup', $event)">
+        @open-popup="openPopUp($event)">
         <template #popup="{entity}">
             <mc-map-card :entity="entity"></mc-map-card>
         </template>
