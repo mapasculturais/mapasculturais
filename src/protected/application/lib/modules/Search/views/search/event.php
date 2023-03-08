@@ -1,19 +1,22 @@
 <?php
 use MapasCulturais\i;
+
 $this->import('
+    create-event
     mapas-breadcrumb 
     search 
     search-filter-event
     search-list-event 
     search-map-event 
-    create-event
     tabs 
 ');
+
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
     ['label' => i::__('Eventos'), 'url' => $app->createUrl('events')],
 ];
 ?>
+
 <search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[],'event:term:linguagem':[], 'event:classificacaoEtaria': []}">
     <template #create-button>
         <create-event #default="{modal}">

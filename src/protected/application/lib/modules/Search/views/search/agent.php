@@ -1,8 +1,15 @@
 <?php
 use MapasCulturais\i;
+
 $this->import('
-    search tabs search-list search-map search-filter-agent create-agent
-    ');
+    create-agent
+    search 
+    search-filter-agent 
+    search-list 
+    search-map 
+    tabs 
+');
+
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
     ['label' => i::__('Agentes'), 'url' => $app->createUrl('agents')],
@@ -11,7 +18,7 @@ $this->breadcrumb = [
 
 <search page-title="<?php i::esc_attr_e('Agentes') ?>" entity-type="agent" :initial-pseudo-query="{'term:area':[]}">
     <template #create-button>
-        <create-agent>
+        <create-agent #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">
                 <mc-icon name="add"></mc-icon>
                 <span><?= i::__('Criar Agente') ?></span>

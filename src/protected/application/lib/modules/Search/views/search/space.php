@@ -1,6 +1,15 @@
 <?php 
 use MapasCulturais\i;
-$this->import('search tabs search-list search-map search-filter-space create-space');
+
+$this->import('
+    create-space
+    search
+    search-filter-space
+    search-list
+    search-map
+    tabs
+');
+
 $this->breadcrumb = [
     ['label'=> i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
     ['label'=> i::__('Espaços'), 'url' => $app->createUrl('spaces')],
@@ -9,10 +18,10 @@ $this->breadcrumb = [
 
 <search page-title="<?php i::esc_attr_e('Espaços') ?>" entity-type="space" :initial-pseudo-query="{'term:area':[], type:[]}">    
     <template #create-button>
-        <create-space>
+        <create-space #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">
-                        <mc-icon name="add"></mc-icon>
-                        <span><?= i::__('Criar Espaço') ?></span>
+                <mc-icon name="add"></mc-icon>
+                <span><?= i::__('Criar Espaço') ?></span>
             </button>
         </create-space>
     </template>
