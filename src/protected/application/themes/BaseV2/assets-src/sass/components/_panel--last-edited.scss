@@ -11,7 +11,7 @@
         }
 
         &-cards {
-            .carousel {           
+            .carousel {
                 .actions {
                     display: flex;
                     gap: size(18);
@@ -41,7 +41,7 @@
                     }
                 }
 
-        
+
                 &__slide {
                     align-items: flex-start;
                     display: flex;
@@ -49,8 +49,8 @@
                     .panel__row {
                         margin: 0;
                     }
-        
-                    .panel-entity-card{
+
+                    .panel-entity-card {
                         border-radius: var(--mc-border-radius-xs);
                         min-height: size(224);
                         padding: size(16);
@@ -61,34 +61,58 @@
                         justify-content: space-between;
                         margin: 0 size(12);
 
-                        &__header--picture {
-                            width: size(48);
-                            height: size(48);
-                            margin-right: size(8);
+                        &__header {
 
-                            img {
+                            &--picture {
                                 width: size(48);
                                 height: size(48);
-                            }
-                        } 
+                                margin-right: size(8);
 
-                        &__header--info {
-                            &-title {
-                                font-size: size(16);
-                                line-height: size(22);
+                                img {
+                                    width: size(48);
+                                    height: size(48);
+                                }
                             }
 
-                            &-subtitle {
-                                display: none;
+                            &--info {
+                                &-title {
+                                    font-size: size(16);
+                                    line-height: size(22);
+                                }
+
+                                &-subtitle {
+                                    display: none;
+                                }
+                            }
+
+                            .left {
+                                @media (max-width:size(956)) {
+                                    display: flex;
+                                    gap: size(12);
+                                }
                             }
                         }
-
                         &__main {
                             font-weight: 400;
                             font-size: size(12);
                             line-height: size(16);
                             text-align: left;
                             padding: 0;
+                        }
+
+                        &__footer {
+                            &-actions {
+
+                                @media (max-width: size(956)) {
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: flex-end;
+
+                                    &.right {
+                                        gap: 0;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -111,6 +135,39 @@
                             font-size: size(16);
                             margin-right: size(8);
                         }
+
+                        @media (max-width: size(956)) {
+                            .right {
+                                display: flex;
+                                gap: 0;
+                            }
+
+                            height: 32px;
+                            width: 32px;
+                            min-width: initial;
+                            border-radius: 50%;
+                            padding: 0;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            text-align: center;
+
+                            span {
+                                display: none;
+                            }
+
+                            .iconify {
+                                max-width: 32px;
+                                margin-right: size(0);
+
+                                svg {
+
+                                    font-size: size(14);
+                                }
+                            }
+                        }
+
+
                     }
                 }
             }
