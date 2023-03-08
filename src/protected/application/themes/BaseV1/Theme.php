@@ -2771,7 +2771,11 @@ class Theme extends MapasCulturais\Theme {
 
     public function renderModalFor($entity_name, $show_icon = true, $label = "", $classes = "", $use_modal = true) {
         $app = App::i();
-
+        
+        if($app->user->is('guest')){
+            return;
+        }
+        
         $entity_classname = $app->controller($entity_name)->entityClassName;
 
         $current_entity_classname = $this->controller->entityClassName;
