@@ -6,7 +6,7 @@ app.component('search-filter', {
         const text = Utils.getTexts('search-filter')
         return { text }
     },
-
+    
     props: {
         position: {
             type: String,
@@ -19,15 +19,30 @@ app.component('search-filter', {
     },
 
     data() {
+        
         return {
-            show: false,
+            // clickListener: null,
+            show: false, 
         }
     },
 
     computed: {
     },
 
+    mounted() {
+        window.addEventListener('mc-pin-click', this.closeFilter);
+    },
+    unmounted() {
+        window.removeEventListener('mc-pin-click', this.closeFilter);
+    },
     methods: {
+        closeFilter(){
+            console.log("closeFilter");
+            this.show = true;
+            const header = document.getElementById('main-header');
+            header.removeAttribute('style');
+        },
+        
         toggleFilter() {
             this.show = !this.show;
             const header = document.getElementById('main-header');
@@ -39,6 +54,7 @@ app.component('search-filter', {
                 header.removeAttribute('style');
                 // header.style.top=unset;
                 // header.style.position = 'relative';
+                window.dispatchEvent(new CustomEvent('mc-map-filter-open', {detail:null}));
             }
         }
     },
