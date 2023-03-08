@@ -3,11 +3,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [5.5.17] - 2023-03-07
+## [5.5.18] - 2023-03-08
 ### Melhorias
 - Coloca scroll na modal de criação rapida de entidades
 - Remove botões de criação de entidades da home
+- Define forma de bloquear acesso a áreas que requer autenticação se os dados obrigatórios do agente não estão preenchidos
+### Correções
+- Evita que o modal de criação rápida de entidades seja acessado quando o usuários não estiver autenticado
 
 ## [5.5.16] - 2023-03-06
 ### Novas Funcionalidade
