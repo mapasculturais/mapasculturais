@@ -516,7 +516,7 @@ class Module extends \MapasCulturais\Module{
             // que não seja a fase de publicação de resultado.
             $first_phase = $this->opportunity->firstPhase;
             $phase = $first_phase;
-            eval(\psy\sh());
+
             while($phase && $phase->evaluationMethodConfiguration && !$phase->isLastPhase) {
                 $phase = $phase->nextPhase;
             }
