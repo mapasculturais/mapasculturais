@@ -1,24 +1,27 @@
-# Componente `<registration-header>`
+# Componente `<opportunity-header>`
 Header da tela de inscrições
   
 ## Propriedades
 - *Entity **registration*** - Entidade
 
+## Slots
+- **button** *opctional* - Botão de voltar página
+
 ### Importando componente
 ```PHP
 <?php 
-$this->import('registration-header');
+$this->import('opportunity-header');
 ?>
 ```
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<registration-header :registration="registration"></registration-header>
+<opportunity-header :registration="registration"></opportunity-header>
 
-<registration-header :registration="registration">
+<opportunity-header :registration="registration">
     <template #button="{ historyBack }">
         <button @click="historyBack"></button>
     </template>
-</registration-header>
+</opportunity-header>
 
 ```

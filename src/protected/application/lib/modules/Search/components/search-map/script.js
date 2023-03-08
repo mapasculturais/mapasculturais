@@ -64,6 +64,14 @@ app.component('search-map', {
                 rawProcessor: this.entityRawProcessor
             });
             this.loading = false;
-        }
+        },
+        openPopUp(event) {
+            this.$emit('openPopup', event);
+            window.dispatchEvent(new CustomEvent('mc-pin-click', {detail:event}));
+            
+        },
+        closePopUp(event) {
+            this.$emit('closePopup', event);
+        },
     },
 });
