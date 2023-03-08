@@ -504,6 +504,42 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        /** 
+         * Corrige a propriedade opportunity da fase de avaliação antes da criação.
+         * A fase de avaliação é sempre criada para a última fase (opportunity) da oportunidade,
+         * e no caso desta já possuir uma fase de avaliação, uma nova fase (opportunity) sem coleta de dados
+         * é criada para "abrigar" a fase de avaliaçao.
+         */ 
+
+        $app->hook('entity(EvaluationMethodConfiguration).insert:before', function () {
+            // procura a última fase (opportunity) sem método de avaliação/
+            // que não seja a fase de publicação de resultado.
+            $first_phase = $this->opportunity->firstPhase;
+            $phase = $first_phase;
+            eval(\psy\sh());
+            while($phase && $phase->evaluationMethodConfiguration && !$phase->isLastPhase) {
+                $phase = $phase->nextPhase;
+            }
+
+            if(!$phase || $phase->isLastPhase) {
+                // se entrou aqui é pq todas as fases tem método de avaliação,
+                // então precisamos criar uma nova fase (opportunity) para abrigar 
+                // a nova fase de avaliação
+                $class = get_class($this->opportunity);
+
+                $phase = new $class;
+                $phase->status = -1;
+                $phase->parent = $first_phase;
+                $phase->name = $this->name;
+                $phase->type = $first_phase->type;
+                $phase->isOpportunityPhase = true;
+                $phase->isDataCollection = '0';
+                $phase->save(true);
+            }
+
+            $this->opportunity = $phase;
+        });
+
         // hooks específicos para os novos temas
         if ($app->view->version >= 2) {
             // cria a fase de publicaçao de resultado na criação de novas oportunidades
