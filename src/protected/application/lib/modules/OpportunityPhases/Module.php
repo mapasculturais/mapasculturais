@@ -280,7 +280,20 @@ class Module extends \MapasCulturais\Module{
                 "parent" => $this->firstPhase,
             ]);
 
-            $value = $query->getResult();
+            $last_phase = null;
+            $value = [];
+            foreach($query->getResult() as $opp) {
+                if($opp->isLastPhase) {
+                    $last_phase = $opp;
+                } else {
+                    $value[] = $opp;
+                }
+            }
+
+            if($last_phase) {
+                $value[] = $last_phase;
+            }
+
         });
 
         /**
@@ -297,7 +310,7 @@ class Module extends \MapasCulturais\Module{
             if($opportunity_phases = $firstPhase->allPhases){
                 foreach($opportunity_phases as $key => $opportunity){
 
-                    if($opportunity->isDataCollection || $opportunity->isFirstPhase){
+                    if($opportunity->isDataCollection || $opportunity->isFirstPhase || $opportunity->isLastPhase){
                         $result[] = $opportunity->simplify("{$mout_symplyfy},registrationFrom,registrationTo,isFirstPhase,isLastPhase");
                     }
 
