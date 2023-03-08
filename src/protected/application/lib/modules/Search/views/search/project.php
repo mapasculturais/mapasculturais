@@ -2,7 +2,15 @@
 
 use MapasCulturais\i;
 
-$this->import('search tabs search-list search-map search-filter-project create-project');
+$this->import('
+    create-project
+    search
+    search-filter-project
+    search-list
+    search-map
+    tabs
+');
+
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
     ['label' => i::__('Projetos'), 'url' => $app->createUrl('projects')],
@@ -11,8 +19,7 @@ $this->breadcrumb = [
 
 <search page-title="<?php i::esc_attr_e('Projetos') ?>" entity-type="project" :initial-pseudo-query="{type:[]}">
     <template #create-button>
-
-        <create-project :editable="true" #default="{modal}">
+        <create-project #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">
                 <mc-icon name="add"></mc-icon>
                 <span><?= i::__('Criar Projeto') ?></span>
