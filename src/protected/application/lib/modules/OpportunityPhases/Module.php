@@ -559,6 +559,7 @@ class Module extends \MapasCulturais\Module{
                 $last_phase->type = $this->type;
                 $last_phase->isLastPhase = true;
                 $last_phase->isOpportunityPhase = true;
+                $last_phase->isDataCollection = '0';
                 $last_phase->save(true);
             });
         }
