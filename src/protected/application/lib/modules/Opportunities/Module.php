@@ -3,9 +3,12 @@
 namespace Opportunities;
 
 use DateTime;
+use Exception;
 use MapasCulturais\App;
 use MapasCulturais\i;
-
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
+use PHPUnit\Util\Annotation\Registry;
 
 class Module extends \MapasCulturais\Module{
 
@@ -83,6 +86,23 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Theme::useOpportunityAPI', function () use ($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
             $this->enqueueScript('components', 'opportunities-api', 'js/OpportunitiesAPI.js', ['components-api']);
+        });
+
+        $app->hook('Theme::addOpportunityPhasesToJs', function ($opportunity = null) use ($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */            
+            if (!$opportunity) {
+                $entity = $this->controller->requestedEntity;
+
+                if ($entity instanceof Opportunity) {
+                    $opportunity = $entity;
+                } else if ($entity instanceof Registration) {
+                    $opportunity = $entity->opportunity;
+                } else {
+                    throw new Exception();
+                }
+            }
+
+            $this->jsObject['opportunityPhases'] = $opportunity->firstPhase->phases;
         });
 
         $app->hook('mapas.printJsObject:before', function() use($app) {
