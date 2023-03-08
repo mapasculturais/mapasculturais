@@ -60,6 +60,12 @@ app.component('mc-map', {
             this.defaultZoom = 16;
         }        
     },
+    mounted() {
+        window.addEventListener('mc-map-filter-open', this.closePopups);
+    },
+    unmounted() {
+        window.removeEventListener('mc-map-filter-open', this.closePopups);
+    },
 
     beforeUpdate() {
         this.populateMarkerClusterGroup();
@@ -118,7 +124,8 @@ app.component('mc-map', {
                     const entityPromise = api.findOne(entity.id);
     
                     $this.$emit('openPopup', {marker, leaflet, entityPromise, entity});
-    
+                    
+
                     entityPromise.then((entity) => {
                         $this.popupEntity = entity;
                         $this.$nextTick(() => {
@@ -136,6 +143,9 @@ app.component('mc-map', {
             }
 
             return marker;
+        },
+        closePopups() {
+            this.$refs.map.leafletObject.closePopup();
         },
 
         countClusterEntityTypes(cluster, result) {
