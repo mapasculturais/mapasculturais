@@ -13,12 +13,13 @@ $this->import('
     opportunity-form-builder
     entity-actions
     mapas-breadcrumb
+    opportunity-header
 ')
 ?>
 
 <div class="main-app form-builder">
     <mapas-breadcrumb></mapas-breadcrumb>
-    <entity-header :entity="entity.parent ? entity.parent : entity"></entity-header>
+    <opportunity-header :opportunity="entity"></opportunity-header>
 
     <opportunity-form-builder :entity="entity.parent ? entity.parent : entity" :is-first-phase="entity.parent == null || entity.isFirstPhase"></opportunity-form-builder>
 

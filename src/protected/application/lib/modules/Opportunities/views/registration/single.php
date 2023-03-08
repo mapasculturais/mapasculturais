@@ -7,7 +7,7 @@ $this->layout = 'registrations';
 $this->import('
     mapas-breadcrumb
     mapas-card
-    registration-header
+    opportunity-header
     tabs
     timeline
 ');
@@ -21,7 +21,7 @@ $this->breadcrumb = [
 
 <div class="main-app registration single">
     <mapas-breadcrumb></mapas-breadcrumb>
-    <registration-header :registration="entity"></registration-header>
+    <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
     <tabs>
         <tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">

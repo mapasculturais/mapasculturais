@@ -10,7 +10,7 @@ $this->import('
     mapas-container
     mc-icon
     registration-actions
-    registration-header
+    opportunity-header
     registration-related-agents
     registration-related-space
     select-entity
@@ -32,7 +32,7 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
 
 <div class="main-app registration edit">
     <mapas-breadcrumb></mapas-breadcrumb>
-    <registration-header :registration="entity"></registration-header>
+    <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
     <div class="registration__title">
         <?= i::__('Formulário de inscrição') ?>
