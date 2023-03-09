@@ -22,6 +22,7 @@ class Module extends \MapasCulturais\Module
             $theme_instance = new \MapasCulturais\Themes\BaseV1\Theme($app->config['themes.assetManager']);
             $theme_instance->path = $app->view->path;
             $app->view = $theme_instance;
+            $app->view->enqueueScript('app', 'embedtools-messages', 'js/embedtools.js', ['mapasculturais']);
         }
     }
 
