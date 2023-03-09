@@ -15,7 +15,7 @@ $this->import('
         </template>
         <template v-else>
             <div class="col-6 sm:col-12">
-                <entity-field :entity="entity" prop="publishTimestamp" classes="col-6 sm:col-12" :min="getMinDate(entity.__objectType, currentIndex)" :max="getMaxDate(entity.__objectType, currentIndex)"></entity-field>
+                <entity-field :entity="entity" prop="publishTimestamp" classes="col-6 sm:col-12" :min="getMinDate()" :max="getMaxDate()"></entity-field>
             </div>
             <div class="col-6 sm:col-12 phase-publish__auto">
                 <input type="checkbox" v-model="entity.autoPublish"><?= i::__("Publicar resultados automaticamente"); ?>
@@ -30,7 +30,7 @@ $this->import('
         <div class="col-6 phase-publish__confirm">
             <confirm-button :message="text('confirmar_publicacao')" @confirm="addPublishRegistrations(entity)">
                 <template #button="modal">
-                    <button v-if='isBlockedPublish(currentIndex)' class="button" disabled>
+                    <button v-if='isBlockedPublish()' class="button" disabled>
                       <?= i::__("Publicar Resultados") ?>
                         <mc-icon name="upload"></mc-icon>
                     </button>
