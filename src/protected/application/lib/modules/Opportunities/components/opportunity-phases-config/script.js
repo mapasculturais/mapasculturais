@@ -31,9 +31,7 @@ app.component('opportunity-phases-config', {
     },
 
     computed: {
-        categories(){
-            return this.entity.registrationCategories instanceof Array ?  this.entity.registrationCategories : [];
-        }
+
     },
     
     methods: {
