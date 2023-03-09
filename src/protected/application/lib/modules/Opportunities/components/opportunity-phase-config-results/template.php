@@ -28,9 +28,9 @@ $this->import('
             <button class="button button--text"><?= i::__("Acessar lista de pessoas inscritas") ?><mc-icon name="upload"></mc-icon></button>
         </div>
         <div class="col-6 phase-publish__confirm">
-            <confirm-button :message="text('confirmar_publicacao')" @confirm="addPublishRegistrations(item)">
+            <confirm-button :message="text('confirmar_publicacao')" @confirm="addPublishRegistrations(entity)">
                 <template #button="modal">
-                    <button v-if='isBlockedPublish(index)' class="button" disabled>
+                    <button v-if='isBlockedPublish(currentIndex)' class="button" disabled>
                       <?= i::__("Publicar Resultados") ?>
                         <mc-icon name="upload"></mc-icon>
                     </button>
