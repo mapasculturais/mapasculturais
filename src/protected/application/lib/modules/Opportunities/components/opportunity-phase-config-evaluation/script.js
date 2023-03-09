@@ -33,6 +33,9 @@ app.component('opportunity-phase-config-evaluation' , {
     },
 
     computed: {
+        categories(){
+            return this.entity.registrationCategories instanceof Array ?  this.entity.registrationCategories : [];
+        }
     },
 
     mounted () {
@@ -61,7 +64,7 @@ app.component('opportunity-phase-config-evaluation' , {
             const currentPhase = this.phases[index];
 
             if(nextPhase && nextPhase.__objectType === 'opportunity'){
-                return nextPhase.registrationFrom;
+                return nextPhase.registrationFrom?._date;
             }else if(nextPhase && nextPhase.__objectType === 'evaluationmethodconfiguration'){
                 if(currentPhase.__objectType === 'opportunity'){
                     return nextPhase.evaluationTo._date;
