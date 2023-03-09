@@ -11,8 +11,8 @@ $this->import('
         <div class="config-phase__title col-12">
             <h3 class="config-phase__title--title"><?= i::__("Configuração da fase") ?></h3>
         </div>
-        <entity-field :entity="entity" prop="registrationFrom" classes="col-6 sm:col-12" :min="getMinDate(entity.__objectType, currentIndex)" :max="getMaxDate(entity.__objectType, currentIndex)"></entity-field>
-        <entity-field :entity="entity" prop="registrationTo" classes="col-6 sm:col-12" :min="getMinDate(entity.__objectType, currentIndex)" :max="getMaxDate(entity.__objectType, currentIndex)"></entity-field>
+        <entity-field :entity="entity" prop="registrationFrom" classes="col-6 sm:col-12" :min="getMinDate()" :max="getMaxDate()"></entity-field>
+        <entity-field :entity="entity" prop="registrationTo" classes="col-6 sm:col-12" :min="entity.registrationFrom?._date" :max="getMaxDate()"></entity-field>
         <div class="config-phase__info col-12">
             <h5 class="config-phase__info--message">
                 <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
