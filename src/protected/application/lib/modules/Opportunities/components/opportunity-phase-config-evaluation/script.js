@@ -38,63 +38,39 @@ app.component('opportunity-phase-config-evaluation' , {
         }
     },
 
-    mounted () {
-    },
-
     methods: {
-        getMinDate (phase, index) {
-            const previousPhase = this.getPreviousPhase(index);
-
-            if(index === 0) {
-                return undefined;
+        getMinDate () {
+            if(this.currentIndex === 0) {
+                return null;
             }
 
-            if (phase === 'opportunity') {
-                return previousPhase.registrationTo?._date || previousPhase.evaluationTo?._date;
-            } else if (phase === 'evaluationmethodconfiguration') {
-                if(previousPhase.__objectType === 'evaluationmethodconfiguration') {
-                    return previousPhase.registrationTo?._date;
-                } else if(previousPhase.__objectType === 'opportunity') {
-                    return previousPhase.registrationFrom?._date;
-                }
+            const previousPhase = this.phases[this.currentIndex - 1];
+
+            if(previousPhase && previousPhase.__objectType === 'evaluationmethodconfiguration') {
+                return previousPhase.registrationTo?._date || null;
+            } else if(previousPhase && previousPhase.__objectType === 'opportunity') {
+                return previousPhase.registrationFrom?._date || null;
             }
         },
-        getMaxDate (phase, index) {
-            const nextPhase = this.getNextPhase(index);
-            const currentPhase = this.phases[index];
+        getMaxDate () {
+            const nextPhase = this.phases[this.currentIndex + 1];
+            const currentPhase = this.phases[this.currentIndex];
 
             if(nextPhase && nextPhase.__objectType === 'opportunity'){
-                return nextPhase.registrationFrom?._date;
+                return nextPhase.registrationFrom?._date || null;
             }else if(nextPhase && nextPhase.__objectType === 'evaluationmethodconfiguration'){
-                if(currentPhase.__objectType === 'opportunity'){
-                    return nextPhase.evaluationTo._date;
-                }
-                if(currentPhase.__objectType === 'evaluationmethodconfiguration'){
-                    return nextPhase.evaluationFrom._date;
+                if(currentPhase && currentPhase.__objectType === 'evaluationmethodconfiguration'){
+                    return nextPhase.evaluationFrom?._date || null;
                 }
             }
 
-        },
-        getPreviousPhase (currentIndex) {
-            if(this.phases[currentIndex - 1]) {
-                return this.phases[currentIndex - 1];
-            } else {
-                return undefined;
-            }
-        },
-        getNextPhase (currentIndex) {
-            if(this.phases[currentIndex + 1]) {
-                return this.phases[currentIndex + 1];
-            } else {
-                return undefined;
-            }
         },
         async deletePhase (event, item, index) {
             const messages = useMessages();
-            try{
+            try {
                 await item.destroy();
                 this.phases.splice(index, 1);
-            }catch{
+            } catch (e) {
                 messages.error(this.text('nao foi possivel remover fase'));
             }
 
