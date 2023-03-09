@@ -12,6 +12,14 @@
 
         &-cards {
             .carousel {
+                &__viewport {
+                    @media (max-width:size(500px)) {
+                        .carousel__track {
+                            gap: 10px;
+                        }
+                    }
+                }
+
                 .actions {
                     display: flex;
                     gap: size(18);
@@ -46,9 +54,20 @@
                     align-items: flex-start;
                     display: flex;
 
+                    &--active {
+                        &.carousel__slide {
+                            &--active {
+                                min-width: 328px;
+                                max-width: 100%;
+                            }
+                        }
+                    }
+
                     .panel__row {
                         margin: 0;
+
                     }
+
 
                     .panel-entity-card {
                         border-radius: var(--mc-border-radius-xs);
@@ -60,6 +79,26 @@
                         flex-direction: column;
                         justify-content: space-between;
                         margin: 0 size(12);
+
+                        .panel__row,
+                        &.panel-entity-card,
+                        &.card {
+                            @media (max-width: 400px) {
+                                background-color: red;
+                                margin-left: 0;
+                                max-width: 328%;
+                                width: 100%;
+
+                                .panel-home__tabs .tab-component {
+                                    padding-inline: 8px;
+                                    background-color: var(--mc-gray-100);
+                                }
+
+                                .card {
+                                    width: 328px;
+                                }
+                            }
+                        }
 
                         &__header {
 
@@ -92,6 +131,7 @@
                                 }
                             }
                         }
+
                         &__main {
                             font-weight: 400;
                             font-size: size(12);
