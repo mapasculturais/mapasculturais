@@ -54,7 +54,7 @@ app.component('opportunity-phase-config-data-collection' , {
             const currentPhase = this.phases[index];
 
             if(nextPhase && nextPhase.__objectType === 'opportunity'){
-                return nextPhase.registrationFrom;
+                return nextPhase.registrationFrom._date;
             }else if(nextPhase && nextPhase.__objectType === 'evaluationmethodconfiguration'){
                 if(currentPhase.__objectType === 'opportunity'){
                     return nextPhase.evaluationTo._date;
