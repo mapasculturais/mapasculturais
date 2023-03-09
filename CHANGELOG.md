@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[unreleased]
+## Melhorias
+- Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
+
 ## [5.6.0] - 2023-03-09
 ### Novas Funcionalidade
 - No formulário de inscrição, exibe os erros de preenchimento no final da página para facilitar identificação dos campos com erros
