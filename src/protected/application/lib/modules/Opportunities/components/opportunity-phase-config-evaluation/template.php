@@ -8,8 +8,8 @@ $this->import('
 <mapas-card>
     <div class="evaluation-step grid-12">
 
-        <entity-field :entity="entity" prop="evaluationFrom" classes="col-6 sm:col-12" :min="getMinDate(entity.__objectType, currentIndex)" :max="getMaxDate(entity.__objectType, currentIndex)"></entity-field>
-        <entity-field :entity="entity" prop="evaluationTo" classes="col-6 sm:col-12" :min="getMinDate(entity.__objectType, currentIndex)" :max="getMaxDate(entity.__objectType, currentIndex)"></entity-field>
+        <entity-field :entity="entity" prop="evaluationFrom" classes="col-6 sm:col-12" :min="getMinDate()" :max="getMaxDate()"></entity-field>
+        <entity-field :entity="entity" prop="evaluationTo" classes="col-6 sm:col-12" :min="entity.evaluationFrom?._date" :max="getMaxDate()"></entity-field>
         <div class="evaluation-box col-12">
             <div class="evaluation-box__line">
 
