@@ -24,11 +24,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [5.5.15] - 2023-03-06
 ### Correções
-- Evita que ao importar inscrições entre fases, não seja disparado e-mail de notificação da criação da inscrição
-
-### Correções
-- Evita que ao importar inscrições entre fases, não seja disparado e-mail de notificação da criação da inscrição
-- Evita que quebre quando existe dados do lockedFields
+- Ajusta verificação que evita que quebre quando não existe dados do lockedFields
 
 ## [5.5.14] - 2023-03-06
 ### Correções
