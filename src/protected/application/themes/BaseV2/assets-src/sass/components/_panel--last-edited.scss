@@ -84,13 +84,13 @@
                         &.panel-entity-card,
                         &.card {
                             @media (max-width: 400px) {
-                                background-color: red;
+                                //background-color: red;
                                 margin-left: 0;
-                                max-width: 328%;
+                                max-width: 328px;
                                 width: 100%;
 
-                                .panel-home__tabs .tab-component {
-                                    padding-inline: 8px;
+                                &.panel-home__tabs, &.tab-component {
+                                    // padding-inline: 8px;
                                     background-color: var(--mc-gray-100);
                                 }
 
