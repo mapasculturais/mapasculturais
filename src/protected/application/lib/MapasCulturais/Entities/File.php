@@ -163,7 +163,7 @@ abstract class File extends \MapasCulturais\Entity
         ];
 
         $prefix = self::getHookPrefix();
-        $app->applyHook("{$prefix}.validations", [&$validations]);
+        $app->applyHook("{$prefix}::validations", [&$validations]);
 
         return $validations;
     }
