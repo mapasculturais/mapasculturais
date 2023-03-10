@@ -167,7 +167,8 @@ class EventOccurrence extends \MapasCulturais\Entity
     protected $status = self::STATUS_ENABLED;
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'startsOn' => [
                 'required' => \MapasCulturais\i::__('Data de inicio é obrigatória'),
                 '$value instanceof \DateTime' => \MapasCulturais\i::__('Data de inicio inválida')
@@ -208,6 +209,11 @@ class EventOccurrence extends \MapasCulturais\Entity
             ]
 
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}::validations", [&$validations]);
+
+        return $validations;
     }
 
     function validateFrequency($value) {

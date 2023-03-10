@@ -94,7 +94,8 @@ class SystemRole extends \MapasCulturais\Entity {
      * @return string[][] 
      */
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'name' => [
                 'required' => i::__('O nome da função é obrigatório'),
                 'unique' => i::__('O nome da função já está sendo utilizado'),
@@ -106,6 +107,11 @@ class SystemRole extends \MapasCulturais\Entity {
                 'v::arrayType()->length(1,null)' => i::__('Ao menos uma permissão deve ser informada')
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}::validations", [&$validations]);
+
+        return $validations;
     }
 
     public static function getPropertiesMetadata($include_column_name = false) {

@@ -132,13 +132,19 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     protected $_isDeleting = false;
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'email' => [
                 'unique' => i::__('Este e-mail já está sendo utilizado por outro usuário'),
                 'required' => i::__('O e-mail é obrigatório'),
                 'v::email()' => i::__('O valor informado não é um e-mail válido'),
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}::validations", [&$validations]);
+
+        return $validations;
     }
 
     public function __construct() {
