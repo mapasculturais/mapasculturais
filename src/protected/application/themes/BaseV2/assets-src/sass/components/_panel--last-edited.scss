@@ -23,7 +23,7 @@
                 &__viewport {
                     @media (max-width:size(500px)) {
                         .carousel__track {
-                            // gap: 10px;
+                          
                         }
                     }
                 }
@@ -57,6 +57,18 @@
                     }
 
                     @media (max-width:size(400)) {
+
+                        button.carousel__prev,
+                        button.carousel__next {
+                            background-color: var(--mc-high-500);
+                            border: none;
+                            border-radius: var(--mc-border-radius-pill);
+                            height: size(32);
+                            width: size(32);
+                        }
+
+                    }
+                    @media (max-width:size(700)) {
 
                         button.carousel__prev,
                         button.carousel__next {
