@@ -223,6 +223,10 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).get(previousPhase)', function(&$value) use ($app) {
+            $first_phase = $this->firstPhase;
+            if(!$first_phase->id) {
+                return;
+            }
             $query = $app->em->createQuery("
                 SELECT o 
                 FROM MapasCulturais\\Entities\\Opportunity o 
@@ -232,7 +236,7 @@ class Module extends \MapasCulturais\Module{
                 ORDER BY o.registrationFrom DESC");
 
             $query->setParameters([
-                "parent" => $this->firstPhase,
+                "parent" => $first_phase,
                 "rfrom" => $this->isLastPhase ? $this->publishTimestamp : $this->registrationFrom,
             ]);
 
@@ -240,6 +244,10 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).get(previousPhases)', function(&$value) use ($app) {
+            $first_phase = $this->firstPhase;
+            if(!$first_phase->id) {
+                return;
+            }
             $query = $app->em->createQuery("
                 SELECT o 
                 FROM MapasCulturais\\Entities\\Opportunity o 
@@ -249,7 +257,7 @@ class Module extends \MapasCulturais\Module{
                 ORDER BY o.registrationFrom ASC");
 
             $query->setParameters([
-                "parent" => $this->firstPhase,
+                "parent" => $first_phase,
                 "rfrom" => $this->isLastPhase ? $this->publishTimestamp : $this->registrationFrom,
             ]);
 
@@ -257,6 +265,10 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).get(nextPhase)', function(&$value) use ($app) {
+            $first_phase = $this->firstPhase;
+            if(!$first_phase->id) {
+                return;
+            }
             $query = $app->em->createQuery("
                 SELECT o 
                 FROM MapasCulturais\\Entities\\Opportunity o 
@@ -265,8 +277,9 @@ class Module extends \MapasCulturais\Module{
                     (o.registrationFrom > :rfrom OR o.registrationFrom IS NULL AND o.publishTimestamp > :rfrom)
                 ORDER BY o.registrationFrom ASC");
 
+            
             $query->setParameters([
-                "parent" => $this->firstPhase,
+                "parent" => $first_phase,
                 "rfrom" => $this->isLastPhase ? $this->publishTimestamp : $this->registrationFrom,
             ]);
 
@@ -274,6 +287,10 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).get(nextPhases)', function(&$value) use ($app) {
+            $first_phase = $this->firstPhase;
+            if(!$first_phase->id) {
+                return;
+            }
             $query = $app->em->createQuery("
                 SELECT o 
                 FROM MapasCulturais\\Entities\\Opportunity o 
@@ -283,7 +300,7 @@ class Module extends \MapasCulturais\Module{
                 ORDER BY o.registrationFrom ASC");
 
             $query->setParameters([
-                "parent" => $this->firstPhase,
+                "parent" => $first_phase,
                 "rfrom" => $this->isLastPhase ? $this->publishTimestamp : $this->registrationFrom,
             ]);
 
@@ -295,6 +312,9 @@ class Module extends \MapasCulturais\Module{
          */
         $app->hook('entity(Opportunity).get(allPhases)', function(&$values) use ($app) {
             $first_phase = $this->firstPhase;
+            if(!$first_phase->id) {
+                return;
+            }
             $values = [$first_phase];
             $query = $app->em->createQuery("
                 SELECT o 
