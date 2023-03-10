@@ -7,46 +7,42 @@ app.component('opportunity-phase-config-results' , {
     },
 
     props: {
-        currentIndex: {
-            type: Number,
-            required: true
-        },
-        entity: {
-            type: Entity,
-            required: true
-        },
         phases: {
             type: Array,
+            required: true
+        },
+        phase: {
+            type: Entity,
             required: true
         }
     },
 
-    methods: {
-        addPublishRegistrations (phase) {
-            phase.POST('publishRegistrations');
+    computed: {
+        index() {
+            return this.phases.indexOf(this.phase);
         },
-        isBlockedPublish () {
-            const previousPhase = this.phases[this.currentIndex - 1];
-            const dtFinal = previousPhase.evaluationTo?._date || null;
-            return dtFinal > new Date();
-        },
-        getMinDate () {
-            const previousPhase = this.phases[this.currentIndex - 1];
-            const currentPhase = this.phases[this.currentIndex];
 
-            if (currentPhase.__objectType === 'opportunity') {
-                return previousPhase.registrationTo?._date || previousPhase.evaluationTo?._date;
-            } else if (previousPhase && currentPhase.__objectType === 'evaluationmethodconfiguration') {
-                if(previousPhase.__objectType === 'evaluationmethodconfiguration') {
-                    return previousPhase.registrationTo?._date || null;
-                } else if(previousPhase.__objectType === 'opportunity') {
-                    return previousPhase.registrationFrom?._date || null;
-                }
-            }
+        previousPhase() {
+            return this.phases[this.index - 1];
         },
-        getMaxDate () {
-            const currentPhase = this.phases[this.currentIndex];
-            return currentPhase.publishTimestamp?._date || null;
+
+        previousPhaseDateTo() {
+            const previousPhase = this.previousPhase;
+            return previousPhase.registrationTo || previousPhase.evaluationTo;
+        },
+
+        minDate() {
+            return this.previousPhaseDateTo;
+        },
+
+        isPublishLocked() {
+            return this.previousPhaseDateTo.isFuture();
+        }
+    },
+
+    methods: {
+        addPublishRegistrations () {
+            this.phase.POST('publishRegistrations');
         }
     }
 });
