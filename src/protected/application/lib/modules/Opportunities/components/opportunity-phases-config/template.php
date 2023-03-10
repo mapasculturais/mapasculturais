@@ -42,12 +42,12 @@ $this->import('
             <opportunity-phase-config-data-collection :entity="item" :phases="phases" :currentIndex="index"></opportunity-phase-config-data-collection>
         </template>
 
-        <template v-if="item.isLastPhase">
-            <opportunity-phase-config-results :entity="item" :phases="phases" :currentIndex="index"></opportunity-phase-config-results>
-        </template>
-
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
             <opportunity-phase-config-evaluation :entity="item" :phases="phases" :currentIndex="index"></opportunity-phase-config-evaluation>
+        </template>
+
+        <template v-if="item.isLastPhase">
+            <opportunity-phase-config-results :phases="phases" :phase="item"></opportunity-phase-config-results>
         </template>
     </template>
     <template #after-li="{index, item}">
