@@ -245,7 +245,13 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).get(nextPhase)', function(&$value) use ($app) {
-            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE o.parent = :parent AND o.registrationFrom > :rfrom ORDER BY o.registrationFrom ASC");
+            $query = $app->em->createQuery("
+                SELECT o 
+                FROM MapasCulturais\\Entities\\Opportunity o 
+                WHERE 
+                    o.parent = :parent AND 
+                    (o.registrationFrom > :rfrom OR o.registrationFrom IS NULL AND o.publishTimestamp > :rfrom)
+                ORDER BY o.registrationFrom ASC");
 
             $query->setParameters([
                 "parent" => $this->firstPhase,
