@@ -124,10 +124,20 @@ class McDate {
         return now.toDateString() == this._date.toDateString();
     }
 
-    isYesterday () {
+    isYesterday() {
         const now = new Date();
         now.setDate(now.getDate() - 1);
         return now.toDateString() == this._date.toDateString();
+    }
+
+    isFuture() {
+        const now = new Date();
+        return now < this._date;
+    }
+
+    isPast() {
+        const now = new Date();
+        return now > this._date;
     }
 
     addDays (days) {
