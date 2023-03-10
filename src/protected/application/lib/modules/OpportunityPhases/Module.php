@@ -529,13 +529,42 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('entity(Opportunity).validations', function(&$validations, $opp = null) {
+            if($this->parent) {
+                $previous = $this->previousPhase;
+                $prev_em = $previous->evaluationMethodConfiguration;
+
+                $previous_date = $prev_em ? $prev_em->evaluationTo : $previous->registrationTo;
+                
+                $previous_date = $previous_date->format('Y-m-d H:i:s');
+
+                $validations['registrationFrom']["\$value >= new DateTime('$previous_date')"] = i::__('A data inicial deve ser maior que a data final da fase anterior');
+            }
+
+            if (!$this->isLastPhase) {
+                $next = $this->nextPhase;
+                eval(\psy\sh());
+                if($next->isLastPhase) {
+                    $next_date = $next->publishTimestamp;
+                    $next_error = i::__('A data final deve ser menor que a data de publicação do resultado final');
+                } else {
+                    $next_date = $next->registrationFrom;
+                    $next_error = i::__('A data final deve ser menor que a data inicial da próxima fase');
+                }
+
+                if ($next_date) {
+                    $next_date = $next_date->format('Y-m-d H:i:s');
+                    $validations['registrationTo']["\$value <= new DateTime('$next_date')"] = $next_error;
+                }
+            }
+        });
+
         /** 
          * Corrige a propriedade opportunity da fase de avaliação antes da criação.
          * A fase de avaliação é sempre criada para a última fase (opportunity) da oportunidade,
          * e no caso desta já possuir uma fase de avaliação, uma nova fase (opportunity) sem coleta de dados
          * é criada para "abrigar" a fase de avaliaçao.
          */ 
-
         $app->hook('entity(EvaluationMethodConfiguration).insert:before', function () {
             // procura a última fase (opportunity) sem método de avaliação/
             // que não seja a fase de publicação de resultado.
