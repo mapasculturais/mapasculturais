@@ -12,7 +12,7 @@ $this->import('
             <label> <?php i::_e('Editados recentemente')?> </label>
         </div>
         <div class="panel--last-edited__content-cards">
-            <carousel :settings="settings" :breakpoints="breakpoints">
+            <carousel :settings="settings" :breakpoints="breakpoints" ref="carousel" @slide-end="resizeSlides">
                 <slide v-for="entity in entities" :key="entity.id">
                     <panel--entity-card :key="entity.id" :entity="entity" class="card">
                         <template #title="{entity}">
