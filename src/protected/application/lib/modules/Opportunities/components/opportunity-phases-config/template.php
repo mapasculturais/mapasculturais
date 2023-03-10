@@ -34,18 +34,17 @@ $this->import('
         </div>
     </template>
     <template #default="{index, item}">
-        <div v-if="index > 0" class="config-input">
-            <entity-field :entity="item" prop="name" label="Título" hide-required></entity-field>
-        </div>
-
+        <!-- fase de coleta de dados -->
         <template v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
             <opportunity-phase-config-data-collection :entity="item" :phases="phases" :currentIndex="index"></opportunity-phase-config-data-collection>
         </template>
 
+        <!-- fase de avaliação -->
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
-            <opportunity-phase-config-evaluation :entity="item" :phases="phases" :currentIndex="index"></opportunity-phase-config-evaluation>
+            <opportunity-phase-config-evaluation :phases="phases" :phase="item"></opportunity-phase-config-evaluation>
         </template>
 
+        <!-- fase de publicação de resultado -->
         <template v-if="item.isLastPhase">
             <opportunity-phase-config-results :phases="phases" :phase="item"></opportunity-phase-config-results>
         </template>
