@@ -48,8 +48,14 @@ app.component('opportunity-phase-config-evaluation' , {
                 // próxima fase é de coleta de dados
                 return this.nextPhase.registrationFrom;
             } else {
-                // próxima fase avalição
-                return this.nextPhase.evaluationFrom;
+                // próxima fase avaliação
+                if(this.phase.__objectType == 'opportunity') {
+                    // fase atual é de coleta de dados
+                    return this.nextPhase.evaluationTo;
+                } else {
+                    // fase atual é de avaliacao
+                    return this.nextPhase.evaluationFrom;
+                }
             }
         },
 
