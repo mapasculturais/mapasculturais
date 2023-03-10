@@ -223,7 +223,13 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).get(previousPhase)', function(&$value) use ($app) {
-            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE (o.parent = :parent AND o.registrationFrom < :rfrom) OR o.id = :parent ORDER BY o.registrationFrom DESC");
+            $query = $app->em->createQuery("
+                SELECT o 
+                FROM MapasCulturais\\Entities\\Opportunity o 
+                WHERE 
+                    o.id = :parent OR
+                    (o.parent = :parent AND o.registrationFrom < :rfrom)
+                ORDER BY o.registrationFrom DESC");
 
             $query->setParameters([
                 "parent" => $this->firstPhase,
@@ -234,7 +240,13 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).get(previousPhases)', function(&$value) use ($app) {
-            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE (o.parent = :parent AND o.registrationFrom < :rfrom) OR o.id = :parent ORDER BY o.registrationFrom ASC");
+            $query = $app->em->createQuery("
+                SELECT o 
+                FROM MapasCulturais\\Entities\\Opportunity o 
+                WHERE 
+                    o.id = :parent OR
+                    (o.parent = :parent AND o.registrationFrom < :rfrom)  
+                ORDER BY o.registrationFrom ASC");
 
             $query->setParameters([
                 "parent" => $this->firstPhase,
@@ -262,7 +274,13 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).get(nextPhases)', function(&$value) use ($app) {
-            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE o.parent = :parent AND o.registrationFrom > :rfrom ORDER BY o.registrationFrom ASC");
+            $query = $app->em->createQuery("
+                SELECT o 
+                FROM MapasCulturais\\Entities\\Opportunity o 
+                WHERE 
+                    o.parent = :parent AND 
+                    o.registrationFrom > :rfrom 
+                ORDER BY o.registrationFrom ASC");
 
             $query->setParameters([
                 "parent" => $this->firstPhase,
