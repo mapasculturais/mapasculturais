@@ -120,7 +120,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         $hook_class = self::getHookClassPath();
 
-        $app->applyHook("entity($hook_class).validations", [&$validations]);
+        $app->applyHook("entity($hook_class)::validations", [&$validations]);
 
         return $validations;
     }

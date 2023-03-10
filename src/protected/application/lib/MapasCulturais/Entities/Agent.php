@@ -311,7 +311,7 @@ class Agent extends \MapasCulturais\Entity
 
         $prefix = self::getHookPrefix();
         // entity(Agent).validations
-        $app->applyHook("{$prefix}.validations", [&$validations]);
+        $app->applyHook("{$prefix}::validations", [&$validations]);
 
         return $validations;
     }
