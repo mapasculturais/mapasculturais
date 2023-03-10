@@ -9,6 +9,14 @@
         }
     }
 
+    @media (max-width:(size(700))) {
+        .panel-home__tabs {
+            .tab-component {
+                padding: size(32) 0 size(40) size(16);
+            }
+        }
+    }
+
 }
 
 .panel-home {
