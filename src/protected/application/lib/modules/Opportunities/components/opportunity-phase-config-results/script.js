@@ -6,10 +6,6 @@ app.component('opportunity-phase-config-results' , {
         return { text };
     },
 
-    data () {
-        return {};
-    },
-
     props: {
         currentIndex: {
             type: Number,
@@ -25,52 +21,32 @@ app.component('opportunity-phase-config-results' , {
         }
     },
 
-    computed: {
-    },
-
-    mounted () {
-    },
-
     methods: {
         addPublishRegistrations (phase) {
             phase.POST('publishRegistrations');
         },
-        isBlockedPublish (index) {
-            const previousPhase = this.getPreviousPhase(index);
+        isBlockedPublish () {
+            const previousPhase = this.phases[this.currentIndex - 1];
             const dtFinal = previousPhase.evaluationTo?._date || null;
             return dtFinal > new Date();
         },
-        getMinDate (phase, index) {
-            const previousPhase = this.getPreviousPhase(index);
+        getMinDate () {
+            const previousPhase = this.phases[this.currentIndex - 1];
+            const currentPhase = this.phases[this.currentIndex];
 
-            if (phase === 'opportunity') {
+            if (currentPhase.__objectType === 'opportunity') {
                 return previousPhase.registrationTo?._date || previousPhase.evaluationTo?._date;
-            } else if (phase === 'evaluationmethodconfiguration') {
+            } else if (previousPhase && currentPhase.__objectType === 'evaluationmethodconfiguration') {
                 if(previousPhase.__objectType === 'evaluationmethodconfiguration') {
-                    return previousPhase.registrationTo?._date;
+                    return previousPhase.registrationTo?._date || null;
                 } else if(previousPhase.__objectType === 'opportunity') {
-                    return previousPhase.registrationFrom?._date;
+                    return previousPhase.registrationFrom?._date || null;
                 }
             }
         },
-        getMaxDate (phase, index) {
-            if(phase.isLastPhase) {
-                return phase.publishTimestamp?._date;
-            }
-        },
-        getPreviousPhase (currentIndex) {
-            if(this.phases[currentIndex - 1]) {
-                return this.phases[currentIndex - 1];
-            } else {
-                return undefined;
-            }
-        },
-        getNextPhase (currentIndex) {
-            if(this.phases[currentIndex + 1]) {
-                return this.phases[currentIndex + 1];
-            } else {
-                return undefined;
-            }
-        },
+        getMaxDate () {
+            const currentPhase = this.phases[this.currentIndex];
+            return currentPhase.publishTimestamp?._date || null;
+        }
     }
 });
