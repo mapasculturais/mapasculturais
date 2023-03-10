@@ -8,6 +8,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## Melhorias
 - Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
 
+## [5.6.1] - 2023-03-10
+### Correções
+- Evita que ao importar inscrições entre fases, não seja disparado e-mail de notificação de envio da inscrição
+
 ## [5.6.0] - 2023-03-09
 ### Novas Funcionalidade
 - No formulário de inscrição, exibe os erros de preenchimento no final da página para facilitar identificação dos campos com erros
