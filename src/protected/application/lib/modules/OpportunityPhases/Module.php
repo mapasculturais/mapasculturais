@@ -219,19 +219,15 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).get(firstPhase)', function(&$value) {
-            if ($this->isOpportunityPhase) {
-                $value = $this->parent;
-            } else {
-                $value = $this;
-            }
+            $value = $this->parent ? $this->parent : $this;
         });
 
         $app->hook('entity(Opportunity).get(previousPhase)', function(&$value) use ($app) {
-            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE o.parent = :parent AND o.registrationFrom < :rfrom ORDER BY o.registrationFrom DESC");
+            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE (o.parent = :parent AND o.registrationFrom < :rfrom) OR o.id = :parent ORDER BY o.registrationFrom DESC");
 
             $query->setParameters([
                 "parent" => $this->firstPhase,
-                "rfrom" => $this->registrationFrom,
+                "rfrom" => $this->isLastPhase ? $this->publishTimestamp : $this->registrationFrom,
             ]);
 
             $value = $query->getOneOrNullResult();
@@ -242,7 +238,7 @@ class Module extends \MapasCulturais\Module{
 
             $query->setParameters([
                 "parent" => $this->firstPhase,
-                "rfrom" => $this->registrationFrom,
+                "rfrom" => $this->isLastPhase ? $this->publishTimestamp : $this->registrationFrom,
             ]);
 
             $value = $query->getResult();
@@ -253,7 +249,7 @@ class Module extends \MapasCulturais\Module{
 
             $query->setParameters([
                 "parent" => $this->firstPhase,
-                "rfrom" => $this->registrationFrom,
+                "rfrom" => $this->isLastPhase ? $this->publishTimestamp : $this->registrationFrom,
             ]);
 
             $value = $query->getOneOrNullResult();
@@ -264,7 +260,7 @@ class Module extends \MapasCulturais\Module{
 
             $query->setParameters([
                 "parent" => $this->firstPhase,
-                "rfrom" => $this->registrationFrom,
+                "rfrom" => $this->isLastPhase ? $this->publishTimestamp : $this->registrationFrom,
             ]);
 
             $value = $query->getResult();
