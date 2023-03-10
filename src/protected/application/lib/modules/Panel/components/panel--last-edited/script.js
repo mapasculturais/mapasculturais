@@ -48,40 +48,44 @@ app.component('panel--last-edited', {
 
             // carousel settings
             settings: {
-                itemsToShow: 2.2,
+                itemsToShow: 1.2,
                 snapAlign: 'center',
             },
             breakpoints: {
                 1200: {
-                    itemsToShow: 2.2,
+                    itemsToShow: 3.2,
                     snapAlign: "start"
                 },
                 1100: {
-                    itemsToShow: 2,
+                    itemsToShow: 3,
                     snapAlign: "start"
                 },
                 1000: {
-                    itemsToShow: 1.8,
+                    itemsToShow: 2.8,
                     snapAlign: "start"
                 },
                 900: {
-                    itemsToShow: 1.6,
+                    itemsToShow: 2.6,
                     snapAlign: "start"
                 },
                 800: {
-                    itemsToShow: 1.4,
+                    itemsToShow: 2.4,
                     snapAlign: "start"
                 },
                 700: {
-                    itemsToShow: 1.7,
+                    itemsToShow: 2.7,
                     snapAlign: "start"
                 },
                 600: {
-                    itemsToShow: 1.5,
+                    itemsToScrool: 1,
+
+                    itemsToShow: 0.9,
                     snapAlign: "start"
                 },
                 500: {
-                    itemsToShow: 1.2,
+                    itemsToScrool: 1,
+
+                    itemsToShow: 0.9,
                     snapAlign: "start"
                 },
             }
