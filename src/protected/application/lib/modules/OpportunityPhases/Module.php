@@ -549,6 +549,9 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        /**
+         * Validação das datas da nova fase em relação às fases anterior e posterior
+         */
         $app->hook('entity(Opportunity).validations', function(&$validations, $opp = null) {
             if($this->parent) {
                 $previous = $this->previousPhase;
@@ -561,9 +564,7 @@ class Module extends \MapasCulturais\Module{
                 $validations['registrationFrom']["\$value >= new DateTime('$previous_date')"] = i::__('A data inicial deve ser maior que a data final da fase anterior');
             }
 
-            if (!$this->isLastPhase) {
-                $next = $this->nextPhase;
-                eval(\psy\sh());
+            if (($next = $this->nextPhase) && !$this->isLastPhase) {
                 if($next->isLastPhase) {
                     $next_date = $next->publishTimestamp;
                     $next_error = i::__('A data final deve ser menor que a data de publicação do resultado final');
