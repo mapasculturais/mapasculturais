@@ -7,11 +7,7 @@ app.component('opportunity-phase-config-data-collection' , {
     },
 
     props: {
-        currentIndex: {
-            type: Number,
-            required: true
-        },
-        entity: {
+        phase: {
             type: Entity,
             required: true
         },
@@ -21,27 +17,50 @@ app.component('opportunity-phase-config-data-collection' , {
         }
     },
 
-    methods: {
-        getMinDate () {
-            if(this.currentIndex === 0) {
-                return null;
-            }
-
-            const previousPhase = this.phases[this.currentIndex - 1];
-            return previousPhase.registrationTo?._date || previousPhase.evaluationTo?._date;
+    computed: {
+        index() {
+            return this.phases.indexOf(this.phase);
         },
-        getMaxDate () {
-            const nextPhase = this.phases[this.currentIndex + 1];
-            const currentPhase = this.phases[this.currentIndex];
 
-            if(nextPhase && nextPhase.__objectType === 'opportunity'){
-                return nextPhase.registrationFrom?._date || null;
-            }else if(nextPhase && nextPhase.__objectType === 'evaluationmethodconfiguration'){
-                if(currentPhase && currentPhase.__objectType === 'opportunity'){
-                    return nextPhase.evaluationTo?._date || null;
+        previousPhase() {
+            return this.phases[this.index - 1];
+        },
+
+        nextPhase() {
+            return this.phases[this.index + 1];
+        },
+
+        minDate() {
+            if (this.previousPhase.__objectType == 'evaluationmethodconfiguration') {
+                // fase anterior é uma fase de avaliação
+                return this.previousPhase.evaluationTo;
+            } else {
+                // fase anterior é uma fase de coleta de dados
+                return this.previousPhase.registrationFrom;
+            }
+        },
+
+        maxDate() {
+            if (this.nextPhase.isLastPhase) {
+                // próxima fase é de publicação de resultado
+                return this.nextPhase.publishTimestamp;
+            } else if(this.nextPhase.__objectType == 'opportunity') {
+                // próxima fase é de coleta de dados
+                return this.nextPhase.registrationFrom;
+            } else {
+                // próxima fase avaliação
+                if(this.phase.__objectType == 'opportunity') {
+                    // fase atual é de coleta de dados
+                    return this.nextPhase.evaluationTo;
+                } else {
+                    // fase atual é de avaliacao
+                    return this.nextPhase.evaluationFrom;
                 }
             }
         },
+    },
+
+    methods: {
         async deletePhase (event, item, index) {
             const messages = useMessages();
             try{
