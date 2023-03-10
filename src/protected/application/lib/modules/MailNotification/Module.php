@@ -34,7 +34,9 @@ class Module extends \MapasCulturais\Module
         $self = $this;
 
         $app->hook("entity(Registration).send:after", function () use ($self) {
-            $self->registrationSend($this);
+            if(!$this->opportunity->parent){
+                $self->registrationSend($this);
+            }
         });
 
         $app->hook("entity(Registration).insert:finish", function () use ($self) {
