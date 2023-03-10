@@ -36,7 +36,7 @@ $this->import('
     <template #default="{index, item}">
         <!-- fase de coleta de dados -->
         <template v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
-            <opportunity-phase-config-data-collection :entity="item" :phases="phases" :currentIndex="index"></opportunity-phase-config-data-collection>
+            <opportunity-phase-config-data-collection :phases="phases" :phase="item"></opportunity-phase-config-data-collection>
         </template>
 
         <!-- fase de avaliação -->
