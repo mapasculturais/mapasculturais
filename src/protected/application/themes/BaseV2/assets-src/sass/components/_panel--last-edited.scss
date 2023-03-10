@@ -10,6 +10,14 @@
             margin-bottom: size(16);
         }
 
+        @media (max-width:size(400)) {
+            &-title {
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 25px;
+            }
+        }
+
         &-cards {
             .carousel {
                 &__viewport {
@@ -46,6 +54,19 @@
 
                     .carousel__icon {
                         display: none;
+                    }
+
+                    @media (max-width:size(400)) {
+
+                        button.carousel__prev,
+                        button.carousel__next {
+                            background-color: var(--mc-high-500);
+                            border: none;
+                            border-radius: var(--mc-border-radius-pill);
+                            height: size(32);
+                            width: size(32);
+                        }
+
                     }
                 }
 
@@ -89,7 +110,8 @@
                                 max-width: 328px;
                                 width: 100%;
 
-                                &.panel-home__tabs, &.tab-component {
+                                &.panel-home__tabs,
+                                &.tab-component {
                                     // padding-inline: 8px;
                                     background-color: var(--mc-gray-100);
                                 }
