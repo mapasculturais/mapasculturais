@@ -101,11 +101,12 @@
 
                 &__entity {
                     width: 100%;
-                    display: flex;
                     align-items: center;
                     border-radius: var(--mc-border-radius-xs);
                     gap: size(15);
                     padding: size(8);
+                    display: grid;
+                    grid-template-columns: size(40) 1fr;
 
                     .img {
                         width: 40px;
@@ -128,7 +129,7 @@
                         font-weight: 600;
                         font-size: 14px;
                         line-height: 19px;
-
+                        word-break: break-word;
                     }
 
                 }
