@@ -1,7 +1,11 @@
 @use '../settings/mixins' as *;
 
-.panel-nav {
+.panel__sidebar {
+
     border-right: 1px solid var(--mc-gray-100);
+}
+
+.panel-nav {
     height: 100%;
     padding: size(40) size(24);
 
@@ -10,8 +14,8 @@
         padding: 0;
 
         ul:first-child {
-            li > a {
-                 color:var(--mc-primary-500)
+            li>a {
+                color: var(--mc-primary-500)
             }
         }
     }
@@ -84,18 +88,20 @@
         padding: size(8) size(16);
         text-decoration: none;
 
-        &:focus, &:hover {
+        &:focus,
+        &:hover {
             background-color: var(--mc-gray-100);
         }
 
         &.active {
             background-color: var(--mc-secondary-300);
-            color: var(    --mc-black);
+            color: var(--mc-black);
 
-            &:focus, &:hover {
+            &:focus,
+            &:hover {
                 background-color: var(--mc-danger-700);
             }
-            
+
         }
 
         .iconify {

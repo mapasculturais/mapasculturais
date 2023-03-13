@@ -53,11 +53,12 @@
             border-radius: var(--mc-border-radius-xs);
             color: inherit;
             cursor: pointer;
-            display: flex;
+            display: grid;
+            grid-template-columns: size(32) 1fr;
             gap: size(10);
             padding: size(8);
             text-decoration: none;
-            white-space: nowrap;
+            word-break: break-word;
 
             .icon {
                 align-items: center;
