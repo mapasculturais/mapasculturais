@@ -34,7 +34,7 @@ $this->import('
                 <mc-icon name="upload"></mc-icon>
             </button>
             <button v-if='isPublishLocked' class="button" disabled>
-                <?= i::__("Publicar Resultados") ?>
+                <?= i::__("Salvar data") ?>
                 <mc-icon name="upload"></mc-icon>
             </button>
             <confirm-button v-if="!isPublishLocked" :message="text('confirmar_publicacao')" @confirm="addPublishRegistrations()">

@@ -45,20 +45,20 @@ app.component('opportunity-phase-config-data-collection' , {
         },
 
         maxDate() {
-            if (this.nextPhase.isLastPhase) {
+            if (this.nextPhase?.isLastPhase) {
                 // próxima fase é de publicação de resultado
                 return this.nextPhase.publishTimestamp;
-            } else if(this.nextPhase.__objectType == 'opportunity') {
+            } else if(this.nextPhase?.__objectType == 'opportunity') {
                 // próxima fase é de coleta de dados
-                return this.nextPhase.registrationFrom;
+                return this.nextPhase?.registrationFrom;
             } else {
                 // próxima fase avaliação
-                if(this.phase.__objectType == 'opportunity') {
+                if(this.phase?.__objectType == 'opportunity') {
                     // fase atual é de coleta de dados
-                    return this.nextPhase.evaluationTo;
+                    return this.nextPhase?.evaluationTo;
                 } else {
                     // fase atual é de avaliacao
-                    return this.nextPhase.evaluationFrom;
+                    return this.nextPhase?.evaluationFrom;
                 }
             }
         },

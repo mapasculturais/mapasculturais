@@ -27,25 +27,18 @@ app.component('opportunity-create-data-collect-phase' , {
 
     computed: {
         maxDate () {
-            return this.dateEnd;
+            return this.lastPhase.publishTimestamp._date || null;
         },
         minDate () {
-            return this.dateStart;
+            return this.previousPhase.registrationTo?._date || this.previousPhase.evaluationTo?._date;
         },
         minDateRegistrationTo () {
-            return this.phase.registrationFrom?._date || '';
+            return this.phase.registrationTo?._date || '';
         }
     },
 
-    mounted () {
-        this.dateStart = $MAPAS.requestedEntity.registrationFrom?.date;
-        this.dateEnd = $MAPAS.requestedEntity.registrationTo?.date;
-    },
-
     methods: {
-        dateFormat(date) {
-            return new Date(date).toLocaleString();
-        },
+
         createEntity() {
             this.phase = Vue.ref(new Entity('opportunity'));
             this.phase.ownerEntity = this.opportunity.ownerEntity;
