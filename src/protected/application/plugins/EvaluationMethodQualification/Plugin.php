@@ -43,6 +43,27 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
     protected function _register()
     {
+        $this->registerEvaluationMethodConfigurationMetadata('sections', [
+            'label' => i::__('Seções'),
+            'type' => 'json',
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function ($val) {
+                return json_decode($val);
+            }
+        ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('criteria', [
+            'label' => i::__('Critérios'),
+            'type' => 'json',
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function ($val) {
+                return json_decode($val);
+            }
+        ]);
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
