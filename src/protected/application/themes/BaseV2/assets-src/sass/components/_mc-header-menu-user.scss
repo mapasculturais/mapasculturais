@@ -80,8 +80,6 @@
         &--list {
             height: 100vh;
             left: 0;
-            overflow-y: scroll;
-            overflow-x: visible;
             position: fixed;
             top: 0;
             width: 100%;
@@ -91,7 +89,7 @@
                 background-color: white;
                 overflow-y: scroll;
                 display: block;
-                height: 100%;
+                height: calc(100% - 90px);
                 padding: size(16) size(16) size(32);
             }
         }
