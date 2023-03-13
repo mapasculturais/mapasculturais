@@ -23,6 +23,7 @@ class Module extends \MapasCulturais\Module
             $theme_instance->path = $app->view->path;
             $app->view = $theme_instance;
             $app->view->enqueueScript('app', 'embedtools-messages', 'js/embedtools.js', ['mapasculturais']);
+            $app->view->enqueueStyle('app', 'embedtools-style', 'css/embedtools.css', ['main']);
         }
     }
 

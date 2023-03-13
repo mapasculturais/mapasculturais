@@ -1,0 +1,328 @@
+body {
+    background-color: transparent;
+}
+
+#main-footer {
+    display: none;
+}
+
+#main-section {
+    background-color: transparent;
+    margin: 0;
+}
+
+#main-section .main-content {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+
+
+/* RegistrationForm */
+.attachment-list .attachment-list-item {
+    padding: 0;
+    font-size: unset;
+}
+
+.attachment-list .attachment-list-item.attachment-list-item-type-section {
+    margin: unset;
+    padding: unset;
+    border: unset;
+}
+.registration-fieldset {
+    border: none;
+    padding: 0;
+}
+
+.registration-edit-mode ul.attachment-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item {
+    padding: 0;
+    border: none;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item span label {
+    padding: 0;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field],
+.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] {
+    background-color: #FFFFFF;
+    overflow: auto;
+    padding: 16px;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item .title_section {
+    background-color: #E5E5E5 !important;
+    padding: 0 0 32px !important;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .label {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 44px;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .attachment-description {
+    margin: 0;
+}
+
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item .label {
+    display: flex;
+    font-size: 14px;
+    font-weight: 600;
+    gap: 5px;
+    line-height: 19px;
+    margin-bottom: 8px;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item .attachment-description {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #141414;
+    margin-bottom: 8px;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .attachment-description {
+    margin-bottom: 32px;
+
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn,
+.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .submit-attach-opportunity {
+    align-items: center;
+    appearance: none;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    border: 2px solid #0074C1;
+    color: #0074C1;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 16px;
+    font-weight: bold;
+    gap: 12px;
+    height: unset;
+    justify-content: center;
+    line-height: 18px;
+    padding: 9px 19px;
+    position: relative;
+    text-decoration: none;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn::before {
+    font-size: 16px;
+    margin: 0;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item input,
+.registration-edit-mode ul.attachment-list li.attachment-list-item textarea,
+.registration-edit-mode ul.attachment-list li.attachment-list-item select {
+    border-radius: 4px;
+    border: 1px solid #898989;
+    font-size: 16px;
+    height: unset;
+    margin: 0;
+    padding: 14px;
+    width: 100%;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item input[type="checkbox"],
+.registration-edit-mode ul.attachment-list li.attachment-list-item input[type="radio"] {
+    float: left;
+    height: 18px;
+    margin-right:8px;
+    width: 18px;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #FFFFFF;
+    background-size: 20px;
+    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat calc(100% - 14px) center/contain;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item textarea {
+    min-height: 91px;
+}
+
+.registration-edit-mode ul.attachment-list li.attachment-list-item .alert {
+    margin: 5px 0 0;
+}
+
+
+
+/* FormBuilder */
+
+.project-edit-mode:hover {
+    background-color: transparent !important;
+}
+
+.project-edit-mode--header h4 {
+    color: #000000;
+    font-family: 'Open Sans';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28px;
+    margin: 0;
+}
+
+.project-edit-mode .buttons {
+    background: #FFFFFF;
+    border-radius: 4px;
+    display: flex;
+    gap: 24px;
+    justify-content: flex-end;
+    padding: 15px 32px;
+}
+
+.project-edit-mode .buttons .btn {
+    background-color: #FFA4A3;
+    border-radius: 8px;
+    border: none;
+    color: #1E1E1E;
+    font-size: 14px;
+    font-weight: 600;
+    height: unset;
+    line-height: 19px;
+    padding: 10px 16px;
+}
+
+.project-edit-mode .buttons .btn:hover {
+    background-color: #800100;
+    color: #FFFFFF;
+}
+
+.project-edit-mode .buttons .btn::before {
+    content: unset;
+}
+
+.project-edit-mode ul.attachment-list {
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    margin-top: 8px;
+    display: grid;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #BBBBBB;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item > div:first-child {
+    background-color: #FFFFFF;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item:first-child,
+.project-edit-mode ul.attachment-list li.attachment-list-item:first-child > div {
+    border-radius: 4px 4px 0 0;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item:last-child {
+    margin-bottom: 7px;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .btn-group {
+    align-items: center;
+    display: flex;
+    gap: 34px;
+    height: 100%;
+    right: 28px;
+    top: 0;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .btn-group .btn::before {
+    font-size: 20px;
+    height: 100%;
+    height: unset;
+    margin-right: 0 !important;
+    width: unset;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .btn-group .btn {
+    background-color: transparent;
+    border: none;
+}
+.project-edit-mode ul.attachment-list li.attachment-list-item .btn-group .btn:hover {
+    box-shadow: unset;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .btn-group .btn.delete {
+    color: #ED0000;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .item {
+    background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 36px center / 30px;
+    padding: 11px 28px 11px 85px;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .item .label {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 25px;
+    margin: 0;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .item {
+    display: grid;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .item .type {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    margin-bottom: 16px;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .item .description {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .section .item {
+    padding: 24px 28px 24px 85px;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .section .item .type {
+    display: none;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .section .item .field-id {
+    display: none;
+}
+
+.project-edit-mode ul.attachment-list li.attachment-list-item .section .item .label {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28px;
+    margin: 0;
+}
+
+@media (max-width: 500px) {
+    .project-edit-mode ul.attachment-list li.attachment-list-item .btn-group {
+        flex-direction: column;
+        gap: 2px;
+        height: 100%;
+        justify-content: center;
+        top: 0;
+    }
+
+    .project-edit-mode ul.attachment-list li.attachment-list-item .item {
+        background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 16px center / 30px;
+        padding: 11px 28px 11px 65px;
+    }
+
+    .project-edit-mode ul.attachment-list li.attachment-list-item .section .item {
+        padding: 24px 28px 24px 65px;
+    }
+}
