@@ -9,7 +9,7 @@
     .popover {
         &__content {
             padding: 0;
-        }  
+        }
     }
 
     &__user {
@@ -26,7 +26,7 @@
             font-weight: 600;
             font-size: size(14);
             line-height: size(14);
-            
+
             @media (max-width: size(1150)) {
                 display: none;
             }
@@ -41,10 +41,11 @@
             justify-content: center;
             overflow: hidden;
             width: size(40);
-            img{
+
+            img {
                 max-width: 100%;
             }
-            
+
         }
 
         &::before {
@@ -61,7 +62,7 @@
         }
     }
 
-    
+
 
     &__desktop {
         @media (max-width: size(860)) {
@@ -71,25 +72,27 @@
 
     &__mobile {
         display: none;
-        
+
         &--button {
             position: relative;
         }
 
         &--list {
-            background: white;
             height: 100vh;
             left: 0;
             overflow-y: scroll;
-            overflow-x: hidden;
+            overflow-x: visible;
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 100;
 
             .panel-nav {
+                background-color: white;
+                overflow-y: scroll;
+                overflow-x: visible;
                 display: block;
-                height: unset;
+                height: 100%;
                 padding: size(16);
             }
         }
@@ -110,7 +113,7 @@
             top: 0;
             width: 100%;
             z-index: 1;
-            
+
             &__btn {
                 background: none;
                 border: none;
@@ -120,7 +123,7 @@
                 margin-right: size(21);
                 padding: size(6);
                 text-decoration: none;
-                
+
                 .iconify {
                     font-size: size(25);
                     right: 0;
@@ -138,7 +141,7 @@
                 margin-right: size(18);
                 width: 100%;
 
-                @media (max-width: size(430)){
+                @media (max-width: size(430)) {
                     .theme-logo__text {
                         font-size: size(11);
                         letter-spacing: size(3);
