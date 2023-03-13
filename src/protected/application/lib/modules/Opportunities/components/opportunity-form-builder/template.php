@@ -5,6 +5,7 @@ $this->layout = 'entity';
 $this->import('
     entity-field
     opportunity-form-builder-category
+    v1-embed-tool
 ')
 ?>
 
@@ -86,6 +87,10 @@ $this->import('
                     <label for="css"><?= i::__("Não") ?></label>
                 </div>
             </div>
+        </div>
+
+        <div class="col-12">
+            <v1-embed-tool route="formbuilder" :id="entity.id"></v1-embed-tool>
         </div>
     </div>
 </div>
