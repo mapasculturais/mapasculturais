@@ -31,6 +31,10 @@ app.component('opportunity-phase-config-data-collection' , {
         },
 
         minDate() {
+            if(this.index == 0) {
+                return null;
+            }
+
             if (this.previousPhase.__objectType == 'evaluationmethodconfiguration') {
                 // fase anterior é uma fase de avaliação
                 return this.previousPhase.evaluationTo;
