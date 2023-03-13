@@ -15,7 +15,7 @@ $this->import('
 
 <tabs :class="{'hasDrafts': this.totalDrafts>0}" @changed="changed($event)">
     <tab label="<?= i::_e('Enviadas') ?>" class="tabs_sent" slug="sent">
-        <entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" endpoint="find" select="*,owner.{name, files.avatar}">            
+        <entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" endpoint="find" select="number,category,createTimestamp,sentTimestamp,owner.{name, files.avatar}">            
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -50,7 +50,7 @@ $this->import('
         </entities>
     </tab>
     <tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem" class="teste?">
-        <entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="*,owner.{name, files.avatar}">
+        <entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="number,category,createTimestamp,sentTimestamp,owner.{name, files.avatar}">
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
