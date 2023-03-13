@@ -90,10 +90,9 @@
             .panel-nav {
                 background-color: white;
                 overflow-y: scroll;
-                overflow-x: visible;
                 display: block;
                 height: 100%;
-                padding: size(16);
+                padding: size(16) size(16) size(32);
             }
         }
 
