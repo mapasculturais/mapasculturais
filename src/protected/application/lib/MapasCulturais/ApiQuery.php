@@ -1562,8 +1562,11 @@ class ApiQuery {
                         $transformed_files[$parent][$transformation] = $file;
                     } else {
                         $file->description = $f['description'];
-
-                        if ($file_groups[$group]->unique) {
+                        
+                        /**
+                         * Se o filegroup não existe, considerando que é um anexo de inscrição
+                         */
+                        if ($file_groups[$group]->unique ?? true) {
                             $raw_files[$group] = $file;
                         } else {
                             $raw_files[$group] = $raw_files[$group] ?? [];
@@ -1573,7 +1576,10 @@ class ApiQuery {
                 }
 
                 foreach($raw_files as $group => &$fs){
-                    if ($file_groups[$group]->unique) {
+                    /**
+                     * Se o filegroup não existe, considerando que é um anexo de inscrição
+                     */
+                    if ($file_groups[$group]->unique ?? true) {
                         $fs->transformations = $transformed_files[$fs->id] ?? null;
                     } else {
                         foreach($fs as &$file) {
