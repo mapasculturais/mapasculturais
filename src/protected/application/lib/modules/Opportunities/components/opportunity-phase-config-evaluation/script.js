@@ -41,6 +41,9 @@ app.component('opportunity-phase-config-evaluation' , {
         },
 
         maxDate() {
+            if(!this.nextPhase) {
+                return this.phase.publishTimestamp;
+            }
             if (this.nextPhase.isLastPhase) {
                 // próxima fase é de publicação de resultado
                 return this.nextPhase.publishTimestamp;
