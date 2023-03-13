@@ -15,6 +15,7 @@ $this->import('
     registration-related-space
     select-entity
     stepper
+    v1-embed-tool
 ');
 
 $this->breadcrumb = [
@@ -50,11 +51,11 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
                     <div class="registration-info__content">
                         <div class="data">
                             <p class="data__title"> <?= i::__('Inscrição') ?> </p>
-                            <p class="data__info">on-63348175</p>
+                            <p class="data__info">{{entity.number}}</p>
                         </div>
                         <div class="data">
                             <p class="data__title"> <?= i::__('Data') ?> </p>
-                            <p class="data__info">06/04/2022</p>
+                            <p class="data__info">{{entity.createTimestamp.date('2-digit year')}}</p>
                         </div>
                         <div class="data">
                             <p class="data__title"> <?= i::__('Categoria') ?> </p>
@@ -87,6 +88,10 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
                         <registration-related-agents :registration="entity"></registration-related-agents>
                         <registration-related-space :registration="entity"></registration-related-space>
                     </div>
+                </section>
+
+                <section class="section">
+                    <v1-embed-tool route="registrationform" :id="entity.id"></v1-embed-tool>
                 </section>
             </main>
 
