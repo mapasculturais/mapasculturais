@@ -1,0 +1,153 @@
+.qualification-evaluation-configuration .btn {
+    margin-left:10px;
+}
+
+.qualification-evaluation-configuration input {
+    border:1px solid transparent;
+    cursor: pointer;
+}
+.qualification-evaluation-configuration .criteria-fields{
+    width: 100%;
+}
+
+.qualification-evaluation-configuration input:focus {
+    border:1px solid #888;
+    cursor: text;
+}
+
+.qualification-evaluation-configuration input.section-name{
+    font-size: 1.3em;
+    font-weight: bold;
+    width: 80%;
+}
+
+.qualification-evaluation-configuration table {
+    width:100%;
+}
+.qualification-evaluation-configuration table th .btn {
+    text-align: right
+}
+
+.qualification-evaluation-configuration table input {
+}
+
+.qualification-evaluation-configuration .criterion-title {
+    width: 60%;
+}
+
+.qualification-evaluation-configuration .criterion-num {
+    width: 10%;
+}
+
+.qualification-evaluation-configuration .criterion-num input{
+    font-weight: bold;
+    text-align: center;
+    font-size: 13px;
+}
+
+
+/* Políticas afirmativas */
+.qualification-evaluation-configuration .policy-roof {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.qualification-evaluation-configuration .policy-roof p {
+    font-size: 12px; 
+    margin: 0; 
+    white-space: nowrap;
+    width: 100%;
+}
+.qualification-evaluation-configuration .policy-roof span.detail {
+    font-size: 12px; 
+    margin: 0 0 0 15px; 
+}
+.qualification-evaluation-configuration .policy-roof input {
+    margin: 0 5px;
+    margin-right: 5px;
+}
+
+.qualification-evaluation-configuration .policy-field,
+.qualification-evaluation-configuration .policy-percent {
+    width: 20%;
+}
+
+.qualification-evaluation-configuration .policy-value {
+    width: 50%;
+}
+
+.qualification-evaluation-configuration .policy-value select {
+    width: 100%;
+}
+.qualification-evaluation-configuration .policy-value .check {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.qualification-evaluation-configuration .policy-value .check span {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 5px;
+    align-items: center;
+}
+.qualification-evaluation-configuration .policy-value .check span input{
+    margin-right: 5px;
+}
+
+
+.qualification-evaluation-configuration td.policy-field select {
+    width: 100%;
+    margin: 0;
+}
+
+.qualification-evaluation-configuration td.policy-percent input {
+    width: 80% !important;
+    margin: 0;
+    border-bottom: 1px solid #EEE;
+}
+.qualification-evaluation-configuration td.policy-percent input:focus{
+    border-bottom: 1px solid #888;
+}
+
+/* evaluation form */
+
+.qualification-evaluation-form table{
+    width:100%;
+    border:1px solid #bbb;
+    padding:5px;
+}
+
+.qualification-evaluation-form table th{
+    background-color: #ddd;
+}
+
+.qualification-evaluation-form table td{
+    padding:0 10px;
+    text-align: left;
+}
+
+.qualification-evaluation-form table tr td:last-of-type{
+    vertical-align: bottom;
+    text-align: right;
+    padding:0;
+}
+
+.qualification-evaluation-form table td input{
+    width:50px;
+}
+
+
+.qualification-evaluation-form table tr.subtotal {
+    background-color: #ddd;
+}
+
+.qualification-evaluation-form table tr.subtotal td{
+    padding: 5px 10px;
+    font-weight: bold;
+}
+
+.qualification-evaluation-form textarea {
+    width: 100%;
+    height:150px;
+}
