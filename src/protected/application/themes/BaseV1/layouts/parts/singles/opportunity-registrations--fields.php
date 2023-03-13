@@ -15,17 +15,19 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
 <div id="registration-attachments" class="registration-fieldset project-edit-mode">
 
-    <h4><?php i::_e("Campos"); ?></h4>
-
-    <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help"><?php i::_e("Configure aqui os campos do formulário de inscrição."); ?></p>
-    <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help"><?php i::_e("A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto."); ?> </p>
+    <div class="project-edit-mode--header">
+        <h4><?php i::_e("Campos"); ?></h4>
+    
+        <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help"><?php i::_e("Configure aqui os campos do formulário de inscrição."); ?></p>
+        <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help"><?php i::_e("A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto."); ?> </p>
+    </div>
 
     <div ng-controller="RegistrationConfigurationsController">
         <?php if ($this->controller->action == 'create') : ?>
             <p class="allert warning"><?php i::_e("Antes de configurar os campos é preciso salvar o projeto."); ?></p>
         <?php else : ?>
             <?php $this->part('singles/opportunity-registrations--fields--project-name', ['editable_class' => $editable_class, 'entity' => $entity]) ?>
-            <p ng-if="data.entity.canUserModifyRegistrationFields">
+            <p ng-if="data.entity.canUserModifyRegistrationFields" class="buttons">
                 <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-fields', $event)" rel='noopener noreferrer'><?php i::_e("Adicionar campo"); ?></a>
                 <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-files', $event)" rel='noopener noreferrer'><?php i::_e("Adicionar anexo"); ?></a>
             </p>
@@ -81,21 +83,21 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
         <!-- added attachments list -->
         <ul ui-sortable="sortableOptions" class="attachment-list" ng-model="data.fields">
             <li ng-repeat="field in data.fields" ng-show="showFieldConfiguration(field)" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" class="attachment-list-item project-edit-mode attachment-list-item-type-{{field.fieldType}}">
-                <div ng-if="field.fieldType !== 'file'">
-                    <div class="js-open-editbox">
+                <div ng-if="field.fieldType !== 'file'" ng-class="{'section' : field.fieldType==='section'}">
+                    <div class="js-open-editbox item">
                         <div class="label">
-                            <code onclick="copyToClipboard(this)" class="hltip field-id" title="<?php i::esc_attr_e('Clique para copiar') ?>">{{field.id}}</code>
-                            {{field.title}} <em ng-if="field.fieldType !== 'section'"><small>({{field.required.toString() === 'true' ? data.fieldsRequiredLabel : data.fieldsOptionalLabel }})</small></em>
+                            <code onclick="copyToClipboard(this)" class="hltip field-id" title="<?php i::esc_attr_e('Clique para copiar') ?>">{{field.id}}</code> {{field.title}} 
+                            <em ng-if="field.fieldType !== 'section'"><small>({{field.required.toString() === 'true' ? data.fieldsRequiredLabel : data.fieldsOptionalLabel }})</small></em>
                         </div>
                         <span ng-if="field.categories.length" class="attachment-description">
                             <?php i::_e("Somente para"); ?> <strong>{{field.categories.join(', ')}}</strong>
                             <br>
                         </span>
-                        <span class="attachment-description">
+                        <span class="attachment-description type">
                             <?php i::_e("Tipo"); ?>: <strong>{{data.fieldTypesBySlug[field.fieldType].name}}</strong>
                             <br>
                         </span>
-                        <span ng-if="field.description" class="attachment-description">
+                        <span ng-if="field.description" class="attachment-description description">
                             <?php i::_e("Descrição"); ?>: {{field.description}}
                         </span>
                     </div>
@@ -138,17 +140,17 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                 </div>
 
                 <div ng-if="field.fieldType === 'file'">
-                    <div class="js-open-editbox">
+                    <div class="js-open-editbox item">
                         <div class="label">{{field.title}} <em><small>({{field.required.toString() === 'true' ? 'Obrigatório' : 'Opcional'}})</small></em></div>
                         <span ng-if="field.categories.length" class="attachment-description">
                             <?php i::_e("Somente para"); ?> <strong>{{field.categories.join(', ')}}</strong>
                             <br>
                         </span>
-                        <span class="attachment-description">
+                        <span class="attachment-description type">
                             <?php i::_e("Tipo"); ?>: <strong><?php i::_e("Anexo"); ?></strong>
                             <br>
                         </span>
-                        <span class="attachment-description">
+                        <span class="attachment-description description">
                             <?php i::_e("Descrição"); ?>: {{field.description}}
                         </span>
                     </div>
@@ -178,8 +180,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                     <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files-template-{{field.id}}" position="top" title="<?php i::esc_attr_e("Enviar modelo"); ?>" cancel-label="<?php i::esc_attr_e("Cancelar"); ?>" submit-label="<?php i::esc_attr_e("Enviar modelo"); ?>" on-submit="sendFile" close-on-cancel='true' spinner-condition="data.uploadSpinner">
                         <p ng-if="field.template">
                             <a class="file-{{field.template.id}} attachment-template" href="{{field.template.url}}" target="_blank" rel='noopener noreferrer'>{{field.template.name}}</a>
-                        </p>
-                        
+                        </p>                        
                         <form class="js-ajax-upload" method="post" data-group="{{uploadFileGroup}}" action="{{getUploadUrl(field.id)}}" enctype="multipart/form-data">
                             <div class="alert danger hidden"></div>
                             <p class="form-help"><?php i::_e("Tamanho máximo do arquivo"); ?>: {{maxUploadSizeFormatted}}</p>
@@ -198,7 +199,6 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                         <a ng-if="!field.template" ng-click="openFileConfigurationTemplateEditBox(field.id, $index, $event);" class="btn btn-default send hltip" title="<?php i::esc_attr_e("enviar modelo"); ?>"></a>
                         <a ng-click="removeFileConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php i::esc_attr_e("excluir anexo"); ?>"></a>
                     </div>
-
                 </div>
             </li>
         </ul>
