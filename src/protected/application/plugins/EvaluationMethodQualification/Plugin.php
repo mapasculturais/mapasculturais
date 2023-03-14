@@ -68,7 +68,6 @@ class Plugin extends \MapasCulturais\EvaluationMethod
             }
         }
 
-        return 1;
     }
 
 
