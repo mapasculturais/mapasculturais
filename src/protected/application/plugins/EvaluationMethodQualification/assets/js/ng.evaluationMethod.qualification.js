@@ -33,8 +33,6 @@
 
         if (MapasCulturais.evaluationConfiguration && MapasCulturais.evaluationConfiguration.criteria) {
             MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function (e) {
-                e.min = parseFloat(e.min);
-                e.max = parseFloat(e.max);
                 e.weight = parseFloat(e.weight);
                 return e;
             });
@@ -62,11 +60,7 @@
             var data = {
                 sections: $scope.data.sections,
                 criteria: [],
-                quotas: $scope.data.quotas,
                 enableViability: $scope.data.enableViability,
-                affirmativePolicies: JSON.stringify($scope.data.criteriaAffirmativePolicies) == "[]" ? null : $scope.data.criteriaAffirmativePolicies,
-                isActiveAffirmativePolicies: $scope.data.isActiveAffirmativePolicies,
-                affirmativePoliciesRoof: $scope.data.affirmativePolicieRoof || 0.00
             };
 
             console.log(data);
@@ -143,8 +137,6 @@
     module.controller('QualificationEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'QualificationEvaluationMethodService', function ($scope, $rootScope, $timeout, QualificationEvaluationMethodService) {
         var labels = MapasCulturais.gettext.qualificationEvaluationMethod;
         MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function (e) {
-            e.min = parseInt(e.min);
-            e.max = parseInt(e.max);
             e.weight = parseInt(e.weight);
             return e;
         });
