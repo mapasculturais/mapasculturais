@@ -75,6 +75,27 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
     protected function _register()
     {
+        $this->registerEvaluationMethodConfigurationMetadata('sections', [
+            'label' => i::__('Seções'),
+            'type' => 'json',
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function ($val) {
+                return json_decode($val);
+            }
+        ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('criteria', [
+            'label' => i::__('Critérios'),
+            'type' => 'json',
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function ($val) {
+                return json_decode($val);
+            }
+        ]);
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
@@ -97,6 +118,20 @@ class Plugin extends \MapasCulturais\EvaluationMethod
     function enqueueScriptsAndStyles()
     {
         $app = App::i();
+
+        $app = App::i();
+        $app->view->enqueueScript('app', 'qualification-evaluation-form', 'js/ng.evaluationMethod.qualification.js', ['entity.module.opportunity']);
+        $app->view->enqueueStyle('app', 'qualification-evaluation-method', 'css/qualification-evaluation-method.css');
+
+        $app->view->localizeScript('qualificationEvaluationMethod', [
+            'sectionNameAlreadyExists' => i::__('Já existe uma seção com o mesmo nome'),
+            'changesSaved' => i::__('Alteraçṍes salvas'),
+            'deleteSectionConfirmation' => i::__('Deseja remover a seção? Esta ação não poderá ser desfeita e também removerá todas os critérios desta seção.'),
+            'deleteCriterionConfirmation' => i::__('Deseja remover este critério de avaliação? Esta ação não poderá ser desfeita.'),
+            'deleteAffirmativePolicy' => i::__('Deseja remover esta política afirmativa? Esta ação não poderá ser desfeita.')
+        ]);
+
+        $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.qualification';
     }
 
     public function _init()
