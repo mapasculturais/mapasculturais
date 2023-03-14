@@ -71,8 +71,24 @@ app.component('opportunity-phases-timeline', {
 			return false;
 		},
 
+		itHappened(id) {
+			let item = this.getItemById(id);
+
+			if (item.registrationTo) {
+				if (item.registrationTo._date < new Date()) {
+					return true;
+				}
+			}
+			if (item.evaluationTo) {
+				if (item.evaluationTo._date < new Date()) {
+					return true;
+				}
+			}
+			return false;
+		},
+
 		getItemById(id) {
 			return this.phases.find(x => x.id === id);
-		}
+		},
 	}
 });
