@@ -2,7 +2,7 @@
 
 use MapasCulturais\i;
 ?>
-<div ng-controller="QualificationEvaluationMethodConfigurationController" class="technical-evaluation-configuration registration-fieldset">
+<div ng-controller="QualificationEvaluationMethodConfigurationController" class="qualification-evaluation-configuration registration-fieldset">
     <h4><?php i::_e('Critérios') ?></h4>
     <p><?php i::_e('Configure abaixo os critérios de avaliação de habilitação documental') ?>
     <section id="{{section.id}}" ng-repeat="section in data.sections">
@@ -14,20 +14,24 @@ use MapasCulturais\i;
 
         <table>
             <tr>
-                <th class="criterion-title"><?php i::_e('Título do critério') ?></th>
                 <th>
-                    <button ng-click="addCriterion(section)" class="btn btn-default add" title="<?php i::_e('Adicionar sessão') ?>"></button>
+                    <button ng-click="addCriterion(section)" class="btn btn-default add" title="<?php i::_e('Adicionar critétio') ?>"> <?php i::_e('Adicionar critétio') ?></button>
                 </th>
             </tr>
 
             <tr id="{{cri.id}}" ng-repeat="cri in data.criteria" ng-if="cri.sid == section.id">
                 <td class="criterion-title">
-                    <select ng-model="data.qualifications[cri.id].field">
+                    <select ng-model="cri.fieldId" ng-change="save({sections: data.sections})">
                         <option ng-repeat="field in data.registrationFieldConfigurations" value="{{field.id}}">#{{field.id}} - {{field.title}} </option>
                     </select>
                 </td>
                 <td>
-                    <button ng-click="editableCriterion(cri)" class="btn btn-warning editable" title="<?php i::_e('Editar critério') ?>"></button>
+                    <input type="text" ng-model="cri.description" placeholder="<?php i::_e('Descrição do critério') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
+                </td>
+                <td>
+                    <textarea ng-model="data.options[cri.id]" cols="70" rows="5" ng-change="save({sections: data.sections})"></textarea>
+                </td>
+                <td>
                     <button ng-click="deleteCriterion(cri)" class="btn btn-danger delete" title="<?php i::_e('Remover critério') ?>"></button>
                 </td>
             </tr>
