@@ -15,8 +15,7 @@ Componente que renderiza os campos de uma entidade
 - *Number **debounce** = 0* - 
 - *String/Array/Object **classes*** - Classes a serem aplicadas no componente
 - *String **fieldDescription*** - Descrição do campo
-- *String **minDate*** - Propriedade para seleção mínima de data
-- *String **maxDate*** - Propriedade para seleção máxima de data
+- *Number **autosave*** - Se informado a entidade será salva após o número de milisegundos informados nessa propriedade
 
 ## Slots
 - **default**: label do campo
@@ -49,6 +48,9 @@ $this->import('entity-field');
 
 <!-- utilização com mascara -->
 <entity-field :entity="entity" mask classes="col-12" prop="cpf"></entity-field>
+
+<!-- o cpf será salvo 300 milisegundos depois da última modificação -->
+<entity-field :entity="entity" mask classes="col-12" prop="cpf" :autosave="300"></entity-field>
 
 <!-- utilização com restrição de data -->
 <entity-field :entity="entity" classes="col-12" prop="createTimestamp" :min-date="2012-01-01" :max-date="2012-02-01"></entity-field>
