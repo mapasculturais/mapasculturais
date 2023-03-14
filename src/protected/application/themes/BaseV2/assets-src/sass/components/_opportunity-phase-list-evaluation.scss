@@ -1,0 +1,32 @@
+@use '../settings/mixins' as *;
+
+.opportunity-phase-list-evaluation {
+
+    p {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 19px;
+    }
+
+    .subscribe_prev_phase {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &_action {
+
+        &--button {
+            color: var(--mc-primary-500);
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 28px;
+            text-align: center;
+        }
+
+        &--center {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
