@@ -1,5 +1,7 @@
 <?php
+
 use MapasCulturais\i;
+
 $this->import('entities mapas-card entity-card');
 ?>
 
@@ -14,10 +16,12 @@ $this->import('entities mapas-card entity-card');
         </template>
 
         <template #default="{entities}">
-            <div class="col-9" v-for="entity in entities" :key="entity.__objectId">
-                <entity-card :entity="entity">
-                    <template  #type> <span >{{typeText}} <span :class="['upper', entity.__objectType+'__color']">{{entity.type.name}}</span></span></template>
-                </entity-card> 
+            <div class="col-9 ">
+                <div  class="grid-12">
+                    <entity-card :entity="entity" v-for="entity in entities" :key="entity.__objectId" class="col-12">
+                        <template #type> <span>{{typeText}} <span :class="['upper', entity.__objectType+'__color']">{{entity.type.name}}</span></span></template>
+                    </entity-card>
+                </div  >
             </div>
         </template>
     </entities>
