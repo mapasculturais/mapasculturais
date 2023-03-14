@@ -655,33 +655,74 @@ class Opportunity extends EntityController {
             'opportunity_id' => $opportunity->id,
             ]);
 
-        $sql = "
-        SELECT
-            r.id as registrationId,
-            r.status as registrationStatus,
-            r.consolidated_result as registrationConsolidated_result,
-            r.number as registrationNumber,
-            re.*, 
-            a.id as agentId,
-            a.name as agentName
-        FROM
-            registration r
-        INNER JOIN pcache pc
-            ON pc.object_id = r.id
-                AND pc.object_type = 'MapasCulturais\Entities\Registration'
-                AND pc.action = 'evaluate'
-                AND pc.user_id = :user_id
-        LEFT JOIN registration_evaluation re
-            ON r.id = re.registration_id
-            AND re.user_id = :user_id
-        INNER JOIN agent a
-            ON a.id = r.agent_id
-                WHERE r.status > 0
-                AND r.opportunity_id = :opportunity_id 
-                ORDER BY r.id
-            LIMIT :limit
-            OFFSET :offset
-        ";
+        if(isset($this->data['@pending'])){
+            $sql = "
+            SELECT
+                r.id as registrationId,
+                r.status as registrationStatus,
+                r.consolidated_result as registrationConsolidated_result,
+                r.number as registrationNumber,
+                re.*,
+                a.id as agentId,
+                a.name as agentName
+            FROM
+                registration r
+                INNER JOIN pcache pc ON
+                    pc.object_id = r.id
+                    AND pc.object_type = 'MapasCulturais\Entities\Registration'
+                    AND pc.action = 'evaluate'
+                    AND pc.user_id = :user_id
+                LEFT JOIN registration_evaluation re ON
+                    r.id = re.registration_id
+                    AND re.user_id = :user_id
+                INNER JOIN agent a ON 
+                    a.id = r.agent_id
+            WHERE
+                r.status > 0
+                AND r.opportunity_id = :opportunity_id
+                AND r.id NOT IN (
+                    SELECT registration_id 
+                    FROM registration_evaluation 
+                    WHERE user_id = :user_id
+                )
+            ORDER BY
+                r.id
+            LIMIT
+                :limit OFFSET :offset
+            ";
+        }else{
+            $sql = "
+            SELECT
+                r.id as registrationId,
+                r.status as registrationStatus,
+                r.consolidated_result as registrationConsolidated_result,
+                r.number as registrationNumber,
+                re.*,
+                a.id as agentId,
+                a.name as agentName
+            FROM
+                registration r
+                INNER JOIN pcache pc ON
+                    pc.object_id = r.id
+                    AND pc.object_type = 'MapasCulturais\Entities\Registration'
+                    AND pc.action = 'evaluate'
+                    AND pc.user_id = :user_id
+                LEFT JOIN registration_evaluation re ON
+                    r.id = re.registration_id
+                    AND re.user_id = :user_id
+                INNER JOIN agent a ON 
+                    a.id = r.agent_id
+            WHERE
+                r.status > 0
+                AND r.opportunity_id = :opportunity_id
+            ORDER BY
+                r.id
+            LIMIT
+                :limit OFFSET :offset
+            ";
+        }
+
+        
 
         $limit = isset($data['@limit']) ? $data['@limit'] : 50;
         $page = isset($data['@page'] ) ? $data['@page'] : 1;
