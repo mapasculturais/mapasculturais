@@ -2705,7 +2705,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
         var last = '';
         $scope.timeOut = null;
-        $scope.$watch('data.keyword', function(o,n){
+        $scope.$watchGroup(['data.keyword', 'data.pending'], function(o,n){
             var lower = $scope.data.keyword.toLowerCase();
             if(lower != last){
                 last = lower;
@@ -2714,6 +2714,19 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
             clearTimeout($scope.timeOut);
             $scope.timeOut = setTimeout(() => {
+                let args = {
+                    '@opportunity': getOpportunityId(),
+                    '@limit': 50,
+                    '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status',
+                    '@keyword' : 'like('+$scope.data.keywords+')'
+                };
+        
+                if($scope.data.pending){
+                    args['@pending'] = true
+                }
+                
+                var registrationAndEvaluationsApi = new OpportunityApiService($scope, 'registrationAndEvaluations', 'findRegistrationsAndEvaluations', args);
+        
                 registrationAndEvaluationsApi.find().success(function(){
                     $scope.registrationAndEvaluations = $scope.data.registrationAndEvaluations.map(object => {
                         return {
@@ -2725,7 +2738,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                             resultString: object.resultString
                         }
                     })
-                });                
+                });             
             }, 1500);
         });
 
