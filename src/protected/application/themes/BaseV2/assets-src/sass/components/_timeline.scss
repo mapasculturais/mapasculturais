@@ -110,8 +110,7 @@
     
             &.active {    
                 .item {
-                    &__dot {
-    
+                    &__dot {    
                         .dot {
                             background-color: var(--mc-opportunities-500);
                             height: size(70);
@@ -128,6 +127,20 @@
                         &--description {
                             font-size: size(24);
                             line-height: size(33);
+                        }
+                    }
+                }    
+            }
+
+            &.happened {    
+                .item {
+                    &__dot {   
+                        &::before {
+                            background-color: var(--mc-opportunities-500);
+                        } 
+                        
+                        .dot {
+                            background-color: var(--mc-opportunities-500);
                         }
                     }
                 }    
