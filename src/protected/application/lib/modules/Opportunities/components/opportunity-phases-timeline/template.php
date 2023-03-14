@@ -4,7 +4,7 @@ use MapasCulturais\i;
 
 
 <section :class="['timeline', {'center': center}, {'big': big}]">
-    <div v-for="item in phases" :class="['item', {'active': isActive(item.id)}]">
+    <div v-for="item in phases" :class="['item', {'active': isActive(item.id)}, {'happened': itHappened(item.id)}]">
         <div class="item__dot"> <span class="dot"></span> </div>
 
         <div class="item__content">
