@@ -60,7 +60,7 @@ app.component('search-filter-opportunity', {
         },
 
         openForRegistrations() {
-            this.pseudoQuery['registrationFrom'] = '<= ' + this.futureDate();
+            this.pseudoQuery['registrationFrom'] = '<= ' + this.actualDate();
             this.pseudoQuery['registrationTo'] = '>= ' + this.actualDate();
         },
 
