@@ -321,7 +321,7 @@
                 &__filter {
                     background-color: var(--mc-gray-100);
                     padding: 0;
-                    position: absolute;
+                    position: relative;
                     right: 0;
                     top: size(14);
                     width: 100%;
@@ -330,7 +330,7 @@
 
 
                     .content {
-                        padding: size(130) size(16) size(24);
+                        padding: size(130) size(16) size(32);
                     }
 
                     &>* {
