@@ -41,6 +41,7 @@
         $scope.data = {
             sections: MapasCulturais.evaluationConfiguration.sections || [],
             criteria: MapasCulturais.evaluationConfiguration.criteria || [],
+            options:{},
             registrationFieldConfigurations: MapasCulturais.entity.registrationFieldConfigurations,
             qualifications: [],
         };
@@ -66,16 +67,15 @@
                 criteria: [],
                 enableViability: $scope.data.enableViability,
             };
-
-            console.log(data);
-
-            $scope.data.criteria.forEach(function (crit) {
+            $scope.data.criteria.forEach(function (crit, index) {
                 for (var i in data.sections) {
                     var section = data.sections[i];
                     if (crit.sid == section.id) {
                         data.criteria.push(crit);
                     }
                 }
+                
+                data.criteria[index].options = $scope.data.options[crit.id]?.split("\n")
             });
 
             QualificationEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
@@ -116,7 +116,7 @@
         $scope.addCriterion = function (section) {
             var date = new Date;
             var new_id = 'c-' + date.getTime();
-            $scope.data.criteria.push({ id: new_id, sid: section.id, title: null, min: 0, max: 10, weight: 1 });
+            $scope.data.criteria.push({ id: new_id, sid: section.id, weight: 1 });
             $scope.save();
 
             $timeout(function () {
