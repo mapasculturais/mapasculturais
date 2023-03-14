@@ -33,6 +33,25 @@ class Plugin extends \MapasCulturais\EvaluationMethod
     }
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation)
     {
+        $app = App::i();
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
+
+        if(is_array($evaluations) && count($evaluations) === 0){
+            return 0;
+        }
+
+        $result = 1;
+
+        foreach ($evaluations as $eval){
+            if($eval->status === \MapasCulturais\Entities\RegistrationEvaluation::STATUS_DRAFT){
+                return 0;
+            }
+
+            $result = ($result === 1 && $this->getEvaluationResult($eval) === 1) ? 1 : -1;
+        }
+
+        return $result;
     }
 
     public function valueToString($value)
