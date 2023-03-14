@@ -52,7 +52,8 @@
         box-shadow: var(--mc-shadow-lv1);
         border-radius: var(--mc-border-radius-xs);
         padding: size(16);
-        position: absolute;
+        position: relative;
+        // top: 100%;
         width: 100%;
             .clear-filter {
                 display: flex;
