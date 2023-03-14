@@ -1,6 +1,6 @@
 app.component('entity-field', {
     template: $TEMPLATES['entity-field'],
-    emits: ['change'],
+    emits: ['change', 'save'],
 
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name]
@@ -93,6 +93,9 @@ app.component('entity-field', {
         fieldDescription: {
             type: String,
             default: null
+        },
+        autosave: {
+            type: Number,
         }
     },
 
@@ -128,6 +131,14 @@ app.component('entity-field', {
                 }
 
                 this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
+
+                if (this.autosave && this.entity[this.prop] != oldValue) {
+                    clearTimeout(this.entity.__autosaveTimeout);
+                    this.entity.__autosaveTimeout = setTimeout(() => {
+                        this.entity.save();
+                        this.$emit('save', this.entity);
+                    }, this.autosave);
+                }
             }, this.debounce);
         },
 
