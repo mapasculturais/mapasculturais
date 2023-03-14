@@ -1,8 +1,6 @@
 <?php
 use MapasCulturais\i;
-$this->import('
 
-');
 ?>
 
 <mapas-card>
