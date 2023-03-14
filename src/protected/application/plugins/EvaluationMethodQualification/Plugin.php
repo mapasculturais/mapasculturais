@@ -56,6 +56,19 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
     public function valueToString($value)
     {
+        $data = (array) $evaluation->evaluationData;
+        
+        if(is_array($data) && count($data) == 0){
+            return 1; // valid
+        }
+
+        foreach ($data as $id => $value) {
+            if(isset($value['evaluation']) && $value['evaluation'] === STATUS_INVALID){
+                return -1;
+            }
+        }
+
+        return 1;
     }
 
 
