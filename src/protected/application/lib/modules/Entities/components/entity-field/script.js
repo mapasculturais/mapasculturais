@@ -30,11 +30,6 @@ app.component('entity-field', {
             }
         }
 
-        // if ((description.type === 'smallint' || description.type === 'integer' || description.type === 'number') && !(value instanceof Number)) {
-        //     description.min = this.props.min;
-        //     description.max = this.props.max;
-        // }
-
         let fieldType = this.type || description.field_type || description.type;
 
         if(this.type == 'textarea' || (description.type == 'text' && description.field_type === undefined)) {
