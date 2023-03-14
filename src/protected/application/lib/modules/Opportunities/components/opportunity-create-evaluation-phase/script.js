@@ -30,7 +30,7 @@ app.component('opportunity-create-evaluation-phase' , {
             return this.lastPhase.publishTimestamp._date || null;
         },
         minDate () {
-            return this.previousPhase.evaluationTo?._date;
+            return this.previousPhase.registrationTo?._date || this.previousPhase.evaluationTo?._date;
         },
         minDateEvaluationTo () {
             return this.phase.evaluationFrom?._date || '';
