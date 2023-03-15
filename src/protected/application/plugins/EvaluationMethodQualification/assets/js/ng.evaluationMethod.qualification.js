@@ -58,7 +58,7 @@
         }
 
         MapasCulturais.evaluationConfiguration.criteria?.forEach(function(values, index){
-            $scope.data.options[values.id] = values.options.join("\n")
+            $scope.data.options[values.id] = values.options?.join("\n")
         })
 
         $scope.save = function () {
