@@ -1,26 +1,38 @@
 <?php
 
+namespace EvaluationMethodQualification;
+
 use MapasCulturais\i;
+
+$params = ['registration' => $entity, 'opportunity' => $opportunity];
 ?>
-<div ng-controller="QualificationEvaluationMethodConfigurationController" class="qualification-evaluation-configuration registration-fieldset">
-    <div>
-        <strong> <?php i::_e('Comprovante de endereço') ?> </strong>
-        <select class="select-option"  name="data[obs]" ng-model="evaluation['obs']">
-            <option>Sem comprovante de endereço</option>
-            <option>qualquer coisa2</option>
-        </select>
-    </div>
-    <br><br>
-    <label>
-        <strong class="textearea-strong"><?php i::_e('Observações') ?> </strong>
-        <br>
-            <textarea class="textearea-text" name="data[obs]" ng-model="evaluation['obs']"></textarea>
-    </label>
-    <br><br>
-    <div>
-        <label>
-            <br>
-            <strong> <?php i::_e('Status:inabilitado') ?> </strong>
-        </label>
-    </div>
+<?php $this->applyTemplateHook('evaluationForm.qualification', 'before', $params); ?>
+<div id="qualification-evaluation-form" class="qualification-evaluation-form">
+    <?php $this->applyTemplateHook('evaluationForm.qualification', 'begin', $params); ?>
+    <div id="qualification-evaluation-form--container"></div>
+    <?php $this->applyTemplateHook('evaluationForm.qualification', 'end', $params); ?>
 </div>
+<?php $this->applyTemplateHook('evaluationForm.qualification', 'after', $params); ?>
+
+<script id='qualification-evaluation-form-template' class='js-mustache-template' type="html/template">
+    <?php $this->applyTemplateHook('evaluationForm.qualification.template', 'before', $params); ?>
+    <div id="evaluatin-field-{{id}}" class="qualification-evaluation-form--field">
+        <?php $this->applyTemplateHook('evaluationForm.qualification.template', 'begin', $params); ?>
+        <h6>{{label}}</h6>
+        <div>
+            <select name="data[{{id}}][qualification]">
+                <option>Opção 1</option>
+                <option>Opção 2</option>
+            </select>
+        </div>
+
+        {{olegario}}
+        
+        <label class="textarea-label">
+            <?php i::_e('Justificativa / Observações') ?><br>
+            <textarea name="data[{{id}}][obs]">{{obs}}</textarea>
+        </label>
+        <?php $this->applyTemplateHook('evaluationForm.qualification.template', 'end', $params); ?>
+    </div>
+    <?php $this->applyTemplateHook('evaluationForm.qualification.template', 'after', $params); ?>
+</script>
