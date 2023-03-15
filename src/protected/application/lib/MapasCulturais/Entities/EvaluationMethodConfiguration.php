@@ -33,6 +33,9 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         Traits\EntityMetadata,
         Traits\EntityAgentRelation,
         Traits\EntityPermissionCache;
+        
+    protected $__enableMagicGetterHook = true;
+    protected $__enableMagicSetterHook = true;
 
     /**
      * @var integer
