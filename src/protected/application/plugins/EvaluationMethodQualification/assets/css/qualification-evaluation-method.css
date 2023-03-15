@@ -7,6 +7,24 @@
     cursor: pointer;
 }
 
+.qualification-evaluation-configuration .select-option{
+    width:300px;
+    display:block;
+    position: fixed;
+}
+
+.qualification-evaluation-configuration .textearea-strong{
+    width:300px;
+    display:block;
+    position: fixed;
+}
+
+.qualification-evaluation-configuration .textearea-text{
+    width:300px;
+    display:block;
+    position: fixed;
+}
+
 .qualification-evaluation-configuration .criteria-fields {
     width: 100%;
 }
