@@ -295,7 +295,7 @@ trait ControllerEntityActions {
         $entity->delete(true);
 
         if($this->isAjax()){
-            $this->json($entity);
+            $this->json($entity->simplify('id,name'));
         }else{
             //e redireciona de volta para o referer
             $redirect_url = $app->request()->getReferer();

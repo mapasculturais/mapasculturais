@@ -39,7 +39,7 @@ trait ControllerSoftDelete{
         $entity->destroy(true);
 
         if($this->isAjax()){
-            $this->json($entity);
+            $this->json($entity->simplify('id,name'));
         }else{
             //e redireciona de volta para o referer
             if(in_array($app->request()->getReferer(), $urls))
