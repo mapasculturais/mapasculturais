@@ -16,7 +16,7 @@ $this->import('
         </template>
         <template v-else>
             <div class="col-6 sm:col-12">
-                <entity-field :entity="phase" prop="publishTimestamp" classes="col-6 sm:col-12" :min="minDate._date"></entity-field>
+                <entity-field :entity="phase" prop="publishTimestamp" classes="col-6 sm:col-12" :min="minDate?._date"></entity-field>
             </div>
             <div class="col-6 sm:col-12 phase-publish__auto">
                 <input type="checkbox" v-model="phase.autoPublish"><?= i::__("Publicar resultados automaticamente"); ?>
@@ -30,18 +30,13 @@ $this->import('
         </div>
         <div class="col-6 phase-publish__confirm">
             <button class="button" @click="phase.save()">
-                <?= i::__("Publicar Resultados") ?>
-                <mc-icon name="upload"></mc-icon>
-            </button>
-            <button v-if='isPublishLocked' class="button" disabled>
-                <?= i::__("Salvar data") ?>
+                <?= i::__("salvar") ?>
                 <mc-icon name="upload"></mc-icon>
             </button>
             <confirm-button v-if="!isPublishLocked" :message="text('confirmar_publicacao')" @confirm="addPublishRegistrations()">
                 <template #button="modal">
                     <button class="button button--primary" @click="modal.open()">
                       <?= i::__("Publicar Resultados") ?>
-                        <mc-icon name="upload"></mc-icon>
                     </button>
                 </template>
             </confirm-button>
