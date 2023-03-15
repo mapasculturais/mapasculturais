@@ -24,7 +24,7 @@ $this->import('
             <p><strong><?= i::__("Ao trazer as inscrições, você garante que apenas participantes classificados na fase anterior sigam para a póxima fase.") ?></strong></p>
         </div>
         <div class="col-12">
-            <mc-notification type="error">
+            <mc-notification type="success">
               <?= i::__("Os resultados das avaliações desta fase já foram aplicados nas inscrições.") ?>
             </mc-notification>
         </div>
