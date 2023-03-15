@@ -8,7 +8,7 @@ $this->import('
     notification-list
 ');
 ?>
-<modal v-if="notificationsCount>0" :title="modalTitle" classes="create-modal notification-modal" button-label="Notificações" @open="" @close="">
+<modal v-if="notificationsCount>0" :title="modalTitle" classes="create-modal notification-modal" button-label="<?= i::esc_attr__("Notificações") ?>" @open="" @close="">
     <template #default>
         <div class="grid-12 notification-modal__header">
             <div class="col-6 " v-if="notificationsCount>0">
