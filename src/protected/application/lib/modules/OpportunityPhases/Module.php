@@ -557,11 +557,12 @@ class Module extends \MapasCulturais\Module{
                 $previous = $this->previousPhase;
                 $prev_em = $previous->evaluationMethodConfiguration;
 
-                $previous_date = $prev_em ? $prev_em->evaluationTo : $previous->registrationTo;
-                
-                $previous_date = $previous_date->format('Y-m-d H:i:s');
-
-                $validations['registrationFrom']["\$value >= new DateTime('$previous_date')"] = i::__('A data inicial deve ser maior que a data final da fase anterior');
+                if($previous_date = $prev_em ? $prev_em->evaluationTo : $previous->registrationTo) {
+                    
+                    $previous_date = $previous_date->format('Y-m-d H:i:s');
+    
+                    $validations['registrationFrom']["\$value >= new DateTime('$previous_date')"] = i::__('A data inicial deve ser maior que a data final da fase anterior');
+                }
             }
 
             if (($next = $this->nextPhase) && !$this->isLastPhase) {
