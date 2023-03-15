@@ -43,13 +43,20 @@ use MapasCulturais\i;
             <?php $this->applyTemplateHook('opportunity-support', 'begin');?>
 
             <div class="support-body">
+
                 <div class="committee ng-scope" ng-repeat="(key,agentRelation) in data.agentsRelations">
                     <div ng-controller='SupportModal'>
                         <div class="committee--info">
-                            <span class="btn btn-danger delete alignright" ng-click="deleteAgentRelation(agentRelation.agent.id)"><?php i::_e("Excluir");?></span>
-                            <span ng-click="data.openModal = true" class="btn btn-default add alignright mr10 ng-scope"><?php i::_e("Autorizar campos");?></span>
-                            <img class="committee--avatar" ng-src="{{(agentRelation.agent.avatar.avatarSmall.url) ? agentRelation.agent.avatar.avatarSmall.url : data.defaultAvatar}}" src="{{(agentRelation.agent.avatar.avatarSmall.url) ? agentRelation.agent.avatar.avatarSmall.url : data.defaultAvatar}}">
-                            <span class="committee--name ng-binding">{{agentRelation.agent.name}}</span>
+                            <div class="buttons">
+                                <span class="btn btn-danger delete alignright" ng-click="deleteAgentRelation(agentRelation.agent.id)"><?php i::_e("Excluir");?></span>
+                                <span ng-click="data.openModal = true" class="btn btn-default add alignright mr10 ng-scope"><?php i::_e("Autorizar campos");?></span>
+                            </div>
+                            <div class="user-info">
+                                <div class="user-info--img">
+                                    <img class="committee--avatar" ng-src="{{(agentRelation.agent.avatar.avatarSmall.url) ? agentRelation.agent.avatar.avatarSmall.url : data.defaultAvatar}}" src="{{(agentRelation.agent.avatar.avatarSmall.url) ? agentRelation.agent.avatar.avatarSmall.url : data.defaultAvatar}}">
+                                </div>
+                                <span class="committee--name ng-binding">{{agentRelation.agent.name}}</span>
+                            </div>
                         </div>
 
                         <div ng-class="{open:data.openModal}" class="bg-support-modal">
@@ -59,6 +66,7 @@ use MapasCulturais\i;
                         </div>
                     </div>
                 </div>
+
             </div> <!--Fim content -->
             <?php $this->applyTemplateHook('opportunity-support', 'end');?>
         </div>
