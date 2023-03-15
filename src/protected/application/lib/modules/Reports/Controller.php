@@ -793,7 +793,7 @@ class Controller extends \MapasCulturais\Controller
         $i = ($tables[0] == "registration") ? 1 : 0;
         if ($this->queryMatchAgent($tables[$i], $types[$i])) {
             $joins = ($tables[$i] == "agent") ? "" : "LEFT OUTER ";
-            $joins .= "JOIN table0 ON r.agent_id = table0.number ";
+            $joins .= "JOIN table0 ON r.agent_id = table0.object_id ";
         }
         if (sizeof($ctes) > 1) {
             if ($this->queryMatchAgent($tables[1], $types[1])) {
