@@ -20,7 +20,7 @@ $this->import('mc-icon mc-header-menu mc-header-menu-user theme-logo');
                 <?= i::_e('Filtrar'); ?>
             </button>
         </div>
-        <div :class="['search-filter__filter', {'show': show}]">
+        <div :class="['search-filter__filter', {'show': showMenu}]">
             <div class="content">
                 <a href="#main-app" class="search-filter__filter--close button button--icon" @click="toggleFilter()"><?= i::_e('Fechar') ?> <mc-icon name="close"></mc-icon></a>
                 <slot> Filtros </slot>
