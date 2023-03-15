@@ -54,18 +54,18 @@ body {
 .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] {
     background-color: #FFFFFF;
     overflow: auto;
-    padding: 16px;
+    padding: 1rem;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section {
     background-color: #E5E5E5 !important;
-    padding: 0 0 32px !important;
+    padding: 0 0 2rem !important;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .label {
     font-weight: 700;
-    font-size: 32px;
-    line-height: 44px;
+    font-size: 2rem;
+    line-height: 2.76rem;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .attachment-description {
@@ -75,23 +75,23 @@ body {
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item .label {
     display: flex;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 600;
-    gap: 5px;
-    line-height: 19px;
-    margin-bottom: 8px;
+    gap: 0.313rem;
+    line-height: 1.188rem;
+    margin-bottom: 0.5rem;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item .attachment-description {
     font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
+    font-size: 0.875rem;
+    line-height: 1rem;
     color: #141414;
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .attachment-description {
-    margin-bottom: 32px;
+    margin-bottom: 2rem;
 
 }
 
@@ -100,45 +100,45 @@ body {
     align-items: center;
     appearance: none;
     background-color: #FFFFFF;
-    border-radius: 8px;
-    border: 2px solid #0074C1;
+    border-radius: 0.5rem;
+    border: 0.125rem solid #0074C1;
     color: #0074C1;
     cursor: pointer;
     display: inline-flex;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
-    gap: 12px;
+    gap: 0.75rem;
     height: unset;
     justify-content: center;
-    line-height: 18px;
-    padding: 9px 19px;
+    line-height: 1.125rem;
+    padding: 0.563rem 1.188rem;
     position: relative;
     text-decoration: none;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn::before {
-    font-size: 16px;
+    font-size: 1rem;
     margin: 0;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item input,
 .registration-edit-mode ul.attachment-list li.attachment-list-item textarea,
 .registration-edit-mode ul.attachment-list li.attachment-list-item select {
-    border-radius: 4px;
-    border: 1px solid #898989;
-    font-size: 16px;
+    border-radius: 0.25rem;
+    border: 0.063rem solid #898989;
+    font-size: 1rem;
     height: unset;
     margin: 0;
-    padding: 14px;
+    padding: 0.875rem;
     width: 100%;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item input[type="checkbox"],
 .registration-edit-mode ul.attachment-list li.attachment-list-item input[type="radio"] {
     float: left;
-    height: 18px;
-    margin-right:8px;
-    width: 18px;
+    height: 1.125rem;
+    margin-right: 0.5rem;
+    width: 1.125rem;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item select {
@@ -146,16 +146,16 @@ body {
     -webkit-appearance: none;
     appearance: none;
     background-color: #FFFFFF;
-    background-size: 20px;
-    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat calc(100% - 14px) center/contain;
+    background-size: 1.25rem;
+    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat calc(100% - 0.875rem) center/contain;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item textarea {
-    min-height: 91px;
+    min-height: 5.688rem;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item .alert {
-    margin: 5px 0 0;
+    margin: 0.313rem 0 0;
 }
 
 
@@ -169,32 +169,32 @@ body {
 .project-edit-mode--header h4 {
     color: #000000;
     font-family: 'Open Sans';
-    font-size: 24px;
+    font-size: 1.5rem;
     font-style: normal;
     font-weight: 700;
-    line-height: 28px;
+    line-height: 1.75rem;
     margin: 0;
 }
 
 .project-edit-mode .buttons {
     background: #FFFFFF;
-    border-radius: 4px;
+    border-radius: 0.25rem;
     display: flex;
-    gap: 24px;
+    gap: 1.5rem;
     justify-content: flex-end;
-    padding: 15px 32px;
+    padding: 0.938rem 2rem;
 }
 
 .project-edit-mode .buttons .btn {
     background-color: #FFA4A3;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     border: none;
     color: #1E1E1E;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 600;
     height: unset;
-    line-height: 19px;
-    padding: 10px 16px;
+    line-height: 1.188rem;
+    padding: 0.625rem 1rem;
 }
 
 .project-edit-mode .buttons .btn:hover {
@@ -208,14 +208,14 @@ body {
 
 .project-edit-mode ul.attachment-list {
     background-color: #FFFFFF;
-    border-radius: 4px;
-    margin-top: 8px;
+    border-radius: 0.25rem;
+    margin-top: 0.5rem;
     display: grid;
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item {
     background-color: #FFFFFF;
-    border-bottom: 1px solid #BBBBBB;
+    border-bottom: 0.063rem solid #BBBBBB;
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item > div:first-child {
@@ -224,24 +224,24 @@ body {
 
 .project-edit-mode ul.attachment-list li.attachment-list-item:first-child,
 .project-edit-mode ul.attachment-list li.attachment-list-item:first-child > div {
-    border-radius: 4px 4px 0 0;
+    border-radius: 0.25rem 0.25rem 0 0;
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item:last-child {
-    margin-bottom: 7px;
+    margin-bottom: 0.438rem;
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item .btn-group {
     align-items: center;
     display: flex;
-    gap: 34px;
+    gap: 2.125rem;
     height: 100%;
-    right: 28px;
+    right: 1.75rem;
     top: 0;
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item .btn-group .btn::before {
-    font-size: 20px;
+    font-size: 1.25rem;
     height: 100%;
     height: unset;
     margin-right: 0 !important;
@@ -261,14 +261,14 @@ body {
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item .item {
-    background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 36px center / 30px;
-    padding: 11px 28px 11px 85px;
+    background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 2.25rem center / 1.875rem;
+    padding: 0.688rem 1.75rem 0.688rem 5.313rem;
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item .item .label {
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 700;
-    line-height: 25px;
+    line-height: 1.563rem;
     margin: 0;
 }
 
@@ -277,20 +277,20 @@ body {
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item .item .type {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 400;
-    line-height: 16px;
-    margin-bottom: 16px;
+    line-height: 1rem;
+    margin-bottom: 1rem;
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item .item .description {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 400;
-    line-height: 16px;
+    line-height: 1rem;
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item .section .item {
-    padding: 24px 28px 24px 85px;
+    padding: 1.5rem 1.75rem 1.5rem 5.313rem;
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item .section .item .type {
@@ -302,27 +302,155 @@ body {
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item .section .item .label {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 700;
-    line-height: 28px;
+    line-height: 1.75rem;
     margin: 0;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 31.25rem) {
     .project-edit-mode ul.attachment-list li.attachment-list-item .btn-group {
         flex-direction: column;
-        gap: 2px;
+        gap: 0.125rem;
         height: 100%;
         justify-content: center;
         top: 0;
     }
 
     .project-edit-mode ul.attachment-list li.attachment-list-item .item {
-        background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 16px center / 30px;
-        padding: 11px 28px 11px 65px;
+        background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 1rem center / 1.875rem;
+        padding: 0.688rem 1.75rem 0.688rem 4.063rem;
     }
 
     .project-edit-mode ul.attachment-list li.attachment-list-item .section .item {
-        padding: 24px 28px 24px 65px;
+        padding: 1.5rem 1.75rem 1.5rem 4.063rem;
     }
+}
+
+
+/* SuportBuilder */
+
+#support-settings header {
+    position: relative;
+    height: 9.688rem;
+    margin-bottom: 1.5rem;
+}
+
+#support-settings header h4 {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 2.76rem;
+    margin-bottom: 1rem !important;
+}
+
+#support-settings header p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.375rem;
+    color: #3E3E3E;
+    margin-bottom: 2.125rem !important;
+}
+
+#support-settings header .btn.add {
+    bottom: 0;
+    position: absolute;
+    background: #0074C1;
+    border-radius: 0.5rem;
+    height: unset;
+    border: none;
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 1.563rem;
+    padding: 0.625rem 2rem;
+}
+
+#support-settings .support-content {
+    padding: 0 !important;
+    border: unset !important;
+}
+
+#support-settings .support-content .committee {
+    padding: 2.188rem 1.5rem;
+    background-color: #FFFFFF;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+#support-settings .support-content .committee .committee--info {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+
+#support-settings .support-content .committee .committee--info .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#support-settings .support-content .committee .committee--info .user-info--img {
+    width: 2.5rem;
+    height: 2.5rem;
+    overflow: hidden;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#support-settings .support-content .committee .committee--info .committee--name {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.125rem;
+    line-height: 1.563rem;
+    padding: 0;
+}
+
+#support-settings .support-content .committee .committee--info .buttons {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 1.688rem;
+    align-items: center;
+}
+
+#support-settings .support-content .committee .committee--info .buttons .btn {
+    margin: 0;
+    height: unset;
+    padding: 0.688rem 2.5rem;
+    background: transparent;
+    border: none;
+    display: flex;
+    gap: 0.75rem;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 1.563rem;
+    color: #1E1E1E;
+}
+
+#support-settings .support-content .committee .committee--info .buttons .btn:hover {
+    box-shadow: unset;
+}
+
+#support-settings .support-content .committee .committee--info .buttons .btn.delete {
+    color: #ED0000;
+    font-weight: 700;
+    font-size: 0.875rem;
+    line-height: 1.188rem;
+}
+
+#support-settings .support-content .committee .committee--info .buttons .btn.add {
+    background: #FFA4A3;
+    border-radius: 0.5rem;
+}
+
+#support-settings .support-content .committee .committee--info .buttons .btn.add:hover {
+    background: #800100;
+    color: #FFFFFF;
 }
