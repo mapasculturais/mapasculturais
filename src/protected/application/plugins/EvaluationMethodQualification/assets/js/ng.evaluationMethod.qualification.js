@@ -43,7 +43,7 @@
             criteria: MapasCulturais.evaluationConfiguration.criteria || [],
             options:{},
             registrationFieldConfigurations: MapasCulturais.entity.registrationFieldConfigurations,
-            qualifications: [],
+            debounce: 2000
         };
       
         function sectionExists(name) {

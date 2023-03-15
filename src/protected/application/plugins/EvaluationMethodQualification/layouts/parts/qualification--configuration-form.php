@@ -21,18 +21,18 @@ use MapasCulturais\i;
 
             <tr id="{{cri.id}}" ng-repeat="cri in data.criteria" ng-if="cri.sid == section.id">
                 <td class="criterion-title">
-                    <select ng-model="cri.fieldId" ng-change="save({sections: data.sections})">
+                    <select ng-model="cri.fieldId" ng-change="save({sections: data.sections})" ng-model-options='{ debounce: data.debounce }'>
                         <option ng-repeat="field in data.registrationFieldConfigurations" value="{{field.id}}">#{{field.id}} - {{field.title}} </option>
                     </select>
                 </td>
                 <td>
-                    <input type="text" ng-model="cri.description" placeholder="<?php i::_e('Descrição do critério') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
+                    <input type="text" ng-model="cri.description" ng-model-options='{ debounce: data.debounce }' placeholder="<?php i::_e('Descrição do critério') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
                 </td>
                 <td>
-                    <textarea ng-model="data.options[cri.id]" cols="70" rows="5" ng-change="save({sections: data.sections})"></textarea>
+                    <textarea ng-model="data.options[cri.id]" ng-model-options='{ debounce: data.debounce }' cols="70" rows="5" ng-change="save({sections: data.sections})"></textarea>
                 </td>
                 <td>
-                    <button ng-click="deleteCriterion(cri)" class="btn btn-danger delete" title="<?php i::_e('Remover critério') ?>"></button>
+                    <button ng-click="deleteCriterion(cri)" ng-model-options='{ debounce: data.debounce }' class="btn btn-danger delete" title="<?php i::_e('Remover critério') ?>"></button>
                 </td>
             </tr>
         </table>
