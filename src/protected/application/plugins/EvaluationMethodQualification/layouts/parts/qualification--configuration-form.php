@@ -14,6 +14,9 @@ use MapasCulturais\i;
 
         <table>
             <tr>
+                <th class="criterion-title"><?php i::_e('Campo') ?></th>
+                <th class="criterion-num"><?php i::_e('Descrição') ?></th>
+                <th class="criterion-num"><?php i::_e('Opções') ?></th>
                 <th>
                     <button ng-click="addCriterion(section)" class="btn btn-default add" title="<?php i::_e('Adicionar critétio') ?>"> <?php i::_e('Adicionar critétio') ?></button>
                 </th>
