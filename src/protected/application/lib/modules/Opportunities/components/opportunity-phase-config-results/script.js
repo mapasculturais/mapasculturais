@@ -36,7 +36,8 @@ app.component('opportunity-phase-config-results' , {
         },
 
         isPublishLocked() {
-            return this.previousPhaseDateTo.isFuture();
+            const previousPhaseDateTo = this.previousPhaseDateTo
+            return previousPhaseDateTo ? this.previousPhaseDateTo.isFuture() : true;
         }
     },
 

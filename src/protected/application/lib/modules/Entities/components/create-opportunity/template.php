@@ -29,8 +29,8 @@
                      <select-entity type="project" @select="setEntity($event)" openside="down-right" class="list-box">
                          <template #button="{ toggle }">
                              <div class="input">
-                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="project" />
                                  <label class="list-box--label">
+                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="project" />
                                      <?php i::_e('Projeto') ?>
                                  </label>
                              </div>
@@ -45,8 +45,8 @@
                      <select-entity type="event" @select="setEntity($event)" openside="down-right" class="list-box">
                          <template #button="{ toggle }">
                              <div class="input">
-                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="event" />
                                  <label class="list-box--label">
+                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="event" />
                                      <?php i::_e('Evento') ?>
                                  </label>
                              </div>
@@ -60,8 +60,8 @@
                      <select-entity type="space" @select="setEntity($event)" openside="down-right" class="list-box">
                          <template #button="{ toggle }">
                              <div class="input">
-                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="space" />
                                  <label class="list-box--label">
+                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="space" />
                                      <?php i::_e('Espaço') ?>
                                  </label>
                              </div>
@@ -76,8 +76,8 @@
                      <select-entity type="agent" @select="setEntity($event)" openside="down-right" class="list-box">
                          <template #button="{ toggle }">
                              <div class="input">
-                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="agent" />
                                  <label class="list-box--label">
+                                 <input v-model="entityTypeSelected" type="radio" id="btnAgent" name="inputName" value="agent" />
                                      <?php i::_e('Agente') ?>
                                  </label>
                              </div>
