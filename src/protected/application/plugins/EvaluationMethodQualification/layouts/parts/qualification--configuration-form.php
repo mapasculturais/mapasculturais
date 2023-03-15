@@ -15,8 +15,8 @@ use MapasCulturais\i;
         <table>
             <tr>
                 <th class="criterion-title"><?php i::_e('Campo') ?></th>
-                <th class="criterion-num"><?php i::_e('Descrição') ?></th>
-                <th class="criterion-num"><?php i::_e('Opções') ?></th>
+                <th class="criterion-title"><?php i::_e('Descrição') ?></th>
+                <th class="criterion-title"><?php i::_e('Opções') ?></th>
                 <th>
                     <button ng-click="addCriterion(section)" class="btn btn-default add" title="<?php i::_e('Adicionar critétio') ?>"> <?php i::_e('Adicionar critétio') ?></button>
                 </th>
@@ -32,9 +32,12 @@ use MapasCulturais\i;
                     <input type="text" ng-model="cri.description" ng-model-options='{ debounce: data.debounce }' placeholder="<?php i::_e('Descrição do critério') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
                 </td>
                 <td>
-                    <textarea ng-model="data.options[cri.id]" ng-model-options='{ debounce: data.debounce }' cols="70" rows="5" ng-change="save({sections: data.sections})"></textarea>
+                    <edit-box id="{{cri.id}}" position="right" title="<?php i::esc_attr_e("Informe as opções do critério separadas quebrando linha");?>" cancel-label="<?php i::esc_attr_e("Fechar");?>" close-on-cancel='true' spinner-condition="data.spinner">
+                        <textarea ng-model="data.options[cri.id]" ng-model-options='{ debounce: data.debounce }' cols="70" rows="5" ng-change="save({sections: data.sections})"></textarea>
+                    </edit-box>
                 </td>
                 <td>
+                    <a id="delete-account--button" ng-click="editbox.open(cri.id, $event)" rel='noopener noreferrer' class="btn btn-primary add"><?php i::_e('Definir opções') ?></a>
                     <button ng-click="deleteCriterion(cri)" ng-model-options='{ debounce: data.debounce }' class="btn btn-danger delete" title="<?php i::_e('Remover critério') ?>"></button>
                 </td>
             </tr>
