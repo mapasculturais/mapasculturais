@@ -34,7 +34,7 @@ class Module extends \MapasCulturais\Module
     function _init()
     {
         $app = App::i();
-
+        
         $self = $this;
 
         $this->evaluationMethod = new EvaluationMethod($this->_config);
