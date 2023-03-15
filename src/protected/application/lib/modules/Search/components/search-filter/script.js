@@ -22,7 +22,7 @@ app.component('search-filter', {
         
         return {
             // clickListener: null,
-            show: false, 
+            showMenu: false, 
         }
     },
 
@@ -37,16 +37,15 @@ app.component('search-filter', {
     },
     methods: {
         closeFilter(){
-            console.log("closeFilter");
-            this.show = true;
+            this.showMenu = false;
             const header = document.getElementById('main-header');
             header.removeAttribute('style');
         },
         
         toggleFilter() {
-            this.show = !this.show;
+            this.showMenu = !this.showMenu;
             const header = document.getElementById('main-header');
-            if (this.show) {
+            if (!this.showMenu) {
                 header.style.top=0;
                 header.style.position = 'fixed';
             }
