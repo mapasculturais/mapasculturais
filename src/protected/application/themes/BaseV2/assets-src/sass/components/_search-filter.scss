@@ -48,6 +48,7 @@
     }
 
     &__filter {
+        display: none;
         background: #FFFFFF;
         box-shadow: var(--mc-shadow-lv1);
         border-radius: var(--mc-border-radius-xs);
@@ -74,6 +75,7 @@
 
         form,
         .form {
+            
             &__label {
                 color: var(--mc-primary-500);
                 display: inline-block;
@@ -142,7 +144,7 @@
         }
 
         &.show {
-            display: none;
+            display: block;
         }
     }
 
