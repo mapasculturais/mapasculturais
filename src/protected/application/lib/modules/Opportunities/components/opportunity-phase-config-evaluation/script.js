@@ -71,7 +71,7 @@ app.component('opportunity-phase-config-evaluation' , {
         async deletePhase (event, item, index) {
             const messages = useMessages();
             try {
-                await item.destroy();
+                await item.delete();
                 this.phases.splice(index, 1);
             } catch (e) {
                 messages.error(this.text('nao foi possivel remover fase'));
