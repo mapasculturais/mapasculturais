@@ -6,6 +6,7 @@ use MapasCulturais\App;
 use MapasCulturais\i;
 use MapasCulturais\Entities;
 use MapasCulturais\Definitions;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Exceptions;
 use MapasCulturais\Entities\Opportunity;
 
@@ -400,6 +401,36 @@ class Module extends \MapasCulturais\Module{
         });
 
         /**
+         * Getters das fases de avaliação
+         */
+
+         $app->hook('entity(EvaluationMethodConfiguration).get(previousPhase)', function(&$value) {
+            $previous_phase = $this->opportunity;
+            if ($previous_phase->isDataCollection) {
+                $value = $previous_phase;
+            } else {
+                while(!$value && ($previous_phase = $previous_phase->previousPhase)) {
+                    if ($emc = $previous_phase->evaluationMethodConfiguration) {
+                        $value = $emc;
+                    } elseif ($previous_phase->isDataCollection) {
+                        $value = $previous_phase;
+                    }
+                }
+            }
+         });
+
+         $app->hook('entity(EvaluationMethodConfiguration).get(nextPhase)', function(&$value) {
+            $phase = $this->opportunity;
+            while(!$value && ($phase = $phase->nextPhase)) {
+                if ($phase->isDataCollection || $phase->isLastPhase) {
+                    $value = $phase;
+                } else if ($emc = $phase->evaluationMethodConfiguration) {
+                    $value = $emc;
+                }
+            }
+         });
+
+        /**
          * Getters das inscrições
          */
 
@@ -550,9 +581,9 @@ class Module extends \MapasCulturais\Module{
         });
 
         /**
-         * Validação das datas da nova fase em relação às fases anterior e posterior
+         * Validação das datas da fase de coleta de dados em relação às fases anterior e posterior
          */
-        $app->hook('entity(Opportunity).validations', function(&$validations, $opp = null) {
+        $app->hook('entity(Opportunity).validations', function(&$validations) {
             if($this->parent) {
                 $previous = $this->previousPhase;
                 $prev_em = $previous->evaluationMethodConfiguration;
@@ -580,6 +611,45 @@ class Module extends \MapasCulturais\Module{
                 }
             }
         });
+
+        /**
+         * Validação das datas da fase de coleta de dados em relação às fases anterior e posterior
+         */
+        $app->hook('entity(EvaluationMethodConfiguration).validations', function(&$validations) {
+            $previous_phase = $this->previousPhase;
+            if ($previous_phase instanceof Opportunity) {
+                if ($date = $previous_phase->registrationFrom) {
+                    $date = $date->format('Y-m-d H:i:s');
+                    $validations['evaluationFrom']["\$value >= new DateTime('$date')"] = i::__('A data inicial deve ser maior que a data de inicio da coleta de dados da fase anterior');
+                }
+
+            } else if ($previous_phase instanceof EvaluationMethodConfiguration) {
+                if ($date = $previous_phase->evaluationTo) {
+                    $date = $date->format('Y-m-d H:i:s');
+                    $validations['evaluationFrom']["\$value >= new DateTime('$date')"] = i::__('A data inicial deve ser maior que a data de término das avaliações da fase anterior');
+                }
+            }
+
+            if (!$this->id) {
+                $next_phase = $this->opportunity->lastPhase;
+                $error_message = i::__('A data final deve ser menor que a data de final de publicação dos resultados');
+            } else {
+                $next_phase = $this->nextPhase;
+                $error_message = i::__('A data final deve ser menor que a data de inicio da próxima fase');
+            }
+
+            if($next_phase instanceof Opportunity) {
+                $date = $next_phase->isLastPhase ? $next_phase->publishTimestamp :  $next_phase->registrationFrom;
+            } else {
+                $date = $next_phase->evaluationFrom;
+            }
+
+            if($date) {
+                $date = $date->format('Y-m-d H:i:s');
+                $validations['evaluationTo']["\$value < new DateTime('$date')"] = $error_message;
+            }
+        });
+
 
         /** 
          * Corrige a propriedade opportunity da fase de avaliação antes da criação.
