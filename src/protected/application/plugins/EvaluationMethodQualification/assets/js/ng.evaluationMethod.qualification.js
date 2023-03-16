@@ -45,17 +45,6 @@
             registrationFieldConfigurations: MapasCulturais.entity.registrationFieldConfigurations,
             debounce: 2000
         };
-      
-        function sectionExists(name) {
-            var exists = false;
-            $scope.data.sections.forEach(function (s) {
-                if (s.name == name) {
-                    exists = true;
-                }
-            });
-
-            return exists;
-        }
 
         MapasCulturais.evaluationConfiguration.criteria?.forEach(function(values, index){
             $scope.data.options[values.id] = values.options?.join("\n")
@@ -185,17 +174,6 @@
             var result = approved ? "Habilitado" : "Inabilitado";
             return result
         };
-
-        $scope.viabilityLabel = function (val) {
-            if ($scope.data.enableViability) {
-                var label = "Inválida";
-                if ("valid" === val)
-                    label = "Válida";
-
-                return label;
-            }
-        }
-
 
     }]);
 })(angular);
