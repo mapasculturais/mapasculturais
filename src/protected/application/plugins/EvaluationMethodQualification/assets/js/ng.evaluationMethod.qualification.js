@@ -42,7 +42,6 @@
             sections: MapasCulturais.evaluationConfiguration.sections || [],
             criteria: MapasCulturais.evaluationConfiguration.criteria || [],
             options: {},
-            registrationFieldConfigurations: MapasCulturais.entity.registrationFieldConfigurations,
             debounce: 2000
         };
 
