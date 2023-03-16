@@ -29,10 +29,15 @@ app.component('home-feature', {
             query['@limit'] = this.limit;
         }
 
-        this.spaces = await spaceAPI.find(query);
-        this.agents = await agentAPI.find(query);
-        this.projects = await projectAPI.find(query);
-
+        Promise.all([
+            spaceAPI.find(query), 
+            agentAPI.find(query),
+            projectAPI.find(query),
+        ]).then((values) => {
+            this.spaces = values[0];
+            this.agents = values[1];
+            this.projects = values[2];
+        });
     },
 
     data() {
@@ -87,7 +92,7 @@ app.component('home-feature', {
 
     computed: {
         entities() {
-            const entities = this.spaces.concat([...this.agents, ...this.projects]).sort((a,b) => {
+            const entities = [...this.spaces, ...this.agents, ...this.projects].sort((a,b) => {
                 if (a.name > b.name) {
                     return 1;
                 } else if (a.name == b.name) {
