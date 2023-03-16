@@ -78,7 +78,11 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
     public function valueToString($value)
     {
-       
+        if(is_null($value)){
+            return i::__('Avaliação incompleta');
+        } else {
+            return $value;
+        }
     }
 
 
