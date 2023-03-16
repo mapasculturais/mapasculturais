@@ -6,7 +6,7 @@ $this->import('entity');
 $this->addRequestedEntityToJs();
 $query = new ApiQuery(\MapasCulturais\Entities\Opportunity::class, [
     'id' => "EQ({$entity->opportunity->id})",
-    '@select' => "id,name,type,files.avatar,ownerEntity.name"
+    '@select' => "*"
 ]);
 $this->jsObject['opportunity'] = $query->getFindOneResult();
 $this->useOpportunityAPI();
