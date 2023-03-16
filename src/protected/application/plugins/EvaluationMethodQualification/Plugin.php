@@ -109,7 +109,6 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
         $app = App::i();
         $app->view->enqueueScript('app', 'qualification-evaluation-form', 'js/ng.evaluationMethod.qualification.js', ['entity.module.opportunity']);
-        $app->view->enqueueScript('app', 'evaluation-form--qualification', 'js/evaluation-form--qualification.js', ['entity.module.opportunity']);
         $app->view->enqueueStyle('app', 'qualification-evaluation-method', 'css/qualification-evaluation-method.css');
 
         $app->view->localizeScript('qualificationEvaluationMethod', [
