@@ -30,28 +30,30 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
     protected function _getConsolidatedResult(Entities\Registration $registration)
     {
-    }
-    public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation)
-    {
         $app = App::i();
+        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
+        ];
 
-        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
-
-        if(is_array($evaluations) && count($evaluations) === 0){
-            return 0;
+        $committee = $registration->opportunity->getEvaluationCommittee();
+        $users = [];
+        foreach ($committee as $item) {
+            $users[] = $item->agent->user->id;
         }
 
-        $result = 1;
+        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
 
+        $result = 0;
+        $_result = "Habilitado";
         foreach ($evaluations as $eval){
-            if($eval->status === \MapasCulturais\Entities\RegistrationEvaluation::STATUS_DRAFT){
-                return 0;
+            $_result = $this->getEvaluationResult($eval);
+            if($_result == "Inabilitado"){
+                $result = $_result;
             }
-
-            $result = ($result === 1 && $this->getEvaluationResult($eval) === 1) ? 1 : -1;
         }
 
         return $result;
+
     }
 
     public function valueToString($value)
