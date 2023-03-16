@@ -14,7 +14,6 @@ use MapasCulturais\i;
 
         <table>
             <tr>
-                <th class="criterion-title"><?php i::_e('Campo') ?></th>
                 <th class="criterion-title"><?php i::_e('Descrição') ?></th>
                 <th class="criterion-title"><?php i::_e('Opções') ?></th>
                 <th>
@@ -23,11 +22,6 @@ use MapasCulturais\i;
             </tr>
 
             <tr id="{{cri.id}}" ng-repeat="cri in data.criteria" ng-if="cri.sid == section.id">
-                <td class="criterion-title">
-                    <select ng-model="cri.fieldId" ng-change="save({sections: data.sections})" ng-model-options='{ debounce: data.debounce }'>
-                        <option ng-repeat="field in data.registrationFieldConfigurations" value="{{field.id}}">#{{field.id}} - {{field.title}} </option>
-                    </select>
-                </td>
                 <td>
                     <input type="text" ng-model="cri.description" ng-model-options='{ debounce: data.debounce }' placeholder="<?php i::_e('Descrição do critério') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
                     <edit-box id="{{cri.id}}" position="right" title="<?php i::esc_attr_e("Informe as opções do critério separadas quebrando linha");?>" cancel-label="<?php i::esc_attr_e("Fechar");?>" close-on-cancel='true' spinner-condition="data.spinner">
