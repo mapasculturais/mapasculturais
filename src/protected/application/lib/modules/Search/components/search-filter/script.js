@@ -21,8 +21,7 @@ app.component('search-filter', {
     data() {
         
         return {
-            // clickListener: null,
-            showMenu: false, 
+            showMenu: true, 
         }
     },
 
