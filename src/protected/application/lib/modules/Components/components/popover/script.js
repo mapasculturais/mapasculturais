@@ -10,6 +10,7 @@ app.component('popover', {
     data() {
         return {
             active: false,
+            media:'',
         }
     },
 
@@ -58,6 +59,9 @@ app.component('popover', {
     },
 
     methods: {
+        isMobile() {
+            return this.$media('max-width: 500px');
+        },
         focus() {
             const inputs = this.$refs.content.getElementsByTagName('input');
             if (inputs.length) {
