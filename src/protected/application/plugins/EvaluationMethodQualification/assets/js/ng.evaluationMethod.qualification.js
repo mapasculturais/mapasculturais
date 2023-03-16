@@ -133,6 +133,26 @@
             consolidate: {}
         };
 
+        Object.values($scope.data.criteria).forEach(function(crit){
+            crit.notApplyOption = crit.notApplyOption == "true" ? true : false;
+
+            var cri_options = crit.options || [];
+            crit.options = cri_options.filter(function (i) {
+                return i;
+            });
+
+           
+            if(crit.options.length < 1){
+                crit.options.unshift('Inabilitado')
+            }else{
+                crit.options.unshift('Habilitado')
+            }
+
+            if(crit.notApplyOption && crit.options.length > 0){
+                crit.options.unshift('Não se aplica')
+            }
+        })
+
         if (MapasCulturais.evaluation) {
             $scope.evaluation = MapasCulturais.evaluation.evaluationData;
             $scope.data.empty = false;
