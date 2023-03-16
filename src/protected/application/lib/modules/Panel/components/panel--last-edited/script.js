@@ -29,19 +29,30 @@ app.component('panel--last-edited', {
         const opportunityAPI = new API('opportunity');
 
         const query = this.query;
-        query['@select'] = 'id,name,shortDescription,singleUrl,updateTimestamp,type';
+        query['@select'] = 'id,type,name,shortDescription,singleUrl,updateTimestamp,status';
         query['@order'] = 'updateTimestamp DESC';
         query['user'] = `EQ(@me)`;
+        query['@permissions'] = 'view';
+        query['status'] = 'GTE(0)';
+
 
         if (this.limit) {
             query['@limit'] = this.limit;
         }
 
-        this.spaces = await spaceAPI.find(query);
-        this.agents = await agentAPI.find(query);
-        this.events = await eventAPI.find(query);
-        this.projects = await projectAPI.find(query);
-        this.opportunities = await opportunityAPI.find(query);
+        Promise.all([
+            spaceAPI.find(query),
+            agentAPI.find(query),
+            eventAPI.find(query),
+            projectAPI.find(query),
+            opportunityAPI.find(query),
+        ]).then(values => {
+            this.spaces = values[0];
+            this.agents = values[1];
+            this.events = values[2];
+            this.projects = values[3];
+            this.opportunities = values[4];
+        })
     },
 
     data() {
@@ -127,25 +138,25 @@ app.component('panel--last-edited', {
 
     computed: {
         entities() {
-            if (this.projects.metadata && this.spaces.metadata && this.agents.metadata && this.opportunities.metadata && this.events.metadata) {
-                const entities = this.projects.concat(this.spaces, this.agents, this.opportunities, this.events);
-                entities.sort((a, b) => {
-                    let dateA = a.updateTimestamp.date('sql');
-                    let dateB = b.updateTimestamp.date('sql');
-
-                    return (dateA.localeCompare(dateB));
-                });
-                return entities.slice(0, this.limit);;
-            } else {
-                return {};
-            }
+            const entities = [...this.projects, ...this.spaces, ...this.agents, ...this.opportunities, ...this.events];
+            entities.sort((a, b) => {
+                let dateA = a.updateTimestamp._date;
+                let dateB = b.updateTimestamp._date;
+                if(dateA < dateB) {
+                    return 1;
+                } else if(dateA > dateB) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+            return entities.slice(0, this.limit);;
+            
         }
     },
     methods: {
         resizeSlides() {
             this.$refs.carousel.updateSlideWidth();
-            console.log('teste');
-
         }
     },
 

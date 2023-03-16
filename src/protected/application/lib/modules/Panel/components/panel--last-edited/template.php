@@ -29,6 +29,11 @@ $this->import('
                             </div>
                         </template>
                         <template #default="{entity}">
+                            <div class="grid-12">
+                                <div class="col-12">
+                                    <?php i::_e('Modificado em') ?> <strong>{{entity.updateTimestamp.date('2-digit year')}} {{entity.updateTimestamp.time('full')}}</strong>
+                                </div>
+                            </div>
                             <span v-if="entity.shortDescription">
                                {{entity.shortDescription}}
                             </span>
