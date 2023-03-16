@@ -41,12 +41,12 @@
         $scope.data = {
             sections: MapasCulturais.evaluationConfiguration.sections || [],
             criteria: MapasCulturais.evaluationConfiguration.criteria || [],
-            options:{},
+            options: {},
             registrationFieldConfigurations: MapasCulturais.entity.registrationFieldConfigurations,
             debounce: 2000
         };
 
-        MapasCulturais.evaluationConfiguration.criteria?.forEach(function(values, index){
+        MapasCulturais.evaluationConfiguration.criteria?.forEach(function (values, index) {
             $scope.data.options[values.id] = values.options?.join("\n")
         })
 
@@ -63,7 +63,7 @@
                         data.criteria.push(crit);
                     }
                 }
-                
+
                 data.criteria[index].options = $scope.data.options[crit.id]?.split("\n")
             });
 
@@ -123,8 +123,6 @@
 
             $scope.save();
         }
-
-
     }]);
 
     module.controller('QualificationEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'QualificationEvaluationMethodService', function ($scope, $rootScope, $timeout, QualificationEvaluationMethodService) {
@@ -147,15 +145,15 @@
             for (var i in $scope.data.criteria) {
                 var cri = $scope.data.criteria[i];
                 if (cri.sid == section.id) {
-                    if($scope.evaluation[cri.id] == "Não se aplica" || $scope.evaluation[cri.id] == "Habilitado"){
+                    if ($scope.evaluation[cri.id] == "Não se aplica" || $scope.evaluation[cri.id] == "Habilitado") {
                         approved = true;
-                    }else{
+                    } else {
                         approved = false;
                         break
                     }
                 }
             }
-          
+
             var result = approved ? "Habilitado" : "Inabilitado";
             $scope.data.consolidate[section.id] = result;
             return result
@@ -164,8 +162,8 @@
         $scope.total = function () {
             var approved = true;
 
-            Object.values($scope.data.sections).forEach(function(section){
-                if($scope.data.consolidate[section.id] == "Inabilitado"){
+            Object.values($scope.data.sections).forEach(function (section) {
+                if ($scope.data.consolidate[section.id] == "Inabilitado") {
                     approved = false;
                     return;
                 }
