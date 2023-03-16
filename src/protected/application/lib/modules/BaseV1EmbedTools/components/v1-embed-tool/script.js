@@ -29,29 +29,31 @@ app.component('v1-embed-tool', {
     },
 
     created() {
-        const self = this;
-        window.addEventListener("message", function(event) {            
-            if (event.data.type == "resize") {
-                self.iframeHeight = event.data.data.height + 'px';
-            }
-
-            if (event.data.type == "message") {
-                const messages = useMessages();
-                const type = event.data.data.type;
-                const message = event.data.data.message;
-                
-                messages[type](message);
-            }
-        }, false);
+        window.addEventListener("message", this.listener, false);
     },
 
     unmounted() {
-        window.removeEventListener("message");
+        window.removeEventListener("message", this.listener);
     },
 
     data() {
+        const self = this;
+
         return {
             iframeHeight: this.height,
+            listener: function(event) {            
+                if (event.data.type == "resize") {
+                    self.iframeHeight = event.data.data.height + 'px';
+                }
+    
+                if (event.data.type == "message") {
+                    const messages = useMessages();
+                    const type = event.data.data.type;
+                    const message = event.data.data.message;
+                    
+                    messages[type](message);
+                }
+            }
         }
     },
 
