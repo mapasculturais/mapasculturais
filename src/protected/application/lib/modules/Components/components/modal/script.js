@@ -43,6 +43,13 @@ app.component('modal', {
         },
         loading (active) {
             this.processing = active ? true : false 
-        }
+        },
+        toggle() {
+            if (this.modalOpen) {
+              this.close();
+            } else {
+              this.open();
+            }
+          },
     },
 });
