@@ -119,6 +119,7 @@ abstract class Theme extends \Slim\View {
         $this->jsObject['assetURL'] = $app->assetUrl;
         $this->jsObject['maxUploadSize'] = $app->getMaxUploadSize($useSuffix=false);
         $this->jsObject['maxUploadSizeFormatted'] = $app->getMaxUploadSize();
+        $this->jsObject['EntitiesDescription'] = [];
         $this->jsObject['config'] = [
             'locale' => str_replace('_', '-', $app->config['app.lcode']),
             'timezone' => date_default_timezone_get()
@@ -137,9 +138,9 @@ abstract class Theme extends \Slim\View {
             $app->registerMetadata($def, 'MapasCulturais\Entities\Space');
         });
         
-        $app->hook('app.register:after', function () use($app) {
-            $this->view->jsObject['EntitiesDescription'] = [
-                "user"         => Entities\User::getPropertiesMetadata(),
+        $app->hook('mapas.printJsObject:before', function () use($app) {
+            $this->jsObject['EntitiesDescription'] = [
+                "user"          => Entities\User::getPropertiesMetadata(),
                 "agent"         => Entities\Agent::getPropertiesMetadata(),
                 "event"         => Entities\Event::getPropertiesMetadata(),
                 "eventoccurrence" => Entities\EventOccurrence::getPropertiesMetadata(),
@@ -161,7 +162,7 @@ abstract class Theme extends \Slim\View {
                 
                 $taxonomies[$slug] = $taxonomy;
             }
-            $this->view->jsObject['Taxonomies'] = $taxonomies;
+            $this->jsObject['Taxonomies'] = $taxonomies;
         });
 
 
