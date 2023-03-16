@@ -104,7 +104,7 @@
         $scope.addCriterion = function (section) {
             var date = new Date;
             var new_id = 'c-' + date.getTime();
-            $scope.data.criteria.push({ id: new_id, sid: section.id, weight: 1 });
+            $scope.data.criteria.push({ id: new_id, sid: section.id, weight: 1 , notApplyOption: false});
             $scope.save();
 
             $timeout(function () {
