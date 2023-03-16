@@ -27,7 +27,7 @@ app.component('opportunity-create-data-collect-phase' , {
 
     computed: {
         maxDate () {
-            return this.lastPhase.publishTimestamp._date || null;
+            return this.lastPhase.publishTimestamp?._date || null;
         },
         minDate () {
             return this.previousPhase.registrationTo?._date || this.previousPhase.evaluationTo?._date;
