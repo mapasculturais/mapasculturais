@@ -46,7 +46,40 @@ app.component('registration-actions', {
             }
         },
         async save() {
-            return this.registration.save(false);
+            const iframe = document.getElementById('registration-form');
+            const registration = this.registration;
+            if (iframe) {
+                registration.disableMessages();
+                const promise = new Promise((resolve, reject) => {
+                    Promise.all([
+                        registration.save(false),
+                        new Promise((resolve, reject) => {
+                            const saved = function(event) {    
+                                if (event.data.type == "registration.saved") {
+                                    if (event.data.error) {
+                                        registration.__validationErrors = event.data.data;
+                                    } else {
+                                        registration.__validationErrors = {};
+                                    }
+                                    resolve(registration);
+                                    window.removeEventListener("message", saved);
+                                }
+                            };
+                            window.addEventListener("message", saved)
+                        })
+                    ]).then((values) => {
+                        registration.enableMessages();
+                        resolve(values[0]);
+                    });
+
+                });
+
+                iframe.contentWindow.postMessage('registration.save');
+                return promise;
+
+            } else {
+                return registration.save(false);
+            }
         },
         exit() {
             this.registration.save().then(() => {
