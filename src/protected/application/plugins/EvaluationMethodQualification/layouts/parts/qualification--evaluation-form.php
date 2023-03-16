@@ -29,8 +29,9 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
             </tr>
 
             <tr class="subtotal">
-                <td><?php i::_e('Subtotal') ?></td>
-                <td>{{subtotalSection(section)}}</td>
+                <td><?php i::_e('Resultado da seção') ?></td>
+                <td ng-if="subtotalSection(section) == 'Habilitado'" class="approved">{{subtotalSection(section)}}</td>
+                <td ng-if="subtotalSection(section) == 'Inabilitado'" class="repproved">{{subtotalSection(section)}}</td>
             </tr>
         </table>
     </section>
