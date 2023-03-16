@@ -91,7 +91,7 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
                 </section>
 
                 <section class="section">
-                    <v1-embed-tool route="registrationform" :id="entity.id"></v1-embed-tool>
+                    <v1-embed-tool iframe-id="registration-form" route="registrationform" :id="entity.id"></v1-embed-tool>
                 </section>
             </main>
 
