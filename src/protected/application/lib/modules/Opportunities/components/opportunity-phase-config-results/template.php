@@ -16,7 +16,7 @@ $this->import('
         </template>
         <template v-else>
             <div class="col-6 sm:col-12">
-                <entity-field :entity="phase" prop="publishTimestamp" classes="col-6 sm:col-12" :min="minDate?._date"></entity-field>
+                <entity-field :entity="phase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12" :min="minDate?._date"></entity-field>
             </div>
             <div class="col-6 sm:col-12 phase-publish__auto">
                 <input type="checkbox" v-model="phase.autoPublish"><?= i::__("Publicar resultados automaticamente"); ?>
