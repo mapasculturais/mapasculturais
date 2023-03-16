@@ -31,6 +31,7 @@ body {
     padding: unset;
     border: unset;
 }
+
 .registration-fieldset {
     border: none;
     padding: 0;
@@ -218,12 +219,12 @@ body {
     border-bottom: 0.063rem solid #BBBBBB;
 }
 
-.project-edit-mode ul.attachment-list li.attachment-list-item > div:first-child {
+.project-edit-mode ul.attachment-list li.attachment-list-item>div:first-child {
     background-color: #FFFFFF;
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item:first-child,
-.project-edit-mode ul.attachment-list li.attachment-list-item:first-child > div {
+.project-edit-mode ul.attachment-list li.attachment-list-item:first-child>div {
     border-radius: 0.25rem 0.25rem 0 0;
 }
 
@@ -252,6 +253,7 @@ body {
     background-color: transparent;
     border: none;
 }
+
 .project-edit-mode ul.attachment-list li.attachment-list-item .btn-group .btn:hover {
     box-shadow: unset;
 }
@@ -326,6 +328,7 @@ body {
         padding: 1.5rem 1.75rem 1.5rem 4.063rem;
     }
 }
+
 
 
 /* SuportBuilder */
@@ -453,4 +456,213 @@ body {
 #support-settings .support-content .committee .committee--info .buttons .btn.add:hover {
     background: #800100;
     color: #FFFFFF;
+}
+
+
+
+/* Affirmative policies manager */
+
+.technical-evaluation-configuration {
+    margin: 0;
+    padding: 0 1rem;
+}
+
+.technical-evaluation-configuration br,
+.technical-evaluation-configuration hr {
+    display: none;
+}
+
+.technical-evaluation-configuration h4 {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.125rem;
+    line-height: 1.563rem;
+    color: #1E1E1E;
+    margin-bottom: 0.5rem;
+}
+
+.technical-evaluation-configuration p {
+    color: #1E1E1E;
+    font-family: 'Open Sans';
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.375rem;
+    margin-bottom: 1.5rem;
+}
+
+.technical-evaluation-configuration .btn.add {
+    align-items: center;
+    background: #0074C1;
+    border-radius: 0.5rem;
+    border: none;
+    color: #FFFFFF;
+    display: flex;
+    font-family: 'Open Sans';
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 600;
+    gap: 0.625rem;
+    height: unset;
+    justify-content: center;
+    line-height: 1.563rem;
+    margin: 0;
+    padding: 0.719rem 1.375rem;
+}
+.technical-evaluation-configuration .btn.add::before {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+.technical-evaluation-configuration .btn.add:hover {
+    background-color: #004d80;
+    box-shadow: unset;
+}
+
+.technical-evaluation-configuration .btn.delete {
+    align-items: center;
+    border-radius: 0.5rem;
+    border: none;
+    color: #FFFFFF;
+    display: flex;
+    font-family: 'Open Sans';
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 600;
+    gap: 0.625rem;
+    height: unset;
+    justify-content: center;
+    line-height: 1.563rem;
+    margin: 0;
+    padding: 0.719rem 1.375rem;
+}
+.technical-evaluation-configuration .btn.delete::before {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+.technical-evaluation-configuration .policy-roof p {
+    color: #1E1E1E;
+    font-family: 'Open Sans';
+    font-size: 0.875rem !important;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.188rem;
+    margin-bottom: 0.625rem !important;
+}
+
+.technical-evaluation-configuration .policy-roof input.edit {
+    background: #FFFFFF;
+    border-radius: 0.25rem;
+    border: 0.063rem solid #BBBBBB;
+    height: unset;
+    margin: 0 0.313rem 0 0;
+    max-width: 21.563rem;
+    padding: 0.813rem 1rem;
+    width: 100%;
+}
+
+.technical-evaluation-configuration table tr {
+    border-bottom: 0.063rem solid #BBBBBB;
+}
+
+.technical-evaluation-configuration table tr th,
+.technical-evaluation-configuration table tr td {
+    border: none;
+}
+
+.technical-evaluation-configuration table tr:first-child {
+    color: #1E1E1E;
+    font-family: 'Open Sans';
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.188rem;
+}
+
+.technical-evaluation-configuration table tr:first-child th:last-child {
+    display: flex;
+    justify-content: center;
+}
+
+.technical-evaluation-configuration table tr:first-child th .btn.add {
+    align-items: center;
+    background: #0074C1;
+    border-radius: 0.5rem;
+    border: none;
+    color: #FFFFFF;
+    display: flex;
+    height: unset;
+    justify-content: center;
+    margin: 0;
+    padding: 0.938rem 1.375rem;
+}
+
+.technical-evaluation-configuration table tr:first-child th .btn.add::before {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+.technical-evaluation-configuration table tr:first-child th .btn.add:hover {
+    background-color: #004d80;
+    box-shadow: unset;
+}
+
+.technical-evaluation-configuration table tr td input,
+.technical-evaluation-configuration table tr td select {
+    background: #FFFFFF;
+    border-radius: 0.25rem;
+    border: 0.063rem solid #BBBBBB !important;
+    height: unset;
+    margin: 0 0.313rem 0 0 !important;
+    padding: 0.813rem 1rem;
+    width: 100%;
+}
+
+.technical-evaluation-configuration table tr td:last-child {
+    display: flex;
+    justify-content: center;
+}
+
+.technical-evaluation-configuration table tr td select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--mc-white);
+    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/1.25rem;
+}
+
+.technical-evaluation-configuration table tr td input[type=checkbox] {
+    border-radius: 0.125rem;
+    border: 0.125rem solid #111111;
+    height: 1rem;
+    margin: 0 !important;
+    width: 1rem;
+}
+
+.technical-evaluation-configuration table tr td.policy-value .check {
+    gap: 1rem;
+}
+
+.technical-evaluation-configuration table tr td.policy-value .check span label {
+    align-items: center;
+    display: flex;
+    font-size: 0.875rem;
+    font-weight: 400;
+    gap: 0.5rem;
+    line-height: 1.188rem;
+}
+
+.technical-evaluation-configuration table tr td.policy-percent input {
+    width: 95% !important;
+}
+
+.technical-evaluation-configuration table tr td .btn.delete {
+
 }
