@@ -26,7 +26,7 @@ $this->import('
                     <template #button="popover">
                         <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
-                    <template #default="popover">
+                    <template #default="{popover, close}">
                         <form @submit="rename(img, popover); $event.preventDefault()" class="entity-gallery__addNew--newGroup">
                             <div class="grid-12">
                                 <div class="col-12">
