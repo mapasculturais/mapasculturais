@@ -1154,7 +1154,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             });
     }
 
-
+    window.$registrationScope = $scope;
+    
     function replaceRegistrationAgentBy(groupName, agent, relationStatus){
         for(var i in MapasCulturais.entity.registrationAgents){
             var def = MapasCulturais.entity.registrationAgents[i];
