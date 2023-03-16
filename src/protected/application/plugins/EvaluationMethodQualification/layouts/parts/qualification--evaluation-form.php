@@ -22,7 +22,9 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
                     <?php echo $plugin->step ?><label for="{{cri.id}}">{{cri.description}}:</label>
                 </td>
                 <td>
-                    <select>
+                    <select name="data[{{cri.id}}]" ng-model="evaluation[cri.id]">
+                        <option><?php i::_e('Não se aplica') ?></option>
+                        <option><?php i::_e('Habilitado') ?></option>
                         <option ng-repeat="option in ::cri.options">{{option}}</option>
                     </select>
                 </td>
