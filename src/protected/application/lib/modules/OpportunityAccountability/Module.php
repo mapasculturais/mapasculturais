@@ -34,6 +34,9 @@ class Module extends \MapasCulturais\Module
     function _init()
     {
         $app = App::i();
+        if ($app->view->version >= 2) {
+            return;
+        }
         
         $self = $this;
 
@@ -783,6 +786,9 @@ class Module extends \MapasCulturais\Module
     function register()
     {
         $app = App::i();
+        if ($app->view->version >= 2) {
+            return;
+        }
         $opportunity_repository = $app->repo('Opportunity');
         $registration_repository = $app->repo('Registration');
         $project_repository = $app->repo('Project');
