@@ -139,25 +139,11 @@
     }]);
 
     module.controller('QualificationEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'QualificationEvaluationMethodService', function ($scope, $rootScope, $timeout, QualificationEvaluationMethodService) {
-        var labels = MapasCulturais.gettext.qualificationEvaluationMethod;
-        MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function (e) {
-            e.weight = parseInt(e.weight);
-            return e;
-        });
-
-        if (MapasCulturais.evaluation) {
-            for (var id in MapasCulturais.evaluation.evaluationData) {
-                if (id != 'obs' && id != 'viability') {
-                    MapasCulturais.evaluation.evaluationData[id] = parseFloat(MapasCulturais.evaluation.evaluationData[id]);
-                }
-            }
-        }
-
         $scope.data = {
             sections: MapasCulturais.evaluationConfiguration.sections || [],
             criteria: MapasCulturais.evaluationConfiguration.criteria || [],
-            enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
-            empty: true
+            empty: true,
+            consolidate: {}
         };
 
         if (MapasCulturais.evaluation) {
@@ -168,45 +154,36 @@
         }
 
         $scope.subtotalSection = function (section) {
-            var total = 0;
-
+            var approved = false;
             for (var i in $scope.data.criteria) {
                 var cri = $scope.data.criteria[i];
                 if (cri.sid == section.id) {
-                    total += $scope.evaluation[cri.id] * cri.weight;
+                    if($scope.evaluation[cri.id] == "Não se aplica" || $scope.evaluation[cri.id] == "Habilitado"){
+                        approved = true;
+                    }else{
+                        approved = false;
+                        break
+                    }
                 }
             }
-
-            return total.toFixed(1);
+          
+            var result = approved ? "Habilitado" : "Inabilitado";
+            $scope.data.consolidate[section.id] = result;
+            return result
         };
 
         $scope.total = function () {
-            var total = 0;
+            var approved = true;
 
-            for (var i in $scope.data.criteria) {
-                var cri = $scope.data.criteria[i];
-                total += $scope.evaluation[cri.id] * cri.weight;
-            }
+            Object.values($scope.data.sections).forEach(function(section){
+                if($scope.data.consolidate[section.id] == "Inabilitado"){
+                    approved = false;
+                    return;
+                }
+            })
 
-            return total.toFixed(1);
-        };
-
-        $scope.max = function () {
-            var total = 0;
-
-            for (var i in $scope.data.criteria) {
-                var cri = $scope.data.criteria[i];
-                total += cri.max * cri.weight;
-            }
-
-            return total;
-        };
-
-        $scope.checkTotal = function (num) {
-            if (isNaN(num))
-                return 0;
-
-            return num.toFixed(1);
+            var result = approved ? "Habilitado" : "Inabilitado";
+            return result
         };
 
         $scope.viabilityLabel = function (val) {
