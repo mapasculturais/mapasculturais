@@ -23,6 +23,9 @@ app.component('v1-embed-tool', {
         height: {
             type: String,
         },
+        iframeId: {
+            type: String
+        }
     },
 
     created() {
