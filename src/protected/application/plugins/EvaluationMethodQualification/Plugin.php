@@ -115,7 +115,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod
         $errors = [];
         $empty = true;
         foreach ($data as $prop => $val) {
-            if ($val['evaluation']) {
+            if ($val) {
                 $empty = false;
             }
         }
