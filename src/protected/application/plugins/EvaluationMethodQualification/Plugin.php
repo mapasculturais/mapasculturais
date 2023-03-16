@@ -56,6 +56,26 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
     }
 
+    public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation)
+    {
+        $approved = ['Habilitado', 'Não se aplica'];
+        $result = "Habilitado";
+        $cfg = $evaluation->getEvaluationMethodConfiguration();
+        foreach($cfg->criteria as $cri){
+            $key = $cri->id;
+            if(!isset($evaluation->evaluationData->$key)){
+                return null;
+            } else {
+                if(!in_array($evaluation->evaluationData->$key, $approved)){
+                    $result = "Inabilitado";
+                    break;
+                }
+            }
+        }
+
+        return $result;
+    }
+
     public function valueToString($value)
     {
        
