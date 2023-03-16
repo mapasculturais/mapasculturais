@@ -23,9 +23,7 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
                 </td>
                 <td>
                     <select name="data[{{cri.id}}]" ng-model="evaluation[cri.id]">
-                        <option><?php i::_e('Não se aplica') ?></option>
-                        <option><?php i::_e('Habilitado') ?></option>
-                        <option ng-repeat="option in ::cri.options">{{option}}</option>
+                        <option ng-repeat="option in cri.options">{{option}}</option>
                     </select>
                 </td>
             </tr>

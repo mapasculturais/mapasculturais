@@ -46,7 +46,7 @@
         };
 
         MapasCulturais.evaluationConfiguration.criteria?.forEach(function (values, index) {
-            $scope.data.options[values.id] = values.options?.join("\n")
+            $scope.data.criteria[index].notApplyOption = (values.notApplyOption == "true") ? true : false; 
         })
 
         $scope.save = function () {
