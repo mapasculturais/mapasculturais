@@ -42,8 +42,9 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
     <hr>
 
     <div class='total'>
-        <?php i::_e('Pontuação Total'); ?>: <strong>{{total(total)}}</strong><br>
-        <?php i::_e('Pontuação Máxima'); ?>: <strong>{{max(total)}}</strong>
+        <?php i::_e('Status'); ?>:
+        <strong ng-if="total() == 'Habilitado'" class="approved">{{total()}}</strong>
+        <strong ng-if="total() == 'Inabilitado'" class="repproved">{{total()}}</strong><br>
     </div>
     <?php $this->applyTemplateHook('evaluationForm.qualification', 'end', $params); ?>
 </div>
