@@ -1,11 +1,14 @@
 <?php
-
 use MapasCulturais\i;
+
+$this->import('
+    modal
+');
 ?>
 
 <div ref="content">
 
-    <VDropdown v-if="!isMobile()" :triggers="[]" :shown="active" :autoHide="false" @apply-show="focus()">
+    <VDropdown v-if="!$media('max-width: 500px')" :triggers="[]" :shown="active" :autoHide="false"   @apply-show="focus()">
         <slot name="button" :open="open" :close="close" :toggle="toggle" :active="active">
             <button :class="['button', buttonClasses]">{{buttonLabel || '<?= i::__('Defina a propriedade button-label do componente popover') ?>'}}</button>
         </slot>
@@ -17,8 +20,8 @@ use MapasCulturais\i;
     </VDropdown>
 
 
-    <modal >
-        <template #default>
+    <modal classes="popover-modal" v-if="$media('max-width: 500px')">
+        <template #default="modal">
             <div ref="content" class="popover__content">
                 <slot :open="modal.open" :close="modal.close" :toggle="modal.toggle" :active="modalOpen"></slot>
             </div>
@@ -30,9 +33,6 @@ use MapasCulturais\i;
             </slot>
         </template>
 
-        <template #actions="modal">
-            <a class="button button--secondary" @click="modal.close()"><?php i::_e('Fechar') ?></a>
-        </template>
     </modal>
 
 </div>
