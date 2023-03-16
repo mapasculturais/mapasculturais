@@ -1,6 +1,6 @@
 app.component('popover', {
     template: $TEMPLATES['popover'],
-    emits: ['open', 'close'],
+    emits: ['open', 'close', 'confirm'],
 
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name]
@@ -33,6 +33,7 @@ app.component('popover', {
         }
     },
     
+    
     mounted() {
         document.addEventListener('mousedown', (event) => {
             let contained = false;
@@ -59,9 +60,7 @@ app.component('popover', {
     },
 
     methods: {
-        isMobile() {
-            return this.$media('max-width: 500px');
-        },
+      
         focus() {
             const inputs = this.$refs.content.getElementsByTagName('input');
             if (inputs.length) {
@@ -82,6 +81,11 @@ app.component('popover', {
         },
         toggle() {
             this.active ? this.close() : this.open();
+        },
+        handleConfirm() {
+            console.log('teste')
+            this.$emit('confirm');
+            this.close();
         },
     },
 });
