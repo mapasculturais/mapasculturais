@@ -85,8 +85,6 @@ class Plugin extends \MapasCulturais\EvaluationMethod
         }
     }
 
-
-
     protected function _register()
     {
         $this->registerEvaluationMethodConfigurationMetadata('sections', [
