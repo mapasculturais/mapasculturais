@@ -13,6 +13,8 @@ $this->import('
     tabs
 ');
 
+$this->addOpportunityPhasesToJs();
+
 $this->breadcrumb = [
   ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
   ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
