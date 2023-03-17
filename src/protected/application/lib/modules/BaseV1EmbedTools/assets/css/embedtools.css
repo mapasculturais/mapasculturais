@@ -663,6 +663,174 @@ body {
     width: 95% !important;
 }
 
-.technical-evaluation-configuration table tr td .btn.delete {
 
+
+/* Registration Manager */
+
+.action-registrationmanager #filtro-inscritos {
+    background: white;
+    border-radius: 4px 4px 0 0;
+    border: none;
+    margin: 0;
+    padding: 24px;
+}
+
+.action-registrationmanager #filtro-inscritos input {
+    background: #FFFFFF;
+    border-radius: 68px;
+    border: 1px solid #ACACAC;
+    font-family: 'Roboto';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    height: unset;
+    line-height: 19px;
+    margin: 0;
+    padding: 12px 20px;
+}
+
+.action-registrationmanager .dropdown {
+    background-color: #FFFFFF;
+    display: block;
+    padding: 10px 24px 0;
+    width: unset !important;
+    margin: 0 !important;
+    border-radius: 0;
+}
+
+.action-registrationmanager .dropdown .placeholder {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--mc-white);
+    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 100% center/20px;
+    border-radius: 4px;
+    border: 0.8px solid #BBBBBB;
+}
+
+
+.action-registrationmanager .dropdown .placeholder::after {
+    content: unset;
+}
+
+.action-registrationmanager #selected-filters {
+    display: block;
+    margin: 0;
+    padding: 8px 24px 24px;
+    background-color: #FFFFFF;
+    border-radius: 0 0 4px 4px;
+    width: unset !important;
+    margin: 0 0 8px !important;
+}
+
+.action-registrationmanager #selected-filters span {
+    height: unset;
+    display: flex;
+    gap: 16px;
+}
+
+.action-registrationmanager #selected-filters .tag-selected {
+    margin: 0;
+    padding: 8px 14px;
+    border-radius: 64px;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    background-color: #D50200;
+    color: #FFFFFF;
+    text-transform: capitalize;
+}
+
+.action-registrationmanager #registrations-table-container table thead tr th {
+    background-color: #FFFFFF;
+    border: none;
+    text-align: left;
+}
+
+.action-registrationmanager #registrations-table-container table thead tr th:first-child,
+.action-registrationmanager #registrations-table-container table thead tr th:last-child {
+    text-align: center;
+}
+
+.action-registrationmanager #registrations-table-container table .table-info {
+    display: none;
+}
+
+.action-registrationmanager #registrations-table-container table thead tr,
+.action-registrationmanager #registrations-table-container table tbody tr {
+    border: none;
+    border-bottom: 1px solid #BBBBBB;
+}
+
+.action-registrationmanager table.registrations-table thead th.registration-status-col .dropdown,
+.action-registrationmanager table.registrations-table tbody tr td.registration-status-col .dropdown {
+    padding: 0;
+    background-color: transparent;
+}
+
+.action-registrationmanager table.registrations-table thead th.registration-status-col .dropdown .placeholder,
+.action-registrationmanager table.registrations-table tbody tr td.registration-status-col .dropdown .placeholder {
+    color: #000000;
+}
+
+
+.action-registrationmanager table.registrations-table thead th.registration-status-col .dropdown .submenu-dropdown,
+.action-registrationmanager table.registrations-table tbody tr td.registration-status-col .dropdown .submenu-dropdown {
+    background-color: #FFFFFF;
+}
+.action-registrationmanager table.registrations-table tbody tr td.registration-agents-col p {
+    margin: 0;
+}
+
+.action-registrationmanager table.registrations-table tbody tr td.registration-agents-col p .label,
+.action-registrationmanager table.registrations-table tbody tr td.registration-agents-col p br {
+    display: none;
+}
+
+.registrations-table tbody tr.draft .dropdown .placeholder, 
+.my-registrations tbody tr.draft .dropdown .placeholder {
+
+}
+
+.action-registrationmanager table.registrations-table tbody tr {
+    background-color: #FFFFFF;
+}
+
+.action-registrationmanager table.registrations-table tbody tr td {
+    border: none;
+}
+
+.action-registrationmanager table.registrations-table tbody tr td a {
+    color: #000000;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.action-registrationmanager table.registrations-table tbody tr.draft {
+    background-color: #FFFFFF;
+}
+
+.action-registrationmanager table.registrations-table tbody tr.notapproved {
+    background-color: #FFE1E1;
+}
+
+.action-registrationmanager table.registrations-table tbody tr.approved {
+    background-color: #BFE88B;
+}
+
+.action-registrationmanager table.registrations-table tbody tr.invalid {
+    background-color: #BBBBBB;
+}
+
+.action-registrationmanager table.registrations-table tbody tr.waitlist {
+    background-color: #FFCF8F;
+}
+
+.action-registrationmanager table.registrations-table tfoot tr td {
+    border: none;
 }
