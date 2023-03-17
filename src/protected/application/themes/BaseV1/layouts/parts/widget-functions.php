@@ -1,11 +1,18 @@
 <?php
 $entityClass = $entity->getClassName();
 $entityName = strtolower(array_slice(explode('\\', $entityClass),-1)[0]);
-$funcoes = array_values($app->getRegisteredTaxonomy($entityClass, 'funcao')->restrictedTerms);
+
+$funcoes = [];
+if($taxonomy = $app->getRegisteredTaxonomy($entityClass, 'funcao')){
+    if(property_exists($taxonomy, 'restrictedTerms')){
+        $funcoes = array_values($app->getRegisteredTaxonomy($entityClass, 'funcao')->restrictedTerms);
+    }
+}
+
 sort($funcoes);
 
 ?>
-
+<?php if($funcoes):?>
 <div class="widget areas">
     <br>
     
@@ -21,3 +28,4 @@ sort($funcoes);
         <?php endif; endforeach; ?>
     <?php endif;?>
 </div>
+<?php endif?>

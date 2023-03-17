@@ -316,6 +316,18 @@ class Agent extends \MapasCulturais\Entity
         return $validations;
     }
 
+    public function setType($type)
+    {
+        $app = App::i();
+
+        if(!$app->user->is('admin') && $this->isNew() && $this->owner){
+            $this->_type = 2;
+        }else{
+            $this->_type = $type;
+        }
+
+    }
+
     function setAsUserProfile(){
         $this->checkPermission('setAsUserProfile');
 
@@ -459,6 +471,21 @@ class Agent extends \MapasCulturais\Entity
         } else {
             return parent::canUserCreate($user);
         }
+    }
+
+    protected function canUserChangeUserProfile($user)
+    {
+        if($user->is('admin')){
+            return true;
+        }
+        return false;
+    }
+
+    protected function canUserChangeType($user){
+        if($user->is('admin')){
+            return true;
+        }
+        return false;
     }
 
     protected function canUserRemove($user){

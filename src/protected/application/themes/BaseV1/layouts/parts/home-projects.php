@@ -60,7 +60,6 @@ $project_img_attributes = 'class="random-feature no-image"';
                 </div>
             </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('project', 'create') ?>"><?php \MapasCulturais\i::_e("Adicionar projeto");?></a>
         <a class="btn btn-accent btn-large" href="<?php echo $url_search_projects ?>"><?php \MapasCulturais\i::_e("Ver tudo");?></a>
     </div>
     <?php $this->applyTemplateHook('home-projects','end'); ?>
