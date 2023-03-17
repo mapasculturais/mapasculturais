@@ -69,7 +69,7 @@ use MapasCulturais\i;
                 <?php $this->applyTemplateHook('registration-list-header', 'end'); ?>
             </tr>
         </thead>
-        <tr>
+        <tr class="table-info">
             <td colspan='{{numberOfEnabledColumns()}}'>
                 <label class="alignright"><input type="checkbox" class="hltip" ng-model="data.fullscreenTable"> <?php i::_e('Expandir tabela') ?></label>
 
