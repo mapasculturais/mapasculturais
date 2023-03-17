@@ -188,7 +188,23 @@ class Plugin extends \MapasCulturais\EvaluationMethod
                     $section->columns[] = (object) [
                         'label' => $crit->description,
                         'getValue' => function (Entities\RegistrationEvaluation $evaluation) use ($crit) {
-                            return isset($evaluation->evaluationData->{$crit->id}) ? $evaluation->evaluationData->{$crit->id} : '';
+                            $_result = "";
+
+                            if(isset($evaluation->evaluationData->{$crit->id})){
+                                switch ($evaluation->evaluationData->{$crit->id}) {
+                                    case i::__('Habilitado'):
+                                        $_result = i::__('Aprovado');
+                                        break;
+                                    case i::__('Não se aplica'):
+                                        $_result = i::__('Não se aplica');
+                                        break;
+                                    default:
+                                        $_result = i::__('Desaprovado');
+                                        break;
+                                }
+                            }
+
+                            return $_result;
                         }
                     ];
                 }
