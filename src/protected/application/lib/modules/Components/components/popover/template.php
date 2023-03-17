@@ -20,10 +20,10 @@ $this->import('
     </VDropdown>
 
 
-    <modal classes="popover-modal" v-if="$media('max-width: 500px')">
+    <modal :title="title" classes="popover-modal" v-if="$media('max-width: 500px')">
         <template #default="modal">
-            <div ref="content" class="popover__content">
-                <slot :open="modal.open" :close="modal.close" :toggle="modal.toggle" :active="modalOpen"></slot>
+            <div ref="content" class="popover__content--modal">
+                <slot  :open="modal.open" :close="modal.close" :toggle="modal.toggle" :active="modalOpen"></slot>
             </div>
         </template>
 
