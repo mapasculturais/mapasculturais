@@ -139,13 +139,9 @@
             crit.options = cri_options.filter(function (i) {
                 return i;
             });
-
            
-            if(crit.options.length < 1){
-                crit.options.unshift('Inabilitado')
-            }else{
-                crit.options.unshift('Habilitado')
-            }
+            crit.options.unshift('Inabilitado');
+            crit.options.unshift('Habilitado');
 
             if(crit.notApplyOption && crit.options.length > 0){
                 crit.options.unshift('Não se aplica')
