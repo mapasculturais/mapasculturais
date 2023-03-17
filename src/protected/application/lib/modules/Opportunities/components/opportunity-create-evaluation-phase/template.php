@@ -9,16 +9,16 @@ $this->import('
     <template #default="modal">
         <div class="grid-12">
             <div class="col-12">
-                <entity-field :entity="phase" prop="type"></entity-field>
+                <entity-field :entity="phase" prop="type" hideRequired></entity-field>
             </div>
             <div class="col-12">
-                <entity-field :entity="phase" prop="name"></entity-field>
+                <entity-field :entity="phase" prop="name" hideRequired></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="phase" prop="evaluationFrom" :min="minDate" :max="phase.evaluationTo?._date"></entity-field>
+                <entity-field :entity="phase" prop="evaluationFrom" hideRequired :min="minDate" :max="phase.evaluationTo?._date"></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="phase" prop="evaluationTo" :min="phase.evaluationFrom?._date" :max="maxDate"></entity-field>
+                <entity-field :entity="phase" prop="evaluationTo" hideRequired :min="phase.evaluationFrom?._date" :max="maxDate"></entity-field>
             </div>
         </div>
     </template>
