@@ -43,8 +43,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
         $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
 
-        $result = 0;
-        $_result = "Habilitado";
+        $result = "Habilitado";
         foreach ($evaluations as $eval){
             $_result = $this->getEvaluationResult($eval);
             if($_result == "Inabilitado"){
