@@ -149,7 +149,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod
     public function _init()
     {
         $app = App::i();
-        $app->hook('evaluationsReport(technical).sections', function (Entities\Opportunity $opportunity, &$sections) {
+        $app->hook('evaluationsReport(qualification).sections', function (Entities\Opportunity $opportunity, &$sections) {
             $i = 0;
             $get_next_color = function ($last = false) use (&$i) {
                 $colors = [
@@ -186,46 +186,17 @@ class Plugin extends \MapasCulturais\EvaluationMethod
                     }
 
                     $section->columns[] = (object) [
-                        'label' => $crit->title . ' ' . sprintf(i::__('(peso: %s)'), $crit->weight),
+                        'label' => $crit->description,
                         'getValue' => function (Entities\RegistrationEvaluation $evaluation) use ($crit) {
                             return isset($evaluation->evaluationData->{$crit->id}) ? $evaluation->evaluationData->{$crit->id} : '';
                         }
                     ];
                 }
 
-                $max = 0;
-                foreach ($cfg->criteria as $crit) {
-                    if ($crit->sid != $sec->id) {
-                        continue;
-                    }
-
-                    $max += $crit->max * $crit->weight;
-                }
-
-                $section->columns[] = (object) [
-                    'label' => sprintf(i::__('Subtotal (max: %s)'), $max),
-                    'getValue' => function (Entities\RegistrationEvaluation $evaluation) use ($sec, $cfg) {
-                        $result = 0;
-                        foreach ($cfg->criteria as $crit) {
-                            if ($crit->sid != $sec->id) {
-                                continue;
-                            }
-
-                            $val =  isset($evaluation->evaluationData->{$crit->id}) ? (float) $evaluation->evaluationData->{$crit->id} : 0;
-                            $weight = (float) $crit->weight;
-                            $result += $val * $weight;
-                        }
-
-                        return $result;
-                    }
-                ];
-
                 $result[] = $section;
             }
 
             $result['evaluation'] = $sections['evaluation'];
-            //            $result['evaluation']->color = $get_next_color(true);
-
 
             // adiciona coluna do parecer técnico
             $result['evaluation']->columns[] = (object) [
@@ -234,15 +205,6 @@ class Plugin extends \MapasCulturais\EvaluationMethod
                     return isset($evaluation->evaluationData->obs) ? $evaluation->evaluationData->obs : '';
                 }
             ];
-
-            $viability = [
-                'label' => i::__('Esta proposta apresenta exequibilidade?'),
-                'getValue' => function (Entities\RegistrationEvaluation $evaluation) {
-                    return $this->viabilityLabel($evaluation);
-                }
-            ];
-
-            $result['evaluation']->columns[] = (object) $viability;
 
             $sections = $result;
 
