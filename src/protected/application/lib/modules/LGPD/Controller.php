@@ -51,51 +51,12 @@ class Controller  extends \MapasCulturais\Controller
 
     public function POST_accept()
     {
-        $app = App::i();
-        $term_slug = $this->data[0] ?? null;
-
-        /** @todo Verificar term_slug*/
-        $config = $app->config['module.LGPD'][$term_slug];
-        $text = $config['text'];
-
-        $accept_terms = [
-            'timestamp' => (new DateTime())->getTimestamp(),
-            'md5' => Module::createHash($text),
-            'text' => $text,
-            'ip' => $app->request()->getIp(),
-            'userAgent' => $app->request()->getUserAgent(),
-
-        ];
-
-        $this->verifiedTerms("lgpd_{$term_slug}", $accept_terms);
-
-    }
-
-    /**
-     * @param string $meta
-     * @param array $accept_terms
-     * @return void
-     */
-    private function verifiedTerms($meta, $accept_terms)
-    {
-        /** @var App $app */
-        $app = App::i();
-
-        $user = $app->user;
-        $_accept_lgpd = $user->$meta ?: (object)[];
-        $index = $accept_terms['md5'];
-        if (!isset($_accept_lgpd->$index)) {
-            $_accept_lgpd->$index = $accept_terms;
-            $user->$meta = $_accept_lgpd;
-            $user->save();
-        }
+        $app = App::i();        
+        $terms_slug = null;
+        $terms_slug = !is_array($this->data[0]) ? [$this->data[0]] : $this->data[0];
+        $app->modules['LGPD']->acceptTerms($terms_slug);
 
         $url = $_SESSION[Module::key] ?? "/";
-        if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
-            /** @todo Redirecionar pra url original */
-            $app->redirect($url);
-        }else{
-            $this->json(['redirect' =>  $url]);
-        }
+        $this->json(['redirect' =>  $url]);
     }
 }
