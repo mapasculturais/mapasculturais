@@ -119,13 +119,17 @@ app.component('entity-field', {
             let oldValue = this.entity[this.prop];
 
             this.__timeout = setTimeout(() => {
-                if(this.is('date')) {
-                    this.entity[this.prop] = new McDate(event.target.value);
+                if(this.is('date') || this.is('datetime') || this.is('time')) {
+                    this.entity[this.prop] = new McDate(event);
                 } else {
                     this.entity[this.prop] = event.target.value;
                 }
 
-                this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
+                if(this.is('date') || this.is('datetime') || this.is('time')) {
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event});
+                } else {
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
+                }
 
                 if (this.autosave && this.entity[this.prop] != oldValue) {
                     clearTimeout(this.entity.__autosaveTimeout);

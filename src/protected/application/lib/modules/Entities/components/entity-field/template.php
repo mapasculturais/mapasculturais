@@ -24,7 +24,7 @@ $this->import('
 
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @change="change($event)" autocomplete="off">
 
-        <mc-input-datepicker-wrapper v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType"></mc-input-datepicker-wrapper>
+        <mc-input-datepicker-wrapper v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change"></mc-input-datepicker-wrapper>
 
         <input v-if="is('email') || is('url')" :value="value" :id="propId" :name="prop" :type="fieldType" @change="change($event)" autocomplete="off">
         

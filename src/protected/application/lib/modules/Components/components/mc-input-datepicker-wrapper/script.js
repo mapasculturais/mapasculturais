@@ -65,6 +65,9 @@ app.component('mc-input-datepicker-wrapper', {
         },
         dateFormat(date) {
             return new Date(date).toLocaleString(this.locale);
+        },
+        change(val) {
+            this.$emit('change', val);
         }
     }
 });
