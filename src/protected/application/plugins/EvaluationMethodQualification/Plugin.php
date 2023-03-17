@@ -214,6 +214,20 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
             $result['evaluation'] = $sections['evaluation'];
 
+            $result['evaluation']->columns[] = (object) [
+                'label' => i::__('Motivo(s) da inabilitação'),
+                'getValue' => function (Entities\RegistrationEvaluation $evaluation) use ($crit) {
+                    $_result = "";
+                    if($evaluation->evaluationData){
+                        $evaluationData = (array) $evaluation->evaluationData;
+                        unset($evaluationData['obs']);
+                        $_result = implode(";", array_values($evaluationData));
+                    }
+
+                    return $_result;
+                }
+            ];
+
             // adiciona coluna do parecer técnico
             $result['evaluation']->columns[] = (object) [
                 'label' => i::__('Observações'),
