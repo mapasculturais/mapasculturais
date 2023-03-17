@@ -19,7 +19,12 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
 
             <tr ng-repeat="cri in ::data.criteria" ng-if="cri.sid == section.id">
                 <td>
-                    <?php echo $plugin->step ?><label for="{{cri.id}}">{{cri.description}}:</label>
+                    <div>
+                        <?php echo $plugin->step ?><label for="{{cri.id}}">
+                            <i class="fa fa-info-circle hltip" title="{{cri.description}}"></i>
+                            {{cri.name}}:
+                        </label>
+                    </div>
                 </td>
                 <td>
                     <select name="data[{{cri.id}}]" ng-model="evaluation[cri.id]">
