@@ -1878,8 +1878,13 @@ $$
         __exec("ALTER TABLE event_occurrence ADD priceInfo TEXT DEFAULT NULL;");
     },
     
+    'Apaga registro do db-update de "Definição dos cammpos cpf e cnpj com base no documento" para que rode novamente' => function() use ($conn, $app){
+        if($conn->fetchAll("SELECT * FROM db_update WHERE name = 'Definição dos cammpos cpf e cnpj com base no documento'")){
+            $conn->executeQuery("DELETE FROM db_update WHERE name = 'Definição dos cammpos cpf e cnpj com base no documento'");
+        }
+    },
     'Definição dos cammpos cpf e cnpj com base no documento' => function () use ($conn, $app) {
-        if ($agents_id = $conn->fetchAll("SELECT id from agent WHERE status > 0")) {
+        if ($agents_id = $conn->fetchAll("SELECT id from agent WHERE status >= 0")) {
             $txt = "AGENTE_ID | NOME |NOME_COMPLETO | EMAIL_PRIVADO | TIPO_ATUAL| OPERACAO \n";
             $_types = [
                 1 => "individual",
@@ -1905,13 +1910,20 @@ $$
                     }
 
                     if ($validate) {
-                        $agent->$type = $agent->documento;
+                        $_type = strtolower($type);
+                        $agent->$_type = $agent->documento;
 
                         $op = "Definido {$type} para o agente";
                         $txt .= "{$agent->id} | {$agent->name} | {$agent->nomeCompleto} | {$agent->emailPrivado} | {$_types[$agent->type->id]} | {$op} \n";
                         $app->log->debug($agent->id . " " . $op);
 
                         $app->disableAccessControl();
+
+                        if(!$agent->getRevisions()){
+                            $agent->_newCreatedRevision();
+                            $app->log->debug("Revision do agente {$agent->id} Criada");
+                        }
+
                         $agent->save(true);
                         $app->enableAccessControl();
                     } else {
@@ -1935,5 +1947,60 @@ $$
             fwrite($fp, $txt);
             fclose($fp);
         }
+    },
+    'Corrige config dos campos na entidade registration_fields_configurarion' => function() use ($conn, $app){
+
+        $registration_fields_Types = $app->getRegisteredRegistrationFieldTypes();
+
+        $field_types = [];
+        foreach($registration_fields_Types as $type => $values){
+            if(preg_match('/^@[a-zA-Z0-9\- ]{1,90}/', $values->name)){
+                $field_types[] = "'".trim($values->slug)."'";
+            }
+        }
+        $_field_types = implode(",", $field_types);
+    
+        $fields = $conn->fetchAll("SELECT * FROM registration_field_configuration WHERE field_type NOT IN ({$_field_types}) AND config LIKE '%entityField%'");
+        
+        $txt = "";
+        foreach($fields as $field){
+            $_field = $app->repo("RegistrationFieldConfiguration")->find($field['id']);
+            $config = $_field->config;
+            $txt.='['.$_field->id.' => '.serialize($_field->config).']\n';
+            unset($config['entityField']);
+            array_filter($config);
+            $_field->config = $config;
+            $_field->save(true);
+            $app->log->debug("db-update executado no campo field_{$_field->id}");
+            $app->em->clear();
+        }
+
+        $fileName = "dbupdate_RegistrationFieldConfiguration.txt";
+        $dir = PRIVATE_FILES_PATH . "dbupdate_documento";
+        if (!file_exists($dir)) {
+            mkdir($dir, 775);
+        }
+
+        $path = $dir . "/" . $fileName;
+        $fp = fopen($path, "wb");
+        fwrite($fp, $txt);
+        fclose($fp);
+    },
+    "seta como vazio campo escolaridade do agent caso esteja com valor não informado" => function() use ($conn, $app){
+        /** @var App $app */
+        $app= App::i();
+        $conn = $app->em->getConnection();
+        if($agent_ids = $conn->fetchAll("SELECT am.object_id as id  FROM agent_meta am WHERE am.key = 'escolaridade' AND am.value = 'Não Informar'")){
+            $app->disableAccessControl();
+            foreach($agent_ids as $value){
+                $agent = $app->repo("Agent")->find($value['id']);
+                $agent->escolaridade =  null;
+                $agent->save(true);
+            }
+            $app->enableAccessControl();
+        }
+    },
+    'altera tipo da coluna description na tabela file' => function() use ($conn, $app){
+        $conn->executeQuery("ALTER TABLE file ALTER COLUMN description TYPE text;");
     }
 ] + $updates ;

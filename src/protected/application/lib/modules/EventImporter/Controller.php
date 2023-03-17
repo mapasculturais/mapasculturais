@@ -136,7 +136,7 @@ class Controller extends \MapasCulturais\Controller
          }
 
          $data = $this->$function($file_dir);
-         $this->processData($data, $file_dir);
+         $this->processData($data, $file);
 
       } else {
          throw new Exception("Arquivo CSV não existe. Erro ao processar");
@@ -275,9 +275,11 @@ class Controller extends \MapasCulturais\Controller
       }
    }
 
-   public function processData($file_data, string $file_dir)
+   public function processData($file_data, $file)
    {
       $app = App::i();
+
+      $file_dir = $file->path;
 
       $conn = $app->em->getConnection();
 
@@ -341,11 +343,6 @@ class Controller extends \MapasCulturais\Controller
 
             if(empty(array_filter($value))){
                continue;
-            }
-
-            if($err = $this->checkRemoteFile($value, $key)){
-               $this->render("import-erros", ["errors" => $err, 'filename' => basename($file_dir)]);
-               exit;
             }
 
             $type_process_map = $this->typeProcessMap($value);
@@ -545,83 +542,88 @@ class Controller extends \MapasCulturais\Controller
          $this->render("import-erros", ["errors" => $errors, 'filename' => basename($file_dir)]);
          exit;
       }
-   
+
       $countNewEvent = 0;
       $eventsIdList = [];
       $error_process = false;
       $deletedOcurrences = [];
-      foreach ($data as $key => $value) {
-         $type_process_map = $this->typeProcessMap($value);
+      $process_file = json_decode($app->user->profile->event_importer_files_processed, true);
+      if (!in_array($file->id, $process_file)) {
+         $process_file[] = $file->id;
+         $app->user->profile->event_importer_files_processed = json_encode($process_file);
+         $app->user->profile->save(true);
 
-         if(!empty($value['EVENT_ID']) && in_array($value['NAME'], $moduleConfig['clear_ocurrence_ref'])){
-            continue;
-         };
+         foreach ($data as $key => $value) {
+            $type_process_map = $this->typeProcessMap($value);
 
-         $app->em->beginTransaction();
-         if($type_process_map->create_event || $type_process_map->edit_event){
+            if (!empty($value['EVENT_ID']) && in_array($value['NAME'], $moduleConfig['clear_ocurrence_ref'])) {
+               continue;
+            };
 
-            if($type_process_map->edit_event && in_array($value['EVENT_ID'], $clearOcurrenceList) && !in_array($value['EVENT_ID'], $deletedOcurrences)){
-               if($ocurrences = $app->repo("EventOccurrence")->findBy(["eventId" => $value['EVENT_ID']])){
-                  foreach($ocurrences as $ocurrence){
-                     $ocurrence->delete(true);
+            $app->em->beginTransaction();
+            if ($type_process_map->create_event || $type_process_map->edit_event) {
+
+               if ($type_process_map->edit_event && in_array($value['EVENT_ID'], $clearOcurrenceList) && !in_array($value['EVENT_ID'], $deletedOcurrences)) {
+                  if ($ocurrences = $app->repo("EventOccurrence")->findBy(["eventId" => $value['EVENT_ID']])) {
+                     foreach ($ocurrences as $ocurrence) {
+                        $ocurrence->delete(true);
+                     }
+                     $deletedOcurrences[] = $value['EVENT_ID'];
                   }
-                  $deletedOcurrences[] = $value['EVENT_ID'];
                }
+
+               if ($event = $this->insertEvent($value)) {
+
+                  $ocurrence = true;
+                  if ($type_process_map->create_ocurrence || $type_process_map->edit_ocurrence) {
+                     $ocurrence = $this->createOcurrency($event, $value, $key);
+                  }
+
+                  $file = $this->downloadFile($event, $value);
+                  $metalist = $this->createMetalists($event, $value);
+
+
+                  if ($ocurrence && $file && $metalist) {
+                     $countNewEvent++;
+                     $eventsIdList[$event->id] = $event->id;
+                     $this->ApplySeal($event, $value);
+                     $app->em->commit();
+                  } else {
+                     $error_process = true;
+                     $errors[$key + 1][] = i::__("Evento {$event->name} Não foi inserido");
+                  }
+               }
+            } else if ($type_process_map->delete_event) {
+               $event = $app->repo('Event')->find($value['EVENT_ID']);
+               $event->delete(true);
+               $countNewEvent++;
+               $eventsIdList[] = $event->id;
+               $app->em->commit();
             }
-            
-            if($event = $this->insertEvent($value)){
-
-               $ocurrence = true;
-               if($type_process_map->create_ocurrence || $type_process_map->edit_ocurrence){
-                  $ocurrence = $this->createOcurrency($event, $value, $key);
-               }
-
-               $file = $this->downloadFile($event, $value);
-               $metalist = $this->createMetalists($event, $value);
-
-
-               if($ocurrence && $file && $metalist){
-                  $countNewEvent++;
-                  $eventsIdList[$event->id] = $event->id;
-                  $this->ApplySeal($event,$value);
-                  $app->em->commit();
-               }else{
-                  $error_process = true;
-                  $errors[$key+1][] = i::__("Evento {$event->name} Não foi inserido");
-               }
-               
-            }
-
-         }else if($type_process_map->delete_event){
-            $event = $app->repo('Event')->find($value['EVENT_ID']);
-            $event->delete(true);
-            $countNewEvent++;
-            $eventsIdList[] = $event->id;
-            $app->em->commit();
-            
          }
-      }
 
-      if($countNewEvent >= 1){
-         $_agent = $app->user->profile;
-         $files = $_agent->event_importer_processed_file ?? new stdClass();
-         $files->{basename($file_dir)} = [
-            'date' => date('d/m/Y \à\s H:i'),
-            'countProsess' => $countNewEvent,
-            'eventsIdList' => $eventsIdList,
-            'typeFile' => ($type_process_map->create_event ? i::__('Criação') : ($type_process_map->edit_event ? i::__('Edição') : ($type_process_map->delete_event ? i::__('Deleção') : i::__('Não definido'))))
-         ];
-         $_agent->event_importer_processed_file = $files;
-         $_agent->save(true);
-         
-         if($error_process){
+         if ($countNewEvent >= 1) {
+            $_agent = $app->user->profile;
+            $files = $_agent->event_importer_processed_file ?? new stdClass();
+            $files->{basename($file_dir)} = [
+               'date' => date('d/m/Y \à\s H:i'),
+               'countProsess' => $countNewEvent,
+               'eventsIdList' => $eventsIdList,
+               'typeFile' => ($type_process_map->create_event ? i::__('Criação') : ($type_process_map->edit_event ? i::__('Edição') : ($type_process_map->delete_event ? i::__('Deleção') : i::__('Não definido'))))
+            ];
+            $_agent->event_importer_processed_file = $files;
+            $_agent->save(true);
+
+            if ($error_process) {
+               $this->render("import-erros", ["errors" => $errors, 'filename' => basename($file_dir)]);
+               exit;
+            }
+         } else {
             $this->render("import-erros", ["errors" => $errors, 'filename' => basename($file_dir)]);
-            exit; 
+            exit;
          }
-      }else{
-         $this->render("import-erros", ["errors" => $errors, 'filename' => basename($file_dir)]);
-         exit;
       }
+      
 
       $url = $app->createUrl("painel", "eventos");
       $app->redirect($url."#tab=event-importer");
@@ -1019,60 +1021,6 @@ class Controller extends \MapasCulturais\Controller
       }
    }
 
-   public function checkRemoteFile($value, $key)
-   {
-      
-      $check = function($file){
-         $basename = basename($file);
-         $file_data = str_replace($basename, urlencode($basename), $file);
-
-         $curl = new Curl;
-         $curl->get($file_data);
-         $curl->close();
-         $response = $curl->response;
-
-         $tmp = tempnam("/tmp", "");
-         $handle = fopen($tmp, "wb");
-         fwrite($handle,$response);
-         fclose($handle);
-
-         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-         $mimetype = finfo_file($finfo, $tmp);
-         if ($mimetype == 'image/jpg' || $mimetype == 'image/jpeg' || $mimetype == 'image/gif' || $mimetype == 'image/png') {
-            $is_image = true;
-         } else {
-            $is_image = false;
-         }
-
-         return $is_image;
-      };
-
-      $error = [];
-      $alloweds_type = ['AVATAR', 'HEADER', 'GALLERY'];
-      foreach($alloweds_type as $type){
-         
-         if(empty($value[$type])){
-            continue;
-         }
-
-         if($matches = $this->matches($value[$type])){
-            foreach($matches as $matche){
-               $exp = explode(":", $matche);
-               $url = $exp[0].":".$exp[1];
-
-               if(!$check($url)){
-                  $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$url}");
-               }
-            }
-         }else{
-            if(!$check($value[$type])){
-               $error[$key][] = i::__("O link do {$type} é inválido. Não foi possivel identificar o conteúdo do no link {$value[$type]}");
-            }
-         }
-      }
-
-      return $error;
-   }
 
    public function createMetalists(Entity $owner, $value)
    {

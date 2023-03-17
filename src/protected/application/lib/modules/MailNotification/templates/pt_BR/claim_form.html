@@ -13,18 +13,10 @@
                             <strong>Mensagem: </strong> {{message}}
                         </p>
                         <p>
-                            {{#enableFile}}
-                                <div>
-                                    Existem anexos a este recurso.<br>
-                                    Segue abaixo os links pra visulizar os arquivos.<br><br>
-                                </div>
-                            {{/enableFile}}
-
-                            {{#files}}
-                                <div>
-                                    {{.}}  
-                                </div>
-                            {{/files}}
+                            <div>
+                                Segue abaixo link pra visulizar o arquivo em anexo.<br><br>
+                                {{file}}
+                            </div>
                         </p>
                     </td>
                 </tr>
@@ -33,4 +25,3 @@
     </tr>
 </table>
 {{{_footer}}}
-
