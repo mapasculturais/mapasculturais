@@ -22,15 +22,15 @@ $this->import('popover confirm-button');
                         </slot>
                     </template>
 
-                    <template #default="popover">
-                        <form @submit="renameGroup(groupName, groupAgents.newGroupName, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                    <template #default="{popover, close}">
+                        <form @submit="renameGroup(groupName, groupAgents.newGroupName, popover); $event.preventDefault(); close()" class="entity-related-agents__addNew--newGroup">
                             <div class="grid-12">
                                 <div class="col-12">
                                     <input v-model="groupAgents.newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                                 </div>
 
-                                <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
-                                <button class="col-6 button button--primary"> <?php i::_e("Confirmar") ?> </button>
+                                <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--primary" type="submit" @click="close"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
@@ -101,16 +101,16 @@ $this->import('popover confirm-button');
                 </slot>
             </template>
 
-            <template #default>
+            <template #default="{close}">
                 <div class="entity-related-agents__addNew--newGroup">
-                    <form @submit="addGroup(newGroupName); $event.preventDefault();">
+                    <form @submit="addGroup(newGroupName); $event.preventDefault(); close();">
                         <div class="grid-12">
                             <div class="col-12">
                                 <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                             </div>
 
-                            <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
-                            <button class="col-6 button button--primary"> <?php i::_e("Confirmar") ?> </button>
+                            <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
+                            <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                         </div>
                     </form>
                 </div>

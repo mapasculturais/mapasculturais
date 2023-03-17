@@ -26,7 +26,7 @@ $this->import('
                     <template #button="popover">
                         <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
-                    <template #default="popover">
+                    <template #default="{popover, close}">
                         <form @submit="rename(img, popover); $event.preventDefault()" class="entity-gallery__addNew--newGroup">
                             <div class="grid-12">
                                 <div class="col-12">
@@ -34,8 +34,8 @@ $this->import('
                                         <input v-model="img.newDescription" type="text" placeholder="<?php i::esc_attr_e("Informe a descrição da imagem") ?>"/>
                                     </div>
                                 </div>
-                                <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
-                                <button class="col-6 button button--primary" type="submit" v-close-popper> <?php i::_e("Confirmar") ?> </button>
+                                <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--primary" type="submit" @click="close"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
