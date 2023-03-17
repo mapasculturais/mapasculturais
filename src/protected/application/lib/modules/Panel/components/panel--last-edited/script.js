@@ -11,7 +11,7 @@ app.component('panel--last-edited', {
     props: {
         limit: {
             type: Number,
-            default: 5
+            default: 15
         }
     },
 
@@ -52,11 +52,13 @@ app.component('panel--last-edited', {
             this.events = values[2];
             this.projects = values[3];
             this.opportunities = values[4];
+            this.loading = false;
         })
     },
 
     data() {
         return {
+            loading: true,
             query: {},
             agents: [],
             spaces: [],
