@@ -218,10 +218,14 @@ class Plugin extends \MapasCulturais\EvaluationMethod
                 'label' => i::__('Motivo(s) da inabilitação'),
                 'getValue' => function (Entities\RegistrationEvaluation $evaluation) use ($crit) {
                     $_result = "";
-                    if($evaluation->evaluationData){
-                        $evaluationData = (array) $evaluation->evaluationData;
-                        unset($evaluationData['obs']);
-                        $_result = implode(";", array_values($evaluationData));
+                    if($evaluationData = (array) $evaluation->evaluationData){
+                        $reasons = [];
+                        foreach($evaluationData as $cri => $eval){
+                            if($cri != "obs" && !in_array($eval, ['Não se aplica', 'Habilitado'])){
+                                $reasons[] = $eval;
+                            }
+                        }                        
+                        $_result = implode(";", $reasons);
                     }
 
                     return $_result;
