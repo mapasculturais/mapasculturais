@@ -216,11 +216,12 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
             // adiciona coluna do parecer técnico
             $result['evaluation']->columns[] = (object) [
-                'label' => i::__('Parecer Técnico'),
+                'label' => i::__('Observações'),
                 'getValue' => function (Entities\RegistrationEvaluation $evaluation) use ($crit) {
                     return isset($evaluation->evaluationData->obs) ? $evaluation->evaluationData->obs : '';
                 }
             ];
+            
 
             $sections = $result;
 
