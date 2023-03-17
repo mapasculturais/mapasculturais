@@ -15,8 +15,8 @@ use MapasCulturais\i;
                     <template #button="popover">
                         <a @click="metalist.newData = {...metalist}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
-                    <template #default>
-                        <form @submit="save(metalist); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                    <template #default="{close}">
+                        <form @submit="save(metalist); $event.preventDefault(); close()" class="entity-related-agents__addNew--newGroup">
                             <div class="grid-12">
                                 <div class="col-12">
                                     <div class="field">
@@ -32,7 +32,7 @@ use MapasCulturais\i;
                                     </div>
                                 </div>
 
-                                <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
                                 <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
@@ -60,8 +60,8 @@ use MapasCulturais\i;
             </a>
         </template>
 
-        <template #default>
-            <form @submit="create(); $event.preventDefault();" class="entity-links__newLink">
+        <template #default="{close}">
+            <form @submit="create(); $event.preventDefault(); close()" class="entity-links__newLink">
                 <div class="grid-12">
                     <div class="col-12">
                         <div class="field">
@@ -77,7 +77,7 @@ use MapasCulturais\i;
                         </div>
                     </div> 
 
-                    <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
+                    <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
                     <button class="col-6 button button--solid" type="submit"> <?php i::_e("Confirmar") ?> </button>
                 </div>
             </form>

@@ -8,7 +8,7 @@ $this->import('popover');
         <template #button="popover">
             <slot :popover="popover"></slot>
         </template>
-        <template #default>
+        <template #default="{close}">
             <div class="mc-multiselect__content">
                 <div class="mc-multiselect__content-form">
                     <input v-if="!hideFilter" type="text" v-model="model.filter" class="input" placeholder="<?= i::__('Filtro') ?>">
@@ -22,7 +22,7 @@ $this->import('popover');
                     </li>
                 </ul>
                 <div class="mc-multiselect__content-button">
-                    <button v-if="!hideButton" class="button button--primary" v-close-popper>
+                    <button v-if="!hideButton" class="button button--primary" @click="close">
                         <?php i::_e('Confirmar') ?>
                     </button>
                 </div>
