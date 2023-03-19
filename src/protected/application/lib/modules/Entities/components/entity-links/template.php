@@ -11,7 +11,7 @@ use MapasCulturais\i;
                 {{metalist.title}}
             </a>            
             <div v-if="editable" class="edit">
-                <popover openside="down-right">
+                <popover openside="down-right" title="<?php i::esc_attr_e('Editar link')?>">
                     <template #button="popover">
                         <a @click="metalist.newData = {...metalist}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
@@ -52,7 +52,7 @@ use MapasCulturais\i;
         </li>
     </ul>
 
-    <popover v-if="editable" openside="down-right">
+    <popover v-if="editable" openside="down-right" title="<?php i::esc_attr_e('Adicionar Link')?>">
         <template #button="popover">
             <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline">
                 <mc-icon name="add"></mc-icon>

@@ -12,6 +12,8 @@ import * as Dates from 'date-fns';
 import * as FloatingVue from 'floating-vue'
 import MediaQuery from './media-query'
 import { vMaska } from 'maska'
+import { VueRecaptcha } from 'vue-recaptcha';
+
 const app = Vue.createApp({})
 const pinia = Pinia.createPinia()
 
@@ -36,6 +38,7 @@ globalThis.MarkerClusterGroup = MarkerClusterGroup
 globalThis.Leaflet = Leaflet
 globalThis.Datepicker = Datepicker
 globalThis.Dates = Dates;
+globalThis.VueRecaptcha = VueRecaptcha;
 
 
 globalThis.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
