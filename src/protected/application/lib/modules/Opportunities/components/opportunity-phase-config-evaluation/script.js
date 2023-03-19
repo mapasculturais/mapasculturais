@@ -77,6 +77,11 @@ app.component('opportunity-phase-config-evaluation' , {
                 messages.error(this.text('nao foi possivel remover fase'));
             }
 
+        },
+        savePhase () {
+            setTimeout(() => {
+                this.phase.save();
+            }, 300);
         }
     }
 });
