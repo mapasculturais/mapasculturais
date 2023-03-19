@@ -14,7 +14,6 @@ $this->import('
     entity-gallery-video
     entity-gallery
     entity-links
-    entity-log
 ');
 ?>
 
@@ -43,13 +42,6 @@ $this->import('
                             :dayNames="dayNames"
                             autoApply utc>
                     </datepicker>
-                </div>
-                <div class="col-4 sm:col-12">
-                    <p class="opportunity-basic-info__label"><?= i::__("Haverá prestação de contas?") ?></p>
-                    <input v-model="accountability" type="radio" id="yes" value="true">
-                    <label for="yes"><?= i::__("Sim") ?></label>
-                    <input v-model="accountability" type="radio" id="no" value="false">
-                    <label for="no"><?= i::__("Não") ?></label>
                 </div>
             </div>
         </template>
@@ -89,7 +81,6 @@ $this->import('
                 <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags')?>" editable></entity-terms>
                 <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>" editable></entity-related-agents>
                 <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
-                <entity-log :entity="entity" classes="col-12"></entity-log>
             </div>
         </mapas-card>
     </aside>
