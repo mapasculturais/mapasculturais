@@ -30,6 +30,10 @@ app.component('popover', {
         openside: {
             type: String,
             default: '',
+        },
+        title: {
+            type: String,
+            default: '',
         }
     },
     
@@ -82,7 +86,7 @@ app.component('popover', {
         toggle() {
             this.active ? this.close() : this.open();
         },
-        handleConfirm() {
+        confirm() {
             console.log('teste')
             this.$emit('confirm');
             this.close();

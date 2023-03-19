@@ -18,8 +18,9 @@
 }
 .modal__title {
     margin: 0 2rem 0 0;
-    font-size: 1.5rem;
+    font-size: 1.125rem;
     font-weight: 700;
+    line-height: 1.563rem;
 }
 .modal__header {
     display: flex;
