@@ -127,7 +127,8 @@
   .tooltip .tooltiptext {
     visibility: hidden;
     word-break: break-all;
-    width: 350px;
+    max-width: 300px;
+    width: 290px;
     background-color: black;
     color: #fff;
     text-align: center;
