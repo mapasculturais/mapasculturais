@@ -112,15 +112,24 @@ class Plugin extends \MapasCulturais\EvaluationMethod
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
     {
         $errors = [];
-        $empty = true;
-        foreach ($data as $prop => $val) {
-            if ($val) {
-                $empty = false;
+              
+        foreach($evaluation_method_configuration->criteria as $key => $c){
+            if(isset($data[$c->id])){
+                $val = $data[$c->id];
+                $options = array_merge($c->options, ['Habilitado', 'Inabilitado', 'Não se aplica']);
+                if(!in_array($val, $options)){
+                    $errors[] = i::__("O valor do critério {$c->name} é inválido");
+                    break;
+                } 
             }
         }
 
-        if ($empty) {
-            $errors[] = i::__('Nenhum campo foi avaliado');
+        if(!$errors){
+            foreach($data as $key => $val){
+                if($key === 'obs' && !trim($val)) {
+                    $errors[] = i::__('O campo Observações é obrigatório');
+                }
+            }
         }
 
         return $errors;
