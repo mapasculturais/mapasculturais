@@ -119,7 +119,7 @@ $this->breadcrumb = [
                     <div class="grid-12">
                         <entity-seals :entity="entity" editable classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                         <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
-                        <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="Tags" editable></entity-terms>
+                        <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="Tags" popover-title="<?php i::esc_attr_e('Tags')?>" editable></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                         <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
                     </div>
