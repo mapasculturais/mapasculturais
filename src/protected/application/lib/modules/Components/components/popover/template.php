@@ -19,16 +19,15 @@ $this->import('
         </template>
     </VDropdown>
 
-
     <modal :title="title" classes="popover-modal" v-if="$media('max-width: 500px')">
         <template #default="modal">
-            <div ref="content" class="popover__content--modal">
-                <slot  :open="modal.open" :close="modal.close" :toggle="modal.toggle" :active="modalOpen"></slot>
+            <div ref="content" class="popover__content--modal popover-form">
+                <slot  :open="modal.open" :close="modal.close" :toggle="modal.toggle" :active="modal.isOpen"></slot>
             </div>
         </template>
 
         <template #button="modal">
-            <slot name="button" :open="modal.open" :close="modal.close" :toggle="modal.toggle" :active="modalOpen">
+            <slot name="button" :open="modal.open" :close="modal.close" :toggle="modal.toggle" :active="modal.isOpen">
                 <button :class="['button', buttonClasses]">{{buttonLabel || '<?= i::__('Defina a propriedade button-label do componente popover') ?>'}}</button>
             </slot>
         </template>
