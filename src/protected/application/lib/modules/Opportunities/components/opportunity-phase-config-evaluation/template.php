@@ -21,13 +21,11 @@ $this->import('
         <div class="evaluation-config col-12 field">
             <label> <?= i::__("Texto configuração geral") ?>
             </label>
-<!--            <entity-field :entity="phase" prop="infos"></entity-field>-->
-                <textarea v-model="phase.infos['general']" class="evaluation-config__area" rows="10"></textarea>
+                <textarea v-model="phase.infos['general']" @change="savePhase()" class="evaluation-config__area" rows="10"></textarea>
         </div>
         <div class="col-6 sm:col-12 field" v-for="(category, index) in categories">
             <label :key="index"> {{ category }}
-<!--                <entity-field :entity="phase" prop="infos[category]"></entity-field>-->
-                <textarea v-model="phase.infos[category]" style="width: 100%" rows="10"></textarea>
+                <textarea v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10"></textarea>
             </label>
         </div>
         <div class="config-phase__line-bottom col-12"></div>

@@ -9,7 +9,7 @@ use MapasCulturais\i;
             <button v-if="closeButton" class="modal__close" @click="close()"> <mc-icon name="close"></mc-icon> </button>
         </div>
         <div class="modal__content">
-            <slot :close="close" :open="open" :toggle="toggle" :loading="loading"></slot>
+            <slot :close="close" :open="open" :isOpen="modalOpen" :toggle="toggle" :loading="loading"></slot>
         </div>
         <div class="modal__action">
             <loading :condition="processing"></loading>
