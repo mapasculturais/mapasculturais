@@ -170,12 +170,15 @@ class Metadata extends \MapasCulturais\Definition{
     function getDefaultSerializer() {
         $serializers = [
             'boolean' => function($value) {
+                if(is_null($value)) { return null; }
                 return $value ? '1' : '0';
             },
             'json' => function($value) {
+                if(is_null($value)) { return null; }
                 return json_encode($value);
             },
             'DateTime' => function ($value) {
+                if(is_null($value)) { return null; }
                 if ($value instanceof DateTime) {
                     return $value->format('Y-m-d H:i:s');
                 } else if (is_string($value)) {
@@ -198,22 +201,22 @@ class Metadata extends \MapasCulturais\Definition{
     function getDefaultUnserializer() {
         $unserializers = [
             'boolean' => function($value) {
-                return (bool) $value;
+                return is_null($value) ? null : (bool) $value;
             },
             'integer' => function($value) {
-                return (int) $value;
+                return is_null($value) ? null : (int) $value;
             },
             'int' => function($value) {
-                return (int) $value;
+                return is_null($value) ? null : (int) $value;
             },
             'numeric' => function($value) {
-                return (float) $value;
+                return is_null($value) ? null : (float) $value;
             },
             'number' => function($value) {
-                return (float) $value;
+                return is_null($value) ? null : (float) $value;
             },
             'json' => function($value) {
-                return json_decode($value);
+                return is_null($value) ? null : json_decode($value);
             },
             'DateTime' => function($value) {
                 if ($value) {
@@ -243,7 +246,7 @@ class Metadata extends \MapasCulturais\Definition{
     function validate(\MapasCulturais\Entity $entity, $value){
         $errors = [];
 
-        if($this->is_required && !$value){
+        if($this->is_required && is_null($value)){
             $errors[] = $this->is_required_error_message;
 
         }elseif($value){

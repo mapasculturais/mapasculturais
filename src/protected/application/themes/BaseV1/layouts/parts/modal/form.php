@@ -13,16 +13,15 @@ $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
     <?php $this->part('modal/before-form'); ?>
     <?php $this->part('modal/feedback', ['entity_name' => $entity_name, 'label' => $name]); ?>
 
-    <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>"
-          data-entity="<?php echo $url; ?>" data-formid="<?php echo $modal_id; ?>" id="form-for-<?php echo $modal_id; ?>">
+    <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>" data-entity="<?php echo $url; ?>" data-formid="<?php echo $modal_id; ?>" id="form-for-<?php echo $modal_id; ?>">
+        <div style="max-height: 500px;overflow-x: auto;">
+            <?php $this->renderModalFields($entity_classname, $entity_name, $modal_id); ?>
+            <?php $this->renderModalRequiredMetadata($entity_classname, $entity_name); ?>
+            <?php $this->renderModalTaxonomies($entity_classname, $entity_name); ?>
 
-        <?php $this->renderModalFields($entity_classname, $entity_name, $modal_id); ?>
-        <?php $this->renderModalRequiredMetadata($entity_classname, $entity_name); ?>
-        <?php $this->renderModalTaxonomies($entity_classname, $entity_name); ?>
-
-        <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
-        <?php $this->part('modal/footer', ['entity' => $entity_name]); ?>
-
+            <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
+            <?php $this->part('modal/footer', ['entity' => $entity_name]); ?>
+        </div>
         <?php $this->part('modal/actions', ['entity_name' => $entity_name, 'classes' => $classes, 'name' => $name, 'modal_id' => $modal_id]); ?>
 
     </form>

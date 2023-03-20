@@ -1,4 +1,22 @@
-<div class="registration-fieldset">
+<?php
+$app = \MapasCulturais\App::i();
+?>
+
+<div>
+    <div class="validation-fields-errors" ng-init="validateRegistration()">
+        <div class="errors-header" ng-if="numFieldErrors() > 0">
+            <p class="errors-header-title title"><?= \MapasCulturais\i::_e('O cadastro não foi enviado!') ?></p>
+            <p class="errors-header-title text"><?= \MapasCulturais\i::_e('Corrija os campos listados abaixo e valide seu formulário utilizando o botão Salvar e validar.') ?></p>
+            <div class="errors " ng-repeat="field in data.fields" ng-if="entityErrors[field.fieldName]">
+                <a ng-click="scrollTo('wrapper-' + field.fieldName, 130)">
+                    <span class="errors-field" ng-repeat="error in entityErrors[field.fieldName]"> <strong>{{field.title.replace(':', '')}}:</strong> {{error}} </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="registration-fieldset">    
     <?php if($entity->opportunity->isRegistrationOpen()): ?>
         <p class="registration-help"><?php \MapasCulturais\i::_e("Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição.");?> <strong><?php \MapasCulturais\i::_e("Depois de enviada, não será mais possível editá-la.");?></strong></p>
         <a class="btn btn-primary" ng-click="sendRegistration()" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Enviar inscrição");?></a>

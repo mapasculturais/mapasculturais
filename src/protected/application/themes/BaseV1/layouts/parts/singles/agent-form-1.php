@@ -81,8 +81,8 @@ if($entity->dataDeNascimento){
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
                     <span class="label"><?php \MapasCulturais\i::_e("CPF");?>:</span>
-                    <span class="js-editable js-mask-cpf <?php echo ($entity->isPropertyRequired($entity,"documento") && $editEntity? 'required': '');?>" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu CPF  com pontos, hífens e barras");?>">
-                        <?php echo $entity->documento; ?>
+                    <span class="js-editable js-mask-cpf <?php echo ($entity->isPropertyRequired($entity,"cpf") && $editEntity? 'required': '');?>" data-edit="cpf" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu CPF  com pontos, hífens e barras");?>">
+                        <?php echo $entity->cpf; ?>
                     </span>
                 </p>
                   <!-- Campo Mei -->
