@@ -501,6 +501,20 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.editFieldConfiguration = function(attrs) {
             var model = $scope.data.fields[attrs.index];
+           
+            var field_types_entity_list = [];
+            Object.values(MapasCulturais.registrationFieldTypes).forEach(function(item){
+                if(item.name.match(/^@[a-zA-Z0-9\- ]{1,90}/)){
+                    field_types_entity_list.push(item.slug)
+                }
+            })
+
+            if(!field_types_entity_list.includes(model.fieldType)){
+                delete model.config.entityField;
+                if(Object.keys(model.config).length == 0){
+                    model.config = "";
+                }
+            }
 
             if(model.config.hasOwnProperty("require") && model.config.require.condition  && (!model.config.require.field)){
                 MapasCulturais.Messages.error("Informe a qual campo quer condicionar a obrigatoriedade");
@@ -1115,12 +1129,14 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         delete field.error;
 
-        $scope.data.editableEntity[field.fieldName] = value ? JSON.parse(angular.toJson(value)) : null;
+        $scope.data.editableEntity[field.fieldName] = value !== undefined ? JSON.parse(angular.toJson(value)) : null;
 
         $timeout.cancel(saveTimeout);
         
         saveTimeout = $timeout(function(){
-            $scope.saveRegistration();
+            if(MapasCulturais.isEditable){
+                $scope.saveRegistration();
+            }
         }, MapasCulturais.registrationAutosaveTimeout);
     }
 
@@ -1139,8 +1155,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.saveRegistration = function () {
-        return RegistrationService.updateFields($scope.data.editableEntity)
-            .error(function(r) {
+       return RegistrationService.updateFields($scope.data.editableEntity)
+        .success(function(r){
+            $scope.validateRegistration();
+        })
+        .error(function(r) {
                 $scope.data.errors = r.data;
                 for (var key in r.data) {
                     $scope.data.fields.forEach(function(field) {
@@ -1149,7 +1168,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                         }
                     });
                 }
-
+                $scope.validateRegistration();
                 MapasCulturais.Messages.error(labels['correctErrors']);
             });
     }
@@ -1545,13 +1564,22 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         });
     }, 1000);
 
+    $scope.lockedEntityField = function(field){
+
+        if (MapasCulturais.entity.object.owner.lockedFields.indexOf(field) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     $scope.lockedField = function (field) {
         if(!field.config?.entityField){
             return false;
         }
         
         let fname = field.config.entityField.replace('@','');
-        if (field.config && MapasCulturais.entity.object.owner.lockedFields.indexOf(fname) >= 0) {
+        if (field.config && $scope.lockedEntityField(fname)) {
             return true;
         } else {
             return false;
@@ -2678,7 +2706,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
         var last = '';
         $scope.timeOut = null;
-        $scope.$watch('data.keyword', function(o,n){
+        $scope.$watchGroup(['data.keyword', 'data.pending'], function(o,n){
             var lower = $scope.data.keyword.toLowerCase();
             if(lower != last){
                 last = lower;
@@ -2687,6 +2715,19 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
             clearTimeout($scope.timeOut);
             $scope.timeOut = setTimeout(() => {
+                let args = {
+                    '@opportunity': getOpportunityId(),
+                    '@limit': 50,
+                    '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status',
+                    '@keyword' : 'like('+$scope.data.keywords+')'
+                };
+        
+                if($scope.data.pending){
+                    args['@pending'] = true
+                }
+                
+                var registrationAndEvaluationsApi = new OpportunityApiService($scope, 'registrationAndEvaluations', 'findRegistrationsAndEvaluations', args);
+        
                 registrationAndEvaluationsApi.find().success(function(){
                     $scope.registrationAndEvaluations = $scope.data.registrationAndEvaluations.map(object => {
                         return {
@@ -2698,7 +2739,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                             resultString: object.resultString
                         }
                     })
-                });                
+                });             
             }, 1500);
         });
 
