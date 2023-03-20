@@ -6,20 +6,17 @@ use MapasCulturais\i;
     <h4><?php i::_e('Critérios') ?></h4>
     <p><?php i::_e('Configure abaixo os critérios de avaliação de habilitação documental') ?>
     <section id="{{section.id}}" ng-repeat="section in data.sections">
-        <div class="btn-add-section">
-            <button ng-click="addCriterion(section)" class="btn btn-default add" title="<?php i::_e('Adicionar critétio') ?>"> <?php i::_e('Adicionar critétio') ?></button>
-        </div>
         <hr>
         <header>
             <input ng-model="section.name" placeholder="<?php i::_e('informe o nome da seção') ?>" class="section-name edit" ng-change="save({sections: data.sections})" ng-model-options='{ debounce: data.debounce }'>
+            <button  class="btn btn-default add" ng-click="addCriterion(section)" title="<?php i::_e('Adicionar critétio') ?>"> <?php i::_e('Adicionar critétio') ?></button>
             <button ng-if="section.name.trim().length > 0" ng-click="deleteSection(section)" class="btn btn-danger delete alignright"><?php i::_e('Remover seção') ?></button>
             <button ng-if="section.name.trim().length == 0" ng-click="deleteSection(section)" class="btn btn-default delete alignright"><?php i::_e('Cancelar') ?></button>
         </header>
 
         <table>
             <tr>
-                <th class="criterion-title"><?php i::_e('Nome do critério') ?></th>
-                <th class="criterion-title"><?php i::_e('Descrição do critério') ?></th>
+                <th class="criterion-title"><?php i::_e('Nome / Descrição do critério') ?></th>
                 <th class="criterion-title"><?php i::_e('Opções') ?></th>
             </tr>
 
@@ -28,10 +25,8 @@ use MapasCulturais\i;
                     <div>
                         <input type="text" ng-model="cri.name" ng-model-options='{ debounce: data.debounce }' placeholder="<?php i::_e('Nome do cretério') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
                     </div>
-                </td>
-                <td>
                     <div>
-                        <textarea ng-model="cri.description" ng-model-options='{ debounce: data.debounce }' cols="40" rows="3" ng-change="save({sections: data.sections})"></textarea>
+                        <textarea ng-model="cri.description" ng-model-options='{ debounce: data.debounce }' cols="105" rows="3" ng-change="save({sections: data.sections})"></textarea>
                     </div>
                 </td>
                 <td>
