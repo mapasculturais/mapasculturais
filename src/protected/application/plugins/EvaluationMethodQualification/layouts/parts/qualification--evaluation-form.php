@@ -23,7 +23,8 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
                         <?php echo $plugin->step ?><label for="{{cri.id}}">
                         <div class="tooltip">
                             <i class="fa fa-info-circle"></i>
-                            <div class="tooltiptext">{{cri.description}}</div>
+                            <div class="tooltiptext" ng-if="cri.description">{{cri.description}}</div>
+                            <div class="tooltiptext">{{cri.name}}</div>
                         </div>
                             {{cri.name}}:
                         </label>
