@@ -1,3 +1,7 @@
+.qualification-evaluation-configuration header {
+    display: flex;
+}
+
 .qualification-evaluation-configuration .btn {
     margin-left: 10px;
 }
