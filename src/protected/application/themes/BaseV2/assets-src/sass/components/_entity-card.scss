@@ -313,19 +313,26 @@
 		align-items: flex-start;
 		display: flex;
 		justify-content: space-between;
-
+		
 		&> :first-child {
 			align-items: center;
 			display: grid;
 			grid-template-columns: size(64) 1fr;
 			gap: size(16);
 
-			@include mobile {
-				grid-template-columns: size(32) 1fr;
+			@media (max-width: size(500)) {
+
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+
+				.panel-entity-card__main {
+					display: none;
+				}
 			}
 		}
 
-		&--picture {
+		&--picture{
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -344,7 +351,8 @@
 				width: 100%;
 			}
 
-			@include mobile {
+			@media (max-width: size(500)) {
+
 				height: size(32);
 				width: size(32);
 
@@ -461,6 +469,14 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-end;
+
+		.panel__entity-actions {
+			@media (max-width: size(500)) {
+
+				display: flex;
+				padding-bottom: 21px;
+			}
+		}
 
 		@media (max-width: size(500)) {
 			align-items: center;
