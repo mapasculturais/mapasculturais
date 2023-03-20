@@ -18,6 +18,17 @@ body {
     width: 100%;
 }
 
+.edit-box {
+    top: 0 !important;
+    left: 0 !important;
+    position: relative !important;
+    margin: 15px auto !important;
+    width: calc(95% - 21px) !important;
+}
+
+.edit-box .mc-arrow {
+    display: none;
+}
 
 
 /* RegistrationForm */
@@ -239,6 +250,7 @@ body {
     height: 100%;
     right: 1.75rem;
     top: 0;
+    max-height: 6.938rem;
 }
 
 .project-edit-mode ul.attachment-list li.attachment-list-item .btn-group .btn::before {
