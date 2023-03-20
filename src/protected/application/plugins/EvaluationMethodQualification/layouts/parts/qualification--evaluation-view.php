@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 ?>
 <div ng-controller="QualificationEvaluationMethodFormController" class="qualification-evaluation-form">
-    <div>
+    <div ng-if="!data.empty">
         <strong><?php i::_e('Resultados das seções'); ?>:</strong>
         <section ng-repeat="section in ::data.sections">
              {{section.name}}: 
@@ -17,7 +17,7 @@ use MapasCulturais\i;
         </section>
         <hr>
         <label>
-            <strong><?php i::_e('Parecer Técnico') ?>:</strong>
+            <strong><?php i::_e('Observações') ?>:</strong>
             <p>{{evaluation['obs']}}</p>
         </label>
     </div>
