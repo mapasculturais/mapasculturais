@@ -18,16 +18,17 @@ $this->import('popover mc-tag-list mc-multiselect')
         </template>
 
         <!-- Modo Tags -->
-        <template #default="popover">
+        <template #default="{toggle}">
             <div class="entity-terms__tags">
-                <form class="entity-terms__tags--form" @submit.prevent="addTerm(filter, popover)">
-                    <input type="text" v-model="filter" class="input" placeholder="<?= i::__('Adicione uma nova tag') ?>">
-                    <button class="button button--primary button--icon entity-terms__tags--form-addBtn" type="submit" @click="popover.toggle">
+                <form class="entity-terms__tags--form" @submit="addTerm(filter); toggle(); $event.preventDefault();">
+                    {{filter}}
+                    <input type="text"  class="input" placeholder="<?= i::__('Adicione uma nova tag') ?>"  :v-bind="filter" @input="filter = $event.target.value" >
+                    <button class="button button--primary button--icon entity-terms__tags--form-addBtn" type="submit">
                         <mc-icon name="add"></mc-icon>
                     </button>
                 </form>
                 <ul class="entity-terms__tags--list" v-if="filteredTerms.length > 0">
-                    <li class="entity-terms__tags--list-item" @click="addTerm(term, popover)" v-for="term in filteredTerms">
+                    <li class="entity-terms__tags--list-item" @click="addTerm(term)" v-for="term in filteredTerms">
                         <span v-html="highlightedTerm(term)"></span>
                     </li>
                 </ul>
