@@ -68,8 +68,6 @@ app.component('v1-embed-tool', {
             if (this.hash) {
                 url += '#' + this.hash;
             }
-
-            console.log(url);
             return url;
         }
     },
