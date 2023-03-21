@@ -18,5 +18,8 @@ app.component('opportunity-phase-list-evaluation' , {
     },
 
     methods: {
+        addPublishRegistrations () {
+            this.phase.opportunity.POST('publishRegistrations');
+        }
     }
 });
