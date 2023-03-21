@@ -1,15 +1,15 @@
 app.component('entity-terms', {
     template: $TEMPLATES['entity-terms'],
-    
-    setup() { 
+
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('entity-terms')
         return { text }
     },
-    
+
     beforeCreate() {
         this.definition = $TAXONOMIES[this.taxonomy];
-    
+
         if (!this.definition) {
             throw Error(`Taxonomia ${this.taxonomy} não registrada na aplicação`);
         }
@@ -49,11 +49,15 @@ app.component('entity-terms', {
             type: [String, Array, Object],
             required: false
         },
+        popoverTitle: {
+            type: String,
+            default: ''
+        },
     },
 
     computed: {
         filteredTerms() {
-            if(this.allowInsert && this.filter.trim().length == 0) {
+            if (this.allowInsert && this.filter.trim().length == 0) {
                 return [];
             }
 
@@ -61,7 +65,7 @@ app.component('entity-terms', {
                 const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 const _term = term.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-                if(_term.indexOf(_filter) >= 0) {
+                if (_term.indexOf(_filter) >= 0) {
                     return term;
                 }
             })
@@ -69,6 +73,7 @@ app.component('entity-terms', {
     },
 
     methods: {
+        
         loadTerms() {
             if (this.definition.terms.length == 0) {
                 const api = new API('term');
@@ -84,9 +89,9 @@ app.component('entity-terms', {
             const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const _term = term.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const indexOf = _term.indexOf(_filter);
-            if(indexOf >= 0) {
-                const part0 = term.substr(0, indexOf); 
-                const part1 = term.substr(indexOf, this.filter.length); 
+            if (indexOf >= 0) {
+                const part0 = term.substr(0, indexOf);
+                const part1 = term.substr(indexOf, this.filter.length);
                 const part2 = term.substr(indexOf + this.filter.length);
                 return `${part0}<b><u>${part1}</u></b>${part2}`;
             } else {
@@ -95,7 +100,8 @@ app.component('entity-terms', {
         },
 
 
-        addTerm(term, popover) {
+        addTerm(term) {
+            console.log(this.entityTerms, this.terms, term);  
             if (this.entityTerms.indexOf(term) < 0) {
                 this.entityTerms.push(term);
             }
@@ -103,8 +109,6 @@ app.component('entity-terms', {
             if (this.terms.indexOf(term) < 0) {
                 this.terms.push(term);
             }
-
-            popover.close();
         }
     }
 });
