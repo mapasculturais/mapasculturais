@@ -57,7 +57,7 @@ $this->breadcrumb = [
                                 <entity-occurrence-list :entity="entity"></entity-occurrence-list>                    
                             </div>        
                             <div class="col-12">
-                                <div class="acessibility">
+                                <div v-if="entity.descricaoSonora || entity.traducaoLibras" class="acessibility">
                                     <span class="acessibility__label"><?php i::_e("Acessibilidade"); ?></label>
                                     <div v-if="entity.descricaoSonora" class="acessibility__audio">
                                         <span><?php i::_e("Libras:"); ?></span>{{entity.descricaoSonora}}
@@ -85,7 +85,7 @@ $this->breadcrumb = [
                                 <h2><?php i::_e('Descrição Detalhada');?></h2>
                                 <p>{{entity.longDescription}}</p>
                             </div>                      
-                            <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download') ?>"></entity-files-list>
+                            <entity-files-list v-if="entity.files.downloads!= null" :entity="entity"  classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download') ?>"></entity-files-list>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
                         </div>
