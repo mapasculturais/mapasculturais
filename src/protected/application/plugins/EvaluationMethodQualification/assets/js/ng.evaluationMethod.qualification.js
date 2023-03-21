@@ -126,6 +126,8 @@
     }]);
 
     module.controller('QualificationEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'QualificationEvaluationMethodService', function ($scope, $rootScope, $timeout, QualificationEvaluationMethodService) {
+        var labels = MapasCulturais.gettext.qualificationEvaluationMethod;
+
         $scope.data = {
             sections: MapasCulturais.evaluationConfiguration.sections || [],
             criteria: MapasCulturais.evaluationConfiguration.criteria || [],
@@ -141,11 +143,11 @@
                 return i;
             });
            
-            crit.options.unshift('Inabilitado');
-            crit.options.unshift('Habilitado');
+            crit.options.unshift(labels['disabled']);
+            crit.options.unshift(labels['enabled']);
 
             if(crit.notApplyOption && crit.options.length > 0){
-                crit.options.unshift('Não se aplica')
+                crit.options.unshift(labels['notApplicable'])
             }
         })
 
