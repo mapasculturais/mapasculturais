@@ -26,7 +26,7 @@ use MapasCulturais\i;
                         <input type="text" ng-model="cri.name" ng-model-options='{ debounce: data.debounce }' placeholder="<?php i::_e('Nome do cretério') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
                     </div>
                     <div>
-                        <textarea ng-model="cri.description" ng-model-options='{ debounce: data.debounce }' cols="105" rows="3" ng-change="save({sections: data.sections})"></textarea>
+                        <textarea ng-model="cri.description" ng-model-options='{ debounce: data.debounce }' cols="75" rows="3" ng-change="save({sections: data.sections})"></textarea>
                     </div>
                 </td>
                 <td>
