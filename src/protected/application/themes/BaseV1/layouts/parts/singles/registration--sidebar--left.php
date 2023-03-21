@@ -17,8 +17,9 @@ use MapasCulturais\i;
                         current: registration.id == data.current,
                         visible: newShow(registration),
                         missing: !newEvaluated(registration),
-                        valid: getEvaluationResult(registration) === '1',
-                        invalid: getEvaluationResult(registration) === '-1'
+                        valid: getEvaluationResult(registration) === 'valid',
+                        invalid: getEvaluationResult(registration) === 'invalid',
+                        finish: getEvaluationResult(registration) === 'finish',
                     }">
                         <a href="{{::registration.singleUrl}}" rel='noopener noreferrer'>
                             <div class="registration-evaluated"> (<?php i::_e('Avaliação:'); ?> <strong> {{registrationStatus(registration)}}</strong>) </div>
