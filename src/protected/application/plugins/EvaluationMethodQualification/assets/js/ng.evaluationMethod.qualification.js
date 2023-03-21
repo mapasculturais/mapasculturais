@@ -163,7 +163,7 @@
             for (var i in $scope.data.criteria) {
                 var cri = $scope.data.criteria[i];
                 if (cri.sid == section.id) {
-                    if ($scope.evaluation[cri.id] == "Não se aplica" || $scope.evaluation[cri.id] == "Habilitado") {
+                    if ($scope.evaluation[cri.id] == labels['notApplicable'] || $scope.evaluation[cri.id] == labels['enabled']) {
                         approved = true;
                     } else {
                         approved = false;
@@ -172,7 +172,7 @@
                 }
             }
 
-            var result = approved ? "Habilitado" : "Inabilitado";
+            var result = approved ? labels['enabled'] : labels['disabled'];
             $scope.data.consolidate[section.id] = result;
             return result
         };
@@ -181,13 +181,13 @@
             var approved = true;
 
             Object.values($scope.data.sections).forEach(function (section) {
-                if ($scope.data.consolidate[section.id] == "Inabilitado") {
+                if ($scope.data.consolidate[section.id] == labels['disabled']) {
                     approved = false;
                     return;
                 }
             })
 
-            var result = approved ? "Habilitado" : "Inabilitado";
+            var result = approved ?  labels['enabled'] : labels['disabled'];
             return result
         };
 
