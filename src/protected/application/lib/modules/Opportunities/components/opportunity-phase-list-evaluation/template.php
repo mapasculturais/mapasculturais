@@ -29,7 +29,7 @@ $this->import('
             </mc-notification>
         </div>
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
-            <mc-link :entity="entity.opportunity" class="opportunity-phase-list-data-collection_action--button" icon="external" route="registrations" right-icon>
+            <mc-link :entity="entity" class="opportunity-phase-list-data-collection_action--button" icon="external" route="registrations" right-icon>
               <?= i::__("Lista de inscrições da fase") ?>
             </mc-link>
         </div>
