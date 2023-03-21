@@ -45,13 +45,6 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->render("registration-form", ['entity' => $entity]);
     }
 
-    public function GET_affirmativepoliciesmanager()
-    {
-        $entity = $this->getEntityAndCheckPermission('@control');
-
-        $this->render("affirmative-policies-manager", ['entity' => $entity]);
-    }
-
     function getEntityAndCheckPermission($permission) 
     {
         $app = App::i();
