@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa novo método de avaliação EvaluationMethodQualification
 ## Melhorias
 - Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
+- Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
 
 ## [5.6.2] - 2023-03-14
 ### Correções
