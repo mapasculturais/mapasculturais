@@ -55,6 +55,16 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
     }
 
+    public function getEvaluationStatues()
+    {
+        $status = [
+            'valid' => ['Habilitado'],
+            'invalid' => ['Inabilitado']
+        ];
+
+        return $status;
+    }
+
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation)
     {
         $approved = ['Habilitado', 'Não se aplica'];
@@ -78,7 +88,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod
     public function valueToString($value)
     {
         if(is_null($value)){
-            return i::__('Avaliação incompleta');
+            return i::__('');
         } else {
             return $value;
         }
@@ -152,6 +162,8 @@ class Plugin extends \MapasCulturais\EvaluationMethod
         ]);
 
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.qualification';
+
+        $app->view->jsObject['evaluationStatus']['qualification'] = $this->evaluationStatues;
     }
 
     public function _init()
