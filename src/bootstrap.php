@@ -1,20 +1,21 @@
 <?php
-define('BASE_PATH', realpath(__DIR__ . '/../../') . '/');
-define('PROTECTED_PATH', realpath(__DIR__ . '/../') . '/');
-define('APPLICATION_PATH', realpath(__DIR__) . '/');
+define('PUBLIC_PATH', realpath('../public') . '/');
+define('BASE_PATH', PUBLIC_PATH);
+define('PROTECTED_PATH', realpath('..') . '/');
+define('APPLICATION_PATH', realpath('.') . '/');
 define('LANGUAGES_PATH', APPLICATION_PATH . 'translations/');
 define('THEMES_PATH', APPLICATION_PATH . 'themes/');
-define('ACTIVE_THEME_PATH', THEMES_PATH . 'active/');
 define('PLUGINS_PATH', APPLICATION_PATH . 'plugins/');
-define('MODULES_PATH', APPLICATION_PATH . 'lib/modules/');
+define('MODULES_PATH', APPLICATION_PATH . 'modules/');
+define('VAR_PATH', PROTECTED_PATH . 'var/');
 
-define('DOCTRINE_PROXIES_PATH', PROTECTED_PATH . 'DoctrineProxies/');
+define('DOCTRINE_PROXIES_PATH', VAR_PATH . 'DoctrineProxies/');
 if(!is_dir(DOCTRINE_PROXIES_PATH)){
     mkdir(DOCTRINE_PROXIES_PATH);
 }
 
-define('PRIVATE_FILES_PATH', env('PRIVATE_FILES_PATH', dirname(BASE_PATH) . '/private-files/'));
-define('SESSIONS_SAVE_PATH', env('SESSIONS_SAVE_PATH', PRIVATE_FILES_PATH . 'sessions/'));
+define('PRIVATE_FILES_PATH', env('PRIVATE_FILES_PATH', VAR_PATH . 'private-files/'));
+define('SESSIONS_SAVE_PATH', env('SESSIONS_SAVE_PATH', VAR_PATH . 'sessions/'));
 
 define('REDIS_SESSION', strpos(SESSIONS_SAVE_PATH, 'tcp://') !== false);
 
@@ -26,7 +27,7 @@ if (REDIS_SESSION) {
     ini_set('session.save_handler', 'redis'); 
 } else {
     if(!is_dir(SESSIONS_SAVE_PATH)){
-            mkdir(SESSIONS_SAVE_PATH);
+        mkdir(SESSIONS_SAVE_PATH);
     }
 }
 
@@ -42,7 +43,6 @@ define('DAY_IN_SECONDS', HOUR_IN_SECONDS * 24);
 define('WEEK_IN_SECONDS', DAY_IN_SECONDS * 7);
 define('MONTH_IN_SECONDS', DAY_IN_SECONDS * 30);
 define('YEAR_IN_SECONDS', DAY_IN_SECONDS * 365 );
-
 
 function env($name, $default = null) {
     if(defined('GENERATING_CONFIG_DOCUMENTATION')){
@@ -123,3 +123,6 @@ if (env('MAPAS_HTTPS', false) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_
     $_SERVER['REQUEST_SCHEME'] = 'https';
 }
 
+require_once '../vendor/autoload.php';
+
+require './dump-function.php';
