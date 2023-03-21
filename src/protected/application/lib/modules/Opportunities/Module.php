@@ -105,6 +105,28 @@ class Module extends \MapasCulturais\Module{
             $this->jsObject['opportunityPhases'] = $opportunity->firstPhase->phases;
         });
 
+        $app->hook('Theme::addRegistrationFieldsToJs', function ($opportunity = null) use ($app) {
+            if (!$opportunity) {
+                $entity = $this->controller->requestedEntity;
+
+                if ($entity instanceof Opportunity) {
+                    $opportunity = $entity;
+                } else if ($entity instanceof Registration) {
+                    $opportunity = $entity->opportunity;
+                } else {
+                    throw new Exception();
+                }
+            }
+            
+            $fields = array_merge((array) $opportunity->registrationFileConfigurations, (array) $opportunity->registrationFieldConfigurations);
+
+            usort($fields, function($a, $b) {                
+                return $a->displayOrder <=> $b->displayOrder;
+            });
+
+            $this->jsObject['registrationFields'] = $fields;
+        });
+
         $app->hook('mapas.printJsObject:before', function() use($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
             $this->jsObject['config']['evaluationMethods'] = $app->getRegisteredEvaluationMethods();

@@ -9,11 +9,11 @@ use MapasCulturais\i;
 ?>
 
 <div :class="['stepper' , {'small' : small}]">
-    <div v-for="n in totalSteps" :class="['step', {'passedby' : step>=n}, {'active' : step==n}]">
+    <div v-for="(steped, n) in steps" :class="['step', {'passedby' : step>=n}, {'active' : step==n}]" @click="goToStep(n)">
         <div class="count">
-            <span v-if="!small"> {{n}} </span>
-            <span v-if="small && step==n"> {{n}} </span>
+            <span v-if="!small"> {{n+1}} </span>
+            <span v-if="small && step==n"> {{n+1}} </span>
         </div>
-        <span v-show="steps && !noLabels" :class="['label', {'active' : step==n}, {'show' : (onlyActiveLabel && (step==n || n==totalSteps)) || !onlyActiveLabel }]"> {{steps[n-1]}} </span>
+        <span v-show="steps && !noLabels" :class="['label', {'active' : step==n}, {'show' : (onlyActiveLabel && (step==n || n==totalSteps)) || !onlyActiveLabel }]"> {{steped}} </span>
     </div>
 </div>

@@ -9,12 +9,12 @@ $this->import('
     mapas-card
     mapas-container
     mc-icon
-    registration-actions
     opportunity-header
+    registration-actions
     registration-related-agents
     registration-related-space
+    registration-steps
     select-entity
-    stepper
     v1-embed-tool
 ');
 
@@ -40,7 +40,7 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
     </div>
 
     <div class="registration__steps">
-        <stepper :steps="<?= $stepsLabels ?>" :actual-step="3" only-active-label small></stepper>
+        <registration-steps></registration-steps>
     </div>
 
     <div class="registration__content">
@@ -65,8 +65,8 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
                     </div>
                 </div>
                 <section class="section">
-                    <div class="section__title">
-                        <?= i::__('Título da seção') ?>
+                    <div class="section__title" id="main-info">
+                        <?= i::__('Informações básicas') ?>
                     </div>
                     <div class="section__content">                         
                         <div class="card owner">                            
