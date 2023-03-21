@@ -12,8 +12,8 @@ use MapasCulturais\i;
         <hr>
         <section class='total'>
             <?php i::_e('Status'); ?>: 
-            <strong ng-if="total() == <?php i::_e('Habilitado')?>" class="approved">{{total(total)}}</strong>
-            <strong ng-if="total() == <?php i::_e('Inabilitado')?>" class="repproved">{{total(total)}}</strong><br>
+            <strong ng-if="total() == 'Habilitado'" class="approved">{{total(total)}}</strong>
+            <strong ng-if="total() == 'Inabilitado'" class="repproved">{{total(total)}}</strong><br>
         </section>
         <hr>
         <label>
