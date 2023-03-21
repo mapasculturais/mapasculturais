@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-redesign
-=======
-develop
->>>>>>> develop
+7.0.0-develop
