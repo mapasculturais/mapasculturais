@@ -1,4 +1,4 @@
 <?php
-require_once __DIR__.'/protected/application/bootstrap.php';
+require_once 'bootstrap.php';
 
-MapasCulturais\App::i()->run();
+$app->run();
