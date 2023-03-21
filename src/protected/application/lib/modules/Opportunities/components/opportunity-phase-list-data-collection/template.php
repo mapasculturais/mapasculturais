@@ -16,14 +16,9 @@ $this->import('confirm-button')
             <p><strong><?= i::__("Ao trazer as inscrições, você garante que apenas participantes classificados na fase anterior sigam para a póxima fase.") ?></strong></p>
         </div>
         <div class="col-12 opportunity-phase-list-data-collection_action--center">
-            <confirm-button message="<?= i::__("Confirma a execução da ação?") ?>" @confirm="console.log('Lista de Inscricoes da Fase')">
-                <template #button="modal">
-                    <a class="opportunity-phase-list-data-collection_action--button" @click="modal.open()">
-                        <label><?= i::__("Lista de inscrições da fase") ?></label>
-                        <mc-icon name="external"></mc-icon>
-                    </a>
-                </template>
-            </confirm-button>
+            <mc-link :entity="entity" class="opportunity-phase-list-data-collection_action--button" icon="external" route="registrations" right-icon>
+              <?= i::__("Lista de inscrições da fase") ?>
+            </mc-link>
         </div>
         <div class="config-phase__line-bottom col-12"></div>
         <div class="col-3">
