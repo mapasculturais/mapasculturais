@@ -1,6 +1,7 @@
 <?php
 use MapasCulturais\i;
 
+$this->import('confirm-button')
 ?>
 
 <mapas-card>
@@ -26,7 +27,13 @@ use MapasCulturais\i;
         </div>
         <div class="config-phase__line-bottom col-12"></div>
         <div class="col-3">
-            <button class="button button--primary-outline"><?= i::__("Publicar resultado") ?></button>
+            <confirm-button :message="text('confirmar_publicacao')" @confirm="addPublishRegistrations()">
+                <template #button="modal">
+                    <button class="button button--primary" @click="modal.open()">
+                      <?= i::__("Publicar Resultados") ?>
+                    </button>
+                </template>
+            </confirm-button>
         </div>
         <div class="col-6">
             <h5><?= i::__("A publicação de um resultado é opcional e só pode ser executada após a aplicação dos resultados das avaliações.") ?></h5>
