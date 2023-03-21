@@ -2752,7 +2752,19 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             if($scope.evaluations[registration.id] == null){
                 return 0;
             }
-            return $scope.evaluations[registration.id].result;
+
+            let result = $scope.evaluations[registration.id].result;
+            let type = MapasCulturais.evaluationConfiguration.type;
+
+            if(MapasCulturais.evaluationStatus[type]?.invalid.includes(result)){
+                return "invalid";
+            }
+
+            if(MapasCulturais.evaluationStatus[type]?.valid.includes(result)){
+                return "valid";
+            }
+           
+            return "finish";
         };
 
         $scope.show = function(registration){
