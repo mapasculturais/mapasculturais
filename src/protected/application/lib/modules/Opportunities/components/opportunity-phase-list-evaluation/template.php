@@ -29,14 +29,9 @@ $this->import('
             </mc-notification>
         </div>
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
-            <confirm-button message="<?= i::__("Confirma a execução da ação?") ?>" @confirm="console.log('Lista de Inscricoes da Fase')">
-                <template #button="modal">
-                    <a class="opportunity-phase-list-evaluation_action--button" @click="modal.open()">
-                        <label><?= i::__("Lista de inscrições da fase") ?></label>
-                        <mc-icon name="external"></mc-icon>
-                    </a>
-                </template>
-            </confirm-button>
+            <mc-link :entity="entity.opportunity" class="opportunity-phase-list-data-collection_action--button" icon="external" route="registrations" right-icon>
+              <?= i::__("Lista de inscrições da fase") ?>
+            </mc-link>
         </div>
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
             <confirm-button message="<?= i::__("Confirma a execução da ação?") ?>" @confirm="console.log('Lista de avaliacoes da Fase')">
