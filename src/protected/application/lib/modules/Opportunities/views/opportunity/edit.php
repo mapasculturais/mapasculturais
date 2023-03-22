@@ -10,6 +10,7 @@ $this->import('
     opportunity-basic-info
     opportunity-phases-config
     opportunity-subscribe-results
+    opportunity-phase-reports
     tabs
 ');
 
@@ -36,6 +37,7 @@ $this->breadcrumb = [
             <opportunity-subscribe-results :entity="entity"></opportunity-subscribe-results>
         </tab>
         <tab label="<?= i::__('Relatórios') ?>" slug="report">
+            <opportunity-phase-reports :entity="entity"></opportunity-phase-reports>
         </tab>
     </tabs>
     <entity-actions :entity="entity" editable></entity-actions>
