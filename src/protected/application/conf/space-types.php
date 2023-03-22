@@ -228,6 +228,12 @@ return array(
             ),
             'available_for_opportunities' => true
         ),
+        'vimeo' => array(
+            'label' => \MapasCulturais\i::__('Vimeo'),
+            'validations' => array(
+                "v::url('vimeo.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            )
+        ),
         'spotify' => array(
             'label' => \MapasCulturais\i::__('Spotify'),
             'validations' => array(
