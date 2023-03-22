@@ -10,7 +10,7 @@
     &.action-edit {
         background-color: var(--mc-gray-100);
 
-        .container{
+        .container {
             main {
                 gap: size(40);
             }
@@ -28,12 +28,12 @@
                 &__header {
                     border-bottom: 1px solid;
                     padding: 0;
-                    
+
                     @media (max-width: size(1200)) {
-                        margin: 0 size(16);                        
+                        margin: 0 size(16);
                     }
                 }
-                
+
                 &__buttons {
                     margin: size(35) 0 0;
                 }
@@ -46,8 +46,9 @@
             }
 
             &__info {
-                .container main{
+                .container main {
                     gap: size(40);
+
                     h3 {
                         font-weight: 700;
                         font-size: size(24);
@@ -60,22 +61,58 @@
                         font-size: 24px;
                         line-height: 28px;
                     }
+
                     .property {
                         button {
                             background-color: var(--mc-danger-300);
                             color: var(--mc-low-500);
                             border-color: var(--mc-danger-300);
                         }
+
                         padding-top: 176px;
                     }
 
+                    .additional {
+                        &-info {
+                            display: flex;
+                            flex-direction: column;
+                            gap: size(5);
+                            padding-bottom: size(32);
+
+                            &__title {
+                                font-weight: 700;
+                                font-size: size(18);
+                                line-height: size(25);
+                            }
+
+                            &__content {
+                                .info {
+                                    align-items: center;
+                                    display: flex;
+                                    font-weight: 500;
+                                    font-size: 1rem;
+                                    line-height: size(22);
+                                    color: var(--mc-low-700);
+                                    gap: 8px;
+
+                                    &-item {
+                                        text-transform: uppercase;
+                                    }
+
+                                    &-content {}
+                                }
+                            }
+                        }
+                    }
+
                 }
+
                 .divider {
                     background-color: var(--mc-gray-300);
                     grid-column-end: span 3;
                     height: size(0.5);
                     width: 100%;
-                    
+
                     @media (max-width: size(800)) {
                         grid-column-end: 2;
                     }

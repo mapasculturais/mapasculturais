@@ -14,12 +14,14 @@
     font-size: size(14);
     line-height: size(19);
     color: var(--mc-low-500);
+    margin-top: size(10);
+    margin-bottom: 0 !important;
   }
 
   &__hint {
     font-weight: 700;
     font-size: size(12);
     line-height: size(16);
-    color: var(--mc-opportunities-500);
+    color: var(--mc-error);
   }
 }

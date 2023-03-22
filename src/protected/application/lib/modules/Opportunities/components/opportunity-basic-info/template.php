@@ -33,15 +33,14 @@ $this->import('
             </div>
             <div class="grid-12">
                 <div class="col-5 sm:col-12">
-                    <p class="opportunity-basic-info__label"><?= i::__("Publicação final de resultados (data e hora)")?><span class="opportunity-basic-info__hint"><?= i::__("*obrigatório") ?></span></p>
-                    <datepicker
-                            :locale="locale"
-                            :weekStart="0"
-                            v-model="dateFinalResult"
-                            :format="dateFormat"
-                            :dayNames="dayNames"
-                            autoApply utc>
-                    </datepicker>
+                    <entity-field :entity="entity" prop="publishTimestamp" :autosave="300">
+                        <p class="opportunity-basic-info__label">
+                          <?= i::__("Publicação final de resultados (data e hora)")?>
+                            <span class="opportunity-basic-info__hint">
+                              <?= i::__("*obrigatório") ?>
+                            </span>
+                        </p>
+                    </entity-field>
                 </div>
             </div>
         </template>
