@@ -73,7 +73,11 @@ app.component('entity-terms', {
     },
 
     methods: {
-        
+        insertTag(toggleModal) {
+            this.addTerm(this.filter);
+            this.filter = '';
+            toggleModal();
+        },
         loadTerms() {
             if (this.definition.terms.length == 0) {
                 const api = new API('term');
@@ -109,6 +113,7 @@ app.component('entity-terms', {
             if (this.terms.indexOf(term) < 0) {
                 this.terms.push(term);
             }
+           
         }
     }
 });
