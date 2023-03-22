@@ -186,7 +186,7 @@ class Hooks {
     /**
      * 
      * @param string $name 
-     * @return callable[]
+     * @return \Closure[]
      */
     function getCallables(string $name):array  {
         if(isset($this->_hookCache[$name])){
