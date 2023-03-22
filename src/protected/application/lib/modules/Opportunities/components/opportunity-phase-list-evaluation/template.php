@@ -24,9 +24,7 @@ $this->import('
             <p><strong><?= i::__("Ao trazer as inscrições, você garante que apenas participantes classificados na fase anterior sigam para a póxima fase.") ?></strong></p>
         </div>
         <div class="col-12">
-            <mc-notification type="success">
-              <?= i::__("Os resultados das avaliações desta fase já foram aplicados nas inscrições.") ?>
-            </mc-notification>
+            <!-- TO DO -->
         </div>
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
             <mc-link :entity="entity.opportunity" class="opportunity-phase-list-data-collection_action--button" icon="external" route="registrations" right-icon>
