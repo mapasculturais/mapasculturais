@@ -1,34 +1,33 @@
 <?php
+use Monolog\Level;
+
 switch(strtoupper(env('LOG_LEVEL', 'NOTICE'))){
     case 'ALERT':
-        $loglevel = \Slim\Log::ALERT;
+        $loglevel = Level::Alert;
         break;
     case 'CRITICAL':
-        $loglevel = \Slim\Log::CRITICAL;
+        $loglevel = Level::Critical;
         break;
     case 'DEBUG':
-        $loglevel = \Slim\Log::DEBUG;
+        $loglevel = Level::Debug;
         break;
     case 'EMERGENCY':
-        $loglevel = \Slim\Log::EMERGENCY;
+        $loglevel = Level::Emergency;
         break;
     case 'ERROR':
-        $loglevel = \Slim\Log::ERROR;
-        break;
-    case 'FATAL':
-        $loglevel = \Slim\Log::FATAL;
+        $loglevel = Level::Error;
         break;
     case 'INFO':
-        $loglevel = \Slim\Log::INFO;
+        $loglevel = Level::Info;
         break;
     case 'NOTICE':
-        $loglevel = \Slim\Log::NOTICE;
+        $loglevel = Level::Notice;
         break;
     case 'WARN':
-        $loglevel = \Slim\Log::WARN;
+        $loglevel = Level::Warning;
         break;
     default:
-        $loglevel = \Slim\Log::NOTICE;
+        $loglevel = Level::Notice;
         break;
 }
 
