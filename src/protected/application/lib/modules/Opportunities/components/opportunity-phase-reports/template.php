@@ -15,7 +15,15 @@ $this->import('
 <mc-stepper-vertical :items="phases" allow-multiple>
     <template #header-title="{index, item}">
         <div class="phase-stepper">
-            <h2 class="phase-stepper__name">{{ isJoinedPhaseLabel(index) }}</h2>
+            <h2 v-if="index" class="phase-stepper__name">{{ isJoinedPhaseLabel(index)}}</h2>
+            <h2 v-if="!index" class="phase-stepper__period">{{ isJoinedPhaseLabel(index)}}</h2>
+            <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
+                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
+                <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
+            </p>
+            <p v-if="item.__objectType == 'evaluationmethodconfiguration'" class="phase-stepper__type">
+                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>: <label class="phase-stepper__type--item">{{item.type.name}}</label>
+            </p>
         </div>
     </template>
     <template #default="{index, item}">

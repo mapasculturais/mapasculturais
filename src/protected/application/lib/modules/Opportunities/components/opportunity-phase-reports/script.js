@@ -35,7 +35,7 @@ app.component('opportunity-phase-reports', {
             const previousPhase = this.phases[index - 1];
 
             if(currentPhase.__objectType === 'evaluationmethodconfiguration' && currentPhase.opportunity.id === previousPhase.id) {
-                return `Periodo de inscrições - ${currentPhase.name}`;
+                return `${this.text('periodo_inscricao')} - ${currentPhase.name}`;
             }
             return currentPhase.name;
         },
