@@ -1,7 +1,7 @@
 <?php
-$config = include 'conf-base.php';
+$config = [];
 
-$config_files = glob(__DIR__ . '/' . 'config.d/*.php');
+$config_files = glob(PROTECTED_PATH . 'config/*.php');
 
 sort($config_files);
 
