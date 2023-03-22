@@ -9,7 +9,7 @@ $this->import('popover mc-tag-list mc-multiselect')
     <h4 class="entity-terms__title" v-if="title == ''"> {{taxonomy}} </h4>
     <h4 class="entity-terms__title" v-else> {{title}} </h4>
 
-    <popover v-if="allowInsert && editable" openside="down-right" @close="this.filter = ''" @open="loadTerms()" :title="popoverTitle">
+    <popover v-if="allowInsert && editable" openside="down-right"  @open="loadTerms()" :title="popoverTitle">
         <template #button="popover">
             <button @click="popover.toggle()" class="button button--rounded button--sm button--icon button--primary" v-if="editable">
                 <?php i::_e("Adicionar nova") ?>
@@ -20,9 +20,8 @@ $this->import('popover mc-tag-list mc-multiselect')
         <!-- Modo Tags -->
         <template #default="{toggle}">
             <div class="entity-terms__tags">
-                <form class="entity-terms__tags--form" @submit="addTerm(filter); toggle(); $event.preventDefault();">
-                    {{filter}}
-                    <input type="text"  class="input" placeholder="<?= i::__('Adicione uma nova tag') ?>"  :v-bind="filter" @input="filter = $event.target.value" >
+                <form class="entity-terms__tags--form" @submit.prevent="insertTag(toggle)">
+                    <input type="text"  class="input" placeholder="<?= i::__('Adicione uma nova tag') ?>"  v-model="filter">
                     <button class="button button--primary button--icon entity-terms__tags--form-addBtn" type="submit">
                         <mc-icon name="add"></mc-icon>
                     </button>
