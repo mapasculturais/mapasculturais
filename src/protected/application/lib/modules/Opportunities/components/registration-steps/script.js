@@ -10,6 +10,34 @@ app.component('registration-steps', {
         return { text }
     },
 
+    mounted() {
+        const iframe = document.getElementById('registration-form');
+        const globalState = useGlobalState();
+
+        const self = this;
+
+        window.addEventListener("message", (event) => {    
+            if (event.data.type == "section.tops") {
+                
+                const iftop = iframe.offsetTop;
+                const scrollY = window.scrollY;
+                const sections = event.data.data;
+                let currentLabel = this.text('Informações básicas');
+                for(let section of sections) {
+                    if(!self.sectionsByName[section.label]) {
+                        continue;
+                    }
+                    self.sectionsByName[section.label].top = section.top + iftop;
+                    if(scrollY > section.top + iftop + 400) {
+                        currentLabel = section.label;
+                    }
+                }
+
+                globalState['stepper'] = self.sections.indexOf(currentLabel);
+            }
+        })
+    },
+
     data() {
         let sectionsByName = {};
         let sections = [ 
@@ -18,8 +46,10 @@ app.component('registration-steps', {
 
         for (let entry of $MAPAS.registrationFields) {
             if (entry.fieldType == 'section') {
-                sections.push(entry.title);
-                sectionsByName[entry.title] = entry
+                if(!sectionsByName[entry.title]) {
+                    sections.push(entry.title);
+                    sectionsByName[entry.title] = entry;
+                }
             }
         }
 
@@ -33,12 +63,12 @@ app.component('registration-steps', {
         goToSection(event) {
             const iframe = document.getElementById('registration-form');
             if (event == this.text('Informações básicas')) {
-                window.location.hash = 'main-info';
-                iframe.contentDocument.location.hash = '';
+                window.scroll(0,0);
             } else {
-                history.replaceState(null, null, ' ');
-                iframe.contentDocument.location.hash = this.sectionsByName[event].fieldName;
+                window.scroll(0,this.sectionsByName[event].top + 500);
             }
         },
+
+
     },
 });
