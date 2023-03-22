@@ -10,7 +10,7 @@ $this->import('confirm-button')
             <p><?= i::__("Quantidade inscrições:") ?> <strong>xxx inscrições</strong></p>
         </div>
         <div class="col-4 sm:col-12 subscribe_prev_phase">
-            <button class="button button--primary-outline"><?= i::__("Trazer inscrições da fase anterior") ?></button>
+            <!-- TO DO -->
         </div>
         <div class="col-8 sm:col-12 subscribe_prev_phase">
             <p><strong><?= i::__("Ao trazer as inscrições, você garante que apenas participantes classificados na fase anterior sigam para a póxima fase.") ?></strong></p>
@@ -34,9 +34,7 @@ $this->import('confirm-button')
             <h5><?= i::__("A publicação de um resultado é opcional e só pode ser executada após a aplicação dos resultados das avaliações.") ?></h5>
         </div>
         <div class="col-3 field">
-            <label>
-                <input type="checkbox" /> <?= i::__("Publicar resultados automaticamente") ?>
-            </label>
+            <!-- TO DO -->
         </div>
     </div>
 </mapas-card>
