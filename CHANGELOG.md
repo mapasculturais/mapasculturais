@@ -15,6 +15,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [5.6.0] - 2023-03-09
 ### Novas Funcionalidade
 - No formulário de inscrição, exibe os erros de preenchimento no final da página para facilitar identificação dos campos com erros
+- Impede que usuários comuns criem novos agentes individuais
+
 ### Melhorias
 - Coloca scroll na modal de criação rapida de entidades
 - Remove botões de criação de entidades da home
