@@ -106,13 +106,22 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Remove definição da configuração availableAgentFields no Module registrationFieldTypes
 - Corrige carregamento dos campos @ na tela de configuração de campo garantindo que todos ja tenham sido registrados
 - Corrige erro na tela do certificado que impedia a exibição ao tentar verificar a expiração do selo
+
 ### Melhorias
 - atualiza o updateTimestamp da entidade quando modifica um metadado
 - opção de bloqueio de campos das entidades seladas
 - Cria hooks no modulo sendMailNotification
 - Possibilita que seja possivel controlar disparo de e-mails de criação e aprovação no modulo sendMailNotification
+
 ### Novas Funcionalidade
 - Bloqueio dos campos através dos selos
+- Adciona novos campos para o cadastro de agente individual: 
+    - Nome social
+    - Escolaridade
+    - Pessoa com deficiência
+    - Comunidades tradicionais
+    - CNPJ (MEI)
+    - Pessoa idosa
 
 
 ## [5.4.7] - 2023-02-16
