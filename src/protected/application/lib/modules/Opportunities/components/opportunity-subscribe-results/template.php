@@ -16,8 +16,7 @@ $this->import('
 <mc-stepper-vertical :items="phases" allow-multiple>
     <template #header-title="{index, item}">
         <div class="phase-stepper">
-            <h2 v-if="index" class="phase-stepper__name">{{item.name}}</h2>
-            <h2 v-if="!index" class="phase-stepper__period"><?= i::__("Inscritos em fase 1") ?></h2>
+            <h2 class="phase-stepper__name">{{item.name}}</h2>
         </div>
     </template>
     <template #default="{index, item}">

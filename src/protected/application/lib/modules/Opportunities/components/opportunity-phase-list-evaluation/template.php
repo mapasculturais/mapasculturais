@@ -18,7 +18,7 @@ $this->import('
             <p><?= i::__("Quantidade de inscrições pendentes:") ?> <strong>XX inscrições</strong></p>
         </div>
         <div class="col-4 sm:col-12 subscribe_prev_phase">
-            <button class="button button--primary-outline"><?= i::__("Trazer inscrições da fase anterior") ?></button>
+            <!-- TO DO -->
         </div>
         <div class="col-8 sm:col-12 subscribe_prev_phase">
             <p><strong><?= i::__("Ao trazer as inscrições, você garante que apenas participantes classificados na fase anterior sigam para a póxima fase.") ?></strong></p>
@@ -34,14 +34,7 @@ $this->import('
             </mc-link>
         </div>
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
-            <confirm-button message="<?= i::__("Confirma a execução da ação?") ?>" @confirm="console.log('Lista de avaliacoes da Fase')">
-                <template #button="modal">
-                    <a class="opportunity-phase-list-evaluation_action--button" @click="modal.open()">
-                        <label class="text--primary"><?= i::__("Lista de avaliações") ?></label>
-                        <mc-icon name="external"></mc-icon>
-                    </a>
-                </template>
-            </confirm-button>
+            <!-- TO DO -->
         </div>
 
         <div class="config-phase__line-bottom col-12"></div>
@@ -59,7 +52,7 @@ $this->import('
         </div>
         <div class="col-3 field">
             <label>
-                <input type="checkbox" /> <?= i::__("Publicar resultados automaticamente") ?>
+                <!-- TO DO -->
             </label>
         </div>
     </div>
