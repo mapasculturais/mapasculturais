@@ -847,8 +847,14 @@ class ApiQuery {
             
             $_keyword_dql = $this->entityRepository->getIdsByKeywordDQL($this->_keyword, $alias);
             $_keyword_dql = preg_replace('#([^a-z0-9_])e\.#i', "$1{$alias}.", $_keyword_dql);
+            foreach ($this->entityClassMetadata->subClasses as $class) {
+                $_keyword_dql = str_replace("{$class} e", "{$class} {$alias}", $_keyword_dql);
+            }
+            foreach ($this->entityClassMetadata->parentClasses as $class) {
+                $_keyword_dql = str_replace("{$class} e", "{$class} {$alias}", $_keyword_dql);
+            }
             $_keyword_dql = str_replace("{$this->entityClassName} e", "{$this->entityClassName} {$alias}", $_keyword_dql);
-            
+        
             $dql = "e.{$this->pk} IN ($_keyword_dql)";
             $this->_dqlParams['keyword'] = "%{$this->_keyword}%";
         }

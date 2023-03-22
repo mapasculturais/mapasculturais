@@ -24,8 +24,7 @@ app.component('mc-notification', {
         },
 
         message: {
-            type: String,
-            required: true
+            type: String
         },
 
     },
