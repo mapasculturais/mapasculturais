@@ -1,8 +1,8 @@
 <?php
-define('PUBLIC_PATH', realpath('../public') . '/');
+define('PROTECTED_PATH', realpath(__DIR__ . '/..') . '/');
+define('PUBLIC_PATH', PROTECTED_PATH . 'public/');
 define('BASE_PATH', PUBLIC_PATH);
-define('PROTECTED_PATH', realpath('..') . '/');
-define('APPLICATION_PATH', realpath('.') . '/');
+define('APPLICATION_PATH', realpath(__DIR__) . '/');
 define('LANGUAGES_PATH', APPLICATION_PATH . 'translations/');
 define('THEMES_PATH', APPLICATION_PATH . 'themes/');
 define('PLUGINS_PATH', APPLICATION_PATH . 'plugins/');
@@ -123,6 +123,6 @@ if (env('MAPAS_HTTPS', false) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_
     $_SERVER['REQUEST_SCHEME'] = 'https';
 }
 
-require_once '../vendor/autoload.php';
+require_once PROTECTED_PATH . 'vendor/autoload.php';
 
-require './dump-function.php';
+require_once APPLICATION_PATH . 'dump-function.php';
