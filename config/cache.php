@@ -1,19 +1,29 @@
 <?php
+use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Adapter\ApcuAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+
+$_cache_namespace = env('CACHE_NAMESPACE', md5(@$_SERVER['HTTP_HOST']));
 
 if (env('REDIS_CACHE', false)) {
-    $redis = new \Redis();
-    $redis->connect(env('REDIS_CACHE'));
-    $_cache = new \Doctrine\Common\Cache\RedisCache;
-    $_cache->setRedis($redis);
     
     $redis = new \Redis();
     $redis->connect(env('REDIS_CACHE'));
-    $_mscache = new \Doctrine\Common\Cache\RedisCache;
-    $_mscache->setRedis($redis);
+    
+    $redis = new \Redis();
+    $redis->connect(env('REDIS_CACHE'));
+
+
+    $_cache = new RedisAdapter($redis, $_cache_namespace);
+    $_mscache = new RedisAdapter($redis, "ms.$_cache_namespace");
 } else {
-    $cache_class = env('CACHE_CLASSNAME', '\\Doctrine\\Common\\Cache\\ApcuCache');
-    $_cache = new $cache_class;
-    $_mscache = new $cache_class;
+    try {
+        $_cache = new ApcuAdapter($_cache_namespace);
+        $_mscache = new ApcuAdapter("ms.$_cache_namespace");
+    } catch (\Exception $e) {
+        $_cache = new FilesystemAdapter($_cache_namespace);
+        $_mscache = new FilesystemAdapter("ms.$_cache_namespace");
+    }
 }
 
 return [
