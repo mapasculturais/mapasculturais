@@ -25,14 +25,7 @@ $this->import('
 
         <div class="config-phase__line-bottom col-12 "></div>
 
-        <div class="col-6 phase-publish__subscribers">
-            <mc-link :entity='phase' route="registrations" icon="external" right-icon><?= i::__("Acessar lista de pessoas inscritas") ?></mc-link>
-        </div>
-        <div class="col-6 phase-publish__confirm">
-            <button class="button" @click="phase.save()">
-                <?= i::__("salvar") ?>
-                <mc-icon name="upload"></mc-icon>
-            </button>
+        <div class="col-6">
             <confirm-button v-if="!isPublishLocked" :message="text('confirmar_publicacao')" @confirm="addPublishRegistrations()">
                 <template #button="modal">
                     <button class="button button--primary" @click="modal.open()">

@@ -18,5 +18,8 @@ app.component('opportunity-phase-list-data-collection' , {
     },
 
     methods: {
+        addPublishRegistrations () {
+            this.entity.POST('publishRegistrations', this.entity);
+        }
     }
 });

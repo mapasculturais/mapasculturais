@@ -84,8 +84,9 @@
                     }
                 }
             }
+
             &--right {
-                .button{
+                .button {
 
                     display: flex;
                     gap: 24px;
@@ -270,6 +271,23 @@
 
                             .weekend {
                                 font-size: size(13);
+                            }
+
+                            .actual-date {
+                                display: flex;
+                                flex-direction: column;
+                                left: 0;
+                                position: relative;
+                                text-align: right;
+                                font-size: 700;
+
+                                h2 {
+                                }
+
+                                label {
+                                    font-size: 18px;
+                                    font-weight: 600;
+                                }
                             }
                         }
 
