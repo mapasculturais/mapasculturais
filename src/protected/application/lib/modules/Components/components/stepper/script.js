@@ -3,7 +3,7 @@ app.component('stepper', {
 
     emits: ['stepChanged'],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('stepper')
         return { text }
@@ -15,7 +15,7 @@ app.component('stepper', {
             default: 'stepper',
         },
         steps: {
-            type: Array,
+            type: [Array, Number],
             default: null,
         },
         onlyActiveLabel: {
@@ -30,6 +30,10 @@ app.component('stepper', {
             type: Boolean,
             default: false,
         },
+        disableNavigation: {
+            type: Boolean,
+            default: false,
+        }
     },
 
     computed: {
@@ -44,26 +48,30 @@ app.component('stepper', {
         },
 
         totalSteps() {
-            return this.steps.length;
+            if (typeof this.steps == 'number') {
+                return this.steps;
+            } else {
+                return this.steps.length;
+            }
         },
-        
-        step () {
+
+        step() {
             const globalState = useGlobalState();
 
             return globalState[this.id] ?? 0;
         },
     },
-    
+
     methods: {
         nextStep() {
-            this.goToStep(this.actualStep+1);
+            this.goToStep(this.actualStep + 1);
         },
         previousStep() {
-            this.goToStep(this.actualStep-1);
+            this.goToStep(this.actualStep - 1);
         },
         goToStep(step) {
             const globalState = useGlobalState();
-            
+
             if (step >= this.totalSteps) {
                 step = this.totalSteps;
             } else if (step <= 0) {
