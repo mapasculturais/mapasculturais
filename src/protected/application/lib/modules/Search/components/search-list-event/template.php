@@ -18,12 +18,12 @@ $this->import('entities mapas-card occurrence-card loading');
 
                 <div v-if="newDate(occurrence)" class="search-list__cards--date">
                     <div class="search-list__cards--date-info">
-                        <h2 v-if="occurrence.starts.isToday()"><?= i::__('Hoje') ?></h2>
-                        <h2 v-else-if="occurrence.starts.isTomorrow()"><?= i::__('Amanhã') ?></h2>
-                        <h2 v-else-if="occurrence.starts.isYesterday()"><?= i::__('Ontem') ?></h2>
+                        <h2  class="actual-date" v-if="occurrence.starts.isToday()"><?= i::__('Hoje') ?><label class="month">{{occurrence.starts.month()}}</label></h2>
+                        <h2 class="actual-date" v-else-if="occurrence.starts.isTomorrow()"><?= i::__('Amanhã') ?><label class="month">{{occurrence.starts.month()}}</label></h2>
+                        <h2 class="actual-date" v-else-if="occurrence.starts.isYesterday()"><?= i::__('Ontem') ?><label class="month">{{occurrence.starts.month()}}</label></h2>
                         <template v-else>
-                            <label class="day">{{occurrence.starts.day()}}</label>
-                            <strong class="month">{{occurrence.starts.month()}}</strong>
+                            <h2 class="actual-date" >{{occurrence.starts.day()}}<label class="month">{{occurrence.starts.month()}}</label></h2>
+                            
                         </template>
                         <label class="weekend">{{occurrence.starts.weekday()}}</label>
                     </div>
