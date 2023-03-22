@@ -67,6 +67,9 @@ body {
     background-color: #FFFFFF;
     overflow: auto;
     padding: 1rem;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section {
@@ -141,7 +144,7 @@ body {
     font-size: 1rem;
     height: unset;
     margin: 0;
-    padding: 0.875rem;
+    padding: 0.75rem 0.875rem;
     width: 100%;
 }
 
@@ -159,7 +162,7 @@ body {
     appearance: none;
     background-color: #FFFFFF;
     background-size: 1.25rem;
-    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat calc(100% - 0.875rem) center/contain;
+    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat calc(100% - 0.875rem) center/1.25rem;
 }
 
 .registration-edit-mode ul.attachment-list li.attachment-list-item textarea {
@@ -698,7 +701,7 @@ body {
     height: unset;
     line-height: 19px;
     margin: 0;
-    padding: 12px 20px;
+    padding: 0.75rem 0.875rem;
 }
 
 .action-registrationmanager .dropdown {
