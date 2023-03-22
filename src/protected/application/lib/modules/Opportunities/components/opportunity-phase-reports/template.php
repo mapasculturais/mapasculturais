@@ -15,23 +15,32 @@ $this->import('
 <mc-stepper-vertical :items="phases" allow-multiple>
     <template #header-title="{index, item}">
         <div class="phase-stepper">
-            <h2 v-if="index" class="phase-stepper__name">{{item.name}}</h2>
-            <h2 v-if="!index" class="phase-stepper__period"><?= i::__("Fase 1") ?></h2>
+            <h2 class="phase-stepper__name">{{ isJoinedPhaseLabel(index) }}</h2>
         </div>
     </template>
     <template #default="{index, item}">
 
-        <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
-            <mapas-card>
-                <v1-embed-tool route="opportunityreport" :id="entity.id"></v1-embed-tool>
-                <!-- entity.opportunity.id esta undefined -->
+        <template v-if="isJoinedPhase(index)">
+            <mapas-card v-if="item.opportunity && item.opportunity.id">
+                <v1-embed-tool route="opportunityreport" :id="item.opportunity.id"></v1-embed-tool>
+            </mapas-card>
+            <mapas-card v-if="item && item.id">
+                <v1-embed-tool route="opportunityreport" :id="item.id"></v1-embed-tool>
             </mapas-card>
         </template>
 
-        <template v-if="item.__objectType == 'opportunity'">
-            <mapas-card>
-                <v1-embed-tool route="opportunityreport" :id="entity.id"></v1-embed-tool>
-            </mapas-card>
+        <template v-else>
+            <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
+                <mapas-card v-if="item.opportunity && item.opportunity.id">
+                    <v1-embed-tool route="opportunityreport" :id="item.opportunity.id"></v1-embed-tool>
+                </mapas-card>
+            </template>
+
+            <template v-if="item.__objectType == 'opportunity'">
+                <mapas-card v-if="item && item.id">
+                    <v1-embed-tool route="opportunityreport" :id="item.id"></v1-embed-tool>
+                </mapas-card>
+            </template>
         </template>
 
     </template>
