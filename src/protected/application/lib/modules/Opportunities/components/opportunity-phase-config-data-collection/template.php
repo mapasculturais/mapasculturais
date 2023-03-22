@@ -13,11 +13,6 @@ $this->import('
         </div>
         <entity-field :entity="phase" prop="registrationFrom" :autosave="300" classes="col-6 sm:col-12" :min="minDate?._date" :max="phase.registrationTo?._date"></entity-field>
         <entity-field :entity="phase" prop="registrationTo" :autosave="300" classes="col-6 sm:col-12" :min="phase.registrationFrom?._date" :max="maxDate?._date"></entity-field>
-        <div class="config-phase__info col-12">
-            <h5 class="config-phase__info--message">
-                <mc-icon name="info"></mc-icon> <?= i::__("A configuração desse formulário está pendente") ?>
-            </h5>
-        </div>
         <div class="col-6 sm:col-12">
             <mc-link :entity="phase" route='formBuilder' class="config-phase__info--button button--primary button" icon="external">
               <?= i::__("Configurar formulário") ?>

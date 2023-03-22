@@ -14,7 +14,6 @@ $this->import('
     entity-links
     entity-owner
     entity-related-agents
-    entity-request-ownership
     entity-seals
     entity-social-media
     entity-terms
@@ -70,13 +69,6 @@ $this->breadcrumb = [
                         </div>
                         <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                         <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
-                        <div class="col-12">
-                            <entity-request-ownership></entity-request-ownership>
-                        </div>
-                        <div class="col-12 controller-opportunity__helpers">
-                            <button class="button button--primary-outline">Denúncia</button>
-                            <button class="button button--primary">Contato</button>
-                        </div>
                     </div>
                 </main>
                 <aside>
@@ -91,12 +83,6 @@ $this->breadcrumb = [
                     </div>
                 </aside>
             </mapas-container>
-        </tab>
-
-        <tab label="<?= i::__('Projetos contemplados') ?>" slug="project">
-        </tab>
-
-        <tab label="<?= i::__('Suporte') ?>" slug="support">
         </tab>
 
     </tabs>
