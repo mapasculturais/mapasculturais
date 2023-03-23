@@ -1,21 +1,22 @@
 app.component('stepper', {
     template: $TEMPLATES['stepper'],
 
-    setup() { 
+    emits: ['stepChanged'],
+
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('stepper')
         return { text }
     },
 
-
     props: {
-        steps: {
-            type: [Array, Object],
-            default: null,
+        id: {
+            type: String,
+            default: 'stepper',
         },
-        actualStep: {
-            type: Number,
-            default: 1,
+        steps: {
+            type: [Array, Number],
+            default: null,
         },
         onlyActiveLabel: {
             type: Boolean,
@@ -29,38 +30,57 @@ app.component('stepper', {
             type: Boolean,
             default: false,
         },
+        disableNavigation: {
+            type: Boolean,
+            default: false,
+        }
     },
 
     computed: {
+        actualStep() {
+            const globalState = useGlobalState();
+
+            if (!globalState[this.id]) {
+                globalState[this.id] = 0;
+            }
+
+            return globalState[this.id];
+        },
+
         totalSteps() {
-            if (this.steps instanceof Object) {
-                return Object.keys(this.steps).length;
-            } else if (this.steps instanceof Array) {
+            if (typeof this.steps == 'number') {
+                return this.steps;
+            } else {
                 return this.steps.length;
             }
         },
-        step () {
-            if (this.actualStep >= this.totalSteps) {
-                this.actualStep = this.totalSteps;
-            } 
 
-            if (this.actualStep <= 1) {
-                this.actualStep = 1;
-            }
+        step() {
+            const globalState = useGlobalState();
 
-            return this.actualStep;
+            return globalState[this.id] ?? 0;
         },
     },
-    
+
     methods: {
         nextStep() {
-            ++this.actualStep;
+            this.goToStep(this.actualStep + 1);
         },
         previousStep() {
-            --this.actualStep;
+            this.goToStep(this.actualStep - 1);
         },
         goToStep(step) {
-            this.actualStep = step;
+            const globalState = useGlobalState();
+
+            if (step >= this.totalSteps) {
+                step = this.totalSteps;
+            } else if (step <= 0) {
+                step = 0;
+            }
+
+            globalState[this.id] = step;
+
+            this.$emit('stepChanged', this.steps[step]);
         },
     },
 });

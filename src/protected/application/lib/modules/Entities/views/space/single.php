@@ -54,11 +54,11 @@ $this->breadcrumb = [
                             <div class="col-12">
                                 <space-info :entity="entity"></space-info>
                             </div>
-                            <div class="col-12">
-                                <h2><?= i::_e("Descrição Detalhada"); ?></h2>
+                            <div v-if="entity.longDescription" class="col-12">
+                                <h2><?php i::_e('Descrição Detalhada');?></h2>
                                 <p>{{entity.longDescription}}</p>
                             </div>
-                            <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Arquivos para download'); ?>"></entity-files-list>                            
+                            <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Arquivos para download'); ?>"></entity-files-list>                            
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>                            
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>                            
                         </div>

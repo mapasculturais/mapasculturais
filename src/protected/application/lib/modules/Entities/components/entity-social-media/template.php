@@ -33,7 +33,10 @@ $this->import('entity-field');
             <mc-icon name="linkedin"></mc-icon>
             {{entity.linkedin}}
         </div>
-
+        <div v-if="entity.vimeo" class="entity-social-media__links--link">
+            <mc-icon name="vimeo"></mc-icon>
+            {{entity.vimeo}}
+        </div>
         <div v-if="entity.spotify" class="entity-social-media__links--link">
             <mc-icon name="spotify"></mc-icon>
             {{entity.spotify}}
@@ -64,7 +67,10 @@ $this->import('entity-field');
             <mc-icon name="facebook"></mc-icon>
             <entity-field :entity="entity" prop="facebook"></entity-field>
         </div>
-
+        <div class="entity-social-media__edit--link">
+            <mc-icon name="vimeo"></mc-icon>
+            <entity-field :entity="entity" prop="vimeo"></entity-field>
+        </div>
         <div class="entity-social-media__edit--link">
             <mc-icon name="youtube"></mc-icon>
             <entity-field :entity="entity" prop="youtube"></entity-field>

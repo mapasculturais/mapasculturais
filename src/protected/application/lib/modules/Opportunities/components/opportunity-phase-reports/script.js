@@ -30,5 +30,21 @@ app.component('opportunity-phase-reports', {
     },
     
     methods: {
+        isJoinedPhaseLabel (index) {
+            const currentPhase = this.phases[index];
+            const previousPhase = this.phases[index - 1];
+
+            if(currentPhase.__objectType === 'evaluationmethodconfiguration' && currentPhase.opportunity.id === previousPhase.id) {
+                return `${this.text('periodo_inscricao')} - ${currentPhase.name}`;
+            }
+            return currentPhase.name;
+        },
+        isJoinedPhase (index) {
+            const currentPhase = this.phases[index];
+            const previousPhase = this.phases[index - 1];
+
+            return currentPhase.__objectType === 'evaluationmethodconfiguration' && currentPhase.opportunity.id === previousPhase.id;
+
+        }
     },
 });

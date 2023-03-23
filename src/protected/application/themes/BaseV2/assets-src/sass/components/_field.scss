@@ -15,8 +15,8 @@
         letter-spacing: 0em;
         text-align: left;
         color: var(--mc-error);
-    
     }
+
     .required {
         font-family: Open Sans;
         font-size: 12px;
@@ -75,6 +75,7 @@
         input, textarea, select {
             background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red') no-repeat right 20px center / 20px;
             border: size(2) solid #FF0000;
+            padding-right: size(45);
         }
     }
 }

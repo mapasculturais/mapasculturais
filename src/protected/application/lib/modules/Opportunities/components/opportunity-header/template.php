@@ -25,8 +25,8 @@ use MapasCulturais\i;
                         <div class="data__info opportunity__color"> {{opportunity?.type?.name}} </div>
                     </div>
                     <div v-if="opportunity.ownerEntity?.name" class="data">
-                        <div class="data__title"> <?= i::__('Projeto') ?>: </div>
-                        <div class="data__info"> {{opportunity?.ownerEntity?.name}} </div>
+                        <div class="data__title"> {{type}}: </div>
+                        <div class="data__info"> <mc-link :entity="opportunity?.ownerEntity"></mc-link> <!-- {{opportunity?.ownerEntity?.name}} --> </div>
                     </div>
                 </div>
             </div>

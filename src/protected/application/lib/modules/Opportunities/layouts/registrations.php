@@ -10,6 +10,7 @@ $query = new ApiQuery(\MapasCulturais\Entities\Opportunity::class, [
 ]);
 $this->jsObject['opportunity'] = $query->getFindOneResult();
 $this->useOpportunityAPI();
+$this->addRegistrationFieldsToJs($entity->opportunity);
 ?>
 <?php $this->part('header', $render_data) ?>
 <?php $this->part('main-header', $render_data) ?>
