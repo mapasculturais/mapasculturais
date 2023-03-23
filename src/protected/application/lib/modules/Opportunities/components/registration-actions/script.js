@@ -7,11 +7,15 @@ app.component('registration-actions', {
             required: true
         },
     },
+
+    data() {
+        return {
+            fields: $MAPAS.registrationFields,
+        }
+    },
     
     methods: {
         fieldName(field) {
-            console.log(field.slice(0, 6));
-
             if (field == 'agent_instituicao') {
                 return 'Instituição responsável'; 
             }
@@ -21,7 +25,11 @@ app.component('registration-actions', {
             }
 
             if (field.slice(0, 6) == 'field_') {
-                return 'Campo no formulário';
+                for (let regField of this.fields) {
+                    if (regField.fieldName == field) {
+                        return regField.title;
+                    }
+                }
             }
 
             return 'Campo não identificado';

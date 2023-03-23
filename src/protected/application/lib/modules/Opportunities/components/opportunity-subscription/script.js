@@ -30,10 +30,12 @@ app.component('opportunity-subscription' , {
             agent = $MAPAS.config.opportunitySubscription.agents[0];
         }
 
+        const categories = Object.keys(this.entity.registrationCategories).length > 0 ? this.entity.registrationCategories : null;
+
         return {
             agent,
             category: null,
-            categories: this.entity.registrationCategories,
+            categories,
             dateStart: this.entity.registrationFrom, 
             dateEnd: this.entity.registrationTo,
             entities: {},
