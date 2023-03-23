@@ -33,7 +33,7 @@ $this->import('
             </div>
             <div class="grid-12">
                 <div class="col-5 sm:col-12" v-if="lastPhase">
-                    <entity-field :entity="lastPhase" prop="publishTimestamp" :autosave="300">
+                    <entity-field :entity="lastPhase" prop="publishTimestamp">
                         <p class="opportunity-basic-info__label">
                           <?= i::__("Publicação final de resultados (data e hora)")?>
                             <span class="opportunity-basic-info__hint">
