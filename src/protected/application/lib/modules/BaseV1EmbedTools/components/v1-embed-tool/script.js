@@ -7,7 +7,7 @@ app.component('v1-embed-tool', {
             required: true,
         },
         id: {
-            type: String,
+            type: [String, Number],
             default: null,
         },
         hash: {

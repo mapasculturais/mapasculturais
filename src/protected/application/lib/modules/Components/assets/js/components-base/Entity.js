@@ -15,7 +15,11 @@ class Entity {
     populate(obj, preserveValues = true) {
         const __properties = this.$PROPERTIES;
         const __relations = this.$RELATIONS;
-        const defaultProperties = ['terms', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
+        const defaultProperties = [
+            'terms', 'seals', , 'currentUserPermissions', 
+            'relatedAgents', 'agentRelations',
+            'relatedSpaces', 'spaceRelations',
+        ];
         
         this.populateId(obj);
 

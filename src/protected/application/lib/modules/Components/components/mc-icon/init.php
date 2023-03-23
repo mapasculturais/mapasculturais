@@ -22,8 +22,8 @@ $iconset = [
     'telegram' => 'cib:telegram-plane',
     'twitter' => 'akar-icons:twitter-fill',
     'whatsapp' => 'akar-icons:whatsapp-fill',
-    'youtube' => 'brandico:vimeo',
-    'vimeo' => 'akar-icons:youtube-fill',
+    'vimeo' => 'brandico:vimeo',
+    'youtube' => 'akar-icons:youtube-fill',
 
 
     // IMPORTANTE: manter ordem alfabética

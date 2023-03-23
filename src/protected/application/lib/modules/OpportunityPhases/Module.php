@@ -366,7 +366,7 @@ class Module extends \MapasCulturais\Module{
                             $mout_symplyfy.=",ownerId";
                         }
 
-                        $result[] = $opportunity->evaluationMethodConfiguration->simplify("{$mout_symplyfy},infos,status,evaluationFrom,evaluationTo");
+                        $result[] = $opportunity->evaluationMethodConfiguration->simplify("{$mout_symplyfy},opportunity,infos,status,evaluationFrom,evaluationTo");
                     }
                 }
             }
