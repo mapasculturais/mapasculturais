@@ -34,5 +34,5 @@
         }, '*');
     }
 
-    setInterval(sendSizes, 100);
+    setInterval(sendSizes, 50);
 })(jQuery)
