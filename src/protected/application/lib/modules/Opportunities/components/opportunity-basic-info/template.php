@@ -25,15 +25,15 @@ $this->import('
         <template #content>
             <div class="grid-12">
                 <div class="col-4 sm:col-12">
-                    <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date" :autosave=300></entity-field>
+                    <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date"></entity-field>
                 </div>
                 <div class="col-4 sm:col-12">
-                    <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave=300></entity-field>
+                    <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date"></entity-field>
                 </div>
             </div>
             <div class="grid-12">
-                <div class="col-5 sm:col-12">
-                    <entity-field :entity="entity" prop="publishTimestamp" :autosave="300">
+                <div class="col-5 sm:col-12" v-if="lastPhase">
+                    <entity-field :entity="lastPhase" prop="publishTimestamp" :autosave="300">
                         <p class="opportunity-basic-info__label">
                           <?= i::__("Publicação final de resultados (data e hora)")?>
                             <span class="opportunity-basic-info__hint">
