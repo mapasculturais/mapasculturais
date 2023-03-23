@@ -45,6 +45,12 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->render("registration-form", ['entity' => $entity]);
     }
 
+    public function GET_reportmanager()
+    {
+        $entity = $this->getEntityAndCheckPermission('@control');
+        $this->render("report-manager",['entity' => $entity]);
+    }
+
     function getEntityAndCheckPermission($permission) 
     {
         $app = App::i();
