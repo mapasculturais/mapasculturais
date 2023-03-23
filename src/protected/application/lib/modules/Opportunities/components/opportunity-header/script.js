@@ -15,7 +15,6 @@ app.component('opportunity-header', {
 
     computed: {
         type() {
-            console.log(this.opportunity.ownerEntity.__objectType);
             switch (this.opportunity.ownerEntity.__objectType) {
                 case 'Opportunity':
                     return this.text('Oportunidade');
