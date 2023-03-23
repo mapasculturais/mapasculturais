@@ -20,7 +20,7 @@ $this->import('mc-icon');
 					<slot name="type">
 						<span v-if="entity.type"> <?php i::_e('Tipo:') ?> {{entity.type.name}} </span>
 					</slot>
-
+					
 				</div>
 			</div>
 		</div>
@@ -30,12 +30,16 @@ $this->import('mc-icon');
 	</div>
 
 	<div class="entity-card__content">
+	<div class="entity-card__content-shortDescription">
+				<span class="short-span">{{entity.shortDescription}}</span>
+		</div>
 		<div v-if="entity.__objectType=='space'" class="entity-card__content--description">
 
 			<label v-if="entity.endereco" class="entity-card__content--description-local"><?= i::_e('ONDE: ') ?></label> <strong class="entity-card__content--description-adress">{{entity.endereco}}</strong>
 		</div>
+		
 		<div v-if="entity.__objectType=='space'" class="entity-card__content--description">
-
+		
 			<label><?= i::_e('ACESSIBILIDADE:') ?>
 				<strong v-if="entity.acessibility">
 					<strong><?= i::_e('Oferece: ') ?></strong>
@@ -45,6 +49,7 @@ $this->import('mc-icon');
 			</label>
 		</div>
 		<div class="entity-card__content--terms">
+			
 			<div v-if="areas" class="entity-card__content--terms-area">
 				<label class="area__title">
 					<?php i::_e('Áreas de atuação:') ?> ({{entity.terms.area.length}}):
