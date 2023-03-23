@@ -29,11 +29,15 @@ app.component('opportunity-create-evaluation-phase' , {
         maxDate () {
             return this.lastPhase.publishTimestamp?._date || null;
         },
-        minDate () {
-            return this.previousPhase.registrationTo?._date || this.previousPhase.evaluationTo?._date;
-        },
-        minDateEvaluationTo () {
-            return this.phase.evaluationFrom?._date || '';
+
+        minDate() {
+            if (this.previousPhase.__objectType == 'evaluationmethodconfiguration') {
+                // fase anterior é uma fase de avaliação
+                return this.previousPhase.evaluationTo;
+            } else {
+                // fase anterior é uma fase de coleta de dados
+                return this.previousPhase.registrationFrom;
+            }
         }
     },
 
