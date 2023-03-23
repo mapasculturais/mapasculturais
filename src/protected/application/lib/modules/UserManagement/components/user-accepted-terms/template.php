@@ -15,7 +15,9 @@ use MapasCulturais\i;
                     <div v-if="user['lgpd_'+ slug]?.[term.md5]">
                         <label class="boxterm__list-subterm">
                             <label class="boxterm__list-subterm-title"><?= i::__('{{term.title}}') ?></label>
-                            <label class="boxterm__list-subterm-content"><?= i::__(' aceitos em {{formatDate(user["lgpd_"+slug][term.md5].timestamp)}} pelo ip {{user["lgpd_"+slug][term.md5].ip}}') ?></label>
+                            <label class="boxterm__list-subterm-content"><label><?= i::__(' aceitos em {{formatDate(user["lgpd_"+slug][term.md5].timestamp)}}') ?></label>
+                                <label><?= i::__(' pelo ip {{user["lgpd_"+slug][term.md5].ip}}') ?></label>
+                            </label>
                         </label>
                     </div>
                 </div>

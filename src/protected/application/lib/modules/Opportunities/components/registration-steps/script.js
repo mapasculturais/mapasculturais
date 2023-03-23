@@ -31,6 +31,9 @@ app.component('registration-steps', {
                     if(scrollY > section.top + iftop + 400) {
                         currentLabel = section.label;
                     }
+                    if(window.scrollY > document.body.offsetHeight - window.innerHeight - 100) {
+                        currentLabel = section.label;
+                    }
                 }
 
                 globalState['stepper'] = self.sections.indexOf(currentLabel);
