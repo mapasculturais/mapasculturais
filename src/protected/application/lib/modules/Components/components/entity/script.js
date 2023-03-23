@@ -30,7 +30,7 @@ app.component('entity', {
 
     methods: {
         getDataFromApi() {
-            var api = new API(this.type, this.scope || 'default');
+            const api = new API(this.type, this.scope || 'default');
             api.findOne(this.id, this.select).then(entity => { 
                 this.entity = entity;
                 this.loading = false;
@@ -40,14 +40,16 @@ app.component('entity', {
         }
     },
 
-    created() {
+    mounted() {
         if (this.id) {
             this.getDataFromApi();
         } else if($MAPAS.requestedEntity) {
             const entity = $MAPAS.requestedEntity;
-            this.loading = false;
-            this.entity = new Entity(entity.controllerId, entity.id, this.scope);
+            const api = new API(entity['@entityType'], this.scope || 'default');
+
+            this.entity = api.getEntityInstance(entity.id); 
             this.entity.populate(entity);
+            this.loading = false;
         }
     },
 
