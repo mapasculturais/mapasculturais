@@ -1,4 +1,5 @@
 #!/bin/bash
+echo 'Inicializando CRON dos jobs'
 while [ true ]; do
     /var/www/scripts/execute-job.sh &
     if [ -z "$JOBS_INTERVAL" ]; then 
