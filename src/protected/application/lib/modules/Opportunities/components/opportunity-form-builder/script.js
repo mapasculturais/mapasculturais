@@ -15,8 +15,13 @@ app.component('opportunity-form-builder' , {
         const text = Utils.getTexts('opportunity-form-builder');
         return { text }
     },
+    data () {
+      return {
+          descriptionsOpportunity: null
+      }
+    },
     mounted () {
-        console.log(this.entity);
+        this.descriptionsOpportunity = $DESCRIPTIONS.opportunity;
     },
     computed: {
         getDateRegistrationFrom () {

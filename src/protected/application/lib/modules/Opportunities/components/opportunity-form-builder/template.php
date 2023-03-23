@@ -39,21 +39,15 @@ $this->import('
                 <div>
                     <h4><?= i::__("Permitir Agente Coletivo?") ?></h4>
                     <span class="subtitle"><?= i::__("Permitir inscrição de Agente Coletivo") ?></span>
-                    <div>
-                        <input type="radio" value="use" v-model="entity.useAgentRelationColetivo">
-                        <label for="html"><?= i::__("Sim") ?></label>
-                        <input type="radio" value="dontUse" v-model="entity.useAgentRelationColetivo">
-                        <label for="css"><?= i::__("Não") ?></label>
+                    <div class="col-12" v-if="descriptionsOpportunity && descriptionsOpportunity.useAgentRelationColetivo">
+                        <entity-field :entity="descriptionsOpportunity" prop="useAgentRelationColetivo"></entity-field>
                     </div>
                 </div>
                 <div>
                     <h4><?= i::__("Permitir instituição responsável?") ?></h4>
                     <span class="subtitle"><?= i::__("Permitir inscrição de instituições") ?></span>
-                    <div>
-                        <input type="radio" value="use" v-model="entity.useAgentRelationInstituicao">
-                        <label for="html"><?= i::__("Sim") ?></label>
-                        <input type="radio" value="dontUse" v-model="entity.useAgentRelationInstituicao">
-                        <label for="css"><?= i::__("Não") ?></label>
+                    <div class="col-12" v-if="descriptionsOpportunity && descriptionsOpportunity.useAgentRelationInstituicao">
+                        <entity-field :entity="descriptionsOpportunity" prop="useAgentRelationInstituicao"></entity-field>
                     </div>
                 </div>
                 <div>
@@ -68,11 +62,8 @@ $this->import('
             <div class="form-builder__bg-content form-builder__bg-content--spacing">
                 <h4><?= i::__("Permitir vínculo de Espaço?") ?></h4>
                 <span class="subtitle"><?= i::__("Permitir um espaço para associar à inscrição.") ?></span>
-                <div>
-                    <input type="radio" value="use" v-model="entity.useSpaceRelationIntituicao">
-                    <label for="html"><?= i::__("Sim") ?></label>
-                    <input type="radio" value="dontUse" v-model="entity.useSpaceRelationIntituicao">
-                    <label for="css"><?= i::__("Não") ?></label>
+                <div class="col-12" v-if="descriptionsOpportunity && descriptionsOpportunity.useSpaceRelationIntituicao">
+                    <entity-field :entity="descriptionsOpportunity" prop="useSpaceRelationIntituicao"></entity-field>
                 </div>
             </div>
         </div>
@@ -80,11 +71,8 @@ $this->import('
             <div class="form-builder__bg-content form-builder__bg-content--spacing">
                 <h4><?= i::__("Habilitar informações de Projeto?") ?></h4>
                 <span class="subtitle"><?= i::__("Permitir que proponente vizualise informações básicas sobre um projeto.") ?></span>
-                <div>
-                    <input type="radio" value="0" v-model="entity.projectName">
-                    <label for="html"><?= i::__("Sim") ?></label>
-                    <input type="radio" value="1" v-model="entity.projectName">
-                    <label for="css"><?= i::__("Não") ?></label>
+                <div class="col-12" v-if="descriptionsOpportunity && descriptionsOpportunity.projectName">
+                    <entity-field :entity="descriptionsOpportunity" prop="projectName"></entity-field>
                 </div>
             </div>
         </div>
