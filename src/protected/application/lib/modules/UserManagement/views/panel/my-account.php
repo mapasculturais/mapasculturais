@@ -21,10 +21,10 @@ $this->import('
 ?>
 <entity #default='{entity}'>
 
-    <div class="p-user-detail">
-        <header class="p-user-detail__header">
+    <div class="p-user-detail account-privacy">
+        <header class="p-user-detail__header account-privacy__header">
 
-            <div class="p-user-detail__header-top">
+            <div class="p-user-detail__header-top account-privacy__header">
                 <div class="left">
                     <div class="left-icon">
                         <mc-icon class="icon" name="account"></mc-icon>
