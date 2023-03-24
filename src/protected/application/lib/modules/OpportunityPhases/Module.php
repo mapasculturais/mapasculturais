@@ -711,12 +711,23 @@ class Module extends \MapasCulturais\Module{
                 $last_phase->save(true);
             });
 
+            // atualiza as datas da oportunidade auxiliar das fases de avaliação sem coleta de dados
+            $app->hook('entity(EvaluationMethodConfiguration).save:finish', function($flush) use ($app) {
+                /** @var EvaluationMethodConfiguration $this */
+                $opportunity = $this->opportunity;
+                if (!$opportunity->isDataCollection) {
+                    $opportunity->registrationFrom = $this->evaluationFrom;
+                    $opportunity->registrationTo = $this->evaluationTo;
+                    $opportunity->save($flush);
+                }
+            });
+
             // remove a oportunidade auxiliar da fases de avaliação sem coleta de dados
             $app->hook('entity(EvaluationMethodConfiguration).remove:after', function() use ($app) {
                 /** @var EvaluationMethodConfiguration $this */
                 $app->em->clear();
                 $opportunity = $app->repo('Opportunity')->find($this->opportunity->id);
-                eval(\psy\sh());
+                
                 if (!$opportunity->isDataCollection) {
                     $opportunity->destroy(true);
                 }
