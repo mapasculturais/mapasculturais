@@ -8,6 +8,16 @@ app.component('registration-actions', {
         },
     },
 
+    mounted() {
+        window.addEventListener("message", (event) => {
+            if (event.data.type == 'registration.update') {
+                for (let key in event.data.data) {
+                    this.registration[key] = event.data.data[key];
+                }
+            }
+        });
+    },
+
     data() {
         return {
             fields: $MAPAS.registrationFields,
@@ -45,10 +55,8 @@ app.component('registration-actions', {
                 this.registration.disableMessages();
                 await this.save();
                 this.registration.enableMessages();
-
-                await this.registration.POST('send', {data}).then((response) => {
-                    console.log(response);
-                });
+                await this.registration.POST('send', {data});
+                document.location.reload();
             } catch(error) {
                 console.log(error);
             }
@@ -60,7 +68,7 @@ app.component('registration-actions', {
                 registration.disableMessages();
                 const promise = new Promise((resolve, reject) => {
                     Promise.all([
-                        registration.save(false),
+                        /* registration.save(false), */
                         new Promise((resolve, reject) => {
                             const saved = function(event) {    
                                 if (event.data.type == "registration.saved") {
