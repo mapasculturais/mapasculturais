@@ -105,7 +105,6 @@ app.component('entity-terms', {
 
 
         addTerm(term) {
-            console.log(this.entityTerms, this.terms, term);  
             if (this.entityTerms.indexOf(term) < 0) {
                 this.entityTerms.push(term);
             }

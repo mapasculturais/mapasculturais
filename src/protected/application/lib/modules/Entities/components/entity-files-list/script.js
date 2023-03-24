@@ -60,7 +60,6 @@ app.component('entity-files-list', {
             };
 
             this.entity.upload(this.newFile, data).then((response) => {
-                console.log(response)
                 this.$emit('uploaded', this);
                 popover.close()
             });

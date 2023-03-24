@@ -93,10 +93,10 @@ app.component('notification-list', {
             }
         },
         cancel (notification) {
-            console.log(notification)
+            console.log('NÃO IMPLEMENTADO', notification)
         },
         delete (notification) {
-            console.log(notification)
+            console.log('NÃO IMPLEMENTADO', notification)
         }
     },
 });
