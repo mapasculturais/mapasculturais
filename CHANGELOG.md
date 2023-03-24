@@ -11,6 +11,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
 - Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
 
+## [5.6.3] - 2023-03-24
+### Melhorias
+- Passa processo de passar dados do metadado documento para o metadados CPF ou CNPJ do db-update para o mc-update para melhorar performace
+
 ## [5.6.2] - 2023-03-14
 ### Correções
 - Corrige filtro de avaliações na tela do avaliador
