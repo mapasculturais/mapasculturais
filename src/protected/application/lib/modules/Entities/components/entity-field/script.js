@@ -107,7 +107,7 @@ app.component('entity-field', {
             return this.entity.__validationErrors[this.prop];
         },
         value() {
-            return this.entity[this.prop];
+            return this.entity[this.prop]?.id ?? this.entity[this.prop];
         }
     },
     
