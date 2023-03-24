@@ -12,8 +12,11 @@
                 padding-inline: calc(50vw - size(math.div(1170, 2)));
 
             }
+            
         }
-
+        &__button--active::after{
+            background-color: var(--mc-primary-500);
+        }
         &__panels {
             margin-bottom: 0;
 
