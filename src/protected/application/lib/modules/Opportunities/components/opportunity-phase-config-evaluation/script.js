@@ -17,6 +17,10 @@ app.component('opportunity-phase-config-evaluation' , {
         }
     },
 
+    beforeMount() {
+        this.phase.infos = this.phase.infos || {general: ''};
+    },
+
     computed: {
         index() {
             return this.phases.indexOf(this.phase);
