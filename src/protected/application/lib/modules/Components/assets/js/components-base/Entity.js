@@ -50,8 +50,8 @@ class Entity {
                 }
             }
 
-            if (prop == 'location') {
-                if(val.latitude && val.longitude) {
+            if (prop == 'location' && val) {
+                if(val?.latitude && val?.longitude) {
                     val = {lat: parseFloat(val?.latitude), lng: parseFloat(val?.longitude)};
                 }
                 val.lat = val.lat ?? 0;
@@ -64,7 +64,6 @@ class Entity {
                     name: __properties['type']?.options?.[val]
                 };
             }
-
             this[prop] = val;
         }
 
