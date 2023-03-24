@@ -248,7 +248,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod
                                 $reasons[] = $eval;
                             }
                         }                        
-                        $_result = implode(";", $reasons);
+                        $_result = implode("; ", $reasons);
                     }
 
                     return $_result;
