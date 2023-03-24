@@ -30,11 +30,17 @@ app.component('panel--registration-tabs', {
         changed(event) {
             console.log(event.tab);
             switch (event.tab.slug) {
-                case 'sent':
+                case 'sent':                    
+                    if ($MAPAS.currentUserRoles.includes('admin')) {
+                        this.query['@permissions'] = 'view';
+                    }else{
+                        this.query['@permissions'] = '@control';
+                    }
                     this.query['status'] = 'GT(0)';
                     break;
                 case 'notSent':
                     this.query['status'] = 'EQ(0)';
+                    this.query['@permissions'] = 'view';
                     break;
             }
         },
