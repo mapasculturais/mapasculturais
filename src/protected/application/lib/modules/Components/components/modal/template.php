@@ -2,7 +2,7 @@
 
 use MapasCulturais\i;
 ?>
-<vue-final-modal attach="body" v-model="modalOpen" :classes="['modal-container',classes]" content-class="modal-content" transition="modal" esc-to-close>
+<vue-final-modal v-model="modalOpen" :classes="['modal-container',classes]" content-class="modal-content" transition="modal" modalPosition="fixed" :modalClasses="['modal-fixed']" esc-to-close>
     <template v-if="modalOpen">
         <div class="modal__header">
             <span v-if="title" class="modal__title">{{title}}</span>
