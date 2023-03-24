@@ -104,7 +104,7 @@ $this->breadcrumb = [
 
                 </template>
             </mapas-card> -->
-            <mapas-card>
+            <!-- <mapas-card>
                 <template #title>
                     <label><?php i::_e("Adicione um subprojeto"); ?></label>
                     <p><?php i::_e("Adicione um projeto que será vinculado a este"); ?></p>
@@ -112,7 +112,7 @@ $this->breadcrumb = [
                 <template #content>
 
                 </template>
-            </mapas-card>
+            </mapas-card> -->
             <!-- <mapas-card>
                 <template #title>
                     <label><?php i::_e("Vincule um evento ao seu projeto"); ?></label>
