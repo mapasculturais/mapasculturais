@@ -39,15 +39,15 @@ $this->import('
                 <div>
                     <h4><?= i::__("Permitir Agente Coletivo?") ?></h4>
                     <span class="subtitle"><?= i::__("Permitir inscrição de Agente Coletivo") ?></span>
-                    <div class="col-12" v-if="descriptionsOpportunity && descriptionsOpportunity.useAgentRelationColetivo">
-                        <entity-field :entity="descriptionsOpportunity" prop="useAgentRelationColetivo"></entity-field>
+                    <div class="col-12">
+                        <entity-field :entity="entity" prop="useAgentRelationColetivo"></entity-field>
                     </div>
                 </div>
                 <div>
                     <h4><?= i::__("Permitir instituição responsável?") ?></h4>
                     <span class="subtitle"><?= i::__("Permitir inscrição de instituições") ?></span>
-                    <div class="col-12" v-if="descriptionsOpportunity && descriptionsOpportunity.useAgentRelationInstituicao">
-                        <entity-field :entity="descriptionsOpportunity" prop="useAgentRelationInstituicao"></entity-field>
+                    <div class="col-12">
+                        <entity-field :entity="entity" prop="useAgentRelationInstituicao"></entity-field>
                     </div>
                 </div>
                 <div>
@@ -62,8 +62,8 @@ $this->import('
             <div class="form-builder__bg-content form-builder__bg-content--spacing">
                 <h4><?= i::__("Permitir vínculo de Espaço?") ?></h4>
                 <span class="subtitle"><?= i::__("Permitir um espaço para associar à inscrição.") ?></span>
-                <div class="col-12" v-if="descriptionsOpportunity && descriptionsOpportunity.useSpaceRelationIntituicao">
-                    <entity-field :entity="descriptionsOpportunity" prop="useSpaceRelationIntituicao"></entity-field>
+                <div class="col-12">
+                    <entity-field :entity="entity" prop="useSpaceRelationIntituicao"></entity-field>
                 </div>
             </div>
         </div>
@@ -71,8 +71,8 @@ $this->import('
             <div class="form-builder__bg-content form-builder__bg-content--spacing">
                 <h4><?= i::__("Habilitar informações de Projeto?") ?></h4>
                 <span class="subtitle"><?= i::__("Permitir que proponente vizualise informações básicas sobre um projeto.") ?></span>
-                <div class="col-12" v-if="descriptionsOpportunity && descriptionsOpportunity.projectName">
-                    <entity-field :entity="descriptionsOpportunity" prop="projectName"></entity-field>
+                <div class="col-12">
+                    <entity-field :entity="entity" prop="projectName"></entity-field>
                 </div>
             </div>
         </div>
