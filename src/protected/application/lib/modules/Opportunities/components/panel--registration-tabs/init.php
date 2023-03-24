@@ -5,8 +5,10 @@ $qa_params = [
 
 if ($app->user->is('admin')) {
     $qa_params['user'] = 'EQ(@me)';
+    $qa_params['@permissions'] = 'view';
 } else {
     $qa_params['@permissions'] = '@control';
+    
 }
 
 $qa = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Agent::class, $qa_params);

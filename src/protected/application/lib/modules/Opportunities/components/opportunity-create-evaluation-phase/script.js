@@ -45,21 +45,24 @@ app.component('opportunity-create-evaluation-phase' , {
 
         createEntity() {
             this.phase = Vue.ref(new Entity('evaluationmethodconfiguration'));
+            this.phase.infos = {general: ''};
             this.phase.opportunity = this.opportunity;
         },
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
         },
-        save(modal) {
+        async save(modal) {
             modal.loading(true);
-            this.phase.save().then((response) => {
-                this.$emit('create', response);
-                modal.loading(false);
+            try{
+                await this.phase.save();
+                this.$emit('create', this.phase);
                 modal.close();
-            }).catch((e) => {
                 modal.loading(false);
-            });
+            
+            } catch(e) {
+                modal.loading(false);
+            }
         },
     }
 });

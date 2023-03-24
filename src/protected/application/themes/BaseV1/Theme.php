@@ -1751,14 +1751,7 @@ class Theme extends MapasCulturais\Theme {
             }
         }
 
-        // after plugin registration that creates the configuration types
-        $app->hook('app.register', function(){
-            $this->view->registerMetadata('MapasCulturais\Entities\EvaluationMethodConfiguration', 'infos', [
-                'label' => i::__("Textos informativos para as fichas de avaliação"),
-                'serialize' => function($val){ return json_encode($val); },
-                'unserialize' => function($val){ return json_decode($val); },
-            ]);
-        });
+        
     }
 
     function getLockedFieldsSeal(){

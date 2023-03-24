@@ -7,6 +7,7 @@ use Exception;
 use MapasCulturais\App;
 use MapasCulturais\i;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Registration;
 use PHPUnit\Util\Annotation\Registry;
 
@@ -134,12 +135,19 @@ class Module extends \MapasCulturais\Module{
     }
 
     function register(){
-        
-            $app = App::i();
-            $controllers = $app->getRegisteredControllers();
-            if (!isset($controllers['opportunities'])) {
-                $app->registerController('opportunities', Controller::class);
-            }
+        $app = App::i();
+        $controllers = $app->getRegisteredControllers();
+        if (!isset($controllers['opportunities'])) {
+            $app->registerController('opportunities', Controller::class);
+        }
+
+        // after plugin registration that creates the configuration types
+        $app->hook('app.register', function(){
+            $this->view->registerMetadata(EvaluationMethodConfiguration::class, 'infos', [
+                'label' => i::__("Textos informativos para as fichas de avaliação"),
+                'type' => 'json',
+            ]);
+        });
            
     }
 }
