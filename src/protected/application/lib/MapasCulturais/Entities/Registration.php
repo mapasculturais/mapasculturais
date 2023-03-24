@@ -401,6 +401,14 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
+    static function usesSpaceRelation() {
+        return true;
+    }
+
+    static function getSpaceRelationEntityClassName() {
+        return RegistrationSpaceRelation::class;
+    }
+
     function setOwnerId($id){
         $agent = App::i()->repo('Agent')->find($id);
         $this->setOwner($agent);
