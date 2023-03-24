@@ -68,7 +68,7 @@ class Opportunity extends EntityController {
 
         $opportunity->sendUserEvaluations();
 
-        if($app->request->isAjax()){
+        if($this->isAjax()){
             $this->json($opportunity);
         }else{
             $app->redirect($app->request->getReferer());
@@ -89,7 +89,7 @@ class Opportunity extends EntityController {
 
         $opportunity->publishRegistrations();
 
-        if($app->request->isAjax()){
+        if($this->isAjax()){
             $this->json($opportunity);
         }else{
             $app->redirect($app->request->getReferer());

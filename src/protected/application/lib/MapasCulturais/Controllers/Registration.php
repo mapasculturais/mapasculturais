@@ -323,7 +323,7 @@ class Registration extends EntityController {
         $method_name = 'setStatusTo' . ucfirst($status);
 
         if(!method_exists($registration, $method_name)){
-            if($app->request->isAjax()){
+            if($this->isAjax()){
                 $this->errorJson('Invalid status name');
             }else{
                 $app->halt(200, 'Invalid status name');
@@ -334,7 +334,7 @@ class Registration extends EntityController {
 
         $app->applyHookBoundTo($this, 'registration.setStatusTo:after', [$registration]);
 
-        if($app->request->isAjax()){
+        if($this->isAjax()){
             $this->json($registration);
         }else{
             $app->redirect($app->request->getReferer());
@@ -393,7 +393,7 @@ class Registration extends EntityController {
             $registration->cleanMaskedRegistrationFields();
             $registration->send();
 
-            if($app->request->isAjax()){
+            if($this->isAjax()){
                 $this->json($registration);
             }else{
                 $app->redirect($app->request->getReferer());
