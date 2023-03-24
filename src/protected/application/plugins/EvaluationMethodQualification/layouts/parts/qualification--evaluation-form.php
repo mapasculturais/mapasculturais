@@ -24,7 +24,7 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
                         <div class="tooltip">
                             <i class="fa fa-info-circle"></i>
                             <div class="tooltiptext" ng-if="cri.description">{{cri.description}}</div>
-                            <div class="tooltiptext">{{cri.name}}</div>
+                            <div class="tooltiptext" ng-if="!cri.description">{{cri.name}}</div>
                         </div>
                             {{cri.name}}:
                         </label>
