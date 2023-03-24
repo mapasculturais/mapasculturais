@@ -736,6 +736,10 @@ abstract class Theme extends \Slim\View {
                 $query_params['@select'] .= ',agentRelations';
             }
 
+            if ($entity_class_name::usesSpaceRelation()) {
+                $query_params['@select'] .= ',spaceRelations';
+            }
+
             if ($entity_class_name == Entities\User::class) {
                 $query_params['@select'] .= ',profile.{name,files.avatar,terms,seals}';
             }
