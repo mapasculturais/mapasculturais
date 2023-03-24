@@ -23,7 +23,7 @@ use MapasCulturais\i;
             <tr id="{{cri.id}}" ng-repeat="cri in data.criteria" ng-if="cri.sid == section.id">
                 <td>
                     <div>
-                        <input type="text" ng-model="cri.name" ng-model-options='{ debounce: data.debounce }' placeholder="<?php i::_e('Nome do cretério') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
+                        <input type="text" ng-model="cri.name" ng-model-options='{ debounce: data.debounce }' placeholder="<?php i::_e('Nome do critério') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
                     </div>
                 </td>
                 <td>
@@ -31,7 +31,7 @@ use MapasCulturais\i;
                         <a id="delete-account--button" ng-click="editbox.open(cri.id, $event)" rel='noopener noreferrer' class="btn btn-primary add"><?php i::_e('Configurar critério') ?></a>
                         <edit-box id="{{cri.id}}" position="right" title="<?php i::esc_attr_e("Configuração do critétio - "); ?> {{cri.name}}" cancel-label="<?php i::esc_attr_e("Fechar"); ?>" close-on-cancel='true' spinner-condition="data.spinner">
                             <div>
-                                <label > <?php i::esc_attr_e("Opções de inabilitação"); ?></label>
+                                <label > <?php i::esc_attr_e("Opções ou motivos de inabilitação"); ?></label>
                                 <textarea ng-model="data.options[cri.id]" ng-model-options='{ debounce: data.debounce }' cols="70" rows="5" ng-change="save({sections: data.sections})"></textarea>
                             </div>
                             <div>
