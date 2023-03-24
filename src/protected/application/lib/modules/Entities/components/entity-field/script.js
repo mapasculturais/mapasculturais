@@ -18,7 +18,7 @@ app.component('entity-field', {
         try{
             description = this.entity.$PROPERTIES[this.prop];
         } catch (e) {
-            console.log(`Propriedade ${this.prop} não existe na entidade`);
+            console.error(`Propriedade ${this.prop} não existe na entidade`);
             return {};
         }
         

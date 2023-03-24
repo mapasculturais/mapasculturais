@@ -35,7 +35,7 @@ app.component('entity', {
                 this.entity = entity;
                 this.loading = false;
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             });
         }
     },

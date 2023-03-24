@@ -58,7 +58,7 @@ app.component('registration-actions', {
                 await this.registration.POST('send', {data});
                 document.location.reload();
             } catch(error) {
-                console.log(error);
+                console.error(error);
             }
         },
         async save() {

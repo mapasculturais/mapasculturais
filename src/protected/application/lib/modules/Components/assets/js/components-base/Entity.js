@@ -658,7 +658,7 @@ class Entity {
             const res = await this.API.POST(this.getUrl('changeOwner'), {ownerId});
             this.doPromise(res, (data) => {
 
-                console.log(data);
+                console.log('NÃO IMPLEMENTADO', data);
 
                 /* let index;
                 index = this.seals.indexOf(seal);

@@ -11,9 +11,6 @@ app.component('opportunity-basic-info' , {
         const api = new OpportunitiesAPI();
 
         this.phases = await api.getPhases(this.entity.id);
-
-        console.log('this.phases');
-        console.log(this.phases);
     },
 
     props: {
