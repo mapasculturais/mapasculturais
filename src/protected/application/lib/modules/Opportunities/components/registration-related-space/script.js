@@ -59,7 +59,6 @@ app.component('registration-related-space', {
             }
         },
         hasRelations(relation) {
-            console.log('relation: ', relation);
             if (relation) {
                 if (Object.keys(relation).length > 0) {
                     return true;
