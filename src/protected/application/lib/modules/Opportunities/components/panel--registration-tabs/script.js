@@ -28,7 +28,6 @@ app.component('panel--registration-tabs', {
     
     methods: {
         changed(event) {
-            console.log(event.tab);
             switch (event.tab.slug) {
                 case 'sent':                    
                     if ($MAPAS.currentUserRoles.includes('admin')) {
@@ -43,10 +42,6 @@ app.component('panel--registration-tabs', {
                     this.query['@permissions'] = 'view';
                     break;
             }
-        },
-
-        consoleLog(text){
-            console.log(text)
         },
 
         closeAlert() {
