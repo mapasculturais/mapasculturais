@@ -29,7 +29,8 @@ app.component('opportunity-phases-config', {
     data() {
         return {
             phases: [],
-            evaluationMethods: $MAPAS.config.evaluationMethods
+            evaluationMethods: $MAPAS.config.evaluationMethods,
+            evaluationTypes: $DESCRIPTIONS.evaluationmethodconfiguration.type.options
         }
     },
 
