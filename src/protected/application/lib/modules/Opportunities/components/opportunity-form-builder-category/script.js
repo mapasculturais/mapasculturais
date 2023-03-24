@@ -11,9 +11,7 @@ app.component('opportunity-form-builder-category' , {
         const text = Utils.getTexts('opportunity-form-builder-category');
         return { text }
     },
-    created () {
-      this.phase = $DESCRIPTIONS.opportunity;
-    },
+
     data () {
       return {
           phase: null
