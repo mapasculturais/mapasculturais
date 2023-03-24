@@ -209,5 +209,71 @@ return [
             }
         });
     },
+    'Definição dos cammpos cpf e cnpj com base no documento' => function(){
+        $app = \MapasCulturais\App::i();
+        /**
+         * Header do arquivo txt
+         * AGENTE_ID | NOME | NOME_COMPLETO | EMAIL_PRIVADO | TIPO_ATUAL| OPERACAO
+         */
+        $txt = "";
+        DB_UPDATE::enqueue('Agent', "status > 0", function (MapasCulturais\Entities\Agent $agent) use ($app, &$txt){
+
+            $_types = [
+                1 => "individual",
+                2 => "coletivo",
+            ];
+            
+            if (!$agent->documento) {
+                $op = "Agente sem documento definido";
+                $txt .= "{$agent->id} | {$agent->name} | {$agent->nomeCompleto} | {$agent->emailPrivado} | {$_types[$agent->type->id]} | {$op} \n";
+                $app->log->debug($agent->id . " " . $op);
+            }else{
+                $doc = preg_replace('/[^0-9]/i', '', $agent->documento);
+                $type = (strlen($doc) > 11) ? "CNPJ" : "CPF";
+
+                if ($type == "CPF") {
+                    $validate = \MapasCulturais\Validator::cpf()->validate($agent->documento);
+                } else {
+                    $validate = \MapasCulturais\Validator::cnpj()->validate($agent->documento);
+                }
+
+                if ($validate) {
+                    $_type = strtolower($type);
+                    $agent->$_type = $agent->documento;
+
+                    $op = "Definido {$type} para o agente";
+                    $txt .= "{$agent->id} | {$agent->name} | {$agent->nomeCompleto} | {$agent->emailPrivado} | {$_types[$agent->type->id]} | {$op} \n";
+                    $app->log->debug($agent->id . " " . $op);
+
+                    $app->disableAccessControl();
+
+                    if(!$agent->getRevisions()){
+                        $agent->_newCreatedRevision();
+                        $app->log->debug("Revision do agente {$agent->id} Criada");
+                    }
+
+                    $agent->save(true);
+                    $app->enableAccessControl();
+                } else {
+                    $op = "{$type} do agente é inválido";
+                    $txt .= "{$agent->id} | {$agent->name} | {$agent->nomeCompleto} | {$agent->emailPrivado} | {$_types[$agent->type->id]} | {$op} \n";
+                    $app->log->debug($agent->id . " " . $op);
+                }
+            }
+
+            $fileName = "mcupdate1_documento.txt";
+            $dir = PRIVATE_FILES_PATH . "mcupdate_files";
+            if (!file_exists($dir)) {
+                mkdir($dir, 775);
+            }
+
+            $path = $dir . "/" . $fileName;
+            $fp = fopen($path, "a+");
+            fwrite($fp, $txt);
+            fclose($fp);
+        });
+
+        
+    }
 
 ];
