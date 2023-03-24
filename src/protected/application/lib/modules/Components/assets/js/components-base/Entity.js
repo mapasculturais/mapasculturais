@@ -51,7 +51,11 @@ class Entity {
             }
 
             if (prop == 'location') {
-                val = {lat: parseFloat(val?.latitude), lng: parseFloat(val?.longitude)};
+                if(val.latitude && val.longitude) {
+                    val = {lat: parseFloat(val?.latitude), lng: parseFloat(val?.longitude)};
+                }
+                val.lat = val.lat ?? 0;
+                val.lng = val.lng ?? 0;
             }
 
             if(prop == 'type' && typeof val == 'number') {
