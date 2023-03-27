@@ -7,40 +7,41 @@
     padding-bottom: size(5);
 
     &__card {
-        width: size(191.8);
-        height: size(191.8);
+        max-width: 10.5rem;
+        width: 100%;
         border-radius: var(--mc-border-radius-xs);
         flex-shrink: 0;
-        padding: size(16);
+        padding: 0.8rem;
         background-color: var(--mc-high-500);
-
+        @media (max-width:size(800)){}
         a {
             text-decoration: none;
             color: var(--mc-low-700);
         }
-
+    
         &--header {
+            // panel--entities-summary__card--header
             display: flex;
             gap: size(8);
             align-items: center;
 
             &-icon {
-                width: size(32);
-                height: size(32);
+                width: size(28);
+                height: size(28);
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 border-radius: var(--mc-border-radius-pill);
                 
                 .iconify {
-                    width: size(16);
-                    height: size(16);
+                    width: size(14);
+                    height: size(14);
                 }
             }
 
             &-label {
                 font-weight: 600;
-                font-size: size(16);
+                font-size: size(14);
                 line-height: size(22);
             }
         }
