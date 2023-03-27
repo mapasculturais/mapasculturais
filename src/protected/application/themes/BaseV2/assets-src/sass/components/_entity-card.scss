@@ -33,18 +33,18 @@
 				background-color: var(--mc-gray-300);
 				border-radius: 50%;
 				display: flex;
-				height: size(80);
+				height: size(48);
 				justify-content: center;
-				min-width: size(80);
+				min-width: size(48);
 				overflow: hidden;
-				width: size(80);
+				width: size(48);
 
 				img {
 					width: 100%;
 				}
 
 				.iconify {
-					font-size: size(36);
+					font-size: size(24);
 					color: var(--mc-gray-700);
 				}
 			}
@@ -69,7 +69,7 @@
 				&__name {
 					align-items: center;
 					display: flex;
-					font-size: size(32);
+					font-size: size(18);
 					font-weight: 700;
 					line-height: size(43);
 				}
