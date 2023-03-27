@@ -2628,9 +2628,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
         $scope.registrationAndEvaluations = [];
         $scope.data = {
             keyword: '',
-            current: MapasCulturais.registration.id,
+            current: MapasCulturais.entity.id,
             keywords: [],
-            pending: false,
+            pending: MapasCulturais.cookies.get('pending') ? true : false,
             registrations: [],
             evaluations: [],
             registrationAndEvaluations: [],
@@ -2720,11 +2720,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status',
                     '@keyword' : 'like('+$scope.data.keywords+')'
                 };
-        
+
+                
                 if($scope.data.pending){
-                    args['@pending'] = true
+                    args['@pending'] = true;
                 }
                 
+                MapasCulturais.cookies.set('pending',$scope.data.pending)
+
                 var registrationAndEvaluationsApi = new OpportunityApiService($scope, 'registrationAndEvaluations', 'findRegistrationsAndEvaluations', args);
         
                 registrationAndEvaluationsApi.find().success(function(){
@@ -2822,7 +2825,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
             if($scope.data.pending){
                 if($scope.newEvaluated(registration)){
-                    result = false;
+                    result = true;
                 }
             }
 
