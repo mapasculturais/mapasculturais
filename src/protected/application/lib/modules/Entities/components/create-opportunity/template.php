@@ -10,12 +10,7 @@
     select-entity
     entity-owner
 ');
-    ?>
- <div style="z-index:1000000; position:absolute; top: 0; left: 0;" class="teste">
-     <input v-if="entity" v-model="entity.id">
-     <input v-if="entity" v-model="entity.status">
- </div>
-
+?>
  <modal :title="modalTitle" classes="create-modal" button-label="Criar Oportunidade" @open="createEntity()" @close="destroyEntity()">
      <template v-if="entity && !entity.id" #default>
          <label><?php i::_e('Crie uma oportunidade com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
