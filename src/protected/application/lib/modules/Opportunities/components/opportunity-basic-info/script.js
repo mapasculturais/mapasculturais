@@ -10,7 +10,7 @@ app.component('opportunity-basic-info' , {
     async created() {
         const api = new OpportunitiesAPI();
 
-        this.phases = await api.getPhases(this.entity.id);
+        this.phases = $MAPAS.opportunityPhases || await api.getPhases(this.entity.id);
     },
 
     props: {
