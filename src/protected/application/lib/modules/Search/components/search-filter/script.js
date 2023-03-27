@@ -46,7 +46,7 @@ app.component('search-filter', {
             const header = document.getElementById('main-header');
             if (!this.showMenu) {
                 header.style.top=0;
-                header.style.position = 'fixed';
+                // header.style.position = 'fixed';
             }
             else {
                 header.removeAttribute('style');
