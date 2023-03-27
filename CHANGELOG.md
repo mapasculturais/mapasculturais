@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.6.4] - 2023-03-27
+### Correção
+- Na tela do avaliador, corrige o avanço automático das avaliações ao finalizar o processo em uma determinada inscrição
+
 ## [5.6.3] - 2023-03-24
 ### Melhorias
 - Passa processo de passar dados do metadado documento para o metadados CPF ou CNPJ do db-update para o mc-update para melhorar performace
