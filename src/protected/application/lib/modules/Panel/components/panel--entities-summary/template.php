@@ -1,7 +1,19 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ */
+
 use MapasCulturais\i;
 
-$this->import('mc-link create-agent create-space create-event create-project create-opportunity');
+$this->import('
+    create-agent
+    create-event
+    create-opportunity
+    create-project
+    create-space
+    mc-link
+');
 ?>
 
 <div class="panel--entities-summary">                    

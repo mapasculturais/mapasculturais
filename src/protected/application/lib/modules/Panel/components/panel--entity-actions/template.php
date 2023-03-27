@@ -1,9 +1,16 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ */
+
 use MapasCulturais\i;
 use MapasCulturais\Entity;
 
-$this->import('confirm-button');
-$this->import('loading');
+$this->import('
+    confirm-button
+    loading
+');
 ?>
 <div v-if="entity.__processing" class="panel__entity-actions">
     <loading :entity="entity"></loading>

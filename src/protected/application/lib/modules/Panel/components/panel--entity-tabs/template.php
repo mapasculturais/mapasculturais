@@ -1,10 +1,16 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ */
+
 use MapasCulturais\i;
 
 $this->import('
-    tabs,tab,
-    panel--entity-card
     entities
+    panel--entity-card
+    tab
+    tabs
 ');
 
 $tabs = $tabs ?? [
