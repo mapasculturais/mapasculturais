@@ -131,8 +131,8 @@
                         margin: 0;
                     }
 
-                    @include mobile {
-                        font-size: size(12);
+                    @media (max-width : size(900)) {
+                        font-size: size(14);
                         line-height: size(16);
                     }
                 }
