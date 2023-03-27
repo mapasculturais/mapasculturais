@@ -2,6 +2,8 @@
 use MapasCulturais\i;
 $this->layout = 'entity';
 
+$this->import('opportunity-form-builder-category-list')
+
 ?>
 
 <div class="form-builder__bg-content form-builder__bg-content--spacing">
@@ -14,8 +16,6 @@ $this->layout = 'entity';
         <entity-field :entity="entity" prop="registrationCategDescription"></entity-field>
     </div>
     <div>
-        <p>Categorias</p>
-        <input type="text" />
-        <button class="button--primary-outline button"><mc-icon name="add"></mc-icon> Adicionar</button>
+        <opportunity-form-builder-category-list></opportunity-form-builder-category-list>
     </div>
 </div>
