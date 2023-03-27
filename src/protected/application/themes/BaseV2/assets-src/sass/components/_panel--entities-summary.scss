@@ -13,12 +13,14 @@
         flex-shrink: 0;
         padding: 0.8rem;
         background-color: var(--mc-high-500);
-        @media (max-width:size(800)){}
+
+        @media (max-width:size(800)) {}
+
         a {
             text-decoration: none;
             color: var(--mc-low-700);
         }
-    
+
         &--header {
             // panel--entities-summary__card--header
             display: flex;
@@ -32,7 +34,7 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: var(--mc-border-radius-pill);
-                
+
                 .iconify {
                     width: size(14);
                     height: size(14);
@@ -63,6 +65,14 @@
                 font-weight: 600;
                 font-size: size(14);
                 line-height: size(19);
+            }
+        }
+
+        &--create {
+            max-width: size(120);
+
+            button {
+                margin-left: size(11);
             }
         }
     }
