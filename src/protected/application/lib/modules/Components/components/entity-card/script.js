@@ -42,9 +42,10 @@ app.component('entity-card', {
     methods: {
         openSubscriptions() {
             if (this.entity.__objectType == "opportunity") {
-                let actualDate = new Date();
-                if(actualDate > this.entity.registrationFrom._date && actualDate < this.entity.registrationTo._date) {
-                    return true;
+                if(this.entity.registrationFrom && this.entity.registrationTo) {
+                    return this.entity.registrationFrom.isPast() && this.entity.registrationTo.isFuture();
+                } else {
+                    return false;
                 }
             }
             return false;
