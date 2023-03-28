@@ -6,13 +6,13 @@ $this->import('mc-icon');
 ?>
 
 <div :class="['entity-card', {'portrait':portrait}]">
-	<div class="entity-card__header" :class="{'with-labels': hasSlot('labels'), 'without-labels': !hasSlot('labels')}">
+	<div class="entity-card__header" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
 		<div class="entity-card__header user-details">
 			<div class="user-image">
 				<img v-if="entity.files?.avatar" :src="entity.files?.avatar?.transformations?.avatarMedium.url" />
 				<mc-icon v-else :entity="entity"></mc-icon>
 			</div>
-			<div class="user-info" :class="{'with-labels': hasSlot('labels'), 'without-labels': !hasSlot('labels')}">
+			<div class="user-info" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
 				<label class="user-info__name">
 					{{entity.name}}
 				</label>
@@ -26,7 +26,7 @@ $this->import('mc-icon');
 		</div>
 		<div class="entity-card__header user-slot">
 			<slot name="labels">
-				<span class="openSubscriptions" v-if="openSubscriptions()"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
+				<span class="openSubscriptions" v-if="openSubscriptions"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
 			</slot>
 		</div>
 	</div>
