@@ -37,9 +37,9 @@ class Module extends \MapasCulturais\Module{
          /* === NOTIFICATIONS  === */
 
         // adiciona a descriçào das entidades notification e request ao jsObject
-        $app->hook('app.register:after', function () {
-                $this->view->jsObject['EntitiesDescription']['request'] = Request::getPropertiesMetadata();
-                $this->view->jsObject['EntitiesDescription']['notification'] = Notification::getPropertiesMetadata();
+        $app->hook('mapas.printJsObject:before', function () {
+                $this->jsObject['EntitiesDescription']['request'] = Request::getPropertiesMetadata();
+                $this->jsObject['EntitiesDescription']['notification'] = Notification::getPropertiesMetadata();
         }, 100);
 
         // adiciona a contagem de notificações no header e no jsObject
