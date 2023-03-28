@@ -22,7 +22,8 @@ app.component('opportunity-subscribe-results', {
 
     data() {
         return {
-            phases: []
+            phases: [],
+            evaluationMethods: $MAPAS.config.evaluationMethods
         }
     },
 
