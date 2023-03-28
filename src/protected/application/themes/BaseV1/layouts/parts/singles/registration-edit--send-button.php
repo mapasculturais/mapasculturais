@@ -3,7 +3,7 @@ $app = \MapasCulturais\App::i();
 ?>
 
 <div>
-    <div class="validation-fields-errors" ng-init="validateRegistration()">
+    <div class="validation-fields-errors">
         <div class="errors-header" ng-if="numFieldErrors() > 0">
             <p class="errors-header-title title"><?= \MapasCulturais\i::_e('O cadastro não foi enviado!') ?></p>
             <p class="errors-header-title text"><?= \MapasCulturais\i::_e('Corrija os campos listados abaixo e valide seu formulário utilizando o botão Salvar e validar.') ?></p>
