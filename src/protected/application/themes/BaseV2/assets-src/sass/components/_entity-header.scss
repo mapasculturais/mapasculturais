@@ -131,8 +131,8 @@
                         margin: 0;
                     }
 
-                    @include mobile {
-                        font-size: size(12);
+                    @media (max-width : size(900)) {
+                        font-size: size(14);
                         line-height: size(16);
                     }
                 }
@@ -235,9 +235,30 @@
             &__single {
                 &--content {
                     .leftSide {
+                        @media (max-width: size(900)) {
+                            margin: 0 auto;
+                        }
+
                         .avatar {
+                            height: size(167);
+                            width: size(167);
                             margin-top: 0;
                             margin-left: 0;
+
+                            svg {
+                                height: size(75);
+                                width: size(75);
+                            }
+
+                            @media (max-width: size(900)) {
+                                height: size(113);
+                                width: size(113);
+
+                                svg {
+                                    height: size(58);
+                                    width: size(58);
+                                }
+                            }
                         }
                     }
 

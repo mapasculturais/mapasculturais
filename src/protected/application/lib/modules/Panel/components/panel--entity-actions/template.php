@@ -1,15 +1,22 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ */
+
 use MapasCulturais\i;
 use MapasCulturais\Entity;
 
-$this->import('confirm-button');
-$this->import('loading');
+$this->import('
+    confirm-button
+    loading
+');
 ?>
 <div v-if="entity.__processing" class="panel__entity-actions">
     <loading :entity="entity"></loading>
 </div>
 <div v-if="!entity.__processing" class="panel__entity-actions">
-    <confirm-button v-if="publishButton && entity.status == <?= Entity::STATUS_TRASH ?>"
+    <confirm-button v-if="undeleteButton && entity.status == <?= Entity::STATUS_TRASH ?>"
         @confirm="undeleteEntity($event)" 
         button-class="button unpublish button--primary button--icon"
         message="<?php i::esc_attr_e("Você está certo que deseja recuperar esta entidade da lixeira?") ?>">

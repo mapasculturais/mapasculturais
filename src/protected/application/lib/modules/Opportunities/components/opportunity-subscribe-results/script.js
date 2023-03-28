@@ -15,14 +15,18 @@ app.component('opportunity-subscribe-results', {
     },
 
     async created() {
-        const api = new OpportunitiesAPI();
-        
-        this.phases = await api.getPhases(this.entity.id);
+        if($MAPAS.opportunityPhases && $MAPAS.opportunityPhases.length > 0) {
+            this.phases = $MAPAS.opportunityPhases;
+        } else {
+            const api = new OpportunitiesAPI();
+            this.phases = await api.getPhases(this.entity.id);
+        }
     },
 
     data() {
         return {
-            phases: []
+            phases: [],
+            evaluationMethods: $MAPAS.config.evaluationMethods
         }
     },
 

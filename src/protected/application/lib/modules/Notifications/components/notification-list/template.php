@@ -17,7 +17,7 @@ $this->import('
         <div class="content">
             <div class="content__header">
                 <span class="title" v-html='entity.message'></span>
-                <span class="subtitle">{{ entity.createTimestamp.date('numeric year') }} - {{ entity.createTimestamp.time() }}</span>
+                <span class="subtitle">{{ entity.createTimestamp?.date('numeric year') }} - {{ entity.createTimestamp?.time() }}</span>
             </div>
             <div class="content__groupButtons" v-if="!entity.request">
                 <div class="col-2">

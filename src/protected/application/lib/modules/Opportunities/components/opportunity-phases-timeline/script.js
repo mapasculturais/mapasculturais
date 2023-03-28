@@ -12,9 +12,18 @@ app.component('opportunity-phases-timeline', {
 		}
 	},
 
+    async created() {
+        if($MAPAS.opportunityPhases && $MAPAS.opportunityPhases.length > 0) {
+            this.phases = $MAPAS.opportunityPhases;
+        } else {
+            const api = new OpportunitiesAPI();
+            this.phases = await api.getPhases(this.entity.id);
+        }
+    },
+
 	data() {
         return {
-			phases: $MAPAS.opportunityPhases,
+			phases: [],
         }
     },
 

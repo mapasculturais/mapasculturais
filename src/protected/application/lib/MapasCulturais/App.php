@@ -1706,6 +1706,24 @@ class App extends \Slim\Slim{
         return $job;
     }
 
+    public function unqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
+        if($this->config['app.log.jobs']) {
+            $this->log->debug("UNQUEUED JOB: $type_slug");
+        }
+
+        $type = $this->getRegisteredJobType($type_slug);
+        
+        if (!$type) {
+            throw new \Exception("invalid job type: {$type_slug}");
+        }
+
+        $id = $type->generateId($data, $start_string, $interval_string, $iterations);
+
+        if ($job = $this->repo('Job')->find($id)) {
+            $job->delete(true);
+        }
+    }
+
     public function executeJob() {
         $conn = $this->em->getConnection();
 
@@ -1720,9 +1738,10 @@ class App extends \Slim\Slim{
             LIMIT 1");
 
         if ($job_id) {
+            /** @var Job $job */
             $conn->executeQuery("UPDATE job SET status = 1 WHERE id = '{$job_id}'");
             $job = $this->repo('Job')->find($job_id);
-
+            
             $this->disableAccessControl();
             $this->applyHookBoundTo($this, "app.executeJob:before");
             $job->execute();

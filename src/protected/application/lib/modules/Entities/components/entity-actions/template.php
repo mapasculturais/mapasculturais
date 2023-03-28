@@ -29,7 +29,7 @@ $this->import('loading confirm-button');
                         <?php i::_e('Você está certo qeu deseja arquivar?') ?>
                     </template>
                 </confirm-button>
-                <confirm-button v-if="entity.currentUserPermissions?.remove" @confirm="entity.delete()">
+                <confirm-button v-if="entity.currentUserPermissions?.remove && canDelete" @confirm="entity.delete()">
                     <template #button="modal">
                         <button @click="modal.open()" class="button button--icon button--sm excluir">
                             <mc-icon name="trash"></mc-icon>
