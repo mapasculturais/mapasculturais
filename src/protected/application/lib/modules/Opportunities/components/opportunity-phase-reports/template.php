@@ -22,7 +22,7 @@ $this->import('
                 <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
             </p>
             <p v-if="item.__objectType == 'evaluationmethodconfiguration'" class="phase-stepper__type">
-                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>: <label class="phase-stepper__type--item">{{item.type.name}}</label>
+                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>: <label class="phase-stepper__type--item">{{evaluationMethods[item.type].name}}</label>
             </p>
         </div>
     </template>
@@ -30,23 +30,23 @@ $this->import('
 
         <template v-if="isJoinedPhase(index)">
             <mapas-card v-if="item.opportunity && item.opportunity.id">
-                <v1-embed-tool route="opportunityreport" :id="item.opportunity.id"></v1-embed-tool>
+                <v1-embed-tool route="reportmanager" :id="item.opportunity.id"></v1-embed-tool>
             </mapas-card>
             <mapas-card v-if="item && item.id">
-                <v1-embed-tool route="opportunityreport" :id="item.id"></v1-embed-tool>
+                <v1-embed-tool route="reportmanager" :id="item.id"></v1-embed-tool>
             </mapas-card>
         </template>
 
         <template v-else>
             <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
                 <mapas-card v-if="item.opportunity && item.opportunity.id">
-                    <v1-embed-tool route="opportunityreport" :id="item.opportunity.id"></v1-embed-tool>
+                    <v1-embed-tool route="reportmanager" :id="item.opportunity.id"></v1-embed-tool>
                 </mapas-card>
             </template>
 
             <template v-if="item.__objectType == 'opportunity'">
                 <mapas-card v-if="item && item.id">
-                    <v1-embed-tool route="opportunityreport" :id="item.id"></v1-embed-tool>
+                    <v1-embed-tool route="reportmanager" :id="item.id"></v1-embed-tool>
                 </mapas-card>
             </template>
         </template>

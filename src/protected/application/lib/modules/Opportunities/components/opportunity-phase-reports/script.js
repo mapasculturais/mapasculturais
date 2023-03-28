@@ -25,7 +25,8 @@ app.component('opportunity-phase-reports', {
 
     data() {
         return {
-            phases: []
+            phases: [],
+            evaluationMethods: $MAPAS.config.evaluationMethods
         }
     },
 
