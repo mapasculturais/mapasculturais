@@ -30,23 +30,23 @@ $this->import('
 
         <template v-if="isJoinedPhase(index)">
             <mapas-card v-if="item.opportunity && item.opportunity.id">
-                <v1-embed-tool route="opportunityreport" :id="item.opportunity.id"></v1-embed-tool>
+                <v1-embed-tool route="reportmanager" :id="item.opportunity.id"></v1-embed-tool>
             </mapas-card>
             <mapas-card v-if="item && item.id">
-                <v1-embed-tool route="opportunityreport" :id="item.id"></v1-embed-tool>
+                <v1-embed-tool route="reportmanager" :id="item.id"></v1-embed-tool>
             </mapas-card>
         </template>
 
         <template v-else>
             <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
                 <mapas-card v-if="item.opportunity && item.opportunity.id">
-                    <v1-embed-tool route="opportunityreport" :id="item.opportunity.id"></v1-embed-tool>
+                    <v1-embed-tool route="reportmanager" :id="item.opportunity.id"></v1-embed-tool>
                 </mapas-card>
             </template>
 
             <template v-if="item.__objectType == 'opportunity'">
                 <mapas-card v-if="item && item.id">
-                    <v1-embed-tool route="opportunityreport" :id="item.id"></v1-embed-tool>
+                    <v1-embed-tool route="reportmanager" :id="item.id"></v1-embed-tool>
                 </mapas-card>
             </template>
         </template>
