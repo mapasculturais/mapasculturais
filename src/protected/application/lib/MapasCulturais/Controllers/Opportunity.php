@@ -1101,4 +1101,27 @@ class Opportunity extends EntityController {
       $this->render('registrations', ['entity' => $entity]);
     }
   }
+
+  function GET_opportunityEvaluations() {
+    $this->requireAuthentication();
+    $app = App::i();
+
+    $entity = $this->requestedEntity;
+
+    if (!$entity) {
+      $app->pass();
+    }
+
+    $entity->checkPermission('modify');
+
+    if($entity->usesNested()){
+
+      $child_entity_request = $app->repo('RequestChildEntity')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+
+      $this->render('list-evaluation', ['entity' => $entity, 'child_entity_request' => $child_entity_request]);
+
+    }else{
+      $this->render('list-evaluation', ['entity' => $entity]);
+    }
+  }
 }
