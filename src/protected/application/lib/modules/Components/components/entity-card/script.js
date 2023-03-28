@@ -36,10 +36,7 @@ app.component('entity-card', {
         },
         linguagens() {
             return (Array.isArray(this.entity.terms.linguagem) ? this.entity.terms.linguagem.join(", ") : false);
-        }
-    },
-    
-    methods: {
+        },
         openSubscriptions() {
             if (this.entity.__objectType == "opportunity") {
                 if(this.entity.registrationFrom && this.entity.registrationTo) {
@@ -49,6 +46,9 @@ app.component('entity-card', {
                 }
             }
             return false;
+        },
+        useLabels() {
+            return this.openSubscriptions || this.hasSlot('labels')
         }
     },
 });
