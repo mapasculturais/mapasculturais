@@ -1,4 +1,4 @@
-# Componente `<mc-input-datepicker-wrapper>`
+# Componente `<entity-field-datepicker>`
 Adiciona um campo de input de data
 
 ## Propriedades
@@ -10,12 +10,12 @@ Adiciona um campo de input de data
 ### Importando componente
 ```PHP
 <?php 
-$this->import('mc-input-datepicker-wrapper');
+$this->import('entity-field-datepicker');
 ?>
 ```
 ### Exemplos de uso
 ```HTML
-<mc-input-datepicker-wrapper :entity="entity" :prop="prop" field-type="date"></mc-input-datepicker-wrapper>
+<entity-field-datepicker :entity="entity" :prop="prop" field-type="date"></entity-field-datepicker>
 
-<mc-input-datepicker-wrapper :entity="entity" :prop="prop" :min-date="2012-01-01" :max-date="2012-02-01" field-type="date"></mc-input-datepicker-wrapper>
+<entity-field-datepicker :entity="entity" :prop="prop" :min-date="2012-01-01" :max-date="2012-02-01" field-type="date"></entity-field-datepicker>
 ```
