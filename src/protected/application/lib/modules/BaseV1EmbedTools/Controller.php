@@ -35,6 +35,15 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->render("support-builder", ['entity' => $entity]);
     }
 
+    public function GET_evaluationmanager()
+    {
+        $entity = $this->getEntityAndCheckPermission('@control');
+
+        $evaluation_method = $entity->getEvaluationMethod();
+
+        $this->render("evaluation-manager", ['entity' => $entity, 'evaluation_method' => $evaluation_method]);
+    }
+
     public function GET_registrationform()
     {
         $this->entityClassName = "MapasCulturais\\Entities\\Registration";
