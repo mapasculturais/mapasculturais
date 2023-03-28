@@ -5,7 +5,8 @@ $this->layout = 'entity';
 $this->breadcrumb = [
   ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
   ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
-  ['label'=> $entity->name, 'url' => $app->createUrl('opportunity', 'formBuilder', [$entity->id])],
+  ['label'=> $entity->name, 'url' => $app->createUrl('opportunity', 'edit', [$entity->id])],
+  ['label'=> i::__('Configuração do formulário'), 'url' => $app->createUrl('opportunity', 'formBuilder', [$entity->id])]
 ];
 
 $this->import('
@@ -26,7 +27,7 @@ $this->import('
         </template>
     </opportunity-header>
 
-    <opportunity-form-builder :entity="entity.parent ? entity.parent : entity" :is-first-phase="entity.parent == null || entity.isFirstPhase"></opportunity-form-builder>
+    <opportunity-form-builder :entity="entity.parent ? entity.parent : entity"></opportunity-form-builder>
 
-    <entity-actions :entity="entity.parent ? entity.parent : entity" editable></entity-actions>
+    <entity-actions :entity="entity.parent ? entity.parent : entity" editable :can-delete="false"></entity-actions>
 </div>
