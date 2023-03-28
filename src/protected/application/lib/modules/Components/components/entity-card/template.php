@@ -25,7 +25,9 @@ $this->import('mc-icon');
 			</div>
 		</div>
 		<div class="entity-card__header user-slot">
-			<slot name="labels"></slot>
+			<slot name="labels">
+				<span class="openSubscriptions" v-if="openSubscriptions()"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
+			</slot>
 		</div>
 	</div>
 

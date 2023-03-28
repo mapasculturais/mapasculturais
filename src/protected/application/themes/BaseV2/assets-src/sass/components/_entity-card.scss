@@ -116,6 +116,21 @@
 					line-height: size(16);
 				}
 			}
+
+			.openSubscriptions {
+				color: var(--mc-low-700);
+				display: flex;
+				font-size: size(14);
+				font-weight: 700;
+				gap: size(6);
+				line-height: size(19);
+
+				.iconify {
+					color: #008739;
+					font-size: size(21);
+				}
+
+			}
 		}
 
 		&--highlight {
