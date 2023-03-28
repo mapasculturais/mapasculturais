@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta o scroll para que quando existir error no formulário ele pare corretamente sobre o elemento
 - Ajusta método sendRegistration para ele só fazer a validação de erros após salvar a inscrição
 - Limpa mensagem de erro do anexo após o envio de arquivos
+
 ## [5.6.4] - 2023-03-27
 ### Correção
 - Na tela do avaliador, corrige o avanço automático das avaliações ao finalizar o processo em uma determinada inscrição
