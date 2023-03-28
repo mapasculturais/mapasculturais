@@ -1033,12 +1033,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
     }
 
-    /** @ORM\PreRemove */
-    public function unlinkEvents(){
-        foreach($this->events as $event)
-            $event->opportunity = null;
-    }
-
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
