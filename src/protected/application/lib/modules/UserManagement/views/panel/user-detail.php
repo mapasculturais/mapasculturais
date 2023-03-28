@@ -26,7 +26,6 @@ $this->import('
                     <mc-link route="panel/index" class="button button--icon button--primary-outline">
                         <mc-icon name="arrow-left"></mc-icon><?= i::__('Voltar') ?>
                     </mc-link>
-                    <a class="panel__help-link" href="#"><?= i::__('Ajuda?') ?></a>
                 </div>
                 <div class="p-user-detail__header-content">
                     <div class="management-icon">
