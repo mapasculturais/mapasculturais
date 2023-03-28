@@ -1741,6 +1741,9 @@ $$
     "Adiciona coluna publish_timestamp na tabela opportunity" => function() use ($conn){
         __exec("ALTER TABLE opportunity ADD publish_timestamp timestamp DEFAULT NULL;");
     },
+    "Adiciona coluna auto_publish na tabela opportunity" => function () {
+        __exec("ALTER TABLE opportunity ADD auto_publish BOOLEAN DEFAULT 'false' NOT NULL;");
+    },
     "Adiciona coluna evaluation_from e evaluation_to na tabela evaluation_method_configuration" => function() use ($conn){
         __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_from timestamp DEFAULT NULL;");
         __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_to timestamp DEFAULT NULL;");

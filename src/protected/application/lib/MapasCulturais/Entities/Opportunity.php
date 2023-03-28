@@ -16,6 +16,10 @@ use MapasCulturais\Definitions\Metadata as MetadataDefinition;
  * @property-read \DateTime $createTimestamp
  * @property-read \DateTime $updateTimestamp
  * @property-read array $summary
+ * @property-read boolean $autoPublish
+ * @property \DateTime $publishTimestamp
+ * @property-read boolean $publishedRegistrations
+ * 
  * 
  * @property string $name
  * @property string $shortDescription
@@ -154,6 +158,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="publish_timestamp", type="datetime", nullable=true)
      */
     protected $publishTimestamp;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="auto_publish", type="boolean", options={"default" : false})
+     */
+    protected $autoPublish = false;
 
     /**
      * @var integer
@@ -1031,12 +1042,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
         } else {
             return false;
         }
-    }
-
-    /** @ORM\PreRemove */
-    public function unlinkEvents(){
-        foreach($this->events as $event)
-            $event->opportunity = null;
     }
 
     //============================================================= //

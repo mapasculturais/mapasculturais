@@ -49,6 +49,10 @@ app.component('entity-actions', {
         editable: {
             type: Boolean,
             default: false
+        },
+        canDelete: {
+            type: Boolean,
+            default: true
         }
     },
     

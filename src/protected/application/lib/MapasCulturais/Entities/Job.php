@@ -12,11 +12,11 @@ use stdClass;
 /**
  * Job
  *
- * @property-read string $id
+ * @property string $id
  * @property string $type
- * @property-read int $iterations
+ * @property int $iterations
  * @property-read int $iterationsCount
- * @property-read string $intervalString
+ * @property string $intervalString
  * @property-read string $type
  * 
  * @ORM\Table(name="job", indexes={
@@ -182,23 +182,26 @@ class Job extends \MapasCulturais\Entity{
         }
 
         if ($success){
-            $this->iterationsCount++;
+            // para evitar que um eventual erro no job deixe a entidade detached
+            $job = $app->repo('Job')->find($this->id);
+
+            $job->iterationsCount++;
             
-            if ($this->iterationsCount >= $this->iterations) {
+            if ($job->iterationsCount >= $job->iterations) {
                 if($app->config['app.log.jobs']) {
-                    $app->log->info("Job {$this->slug}:{$this->id}: SUCCESSFUL and TERMINATED");
+                    $app->log->info("Job {$job->slug}:{$job->id}: SUCCESSFUL and TERMINATED");
                 }
 
-                $this->delete(true);
+                $job->delete(true);
             } else {
                 if($app->config['app.log.jobs']) {
-                    $app->log->info("Job {$this->slug}:{$this->id}: SUCCESSFUL");
+                    $app->log->info("Job {$job->slug}:{$job->id}: SUCCESSFUL");
                 }
-                $this->status = 0;
-                $this->lastExecutionTimestamp = new DateTime;
-                $this->nextExecutionTimestamp = new DateTime(date('Y-m-d H:i:s', strtotime($this->intervalString, $this->nextExecutionTimestamp->getTimestamp())));
+                $job->status = 0;
+                $job->lastExecutionTimestamp = new DateTime;
+                $job->nextExecutionTimestamp = new DateTime(date('Y-m-d H:i:s', strtotime($job->intervalString, $job->nextExecutionTimestamp->getTimestamp())));
                 
-                $this->save(true);
+                $job->save(true);
             }
 
         } else {
