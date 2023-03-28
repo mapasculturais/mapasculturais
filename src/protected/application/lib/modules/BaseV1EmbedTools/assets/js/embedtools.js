@@ -25,14 +25,26 @@
         }
     });
 
-    function sendSizes() {
+    function postToParent() {
         window.parent.postMessage({
             type: 'resize',
             data: {
                 height: document.body.offsetHeight+1,
             }
         }, '*');
+
+        const registrationFields = {};
+        for (let key in MapasCulturais.registration) {
+            if (key.indexOf('field_') === 0) {
+                registrationFields[key] = MapasCulturais.registration[key];
+            } 
+        }
+
+        window.parent.postMessage({
+            type: 'registration.update',
+            data: registrationFields,
+        }, '*');
     }
 
-    setInterval(sendSizes, 50);
+    setInterval(postToParent, 50);
 })(jQuery)
