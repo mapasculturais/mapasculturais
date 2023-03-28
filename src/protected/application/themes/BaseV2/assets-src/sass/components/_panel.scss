@@ -60,21 +60,7 @@
         }
     }
 
-    &__help-link {
-        background-color: var(--mc-gray-100);
-        border-radius: var(--mc-border-radius-pill);
-        color: var(--mc-low-500);
-        font-size: size(12);
-        font-weight: 800;
-        line-height: size(16);
-        padding: size(8) size(14);
-        text-decoration: none;
-
-        &:focus,
-        &:hover {
-            background-color: var(--mc-gray-300);
-        }
-    }
+   
 
     &__row {
         margin: size(32);
