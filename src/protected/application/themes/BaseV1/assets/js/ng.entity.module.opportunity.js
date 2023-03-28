@@ -1353,60 +1353,66 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.sendRegistration = function(redirectUrl = false, isAccountability = false){
         $timeout.cancel(saveTimeout); 
-        var req = $scope.saveRegistration();
 
-        req.error(function(){
-            $scope.scrollToError();
-        });
-        
-        req.success(function () { 
-            // TODO: i18n
-            if(isAccountability){
-                if(!confirm('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?')){
-                    return;
-                }                    
-            }
+        $scope.saveRegistration().success(function(){
+            var req = $scope.validateRegistration();
 
-         
-            RegistrationService.send(MapasCulturais.registration.id).success(function(response){
-                $('.js-response-error').remove();
-                if(response.error){
-                    $scope.data.errors = response.data;
-                    Object.keys(response.data).forEach(function(field, index){
-                        var $el;
-                        if(field === 'projectName'){
-                            $el = $('#projectName').parent().find('.label');
-                        }else if(field === 'category'){
-                            $el = $('#category');
-                        }else if(field.indexOf('agent') !== -1){
-                            $el = $('#' + field).parent().find('.registration-label');
-                        }else if(field.indexOf('space') !== -1){
-                            $el = $('#registration-space-title').parent().find('.registration-label');
-                        }else {
-                            $el = $('#' + field).find('div:first');
-                        }
-
-                        $scope.data.fields.forEach(function(fieldObject) {   
-                            if(fieldObject.fieldName == field){
-                                fieldObject.error = response.data[field];
-                            }
-                        });
-                    });
-                    MapasCulturais.Messages.error(labels['correctErrors']);
-                    $scope.scrollToError();
-                }else{
-                    $scope.data.sent = true;
-                    MapasCulturais.Messages.success(labels['registrationSent']);
-
-                    if (redirectUrl) {
-                        document.location = redirectUrl;
-                    } 
-                    else {
-                        document.location = response.redirect || response.singleUrl;
-                    } 
-                }
+            req.error(function(){
+                $scope.scrollToError();
             });
-        });        
+            
+            req.success(function () { 
+                // TODO: i18n
+                if(isAccountability){
+                    if(!confirm('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?')){
+                        return;
+                    }                    
+                }
+             
+         
+                RegistrationService.send(MapasCulturais.registration.id).success(function(response){
+                    $('.js-response-error').remove();
+                    if(response.error){
+                        $scope.data.errors = response.data;
+                        Object.keys(response.data).forEach(function(field, index){
+                            var $el;
+                            if(field === 'projectName'){
+                                $el = $('#projectName').parent().find('.label');
+                            }else if(field === 'category'){
+                                $el = $('#category');
+                            }else if(field.indexOf('agent') !== -1){
+                                $el = $('#' + field).parent().find('.registration-label');
+                            }else if(field.indexOf('space') !== -1){
+                                $el = $('#registration-space-title').parent().find('.registration-label');
+                            }else {
+                                $el = $('#' + field).find('div:first');
+                            }
+    
+                            $scope.data.fields.forEach(function(fieldObject) {   
+                                if(fieldObject.fieldName == field){
+                                    fieldObject.error = response.data[field];
+                                }
+                            });
+                        });
+                        MapasCulturais.Messages.error(labels['correctErrors']);
+                        $scope.scrollToError();
+                    }else{
+                        $scope.data.sent = true;
+                        MapasCulturais.Messages.success(labels['registrationSent']);
+    
+                        if (redirectUrl) {
+                            document.location = redirectUrl;
+                        } 
+                        else {
+                            document.location = response.redirect || response.singleUrl;
+                        } 
+                    }
+                });
+            });  
+        })
+        .error(function(r) {
+            $scope.validateRegistration();
+        });;
     };
 
     $scope.removeFieldErrors = function(fieldName) {
