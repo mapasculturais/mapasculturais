@@ -37,7 +37,7 @@ app.component('search-list', {
         },
         select: {
             type: String,
-            default: 'id,name,type,shortDescription,files.avatar,seals,endereco,acessibility,terms,singleUrl'
+            required: true
         },
         pseudoQuery: {
             type: Object,

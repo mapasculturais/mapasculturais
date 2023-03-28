@@ -34,7 +34,7 @@ $this->breadcrumb = [
             </template>
             <tab icon="list" label="<?php i::esc_attr_e('Lista') ?>" slug="list">
                 <div class="search__tabs--list">
-                    <search-list :pseudo-query="pseudoQuery" type="space">
+                    <search-list :pseudo-query="pseudoQuery" type="space" select="name,type,shortDescription,files.avatar,seals,endereco,terms,acessibility" >
                         <template #filter>
                             <search-filter-space :pseudo-query="pseudoQuery"></search-filter-space>
                         </template>
