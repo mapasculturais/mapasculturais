@@ -110,7 +110,7 @@
                 .title {
                     align-items: center;
                     display: grid;
-                    grid-template-columns: size(40) 1fr;
+                    grid-template-columns: size(40) 1.2fr;
                     gap: size(16);
 
 
@@ -145,17 +145,8 @@
                         font-size: size(32);
                         font-weight: 700;
                         line-height: size(44);
-                        letter-spacing: -0.05em;
-                        word-break: no-break;
-
-                        @include mobile {
-                            font-size: size(18);
-                            line-height: size(24);
-                        }
                     }
                 }
-
-
             }
 
             @include mobile {
@@ -188,8 +179,8 @@
                         }
 
                         &__title {
-                            font-size: size(18);
-
+                            font-size: size(20.8);
+                            letter-spacing: -0.05em;
                         }
                     }
                 }
