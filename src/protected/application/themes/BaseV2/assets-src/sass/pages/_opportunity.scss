@@ -26,6 +26,12 @@
       width: 100%;
       border-bottom: size(1) solid;
     }
+
+    .modalSuportBuilder {
+      .modal-content {
+        width: 90%;
+      }
+    }
   }
 
   &.action-single {
