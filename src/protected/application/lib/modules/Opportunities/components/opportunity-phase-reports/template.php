@@ -22,7 +22,7 @@ $this->import('
                 <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
             </p>
             <p v-if="item.__objectType == 'evaluationmethodconfiguration'" class="phase-stepper__type">
-                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>: <label class="phase-stepper__type--item">{{item.type.name}}</label>
+                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>: <label class="phase-stepper__type--item">{{evaluationMethods[item.type].name}}</label>
             </p>
         </div>
     </template>
