@@ -1301,7 +1301,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     });
 
     $scope.validateRegistration = function(callback='') {
-        RegistrationService.validateEntity(MapasCulturais.entity.object.id)
+        return RegistrationService.validateEntity(MapasCulturais.entity.object.id)
             .success(function(response) {
                 if(response.error) {
                     $scope.entityValidated = false;
