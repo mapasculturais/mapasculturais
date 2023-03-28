@@ -17,7 +17,7 @@ $this->breadcrumb = [
 ];
 ?>
 
-<search page-title="<?php i::esc_attr_e('Projetos') ?>" entity-type="project" :initial-pseudo-query="{type:[]}">
+<search entity-type="project" page-title="<?php i::esc_attr_e('Projetos') ?>" :initial-pseudo-query="{type:[]}">
     <template #create-button>
         <create-project #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">
@@ -29,7 +29,7 @@ $this->breadcrumb = [
     <template #default="{pseudoQuery}">
         <div class="tabs-component__panels">
             <div class="search__tabs--list">
-                <search-list :pseudo-query="pseudoQuery" type="project">
+                <search-list :pseudo-query="pseudoQuery" type="project" select="name,type,shortDescription,files.avatar,seals,terms" >
                     <template #filter>
                         <search-filter-project :pseudo-query="pseudoQuery"></search-filter-project>
                     </template>
