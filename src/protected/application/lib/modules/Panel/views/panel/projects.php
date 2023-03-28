@@ -12,9 +12,6 @@ $this->import('panel--entity-tabs panel--entity-card mc-icon create-project');
                 <div class="title__icon project__background"> <mc-icon name="project"></mc-icon> </div>
                 <div class="title__title"> <?= i::_e('Meus projetos') ?> </div>
             </div>
-            <div class="help">
-                <a class="panel__help-link" href="#"><?= i::__('Ajuda?') ?></a>
-            </div>
         </div>
         <p class="panel-page__header-subtitle">
             <?= i::_e('Nesta seção você pode adicionar e gerenciar seus projetos') ?>

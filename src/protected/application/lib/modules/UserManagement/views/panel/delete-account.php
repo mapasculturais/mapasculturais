@@ -14,9 +14,6 @@ $this->import('user-management--delete');
             <div class="title__icon default"> <mc-icon name="trash"></mc-icon> </div>
             <div class="title__title"> <?php i::esc_attr_e('Exclua sua conta') ?> </div>
           </div>
-          <div class="help">
-            <a class="panel__help-link" href="#"><?=i::__('Ajuda?')?></a>
-          </div>
         </div>
       </header>
       <user-management--delete :user="entity"></user-management--delete>
