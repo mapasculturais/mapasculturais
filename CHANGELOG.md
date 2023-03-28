@@ -4,6 +4,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.6.5] - 2023-03-28
+### Melhorias
+- Adiciona botão para fazer a validação de erros da inscrição no formulario de inscrição
+### Correção
+- Redefine método saveRegistration para apenas salvar a inscrição e não computar erros do formulário
+- Ajusta o scroll para que quando existir error no formulário ele pare corretamente sobre o elemento
+- Ajusta método sendRegistration para ele só fazer a validação de erros após salvar a inscrição
+- Limpa mensagem de erro do anexo após o envio de arquivos
 ## [5.6.4] - 2023-03-27
 ### Correção
 - Na tela do avaliador, corrige o avanço automático das avaliações ao finalizar o processo em uma determinada inscrição
