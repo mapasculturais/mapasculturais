@@ -145,6 +145,13 @@
                         font-size: size(32);
                         font-weight: 700;
                         line-height: size(44);
+                        letter-spacing: -0.05em;
+                        word-break: no-break;
+
+                        @include mobile {
+                            font-size: size(18);
+                            line-height: size(24);
+                        }
                     }
                 }
 
@@ -268,28 +275,29 @@
 
         .actions-left {
             display: inline-flex;
+
             .panel__entity-actions:first-of-type {
 
                 display: flex;
                 flex-direction: row-reverse;
             }
-        
 
-        &-before {
-            // background-color: red;
+
+            &-before {
+                // background-color: red;
+            }
+
+            &-after {
+                // background-color: blue;
+            }
+
         }
 
-        &-after {
-            // background-color: blue;
-        }
+        .tabs-component {
+            &__panels {
+                margin: 0;
+            }
 
+        }
     }
-
-    .tabs-component {
-        &__panels {
-            margin: 0;
-        }
-
-    }
-}
 }
