@@ -146,8 +146,14 @@
 		text-align: left;
 
 		&-shortDescription {
-			white-space: pre-line;
-
+				max-width: 285px;
+				white-space: pre-line;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				display: inline;
+				width: 48em; 
+			
 		}
 
 		&--occurrence {
