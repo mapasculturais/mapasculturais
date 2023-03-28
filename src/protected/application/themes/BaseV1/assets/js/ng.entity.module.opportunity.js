@@ -1155,24 +1155,16 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.saveRegistration = function () {
-       return RegistrationService.updateFields($scope.data.editableEntity)
-        .success(function(r){
-            $scope.validateRegistration();
-        })
-        .error(function(r) {
-                $scope.data.errors = r.data;
-                for (var key in r.data) {
-                    $scope.data.fields.forEach(function(field) {
-                        if(field.fieldName == key){
-                            field.error = r.data[key]
-                        }
-                    });
-                }
-                $scope.validateRegistration();
-                MapasCulturais.Messages.error(labels['correctErrors']);
-            });
+       return RegistrationService.updateFields($scope.data.editableEntity).success(function(){
+            MapasCulturais.Messages.success(labels['changesSaved']);
+       }).error(function(req, status){
+            if(status == 400){
+                MapasCulturais.Messages.success(labels['changesSaved']);
+            }else{
+                MapasCulturais.Messages.error(labels['unexpectedError']);
+            }
+       })        
     }
-
 
     function replaceRegistrationAgentBy(groupName, agent, relationStatus){
         for(var i in MapasCulturais.entity.registrationAgents){
