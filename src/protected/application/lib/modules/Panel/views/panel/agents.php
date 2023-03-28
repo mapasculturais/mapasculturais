@@ -12,9 +12,6 @@ $this->import('create-agent panel--entity-tabs panel--entity-actions panel--enti
                 <div class="title__icon agent__background"> <mc-icon name="agent"></mc-icon> </div>
                 <div class="title__title"> <?= i::_e('Meus agentes') ?> </div>
             </div>
-            <div class="help">
-                <a class="panel__help-link" href="#"><?= i::__('Ajuda?') ?></a>
-            </div>
         </div>
         <p class="panel-page__header-subtitle">
             <?= i::_e('Nesta seção você visualiza e gerencia seu perfil de usuário e outros agentes criados') ?>
