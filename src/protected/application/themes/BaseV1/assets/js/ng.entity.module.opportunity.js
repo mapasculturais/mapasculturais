@@ -1514,6 +1514,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         $form.on('ajaxForm.success', function(evt, response){
             $scope.data.fields[index].file = response[$scope.data.fields[index].groupName];
+            $scope.data.fields[index].error = [];
             $scope.$apply();
             setTimeout(function(){
                 $('.carregando-arquivo').hide();
