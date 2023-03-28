@@ -28,7 +28,7 @@ $this->import('
                     <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date"></entity-field>
                 </div>
                 <div class="col-4 sm:col-12">
-                    <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date"></entity-field>
+                    <entity-field :entity="entity" prop="registrationTo" :autosave="300" :min="entity.registrationFrom?._date"></entity-field>
                 </div>
             </div>
             <div class="grid-12">

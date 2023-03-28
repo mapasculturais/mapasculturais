@@ -11,7 +11,7 @@ $this->import('
         <div class="config-phase__title col-12">
             <h3 class="config-phase__title--title"><?= i::__("Configuração da fase") ?></h3>
         </div>
-        <entity-field :entity="phase" prop="registrationFrom" :autosave="300" classes="col-6 sm:col-12" :min="minDate?._date" :max="phase.registrationTo?._date"></entity-field>
+        <entity-field :entity="phase" prop="registrationFrom" classes="col-6 sm:col-12" :min="minDate?._date" :max="phase.registrationTo?._date"></entity-field>
         <entity-field :entity="phase" prop="registrationTo" :autosave="300" classes="col-6 sm:col-12" :min="phase.registrationFrom?._date" :max="maxDate?._date"></entity-field>
         <div class="col-6 sm:col-12">
             <mc-link :entity="phase" route='formBuilder' class="config-phase__info--button button--primary button" icon="external">
