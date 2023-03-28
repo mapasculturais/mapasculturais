@@ -11,7 +11,7 @@ $this->import('
             <entity-field :entity="phase" prop="name" :autosave="300" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
         </div>
 
-        <entity-field :entity="phase" prop="evaluationFrom" :autosave="300" classes="col-6 sm:col-12" :min="minDate?._date" :max="phase.evaluationTo?._date"></entity-field>
+        <entity-field :entity="phase" prop="evaluationFrom" classes="col-6 sm:col-12" :min="minDate?._date" :max="phase.evaluationTo?._date"></entity-field>
         <entity-field :entity="phase" prop="evaluationTo" :autosave="300" classes="col-6 sm:col-12" :min="phase.evaluationFrom?._date" :max="maxDate?._date"></entity-field>
 
 
