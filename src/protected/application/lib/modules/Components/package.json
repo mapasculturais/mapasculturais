@@ -11,7 +11,7 @@
         "@iconify/vue": "^3.2.1",
         "@types/leaflet": "^1.7.11",
         "@vue-leaflet/vue-leaflet": "^0.6.1",
-        "@vuepic/vue-datepicker": "^3.4.8",
+        "@vuepic/vue-datepicker": "^4.2.3",
         "date-fns": "^2.29.3",
         "floating-vue": "^2.0.0-beta.20",
         "leaflet": "1.7.1",
