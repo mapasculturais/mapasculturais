@@ -27,6 +27,7 @@
 
         &-item {
             word-break: break-word;
+
             &-img {
                 border-radius: 50%;
                 display: flex;
@@ -36,17 +37,17 @@
                 overflow: hidden;
                 height: size(40);
                 width: size(40);
-                
+                max-width: 100%;
+
                 .iconify {
                     color: var(--mc-high-500);
                 }
             }
 
             &-link {
-                display: flex;
-                align-items: center;
+                display: grid;
+                grid-template-columns: 48px 1fr;
                 gap: size(8);
-                color: var(--mc-agents-500);
                 text-decoration: none;
             }
         }
