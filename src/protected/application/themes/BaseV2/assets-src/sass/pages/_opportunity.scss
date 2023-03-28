@@ -10,6 +10,12 @@
   &.action-edit {
     background-color: var(--mc-gray-100);
 
+    .tabs-component {
+      &__header {
+        margin: size(-40) auto size(40);
+      }
+    }
+
     .container {
       main {
         gap: size(40);
