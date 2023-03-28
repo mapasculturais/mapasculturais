@@ -12,11 +12,11 @@ use stdClass;
 /**
  * Job
  *
- * @property-read string $id
+ * @property string $id
  * @property string $type
- * @property-read int $iterations
+ * @property int $iterations
  * @property-read int $iterationsCount
- * @property-read string $intervalString
+ * @property string $intervalString
  * @property-read string $type
  * 
  * @ORM\Table(name="job", indexes={
