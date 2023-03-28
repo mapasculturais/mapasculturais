@@ -1343,9 +1343,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.scrollToError = function(){
         
         setTimeout(function(){
-            var $el = $('.registration-fieldset .alert.danger');
+            var $el = $('.invalidField');
+            window.$el = $el;
             if($el.length){
-                $('html,body').animate({scrollTop: $el.get(0).offsetTop - 100}, 300);
+                $('html,body').animate({scrollTop: $el.offset().top - 100}, 300);
             }
         },10);
     };
