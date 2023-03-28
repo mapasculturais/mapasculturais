@@ -12,7 +12,7 @@ $this->import('
 <div class="form-builder__content">
     <div class="grid-12 form-builder__bg-content">
         <div class="col-8 sm:col-12 form-builder__title">
-            <p class="opportunity__color"><?= i::__("1. {{ getTitleForm }}") ?></p>
+            <p class="opportunity__color"><?= i::__("{{ getTitleForm }}") ?></p>
         </div>
         <div class="col-2 sm:col-6 form-builder__period">
             <h5 class="period_label"><?= i::__("Data de início") ?></h5>
@@ -31,17 +31,17 @@ $this->import('
     </div>
 
     <div class="grid-12">
-        <div class="col-6 sm:col-12">
-            <opportunity-form-builder-category v-if="entity.isFirstPhase || !entity.parent" :entity="entity"></opportunity-form-builder-category>
+        <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
+            <opportunity-form-builder-category :entity="entity"></opportunity-form-builder-category>
         </div>
         <div class="col-6 sm:col-12">
             <div class="form-builder__bg-content form-builder__bg-content--spacing">
-                <div>
+                <div v-if="entity.isFirstPhase">
                     <h4><?= i::__("Permitir Agente Coletivo?") ?></h4>
                     <span class="subtitle"><?= i::__("Permitir inscrição de Agente Coletivo") ?></span>
                     <entity-field :entity="entity" prop="useAgentRelationColetivo"></entity-field>
                 </div>
-                <div>
+                <div v-if="entity.isFirstPhase">
                     <h4><?= i::__("Permitir instituição responsável?") ?></h4>
                     <span class="subtitle"><?= i::__("Permitir inscrição de instituições") ?></span>
                     <entity-field :entity="entity" prop="useAgentRelationInstituicao"></entity-field>
@@ -54,7 +54,7 @@ $this->import('
                 </div>
             </div>
         </div>
-        <div class="col-6 sm:col-12">
+        <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
             <div class="form-builder__bg-content form-builder__bg-content--spacing">
                 <h4><?= i::__("Permitir vínculo de Espaço?") ?></h4>
                 <span class="subtitle"><?= i::__("Permitir um espaço para associar à inscrição.") ?></span>

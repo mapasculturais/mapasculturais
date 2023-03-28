@@ -4,11 +4,7 @@ app.component('opportunity-form-builder' , {
         entity: {
             type: Entity,
             required: true
-        },
-        isFirstPhase: {
-            type: Boolean,
-            required: true
-        },
+        }
     },
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
@@ -31,10 +27,10 @@ app.component('opportunity-form-builder' , {
             return new McDate(this.entity.registrationTo._date).date('2-digit year');
         },
         getTitleForm () {
-            if(this.isFirstPhase) {
-                return 'Período de inscrição';
+            if(this.entity.isFirstPhase) {
+                return '1. Período de inscrição';
             } else {
-                return this.entity.name;
+                return `${this.entity.id}. ${this.entity.name}`;
             }
         }
     }
