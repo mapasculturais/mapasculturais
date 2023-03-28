@@ -1143,11 +1143,16 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     // modifica o botão salvar
     if(MapasCulturais.isEditable){
         $('#editable-entity .js-submit-button').remove();
-        $('#editable-entity .controles').html('<a class="btn btn-primary js-save-registration" rel="noopener noreferrer">Salvar</a>');
+        $('#editable-entity .controles').html('<a class="btn btn-default js-validade-registration" rel="noopener noreferrer">Validar inscrição</a> <a class="btn btn-primary js-save-registration" rel="noopener noreferrer">Salvar</a>');
         if(!$('#editable-entity .js-save-registration').data('registration')) {
             $('#editable-entity .js-save-registration').data('registration', true);
             $('#editable-entity .js-save-registration').click(function(e) {
                 $scope.saveRegistration();
+            });
+
+            $('#editable-entity .js-validade-registration').click(function(e) {
+                $scope.validateRegistration();
+                $scope.scrollToError();
             });
         }
     }else{
