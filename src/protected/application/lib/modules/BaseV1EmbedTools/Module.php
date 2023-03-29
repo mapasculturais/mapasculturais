@@ -19,6 +19,9 @@ class Module extends \MapasCulturais\Module
     {
         if (strpos($_SERVER['REQUEST_URI'], '/embedtools') === 0) {
             $app = App::i();
+
+            $app->view->enqueueScript('app', 'evaluations', 'js/evaluations.js');
+
             $theme_instance = new \MapasCulturais\Themes\BaseV1\Theme($app->config['themes.assetManager']);
             $theme_instance->path = $app->view->path;
             $app->view = $theme_instance;
