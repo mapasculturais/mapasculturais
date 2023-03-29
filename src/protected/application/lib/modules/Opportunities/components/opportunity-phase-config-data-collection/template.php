@@ -20,7 +20,7 @@ $this->import('
         </div>
 
         <div class="config-phase__line-bottom col-12 "></div>
-        <div class="phase-delete col-6" v-if="!phase.isLastPhase && !phase.isFirstPhase">
+        <div class="phase-delete col-12" v-if="!phase.isLastPhase && !phase.isFirstPhase">
             <confirm-button message="Confirma a execução da ação?" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
                     <a class="phase-delete__trash" @click="modal.open">
