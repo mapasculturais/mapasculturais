@@ -33,7 +33,7 @@ $this->import('mc-icon');
 
 	<div class="entity-card__content">
 	<div class="entity-card__content-shortDescription">
-				<span class="short-span">{{entity.shortDescription}}</span>
+				<span class="short-span">{{showShortDescription}}</span>
 		</div>
 		<div v-if="entity.__objectType=='space'" class="entity-card__content--description">
 
