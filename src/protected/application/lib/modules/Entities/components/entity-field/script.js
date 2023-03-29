@@ -120,7 +120,11 @@ app.component('entity-field', {
 
             this.__timeout = setTimeout(() => {
                 if(this.is('date') || this.is('datetime') || this.is('time')) {
-                    this.entity[this.prop] = new McDate(event);
+                    if(event) {
+                        this.entity[this.prop] = new McDate(event);
+                    } else {
+                        this.entity[this.prop] = '';
+                    }
                 } else {
                     this.entity[this.prop] = event.target.value;
                 }
