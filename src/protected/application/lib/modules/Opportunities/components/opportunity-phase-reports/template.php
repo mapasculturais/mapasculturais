@@ -28,28 +28,9 @@ $this->import('
     </template>
     <template #default="{index, item}">
 
-        <template v-if="item.phases.length > 1">
-            <mapas-card v-if="item.phases[0].opportunity && item.phases[0].opportunity.id">
-                <v1-embed-tool route="reportmanager" :id="item.phases[0].opportunity.id"></v1-embed-tool>
-            </mapas-card>
-            <mapas-card v-if="item.phases[0] && item.phases[0].id">
-                <v1-embed-tool route="reportmanager" :id="item.phases[0].id"></v1-embed-tool>
-            </mapas-card>
-        </template>
-
-        <template v-else>
-            <template v-if="item.phases[0] && item.phases[0].__objectType == 'evaluationmethodconfiguration'">
-                <mapas-card v-if="item.phases[0].opportunity && item.phases[0].opportunity.id">
-                    <v1-embed-tool route="reportmanager" :id="item.phases[0].opportunity.id"></v1-embed-tool>
-                </mapas-card>
-            </template>
-
-            <template v-if="item.phases[0] && item.phases[0].__objectType == 'opportunity'">
-                <mapas-card v-if="item.phases[0] && item.phases[0].id">
-                    <v1-embed-tool route="reportmanager" :id="item.phases[0].id"></v1-embed-tool>
-                </mapas-card>
-            </template>
-        </template>
+        <mapas-card v-if="item.id">
+            <v1-embed-tool route="reportmanager" :id="item.id"></v1-embed-tool>
+        </mapas-card>
 
     </template>
 </mc-stepper-vertical>
