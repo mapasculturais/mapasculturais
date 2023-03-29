@@ -191,6 +191,14 @@ body {
     margin: 0;
 }
 
+.project-edit-mode--header .registration-help {
+    margin-bottom: 1rem;
+}
+
+.project-edit-mode .projectName {
+    display: none;
+}
+
 .project-edit-mode .buttons {
     background: #FFFFFF;
     border-radius: 0.25rem;
