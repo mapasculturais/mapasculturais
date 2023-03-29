@@ -479,7 +479,7 @@ body {
 }
 
 #support-settings .support-content-modal {
-    max-width: 96.3% !important;
+    max-width: calc(100% - 50px) !important;
     width: 100% !important;
     margin: 0 auto !important;
     border-radius: 0 !important;
