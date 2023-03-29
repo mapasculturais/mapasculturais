@@ -5,7 +5,7 @@ $this->import('
 ');
 ?>
 
-<modal title="<?= i::__("Adicionar Fase de Avaliação") ?>" @open="createEntity()" @close="destroyEntity()">
+<modal title="<?= i::__("Adicionar Fase de Avaliação") ?>" @open="createEntity()" @close="destroyEntity()" classes="-with-datepicker">
     <template #default="modal">
         <div class="grid-12">
             <div class="col-12">
@@ -29,6 +29,6 @@ $this->import('
     </template>
 
     <template #button="modal">
-        <a class="button button--primary w-100" href="#" @click="modal.open()"><?= i::__("Adicionar fase Avaliação") ?></a>
+        <a class="button button--primary w-100" href="javascript:void(0)" @click="modal.open()"><?= i::__("Adicionar fase Avaliação") ?></a>
     </template>
 </modal>

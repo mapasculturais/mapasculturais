@@ -1339,7 +1339,7 @@ class Theme extends MapasCulturais\Theme {
                 return;
             }
 
-            while($registration = self::getPreviousPhaseRegistration($registration)){
+            while($registration = Phases::getPreviousPhaseRegistration($registration)){
                 $opportunity = $registration->opportunity;
 
                 $this->registerRegistrationMetadata($opportunity);

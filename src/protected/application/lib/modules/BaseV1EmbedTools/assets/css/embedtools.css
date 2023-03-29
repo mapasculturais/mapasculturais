@@ -191,6 +191,14 @@ body {
     margin: 0;
 }
 
+.project-edit-mode--header .registration-help {
+    margin-bottom: 1rem;
+}
+
+.project-edit-mode .projectName {
+    display: none;
+}
+
 .project-edit-mode .buttons {
     background: #FFFFFF;
     border-radius: 0.25rem;
@@ -396,6 +404,7 @@ body {
     background-color: #FFFFFF;
     border-radius: 0.25rem;
     margin-bottom: 1rem;
+    border: 1px solid #BBBBBB;
 }
 
 #support-settings .support-content .committee .committee--info {
@@ -473,6 +482,78 @@ body {
     color: #FFFFFF;
 }
 
+#support-settings  .edit-box {
+    position: absolute !important;
+    right: 0px !important;
+}
+
+#support-settings .support-content-modal {
+    max-width: calc(100% - 50px) !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    border-radius: 0 !important;
+}
+
+#support-settings .support-content-modal header {
+    height: unset;
+    margin: unset;
+}
+
+#support-settings .support-content-modal header .support-modal-title{
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.125rem;
+    line-height: 1.563rem;
+    margin: 0 0 0.375rem;
+    padding: 0;
+    border: none;
+}
+
+#support-settings .support-content-modal header .x {
+    padding: 0;
+    top: 0;
+}
+
+#support-settings .support-content-modal header .multiple-fields {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3rem;
+    margin-bottom: 1rem;
+}
+
+#support-settings .support-content-modal header hr {
+    margin: 0;
+}
+
+#support-settings .support-content-modal select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--mc-white);
+    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/1.25rem;
+    width: unset;
+    height: unset;
+    padding: 0.875rem 1.875rem 0.875rem 0.688rem;
+    margin: 0;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+}
+
+#support-settings .support-content-modal .modal-body ul {
+    margin: 0 !important;
+}
+
+#support-settings .support-content-modal .modal-body ul li {
+    border-bottom: 0.063rem solid #BBBBBB;
+    padding: 1.5rem 0.625rem !important;
+    margin: 0 !important;
+}
 
 
 /* Affirmative policies manager */

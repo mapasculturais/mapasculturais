@@ -161,7 +161,7 @@
 		text-align: left;
 
 		&-shortDescription {
-			
+			word-break: break-all;
 		}
 
 		&--occurrence {
@@ -178,27 +178,34 @@
 				}
 			}
 
+			
 			&-space {
 				font-weight: 700;
 				font-size: size(14);
 				line-height: size(19);
 				display: flex;
 				align-items: center;
-				gap: size(10);
+				gap: size(11);
 
 				.link {
 					align-items: center;
 					display: flex;
 					gap: size(10);
 					text-decoration: none;
-
-					.iconify {
-						font-size: size(18);
-					}
+					font-size: size(18);
 				}
+
+				.space-adress {
+				&__adress{
+					margin-left: size(10);
+				}}
+				// @media (max-width:size(500)){
+				// 	display: unset;
+				// }
 			}
 
 			&-info {
+				// background-color: red;
 				font-size: size(14);
 				line-height: size(19);
 				display: flex;

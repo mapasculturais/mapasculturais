@@ -7,6 +7,11 @@
     justify-content: center;
     align-items: center;
 }
+
+.modal-container.-with-datepicker .modal__content {
+    overflow: unset;
+}
+
 .modal-content {
     position: relative;
     display: flex;

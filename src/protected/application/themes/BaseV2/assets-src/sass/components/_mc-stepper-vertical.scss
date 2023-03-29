@@ -20,9 +20,8 @@ ol.mc-stepper-vertical {
 ol.mc-stepper-vertical li {
     position: relative;
     counter-increment: item;
-    padding-left: 20px;
     border-left: 3px solid red;
-    padding-bottom: 20px;
+    padding: 0 45px 20px;
 
     mapas-card {
 
@@ -326,7 +325,6 @@ ol.mc-stepper-vertical li.active::before {
     .stepper-step {
         max-width: 1096px;
         width: 100%;
-        margin-left: 25px;
 
         .mapas-card {
             margin-bottom: 0;
@@ -345,15 +343,13 @@ ol.mc-stepper-vertical li.active::before {
 
 
     .stepper-header {
-
         background-color: white;
         padding: 16px;
         border-radius: 4px;
         display: flex;
-        gap: 100px;
         justify-content: space-between;
         flex-direction: row;
-        align-items: flex-start;
+        align-items: center;
 
         .phase-stepper {
 
@@ -395,10 +391,32 @@ ol.mc-stepper-vertical li.active::before {
             &__name {}
         }
 
+        .phase-actions {
+            display: flex;
+            gap: size(47);
+            color: var(--mc-primary-500);
+            font-weight: 700;
+            font-size: size(14);
+            line-height: size(19); 
+            
+            a.support {
+                display: flex;
+                align-items: center;
+                gap: size(8);
+                cursor: pointer;
+
+                .iconify {
+                    font-size: size(24);
+                }
+            }
+
+        }
+
         .expand-stepper {
             display: flex;
             align-items: center;
             color: var(--mc-primary-500);
+            gap: size(4);
 
             label {
                 font-weight: 700;

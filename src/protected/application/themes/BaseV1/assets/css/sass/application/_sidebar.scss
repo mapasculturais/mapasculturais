@@ -96,7 +96,7 @@
                 &.valid { background-color: $alert-success-bg !important;}
                 &.invalid { background-color: $alert-danger-bg !important; }
                 &.current { background: white !important; }
-
+                &.finish { background: #fcfcfc !important; }
 
                 .registration-evaluated {
                     font-style: italic;

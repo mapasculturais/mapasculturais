@@ -745,6 +745,35 @@ class Module extends \MapasCulturais\Module{
             $this->opportunity = $phase;
         });
 
+        /** Adiciona o isFirstPhase ao requestedEntity */
+        $app->hook('view.requestedEntity(Opportunity).result', function(&$entity) {
+            $entity['isFirstPhase'] = !isset($entity['parent']);
+        });
+
+        /** Adiciona o isFirstPhase ao propertiesMetadata  */
+        $app->hook('entity(Opportunity).propertiesMetadata', function (&$result) {
+            $result['isFirstPhase'] = [
+                'label' => i::__('Indica se o objeto é a primeira fase da oportunidade'),
+                'isMetadata' => true,
+                'isEntityRelation' => false,
+                'required' => false,
+                'type' => 'boolean',
+                'isReadonly' => true,
+            ];
+        });
+        
+        /** Adiciona o summary ao propertiesMetadata  */
+        $app->hook('entity(<<Opportunity|EvaluationMethodConfiguration>>).propertiesMetadata', function (&$result) {
+            $result['summary'] = [
+                'label' => i::__('Resumo dos status da fase'),
+                'isMetadata' => true,
+                'isEntityRelation' => false,
+                'required' => false,
+                'type' => 'object',
+                'isReadonly' => true,
+            ];
+        });
+
         // hooks específicos para os novos temas
         if ($app->view->version >= 2) {
             // cria a fase de publicaçao de resultado na criação de novas oportunidades
@@ -789,7 +818,6 @@ class Module extends \MapasCulturais\Module{
                     $opportunity->destroy(true);
                 }
             });
-
         }
     }
 
