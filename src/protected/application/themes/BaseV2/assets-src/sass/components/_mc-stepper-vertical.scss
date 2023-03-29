@@ -20,9 +20,8 @@ ol.mc-stepper-vertical {
 ol.mc-stepper-vertical li {
     position: relative;
     counter-increment: item;
-    padding-left: 20px;
     border-left: 3px solid red;
-    padding-bottom: 20px;
+    padding: 0 45px 20px;
 
     mapas-card {
 
@@ -326,7 +325,6 @@ ol.mc-stepper-vertical li.active::before {
     .stepper-step {
         max-width: 1096px;
         width: 100%;
-        margin-left: 25px;
 
         .mapas-card {
             margin-bottom: 0;
@@ -349,7 +347,6 @@ ol.mc-stepper-vertical li.active::before {
         padding: 16px;
         border-radius: 4px;
         display: flex;
-        gap: 100px;
         justify-content: space-between;
         flex-direction: row;
         align-items: center;
