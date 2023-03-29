@@ -23,8 +23,8 @@ $this->import('
             </label>
                 <textarea v-model="phase.infos['general']" @change="savePhase()" class="evaluation-config__area" rows="10"></textarea>
         </div>
-        <div class="col-6 sm:col-12 field" v-for="(category, index) in categories">
-            <label :key="index"> {{ category }}
+        <div class="col-6 sm:col-12" v-for="(category, index) in categories">
+            <label :key="index"> <strong>{{ category }}</strong>
                 <textarea v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10"></textarea>
             </label>
         </div>
