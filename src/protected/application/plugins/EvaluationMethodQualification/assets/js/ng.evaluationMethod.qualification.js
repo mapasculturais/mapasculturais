@@ -143,8 +143,13 @@
                 return i;
             });
            
-            crit.options.unshift(labels['disabled']);
-            crit.options.unshift(labels['enabled']);
+            if(!crit.options.includes(labels['disabled'])){
+                crit.options.unshift(labels['disabled']);
+            }
+
+            if(!crit.options.includes(labels['enabled'])){
+                crit.options.unshift(labels['enabled']);
+            }
 
             if(crit.notApplyOption && crit.options.length > 0){
                 crit.options.unshift(labels['notApplicable'])
