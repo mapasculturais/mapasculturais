@@ -755,6 +755,9 @@ class Module extends \MapasCulturais\Module{
             $result['isFirstPhase'] = [
                 'label' => i::__('Indica se o objeto é a primeira fase da oportunidade'),
                 'isMetadata' => true,
+                'isEntityRelation' => false,
+                'required' => false,
+                'type' => 'boolean',
                 'isReadonly' => true,
             ];
         });
