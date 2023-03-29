@@ -250,6 +250,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     public function getSummary()
     {
+        if($this->isNew()) {
+            return [];
+        }
+        
         /** @var App $app */
         $app = App::i();
 
