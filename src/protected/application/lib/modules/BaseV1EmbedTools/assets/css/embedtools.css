@@ -404,6 +404,7 @@ body {
     background-color: #FFFFFF;
     border-radius: 0.25rem;
     margin-bottom: 1rem;
+    border: 1px solid #BBBBBB;
 }
 
 #support-settings .support-content .committee .committee--info {
