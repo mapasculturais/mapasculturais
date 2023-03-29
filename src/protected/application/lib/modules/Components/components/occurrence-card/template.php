@@ -37,16 +37,16 @@ $this->import('mc-icon mc-link');
                 <span class="space-adress__adress" v-if="space.endereco">- {{space.endereco}}</span>
             </div>
         </div>
-
-
-
-
         <div class="entity-card__content--occurrence-info">
             <div class="ageRating">
-                <?= i::__('Classificação') ?>: <strong>{{event.classificacaoEtaria}}</strong>
+                <span class="ageRating__class"><?= i::__('Classificação') ?><strong>:</strong></span>
+
+                <span class="ageRating__value">{{event.classificacaoEtaria}}</span>
             </div>
-            <div v-if="occurrence.price" class="price">
-                <?= i::__('Entrada') ?>: <strong>{{occurrence.price}}</strong>
+            <div v-if="occurrence.price" class="price ageRating">
+                <span class="ageRating__class"><?= i::__('Entrada') ?><strong>:</strong></span>
+
+                <span class="ageRating__value">{{occurrence.price}}</span>
             </div>
         </div>
         <div class="entity-card__content--terms">
