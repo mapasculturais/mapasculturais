@@ -5,7 +5,7 @@ $this->import('
 ');
 ?>
 
-<modal title="<?= i::__("Adicionar fase de Coleta de Dados") ?>" @open="createEntity()" @close="destroyEntity()" classes="datepicker">
+<modal title="<?= i::__("Adicionar fase de Coleta de Dados") ?>" @open="createEntity()" @close="destroyEntity()" classes="-with-datepicker">
     <template #default="modal">
         <div class="grid-12">
             <div class="col-12">
