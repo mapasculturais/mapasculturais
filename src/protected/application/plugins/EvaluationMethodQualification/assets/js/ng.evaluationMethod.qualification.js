@@ -105,7 +105,7 @@
         $scope.addCriterion = function (section) {
             var date = new Date;
             var new_id = 'c-' + date.getTime();
-            $scope.data.criteria.push({ id: new_id, sid: section.id, weight: 1 , notApplyOption: false});
+            $scope.data.criteria.push({ id: new_id, sid: section.id, weight: 1 , notApplyOption: false, name: ""});
             $scope.save();
 
             $timeout(function () {
@@ -126,6 +126,8 @@
     }]);
 
     module.controller('QualificationEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'QualificationEvaluationMethodService', function ($scope, $rootScope, $timeout, QualificationEvaluationMethodService) {
+        var labels = MapasCulturais.gettext.qualificationEvaluationMethod;
+
         $scope.data = {
             sections: MapasCulturais.evaluationConfiguration.sections || [],
             criteria: MapasCulturais.evaluationConfiguration.criteria || [],
@@ -141,11 +143,11 @@
                 return i;
             });
            
-            crit.options.unshift('Inabilitado');
-            crit.options.unshift('Habilitado');
+            crit.options.unshift(labels['disabled']);
+            crit.options.unshift(labels['enabled']);
 
             if(crit.notApplyOption && crit.options.length > 0){
-                crit.options.unshift('Não se aplica')
+                crit.options.unshift(labels['notApplicable'])
             }
         })
 
@@ -161,7 +163,7 @@
             for (var i in $scope.data.criteria) {
                 var cri = $scope.data.criteria[i];
                 if (cri.sid == section.id) {
-                    if ($scope.evaluation[cri.id] == "Não se aplica" || $scope.evaluation[cri.id] == "Habilitado") {
+                    if ($scope.evaluation[cri.id] == labels['notApplicable'] || $scope.evaluation[cri.id] == labels['enabled']) {
                         approved = true;
                     } else {
                         approved = false;
@@ -170,7 +172,7 @@
                 }
             }
 
-            var result = approved ? "Habilitado" : "Inabilitado";
+            var result = approved ? labels['enabled'] : labels['disabled'];
             $scope.data.consolidate[section.id] = result;
             return result
         };
@@ -179,13 +181,13 @@
             var approved = true;
 
             Object.values($scope.data.sections).forEach(function (section) {
-                if ($scope.data.consolidate[section.id] == "Inabilitado") {
+                if ($scope.data.consolidate[section.id] == labels['disabled']) {
                     approved = false;
                     return;
                 }
             })
 
-            var result = approved ? "Habilitado" : "Inabilitado";
+            var result = approved ?  labels['enabled'] : labels['disabled'];
             return result
         };
 
