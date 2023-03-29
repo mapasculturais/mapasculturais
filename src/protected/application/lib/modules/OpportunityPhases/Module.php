@@ -761,6 +761,18 @@ class Module extends \MapasCulturais\Module{
                 'isReadonly' => true,
             ];
         });
+        
+        /** Adiciona o summary ao propertiesMetadata  */
+        $app->hook('entity(<<Opportunity|EvaluationMethodConfiguration>>).propertiesMetadata', function (&$result) {
+            $result['summary'] = [
+                'label' => i::__('Resumo dos status da fase'),
+                'isMetadata' => true,
+                'isEntityRelation' => false,
+                'required' => false,
+                'type' => 'object',
+                'isReadonly' => true,
+            ];
+        });
 
         // hooks específicos para os novos temas
         if ($app->view->version >= 2) {
