@@ -345,7 +345,6 @@ ol.mc-stepper-vertical li.active::before {
 
 
     .stepper-header {
-
         background-color: white;
         padding: 16px;
         border-radius: 4px;
@@ -353,7 +352,7 @@ ol.mc-stepper-vertical li.active::before {
         gap: 100px;
         justify-content: space-between;
         flex-direction: row;
-        align-items: flex-start;
+        align-items: center;
 
         .phase-stepper {
 
@@ -395,10 +394,32 @@ ol.mc-stepper-vertical li.active::before {
             &__name {}
         }
 
+        .phase-actions {
+            display: flex;
+            gap: size(47);
+            color: var(--mc-primary-500);
+            font-weight: 700;
+            font-size: size(14);
+            line-height: size(19); 
+            
+            a.support {
+                display: flex;
+                align-items: center;
+                gap: size(8);
+                cursor: pointer;
+
+                .iconify {
+                    font-size: size(24);
+                }
+            }
+
+        }
+
         .expand-stepper {
             display: flex;
             align-items: center;
             color: var(--mc-primary-500);
+            gap: size(4);
 
             label {
                 font-weight: 700;
