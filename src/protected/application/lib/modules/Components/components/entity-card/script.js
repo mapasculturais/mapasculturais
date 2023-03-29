@@ -3,7 +3,7 @@ app.component('entity-card', {
 
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name];
-        
+
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('entity-card')
         return { text, hasSlot }
@@ -25,6 +25,15 @@ app.component('entity-card', {
     },
 
     computed: {
+        showShortDescription() {
+            if (this.entity.shortDescription) {
+                if (this.entity.shortDescription.length > 400) {
+                    return this.entity.shortDescription.substring(0, 400) + '...';
+                } else {
+                    return this.entity.shortDescription;
+                }
+            }
+        },
         seals() {
             return (this.entity.seals.length > 0 ? this.entity.seals.slice(0, 2) : false);
         },
@@ -39,7 +48,7 @@ app.component('entity-card', {
         },
         openSubscriptions() {
             if (this.entity.__objectType == "opportunity") {
-                if(this.entity.registrationFrom && this.entity.registrationTo) {
+                if (this.entity.registrationFrom && this.entity.registrationTo) {
                     return this.entity.registrationFrom.isPast() && this.entity.registrationTo.isFuture();
                 } else {
                     return false;
