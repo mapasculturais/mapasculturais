@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ */
 
 use MapasCulturais\i;
 
@@ -20,7 +24,7 @@ $this->import('
 
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
+    ['label' => i::__('Oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
     ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
 ];
 
@@ -58,7 +62,7 @@ $this->breadcrumb = [
                         <div class="data">
                             <p class="data__title"> <?= i::__('Categoria') ?> </p>
                             <p v-if="entity.category" class="data__info">{{entity.category}}</p>
-                            <p v-if="!entity.category" class="data__info">Sem categoria</p>
+                            <p v-if="!entity.category" class="data__info"><?php i::_e('Sem categoria') ?></p>
                         </div>
                     </div>
                 </div>

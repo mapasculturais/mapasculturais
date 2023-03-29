@@ -39,6 +39,16 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         ;
     }
 
+    public function getEvaluationStatues()
+    {
+        $status = [
+            'valid' => ['1'],
+            'invalid' => ['-1']
+        ];
+
+        return $status;
+    }
+
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
         $errors = [];
@@ -65,6 +75,8 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         $app->view->enqueueStyle('app', 'documentary-evaluation-method', 'css/documentary-evaluation-method.css');
         
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.documentary';
+
+        $app->view->jsObject['evaluationStatus']['documentary'] = $this->evaluationStatues;
     }
 
     public function _init() {

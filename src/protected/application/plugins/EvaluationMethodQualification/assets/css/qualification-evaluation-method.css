@@ -1,3 +1,7 @@
+.qualification-evaluation-configuration header {
+    display: flex;
+}
+
 .qualification-evaluation-configuration .btn {
     margin-left: 10px;
 }
@@ -117,3 +121,27 @@
 .qualification-evaluation-form .repproved {
     color: red;
 }
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    word-break: break-all;
+    max-width: 300px;
+    width: 290px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px 10px;
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
