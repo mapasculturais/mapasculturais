@@ -2,6 +2,8 @@
 use MapasCulturais\i;
 $this->layout = 'entity';
 
+$this->addOpportunityPhasesToJs();
+
 $this->import('
     entity-field
     opportunity-form-builder-category
@@ -12,15 +14,15 @@ $this->import('
 <div class="form-builder__content">
     <div class="grid-12 form-builder__bg-content">
         <div class="col-8 sm:col-12 form-builder__title">
-            <p class="opportunity__color"><?= i::__("{{ getTitleForm }}") ?></p>
+            <p class="opportunity__color">{{ title }}</p>
         </div>
         <div class="col-2 sm:col-6 form-builder__period">
             <h5 class="period_label"><?= i::__("Data de início") ?></h5>
-            <h5 class="opportunity__color">{{ getDateRegistrationFrom }}</h5>
+            <h5 class="opportunity__color">{{ registrationFrom }}</h5>
         </div>
         <div class="col-2 sm:col-6 form-builder__period">
             <h5 class="period_label"><?= i::__("Data final") ?></h5>
-            <h5 class="opportunity__color">{{ getDateRegistrationTo }}</h5>
+            <h5 class="opportunity__color">{{ registrationTo }}</h5>
         </div>
     </div>
 
