@@ -91,6 +91,10 @@ app.component('entity-field', {
         },
         autosave: {
             type: Number,
+        },
+        checkbox: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -121,12 +125,16 @@ app.component('entity-field', {
             this.__timeout = setTimeout(() => {
                 if(this.is('date') || this.is('datetime') || this.is('time')) {
                     this.entity[this.prop] = new McDate(event);
+                } else if(this.checkbox) {
+                    this.entity[this.prop] = event.target.checked;
                 } else {
                     this.entity[this.prop] = event.target.value;
                 }
 
                 if(this.is('date') || this.is('datetime') || this.is('time')) {
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event});
+                } else if(this.checkbox) {
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.checked});
                 } else {
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
                 }
