@@ -33,8 +33,11 @@ $this->import('mc-icon mc-link');
         <div v-if="!hideSpace" class="entity-card__content--occurrence-space">
             <div class="link"><mc-icon class="link space__color" name="pin"></mc-icon></div>
             <div class="space-adress">
-                <span class="space-adress__name space__color">{{space.name}}</span>
+                <mc-link :entity="space">
+                    <span class="space-adress__name space__color">{{space.name}}</span>
+                </mc-link>
                 <span class="space-adress__adress" v-if="space.endereco">- {{space.endereco}}</span>
+
             </div>
         </div>
         <div class="entity-card__content--occurrence-info">

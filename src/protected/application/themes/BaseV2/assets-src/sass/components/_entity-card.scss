@@ -178,7 +178,7 @@
 				}
 			}
 
-			
+
 			&-space {
 				font-weight: 700;
 				font-size: size(14);
@@ -196,21 +196,54 @@
 				}
 
 				.space-adress {
-				&__adress{
-					margin-left: size(10);
-				}}
-				// @media (max-width:size(500)){
-				// 	display: unset;
-				// }
+					a {
+						text-decoration: none;
+					}
+
+					&__adress {
+
+
+						margin-left: size(10);
+
+						@media (max-width:size(600)) {
+							word-break: break-all;
+						}
+					}
+				}
+
+				@media (max-width:size(500)) {
+					align-items: flex-start;
+				}
 			}
 
 			&-info {
-				// background-color: red;
-				font-size: size(14);
-				line-height: size(19);
 				display: flex;
 				align-items: center;
 				gap: size(40);
+
+				.ageRating {
+
+					&__class {
+
+						font-weight: 500;
+						font-size: 0.75rem;
+						line-height: 1rem;
+						text-transform: uppercase;
+						color: var(--mc-low-700);
+					}
+
+					&__value {
+						font-weight: 700;
+						font-size: 13.5px;
+						line-height: 16px;
+					}
+
+					@media (max-width:size(700)) {
+						display: flex;
+						flex-direction: column;
+					}
+				}
+
 			}
 		}
 
