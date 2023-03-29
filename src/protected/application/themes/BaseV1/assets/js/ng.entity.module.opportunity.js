@@ -1143,11 +1143,16 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     // modifica o botão salvar
     if(MapasCulturais.isEditable){
         $('#editable-entity .js-submit-button').remove();
-        $('#editable-entity .controles').html('<a class="btn btn-primary js-save-registration" rel="noopener noreferrer">Salvar</a>');
+        $('#editable-entity .controles').html('<a class="btn btn-default js-validade-registration" rel="noopener noreferrer">Validar inscrição</a> <a class="btn btn-primary js-save-registration" rel="noopener noreferrer">Salvar</a>');
         if(!$('#editable-entity .js-save-registration').data('registration')) {
             $('#editable-entity .js-save-registration').data('registration', true);
             $('#editable-entity .js-save-registration').click(function(e) {
                 $scope.saveRegistration();
+            });
+
+            $('#editable-entity .js-validade-registration').click(function(e) {
+                $scope.validateRegistration();
+                $scope.scrollToError();
             });
         }
     }else{
@@ -1155,26 +1160,17 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.saveRegistration = function () {
-       return RegistrationService.updateFields($scope.data.editableEntity)
-        .success(function(r){
-            /* $scope.validateRegistration(); */
-        })
-        .error(function(r) {
-                $scope.data.errors = r.data;
-                for (var key in r.data) {
-                    $scope.data.fields.forEach(function(field) {
-                        if(field.fieldName == key){
-                            field.error = r.data[key]
-                        }
-                    });
-                }
-                /* $scope.validateRegistration(); */
-                MapasCulturais.Messages.error(labels['correctErrors']);
-            });
+       return RegistrationService.updateFields($scope.data.editableEntity).success(function(){
+            MapasCulturais.Messages.success(labels['changesSaved']);
+       }).error(function(req, status){
+            if(status == 400){
+                MapasCulturais.Messages.success(labels['changesSaved']);
+            }else{
+                MapasCulturais.Messages.error(labels['unexpectedError']);
+            }
+       })        
     }
 
-    window.$registrationScope = $scope;
-    
     function replaceRegistrationAgentBy(groupName, agent, relationStatus){
         for(var i in MapasCulturais.entity.registrationAgents){
             var def = MapasCulturais.entity.registrationAgents[i];
@@ -1305,7 +1301,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     });
 
     $scope.validateRegistration = function(callback='') {
-        RegistrationService.validateEntity(MapasCulturais.entity.object.id)
+        return RegistrationService.validateEntity(MapasCulturais.entity.object.id)
             .success(function(response) {
                 if(response.error) {
                     $scope.entityValidated = false;
@@ -1347,69 +1343,76 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.scrollToError = function(){
         
         setTimeout(function(){
-            var $el = $('.registration-fieldset .alert.danger');
+            var $el = $('.invalidField');
+            window.$el = $el;
             if($el.length){
-                $('html,body').animate({scrollTop: $el.get(0).offsetTop - 100}, 300);
+                $('html,body').animate({scrollTop: $el.offset().top - 100}, 300);
             }
         },10);
     };
 
     $scope.sendRegistration = function(redirectUrl = false, isAccountability = false){
         $timeout.cancel(saveTimeout); 
-        var req = $scope.saveRegistration();
 
-        req.error(function(){
-            $scope.scrollToError();
-        });
-        
-        req.success(function () { 
-            // TODO: i18n
-            if(isAccountability){
-                if(!confirm('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?')){
-                    return;
-                }                    
-            }
+        $scope.saveRegistration().success(function(){
+            var req = $scope.validateRegistration();
 
-         
-            RegistrationService.send(MapasCulturais.registration.id).success(function(response){
-                $('.js-response-error').remove();
-                if(response.error){
-                    $scope.data.errors = response.data;
-                    Object.keys(response.data).forEach(function(field, index){
-                        var $el;
-                        if(field === 'projectName'){
-                            $el = $('#projectName').parent().find('.label');
-                        }else if(field === 'category'){
-                            $el = $('#category');
-                        }else if(field.indexOf('agent') !== -1){
-                            $el = $('#' + field).parent().find('.registration-label');
-                        }else if(field.indexOf('space') !== -1){
-                            $el = $('#registration-space-title').parent().find('.registration-label');
-                        }else {
-                            $el = $('#' + field).find('div:first');
-                        }
-
-                        $scope.data.fields.forEach(function(fieldObject) {   
-                            if(fieldObject.fieldName == field){
-                                fieldObject.error = response.data[field];
-                            }
-                        });
-                    });
-                    MapasCulturais.Messages.error(labels['correctErrors']);
-                    $scope.scrollToError();
-                }else{
-                    $scope.data.sent = true;
-                    MapasCulturais.Messages.success(labels['registrationSent']);
-
-                    if (redirectUrl) {
-                        document.location = redirectUrl;
-                    } 
-                    else {
-                        document.location = response.redirect || response.singleUrl;
-                    } 
-                }
+            req.error(function(){
+                $scope.scrollToError();
             });
-        });        
+            
+            req.success(function () { 
+                // TODO: i18n
+                if(isAccountability){
+                    if(!confirm('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?')){
+                        return;
+                    }                    
+                }
+             
+         
+                RegistrationService.send(MapasCulturais.registration.id).success(function(response){
+                    $('.js-response-error').remove();
+                    if(response.error){
+                        $scope.data.errors = response.data;
+                        Object.keys(response.data).forEach(function(field, index){
+                            var $el;
+                            if(field === 'projectName'){
+                                $el = $('#projectName').parent().find('.label');
+                            }else if(field === 'category'){
+                                $el = $('#category');
+                            }else if(field.indexOf('agent') !== -1){
+                                $el = $('#' + field).parent().find('.registration-label');
+                            }else if(field.indexOf('space') !== -1){
+                                $el = $('#registration-space-title').parent().find('.registration-label');
+                            }else {
+                                $el = $('#' + field).find('div:first');
+                            }
+    
+                            $scope.data.fields.forEach(function(fieldObject) {   
+                                if(fieldObject.fieldName == field){
+                                    fieldObject.error = response.data[field];
+                                }
+                            });
+                        });
+                        MapasCulturais.Messages.error(labels['correctErrors']);
+                        $scope.scrollToError();
+                    }else{
+                        $scope.data.sent = true;
+                        MapasCulturais.Messages.success(labels['registrationSent']);
+    
+                        if (redirectUrl) {
+                            document.location = redirectUrl;
+                        } 
+                        else {
+                            document.location = response.redirect || response.singleUrl;
+                        } 
+                    }
+                });
+            });  
+        })
+        .error(function(r) {
+            $scope.validateRegistration();
+        });;
     };
 
     $scope.removeFieldErrors = function(fieldName) {
@@ -1513,6 +1516,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         $form.on('ajaxForm.success', function(evt, response){
             $scope.data.fields[index].file = response[$scope.data.fields[index].groupName];
+            $scope.data.fields[index].error = [];
             $scope.$apply();
             setTimeout(function(){
                 $('.carregando-arquivo').hide();
@@ -2631,9 +2635,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
         $scope.registrationAndEvaluations = [];
         $scope.data = {
             keyword: '',
-            current: MapasCulturais.registration.id,
+            current: MapasCulturais.entity.id,
             keywords: [],
-            pending: false,
+            pending: MapasCulturais.cookies.get('pending') ? true : false,
             registrations: [],
             evaluations: [],
             registrationAndEvaluations: [],
@@ -2723,11 +2727,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status',
                     '@keyword' : 'like('+$scope.data.keywords+')'
                 };
-        
+
+                
                 if($scope.data.pending){
-                    args['@pending'] = true
+                    args['@pending'] = true;
                 }
                 
+                MapasCulturais.cookies.set('pending',$scope.data.pending)
+
                 var registrationAndEvaluationsApi = new OpportunityApiService($scope, 'registrationAndEvaluations', 'findRegistrationsAndEvaluations', args);
         
                 registrationAndEvaluationsApi.find().success(function(){
@@ -2768,7 +2775,19 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             if($scope.evaluations[registration.id] == null){
                 return 0;
             }
-            return $scope.evaluations[registration.id].result;
+
+            let result = $scope.evaluations[registration.id].result;
+            let type = MapasCulturais.evaluationConfiguration.type;
+
+            if(MapasCulturais.evaluationStatus[type]?.invalid.includes(result)){
+                return "invalid";
+            }
+
+            if(MapasCulturais.evaluationStatus[type]?.valid.includes(result)){
+                return "valid";
+            }
+           
+            return "finish";
         };
 
         $scope.show = function(registration){
@@ -2825,7 +2844,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
             if($scope.data.pending){
                 if($scope.newEvaluated(registration)){
-                    result = false;
+                    result = true;
                 }
             }
 
