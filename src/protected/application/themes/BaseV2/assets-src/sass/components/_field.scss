@@ -9,9 +9,9 @@
 
     &__error {
         font-family: Open Sans;
-        font-size: 12px;
+        font-size: size(12);
         font-weight: 600;
-        line-height: 16px;
+        line-height: size(16);
         letter-spacing: 0em;
         text-align: left;
         color: var(--mc-error);
@@ -19,9 +19,9 @@
 
     .required {
         font-family: Open Sans;
-        font-size: 12px;
+        font-size: size(12);
         font-weight: 700;
-        line-height: 16px;
+        line-height: size(16);
         letter-spacing: 0em;
         text-align: left;
         color: var(--mc-error);
@@ -39,13 +39,21 @@
     }
 
     input, textarea, select {
-        border: 1px solid var(--mc-gray-500);
+        border: size(1) solid var(--mc-gray-500);
         border-radius: var(--mc-border-radius-xs);
-        font-size: 16px;
-        padding: 14px;
+        font-size: size(16);
+        padding: size(14);
         width: 100%;
         &.dp__input {
             padding-left: size(35);
+        }
+    }
+
+    .dp__input_wrap {
+        input {
+            background: url(https://api.iconify.design/material-symbols/date-range.svg) no-repeat size(10) center/size(20);
+            background-color: var(--mc-white);
+            padding: size(14) size(14) size(14) size(40);
         }
     }
 
@@ -62,9 +70,8 @@
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-        background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/contain;
+        background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/size(20);
         background-color: var(--mc-white);
-        background-size: size(20);
     }
 
     textarea {
@@ -73,7 +80,7 @@
 
     &.error {
         input, textarea, select {
-            background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red') no-repeat right 20px center / 20px;
+            background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red') no-repeat right size(20) center / size(20);
             border: size(2) solid #FF0000;
             padding-right: size(45);
         }

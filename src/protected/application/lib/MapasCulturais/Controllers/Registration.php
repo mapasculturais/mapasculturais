@@ -181,14 +181,16 @@ class Registration extends EntityController {
         $space = $app->repo('Space')->find($this->postData['id']);
         
         if(is_object($registrationEntity) && !is_null($space)){
-            $spaceRelation = $app->repo('SpaceRelation')->findOneBy(array('objectId'=>$registrationEntity->id, 'space'=>(array('id'=>$space->id))));
-            $spaceRelation->delete(true);
-            
-            $this->refresh();
-            $this->deleteUsersWithControlCache();
-            $this->usesPermissionCache();
-            
-            $this->json(true);
+            if ($spaceRelation = $app->repo('SpaceRelation')->findOneBy([
+                'objectId' => $registrationEntity->id, 
+                'space' => $space->id 
+            ])) {
+                $spaceRelation->delete(true);
+                $this->json(true);
+            } else {
+                $this->json(false);
+            }
+
         }        
     }   
 

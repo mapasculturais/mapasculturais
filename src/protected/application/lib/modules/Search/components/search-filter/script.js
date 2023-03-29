@@ -15,13 +15,13 @@ app.component('search-filter', {
         pseudoQuery: {
             type: Object,
             required: true
-        }
+        },
     },
 
     data() {
         
         return {
-            showMenu: true, 
+            showMenu: false, 
         }
     },
 
@@ -30,6 +30,10 @@ app.component('search-filter', {
 
     mounted() {
         window.addEventListener('mc-pin-click', this.closeFilter);
+
+        if(this.position === 'list' && window.matchMedia('(min-width: 56.25rem)').matches) {
+            this.showMenu = true;
+        }
     },
     unmounted() {
         window.removeEventListener('mc-pin-click', this.closeFilter);
@@ -46,12 +50,9 @@ app.component('search-filter', {
             const header = document.getElementById('main-header');
             if (!this.showMenu) {
                 header.style.top=0;
-                // header.style.position = 'fixed';
             }
             else {
                 header.removeAttribute('style');
-                // header.style.top=unset;
-                // header.style.position = 'relative';
                 window.dispatchEvent(new CustomEvent('mc-map-filter-open', {detail:null}));
             }
         }

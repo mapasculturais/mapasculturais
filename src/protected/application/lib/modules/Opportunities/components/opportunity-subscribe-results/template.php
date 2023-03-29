@@ -11,6 +11,7 @@ $this->import('
     mc-stepper-vertical
     opportunity-phase-list-data-collection
     opportunity-phase-list-evaluation
+    v1-embed-tool
 ');
 ?>
 <mc-stepper-vertical :items="phases" allow-multiple>
@@ -25,6 +26,21 @@ $this->import('
             <p v-if="item.__objectType == 'evaluationmethodconfiguration'" class="phase-stepper__type">
                 <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>: <label class="phase-stepper__type--item">{{evaluationMethods[item.type].name}}</label>
             </p>
+        </div>
+    </template>
+    <template #header-actions="{step, item}">     
+        <div class="phase-actions">
+            <modal title="<?= i::esc_attr__('Configurações de suporte')?>" classes="modalSuportBuilder" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
+                <template #default="modal">
+                    <v1-embed-tool route="supportbuilder" :id="item.id" min-height="500px"></v1-embed-tool>
+                </template>
+                <template #button="modal">
+                    <a class="support" @click="modal.open"><?= i::__('Suporte') ?> <mc-icon name="external"></mc-icon></a>
+                </template>
+            </modal>   
+
+            <a class="expand-stepper" v-if="step.active" @click="step.close()"><label><?= i::__('Fechar') ?></label><mc-icon name="arrowPoint-up"></mc-icon></a>
+            <a class="expand-stepper" v-if="!step.active" @click="step.open()"><label><?= i::__('Expandir') ?></label> <mc-icon name="arrowPoint-down"></mc-icon></a>
         </div>
     </template>
     <template #default="{index, item}">
