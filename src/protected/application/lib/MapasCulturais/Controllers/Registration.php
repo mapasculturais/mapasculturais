@@ -183,7 +183,7 @@ class Registration extends EntityController {
         if(is_object($registrationEntity) && !is_null($space)){
             if ($spaceRelation = $app->repo('SpaceRelation')->findOneBy([
                 'objectId' => $registrationEntity->id, 
-                'space '=> $space->id 
+                'space' => $space->id 
             ])) {
                 $spaceRelation->delete(true);
                 $this->json(true);
