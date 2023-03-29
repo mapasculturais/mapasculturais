@@ -33,7 +33,7 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
                 <td>
                     <select name="data[{{cri.id}}]" ng-model="evaluation[cri.id]">
                         <option value=""><?php i::_e('Selecione') ?></option>
-                        <option ng-repeat="option in cri.options">{{option}}</option>
+                        <option ng-repeat="option in cri.options track by $index">{{option}}</option>
                     </select>
                 </td>
             </tr>
