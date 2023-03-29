@@ -29,6 +29,6 @@ $this->import('
     </template>
 
     <template #button="modal">
-        <a class="button button--primary w-100" href="#" @click="modal.open()"><?= i::__("Adicionar fase Avaliação") ?></a>
+        <a class="button button--primary w-100" @click="modal.open()"><?= i::__("Adicionar fase Avaliação") ?></a>
     </template>
 </modal>
