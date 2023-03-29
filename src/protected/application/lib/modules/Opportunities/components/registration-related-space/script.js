@@ -8,6 +8,11 @@ app.component('registration-related-space', {
         },
     },
 
+    setup() {
+        const text = Utils.getTexts('registration-related-space')
+        return { text }
+    },
+
     data() {
         return {
             opportunity: this.registration.opportunity,
@@ -15,56 +20,48 @@ app.component('registration-related-space', {
     },
 
     computed: {
-        spaceRelation() {
-            const relations = [];
-
-            for (let relation of $MAPAS.config.registrationRelatedSpace) {
-
-                const metadata = 'useSpaceRelationIntituicao';                
-                if (this.opportunity[metadata] != 'dontUse') {
-                    if (this.opportunity[metadata] == 'required') {
-                        relation.required = true;
-                    }
-                    relations.push(relation);
-                }
+        useSpaceRelation() {
+            const metadata = 'useSpaceRelationIntituicao';
+            if (this.opportunity[metadata] && this.opportunity[metadata] != 'dontUse') {
+                return this.opportunity[metadata];
             }
+            return 'dontUse';
+        },
 
-            return relations;            
-        },  
+        relatedSpace() {
+            return this.registration.relatedSpaces[0];
+        }
     },
     
     methods: {
-        selectSpace(space) {            
-            const api = this.registration.API;
-            
-            api.POST(this.registration.getUrl('createSpaceRelation'), {id: space.id}).then((response) => {
+        selectSpace(space) {
+            this.registration.POST('createSpaceRelation', {data: {id: space.id}, callback: (relation) => {
+                this.registration.spaceRelations[0] = relation;
+                this.registration.relatedSpaces[0] = space;
                 const messages = useMessages();
-                messages.success('Espaço vinculado.');
-            });
+                messages.success(this.text('Espaço vinculado'));
+            }});
         },
         removeSpace() {
-            let spaceRelations = this.registration.agentRelations[relation.agentRelationGroupName];
-            let relatedSpaces = this.registration.relatedAgents[relation.agentRelationGroupName];
+            if (this.relatedSpace) {
+                this.registration.POST('removeSpaceRelation', {data: {id: this.relatedSpace.id}, callback: () => {
+                    let spaceRelations = this.registration.spaceRelations;
+                    let relatedSpaces = this.registration.relatedSpaces;
+                    if (spaceRelations) {
+                        if (Object.keys(spaceRelations).length > 0) {
+                            spaceRelations.pop();
+                        }
+                    }        
+                    if (relatedSpaces) {
+                        if (Object.keys(relatedSpaces).length > 0) {
+                            relatedSpaces.pop();
+                        }
+                    }
 
-            if (spaceRelations) {
-                if (Object.keys(spaceRelations).length > 0) {
-                    spaceRelations.pop();
-                }
-            }
-
-            if (relatedSpaces) {
-                if (Object.keys(relatedSpaces).length > 0) {
-                    relatedSpaces.pop();
-                }
+                    const messages = useMessages();
+                    messages.success(this.text('Espaço desvinculado'));
+                }});
             }
         },
-        hasRelations(relation) {
-            if (relation) {
-                if (Object.keys(relation).length > 0) {
-                    return true;
-                }
-            }
-            return false;
-        }
     },
 });
