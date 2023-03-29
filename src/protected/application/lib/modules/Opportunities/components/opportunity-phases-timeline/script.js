@@ -56,10 +56,10 @@ app.component('opportunity-phases-timeline', {
 			let item = this.getItemById(id);
 
 			if (item.registrationTo) {
-				return item.registrationTo.hour('2-digit')+'h';
+				return item.registrationTo.time();
 			}
 			if (item.evaluationTo) {
-				return item.evaluationTo.hour('2-digit')+'h';
+				return item.evaluationTo.time();
 			}
 			return false;
 		},

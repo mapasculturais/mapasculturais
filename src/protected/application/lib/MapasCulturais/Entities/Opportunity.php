@@ -509,7 +509,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $this->registrationFrom = $date;
         }elseif($date){
             $this->registrationFrom = new \DateTime($date);
-            $this->registrationFrom->setTime(0,0,0);
         }else{
             $this->registrationFrom = null;
         }

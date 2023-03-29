@@ -16,7 +16,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
     public function getSlug()
     {
-        return 'qualification';
+        return i::__('qualification');
     }
 
     public function getName()
@@ -43,10 +43,10 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
         $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
 
-        $result = "Habilitado";
+        $result = i::__("Habilitado");
         foreach ($evaluations as $eval){
             $_result = $this->getEvaluationResult($eval);
-            if($_result == "Inabilitado"){
+            if($_result == i::__("Inabilitado")){
                 $result = $_result;
             }
         }
@@ -55,10 +55,20 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
     }
 
+    public function getEvaluationStatues()
+    {
+        $status = [
+            'valid' => i::__(['Habilitado']),
+            'invalid' => i::__(['Inabilitado'])
+        ];
+
+        return $status;
+    }
+
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation)
     {
-        $approved = ['Habilitado', 'Não se aplica'];
-        $result = "Habilitado";
+        $approved = [i::__('Habilitado'), i::__('Não se aplica')];
+        $result = i::__("Habilitado");
         $cfg = $evaluation->getEvaluationMethodConfiguration();
         foreach($cfg->criteria as $cri){
             $key = $cri->id;
@@ -66,7 +76,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod
                 return null;
             } else {
                 if(!in_array($evaluation->evaluationData->$key, $approved)){
-                    $result = "Inabilitado";
+                    $result = i::__("Inabilitado");
                     break;
                 }
             }
@@ -78,7 +88,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod
     public function valueToString($value)
     {
         if(is_null($value)){
-            return i::__('Avaliação incompleta');
+            return i::__('');
         } else {
             return $value;
         }
@@ -112,15 +122,24 @@ class Plugin extends \MapasCulturais\EvaluationMethod
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
     {
         $errors = [];
-        $empty = true;
-        foreach ($data as $prop => $val) {
-            if ($val) {
-                $empty = false;
+              
+        foreach($evaluation_method_configuration->criteria as $key => $c){
+            if(isset($data[$c->id])){
+                $val = $data[$c->id];
+                $options = array_merge($c->options, ['Habilitado', 'Inabilitado', 'Não se aplica']);
+                if(!in_array($val, $options)){
+                    $errors[] = i::__("O valor do critério {$c->name} é inválido");
+                    break;
+                } 
             }
         }
 
-        if ($empty) {
-            $errors[] = i::__('Nenhum campo foi avaliado');
+        if(!$errors){
+            foreach($data as $key => $val){
+                if($key === i::__('obs') && !trim($val)) {
+                    $errors[] = i::__('O campo Observações é obrigatório');
+                }
+            }
         }
 
         return $errors;
@@ -139,10 +158,15 @@ class Plugin extends \MapasCulturais\EvaluationMethod
             'changesSaved' => i::__('Alteraçṍes salvas'),
             'deleteSectionConfirmation' => i::__('Deseja remover a seção? Esta ação não poderá ser desfeita e também removerá todas os critérios desta seção.'),
             'deleteCriterionConfirmation' => i::__('Deseja remover este critério de avaliação? Esta ação não poderá ser desfeita.'),
-            'deleteAffirmativePolicy' => i::__('Deseja remover esta política afirmativa? Esta ação não poderá ser desfeita.')
+            'deleteAffirmativePolicy' => i::__('Deseja remover esta política afirmativa? Esta ação não poderá ser desfeita.'),
+            'disabled' => i::__('Inabilitado'),
+            'enabled' => i::__('Habilitado'),
+            'notApplicable' => i::__('Não se aplica'),
         ]);
 
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.qualification';
+
+        $app->view->jsObject['evaluationStatus']['qualification'] = $this->evaluationStatues;
     }
 
     public function _init()
@@ -220,11 +244,11 @@ class Plugin extends \MapasCulturais\EvaluationMethod
                     if($evaluationData = (array) $evaluation->evaluationData){
                         $reasons = [];
                         foreach($evaluationData as $cri => $eval){
-                            if($cri != "obs" && !in_array($eval, ['Não se aplica', 'Habilitado'])){
+                            if($cri != "obs" && !in_array($eval, [i::__('Não se aplica'), i::__('Habilitado')])){
                                 $reasons[] = $eval;
                             }
                         }                        
-                        $_result = implode(";", $reasons);
+                        $_result = implode("; ", $reasons);
                     }
 
                     return $_result;

@@ -9,6 +9,24 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa novo método de avaliação EvaluationMethodQualification
 ## Melhorias
 - Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
+- Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
+
+## [5.6.5] - 2023-03-28
+### Melhorias
+- Adiciona botão para fazer a validação de erros da inscrição no formulario de inscrição
+### Correção
+- Redefine método saveRegistration para apenas salvar a inscrição e não computar erros do formulário
+- Ajusta o scroll para que quando existir error no formulário ele pare corretamente sobre o elemento
+- Ajusta método sendRegistration para ele só fazer a validação de erros após salvar a inscrição
+- Limpa mensagem de erro do anexo após o envio de arquivos
+
+## [5.6.4] - 2023-03-27
+### Correção
+- Na tela do avaliador, corrige o avanço automático das avaliações ao finalizar o processo em uma determinada inscrição
+
+## [5.6.3] - 2023-03-24
+### Melhorias
+- Passa processo de passar dados do metadado documento para o metadados CPF ou CNPJ do db-update para o mc-update para melhorar performace
 
 ## [5.6.2] - 2023-03-14
 ### Correções
@@ -20,6 +38,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [5.6.0] - 2023-03-09
 ### Novas Funcionalidade
 - No formulário de inscrição, exibe os erros de preenchimento no final da página para facilitar identificação dos campos com erros
+- Impede que usuários comuns criem novos agentes individuais
 
 ### Melhorias
 - Coloca scroll na modal de criação rapida de entidades

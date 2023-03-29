@@ -581,10 +581,10 @@ abstract class Entity implements \JsonSerializable{
         $__class = get_called_class();
         $class = $__class::getClassName();
 
-        $class_metadata = App::i()->em->getClassMetadata($class)->fieldMappings;
-        $class_relations = App::i()->em->getClassMetadata($class)->getAssociationMappings();
+        $class_metadata = $app->em->getClassMetadata($class)->fieldMappings;
+        $class_relations = $app->em->getClassMetadata($class)->getAssociationMappings();
 
-        $data_array = [];
+        $result = [];
 
         $validations = $__class::getValidations();
 
@@ -628,11 +628,11 @@ abstract class Entity implements \JsonSerializable{
                 $metadata['options'] = $options;
             }
 
-            $data_array[$key] = $metadata;
+            $result[$key] = $metadata;
         }
 
         foreach ($class_relations as $key => $value){
-            $data_array[$key] = [
+            $result[$key] = [
                 'isMetadata' => false,
                 'isEntityRelation' => true,
 
@@ -643,10 +643,8 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if($class::usesMetadata()){
-            $data_array = $data_array + $class::getMetadataMetadata();
+            $result = $result + $class::getMetadataMetadata();
         }
-
-        
         
         if($class::usesTypes()){
             $types = [];
@@ -656,20 +654,22 @@ abstract class Entity implements \JsonSerializable{
                 $types_order[] = $type->id;
             }
 
-            $data_array['type'] = [
+            $result['type'] = [
                 'type' => 'select',
                 'options' => $types,
                 'optionsOrder' => $types_order,
 
-            ] + $data_array['_type'];
+            ] + $result['_type'];
         }
 
-        if(isset($data_array['location']) && isset($data_array['publicLocation'])){
-            $data_array['location']['private'] = function(){ return (bool) ! $this->publicLocation; };
+        if(isset($result['location']) && isset($result['publicLocation'])){
+            $result['location']['private'] = function(){ return (bool) ! $this->publicLocation; };
         }
 
+        $kook_prefix = $class::getHookPrefix();
+        $app->applyHook("{$kook_prefix}.propertiesMetadata", [&$result]);
 
-        return $data_array;
+        return $result;
     }
 
     static public function getValidations(){
