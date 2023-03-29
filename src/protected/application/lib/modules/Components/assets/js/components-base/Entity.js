@@ -330,7 +330,7 @@ class Entity {
     }
 
     async POST(action, {callback, data}) {        
-        const res = await this.API.POST(this.getUrl(action));
+        const res = await this.API.POST(this.getUrl(action), data);
         callback = callback || (() => {});
 
         try {
