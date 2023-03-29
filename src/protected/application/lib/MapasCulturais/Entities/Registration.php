@@ -112,7 +112,7 @@ class Registration extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="agents_data", type="json_array", nullable=true)
      */
-    protected $_agentsData = [];
+    protected $agentsData = [];
     
     /**
      * @var integer
@@ -558,7 +558,7 @@ class Registration extends \MapasCulturais\Entity
 
     function getAgentsData(){
         if($this->canUser('view')){
-            return $this->_agentsData;
+            return $this->agentsData;
         }else{
             return [];
         }
@@ -786,7 +786,7 @@ class Registration extends \MapasCulturais\Entity
 
         $this->status = self::STATUS_SENT;
         $this->sentTimestamp = new \DateTime;
-        $this->_agentsData = $this->_getAgentsData();
+        $this->agentsData = $this->_getAgentsData();
         $this->_spaceData = $this->_getSpaceData();
         $this->save(true);
 
