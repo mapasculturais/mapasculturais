@@ -30,19 +30,14 @@ app.component('entities', {
         this.entities.refresh = (debounce) => this.refresh(debounce);
         this.entities.loadMore = () => this.loadMore();
         this.entities.stringifiedQuery = JSON.stringify(this.entities.query)
-        let watchTimeout = null;
         if (this.watchQuery) {
             this.$watch('query', (q1) => {
                 if(this.entities.stringifiedQuery == JSON.stringify(q1)) {
                     return;
                 }
                 this.entities.stringifiedQuery = JSON.stringify(q1);
-                this.entities.loading = true;
-                this.entities.splice(0);
-                clearTimeout(watchTimeout, 100);
-                watchTimeout = setTimeout(() => {
-                    this.entities.refresh();
-                }, this.watchDebounce);
+                this.entities.refresh(this.watchDebounce);
+                
             }, {deep:true});
         }
 
