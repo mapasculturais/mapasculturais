@@ -76,6 +76,12 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->render("registration-view",['entity' => $entity]);
     }
 
+    public Function GET_fieldsvisible()
+    {
+        $entity = $this->getEntityAndCheckPermission('@control');
+        $this->render("fields-visible",['entity' => $entity]);
+    }
+
     function getEntityAndCheckPermission($permission) 
     {
         $app = App::i();
