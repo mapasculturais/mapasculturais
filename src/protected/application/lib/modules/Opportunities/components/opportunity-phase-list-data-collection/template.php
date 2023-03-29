@@ -34,7 +34,11 @@ $this->import('confirm-button')
             <h5><?= i::__("A publicação de um resultado é opcional e só pode ser executada após a aplicação dos resultados das avaliações.") ?></h5>
         </div>
         <div class="col-3 field">
-            <!-- TO DO -->
+            <entity-field :entity="entity" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel>
+                <template #checkboxLabel>
+                  <?= i::__("Publicar resultados automaticamente"); ?>
+                </template>
+            </entity-field>
         </div>
     </div>
 </mapas-card>
