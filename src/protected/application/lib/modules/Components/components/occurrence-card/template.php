@@ -1,4 +1,5 @@
 <?php
+
 use MapasCulturais\i;
 
 $this->import('mc-icon mc-link');
@@ -6,41 +7,52 @@ $this->import('mc-icon mc-link');
 
 <div class="entity-card">
     <div class="entity-card__header">
-		<div class="entity-card__header user-details">    
-			<div class="user-image">
-				<img v-if="event.files?.avatar" :src="event.files?.avatar?.transformations?.avatarMedium.url" />
-				<mc-icon v-else name="event"></mc-icon>
-			</div>            
-			<div class="user-info">
-				<label class="user-info__name"> 
-					{{event.name}}
-				</label>                
-				<div class="user-info__attr">
-					<span> {{event.subTitle}} </span>
-				</div>
-			</div>
-		</div>
-		<div class="entity-card__header user-slot">
-			<slot name="labels"></slot>
-		</div>
-	</div>
+        <div class="entity-card__header user-details">
+            <div class="user-image">
+                <img v-if="event.files?.avatar" :src="event.files?.avatar?.transformations?.avatarMedium.url" />
+                <mc-icon v-else name="event"></mc-icon>
+            </div>
+            <div class="user-info">
+                <label class="user-info__name">
+                    {{event.name}}
+                </label>
+                <div class="user-info__attr">
+                    <span> {{event.subTitle}} </span>
+                </div>
+            </div>
+        </div>
+        <div class="entity-card__header user-slot">
+            <slot name="labels"></slot>
+        </div>
+    </div>
 
     <div class="entity-card__content">
         <div class="entity-card__content--occurrence-data">
             <mc-icon name="event"></mc-icon> {{occurrence.starts.date('long')}} <?= i::_e('às') ?> {{occurrence.starts.time()}}
         </div>
         <div v-if="!hideSpace" class="entity-card__content--occurrence-space">
-            <mc-link :entity="space" icon="pin" class="link"></mc-link> <span v-if="space.endereco">- {{space.endereco}}</span>
-        </div>        
-        <div class="entity-card__content--occurrence-info">
-            <div class="ageRating">
-                <?= i::__('Classificação') ?>: <strong>{{event.classificacaoEtaria}}</strong>
-            </div>
-            <div v-if="occurrence.price" class="price">
-                <?= i::__('Entrada') ?>: <strong>{{occurrence.price}}</strong>
+            <div class="link"><mc-icon class="link space__color" name="pin"></mc-icon></div>
+            <div class="space-adress">
+                <mc-link :entity="space">
+                    <span class="space-adress__name space__color">{{space.name}}</span>
+                </mc-link>
+                <span class="space-adress__adress" v-if="space.endereco">- {{space.endereco}}</span>
+
             </div>
         </div>
-        <div class="entity-card__content--terms">            
+        <div class="entity-card__content--occurrence-info">
+            <div class="ageRating">
+                <span class="ageRating__class"><?= i::__('Classificação') ?><strong>:</strong></span>
+
+                <span class="ageRating__value">{{event.classificacaoEtaria}}</span>
+            </div>
+            <div v-if="occurrence.price" class="price ageRating">
+                <span class="ageRating__class"><?= i::__('Entrada') ?><strong>:</strong></span>
+
+                <span class="ageRating__value">{{occurrence.price}}</span>
+            </div>
+        </div>
+        <div class="entity-card__content--terms">
             <div v-if="tags" class="entity-card__content--terms-tag">
                 <label class="tag__title">
                     <?php i::_e('Tags:') ?> ({{event.terms.tag.length}}):
@@ -58,7 +70,7 @@ $this->import('mc-icon mc-link');
     <div class="entity-card__footer">
         <div class="entity-card__footer--info">
             <div v-if="seals" class="seals">
-                <label class="seals__title"> 
+                <label class="seals__title">
                     <?php i::_e('Selos') ?> ({{event.seals.length}}):
                 </label>
                 <div v-for="seal in seals" class="seals__seal"></div>
@@ -66,9 +78,9 @@ $this->import('mc-icon mc-link');
             </div>
         </div>
         <div class="entity-card__footer--action">
-            <a :href="event.singleUrl" class="button button--primary button--large button--icon"> 
-                <?php i::_e('Acessar') ?> 
-                <mc-icon name="access"></mc-icon> 
+            <a :href="event.singleUrl" class="button button--primary button--large button--icon">
+                <?php i::_e('Acessar') ?>
+                <mc-icon name="access"></mc-icon>
             </a>
         </div>
     </div>
