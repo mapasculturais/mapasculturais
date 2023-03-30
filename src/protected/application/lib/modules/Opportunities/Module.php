@@ -131,10 +131,16 @@ class Module extends \MapasCulturais\Module{
             /** @var Opportunity $entity */
             $entity = $this->controller->requestedEntity;
 
+            if($entity instanceof EvaluationMethodConfiguration) {
+                $first_phase = $entity->opportunity->firstPhase;
+            } else {
+                $first_phase = $entity->firstPhase;
+            }
+
             $breadcrumb = [
                 ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
                 ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
-                ['label'=> $entity->firstPhase->name, 'url' => $app->createUrl('opportunity', 'edit', [$entity->firstPhase->id])]
+                ['label'=> $first_phase->name, 'url' => $app->createUrl('opportunity', 'edit', [$first_phase->id])]
             ];
             
             if ($entity->isFirstPhase) {
