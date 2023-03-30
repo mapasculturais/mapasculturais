@@ -6,7 +6,7 @@ use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
 
-class Modulo extends \MapasCulturais\EvaluationMethod {
+class Module extends \MapasCulturais\EvaluationMethod {
     function __construct(array $config = []) {
         $config += ['step' => '0.1'];
         parent::__construct($config);

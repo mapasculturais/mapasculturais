@@ -7,7 +7,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Registration;
 
-class Modulo extends \MapasCulturais\EvaluationMethod {
+class Module extends \MapasCulturais\EvaluationMethod {
 
     public function getSlug() {
         return 'simple';
