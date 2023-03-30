@@ -1059,6 +1059,8 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 }]);
 
 module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RelatedAgentsService', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RelatedAgentsService, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
+    window.$registrationScope = $scope;
+    
     var registrationsUrl = new UrlService('registration');
 
     var labels = MapasCulturais.gettext.moduleOpportunity;
