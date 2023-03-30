@@ -7,6 +7,7 @@ use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 
 /**
  * Opportunity Controller
@@ -1088,15 +1089,12 @@ class Opportunity extends EntityController {
 
     function GET_opportunityEvaluations() {
         $this->requireAuthentication();
+
+        $this->entityClassName = EvaluationMethodConfiguration::class;
+        
         $app = App::i();
 
-        $opportunity = $this->requestedEntity;
-
-        if (!$opportunity) {
-            $app->pass();
-        }
-
-        $entity = $opportunity->evaluationMethodConfiguration; 
+        $entity = $this->requestedEntity;
 
         if (!$entity) {
             $app->pass();
