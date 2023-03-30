@@ -2,7 +2,7 @@
 
 use MapasCulturais\i;
 
-$plugin = $app->plugins['EvaluationMethodQualification'];
+$module = $app->modules['EvaluationMethodQualification'];
 
 $params = ['registration' => $entity, 'opportunity' => $opportunity];
 ?>
@@ -20,7 +20,7 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
             <tr ng-repeat="cri in ::data.criteria" ng-if="cri.sid == section.id">
                 <td>
                     <div>
-                        <?php echo $plugin->step ?><label for="{{cri.id}}">
+                        <?php echo $module->step ?><label for="{{cri.id}}">
                         <div class="tooltip">
                             <i class="fa fa-info-circle"></i>
                             <div class="tooltiptext" ng-if="cri.description">{{cri.description}}</div>

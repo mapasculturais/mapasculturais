@@ -11,7 +11,7 @@ const STATUS_INVALID = 'invalid';
 const STATUS_VALID = 'valid';
 
 
-class Plugin extends \MapasCulturais\EvaluationMethod
+class Module extends \MapasCulturais\EvaluationMethod
 {
 
     public function getSlug()
