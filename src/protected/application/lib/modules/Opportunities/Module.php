@@ -145,7 +145,7 @@ class Module extends \MapasCulturais\Module{
             $this->enqueueScript('components', 'opportunities-api', 'js/OpportunitiesAPI.js', ['components-api']);
         });
 
-        $app->hook('Theme::addOpportunityPhasesToJs', function ($opportunity = null) use ($app) {
+        $app->hook('Theme::addOpportunityPhasesToJs', function ($unused = null, $opportunity = null) use ($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */   
             $this->useOpportunityAPI();         
             if (!$opportunity) {
@@ -163,7 +163,7 @@ class Module extends \MapasCulturais\Module{
             $this->jsObject['opportunityPhases'] = $opportunity->firstPhase->phases;
         });
 
-        $app->hook('Theme::addRegistrationFieldsToJs', function ($opportunity = null) use ($app) {
+        $app->hook('Theme::addRegistrationFieldsToJs', function ($unused = null, $opportunity = null) use ($app) {
             if (!$opportunity) {
                 $entity = $this->controller->requestedEntity;
 
