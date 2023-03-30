@@ -32,7 +32,7 @@ $this->import('
                     <v1-embed-tool route="fieldsvisible" :id="phase.opportunity.id" min-height="500px"></v1-embed-tool>
                 </template>
                 <template #button="modal">
-                    <button class="evaluation-fields-button button button--bg button--secondarylight" @click="modal.open"><?= i::__('Abrir campos') ?></a>
+                    <button class="evaluation-fields-button button button--bg button--secondarylight" @click="modal.open"><?= i::__('Abrir campos') ?></button>
                 </template>
             </modal>  
 
