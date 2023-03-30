@@ -23,5 +23,4 @@ $this->import('
 
     <opportunity-evaluations :entity="entity"></opportunity-evaluations>
 
-    <entity-actions :entity="entity" editable></entity-actions>
 </div>
