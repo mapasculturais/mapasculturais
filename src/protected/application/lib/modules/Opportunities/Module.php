@@ -31,6 +31,13 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\FinishDataCollectionPhase(Jobs\FinishDataCollectionPhase::SLUG));
         $app->registerJobType(new Jobs\PublishResult(Jobs\PublishResult::SLUG));
 
+        $app->hook('entity(Opportunity).validations', function(&$validations) {
+            if (!$this->isNew()) {
+                $validations['registrationFrom']['required'] = i::__('A data inicial das inscrições é obrigatória');
+                $validations['registrationTo']['required'] = i::__('A data final das inscrições é obrigatória');
+            }
+        });
+
         $app->hook("entity(Opportunity).publish:after", function() use ($app){
             /** @var Opportunity $this */
 
