@@ -1361,7 +1361,7 @@ class ApiQuery {
 
                     $qdata = ['@select' => $select];
 
-                    if ($this->entityClassName == Entities\User::class && $prop == 'profile') {
+                    if ($this->entityClassName == Entities\User::class && $prop == 'profile' || $mapping['isOwningSide']) {
                         $qdata['status'] = 'GTE(-10)';
                         $qdata['@permissions'] = 'view';
                     }

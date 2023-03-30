@@ -31,6 +31,13 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\FinishDataCollectionPhase(Jobs\FinishDataCollectionPhase::SLUG));
         $app->registerJobType(new Jobs\PublishResult(Jobs\PublishResult::SLUG));
 
+        $app->hook('entity(Opportunity).validations', function(&$validations) {
+            if (!$this->isNew()) {
+                $validations['registrationFrom']['required'] = i::__('A data inicial das inscrições é obrigatória');
+                $validations['registrationTo']['required'] = i::__('A data final das inscrições é obrigatória');
+            }
+        });
+
         $app->hook("entity(Opportunity).publish:after", function() use ($app){
             /** @var Opportunity $this */
 
@@ -119,12 +126,39 @@ class Module extends \MapasCulturais\Module{
             ];
         });
 
+        $app->hook('Theme::addOpportunityBreadcramb', function($unused = null, $label) use($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            /** @var Opportunity $entity */
+            $entity = $this->controller->requestedEntity;
+
+            if($entity instanceof EvaluationMethodConfiguration) {
+                $first_phase = $entity->opportunity->firstPhase;
+            } else {
+                $first_phase = $entity->firstPhase;
+            }
+
+            $breadcrumb = [
+                ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+                ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
+                ['label'=> $first_phase->name, 'url' => $app->createUrl('opportunity', 'edit', [$first_phase->id])]
+            ];
+            
+            if ($entity->isFirstPhase) {
+                $breadcrumb[] = ['label'=> i::__('Período de inscrição')];
+            } else {
+                $breadcrumb[] = ['label'=> $entity->name];
+            }
+            $breadcrumb[] = ['label'=> $label];
+            
+            $this->breadcrumb = $breadcrumb;
+        });
+
         $app->hook('Theme::useOpportunityAPI', function () use ($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
             $this->enqueueScript('components', 'opportunities-api', 'js/OpportunitiesAPI.js', ['components-api']);
         });
 
-        $app->hook('Theme::addOpportunityPhasesToJs', function ($opportunity = null) use ($app) {
+        $app->hook('Theme::addOpportunityPhasesToJs', function ($unused = null, $opportunity = null) use ($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */   
             $this->useOpportunityAPI();         
             if (!$opportunity) {
@@ -142,7 +176,7 @@ class Module extends \MapasCulturais\Module{
             $this->jsObject['opportunityPhases'] = $opportunity->firstPhase->phases;
         });
 
-        $app->hook('Theme::addRegistrationFieldsToJs', function ($opportunity = null) use ($app) {
+        $app->hook('Theme::addRegistrationFieldsToJs', function ($unused = null, $opportunity = null) use ($app) {
             if (!$opportunity) {
                 $entity = $this->controller->requestedEntity;
 

@@ -43,7 +43,7 @@ $this->breadcrumb = [
                         <div class="grid-12">
                             <entity-location :entity="entity" classes="col-12"></entity-location>
                             <div v-if="entity.cnpj" class="col-12 box-cnpj">
-                                <label>CNPJ do agente</label>
+                                <label>CNPJ</label>
                                 <div class="box-cnpj__box" >
                                     {{entity.cnpj}}
                                 </div>

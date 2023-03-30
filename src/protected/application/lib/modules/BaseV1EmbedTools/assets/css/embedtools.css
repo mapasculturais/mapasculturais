@@ -175,6 +175,32 @@ body {
 
 
 
+/* RegistrationView */
+
+.registration .registration-fieldset {
+
+}
+
+.registration .registration-fieldset ul.attachment-list {
+    
+}
+
+.registration .registration-fieldset ul.attachment-list li {
+    background-color: #FFFFFF;
+    padding: 16px 27px;
+}
+
+.registration .registration-fieldset ul.attachment-list li h4{
+    margin: 24px 0 0;
+    padding: 16px 27px 5px;
+}
+
+.registration .registration-fieldset ul.attachment-list li > div {
+    background-color: #E8E8E8;
+}
+
+
+
 /* FormBuilder */
 
 .project-edit-mode:hover {

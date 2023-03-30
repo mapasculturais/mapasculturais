@@ -4,7 +4,33 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
-    
+
+    &-edit {
+        .edit-label {
+            margin-bottom: 18px;
+        }
+
+        &__fields {
+            padding-top: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+
+            &-label {
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 19px;
+            }
+
+            .options {
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 19px;
+            }
+        }
+    }
+
     &--label {
         font-weight: 700;
         font-size: 18px;
@@ -26,7 +52,7 @@
         }
     }
 
-    &__hour{
+    &__hour {
         &--content {
             align-items: center;
             background-color: var(--mc-gray-100);
