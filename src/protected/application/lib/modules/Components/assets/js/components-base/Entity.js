@@ -101,12 +101,8 @@ class Entity {
         this.id = obj[this.$PK];
     }
 
-    populateFiles(files) {
-        if (this.files && Object.keys(this.files).length) {
-            return;
-        }
-        
-        this.files = {};
+    populateFiles(files) {        
+        this.files = this.files || {};
         for (let groupName in files) {
             const group = files[groupName];
             if (group instanceof Array) {
