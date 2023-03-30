@@ -119,6 +119,27 @@ class Module extends \MapasCulturais\Module{
             ];
         });
 
+        $app->hook('Theme::addOpportunityBreadcramb', function($unused = null, $label) use($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            /** @var Opportunity $entity */
+            $entity = $this->controller->requestedEntity;
+
+            $breadcrumb = [
+                ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+                ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
+                ['label'=> $entity->firstPhase->name, 'url' => $app->createUrl('opportunity', 'edit', [$entity->firstPhase->id])]
+            ];
+            
+            if ($entity->isFirstPhase) {
+                $breadcrumb[] = ['label'=> i::__('Período de inscrição')];
+            } else {
+                $breadcrumb[] = ['label'=> $entity->name];
+            }
+            $breadcrumb[] = ['label'=> $label];
+            
+            $this->breadcrumb = $breadcrumb;
+        });
+
         $app->hook('Theme::useOpportunityAPI', function () use ($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
             $this->enqueueScript('components', 'opportunities-api', 'js/OpportunitiesAPI.js', ['components-api']);
