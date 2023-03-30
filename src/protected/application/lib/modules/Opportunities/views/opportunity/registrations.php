@@ -2,11 +2,7 @@
 use MapasCulturais\i;
 $this->layout = 'entity';
 
-$this->breadcrumb = [
-  ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-  ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
-  ['label'=> $entity->name, 'url' => $app->createUrl('opportunity', 'registrations', [$entity->id])],
-];
+$this->addOpportunityBreadcramb(i::__('Lista de inscrições'));
 
 $this->import('
     entity-header
