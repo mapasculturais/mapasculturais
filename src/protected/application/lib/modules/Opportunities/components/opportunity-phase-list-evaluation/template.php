@@ -32,7 +32,7 @@ $this->import('
             </mc-link>
         </div>
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
-            <mc-link :entity="entity.opportunity" class="opportunity-phase-list-data-collection_action--button" icon="external" route="opportunityEvaluations" right-icon>
+            <mc-link route="opportunity/opportunityEvaluations" :params="[entity.id]" class="opportunity-phase-list-data-collection_action--button" icon="external" right-icon>
               <?= i::__("Lista de avaliações") ?>
             </mc-link>
         </div>
