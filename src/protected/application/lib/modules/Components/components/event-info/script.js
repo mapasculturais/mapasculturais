@@ -30,6 +30,7 @@ app.component('event-info', {
 
     mounted() {
         this.descricaoSonora = "";
+        this.traducaoLibras = "";
 
     },
 
