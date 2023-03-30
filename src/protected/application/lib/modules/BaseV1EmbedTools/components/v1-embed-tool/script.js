@@ -32,6 +32,13 @@ app.component('v1-embed-tool', {
         window.addEventListener("message", this.listener, false);
     },
 
+    mounted() {
+        const self = this;
+        this.$refs.iframe.addEventListener('load', (event) => {
+            self.loaded = true;
+        });
+    },
+
     unmounted() {
         window.removeEventListener("message", this.listener);
     },
@@ -40,6 +47,7 @@ app.component('v1-embed-tool', {
         const self = this;
 
         return {
+            loaded: false,
             iframeHeight: this.height,
             listener: function(event) {            
                 if (event.data.type == "resize") {

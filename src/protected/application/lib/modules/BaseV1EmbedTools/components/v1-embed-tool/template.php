@@ -6,5 +6,7 @@
  */
 
 use MapasCulturais\i;
+$this->import('loading');
 ?>
-<iframe :id="iframeId" :src="url" ref="iframe" :style="{height: iframeHeight, maxHeight: maxHeight, minHeight: minHeight, width: '100%', border: 'none'}" ></iframe>
+<loading :condition="!loaded"></loading>
+<iframe v-show="loaded" :id="iframeId" :src="url" ref="iframe" :style="{height: iframeHeight, maxHeight: maxHeight, minHeight: minHeight, width: '100%', border: 'none'}" ></iframe>
