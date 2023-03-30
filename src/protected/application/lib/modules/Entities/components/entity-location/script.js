@@ -197,7 +197,7 @@ app.component('entity-location', {
                     .then( r => {
                         // Consideramos o primeiro resultado
                         if (r[0] && r[0].lat && r[0].lon) {
-                            this.entity.location = {latitude: r[0].lat, longitude: r[0].lon};
+                            this.entity.location = {lat: r[0].lat, lng: r[0].lon};
                         }
                     } );
             }            
