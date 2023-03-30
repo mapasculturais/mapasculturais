@@ -46,11 +46,18 @@ globalThis.$DESCRIPTIONS = $MAPAS.EntitiesDescription ?? []
 globalThis.$TAXONOMIES = $MAPAS.Taxonomies ?? {}
 
 document.addEventListener('DOMContentLoaded', () => {
-    let rawProfile = globalThis.$MAPAS.userProfile;
+    const rawProfile = globalThis.$MAPAS.userProfile;
     if(rawProfile) {
-        let profile = new Entity('agent', rawProfile.id);
+        const profile = new Entity('agent', rawProfile.id);
         profile.populate(rawProfile);
         globalThis.$MAPAS.userProfile = profile;
+    }
+    
+    const rawUser = globalThis.$MAPAS.user;
+    if(rawUser) {
+        const user = new Entity('user', rawUser.id);
+        user.populate(rawUser);
+        globalThis.$MAPAS.user = user;
     }
     
     app.mount('#main-app');
