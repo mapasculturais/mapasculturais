@@ -2,20 +2,7 @@
 use MapasCulturais\i;
 $this->layout = 'entity';
 
-$breadcrumb = [
-  ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-  ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
-  ['label'=> $entity->firstPhase->name, 'url' => $app->createUrl('opportunity', 'edit', [$entity->firstPhase->id])]
-];
-
-if ($entity->isFirstPhase) {
-    $breadcrumb[] = ['label'=> i::__('Período de inscrição')];
-} else {
-    $breadcrumb[] = ['label'=> $entity->name];
-}
-$breadcrumb[] = ['label'=> i::__('Configuração do formulário'), 'url' => $app->createUrl('opportunity', 'formBuilder', [$entity->id])];
-
-$this->breadcrumb = $breadcrumb;
+$this->addOpportunityBreadcramb(i::__('Configuração do formulário'));
 
 $this->import('
     entity-header
