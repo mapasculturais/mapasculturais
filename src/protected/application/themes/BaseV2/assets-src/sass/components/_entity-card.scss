@@ -538,6 +538,10 @@
 
 				display: flex;
 				padding-bottom: 21px;
+				justify-content: center;
+				flex-wrap: wrap;
+				padding-bottom: 21px;
+				
 			}
 		}
 
@@ -546,8 +550,9 @@
 			flex-direction: column;
 
 		}
+
 		&.left {
-			.publish-archived.button{
+			.publish-archived.button {
 				color: var(--mc-primary-500);
 				border: none;
 				background-color: white;
@@ -556,13 +561,14 @@
 				line-height: 19px;
 			}
 		}
+
 		&.right {
 			display: flex;
 			gap: size(32);
 
 			@media (max-width: size(500)) {
 				.button {
-					width: size(280);
+					width: size(180);
 					display: flex;
 					justify-content: flex-start;
 					align-items: center;
