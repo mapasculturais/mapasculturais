@@ -729,9 +729,12 @@ abstract class Theme extends \Slim\View {
             $query_params = [
                 '@select' => '*', 
                 'id' => "EQ({$entity_id})", 
-                'status' => 'GTE(-10)',
                 '@permissions'=>'view', 
             ];
+
+            if(property_exists ($entity_class_name, 'status')) {
+                $query_params['status'] = 'GTE(-10)'; 
+            }
 
             if ($entity_class_name::usesAgentRelation()) {
                 $query_params['@select'] .= ',agentRelations';
