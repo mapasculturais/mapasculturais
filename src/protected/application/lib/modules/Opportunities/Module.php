@@ -125,7 +125,8 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('Theme::addOpportunityPhasesToJs', function ($opportunity = null) use ($app) {
-            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */            
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */   
+            $this->useOpportunityAPI();         
             if (!$opportunity) {
                 $entity = $this->controller->requestedEntity;
 

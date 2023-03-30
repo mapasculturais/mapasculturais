@@ -20,17 +20,23 @@ app.component('opportunity-form-builder' , {
         this.descriptionsOpportunity = $DESCRIPTIONS.opportunity;
     },
     computed: {
-        getDateRegistrationFrom () {
-            return new McDate(this.entity.registrationFrom._date).date('2-digit year');
+        registrationFrom () {
+            return this.entity.registrationFrom?.date('2-digit year');
         },
-        getDateRegistrationTo () {
-            return new McDate(this.entity.registrationTo._date).date('2-digit year');
+        registrationTo () {
+            return this.entity.registrationTo?.date('2-digit year');
         },
-        getTitleForm () {
+        title () {
             if(this.entity.isFirstPhase) {
                 return '1. Período de inscrição';
             } else {
-                return `${this.entity.id}. ${this.entity.name}`;
+                const index = $MAPAS.opportunityPhases.findIndex(item => item.__objectType == 'opportunity' && item.id == this.entity.id) + 1;
+                
+                if (index) { 
+                    return `${index}. ${this.entity.name}`;
+                } else {
+                    return this.entity.name;
+                }
             }
         }
     }
