@@ -14,6 +14,12 @@ app.component('v1-embed-tool', {
             type: String,
             default: null,
         },
+        maxWidth: {
+            type: String,
+        },
+        minWidth: {
+            type: String,
+        },
         maxHeight: {
             type: String,
         },
