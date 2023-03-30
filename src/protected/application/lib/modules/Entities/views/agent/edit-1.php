@@ -71,6 +71,7 @@ $this->breadcrumb = [
                     <div class="grid-12">
                         <entity-field :entity="entity" classes="col-12" prop="nomeCompleto" label="<?= i::__('Nome Completo') ?>"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="cpf"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" prop="cnpj" label="CNPJ (MEI)"></entity-field>                        
                         <entity-field :entity="entity" classes="col-12" prop="emailPrivado"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="telefonePublico"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="emailPublico"></entity-field>
