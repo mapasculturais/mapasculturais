@@ -23,7 +23,7 @@ $this->import('
     <mapas-breadcrumb></mapas-breadcrumb>
     <opportunity-header :opportunity="entity">
         <template #button>
-            <mc-link class="button button--primary-outline" :entity="entity" route="edit" hash="config" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
+            <mc-link class="button button--primary-outline" :entity="entity" route="edit" hash="registrations" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
         </template>
     </opportunity-header>
 
