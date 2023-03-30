@@ -546,7 +546,16 @@
 			flex-direction: column;
 
 		}
-
+		&.left {
+			.publish-archived.button{
+				color: var(--mc-primary-500);
+				border: none;
+				background-color: white;
+				font-weight: 700;
+				font-size: 14px;
+				line-height: 19px;
+			}
+		}
 		&.right {
 			display: flex;
 			gap: size(32);
