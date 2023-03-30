@@ -6,19 +6,14 @@ app.component('accept-terms', {
         const terms = $MAPAS.config.LGPD;
         const accepteds = $MAPAS.hashAccepteds;
         const step = this.getStep();
-        var user = {};
-
+        const user = $MAPAS.user;
         return {
-            terms, accepteds, step, user
+            loading: false,
+            user, terms, accepteds, step
         };
     },
-    created(){
-       this.getCurrentUser();
-    },
 
-    props: {},
     methods: {
-
         formatDate(timestamp) {
             let date = new McDate(new Date(timestamp * 1000));
             return date.date('numeric year') + ' - ' + date.time('numeric');
@@ -26,9 +21,23 @@ app.component('accept-terms', {
         acceptTerm(slug, hash) {
             let url = Utils.createUrl('lgpd', 'accept');
             let api = new API();
+            this.loading = true;
             api.POST(url, [slug]).then(res => res.json()).then(data => {
-                window.location.href = data.redirect;
+                this.loading = false;
                 this.accepteds.push(hash);
+
+                let finish = true;
+                for (let termSlug in this.terms) {
+                    const term = this.terms[termSlug];
+                    if (!this.accepteds.includes(term.md5)) {
+                        finish = false;
+                        window.location.hash = termSlug;
+                        break;
+                    }
+                }
+                if(finish) {
+                    window.location.href = data.redirect;
+                }
             })
         },
         showButton(hash) {
@@ -47,16 +56,6 @@ app.component('accept-terms', {
             if(window.location.href.match(/[a-zA-z./0-9]?#([a-zA-z]{1,61})[0-9]?/)){
                 return window.location.href.match(/[a-zA-z./0-9]?#([a-zA-z]{1,61})[0-9]?/)[1];
             }
-        }, 
-        async getCurrentUser(){
-            let api = new API('user');
-            let userId = $MAPAS.userId;
-            let query = {
-                '@select': '*',
-                'id': `EQ(`+userId+`)`
-            };
-    
-            this.user = await api.find(query);
-        }
+        },
     },
 });
