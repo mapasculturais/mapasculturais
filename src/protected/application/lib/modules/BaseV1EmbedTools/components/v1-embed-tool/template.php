@@ -9,4 +9,4 @@ use MapasCulturais\i;
 $this->import('loading');
 ?>
 <loading :condition="!loaded"></loading>
-<iframe v-show="loaded" :id="iframeId" :src="url" ref="iframe" :style="{height: iframeHeight, maxHeight: maxHeight, minHeight: minHeight, width: '100%', border: 'none'}" ></iframe>
+<iframe v-show="loaded" :id="iframeId" :src="url" ref="iframe" :style="{height: iframeHeight, maxHeight: maxHeight, minHeight: minHeight, maxWidth: maxWidth, minWidth: minWidth, width: '100%', border: 'none'}" ></iframe>
