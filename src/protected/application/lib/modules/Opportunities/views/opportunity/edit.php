@@ -33,7 +33,7 @@ $this->breadcrumb = [
         <tab label="<?= i::__('Configuração de fases') ?>" slug="config">
             <opportunity-phases-config :entity="entity"></opportunity-phases-config>
         </tab>
-        <tab label="<?= i::__('Inscrições e Resultados') ?>" slug="subs_result">
+        <tab label="<?= i::__('Inscrições e Resultados') ?>" slug="registrations">
             <opportunity-subscribe-results :entity="entity"></opportunity-subscribe-results>
         </tab>
         <tab label="<?= i::__('Relatórios') ?>" slug="report">

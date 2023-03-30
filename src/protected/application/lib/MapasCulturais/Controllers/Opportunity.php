@@ -7,6 +7,7 @@ use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 
 /**
  * Opportunity Controller
@@ -1056,72 +1057,51 @@ class Opportunity extends EntityController {
 
     }
 
-  function GET_formBuilder() {
-    $this->requireAuthentication();
-    $app = App::i();
+    function GET_formBuilder() {
+        $this->requireAuthentication();
+        $app = App::i();
 
-    $entity = $this->requestedEntity;
+        $entity = $this->requestedEntity;
 
-    if (!$entity) {
-      $app->pass();
+        if (!$entity) {
+            $app->pass();
+        }
+
+        $entity->checkPermission('modify');
+
+        $this->render('form-builder', ['entity' => $entity]);
     }
 
-    $entity->checkPermission('modify');
+    function GET_registrations() {
+        $this->requireAuthentication();
+        $app = App::i();
 
-    if($entity->usesNested()){
+        $entity = $this->requestedEntity;
 
-      $child_entity_request = $app->repo('RequestChildEntity')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+        if (!$entity) {
+            $app->pass();
+        }
 
-      $this->render('form-builder', ['entity' => $entity, 'child_entity_request' => $child_entity_request]);
+        $entity->checkPermission('modify');
 
-    }else{
-      $this->render('form-builder', ['entity' => $entity]);
-    }
-  }
-
-  function GET_registrations() {
-    $this->requireAuthentication();
-    $app = App::i();
-
-    $entity = $this->requestedEntity;
-
-    if (!$entity) {
-      $app->pass();
+        $this->render('registraions', ['entity' => $entity]);
     }
 
-    $entity->checkPermission('modify');
+    function GET_opportunityEvaluations() {
+        $this->requireAuthentication();
 
-    if($entity->usesNested()){
+        $this->entityClassName = EvaluationMethodConfiguration::class;
+        
+        $app = App::i();
 
-      $child_entity_request = $app->repo('RequestChildEntity')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+        $entity = $this->requestedEntity;
 
-      $this->render('registrations', ['entity' => $entity, 'child_entity_request' => $child_entity_request]);
+        if (!$entity) {
+            $app->pass();
+        }
 
-    }else{
-      $this->render('registrations', ['entity' => $entity]);
+        $entity->checkPermission('modify');
+
+        $this->render('evaluations-list', ['entity' => $entity]);
     }
-  }
-
-  function GET_opportunityEvaluations() {
-    $this->requireAuthentication();
-    $app = App::i();
-
-    $entity = $this->requestedEntity;
-
-    if (!$entity) {
-      $app->pass();
-    }
-
-    $entity->checkPermission('modify');
-
-    if($entity->usesNested()){
-
-      $child_entity_request = $app->repo('RequestChildEntity')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
-
-      $this->render('list-evaluation', ['entity' => $entity, 'child_entity_request' => $child_entity_request]);
-
-    }else{
-      $this->render('list-evaluation', ['entity' => $entity]);
-    }
-  }
 }

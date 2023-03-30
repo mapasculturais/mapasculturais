@@ -16,6 +16,7 @@ $this->import('
     opportunity-header
     tabs
     opportunity-phases-timeline
+    v1-embed-tool
 ');
 
 $this->breadcrumb = [
@@ -100,7 +101,7 @@ $this->breadcrumb = [
                             <span class="info"> <strong> <?= i::__('Nome') ?>: </strong> {{entity.owner.name}} </span>
                             <span class="info"> <strong> <?= i::__('Descrição curta') ?>: </strong> {{entity.owner.shortDescription}} </span>
                             <span class="info"> <strong> <?= i::__('CPF ou CNPJ') ?>: </strong> {{entity.owner.document}} </span>
-                            <span class="info"> <strong> <?= i::__('Data de nascimento ou fundação') ?>: </strong> <!-- {{entity.owner.dataDeNascimento.date('2-digit year')}} --> </span>
+                            <span class="info"> <strong> <?= i::__('Data de nascimento ou fundação') ?>: </strong> {{entity.owner.dataDeNascimento.date('2-digit year')}} </span>
                             <span class="info"> <strong> <?= i::__('Email') ?>: </strong> {{entity.owner.emailPublico}} </span>
                             <span class="info"> <strong> <?= i::__('Raça') ?>: </strong> {{entity.owner.raca}} </span>
                             <span class="info"> <strong> <?= i::__('Genero') ?>: </strong> {{entity.owner.genero}} </span>
@@ -115,16 +116,28 @@ $this->breadcrumb = [
                         <label> <?= i::__('Espaço Vinculado') ?> </label>
                     </template>
                     <template #content>
-                        <div class="space">
+                        <div v-if="entity.relatedSpaces[0]" class="space">
                             <div class="image">
+                                <mc-icon v-if="!entity.relatedSpaces[0]?.files?.avatar" name="image"></mc-icon>
+                                <img v-if="entity.relatedSpaces[0]?.files?.avatar" :src="entity.relatedSpaces[0].files.avatar.transformations.avatarMedium.url" />
+                            </div>
+                            <div class="name">
+                                <a href="entity?.relatedSpaces[0]?.singleUrl" :class="[entity.relatedSpaces[0]['@entityType'] + '__color']"> {{entity?.relatedSpaces[0]?.name}} </a>
+                            </div>
+                        </div>
+
+                        <div v-if="!entity.relatedSpaces[0]" class="space">
+                        <div class="image">
                                 <mc-icon name="image"></mc-icon>
                             </div>
                             <div class="name">
-                                Nome do espaço
+                                <?= i::__('Sem espaço vinculado') ?>
                             </div>
                         </div>
                     </template>
                 </mapas-card>
+
+                <v1-embed-tool route="registrationview" :id="entity.id"></v1-embed-tool>
             </div>
         </tab>
     </tabs>

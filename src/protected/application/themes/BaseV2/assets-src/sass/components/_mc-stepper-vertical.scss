@@ -23,12 +23,8 @@ ol.mc-stepper-vertical li {
     border-left: 3px solid red;
     padding: 0 45px 20px;
 
-    mapas-card {
-
-        padding-top: 16px;
-        padding-left: 16px;
-        padding-right: 16px;
-        padding-bottom: 24px;
+    .mapas-card {
+        padding: size(16);
 
         .evaluation-box {
             &__line {
@@ -46,14 +42,43 @@ ol.mc-stepper-vertical li {
     }
 }
 
+.evaluation {
+    &-section {
+        margin-bottom: size(20);
+
+        &__header {
+            margin-bottom: size(24);
+            display: flex;
+            flex-direction: column;
+            gap: size(8);
+
+            .title {
+                font-weight: 700;
+                font-size: size(24);
+                line-height: size(28);
+            }
+
+            .subtitle {
+                font-weight: 400;
+                font-size: size(16);
+                line-height: size(22);
+            }
+        }
+    }
+
+    &-line {
+        height: size(1);
+        border-bottom: size(1) solid var(--mc-gray-100);
+        margin: 0 0 size(20);
+    }
+}
+
 .config {
     &-input {
         background-color: var(--mc-high-500);
         margin: 0;
-        padding-left: 16px;
 
         input {
-            max-width: 822px;
             border-radius: 4px;
         }
     }

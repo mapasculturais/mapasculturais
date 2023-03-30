@@ -43,18 +43,21 @@ $this->import('
     <footer class="panel-entity-card__footer">
         <div class="panel-entity-card__footer-actions">
             <slot name="footer-actions">
-                <slot name="entity-actions-left" :entity="entity">
-                    <panel--entity-actions 
-                        :entity="entity" 
-                        @undeleted="$emit('undeleted', arguments)"
-                        @deleted="$emit('deleted', arguments)"
-                        @unpublished="$emit('unpublished', arguments)"
-                        @archived="$emit('archived', arguments)"
-                        @published="$emit('published', arguments)"
-                        :on-delete-remove-from-lists="onDeleteRemoveFromLists"
-                        :buttons="leftButtons"
-                    ></panel--entity-actions>
-                </slot>
+                <div class="panel-entity-card__footer-actions left">
+                    <slot name="entity-actions-left" :entity="entity">
+                        <panel--entity-actions 
+                            :entity="entity" 
+                            @undeleted="$emit('undeleted', arguments)"
+                            @deleted="$emit('deleted', arguments)"
+                            @unpublished="$emit('unpublished', arguments)"
+                            @archived="$emit('archived', arguments)"
+                            @published="$emit('published', arguments)"
+                            :on-delete-remove-from-lists="onDeleteRemoveFromLists"
+                            :buttons="leftButtons"
+                        ></panel--entity-actions>
+                    </slot>
+                </div>
+
                 <div class="panel-entity-card__footer-actions right">
                     <slot name="entity-actions-center" >
                     </slot>

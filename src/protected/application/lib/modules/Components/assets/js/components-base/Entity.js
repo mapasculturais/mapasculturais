@@ -86,7 +86,7 @@ class Entity {
     }
 
     parseRelation(prop, key) {
-        const type = prop?.['@entityType'] || $DESCRIPTIONS?.[this.__objectType]?.[key]?.targetEntity.toLocaleLowerCase();
+        const type = prop?.['@entityType'] || this.$RELATIONS[key]?.targetEntity?.toLocaleLowerCase();
         if (type && prop?.id) {
             const propAPI = new API(type, this.__scope);
             const instance = propAPI.getEntityInstance(prop.id);

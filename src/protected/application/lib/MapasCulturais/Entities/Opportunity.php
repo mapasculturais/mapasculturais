@@ -399,7 +399,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             ],
             'registrationFrom' => [
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
-                '!empty($this->registrationTo)' => \MapasCulturais\i::__('Data final obrigatória caso data inicial preenchida')
             ],
             'registrationTo' => [
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
