@@ -20,6 +20,7 @@ $this->import('
         entity-related-agents
         entity-social-media
         entity-terms
+        event-info
         mapas-container
         mapas-card
         mapas-breadcrumb
@@ -93,10 +94,11 @@ $this->breadcrumb = [
             </mapas-card>
             <mapas-card>
                 <template #title>
-                    <label><?php i::_e("Acessibilidade"); ?></label>
+                    <!-- <label><?php i::_e("Acessibilidade"); ?></label> -->
+                    <event-info :entity="entity" editable></event-info>
                 </template>
                 <template #content>
-                    <mc-tag-list classes="event__background" editable :tags="entity.terms?.linguagem"></mc-tag-list>
+                    <mc-tag-list classes="event__background" editable :tags="entity.accessibility"></mc-tag-list>
                 </template>
             </mapas-card>
             <mapas-card>
