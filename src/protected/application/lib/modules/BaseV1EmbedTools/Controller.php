@@ -82,6 +82,18 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->render("fields-visible",['entity' => $entity]);
     }
 
+    public Function GET_evaluationlist()
+    {
+        $entity = $this->getEntityAndCheckPermission('@control');
+        $app = App::i();
+
+        if($app->user->is('admin')){
+            $this->render("evaluations-admin-list",['entity' => $entity]);
+        }else{
+            $this->render("evaluations-evaluator-list",['entity' => $entity]);
+        }
+    }
+
     function getEntityAndCheckPermission($permission) 
     {
         $app = App::i();

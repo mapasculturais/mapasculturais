@@ -67,7 +67,7 @@ app.component('opportunity-phase-config-evaluation' , {
         },
 
         categories(){
-            return this.phase.registrationCategories instanceof Array ?  this.phase.registrationCategories : [];
+            return $MAPAS.requestedEntity.registrationCategories ?  $MAPAS.requestedEntity.registrationCategories : [];
         }
     },
 

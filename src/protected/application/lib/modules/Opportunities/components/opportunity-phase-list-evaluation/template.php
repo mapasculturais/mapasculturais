@@ -52,7 +52,11 @@ $this->import('
         </div>
         <div class="col-3 field">
             <label>
-                <!-- TO DO -->
+                <entity-field :entity="entity.opportunity" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel>
+                    <template #checkboxLabel>
+                      <?= i::__("Publicar resultados automaticamente"); ?>
+                    </template>
+                </entity-field>
             </label>
         </div>
     </div>

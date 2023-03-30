@@ -11,7 +11,7 @@ $this->import('
             <entity-field :entity="phase" prop="name" :autosave="300" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
         </div>
 
-        <entity-field :entity="phase" prop="evaluationFrom" :autosave="300" classes="col-6 sm:col-12" :min="minDate?._date" :max="phase.evaluationTo?._date"></entity-field>
+        <entity-field :entity="phase" prop="evaluationFrom" classes="col-6 sm:col-12" :min="minDate?._date" :max="phase.evaluationTo?._date"></entity-field>
         <entity-field :entity="phase" prop="evaluationTo" :autosave="300" classes="col-6 sm:col-12" :min="phase.evaluationFrom?._date" :max="maxDate?._date"></entity-field>
 
 
@@ -23,13 +23,13 @@ $this->import('
             </label>
                 <textarea v-model="phase.infos['general']" @change="savePhase()" class="evaluation-config__area" rows="10"></textarea>
         </div>
-        <div class="col-6 sm:col-12 field" v-for="(category, index) in categories">
-            <label :key="index"> {{ category }}
+        <div class="col-6 sm:col-12" v-for="(category, index) in categories">
+            <label :key="index"> <strong>{{ category }}</strong>
                 <textarea v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10"></textarea>
             </label>
         </div>
         <div class="config-phase__line-bottom col-12"></div>
-        <div class="phase-delete col-6">
+        <div class="phase-delete col-12">
             <confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
                     <a class="phase-delete__trash" @click="modal.open()">

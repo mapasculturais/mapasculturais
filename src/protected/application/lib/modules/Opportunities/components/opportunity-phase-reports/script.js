@@ -31,24 +31,32 @@ app.component('opportunity-phase-reports', {
     },
 
     computed: {
-    },
-    
-    methods: {
-        isJoinedPhaseLabel (index) {
-            const currentPhase = this.phases[index];
-            const previousPhase = this.phases[index - 1];
+        newPhases () {
 
-            if(currentPhase.__objectType === 'evaluationmethodconfiguration' && currentPhase.opportunity.id === previousPhase.id) {
-                return `${this.text('periodo_inscricao')} - ${currentPhase.name}`;
-            }
-            return currentPhase.name;
-        },
-        isJoinedPhase (index) {
-            const currentPhase = this.phases[index];
-            const previousPhase = this.phases[index - 1];
+            const newPhases = [];
 
-            return currentPhase.__objectType === 'evaluationmethodconfiguration' && currentPhase.opportunity.id === previousPhase.id;
+            this.phases.forEach((phase, index) => {
+                const previousPhase = this.phases[index-1];
+                if(phase.__objectType === 'evaluationmethodconfiguration' && phase.opportunity.id === previousPhase.id) {
+                    const phases = newPhases.flatMap(item => item.phases);
+                    const indexPhaseDeleted = phases.indexOf(previousPhase);
+                    newPhases.splice(indexPhaseDeleted, 1);
 
+                    newPhases.push({
+                        label: `${this.text('periodo_inscricao')} - ${phase.name}`,
+                        id: phase.id
+                    });
+                } else {
+                    newPhases.push({
+                        type: this.evaluationMethods[phase.type] ? this.evaluationMethods[phase.type].name : '',
+                        label: phase.name,
+                        id: phase.id
+                    });
+                }
+
+            });
+
+            return newPhases;
         }
     },
 });
