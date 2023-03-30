@@ -42,6 +42,10 @@ app.component('v1-embed-tool', {
         return {
             iframeHeight: this.height,
             listener: function(event) {            
+                if (event.source !== self.$refs.iframe.contentWindow) {
+                    return;
+                }
+
                 if (event.data.type == "resize") {
                     self.iframeHeight = event.data.data.height + 'px';
                 }
