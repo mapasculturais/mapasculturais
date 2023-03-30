@@ -112,10 +112,11 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
                 'required' => \MapasCulturais\i::__('O nome da fase de avaliação é obrigatório')
             ],
             'evaluationFrom' => [
+                'required' => \MapasCulturais\i::__('A data inicial das avaliações é obrigatória'),
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
-                '!empty($this->evaluationTo)' => \MapasCulturais\i::__('Data final obrigatória caso data inicial preenchida')
             ],
             'evaluationTo' => [
+                'required' => \MapasCulturais\i::__('A data final das avaliações é obrigatória'),
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
                 '$this->validateEvaluationDates()' => \MapasCulturais\i::__('A data final das avaliações deve ser maior ou igual a data inicial')
             ]
@@ -249,6 +250,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     public function getSummary()
     {
+        if($this->isNew()) {
+            return [];
+        }
+        
         /** @var App $app */
         $app = App::i();
 

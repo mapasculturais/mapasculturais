@@ -1,9 +1,16 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ */
+
+use MapasCulturais\i;
+
 $this->import('
+    loading
     mc-icon
     user-accepted-terms
 ');
-use MapasCulturais\i;
 ?>
 <?php $this->applyTemplateHook('accepted-terms', 'before'); ?>
 
@@ -17,8 +24,12 @@ use MapasCulturais\i;
         </div>
     </header>
 
-    <tabs class="tabs mapas-terms__content" :defaultTab="step" iconPosition="right">
-        <tab  v-for="(term, slug) in terms" :label="term.title" :slug="slug" :icon="showIconAccepted(term.md5)">
+    <mapas-card>
+        <loading :condition="loading"><?= i::__('Salvando aceite dos termos...') ?></loading>
+    </mapas-card>
+
+    <tabs v-if="!loading" class="tabs mapas-terms__content" :defaultTab="step" iconPosition="right">
+        <tab v-for="(term, slug) in terms" :label="term.title" :slug="slug" :icon="showIconAccepted(term.md5)">
             <template #default>
                 <mapas-card>
                     <template #content>
@@ -27,15 +38,18 @@ use MapasCulturais\i;
                             </div>
                         </div>
                     </template>
-
                 </mapas-card>
-                <div  v-if="showButton(term.md5)"  class="btn">
+                <div v-if="showButton(term.md5)"  class="btn">
                     <button class="button button--text back" @click="cancel()">Voltar</button>
                     <button class="button button--primary button--md accept" @click="acceptTerm(slug,term.md5)">{{term.buttonText}}</button>
-                 </div>
-                 <div v-if="!showButton(term.md5)">
-                    <user-accepted-terms :user="user[0]"></user-accepted-terms>
-                 </div>
+                </div>
+
+                <mapas-card v-if="user && !showButton(term.md5)">
+                    <div>
+                        <user-accepted-terms :user="user" :onlyTerm="slug"></user-accepted-terms>
+                    </div>
+                </mapas-card>
+
             </template>
         </tab>
     </tabs>

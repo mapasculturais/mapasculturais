@@ -9,7 +9,7 @@ $this->import('mc-icon mc-header-menu mc-header-menu-user theme-logo');
 
     <div :class="position">
         <div class="search-filter__actions">
-            <form class="search-filter__actions--form" @submit="$event.preventDefault()">
+            <form class="search-filter__actions--form" @submit.prevent>
                 <input v-model="pseudoQuery['@keyword']" type="text" class="search-filter__actions--form-input" />
                 <button class="search-filter__actions--form-button button--icon">
                     <mc-icon name="search"></mc-icon>

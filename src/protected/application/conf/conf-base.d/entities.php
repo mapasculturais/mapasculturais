@@ -37,7 +37,9 @@ return [
             'validPeriod'	=> i::__('Período de Validade'),
             'status' => i::__('Status'),
             'registrationFrom' => i::__('Data de início das inscrições'), 
-            'registrationTo' => i::__('Data final das inscrições')
+            'registrationTo' => i::__('Data final das inscrições'),
+            'evaluationFrom' => i::__('Data de início das avaliações'), 
+            'evaluationTo' => i::__('Data final das avaliações'),
         ),
 
         'MapasCulturais\Entities\Agent' => array(
