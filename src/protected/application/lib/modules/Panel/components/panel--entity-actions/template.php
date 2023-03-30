@@ -25,7 +25,7 @@ $this->import('
     
     <confirm-button v-if="publishButton && entity.status != <?= Entity::STATUS_TRASH ?> && entity.status != <?= Entity::STATUS_ENABLED ?>"
         @confirm="publishEntity($event)"
-        button-class="button publish button--primary button--icon"
+        button-class="button publish button--primary button--icon publish-archived"
         message="<?php i::esc_attr_e("Você está certo que deseja publicar esta entidade?") ?>">
             <?php i::_e('Publicar') ?>
     </confirm-button>
