@@ -24,6 +24,6 @@ $this->import('
             </mc-link>
         </div>
         <div class="config-phase__line-bottom col-12"></div>
-        <opportunity-phase-publish-date-config :phase="entity" hideDatepicker :hide-checkbox="entity.publishTimestamp == null" />
+        <opportunity-phase-publish-date-config :phase="entity" :hide-checkbox="!!entity.publishTimestamp" />
     </div>
 </mapas-card>
