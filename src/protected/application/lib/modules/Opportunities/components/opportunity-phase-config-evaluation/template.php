@@ -29,7 +29,7 @@ $this->import('
 
             <modal title="<?= i::esc_attr__('Configurações de suporte')?>" classes="modalEvaluationFields">
                 <template #default="modal">
-                    <v1-embed-tool route="fieldsvisible" :id="phase.opportunity.id" min-height="500px"></v1-embed-tool>
+                    <v1-embed-tool route="fieldsvisible" :id="phase.opportunity.id" min-width="800px"></v1-embed-tool>
                 </template>
                 <template #button="modal">
                     <button class="evaluation-fields-button button button--bg button--secondarylight" @click="modal.open"><?= i::__('Abrir campos') ?></button>
