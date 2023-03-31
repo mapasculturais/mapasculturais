@@ -273,16 +273,56 @@ body {
 /* Registration View */
 .registration .registration-fieldset ul.attachment-list li {
     background-color: #FFFFFF;
-    padding: 16px 27px;
+    padding: 0 27px 16px;
+    border: none;
+}
+
+.registration .registration-fieldset ul.attachment-list li.section-title {
+    margin-top: 24px;
+}
+
+.registration .registration-fieldset ul.attachment-list li.section-title:first-child {
+    margin-top: 0;
+}
+
+.registration .registration-fieldset ul.attachment-list li.section-title > div {
+    background-color: #FFFFFF;
+    padding: 0;
 }
 
 .registration .registration-fieldset ul.attachment-list li h4{
-    margin: 24px 0 0;
-    padding: 16px 27px 5px;
+    margin: 0;
+    padding: 16px 0 5px;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
 }
 
 .registration .registration-fieldset ul.attachment-list li > div {
     background-color: #E8E8E8;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 24px;
+    border-radius: 4px;
+}
+
+.registration .registration-fieldset ul.attachment-list li > div label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.registration .registration-fieldset ul.attachment-list li > div em {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
 }
 
 
@@ -1012,11 +1052,6 @@ body {
 .action-registrationmanager table.registrations-table tbody tr td.registration-agents-col p .label,
 .action-registrationmanager table.registrations-table tbody tr td.registration-agents-col p br {
     display: none;
-}
-
-.registrations-table tbody tr.draft .dropdown .placeholder, 
-.my-registrations tbody tr.draft .dropdown .placeholder {
-
 }
 
 .action-registrationmanager table.registrations-table tbody tr {
