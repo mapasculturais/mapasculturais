@@ -31,9 +31,10 @@
       border-bottom: size(1) solid;
     }
 
-    .modalSuportBuilder {
+    .modalEmbedTools {
       .modal-content {
-        width: 90%;
+        width: 80%;
+        max-width: size(1170);
       }
     }
   }
