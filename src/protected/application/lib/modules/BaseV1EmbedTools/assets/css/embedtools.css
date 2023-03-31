@@ -1059,3 +1059,70 @@ body {
 .action-registrationmanager table.registrations-table tfoot tr td {
     border: none;
 }
+
+
+
+/* Visible fields to raters */
+
+.fields-visible h4 {
+    display: none;
+}
+
+.fields-visible .search label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+}
+
+.fields-visible .search label small {
+    font-size: smaller;
+    font-weight: 400;
+}
+
+.fields-visible .search label input {
+    border: 0.8px solid #BBBBBB;
+    border-radius: 4px;
+    margin-bottom: 34px;
+}
+
+.fields-visible .search .select-all label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.fields-visible .search .select-all label input {
+    margin: 0;
+}
+
+.fields-visible .search .select-all label br {
+    display: none;
+}
+
+.fields-visible .search hr {
+    display: none;
+}
+
+.fields-visible .evaluationFields span {
+    margin: 0;
+    padding: 9px 20px;
+    background: #E8E8E8;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.fields-visible .evaluationFields span label {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
