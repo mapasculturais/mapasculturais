@@ -44,8 +44,38 @@ trait EntityPermissionCache {
         
         return $class_name;
     }
+
+
+    protected $permissionCacheEnabled = true;
+
+    public function getPermissionCachePrefix() {
+        $app = App::i();
+        $prefix = $app->cache->fetch("$this::permission-cache-prefix");
+
+        if(!$prefix) {
+            $prefix = $this->renewPermissionCachePrefix();
+        }
+
+        return $prefix;
+    }
+
+    public function renewPermissionCachePrefix() {
+        $app = App::i();
+        $prefix = uniqid();
+        $app->cache->save("$this::permission-cache-prefix", $prefix);
+        return $prefix;
+    }
+
+    public function getPermissionCacheKey($user, $action) {
+        $prefix = $this->getPermissionCachePrefix();
+
+        return "$prefix::{$this->hookClassPath}:{$this->id}::User:{$user->id}::$action";
+    }
     
     function createPermissionsCacheForUsers($users = null, $flush = false, $delete_old = true) {
+        $this->permissionCacheEnabled = false;
+        $this->renewPermissionCachePrefix();
+
         $app = App::i();
         if($this->getEntityState() !== 2){
             $this->refresh();

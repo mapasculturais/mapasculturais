@@ -28,6 +28,8 @@ use MapasCulturais\Entities\User;
  * @property-read \MapasCulturais\Storage\FileSystem $storage File Storage Component.
  * @property-read \MapasCulturais\Entities\User $user The Logged in user.
  * @property-read String $opportunityRegistrationAgentRelationGroupName Opportunity Registration Agent Relation Group Name
+ * 
+ * @property Boolean $permissionCacheEnabled
  *
  * From Slim Class Definition
  * @property-read array[\Slim] $apps = []
@@ -168,6 +170,7 @@ class App extends \Slim\Slim{
 
     protected $_subsite = null;
 
+    protected $permissionCacheEnabled = true;
     /**
      * Initializes the application instance.
      *
@@ -193,6 +196,8 @@ class App extends \Slim\Slim{
             return $this;
 
         $this->_initiated = true;
+
+        $this->permissionCacheEnabled = $config['app.usePermissionsCache'] ?? true;
 
         if(empty($config['base.url'])){
             $config['base.url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://') . 
