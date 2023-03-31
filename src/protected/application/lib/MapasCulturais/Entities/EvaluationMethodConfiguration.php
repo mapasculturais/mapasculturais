@@ -257,9 +257,11 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         /** @var App $app */
         $app = App::i();
 
-        $cache_key = __METHOD__ . ':' . $this->id; 
-        if($cache = $app->cache->fetch($cache_key)){
-            return $cache;
+        if($app->config['app.useOpportunitySummaryCache']) {
+            $cache_key = __METHOD__ . ':' . $this->id; 
+            if ($app->cache->contains($cache_key)) {
+                return $app->cache->fetch($cache_key);
+            }
         }
 
         $conn = $app->em->getConnection();
@@ -300,8 +302,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
                 $data[$status] = $values['qtd'];
             }
         }
-
-        $app->cache->save($cache_key, $data, 30);
+        
+        if($app->config['app.useOpportunitySummaryCache']) {
+            $app->cache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
+        }
         return $data;
     }
 
