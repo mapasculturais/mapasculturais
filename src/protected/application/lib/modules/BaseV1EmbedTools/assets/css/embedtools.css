@@ -31,7 +31,8 @@ body {
 }
 
 
-/* RegistrationForm */
+
+/* Registration Form */
 .attachment-list .attachment-list-item {
     padding: 0;
     font-size: unset;
@@ -175,16 +176,101 @@ body {
 
 
 
-/* RegistrationView */
-
-.registration .registration-fieldset {
-
+/* Evaluation Maneger */
+#evaluations-config .registration-fieldset {
+    border: none;
+    padding: 0;
+    margin-bottom: 0;
 }
 
-.registration .registration-fieldset ul.attachment-list {
-    
+#evaluations-config .registration-fieldset .committee {
+    background-color: #FFFFFF;
+    border: 1px solid #666666;
+    border-radius: 4px;
+    padding: 0;
+    margin: 16px 0;
 }
 
+#evaluations-config .registration-fieldset .committee .committee--info {
+    padding: 16px 24px;
+    border-bottom: 1px solid #BBBBBB;
+}
+
+#evaluations-config .registration-fieldset .committee .committee--info .committee--header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+#evaluations-config .registration-fieldset .committee .committee--info .committee--header .committee--avatar {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    float: unset;
+    margin: 0;
+}
+
+#evaluations-config .registration-fieldset .committee .committee--info .committee--header .committee--content {
+    display: flex;
+    gap: 10px;
+}
+
+#evaluations-config .registration-fieldset .btn.add {
+    align-items: center;
+    background: #0074C1;
+    border-radius: 0.5rem;
+    border: none;
+    color: #FFFFFF;
+    display: flex;
+    font-family: 'Open Sans';
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 600;
+    gap: 0.625rem;
+    height: unset;
+    justify-content: center;
+    line-height: 1.563rem;
+    margin: 0;
+    padding: 0.719rem 1.375rem;
+}
+
+#evaluations-config .registration-fieldset .btn.add::before {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+#evaluations-config .affirmativePolices {
+    margin-top: 40px;
+}
+
+#evaluations-config .technical-evaluation-configuration--feasibility {
+    margin-top: 40px;
+}
+
+#evaluations-config .technical-evaluation-configuration--feasibility .options {
+    display: flex;
+    gap: 30px;
+}
+
+#evaluations-config .technical-evaluation-configuration--feasibility .options label {
+    display: flex;
+    gap: 8px;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+#evaluations-config .technical-evaluation-configuration--criteria {
+    margin-top: 40px;
+}
+
+
+
+/* Registration View */
 .registration .registration-fieldset ul.attachment-list li {
     background-color: #FFFFFF;
     padding: 16px 27px;
@@ -201,8 +287,7 @@ body {
 
 
 
-/* FormBuilder */
-
+/* Form Builder */
 .project-edit-mode:hover {
     background-color: transparent !important;
 }
@@ -380,8 +465,7 @@ body {
 
 
 
-/* SuportBuilder */
-
+/* Suport Builder */
 #support-settings header {
     position: relative;
     height: 9.688rem;
@@ -582,8 +666,8 @@ body {
 }
 
 
-/* Affirmative policies manager */
 
+/* Affirmative policies manager */
 .technical-evaluation-configuration {
     margin: 0;
     padding: 0 1rem;
@@ -612,6 +696,26 @@ body {
     font-weight: 400;
     line-height: 1.375rem;
     margin-bottom: 1.5rem;
+}
+
+.technical-evaluation-configuration header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+
+.technical-evaluation-configuration header input {
+    margin: 0;
+    background: #FFFFFF;
+    border-radius: 0.25rem;
+    border: 0.063rem solid #BBBBBB !important;
+    height: unset;
+    padding: 0.531rem 1rem;
+}
+
+.technical-evaluation-configuration header .btn.delete {
+    background-color: #cc3333;
 }
 
 .technical-evaluation-configuration .btn.add {
@@ -788,7 +892,6 @@ body {
 
 
 /* Registration Manager */
-
 .action-registrationmanager #filtro-inscritos {
     background: white;
     border-radius: 4px 4px 0 0;
