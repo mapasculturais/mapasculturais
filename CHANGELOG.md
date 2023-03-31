@@ -11,6 +11,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
 - Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
 
+## [5.6.6] - 2023-03-31
+### Correção
+- Evita que ao exportar a planila de inscritos se quebre quando a politicas afirmativas esta ativa e nao existe rule configurada
+- Corrige erro ao salvar metadado que define se as politicas afirmativas estão ativas ou não
+- Corrige front-end para que quando a politica afirmativa esteja ativa, o box de configuração permaneça aberto
+
 ## [5.6.5] - 2023-03-28
 ### Melhorias
 - Adiciona botão para fazer a validação de erros da inscrição no formulario de inscrição
