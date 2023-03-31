@@ -520,7 +520,8 @@ class Agent extends \MapasCulturais\Entity
             return true;
         }
 
-        return $this->getOwner()->canUser('modify') && $this->canUser('modify');
+        $owner = $this->getOwner();
+        return $owner && $owner->canUser('modify') && $this->canUser('modify');
     }
 
     protected function canUserArchive($user){
