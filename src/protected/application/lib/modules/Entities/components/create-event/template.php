@@ -11,7 +11,7 @@
 
  <modal :title="modalTitle" classes="create-modal" button-label="Criar Evento" @open="createEntity()" @close="destroyEntity()">
      <template v-if="entity && !entity.id" #default>
-         <label><?php i::_e('Crie um evento com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
+         <label id="title"><?php i::_e('Crie um evento com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
          <div class="create-modal__fields">
              <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Nome ou título") ?> prop="name"></entity-field>
              <entity-terms :entity="entity" :editable="true" :classes="linguagemClasses" taxonomy='linguagem' title="<?php i::esc_attr_e("Linguagem cultural") ?>"></entity-terms>
@@ -27,7 +27,7 @@
             <label><?php i::_e('Para completar e publicar seu novo evento, acesse a área <b>Rascunhos</b> em <b>Meus Eventos</b> no <b>Painel de Controle</b>.  ');?></label>
         </div>
         <hr><br>
-         <entity-occurrence-list></entity-occurrence-list>
+         <entity-occurrence-list :entity="entity" editable create-event></entity-occurrence-list>
      </template>
 
      <template #button="modal">
@@ -35,8 +35,8 @@
      </template>
 
      <template v-if="!entity?.id" #actions="modal">
-         <button class="button button--primary" @click="createPublic(modal)"><?php i::_e('Criar e Publicar') ?></button>
-         <button class="button button--solid-dark" @click="createDraft(modal)"><?php i::_e('Criar em Rascunho') ?></button>
+         <a href="#title" class="button button--primary" @click="createPublic(modal)"><?php i::_e('Criar e Publicar') ?></a>
+         <a href="#title" class="button button--solid-dark" @click="createDraft(modal)"><?php i::_e('Criar em Rascunho') ?></a>
          <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar') ?></button>
      </template>
      <template v-if="entity?.id && entity.status==1" #actions="modal">
