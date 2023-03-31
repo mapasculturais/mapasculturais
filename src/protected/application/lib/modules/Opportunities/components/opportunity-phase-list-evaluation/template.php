@@ -36,28 +36,5 @@ $this->import('
               <?= i::__("Lista de avaliações") ?>
             </mc-link>
         </div>
-
-        <div class="config-phase__line-bottom col-12"></div>
-        <div class="col-3">
-            <confirm-button :message="text('confirmar_publicacao')" @confirm="addPublishRegistrations()">
-                <template #button="modal">
-                    <button class="button button--primary" @click="modal.open()">
-                      <?= i::__("Publicar Resultados") ?>
-                    </button>
-                </template>
-            </confirm-button>
-        </div>
-        <div class="col-6">
-            <h5><?= i::__("A publicação de um resultado é opcional e só pode ser executada após a aplicação dos resultados das avaliações.") ?></h5>
-        </div>
-        <div class="col-3 field">
-            <label>
-                <entity-field :entity="entity.opportunity" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel>
-                    <template #checkboxLabel>
-                      <?= i::__("Publicar resultados automaticamente"); ?>
-                    </template>
-                </entity-field>
-            </label>
-        </div>
     </div>
 </mapas-card>
