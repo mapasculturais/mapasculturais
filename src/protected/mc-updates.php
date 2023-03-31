@@ -278,8 +278,7 @@ return [
         });
 
         
-    }
-
+    },
     'Atualiza os campos das ocorrencias para o novo padrao' => function(){
         $app = App::i();
         DB_UPDATE::enqueue('EventOccurrence', 'id > 0', function (MapasCulturais\Entities\EventOccurrence $entity) use ($app) {
