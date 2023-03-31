@@ -4,6 +4,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.6.6] - 2023-03-31
+### Correção
+- Evita que ao exportar a planila de inscritos se quebre quando a politicas afirmativas esta ativa e nao existe rule configurada
+- Corrige erro ao salvar metadado que define se as politicas afirmativas estão ativas ou não
+- Corrige front-end para que quando a politica afirmativa esteja ativa, o box de configuração permaneça aberto
+
 ## [5.6.5] - 2023-03-28
 ### Melhorias
 - Adiciona botão para fazer a validação de erros da inscrição no formulario de inscrição
