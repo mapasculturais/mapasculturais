@@ -1084,7 +1084,7 @@ class Opportunity extends EntityController {
 
         $entity->checkPermission('modify');
 
-        $this->render('registraions', ['entity' => $entity]);
+        $this->render('registrations', ['entity' => $entity]);
     }
 
     function GET_opportunityEvaluations() {
