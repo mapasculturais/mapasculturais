@@ -85,7 +85,9 @@ app.component('create-event', {
         },
         save(modal) {
             modal.loading(true);
+
             this.entity.save().then((response) => {
+                console.log(response);
                 this.$emit('create', response)
                 modal.loading(false);
                 Utils.pushEntityToList(this.entity);
