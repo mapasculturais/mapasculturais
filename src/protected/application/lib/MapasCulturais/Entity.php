@@ -937,7 +937,7 @@ abstract class Entity implements \JsonSerializable{
     public function jsonSerialize() {
         $app = App::i();
         $result = [
-            '@objectType' => $this->getControllerId()
+            '@entityType' => $this->getControllerId()
         ];
         $allowed_classes = [
             'DateTime',
