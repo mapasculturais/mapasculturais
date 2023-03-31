@@ -22,21 +22,26 @@ $this->import('
 
         <template v-else>
 
-            <div class="col-3" v-if="!hideButton && buttonPosition === 'left'">
+            <!-- BUTTON -->
+            <div class="col-3">
                 <confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
                     <template #button="modal">
-                        <button class="button button--primary" @click="modal.open()">
+                        <button v-if="!isBlockPublish" class="button button--primary" @click="modal.open()">
+                          <?= i::__("Publicar Resultados") ?>
+                        </button>
+                        <button v-else class="button" disabled>
                           <?= i::__("Publicar Resultados") ?>
                         </button>
                     </template>
                 </confirm-button>
             </div>
+
+            <!-- DESCRIPTION -->
             <div class="col-6" v-if="!hideDescription">
                 <h5><?= i::__("A publicação de um resultado é opcional e só pode ser executada após a aplicação dos resultados das avaliações.") ?></h5>
             </div>
-            <div class="col-6 sm:col-12" v-if="!hideDatepicker">
-                <entity-field :entity="phase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12" :min="minDate?._date"></entity-field>
-            </div>
+
+            <!-- CHECKBOX -->
             <div class="col-3 field" v-if="!hideCheckbox">
                 <entity-field :entity="phase" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel>
                     <template #checkboxLabel>
@@ -44,14 +49,8 @@ $this->import('
                     </template>
                 </entity-field>
             </div>
-            <div class="col-3" v-if="!hideButton && buttonPosition === 'right'">
-                <confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
-                    <template #button="modal">
-                        <button class="button button--primary" @click="modal.open()">
-                          <?= i::__("Publicar Resultados") ?>
-                        </button>
-                    </template>
-                </confirm-button>
+            <div class="col-3 field" v-else>
+                <p><?= i::__("Os resultados serão publicados automaticamente"); ?></p>
             </div>
 
         </template>
