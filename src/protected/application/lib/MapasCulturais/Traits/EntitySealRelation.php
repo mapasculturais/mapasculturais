@@ -3,7 +3,7 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App,
     MapasCulturais\Entities\Seal;
-
+use MapasCulturais\Exceptions\PermissionDenied;
 
 /**
  * Defines that this entity has seals related to it.
@@ -164,7 +164,13 @@ trait EntitySealRelation {
 
     protected function canUserCreateSealRelation($user){
         $result = $this->canUser('@control', $user);
-        return $user->is('admin') || $result && $user->hasControlSeals;
+        try {
+            $user_seals = $user->hasControlSeals;
+        } catch (PermissionDenied $th) {
+            $user_seals = [];
+        }
+
+        return $user->is('admin') || $result && $user_seals;
     }
 
     function canUserRemoveSealRelation($user){
@@ -175,7 +181,12 @@ trait EntitySealRelation {
         $result = false;
         if($this->canUser('@control', $user)){
             if($entity_seals = $this->relatedSeals){
-                $user_seals = $user->hasControlSeals;
+
+                try {
+                    $user_seals = $user->hasControlSeals;
+                } catch (PermissionDenied $th) {
+                    $user_seals = [];
+                }
 
                 foreach($user_seals as $seal) {
                     if(array_search($seal, $entity_seals) !== false) {
