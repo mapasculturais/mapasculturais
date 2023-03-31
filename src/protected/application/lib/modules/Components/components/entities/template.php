@@ -21,7 +21,7 @@ $this->import('loading');
         :query="query" 
         :refresh="refresh"></slot>
     <slot v-else name="empty">
-        <div class="panel__row">
+        <div class="panel__row noEntity">
             <p><?= i::__('Nenhuma entidade encontrada') ?></p>
         </div>
     </slot>
