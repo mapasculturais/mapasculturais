@@ -170,7 +170,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
                     $policies = $reg->appliedAffirmativePolicy;
 
-                    if(!$policies->rules){
+                    if(!$policies || !$policies->rules){
                         continue;
                     }
 
