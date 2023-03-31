@@ -13,6 +13,10 @@
     .tabs-component {
       &__header {
         margin: size(-40) auto size(40);
+        @media (max-width: size(800)){
+          margin-top: 0;
+          background-color: var(--mc-high-500);
+        }
       }
     }
 
