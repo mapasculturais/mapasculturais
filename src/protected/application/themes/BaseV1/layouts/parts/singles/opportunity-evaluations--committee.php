@@ -77,11 +77,15 @@ $method = $entity->getEvaluationMethod();
                     <?php if($entity->canUser('reopenValuerEvaluations')): ?>
                         <span ng-if="admin.status === 10" class="btn btn-success alignright mr10" ng-click="reopenEvaluations(admin)"><?php i::_e("Reabrir avaliações");?></span>
                     <?php endif; ?>
-                    <img class="committee--avatar" ng-src="{{avatarUrl(admin.agent)}}" />
-                    <span class="committee--name" >{{admin.agent.name}}</span> 
-                    <div ng-if="admin.status === 10" class="success"> <?php i::_e('Avaliações enviadas')?></div>
-                    <div ng-if="admin.status === 1" class="warning"> <?php i::_e('Avaliações pendentes')?></div>
-                    <div ng-if="admin.agent.terms.area">{{admin.agent.terms.area.join(', ')}}</div>
+                    <div class="committee--header">
+                        <img class="committee--avatar" ng-src="{{avatarUrl(admin.agent)}}" />
+                        <div class="committee--content">
+                            <span class="committee--name" >{{admin.agent.name}}</span> 
+                            <div ng-if="admin.status === 10" class="success"> <?php i::_e('Avaliações enviadas')?></div>
+                            <div ng-if="admin.status === 1" class="warning"> <?php i::_e('Avaliações pendentes')?></div>
+                            <div ng-if="admin.agent.terms.area">{{admin.agent.terms.area.join(', ')}}</div>
+                        </div>
+                    </div>
                 </div>
                 <?php if($method->fetchRegistrations()): ?>
                     <div class="committee--fetch clear">
@@ -92,7 +96,7 @@ $method = $entity->getEvaluationMethod();
                 <?php endif; ?>
             </div>
         <p ng-if="committee.length < 1"><?php i::_e('Não há nenhum avaliador definido.'); ?></p>
-        <span class="btn btn-default add" ng-click="editbox.open('add-committee-agent', $event)" ><?php i::esc_attr_e('Adicionar avaliador'); ?></span>
+        <button class="btn btn-default add" ng-click="editbox.open('add-committee-agent', $event)" ><?php i::esc_attr_e('Adicionar avaliador'); ?></button>
 
         <edit-box id="add-committee-agent" ng-if="isEditable" position="right" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar agente à comissão de avaliadores");?>" spinner-condition="spinners['add-committee-agent']" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true'>
             <find-entity entity="agent" api-query="findQuery" no-results-text="<?php i::esc_attr_e('Nenhum agente encontrado'); ?>" description="" spinner-condition="spinners['add-committee-agent']" group="add-committee-agent" select="createAdminRelation"></find-entity>
