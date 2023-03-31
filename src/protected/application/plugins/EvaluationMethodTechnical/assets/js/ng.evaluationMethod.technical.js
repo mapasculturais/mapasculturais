@@ -48,7 +48,7 @@
                 registrationFieldConfigurations: [],
                 criteriaAffirmativePolicies: MapasCulturais.affirmativePolicies || [],
                 fieldsAffiermativePolicie: {},
-                isActiveAffirmativePolicies: MapasCulturais.isActiveAffirmativePolicies == "true" ? true : false,
+                isActiveAffirmativePolicies: MapasCulturais.isActiveAffirmativePolicies ? true : false,
                 affirmativePolicieRoof: parseFloat(MapasCulturais.affirmativePoliciesRoof) || 0.00,
                 
                 debounce: 2000
