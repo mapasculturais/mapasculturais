@@ -12,7 +12,7 @@ $this->import('
 ?>
 
 <div class="entity-occurrence-list">
-    <div v-if="editable" class="entity-occurrence-list__editable">
+    <div v-if="editable && !createEvent" class="entity-occurrence-list__editable">
         <label class="entity-occurrence-list__editable--title">
             <?= i::_e('Data, hora e local do evento') ?>
         </label>
@@ -21,8 +21,18 @@ $this->import('
         </p>
         <create-occurrence :entity="entity" @create="addToOccurrenceList($event)"></create-occurrence>
     </div>
+    <div v-if="editable && createEvent" class="entity-occurrence-list__editable">
+        <label class="entity-occurrence-list__editable--title">
+            <?= i::_e('Deseja inserir uma ocorrência para o seu Evento?') ?>
+        </label>
+        <p class="entity-occurrence-list__editable--description">
+            <?= i::_e('Você pode inserir agora uma ocorrência do seu evento ou a ocorrência única.') ?>
+        </p>
+        <create-occurrence :entity="entity" @create="addToOccurrenceList($event)"></create-occurrence>
+    </div>
     <div class="entity-occurrence-list__occurrences">
         <label class="occurrence__title">Agenda</label>
+        <!-- no entities display none na classe Noentity -->
         <entities name="occurrenceList" type="eventoccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
             <template #default="{entities}">
                 <div v-for="occurrence in entities" class="occurrence" :class="{'edit': editable}" :key="occurrence._reccurrence_string">
