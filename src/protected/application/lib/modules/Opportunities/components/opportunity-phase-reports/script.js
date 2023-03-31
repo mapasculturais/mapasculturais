@@ -43,8 +43,8 @@ app.component('opportunity-phase-reports', {
                     newPhases.splice(indexPhaseDeleted, 1);
 
                     newPhases.push({
-                        label: `${this.text('periodo_inscricao')} - ${phase.name}`,
-                        id: phase.id
+                        label: `${this.text('periodo_inscricao')} / ${phase.name}`,
+                        id: previousPhase.id
                     });
                 } else {
                     newPhases.push({
