@@ -12,10 +12,9 @@ $this->import('
     opportunity-header
 ')
 ?>
-{{}}
 <div class="main-app opportunity-evaluations">
     <mapas-breadcrumb></mapas-breadcrumb>
-    <opportunity-header :opportunity="entity">
+    <opportunity-header :opportunity="entity.opportunity">
         <template #button>
             <mc-link class="button button--primary-outline" :entity="entity.opportunity" route="edit" hash="registrations" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
         </template>
