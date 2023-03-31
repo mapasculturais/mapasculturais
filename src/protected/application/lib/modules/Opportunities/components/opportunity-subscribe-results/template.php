@@ -30,9 +30,9 @@ $this->import('
     </template>
     <template #header-actions="{step, item}">     
         <div class="phase-actions">
-            <modal title="<?= i::esc_attr__('Configurações de suporte')?>" classes="modalSuportBuilder" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
+            <modal title="<?= i::esc_attr__('Configurações de suporte')?>" classes="modalEmbedTools" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
                 <template #default="modal">
-                    <v1-embed-tool route="supportbuilder" :id="item.id" min-height="500px"></v1-embed-tool>
+                    <v1-embed-tool route="supportbuilder" :id="item.id"></v1-embed-tool>
                 </template>
                 <template #button="modal">
                     <a class="support" @click="modal.open"><?= i::__('Suporte') ?> <mc-icon name="external"></mc-icon></a>

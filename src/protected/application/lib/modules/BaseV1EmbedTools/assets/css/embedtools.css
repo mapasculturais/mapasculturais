@@ -563,6 +563,14 @@ body {
     justify-content: space-between;
 }
 
+@media (max-width: 800px) {
+    #support-settings .support-content .committee .committee--info {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 20px;
+    }
+}
+
 #support-settings .support-content .committee .committee--info .user-info {
     display: flex;
     align-items: center;
