@@ -11,18 +11,6 @@ app.component('opportunity-phase-publish-date-config' , {
             type: Entity,
             required: true
         },
-        hideButton: {
-            type: Boolean,
-            default: false
-        },
-        buttonPosition: {
-            type: String,
-            default: 'left'
-        },
-        hideDatepicker: {
-            type: Boolean,
-            default: false
-        },
         hideCheckbox: {
             type: Boolean,
             default: false
@@ -30,6 +18,13 @@ app.component('opportunity-phase-publish-date-config' , {
         hideDescription: {
             type: Boolean,
             default: false
+        }
+    },
+
+    computed: {
+        isBlockPublish () {
+            const date = this.phase.evaluationMethodConfiguration?.evaluationTo || this.phase.registrationTo;
+            return !!date ? date.isFuture() : false;
         }
     },
 
