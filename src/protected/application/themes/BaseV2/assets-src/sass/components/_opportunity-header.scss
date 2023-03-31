@@ -100,7 +100,9 @@
                     font-size: size(18);
                     line-height: size(25);
                 }
-
+                @media (max-width: size(500)){
+                    
+                }
                 &__info {
                     flex-direction: column;
                     gap: size(8) size(20);

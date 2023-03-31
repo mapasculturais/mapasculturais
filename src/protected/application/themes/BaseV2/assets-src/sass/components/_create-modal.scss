@@ -1,6 +1,5 @@
 @use '../settings/mixins' as *;
 
-
 .create-modal {
     margin: 0;
     color: black;
@@ -197,5 +196,22 @@
             margin: 0 size(5);
         }
 
+    }
+
+    .entity-occurrence-list {
+        &__editable--title{
+            font-weight: 700;
+            font-size: size(18);
+            line-height: size(25);
+        }
+        &__editable--description {
+            font-weight: 400;
+            font-size: size(16);
+            line-height: size(22);
+            margin: size(8) 0 size(15);
+        }
+        .noEntity {
+            margin: 0 size(32);
+        }
     }
 }

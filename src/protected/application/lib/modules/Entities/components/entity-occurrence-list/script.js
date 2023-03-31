@@ -16,6 +16,10 @@ app.component('entity-occurrence-list', {
             type: Boolean,
             default: false
         },
+        createEvent: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
