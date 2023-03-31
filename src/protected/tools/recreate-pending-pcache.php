@@ -5,7 +5,7 @@ unset($_ENV['LOG_HOOK']);
 require __DIR__ . '/../application/bootstrap.php';
 
 $app = MapasCulturais\App::i();
-
+$app->permissionCacheEnabled = false;
 if($app->config['app.log.pcache']){
     $app->log->debug('RECREATE PENDING PCACHE');
 }
