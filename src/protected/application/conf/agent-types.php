@@ -98,6 +98,7 @@ return array(
         'cnpj' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CNPJ'),
+            'type' => 'cnpj',
             'serialize' => function($value, $entity = null){
                 /**@var MapasCulturais\App $this */
                 $key = "hook:cnpj:{$entity}";
@@ -117,6 +118,7 @@ return array(
         'cpf' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF'),
+            'type' => 'cpf',
             'serialize' => function($value, $entity = null){
                 $key = "hook:cpf:{$entity}";
                 if(!$this->rcache->contains($key)){
@@ -305,6 +307,7 @@ return array(
                     
         'En_CEP' => [
             'label' => \MapasCulturais\i::__('CEP'),
+            'type' => 'cep',
             'private' => function(){
                 return !$this->publicLocation;
             },
