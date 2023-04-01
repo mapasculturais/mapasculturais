@@ -8,6 +8,8 @@ class Entity {
         this.__messagesEnabled = true;
         this.__processing = false;
 
+        this.__originalValues = {};
+
         // as traduções estão no arquivo texts.php do componente <entity>
         this.text = Utils.getTexts('entity');
     }
@@ -82,6 +84,7 @@ class Entity {
 
         this.cleanErrors();
         
+        this.__originalValues = this.data();
         return this;
     }
 
@@ -140,7 +143,7 @@ class Entity {
         }
     }
 
-    data() {
+    data(onlyModifiedFields) {
         const skipProperties = ['id', 'createTimestamp', 'updateTimestamp', 'lastLoginTimestamp'];
         const skipRelations = ['user', 'subsite'];
 
@@ -198,7 +201,24 @@ class Entity {
             result.terms = this.terms;
         }
 
-        return result;
+        if(onlyModifiedFields) {
+            const modifiedFields = {};
+
+            for(let key in result) {
+                if(result[key] == this.__originalValues[key]) {
+                    continue;
+                } else if(JSON.stringify(result[key]) == JSON.stringify(this.__originalValues[key])){
+                    continue;
+                }
+
+                modifiedFields[key] = result[key];
+            }
+
+            return modifiedFields;
+        } else {
+            return result;
+        }
+
     }
 
     get API () {
