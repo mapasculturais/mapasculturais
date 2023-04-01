@@ -206,7 +206,7 @@ class API {
             return this.POST(url, entity.data())
             
         } else {
-            return this.PATCH(entity.singleUrl, entity.data())
+            return this.PATCH(entity.singleUrl, entity.data(true))
         }
     }
 
