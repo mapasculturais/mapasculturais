@@ -169,6 +169,8 @@ class Module extends \MapasCulturais\Module{
                     $opportunity = $entity;
                 } else if ($entity instanceof Registration) {
                     $opportunity = $entity->opportunity;
+                } else if ($entity instanceof EvaluationMethodConfiguration) {
+                    $opportunity = $entity->opportunity;
                 } else {
                     throw new Exception();
                 }
