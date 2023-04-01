@@ -9,8 +9,10 @@ $this->import('
 
 <mapas-card>
     <div class="grid-12 opportunity-phase-list-data-collection">
-        <div class="col-12">
-            <p><?= i::__("Quantidade inscrições:") ?> <strong>xxx inscrições</strong></p>
+        <div v-if="entity.summary?.registrations" class="col-12">
+            <p v-if="entity.summary.registrations"><?= i::__("Quantidade de inscrições:") ?> <strong>{{entity.summary.registrations}} <?= i::__('inscrições') ?></strong></p>
+            <p v-if="entity.summary?.Sent"><?= i::__("Quantidade de inscrições enviadas:") ?> <strong>{{entity.summary.Sent}} <?= i::__('inscrições') ?></strong></p>
+            <p v-if="entity.summary?.Draft"><?= i::__("Quantidade de inscrições rascunho:") ?> <strong>{{entity.summary.Draft}} <?= i::__('inscrições') ?></strong></p>
         </div>
         <div class="col-4 sm:col-12 subscribe_prev_phase">
             <!-- TO DO -->
