@@ -1,15 +1,23 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ */
+
 use MapasCulturais\i;
+
 $this->layout = 'entity';
 $this->addOpportunityBreadcramb(i::__('Lista de avaliações'));
+$this->addOpportunityPhasesToJs();
 
 $this->import('
-    entity-header
     entity-actions
+    entity-header
     mapas-breadcrumb
     mc-link
-    opportunity-evaluations
+    opportunity-evaluations-table
     opportunity-header
+    opportunity-phase-header
 ')
 ?>
 <div class="main-app opportunity-evaluations">
@@ -20,6 +28,8 @@ $this->import('
         </template>
     </opportunity-header>
 
-    <opportunity-evaluations :entity="entity"></opportunity-evaluations>
-
+    <div class="opportunity-registrations__container">
+        <opportunity-phase-header :phase="entity"></opportunity-phase-header>
+        <opportunity-evaluations-table :phase="entity"></opportunity-evaluations-table>
+    </div>
 </div>
