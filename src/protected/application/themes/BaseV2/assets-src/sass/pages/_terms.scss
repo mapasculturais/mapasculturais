@@ -12,17 +12,28 @@
                 padding-inline: calc(50vw - size(math.div(1170, 2)));
 
             }
-            
+
         }
-        &__button--active::after{
+
+        &__button--active::after {
             background-color: var(--mc-primary-500);
         }
+
         &__panels {
             margin-bottom: 0;
 
             .tab-component.termsOfUsage {
                 padding: size(24) size(16) 0;
 
+            }
+
+            .tab-component.privacyPolicy {
+                padding: size(24) size(16) 0;
+
+            }
+
+            .tab-component.termsUse {
+                padding: size(24) size(16) 0;
             }
         }
     }
