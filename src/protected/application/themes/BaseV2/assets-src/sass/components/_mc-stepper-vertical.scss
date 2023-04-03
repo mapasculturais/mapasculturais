@@ -14,6 +14,10 @@ ol.mc-stepper-vertical {
     list-style: none;
     margin-right: -28px;
 
+    @media (max-width:size(600)) {
+        margin: 0 0 0 55px;
+    }
+
 }
 
 ol.mc-stepper-vertical li {
@@ -21,6 +25,11 @@ ol.mc-stepper-vertical li {
     counter-increment: item;
     border-left: 3px solid red;
     padding: 0 0 20px 45px;
+
+    @media (max-width:size(600)) {
+        padding: 0 16px 20px 45px;
+
+    }
 
     .mapas-card {
         padding: size(16);
@@ -297,20 +306,20 @@ ol.mc-stepper-vertical li.active::before {
             text-align: right;
         }
     }
-    
+
     &-delete {
         display: flex;
         flex-direction: row;
         justify-content: center;
         gap: 8px;
-    
+
         &__trash {
             svg {
                 color: var(--mc-secondary-500);
                 font-size: 18px;
             }
         }
-    
+
         &__label {
             font-weight: 700;
             font-size: 14px;
@@ -381,6 +390,10 @@ ol.mc-stepper-vertical li.active::before {
                 font-weight: 700;
                 font-size: 24px;
                 line-height: 28px;
+                @media (max-width:size(600)) {
+
+                    font-size: 20px;
+                }
             }
 
             &__type {
@@ -391,6 +404,7 @@ ol.mc-stepper-vertical li.active::before {
                     font-weight: 600;
                     font-size: 14px;
                     line-height: 19px;
+                  
                 }
 
                 &--label {
@@ -412,7 +426,11 @@ ol.mc-stepper-vertical li.active::before {
 
             &__label {}
 
-            &__name {}
+            &__name {
+                @media (max-width:size(600)) {
+                        font-size: 20px;
+                }
+            }
         }
 
         .phase-actions {
@@ -422,8 +440,8 @@ ol.mc-stepper-vertical li.active::before {
             flex-wrap: wrap-reverse;
             font-weight: 700;
             font-size: size(14);
-            line-height: size(19); 
-            
+            line-height: size(19);
+
             a.support {
                 display: flex;
                 align-items: center;
