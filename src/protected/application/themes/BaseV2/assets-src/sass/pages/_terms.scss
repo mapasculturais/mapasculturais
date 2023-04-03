@@ -46,6 +46,10 @@
         margin: 0 auto;
         border-radius: size(4);
 
+        @media (max-width: size(360)) {
+            padding-left: 0;
+        }
+
         &-title {
             margin: size(75) 0 size(48);
 
@@ -63,7 +67,7 @@
 
         background: var(--mc-gray-100);
         margin: 0 auto;
-        width: 100%;
+        max-width: 100%;
 
         .mapas-card {
             &__title {
@@ -81,6 +85,31 @@
             display: flex;
             justify-content: space-evenly;
             margin: size(46) auto;
+        }
+
+        .mapas-card {
+            @media (max-width:size(500)) {
+                padding-left: 0;
+            }
+
+            &__content {
+                .term {
+                    &__content {
+                        ol {
+                            @media (max-width:size(500)) {
+                            }
+
+                            li {
+                                @media (max-width:size(340)) {
+                                    text-align: left;
+                                    line-height: 1.5;
+                                  
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         .accept,
