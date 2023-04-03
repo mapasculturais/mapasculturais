@@ -19,7 +19,7 @@ $this->import('
 <div class="panel--entities-summary">                    
     <!-- agentes -->
     <div class="panel--entities-summary__card">
-        <mc-link route="panel/agents">
+        <mc-link route="panel/agents" class="card-link">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon agent__background agent__color"> <mc-icon name="agent-1"></mc-icon> </div>
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Agentes') ?> </div>
