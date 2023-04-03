@@ -113,12 +113,10 @@
              <entity-field :entity="entity" hide-required v-for="field in fields" :prop="field"></entity-field>
          </div>
      </template>
-     <!-- <template v-if="entity?.id" #default> -->
 
      <template v-if="entity?.id" #default>
          <label><?php i::_e('Você pode completar as informações da sua oportunidade agora ou pode deixar para depois.  '); ?></label>
      </template>
-     <!-- <template v-if="entity?.id && entity.status==0" #default> -->
 
      <template v-if="entity?.id && entity.status==0" #default>
 
@@ -132,8 +130,8 @@
      </template>
      <template v-if="!entity?.id" #actions="modal">
          <!-- #Criado em Rascunho -->
-         <mc-link route="panel/index" class="button button--text button--text-del" @click="modal.close()"><?php i::_e('Ir para o painel') ?></mc-link>
          <button class="button button--primary button--icon " @click="createDraft(modal)"><?php i::_e('Criar') ?></button>
+         <mc-link route="panel/index" class="button button--text button--text-del" @click="modal.close()"><?php i::_e('Cancelar') ?></mc-link>
      </template>
 
      <template v-if="entity?.id" #actions="modal">
