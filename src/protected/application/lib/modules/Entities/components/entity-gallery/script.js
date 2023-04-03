@@ -4,11 +4,13 @@ app.component('entity-gallery', {
 
     created() {
         window.addEventListener('keydown', (e) => {
-            switch(e.key) {
-                case 'Escape':      this.close();   break;
-                case 'ArrowLeft':   this.prev();    break;
-                case 'ArrowRight':  this.next();    break;
-            }            
+            if (this.galleryOpen) {
+                switch(e.key) {
+                    case 'Escape':      this.close();   break;
+                    case 'ArrowLeft':   this.prev();    break;
+                    case 'ArrowRight':  this.next();    break;
+                }            
+            }
         });
     },
 
