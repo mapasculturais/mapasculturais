@@ -22,7 +22,9 @@
         justify-content: center;
         padding: size(5) size(20) size(5) size(16);
         position: relative;
-
+        @media (max-width: size(600)) {
+            grid-template-columns: 1fr;
+        }
         &--name {
             font-weight: 600;
             font-size: size(14);
