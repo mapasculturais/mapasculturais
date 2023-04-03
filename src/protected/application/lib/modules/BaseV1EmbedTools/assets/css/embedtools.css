@@ -213,11 +213,24 @@ body {
 #evaluations-config .registration-fieldset .committee .committee--info .committee--header .committee--content {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
-#evaluations-config .registration-fieldset .btn.add {
+#evaluations-config .registration-fieldset .committee .committee--info .btn {
+    padding: 8px 15px !important;
+}
+
+#evaluations-config .registration-fieldset .committee .committee--info .btn-warning {
+    margin-right: 10px;
+}
+
+#evaluations-config .registration-fieldset  .directive-find-entity {
+    width: 100%;
+}
+
+#evaluations-config .registration-fieldset .btn.add,
+#evaluations-config .registration-fieldset .btn.delete  {
     align-items: center;
-    background: #0074C1;
     border-radius: 0.5rem;
     border: none;
     color: #FFFFFF;
@@ -234,11 +247,20 @@ body {
     padding: 0.719rem 1.375rem;
 }
 
-#evaluations-config .registration-fieldset .btn.add::before {
+#evaluations-config .registration-fieldset .btn.add::before,
+#evaluations-config .registration-fieldset .btn.delete::before {
     align-items: center;
     display: flex;
     justify-content: center;
     margin: 0;
+}
+
+#evaluations-config .registration-fieldset .btn.add {
+    background: #0074C1;
+}
+
+#evaluations-config .registration-fieldset .btn.btn-default.delete {
+    background-color: #cc3333;
 }
 
 #evaluations-config .affirmativePolices {
@@ -266,6 +288,61 @@ body {
 
 #evaluations-config .technical-evaluation-configuration--criteria {
     margin-top: 40px;
+}
+
+#evaluations-config .qualification-evaluation-configuration {
+    margin-top: 40px;
+}
+
+#evaluations-config .qualification-evaluation-configuration p {
+    margin-bottom: 1rem;
+}
+
+#evaluations-config .qualification-evaluation-configuration header {
+    align-items: center;
+    display: flex;
+    gap: 25px;
+    justify-content: space-between;
+}
+
+#evaluations-config .qualification-evaluation-configuration header input {
+    background: #FFFFFF;
+    border-radius: 0.25rem;
+    border: 0.063rem solid #BBBBBB !important;
+    height: unset;
+    margin: 0;
+    padding: 0.531rem 1rem;
+}
+
+#evaluations-config .qualification-evaluation-configuration table {
+    margin-top: 1rem;
+}
+
+#evaluations-config .qualification-evaluation-configuration table tr th:first-child {
+    width: 60%;
+}
+
+#evaluations-config .qualification-evaluation-configuration table tr td .criteria-name input {
+    background: #FFFFFF;
+    border-radius: 0.25rem;
+    border: 0.063rem solid #BBBBBB !important;
+    height: unset;
+    margin: 0;
+    padding: 0.76rem 1rem;
+    text-align: left;
+    width: 100%;
+}
+
+#evaluations-config .qualification-evaluation-configuration table tr td .criteria-options {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+#evaluations-config .qualification-evaluation-configuration table tr td .criteria-options .edit-box {   
+    left: 50% !important;
+    position: absolute !important;
+    transform: translateX(-50%);
 }
 
 
