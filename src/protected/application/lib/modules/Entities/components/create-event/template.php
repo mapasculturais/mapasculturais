@@ -35,8 +35,8 @@
      </template>
 
      <template v-if="!entity?.id" #actions="modal">
-         <a href="#title" class="button button--primary" @click="createPublic(modal)"><?php i::_e('Criar e Publicar') ?></a>
-         <a href="#title" class="button button--solid-dark" @click="createDraft(modal)"><?php i::_e('Criar em Rascunho') ?></a>
+         <button href="#title" class="button button--primary" @click="createPublic(modal)"><?php i::_e('Criar e Publicar') ?></a>
+         <button href="#title" class="button button--solid-dark" @click="createDraft(modal)"><?php i::_e('Criar em Rascunho') ?></a>
          <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar') ?></button>
      </template>
      <template v-if="entity?.id && entity.status==1" #actions="modal">
