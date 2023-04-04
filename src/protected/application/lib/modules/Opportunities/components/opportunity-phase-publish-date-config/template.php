@@ -26,7 +26,7 @@ $this->import('
                 <h5><?= i::__("A publicação de um resultado é opcional e só pode ser executada após a aplicação dos resultados das avaliações.") ?></h5>
             </div>
 
-            <div class="col-3" v-if="!hideButton">
+            <div class="col-    3" v-if="!hideButton">
                 <confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
                     <template #button="modal">
                         <button class="button button--primary" @click="modal.open()">
@@ -37,26 +37,26 @@ $this->import('
             </div>
 
             <template v-if="hideCheckbox && hideDatepicker && !!phase.publishTimestamp">
-                <div class="col-3">
+                <div class="col-4">
                     <h5>{{ msgPublishDateAuto }}</h5>
                 </div>
             </template>
 
             <template v-else>
-                <div class="col-3 sm:col-12" v-if="!hideDatepicker">
+                <div class="col-4 sm:col-12" v-if="!hideDatepicker">
                     <entity-field :entity="phase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12" :min="minDate?._date"></entity-field>
                 </div>
-                <div class="col-3" v-else-if="hideDatepicker && !!phase.publishTimestamp">
+                <div class="col-4" v-else-if="hideDatepicker && !!phase.publishTimestamp">
                     <h5 v-if="!!phase.publishTimestamp">{{ msgPublishDate }}</h5>
                 </div>
-                <div class="col-3" v-if="!hideCheckbox">
+                <div class="col-4" v-if="!hideCheckbox">
                     <entity-field :entity="phase" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel>
                         <template #checkboxLabel>
                           <?= i::__("Publicar resultados automaticamente"); ?>
                         </template>
                     </entity-field>
                 </div>
-                <div class="col-3" v-else>
+                <div class="col-4" v-else>
                     <h5>{{ msgAutoPublish }}</h5>
                 </div>
             </template>
