@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 ?>
 
-<a class="theme-logo" :style="{ '--logo-color': color }" :href="href">    
+<a class="theme-logo" :style="{'--logo-color1': primaryBackground, '--logo-color2': secondaryBackground}" :href="href">    
     <div class="theme-logo__logo">
         <div class="theme-logo__logo--part1"></div>
         <div class="theme-logo__logo--part2"></div>

@@ -28,13 +28,12 @@
         }
 
         &--part1 {
-            background: var(--logo-color);
+            background: var(--logo-color1);
             transform: skew(0, -19deg);
-            opacity: .5;
         }
 
         &--part2 {
-            background: var(--logo-color);
+            background: var(--logo-color2);
             transform: skew(0, 19deg);
         }
     }
