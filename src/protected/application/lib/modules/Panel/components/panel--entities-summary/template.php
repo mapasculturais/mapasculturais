@@ -29,7 +29,7 @@ $this->import('
                 <div class="panel--entities-summary__card--counter-label"> {{agents.title}} </div>
             </div>
         </mc-link>
-        <div class="agent-summary">
+        <div class="panel--entities-summary__card--create">
             <create-agent #default="{modal}">
                 <button @click="modal.open()" class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
             </create-agent>
