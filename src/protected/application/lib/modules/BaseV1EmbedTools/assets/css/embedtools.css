@@ -33,38 +33,38 @@ body {
 
 
 /* Registration Form */
-.attachment-list .attachment-list-item {
+.action-registrationform .attachment-list .attachment-list-item {
     padding: 0;
     font-size: unset;
 }
 
-.attachment-list .attachment-list-item.attachment-list-item-type-section {
+.action-registrationform .attachment-list .attachment-list-item.attachment-list-item-type-section {
     margin: unset;
     padding: unset;
     border: unset;
 }
 
-.registration-fieldset {
+.action-registrationform .registration-fieldset {
     border: none;
     padding: 0;
 }
 
-.registration-edit-mode ul.attachment-list {
+.action-registrationform .registration-edit-mode ul.attachment-list {
     display: flex;
     flex-direction: column;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item {
     padding: 0;
     border: none;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item span label {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item span label {
     padding: 0;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field],
-.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field],
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] {
     background-color: #FFFFFF;
     overflow: auto;
     padding: 1rem;
@@ -73,23 +73,22 @@ body {
     line-height: 19px;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item .title_section {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section {
     background-color: #E5E5E5 !important;
     padding: 0 0 2rem !important;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .label {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .label {
     font-weight: 700;
     font-size: 2rem;
     line-height: 2.76rem;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .attachment-description {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .attachment-description {
     margin: 0;
 }
 
-
-.registration-edit-mode ul.attachment-list li.attachment-list-item .label {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .label {
     display: flex;
     font-size: 0.875rem;
     font-weight: 600;
@@ -98,7 +97,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item .attachment-description {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .attachment-description {
     font-weight: 400;
     font-size: 0.875rem;
     line-height: 1rem;
@@ -106,13 +105,13 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .attachment-description {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .attachment-description {
     margin-bottom: 2rem;
 
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn,
-.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .submit-attach-opportunity {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn,
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .submit-attach-opportunity {
     align-items: center;
     appearance: none;
     background-color: #FFFFFF;
@@ -132,14 +131,14 @@ body {
     text-decoration: none;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn::before {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn::before {
     font-size: 1rem;
     margin: 0;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item input,
-.registration-edit-mode ul.attachment-list li.attachment-list-item textarea,
-.registration-edit-mode ul.attachment-list li.attachment-list-item select {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item input,
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item textarea,
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item select {
     border-radius: 0.25rem;
     border: 0.063rem solid #898989;
     font-size: 1rem;
@@ -149,15 +148,15 @@ body {
     width: 100%;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item input[type="checkbox"],
-.registration-edit-mode ul.attachment-list li.attachment-list-item input[type="radio"] {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item input[type="checkbox"],
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item input[type="radio"] {
     float: left;
     height: 1.125rem;
     margin-right: 0.5rem;
     width: 1.125rem;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item select {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item select {
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
@@ -166,11 +165,11 @@ body {
     background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat calc(100% - 0.875rem) center/1.25rem;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item textarea {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item textarea {
     min-height: 5.688rem;
 }
 
-.registration-edit-mode ul.attachment-list li.attachment-list-item .alert {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .alert {
     margin: 0.313rem 0 0;
 }
 
@@ -348,26 +347,29 @@ body {
 
 
 /* Registration View */
-.registration .registration-fieldset ul.attachment-list li {
+.action-registrationview .registration .registration-fieldset {
+    padding: 0;
+}
+.action-registrationview .registration .registration-fieldset ul.attachment-list li {
     background-color: #FFFFFF;
     padding: 0 27px 16px;
     border: none;
 }
 
-.registration .registration-fieldset ul.attachment-list li.section-title {
+.action-registrationview .registration .registration-fieldset ul.attachment-list li.section-title {
     margin-top: 24px;
 }
 
-.registration .registration-fieldset ul.attachment-list li.section-title:first-child {
+.action-registrationview .registration .registration-fieldset ul.attachment-list li.section-title:first-child {
     margin-top: 0;
 }
 
-.registration .registration-fieldset ul.attachment-list li.section-title > div {
+.action-registrationview .registration .registration-fieldset ul.attachment-list li.section-title > div {
     background-color: #FFFFFF;
     padding: 0;
 }
 
-.registration .registration-fieldset ul.attachment-list li h4{
+.action-registrationview .registration .registration-fieldset ul.attachment-list li h4{
     margin: 0;
     padding: 16px 0 5px;
     font-family: 'Open Sans';
@@ -377,7 +379,7 @@ body {
     line-height: 28px;
 }
 
-.registration .registration-fieldset ul.attachment-list li > div {
+.action-registrationview .registration .registration-fieldset ul.attachment-list li > div {
     background-color: #E8E8E8;
     display: flex;
     flex-direction: column;
@@ -386,7 +388,7 @@ body {
     border-radius: 4px;
 }
 
-.registration .registration-fieldset ul.attachment-list li > div label {
+.action-registrationview .registration .registration-fieldset ul.attachment-list li > div label {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 700;
@@ -394,7 +396,7 @@ body {
     line-height: 19px;
 }
 
-.registration .registration-fieldset ul.attachment-list li > div em {
+.action-registrationview .registration .registration-fieldset ul.attachment-list li > div em {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 700;
