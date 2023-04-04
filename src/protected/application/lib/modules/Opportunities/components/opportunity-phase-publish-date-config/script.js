@@ -11,6 +11,14 @@ app.component('opportunity-phase-publish-date-config' , {
             type: Entity,
             required: true
         },
+        hideButton: {
+            type: Boolean,
+            default: false
+        },
+        hideDatepicker: {
+            type: Boolean,
+            default: false
+        },
         hideCheckbox: {
             type: Boolean,
             default: false
@@ -25,15 +33,24 @@ app.component('opportunity-phase-publish-date-config' , {
         isBlockPublish () {
             const date = this.phase.evaluationMethodConfiguration?.evaluationTo || this.phase.registrationTo;
             return !!date ? date.isFuture() : false;
+        },
+        msgAutoPublish () {
+            return this.text('publicacao_automatica');
+        },
+        msgPublishDate () {
+            return this.text('publicacao_com_data') + ' ' + this.phase.publishTimestamp?.format({ dateStyle: 'full', timeStyle: 'long'});
+        },
+        msgPublishDateAuto () {
+            return this.text('publicacao_com_data_automatica') + ' ' + this.phase.publishTimestamp?.format({ dateStyle: 'full', timeStyle: 'long'});
         }
     },
 
     methods: {
         publishRegistration () {
-            this.phase.POST('publishRegistration');
+            this.phase.POST('publishRegistrations', this.phase);
         },
         unpublishRegistration () {
-            this.phase.POST('unpublishRegistration');
+            this.phase.POST('unpublishRegistrations', this.phase);
         }
     }
 });

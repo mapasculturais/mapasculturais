@@ -6,7 +6,7 @@ $this->import('
 ?>
 
 <div class="col-12">
-    <div class="grid-12">
+    <div class="grid-12 opportunity-phase-publish-date-config">
 
         <template v-if="phase.publishedRegistrations">
             <div class="col-12">
@@ -22,36 +22,44 @@ $this->import('
 
         <template v-else>
 
-            <!-- BUTTON -->
-            <div class="col-3">
+            <div class="col-12" v-if="!hideDescription">
+                <h5><?= i::__("A publicação de um resultado é opcional e só pode ser executada após a aplicação dos resultados das avaliações.") ?></h5>
+            </div>
+
+            <div class="col-3" v-if="!hideButton">
                 <confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
                     <template #button="modal">
-                        <button v-if="!isBlockPublish" class="button button--primary" @click="modal.open()">
-                          <?= i::__("Publicar Resultados") ?>
-                        </button>
-                        <button v-else class="button" disabled>
+                        <button class="button button--primary" @click="modal.open()">
                           <?= i::__("Publicar Resultados") ?>
                         </button>
                     </template>
                 </confirm-button>
             </div>
 
-            <!-- DESCRIPTION -->
-            <div class="col-6" v-if="!hideDescription">
-                <h5><?= i::__("A publicação de um resultado é opcional e só pode ser executada após a aplicação dos resultados das avaliações.") ?></h5>
-            </div>
+            <template v-if="hideCheckbox && hideDatepicker && !!phase.publishTimestamp">
+                <div class="col-3">
+                    <h5>{{ msgPublishDateAuto }}</h5>
+                </div>
+            </template>
 
-            <!-- CHECKBOX -->
-            <div class="col-3 field" v-if="!hideCheckbox">
-                <entity-field :entity="phase" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel>
-                    <template #checkboxLabel>
-                      <?= i::__("Publicar resultados automaticamente"); ?>
-                    </template>
-                </entity-field>
-            </div>
-            <div class="col-3 field" v-else>
-                <p><?= i::__("Os resultados serão publicados automaticamente"); ?></p>
-            </div>
+            <template v-else>
+                <div class="col-3 sm:col-12" v-if="!hideDatepicker">
+                    <entity-field :entity="phase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12" :min="minDate?._date"></entity-field>
+                </div>
+                <div class="col-3" v-else-if="hideDatepicker && !!phase.publishTimestamp">
+                    <h5 v-if="!!phase.publishTimestamp">{{ msgPublishDate }}</h5>
+                </div>
+                <div class="col-3" v-if="!hideCheckbox">
+                    <entity-field :entity="phase" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel>
+                        <template #checkboxLabel>
+                          <?= i::__("Publicar resultados automaticamente"); ?>
+                        </template>
+                    </entity-field>
+                </div>
+                <div class="col-3" v-else>
+                    <h5>{{ msgAutoPublish }}</h5>
+                </div>
+            </template>
 
         </template>
 
