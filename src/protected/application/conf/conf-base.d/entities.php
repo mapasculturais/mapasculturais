@@ -43,7 +43,7 @@ return [
         ),
 
         'MapasCulturais\Entities\Agent' => array(
-            'publicLocation' => i::__('Localização publicada'),
+            'publicLocation' => i::__('Localização pública'),
             'location' => i::__('Localização'),
             'userId' => i::__('ID usuário'),
         )
