@@ -407,6 +407,11 @@ body {
 
 
 /* Form Builder */
+.project-edit-mode {
+    border: none;
+    padding: 0;
+}
+
 .project-edit-mode:hover {
     background-color: transparent !important;
 }
