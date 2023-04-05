@@ -13,7 +13,8 @@
     .tabs-component {
       &__header {
         margin: size(-40) auto size(40);
-        @media (max-width: size(800)){
+
+        @media (max-width: size(800)) {
           margin-top: 0;
           background-color: var(--mc-high-500);
         }
@@ -106,11 +107,13 @@
       line-height: size(33);
       color: var(--mc-black);
     }
+
     &--content {
       background: var(--mc-gray-100);
       border-radius: size(4);
       padding: size(1);
     }
+
     &--description {
       font-weight: 600;
       font-size: size(18);
@@ -127,12 +130,14 @@
       line-height: size(33);
       color: var(--mc-black);
     }
+
     &--description {
       font-weight: 400;
       font-size: size(16);
       line-height: size(22);
       color: var(--mc-black);
     }
+
     &--button {
       background: var(--mc-primary-500);
       border-radius: size(8);
@@ -150,6 +155,7 @@
     background: var(--mc-white);
     border-radius: size(4);
     padding: 24px;
+
     &--title {
       font-weight: 800;
       font-size: size(12);
@@ -158,6 +164,7 @@
       text-transform: uppercase;
       color: var(--mc-black);
     }
+
     &--description {
       font-weight: 400;
       font-size: size(12);
@@ -197,7 +204,23 @@
     &__content {
       max-width: size(1200);
       margin: 0 auto;
-      padding: size(20) 0;
+      padding: size(20) size(16);
+
+      .mapas-card__title {
+        label {
+          font-weight: 700;
+          font-size: 18px;
+          line-height: 25px;
+        }
+
+        p {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 19px;
+          color: var(--mc-gray-700);
+        }
+      }
+
       p {
         font-weight: bold;
       }
@@ -208,16 +231,19 @@
         color: var(--mc-gray-500);
       }
     }
+
     &__bg-content {
       background-color: var(--mc-white);
-      margin: size(20) 0;
+
       &--spacing {
         padding: size(16);
+
         div {
           margin-bottom: size(16);
         }
       }
     }
+
     &__label-btn {
       margin: size(20) 0;
     }
