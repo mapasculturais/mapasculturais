@@ -25,7 +25,10 @@ $this->import('
               <?= i::__("Lista de inscrições da fase") ?>
             </mc-link>
         </div>
-        <div class="config-phase__line-bottom col-12"></div>
-        <opportunity-phase-publish-date-config :phase="entity" :phases="phases" :hide-checkbox="!!entity.publishTimestamp" hide-datepicker></opportunity-phase-publish-date-config>
+
+        <template v-if="!!entity.evaluationMethodConfiguration">
+            <div class="config-phase__line-bottom col-12"></div>
+            <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-datepicker></opportunity-phase-publish-date-config>
+        </template>
     </div>
 </mapas-card>
