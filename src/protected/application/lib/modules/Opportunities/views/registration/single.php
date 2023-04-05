@@ -99,16 +99,45 @@ $this->breadcrumb = [
                 <mapas-card no-title>
                     <template #content>
                         <div class="registered-info">
-                            <span class="info"> <strong> <?= i::__('Dados do proponente') ?> </strong> </span>
-                            <span class="info"> <strong> <?= i::__('Nome') ?>: </strong> {{entity.owner.name}} </span>
-                            <span class="info"> <strong> <?= i::__('Descrição curta') ?>: </strong> {{entity.owner.shortDescription}} </span>
-                            <span class="info"> <strong> <?= i::__('CPF ou CNPJ') ?>: </strong> {{entity.owner.document}} </span>
-                            <span class="info"> <strong> <?= i::__('Data de nascimento ou fundação') ?>: </strong> {{entity.owner.dataDeNascimento.date('2-digit year')}} </span>
-                            <span class="info"> <strong> <?= i::__('Email') ?>: </strong> {{entity.owner.emailPublico}} </span>
-                            <span class="info"> <strong> <?= i::__('Raça') ?>: </strong> {{entity.owner.raca}} </span>
-                            <span class="info"> <strong> <?= i::__('Genero') ?>: </strong> {{entity.owner.genero}} </span>
-                            <span class="info"> <strong> <?= i::__('Endereço') ?>: </strong> {{entity.owner.endereco}} </span>
-                            <span class="info"> <strong> <?= i::__('CEP') ?>: </strong> {{entity.owner.En_CEP}} </span>
+                            <span class="info"> 
+                                <strong><?= i::__('Dados do proponente') ?></strong> 
+                            </span>
+                            <span class="info"> 
+                                <strong> <?= i::__('Nome') ?>: </strong> 
+                                <span v-if="entity.owner.name">{{entity.owner.name}}</span>
+                            </span>
+                            <span class="info"> 
+                                <strong> <?= i::__('Descrição curta') ?>: </strong> 
+                                <span v-if="entity.owner.shortDescription">{{entity.owner.shortDescription}}</span>
+                            </span>                            
+                            <span class="info"> 
+                                <strong> <?= i::__('CPF ou CNPJ') ?>: </strong> 
+                                <span v-if="entity.owner.document">{{entity.owner.document}}</span>
+                            </span>                            
+                            <span class="info"> 
+                                <strong> <?= i::__('Data de nascimento ou fundação') ?>: </strong> 
+                                <span v-if="entity.owner.dataDeNascimento">{{entity.owner.dataDeNascimento.date('2-digit year')}}</span>
+                            </span>                            
+                            <span class="info"> 
+                                <strong> <?= i::__('Email') ?>: </strong> 
+                                <span v-if="entity.owner.emailPublico">{{entity.owner.emailPublico}}</span>
+                            </span>                            
+                            <span class="info"> 
+                                <strong> <?= i::__('Raça') ?>: </strong> 
+                                <span v-if="entity.owner.raca">{{entity.owner.raca}}</span>
+                            </span>                            
+                            <span class="info"> 
+                                <strong> <?= i::__('Genero') ?>: </strong> 
+                                <span v-if="entity.owner.genero">{{entity.owner.genero}}</span>
+                            </span>                            
+                            <span class="info"> 
+                                <strong> <?= i::__('Endereço') ?>: </strong> 
+                                <span v-if="entity.owner.endereco">{{entity.owner.endereco}}</span>
+                            </span>                            
+                            <span class="info"> 
+                                <strong> <?= i::__('CEP') ?>: </strong> 
+                                <span v-if="entity.owner.En_CEP">{{entity.owner.En_CEP}}</span>
+                            </span>
                         </div>
                     </template>
                 </mapas-card>
