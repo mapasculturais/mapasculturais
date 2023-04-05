@@ -46,7 +46,7 @@ $this->import('
 
         <template v-if="is('boolean')">
             <template v-if="checkbox">
-                <input type="checkbox" :checked="value" @click="change($event)" /> <slot name="checkboxLabel"> <?= i::__("Ativo") ?> </slot>
+                <input type="checkbox" :disabled="disabled" :checked="value" @click="change($event)" /> <slot name="checkboxLabel"> <?= i::__("Ativo") ?> </slot>
             </template>
             <select v-else :value="value" :id="propId" :name="prop" @change="change($event)">
                 <option :value='true' :selected="value"> <?= i::_e('Sim')?> </option>
