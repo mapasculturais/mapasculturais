@@ -394,7 +394,7 @@ ol.mc-stepper-vertical li.active::before {
         align-items: center;
 
         .phase-stepper {
-            @media (max-width:size(620)) {
+            @media (max-width:size(800)) {
 
                 word-break: break-word;
                 display: flex;
