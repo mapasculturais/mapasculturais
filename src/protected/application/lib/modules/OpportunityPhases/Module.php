@@ -387,21 +387,27 @@ class Module extends \MapasCulturais\Module{
 
             $firstPhase = $this->firstPhase;
             
-            $mout_symplyfy = "id,type,publishedRegistrations,name,publishTimestamp,summary";
+            $mout_symplyfy = "id,type,name,summary";
             if($opportunity_phases = $firstPhase->allPhases){
                 foreach($opportunity_phases as $key => $opportunity){
-
+                    $emc = $opportunity->evaluationMethodConfiguration;
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase || $opportunity->isLastPhase){
-                        $result[] = $opportunity->simplify("{$mout_symplyfy},registrationFrom,registrationTo,isFirstPhase,isLastPhase");
+                        $item = $opportunity->simplify("{$mout_symplyfy},publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase");
+                        
+                        if($emc){
+                            $item['evaluationMethodConfiguration'] = $emc->simplify("{$mout_symplyfy},opportunity,infos,status,evaluationFrom,evaluationTo");
+                        }
+                        
+                        $result[] = $item;
                     }
 
-                    if($opportunity->evaluationMethodConfiguration){
+                    if($emc){
 
                         if($opportunity->isDataCollection){
                             $mout_symplyfy.=",ownerId";
                         }
 
-                        $result[] = $opportunity->evaluationMethodConfiguration->simplify("{$mout_symplyfy},opportunity,infos,status,evaluationFrom,evaluationTo");
+                        $result[] = $emc->simplify("{$mout_symplyfy},opportunity,infos,status,evaluationFrom,evaluationTo");
                     }
                 }
             }
