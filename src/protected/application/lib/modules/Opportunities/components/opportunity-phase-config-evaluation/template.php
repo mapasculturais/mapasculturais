@@ -60,7 +60,7 @@ $this->import('
 
         <div class="config-phase__line-bottom col-12"></div>
 
-        <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
+<!--        <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>-->
     
         <div class="config-phase__line-bottom col-12"></div>
 
