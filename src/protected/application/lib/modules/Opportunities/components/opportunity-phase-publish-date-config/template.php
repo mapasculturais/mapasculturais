@@ -9,7 +9,7 @@ $this->import('
     <div class="grid-12 opportunity-phase-publish-date-config">
 
         <template v-if="phase.publishedRegistrations">
-            <div class="col-12">
+            <div class="col-4">
                 <confirm-button :message="text('despublicar')" @confirm="unpublishRegistration()">
                     <template #button="modal">
                         <button class="button button--text button--text-danger" @click="modal.open()">
@@ -17,6 +17,9 @@ $this->import('
                         </button>
                     </template>
                 </confirm-button>
+            </div>
+            <div class="col-4" v-if="!!phase.publishTimestamp">
+                <h5>{{ msgPublishDate }}</h5>
             </div>
         </template>
 
@@ -44,7 +47,7 @@ $this->import('
 
             <template v-else>
                 <div class="col-4 sm:col-12" v-if="!hideDatepicker">
-                    <entity-field :entity="phase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12" :min="getMinDate._date" :max="getMaxDate._date"></entity-field>
+                    <entity-field :entity="phase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12" :min="getMinDate?._date" :max="getMaxDate?._date"></entity-field>
                 </div>
                 <div class="col-4" v-else-if="hideDatepicker && !!phase.publishTimestamp">
                     <h5 v-if="!!phase.publishTimestamp">{{ msgPublishDate }}</h5>
