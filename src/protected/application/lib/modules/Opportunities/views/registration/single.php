@@ -22,7 +22,8 @@ $this->import('
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
-    ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
+    ['label' => $entity->opportunity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->opportunity->id])],
+    ['label' => i::__('Inscrição')]
 ];
 ?>
 
@@ -52,7 +53,8 @@ $this->breadcrumb = [
                                         </div>
                                         <div class="category">
                                             <div class="category__label"> <?= i::__('Categoria de inscrição') ?> </div>
-                                            <div class="category__info"> {{entity.category}} </div>
+                                            <div v-if="entity.category" class="category__info"> {{entity.category}} </div>
+                                            <div v-if="!entity.category" class="category__info"> <?= i::__('Sem categoria') ?> </div>
                                         </div>
                                     </div>
                                 </div>
@@ -65,9 +67,9 @@ $this->breadcrumb = [
                             </div>
                             <div class="registration-info__footer">
                                 <div class="left">
-                                    <div class="project">
+                                    <div v-if="entity.projectName" class="project">
                                         <div class="project__label"> <?= i::__('Nome do projeto') ?> </div>
-                                        <div class="project__name project__color"> Nome do projeto aqui </div>
+                                        <div class="project__name project__color"> {{entity.projectName}} </div>
                                     </div>
                                 </div>
                                 <div class="right">
@@ -75,7 +77,7 @@ $this->breadcrumb = [
                                         <span v-if="entity.status == 0"> <?= i::__('Não enviada') ?> </span>
                                         <span v-if="entity.status > 0"> <?= i::__('Enviada') ?> </span>
                                     </div>
-                                    <div class="sentDate"> <?= i::__('Inscrição realizada em') ?> {{entity.sentTimestamp.date('2-digit year')}} <?= i::__('as') ?> {{entity.sentTimestamp.hour('numeric')}}h </div>
+                                    <div class="sentDate"> <?= i::__('Inscrição realizada em') ?> {{entity.sentTimestamp.date('2-digit year')}} <?= i::__('as') ?> {{entity.sentTimestamp.time('long')}} </div>
                                 </div>
                             </div>
                         </div>
