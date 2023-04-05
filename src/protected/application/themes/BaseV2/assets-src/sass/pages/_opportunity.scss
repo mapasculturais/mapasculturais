@@ -206,18 +206,65 @@
       margin: 0 auto;
       padding: size(20) size(16);
 
-      .mapas-card__title {
-        label {
-          font-weight: 700;
-          font-size: 18px;
-          line-height: 25px;
+      .mapas-card {
+        .build-list {
+          &__content {
+            padding-top: size(16);
+          }
+          &__title {
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 19px;
+          }
+
+          .mc-tag-list__tagList {
+            padding-bottom: size(16);
+
+            &--tag {
+              background-color: var(--mc-primary-500);
+            }
+          }
+
+          .popover-tag {
+            padding: size(16) 0 0 0;
+
+            .button-popover {
+              
+              button {
+                svg {
+
+                }
+              }
+            }
+          }
+
+          &__content {
+            // area da tag
+          }
         }
 
-        p {
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 19px;
-          color: var(--mc-gray-700);
+        &__title {
+
+          .category {
+
+
+            &-header {
+              &__title {
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 25px;
+              }
+
+              &__subtitle {
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 19px;
+                color: var(--mc-gray-700);
+              }
+
+            }
+          }
         }
       }
 
