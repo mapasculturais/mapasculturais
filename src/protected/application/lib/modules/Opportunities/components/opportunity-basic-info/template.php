@@ -24,15 +24,13 @@ $this->import('
         </template>
         <template #content>
             <div class="grid-12">
-                <div class="col-4 sm:col-12">
+                <div class="col-6 sm:col-12">
                     <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date" :autosave="300"></entity-field>
                 </div>
-                <div class="col-4 sm:col-12">
+                <div class="col-6 sm:col-12">
                     <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave="300"></entity-field>
                 </div>
-            </div>
-            <div class="grid-12">
-                <div class="col-5 sm:col-12" v-if="lastPhase">
+                <div class="col-6 sm:col-12" v-if="lastPhase">
                     <entity-field :entity="lastPhase" prop="publishTimestamp" :autosave="300">
                         <p class="opportunity-basic-info__label">
                           <?= i::__("Publicação final de resultados (data e hora)")?>
@@ -55,9 +53,9 @@ $this->import('
                     <div class="col-3 sm:col-12">
                         <entity-profile :entity="entity"></entity-profile>
                     </div>
-                    <div class="col-9 sm:col-12">
-                        <entity-field :entity="entity" prop="name"></entity-field>
-                        <entity-field :entity="entity" editable label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type"></entity-field>
+                    <div class="grid-12 col-9 sm:col-12">
+                        <entity-field :entity="entity" prop="name" classes="col-12"></entity-field>
+                        <entity-field :entity="entity" label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type" classes="col-12"></entity-field>
                     </div>
                     <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
                     <!-- <entity-files-list :entity="entity" classes="col-12" group="rules"  title="<?php i::esc_attr_e('Adicionar regulamento');?>" editable></entity-files-list> -->
