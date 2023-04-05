@@ -38,6 +38,6 @@ $this->import('
             </mc-link>
         </div>
         <div class="config-phase__line-bottom col-12"></div>
-        <opportunity-phase-publish-date-config :phase="entity.opportunity" :hide-checkbox="!!entity.opportunity.publishTimestamp" hide-datepicker></opportunity-phase-publish-date-config>
+        <opportunity-phase-publish-date-config :phase="entity.opportunity" :phases="phases" :hide-checkbox="!!entity.opportunity.publishTimestamp" hide-datepicker></opportunity-phase-publish-date-config>
     </div>
 </mapas-card>
