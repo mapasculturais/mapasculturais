@@ -28,7 +28,7 @@ $this->import('
 
     <template #content>
         <div class="registration-select-entity">
-            <entity-field :entity="registration" prop="projectName"></entity-field>
+            <entity-field :entity="registration" prop="projectName" :autosave="60000"></entity-field>
         </div>
     </template>
 </mapas-card>
