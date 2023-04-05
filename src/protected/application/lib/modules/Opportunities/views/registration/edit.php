@@ -18,6 +18,7 @@ $this->import('
     registration-actions
     registration-related-agents
     registration-related-space
+    registration-related-project
     registration-steps
     select-entity
     v1-embed-tool
@@ -99,6 +100,7 @@ $this->breadcrumb = $breadcrumb;
                         </div>
                         <registration-related-agents :registration="entity"></registration-related-agents>
                         <registration-related-space :registration="entity"></registration-related-space>
+                        <registration-related-project :registration="entity"></registration-related-project>
                     </div>
                 </section>
 

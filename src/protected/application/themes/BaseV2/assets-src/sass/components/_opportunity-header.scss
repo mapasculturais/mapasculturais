@@ -50,6 +50,11 @@
                     font-size: size(32);
                     font-weight: 700;
                     line-height: size(44);
+
+                    a {
+                        text-decoration: none;
+                        color: var(--mc-low-500);
+                    }
                 }
     
                 &__info {

@@ -27,8 +27,4 @@ app.component('opportunity-header', {
             }
         },
     },
-
-    methods: {
-    }
-
 });
