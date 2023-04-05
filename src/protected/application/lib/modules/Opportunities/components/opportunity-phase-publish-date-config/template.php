@@ -26,7 +26,7 @@ $this->import('
                 <h5><?= i::__("A publicação de um resultado é opcional e só pode ser executada após a aplicação dos resultados das avaliações.") ?></h5>
             </div>
 
-            <div class="col-    3" v-if="!hideButton">
+            <div class="col-3" v-if="!hideButton">
                 <confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
                     <template #button="modal">
                         <button class="button button--primary" @click="modal.open()">
@@ -44,7 +44,7 @@ $this->import('
 
             <template v-else>
                 <div class="col-4 sm:col-12" v-if="!hideDatepicker">
-                    <entity-field :entity="phase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12" :min="minDate?._date"></entity-field>
+                    <entity-field :entity="phase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12" :min="getMinDate._date" :max="getMaxDate._date"></entity-field>
                 </div>
                 <div class="col-4" v-else-if="hideDatepicker && !!phase.publishTimestamp">
                     <h5 v-if="!!phase.publishTimestamp">{{ msgPublishDate }}</h5>
