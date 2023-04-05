@@ -17,7 +17,7 @@
 app.component('theme-logo', {
     template: $TEMPLATES['theme-logo'],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('theme-logo')
         return { text }
@@ -27,7 +27,18 @@ app.component('theme-logo', {
         href: {
             type: String,
             default: null
-        }
+        },
+        primaryBackground: {
+            type: String,
+            default: '#4FC9E0',
+            
+        },
+        secondaryBackground: {
+            type: String,
+            default: '#0074C1',
+        },
+
+
     },
 
     data() {

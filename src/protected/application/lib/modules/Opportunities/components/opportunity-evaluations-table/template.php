@@ -24,7 +24,7 @@ $this->import('
         </div>
 
         <div class="col-12">
-            <v1-embed-tool route="evaluationmenager" :id="phase.id"></v1-embed-tool>
+            <v1-embed-tool route="evaluationmanager" :id="phase.id"></v1-embed-tool>
         </div>
     </template>
 </div>
