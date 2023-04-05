@@ -3,6 +3,7 @@ use MapasCulturais\i;
 $this->import('
     confirm-button
     v1-embed-tool
+    opportunity-phase-publish-date-config
 ');
 ?>
 
@@ -56,6 +57,10 @@ $this->import('
                 <textarea v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10"></textarea>
             </label>
         </div>
+
+        <div class="config-phase__line-bottom col-12"></div>
+
+        <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
     
         <div class="config-phase__line-bottom col-12"></div>
 
