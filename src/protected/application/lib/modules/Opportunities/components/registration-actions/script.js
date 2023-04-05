@@ -8,6 +8,11 @@ app.component('registration-actions', {
         },
     },
 
+    setup() {
+        const text = Utils.getTexts('registration-actions')
+        return { text }
+    },
+
     mounted() {
         window.addEventListener("message", (event) => {
             if (event.data.type == 'registration.update') {
@@ -27,11 +32,11 @@ app.component('registration-actions', {
     methods: {
         fieldName(field) {
             if (field == 'agent_instituicao') {
-                return 'Instituição responsável'; 
+                return this.text('Instituição responsável'); 
             }
 
             if (field == 'agent_coletivo') {
-                return 'Agente coletivo';
+                return this.text('Agente coletivo');
             }
 
             if (field.slice(0, 6) == 'field_') {
@@ -42,7 +47,7 @@ app.component('registration-actions', {
                 }
             }
 
-            return 'Campo não identificado';
+            return this.text('Campo não identificado');
 
         },
         async send() {
@@ -65,32 +70,13 @@ app.component('registration-actions', {
             const iframe = document.getElementById('registration-form');
             const registration = this.registration;
             if (iframe) {
-                registration.disableMessages();
                 const promise = new Promise((resolve, reject) => {
                     Promise.all([
-                        /* registration.save(false), */
-                        new Promise((resolve, reject) => {
-                            const saved = function(event) {    
-                                if (event.data.type == "registration.saved") {
-                                    if (event.data.error) {
-                                        registration.__validationErrors = event.data.data;
-                                    } else {
-                                        registration.__validationErrors = {};
-                                    }
-                                    resolve(registration);
-                                    window.removeEventListener("message", saved);
-                                }
-                            };
-                            window.addEventListener("message", saved)
-                        })
+                        registration.save(false),
                     ]).then((values) => {
-                        registration.enableMessages();
                         resolve(values[0]);
                     });
-
                 });
-
-                iframe.contentWindow.postMessage('registration.save');
                 return promise;
 
             } else {

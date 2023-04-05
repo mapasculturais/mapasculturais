@@ -213,6 +213,11 @@
                             height: size(40);
                             justify-content: center;
                             width: size(40);
+                            overflow: hidden;
+
+                            img {
+                                width: 100%;
+                            }
 
                             .iconify {
                                 color: var(--mc-high-500);

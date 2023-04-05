@@ -18,7 +18,8 @@ class OpportunitiesAPI {
 }   
 
 if ($MAPAS.opportunity) {
-    let opportunity = new Entity('opportunity', $MAPAS.opportunity.id);
+    let api = new API('opportunity');
+    let opportunity = api.getEntityInstance($MAPAS.opportunity.id);
     opportunity.populate($MAPAS.opportunity);
 
     $MAPAS.opportunity = opportunity;

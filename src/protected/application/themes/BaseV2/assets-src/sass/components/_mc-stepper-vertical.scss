@@ -6,6 +6,9 @@
     width: 100%;
     margin: 0 auto;
 
+    @media (max-width:size(950)) {
+        padding-inline: 55px;
+    }
 }
 
 ol.mc-stepper-vertical {
@@ -14,8 +17,14 @@ ol.mc-stepper-vertical {
     list-style: none;
     margin-right: -28px;
 
+    @media (max-width:size(950)) {
+        margin: 0 55 0 55px;
+        // padding-inline: 44px;
+    }
+
     @media (max-width:size(600)) {
-        margin: 0 0 0 55px;
+        // padding-inline: size(44);
+        margin: 0 45px;
     }
 
 }
@@ -28,7 +37,7 @@ ol.mc-stepper-vertical li {
 
     @media (max-width:size(600)) {
         padding: 0 16px 20px 45px;
-
+        // margin: 0 45px;
     }
 
     .mapas-card {
@@ -385,12 +394,19 @@ ol.mc-stepper-vertical li.active::before {
         align-items: center;
 
         .phase-stepper {
+            @media (max-width:size(800)) {
+
+                word-break: break-word;
+                display: flex;
+                flex-direction: column;
+            }
 
             &__period {
                 font-weight: 700;
                 font-size: 24px;
                 line-height: 28px;
-                @media (max-width:size(600)) {
+
+                @media (max-width:size(620)) {
 
                     font-size: 20px;
                 }
@@ -404,7 +420,7 @@ ol.mc-stepper-vertical li.active::before {
                     font-weight: 600;
                     font-size: 14px;
                     line-height: 19px;
-                  
+
                 }
 
                 &--label {
@@ -428,7 +444,7 @@ ol.mc-stepper-vertical li.active::before {
 
             &__name {
                 @media (max-width:size(600)) {
-                        font-size: 20px;
+                    font-size: 20px;
                 }
             }
         }
