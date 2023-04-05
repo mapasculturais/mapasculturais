@@ -10,6 +10,10 @@ app.component('opportunity-phase-config-results' , {
         phase: {
             type: Entity,
             required: true
+        },
+        phases: {
+            type: Array,
+            required: true
         }
     },
 
