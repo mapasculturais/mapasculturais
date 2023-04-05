@@ -24,6 +24,16 @@ $this->import('
         <div class="phase-stepper">
             <h2 v-if="index" class="phase-stepper__name">{{item.name}}</h2>
             <h2 v-if="!index" class="phase-stepper__period"><?= i::__('Período de inscrição') ?></h2>
+            <p v-if="item.registrationFrom || item.registrationTo" class="phase-stepper__type">
+                <label class="phase-stepper__type--name"> 
+                    <?= i::__('de') ?> <label class="phase-stepper__type--item">{{item.registrationFrom.date('2-digit year')}}</label> <?= i::__('a') ?> <label class="phase-stepper__type--item">{{item.registrationTo.date('2-digit year')}}</label>
+                </label>
+            </p>
+            <p v-if="item.evaluationFrom || item.evaluationTo" class="phase-stepper__type">
+                <label class="phase-stepper__type--name"> 
+                    <?= i::__('de') ?> <label class="phase-stepper__type--item">{{item.evaluationFrom.date('2-digit year')}}</label> <?= i::__('a') ?> <label class="phase-stepper__type--item">{{item.evaluationTo.date('2-digit year')}}</label>
+                </label>
+            </p>
             <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
                 <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
                 <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
