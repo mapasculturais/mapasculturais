@@ -71,12 +71,19 @@ class Entity {
 
         for (let key in __relations) {
             let prop = obj[key];
+            let value;
             if (prop instanceof Array) {
                 for (let i in prop) {
-                    prop[i] = this.parseRelation(prop[i], key);
+                    value = value || [];
+                    value[i] = this.parseRelation(prop[i], key);
                 }
-            } 
-            this[key] = this.parseRelation(prop, key);
+            } else {
+                value = this.parseRelation(prop, key);
+            }
+
+            if (value) {
+                this[key] = value;
+            }
         }
 
         this.populateFiles(obj.files);
