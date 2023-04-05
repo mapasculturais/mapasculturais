@@ -53,7 +53,7 @@ $this->import('
                     <h5 v-if="!!phase.publishTimestamp">{{ msgPublishDate }}</h5>
                 </div>
                 <div class="col-4" v-if="!hideCheckbox">
-                    <entity-field :entity="phase" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel>
+                    <entity-field :entity="phase" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel :disabled="!phase.publishTimestamp">
                         <template #checkboxLabel>
                           <?= i::__("Publicar resultados automaticamente"); ?>
                         </template>
