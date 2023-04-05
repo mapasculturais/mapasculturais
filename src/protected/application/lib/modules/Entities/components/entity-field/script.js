@@ -95,7 +95,11 @@ app.component('entity-field', {
         checkbox: {
             type: Boolean,
             default: false
-        }
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
     },
 
     computed: {
