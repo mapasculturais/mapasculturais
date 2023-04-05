@@ -1,7 +1,7 @@
 @use '../settings/mixins' as *;
 
 .mapas-card {
-    padding: size(25) size(24);
+    padding: size(24);
     background-color: var(--mc-white);
     border-radius: var(--mc-border-radius-sm);
     width: 100%;
