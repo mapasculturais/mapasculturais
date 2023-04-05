@@ -11,6 +11,10 @@ app.component('opportunity-phase-publish-date-config' , {
             type: Entity,
             required: true
         },
+        phases: {
+            type: Array,
+            required: true
+        },
         hideButton: {
             type: Boolean,
             default: false
@@ -42,7 +46,25 @@ app.component('opportunity-phase-publish-date-config' , {
         },
         msgPublishDateAuto () {
             return this.text('publicacao_com_data_automatica') + ' ' + this.phase.publishTimestamp?.format({ dateStyle: 'full', timeStyle: 'long'});
-        }
+        },
+        getMinDate () {
+            const currentIndex = this.phases.indexOf(this.phase);
+
+            const previousPhase = this.phases[currentIndex - 1];
+
+            if (previousPhase.__objectType == 'evaluationmethodconfiguration') {
+                // fase anterior é uma fase de avaliação
+                return previousPhase.evaluationTo;
+            } else {
+                // fase anterior é uma fase de coleta de dados
+                return previousPhase.registrationFrom;
+            }
+        },
+        getMaxDate () {
+            if(this.phase.isLastPhase) {
+                return this.phase.publishTimestamp;
+            }
+        },
     },
 
     methods: {

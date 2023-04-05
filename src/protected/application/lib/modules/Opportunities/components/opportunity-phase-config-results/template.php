@@ -7,6 +7,6 @@ $this->import('
 
 <mapas-card>
     <div class="config-phase grid-12">
-        <opportunity-phase-publish-date-config :phase="phase" :hide-checkbox="!!phase.publishTimestamp" hide-description />
+        <opportunity-phase-publish-date-config :phase="phase" :phases="phases" :hide-checkbox="!!phase.publishTimestamp" hide-description />
     </div>
 </mapas-card>

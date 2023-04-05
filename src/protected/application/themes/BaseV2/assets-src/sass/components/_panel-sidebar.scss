@@ -85,22 +85,30 @@
         border-radius: var(--mc-border-radius-sm);
         color: inherit;
         display: flex;
+        transition: all 0.2s ease-in-out;
         padding: size(8) size(16);
         text-decoration: none;
 
         &:focus,
         &:hover {
-            background-color: var(--mc-gray-100);
+            background-color: var(--mc-primary-500);
+            color: var(--mc-high-500);
+
         }
 
         &.active {
-            background-color: var(--mc-secondary-300);
-            color: var(--mc-black);
+            background-color: var(--mc-primary-700);
+            color: var(--mc-high-500);
 
-            &:focus,
-            &:hover {
-                background-color: var(--mc-danger-700);
+            &:focus {
+                background-color: var(--mc-primary-500);
+                color: var(--mc-high-500);
             }
+            &:hover {
+                background-color: var(--mc-primary-700);
+                color: var(--mc-high-500);
+            }
+
 
         }
 
