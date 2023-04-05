@@ -2,6 +2,7 @@
 use MapasCulturais\i;
 $this->import('
     confirm-button
+    opportunity-phase-publish-date-config
 ');
 ?>
 
@@ -19,7 +20,12 @@ $this->import('
             </mc-link>
         </div>
 
+        <template v-if="!!phase.evaluationMethodConfiguration">
+            <div class="config-phase__line-bottom col-12 "></div>
+            <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
+        </template>
         <div class="config-phase__line-bottom col-12 "></div>
+
         <div class="phase-delete col-12" v-if="!phase.isLastPhase && !phase.isFirstPhase">
             <confirm-button message="Confirma a execução da ação?" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
