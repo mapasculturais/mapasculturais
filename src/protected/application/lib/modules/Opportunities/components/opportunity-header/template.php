@@ -18,7 +18,9 @@ use MapasCulturais\i;
                 <mc-icon v-if="!opportunity?.files?.avatar" name="image"></mc-icon>
             </div>
             <div class="title">
-                <span class="title__title">{{opportunity?.name}}</span>
+                <span class="title__title">
+                    <a :href="opportunity.getUrl('single')">{{opportunity?.name}}</a>
+                </span>
                 <div class="title__info">
                     <div class="data">
                         <div class="data__title"> <?= i::__('Tipo') ?>: </div>
