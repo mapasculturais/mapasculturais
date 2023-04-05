@@ -8,6 +8,11 @@ app.component('registration-actions', {
         },
     },
 
+    setup() {
+        const text = Utils.getTexts('registration-actions')
+        return { text }
+    },
+
     mounted() {
         window.addEventListener("message", (event) => {
             if (event.data.type == 'registration.update') {
@@ -27,11 +32,11 @@ app.component('registration-actions', {
     methods: {
         fieldName(field) {
             if (field == 'agent_instituicao') {
-                return 'Instituição responsável'; 
+                return this.text('Instituição responsável'); 
             }
 
             if (field == 'agent_coletivo') {
-                return 'Agente coletivo';
+                return this.text('Agente coletivo');
             }
 
             if (field.slice(0, 6) == 'field_') {
@@ -42,7 +47,7 @@ app.component('registration-actions', {
                 }
             }
 
-            return 'Campo não identificado';
+            return this.text('Campo não identificado');
 
         },
         async send() {
