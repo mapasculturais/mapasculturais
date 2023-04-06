@@ -629,6 +629,46 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $app->em->commit();
     }
 
+    function unPublishRegistrations()
+    {
+        $this->checkPermission('unPublishRegistrations');
+        
+        $app = App::i();
+        $app->em->beginTransaction();
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).unPublishRegistrations:before");
+        
+        $this->publishedRegistrations = false;
+        $this->save(true);
+        
+        $query = new ApiQuery(Registration::class, [
+            'opportunity' => "EQ({$this->id})", 
+            'status'=>'EQ(10)'
+        ]);
+
+        $registration_ids = $query->findIds();
+
+        foreach ($registration_ids as $registration_id) {
+            $registration = $app->repo('Registration')->find($registration_id);
+
+            // @todo: fazer dos selos em oportunidades um módulo separado (OpportunitySeals ??)
+            return $registration->unsetAgentSealRelation();
+            
+            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistration", [$registration]);
+
+            $app->em->flush();
+            $app->em->clear();
+        }
+
+
+        
+       
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).unPublishRegistrations:after");
+
+        $app->em->commit();
+    }
+
     function sendUserEvaluations($user = null){
         $app = App::i();
 
