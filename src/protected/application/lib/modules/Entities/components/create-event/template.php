@@ -1,6 +1,7 @@
- <?php
-    use MapasCulturais\i;
-    $this->import('
+<?php
+use MapasCulturais\i;
+
+$this->import('
     entity-occurrence-list
     entity-field 
     entity-terms
