@@ -625,6 +625,28 @@ class Registration extends \MapasCulturais\Entity
         $this->enqueueToPCacheRecreation();
     }
 
+    public function unsetAgentSealRelation()
+    {
+        $app = App::i();
+
+        $opportunityMetadataSeals = $this->opportunity->registrationSeals;
+
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).unsetAgentsSealRelation:before", [&$opportunityMetadataSeals]);
+
+        $app->disableAccessControl();
+
+        $seal_relations = (object)[];
+
+        if(isset($opportunityMetadataSeals->owner)) {
+            $relation_class = $this->owner->getSealRelationEntityClassName();
+    		$relation = new $relation_class;
+
+        eval(\psy\sh());
+
+        }
+    }
+
     function setAgentsSealRelation() {
     	$app = App::i();
 
