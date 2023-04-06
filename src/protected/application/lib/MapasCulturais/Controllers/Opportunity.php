@@ -97,6 +97,28 @@ class Opportunity extends EntityController {
         }
     }
 
+    function ALL_unPublishRegistrations() {
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        $opportunity = $this->requestedEntity;
+
+        $opportunity->registerRegistrationMetadata();
+
+        if (!$opportunity) {
+            $app->pass();
+        }
+
+        $opportunity->unPublishRegistrations();
+
+        if ($this->isAjax()) {
+            $this->json($opportunity);
+        } else {
+            $app->redirect($app->request->getReferer());
+        }
+    }
+
     function GET_report(){
         $this->requireAuthentication();
         $app = App::i();
