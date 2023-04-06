@@ -14,12 +14,12 @@ $this->import('
 ');
 ?>
 
-<mapas-card v-if="useSpaceRelation !== 'dontUse'">
+<mapas-card v-if="useProjectRelation !== 'dontUse'">
 
     <template #title>
         <div class="card__title"> 
             <?= i::__("Projeto") ?>
-            <div v-if="useSpaceRelation == 'required'" class="obrigatory"> <?= i::__('* Obrigatório') ?> </div>
+            <div v-if="useProjectRelation == 'required'" class="obrigatory"> <?= i::__('* Obrigatório') ?> </div>
         </div>
         <div class="card__subtitle">
             <?= i::__("Informe o nome do seu projeto") ?>
