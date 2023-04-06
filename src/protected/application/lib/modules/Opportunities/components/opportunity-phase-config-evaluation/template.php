@@ -58,13 +58,12 @@ $this->import('
             </label>
         </div>
 
-        <div class="config-phase__line-bottom col-12"></div>
 
 <!--        <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>-->
     
         <div class="config-phase__line-bottom col-12"></div>
 
-        <div class="phase-delete col-6">
+        <div class="phase-delete col-12">
             <confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
                     <a class="phase-delete__trash" @click="modal.open()">
