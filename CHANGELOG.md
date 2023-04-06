@@ -11,6 +11,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
 - Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
 
+## [5.6.7] - 2023-04-06
+### Correção
+- Ajusta erro de carregamento dos campos liberados para os avaliadores em oportunidades multifases
+
 ## [5.6.6] - 2023-03-31
 ### Correção
 - Evita que ao exportar a planila de inscritos se quebre quando a politicas afirmativas esta ativa e nao existe rule configurada
