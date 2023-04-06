@@ -10,6 +10,24 @@
   &.action-edit {
     background-color: var(--mc-gray-100);
 
+    .mapas-card__content {
+      .header-opp {
+        &__field {
+          &--name {
+            label{
+              align-items: baseline;
+
+            }
+          }
+        }
+
+      }
+      .content-opp {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
     .tabs-component {
       &__header {
         margin: size(-40) auto size(40);
@@ -211,6 +229,7 @@
           &__content {
             padding-top: size(16);
           }
+
           &__title {
             font-style: normal;
             font-weight: 600;
@@ -230,11 +249,9 @@
             padding: size(16) 0 0 0;
 
             .button-popover {
-              
-              button {
-                svg {
 
-                }
+              button {
+                svg {}
               }
             }
           }
