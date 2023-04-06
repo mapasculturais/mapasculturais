@@ -97,8 +97,7 @@ class Opportunity extends EntityController {
         }
     }
 
-     function ALL_unPublishRegistrations()
-     {
+    function ALL_unPublishRegistrations() {
         $this->requireAuthentication();
 
         $app = App::i();
@@ -107,19 +106,18 @@ class Opportunity extends EntityController {
 
         $opportunity->registerRegistrationMetadata();
 
-        if(!$opportunity){
+        if (!$opportunity) {
             $app->pass();
         }
 
-        var_dump($opportunity->unPublishRegistrations());
+        $opportunity->unPublishRegistrations();
 
-        exit;
-        if($this->isAjax()){
+        if ($this->isAjax()) {
             $this->json($opportunity);
-        }else{
+        } else {
             $app->redirect($app->request->getReferer());
         }
-     }
+    }
 
     function GET_report(){
         $this->requireAuthentication();

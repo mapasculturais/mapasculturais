@@ -651,10 +651,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
         foreach ($registration_ids as $registration_id) {
             $registration = $app->repo('Registration')->find($registration_id);
 
-            // @todo: fazer dos selos em oportunidades um módulo separado (OpportunitySeals ??)
-            return $registration->unsetAgentSealRelation();
+            $registration->unsetAgentSealRelation();
             
-            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistration", [$registration]);
+            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).unpublishRegistration", [$registration]);
 
             $app->em->flush();
             $app->em->clear();
