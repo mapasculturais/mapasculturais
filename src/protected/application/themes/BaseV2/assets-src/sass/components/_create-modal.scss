@@ -4,6 +4,16 @@
     margin: 0;
     color: black;
 
+    @include desktop {
+        .modal-content {
+            min-width: size(580);
+
+            select {
+                max-width: size(514);
+            }
+        }
+    }
+
     .field {
         margin: size(16) 0;
 
@@ -21,10 +31,6 @@
             }
 
             .list {
-                max-width: 520px;
-
-
-
                 &-box {
                     display: flex;
                     align-items: center;
@@ -33,13 +39,13 @@
                     border: 1px solid #313131;
                     border-radius: 4px;
                     justify-content: space-between;
+                    padding: 0 size(10);
 
                     .v-popper {
                         display: flex;
                         align-items: center;
                         width: 100%;
                         justify-content: space-between;
-                        padding: 0 size(10);
                     }
 
                     .input {
