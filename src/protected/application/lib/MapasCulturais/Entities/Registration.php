@@ -625,6 +625,43 @@ class Registration extends \MapasCulturais\Entity
         $this->enqueueToPCacheRecreation();
     }
 
+    public function unsetAgentSealRelation()
+    {
+        $app = App::i();
+
+        $opportunityMetadataSeals = $this->opportunity->registrationSeals;
+
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).unsetAgentsSealRelation:before", [&$opportunityMetadataSeals]);
+
+        $app->disableAccessControl();
+
+        if(isset($opportunityMetadataSeals->owner)) {
+            $sealOwner = $app->repo('Seal')->find($opportunityMetadataSeals->owner);
+            $this->owner->removeSealRelation($sealOwner);
+        }
+
+        $sealInstitutions = isset($opportunityMetadataSeals->institution) ?
+                $app->repo('Seal')->find($opportunityMetadataSeals->institution) : null;
+
+    	$sealCollective = isset($opportunityMetadataSeals->collective) ?
+                $app->repo('Seal')->find($opportunityMetadataSeals->collective) : null;
+
+        foreach($this->relatedAgents as $groupName => $relatedAgents){
+            if (trim($groupName) == 'instituicao' && isset($opportunityMetadataSeals->institution) && is_object($sealInstitutions)) {
+                $agent = $relatedAgents[0];
+                $agent->removeSealRelation($sealInstitutions);
+            } elseif (trim($groupName) == 'coletivo' && isset($opportunityMetadataSeals->collective) && is_object($sealCollective)) {
+                $agent = $relatedAgents[0];
+                $agent->removeSealRelation($sealCollective);
+            }
+        }
+
+        $app->enableAccessControl();
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).unsetAgentsSealRelation:after", [&$opportunityMetadataSeals]);
+    }
+
     function setAgentsSealRelation() {
     	$app = App::i();
 

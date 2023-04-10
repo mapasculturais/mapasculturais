@@ -62,7 +62,7 @@
     cursor: pointer;
 }
 
-@media (max-width: 500px)
+@media (max-width: 800px)
 {   
     .modal-enter-active,
     .modal-leave-active {
