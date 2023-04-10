@@ -1,8 +1,7 @@
- <?php
+<?php
+use MapasCulturais\i;
 
-    use MapasCulturais\i;
-
-    $this->import('
+$this->import('
     entity-field 
     entity-terms
     mc-link
