@@ -1,5 +1,7 @@
 <?php
+
 use MapasCulturais\i;
+
 $this->import('
     confirm-button
 ');
@@ -13,7 +15,7 @@ $this->import('
                 <confirm-button :message="text('despublicar')" @confirm="unpublishRegistration()">
                     <template #button="modal">
                         <button class="button button--text button--text-danger" @click="modal.open()">
-                          <?= i::__("Despublicar") ?>
+                            <?= i::__("Despublicar") ?>
                         </button>
                     </template>
                 </confirm-button>
@@ -33,7 +35,7 @@ $this->import('
                 <confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
                     <template #button="modal">
                         <button class="button button--primary" @click="modal.open()">
-                          <?= i::__("Publicar Resultados") ?>
+                            <?= i::__("Publicar Resultados") ?>
                         </button>
                     </template>
                 </confirm-button>
@@ -46,19 +48,15 @@ $this->import('
             </template>
 
             <template v-else>
-                <div class="col-4 sm:col-12" v-if="!hideDatepicker">
-                    <entity-field :entity="phase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12" :min="getMinDate?._date" :max="getMaxDate?._date"></entity-field>
-                </div>
+                <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12" :min="getMinDate?._date" :max="getMaxDate?._date" classes="col-4 sm:col-12"></entity-field>
                 <div class="col-4" v-else-if="hideDatepicker && !!phase.publishTimestamp">
                     <h5 v-if="!!phase.publishTimestamp">{{ msgPublishDate }}</h5>
                 </div>
-                <div class="col-4" v-if="!hideCheckbox">
-                    <entity-field :entity="phase" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel :disabled="!phase.publishTimestamp">
-                        <template #checkboxLabel>
-                          <?= i::__("Publicar resultados automaticamente"); ?>
-                        </template>
-                    </entity-field>
-                </div>
+                <entity-field v-if="!hideCheckbox" :entity="phase" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel :disabled="!phase.publishTimestamp" classes="col-6">
+                    <template #checkboxLabel>
+                        <?= i::__("Publicar resultados automaticamente"); ?>
+                    </template>
+                </entity-field>
                 <div class="col-4" v-else>
                     <h5>{{ msgAutoPublish }}</h5>
                 </div>
