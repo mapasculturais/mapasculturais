@@ -29,7 +29,7 @@ $this->import('
         </div>
     </template>
     <template #header-actions="{step, item}">     
-        <div class="phase-actions">
+        <div class="stepper-header__actions">
             <modal title="<?= i::esc_attr__('Configurações de suporte')?>" classes="modalEmbedTools" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
                 <template #default="modal">
                     <v1-embed-tool route="supportbuilder" :id="item.id"></v1-embed-tool>

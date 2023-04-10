@@ -15,7 +15,7 @@ $this->import('mc-icon')
         <template v-for="(step, index) in steps">
             <li :class="{active: step.active}">
                 <section class="stepper-step">
-                    <header class="stepper-header">
+                    <header :class="['stepper-header', {'open':step.active}]">
                         <slot class="stepper-header-title" name="header" :index="index" :step="step" :item="step.item">
                             <slot name="header-title" :index="index" :step="step" :item="step.item">{{step.item.name || step.item.title || step.item.label}}</slot>
                             <slot name="header-actions" :index="index" :step="step" :item="step.item">
