@@ -1,5 +1,7 @@
 <?php
+
 use MapasCulturais\i;
+
 $this->layout = 'entity';
 
 $this->addOpportunityPhasesToJs();
@@ -25,39 +27,58 @@ $this->import('
         <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
             <opportunity-form-builder-category :entity="entity"></opportunity-form-builder-category>
         </div>
+
         <div class="col-6 sm:col-12">
-            <div class="form-builder__bg-content form-builder__bg-content--spacing">
-                <div v-if="entity.isFirstPhase">
-                    <h4><?= i::__("Permitir Agente Coletivo?") ?></h4>
-                    <span class="subtitle"><?= i::__("Permitir inscrição de Agente Coletivo") ?></span>
-                    <entity-field :entity="entity" prop="useAgentRelationColetivo"></entity-field>
-                </div>
-                <div v-if="entity.isFirstPhase">
-                    <h4><?= i::__("Permitir instituição responsável?") ?></h4>
-                    <span class="subtitle"><?= i::__("Permitir inscrição de instituições") ?></span>
-                    <entity-field :entity="entity" prop="useAgentRelationInstituicao"></entity-field>
-                </div>
-                <div>
-                    <entity-field :entity="entity" prop="registrationLimit"></entity-field>
-                </div>
-                <div>
-                    <entity-field :entity="entity" prop="registrationLimitPerOwner"></entity-field>
-                </div>
-            </div>
+            <mapas-card no-title>
+                <template #default>
+                    <div class="grid-12">
+                        <div v-if="entity.isFirstPhase" class="col-12">
+                            <h4><?= i::__("Permitir Agente Coletivo?") ?></h4>
+                            <span class="subtitle"><?= i::__("Permitir inscrição de Agente Coletivo") ?></span>
+                            <entity-field :entity="entity" prop="useAgentRelationColetivo"></entity-field>
+                        </div>
+                        <div v-if="entity.isFirstPhase" class="col-12">
+                            <h4><?= i::__("Permitir instituição responsável?") ?></h4>
+                            <span class="subtitle"><?= i::__("Permitir inscrição de instituições") ?></span>
+                            <entity-field :entity="entity" prop="useAgentRelationInstituicao"></entity-field>
+                        </div>
+                        <entity-field :entity="entity" prop="registrationLimit" classes="col-12"></entity-field>
+                        <entity-field :entity="entity" prop="registrationLimitPerOwner" classes="col-12"></entity-field>
+                    </div>
+                </template>
+            </mapas-card>
         </div>
+
         <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
-            <div class="form-builder__bg-content form-builder__bg-content--spacing">
-                <h4><?= i::__("Permitir vínculo de Espaço?") ?></h4>
-                <span class="subtitle"><?= i::__("Permitir um espaço para associar à inscrição.") ?></span>
-                <entity-field :entity="entity" prop="useSpaceRelationIntituicao"></entity-field>
-            </div>
+            <mapas-card>
+                <template #title>
+                    <div class="card-header">
+                        <label class="card-header__title"><?= i::__("Permitir vínculo de Espaço?") ?></label>
+                        <div class="card-header__subtitle"><?= i::__("Permitir um espaço para associar à inscrição.") ?></div>
+                    </div>
+                </template>
+                <template #default>
+                    <div class="grid-12">
+                        <entity-field :entity="entity" prop="useSpaceRelationIntituicao" classes="col-12"></entity-field>
+                    </div>
+                </template>
+            </mapas-card>
         </div>
+
         <div class="col-6 sm:col-12">
-            <div class="form-builder__bg-content form-builder__bg-content--spacing">
-                <h4><?= i::__("Habilitar informações de Projeto?") ?></h4>
-                <span class="subtitle"><?= i::__("Permitir que proponente vizualise informações básicas sobre um projeto.") ?></span>
-                <entity-field :entity="entity" prop="projectName"></entity-field>
-            </div>
+            <mapas-card>
+                <template #title>
+                    <div class="card-header">
+                        <label class="card-header__title"><?= i::__("Habilitar informações de Projeto?") ?></label>
+                        <div class="card-header__subtitle"><?= i::__("Permitir que proponente vizualise informações básicas sobre um projeto.") ?></div>
+                    </div>
+                </template>
+                <template #default>
+                    <div class="grid-12">
+                        <entity-field :entity="entity" prop="projectName" classes="col-12"></entity-field>
+                    </div>
+                </template>
+            </mapas-card>
         </div>
 
         <div class="col-12">
