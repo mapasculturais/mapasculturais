@@ -27,7 +27,7 @@ $this->import('
         </div>
 
         <template v-if="!!entity.evaluationMethodConfiguration">
-            <div class="config-phase__line-bottom col-12"></div>
+            <div class="config-phase__line col-12"></div>
             <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-datepicker></opportunity-phase-publish-date-config>
         </template>
     </div>

@@ -134,18 +134,7 @@ ol.mc-stepper-vertical li {
 
         &__line {
             max-width: size(1038);
-
-            &-up {
-                border-bottom: 1px solid var(--mc-gray-100);
-                height: 0;
-                padding-bottom: size(34);
-            }
-
-            &-bottom {
-                border-bottom: 1px solid var(--mc-gray-100);
-
-                padding-bottom: size(34);
-            }
+            border-bottom: 1px solid var(--mc-gray-100);
         }
 
         .phase-delete {

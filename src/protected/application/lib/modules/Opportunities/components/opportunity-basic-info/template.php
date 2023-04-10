@@ -1,5 +1,7 @@
 <?php
+
 use MapasCulturais\i;
+
 $this->import('
     entity-cover
     entity-profile
@@ -24,22 +26,12 @@ $this->import('
         </template>
         <template #content>
             <div class="grid-12">
-                <div class="col-6 sm:col-12">
-                    <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date" :autosave="300"></entity-field>
-                </div>
-                <div class="col-6 sm:col-12">
-                    <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave="300"></entity-field>
-                </div>
-                <div class="col-6 sm:col-12" v-if="lastPhase">
-                    <entity-field :entity="lastPhase" prop="publishTimestamp" :autosave="300">
-                        <p class="opportunity-basic-info__label">
-                            <?= i::__("Publicação final de resultados (data e hora)") ?>
-                            <span class="opportunity-basic-info__hint">
-                                <?= i::__("*obrigatório") ?>
-                            </span>
-                        </p>
-                    </entity-field>
-                </div>
+                <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date" :autosave="300" classes="col-6 sm:col-12"></entity-field>
+                <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave="300" classes="col-6 sm:col-12"></entity-field>
+                <entity-field v-if="lastPhase" :entity="lastPhase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12">
+                    <label><?= i::__("Publicação final de resultados (data e hora)") ?></slot> 
+                    <span class="required">*<?php i::_e('obrigatório') ?></span> 
+                </entity-field>
             </div>
         </template>
     </mapas-card>
