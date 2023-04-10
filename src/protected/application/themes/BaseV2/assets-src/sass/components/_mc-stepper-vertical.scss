@@ -394,9 +394,10 @@ ol.mc-stepper-vertical li.active::before {
         gap: size(48);
 
         &__content {
-            width: 100%;
+            align-items: center;
             display: flex;
             justify-content: space-between;
+            width: 100%;
 
             .info {
                 display: flex;
@@ -404,25 +405,25 @@ ol.mc-stepper-vertical li.active::before {
                 gap: size(4);
 
                 &__title {
-                    font-weight: 700;
                     font-size: size(24);
+                    font-weight: 700;
                     line-height: size(28);
                 }
 
                 &__type {
                     .title {
-                        font-weight: 600;
+                        color: var(--mc-gray-700);
                         font-size: size(14);
+                        font-weight: 600;
                         line-height: size(19);
                         text-transform: uppercase;
-                        color: var(--mc-gray-700);
                     }
 
                     .type {
-                        font-weight: 700;
-                        font-size: size(14);
-                        line-height: size(19);
                         color: var(--mc-low-500);
+                        font-size: size(14);
+                        font-weight: 700;
+                        line-height: size(19);
                     }
                 }
             }
@@ -437,20 +438,20 @@ ol.mc-stepper-vertical li.active::before {
                     gap: size(4);
 
                     &__title {
-                        font-weight: 600;
+                        color: var(--mc-gray-700);
                         font-size: size(14);
+                        font-weight: 600;
                         line-height: size(19);
                         text-transform: uppercase;
-                        color: var(--mc-gray-700);
                     }
 
                     &__content {
-                        font-weight: 700;
-                        font-size: size(14);
-                        line-height: size(19);
-                        display: flex;
                         align-items: center;
                         color: var(--mc-low-500);
+                        display: flex;
+                        font-size: size(14);
+                        font-weight: 700;
+                        line-height: size(19);
                     }
                 }
             }
