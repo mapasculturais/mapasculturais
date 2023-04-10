@@ -375,12 +375,16 @@ ol.mc-stepper-vertical li.active::before {
     .stepper-header {
         background-color: white;
         padding: 16px;
-        border-radius: 4px;
+        border-radius: size(4);
         display: flex;
         justify-content: space-between;
         flex-direction: row;
         align-items: center;
         gap: size(48);
+
+        &.open {
+            border-radius: size(4) size(4) 0 0;
+        }
 
         &__content {
             align-items: center;
@@ -447,7 +451,24 @@ ol.mc-stepper-vertical li.active::before {
         }
 
         &__actions {
+            color: var(--mc-primary-500);
+            display: flex;
+            flex-wrap: nowrap;
+            font-size: size(14);
+            font-weight: 700;
+            gap: size(20) size(47);
+            line-height: size(19);
 
+            a.support {
+                align-items: center;
+                cursor: pointer;
+                display: flex;
+                gap: size(8);
+
+                .iconify {
+                    font-size: size(24);
+                }
+            }
         }
 
         .phase-stepper {
@@ -506,33 +527,13 @@ ol.mc-stepper-vertical li.active::before {
             }
         }
 
-        .phase-actions {
-            display: flex;
-            gap: size(20) size(47);
-            color: var(--mc-primary-500);
-            flex-wrap: wrap-reverse;
-            font-weight: 700;
-            font-size: size(14);
-            line-height: size(19);
-
-            a.support {
-                display: flex;
-                align-items: center;
-                gap: size(8);
-                cursor: pointer;
-
-                .iconify {
-                    font-size: size(24);
-                }
-            }
-
-        }
-
         .expand-stepper {
-            display: flex;
             align-items: center;
             color: var(--mc-primary-500);
+            display: flex;
             gap: size(4);
+            justify-content: flex-end;
+            min-width: size(82);
 
             label {
                 font-weight: 700;
