@@ -6,56 +6,86 @@ return [
         'default_controller_id' => 'site',
         'default_action_name' => 'index',
         'shortcuts' => [
-            // exemplos de shortcut adicionando parametros
-            'james-bond'                => ['agent', 'single', ['id' => 7]],
-            // 'agente/007'                => ['agent', 'single', ['id' => '007')),
-            // 'teste/de/shortcut/longo'   => ['agent', 'single', ['id' => 'shortcut longo')),
-            //'historico' => ['entityRevision','history',['entity' => 'event','id' => '6')),
-            'historico'         => ['entityRevision','history'],
+            // busca
+            'agentes'           => ['search', 'agents'],
+            'eventos'           => ['search', 'events'],
+            'espacos'           => ['search', 'spaces'],
+            'oportunidades'     => ['search', 'opportunities'],
+            'projetos'          => ['search', 'projects'],
+
+            // entidades
             'evento'            => ['event', 'single'],
             'usuario'           => ['user', 'single'],
             'agente'            => ['agent', 'single'],
             'espaco'            => ['space', 'single'],
             'projeto'           => ['project', 'single'],
-            'oportunidade'      => ['opportunity', 'single'],
-            'salva-avaliacao'   => ['registration', 'saveEvaluation'],
-            'instalacao'        => ['subsite', 'single'],
             'selo'              => ['seal', 'single'],
+            'oportunidade'      => ['opportunity', 'single'],
+            'instalacao'        => ['subsite', 'single'],
+            
+            'edicao-de-evento'            => ['event', 'edit'],
+            'edicao-de-usuario'           => ['user', 'edit'],
+            'edicao-de-agente'            => ['agent', 'edit'],
+            'edicao-de-espaco'            => ['space', 'edit'],
+            'edicao-de-projeto'           => ['project', 'edit'],
+            'edicao-de-selo'              => ['seal', 'edit'],
+            'gestao-de-oportunidade'      => ['opportunity', 'edit'],
+            'edicao-de-instalacao'        => ['subsite', 'edit'],
+
+            'configuracao-de-formulario'  => ['opportunity', 'formBuilder'],
+            'lista-de-inscricoes'  => ['opportunity', 'registrations'],
+            'lista-de-avaliacoes'  => ['opportunity', 'opportunityEvaluations'],
+
+            'baixar-rascunhos' => ['opportunity', 'reportDrafts'],
+            'baixar-inscritos' => ['opportunity', 'report'],
+            'baixar-avaliacoes' => ['opportunity', 'reportEvaluations'],
+
+
+            'historico'         => ['entityRevision','history'],
+            
             'sair'              => ['auth', 'logout'],
             'busca'             => ['site', 'search'],
             'sobre'             => ['site', 'page', ['sobre']],
             'como-usar'         => ['site', 'page', ['como-usar']],
-            'termos-de-uso'     => ['lgpd', 'accept', ['termsOfUsage']], 
-            'uso-de-imagem'      =>['lgpd', 'accept', ['images-use']],
-            'politica-de-privacidade' => ['lgpd','accept', ['privacyPolicy']],
-            'termos-e-condicoes' => ['lgpd','accept'],
-            // workflow actions
-            'aprovar-notificacao' => ['notification', 'approve'],
-            'rejeitar-notificacao' => ['notification', 'reject'],
+            
+            // LGPD
+            'termos-de-uso'             => ['lgpd', 'accept', ['termsOfUsage']], 
+            'uso-de-imagem'             =>['lgpd', 'accept', ['images-use']],
+            'politica-de-privacidade'   => ['lgpd','accept', ['privacyPolicy']],
+            'termos-e-condicoes'        => ['lgpd','accept'],
 
+            // painel
+            'meus-agentes'             => ['panel', 'agents'],
+            'meus-espacos'             => ['panel', 'spaces'],
+            'meus-eventos'             => ['panel', 'events'],
+            'meus-projetos'            => ['panel', 'projects'],
+            'minhas-oportunidades'     => ['panel', 'opportunities'],
+            'minhas-inscricoes'        => ['panel', 'registrations'],
+            'minhas-prestacoes-de-contas'        => ['panel', 'prestacoes-de-conta'],
+
+            'conta-e-privacidade'        => ['panel', 'my-account'],
+
+            'inscricao' => ['registration', 'edit'],
+            'inscricao' => ['registration', 'single'],
             'inscricao' => ['registration', 'view'],
+
+            'gestao-de-usuarios' => ['panel', 'user-management'],
+
             'certificado' => ['relatedSeal','single'],
 
         ],
         'controllers' => [
             'painel'         => 'panel',
-            'autenticacao'   => 'auth',
-            'site'           => 'site',
-            'eventos'        => 'event',
-            'agentes'        => 'agent',
-            'espacos'        => 'space',
-            'arquivos'       => 'file',
-            'projetos'       => 'project',
-            'oportunidades'  => 'opportunity',
-            'selos'          => 'seal',
             'inscricoes'     => 'registration',
-            'instalacoes'    => 'subsite',
+            'inscricoes'     => 'registration',
+            'autenticacao'   => 'auth',
             'anexos'         => 'registrationfileconfiguration',
             'revisoes'       => 'entityRevision',
             'historico'      => 'entityRevision',
             'suporte'        => 'support',
         ],
         'actions' => [
+            'acesso'         => 'single',
             'lista'         => 'list',
             'apaga'         => 'delete',
             'edita'         => 'edit',
