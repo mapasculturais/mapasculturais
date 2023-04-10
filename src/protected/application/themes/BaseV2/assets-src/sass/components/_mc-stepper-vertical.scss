@@ -145,12 +145,11 @@ ol.mc-stepper-vertical li {
                 border-bottom: 1px solid var(--mc-gray-100);
 
                 padding-bottom: size(34);
-                padding-top: size(53);
             }
         }
 
         .phase-delete {
-
+            margin: 0 auto;
             &__trash {
                 display: flex;
                 gap: size(11);
