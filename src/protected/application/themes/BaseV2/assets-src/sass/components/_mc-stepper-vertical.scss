@@ -392,6 +392,74 @@ ol.mc-stepper-vertical li.active::before {
         justify-content: space-between;
         flex-direction: row;
         align-items: center;
+        gap: size(48);
+
+        &__content {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+
+            .info {
+                display: flex;
+                flex-direction: column;
+                gap: size(4);
+
+                &__title {
+                    font-weight: 700;
+                    font-size: size(24);
+                    line-height: size(28);
+                }
+
+                &__type {
+                    .title {
+                        font-weight: 600;
+                        font-size: size(14);
+                        line-height: size(19);
+                        text-transform: uppercase;
+                        color: var(--mc-gray-700);
+                    }
+
+                    .type {
+                        font-weight: 700;
+                        font-size: size(14);
+                        line-height: size(19);
+                        color: var(--mc-low-500);
+                    }
+                }
+            }
+
+            .dates {
+                display: flex;
+                gap: size(48);
+
+                .date {
+                    display: flex;
+                    flex-direction: column;
+                    gap: size(4);
+
+                    &__title {
+                        font-weight: 600;
+                        font-size: size(14);
+                        line-height: size(19);
+                        text-transform: uppercase;
+                        color: var(--mc-gray-700);
+                    }
+
+                    &__content {
+                        font-weight: 700;
+                        font-size: size(14);
+                        line-height: size(19);
+                        display: flex;
+                        align-items: center;
+                        color: var(--mc-low-500);
+                    }
+                }
+            }
+        }
+
+        &__actions {
+
+        }
 
         .phase-stepper {
             @media (max-width:size(800)) {
