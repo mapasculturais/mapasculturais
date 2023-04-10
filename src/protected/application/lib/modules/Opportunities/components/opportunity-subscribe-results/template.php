@@ -15,17 +15,17 @@ $this->import('
 ');
 ?>
 <mc-stepper-vertical :items="phases" allow-multiple>
-    <template #header-title="{index, item}">
-        <div class="phase-stepper">
-            <h2 v-if="index" class="phase-stepper__name">{{item.name}}</h2>
-            <h2 v-if="!index" class="phase-stepper__period"><?= i::__('Período de inscrição') ?></h2>
-            <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
-                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
-                <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
-            </p>
-            <p v-if="item.__objectType == 'evaluationmethodconfiguration'" class="phase-stepper__type">
-                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>: <label class="phase-stepper__type--item">{{evaluationMethods[item.type].name}}</label>
-            </p>
+    <template #header-title="{index, item}">        
+        <div class="stepper-header__content">
+            <div class="info">
+                <h2 v-if="index" class="info__title">{{item.name}}</h2>
+                <h2 v-if="!index" class="info__title"><?= i::__('Período de inscrição') ?></h2>
+                <div class="info__type">
+                    <span class="title"> <?= i::__('Tipo') ?>: </span>
+                    <span v-if="item.__objectType == 'opportunity' && !item.isLastPhase" class="type"><?= i::__('Coleta de dados') ?></span>
+                    <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{evaluationMethods[item.type].name}}</span>
+                </div>
+            </div>
         </div>
     </template>
     <template #header-actions="{step, item}">     

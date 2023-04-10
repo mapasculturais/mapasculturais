@@ -14,16 +14,16 @@ $this->import('
 ?>
 <mc-stepper-vertical :items="newPhases" allow-multiple>
     <template #header-title="{index, item}">
-        <div class="phase-stepper">
-            <h2 v-if="index" class="phase-stepper__name">{{ item.label }}</h2>
-            <h2 v-if="!index" class="phase-stepper__period">{{ item.label }}</h2>
-            <p class="phase-stepper__type" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
-                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>:
-                <label class="phase-stepper__type--item"><?= i::__('Coleta de dados') ?></label>
-            </p>
-            <p v-if="item.__objectType == 'evaluationmethodconfiguration'" class="phase-stepper__type">
-                <label class="phase-stepper__type--name"><?= i::__('Tipo') ?></label>: <label class="phase-stepper__type--item">{{ item.type }}</label>
-            </p>
+
+        <div class="stepper-header__content">
+            <div class="info">
+                <h2 class="info__title">{{item.label}}</h2>
+                <div v-if="item.type && item.type != ''" class="info__type">
+                    <span class="title"> <?= i::__('Tipo') ?>: </span>
+                    <span v-if="item.__objectType == 'opportunity' && !item.isLastPhase" class="type"><?= i::__('Coleta de dados') ?></span>
+                    <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{item.type}}</span>
+                </div>
+            </div>
         </div>
     </template>
     <template #default="{index, item}">
