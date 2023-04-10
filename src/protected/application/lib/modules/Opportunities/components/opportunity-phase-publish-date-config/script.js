@@ -50,6 +50,10 @@ app.component('opportunity-phase-publish-date-config' , {
         getMinDate () {
             const currentIndex = this.phases.indexOf(this.phase);
 
+            if(currentIndex === 0) {
+                return undefined;
+            }
+
             const previousPhase = this.phases[currentIndex - 1];
 
             if (previousPhase.__objectType == 'evaluationmethodconfiguration') {
@@ -69,10 +73,14 @@ app.component('opportunity-phase-publish-date-config' , {
 
     methods: {
         publishRegistration () {
-            this.phase.POST('publishRegistrations', this.phase);
+            this.phase.POST('publishRegistrations', this.phase).then(item => {
+                this.phase.populate(item);
+            });
         },
         unpublishRegistration () {
-            this.phase.POST('unpublishRegistrations', this.phase);
+            this.phase.POST('unpublishRegistrations', this.phase).then(item => {
+                this.phase.populate(item);
+            });
         }
     }
 });
