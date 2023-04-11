@@ -1,8 +1,10 @@
-<?php 
+<?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
+
 use MapasCulturais\i;
 
 $this->import('loading confirm-button');
@@ -14,10 +16,10 @@ $this->import('loading confirm-button');
         <loading :entity="entity"></loading>
         <template v-if="!entity.__processing">
             <?php $this->applyTemplateHook('entity-actions', 'begin') ?>
-            
+
             <div class="entity-actions__content--groupBtn rowBtn" ref="buttons1">
                 <?php $this->applyTemplateHook('entity-actions--primary', 'begin') ?>
-                
+
                 <confirm-button v-if="entity.currentUserPermissions?.archive" @confirm="entity.archive()">
                     <template #button="modal">
                         <button @click="modal.open()" class="button button--icon button--sm arquivar">
@@ -37,7 +39,7 @@ $this->import('loading confirm-button');
                         </button>
                     </template>
                     <template #message="message">
-                        <?php i::_e('Você está certo qeu deseja excluir?') ?>
+                        <?php i::_e('Você está certo que deseja excluir?') ?>
                     </template>
                 </confirm-button>
 
@@ -60,9 +62,16 @@ $this->import('loading confirm-button');
                 <button v-if="entity.currentUserPermissions?.modify" @click="entity.save()" class="button button--md publish publish-exit">
                     <?php i::_e("Salvar") ?>
                 </button>
-                <button v-if="entity.status == 0 && entity.currentUserPermissions?.publish" @click="entity.publish()" class="button button--md publish">
-                    <?php i::_e("Publicar") ?>
-                </button>
+                <confirm-button v-if="entity.status == 0 && entity.currentUserPermissions?.publish" @confirm="entity.publish()">
+                    <template #button="modal">
+                        <button @click="modal.open()" class="button button--md button--secondary">
+                            <?php i::_e("Publicar") ?>
+                        </button>
+                    </template>
+                    <template #message="message">
+                        <?php i::_e('Você está certo que deseja publicar esta entidade?') ?>
+                    </template>
+                </confirm-button>
                 <button v-if="entity.status == 1 && entity.currentUserPermissions?.modify" @click="save()" class="button button--md publish publish-exit">
                     <?php i::_e("Concluir Edição e Sair") ?>
                 </button>
