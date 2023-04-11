@@ -73,7 +73,7 @@ $this->breadcrumb = [
                                 <entity-list title="<?php i::esc_attr_e('Eventos'); ?>" type="event" :ids="entity.events"></entity-list>
                                 <entity-list title="<?php i::esc_attr_e('Agentes'); ?>" type="agent" :ids="entity.children"></entity-list>
                                 <entity-list title="<?php i::esc_attr_e('Projetos'); ?>" type="project" :ids="entity.projects"></entity-list>
-                                <!-- <entity-list title="<?php i::esc_attr_e('Oportunidades'); ?>"  type="opportunity" :ids="entity.ownedOpportunities.concat(entity.relatedOpportunities)"></entity-list> -->
+                                <entity-list title="<?php i::esc_attr_e('Oportunidades'); ?>"  type="opportunity" :ids="entity.ownedOpportunities.concat(entity.relatedOpportunities)"></entity-list>
                             </div>
                             <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
                         </div>
