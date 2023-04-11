@@ -44,12 +44,12 @@ $this->breadcrumb = [
                             <entity-location :entity="entity" classes="col-12"></entity-location>
                             <div v-if="entity.cnpj" class="col-12 box-cnpj">
                                 <label>CNPJ</label>
-                                <div class="box-cnpj__box" >
+                                <div class="box-cnpj__box">
                                     {{entity.cnpj}}
                                 </div>
                             </div>
                             <div v-if="entity.longDescription" class="col-12">
-                                <h2><?php i::_e('Descrição Detalhada');?></h2>
+                                <h2><?php i::_e('Descrição Detalhada'); ?></h2>
                                 <p>{{entity.longDescription}}</p>
                             </div>
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download'); ?>"></entity-files-list>
@@ -66,13 +66,14 @@ $this->breadcrumb = [
                             <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
                             <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></share-links>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                            <div v-if="entity.spaces.length>0 || entity.children.length>0 || entity.events.length>0 || entity.ownedOpportunities.length > 0 || entity.relatedOpportunities.length >0" class="col-12">
-                                <h4><?php i::_e('Propriedades do Agente:'); ?></h4>
+                            <div v-if="(entity.spaces && entity.spaces.length > 0) ||(entity.children && entity.children.length > 0) ||
+                             (entity.events && entity.events.length > 0) || (entity.ownedOpportunities && entity.ownedOpportunities.length > 0) || (entity.relatedOpportunities && entity.relatedOpportunities.length > 0)" class="col-12">
+                                <h4> <?php i::_e('Propriedades do Agente:'); ?><h4>
                                 <entity-list title="<?php i::esc_attr_e('Espaços'); ?>" type="space" :ids="entity.spaces"></entity-list>
                                 <entity-list title="<?php i::esc_attr_e('Eventos'); ?>" type="event" :ids="entity.events"></entity-list>
                                 <entity-list title="<?php i::esc_attr_e('Agentes'); ?>" type="agent" :ids="entity.children"></entity-list>
                                 <entity-list title="<?php i::esc_attr_e('Projetos'); ?>" type="project" :ids="entity.projects"></entity-list>
-                                <entity-list title="<?php i::esc_attr_e('Oportunidades'); ?>" type="opportunity" :ids="entity.ownedOpportunities.concat(entity.relatedOpportunities)"></entity-list>
+                                <!-- <entity-list title="<?php i::esc_attr_e('Oportunidades'); ?>"  type="opportunity" :ids="entity.ownedOpportunities.concat(entity.relatedOpportunities)"></entity-list> -->
                             </div>
                             <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
                         </div>
