@@ -1,6 +1,8 @@
 <?php
 
 use MapasCulturais\i;
+
+$this->import('mc-summary-evaluate');
 ?>
 
 <?php $this->applyTemplateHook('entity-header', 'before'); ?>
@@ -73,6 +75,9 @@ use MapasCulturais\i;
             </div>
             <div v-if="entity.site" class="site">
                 <a :href="entity.site" target="_blank"><mc-icon :class="entity.__objectType+'__color'" name="link"></mc-icon>{{entity.site}}</a>
+            </div>
+            <div>
+                <mc-summary-evaluate></mc-summary-evaluate>
             </div>
         </div>
     </div>
