@@ -112,7 +112,14 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      * @ORM\Column(name="conditional_field", type="string", nullable=true)
      */
     protected $conditionalField;
-    
+
+    /**
+      * @var string
+      *
+      * @ORM\Column(name="conditional_value", type="string", nullable=true)
+      */
+    protected $conditionalValue;
+
     static function getValidations() {
         return [
             'owner' => [ 
