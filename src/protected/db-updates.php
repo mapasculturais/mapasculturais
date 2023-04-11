@@ -1867,5 +1867,11 @@ $$
     },
     'altera tipo da coluna description na tabela file' => function() use ($conn, $app){
         $conn->executeQuery("ALTER TABLE file ALTER COLUMN description TYPE text;");
-    }
+    },
+    "Adiciona novas coluna na tabela registration_field_configuration" => function() use ($conn){
+        __exec("ALTER TABLE registration_field_configuration ADD conditional  BOOLEAN;");
+        __exec("ALTER TABLE registration_field_configuration ADD conditional_field  VARCHAR(255);");
+        __exec("ALTER TABLE registration_field_configuration ADD conditional_value  VARCHAR(255);");
+        return false;
+    },
 ] + $updates ;
