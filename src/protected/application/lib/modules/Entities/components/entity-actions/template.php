@@ -42,7 +42,6 @@ $this->import('loading confirm-button');
                         <?php i::_e('Você está certo que deseja excluir?') ?>
                     </template>
                 </confirm-button>
-
                 <?php $this->applyTemplateHook('entity-actions--primary', 'end') ?>
             </div>
             <?php $this->applyTemplateHook('entity-actions--leftGroupBtn', 'after'); ?>
@@ -51,7 +50,7 @@ $this->import('loading confirm-button');
                 <?php $this->applyTemplateHook('entity-actions--secondary', 'begin') ?>
                 <confirm-button v-if="entity.status == 0" @confirm="">
                     <template #button="modal">
-                        <button @click="modal.open()" class="button button--md button--secondary">
+                        <button @click="modal.open()" class="button button--md publish publish-exit">
                             <?php i::_e("Sair") ?>
                         </button>
                     </template>
@@ -64,7 +63,7 @@ $this->import('loading confirm-button');
                 </button>
                 <confirm-button v-if="entity.status == 0 && entity.currentUserPermissions?.publish" @confirm="entity.publish()">
                     <template #button="modal">
-                        <button @click="modal.open()" class="button button--md button--secondary">
+                        <button @click="modal.open()" class="button button--md publish publish-exit">
                             <?php i::_e("Publicar") ?>
                         </button>
                     </template>
