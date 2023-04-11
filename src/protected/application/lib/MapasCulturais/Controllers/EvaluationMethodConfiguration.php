@@ -32,7 +32,22 @@ class EvaluationMethodConfiguration extends Controller {
 
     function POST_index($data = null) {
         $this->_POST_index();
-    } 
+    }
+
+    function GET_evaluationList() {
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+          $app->pass();
+        }
+
+        $entity->checkPermission('modify');
+
+        $this->render('evaluations-list', ['entity' => $entity]);
+    }
 
     protected function _getValuerAgentRelation() {
         $this->requireAuthentication();
