@@ -568,7 +568,8 @@
 
 			@media (max-width: size(500)) {
 				.button {
-					width: size(180);
+					width: size(305);
+					height: size(48);
 					display: flex;
 					justify-content: flex-start;
 					align-items: center;
