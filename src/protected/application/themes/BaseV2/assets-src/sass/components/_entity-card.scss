@@ -537,18 +537,16 @@
 			@media (max-width: size(500)) {
 
 				display: flex;
-				padding-bottom: 21px;
+				padding-top: size(16);
 				justify-content: center;
 				flex-wrap: wrap;
-				padding-bottom: 21px;
 				
 			}
 		}
 
 		@media (max-width: size(500)) {
 			align-items: center;
-			flex-direction: column;
-
+			flex-direction: column-reverse;
 		}
 
 		&.left {
@@ -568,7 +566,8 @@
 
 			@media (max-width: size(500)) {
 				.button {
-					width: size(180);
+					width: size(305);
+					height: size(48);
 					display: flex;
 					justify-content: flex-start;
 					align-items: center;
@@ -582,9 +581,6 @@
 					align-items: center;
 					justify-content: flex-end;
 				}
-
-
-
 			}
 		}
 
