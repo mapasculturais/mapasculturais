@@ -557,7 +557,7 @@ class Opportunity extends EntityController {
                 JOIN p.user u
                 INNER JOIN u.profile a WITH a.id IN (:aids)
             WHERE 
-                p.action = 'viewPrivateData' AND
+                p.action = 'viewUserEvaluation' AND
                 r.id IN ({$registration_ids})
 
         ");
@@ -830,7 +830,7 @@ class Opportunity extends EntityController {
         $rdata = [
             '@select' => 'id',
             'opportunity' => "EQ({$opportunity->id})",
-            '@permissions' => 'viewPrivateData'
+            '@permissions' => 'viewUserEvaluation'
         ];
 
         foreach($this->data as $k => $v){
