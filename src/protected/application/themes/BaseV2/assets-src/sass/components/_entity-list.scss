@@ -19,11 +19,12 @@
 
     &__list {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         list-style: none;
         padding: 0;
         gap: size(16);
         margin: size(8) 0;
+        justify-content: space-between;
 
         &-item {
             word-break: break-word;
