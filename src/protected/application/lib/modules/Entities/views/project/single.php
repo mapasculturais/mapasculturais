@@ -59,6 +59,11 @@ $this->breadcrumb = [
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download'); ?>"></entity-files-list>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
+                            <div v-if="entity.relatedOpportunities && entity.relatedOpportunities.length>0 || entity.children.length>0" class="col-12">
+                                <h4><?php i::_e('Propriedades do Projeto'); ?></h4>
+                                <entity-list title="<?php i::esc_attr_e('Subprojetos'); ?>" type="project" :ids="entity.children"></entity-list>
+                                <entity-list title="<?php i::esc_attr_e('Oportunidades'); ?>" type="opportunity" :ids="entity.relatedOpportunities"></entity-list>
+                            </div>
                         </div>
                     </main>
                     <aside>
@@ -70,11 +75,7 @@ $this->breadcrumb = [
                             <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></share-links>
                             <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                            <div v-if="entity.relatedOpportunities && entity.relatedOpportunities.length>0 || entity.children.length>0" class="col-12">
-                                <h4><?php i::_e('Propriedades do Projeto'); ?></h4>
-                                <entity-list title="<?php i::esc_attr_e('Subprojetos'); ?>" type="project" :ids="entity.children"></entity-list>
-                                <entity-list title="<?php i::esc_attr_e('Oportunidades'); ?>" type="opportunity" :ids="entity.relatedOpportunities"></entity-list>
-                            </div>
+                            
                         </div>
                     </aside>
                 </mapas-container>

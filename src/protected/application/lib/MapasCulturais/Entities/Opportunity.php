@@ -1027,9 +1027,11 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $today = new \DateTime('now');
         $registrations = $this->getSentRegistrations();
 
-        $evaluations_ok = (($today >= $this->registrationTo) && $registrations) ? true : false;
+        $em = $this->evaluationMethodConfiguration;
+
+        $evaluations_ok = $em && $today >= $em->evaluationFrom && $today <= $em->evaluationTo && $registrations;
         foreach($registrations as $reg){
-            if($reg->canUser('evaluate')){
+            if($reg->canUser('viewUserEvaluation')){
                 $evaluation = $reg->getUserEvaluation($user);
                 if(is_null($evaluation) || $evaluation->status != RegistrationEvaluation::STATUS_EVALUATED){
                     $evaluations_ok = false;
