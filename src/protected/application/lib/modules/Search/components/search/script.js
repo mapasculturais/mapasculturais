@@ -38,6 +38,7 @@ app.component('search', {
 
     methods: {
         changeTab(tab) {
+            console.log(tab.tab.slug);
             if (tab.tab.slug == 'map') {
                 this.globalState.hideFooter();
             } else {
