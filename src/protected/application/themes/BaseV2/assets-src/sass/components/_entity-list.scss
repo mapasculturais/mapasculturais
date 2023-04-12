@@ -27,8 +27,7 @@
         justify-content: space-between;
 
         &-item {
-            word-break: break-word;
-
+            
             &-img {
                 border-radius: 50%;
                 display: flex;
@@ -47,7 +46,7 @@
 
             &-link {
                 display: grid;
-                grid-template-columns: 48px 1fr;
+                grid-template-columns: 48px size(155);
                 gap: size(8);
                 text-decoration: none;
             }
