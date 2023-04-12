@@ -66,6 +66,9 @@ app.component('registration-actions', {
                 console.error(error);
             }
         },
+        async validate() {
+            await this.registration.POST('validateEntity', {});
+        },
         async save() {
             const iframe = document.getElementById('registration-form');
             const registration = this.registration;

@@ -76,6 +76,10 @@
 
         .button {
             background-color: var(--mc-high-500);
+
+            &:hover {
+                color: var(--mc-primary-500);
+            }
         }
     }
 }

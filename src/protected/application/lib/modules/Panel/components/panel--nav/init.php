@@ -10,7 +10,7 @@ $nav_items = [
         ]
     ],
     'main' => [
-        'label' => 'Entidades',
+        'label' => 'Gerenciamento de entidades',
         'items' => [
             ['route' => 'panel/agents', 'icon' => 'agent', 'label' => i::__('Meus Agentes')],
             ['route' => 'panel/spaces', 'icon' => 'space', 'label' => i::__('Meus Espaços')],
