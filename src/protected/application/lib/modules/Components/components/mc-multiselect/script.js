@@ -32,6 +32,9 @@ app.component('mc-multiselect', {
             type: String,
             required: false,
         },
+        title: {
+            type: String,
+        },
 
         closeOnSelect: {
             type: Boolean,
