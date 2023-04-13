@@ -558,4 +558,20 @@ class Registration extends EntityController {
         
         $this->json(true);
     }
+
+
+  function GET_evaluation() {
+    $this->requireAuthentication();
+    $app = App::i();
+
+    $entity = $this->requestedEntity;
+
+    if (!$entity) {
+      $app->pass();
+    }
+
+    $entity->checkPermission('modify');
+
+    $this->render('evaluation', ['entity' => $entity]);
+  }
 }
