@@ -336,7 +336,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         description: null,
         maxSize: null,
         required: false,
-        categories: []
+        categories: [],
+        conditional : false,
+        conditionalField : null,
+        conditionalValue : null,
     };
 
     $scope.isBlockedFields = function(fieldID){
