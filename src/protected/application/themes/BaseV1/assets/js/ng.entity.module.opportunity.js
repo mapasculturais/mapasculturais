@@ -541,8 +541,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     return;
                 }
 
-            if(model.config.hasOwnProperty("require") && !model.config.require.condition){
-                model.config = ""
+            }
+            
+            if(!model.conditional){
+                model.conditionalField = '';
+                model.conditionalValue = '';
             }
             
             var data = {
