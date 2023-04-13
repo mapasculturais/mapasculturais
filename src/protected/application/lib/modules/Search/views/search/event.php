@@ -26,8 +26,8 @@ $this->breadcrumb = [
             </button>
         </create-event>
     </template>
-    <template #default="{pseudoQuery}">
-        <tabs class="search__tabs">
+    <template #default="{pseudoQuery, changeTab}">
+        <tabs  @changed="changeTab($event)" class="search__tabs">
             <template #before-tablist>
                 <label class="search__tabs--before">
                     <?= i::_e('Visualizar como:') ?>
@@ -38,9 +38,9 @@ $this->breadcrumb = [
                     <search-list-event :pseudo-query="pseudoQuery"></search-list-event>
                 </div>
             </tab>
-            <tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>" slug="map">
+            <tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>"  slug="map">
                 <div class="search__tabs--map">
-                    <search-map-event :pseudo-query="pseudoQuery"></search-map-event>
+                    <search-map-event :pseudo-query="pseudoQuery" position="map"></search-map-event>
                 </div>
             </tab>
         </tabs>
