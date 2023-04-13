@@ -15,6 +15,7 @@ $this->import('
     entity-header
     mapas-breadcrumb
     mc-link
+    mc-summary-evaluate
     opportunity-evaluations-table
     opportunity-header
     opportunity-phase-header
@@ -25,6 +26,9 @@ $this->import('
     <opportunity-header :opportunity="entity.opportunity">
         <template #button>
             <mc-link class="button button--primary-outline" :entity="entity.opportunity" route="edit" hash="registrations" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
+        </template>
+        <template #opportunity-header-info-end>
+            <mc-summary-evaluate></mc-summary-evaluate>
         </template>
     </opportunity-header>
 

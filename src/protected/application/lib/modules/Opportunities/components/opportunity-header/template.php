@@ -31,6 +31,9 @@ use MapasCulturais\i;
                         <div class="data__info"> <mc-link :entity="opportunity?.ownerEntity"></mc-link> <!-- {{opportunity?.ownerEntity?.name}} --> </div>
                     </div>
                 </div>
+                <div>
+                    <slot name="opportunity-header-info-end"></slot>
+                </div>
             </div>
         </div>
         <div class="righ">
