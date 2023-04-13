@@ -7,7 +7,7 @@
     </label>
     <div ng-if="data.fields.length >= 1">
         <label>
-            <input type="checkbox" ng-model="field.conditional" ng-true-value="'1'" ng-false-value="">
+            <input type="checkbox" ng-model="field.conditional">
             <?php i::_e("Condicionar a outro campo") ?>
         </label>
             <p><?php i::_e('Marque se deseja que este campo dependa da resposta de um outro campo do formulário. Por exemplo:outras opções')?></p>
