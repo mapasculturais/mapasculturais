@@ -475,6 +475,18 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         $scope.createFieldConfiguration = function(){
             $scope.data.fieldSpinner = true;
             $scope.data.newFieldConfiguration.displayOrder = $scope.data.fields.length +1;
+
+            if($scope.data.newFieldConfiguration.conditional){
+                if(!$scope.data.newFieldConfiguration.conditionalField){
+                    MapasCulturais.Messages.error("Informe a qual campo quer condicionar a obrigatoriedade");
+                    return;
+                }
+                if(!$scope.data.newFieldConfiguration.conditionalValue){
+                    MapasCulturais.Messages.error("Informe o valor condicionante do campo");
+                    return;
+                }
+            }
+
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
 
@@ -519,10 +531,15 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 }
             }
 
-            if(model.config.hasOwnProperty("require") && model.config.require.condition  && (!model.config.require.field)){
-                MapasCulturais.Messages.error("Informe a qual campo quer condicionar a obrigatoriedade");
-                return;
-            }
+            if(model.conditional ){
+                if(!model.conditionalField){
+                    MapasCulturais.Messages.error("Informe a qual campo quer condicionar a obrigatoriedade");
+                    return;
+                }
+                if(!model.conditionalValue){
+                    MapasCulturais.Messages.error("Informe o valor condicionante do campo");
+                    return;
+                }
 
             if(model.config.hasOwnProperty("require") && !model.config.require.condition){
                 model.config = ""
