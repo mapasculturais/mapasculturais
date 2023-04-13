@@ -9,6 +9,7 @@ $this->import('
     panel--last-edited
     panel--last-registrations
     panel--open-opportunities
+    panel--pending-reviews
     user-profile-avatar
 '); 
 ?>
@@ -54,6 +55,8 @@ $this->import('
             <div class="panel-home__tabs--main">
 
                 <panel--entities-summary></panel--entities-summary>
+
+                <panel--pending-reviews></panel--pending-reviews>
 
                 <panel--open-opportunities></panel--open-opportunities>
 
