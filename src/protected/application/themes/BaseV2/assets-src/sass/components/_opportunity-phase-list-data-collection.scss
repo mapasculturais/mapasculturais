@@ -12,16 +12,30 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
+        &__message {
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 19px;
+        }
     }
 
     &_action {
 
         &--button {
             color: var(--mc-primary-500);
-            font-size: 24px;
+            font-family: 'Open Sans';
+            font-style: normal;
             font-weight: 700;
+            font-size: 24px;
             line-height: 28px;
-            text-align: center;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            text-decoration: none;
+
         }
 
         &--center {
