@@ -24,6 +24,14 @@
     }
 
     &.action-single {
+        .container {
+            main {
+                .property-list {
+                    padding-bottom: size(16);
+                }
+
+            }
+        }
         .box-cnpj {
             margin-bottom: size(12);
             &__box {

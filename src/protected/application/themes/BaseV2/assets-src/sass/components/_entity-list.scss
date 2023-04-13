@@ -20,6 +20,7 @@
     &__list {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         list-style: none;
         padding: 0;
         gap: size(16);
@@ -27,7 +28,8 @@
         justify-content: space-between;
 
         &-item {
-            
+            word-wrap: break-word;
+
             &-img {
                 border-radius: 50%;
                 display: flex;
@@ -43,12 +45,12 @@
                     color: var(--mc-high-500);
                 }
             }
-
             &-link {
                 display: grid;
                 grid-template-columns: 48px size(155);
                 gap: size(8);
                 text-decoration: none;
+                align-items: center;
             }
         }
     }
