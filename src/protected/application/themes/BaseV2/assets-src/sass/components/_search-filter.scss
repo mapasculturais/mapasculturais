@@ -109,8 +109,12 @@
 
                 .datepicker {
                     display: flex;
+                    flex-direction: column;
                     gap: size(9);
-
+                    .filter-btn{
+                        display: flex;
+                        gap: size(8);
+                    }
                     .dp {
                         &__icon {
                             display: none;
