@@ -558,6 +558,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 maxSize: model.maxSize,
                 required: model.required,
                 categories: model.categories.length ? model.categories : '',
+                conditional: model.conditional ? true : false,
+                conditionalField: model.conditionalField,
+                conditionalValue: model.conditionalValue
 
             };
 
