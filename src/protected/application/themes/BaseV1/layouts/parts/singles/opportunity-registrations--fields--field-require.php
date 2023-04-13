@@ -26,10 +26,6 @@
                 <input ng-if="!field.options" type="text" ng-model="field.conditionalValue">
             </label>
             </div>
-            <label style="display:block;">
-            <input type="checkbox" ng-model="field.config.require.hide" ng-true-value="'1'" ng-false-value="">
-                <?php i::_e('Ocultar o campo quando não for obrigatório'); ?>
-            </label>
         </div>
     </div>
 </div>
