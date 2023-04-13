@@ -134,6 +134,14 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         ];
     }
 
+    public function setConditional($value){
+        if(!$value){
+            $this->conditionalField = null;
+            $this->conditionalValue = null;
+        }
+        $this->conditional = $value;
+    }
+
     public function setOwnerId($id){
 //        $this->owner = $this->repo()->find('opportunity', $id);
         $this->owner = App::i()->repo('Opportunity')->find($id);
