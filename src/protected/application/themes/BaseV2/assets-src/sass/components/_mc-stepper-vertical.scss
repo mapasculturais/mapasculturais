@@ -139,6 +139,7 @@ ol.mc-stepper-vertical li {
 
         .phase-delete {
             margin: 0 auto;
+
             &__trash {
                 display: flex;
                 gap: size(11);
@@ -458,6 +459,10 @@ ol.mc-stepper-vertical li.active::before {
             font-weight: 700;
             gap: size(20) size(47);
             line-height: size(19);
+
+            @media (max-width:size(800)) {
+                flex-direction: column;
+            }
 
             a.support {
                 align-items: center;
