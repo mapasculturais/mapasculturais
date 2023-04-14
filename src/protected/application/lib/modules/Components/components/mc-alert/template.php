@@ -20,5 +20,5 @@ $this->import('
             <?= i::__('Você tem inscrições não finalizadas. Acesse a aba')?> <strong><?= i::__('Não Enviadas') ?></strong> <?= i::__('para visualizar.') ?>
         </p>
     </div>
-    <button class="alert__button" @click="close"><?= i::__('Fechar') ?></button>
+    <button v-if="closeButton" class="alert__button" @click="close"><?= i::__('Fechar') ?></button>
 </div>

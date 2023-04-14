@@ -7,6 +7,7 @@ Componente para mensagens de alerta
 ## Propriedades
 - *String **type*** - Tipo do alert (success, helper, warning)
 - *Boolean **state** = true* - estado do alert (true = mostrar, false = esconder)
+- *Boolean **closeButton** = false* - Mostra ou esconde o botão 'fechar'
 
 ## Slots
 - **default** - Texto que será exibido no alert
