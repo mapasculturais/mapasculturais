@@ -58,7 +58,7 @@ $this->import('
                             <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
                         </select>
                     </form>
-                    <mc-alert type="warning" :startOpen="showAlert">
+                    <mc-alert type="warning" :startOpen="showAlert" closeButton>
                         <?= i::__('Você tem inscrições não finalizadas. Acesse a aba')?> <strong><?= i::__('Não Enviadas') ?></strong> <?= i::__('para visualizar.') ?>
                     </mc-alert>
                 </div>
