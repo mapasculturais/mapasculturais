@@ -23,13 +23,16 @@
                 padding: size(10) size(16);
                 width: 100%;
             }
+            .mc-tag-list__tagList {
+                max-height: size(180);
+            }
         }
 
         &-list {
             display: flex;
             flex-direction: column;
             list-style: none;
-            overflow-y: scroll;
+            overflow-y: auto;
             padding: 0;
             width: max-content;
             margin: 0;
