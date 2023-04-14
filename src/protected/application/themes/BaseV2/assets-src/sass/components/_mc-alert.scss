@@ -20,7 +20,7 @@
     }
 
     &__message {
-        align-items: center;
+        align-items: start;
         display: grid;
         gap: size(10);
         grid-template-columns: 21px 1fr;
