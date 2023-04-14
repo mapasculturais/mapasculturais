@@ -12,7 +12,6 @@ class Module extends \MapasCulturais\Module{
 
     public function _init() {
         $app = App::i();
-        $theme = $app->view;
      
         // a cada login salva um novo token
         $app->hook('auth.successful', function() use($app){
@@ -62,7 +61,8 @@ class Module extends \MapasCulturais\Module{
         });
         
         // registra o módulo angular da 
-        $app->hook('mapasculturais.head', function() use($app, $theme){
+        $app->hook('mapasculturais.head', function() use($app){
+            $theme = $app->view;
             $theme->jsObject['angularAppDependencies'][] = 'DeleteAccount';
             $theme->enqueueScript('app', 'delete-account', 'js/ng.delete-account.js');
             $theme->localizeScript('delete-account', [
