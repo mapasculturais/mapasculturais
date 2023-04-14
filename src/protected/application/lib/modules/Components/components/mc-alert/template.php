@@ -14,8 +14,9 @@ $this->import('
 
 <div class="alert" :class="['alert', {'success': type=='success'}, {'helper': type=='helper'}, {'warning': type=='warning'}]" v-if="showAlert">
     <div class="alert__message">
-        <mc-icon v-if="type !== 'success'" name="exclamation"></mc-icon>
+        <mc-icon v-if="type === 'helper'" name="info-full"></mc-icon>
         <mc-icon v-if="type === 'success'" name="circle-checked"></mc-icon>
+        <mc-icon v-if="type === 'warning'" name="exclamation"></mc-icon>
         <p class="text">
             <?= i::__('Você tem inscrições não finalizadas. Acesse a aba')?> <strong><?= i::__('Não Enviadas') ?></strong> <?= i::__('para visualizar.') ?>
         </p>
