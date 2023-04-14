@@ -1,19 +1,3 @@
-/**
- * Vue Lifecycle
- * 1. setup
- * 2. beforeCreate
- * 3. created
- * 4. beforeMount
- * 5. mounted
- * 
- * // sempre que há modificação nos dados
- *  - beforeUpdate
- *  - updated
- * 
- * 6. beforeUnmount
- * 7. unmounted                  
- */
-
 app.component('mc-alert', {
     template: $TEMPLATES['mc-alert'],
     
@@ -25,7 +9,10 @@ app.component('mc-alert', {
             type: String,
             required: true
         },
-
+        state: {
+            type: Boolean,
+            default: true
+        }
     },
     
     setup(props, { slots }) {
@@ -35,25 +22,10 @@ app.component('mc-alert', {
         return { text, hasSlot }
     },
 
-    beforeCreate() { },
-    created() { },
-
-    beforeMount() { },
-    mounted() { },
-
-    beforeUpdate() { },
-    updated() { },
-
-    beforeUnmount() {},
-    unmounted() {},
-
     data() {
         return {
-            showAlert: true,
+            showAlert: this.state,
         }
-    },
-
-    computed: {
     },
     
     methods: {
