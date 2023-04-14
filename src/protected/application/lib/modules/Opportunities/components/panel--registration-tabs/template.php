@@ -10,6 +10,7 @@ use MapasCulturais\i;
 $this->import('
     tabs
     registration-card
+    mc-alert
 ')
 ?>
 
@@ -57,15 +58,9 @@ $this->import('
                             <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
                         </select>
                     </form>
-                    <div class="alert" v-if="showAlert">
-                        <div class="alert__message">
-                            <mc-icon name="exclamation"></mc-icon>
-                            <p class="text">
-                                <?= i::__('Você tem inscrições não finalizadas. Acesse a aba')?> <strong><?= i::__('Não Enviadas') ?></strong> <?= i::__('para visualizar.') ?>
-                            </p>
-                        </div>
-                        <button class="alert__button" @click="closeAlert"><?= i::__('Fechar') ?></button>
-                    </div>
+                    <mc-alert type="warning" :startOpen="showAlert">
+                        <?= i::__('Você tem inscrições não finalizadas. Acesse a aba')?> <strong><?= i::__('Não Enviadas') ?></strong> <?= i::__('para visualizar.') ?>
+                    </mc-alert>
                 </div>
             </template>
             <template #default="{entities}">
