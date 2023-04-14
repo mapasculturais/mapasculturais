@@ -12,6 +12,10 @@ app.component('mc-alert', {
         state: {
             type: Boolean,
             default: true
+        },
+        closeButton: {
+            type: Boolean,
+            default: false
         }
     },
     
