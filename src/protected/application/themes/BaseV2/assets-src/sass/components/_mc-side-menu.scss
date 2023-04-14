@@ -1,0 +1,18 @@
+@use '../settings/mixins' as *;
+
+.mc-side-menu {
+  position: sticky;
+  background-color: var(--mc-gray-100);
+
+  &__container {
+    position: relative;
+
+    &--content {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background-color: var(--mc-black);
+      width: 33%;
+    }
+  }
+}
