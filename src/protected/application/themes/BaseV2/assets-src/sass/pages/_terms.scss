@@ -21,7 +21,15 @@
 
         &__panels {
             margin-bottom: 0;
-
+            
+                @media (max-width:size(600)){
+                    .btn {
+                       display: flex;
+                       flex-direction: column-reverse;
+                       gap: size(16);
+                    }
+                }
+            
             .tab-component.termsOfUsage {
                 padding: size(24) size(16) 0;
 
@@ -97,13 +105,14 @@
                     &__content {
                         ol {
                             @media (max-width:size(500)) {
+                                padding-left: 25px;
                             }
 
                             li {
                                 @media (max-width:size(340)) {
                                     text-align: left;
                                     line-height: 1.5;
-                                  
+
                                 }
                             }
                         }

@@ -75,6 +75,10 @@
 
         form,
         .form {
+            .mc-tag-list__tagList {
+                max-height: size(90);
+                overflow: auto;
+            }
             
             &__label {
                 color: var(--mc-primary-500);
@@ -109,8 +113,12 @@
 
                 .datepicker {
                     display: flex;
+                    flex-direction: column;
                     gap: size(9);
-
+                    .filter-btn{
+                        display: flex;
+                        gap: size(8);
+                    }
                     .dp {
                         &__icon {
                             display: none;
@@ -228,7 +236,7 @@
                     border-radius: var(--mc-border-radius-xs);
                     padding: size(16);
 
-
+                    
                 }
 
 
