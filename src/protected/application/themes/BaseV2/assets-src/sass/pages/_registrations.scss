@@ -23,6 +23,8 @@
             position: relative;
             width: 100%;
 
+            padding: size(40) 0;
+
             &>* {
                 margin: 0 auto;
                 max-width: size(1170);
@@ -414,6 +416,7 @@
                                     font-weight: 700;
                                     gap: size(10);
                                     line-height: size(25);
+                                    margin-bottom: size(16);
 
                                     .obrigatory {
                                         color: var(--mc-error);
@@ -463,6 +466,18 @@
                                             font-weight: 700;
                                             line-height: size(19);
                                         }
+                                    }
+                                }
+
+                                .evaluation-form-card {
+                                    background-color: var(--mc-gray-100);
+                                    padding: size(8) size(16);
+                                    h4 {
+                                        color: var(--mc-gray-500);
+                                        font-size: size(14);
+                                    }
+                                    h5 {
+                                        font-size: size(18);
                                     }
                                 }
 

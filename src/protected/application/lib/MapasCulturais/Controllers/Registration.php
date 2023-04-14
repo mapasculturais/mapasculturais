@@ -564,7 +564,7 @@ class Registration extends EntityController {
     $this->requireAuthentication();
     $app = App::i();
 
-    $entity = $this->requestedEntity;
+    $entity = $app->repo('Registration')->find($this->data['id']);
 
     if (!$entity) {
       $app->pass();
