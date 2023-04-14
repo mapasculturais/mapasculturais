@@ -84,12 +84,13 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
 
     public Function GET_evaluationlist()
     {
-        $entity = $this->getEntityAndCheckPermission('@control');
         $app = App::i();
-
+        
         if($app->user->is('admin')){
+            $entity = $this->getEntityAndCheckPermission('@control');
             $this->render("evaluations-admin-list",['entity' => $entity]);
         }else{
+            $entity = $this->getEntityAndCheckPermission('evaluateRegistrations');
             $this->render("evaluations-evaluator-list",['entity' => $entity]);
         }
     }
