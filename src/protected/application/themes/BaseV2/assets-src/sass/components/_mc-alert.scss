@@ -3,6 +3,8 @@
 .alert {
     border-radius: var(--mc-border-radius-xs);
     display: flex;
+    flex-wrap: wrap;
+    gap: size(8);
     justify-content: space-between;
     margin-top: size(24);
     padding: size(18);
@@ -44,5 +46,6 @@
         font-size: size(14);
         font-weight: 700;
         line-height: size(19);
+        margin-left: auto;
     }
 }
