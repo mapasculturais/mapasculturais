@@ -90,8 +90,10 @@ $method = $entity->getEvaluationMethod();
                 <?php if($method->fetchRegistrations()): ?>
                     <div class="committee--fetch clear">
                         <label class="hltip" title="<?php i::esc_attr_e('Distribuição das inscrições: use para dividir as inscrições entre os avaliadores'); ?>"> <?php i::_e('Distribuição'); ?> </label><br>
-                        <input ng-model="config['fetch'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}" placeholder="<?php i::_e('0-9') ?>"/>
-                        <input ng-model="config['fetchCategories'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}"  placeholder="<?php i::_e('Categorias separadas por ponto e vírgula') ?>"/>
+                        <div class="inputs">
+                            <input ng-model="config['fetch'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}" placeholder="<?php i::_e('0-9') ?>"/>
+                            <input ng-model="config['fetchCategories'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}"  placeholder="<?php i::_e('Categorias separadas por ponto e vírgula') ?>"/>
+                        </div>
                     </div>
                 <?php endif; ?>
             </div>
