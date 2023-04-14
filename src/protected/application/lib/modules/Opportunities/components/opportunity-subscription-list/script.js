@@ -16,12 +16,28 @@ app.component('opportunity-subscription-list' , {
     data() {
         return {
             registrations: $MAPAS.config.opportunitySubscriptionList.registrations,
+            opportunity: $MAPAS.requestedEntity,
         }
     },
 
     computed: {
         isLogged() {
             return $MAPAS.userId != null
-        }
+        },
+        registrationStatus() {
+            let _actualDate = new Date();
+            let _fromDate = new McDate(this.opportunity.registrationFrom?.date)._date;
+            let _toDate = new McDate(this.opportunity.registrationTo?.date)._date;
+
+            if (_fromDate < _actualDate && _toDate > _actualDate) {
+                return 'open';
+            }
+
+            if (_toDate < _actualDate) {
+                return 'closed';
+            }
+
+            return false;
+        },
     }
 });
