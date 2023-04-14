@@ -43,9 +43,5 @@ app.component('panel--registration-tabs', {
                     break;
             }
         },
-
-        closeAlert() {
-            this.showAlert = false;
-        },
     },
 });
