@@ -92,11 +92,21 @@ app.component('notification-list', {
                 notification.removeFromLists();
             }
         },
-        cancel (notification) {
-            console.log('NÃO IMPLEMENTADO', notification)
+        async cancel (notification) {
+            const url = this.API.createUrl('reject',[notification.id]);
+            const request = await this.API.POST(url)
+            if(request) {
+                const messages = useMessages();
+                messages.success(this.text('notificacao_cancelada'));
+                notification.removeFromLists();
+            }
         },
-        delete (notification) {
-            console.log('NÃO IMPLEMENTADO', notification)
+        async ok (notification) {
+            notification.disableMessages();
+            notification.delete();
+            if(request) {
+                notification.removeFromLists();
+            }
         }
     },
 });
