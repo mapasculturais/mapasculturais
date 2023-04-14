@@ -31,7 +31,7 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
                     </div>
                 </td>
                 <td>
-                    <select name="data[{{cri.id}}]" ng-model="evaluation[cri.id]">
+                    <select class="autosave" name="data[{{cri.id}}]" ng-model="evaluation[cri.id]">
                         <option value=""><?php i::_e('Selecione') ?></option>
                         <option ng-repeat="option in cri.options track by $index">{{option}}</option>
                     </select>
@@ -48,7 +48,7 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
     <hr>
     <label>
         <?php i::_e('Observações') ?>
-        <textarea name="data[obs]" ng-model="evaluation['obs']"></textarea>
+        <textarea class="autosave" name="data[obs]" ng-model="evaluation['obs']"></textarea>
     </label>
     <hr>
 

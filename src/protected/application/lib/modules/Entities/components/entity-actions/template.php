@@ -48,7 +48,7 @@ $this->import('loading confirm-button');
 
             <div v-if="editable" class="entity-actions__content--groupBtn" ref="buttons2">
                 <?php $this->applyTemplateHook('entity-actions--secondary', 'begin') ?>
-                <confirm-button v-if="entity.status == 0" @confirm="">
+                <confirm-button v-if="entity.status == 0" @confirm="exit()">
                     <template #button="modal">
                         <button @click="modal.open()" class="button button--md publish publish-exit">
                             <?php i::_e("Sair") ?>

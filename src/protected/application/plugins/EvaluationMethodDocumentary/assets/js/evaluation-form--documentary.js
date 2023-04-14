@@ -124,6 +124,20 @@ $(function(){
             var $field = $(this);
             var $form = getForm($field);
 
+            var __onChangeTimeout;
+            $(".autosave").on('keyup change', function() {
+                var $formContainer = $('#registration-evaluation-form');
+                var $_form = $formContainer.find('form');
+                clearTimeout(__onChangeTimeout);
+                __onChangeTimeout = setTimeout(function(){
+                    var data = $_form.serialize();
+                    var status = (MapasCulturais.evaluation && MapasCulturais.evaluation.status == 1) ? 'evaluated' : 'draft';
+                    var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': status});
+                    $.post(url, data, function(r){
+                        MapasCulturais.Messages.success('Avaliação Salva com sucesso');
+                    });
+                },15000);
+            });
 
             // $('window,html,body').animate({scrollTop: $field.offset().top - 75},200);
             $('.documentary-evaluation-form--field').hide();

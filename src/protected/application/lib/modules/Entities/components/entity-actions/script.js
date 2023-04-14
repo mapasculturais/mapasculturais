@@ -65,6 +65,13 @@ app.component('entity-actions', {
                     window.location.href = $MAPAS.baseURL+'panel';
                 }
             });
-        }
+        },
+        exit() {
+            if (window.history.length > 2) {
+                window.history.back();
+            } else {
+                window.location.href = $MAPAS.baseURL+'panel';
+            }
+        },
     },
 });
