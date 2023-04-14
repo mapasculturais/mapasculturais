@@ -22,6 +22,14 @@ use MapasCulturais\i;
         </div>
     </div>
 
+    <div class="registration-evaluation-actions__form">
+
+        <div class="registration-evaluation-actions__form--title">
+            <p><?= i::__("Formulário de") ?> <strong><?= i::__("avaliação simplificada") ?></strong></p>
+        </div>
+
+    </div>
+
     <div class="registration-evaluation-actions__buttons">
         <div class="grid-12">
             <div class="col-12">

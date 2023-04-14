@@ -78,4 +78,14 @@
             width: 100%;
         }
     }
+
+    &__form {
+        background-color: var(--mc-white);
+        padding: size(8);
+
+        &--title {
+            font-size: size(18);
+            color: var(--mc-primary-500);
+        }
+    }
 }
