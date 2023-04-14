@@ -70,41 +70,6 @@
                 padding: size(10) size(26) size(10) size(16);
             }
         }
-
-        .alert {
-            background: #FFCF8F;
-            border-radius: var(--mc-border-radius-xs);
-            display: flex;
-            justify-content: space-between;
-            margin-top: size(24);
-            padding: size(18);
-
-            &__message {
-                align-items: center;
-                display: flex;
-                gap: size(10);
-
-                .text {
-                    font-size: size(16);
-                    font-weight: 400;
-                    line-height: size(22);
-                    margin: 0;
-                }
-
-                .iconify {
-                    font-size: size(21);
-                }
-            }
-
-            &__button {
-                background: none;
-                border: none;
-                cursor: pointer;
-                font-size: size(14);
-                font-weight: 700;
-                line-height: size(19);
-            }
-        }
     }
 
     &__list {

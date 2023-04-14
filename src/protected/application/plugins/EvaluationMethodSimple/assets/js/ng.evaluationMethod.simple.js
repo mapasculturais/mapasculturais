@@ -13,7 +13,31 @@
         };
     }]);
 
-    module.controller('SimpleEvaluationForm',['$scope', 'RegistrationService',function($scope, RegistrationService){
+    module.factory('ApplySimpleEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
+        
+        return {
+            apply: function (from, to, status) {
+                var data = {from: from, to: to, status: status};
+                var url = MapasCulturais.createUrl('opportunity', 'applyEvaluationsSimple', [MapasCulturais.entity.id]);
+                
+                return $http.post(url, data).
+                    success(function (data, status) {
+                        $rootScope.$emit('registration.create', {message: "Opportunity registration was created", data: data, status: status});
+                    }).
+                    error(function (data, status) {
+                        $rootScope.$emit('error', {message: "Cannot create opportunity registration", data: data, status: status});
+                    });
+                    
+            },
+            autoSave: function (registrationId, evaluationData, uid) {
+                var status = (MapasCulturais.evaluation && MapasCulturais.evaluation.status == 1) ? 'evaluated' : 'draft';
+                var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {id: registrationId, status: status});
+                return $http.post(url, {data: evaluationData, uid});
+            },
+        };
+    }]);
+
+    module.controller('SimpleEvaluationForm',['$scope', 'RegistrationService','ApplySimpleEvaluationService',function($scope, RegistrationService, ApplySimpleEvaluationService){
         var evaluation = MapasCulturais.evaluation;
         var statuses = RegistrationService.registrationStatusesNames.filter(function(status) {
             if(status.value > 1) return status;
@@ -33,25 +57,24 @@
             }
             return '';
         };
-    }]);
 
-
-    module.factory('ApplySimpleEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
-        
-        return {
-            apply: function (from, to, status) {
-                var data = {from: from, to: to, status: status};
-                var url = MapasCulturais.createUrl('opportunity', 'applyEvaluationsSimple', [MapasCulturais.entity.id]);
-                
-                return $http.post(url, data).
-                    success(function (data, status) {
-                        $rootScope.$emit('registration.create', {message: "Opportunity registration was created", data: data, status: status});
-                    }).
-                    error(function (data, status) {
-                        $rootScope.$emit('error', {message: "Cannot create opportunity registration", data: data, status: status});
+        $scope.timeOut = null;
+        $scope.$watchGroup(['data.obs', 'data.registration'], function(new_val, old_val) {
+            if(new_val != old_val){
+                clearTimeout($scope.timeOut)               
+                $scope.timeOut = setTimeout(() => {
+                    var _data = {
+                        status:$scope.data.registration,
+                        obs: $scope.data.obs
+                    }
+                    ApplySimpleEvaluationService.autoSave(MapasCulturais.entity.id, _data, MapasCulturais.user.id).success(function () {
+                        MapasCulturais.Messages.success('Salvo');
+                    }).error(function (data) {
+                        MapasCulturais.Messages.error(data.data[0]);
                     });
-            },
-        };
+                }, 15000);
+            }
+        });
     }]);
 
     module.controller('ApplySimpleEvaluationResults',['$scope', 'RegistrationService', 'ApplySimpleEvaluationService', 'EditBox', function($scope, RegistrationService, ApplySimpleEvaluationService, EditBox){
