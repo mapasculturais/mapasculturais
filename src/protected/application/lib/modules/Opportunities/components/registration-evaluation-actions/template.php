@@ -6,6 +6,8 @@
  */
 
 use MapasCulturais\i;
+
+$this->import('v1-embed-tool')
 ?>
 
 <div class="registration-evaluation-actions">
@@ -28,21 +30,23 @@ use MapasCulturais\i;
             <p><?= i::__("Formulário de") ?> <strong><?= i::__("avaliação simplificada") ?></strong></p>
         </div>
 
+        <v1-embed-tool route="evaluation" :id="registration.id"></v1-embed-tool>
+
     </div>
 
     <div class="registration-evaluation-actions__buttons">
         <div class="grid-12">
             <div class="col-12">
-                <button class="button button--primary" @click="send()"> <?= i::__('Finalizar avaliação') ?> </button>
+                <button class="button button--primary" @click="finishEvaluation()"> <?= i::__('Finalizar avaliação') ?> </button>
             </div>
             <div class="col-12">
-                <button class="button button--primary" @click="send()"> <?= i::__('Salvar e continuar depois') ?> </button>
+                <button class="button button--primary" @click="saveAndContinue()"> <?= i::__('Salvar e continuar depois') ?> </button>
             </div>
             <div class="col-6">
-                <button class="button button--primary-outline" @click="validate()"> <?= i::__('Anterior') ?> </button>
+                <button class="button button--primary-outline" @click="previous()"> <?= i::__('Anterior') ?> </button>
             </div>
             <div class="col-6">
-                <button class="button button--primary-outline" @click="save()"> <?= i::__('Próximo') ?> </button>
+                <button class="button button--primary-outline" @click="next()"> <?= i::__('Próximo') ?> </button>
             </div>
             <div class="col-12">
                 <button class="button" disabled @click="send()"> <?= i::__('Enviar avaliação') ?> </button>
