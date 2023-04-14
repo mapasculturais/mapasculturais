@@ -19,6 +19,7 @@ $this->import('mc-link');
         </ul>
     </template>
     <slot name='end'>
+        <div class="panel-nav__line"></div>
         <li><mc-link :entity='entity' icon><?= i::__('Meu Perfil') ?></mc-link></li> 
        <li><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li> 
     </slot>
