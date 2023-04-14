@@ -8,8 +8,8 @@
 use MapasCulturais\i;
 ?>
 
-<div class="registration-actions">
-    <div class="registration-actions__primary">
+<div class="registration-evaluation-actions">
+    <div class="registration-evaluation-actions__primary">
         <div v-if="Object.keys(registration.__validationErrors).length > 0" class="errors">
             <span class="errors__title"> <?= i::__('Ops! Alguns erros foram identificados.') ?> </span>
             <span class="errors__subtitle"> <?= i::__('Para continuar, corrija os campos com os erros listados abaixo:') ?> </span>
@@ -20,11 +20,37 @@ use MapasCulturais\i;
                 </div>    
             </div>
         </div>
-        <button class="button button--large button--xbg button--primary" @click="send()"> <?= i::__('Enviar') ?> </button>
     </div>
-    <div class="registration-actions__secondary">
-        <button class="button button--large button--primary-outline" @click="validate()"> <?= i::__('Validar inscrição') ?> </button>
-        <button class="button button--large button--primary-outline" @click="save()"> <?= i::__('Salvar para depois') ?> </button>
-        <button class="button button--large button--primary-outline" @click="exit()"> <?= i::__('Sair') ?> </button>
+
+    <div class="registration-evaluation-actions__form">
+
+        <div class="registration-evaluation-actions__form--title">
+            <p><?= i::__("Formulário de") ?> <strong><?= i::__("avaliação simplificada") ?></strong></p>
+        </div>
+
+    </div>
+
+    <div class="registration-evaluation-actions__buttons">
+        <div class="grid-12">
+            <div class="col-12">
+                <button class="button button--primary" @click="send()"> <?= i::__('Finalizar avaliação') ?> </button>
+            </div>
+            <div class="col-12">
+                <button class="button button--primary" @click="send()"> <?= i::__('Salvar e continuar depois') ?> </button>
+            </div>
+            <div class="col-6">
+                <button class="button button--primary-outline" @click="validate()"> <?= i::__('Anterior') ?> </button>
+            </div>
+            <div class="col-6">
+                <button class="button button--primary-outline" @click="save()"> <?= i::__('Próximo') ?> </button>
+            </div>
+            <div class="col-12">
+                <button class="button" disabled @click="send()"> <?= i::__('Enviar avaliação') ?> </button>
+            </div>
+            <div class="col-12">
+                <button class="button button--primary-outline" @click="exit()"> <?= i::__('Sair') ?> </button>
+            </div>
+        </div>
+
     </div>
 </div>
