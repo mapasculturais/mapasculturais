@@ -5,6 +5,11 @@
     </div>
 
     <div>
+        <h4><?= MapasCulturais\i::__('Avaliações iniciadas') ?></h4>
+        <span>{{summary.started}} <?= MapasCulturais\i::__('avaliações') ?></span>
+    </div>
+
+    <div>
         <h4><?= MapasCulturais\i::__('Avaliações concluídas') ?></h4>
         <span>{{summary.completed}} <?= MapasCulturais\i::__('avaliações') ?></span>
     </div>
