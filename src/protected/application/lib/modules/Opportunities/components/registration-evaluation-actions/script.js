@@ -9,18 +9,11 @@ app.component('registration-evaluation-actions', {
     },
 
     setup() {
-        const text = Utils.getTexts('registration-actions')
+        const text = Utils.getTexts('registration-evaluation-actions')
         return { text }
     },
 
     mounted() {
-        window.addEventListener("message", (event) => {
-            if (event.data.type == 'registration.update') {
-                for (let key in event.data.data) {
-                    this.registration[key] = event.data.data[key];
-                }
-            }
-        });
     },
 
     data() {
@@ -32,7 +25,7 @@ app.component('registration-evaluation-actions', {
     methods: {
         fieldName(field) {
             if (field == 'agent_instituicao') {
-                return this.text('Instituição responsável'); 
+                return this.text('Instituição responsável');
             }
 
             if (field == 'agent_coletivo') {
@@ -50,50 +43,26 @@ app.component('registration-evaluation-actions', {
             return this.text('Campo não identificado');
 
         },
-        async send() {
-            const data = {id: this.registration.id};
-            if (this.registration.category) {
-                data.category = this.registration.category;
-            }
-            
-            try {
-                this.registration.disableMessages();
-                await this.save();
-                this.registration.enableMessages();
-                await this.registration.POST('send', {data});
-                document.location.reload();
-            } catch(error) {
-                console.error(error);
-            }
+        finishEvaluation() {
+            console.log(this.registration);
         },
-        async validate() {
-            await this.registration.POST('validateEntity', {});
+        saveAndContinue() {
+            console.log(this.registration);
         },
-        async save() {
-            const iframe = document.getElementById('registration-form');
-            const registration = this.registration;
-            if (iframe) {
-                const promise = new Promise((resolve, reject) => {
-                    Promise.all([
-                        registration.save(false),
-                    ]).then((values) => {
-                        resolve(values[0]);
-                    });
-                });
-                return promise;
-
-            } else {
-                return registration.save(false);
-            }
+        send() {
+            console.log(this.registration);
+        },
+        previous() {
+            console.log(this.registration);
+        },
+        next() {
+            console.log(this.registration);
+        },
+        save() {
+            console.log(this.registration);
         },
         exit() {
-            this.registration.save().then(() => {
-                if (window.history.length > 2) {
-                    window.history.back();
-                } else {
-                    window.location.href = $MAPAS.baseURL+'panel';
-                }
-            });
+            console.log(this.registration);
         },
     },
 });
