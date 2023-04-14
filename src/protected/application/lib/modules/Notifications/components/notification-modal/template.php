@@ -10,7 +10,7 @@ $this->import('
 ');
 ?>
 
-<popover openside="down-right">
+<popover v-if="notificationsCount>0" openside="down-right">
     <template #default>
         <div style="max-width: 500px;">
             <div class="grid-12 notification-modal__header">

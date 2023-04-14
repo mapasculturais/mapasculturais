@@ -21,7 +21,7 @@ $this->import('
             </div>
             <div class="content__groupButtons" v-if="!entity.request">
                 <div class="col-2">
-                    <button class="button button--primary-outline" @click="delete(entity)">
+                    <button class="button button--primary-outline" @click="ok(entity)">
                         <?= i::__('Ok') ?>
                     </button>
                 </div>
@@ -34,7 +34,7 @@ $this->import('
                     </button>
                 </div>
                 <div class="col-2">
-                    <button class="button button--primary-outline" @click="delete(entity)">
+                    <button class="button button--primary-outline" @click="ok(entity)">
                         <?= i::__('Ok') ?>
                     </button>
                 </div>
