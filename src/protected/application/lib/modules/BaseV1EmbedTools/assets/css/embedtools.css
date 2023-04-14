@@ -223,6 +223,37 @@ body {
     margin-right: 10px;
 }
 
+#evaluations-config .registration-fieldset .committee .committee--fetch {
+    padding: 18px 24px 29px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#evaluations-config .registration-fieldset .committee .committee--fetch br {
+    display: none;
+}
+
+#evaluations-config .registration-fieldset .committee .committee--fetch label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+#evaluations-config .registration-fieldset .committee .committee--fetch .inputs {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 8px;
+}
+
+#evaluations-config .registration-fieldset .committee .committee--fetch .inputs input{
+    width: 100%;
+    margin: 0;
+}
+
 #evaluations-config .registration-fieldset  .directive-find-entity {
     width: 100%;
 }
@@ -1252,4 +1283,66 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
+}
+
+
+
+/* Evaluation List */
+
+.action-evaluationlist #header-inscritos {
+    display: none;
+}
+
+.action-evaluationlist .registrations-table thead {
+    background-color: #FFFFFF;
+}
+
+.action-evaluationlist .registrations-table thead tr {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #BBBBBB;
+}
+
+.action-evaluationlist .registrations-table thead tr th {
+    background-color: #FFFFFF;
+    color: #000000;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 19px;
+    vertical-align: middle; 
+}
+
+.action-evaluationlist .registrations-table thead tr th .dropdown {
+    align-items: center;
+    color: #000000;
+    display: flex;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 19px;
+    line-height: unset;
+    margin: 0;
+}
+
+.action-evaluationlist .registrations-table thead tr th .dropdown .placeholder {
+    text-align: center;
+    width: 100%;
+}
+
+.action-evaluationlist .registrations-table thead tr th .dropdown .placeholder::after {
+    line-height: unset;
+}   
+
+.action-evaluationlist .registrations-table tbody tr {
+    background-color: #FFFFFF;
+    border: none;
+    border-bottom: 1px solid #BBBBBB;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
 }
