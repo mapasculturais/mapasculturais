@@ -45,6 +45,7 @@ $this->import('
                 </template>
 
                 <template #end>
+                    <div class="user-menu__line"></div>
                     <li><mc-link :entity='profile' icon><?= i::__('Meu Perfil') ?></mc-link></li>
                     <li><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li>
                     <?php $this->applyTemplateHook('header-menu-user--desktop', 'end') ?>

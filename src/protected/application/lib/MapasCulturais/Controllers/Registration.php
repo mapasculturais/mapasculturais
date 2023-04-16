@@ -420,7 +420,7 @@ class Registration extends EntityController {
                 $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
             } else if ($this->urlData['status'] === 'draft') {
                 $evaluation = $registration->getUserEvaluation($user);
-                if (!$evaluation || !$evaluation->canUser('modify', $user)) {
+                if ($evaluation && !$evaluation->canUser('modify', $user)) {
                     $this->errorJson("User {$user->id} is trying to modify evaluation {$evaluation->id}.", 401);
                     return;
                 }

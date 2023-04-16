@@ -80,7 +80,11 @@ $this->breadcrumb = [
                         <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
                         <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
                         <share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
-                    </div>
+                        <div v-if="entity.longDescription" class="col-12">
+                                <h2><?php i::_e('Descrição Detalhada');?></h2>
+                                <p>{{entity.longDescription}}</p>
+                        </div>
+                    </div>  
                 </aside>
             </mapas-container>
         </tab>

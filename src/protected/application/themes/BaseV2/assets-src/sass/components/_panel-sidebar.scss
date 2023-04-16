@@ -8,16 +8,37 @@
 .panel-nav {
     height: 100%;
     padding: size(40) size(24);
+    .user-menu__line{
+            max-width: 296px;
+            height: 0px;
+            left: 16px;
+            top: 809px;
+            border-top: 1px solid var(--mc-low-500);
+            padding: 0;
+            margin: size(16) size(16);
+    }
 
     &.user-menu {
         border: none;
         padding: 0;
+
+        
 
         ul:first-child {
             li>a {
                 color: var(--mc-primary-500)
             }
         }
+    }
+
+    &__line {
+        max-width: 296px;
+        height: 0px;
+        left: 16px;
+        top: 809px;
+        border-top: 1px solid black;
+        padding: 0;
+        margin: size(16) size(16);
     }
 
     @include mobile {
@@ -104,6 +125,7 @@
                 background-color: var(--mc-primary-500);
                 color: var(--mc-high-500);
             }
+
             &:hover {
                 background-color: var(--mc-primary-700);
                 color: var(--mc-high-500);
