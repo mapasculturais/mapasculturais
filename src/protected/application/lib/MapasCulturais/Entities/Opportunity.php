@@ -288,7 +288,11 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @return \MapasCulturais\Definitions\EvaluationMethod
      */
     public function getEvaluationMethodDefinition() {
-        return $this->evaluationMethodConfiguration->getDefinition();
+        if ($this->evaluationMethodConfiguration) {
+            return $this->evaluationMethodConfiguration->getDefinition();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -296,7 +300,11 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @return \MapasCulturais\EvaluationMethod
      */
     public function getEvaluationMethod() {
-        return $this->evaluationMethodConfiguration->getEvaluationMethod();
+        if ($this->evaluationMethodConfiguration) {
+            return $this->evaluationMethodConfiguration->getEvaluationMethod();
+        } else {
+            return null;
+        }
     }
     
     function setParent($parent = null) {
