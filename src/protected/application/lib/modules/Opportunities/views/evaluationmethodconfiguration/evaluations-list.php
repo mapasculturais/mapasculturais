@@ -28,6 +28,8 @@ $this->import('
             <mc-link class="button button--primary-outline" :entity="entity.opportunity" route="edit" hash="registrations" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
         </template>
         <template #opportunity-header-info-end>
+        </template>
+        <template #footer>
             <mc-summary-evaluate></mc-summary-evaluate>
         </template>
     </opportunity-header>
