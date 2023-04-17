@@ -7,6 +7,14 @@ app.component('mc-side-menu', {
             type: Boolean,
             required: true
         },
+        textButton: {
+            type: String,
+            default: 'Button'
+        },
+        content: {
+            type: String,
+            default: 'Content'
+        },
     },
 
     setup() {
@@ -24,5 +32,11 @@ app.component('mc-side-menu', {
     },
     
     methods: {
+        emitToggle () {
+            this.$emit('toggle');
+        },
+        stopPropagation (event) {
+            event.stopPropagation();
+        }
     },
 });
