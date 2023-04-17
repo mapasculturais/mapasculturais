@@ -8,14 +8,18 @@
 use MapasCulturais\i;
 ?>
 
-<template v-if="isOpen">
-    <div class="mc-side-menu">
-        <div class="mc-side-menu--container">
-            <div class="mc-side-menu--container_content">
+
+<div class="mc-side-menu">
+    <a href="#" class="mc-side-menu__button" @click="emitToggle">
+        {{ textButton }}
+    </a>
+    <template v-if="isOpen">
+        <div class="mc-side-menu__container" @click="emitToggle">
+            <div class="mc-side-menu__container--content" @click="e => stopPropagation(e)">
                 <slot>
-                    Conteudo
+                    {{ content }}
                 </slot>
             </div>
         </div>
-    </div>
-</template>
+    </template>
+</div>
