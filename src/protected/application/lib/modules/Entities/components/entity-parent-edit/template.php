@@ -18,7 +18,7 @@ $this->import('select-entity');
         </div>
     </a>
     <div class="entity-parent-edit__edit">        
-        <select-entity :type="type" @select="changeParent($event)" openside="right-down">            
+        <select-entity :type="type" @select="changeParent($event)" :query="{id: `!EQ(${entity.id})`}" openside="right-down">            
             <template #button="{ toggle }">
                 <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
                     <mc-icon name="exchange"></mc-icon>
@@ -29,7 +29,7 @@ $this->import('select-entity');
     </div>
 </div>
 <div v-if="!parent" class="col-12">
-    <select-entity :type="type" @select="changeParent($event)" openside="right-down">            
+    <select-entity :type="type" @select="changeParent($event)" :query="{id: `!EQ(${entity.id})`}" openside="right-down">            
         <template #button="{ toggle }">
             <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
                 <button class="button button--primary-outline  button--icon">{{label}}</button>

@@ -47,7 +47,7 @@ app.component('entity-parent-edit', {
 
     methods: {
         changeParent(entity) {
-                this.entity.parent = entity;
+            this.entity.parent = entity;
         }
     }
     
