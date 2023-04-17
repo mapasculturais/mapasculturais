@@ -572,12 +572,12 @@
 					justify-content: flex-start;
 					align-items: center;
 					flex-direction: row;
-					gap: 91px;
+					gap: size(100)
 				}
 
 				.button:first-of-type {
 					display: flex;
-					gap: 77px;
+					// gap: size(97);
 					align-items: center;
 					justify-content: flex-end;
 				}
@@ -589,9 +589,11 @@
 		}
 
 		.button {
+			font-family: "Open Sans";
 
 			&.archive {
 				color: var(--mc-low-500);
+				font-family: "Open Sans";
 
 				.iconify {
 					color: var(--mc-warning);
