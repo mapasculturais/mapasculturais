@@ -47,6 +47,7 @@ return [
     'app.log.auth'          => env('LOG_AUTH', false),
 
     'app.log.pcache'        => env('LOG_PCACHE', true),
+    'app.log.pcache.users'  => env('LOG_PCACHE_USERS', false),
 
     'app.queryLogger' => env('LOG_QUERYLOG_CLASS', null)
 

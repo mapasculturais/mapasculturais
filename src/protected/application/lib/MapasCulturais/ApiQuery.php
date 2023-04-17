@@ -1828,6 +1828,9 @@ class ApiQuery {
     }
     
     protected function _addFilterBySeals($seals_ids){
+        if(is_string($seals_ids)) {
+            $seals_ids = explode(',', $seals_ids);
+        }
         foreach($seals_ids as $seal){
             $s = intval($seal);
             if($s && !in_array($s, $this->_seals)){

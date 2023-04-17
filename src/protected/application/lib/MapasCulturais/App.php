@@ -1644,25 +1644,18 @@ class App extends \Slim\Slim{
             $item->save(true);
             $this->enableAccessControl();
 
-            $conn = $this->em->getConnection();
-            $conn->beginTransaction();
-
             try {
                 $entity = $this->repo($item->objectType)->find($item->objectId);
                 if ($entity) {
                     $entity->recreatePermissionCache();
                 }
-                
+                $item = $this->repo('PermissionCachePending')->find($item->id);
                 $this->em->remove($item);
-
                 $this->em->flush();
-                $conn->commit();
-            } catch (\ExceptionAa $e ){
-                
-                $conn->rollBack();
-                
+            } catch (\Exception $e ){
                 $this->disableAccessControl();
-                $item->status = 0;
+                $item = $this->repo('PermissionCachePending')->find($item->id);
+                $item->status = 2; // ERROR
                 $item->save(true);
                 $this->enableAccessControl();
 
