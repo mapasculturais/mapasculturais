@@ -77,10 +77,6 @@ trait EntityPermissionCache {
             $app->log->debug("RECREATING pcache FOR $this");
         }
         
-        if($this->usesAgentRelation()){
-            $this->deleteUsersWithControlCache();
-        }
-
         $deleted = false;
         if(is_null($users)){
             if($delete_old){
@@ -134,6 +130,7 @@ trait EntityPermissionCache {
             if($delete_old && !$deleted){
                 $this->deletePermissionsCache();
             }
+            $allowed_permissions = [];
 
             foreach ($permissions as $permission) {
                 if($permission === 'view' && $isStatusNotDraft && !$isPrivateEntity && !$hasCanUserViewMethod) {
@@ -141,6 +138,7 @@ trait EntityPermissionCache {
                 }
 
                 if ($this->canUser($permission, $user)) {
+                    $allowed_permissions[] = $permission;
                     $conn->insert('pcache', [
                         'user_id' => $user->id,
                         'action' => $permission,
@@ -149,6 +147,11 @@ trait EntityPermissionCache {
                         'create_timestamp' => 'now()'
                     ]);
                 }
+            }
+
+            if($app->config['app.log.pcache.users'] && $allowed_permissions){
+                $allowed_permissions = implode(',', $allowed_permissions);
+                $app->log->debug(' PCACHE >> ' . str_replace('MapasCulturais\\Entities\\', '', "{$this}:{$user}($allowed_permissions)"));
             }
         }
 
@@ -184,38 +187,61 @@ trait EntityPermissionCache {
     }
 
 
-    function recreatePermissionCache(){
+    function recreatePermissionCache($users = null, $path = ''){
         $app = App::i();
+
+        $path .= str_replace('MapasCulturais\\Entities\\', '', "$this");
+
+        if($app->config['app.log.pcache']){
+            $app->log->debug($path);
+        }
+
         if($app->isEntityPermissionCacheRecreated($this)){
             return false;
         }
 
-        $app->setEntityPermissionCacheAsRecreated($this);
-        
-        $this->createPermissionsCacheForUsers();
+        $self = $this;
 
-        $class_relations = $app->em->getClassMetadata($this->getClassName())->getAssociationMappings();
-        
+        $app->setEntityPermissionCacheAsRecreated($self);
+
+
+
+        $conn = $app->em->getConnection();
+        $conn->beginTransaction();
+
+        try {
+            $self->createPermissionsCacheForUsers($users);
+            $conn->commit();
+        } catch (\Exception $e ){
+            $conn->rollBack();
+            throw $e;
+        }
+
+        if($self instanceof \MapasCulturais\Entities\User) {
+            return true;
+        }
+
+        $class_relations = $app->em->getClassMetadata($self->getClassName())->getAssociationMappings();
         
         foreach($class_relations as $prop => $def){
             $rel_class = $def['targetEntity'];
             if($def['type'] == 4 && !$def['isOwningSide'] && $rel_class::usesPermissionCache()){
-                foreach($this->$prop as $entity){
-                    $entity->recreatePermissionCache();
+                $total = count($self->$prop);
+                foreach($self->$prop as $i => $entity){
+                    $entity->recreatePermissionCache($users, "{$path}->{$prop}({$i}/$total):");
                 }
             }
             
         }
 
         
-        if(method_exists($this, 'getExtraEntitiesToRecreatePermissionCache')){
-            $entities = $this->getExtraEntitiesToRecreatePermissionCache();
-
-            foreach($entities as $entity){
-                $entity->recreatePermissionCache();
+        if(method_exists($self, 'getExtraEntitiesToRecreatePermissionCache')){
+            $entities = $self->getExtraEntitiesToRecreatePermissionCache();
+            $total = count($entities);
+            foreach($entities as $i => $entity){
+                $i++;
+                $entity->recreatePermissionCache($users, "{$path}->extra({$i}/$total):");
             }
         }
-        
-
     }
 }
