@@ -11,5 +11,5 @@ $this->import('mc-side-menu')
 ?>
 
 <div>
-    <mc-side-menu :is-open="open" @toggle="toggle"></mc-side-menu>
+    <mc-side-menu :is-open="open" @toggle="toggle" text-button="Lista de avaliações"></mc-side-menu>
 </div>
