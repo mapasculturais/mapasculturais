@@ -90,7 +90,8 @@ $this->breadcrumb = [
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
                             <div v-if="entity.relatedOpportunities && entity.relatedOpportunities.length > 0" class="col-12">
                                 <h4><?php i::_e('Propriedades do Evento');?></h4>
-                                <!-- <entity-list title="<?php i::esc_attr_e('Oportunidades'); ?>" type="opportunity" :ids="entity.relatedOpportunities"></entity-list> -->
+                                <entity-list title="<php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
+                                
                             </div>
                         </div>
                     </main>
@@ -103,7 +104,6 @@ $this->breadcrumb = [
                             <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
                             <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                            
                             <entity-owner :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>"></entity-owner>
                     </aside>
                 </mapas-container>

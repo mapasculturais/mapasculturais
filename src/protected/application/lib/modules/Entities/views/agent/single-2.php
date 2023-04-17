@@ -55,14 +55,13 @@ $this->breadcrumb = [
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download'); ?>"></entity-files-list>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
-                            <div v-if="(entity.spaces && entity.spaces.length > 0) ||(entity.children && entity.children.length > 0) ||
-                             (entity.events && entity.events.length > 0) || (entity.ownedOpportunities && entity.ownedOpportunities.length > 0) || (entity.relatedOpportunities && entity.relatedOpportunities.length > 0)" class="col-12">
-                                <h4> <?php i::_e('Propriedades do Agente:'); ?><h4>
-                                <entity-list title="<?php i::esc_attr_e('Espaços'); ?>" type="space" :ids="entity.spaces"></entity-list>
-                                <entity-list title="<?php i::esc_attr_e('Eventos'); ?>" type="event" :ids="entity.events"></entity-list>
-                                <entity-list title="<?php i::esc_attr_e('Agentes'); ?>" type="agent" :ids="entity.children"></entity-list>
-                                <entity-list title="<?php i::esc_attr_e('Projetos'); ?>" type="project" :ids="entity.projects"></entity-list>
-                                <entity-list title="<?php i::esc_attr_e('Oportunidades'); ?>"  type="opportunity" :ids="entity.ownedOpportunities.concat(entity.relatedOpportunities)"></entity-list>
+                            <div v-if="entity.spaces?.length > 0 || entity.children?.length > 0 || entity.events?.length > 0 || entity.ownedOpportunities?.length > 0 || entity.relatedOpportunities?.length > 0" class="col-12">
+                                <h4 class="property-list"> <?php i::_e('Propriedades do Agente:');?> </h4>
+                                <entity-list v-if="entity.spaces?.length>0" title="<?php i::esc_attr_e('Espaços');?>" type="space" :ids="entity.spaces"></entity-list>
+                                <entity-list v-if="entity.events?.length>0" title="<?php i::esc_attr_e('Eventos');?>" type="event" :ids="entity.events"></entity-list>
+                                <entity-list v-if="entity.children?.length>0" title="<?php i::esc_attr_e('Agentes');?>" type="agent" :ids="entity.children"></entity-list>
+                                <entity-list v-if="entity.projects?.length>0" title="<?php i::esc_attr_e('Projetos');?>" type="project" :ids="entity.projects"></entity-list>                                
+                                <entity-list title="<php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
                             </div>
                         </div>
                     </main>

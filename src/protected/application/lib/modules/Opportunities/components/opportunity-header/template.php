@@ -41,7 +41,9 @@ use MapasCulturais\i;
         </div>
         
     </div>
-
+    <div class="">
+        <slot name="footer"></slot>
+    </div>
     <?php $this->applyTemplateHook('opportunity-header', 'end'); ?>
 </header>
 <?php $this->applyTemplateHook('opportunity-header', 'after'); ?>
