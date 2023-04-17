@@ -11,7 +11,7 @@ $this->import('
     <div class="mc-summary-evaluate__box pending">
         <div class="mc-summary-evaluate__box--icon">
 
-            <mc-icon name="check"></mc-icon>
+            <mc-icon name="clock"></mc-icon>
         </div>
         <div class="mc-summary-evaluate__box--content">
 
@@ -24,7 +24,7 @@ $this->import('
 
         <div class="mc-summary-evaluate__box--icon">
 
-            <mc-icon name="check"></mc-icon>
+            <mc-icon name="clock"></mc-icon>
         </div>
         <div class="mc-summary-evaluate__box--content">
 
@@ -47,7 +47,7 @@ $this->import('
     <div class="mc-summary-evaluate__box sent">
         <div class="mc-summary-evaluate__box--icon">
 
-            <mc-icon name="check"></mc-icon>
+            <mc-icon name="send"></mc-icon>
         </div>
         <div class="mc-summary-evaluate__box--content">
 
