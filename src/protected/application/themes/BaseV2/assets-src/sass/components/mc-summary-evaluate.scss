@@ -1,0 +1,5 @@
+@use '../settings/mixins' as *;
+.mc-summary-evaluate{
+display: flex;
+flex-direction: row;
+}
