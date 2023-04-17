@@ -15,6 +15,7 @@ $this->import('
     registration-related-project
     registration-steps
     select-entity
+    registration-evaluation-list
 ');
 
 $opportunity = $entity->opportunity;
@@ -37,6 +38,7 @@ $this->breadcrumb = $breadcrumb;
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
     <div class="registration__content">
+        <registration-evaluation-list :entity="entity"></registration-evaluation-list>
         <mapas-container>
             <main class="grid-12">
                 <div class="col-12 registration-info">
