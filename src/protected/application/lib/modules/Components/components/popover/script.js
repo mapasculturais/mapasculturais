@@ -16,7 +16,7 @@ app.component('popover', {
 
     props: {
         classes: {
-            type: Array,
+            type: [String, Array],
             default: []
         },
         buttonLabel: {
@@ -84,6 +84,7 @@ app.component('popover', {
             this.$emit('close', this);
         },
         toggle() {
+            console.log(this.active );
             this.active ? this.close() : this.open();
         },
         confirm() {
