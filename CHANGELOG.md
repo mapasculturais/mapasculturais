@@ -4,6 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.6.9] - 2023-04-17
+### Melhorias
+- melhora performance do endpoint que retorna avaliações
+- melhora performance da criação dos caches de permissão das oportunidades e inscrições
+
 ## [5.6.8] - 2023-04-17
 ### Melhorias
 - Faz com que sidebar direito, fique com scroll do campo dowloads sem max-higth no modo de edição da oportunidade
@@ -58,6 +63,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Evita que o modal de criação rápida de entidades seja acessado quando o usuários não estiver autenticado
 - Faz com que Job SendMailNotification retorne o status do disparo de e-mail para concluir o processo do Job e evitar erros
+
+## [5.5.23] - 2023-04-17
+### Melhorias
+- melhora performance do endpoint que retorna avaliações
+- melhora performance da criação dos caches de permissão das oportunidades e inscrições
 
 ## [5.5.15] - 2023-03-06
 ### Correções
@@ -149,6 +159,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
     - CNPJ (MEI)
     - Pessoa idosa
 
+## [5.4.10] - 2023-04-17
+### Melhorias
+- melhora performance do endpoint que retorna avaliações
+- melhora performance da criação dos caches de permissão das oportunidades e inscrições
 
 ## [5.4.7] - 2023-02-16
 - melhora performance da criação de revisões de agentes com muitas propriedades
@@ -184,6 +198,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Atualiza updateTimestamp das entidades quando modificado um metadado
 ### Novas Funcionalidade
 - Importação de eventos por planilha
+## [5.3.43] - 2023-04-17
+### Melhorias
+- melhora performance do endpoint que retorna avaliações
+- melhora performance da criação dos caches de permissão das oportunidades e inscrições
 
 ## [5.3.42] - 2023-02-16
 - melhora performance da criação de revisões de agentes com muitas propriedades
