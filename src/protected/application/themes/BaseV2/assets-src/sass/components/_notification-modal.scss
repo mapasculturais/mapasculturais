@@ -8,6 +8,7 @@
 
 	&__menu-mobile {
 		display: none;
+		
 		.icon {
 			position: relative;
 
@@ -32,14 +33,11 @@
 				top: size(-7);
 				left: size(12);
 			}
-
 		}
-		// @media (max-width: size(800)) {
-		// 	display: none;
-		// }
 	}
 
 	&__menu-desk {
+		align-items: center;
 		display: grid;
 		grid-template-columns: 1fr size(30);
 		gap: size(7);
@@ -48,11 +46,12 @@
 			font-weight: 600;
 			font-size: 14px;
 			line-height: size(16);
-
 		}
 
 		.icon {
 			position: relative;
+			height: size(20);
+			width: size(20);
 
 			svg {
 				height: size(20);
@@ -75,7 +74,6 @@
 				top: size(-8);
 				left: size(8);
 			}
-
 		}
 
 		@media (max-width: size(800)) {

@@ -54,7 +54,7 @@ class Module extends \MapasCulturais\Module{
         });
 
         // adiciona icone de notificacao no main header
-        $app->hook('template(<<*>>.mc-header-menu):after', function() {
+        $app->hook('template(<<*>>.header-menu-user):before', function() {
             /** @var \MapasCulturais\Theme $this */
             $this->part('notifications/header-notification',['viewport' => 'desktop']);
         });
