@@ -20,6 +20,8 @@ $this->includeAngularEntityAssets($entity);
 
 $this->jsObject['request']['controller'] = "registration";
 
+$this->jsObject['entity']['object']->opportunity = $entity->opportunity;
+
 $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle();
 $site_name = $this->dict('site: name', false);
 ?>

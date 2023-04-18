@@ -358,7 +358,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
     
     function getExtraEntitiesToRecreatePermissionCache(){
-        return [$this->opportunity];
+        return [$this->opportunity->parent ?: $this->opportunity];
     }
     
     
