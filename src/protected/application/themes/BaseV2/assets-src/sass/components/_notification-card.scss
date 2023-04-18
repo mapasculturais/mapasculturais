@@ -27,14 +27,15 @@
             align-items: center;
             justify-content: center;
             margin: 0;
+            overflow: hidden;
 
             svg {
                 font-size: size(16);
-
             }
 
-
-
+            img {
+                width: 100%;
+            }
         }
 
 
