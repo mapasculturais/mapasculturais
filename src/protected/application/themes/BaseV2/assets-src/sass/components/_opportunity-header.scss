@@ -14,8 +14,19 @@
         max-width: size(1170);
         padding: size(83) size(16) size(76);
         position: relative;
-        
-        .left{
+
+        @media (max-width: size(500)) {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+
+            .right {
+                display: none;
+            }
+
+        }
+
+        .left {
             align-items: start;
             display: grid;
             gap: size(18);
@@ -30,22 +41,45 @@
                 justify-content: center;
                 overflow: hidden;
                 width: size(72);
-                
+
                 .iconify {
                     color: var(--mc-white);
                     font-size: size(40);
                 }
-    
+
                 img {
                     width: 100%;
                 }
             }
-    
+
+            @media (max-width: size(500)) {
+                grid-template-columns: size(40) 1fr;
+
+                .image {
+                    height: size(40);
+                    width: size(40);
+
+                    .iconify {
+                        color: var(--mc-white);
+                        font-size: size(20);
+                    }
+
+                    img {
+                        width: 100%;
+                    }
+                }
+            }
+
             .title {
                 display: flex;
                 flex-direction: column;
                 gap: size(6);
-    
+
+                @media (max-width:size(400)) {
+                    max-width: 100%;
+                    width: 264px;
+                }
+
                 &__title {
                     font-size: size(32);
                     font-weight: 700;
@@ -55,35 +89,76 @@
                         text-decoration: none;
                         color: var(--mc-low-500);
                     }
+
+                    @media (max-width:size(500)) {
+                        a {
+                            font-weight: 700;
+                            font-size: 18px;
+                            line-height: 25px;
+                            text-align: center;
+
+                        }
+                    }
                 }
-    
+
                 &__info {
                     display: flex;
                     flex-wrap: wrap;
                     gap: size(8) size(50);
-    
+
                     .data {
                         display: flex;
                         font-size: size(14);
                         gap: size(5);
                         line-height: size(19);
-    
+                        font-family: 'Open Sans';
+                        font-size: 14px;
+                        align-items: baseline;
+
                         &__title {
+
+                            font-style: normal;
                             font-weight: 600;
+                            color: #3E3E3E;
+                            font-size: size(14);
+                            line-height: size(19);
                             text-transform: uppercase;
+
                         }
-    
+
                         &__info {
+
+                            text-transform: uppercase;
                             font-weight: 700;
+                            align-items: center;
+                            font-size: size(14);
+
                             a {
+                                font-size: size(14);
                                 text-decoration: none;
                             }
                         }
                     }
                 }
-            }            
-        }
 
+                @media (max-width: size(400)) {
+                    &__info {
+                        flex-direction: column;
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: 14px;
+                        line-height: 19px;
+                        text-transform: uppercase;
+
+                        a {
+                            font-size: size(14);
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
     @include mobile {
@@ -94,7 +169,7 @@
             .image {
                 height: size(40);
                 width: size(40);
-                
+
                 .iconify {
                     font-size: size(19);
                 }
@@ -104,10 +179,10 @@
                 &__title {
                     font-size: size(18);
                     line-height: size(25);
+
+                    @media (max-width: size(500)) {}
                 }
-                @media (max-width: size(500)){
-                    
-                }
+
                 &__info {
                     flex-direction: column;
                     gap: size(8) size(20);

@@ -1,12 +1,11 @@
 @use '../settings/mixins' as *;
 
 .notifications {
-    &.notifications-panel{
-        background-color: var(--mc-gray-100);
-        padding: size(32) size(16);
-    }
     .notification-card {
-        margin-bottom: size(32);
+        border-bottom: 0.5px solid #BBBBBB;
+        border-radius: 0;
+        margin: 0;
+        padding: 16px;
 
         .mapas-card__title {
             display: none;
@@ -14,39 +13,39 @@
 
         .mapas-card__content {
             display: grid;
-            gap: size(0) size(6);
+            gap: size(0) size(16);
             grid-template-columns: size(32) 1fr;
         }
 
         .avatar {
-            width: size(32);
-            height: size(32);
-            border-radius: 50%;
-            background-color: var(--mc-gray-100);
-            display: flex;
             align-items: center;
+            background-color: var(--mc-gray-100);
+            border-radius: 50%;
+            display: flex;
+            height: size(32);
             justify-content: center;
             margin: 0;
+            overflow: hidden;
+            width: size(32);
 
             svg {
                 font-size: size(16);
-
             }
 
-
-
+            img {
+                width: 100%;
+            }
         }
-
 
         .content {
             display: flex;
             flex-direction: column;
-            gap: size(29);
+            gap: size(16);
 
             &__header {
                 display: flex;
                 flex-direction: column;
-                gap: size(8);
+                gap: size(4);
 
                 .title {
                     font-size: 16px;
@@ -54,9 +53,12 @@
                     margin: 0;
 
                     a {
-                        text-decoration: none;
                         color: var(--mc-low-500);
+                        display: contents;
                         font-weight: bold;
+                        margin: 0;
+                        padding: 0;
+                        text-decoration: none;
                     }
                 }
 
@@ -71,7 +73,6 @@
                 display: flex;
                 gap: size(16);
             }
-
         }
 
         &.divider {
@@ -89,5 +90,20 @@
                 gap: size(0) size(12);
             }
         }
+    }
+
+    &.tab-component {
+        .notification-card {
+            border-radius: var(--mc-border-radius-xs);
+            border: none;
+
+            .content {
+                gap: size(24);
+
+                &__header {
+                    gap: size(8);
+                }
+            }
+        }        
     }
 }
