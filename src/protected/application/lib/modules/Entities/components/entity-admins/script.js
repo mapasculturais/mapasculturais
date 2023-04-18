@@ -19,7 +19,23 @@ app.component('entity-admins', {
     computed: {
         query() {
             const ids = this.group.map((item) => item.id).join(',');
-            return ids ? {id: `!IN(${ids})`} : {};
+
+            let idFilter = '';
+            let query = {}
+
+            if (this.entity.__objectType === 'agent') {
+                idFilter = ids ? `!IN(${ids}, ${this.entity.id})` : `!EQ(${this.entity.id})`;
+            } else {
+                idFilter = ids ? `!IN(${ids})` : '';
+            }
+
+            query['type'] = 'EQ(1)';
+
+            if (idFilter) {
+                query['id'] = idFilter;
+            }
+
+            return query;
 
         },
         group() {

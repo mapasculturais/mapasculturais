@@ -87,12 +87,6 @@
         width: 100%;
         margin: 0 auto;
 
-        /* .mc-header-logo {
-            .theme-logo {
-                z-index: 999;
-            }
-        } */
-
         .logIn {
             align-items: center;
             background:  var(--mc-low-500);
@@ -124,41 +118,13 @@
                 align-items: center;
                 display: flex;
                 gap: size(30);
-
-                /* .notifications {
-                    a {
-                        padding: size(13);
-                        display: flex;
-                        gap: size(4);
-                        align-items: center;
-                        font-weight: 600;
-                        font-size: size(14);
-                        line-height: size(14);
-                        text-decoration: none;
-                        color: black;
-                        svg {
-                            font-size: size(24);
-                        }
-                        &.mobile {
-                            display: none;
-                            svg {
-                                font-size: size(20);
-                            }
-                        }
-        
-                        @media (max-width: 1250px) {
-                            &.mobile {
-                                display: flex;
-                            }
-                            &.desk {
-                                display: none;
-                            }
-                        }
-                    }
-
-                } */
-
             }
         }
+    }
+
+    &__buttons {
+        align-items: center;
+        display: flex;
+        gap: 0 size(30);
     }
 }

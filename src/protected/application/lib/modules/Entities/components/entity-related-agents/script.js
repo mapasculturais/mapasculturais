@@ -27,9 +27,12 @@ app.component('entity-related-agents', {
             const result = {};
             for (var [groupName, group] of Object.entries(this.entity.relatedAgents)) {
                 const ids = group.map((item) => item.id).join(',');
-                result[groupName] = ids ? {id: `!IN(${ids})`} : {};
+                if (this.entity.__objectType === 'agent') {
+                    result[groupName] = ids ? {id: `!IN(${ids}, ${this.entity.id})`} : {id: `!EQ(${this.entity.id})`};
+                } else {
+                    result[groupName] = ids ? {id: `!IN(${ids})`} : {};
+                }
             }
-
             return result;
         },
 

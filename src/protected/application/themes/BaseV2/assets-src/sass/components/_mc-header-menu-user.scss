@@ -18,17 +18,24 @@
         display: grid;
         flex-direction: row;
         gap: size(4);
-        grid-template-columns: 1fr 40px;
+        grid-template-columns: 1fr size(40);
         justify-content: center;
         padding: size(5) size(20) size(5) size(16);
         position: relative;
+
+        @media (max-width: size(1150)) {
+            grid-template-columns: 1fr;
+        }
+
         @media (max-width: size(600)) {
             grid-template-columns: 1fr;
         }
+
         &--name {
             font-weight: 600;
             font-size: size(14);
             line-height: size(14);
+            white-space: nowrap;
 
             @media (max-width: size(1150)) {
                 display: none;

@@ -15,10 +15,12 @@ $this->import('
             <mc-icon v-if="!hasAvatar(entity)" name='agent-1'></mc-icon>
         </div>
         <div class="content">
+            
             <div class="content__header">
                 <span class="title" v-html='entity.message'></span>
                 <span class="subtitle">{{ entity.createTimestamp?.date('numeric year') }} - {{ entity.createTimestamp?.time() }}</span>
             </div>
+
             <div class="content__groupButtons" v-if="!entity.request">
                 <div class="col-2">
                     <button class="button button--primary-outline" @click="ok(entity)">
@@ -54,4 +56,5 @@ $this->import('
             </div>
         </div>
     </mapas-card>
+
 </entities>

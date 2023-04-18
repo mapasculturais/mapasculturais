@@ -69,18 +69,19 @@ $this->import('
         </mc-header-menu>
         <?php $this->applyTemplateHook('mc-header-menu', 'after') ?>
 
-
-        <?php $this->applyTemplateHook('mc-header-menu-user', 'before') ?>
-        <?php if ($app->user->is('guest')): ?>
-            <!-- Botão login -->
-            <a href="<?= $app->createUrl('auth') ?>" class="logIn">
-                <?php i::_e('Entrar') ?>
-            </a>
-        <?php else: ?>
-            <!-- Menu do usuário -->
-            <mc-header-menu-user></mc-header-menu-user>
-        <?php endif; ?>
-        <?php $this->applyTemplateHook('mc-header-menu-user', 'after') ?>
+        <div class="main-header__buttons">
+            <?php $this->applyTemplateHook('mc-header-menu-user', 'before') ?>
+            <?php if ($app->user->is('guest')): ?>
+                <!-- Botão login -->
+                <a href="<?= $app->createUrl('auth') ?>" class="logIn">
+                    <?php i::_e('Entrar') ?>
+                </a>
+            <?php else: ?>
+                <!-- Menu do usuário -->
+                <mc-header-menu-user></mc-header-menu-user>
+            <?php endif; ?>
+            <?php $this->applyTemplateHook('mc-header-menu-user', 'after') ?>
+        </div>
 
     </div>
 
