@@ -48,8 +48,9 @@ return [
 
     'app.log.components'          => env('LOG_COMPONENTS', false),
     
-    'app.log.pcache'        => env('LOG_PCACHE', false),
     'app.log.jobs'          => env('LOG_JOBS', false),
+    'app.log.pcache'        => env('LOG_PCACHE', false),
+    'app.log.pcache.users'  => env('LOG_PCACHE_USERS', false),
 
     'app.queryLogger' => env('LOG_QUERYLOG_CLASS', null)
 

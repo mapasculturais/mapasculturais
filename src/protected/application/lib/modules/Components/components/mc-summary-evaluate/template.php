@@ -8,11 +8,9 @@ $this->import('
 ');
 ?>
 <div class="mc-summary-evaluate">
-
     <slot>
         Example
     </slot>
-
     <div class="mc-summary-evaluate__box pending">
         <div class="mc-summary-evaluate__box--icon">
 
@@ -20,8 +18,8 @@ $this->import('
         </div>
         <div class="mc-summary-evaluate__box--content">
 
-            <h4><?= MapasCulturais\i::__('Avaliações pendente') ?></h4>
-            <span>{{summary.pending}} <?= MapasCulturais\i::__('avaliações disponíveis') ?></span>
+            <h4><?= i::__('Avaliações pendente') ?></h4>
+            <span>{{summary.pending}} <?= i::__('avaliações disponíveis') ?></span>
         </div>
     </div>
 
@@ -33,8 +31,8 @@ $this->import('
         </div>
         <div class="mc-summary-evaluate__box--content">
 
-            <h4><?= MapasCulturais\i::__('Avaliações iniciadas') ?></h4>
-            <span>{{summary.started}} <?= MapasCulturais\i::__('avaliações') ?></span>
+            <h4><?= i::__('Avaliações iniciadas') ?></h4>
+            <span>{{summary.started}} <?= i::__('avaliações') ?></span>
         </div>
     </div>
 
@@ -44,8 +42,8 @@ $this->import('
             <mc-icon name="check"></mc-icon>
         </div>
         <div class="mc-summary-evaluate__box--content">
-            <h4><?= MapasCulturais\i::__('Avaliações concluídas') ?></h4>
-            <span>{{summary.completed}} <?= MapasCulturais\i::__('avaliações') ?></span>
+            <h4><?= i::__('Avaliações concluídas') ?></h4>
+            <span>{{summary.completed}} <?= i::__('avaliações') ?></span>
         </div>
     </div>
 
@@ -56,8 +54,8 @@ $this->import('
         </div>
         <div class="mc-summary-evaluate__box--content">
 
-            <h4><?= MapasCulturais\i::__('Avaliações enviadas') ?></h4>
-            <span>{{summary.send}} <?= MapasCulturais\i::__('avaliações') ?></span>
+            <h4><?= i::__('Avaliações enviadas') ?></h4>
+            <span>{{summary.send}} <?= i::__('avaliações') ?></span>
         </div>
     </div>
 </div>
