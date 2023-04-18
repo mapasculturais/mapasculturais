@@ -29,7 +29,7 @@ $this->import('select-entity confirm-button');
             </div>
         </div>
         <div class="entity-related-agents__group--actions">
-            <select-entity v-if="editable" type="agent" @select="addAgent($event)" :query="query" openside="down-right">
+            <select-entity v-if="editable" type="agent" permissions="" @select="addAgent($event)" :query="query" openside="down-right">
                 <template #button="{ toggle }">
                     <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()">
                         <?php i::_e('Adicionar administrador') ?>
