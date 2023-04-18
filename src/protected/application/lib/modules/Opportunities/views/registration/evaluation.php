@@ -15,7 +15,9 @@ $this->import('
     registration-related-project
     registration-steps
     select-entity
-    registration-evaluation-list
+    mc-side-menu 
+    mc-summary-evaluate
+    v1-embed-tool
 ');
 
 $opportunity = $entity->opportunity;
@@ -36,9 +38,15 @@ $this->breadcrumb = $breadcrumb;
 <div class="main-app registration edit">
     <mapas-breadcrumb></mapas-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
+    <mapas-card>
+        <mc-summary-evaluate>
+            <mc-side-menu :is-open="open" @toggle="toggle" text-button="Lista de avaliações">
+                <v1-embed-tool></v1-embed-tool>
+            </mc-side-menu>
+        </mc-summary-evaluate>
+    </mapas-card>
 
     <div class="registration__content">
-        <registration-evaluation-list :entity="entity"></registration-evaluation-list>
         <mapas-container>
             <main class="grid-12">
                 <div class="col-12 registration-info">
