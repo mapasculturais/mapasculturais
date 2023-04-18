@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.6.8] - 2023-04-17
+### Melhorias
+- Faz com que sidebar direito, fique com scroll do campo dowloads sem max-higth no modo de edição da oportunidade
+
 ## [5.6.7] - 2023-04-06
 ### Correção
 - Ajusta erro de carregamento dos campos liberados para os avaliadores em oportunidades multifases
