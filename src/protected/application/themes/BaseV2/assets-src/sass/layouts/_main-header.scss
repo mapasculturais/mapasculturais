@@ -125,10 +125,6 @@
     &__buttons {
         align-items: center;
         display: flex;
-        gap: 0 size(60);
-
-        @media (max-width: size(1150)) {
-            gap: 0 size(30);
-        }
+        gap: 0 size(30);
     }
 }
