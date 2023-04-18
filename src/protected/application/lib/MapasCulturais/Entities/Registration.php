@@ -1130,16 +1130,18 @@ class Registration extends \MapasCulturais\Entity
         $result = $user->is('admin') || $this->userHasControl($user);
         return $result;
     }
-    protected function canUserEvaluate($user){
-        if($user->is('guest')){
-            return false;
-        }
 
-        if($this->opportunity->publishedRegistrations){
+    protected function canUserEvaluateOnTime($user){
+        if($user->is('guest')){
             return false;
         }
         
         $evaluation_method_configuration = $this->getEvaluationMethodConfiguration();
+        
+        if (!$evaluation_method_configuration) {
+            return false;
+        }
+
         $valuers = $evaluation_method_configuration->getRelatedAgents('group-admin', true);
         
         $is_valuer = false;
@@ -1158,10 +1160,22 @@ class Registration extends \MapasCulturais\Entity
         if(!$is_valuer){
             return false;
         }
-    
+        
+        return $this->canUserViewUserEvaluation($user);
+    }
+
+    protected function canUserEvaluate($user){
+        if (!$this->opportunity->evaluationMethodConfiguration) {
+            return false;
+        }
+
+        if($this->opportunity->publishedRegistrations){
+            return false;
+        }
+
+        $can = $this->canUserEvaluateOnTime($user);
+
         $evaluation = $this->getUserEvaluation($user);
-    
-        $can = $this->canUserViewUserEvaluation($user);
 
         $evaluation_sent = false;
 
@@ -1217,20 +1231,25 @@ class Registration extends \MapasCulturais\Entity
         $canUserEvaluateNextPhase = false;
         if($this->getMetadata('nextPhaseRegistrationId') !== null) {
             $next_phase_registration = App::i()->repo('Registration')->find($this->getMetadata('nextPhaseRegistrationId'));
-            if ($next_phase_registration) {
-                $canUserEvaluateNextPhase = $this->getEvaluationMethod()->canUserEvaluateRegistration($next_phase_registration, $user);    
+            if ($next_phase_registration && $next_phase_registration->evaluationMethod) {
+                $canUserEvaluateNextPhase = $next_phase_registration->evaluationMethod->canUserEvaluateRegistration($next_phase_registration, $user);    
             }            
         }
 
-        $canUserEvaluate = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user) || $canUserEvaluateNextPhase;
+        $em = $this->evaluationMethod;
+        $canUserEvaluate = $em && $em->canUserEvaluateRegistration($this, $user) || $canUserEvaluateNextPhase;
 
         return $can || $canUserEvaluate;
     }
 
     function getExtraPermissionCacheUsers(){
-        $users = $this->getEvaluationMethodConfiguration()->getUsersWithControl();
+        if($this->status > 0) {
+            $valuers = $this->getEvaluationMethodConfiguration()->getUsersWithControl();
+        } else {
+            $valuers = [];
+        }
 
-        $users = array_merge($users, $this->opportunity->getUsersWithControl());
+        $users = array_merge($valuers, $this->opportunity->getUsersWithControl());
         
         if($this->nextPhaseRegistrationId){
             $next_phase_registration = App::i()->repo('Registration')->find($this->nextPhaseRegistrationId);
@@ -1278,11 +1297,15 @@ class Registration extends \MapasCulturais\Entity
      * @param \MapasCulturais\Entities\User $user
      * @return \MapasCulturais\Entities\RegistrationEvaluation
      */
-    function getUserEvaluation(User $user = null){
+    function getUserEvaluation(\MapasCulturais\UserInterface $user = null){
         $app = App::i();
         if(is_null($user)){
             $user = $app->user;
         }
+        if ($user->is('guest')) {
+            return null;
+        }
+
         $evaluation = App::i()->repo('RegistrationEvaluation')->findOneBy([
             'registration' => $this,
             'user' => $user
