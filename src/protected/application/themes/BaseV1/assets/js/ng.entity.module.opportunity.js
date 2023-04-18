@@ -1611,30 +1611,21 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if(MapasCulturais.entity.canUserEvaluate){
-
-            if(MapasCulturais.entity.object.category){
-                if(!MapasCulturais.entity.object.category.includes(field.categories)){
-                    return false;
-                }   
+            if(result && !$scope.isAvaliableEvaluationFields(field)){
+                result = false;
             }
-            
-            if(field.config && field.config.require && field.config.require.condition){
-                var _field = field.config.require.field;
-                if(field.config.require.value != MapasCulturais.entity.object[_field]){
-                    return false;
-                }
-            }
-
-            if($scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
-                return true;
-            }
-            
-            return false;
         }
 
         return result;
     };
 
+    $scope.isAvaliableEvaluationFields = function(field){
+        if($scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
+            return true;
+        }
+        
+        return false;
+    }
     
     $scope.requiredField = function(field) {
         if(field.required) {
