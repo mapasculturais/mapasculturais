@@ -245,10 +245,9 @@
                 position: 'right',
                 distance: '0px',
                 color: '#000',
-                height: '192px'
             });
 
-            $(this).css({height: 'initial', maxHeight: 192}).parents('.slimScrollDiv').css({height: 'initial', maxHeight: 216});
+            $(this).css({height: 'initial'}).parents('.slimScrollDiv').css({height: 'initial'});
         });
 
         $('#share-tools a.icon-share').click(function() {
