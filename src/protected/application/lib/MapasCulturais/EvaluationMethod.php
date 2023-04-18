@@ -164,10 +164,6 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
             return $this->_canUserEvaluateRegistrationCache[$cache_id];
         }
 
-        if(new DateTime('now') < $registration->opportunity->evaluationMethodConfiguration->evaluationFrom || new DateTime('now') > $registration->opportunity->evaluationMethodConfiguration->evaluationTo){
-            return false;
-        }
-
         $config = $registration->getEvaluationMethodConfiguration();
         
         $can = $config->canUser('@control', $user);

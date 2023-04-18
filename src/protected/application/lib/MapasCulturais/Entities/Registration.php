@@ -1229,10 +1229,6 @@ class Registration extends \MapasCulturais\Entity
         if($user->is('guest')){
             return false;
         }
-
-        if(new DateTime('now') < $this->opportunity->evaluationMethodConfiguration->evaluationFrom || new DateTime('now') > $this->opportunity->evaluationMethodConfiguration->evaluationTo){
-            return false;
-        }
         
         $evaluation_method_configuration = $this->getEvaluationMethodConfiguration();
         
@@ -1264,6 +1260,10 @@ class Registration extends \MapasCulturais\Entity
 
     protected function canUserEvaluate($user){
         if (!$this->opportunity->evaluationMethodConfiguration) {
+            return false;
+        }
+        
+        if(new DateTime('now') < $this->opportunity->evaluationMethodConfiguration->evaluationFrom || new DateTime('now') > $this->opportunity->evaluationMethodConfiguration->evaluationTo){
             return false;
         }
 
