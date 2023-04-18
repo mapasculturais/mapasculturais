@@ -877,7 +877,7 @@ class Registration extends \MapasCulturais\Entity
               
                 $_fied_name = $conf->conditionalField;
                 $_fied_value = $conf->conditionalValue;
-                $field_required = $this->$_fied_name == $_fied_value;
+                $field_required = $this->$_fied_name == $_fied_value && $field->required;
             }
 
             $errors = [];
