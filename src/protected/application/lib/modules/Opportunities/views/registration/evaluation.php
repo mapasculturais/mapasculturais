@@ -1,4 +1,5 @@
 <?php
+
 use MapasCulturais\i;
 
 $this->layout = 'registrations';
@@ -23,10 +24,10 @@ $this->import('
 $opportunity = $entity->opportunity;
 
 $breadcrumb = [
-  ['label' => i::__('Início'), 'url' => $app->createUrl('panel', 'opportunities')],
-  ['label' => i::__('Painel de controle'), 'url' => $app->createUrl('panel', 'opportunities')],
-  ['label' => i::__('Minhas Avaliações'), 'url' => $app->createUrl('panel', 'opportunities')],
-  ['label' => i::__('Lista de Avaliações'), 'url' => $app->createUrl('registration', 'index')],
+    ['label' => i::__('Início'), 'url' => $app->createUrl('panel', 'opportunities')],
+    ['label' => i::__('Painel de controle'), 'url' => $app->createUrl('panel', 'opportunities')],
+    ['label' => i::__('Minhas Avaliações'), 'url' => $app->createUrl('panel', 'opportunities')],
+    ['label' => i::__('Lista de Avaliações'), 'url' => $app->createUrl('registration', 'index')],
 ];
 
 $breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
@@ -37,16 +38,17 @@ $this->breadcrumb = $breadcrumb;
 
 <div class="main-app registration edit">
     <mapas-breadcrumb></mapas-breadcrumb>
-    <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
-    <mapas-card>
-        <mc-summary-evaluate>
-            <mc-side-menu :is-open="open" @toggle="toggle" text-button="Lista de avaliações">
-                <v1-embed-tool></v1-embed-tool>
-            </mc-side-menu>
-        </mc-summary-evaluate>
-    </mapas-card>
-
+    <opportunity-header :opportunity="entity.opportunity">
+        <template #footer>
+            <mc-summary-evaluate>
+                <mc-side-menu :is-open="open" @toggle="toggle" text-button="Lista de avaliações">
+                    <v1-embed-tool></v1-embed-tool>
+                </mc-side-menu>
+            </mc-summary-evaluate>
+        </template>
+    </opportunity-header>
     <div class="registration__content">
+
         <mapas-container>
             <main class="grid-12">
                 <div class="col-12 registration-info">
@@ -78,7 +80,7 @@ $this->breadcrumb = $breadcrumb;
                     <div class="section__content">
                         <div class="card owner">
                             <div class="card__title">
-                              <?= i::__('Dados do proponente') ?>
+                                <?= i::__('Dados do proponente') ?>
                             </div>
                             <p><strong><?= i::__("Nome:") ?></strong> <?= i::__("Lorem ipsum ipsum") ?></p>
                             <p><strong><?= i::__("Descrição curta:") ?></strong> <?= i::__("Est nesciunt excepturi et laborum exercitationem aut dolor veritatis et omnis velit.") ?></p>
@@ -103,7 +105,7 @@ $this->breadcrumb = $breadcrumb;
                     <div class="section__content">
                         <div class="card owner">
                             <div class="card__title">
-                              <?= i::__('Título da seção do formulário') ?>
+                                <?= i::__('Título da seção do formulário') ?>
                             </div>
                             <div class="evaluation-form-card">
                                 <h4><?= i::__("Titulo do formulario") ?> </h4>
@@ -117,7 +119,7 @@ $this->breadcrumb = $breadcrumb;
                     <div class="section__content">
                         <div class="card owner">
                             <div class="card__title">
-                              <?= i::__('Título da seção do formulário') ?>
+                                <?= i::__('Título da seção do formulário') ?>
                             </div>
                             <div class="evaluation-form-card">
                                 <h4><?= i::__("Titulo do formulario") ?> </h4>
