@@ -16,6 +16,7 @@ $this->import('
     entity-gallery-video
     entity-gallery
     entity-links
+    
 ');
 ?>
 
@@ -57,6 +58,9 @@ $this->import('
                     </div>
                     <entity-gallery-video :entity="entity" classes="col-12" editable></entity-gallery-video>
                     <entity-gallery :entity="entity" classes="col-12" editable></entity-gallery>
+                    <entity-field v-if="entity.longDescription" :entity="entity" classes="col-12" prop="longDescription" label="<?php i::_e('Apresentação'); ?>"></entity-field>
+                    
+
                 </div>
             </template>
         </mapas-card>
