@@ -95,6 +95,14 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         }
     }
 
+    public function GET_sidebarleftevaluations()
+    {
+        $this->entityClassName = "MapasCulturais\\Entities\\Registration";
+        $this->layout = "embedtools-registration";
+        $entity = $this->getEntityAndCheckPermission('viewUserEvaluation');
+        $this->render("sidebar-lefte-valuations",['entity' => $entity]);
+    }
+
     function getEntityAndCheckPermission($permission) 
     {
         $app = App::i();
