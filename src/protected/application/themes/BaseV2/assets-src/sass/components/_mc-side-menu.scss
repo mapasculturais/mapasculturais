@@ -4,7 +4,8 @@
   .side-button {
     position: fixed;
     z-index: 100;
-    left: 16px;
+    left: size(16);
+    top: size(458);
     max-width: 100%;
     background-color: var(--mc-white);
     border-radius: 0.25rem;
