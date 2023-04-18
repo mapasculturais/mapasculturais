@@ -1,18 +1,19 @@
 @use '../settings/mixins' as *;
 
 .panel--entities-summary {
-    display: flex;
+    display: grid;
     gap: size(24);
+    grid-template-columns: repeat(5, 1fr);
     overflow-x: auto;
     padding-bottom: size(5);
 
     &__card {
-        max-width: 10.5rem;
         width: 100%;
         border-radius: var(--mc-border-radius-xs);
         flex-shrink: 0;
         padding: 0.8rem;
         background-color: var(--mc-high-500);
+        min-width: size(168);
 
         @media (max-width:size(800)) {}
 
