@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
+use MapasCulturais\Exceptions\WorkflowRequest;
 
 /**
  * Define as rotas POST, PUT, PATCH e DELETE para as entidades.
