@@ -4,6 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.10] - 2023-04-17
+### Melhorias
+- melhora performance do endpoint que retorna avaliações
+- melhora performance da criação dos caches de permissão das oportunidades e inscrições
+
 ## [5.4.9] - 2023-03-10
 ### Correções
 - Evita que ao importar inscrições entre fases, não seja disparado e-mail de notificação de envio da inscrição
@@ -45,6 +50,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Novas Funcionalidade
 - Importação de eventos por planilha
+## [5.3.43] - 2023-04-17
+### Melhorias
+- melhora performance do endpoint que retorna avaliações
+- melhora performance da criação dos caches de permissão das oportunidades e inscrições
 
 ## [5.3.42] - 2023-02-16
 - melhora performance da criação de revisões de agentes com muitas propriedades
