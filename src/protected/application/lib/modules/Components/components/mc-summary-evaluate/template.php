@@ -8,7 +8,9 @@ $this->import('
 ');
 ?>
 <div class="mc-summary-evaluate">
-
+    <slot>
+        Example
+    </slot>
     <div class="mc-summary-evaluate__box pending">
         <div class="mc-summary-evaluate__box--icon">
 
