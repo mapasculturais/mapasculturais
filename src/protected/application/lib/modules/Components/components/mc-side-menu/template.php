@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \MapasCulturais\Themes\BaseV2\Theme $this
  * @var \MapasCulturais\App $app
@@ -10,13 +11,14 @@ use MapasCulturais\i;
 
 
 <div class="mc-side-menu">
-    <a href="#" class="mc-side-menu__button" @click="emitToggle">
-        <div>
-            {{ textButton }}
+    <a href="#" class="side-button" @click="emitToggle">
+        <div class="side-button__content">
+            <label class="side-button__content--text">{{textButton }}</label>
+            <div class="side-button__content--icon">
+                <mc-icon name="arrow-right-ios"></mc-icon>
+            </div>
         </div>
-        <div class="mc-side-menu__button--icon">
-            <mc-icon name="arrow-right"></mc-icon>
-        </div>
+
     </a>
     <template v-if="isOpen">
         <div class="mc-side-menu__container" @click="emitToggle">
