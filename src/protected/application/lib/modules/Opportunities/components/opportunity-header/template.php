@@ -36,7 +36,7 @@ use MapasCulturais\i;
                 </div>
             </div>
         </div>
-        <div class="righ">
+        <div class="right">
             <slot name="button"></slot>
         </div>
         
