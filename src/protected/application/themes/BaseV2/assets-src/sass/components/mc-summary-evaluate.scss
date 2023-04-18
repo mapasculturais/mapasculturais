@@ -4,12 +4,12 @@
     display: flex;
     flex-direction: row;
     margin-top: size(61);
-    max-width: 1167px;
+    //max-width: 1200px;
     gap: size(29);
     margin: 0 auto;
     padding-bottom: size(24);
 
-    @media (max-width:size(1170)) {
+    @media (max-width:size(1195)) {
         gap: size(16);
         padding-left: size(16);
 

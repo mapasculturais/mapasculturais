@@ -2,15 +2,26 @@
 
 .mc-side-menu {
   position: relative;
+  width: 270px;
+
 
   &__button {
     color: var(--mc-primary-500);
-    padding: size(8);
-    border: 1px solid var(--mc-gray-100);
-    background-color: var(--mc-white);
     font-weight: 500;
     text-decoration: none;
-    font-size: size(16);
+    display: flex;
+    max-width: 270px;
+    border-radius: 4px;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--mc-gray-100);
+    padding: size(12);
+    height: 100%;
+
+    &--icon {
+      width: size(64);
+      text-align: right;
+    }
   }
 
   &__container {
