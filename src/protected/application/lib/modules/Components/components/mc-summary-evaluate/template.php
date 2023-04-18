@@ -5,15 +5,16 @@ use MapasCulturais\i;
 
 $this->import('
  mc-icon
+ mc-side-menu
 ');
 ?>
+<slot>
+    <mc-side-menu></mc-side-menu>
+</slot>
 <div class="mc-summary-evaluate">
-    <slot>
-        Example
-    </slot>
+
     <div class="mc-summary-evaluate__box pending">
         <div class="mc-summary-evaluate__box--icon">
-
             <mc-icon name="clock"></mc-icon>
         </div>
         <div class="mc-summary-evaluate__box--content">
