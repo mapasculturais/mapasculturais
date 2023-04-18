@@ -10,23 +10,26 @@ $this->import('
 ');
 ?>
 
-<popover v-if="notificationsCount>0" openside="down-right">
+<popover v-if="notificationsCount>0" classes="notification-modal" title="<?= i::esc_attr_e('Notificações') ?>" openside="down-right">
+    
     <template #default>
         <div style="max-width: 500px;">
-            <div class="grid-12 notification-modal__header">
-                <div class="col-6 " v-if="notificationsCount>0">
+            <div class="notification-modal__header">
+                <div v-if="notificationsCount>0">
                     <label class="count">
-                        <?= i::__('Você tem') ?>
+                        <?= i::__('Você tem') ?> 
                         <span class="count-counter">{{ notificationsCount }}</span>
                         <?= i::__('notificação') ?>
                     </label>
                 </div>
             </div>
             <div class="grid-12 notification-modal__content" style="max-height: 700px; overflow-y:auto">
-                <div class="col-12  notifications">
-                    <notification-list styleCss='divider'></notification-list>
+                <div class="col-12 notifications">
+                    <notification-list></notification-list>
                 </div>
-                <div class="col-12 link" v-if="notificationsCount">
+            </div>
+            <div class="notification-modal__action">
+                <div class="link" v-if="notificationsCount">
                     <mc-link route="panel/index" hash="notifications"><?= i::__('Ver todas as notificações') ?></mc-link>
                 </div>
             </div>
@@ -42,7 +45,6 @@ $this->import('
             </div>
         </div>
 
-        <!-- Refatorar -->
         <a v-if="viewport=='mobile'" class="notification-modal__menu-mobile" @click="popover.toggle()">
             <div class="icon">
                 <mc-icon name='notification'></mc-icon>
