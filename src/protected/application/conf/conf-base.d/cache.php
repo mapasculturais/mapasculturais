@@ -29,7 +29,7 @@ return [
     'app.useSubsiteIdsCache'         => __env_not_false('CACHE_SUBSITE_ID'),
     'app.usePermissionsCache'        => (bool) env('CACHE_PERMISSIONS', env('REDIS_CACHE', false)),
     'app.useRegisterCache'           => __env_not_false('CACHE_REGISTER'),
-    'app.useApiCache'                => __env_not_false('CACHE_API'),
+    'app.useApiCache'                => env('CACHE_API', false),
     'app.useOpportunitySummaryCache' => __env_not_false('CACHE_OPPORTUNITY_SUMARY'),
 
 
