@@ -84,7 +84,6 @@ app.component('popover', {
             this.$emit('close', this);
         },
         toggle() {
-            console.log(this.active );
             this.active ? this.close() : this.open();
         },
         confirm() {
