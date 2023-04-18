@@ -15,10 +15,14 @@
         padding: size(83) size(16) size(76);
         position: relative;
 
-        @media (max-width: size(400)) {
+        @media (max-width: size(500)) {
             display: flex;
             flex-direction: row;
             align-items: flex-start;
+
+            .right {
+                display: none;
+            }
 
         }
 
@@ -71,6 +75,11 @@
                 flex-direction: column;
                 gap: size(6);
 
+                @media (max-width:size(400)) {
+                    max-width: 100%;
+                    width: 264px;
+                }
+
                 &__title {
                     font-size: size(32);
                     font-weight: 700;
@@ -80,9 +89,17 @@
                         text-decoration: none;
                         color: var(--mc-low-500);
                     }
+
+                    @media (max-width:size(500)) {
+                        a {
+                            font-weight: 700;
+                            font-size: 18px;
+                            line-height: 25px;
+                            text-align: center;
+
+                        }
+                    }
                 }
-
-
 
                 &__info {
                     display: flex;
@@ -97,6 +114,7 @@
                         font-family: 'Open Sans';
                         font-size: 14px;
                         align-items: baseline;
+
                         &__title {
 
                             font-style: normal;
@@ -109,12 +127,12 @@
                         }
 
                         &__info {
-                        
+
                             text-transform: uppercase;
                             font-weight: 700;
                             align-items: center;
                             font-size: size(14);
-                            
+
                             a {
                                 font-size: size(14);
                                 text-decoration: none;
@@ -132,15 +150,15 @@
                         font-size: 14px;
                         line-height: 19px;
                         text-transform: uppercase;
+
                         a {
-                           font-size: size(14); 
+                            font-size: size(14);
                         }
 
                     }
                 }
             }
         }
-
     }
 
     @include mobile {
