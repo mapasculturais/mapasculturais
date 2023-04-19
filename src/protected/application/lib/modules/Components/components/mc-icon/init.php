@@ -40,6 +40,7 @@ $iconset = [
     'arrowPoint-left' => 'fe:arrow-left',
     'arrowPoint-right' => 'fe:arrow-right',
     'arrow-right-ios' => 'material-symbols:arrow-forward-ios',
+    'arrow-left-ios' => 'material-symbols:arrow-back-ios',
     'arrowPoint-up' => 'fe:arrow-up',
     'exchange' => 'material-symbols:change-circle-outline',
     'check' => 'material-symbols:check-circle',
