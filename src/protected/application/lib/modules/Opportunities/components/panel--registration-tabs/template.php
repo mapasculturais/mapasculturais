@@ -15,7 +15,7 @@ $this->import('
 ?>
 
 <tabs :class="{'hasDrafts': this.totalDrafts>0}" @changed="changed($event)">
-    <tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem" class="teste?">
+    <tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem">
         <entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
             <template #header="{entities}">
                 <div class="registrations__filter">

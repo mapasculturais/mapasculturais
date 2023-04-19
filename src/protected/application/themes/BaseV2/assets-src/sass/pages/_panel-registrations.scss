@@ -4,7 +4,7 @@
 
     .tabs-component {
         &.hasDrafts {
-            .notSent {
+            li.notSent {
                 margin-right: size(10);
 
                 &::before {
