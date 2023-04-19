@@ -3,8 +3,8 @@
 .mc-summary-evaluate {
     display: flex;
     flex-direction: row;
-    // padding-top: size(61);
-    max-width: 1200px;
+    justify-content: center;
+    max-width: size(1170);
     gap: size(29);
     margin: 0 auto;
     padding-bottom: size(24);
@@ -55,10 +55,12 @@
         display: grid;
         grid-template-columns: 48px 1fr;
 
-        gap: size(16);
+   
 
         // padding: size(12) size(16);
         &--icon {
+            display: flex;
+            align-items: center;
             svg {
                 font-size: size(32);
             }
