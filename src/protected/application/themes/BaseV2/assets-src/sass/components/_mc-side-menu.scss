@@ -1,62 +1,89 @@
 @use '../settings/mixins' as *;
 
 .mc-side-menu {
-  .side-button {
-    position: fixed;
-    z-index: 100;
-    left: size(16);
-    top: size(458);
-    max-width: 100%;
-    background-color: var(--mc-white);
-    border-radius: 0.25rem;
+    max-width: size(311);
     display: flex;
-    padding: size(16);
-    text-decoration: none;
-    height: 4rem;
-    align-content: center;
-    justify-content: space-around;
-    align-items: center;
-
-    &__content {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      gap: size(15);
-      &--text {
-        font-family: 'Open Sans';
-        font-style: normal;
-        font-weight: 700;
-        font-size: size(14);
-        line-height: size(19);
-        color: var(--mc-primary-500);
-      }
-
-      &--icon {
-        .iconify {
-          font-size: size(14);
-          color: var(--mc-primary-500);
-
+    flex-direction: column;
+    padding: size(13) size(18);
+    &__button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: size(15);
+        border: none;
+        background-color: var(--mc-white);
+        .label {
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-size: size(14);
+            font-weight: 700;
+            line-height: size(19);
+            color: var(--mc-primary-500);
+            width: size(74);
         }
 
-      }
+        .icon {
+            .iconify {
+                font-size: size(14);
+                color: var(--mc-primary-500);
+
+            }
+        }
     }
-  }
+    &.isOpen {
+        position: absolute;
+        .mc-side-menu__button {
+            padding: size(23) size(17);
+            justify-content: space-between;
+        
+            .label{
+                width: unset;
+            }
+        }
+    }
 
-  // &__container {
+    // .side-button {
 
-  //   left: 0;
-  //   top: 0;
-  //   //background-color: var(--mc-black);
-  //   background-color: rgba(0, 0, 0, 0.7);
-  //   width: 100%;
-  //   height: 100%;
-  //   z-index: 101 !important;
 
-  //   &--content {
-  //     position: absolute;
-  //     background-color: rgba(255, 255, 255, 1) !important;
-  //     width: 33%;
-  //     height: 100%;
-  //     z-index: 102 !important;
-  //   }
+    //     // position: fixed;
+    //     // z-index: 100;
+    //     // left: size(16);
+    //     // top: size(458);
+    //     // max-width: 100%;
+    //     // background-color: var(--mc-white);
+    //     // border: none;
+    //     // border-radius: 0.25rem;
+    //     // display: flex;
+    //     // padding: size(16);
+    //     // height: 4rem;
+    //     // align-content: center;
+    //     // align-items: center;
+
+    //     &__content {
+
+
+    //         &__label {}
+
+    //         &--icon {}
+    //     }
+    // }
+
+    // &__container {
+    //     max-width: size(311);
+    //     left: 0;
+    //     top: 0;
+    //     background-color: var(--mc-black);
+    //     opacity: .7;
+    //     width: 100%;
+    //     height: 100%;
+    //     z-index: 101 !important;
+
+    //     &--content {
+    //         position: absolute;
+    //         background-color: var(--mc-white) !important;
+    //         width: 33%;
+    //         height: 100%;
+    //         z-index: 205;
+    //     }
+    // }
 }
