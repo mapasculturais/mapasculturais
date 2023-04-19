@@ -7,7 +7,7 @@ $this->import('
     confirm-button
 ');
 ?>
-<entities type="notification" name="notification-list" :query='query' #default='{entities}'>
+<entities type="notification" name="notification-list" :query='query' #default='{entities, refresh}'>
 
     <mapas-card :class="['notification-card', styleCss]" v-for="entity in entities" :key="entity.__objectId">
         <div class="avatar">
@@ -23,7 +23,7 @@ $this->import('
 
             <div class="content__groupButtons" v-if="!entity.request">
                 <div class="col-2">
-                    <button class="button button--primary-outline" @click="ok(entity)">
+                    <button class="button button--primary-outline" @click="ok(entity); refresh();">
                         <?= i::__('Ok') ?>
                     </button>
                 </div>
@@ -31,12 +31,12 @@ $this->import('
 
             <div class="content__groupButtons" v-else-if="entity.request?.requesterUser?.id === currentUserId">
                 <div class="col-2">
-                    <button class="button button--primary-outline" @click="cancel(entity)">
+                    <button class="button button--primary-outline" @click="cancel(entity); refresh();">
                         <?= i::__('Cancelar') ?>
                     </button>
                 </div>
                 <div class="col-2">
-                    <button class="button button--primary-outline" @click="ok(entity)">
+                    <button class="button button--primary-outline" @click="ok(entity); refresh();">
                         <?= i::__('Ok') ?>
                     </button>
                 </div>
@@ -44,12 +44,12 @@ $this->import('
 
             <div class="content__groupButtons" v-else-if="entity.request?.requesterUser?.id !== currentUserId">
                 <div class="col-2">
-                    <button class="button button--primary-outline" @click="reject(entity)">
+                    <button class="button button--primary-outline" @click="reject(entity); refresh();">
                         <?= i::__('Rejeitar') ?>
                     </button>
                 </div>
                 <div class="col-2">
-                    <button class="button button--primary" @click="approve(entity)">
+                    <button class="button button--primary" @click="approve(entity); refresh();">
                         <?= i::__('Aceitar') ?>
                     </button>
                 </div>
