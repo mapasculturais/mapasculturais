@@ -60,7 +60,7 @@ $this->import('
         
         <?php $this->applyTemplateHook('p-user-details__seals', 'before'); ?>
         <div class="p-user-detail__seals">
-            <entity-seals :entity="entity.profile" title="<?= i::__('Verificações da pessoa usuária') ?>" show-name></entity-seals>
+            <entity-seals :entity="entity.profile" :editable="entity.currentUserPermissions?.createSealRelation" title="<?= i::__('Verificações da pessoa usuária') ?>" show-name></entity-seals>
         </div>
         <?php $this->applyTemplateHook('p-user-details__seals', 'after'); ?>
 
