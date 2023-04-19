@@ -16,11 +16,14 @@ $this->import('
     mapas-breadcrumb
     mc-link
     mc-summary-evaluate
+    mc-side-menu
     opportunity-evaluations-table
     opportunity-header
     opportunity-phase-header
 ')
 ?>
+<!-- <span><mc-side-menu ></mc-side-menu></span> -->
+
 <div class="main-app opportunity-evaluations">
     <mapas-breadcrumb></mapas-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity">

@@ -54,7 +54,7 @@ $this->breadcrumb = [
                                 </div>
                             </div>
                             <div class="col-12">
-                                <entity-occurrence-list :entity="entity"></entity-occurrence-list>                    
+                                <entity-occurrence-list :entity="entity"></entity-occurrence-list>
                             </div>        
                             <div class="col-12">
                                 <div v-if="entity.descricaoSonora || entity.traducaoLibras" class="acessibility">
@@ -99,7 +99,7 @@ $this->breadcrumb = [
                         <div class="grid-12">
                             <entity-terms :entity="entity" classes="col-12" taxonomy="area" title="<?php i::esc_attr_e('Areas de atuação');?>"></entity-terms>
                             <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
-                            <entity-seals :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
+                            <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                             <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
                             <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
                             <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>

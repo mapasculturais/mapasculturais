@@ -21,7 +21,6 @@ $this->import('
     mapas-breadcrumb
     mapas-card
     mapas-container
-    entity-seals
 ');
 
 $this->breadcrumb = [
@@ -118,7 +117,6 @@ $this->breadcrumb = [
             <mapas-card>
                 <template #content>
                     <div class="grid-12">
-                        <entity-seals :entity="entity" editable classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                         <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
                         <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="Tags" popover-title="<?php i::esc_attr_e('Tags')?>" editable></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>

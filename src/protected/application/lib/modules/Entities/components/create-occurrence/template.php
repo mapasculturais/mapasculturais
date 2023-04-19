@@ -17,7 +17,7 @@ $this->import('
 
                 <div v-if="!space" class="create-occurrence__section--link-space">
                     <!-- Seletor de entidades - espaços -->
-                    <select-entity type="space" openside="down-right" select="name,files.avatar,endereco,location" @select="selectSpace($event)"> <!-- @select="addAgent(groupName, $event)" :query="queries[groupName]" -->
+                    <select-entity type="space" openside="down-right" permissions="" select="name,files.avatar,endereco,location" @select="selectSpace($event)"> <!-- @select="addAgent(groupName, $event)" :query="queries[groupName]" -->
                         <template #button="{ toggle }">
                             <button class="button button--icon button--text-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Adicionar') ?> </button>
                         </template>
@@ -48,7 +48,7 @@ $this->import('
                     <div class="space-info__new">
                         <select-entity type="space" openside="down-right" @select="selectSpace($event)">
                             <template #button="{ toggle }">
-                                <button class="button button--icon button--primary-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Selecionar outro espaço') ?> </button>
+                                <button class="button button--icon button--primary-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Alterar espaço selecionado') ?> </button>
                             </template>
                         </select-entity>  
                     </div>
