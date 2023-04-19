@@ -54,7 +54,8 @@ $this->breadcrumb = [
                                 </div>
                             </div>
                             <div class="col-12">
-                                <entity-occurrence-list :entity="entity"></entity-occurrence-list>                    
+                                <entity-occurrence-list :entity="entity"></entity-occurrence-list>
+                                <mc-link class="button button--primary" route="search/spaces">Ver espaços</mc-link>
                             </div>        
                             <div class="col-12">
                                 <div v-if="entity.descricaoSonora || entity.traducaoLibras" class="acessibility">
