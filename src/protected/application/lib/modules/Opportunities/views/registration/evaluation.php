@@ -11,14 +11,12 @@ $this->import('
     mc-icon
     opportunity-header
     registration-evaluation-actions
+    registration-evaluation-summary
     registration-related-agents
     registration-related-space
     registration-related-project
     registration-steps
     select-entity
-    mc-side-menu 
-    mc-summary-evaluate
-    v1-embed-tool
 ');
 
 $opportunity = $entity->opportunity;
@@ -40,11 +38,7 @@ $this->breadcrumb = $breadcrumb;
     <mapas-breadcrumb></mapas-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity">
         <template #footer>
-            <mc-summary-evaluate>
-                <mc-side-menu :is-open="open" @toggle="toggle" text-button="Lista de avaliações">
-                    <v1-embed-tool></v1-embed-tool>
-                </mc-side-menu>
-            </mc-summary-evaluate>
+            <registration-evaluation-summary :entity="entity.opportunity"></registration-evaluation-summary>
         </template>
     </opportunity-header>
     <div class="registration__content">
