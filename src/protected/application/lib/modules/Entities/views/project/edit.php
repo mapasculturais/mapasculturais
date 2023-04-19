@@ -63,6 +63,7 @@ $this->breadcrumb = [
                 </div>
                 <div class="divider"></div>
                 <div class="right">
+                    <entity-parent-edit :entity="entity" classes="col-12" type="project" label="<?php i::esc_attr_e('Adicionar Supra Projeto')?>"></entity-parent-edit') ?>">
                     <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
                 </div>
             </template>
@@ -79,66 +80,6 @@ $this->breadcrumb = [
                     </div>
                 </template>
             </mapas-card>
-            <!-- <mapas-card>
-                 <template #title>
-                    <label><?php i::_e("Adicione atividades para o seu projeto"); ?></label>
-                    <p><?php i::_e("Crie um projeto com informações básicas e de forma rápida."); ?></p>
-                </template>
-                <template #content>
-                    <div class="grid-12">
-                        <div class="col-12">
-                            <create-project editable></create-project>
-                        </div>
-                        <div class="col-12">
-                            <entity-activity-card :entity="entity" editable></entity-activity-card>
-                        </div>
-                    </div>
-                </template> 
-            </mapas-card> -->
-            <!-- <mapas-card>
-                <template #title>
-                    <label><?php i::_e("Adicione um projeto que integrará este**"); ?></label>
-                    <p><?php i::_e("Selecione um projeto para que o seu projeto atual seja vinculado como integrante"); ?></p>
-                </template>
-                <template #content>
-
-                </template>
-            </mapas-card> -->
-            <!-- <mapas-card>
-                <template #title>
-                    <label><?php i::_e("Adicione um subprojeto"); ?></label>
-                    <p><?php i::_e("Adicione um projeto que será vinculado a este"); ?></p>
-                </template>
-                <template #content>
-
-                </template>
-            </mapas-card> -->
-            <!-- <mapas-card>
-                <template #title>
-                    <label><?php i::_e("Vincule um evento ao seu projeto"); ?></label>
-                </template>
-                <template #content>
-                    <link-project :entity="entity"></link-project>
-                </template>
-            </mapas-card> -->
-            <!-- <mapas-card>
-                <template  #title>
-                    <label><?php i::_e("Contatos do projeto"); ?></label>
-                    <div class="grid-12">
-                        <entity-field :entity="entity" classes="col-12" prop="emailPrivado"></entity-field>
-                        <entity-field :entity="entity" classes="col-12" prop="telefonePublico"></entity-field>
-                        <entity-field :entity="entity" classes="col-12" prop="emailPublico"></entity-field>
-                        <entity-field :entity="entity" classes="col-12" prop="telefone1"></entity-field>
-                        <entity-field :entity="entity" classes="col-12" prop="telefone2"></entity-field>
-                        <div class="col-12 divider"></div>
-                    </div>
-                   
-
-                </template>
-                <template #content>
-
-                </template>
-            </mapas-card> -->
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Contatos do projeto"); ?></label>
@@ -179,7 +120,6 @@ $this->breadcrumb = [
                         <entity-terms :entity="entity" editable classes="col-12" taxonomy="tag" title="<?php i::_e('Tags') ?>" ></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                         <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por') ?>" editable></entity-owner>
-                        <entity-parent-edit :entity="entity" classes="col-12" type="project" label="<?php i::esc_attr_e('Adicionar Supra Projeto')?>"></entity-parent-edit') ?>">
                     </div>
                 </template>
             </mapas-card>
