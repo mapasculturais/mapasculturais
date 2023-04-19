@@ -40,7 +40,7 @@ $this->import('
                             <div class="header__title">
                                 <mc-icon name="pin"></mc-icon>
                                 <span class="title">
-                                    {{occurrence.space?.name}}
+                                    <mc-link :entity="occurrence.space">{{occurrence.space?.name}}</mc-link>
                                 </span>
                             </div>
                             <span v-if="occurrence.space?.endereco" @click="toggleMap($event)" class="header__link button--icon">
