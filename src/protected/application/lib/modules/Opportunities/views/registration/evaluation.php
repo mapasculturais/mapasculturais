@@ -9,7 +9,10 @@ $this->import('
     mapas-card
     mapas-container
     mc-icon
+    mc-side-menu
     opportunity-header
+    mc-summary-evaluate
+    v1-embed-tool 
     registration-evaluation-actions
     registration-evaluation-summary
     registration-related-agents
@@ -38,7 +41,11 @@ $this->breadcrumb = $breadcrumb;
     <mapas-breadcrumb></mapas-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity">
         <template #footer>
-            <registration-evaluation-summary :entity="entity.opportunity"></registration-evaluation-summary>
+            <mc-summary-evaluate>
+                <mc-side-menu  text-button="<?= i::__("Lista de avaliações") ?>">
+                    <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
+                </mc-side-menu>
+            </mc-summary-evaluate>
         </template>
     </opportunity-header>
     <div class="registration__content">
