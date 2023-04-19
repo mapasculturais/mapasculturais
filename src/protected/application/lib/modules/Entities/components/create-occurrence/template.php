@@ -48,7 +48,7 @@ $this->import('
                     <div class="space-info__new">
                         <select-entity type="space" openside="down-right" @select="selectSpace($event)">
                             <template #button="{ toggle }">
-                                <button class="button button--icon button--primary-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Selecionar outro espaço') ?> </button>
+                                <button class="button button--icon button--primary-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Alterar espaço selecionado') ?> </button>
                             </template>
                         </select-entity>  
                     </div>
