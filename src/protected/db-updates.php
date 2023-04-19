@@ -1874,4 +1874,31 @@ $$
         __exec("ALTER TABLE registration_field_configuration ADD conditional_value VARCHAR(255) DEFAULT NULL;");
    
     },
+    "Atualiza condicionais dos campos para atender nova estrutura" => function () use ($conn, $app) {
+        if ($rfc = $conn->fetchAll("SELECT * from registration_field_configuration WHERE config LIKE '%condition%'")) {
+            foreach ($rfc as $values) {
+                $config = unserialize($values['config']);
+                $field = $config['require']['field'] ?? false;
+                $value = $config['require']['value'] ?? false;
+                if ($field && $value) {
+                   
+                    $em = $app->repo('RegistrationFieldConfiguration')->find($values['id']);
+                    $em->conditional = true;
+                    $em->conditionalField = $config['require']['field'];
+                    $em->conditionalValue = $config['require']['value'];
+
+                    unset($config['require']['field']);
+                    unset($config['require']['value']);
+                    unset($config['require']['condition']);
+
+                    $em->config = $config;
+                    
+                    $em->save(true);
+
+                    $app->log->debug("Campo {$values['id']} da oportunidade {$em->owner->id} Redefinido");
+                    $app->em->clear();
+                }
+            }
+        }
+    }
 ] + $updates ;
