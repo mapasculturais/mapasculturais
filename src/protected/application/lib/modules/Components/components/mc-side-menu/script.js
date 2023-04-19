@@ -3,10 +3,6 @@ app.component('mc-side-menu', {
     emits: ['toggle'],
 
     props: {
-        isOpen: {
-            type: Boolean,
-            required: true
-        },
         textButton: {
             type: String,
             default: 'Button'
@@ -27,7 +23,7 @@ app.component('mc-side-menu', {
 
     data() {
         return {
-
+            isOpen: false,
         }
     },
     
@@ -37,6 +33,9 @@ app.component('mc-side-menu', {
         },
         stopPropagation (event) {
             event.stopPropagation();
-        }
+        },
+        toggleMenu () {
+            this.isOpen= this.isOpen ? false : true; 
+        },
     },
 });
