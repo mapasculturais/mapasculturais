@@ -70,7 +70,7 @@ $this->breadcrumb = [
                     <aside>
                         <div class="grid-12">
                             <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
-                            <entity-seals :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
+                            <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
                             <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
                             <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
                             <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></share-links>

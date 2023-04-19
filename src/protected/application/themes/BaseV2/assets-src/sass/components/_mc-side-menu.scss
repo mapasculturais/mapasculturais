@@ -1,45 +1,62 @@
 @use '../settings/mixins' as *;
 
 .mc-side-menu {
-  position: relative;
-  width: 270px;
-
-
-  &__button {
-    color: var(--mc-primary-500);
-    font-weight: 500;
-    text-decoration: none;
-    display: flex;
-    max-width: 270px;
-    border-radius: 4px;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid var(--mc-gray-100);
-    padding: size(12);
-    height: 100%;
-
-    &--icon {
-      width: size(64);
-      text-align: right;
-    }
-  }
-
-  &__container {
+  .side-button {
     position: fixed;
-    left: 0;
-    top: 0;
-    //background-color: var(--mc-black);
-    background-color: rgba(0, 0, 0, 0.7);
-    width: 100%;
-    height: 100%;
-    z-index: 101 !important;
+    z-index: 100;
+    left: size(16);
+    top: size(458);
+    max-width: 100%;
+    background-color: var(--mc-white);
+    border-radius: 0.25rem;
+    display: flex;
+    padding: size(16);
+    text-decoration: none;
+    height: 4rem;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
 
-    &--content {
-      position: absolute;
-      background-color: rgba(255,255,255, 1) !important;
-      width: 33%;
-      height: 100%;
-      z-index: 102 !important;
+    &__content {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: size(15);
+      &--text {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 700;
+        font-size: size(14);
+        line-height: size(19);
+        color: var(--mc-primary-500);
+      }
+
+      &--icon {
+        .iconify {
+          font-size: size(14);
+          color: var(--mc-primary-500);
+
+        }
+
+      }
     }
   }
+
+  // &__container {
+
+  //   left: 0;
+  //   top: 0;
+  //   //background-color: var(--mc-black);
+  //   background-color: rgba(0, 0, 0, 0.7);
+  //   width: 100%;
+  //   height: 100%;
+  //   z-index: 101 !important;
+
+  //   &--content {
+  //     position: absolute;
+  //     background-color: rgba(255, 255, 255, 1) !important;
+  //     width: 33%;
+  //     height: 100%;
+  //     z-index: 102 !important;
+  //   }
 }

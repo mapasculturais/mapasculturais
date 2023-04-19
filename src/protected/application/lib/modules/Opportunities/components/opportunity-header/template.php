@@ -23,7 +23,7 @@ use MapasCulturais\i;
                 </span>
                 <div class="title__info">
                     <div class="data">
-                        <div class="data__title"> <?= i::__('Tipo') ?>: </div>
+                        <div class="data__title"> <?= i::__('Tipo')?>: </div>
                         <div class="data__info opportunity__color"> {{opportunity?.type?.name}} </div>
                     </div>
                     <div v-if="opportunity.ownerEntity?.name" class="data">
