@@ -39,42 +39,54 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $app->hook("entity(Opportunity).publish:after", function() use ($app){
+        /**
+         * Na publicação da oportunidade cria efetua o salvamento para de todas as fases
+         * para que dessa maneira os jobs sejam criados.
+         * 
+         * @todo pensar uma maneira de ativas os jobs sem necessidade de salvar as fases
+         */
+        $app->hook("entity(Opportunity).<<(un)?publish|(un)?archive|(un)?delete|destroy>>:after", function() use ($app){
             /** @var Opportunity $this */
 
             foreach($this->allPhases as $phase) {
-                $phase->save();
+                $phase->scheduleJobs();
 
                 if($phase->evaluationMethodConfiguration) {
-                    $phase->evaluationMethodConfiguration->save();
+                    $phase->evaluationMethodConfiguration->scheduleJobs();
                 }
             }
         });
 
         $app->hook("entity(Opportunity).save:finish", function() use ($app){
-            /** @var Opportunity $this */            
+            /** @var Opportunity $this */
+            $this->scheduleJobs();
+        });
+
+        $app->hook("Entities\\Opportunity::scheduleJobs", function() use ($app){
+            /** @var Opportunity $this */
             $data = ['opportunity' => $this];
 
             // verifica se a oportunidade e a fase estão públicas
             $active = in_array($this->status, [-1, Opportunity::STATUS_ENABLED]) && $this->firstPhase->status === Opportunity::STATUS_ENABLED;
 
+            $now = new \DateTime;
+
             // Executa Job no momento da publicação automática dos resultados da fase
-            if($active && $this->autoPublish){
+            if($active && $this->autoPublish && $this->publishTimestamp && $this->publishTimestamp >= $now){
                 $app->enqueueOrReplaceJob(Jobs\PublishResult::SLUG, $data, $this->publishTimestamp->format("Y-m-d H:i:s"));
             } else {
                 $app->unqueueJob(Jobs\PublishResult::SLUG, $data);
             }
 
             // Executa Job no início da fase de coleta de dados
-            if ($active && $this->registrationFrom) {
+            if ($active && $this->registrationFrom && $this->registrationFrom >= $now) {
                 $app->enqueueOrReplaceJob(Jobs\StartDataCollectionPhase::SLUG, $data, $this->registrationFrom->format("Y-m-d H:i:s"));
             } else {
                 $app->unqueueJob(Jobs\StartDataCollectionPhase::SLUG, $data);
-
             }
 
             // Executa Job no final da fase de coleta de dados
-            if ($active && $this->registrationTo) {
+            if ($active && $this->registrationTo && $this->registrationTo >= $now) {
                 $app->enqueueOrReplaceJob(Jobs\FinishDataCollectionPhase::SLUG, $data, $this->registrationTo->format("Y-m-d H:i:s"));
             } else {
                 $app->unqueueJob(Jobs\FinishDataCollectionPhase::SLUG, $data);
@@ -82,7 +94,12 @@ class Module extends \MapasCulturais\Module{
         });
 
         
-        $app->hook("entity(EvaluationMethodConfiguration).save:finish ", function() use ($app){
+        $app->hook("entity(EvaluationMethodConfiguration).save:finish", function() use ($app){
+            /** @var EvaluationMethodConfiguration $this */
+            $this->scheduleJobs();
+        });
+
+        $app->hook("Entities\EvaluationMethodConfiguration::scheduleJobs", function() use ($app){
             /** @var EvaluationMethodConfiguration $this */
             $data = [
                 'opportunity' => $this->opportunity,
@@ -91,16 +108,17 @@ class Module extends \MapasCulturais\Module{
 
             $active = in_array($this->opportunity->status, [-1, Opportunity::STATUS_ENABLED]) && $this->opportunity->firstPhase->status === Opportunity::STATUS_ENABLED;
 
+            $now = new \DateTime;
+
             // Executa Job no início de fase de avaliação
-            if ($active && $this->evaluationFrom) {
+            if ($active && $this->evaluationFrom && $this->evaluationFrom >= $now) {
                 $app->enqueueOrReplaceJob(Jobs\StartEvaluationPhase::SLUG, $data, $this->evaluationFrom->format("Y-m-d H:i:s"));
             }else {
                 $app->unqueueJob(Jobs\StartEvaluationPhase::SLUG, $data);
-
             }
 
             // Executa Job no início de fase de avaliação
-            if ($active && $this->evaluationTo) {
+            if ($active && $this->evaluationTo && $this->evaluationTo >= $now) {
                 $app->enqueueOrReplaceJob(Jobs\FinishEvaluationPhase::SLUG, $data, $this->evaluationTo->format("Y-m-d H:i:s"));
             }else {
                 $app->unqueueJob(Jobs\FinishEvaluationPhase::SLUG, $data);
