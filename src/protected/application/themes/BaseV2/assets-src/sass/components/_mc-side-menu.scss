@@ -2,12 +2,19 @@
 
 .mc-side-menu {
     max-width: size(125);
+    max-width: size(125);
     display: flex;
     flex-direction: column;
     box-shadow: 2px 3px 4px -1px rgb(0 0 0 / 16%);
     border-radius: 0px 4px 4px 0px;
 
+    box-shadow: 2px 3px 4px -1px rgb(0 0 0 / 16%);
+    border-radius: 0px 4px 4px 0px;
+
     &__button {
+        border: 1px solid var(--mc-gray-100);
+        padding: size(13) size(18);
+        width: size(125);
         border: 1px solid var(--mc-gray-100);
         padding: size(13) size(18);
         width: size(125);
@@ -16,6 +23,7 @@
         align-items: center;
         gap: size(15);
         background-color: var(--mc-white);
+
 
         .label {
             font-family: 'Open Sans';
@@ -41,17 +49,31 @@
         border-top: 1px solid var(--mc-low-300);
     }
 
+
+    &__container {
+        background-color: var(--mc-white);
+        border-top: 1px solid var(--mc-low-300);
+    }
+
     &.isOpen {
         position: absolute;
         z-index: 2;
         width: 100%;
         max-width: size(311);
 
+        z-index: 2;
+        width: 100%;
+        max-width: size(311);
+
         .mc-side-menu__button {
+            border: none;
             border: none;
             padding: size(23) size(17);
             width: 100%;
+            width: 100%;
             justify-content: space-between;
+
+            .label {
 
             .label {
                 width: unset;
