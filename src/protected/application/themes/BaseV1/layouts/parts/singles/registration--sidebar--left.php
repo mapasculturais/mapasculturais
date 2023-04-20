@@ -7,8 +7,10 @@ use MapasCulturais\i;
         <div ng-controller="RegistrationListController" id="registrations-list-container">
             <h4><?php i::_e('Inscrições'); ?></h4>
 
-            <div><label><input type="checkbox" ng-model="data.pending" /> <?php i::_e('Somente avaliações pendentes'); ?></label></div>
-            <input ng-model="data.keyword" ng-model-options="{ debounce: 333 }" id="registrations-list--filter" placeholder="<?php i::_e('Filtre pelo nome do agente'); ?>" />
+            <div class="registration-list-filter">
+                <div><label class="checkbox"><input type="checkbox" ng-model="data.pending" /> <?php i::_e('Somente avaliações pendentes'); ?></label></div>
+                <input type="text" ng-model="data.keyword" ng-model-options="{ debounce: 333 }" id="registrations-list--filter" placeholder="<?php i::_e('Filtre pelo nome do agente'); ?>" />
+            </div>
 
             <div class="registrations-list" id="container" >
                 <ul infinite-scroll='loadMore()' infinite-scroll-distance='2' infinite-scroll-parent='true' infinite-scroll-container="'#container'">
