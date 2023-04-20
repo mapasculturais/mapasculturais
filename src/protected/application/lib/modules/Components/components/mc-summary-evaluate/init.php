@@ -1,10 +1,17 @@
 <?php
 
-$entity = $this->controller->requestedEntity;
+$requestedEntity = $this->controller->requestedEntity;
 
 $data['isActive'] = false;
 
-if($entity instanceof MapasCulturais\Entities\EvaluationMethodConfiguration){
+if($requestedEntity instanceof MapasCulturais\Entities\EvaluationMethodConfiguration){
+    $entity = $requestedEntity;
+}else if($requestedEntity instanceof MapasCulturais\Entities\Opportunity){
+    $entity = $requestedEntity->opportunity->EvaluationMethodConfiguration;
+}else if($requestedEntity instanceof MapasCulturais\Entities\Registration){
+    $entity = $requestedEntity->EvaluationMethodConfiguration;
+}
+
     $conn = $app->em->getConnection();
 
     $complement = function($collun) use ($app){
@@ -32,8 +39,6 @@ if($entity instanceof MapasCulturais\Entities\EvaluationMethodConfiguration){
     $started = $conn->fetchAssoc("SELECT DISTINCT count(e.registration_id) as qtd FROM registration_evaluation e WHERE e.status = 0 and e.registration_id IN (select r.id from registration r where r.opportunity_id = {$entity->opportunity->id}) {$complement('user_id')}");
     $data['started'] = $started['qtd'];
     $data['isActive'] =  true;
-
-}
 
 $this->jsObject['config']['summaryEvaluate'] = $data;
 
