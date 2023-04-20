@@ -1,5 +1,93 @@
 @use '../settings/mixins' as *;
 
+/* popover do agente */
+.agent-popover {
+    .popover__content {
+        padding: 0;
+    }
+    
+    .view-card {
+        .mapas-card__content {
+            flex-direction: column;
+            gap: size(18);
+        }
+
+        &__close {
+            position: absolute;
+            right: size(21);
+            top: size(21);
+        }
+
+        &__header {
+            display: grid;
+            grid-template-columns: size(48) 1fr;
+            align-items: center;
+            gap: size(12);
+
+            .image {
+                align-items: center;
+                background-color: var(--mc-gray-300);
+                border-radius: var(--mc-border-radius-pill);
+                display: flex;
+                height: size(48);
+                justify-content: center;
+                overflow: hidden;
+                width: size(48);
+
+                img {
+                    width: 100%;
+                }
+
+                .iconify {
+                    font-size: size(22);
+                }
+            }
+
+            .name {
+                font-weight: 700;
+                font-size: size(18);
+                line-height: size(25);
+            }
+        }
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            gap: size(8);
+
+            .type {
+                font-weight: 600;
+                font-size: size(14);
+                line-height: size(19);
+
+                .actualType {
+                    text-transform: uppercase;
+                }
+            }
+
+            .tags {
+                display: flex;
+                flex-direction: column;
+                gap: size(4);
+
+                &__label {
+                    color: var(--mc-gray-700);
+                    font-weight: 600;
+                    font-size: size(12);
+                    line-height: size(16);
+                    text-transform: uppercase;
+                }
+
+                &__tagsList {
+                    font-weight: 700;
+                    font-size: size(12);
+                    line-height: size(16);
+                }
+            }
+        }
+    }
+}
+
 .entity-related-agents {
     display: flex;
     flex-direction: column;
@@ -50,6 +138,7 @@
             gap: size(16);
 
             .agent {
+                cursor: pointer;
                 display: flex;
                 height: size(40);
                 position: relative;
