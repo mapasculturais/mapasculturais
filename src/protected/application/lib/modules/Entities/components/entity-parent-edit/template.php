@@ -1,5 +1,7 @@
 <?php
+
 use MapasCulturais\i;
+
 $this->import('
 mc-icon
 select-entity
@@ -15,26 +17,27 @@ select-entity
             </div>
         </div>
         <div class="entity-parent-edit__parent--name">
-        <?php i::_e('{{entity.parent.name}}') ?>
+            <?php i::_e('{{entity.parent.name}}') ?>
         </div>
     </a>
-    <div class="entity-parent-edit__edit">        
-        <select-entity :type="type" @select="changeParent($event)" :query="{id: `!EQ(${entity.id})`}" openside="right-down">            
+    <div class="entity-parent-edit__edit">
+        <select-entity :type="type" @select="changeParent($event)" :query="{id: `!EQ(${entity.id})`}" openside="right-down">
             <template #button="{ toggle }">
-                <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
+                <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()">
                     <mc-icon name="exchange"></mc-icon>
-                    <h4><?php i::_e("{{label}}") ?></h4>    
+                    <h4><?php i::_e( "Trocar supra projeto") ?></h4>
                 </a>
             </template>
         </select-entity>
     </div>
 </div>
 <div v-if="!parent" class="col-12 entity-parent-edit__edit">
-    <select-entity :type="type" @select="changeParent($event)" :query="{id: `!EQ(${entity.id})`}" openside="right-down">            
+    <select-entity :type="type" @select="changeParent($event)" :query="{id: `!EQ(${entity.id})`}" openside="right-down">
         <template #button="{ toggle }">
-        <p class="text"><?php i::_e("Selecione um projeto para que o seu projeto atual seja vinculado como integrante")?></p>
-            <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
-                <button class="button button--primary-outline  button--icon">{{label}}<mc-icon name="plus"></mc-icon></button>
+            <h4 class="title"><?php i::_e("{{label}}")?></h4>
+            <span class="text"><?php i::_e("Selecione um projeto para que o seu projeto atual seja vinculado como integrante") ?></span>
+            <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()">
+                <button class="add-button button button--primary-outline  button--icon "><mc-icon class="teste" name="add"></mc-icon><?php i::_e("Adicionar")?></button>
             </a>
         </template>
     </select-entity>
