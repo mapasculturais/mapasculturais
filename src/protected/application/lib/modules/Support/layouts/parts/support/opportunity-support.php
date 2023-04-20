@@ -110,6 +110,11 @@ use MapasCulturais\i;
                         <img src="<?php $this->asset('img/spinner_192.gif')?>" width="48">
                     </div>
                 </td>
+                <tr>
+                    <td colspan='{{numberOfEnabledColumns()}}' align="center" ng-if="!data.findingRegistrations">
+                        <button ng-click="findRegistrations();data.findingRegistrations = true"><?php MapasCulturais\i::_e("Carregar mais");?></button>
+                    </td>
+                </tr>
             </tr>
         </tfoot>
     </table>
