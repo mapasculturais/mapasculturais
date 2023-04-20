@@ -1,8 +1,9 @@
 <?php
-
 use MapasCulturais\i;
-
-$this->import('select-entity');
+$this->import('
+mc-icon
+select-entity
+');
 ?>
 <div v-if="parent" :class="['entity-parents-edit' ,classes]">
     <h4 class="entity-parentss-edit__title">{{entity.name}} {{title}}</h4>
@@ -28,11 +29,12 @@ $this->import('select-entity');
         </select-entity>
     </div>
 </div>
-<div v-if="!parent" class="col-12">
+<div v-if="!parent" class="col-12 entity-parent-edit__edit">
     <select-entity :type="type" @select="changeParent($event)" :query="{id: `!EQ(${entity.id})`}" openside="right-down">            
         <template #button="{ toggle }">
+        <p class="text"><?php i::_e("Selecione um projeto para que o seu projeto atual seja vinculado como integrante")?></p>
             <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
-                <button class="button button--primary-outline  button--icon">{{label}}</button>
+                <button class="button button--primary-outline  button--icon">{{label}}<mc-icon name="plus"></mc-icon></button>
             </a>
         </template>
     </select-entity>
