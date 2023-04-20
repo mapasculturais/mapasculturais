@@ -30,7 +30,7 @@ $this->import('v1-embed-tool')
             <p><?= i::__("Formulário de") ?> <strong><?= i::__("avaliação simplificada") ?></strong></p>
         </div>
 
-        <v1-embed-tool route="evaluation" :id="registration.id"></v1-embed-tool>
+        <v1-embed-tool route="evaluationforms" :id="registration.id"></v1-embed-tool>
 
     </div>
 
