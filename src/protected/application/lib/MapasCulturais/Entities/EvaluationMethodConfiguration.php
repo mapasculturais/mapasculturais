@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  * EvaluationMethodConfiguration
  *
  * @property \MapasCulturais\Entities\Opportunity $opportunity Opportunity
+ * @property \DateTime $evaluationFrom
+ * @property \DateTime $evaluationTo
  * 
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
  * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
