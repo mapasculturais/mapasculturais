@@ -19,8 +19,7 @@ $this->import('
               <?= i::__("Configurar formulário") ?>
             </mc-link>
         </div>
-
-        <template v-if="!!phase.evaluationMethodConfiguration">
+        <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div  class="config-phase__line col-12 "></div>
             <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
         </template>

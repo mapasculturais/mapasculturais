@@ -48,7 +48,7 @@ $this->import('
             </template>
 
             <template v-else>
-                <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12" :min="getMinDate?._date" :max="getMaxDate?._date" classes="col-4 sm:col-12"></entity-field>
+                <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="300" :min="getMinDate?._date" :max="getMaxDate?._date" classes="col-4 sm:col-12"></entity-field>
                 <div class="col-4" v-else-if="hideDatepicker && !!phase.publishTimestamp">
                     <h5 v-if="!!phase.publishTimestamp">{{ msgPublishDate }}</h5>
                 </div>
