@@ -5,6 +5,22 @@
     .popover__content {
         padding: 0;
     }
+    
+    .modal__header {
+        display: none;
+    }
+    .modal__content {
+        margin: 0;
+        padding: 0;
+    }
+    .modal-content {
+        max-height: unset;
+        height: unset;
+        padding: 0;
+    }
+    .modal__action {
+        display: none;
+    }
 
     .view-card {
         padding: size(15) size(16) size(19);
@@ -18,6 +34,10 @@
             position: absolute;
             right: size(21);
             top: size(21);
+
+            .iconify {
+                font-size: size(23);
+            }
         }
 
         &__header {
