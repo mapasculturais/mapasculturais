@@ -864,6 +864,8 @@ class Module extends \MapasCulturais\Module{
 
         $target_opportunity ->checkPermission('@control');
 
+        $status = $target_opportunity->isLastPhase ? 'r1.status > 0' : 'r1.status = 10';
+
         $dql = "
             SELECT
                 r1.id
@@ -871,7 +873,7 @@ class Module extends \MapasCulturais\Module{
                 MapasCulturais\Entities\Registration r1
             WHERE
                 r1.opportunity = :previous_opportunity AND
-                r1.status = 10 AND
+                {$status} AND
                 r1.number NOT IN (
                     SELECT
                         r2.number
@@ -914,17 +916,29 @@ class Module extends \MapasCulturais\Module{
             $reg->__skipQueuingPCacheRecreation = true;
             $reg->owner = $agent_repo->find($r->owner->id);
             $reg->opportunity = $opp_repo->find($target_opportunity->id);
-            $reg->status = Registration::STATUS_DRAFT;
+            $reg->category = $r->category;
             $reg->number = $r->number;
 
             $reg->previousPhaseRegistrationId = $r->id;
-            $reg->category = $r->category;
-
             $reg->save(true);
 
-            if(!$as_draft){
+            if($target_opportunity->isLastPhase) {
+                $methods = [
+                    Registration::STATUS_DRAFT => 'setStatusToDraft',
+                    Registration::STATUS_SENT => 'setStatusToSent',
+                    Registration::STATUS_APPROVED => 'setStatusToApproved',
+                    Registration::STATUS_NOTAPPROVED => 'setStatusToNotApproved',
+                    Registration::STATUS_WAITLIST => 'setStatusToWaitlist',
+                    Registration::STATUS_INVALID => 'setStatusToInvalid',
+                ];
+
+                $method = $methods[$r->status];
+                $reg->consolidatedResult = $r->consolidatedResult;
+                $reg->$method();
+            } else if(!$as_draft){
                 $reg->send();
             }
+
             $r->__skipQueuingPCacheRecreation = true;
             $r->nextPhaseRegistrationId = $reg->id;
 
