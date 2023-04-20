@@ -95,6 +95,14 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         }
     }
 
+    public Function GET_sopportlist()
+    {
+        $app = App::i();
+
+        $entity = $this->getEntityAndCheckPermission('@control');
+        $this->render("registration-support",['entity' => $entity]);
+    }
+
     public function GET_sidebarleftevaluations()
     {
         $this->entityClassName = "MapasCulturais\\Entities\\Registration";
