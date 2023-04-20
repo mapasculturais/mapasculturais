@@ -2023,5 +2023,13 @@ $$
     },
     'altera tipo da coluna description na tabela file' => function() use ($conn, $app){
         $conn->executeQuery("ALTER TABLE file ALTER COLUMN description TYPE text;");
-    }
+    },
+    "faz com que o updateTimestamp seja igual ao createTimestamp na criacão da entidade" => function() use ($conn){
+        __exec("UPDATE agent SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
+        __exec("UPDATE space SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
+        __exec("UPDATE project SET update_timestamp = create_timestamp WHERE update_timestamp IS null");
+        __exec("UPDATE opportunity SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
+        __exec("UPDATE EVENT SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
+        return false;
+    },
 ] + $updates ;
