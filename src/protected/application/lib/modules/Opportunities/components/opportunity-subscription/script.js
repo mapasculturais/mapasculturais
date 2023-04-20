@@ -29,8 +29,8 @@ app.component('opportunity-subscription' , {
         if ($MAPAS.config.opportunitySubscription.agents.length == 1) {
             agent = $MAPAS.config.opportunitySubscription.agents[0];
         }
-
-        const categories = Object.keys(this.entity.registrationCategories).length > 0 ? this.entity.registrationCategories : null;
+        const registrationCategories = this.entity.registrationCategories || {};
+        const categories = Object.keys(registrationCategories).length > 0 ? registrationCategories : null;
 
         return {
             agent,
