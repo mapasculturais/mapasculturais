@@ -306,25 +306,35 @@ ol.mc-stepper-vertical li.active::before {
     }
 
     &-delete {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        gap: 8px;
 
         &__trash {
-            svg {
-                color: var(--mc-secondary-500);
-                font-size: 18px;
+            display: flex;
+            flex-direction: row;
+            max-width: 100%;
+            gap: size(4);
+            justify-content: center;
+            .icon {
+
+                // justify-content: center;
+                // align-items: baseline;
+                // margin: 0 auto;
+
+                svg {
+                    color: var(--mc-secondary-500);
+                    font-size: 18px;
+                }
+            }
+
+            .label {
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 19px;
+                color: var(--mc-black);
+                text-decoration: none;
             }
         }
 
-        &__label {
-            font-weight: 700;
-            font-size: 14px;
-            line-height: 19px;
-            color: black;
-            text-decoration: none;
-        }
+
     }
 }
 
