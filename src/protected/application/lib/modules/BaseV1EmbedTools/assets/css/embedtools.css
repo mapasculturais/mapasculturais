@@ -1346,3 +1346,55 @@ body {
     line-height: 19px;
     color: #000000;
 }
+
+
+/* sidebarleftevaluations */
+.action-sidebarleftevaluations {
+ 
+}
+.action-sidebarleftevaluations .sidebar-left {
+    padding: 0;
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container {
+    position: relative;
+    margin: unset;
+    width: unset;
+    display: block;
+
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container h4{
+    display: none;
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container .registration-list-filter {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 1rem 1.813rem;
+    gap: 1.063rem;
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container .registration-list-filter input[type="text"]{
+    margin: 0;
+    padding: 0.75rem 1.875rem 0.75rem 1.25rem;
+    border-radius: 4rem;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.188rem;
+    height: unset;
+    width: 100% !important;
+    background: url('https://api.iconify.design/ant-design/search-outlined.svg') no-repeat calc(100% - 11px) center  / 16px;
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container .registration-list-filter .checkbox{
+    font-size: 0.95rem;
+    line-height: 1.375rem !important;
+    display: flex;
+    gap: 0.688rem;
+    align-items: center;
+    font-family: "Open Sans";
+    font-style: normal;
+
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container .registration-list-filter .checkbox input[type="checkbox"]{
+    width: 1.125rem;
+    height: 1.125rem;
+}
