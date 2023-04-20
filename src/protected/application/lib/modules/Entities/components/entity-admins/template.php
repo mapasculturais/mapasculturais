@@ -1,7 +1,11 @@
 <?php
 use MapasCulturais\i;
 
-$this->import('select-entity confirm-button');
+$this->import('
+    select-entity
+    confirm-button
+    mapas-card
+');
 ?>
 
 <?php $this->applyTemplateHook('entity-related-agents', 'before'); ?>
@@ -10,11 +14,53 @@ $this->import('select-entity confirm-button');
     <h3 v-if="group"><?php i::_e("Administrado por") ?></h3>
     <div class="entity-related-agents__group">
         <div class="entity-related-agents__group--agents">
-            <div v-for="agent in group" class="agent">
-                <a :href="agent.singleUrl" class="agent__img">
-                    <img v-if="agent.files.avatar" :src="agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
-                    <mc-icon v-if="!agent.files.avatar" name="agent"></mc-icon>
-                </a>
+            <div v-for="agent in group" class="agent"> 
+
+                <popover openside="down-right" classes="agent-popover" title="<?php i::esc_attr_e('Editar link')?>">
+                    <template #button="popover">
+                        <a class="agent__img" @click="$event.preventDefault(); popover.toggle()"> <!--  :href="agent.singleUrl" -->
+                            <img v-if="agent.files.avatar" :src="agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
+                            <mc-icon v-if="!agent.files.avatar" name="agent"></mc-icon>
+                        </a>
+                    </template>
+                    <template #default="{close}">
+                        <mapas-card class="view-card" noTitle>
+                            <div class="view-card__close" @click="close()">
+                                <mc-icon name="close"></mc-icon>
+                            </div>
+
+                            <div class="view-card__header">
+                                <div class="image">
+                                    <img v-if="agent.files.avatar" :src="agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
+                                    <mc-icon v-if="!agent.files.avatar" name="image"></mc-icon>
+                                </div>
+                                <div class="name">
+                                    {{agent.name}}
+                                </div>
+                            </div>
+
+                            <div class="view-card__content">
+                                <div class="type">
+                                    <span> <?= i::__('Este agente atua de forma') ?>  <span :class="['actualType', entity.__objectType+'__color']">{{entity.type.name}}</span> </span>
+                                </div>
+                                <div class="tags">
+                                    <div class="tags__label">
+                                        <?= i::__("Áreas de atuação") ?> ({{entity.terms.area.length}})
+                                    </div>
+                                    <div class="tags__tagsList">
+                                        {{entity.terms.area.join(', ')}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="view-card__status">
+                                <mc-icon name="exclamation"></mc-icon>
+                                <?= i::__('A solicitação para `entidade` está pendente') ?>
+                            </div>
+                        </mapas-card>
+                    </template>
+                </popover>
+
                 <div v-if="editable" class="agent__delete">
                     <!-- remover agente -->
                     <confirm-button @confirm="removeAgent(agent)">
