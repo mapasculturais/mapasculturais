@@ -144,6 +144,11 @@ use MapasCulturais\i;
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td colspan='{{numberOfEnabledColumns()}}' align="center" ng-if="!data.findingRegistrations">
+                    <button ng-click="findRegistrations();data.findingRegistrations = true"><?php MapasCulturais\i::_e("Carregar mais");?></button>
+                </td>
+            </tr>
         </tfoot>
     </table>
 
