@@ -2,7 +2,7 @@
 
 $entity = $this->controller->requestedEntity;
 
-$data = [];
+$data['isActive'] = false;
 
 if($entity instanceof MapasCulturais\Entities\EvaluationMethodConfiguration){
     $conn = $app->em->getConnection();
@@ -31,6 +31,7 @@ if($entity instanceof MapasCulturais\Entities\EvaluationMethodConfiguration){
   
     $started = $conn->fetchAssoc("SELECT DISTINCT count(e.registration_id) as qtd FROM registration_evaluation e WHERE e.status = 0 and e.registration_id IN (select r.id from registration r where r.opportunity_id = {$entity->opportunity->id}) {$complement('user_id')}");
     $data['started'] = $started['qtd'];
+    $data['isActive'] =  true;
 
 }
 

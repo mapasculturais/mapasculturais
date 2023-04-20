@@ -7,7 +7,7 @@ $this->import('
 ');
 ?>
 
-<div class="mc-summary-evaluate">
+<div class="mc-summary-evaluate" v-if="summary.isActive">
 
     <div class="mc-summary-evaluate__box pending">
         <div class="mc-summary-evaluate__box--icon">
