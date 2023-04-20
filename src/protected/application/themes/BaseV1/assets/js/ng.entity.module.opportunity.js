@@ -2136,30 +2136,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             });
         });
     }
-
-    angular.element($window).bind("scroll", function(){
-        // @TODO: refatorar este if
-        if(document.location.hash.indexOf("tab=inscritos") >= 0){
-            if(!$scope.data.findingRegistrations){
-                if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
-                    $scope.findRegistrations();
-                }
-            }
-        } else if (document.location.hash.indexOf("tab=evaluations") >= 0){
-            if(!$scope.data.findingEvaluations){
-                if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
-                    $scope.findEvaluations();
-                }
-            }
-        } else  if(document.location.hash.indexOf("tab=support") >= 0){
-            if(!$scope.data.findingRegistrations){
-                if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
-                    $scope.findRegistrations();
-                }
-            }
-        }
-    });
-
+   
     var adjustingBoxPosition = false,
     categories = MapasCulturais.entity.registrationCategories.length ? MapasCulturais.entity.registrationCategories.map(function(e){
         return { value: e, label: e };
