@@ -17,6 +17,17 @@ app.component('opportunity-phase-list-data-collection' , {
         }
     },
 
-    methods: {
+    computed: {
+        index() {
+            return this.phases.indexOf(this.entity);
+        },
+
+        previousPhase() {
+            return this.phases[this.index - 1];
+        },
+
+        nextPhase() {
+            return this.phases[this.index + 1];
+        },
     }
 });

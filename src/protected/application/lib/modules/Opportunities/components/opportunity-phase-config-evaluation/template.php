@@ -59,7 +59,7 @@ $this->import('
         </div>
 
 
-<!--        <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>-->
+       <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
     
         <div class="config-phase__line col-12"></div>
 
