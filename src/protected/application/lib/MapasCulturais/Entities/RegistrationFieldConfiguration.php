@@ -99,6 +99,27 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      */
     protected $config = [];
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="conditional", type="boolean", nullable=true)
+     */
+    protected $conditional;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="conditional_field", type="string", nullable=true)
+     */
+    protected $conditionalField;
+
+    /**
+      * @var string
+      *
+      * @ORM\Column(name="conditional_value", type="string", nullable=true)
+      */
+    protected $conditionalValue;
+
     static function getValidations() {
         $app = App::i();
         $validations = [
@@ -117,6 +138,14 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         $app->applyHook("{$prefix}::validations", [&$validations]);
 
         return $validations;
+    }
+
+    public function setConditional($value){
+        if(!$value){
+            $this->conditionalField = null;
+            $this->conditionalValue = null;
+        }
+        $this->conditional = $value;
     }
 
     public function setOwnerId($id){
@@ -171,7 +200,10 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'config' => $this->config,
         'categories' => $this->categories,
         'fieldName' => $this->getFieldName(),
-        'displayOrder' => $this->displayOrder
+        'displayOrder' => $this->displayOrder,
+        'conditional' => $this->conditional ? true : false,
+        'conditionalField' => $this->conditionalField,
+        'conditionalValue' => $this->conditionalValue
         ];
     }
 
