@@ -63,7 +63,7 @@ $this->breadcrumb = [
                 </div>
                 <div class="divider"></div>
                 <div class="right">
-                    <entity-parent-edit :entity="entity" classes="col-12" type="project" label="<?php i::esc_attr_e('Adicionar Supra Projeto')?>"></entity-parent-edit>
+                    <entity-parent-edit :entity="entity" classes="col-12" type="project" label="<?php i::esc_attr_e('Adicione a um projeto principal')?>"></entity-parent-edit>
                     <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
                 </div>
             </template>
