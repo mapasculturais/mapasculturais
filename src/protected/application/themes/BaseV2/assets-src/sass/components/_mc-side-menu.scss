@@ -1,17 +1,22 @@
 @use '../settings/mixins' as *;
 
 .mc-side-menu {
-    max-width: size(311);
+    max-width: size(125);
     display: flex;
     flex-direction: column;
-    padding: size(13) size(18);
+    box-shadow: 2px 3px 4px -1px rgb(0 0 0 / 16%);
+    border-radius: 0px 4px 4px 0px;
+
     &__button {
+        border: 1px solid var(--mc-gray-100);
+        padding: size(13) size(18);
+        width: size(125);
         display: flex;
         flex-direction: row;
         align-items: center;
         gap: size(15);
-        border: none;
         background-color: var(--mc-white);
+
         .label {
             font-family: 'Open Sans';
             font-style: normal;
@@ -30,60 +35,28 @@
             }
         }
     }
+
+    &__container {
+        background-color: var(--mc-white);
+        border-top: 1px solid var(--mc-low-300);
+    }
+
     &.isOpen {
         position: absolute;
+        z-index: 2;
+        width: 100%;
+        max-width: size(311);
+
         .mc-side-menu__button {
+            border: none;
             padding: size(23) size(17);
+            width: 100%;
             justify-content: space-between;
-        
-            .label{
+
+            .label {
                 width: unset;
             }
         }
     }
 
-    // .side-button {
-
-
-    //     // position: fixed;
-    //     // z-index: 100;
-    //     // left: size(16);
-    //     // top: size(458);
-    //     // max-width: 100%;
-    //     // background-color: var(--mc-white);
-    //     // border: none;
-    //     // border-radius: 0.25rem;
-    //     // display: flex;
-    //     // padding: size(16);
-    //     // height: 4rem;
-    //     // align-content: center;
-    //     // align-items: center;
-
-    //     &__content {
-
-
-    //         &__label {}
-
-    //         &--icon {}
-    //     }
-    // }
-
-    // &__container {
-    //     max-width: size(311);
-    //     left: 0;
-    //     top: 0;
-    //     background-color: var(--mc-black);
-    //     opacity: .7;
-    //     width: 100%;
-    //     height: 100%;
-    //     z-index: 101 !important;
-
-    //     &--content {
-    //         position: absolute;
-    //         background-color: var(--mc-white) !important;
-    //         width: 33%;
-    //         height: 100%;
-    //         z-index: 205;
-    //     }
-    // }
 }
