@@ -67,7 +67,10 @@ $this->import('
             <confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
                     <a class="phase-delete__trash" @click="modal.open()">
-                        <mc-icon name="trash"></mc-icon> <label class="phase-delete__label"><?= i::__("Excluir fase de avaliação") ?></label>
+                        <div class="icon">
+                            <mc-icon name="trash"></mc-icon> 
+                        </div>
+                        <label class="label"><?= i::__("Excluir fase de avaliação") ?></label>
                     </a>
                 </template>
             </confirm-button>
