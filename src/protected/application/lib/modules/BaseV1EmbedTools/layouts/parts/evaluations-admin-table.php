@@ -84,6 +84,20 @@
         <?php $this->applyTemplateHook('opportunity-evaluations--admin--table-tbody-tr','after'); ?>
         <?php $this->applyTemplateHook('opportunity-evaluations--admin--table-tbody','end'); ?>
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan='{{numberOfEnabledColumns()}}' align="center">
+                <div ng-if="data.findingEvaluations">
+                    <img src="<?php $this->asset('img/spinner_192.gif') ?>" width="48">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='{{numberOfEnabledColumns()}}' align="center" ng-if="!data.findingEvaluations">
+                <button ng-click="findEvaluations();data.findingEvaluations = true"><?php MapasCulturais\i::_e("Carregar mais");?></button>
+            </td>
+        </tr>
+    </tfoot>
     <?php $this->applyTemplateHook('opportunity-evaluations--admin--table-tbody','after'); ?>
 </table>
 <?php $this->applyTemplateHook('opportunity-evaluations--admin--table','end'); ?>
