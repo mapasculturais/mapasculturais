@@ -16,7 +16,7 @@ $this->import('
         <div class="entity-related-agents__group--agents">
             <div v-for="agent in group" class="agent"> 
 
-                <popover openside="down-right" classes="agent-popover" title="<?php i::esc_attr_e('Editar link')?>">
+                <popover classes="agent-popover">
                     <template #button="popover">
                         <a class="agent__img" @click="$event.preventDefault(); popover.toggle()"> <!--  :href="agent.singleUrl" -->
                             <img v-if="agent.files.avatar" :src="agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
