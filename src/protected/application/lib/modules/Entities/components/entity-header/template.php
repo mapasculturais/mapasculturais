@@ -89,7 +89,9 @@ use MapasCulturais\i;
                 <div :class="['icon', entity.__objectType+'__background']">
                     <mc-icon :entity="entity"></mc-icon>
                 </div>
-                <h2>{{titleEdit}}</h2>
+                <h2 v-if="this.entity.__objectType!='opportunity'">{{titleEdit}}</h2>
+                <h2 v-if="this.entity.__objectType=='opportunity'">{{entity.name}}</h2>
+                {{type}}
             </div>
         </div>
     </div>
