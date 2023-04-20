@@ -14,7 +14,6 @@ $this->import('
     mc-summary-evaluate
     v1-embed-tool 
     registration-evaluation-actions
-    registration-evaluation-summary
     registration-related-agents
     registration-related-space
     registration-related-project
