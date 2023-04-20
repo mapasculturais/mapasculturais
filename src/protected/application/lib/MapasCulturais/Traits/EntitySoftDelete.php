@@ -111,6 +111,8 @@ trait EntitySoftDelete{
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').destroy:before');
         
+        $this->setStatus(self::STATUS_TRASH);
+        
         parent::delete($flush);
         
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').destroy:after');
