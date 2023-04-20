@@ -570,7 +570,7 @@ class Registration extends EntityController {
       $app->pass();
     }
 
-    $entity->checkPermission('modify');
+    $entity->checkPermission('viewUserEvaluation');
 
     $this->render('evaluation', ['entity' => $entity]);
   }
