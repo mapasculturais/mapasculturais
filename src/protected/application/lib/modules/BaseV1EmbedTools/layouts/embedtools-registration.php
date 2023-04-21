@@ -38,9 +38,11 @@ $site_name = $this->dict('site: name', false);
 
 <body <?php $this->bodyProperties() ?>>
     <section id="main-section" class="clearfix">
+    <?php $this->applyTemplateHook('embedtools-article','before'); ?>
         <article class="main-content registration" ng-controller="OpportunityController">
             <article ng-controller="RegistrationFieldsController">
                 <?php echo $TEMPLATE_CONTENT; ?>
             </article>
         </article>
-        <?php $this->part('footer', $render_data); ?>
+    <?php $this->applyTemplateHook('embedtools-article','after'); ?>
+    <?php $this->part('footer', $render_data); ?>
