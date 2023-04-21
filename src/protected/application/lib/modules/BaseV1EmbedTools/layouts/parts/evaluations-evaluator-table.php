@@ -65,7 +65,7 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
         <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}">
             <?php $this->applyTemplateHook('opportunity-evaluations--committee--table-tbody-tr','begin'); ?> 
 
-            <td class="registration-id-col"><a href="{{evaluation.registration.singleUrl}}" rel='noopener noreferrer'>{{evaluation.registration.number}}</a></td>
+            <td class="registration-id-col"><a href="<?=$evaluation_url?>{{evaluation.registration.id}}" rel='noopener noreferrer' target="_top">{{evaluation.registration.number}}</a></td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{evaluation.registration.category}}</td>
             <td class="registration-agents-col">
                 <p>
