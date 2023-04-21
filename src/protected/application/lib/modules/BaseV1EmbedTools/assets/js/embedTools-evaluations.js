@@ -1,6 +1,4 @@
 $(function(){
-    var labels = MapasCulturais.gettext.evaluations;
-
     var $formContainer = $('#registration-evaluation-form');
     var $form = $formContainer.find('form');
     var $list = $('#registrations-list-container');
@@ -17,11 +15,12 @@ $(function(){
         var data = $form.serialize();
 
         if(!data){
-            MapasCulturais.Messages.success(labels.emptyForm);
+            MapasCulturais.Messages.success("Preencha todos os campos");
         }
 
         $.post(url, data, function(r){
-            MapasCulturais.Messages.success(labels.saveMessage);
+            console.log($MAPAS.config);
+            MapasCulturais.Messages.success("A avaliação foi salva");
             if($button.hasClass('js-next')){
                 // var $current = $("#registrations-list .registration-item.current");
                 var $current = $(".current");
@@ -54,9 +53,10 @@ $(function(){
         clearTimeout(__onChangeTimeout);
         __onChangeTimeout = setTimeout(function(){
             var data = $form.serialize();
-            var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': 'evaluated'});
+            var status = (MapasCulturais.evaluation && MapasCulturais.evaluation.status == 1) ? 'evaluated' : 'draft';
+            var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': status});
             $.post(url, data, function(r){
-                MapasCulturais.Messages.success(labels.saveMessage);
+                MapasCulturais.Messages.success("A avaliação foi salva");
             });
         },15000);
 
