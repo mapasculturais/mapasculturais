@@ -1,3 +1,6 @@
+<?php
+$evaluation_url = $app->createUrl('registration', 'evaluation');
+?>
 <?php $this->applyTemplateHook('opportunity-evaluations--admin--table','before'); ?>
 <header id="header-inscritos" class="clearfix">
     <?php $this->applyTemplateHook('opportunity-evaluations--admin--table','begin'); ?>
@@ -61,7 +64,7 @@
             <?php $this->applyTemplateHook('opportunity-evaluations--admin--table-tbody-tr','before'); ?>
 
             <td class="registration-id-col">
-                <a href='{{evaluation.evaluation.singleUrl || evaluation.registration.singleUrl}}' rel='noopener noreferrer'>
+                <a href='<?=$evaluation_url?>{{evaluation.registration.id}}' rel='noopener noreferrer' target="_top">
                     <strong>{{evaluation.registration.number}}</strong>
                 </a>
             </td>

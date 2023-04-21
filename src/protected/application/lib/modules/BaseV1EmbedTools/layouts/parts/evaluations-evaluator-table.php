@@ -1,3 +1,6 @@
+<?php
+$evaluation_url = $app->createUrl('registration', 'evaluation');
+?>
 <?php $this->applyTemplateHook('opportunity-evaluations--committee--table','before'); ?>
 <header id="header-inscritos" class="clearfix">
     <?php $this->applyTemplateHook('opportunity-evaluations--committee--table','begin'); ?>
