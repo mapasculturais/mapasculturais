@@ -317,7 +317,7 @@ class Module extends \MapasCulturais\Module
 
             $this->registerRegistrationMetadata();
 
-            $module->importLastPhaseRegistrations($this, $this->firstPhase->accountabilityPhase, true);
+            $module->importPreviousPhaseRegistrations($this, $this->firstPhase->accountabilityPhase, true);
         });
 
         // fecha os campos abertos pelo parecerista após o reenvio da prestação de contas

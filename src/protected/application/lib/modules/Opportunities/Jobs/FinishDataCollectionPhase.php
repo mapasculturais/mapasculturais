@@ -2,6 +2,7 @@
 namespace Opportunities\Jobs;
 
 use MapasCulturais\App;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Definitions\JobType;
 
 class FinishDataCollectionPhase extends JobType
@@ -22,17 +23,13 @@ class FinishDataCollectionPhase extends JobType
         /** @var Opportunity $next_phase */
         $next_phase = $opportunity->nextPhase;
         
-        /** @var \OpportunityPhases\Module $module */
-        $module = $app->modules['OpportunityPhases'];
-        
         /**
          * envia as inscrições para a fase de publicação dos resultados
          */
         if ($next_phase && $next_phase->isLastPhase && $opportunity->isDataCollection && !$opportunity->evaluationMethodConfiguration) {
-            $module->importLastPhaseRegistrations($opportunity, $next_phase);
+            $next_phase->syncRegistrations();
         }
 
-        echo "> $job->opportunity " . __CLASS__ . "\n\n";
         return true;
     }    
 }
