@@ -130,6 +130,15 @@ abstract class Entity implements \JsonSerializable{
         App::i()->em->refresh($this);
     }
 
+    /** 
+     * Retorna uma versão trazida do banco novamente
+     * 
+     * @return self
+     */
+    function refreshed() {
+        return $this->repo()->find($this->id);
+    }
+
     function equals($entity){
         return is_object($entity) && $entity instanceof Entity && $entity->getClassName() === $this->getClassName() && $entity->id === $this->id;
     }
