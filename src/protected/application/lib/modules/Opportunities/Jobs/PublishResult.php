@@ -20,7 +20,6 @@ class PublishResult extends JobType
         $opportunity = $job->opportunity;
         $opportunity->publishRegistrations();
         
-        echo "> $job->opportunity " . __CLASS__ . "\n\n";
         return true;
     }
 }

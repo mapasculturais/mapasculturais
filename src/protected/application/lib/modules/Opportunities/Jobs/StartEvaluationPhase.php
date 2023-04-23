@@ -2,6 +2,7 @@
 namespace Opportunities\Jobs;
 
 use MapasCulturais\App;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Definitions\JobType;
 
 class StartEvaluationPhase extends JobType
@@ -19,17 +20,13 @@ class StartEvaluationPhase extends JobType
         /** @var Opportunity $opportunity */
         $opportunity = $job->opportunity;
         
-        /** @var \OpportunityPhases\Module $module */
-        $module = $app->modules['OpportunityPhases'];
-        
         /**
          * importa as inscrições da fase anterior 
          */
         if (!$opportunity->isFirstPhase && !$opportunity->isDataCollection ) {
-            $module->importLastPhaseRegistrations($opportunity->previousPhase, $opportunity, false);
+            $opportunity->syncRegistrations();
         }
 
-        echo "> $job->opportunity " . __CLASS__ . "\n\n";
         return true;
     }
 }
