@@ -1565,7 +1565,7 @@ class Theme extends MapasCulturais\Theme {
             }
     
             if($opportunity->isOpportunityPhase){
-                $template_name = 'opportunity-phase-status';
+                $template_name = 'opportunity-phases/opportunity-phase-status';
             }
         });
     
