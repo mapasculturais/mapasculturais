@@ -178,6 +178,8 @@ class Job extends \MapasCulturais\Entity{
             $success = $job_type->execute($this);
             
         } catch(\Exception $e) {
+            $app->log->info(">>>>>>> JOB ERROR: $e");
+            
             $success = false;
         }
 
