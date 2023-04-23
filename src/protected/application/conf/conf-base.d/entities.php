@@ -31,6 +31,7 @@ return [
             '_type' => i::__('Tipo'),
             'createTimestamp' => i::__('Data de Criação'),
             'updateTimestamp' => i::__('Data de Atualização'),
+            'publishTimestamp' => i::__('Data de publicação'),
             'shortDescription' => i::__('Descrição Curta'),
             'longDescription' => i::__('Descrição Longa'),
             'certificateText' => i::__('Conteúdo da Impressão do Certificado'),
@@ -46,7 +47,11 @@ return [
             'publicLocation' => i::__('Localização pública'),
             'location' => i::__('Localização'),
             'userId' => i::__('ID usuário'),
-        )
+        ),
+
+        'MapasCulturais\Entities\Opportunity' => array(
+            'publishTimestamp' => i::__('Data de publicação dos resultados'),
+        ),
     ),
 
 ];
