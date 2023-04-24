@@ -39,7 +39,7 @@ app.component('entity-admins', {
 
         },
         group() {
-            return  this.entity.relatedAgents?.['group-admin'] || [];
+            return this.entity.agentRelations?.['group-admin'] || [];
         }
     },
 
