@@ -551,6 +551,8 @@ class Entity {
                 delete agentRelation.objectId;
                 delete agentRelation.owner;
                 delete agentRelation.ownerUserId;
+                
+                agentRelation.agent = agent;
 
                 this.agentRelations[group] = this.agentRelations[group] || [];
                 this.agentRelations[group].push(agentRelation);
