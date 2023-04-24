@@ -147,7 +147,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             do{
                 $em = $phase->getEvaluationMethod();
 
-                if($em->getSlug() == "technical"){
+                if($em && $em->getSlug() == "technical"){
                     $app->disableAccessControl();
                     $phase->consolidateResult();
                     $app->enableAccessControl();
