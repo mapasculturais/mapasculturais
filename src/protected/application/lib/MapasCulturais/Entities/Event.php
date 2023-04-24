@@ -298,12 +298,14 @@ class Event extends \MapasCulturais\Entity
     }
 
     function setProject($project) {
-        if (is_object($this->project)) {
+        if(is_numeric($project)) {
+            $this->setProjectId($project);
+        } else if (is_object($this->project)) {
             if (!$this->project->equals($project)) {
                 $this->_newProject = $project;
             }
         } else {
-            $this->_newProject = $project;
+            throw new \Exception(\MapasCulturais\i::__('Tipo inválido para o campo project'));
         }
     }
 
