@@ -505,8 +505,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.removeFieldConfiguration = function (id, $index) {
-            var labels = MapasCulturais.gettext.moduleOpportunity;
-            if(confirm(labels(['removeField']))){
+            if(confirm(labels['fieldRemoved'])){
                 fieldService.delete(id).then(function(response){
                     if(!response.error){
                         $scope.data.fields.splice($index, 1);
