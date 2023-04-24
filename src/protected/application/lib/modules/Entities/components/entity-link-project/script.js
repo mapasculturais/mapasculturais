@@ -12,9 +12,9 @@ app.component('entity-link-project', {
     },
 
     computed: {
-        parent() {
-            return this.entity.parent || null
-        }
+        project() {
+            return this.entity.project || null
+        },
     },
     
     props: {
@@ -46,9 +46,10 @@ app.component('entity-link-project', {
     },
 
     methods: {
-        changeParent(entity) {
-            this.entity.parent = entity;
-        }
+        changeProject(entity) {
+            this.entity.project = entity;
+            console.log(this.entity.project);
+        },
     }
     
 });
