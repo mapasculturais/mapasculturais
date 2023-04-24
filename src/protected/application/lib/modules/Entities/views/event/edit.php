@@ -14,6 +14,7 @@ $this->import('
         entity-gallery-video
         entity-header
         entity-links
+        entity-link-project
         entity-occurrence-list
         entity-owner
         entity-profile
@@ -63,6 +64,7 @@ $this->breadcrumb = [
                 <div class="divider"></div>
                 <div class="right">
                     <div class="grid-12">
+                        <entity-link-project :entity="entity" type="project" label="qualquercoisa"></entity-link-project>
                         <entity-field :entity="entity" classes="col-12" label="Classificação etária" prop="classificacaoEtaria"></entity-field>
                         <entity-terms :entity="entity" classes="col-12" taxonomy="linguagem" editable title="Linguagens culturais"></entity-terms>
                         <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
