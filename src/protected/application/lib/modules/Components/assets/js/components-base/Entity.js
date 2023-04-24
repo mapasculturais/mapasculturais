@@ -560,6 +560,12 @@ class Entity {
                 this.relatedAgents[group] = this.relatedAgents[group] || [];
                 this.relatedAgents[group].push(agent);
             
+            }).then(response => {
+                const messages = useMessages();
+
+                if (response.status == -5) {
+                    messages.success(this.text('solicitação enviada com sucesso'));
+                }
             });
         } catch (error) {
             this.doCatch(error);
