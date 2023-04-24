@@ -48,7 +48,7 @@ app.component('entity-link-project', {
     methods: {
         changeProject(entity) {
             this.entity.project = entity;
-            console.log(this.entity.project);
+            console.log(entity);
         },
     }
     
