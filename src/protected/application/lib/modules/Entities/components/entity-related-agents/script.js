@@ -25,8 +25,9 @@ app.component('entity-related-agents', {
     computed: {
         queries() {
             const result = {};
-            for (var [groupName, group] of Object.entries(this.entity.relatedAgents)) {
-                const ids = group.map((item) => item.id).join(',');
+            for (var [groupName, group] of Object.entries(this.entity.agentRelations)) {
+                const ids = group.map((item) => item.agent.id).join(',');
+
                 if (this.entity.__objectType === 'agent') {
                     result[groupName] = ids ? {id: `!IN(${ids}, ${this.entity.id})`} : {id: `!EQ(${this.entity.id})`};
                 } else {
@@ -38,7 +39,7 @@ app.component('entity-related-agents', {
 
         groups() {
             let groups = {};
-            for (var [groupName, group] of Object.entries(this.entity.relatedAgents)) {
+            for (var [groupName, group] of Object.entries(this.entity.agentRelations)) {
                 if (groupName == "group-admin") {
                     continue;
                 } else {
