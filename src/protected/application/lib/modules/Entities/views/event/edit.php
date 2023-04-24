@@ -64,7 +64,7 @@ $this->breadcrumb = [
                 <div class="divider"></div>
                 <div class="right">
                     <div class="grid-12">
-                        <entity-link-project :entity="entity" type="project" label="qualquercoisa"></entity-link-project>
+                            <entity-link-project :entity="entity" type="project" classes="col-12" label="<?php i::_e('Vincular a um projeto')?>"></entity-link-project>
                         <entity-field :entity="entity" classes="col-12" label="Classificação etária" prop="classificacaoEtaria"></entity-field>
                         <entity-terms :entity="entity" classes="col-12" taxonomy="linguagem" editable title="Linguagens culturais"></entity-terms>
                         <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
@@ -100,7 +100,6 @@ $this->breadcrumb = [
                     <event-info :entity="entity" editable></event-info>
                 </template>
                 <template #content>
-                    <mc-tag-list classes="event__background" editable :tags="entity.accessibility"></mc-tag-list>
                 </template>
             </mapas-card>
             <mapas-card>
