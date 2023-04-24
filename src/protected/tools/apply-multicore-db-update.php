@@ -68,6 +68,13 @@ class DB_UPDATE {
     static function loadUpdates(){
         $app = App::i();
         $updates = include __DIR__ . '/../mc-updates.php';
+
+        foreach($app->view->path as $path){
+            $db_update_file = $path . 'mc-updates.php';
+            if(file_exists($db_update_file)){
+                $updates += include $db_update_file;
+            }
+        }
         
         $executed_updates = [];
 
@@ -139,12 +146,14 @@ class DB_UPDATE {
                         try{
                             $__callback($entity);
                         } catch (\Error $e){
+                            echo "$e";
                             self::$exceptions[] = [
                                 'update' => $__name,
                                 'exception' => $e,
                                 'entity' => $entity,
                             ];
                         } catch (\Exception $e){
+                            echo "$e";
                             self::$exceptions[] = [
                                 'update' => $__name,
                                 'exception' => $e,
