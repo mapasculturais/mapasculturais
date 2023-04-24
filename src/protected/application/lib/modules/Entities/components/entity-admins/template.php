@@ -14,8 +14,7 @@ $this->import('
     <h3 v-if="group"><?php i::_e("Administrado por") ?></h3>
     <div class="entity-related-agents__group">
         <div class="entity-related-agents__group--agents">
-            <div v-for="relation in group" class="agent"> 
-
+            <div v-for="relation in group" class="agent">
                 <mc-relation-card :relation="relation">
                     <template #default="{open, close, toggle}">
                         <a class="agent__img" @click="$event.preventDefault(); toggle()">
@@ -24,7 +23,6 @@ $this->import('
                         </a>
                     </template>
                 </mc-relation-card>
-
                 <!-- remover agente -->
                 <div v-if="editable" class="agent__delete">
                     <confirm-button @confirm="removeAgent(relation.agent)">
@@ -36,7 +34,6 @@ $this->import('
                         </template>
                     </confirm-button>
                 </div>
-
                 <!-- relação de agente pendente -->
                 <div v-if="relation.status == -5" class="agent__pending"></div>
             </div>
