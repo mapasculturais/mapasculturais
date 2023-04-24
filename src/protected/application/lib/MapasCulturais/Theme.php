@@ -739,6 +739,10 @@ abstract class Theme extends \Slim\View {
             if(property_exists ($entity_class_name, 'opportunity')) {
                 $query_params['@select'] .= ',opportunity.{name,type,files.avatar,terms,seals}';
             }
+
+            if(property_exists ($entity_class_name, 'project')) {
+                $query_params['@select'] .= ',project.{name,type,files.avatar,terms,seals}';
+            }
             
             if ($entity_class_name::usesAgentRelation()) {
                 $query_params['@select'] .= ',agentRelations';
