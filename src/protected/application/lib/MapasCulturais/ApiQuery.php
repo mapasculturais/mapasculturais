@@ -1781,7 +1781,7 @@ class ApiQuery {
                 return $item['agentId'];
             }, $relations)));
 
-            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
+            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
             $agents = $agents_query->find();
             $agents_by_id = [];
             foreach($agents as $agent) {
@@ -1880,7 +1880,7 @@ class ApiQuery {
                 return $item['agentId'];
             }, $relations)));
 
-            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
+            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
             $agents = $agents_query->find();
             $agents_by_id = [];
             foreach($agents as $agent) {
@@ -1978,7 +1978,7 @@ class ApiQuery {
             }, $relations)));
 
             $spaces_query = new ApiQuery(Space::class, [
-                    '@select' => 'id,name,shortDescription,files.avatar,terms,singleUrl', 
+                    '@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl', 
                     'id' => "IN($space_ids)"
                 ]);
             $spaces = $spaces_query->find();
@@ -2078,7 +2078,7 @@ class ApiQuery {
                 return $item['spaceId'];
             }, $relations)));
 
-            $spaces_query = new ApiQuery(Space::class, ['@select' => 'id,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($space_ids)"]);
+            $spaces_query = new ApiQuery(Space::class, ['@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($space_ids)"]);
             $spaces = $spaces_query->find();
             $spaces_by_id = [];
             foreach($spaces as $space) {
