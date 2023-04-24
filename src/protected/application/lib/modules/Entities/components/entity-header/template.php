@@ -91,7 +91,6 @@ use MapasCulturais\i;
                 </div>
                 <h2 v-if="this.entity.__objectType!='opportunity'">{{titleEdit}}</h2>
                 <h2 v-if="this.entity.__objectType=='opportunity'">{{entity.name}}</h2>
-                {{type}}
             </div>
         </div>
     </div>
