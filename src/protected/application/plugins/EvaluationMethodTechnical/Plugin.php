@@ -145,12 +145,12 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             $phase = $this;
             
             do{
-                $em = $phase->getEvaluationMethod();
-
-                if($em && $em->getSlug() == "technical"){
-                    $app->disableAccessControl();
-                    $phase->consolidateResult();
-                    $app->enableAccessControl();
+                if($em = $phase->getEvaluationMethod()){
+                    if($em->getSlug() == "technical"){
+                        $app->disableAccessControl();
+                        $phase->consolidateResult();
+                        $app->enableAccessControl();
+                    }
                 }
             }while($phase = $phase->nextPhase);
         });
