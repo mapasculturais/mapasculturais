@@ -18,7 +18,7 @@ app.component('entity-admins', {
 
     computed: {
         query() {
-            const ids = this.group.map((item) => item.id).join(',');
+            const ids = this.group.map((item) => item.agent.id).join(',');
 
             let idFilter = '';
             let query = {}
@@ -39,7 +39,7 @@ app.component('entity-admins', {
 
         },
         group() {
-            return  this.entity.relatedAgents?.['group-admin'] || [];
+            return this.entity.agentRelations?.['group-admin'] || [];
         }
     },
 

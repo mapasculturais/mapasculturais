@@ -26,6 +26,7 @@ return [
     'removendo arquivo' => i::__('Removendo arquivo'),
     'salvando arquivo' =>  i::__('Salvando arquivo'),
 
+    'solicitação enviada com sucesso' => i::__('Seu pedido foi enviado com sucesso!'),
     'adicionando agente relacionado' => i::__('Adicionando agente relacionado'),
     'removendo agente relacionado' => i::__('Removendo agente relacionado'),
     'removendo grupo de agentes relacionados' => i::__('Removendo grupo de agentes relacionados'),

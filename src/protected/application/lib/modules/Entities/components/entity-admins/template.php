@@ -4,7 +4,7 @@ use MapasCulturais\i;
 $this->import('
     select-entity
     confirm-button
-    mapas-card
+    mc-relation-card
 ');
 ?>
 
@@ -14,56 +14,18 @@ $this->import('
     <h3 v-if="group"><?php i::_e("Administrado por") ?></h3>
     <div class="entity-related-agents__group">
         <div class="entity-related-agents__group--agents">
-            <div v-for="agent in group" class="agent"> 
-
-                <popover classes="agent-popover">
-                    <template #button="popover">
-                        <a class="agent__img" @click="$event.preventDefault(); popover.toggle()"> <!--  :href="agent.singleUrl" -->
-                            <img v-if="agent.files.avatar" :src="agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
-                            <mc-icon v-if="!agent.files.avatar" name="agent"></mc-icon>
+            <div v-for="relation in group" class="agent">
+                <mc-relation-card :relation="relation">
+                    <template #default="{open, close, toggle}">
+                        <a class="agent__img" @click="$event.preventDefault(); toggle()">
+                            <img v-if="relation.agent.files.avatar" :src="relation.agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
+                            <mc-icon v-if="!relation.agent.files.avatar" name="agent"></mc-icon>
                         </a>
                     </template>
-                    <template #default="{close}">
-                        <mapas-card class="view-card" noTitle>
-                            <div class="view-card__close" @click="close()">
-                                <mc-icon name="close"></mc-icon>
-                            </div>
-
-                            <div class="view-card__header">
-                                <div class="image">
-                                    <img v-if="agent.files.avatar" :src="agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
-                                    <mc-icon v-if="!agent.files.avatar" name="image"></mc-icon>
-                                </div>
-                                <div class="name">
-                                    {{agent.name}}
-                                </div>
-                            </div>
-
-                            <div class="view-card__content">
-                                <div class="type">
-                                    <span> <?= i::__('Este agente atua de forma') ?>  <span :class="['actualType', entity.__objectType+'__color']">{{entity.type.name}}</span> </span>
-                                </div>
-                                <div class="tags">
-                                    <div class="tags__label">
-                                        <?= i::__("Áreas de atuação") ?> ({{entity.terms.area.length}})
-                                    </div>
-                                    <div class="tags__tagsList">
-                                        {{entity.terms.area.join(', ')}}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="view-card__status">
-                                <mc-icon name="exclamation"></mc-icon>
-                                <?= i::__('A solicitação para `entidade` está pendente') ?>
-                            </div>
-                        </mapas-card>
-                    </template>
-                </popover>
-
+                </mc-relation-card>
+                <!-- remover agente -->
                 <div v-if="editable" class="agent__delete">
-                    <!-- remover agente -->
-                    <confirm-button @confirm="removeAgent(agent)">
+                    <confirm-button @confirm="removeAgent(relation.agent)">
                         <template #button="modal">
                             <mc-icon @click="modal.open()" name="delete"></mc-icon>
                         </template>
@@ -72,10 +34,12 @@ $this->import('
                         </template>
                     </confirm-button>
                 </div>
+                <!-- relação de agente pendente -->
+                <div v-if="relation.status == -5" class="agent__pending"></div>
             </div>
         </div>
         <div class="entity-related-agents__group--actions">
-            <select-entity v-if="editable" type="agent" permissions="" @select="addAgent($event)" :query="query" openside="down-right">
+            <select-entity v-if="editable" type="agent" permissions="" select="id,name,files.avatar,terms,type" @select="addAgent($event)" :query="query" openside="down-right">
                 <template #button="{ toggle }">
                     <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()">
                         <?php i::_e('Adicionar administrador') ?>
