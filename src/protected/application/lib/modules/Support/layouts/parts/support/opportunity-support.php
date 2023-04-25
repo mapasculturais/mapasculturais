@@ -52,8 +52,7 @@ use MapasCulturais\i;
             </tr>
         </thead>
         <tr>
-            <td colspan="3">
-                
+            <td colspan="4">
                 <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição.");?></span>
                 <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
                 <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição.");?></span>
