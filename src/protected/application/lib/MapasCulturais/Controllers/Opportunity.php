@@ -448,7 +448,11 @@ class Opportunity extends EntityController {
 
         $registrations = $query->find();
 
-        $em = $opportunity->getEvaluationMethod();
+        $em = $opportunity->evaluationMethod;
+        if (!$em && $opportunity->isLastPhase && $opportunity->previousPhase && $opportunity->previousPhase->evaluationMethod){
+            $em = $opportunity->previousPhase->evaluationMethod;
+        }
+
         foreach($registrations as &$reg) {
             if(in_array('consolidatedResult', $query->selecting)){
                 $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
@@ -477,8 +481,11 @@ class Opportunity extends EntityController {
     }
 
     protected function _getOpportunityCommittee($opportunity_id) {
-
         $opportunity = $this->_getOpportunity($opportunity_id);
+
+        if (!$opportunity->evaluationMethodConfiguration) {
+            return [];
+        }
 
         $committee_relation_query = new ApiQuery('MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation', [
             '@select' => 'id,agent',
