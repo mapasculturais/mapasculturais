@@ -194,7 +194,7 @@ class Registration extends EntityController {
         }        
     }
     
-    public function POST_repopenEvaluation(){
+    public function POST_reopenEvaluation(){
       $this->requireAuthentication();
 
       $app = App::i();
