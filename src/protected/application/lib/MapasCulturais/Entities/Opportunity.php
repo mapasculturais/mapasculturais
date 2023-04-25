@@ -327,6 +327,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
     function getEvaluationCommittee($return_relation = true){
         $app = App::i();
 
+        if (!$this->evaluationMethodConfiguration) {
+            return [];
+        }
+
         $committee = $this->evaluationMethodConfiguration->getAgentRelations(null, true);
         
         if(!$return_relation) {
