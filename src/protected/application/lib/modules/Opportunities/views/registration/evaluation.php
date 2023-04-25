@@ -104,27 +104,7 @@ $this->breadcrumb = $breadcrumb;
                 <section class="section">
                     <div class="section__content">
                         <div class="card owner">
-                            <div class="card__title">
-                                <?= i::__('Título da seção do formulário') ?>
-                            </div>
-                            <div class="evaluation-form-card">
-                                <h4><?= i::__("Titulo do formulario") ?> </h4>
-                                <h5><?= i::__("Dado informado") ?></h5>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="section">
-                    <div class="section__content">
-                        <div class="card owner">
-                            <div class="card__title">
-                                <?= i::__('Título da seção do formulário') ?>
-                            </div>
-                            <div class="evaluation-form-card">
-                                <h4><?= i::__("Titulo do formulario") ?> </h4>
-                                <h5><?= i::__("Dado informado") ?></h5>
-                            </div>
+                            <v1-embed-tool route="registrationevaluationtionformview" :id="entity.id"></v1-embed-tool>
                         </div>
                     </div>
                 </section>
