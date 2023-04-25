@@ -29,7 +29,7 @@
         window.parent.postMessage({
             type: 'resize',
             data: {
-                height: document.body.offsetHeight+1,
+                height: document.body.offsetHeight + 30,
             }
         }, '*');
 
