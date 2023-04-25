@@ -192,7 +192,36 @@ class Registration extends EntityController {
             }
 
         }        
-    }   
+    }
+    
+    public function POST_repopenEvaluation(){
+      $this->requireAuthentication();
+
+      $app = App::i();
+
+      if(!$this->urlData['id'] || !$this->urlData['uid']){
+        $app->pass();
+        }
+
+      $entity = $this->repository->find($this->data['id']);
+      $user = $app->repo("User")->find($this->data['uid']);
+
+      if($evaluation = $entity->getUserEvaluation($user)){
+
+        $today = new DateTime("now");
+        $evaluationMethod = $evaluation->evaluationMethodConfiguration;
+
+            if($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo){
+            $evaluation->registration->opportunity->checkPermission('reopenValuerEvaluations');
+            $evaluation->status = RegistrationEvaluation::STATUS_EVALUATED;
+            $evaluation->save(true);
+            $this->json($entity);
+            }
+       
+            return null;
+        }
+
+    }
 
     public function createUrl($actionName, array $data = array()) {
         if($actionName == 'single' || $actionName == 'edit'){
