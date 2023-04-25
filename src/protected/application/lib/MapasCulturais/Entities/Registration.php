@@ -1278,14 +1278,14 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserViewUserEvaluation($user){
-        if($this->status <= 0 || $user->is('guest')) {
+        if($this->status <= 0 || $user->is('guest') || !$this->evaluationMethod) {
             return false;
         }
         $app = App::i();
 
         $em = $this->evaluationMethod;
 
-        $can = $em ? $em->canUserEvaluateRegistration($this, $user) : false;
+        $can = $em->canUserEvaluateRegistration($this, $user);
 
         $exclude_list = $this->getValuersExcludeList();
         $include_list = $this->getValuersIncludeList();
