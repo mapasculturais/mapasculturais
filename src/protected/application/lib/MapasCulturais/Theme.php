@@ -4,6 +4,7 @@ namespace MapasCulturais;
 use ArrayObject;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 
 /**
  * This is the default MapasCulturais View class. It extends the \Slim\View class adding a layout layer and the option to render the template partially.
@@ -731,6 +732,10 @@ abstract class Theme extends \Slim\View {
                 'id' => "EQ({$entity_id})", 
                 '@permissions'=>'view', 
             ];
+
+            if($entity_class_name == EvaluationMethodConfiguration::class) {
+                unset($query_params['@permissions']);
+            }
 
             if(property_exists ($entity_class_name, 'status')) {
                 $query_params['status'] = 'GTE(-10)'; 
