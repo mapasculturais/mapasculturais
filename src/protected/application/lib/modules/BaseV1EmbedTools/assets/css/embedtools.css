@@ -1131,6 +1131,10 @@ body {
     text-transform: capitalize;
 }
 
+.registrations-table {
+    margin-bottom: 0;
+}
+
 .action-registrationmanager #registrations-table-container table thead tr th {
     background-color: #FFFFFF;
     border: none;
