@@ -76,6 +76,14 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->render("registration-view",['entity' => $entity]);
     }
 
+     public Function GET_registrationevaluationtionformview()
+    {
+        $this->entityClassName = "MapasCulturais\\Entities\\Registration";
+        $this->layout = "embedtools-registration";
+        $entity = $this->getEntityAndCheckPermission('viewUserEvaluation');
+        $this->render("registration-view",['entity' => $entity]);
+    }
+
     public Function GET_fieldsvisible()
     {
         $entity = $this->getEntityAndCheckPermission('@control');
@@ -101,6 +109,25 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
 
         $entity = $this->getEntityAndCheckPermission('@control');
         $this->render("registration-support",['entity' => $entity]);
+    }
+
+    public function GET_supporteditview(){
+        $app = App::i();
+        $this->entityClassName = "MapasCulturais\\Entities\\Registration";
+        $this->layout = "embedtools-registration";
+        $entity = $this->getEntityAndCheckPermission('@control');
+
+        $entity->registerFieldsMetadata();
+        $relation = $app->repo("AgentRelation")->findOneBy([
+            "agent" => $app->user->profile,
+            "objectId" => $entity->opportunity->id,
+            "group" => "@support"
+        ]);
+        
+        $this->render("support--edit-view",[
+            'entity' => $entity,
+            "userAllowedFields" => ($relation->metadata["registrationPermissions"] ?? [])
+        ]);
     }
 
     public function GET_sidebarleftevaluations()

@@ -41,7 +41,7 @@ $this->import('
                                 </div>
                             </div>
                             <span v-if="entity.shortDescription">
-                               {{entity.shortDescription}}
+                               {{showShort(entity.shortDescription)}}
                             </span>
                         </template>
                         <template #entity-actions-left="{entity}">

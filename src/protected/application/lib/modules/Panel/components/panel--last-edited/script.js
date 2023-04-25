@@ -157,6 +157,15 @@ app.component('panel--last-edited', {
         }
     },
     methods: {
+        showShort(shortDescription) {
+            if (shortDescription) {
+                if (shortDescription.length > 400) {
+                    return shortDescription.substring(0, 400) + '...';
+                } else {
+                    return shortDescription;
+                }
+            }
+        },
         resizeSlides() {
             this.$refs.carousel.updateSlideWidth();
         }
