@@ -24,10 +24,6 @@ $this->import('v1-embed-tool')
         </div>
     </div>
 
-    <div class="registration-evaluation-actions__form">
-        <v1-embed-tool route="evaluationforms" :id="registration.id"></v1-embed-tool>
-    </div>
-
     <div class="registration-evaluation-actions__buttons">
         <div class="grid-12">
             <div class="col-12">
