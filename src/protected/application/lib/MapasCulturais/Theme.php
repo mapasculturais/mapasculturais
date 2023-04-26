@@ -5,6 +5,7 @@ use ArrayObject;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\Opportunity;
 
 /**
  * This is the default MapasCulturais View class. It extends the \Slim\View class adding a layout layer and the option to render the template partially.
