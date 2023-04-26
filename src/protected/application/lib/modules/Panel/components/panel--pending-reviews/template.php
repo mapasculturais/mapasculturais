@@ -29,29 +29,29 @@ $this->import('
                         {{entity.parent?.name || entity.name}}
                     </template>
 
-                    <template #header-actions="{entity}">
+                    <template #header-actions>
                     </template>
 
-                    <template #default="{entity}">
+                    <template #default>
                         <div class="grid-12">
                             <div class="col-12">
-                                <?php i::_e('Tipo:') ?> <strong class="opportunity__color">{{entity.type}}</strong>
+                                <?php i::_e('Tipo:') ?> <strong class="opportunity__color">{{entity.type.name}}</strong>
                             </div>
                             <div class="col-12">
-                                &lt; Entidade &gt;: <strong></strong>
+                                <mc-link :entity="entity.ownerEntity"></mc-link>
                             </div>
                         </div>
                     </template>
 
-                    <template #entity-actions-left="{entity}">
+                    <template #entity-actions-left>
                         &nbsp;
                     </template>
 
-                    <template #entity-actions-center="{entity}">
+                    <template #entity-actions-center>
                         &nbsp;
                     </template>
 
-                    <template #entity-actions-right="{entity}">
+                    <template #entity-actions-right>
                         <mc-link :entity="entity.evaluationMethodConfiguration" route="evaluationsList" ><?= i::__('Avaliar')?></mc-link>
                     </template>
                 </panel--entity-card>
