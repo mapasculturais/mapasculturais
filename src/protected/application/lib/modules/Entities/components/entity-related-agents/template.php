@@ -1,6 +1,10 @@
 <?php
 use MapasCulturais\i;
-$this->import('popover confirm-button');
+$this->import('
+    popover
+    confirm-button
+    mc-relation-card
+');
 ?>
 
 <div :class="classes" class="entity-related-agents" v-if="editable || hasGroups()">
