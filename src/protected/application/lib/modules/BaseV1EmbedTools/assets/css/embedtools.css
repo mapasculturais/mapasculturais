@@ -30,6 +30,222 @@ body {
     display: none;
 }
 
+.edit-box footer {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.screen-reader-text {
+    display: none;
+}
+
+
+/* Tables */
+.registrations-table {
+    margin-bottom: 0;
+}
+
+.registrations-table tr {
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 0.063rem solid #BBBBBB !important;
+    background-color: #FFFFFF !important;
+}
+
+.registrations-table thead tr th {
+    background-color: #FFFFFF;
+    border: none;
+    text-align: center !important;
+    vertical-align: middle;
+    color: #000000;
+}
+
+.registrations-table .table-info {
+    display: none;
+}
+
+.registrations-table thead tr,
+.registrations-table tbody tr {
+    border: none;
+    border-bottom: 1px solid #BBBBBB;
+}
+
+.registrations-table thead th.registration-status-col .dropdown,
+.registrations-table tbody tr td.registration-status-col .dropdown {
+    padding: 0;
+    background-color: transparent;
+}
+
+.registrations-table thead th.registration-status-col .dropdown .placeholder,
+.registrations-table tbody tr td.registration-status-col .dropdown .placeholder {
+    color: #000000;
+}
+
+
+.registrations-table thead th.registration-status-col .dropdown .submenu-dropdown,
+.registrations-table tbody tr td.registration-status-col .dropdown .submenu-dropdown {
+    background-color: #FFFFFF;
+}
+.registrations-table tbody tr td.registration-agents-col p {
+    margin: 0;
+}
+
+.registrations-table tbody tr td.registration-agents-col p .label,
+.registrations-table tbody tr td.registration-agents-col p br {
+    display: none;
+}
+
+.registrations-table tbody tr {
+    background-color: #FFFFFF;
+}
+
+.registrations-table tbody tr td {
+    border: none !important;
+    vertical-align: middle;
+    padding: 16px 10px;
+}
+
+.registrations-table tbody tr td a {
+    color: #000000;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.registrations-table tbody tr.draft {
+    background-color: #FFFFFF !important;
+}
+
+.registrations-table tbody tr.notapproved {
+    background-color: #FFE1E1 !important;
+}
+
+.registrations-table tbody tr.approved {
+    background-color: #BFE88B !important;
+}
+
+.registrations-table tbody tr.invalid {
+    background-color: #BBBBBB !important;
+}
+
+.registrations-table tbody tr.waitlist {
+    background-color: #FFCF8F !important;
+}
+
+.registrations-table tfoot tr td {
+    border: none;
+}
+
+
+/* buttons */
+.btn,
+button {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    gap: 8px;
+    align-items: center;
+    background-color: #0074C1;
+    border-radius: 8px;
+    border: none;
+    color: #FFFFFF;
+    display: flex;
+    height: unset;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 9px 19px;
+}
+
+button {
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    margin: 0 !important;
+    padding: 9px 19px !important;
+}
+
+.btn::before {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 0 !important;
+}
+
+.btn:hover {
+    box-shadow: unset;
+    border: none;
+    background-color: #0074C1;
+    filter: contrast(90%);
+}
+
+.btn.btn-danger {
+    background-color: #cc3333;
+}
+
+.btn.btn-warning {
+    background-color: #cc9933;
+}
+
+/* fields */
+input,
+textarea,
+select {
+    border-radius: 0.25rem;
+    border: 0.063rem solid #898989 !important;
+    font-size: 16px;
+    height: unset;
+    margin: 0;
+    padding: 0.75rem 0.875rem;
+    width: 100% !important;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    float: left;
+    height: 1.125rem;
+    margin-right: 0.5rem;
+    width: 1.125rem  !important;
+}
+
+select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #FFFFFF;
+    background-size: 1.25rem;
+    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat calc(100% - 0.875rem) center/1.25rem;
+}
+
+textarea {
+    min-height: 5.688rem;
+}
+
+
+/* dropdown */
+.dropdown {
+    margin: 0 !important;
+}
+
+.dropdown .placeholder {
+    text-align: center;
+}
+
+.dropdown .placeholder::after {
+    content: '';
+    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat center center/contain;
+    width: 21px;
+    height: 30px;
+    /* background-color: red; */
+    position: absolute;
+}
+
 
 
 /* Registration Form */
@@ -67,7 +283,7 @@ body {
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] {
     background-color: #FFFFFF;
     overflow: auto;
-    padding: 1rem;
+    padding: 16px;
     font-weight: 400;
     font-size: 14px;
     line-height: 19px;
@@ -75,13 +291,13 @@ body {
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section {
     background-color: #E5E5E5 !important;
-    padding: 0 0 2rem !important;
+    padding: 0 0 32px !important;
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .label {
     font-weight: 700;
-    font-size: 2rem;
-    line-height: 2.76rem;
+    font-size: 32px;
+    line-height: 44px;
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .attachment-description {
@@ -100,7 +316,7 @@ body {
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .attachment-description {
     font-weight: 400;
     font-size: 0.875rem;
-    line-height: 1rem;
+    line-height: 16px;
     color: #141414;
     margin-bottom: 0.5rem;
 }
@@ -111,62 +327,17 @@ body {
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn,
-.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .submit-attach-opportunity {
-    align-items: center;
-    appearance: none;
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .submit-attach-opportunity {  
     background-color: #FFFFFF;
-    border-radius: 0.5rem;
     border: 0.125rem solid #0074C1;
     color: #0074C1;
-    cursor: pointer;
     display: inline-flex;
-    font-size: 1rem;
-    font-weight: bold;
-    gap: 0.75rem;
-    height: unset;
-    justify-content: center;
-    line-height: 1.125rem;
-    padding: 0.563rem 1.188rem;
     position: relative;
-    text-decoration: none;
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn::before {
-    font-size: 1rem;
+    font-size: 16px;
     margin: 0;
-}
-
-.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item input,
-.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item textarea,
-.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item select {
-    border-radius: 0.25rem;
-    border: 0.063rem solid #898989;
-    font-size: 1rem;
-    height: unset;
-    margin: 0;
-    padding: 0.75rem 0.875rem;
-    width: 100%;
-}
-
-.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item input[type="checkbox"],
-.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item input[type="radio"] {
-    float: left;
-    height: 1.125rem;
-    margin-right: 0.5rem;
-    width: 1.125rem;
-}
-
-.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item select {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: #FFFFFF;
-    background-size: 1.25rem;
-    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat calc(100% - 0.875rem) center/1.25rem;
-}
-
-.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item textarea {
-    min-height: 5.688rem;
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .alert {
@@ -175,14 +346,204 @@ body {
 
 
 
+/* Form Builder */
+.action-formbuilder .project-edit-mode {
+    border: none;
+    padding: 0;
+}
+
+.action-formbuilder .project-edit-mode:hover {
+    background-color: transparent !important;
+}
+
+.action-formbuilder .project-edit-mode--header h4 {
+    color: #000000;
+    font-family: 'Open Sans';
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.75rem;
+    margin: 0;
+}
+
+.action-formbuilder .project-edit-mode--header .registration-help {
+    margin-bottom: 16px;
+}
+
+.action-formbuilder .project-edit-mode .projectName {
+    display: none;
+}
+
+.action-formbuilder .project-edit-mode .buttons {
+    background: #FFFFFF;
+    border-radius: 0.25rem;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: flex-end;
+    padding: 0.938rem 2rem;
+}
+
+.action-formbuilder .project-edit-mode .buttons .btn {
+    background-color: #FFA4A3;
+    border-radius: 0.5rem;
+    border: none;
+    color: #1E1E1E;
+    font-size: 0.875rem;
+    font-weight: 600;
+    height: unset;
+    line-height: 1.188rem;
+    padding: 0.625rem 16px;
+}
+
+.action-formbuilder .project-edit-mode .buttons .btn:hover {
+    background-color: #800100;
+    color: #FFFFFF;
+}
+
+.action-formbuilder .project-edit-mode .buttons .btn::before {
+    content: unset;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list {
+    background-color: #FFFFFF;
+    border-radius: 0.25rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item {
+    background-color: #FFFFFF;
+    border-bottom: 0.063rem solid #BBBBBB;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item>div:first-child {
+    background-color: #FFFFFF;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item:first-child,
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item:first-child>div {
+    border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item:last-child {
+    margin-bottom: 0.438rem;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    height: 100%;
+    right: 12px;
+    top: 0;
+    max-height: 6.938rem;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group .btn::before {
+    font-size: 1.25rem;
+    height: 100%;
+    height: unset;
+    margin-right: 0 !important;
+    width: unset;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group .btn {
+    background-color: transparent;
+    border: none;
+    color: #000000;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group .btn:hover {
+    box-shadow: unset;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group .btn.delete {
+    color: #ED0000;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item {
+    background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 2.25rem center / 1.875rem;
+    padding: 11px 220px 11px 85px;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item .label {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.563rem;
+    margin: 0;
+    word-break: break-word;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item {
+    display: grid;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item .type {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 16px;
+    margin-bottom: 16px;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item .description {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .section .item {
+    padding: 1.5rem 1.75rem 1.5rem 5.313rem;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .section .item .type {
+    display: none;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .section .item .field-id {
+    display: none;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .section .item .label {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.75rem;
+    margin: 0;
+    word-break: break-word;
+}
+
+@media (max-width: 768px) {
+    .action-formbuilder .project-edit-mode .attachment-list .attachment-list-item {
+        padding: 10px 82px 10px 10px;
+    }
+
+    .action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group {
+        flex-direction: column;
+        gap: 0.125rem;
+        height: 100%;
+        justify-content: center;
+        top: 10px;
+    }
+
+    .action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item {
+        background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 16px center / 1.875rem;
+        padding: 0.688rem 1.75rem 0.688rem 4.063rem;
+    }
+
+    .action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .section .item {
+        padding: 1.5rem 1.75rem 1.5rem 4.063rem;
+    }
+}
+
+
 /* Evaluation Maneger */
-#evaluations-config .registration-fieldset {
+.action-evaluationmanager #evaluations-config .registration-fieldset {
     border: none;
     padding: 0;
     margin-bottom: 0;
 }
 
-#evaluations-config .registration-fieldset .committee {
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee {
     background-color: #FFFFFF;
     border: 1px solid #666666;
     border-radius: 4px;
@@ -190,18 +551,18 @@ body {
     margin: 16px 0;
 }
 
-#evaluations-config .registration-fieldset .committee .committee--info {
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--info {
     padding: 16px 24px;
     border-bottom: 1px solid #BBBBBB;
 }
 
-#evaluations-config .registration-fieldset .committee .committee--info .committee--header {
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--info .committee--header {
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
-#evaluations-config .registration-fieldset .committee .committee--info .committee--header .committee--avatar {
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--info .committee--header .committee--avatar {
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -209,21 +570,13 @@ body {
     margin: 0;
 }
 
-#evaluations-config .registration-fieldset .committee .committee--info .committee--header .committee--content {
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--info .committee--header .committee--content {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
 }
 
-#evaluations-config .registration-fieldset .committee .committee--info .btn {
-    padding: 8px 15px !important;
-}
-
-#evaluations-config .registration-fieldset .committee .committee--info .btn-warning {
-    margin-right: 10px;
-}
-
-#evaluations-config .registration-fieldset .committee .committee--fetch {
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--fetch {
     padding: 18px 24px 29px;
     margin: 0;
     display: flex;
@@ -231,11 +584,11 @@ body {
     gap: 8px;
 }
 
-#evaluations-config .registration-fieldset .committee .committee--fetch br {
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--fetch br {
     display: none;
 }
 
-#evaluations-config .registration-fieldset .committee .committee--fetch label {
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--fetch label {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 700;
@@ -243,70 +596,30 @@ body {
     line-height: 19px;
 }
 
-#evaluations-config .registration-fieldset .committee .committee--fetch .inputs {
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--fetch .inputs {
     display: grid;
     grid-template-columns: 80px 1fr;
     gap: 8px;
 }
 
-#evaluations-config .registration-fieldset .committee .committee--fetch .inputs input{
-    width: 100%;
-    margin: 0;
-}
-
-#evaluations-config .registration-fieldset  .directive-find-entity {
+.action-evaluationmanager #evaluations-config .registration-fieldset  .directive-find-entity {
     width: 100%;
 }
 
-#evaluations-config .registration-fieldset .btn.add,
-#evaluations-config .registration-fieldset .btn.delete  {
-    align-items: center;
-    border-radius: 0.5rem;
-    border: none;
-    color: #FFFFFF;
-    display: flex;
-    font-family: 'Open Sans';
-    font-size: 1.125rem;
-    font-style: normal;
-    font-weight: 600;
-    gap: 0.625rem;
-    height: unset;
-    justify-content: center;
-    line-height: 1.563rem;
-    margin: 0;
-    padding: 0.719rem 1.375rem;
-}
-
-#evaluations-config .registration-fieldset .btn.add::before,
-#evaluations-config .registration-fieldset .btn.delete::before {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-}
-
-#evaluations-config .registration-fieldset .btn.add {
-    background: #0074C1;
-}
-
-#evaluations-config .registration-fieldset .btn.btn-default.delete {
-    background-color: #cc3333;
-}
-
-#evaluations-config .affirmativePolices {
+.action-evaluationmanager #evaluations-config .affirmativePolices {
     margin-top: 40px;
 }
 
-#evaluations-config .technical-evaluation-configuration--feasibility {
+.action-evaluationmanager #evaluations-config .technical-evaluation-configuration--feasibility {
     margin-top: 40px;
 }
 
-#evaluations-config .technical-evaluation-configuration--feasibility .options {
+.action-evaluationmanager #evaluations-config .technical-evaluation-configuration--feasibility .options {
     display: flex;
     gap: 30px;
 }
 
-#evaluations-config .technical-evaluation-configuration--feasibility .options label {
+.action-evaluationmanager #evaluations-config .technical-evaluation-configuration--feasibility .options label {
     display: flex;
     gap: 8px;
     font-family: 'Open Sans';
@@ -316,26 +629,26 @@ body {
     line-height: 20px;
 }
 
-#evaluations-config .technical-evaluation-configuration--criteria {
+.action-evaluationmanager #evaluations-config .technical-evaluation-configuration--criteria {
     margin-top: 40px;
 }
 
-#evaluations-config .qualification-evaluation-configuration {
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration {
     margin-top: 40px;
 }
 
-#evaluations-config .qualification-evaluation-configuration p {
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration p {
     margin-bottom: 1rem;
 }
 
-#evaluations-config .qualification-evaluation-configuration header {
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration header {
     align-items: center;
     display: flex;
     gap: 25px;
     justify-content: space-between;
 }
 
-#evaluations-config .qualification-evaluation-configuration header input {
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration header input {
     background: #FFFFFF;
     border-radius: 0.25rem;
     border: 0.063rem solid #BBBBBB !important;
@@ -344,15 +657,15 @@ body {
     padding: 0.531rem 1rem;
 }
 
-#evaluations-config .qualification-evaluation-configuration table {
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration table {
     margin-top: 1rem;
 }
 
-#evaluations-config .qualification-evaluation-configuration table tr th:first-child {
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration table tr th:first-child {
     width: 60%;
 }
 
-#evaluations-config .qualification-evaluation-configuration table tr td .criteria-name input {
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration table tr td .criteria-name input {
     background: #FFFFFF;
     border-radius: 0.25rem;
     border: 0.063rem solid #BBBBBB !important;
@@ -363,13 +676,13 @@ body {
     width: 100%;
 }
 
-#evaluations-config .qualification-evaluation-configuration table tr td .criteria-options {
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration table tr td .criteria-options {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
 }
 
-#evaluations-config .qualification-evaluation-configuration table tr td .criteria-options .edit-box {   
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration table tr td .criteria-options .edit-box {   
     left: 50% !important;
     position: absolute !important;
     transform: translateX(-50%);
@@ -437,197 +750,14 @@ body {
 
 
 
-/* Form Builder */
-.project-edit-mode {
-    border: none;
-    padding: 0;
-}
-
-.project-edit-mode:hover {
-    background-color: transparent !important;
-}
-
-.project-edit-mode--header h4 {
-    color: #000000;
-    font-family: 'Open Sans';
-    font-size: 1.5rem;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 1.75rem;
-    margin: 0;
-}
-
-.project-edit-mode--header .registration-help {
-    margin-bottom: 1rem;
-}
-
-.project-edit-mode .projectName {
-    display: none;
-}
-
-.project-edit-mode .buttons {
-    background: #FFFFFF;
-    border-radius: 0.25rem;
-    display: flex;
-    gap: 1.5rem;
-    justify-content: flex-end;
-    padding: 0.938rem 2rem;
-}
-
-.project-edit-mode .buttons .btn {
-    background-color: #FFA4A3;
-    border-radius: 0.5rem;
-    border: none;
-    color: #1E1E1E;
-    font-size: 0.875rem;
-    font-weight: 600;
-    height: unset;
-    line-height: 1.188rem;
-    padding: 0.625rem 1rem;
-}
-
-.project-edit-mode .buttons .btn:hover {
-    background-color: #800100;
-    color: #FFFFFF;
-}
-
-.project-edit-mode .buttons .btn::before {
-    content: unset;
-}
-
-.project-edit-mode ul.attachment-list {
-    background-color: #FFFFFF;
-    border-radius: 0.25rem;
-    margin-top: 0.5rem;
-    display: grid;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item {
-    background-color: #FFFFFF;
-    border-bottom: 0.063rem solid #BBBBBB;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item>div:first-child {
-    background-color: #FFFFFF;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item:first-child,
-.project-edit-mode ul.attachment-list li.attachment-list-item:first-child>div {
-    border-radius: 0.25rem 0.25rem 0 0;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item:last-child {
-    margin-bottom: 0.438rem;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .btn-group {
-    align-items: center;
-    display: flex;
-    gap: 2.125rem;
-    height: 100%;
-    right: 1.75rem;
-    top: 0;
-    max-height: 6.938rem;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .btn-group .btn::before {
-    font-size: 1.25rem;
-    height: 100%;
-    height: unset;
-    margin-right: 0 !important;
-    width: unset;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .btn-group .btn {
-    background-color: transparent;
-    border: none;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .btn-group .btn:hover {
-    box-shadow: unset;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .btn-group .btn.delete {
-    color: #ED0000;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .item {
-    background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 2.25rem center / 1.875rem;
-    padding: 0.688rem 1.75rem 0.688rem 5.313rem;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .item .label {
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 1.563rem;
-    margin: 0;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .item {
-    display: grid;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .item .type {
-    font-size: 0.75rem;
-    font-weight: 400;
-    line-height: 1rem;
-    margin-bottom: 1rem;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .item .description {
-    font-size: 0.75rem;
-    font-weight: 400;
-    line-height: 1rem;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .section .item {
-    padding: 1.5rem 1.75rem 1.5rem 5.313rem;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .section .item .type {
-    display: none;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .section .item .field-id {
-    display: none;
-}
-
-.project-edit-mode ul.attachment-list li.attachment-list-item .section .item .label {
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1.75rem;
-    margin: 0;
-}
-
-@media (max-width: 31.25rem) {
-    .project-edit-mode ul.attachment-list li.attachment-list-item .btn-group {
-        flex-direction: column;
-        gap: 0.125rem;
-        height: 100%;
-        justify-content: center;
-        top: 0;
-    }
-
-    .project-edit-mode ul.attachment-list li.attachment-list-item .item {
-        background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 1rem center / 1.875rem;
-        padding: 0.688rem 1.75rem 0.688rem 4.063rem;
-    }
-
-    .project-edit-mode ul.attachment-list li.attachment-list-item .section .item {
-        padding: 1.5rem 1.75rem 1.5rem 4.063rem;
-    }
-}
-
-
-
 /* Suport Builder */
-#support-settings header {
+.action-supportbuilder #support-settings header {
     position: relative;
     height: 9.688rem;
     margin-bottom: 1.5rem;
 }
 
-#support-settings header h4 {
+.action-supportbuilder #support-settings header h4 {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 700;
@@ -636,7 +766,7 @@ body {
     margin-bottom: 1rem !important;
 }
 
-#support-settings header p {
+.action-supportbuilder #support-settings header p {
     font-style: normal;
     font-weight: 400;
     font-size: 1rem;
@@ -645,26 +775,12 @@ body {
     margin-bottom: 2.125rem !important;
 }
 
-#support-settings header .btn.add {
-    bottom: 0;
-    position: absolute;
-    background: #0074C1;
-    border-radius: 0.5rem;
-    height: unset;
-    border: none;
-    color: #FFFFFF;
-    font-weight: 600;
-    font-size: 1.125rem;
-    line-height: 1.563rem;
-    padding: 0.625rem 2rem;
-}
-
-#support-settings .support-content {
+.action-supportbuilder #support-settings .support-content {
     padding: 0 !important;
     border: unset !important;
 }
 
-#support-settings .support-content .committee {
+.action-supportbuilder #support-settings .support-content .committee {
     padding: 2.188rem 1.5rem;
     background-color: #FFFFFF;
     border-radius: 0.25rem;
@@ -672,27 +788,27 @@ body {
     border: 1px solid #BBBBBB;
 }
 
-#support-settings .support-content .committee .committee--info {
+.action-supportbuilder #support-settings .support-content .committee .committee--info {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
 }
 
 @media (max-width: 800px) {
-    #support-settings .support-content .committee .committee--info {
+    .action-supportbuilder #support-settings .support-content .committee .committee--info {
         flex-direction: column-reverse;
         align-items: flex-start;
         gap: 20px;
     }
 }
 
-#support-settings .support-content .committee .committee--info .user-info {
+.action-supportbuilder #support-settings .support-content .committee .committee--info .user-info {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-#support-settings .support-content .committee .committee--info .user-info--img {
+.action-supportbuilder #support-settings .support-content .committee .committee--info .user-info--img {
     width: 2.5rem;
     height: 2.5rem;
     overflow: hidden;
@@ -702,7 +818,7 @@ body {
     justify-content: center;
 }
 
-#support-settings .support-content .committee .committee--info .committee--name {
+.action-supportbuilder #support-settings .support-content .committee .committee--info .committee--name {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 700;
@@ -711,68 +827,31 @@ body {
     padding: 0;
 }
 
-#support-settings .support-content .committee .committee--info .buttons {
+.action-supportbuilder #support-settings .support-content .committee .committee--info .buttons {
     display: flex;
     flex-direction: row-reverse;
     gap: 1.688rem;
     align-items: center;
 }
 
-#support-settings .support-content .committee .committee--info .buttons .btn {
-    margin: 0;
-    height: unset;
-    padding: 0.688rem 2.5rem;
-    background: transparent;
-    border: none;
-    display: flex;
-    gap: 0.75rem;
-    font-family: 'Open Sans';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 1.125rem;
-    line-height: 1.563rem;
-    color: #1E1E1E;
-}
-
-#support-settings .support-content .committee .committee--info .buttons .btn:hover {
-    box-shadow: unset;
-}
-
-#support-settings .support-content .committee .committee--info .buttons .btn.delete {
-    color: #ED0000;
-    font-weight: 700;
-    font-size: 0.875rem;
-    line-height: 1.188rem;
-}
-
-#support-settings .support-content .committee .committee--info .buttons .btn.add {
-    background: #FFA4A3;
-    border-radius: 0.5rem;
-}
-
-#support-settings .support-content .committee .committee--info .buttons .btn.add:hover {
-    background: #800100;
-    color: #FFFFFF;
-}
-
-#support-settings  .edit-box {
+.action-supportbuilder #support-settings  .edit-box {
     position: absolute !important;
     right: 0px !important;
 }
 
-#support-settings .support-content-modal {
+.action-supportbuilder #support-settings .support-content-modal {
     max-width: calc(100% - 50px) !important;
     width: 100% !important;
     margin: 0 auto !important;
     border-radius: 0 !important;
 }
 
-#support-settings .support-content-modal header {
+.action-supportbuilder #support-settings .support-content-modal header {
     height: unset;
     margin: unset;
 }
 
-#support-settings .support-content-modal header .support-modal-title{
+.action-supportbuilder #support-settings .support-content-modal header .support-modal-title{
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 700;
@@ -783,12 +862,12 @@ body {
     border: none;
 }
 
-#support-settings .support-content-modal header .x {
+.action-supportbuilder #support-settings .support-content-modal header .x {
     padding: 0;
     top: 0;
 }
 
-#support-settings .support-content-modal header .multiple-fields {
+.action-supportbuilder #support-settings .support-content-modal header .multiple-fields {
     margin: 0;
     display: flex;
     align-items: center;
@@ -797,32 +876,16 @@ body {
     margin-bottom: 1rem;
 }
 
-#support-settings .support-content-modal header hr {
+.action-supportbuilder #support-settings .support-content-modal header hr {
     margin: 0;
 }
 
-#support-settings .support-content-modal select {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: var(--mc-white);
-    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/1.25rem;
-    width: unset;
-    height: unset;
-    padding: 0.875rem 1.875rem 0.875rem 0.688rem;
-    margin: 0;
-    font-family: 'Open Sans';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 0.875rem;
-    line-height: 1.125rem;
-}
 
-#support-settings .support-content-modal .modal-body ul {
+.action-supportbuilder #support-settings .support-content-modal .modal-body ul {
     margin: 0 !important;
 }
 
-#support-settings .support-content-modal .modal-body ul li {
+.action-supportbuilder #support-settings .support-content-modal .modal-body ul li {
     border-bottom: 0.063rem solid #BBBBBB;
     padding: 1.5rem 0.625rem !important;
     margin: 0 !important;
@@ -868,72 +931,6 @@ body {
     gap: 25px;
 }
 
-.technical-evaluation-configuration header input {
-    margin: 0;
-    background: #FFFFFF;
-    border-radius: 0.25rem;
-    border: 0.063rem solid #BBBBBB !important;
-    height: unset;
-    padding: 0.531rem 1rem;
-}
-
-.technical-evaluation-configuration header .btn.delete {
-    background-color: #cc3333;
-}
-
-.technical-evaluation-configuration .btn.add {
-    align-items: center;
-    background: #0074C1;
-    border-radius: 0.5rem;
-    border: none;
-    color: #FFFFFF;
-    display: flex;
-    font-family: 'Open Sans';
-    font-size: 1.125rem;
-    font-style: normal;
-    font-weight: 600;
-    gap: 0.625rem;
-    height: unset;
-    justify-content: center;
-    line-height: 1.563rem;
-    margin: 0;
-    padding: 0.719rem 1.375rem;
-}
-.technical-evaluation-configuration .btn.add::before {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-}
-.technical-evaluation-configuration .btn.add:hover {
-    background-color: #004d80;
-    box-shadow: unset;
-}
-
-.technical-evaluation-configuration .btn.delete {
-    align-items: center;
-    border-radius: 0.5rem;
-    border: none;
-    color: #FFFFFF;
-    display: flex;
-    font-family: 'Open Sans';
-    font-size: 1.125rem;
-    font-style: normal;
-    font-weight: 600;
-    gap: 0.625rem;
-    height: unset;
-    justify-content: center;
-    line-height: 1.563rem;
-    margin: 0;
-    padding: 0.719rem 1.375rem;
-}
-.technical-evaluation-configuration .btn.delete::before {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-}
-
 .technical-evaluation-configuration .policy-roof p {
     color: #1E1E1E;
     font-family: 'Open Sans';
@@ -942,17 +939,6 @@ body {
     font-weight: 600;
     line-height: 1.188rem;
     margin-bottom: 0.625rem !important;
-}
-
-.technical-evaluation-configuration .policy-roof input.edit {
-    background: #FFFFFF;
-    border-radius: 0.25rem;
-    border: 0.063rem solid #BBBBBB;
-    height: unset;
-    margin: 0 0.313rem 0 0;
-    max-width: 21.563rem;
-    padding: 0.813rem 1rem;
-    width: 100%;
 }
 
 .technical-evaluation-configuration table tr {
@@ -978,53 +964,9 @@ body {
     justify-content: center;
 }
 
-.technical-evaluation-configuration table tr:first-child th .btn.add {
-    align-items: center;
-    background: #0074C1;
-    border-radius: 0.5rem;
-    border: none;
-    color: #FFFFFF;
-    display: flex;
-    height: unset;
-    justify-content: center;
-    margin: 0;
-    padding: 0.938rem 1.375rem;
-}
-
-.technical-evaluation-configuration table tr:first-child th .btn.add::before {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-}
-
-.technical-evaluation-configuration table tr:first-child th .btn.add:hover {
-    background-color: #004d80;
-    box-shadow: unset;
-}
-
-.technical-evaluation-configuration table tr td input,
-.technical-evaluation-configuration table tr td select {
-    background: #FFFFFF;
-    border-radius: 0.25rem;
-    border: 0.063rem solid #BBBBBB !important;
-    height: unset;
-    margin: 0 0.313rem 0 0 !important;
-    padding: 0.813rem 1rem;
-    width: 100%;
-}
-
 .technical-evaluation-configuration table tr td:last-child {
     display: flex;
     justify-content: center;
-}
-
-.technical-evaluation-configuration table tr td select {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: var(--mc-white);
-    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/1.25rem;
 }
 
 .technical-evaluation-configuration table tr td input[type=checkbox] {
@@ -1048,10 +990,6 @@ body {
     line-height: 1.188rem;
 }
 
-.technical-evaluation-configuration table tr td.policy-percent input {
-    width: 95% !important;
-}
-
 
 
 /* Registration Manager */
@@ -1061,44 +999,6 @@ body {
     border: none;
     margin: 0;
     padding: 24px;
-}
-
-.action-registrationmanager #filtro-inscritos input {
-    background: #FFFFFF;
-    border-radius: 68px;
-    border: 1px solid #ACACAC;
-    font-family: 'Roboto';
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    height: unset;
-    line-height: 19px;
-    margin: 0;
-    padding: 0.75rem 0.875rem;
-}
-
-.action-registrationmanager .dropdown {
-    background-color: #FFFFFF;
-    display: block;
-    padding: 10px 24px 0;
-    width: unset !important;
-    margin: 0 !important;
-    border-radius: 0;
-}
-
-.action-registrationmanager .dropdown .placeholder {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: var(--mc-white);
-    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 100% center/20px;
-    border-radius: 4px;
-    border: 0.8px solid #BBBBBB;
-}
-
-
-.action-registrationmanager .dropdown .placeholder::after {
-    content: unset;
 }
 
 .action-registrationmanager #selected-filters {
@@ -1131,101 +1031,9 @@ body {
     text-transform: capitalize;
 }
 
-.registrations-table {
-    margin-bottom: 0;
-}
-
-.action-registrationmanager #registrations-table-container table thead tr th {
-    background-color: #FFFFFF;
-    border: none;
-    text-align: left;
-}
-
-.action-registrationmanager #registrations-table-container table thead tr th:first-child,
-.action-registrationmanager #registrations-table-container table thead tr th:last-child {
-    text-align: center;
-}
-
-.action-registrationmanager #registrations-table-container table .table-info {
-    display: none;
-}
-
-.action-registrationmanager #registrations-table-container table thead tr,
-.action-registrationmanager #registrations-table-container table tbody tr {
-    border: none;
-    border-bottom: 1px solid #BBBBBB;
-}
-
-.action-registrationmanager table.registrations-table thead th.registration-status-col .dropdown,
-.action-registrationmanager table.registrations-table tbody tr td.registration-status-col .dropdown {
-    padding: 0;
-    background-color: transparent;
-}
-
-.action-registrationmanager table.registrations-table thead th.registration-status-col .dropdown .placeholder,
-.action-registrationmanager table.registrations-table tbody tr td.registration-status-col .dropdown .placeholder {
-    color: #000000;
-}
-
-
-.action-registrationmanager table.registrations-table thead th.registration-status-col .dropdown .submenu-dropdown,
-.action-registrationmanager table.registrations-table tbody tr td.registration-status-col .dropdown .submenu-dropdown {
-    background-color: #FFFFFF;
-}
-.action-registrationmanager table.registrations-table tbody tr td.registration-agents-col p {
-    margin: 0;
-}
-
-.action-registrationmanager table.registrations-table tbody tr td.registration-agents-col p .label,
-.action-registrationmanager table.registrations-table tbody tr td.registration-agents-col p br {
-    display: none;
-}
-
-.action-registrationmanager table.registrations-table tbody tr {
-    background-color: #FFFFFF;
-}
-
-.action-registrationmanager table.registrations-table tbody tr td {
-    border: none;
-}
-
-.action-registrationmanager table.registrations-table tbody tr td a {
-    color: #000000;
-    font-family: 'Open Sans';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 19px;
-}
-
-.action-registrationmanager table.registrations-table tbody tr.draft {
-    background-color: #FFFFFF;
-}
-
-.action-registrationmanager table.registrations-table tbody tr.notapproved {
-    background-color: #FFE1E1;
-}
-
-.action-registrationmanager table.registrations-table tbody tr.approved {
-    background-color: #BFE88B;
-}
-
-.action-registrationmanager table.registrations-table tbody tr.invalid {
-    background-color: #BBBBBB;
-}
-
-.action-registrationmanager table.registrations-table tbody tr.waitlist {
-    background-color: #FFCF8F;
-}
-
-.action-registrationmanager table.registrations-table tfoot tr td {
-    border: none;
-}
-
 
 
 /* Visible fields to raters */
-
 .fields-visible h4 {
     display: none;
 }
@@ -1243,9 +1051,7 @@ body {
     font-weight: 400;
 }
 
-.fields-visible .search label input {
-    border: 0.8px solid #BBBBBB;
-    border-radius: 4px;
+.fields-visible .search label input.evaluation-fields-filter {
     margin-bottom: 34px;
 }
 
@@ -1258,10 +1064,6 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
-}
-
-.fields-visible .search .select-all label input {
-    margin: 0;
 }
 
 .fields-visible .search .select-all label br {
@@ -1292,64 +1094,10 @@ body {
 
 
 /* Evaluation List */
-
 .action-evaluationlist #header-inscritos {
     display: none;
 }
 
-.action-evaluationlist .registrations-table thead {
-    background-color: #FFFFFF;
-}
-
-.action-evaluationlist .registrations-table thead tr {
-    background-color: #FFFFFF;
-    border-bottom: 1px solid #BBBBBB;
-}
-
-.action-evaluationlist .registrations-table thead tr th {
-    background-color: #FFFFFF;
-    color: #000000;
-    font-family: 'Open Sans';
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 19px;
-    vertical-align: middle; 
-}
-
-.action-evaluationlist .registrations-table thead tr th .dropdown {
-    align-items: center;
-    color: #000000;
-    display: flex;
-    font-family: 'Open Sans';
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 19px;
-    line-height: unset;
-    margin: 0;
-}
-
-.action-evaluationlist .registrations-table thead tr th .dropdown .placeholder {
-    text-align: center;
-    width: 100%;
-}
-
-.action-evaluationlist .registrations-table thead tr th .dropdown .placeholder::after {
-    line-height: unset;
-}   
-
-.action-evaluationlist .registrations-table tbody tr {
-    background-color: #FFFFFF;
-    border: none;
-    border-bottom: 1px solid #BBBBBB;
-    font-family: 'Open Sans';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 19px;
-    color: #000000;
-}
 
 
 /* sidebarleftevaluations */
