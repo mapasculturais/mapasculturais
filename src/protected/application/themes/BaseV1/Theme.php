@@ -2929,10 +2929,10 @@ class Theme extends MapasCulturais\Theme {
     function getCurrentRegistrationEvaluation(Entities\Registration $entity){
         $evaluation = null;
 
-        if(isset($entity->controller->urlData['uid'])){
+        if(isset($this->controller->urlData['uid'])){
             $evaluation = App::i()->repo('RegistrationEvaluation')->findOneBy([
                 'registration' => $entity,
-                'user' => $entity->controller->urlData['uid']
+                'user' => $this->controller->urlData['uid']
             ]);
             if($evaluation && !$evaluation->registration->equals($entity)){
                 $evaluation = null;

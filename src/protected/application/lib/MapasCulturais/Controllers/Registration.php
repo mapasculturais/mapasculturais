@@ -596,13 +596,19 @@ class Registration extends EntityController {
     $app = App::i();
 
     $entity = $app->repo('Registration')->find($this->data['id']);
-
+    
     if (!$entity) {
-      $app->pass();
+        $app->pass();
     }
 
+    $valuer_user = $app->repo('User')->find($this->data['user'] ?? -1);
+
+    if(!$valuer_user) {
+        $app->pass();
+    }
+    
     $entity->checkPermission('viewUserEvaluation');
 
-    $this->render('evaluation', ['entity' => $entity]);
+    $this->render('evaluation', ['entity' => $entity, 'valuer_user' => $valuer_user]);
   }
 }
