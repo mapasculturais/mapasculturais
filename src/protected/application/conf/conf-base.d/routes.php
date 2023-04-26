@@ -40,6 +40,8 @@ return [
             'baixar-inscritos' => ['opportunity', 'report'],
             'baixar-avaliacoes' => ['opportunity', 'reportEvaluations'],
 
+            'avaliacao' => ['registration', 'evaluation'],
+
 
             'historico'         => ['entityRevision','history'],
             
