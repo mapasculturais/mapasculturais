@@ -25,8 +25,8 @@ $this->import('
             <slide v-for="entity in entities" :key="entity.id">
 
                 <panel--entity-card :key="entity.id" :entity="entity" class="card">
-                    <template #title="{entity}">
-                        {{entity.parent.name || entity.name}}
+                    <template #title>
+                        {{entity.parent?.name || entity.name}}
                     </template>
 
                     <template #header-actions="{entity}">
