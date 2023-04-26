@@ -17,12 +17,14 @@ $this->import('
     entity-seals
     entity-social-media
     entity-terms
+    evaluations-list
     mapas-breadcrumb
     opportunity-subscription
     opportunity-subscription-list
     opportunity-phases-timeline
     share-links
     tabs
+    v1-embed-tool
 ');
 
 $this->breadcrumb = [
@@ -87,6 +89,10 @@ $this->breadcrumb = [
                     </div>  
                 </aside>
             </mapas-container>
+        </tab>
+
+        <tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="entity.currentUserPermissions.evaluateRegistrations">
+            <evaluations-list :entity="entity"></evaluations-list>
         </tab>
 
     </tabs>
