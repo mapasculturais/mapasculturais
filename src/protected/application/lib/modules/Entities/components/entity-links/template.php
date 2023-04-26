@@ -1,7 +1,8 @@
 <?php 
 use MapasCulturais\i;
 ?>
-<div class="entity-links">
+
+<div v-if="entity.metalists.links || editable" class="entity-links">
     <label class="entity-links__title"> {{title}} </label>
 
     <ul class="entity-links__links">
