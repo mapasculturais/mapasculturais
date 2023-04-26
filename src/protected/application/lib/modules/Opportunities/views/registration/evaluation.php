@@ -33,30 +33,22 @@ $breadcrumb = [
 $breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
 
 $this->breadcrumb = $breadcrumb;
-
 ?>
 
 <div class="main-app registration edit">
     <mapas-breadcrumb></mapas-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity">
         <template #footer>
-            <mc-summary-evaluate>
-                <mc-side-menu  text-button="<?= i::__("Lista de avaliações") ?>">
-                    <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
-                </mc-side-menu>
-            </mc-summary-evaluate>
+            <mc-summary-evaluate></mc-summary-evaluate>
+            <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>">
+                <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
+            </mc-side-menu>
         </template>
     </opportunity-header>
     <div class="registration__content">
 
         <mapas-container>
             <main class="grid-12">
-                <div class="col-12 registration-info">
-                    <p class="registration-info__title"> <?= i::__('Agente proponente') ?> </p>
-                    <div class="registration-info__content">
-                        <registration-related-agents :registration="entity"></registration-related-agents>
-                    </div>
-                </div>
                 <div class="col-12 registration-info">
                     <p class="registration-info__title"> <?= i::__('Informações da inscrição') ?> </p>
                     <div class="registration-info__content">
@@ -111,6 +103,20 @@ $this->breadcrumb = $breadcrumb;
             </main>
 
             <aside>
+
+
+                <div class="registration-evaluation-actions__form">
+                    
+                    <div class="registration-evaluation-actions__form--title">
+                        <p><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></p>
+                    </div>
+                    <?php if($valuer_user): ?>
+                        <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" :id="entity.id"></v1-embed-tool>
+                    <?php else : ?>
+                        <v1-embed-tool route="evaluationforms" :id="entity.id"></v1-embed-tool>
+                    <?php endif ?>
+
+                </div>
                 <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
             </aside>
         </mapas-container>

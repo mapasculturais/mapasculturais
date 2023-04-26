@@ -11,29 +11,6 @@ $this->import('v1-embed-tool')
 ?>
 
 <div class="registration-evaluation-actions">
-    <div class="registration-evaluation-actions__primary">
-        <div v-if="Object.keys(registration.__validationErrors).length > 0" class="errors">
-            <span class="errors__title"> <?= i::__('Ops! Alguns erros foram identificados.') ?> </span>
-            <span class="errors__subtitle"> <?= i::__('Para continuar, corrija os campos com os erros listados abaixo:') ?> </span>
-    
-            <div v-for="(error, index) in registration.__validationErrors" class="errors__error">
-                <div class="errors__error--text">
-                    <strong>{{fieldName(index)}}:</strong> <p v-for="text in error">{{text}}</p>
-                </div>    
-            </div>
-        </div>
-    </div>
-
-    <div class="registration-evaluation-actions__form">
-
-        <div class="registration-evaluation-actions__form--title">
-            <p><?= i::__("Formulário de") ?> <strong><?= i::__("avaliação simplificada") ?></strong></p>
-        </div>
-
-        <v1-embed-tool route="evaluationforms" :id="registration.id"></v1-embed-tool>
-
-    </div>
-
     <div class="registration-evaluation-actions__buttons">
         <div class="grid-12">
             <div class="col-12">

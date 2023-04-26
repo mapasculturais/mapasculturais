@@ -8,7 +8,7 @@
 use MapasCulturais\i;
 ?>
 
-<div class="grid-12 form-builder__bg-content" >
+<div class="grid-12 form-builder__bg-content opportunity-phase-header">
     <div class="sm:col-12 form-builder__title" :class="titleColClass">
         <p class="opportunity__color">{{ title }}</p>
     </div>

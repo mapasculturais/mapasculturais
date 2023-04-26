@@ -12,6 +12,7 @@ if(!$evaluation){
 $data = $evaluation->evaluationData;
 
 $class = $evaluation->result == 1 ? 'evaluation-valid' : 'evaluation-invalid';
+
 ?>
 <div id="documentary-evaluation-view" class="widget documentary-evaluation-view <?php echo $class ?>">
     
