@@ -9,7 +9,7 @@ $this->import('
     panel--last-edited
     panel--last-registrations
     panel--open-opportunities
-    panel--pending-reviews
+    panel--pending-evaluations
     user-profile-avatar
 '); 
 ?>
@@ -56,7 +56,7 @@ $this->import('
 
                 <panel--entities-summary></panel--entities-summary>
 
-                <panel--pending-reviews></panel--pending-reviews>
+                <panel--pending-evaluations></panel--pending-evaluations>
 
                 <panel--open-opportunities></panel--open-opportunities>
 

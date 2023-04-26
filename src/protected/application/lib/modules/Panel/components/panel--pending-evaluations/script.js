@@ -1,5 +1,5 @@
-app.component('panel--pending-reviews', {
-    template: $TEMPLATES['panel--pending-reviews'],
+app.component('panel--pending-evaluations', {
+    template: $TEMPLATES['panel--pending-evaluations'],
 
     components: {
         carousel: Vue3Carousel.Carousel,
@@ -10,9 +10,10 @@ app.component('panel--pending-reviews', {
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('panel--pending-reviews');
+        const text = Utils.getTexts('panel--pending-evaluations');
         const entities = [];
         const api = new API("opportunity");
+        
         for(let raw of $MAPAS.opportunitiesCanBeEvaluated){
            const opportunity = api.getEntityInstance(raw.id);
            opportunity.populate(raw);
@@ -98,6 +99,21 @@ app.component('panel--pending-reviews', {
     methods: {
         resizeSlides() {
             this.$refs.carousel.updateSlideWidth();
+        },
+        ownerType(owner) {
+            console.log(owner.__objectType);
+            switch (owner.__objectType) {
+                case 'agent':
+                    return this.text('agente');
+                case 'space':
+                    return this.text('espaço');
+                case 'event':
+                    return this.text('evento');
+                case 'opportunity':
+                    return this.text('opportunidade');
+                case 'project':
+                    return this.text('projeto');
+            }
         }
     },
 
