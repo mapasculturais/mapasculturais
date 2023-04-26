@@ -16,8 +16,8 @@ $this->import('
         <div class="left">
             <div class="panel-entity-card__header--picture">
                 <slot name="picture" :entity="entity">
-                    <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarSmall?.url" alt="">
-                     <mc-icon v-if="!entity.files.avatar" :entity="entity" ></mc-icon>
+                    <img v-if="entity.files?.avatar" :src="entity.files?.avatar?.transformations?.avatarSmall?.url" alt="">
+                    <mc-icon v-if="!entity.files?.avatar" :entity="entity" ></mc-icon>
                 </slot>
             </div>
             <div class="panel-entity-card__header--info">
