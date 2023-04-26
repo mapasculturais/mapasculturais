@@ -374,10 +374,9 @@
 		justify-content: space-between;
 
 		&> :first-child {
-			align-items: center;
+			align-items: start;
 			display: grid;
-			grid-template-columns: size(64) 1fr;
-			gap: size(16);
+			gap: size(7) size(16);
 
 			@media (max-width: size(500)) {
 
@@ -405,13 +404,11 @@
 			}
 
 			img {
-
 				border-radius: 50%;
 				width: 100%;
 			}
 
 			@media (max-width: size(500)) {
-
 				height: size(32);
 				width: size(32);
 
@@ -422,6 +419,7 @@
 		}
 
 		&--info {
+			align-self: center;
 			align-items: flex-start;
 			display: flex;
 			flex-direction: column;

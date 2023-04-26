@@ -1,16 +1,16 @@
-# Componente `<panel--pending-reviews>`
+# Componente `<panel--pending-evaluations>`
 Listagem dos cards com as avaliações pendentes
 
 
 ### Importando componente
 ```PHP
 <?php 
-$this->import('panel--pending-reviews');
+$this->import('panel--pending-evaluations');
 ?>
 ```
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<panel--pending-reviews></panel--pending-reviews>
+<panel--pending-evaluations></panel--pending-evaluations>
 
 ```
