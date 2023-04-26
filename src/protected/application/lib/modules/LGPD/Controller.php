@@ -56,7 +56,12 @@ class Controller  extends \MapasCulturais\Controller
         $terms_slug = !is_array($this->data[0]) ? [$this->data[0]] : $this->data[0];
         $app->modules['LGPD']->acceptTerms($terms_slug);
 
-        $url = $_SESSION[Module::key] ?? "/";
-        $this->json(['redirect' =>  $url]);
+        if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
+            $url = $app->createUrl("painel", "index");
+            $app->redirect($url);
+        }else{
+            $url =  $_SESSION[Module::key] ?? "/";
+            $this->json(['redirect' =>  $url]);
+        }
     }
 }
