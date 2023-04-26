@@ -10,8 +10,16 @@ app.component('panel--pending-reviews', {
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('panel--pending-reviews')
-        return { text }
+        const text = Utils.getTexts('panel--pending-reviews');
+        const entities = [];
+        const api = new API("opportunity");
+        for(let raw of $MAPAS.opportunitiesCanBeEvaluated){
+           const opportunity = api.getEntityInstance(raw.id);
+           opportunity.populate(raw);
+           entities.push(opportunity);
+        }
+
+        return { text, entities }
     },
 
     created() {
@@ -21,7 +29,6 @@ app.component('panel--pending-reviews', {
     data() {
         return {
             loading: true,
-            entities: $MAPAS.opportunitiesCanBeEvaluated,
 
             // carousel settings
             settings: {
