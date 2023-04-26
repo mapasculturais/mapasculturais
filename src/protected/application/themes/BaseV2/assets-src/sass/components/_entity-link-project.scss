@@ -1,6 +1,6 @@
 @use '../settings/mixins' as *;
 
-.entity-parent-edit {
+.entity-link-project {
     margin: 0;
 
     &__title {
@@ -8,7 +8,7 @@
         margin: 0;
     }
 
-    &__parent {
+    &__project {
         align-items: center;
         display: grid;
         grid-template-columns: size(70) 1fr;
