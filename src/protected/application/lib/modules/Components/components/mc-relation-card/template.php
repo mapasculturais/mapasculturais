@@ -36,7 +36,7 @@ use MapasCulturais\i;
 
             <div class="relation-card__content">
                 <div class="type">
-                    <span> <?= i::__('Este agente atua de forma') ?> <span :class="['actualType', relation.agent.__objectType+'__color']">{{relation.agent.type.name}}</span> </span>
+                    <span> <?= i::__('Este agente atua de forma') ?> <span :class="['actualType', relation.agent['@entityType']+'__color']">{{relation.agent.type.name}}</span> </span>
                 </div>
                 <div class="tags">
                     <div class="tags__label">
