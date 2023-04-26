@@ -25,13 +25,7 @@ $this->import('v1-embed-tool')
     </div>
 
     <div class="registration-evaluation-actions__form">
-
-        <div class="registration-evaluation-actions__form--title">
-            <p><?= i::__("Formulário de") ?> <strong><?= i::__("avaliação simplificada") ?></strong></p>
-        </div>
-
         <v1-embed-tool route="evaluationforms" :id="registration.id"></v1-embed-tool>
-
     </div>
 
     <div class="registration-evaluation-actions__buttons">
