@@ -11,9 +11,9 @@ modal
 
 <div class="opportunity-form-export">
   <div class="opportunity-form-export__button">
-    <button type="button" class="export  button">
+    <a v-bind:href="url" type="button" class="export  button">
       <?php i::_e("Exportar") ?>
-    </button>
+    </a>
 
   </div>
 
