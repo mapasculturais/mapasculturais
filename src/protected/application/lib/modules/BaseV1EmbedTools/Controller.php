@@ -115,7 +115,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $app = App::i();
         $this->entityClassName = "MapasCulturais\\Entities\\Registration";
         $this->layout = "embedtools-registration";
-        $entity = $this->getEntityAndCheckPermission('@control');
+        $entity = $this->getEntityAndCheckPermission('support');
 
         $entity->registerFieldsMetadata();
         $relation = $app->repo("AgentRelation")->findOneBy([
