@@ -25,18 +25,6 @@ app.component('opportunity-form-import', {
             type: Entity,
             required: true
         },
-        group: {
-            type: String,
-            required: true
-        },
-        title: {
-            type: String,
-            required: true
-        },
-        editable: {
-            type: Boolean,
-            default: false
-        },
         classes: {
             type: [String, Array, Object],
             required: false
