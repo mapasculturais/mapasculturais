@@ -14,6 +14,7 @@ app.component('panel--pending-evaluations', {
         const entities = [];
         const api = new API("opportunity");
         
+        
         for(let raw of $MAPAS.opportunitiesCanBeEvaluated){
            const opportunity = api.getEntityInstance(raw.id);
            opportunity.populate(raw);
@@ -28,6 +29,7 @@ app.component('panel--pending-evaluations', {
     },
 
     data() {
+        console.log(this.entities);
         return {
             loading: true,
 
