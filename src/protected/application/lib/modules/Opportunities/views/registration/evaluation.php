@@ -40,9 +40,11 @@ $this->breadcrumb = $breadcrumb;
     <opportunity-header :opportunity="entity.opportunity">
         <template #footer>
             <mc-summary-evaluate></mc-summary-evaluate>
-            <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>">
-                <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
-            </mc-side-menu>
+            <?php if(!$app->user->is('admin')): ?>
+                <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>">
+                    <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
+                </mc-side-menu>
+            <?php endif ?>
         </template>
     </opportunity-header>
     <div class="registration__content">
