@@ -52,7 +52,7 @@ $this->import('
                     </template>
 
                     <template #entity-actions-right>
-                        <mc-link :entity="entity.evaluationMethodConfiguration" route="evaluationsList" class="button button--primary button--icon"> <?= i::__('Avaliar')?> <mc-icon name="arrow-right"></mc-icon> </mc-link>
+                        <mc-link :entity="entity" route="opportunityEvaluations" class="button button--primary button--icon"> <?= i::__('Avaliar')?> <mc-icon name="arrow-right"></mc-icon> </mc-link>
                     </template>
                 </panel--entity-card>
 
