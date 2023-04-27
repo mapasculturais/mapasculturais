@@ -87,7 +87,7 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
         <?php $this->applyTemplateHook('opportunity-evaluations--admin--table-tbody-tr','after'); ?>
         <?php $this->applyTemplateHook('opportunity-evaluations--admin--table-tbody','end'); ?>
     </tbody>
-    <tfoot>
+    <tfoot ng-if="data.registrationsAPIMetadata.numPages > 1 && data.registrationsAPIMetadata.page < data.registrationsAPIMetadata.numPages">
         <tr>
             <td colspan='{{numberOfEnabledColumns()}}' align="center">
                 <div ng-if="data.findingEvaluations">
