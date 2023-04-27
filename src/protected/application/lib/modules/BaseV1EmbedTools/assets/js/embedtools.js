@@ -47,4 +47,12 @@
     }
 
     setInterval(postToParent, 50);
+
+    $(document).ready(function() {
+        $("body").on("click", "a[href]", function(event) {
+            event.preventDefault();
+            window.open($(this).attr("href"), "_top");
+        });
+    });
+  
 })(jQuery)
