@@ -26,6 +26,28 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         return i::__('Consiste em avaliação por critérios e cotas.');
     }
 
+    public function filterEvaluationsSummary(array $data) {
+        // encontra o maior valor do array
+        $max_value = max(array_keys($data)) + 1;
+        
+
+        // divide em 5 faixas
+        $result = [];
+        for($i=0;$i<5;$i++){
+            $min = $i * $max_value / 5;
+            $max = ($i+1) * $max_value / 5;
+            foreach($data as $val => $sum) {
+                if($val >= $min && $val < $max) {
+                    $key = "{$min} - {$max}";
+                    $result[$key] = $result[$key] ?? 0;
+                    $result[$key] += $sum;
+                }
+            }
+        }
+        
+        return $result;
+    }
+
     public function cmpValues($value1, $value2){
         $value1 = (float) $value1;
         $value2 = (float) $value2;

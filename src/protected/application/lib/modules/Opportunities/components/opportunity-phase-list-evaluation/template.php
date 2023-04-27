@@ -9,23 +9,19 @@ $this->import('
 
 <mapas-card>
     <div class="grid-12 opportunity-phase-list-evaluation">
-        <div class="col-12">
-            <p><?= i::__("Status da avaliação:") ?> <strong>Em andamento</strong></p>
-            <p><?= i::__("Quantidade inscrições:") ?> <strong>xxx inscrições</strong></p>
-            <p><?= i::__("Quantidade de inscrições avaliadas:") ?> <strong>xxx inscrições</strong></p>
-            <p><?= i::__("Quantidade de inscrições selecionadas:") ?> <strong>XX inscrições</strong></p>
-            <p><?= i::__("Quantidade de inscrições suplentes:") ?> <strong>XX inscrições</strong></p>
-            <p><?= i::__("Quantidade de inscrições inválidas:") ?> <strong>XX inscrições</strong></p>
-            <p><?= i::__("Quantidade de inscrições pendentes:") ?> <strong>XX inscrições</strong></p>
+        <div class="col-6">
+            <h3><?php i::_e("Status das inscrições") ?></h3>
+            <!-- <p><?= i::__("Status da avaliação:") ?> <strong>Em andamento</strong></p> -->
+            <p v-if="entity.summary.registrations"><?= i::__("Quantidade inscrições:") ?> <strong>{{entity.summary.registrations}}</strong> <?php i::_e('inscrições') ?></p>
+            <p v-if="entity.summary.evaluated"><?= i::__("Quantidade de inscrições <strong>avaliadas</strong>:") ?> <strong>{{entity.summary.evaluated}}</strong> <?php i::_e('inscrições') ?></p>
+            <p v-if="entity.summary.Approved"><?= i::__("Quantidade de inscrições <strong>selecionadas</strong>:") ?> <strong>{{entity.summary.Approved}}</strong> <?php i::_e('inscrições') ?></p>
+            <p v-if="entity.summary.Waitlist"><?= i::__("Quantidade de inscrições <strong>suplentes</strong>:") ?> <strong>{{entity.summary.Waitlist}}</strong> <?php i::_e('inscrições') ?></p>
+            <p v-if="entity.summary.Invalid"><?= i::__("Quantidade de inscrições <strong>inválidas</strong>:") ?> <strong>{{entity.summary.Invalid}}</strong> <?php i::_e('inscrições') ?></p>
+            <p v-if="entity.summary.Pending"><?= i::__("Quantidade de inscrições <strong>pendentes</strong>:") ?> <strong>{{entity.summary.Pending}}</strong> <?php i::_e('inscrições') ?></p>
         </div>
-        <div class="col-4 sm:col-12 subscribe_prev_phase">
-            <!-- TO DO -->
-        </div>
-        <div class="col-8 sm:col-12 subscribe_prev_phase">
-            <p><strong><?= i::__("Ao trazer as inscrições, você garante que apenas participantes classificados na fase anterior sigam para a póxima fase.") ?></strong></p>
-        </div>
-        <div class="col-12">
-            <!-- TO DO -->
+        <div class="col-6">
+            <h3><?php i::_e("Status das avaliações") ?></h3>
+            <p v-for="(value, label) in entity.summary.evaluations"><?= i::__("Quantidade de inscrições") ?> <strong>{{label.toLowerCase()}}</strong>: <strong>{{value}}</strong> <?php i::_e('inscrições') ?></p>
         </div>
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
             <mc-link :entity="entity.opportunity" class="opportunity-phase-list-data-collection_action--button" icon="external" route="registrations" right-icon>

@@ -268,7 +268,9 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         $conn = $app->em->getConnection();
         $opportunity = $this->owner;
-        $data = [];
+        $data = [
+            'evaluations' => []
+        ];
         
         $buildQuery = function($colluns = "*", $params = "", $type = "fetchAll") use ($conn, $opportunity){
             return $conn->$type("SELECT {$colluns} FROM evaluations e WHERE opportunity_id = {$opportunity->id} {$params}");
@@ -290,24 +292,67 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $data['evaluated'] = $evaluated['qtd'];
 
         // Conta as inscrições avaliadas por status
-        $query = $app->em->createQuery("SELECT r.consolidatedResult as status, count(r.consolidatedResult) as qtd FROM MapasCulturais\\Entities\\Registration r  WHERE r.opportunity = :opp AND r.consolidatedResult > :status_evaluate AND r.id IN (:reg_ids) GROUP BY r.consolidatedResult");
+        $query = $app->em->createQuery("
+            SELECT 
+                r.status, 
+                count(r) as qtd 
+            FROM 
+                MapasCulturais\\Entities\\Registration r  
+            WHERE 
+                r.opportunity = :opp AND r.status > 0 AND 
+                r.id IN (:reg_ids) GROUP BY r.status
+        ");
 
         $query->setParameters([
             "opp" => $opportunity,
-            "reg_ids" => $registrations_ids,
-            'status_evaluate' => 0
+            "reg_ids" => $registrations_ids
         ]);
         
         if($result = $query->getResult()){
             foreach($result as $values){
-                $status = $this->getStatuses($values['status']);
-                $data[$status] = $values['qtd'];
+                $data[$values['status']] = $values['qtd'];
             }
         }
+
+        // status das avaliações
+
+        // Conta as inscrições avaliadas por status
+        $query = $app->em->createQuery("
+            SELECT 
+                r.consolidatedResult, 
+                count(r) as qtd 
+            FROM 
+                MapasCulturais\\Entities\\Registration r  
+            WHERE 
+                r.opportunity = :opp AND r.status > 0 AND 
+                r.id IN (:reg_ids) GROUP BY r.consolidatedResult
+        ");
+
+        $query->setParameters([
+            "opp" => $opportunity,
+            "reg_ids" => $registrations_ids
+        ]);
         
+        $em = $this->evaluationMethod;
+        if($result = $query->getResult()){
+            foreach($result as $values){
+                $status = $em->valueToString($values['consolidatedResult']);
+                if($status) {
+                    $data['evaluations'][$status] = $values['qtd'];
+                } else {
+                    $data['evaluations'][i::__('Não Avaliada')] = $values['qtd'];
+                }
+            }
+        }
+
+        $data['evaluations'] = $em->filterEvaluationsSummary($data['evaluations']);
+        $slug = $em->slug;
+        $app->applyHookBoundTo($this, "evaluations({$slug}).summary", [&$data]);
+
         if($app->config['app.useOpportunitySummaryCache']) {
             $app->cache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
         }
+
         return $data;
     }
 
@@ -322,33 +367,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
 
         return false;
-    }
-    
-    /**
-     * @param int $status
-     * @return string
-     */
-    public function getStatuses($status)
-    {
-        $em = $this->owner->getEvaluationMethod();
-        $status = $em->valueToString($status);
-
-        switch ($status) {
-            case 'Inválida':
-                return i::__('invalid');
-                break;
-            case 'Não selecionada':
-                return i::__('notapproved');
-                break;
-            case 'Suplente':
-                return i::__('waitlist');
-                break;
-            case 'Selecionada':
-                return i::__('approved');
-                break;
-            default:
-                return $status ?: '';
-        }
     }
 
     protected function canUserCreate($user){

@@ -898,30 +898,50 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         $params = ["opp" => $this];
 
-        $complement = "";
-        if($this->evaluationMethodConfiguration){
-            $complement.= " AND o.status IN (0,1)";
-        }
-
-        $query = $app->em->createQuery("SELECT o.status, COUNT(o.status) AS qtd FROM MapasCulturais\\Entities\\Registration o  WHERE o.opportunity = :opp {$complement} GROUP BY o.status");
+        $query = $app->em->createQuery("
+            SELECT 
+                o.status, 
+                COUNT(o.status) AS qtd 
+            FROM 
+                MapasCulturais\\Entities\\Registration o 
+            WHERE 
+                o.opportunity = :opp
+            GROUP BY o.status");
 
         $query->setParameters($params);
 
-        $data = [];
-        $total_registrations = 0;
-        $status_list = \MapasCulturais\Entities\Registration::getStatuses();
+        $data = [
+            'registrations' => 0,
+            'sent' => 0,
+        ];
+
+        $status_list = Registration::getStatuses();
+        
         if($result = $query->getResult()){
             foreach($result as $value){
                 $status = $status_list[$value['status']];
-                $total_registrations += $value['qtd'];
-                $data[$status] = $value['qtd'];
+                $data['registrations'] += $value['qtd'];
+                
+                if ($value['status'] > 0) {
+                    $data['sent'] += $value['qtd'];
+                }
+                
+                if ($this->evaluationMethodConfiguration){
+                    if (in_array($value['status'], [0,1])){
+                        $data[$status] = $value['qtd'];
+                    } 
+                } else {
+                    $data[$status] = $value['qtd'];
+                }
             }
         }
-        $data['registrations'] = $total_registrations;
 
         if($app->config['app.useOpportunitySummaryCache']) {
             $app->cache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
         }
+
+        $app->applyHookBoundTo($this, "opportunity.summary", [&$data]);
+
         return $data;
     }
 

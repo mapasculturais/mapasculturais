@@ -30,6 +30,16 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
     }
 
     /**
+     * Filtra o resultado do sumário da fase de avaliação
+     * 
+     * @param array $data 
+     * @return array 
+     */
+    public function filterEvaluationsSummary(array $data) {
+        return $data;
+    }
+
+    /**
      * @param Entities\RegistrationEvaluation $evaluation
      *
      * @return array of errors

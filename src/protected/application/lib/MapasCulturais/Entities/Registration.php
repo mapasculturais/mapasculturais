@@ -746,16 +746,12 @@ class Registration extends \MapasCulturais\Entity
      * @return array
      */
     public static function getStatuses() {
-        $statuses[self::STATUS_ARCHIVED] = i::__('Archived');
-        $statuses[self::STATUS_DISABLED] = i::__('Disabled');
-        $statuses[self::STATUS_DRAFT] = i::__('Draft');
-        $statuses[self::STATUS_ENABLED] = i::__('Enabled');
-        $statuses[self::STATUS_TRASH] = i::__('Trash');
-        $statuses[self::STATUS_SENT] = i::__('Sent');
-        $statuses[self::STATUS_INVALID] = i::__('Invalid');
-        $statuses[self::STATUS_NOTAPPROVED] = i::__('Notapproved');
-        $statuses[self::STATUS_WAITLIST] = i::__('Waitlist');
-        $statuses[self::STATUS_APPROVED] = i::__('Approved');
+        $statuses[self::STATUS_DRAFT] = 'Draft';
+        $statuses[self::STATUS_SENT] = 'Pending';
+        $statuses[self::STATUS_INVALID] = 'Invalid';
+        $statuses[self::STATUS_NOTAPPROVED] = 'Notapproved';
+        $statuses[self::STATUS_WAITLIST] = 'Waitlist';
+        $statuses[self::STATUS_APPROVED] = 'Approved';
 
         return $statuses;
     }
