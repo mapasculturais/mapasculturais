@@ -158,6 +158,7 @@
                             }
 
                             .left {
+                                flex-wrap: wrap;
                                 @media (max-width:size(956)) {
                                     display: flex;
                                     gap: size(12);
