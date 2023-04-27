@@ -27,6 +27,7 @@ app.component('opportunity-form-export', {
     },
 
     data() {
+        return {}
     },
 
     methods: {
