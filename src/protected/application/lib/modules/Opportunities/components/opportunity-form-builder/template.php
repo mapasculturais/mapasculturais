@@ -83,8 +83,7 @@ $this->import('
             </mapas-card>
         </div>
         <div class="col-12 form-export">
-            <opportunity-form-export></opportunity-export-form>
-
+            <opportunity-form-export></opportunity-form-export>
         </div>
     
         <div class="col-12">
