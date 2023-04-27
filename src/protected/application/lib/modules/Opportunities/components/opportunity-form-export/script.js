@@ -23,7 +23,10 @@ app.component('opportunity-form-export', {
             type: [String, Array, Object],
             required: false
         },
-
+        entity: {
+            type: Entity,
+            required: true
+        }
     },
 
     data() {
