@@ -22,13 +22,14 @@
 
 			.count {
 				position: absolute;
-				width: size(16);
+				min-width: size(16);
 				height: size(16);
 				text-align: center;
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
-				border-radius: 50%;
+				border-radius: var(--mc-border-radius-pill);
+				padding: 0 size(5);
 				background-color: var(--mc-danger-500);
 				color: var(--mc-high-500);
 				font-weight: normal;
@@ -63,13 +64,14 @@
 
 			.count {
 				position: absolute;
-				width: size(16);
+				min-width: size(16);
 				height: size(16);
 				text-align: center;
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
-				border-radius: 50%;
+				border-radius: var(--mc-border-radius-pill);
+				padding: 0 size(5);
 				background-color: var(--mc-danger-500);
 				color: var(--mc-high-500);
 				font-weight: normal;
@@ -115,13 +117,14 @@
 			text-decoration: none;
 
 			&-counter {
-				width: size(18);
+				min-width: size(18);
 				height: size(18);
 				text-align: center;
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
-				border-radius: 50%;
+				border-radius: var(--mc-border-radius-pill);
+				padding: 0 size(5);
 				background-color: var(--mc-danger-500);
 				color: #FFFFFF;
 				font-weight: normal;
