@@ -30,7 +30,8 @@ app.component('opportunity-form-export', {
     },
 
     data() {
-        return {}
+        let url = Utils.createUrl('opportunity', 'exportFields',[this.entity.id]);
+        return { url }
     },
 
     methods: {
