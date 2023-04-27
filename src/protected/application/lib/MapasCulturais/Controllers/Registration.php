@@ -225,6 +225,34 @@ class Registration extends EntityController {
 
     }
 
+    public function GET_sendEvaluation(){
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        if(!$this->urlData['id']){
+        $app->pass();
+        }
+
+        $entity = $this->repository->find($this->data['id']);
+        $user = $app->user;
+        
+        if($evaluation = $entity->getUserEvaluation($user)){
+            
+            $today = new DateTime("now");
+            $evaluationMethod = $evaluation->evaluationMethodConfiguration;
+           
+            if($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo){
+                $evaluation->registration->opportunity->checkPermission('viewUserEvaluation');
+                $evaluation->status = RegistrationEvaluation::STATUS_SENT;
+                $evaluation->save(true);
+                $this->json($entity);
+            }
+
+            return null;
+        }
+    }
+
     public function createUrl($actionName, array $data = array()) {
         if($actionName == 'single' || $actionName == 'edit'){
             $actionName = 'view';
