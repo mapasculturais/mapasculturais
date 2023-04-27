@@ -7,7 +7,7 @@ app.component('opportunity-form-builder-category-list' , {
         return { text }
     },
     created () {
-      this.categories = $MAPAS.requestedEntity.registrationCategories;
+      this.categories = $MAPAS.requestedEntity.registrationCategories || {};
     },
     data () {
       return {
