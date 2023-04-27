@@ -372,10 +372,18 @@
 		align-items: flex-start;
 		display: flex;
 		justify-content: space-between;
-
+		
+		.left {
+			display: grid;
+			grid-template-columns: 70px 1fr;
+			gap: size(7) size(16);
+		}
+		
+		
 		&> :first-child {
 			align-items: start;
 			display: grid;
+			grid-template-columns: 70px 1fr;
 			gap: size(7) size(16);
 
 			@media (max-width: size(500)) {
