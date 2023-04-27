@@ -24,7 +24,7 @@ $this->import('
             <h3><?= i::__("Configuração de formulário de coleta de dados") ?></h3>
         </div>
     </div>
-        <opportunity-form-import></opportunity-form-import>
+        <opportunity-form-import :entity="entity"></opportunity-form-import>
     <div class="grid-12">
         <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
             <opportunity-form-builder-category :entity="entity"></opportunity-form-builder-category>
