@@ -74,7 +74,7 @@
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-        background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/size(20);
+        background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat calc(100% - size(10)) center/size(20);
         background-color: var(--mc-white);
     }
 
