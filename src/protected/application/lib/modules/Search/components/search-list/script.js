@@ -67,18 +67,4 @@ app.component('search-list', {
             }
         },
     },
-
-    methods: {
-        order(order) {
-            let queryOrder = this.query['@order'];
-
-            if (queryOrder.includes('ASC') && order == 'DESC') {
-                this.query['@order'] = queryOrder.replace('ASC', order);
-            } else if (queryOrder.includes('DESC') && order == 'ASC') {
-                this.query['@order'] = queryOrder.replace('DESC', order);
-            } else {
-                this.query['@order'] = this.query['@order'] + ' ' + order;
-            }
-        }
-    },
 });
