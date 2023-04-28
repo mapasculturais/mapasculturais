@@ -103,7 +103,6 @@ app.component('panel--pending-evaluations', {
             this.$refs.carousel.updateSlideWidth();
         },
         ownerType(owner) {
-            console.log(owner.__objectType);
             switch (owner.__objectType) {
                 case 'agent':
                     return this.text('agente');

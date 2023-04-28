@@ -92,7 +92,7 @@ app.component('entities', {
                 query[this.API.$PK] = 'IN(' + this.ids.join(',') + ')'
             }
     
-            if (this.order) {
+            if (this.order && !query['@order']) {
                 query['@order'] = this.order; 
             }
     
