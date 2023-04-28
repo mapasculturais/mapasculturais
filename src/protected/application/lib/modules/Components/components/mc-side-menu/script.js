@@ -21,10 +21,11 @@ app.component('mc-side-menu', {
         const text = Utils.getTexts('mc-side-menu');
         return { text }
     },
-
     mounted() {
+        this.getEvaluations();
+        window.addEventListener('previousEvaluation', this.previousEvaluation);
+        window.addEventListener('nextEvaluation', this.nextEvaluation);
     },
-
     data() {
         return {
             isOpen: false,
