@@ -2,10 +2,11 @@
 
 .notifications {
     .notification-card {
-        border-bottom: 0.5px solid #BBBBBB;
+        border-bottom: size(0.5) solid #BBBBBB;
         border-radius: 0;
         margin: 0;
-        padding: 16px;
+        padding: size(16);
+        margin-bottom: size(16);
 
         .mapas-card__title {
             display: none;

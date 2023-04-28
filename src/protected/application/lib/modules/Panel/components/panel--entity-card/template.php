@@ -45,13 +45,14 @@ $this->import('
             <slot name="footer-actions">
                 <div class="panel-entity-card__footer-actions left">
                     <slot name="entity-actions-left" :entity="entity">
+                        {{onDeleteRemoveFromLists}}
                         <panel--entity-actions 
                             :entity="entity" 
-                            @undeleted="$emit('undeleted', arguments)"
-                            @deleted="$emit('deleted', arguments)"
-                            @unpublished="$emit('unpublished', arguments)"
-                            @archived="$emit('archived', arguments)"
-                            @published="$emit('published', arguments)"
+                            @undeleted="$emit('undeleted', $event)"
+                            @deleted="$emit('deleted', $event)"
+                            @unpublished="$emit('unpublished', $event)"
+                            @archived="$emit('archived', $event)"
+                            @published="$emit('published', $event)"
                             :on-delete-remove-from-lists="onDeleteRemoveFromLists"
                             :buttons="leftButtons"
                         ></panel--entity-actions>
@@ -67,11 +68,11 @@ $this->import('
                         <panel--entity-actions 
                             v-if="rightButtons"
                             :entity="entity" 
-                            @undeleted="$emit('undeleted', arguments)"
-                            @deleted="$emit('deleted', arguments)"
-                            @unpublished="$emit('unpublished', arguments)"
-                            @archived="$emit('archived', arguments)"
-                            @published="$emit('published', arguments)"
+                            @undeleted="$emit('undeleted', $event)"
+                            @deleted="$emit('deleted', $event)"
+                            @unpublished="$emit('unpublished', $event)"
+                            @archived="$emit('archived', $event)"
+                            @published="$emit('published', $event)"
                             :on-delete-remove-from-lists="onDeleteRemoveFromLists"
                             :buttons="rightButtons"
                         ></panel--entity-actions>

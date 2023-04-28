@@ -30,7 +30,7 @@ $this->import('mc-link');
             </p>
         </div>
         <div v-if="areas" class="mc-map-card__content--info">
-            <p class="info">
+            <p v-if="entity.__objectType != 'agent'" class="info">
             <?= i::_e('ACESSIBILIDADE:') ?>
                 <strong v-if="entity.acessibility">
                    <strong><?= i::_e('Oferece: ') ?></strong>

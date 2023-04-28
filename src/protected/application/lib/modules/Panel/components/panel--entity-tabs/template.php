@@ -64,10 +64,10 @@ $tabs = $tabs ?? [
                 <slot name='before-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
                 <slot v-for="entity in entities" :key="entity.__objectId" :entity="entity" :moveEntity="moveEntity">
                     <panel--entity-card :key="entity.id" :entity="entity" 
-                        @undeleted="moveEntity(entity)" 
-                        @deleted="moveEntity(entity)" 
-                        @archived="moveEntity(entity)" 
-                        @published="moveEntity(entity)"
+                        @undeleted="moveEntity(entity, $event)" 
+                        @deleted="moveEntity(entity, $event)" 
+                        @archived="moveEntity(entity, $event)" 
+                        @published="moveEntity(entity, $event)"
                         :on-delete-remove-from-lists="false"
                         >
                         <template #title="{ entity }">

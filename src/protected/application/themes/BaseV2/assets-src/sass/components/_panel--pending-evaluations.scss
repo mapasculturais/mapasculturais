@@ -1,4 +1,4 @@
-@use '../settings/mixins'as *;
+@use '../settings/mixins' as *;
 
 .panel--pending-evaluations {
 
@@ -48,6 +48,7 @@
                 }
 
                 @media (max-width:size(400)) {
+
                     button.carousel__prev,
                     button.carousel__next {
                         background-color: var(--mc-high-500);
@@ -59,6 +60,7 @@
                 }
 
                 @media (max-width:size(700)) {
+
                     button.carousel__prev,
                     button.carousel__next {
                         background-color: var(--mc-high-500);
@@ -155,10 +157,67 @@
                         line-height: size(16);
                         text-align: left;
                         padding: 0;
+
+                        .type-evaluation {
+                            &__type {
+                                max-width: size(134);
+
+                                .entity-label {
+                                    label {
+                                        font-family: 'Open Sans';
+                                        font-style: normal;
+                                        font-weight: 400;
+                                        font-size: 14px;
+                                        line-height: 19px;
+                                    }
+                                }
+
+                                .entity-strong {
+                                    font-weight: 700;
+                                    font-size: 14px;
+                                }
+                            }
+
+                            &__content {
+                                max-width: size(310);
+                                font-family: 'Open Sans';
+                                font-style: normal;
+                                font-size: size(14);
+                                line-height: size(19);
+
+                                &--label {
+
+                                    font-weight: 400;
+                                }
+
+                                &--strong {
+                                    a {
+                                        font-weight: 700;
+                                        text-decoration: none;
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     &__footer {
                         &-actions {
+                            .right {
+                                
+                                .button-evaluate {
+                                    width: size(272);
+                                    display: flex;
+                                        flex-direction: row;
+                                        gap: 69px;
+                                        justify-content: flex-end;
+                                    // a {
+                                    //     display: flex;
+                                    //     flex-direction: row;
+                                    //     gap: 69px;
+                                    //     justify-content: flex-end;
+                                    // }
+                                }
+                            }
 
                             @media (max-width: size(956)) {
                                 display: flex;
@@ -167,6 +226,7 @@
 
                                 &.right {
                                     gap: size(8);
+
                                 }
                             }
                         }

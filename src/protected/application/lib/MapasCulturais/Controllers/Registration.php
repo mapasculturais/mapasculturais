@@ -620,6 +620,7 @@ class Registration extends EntityController {
 
 
   function GET_evaluation() {
+    
     $this->requireAuthentication();
     $app = App::i();
 
@@ -630,10 +631,7 @@ class Registration extends EntityController {
     }
 
     $valuer_user = $app->repo('User')->find($this->data['user'] ?? -1);
-
-    if(!$valuer_user) {
-        $app->pass();
-    }
+   
     
     $entity->checkPermission('viewUserEvaluation');
 
