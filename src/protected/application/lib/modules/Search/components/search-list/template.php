@@ -28,12 +28,14 @@ $this->import('
                         <div class="field">
                             <label> <? i::_e('Ordenar por')?>  </label>
                             <select v-model="entities.query['@order']">
-                                <option value="name ASC"> <?php i::_e('Ordem alfabetica crescente') ?> </option>
-                                <option value="name DESC"> <?php i::_e('Ordem alfabetica decrescente') ?> </option>
-                                <option value="createTimestamp ASC"> <?php i::_e('Data de criação crescente') ?> </option>
-                                <option value="createTimestamp DESC"> <?php i::_e('Data de criação decrescente') ?> </option>
-                                <option v-if="type == 'opportunity'" value="registrationFrom ASC"> <?php i::_e('Início das inscrições crescente') ?> </option>
-                                <option v-if="type == 'opportunity'" value="registrationFrom DESC"> <?php i::_e('Início das inscrições decrescente') ?> </option>
+                                <option value="name ASC"> <?php i::_e('Ordenar por nome (A - Z)') ?> </option>
+                                <option value="name DESC"> <?php i::_e('Ordenar por nome (Z - A)') ?> </option>
+                                <option value="createTimestamp ASC"> <?php i::_e('Tempo de criação (recentes-antigas)') ?> </option>
+                                <option value="createTimestamp DESC"> <?php i::_e('Tempo de criação (antigas-recentes)') ?> </option>
+                                <option value="updateTimestamp ASC"> <?php i::_e('Ordenar por última edição (recentes-antigas)') ?> </option>
+                                <option value="updateTimestamp DESC"> <?php i::_e('Ordenar por última edição (antigas-recentes)') ?> </option>
+                                <option v-if="type == 'opportunity'" value="registrationFrom ASC"> <?php i::_e('Início das inscrições (recentes-antigas)') ?> </option>
+                                <option v-if="type == 'opportunity'" value="registrationFrom DESC"> <?php i::_e('Início das inscrições (antigas-recentes)') ?> </option>
                             </select>
                         </div>
                         <div class="foundResults">
