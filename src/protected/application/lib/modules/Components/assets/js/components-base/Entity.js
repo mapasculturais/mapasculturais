@@ -416,17 +416,14 @@ class Entity {
             const res = await this.API.undeleteEntity(this);
             return this.doPromise(res, (entity) => {
                 this.sendMessage(this.text('entidade recuperada'));
-                
+                this.populate(entity);
                 if(removeFromLists) {
                     this.removeFromLists();
                 }
-
-                this.populate(entity);
             });
-
         } catch (error) {
-            return this.doCatch(error)
-        }        
+            return this.doCatch(error);
+        }       
     }
 
     async destroy() {

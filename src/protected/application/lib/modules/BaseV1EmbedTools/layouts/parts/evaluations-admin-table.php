@@ -64,7 +64,12 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
             <?php $this->applyTemplateHook('opportunity-evaluations--admin--table-tbody-tr','before'); ?>
 
             <td class="registration-id-col">
-                <a href='<?=$evaluation_url?>{{evaluation.registration.id}}/user:{{evaluation.evaluation.user}}' rel='noopener noreferrer' target="_top">
+
+                <a href='<?=$evaluation_url?>{{evaluation.registration.id}}/user:{{evaluation.evaluation.user}}' rel='noopener noreferrer' ng-if="evaluation.evaluation">
+                    <strong>{{evaluation.registration.number}}</strong>
+                </a>
+
+                <a href='javascript:void(0);' rel='noopener noreferrer' ng-if="!evaluation.evaluation">
                     <strong>{{evaluation.registration.number}}</strong>
                 </a>
             </td>

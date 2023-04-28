@@ -40,9 +40,11 @@ $this->breadcrumb = $breadcrumb;
     <opportunity-header :opportunity="entity.opportunity">
         <template #footer>
             <mc-summary-evaluate></mc-summary-evaluate>
-            <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>">
-                <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
-            </mc-side-menu>
+            <?php if(!$app->user->is('admin')): ?>
+                <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>">
+                    <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
+                </mc-side-menu>
+            <?php endif ?>
         </template>
     </opportunity-header>
     <div class="registration__content">
@@ -103,21 +105,21 @@ $this->breadcrumb = $breadcrumb;
             </main>
 
             <aside>
+                <div class="registration-evaluation-actions">
+                    <div class="registration-evaluation-actions__form">
 
+                        <div class="registration-evaluation-actions__form--title">
+                            <p><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></p>
+                        </div>
+                        <?php if ($valuer_user) : ?>
+                            <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" :id="entity.id"></v1-embed-tool>
+                        <?php else : ?>
+                            <v1-embed-tool route="evaluationforms" :id="entity.id"></v1-embed-tool>
+                        <?php endif ?>
 
-                <div class="registration-evaluation-actions__form">
-                    
-                    <div class="registration-evaluation-actions__form--title">
-                        <p><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></p>
                     </div>
-                    <?php if($valuer_user): ?>
-                        <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" :id="entity.id"></v1-embed-tool>
-                    <?php else : ?>
-                        <v1-embed-tool route="evaluationforms" :id="entity.id"></v1-embed-tool>
-                    <?php endif ?>
-
+                    <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
                 </div>
-                <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
             </aside>
         </mapas-container>
     </div>

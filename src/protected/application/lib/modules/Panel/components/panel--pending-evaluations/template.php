@@ -25,20 +25,27 @@ $this->import('
             <slide v-for="entity in entities" :key="entity.id">
 
                 <panel--entity-card :key="entity.id" :entity="entity" class="card">
+                    
+                    <!-- <template #picture>
+                        <img v-if="entity?.files.avatar || entity.files?.avatar" :src="entity.parent?.files?.avatar?.transformations?.avatarSmall?.url || entity.files?.avatar?.transformations?.avatarSmall?.url" />
+                        <mc-icon v-if="!entity.parent?.files.avatar || !entity.files?.avatar" :entity="entity" ></mc-icon>
+                    </template> -->
+                
+                
                     <template #title>
-                        {{entity.parent?.name || entity.name}}
+                        <label class="evaluation-name">{{entity.parent?.name || entity.name}}</label>
                     </template>
 
                     <template #header-actions>
                     </template>
 
                     <template #default>
-                        <div class="grid-12">
-                            <div class="col-12">
-                                <?php i::_e('Tipo:') ?> <strong class="opportunity__color">{{entity.type.name}}</strong>
+                        <div class="type-evaluation grid-12">
+                            <div class="type-evaluation__type col-12">
+                                <label class="entity-label"><?php i::_e('Tipo:') ?></label> <strong class="opportunity__color entity-strong">{{entity.type.name}}</strong>
                             </div>
-                            <div class="col-12">
-                                {{ownerType(entity.ownerEntity)}}: <strong><mc-link :entity="entity.ownerEntity"></mc-link></strong>
+                            <div class="type-evaluation__content col-12">
+                                <label class="type-evaluation__content--label">{{ownerType(entity.ownerEntity)}}:</label> <strong class="type-evaluation__content--strong"><mc-link :entity="entity.ownerEntity"></mc-link></strong>
                             </div>
                         </div>
                     </template>
@@ -52,7 +59,7 @@ $this->import('
                     </template>
 
                     <template #entity-actions-right>
-                        <mc-link :entity="entity" route="opportunityEvaluations" class="button button--primary button--icon"> <?= i::__('Avaliar')?> <mc-icon name="arrow-right"></mc-icon> </mc-link>
+                        <mc-link :entity="entity.evaluationMethodConfiguration" route="opportunity/evaluations" class="button-evaluate button button--primary button--icon"> <?= i::__('Avaliar')?> <mc-icon name="arrow-right-ios"></mc-icon> </mc-link>
                     </template>
                 </panel--entity-card>
 

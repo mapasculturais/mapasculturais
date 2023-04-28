@@ -16,10 +16,11 @@ if($requestedEntity instanceof MapasCulturais\Entities\EvaluationMethodConfigura
 
     $complement = function($collun) use ($app){
         $str = "";
-        if(!$app->user->is('admin')){
-            $user = $app->user;
+        if(isset($this->controller->data['user'])){
+            $user = $app->repo("User")->find($this->controller->data['user']);
             $str.= " AND e.{$collun} = {$user->id}";
         }
+        
         return $str;
     };
 
