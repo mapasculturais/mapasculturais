@@ -42,56 +42,38 @@ app.component('panel--entity-actions', {
 
         archiveEntity(modal) {
             const entity = this.entity;
-            entity.loading = true;
-            entity.archive().then(() => {
-                this.$emit('archived', {entity, modal});
-                entity.loading = false;
-            });
+            const promise = entity.archive();
+            this.$emit('archived', {entity, modal, promise});
         },
         
         deleteEntity(modal) {
             const entity = this.entity;
-            entity.loading = true;
-            entity.delete(this.onDeleteRemoveFromLists).then(() => {
-                this.$emit('deleted', {entity, modal});
-                entity.loading = false;
-            });
+            const promise = entity.delete(this.onDeleteRemoveFromLists)
+            this.$emit('deleted', {entity, modal, promise});
         },
         
         undeleteEntity(modal) {
             const entity = this.entity;
-            entity.loading = true;
-            entity.undelete().then(() => {
-                this.$emit('undeleted', {entity, modal});
-                entity.loading = false;
-            });
+            const promise = entity.undelete();
+            this.$emit('undeleted', {entity, modal, promise});
         },
         
         destroyEntity(modal) {
             const entity = this.entity;
-            entity.loading = true;
-            entity.destroy().then(() => {
-                this.$emit('destroyed', {entity, modal});
-                entity.loading = false;
-            });
+            const promise = entity.destroy()
+            this.$emit('destroyed', {entity, modal, promise});
         },
 
         publishEntity(modal) {
             const entity = this.entity;
-            entity.loading = true;
-            entity.publish().then(() => {
-                this.$emit('published', {entity, modal});
-                entity.loading = false;
-            });
+            const promise = entity.publish();
+            this.$emit('published', {entity, modal, promise});
         },
 
         unpublishEntity(modal) {
             const entity = this.entity;
-            entity.loading = true;
-            entity.unpublish().then(() => {
-                this.$emit('unpublished', {entity, modal});
-                entity.loading = false;
-            });
+            const promise = entity.unpublish()
+            this.$emit('unpublished', {entity, modal, promise});
         },
     },
 });
