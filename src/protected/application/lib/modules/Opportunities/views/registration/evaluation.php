@@ -41,7 +41,7 @@ $this->breadcrumb = $breadcrumb;
         <template #footer>
             <mc-summary-evaluate></mc-summary-evaluate>
             <?php if(!$app->user->is('admin')): ?>
-                <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>">
+                <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
                     <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
                 </mc-side-menu>
             <?php endif ?>
