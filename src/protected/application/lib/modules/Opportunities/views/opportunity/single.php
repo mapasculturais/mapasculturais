@@ -61,10 +61,6 @@ $this->breadcrumb = [
             <mapas-container>
                 <main>
                     <div class="grid-12">
-                        <div class="col-12">
-                            <h3><?= i::__("Apresentação") ?></h3>
-                            <p>{{ entity.shortDescription }}</p>
-                        </div>
                         <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                         <div class="col-12">
                             <entity-links :entity="entity" title="<?php i::esc_attr_e('Links'); ?>"></entity-links>
@@ -82,10 +78,6 @@ $this->breadcrumb = [
                         <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
                         <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
                         <share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
-                        <!-- <div v-if="entity.longDescription" class="col-12">
-                                <h2><?php i::_e('Descrição Detalhada');?></h2>
-                                <p>{{entity.longDescription}}</p>
-                        </div> -->
                     </div>  
                 </aside>
             </mapas-container>
