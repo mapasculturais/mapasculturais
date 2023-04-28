@@ -1,7 +1,35 @@
 @use '../settings/mixins' as *;
 
 .opportunity-phase-publish-date-config {
-    div {
-        align-self: center;
+
+    .button-config {
+        width: 100%;
+        // border: 1px solid #666666;
+        // border-radius: size(8);
     }
+
+
+
+
+
+
+
+
+
+    // display: flex;
+    // gap: 67px;
+    // .config-footer {
+    //     display: flex;
+    //     flex-direction: row;
+    //     gap: 24px;
+
+    //     .button-config {
+    //         max-width: 100%;
+    //         border: 1px solid #666666;
+    //         // border-radius: size(8);
+    //     }
+    // }
+    // .publish-phase{
+    //     max-width: size(151);
+    // }
 }
