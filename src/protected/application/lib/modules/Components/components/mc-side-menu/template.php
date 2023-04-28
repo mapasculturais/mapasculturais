@@ -12,7 +12,7 @@ $this->import('mc-icon');
 ?>
 
 
-<div v-if="viewLoad == 'list'">
+<div>
     <div :class="['mc-side-menu', {'isOpen': isOpen}]">
         <button class="mc-side-menu__button" @click="toggleMenu()">
             <label class="label">{{textButton }}</label>
