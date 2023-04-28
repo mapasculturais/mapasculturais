@@ -3,6 +3,10 @@ app.component('mc-side-menu', {
     emits: ['toggle'],
 
     props: {
+        entity: {
+            type: Entity,
+            required: true
+        },
         textButton: {
             type: String,
             default: 'Button'
