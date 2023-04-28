@@ -680,6 +680,7 @@ class Opportunity extends EntityController {
                 r.status as registrationStatus,
                 r.consolidated_result as registrationConsolidated_result,
                 r.number as registrationNumber,
+                r.create_timestamp,
                 re.*,
                 a.id as agentId,
                 a.name as agentName
@@ -715,6 +716,7 @@ class Opportunity extends EntityController {
                 r.status as registrationStatus,
                 r.consolidated_result as registrationConsolidated_result,
                 r.number as registrationNumber,
+                r.create_timestamp,
                 re.*,
                 a.id as agentId,
                 a.name as agentName
@@ -767,7 +769,8 @@ class Opportunity extends EntityController {
                 "status" => $registration['status'],
                 "agentid" => $registration['agentid'],
                 "agentname" => $registration['agentname'],
-                "resultString" => $opportunity->getEvaluationMethod()->valueToString($registration['result'])
+                "resultString" => $opportunity->getEvaluationMethod()->valueToString($registration['result']),
+                "createTimestamp" => $registration['create_timestamp']
             ];
         },$registrations);
 
