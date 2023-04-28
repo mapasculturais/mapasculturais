@@ -42,7 +42,7 @@ $action = 'single';
                 </div>
             </form>
         <?php elseif ($entity->canUser('viewUserEvaluation')) : ?>
+            <?php $this->part($evaluation_view_part_name, $params); ?>
         <?php endif; ?>
-        <?php $this->part($evaluation_view_part_name, $params); ?>
     </div>
 <?php endif; ?>
