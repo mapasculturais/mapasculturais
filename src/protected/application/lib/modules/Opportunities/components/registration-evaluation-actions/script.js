@@ -1,6 +1,6 @@
 app.component('registration-evaluation-actions', {
     template: $TEMPLATES['registration-evaluation-actions'],
-
+    emits: ['previousEvaluation', 'nextEvaluation'],
     props: {
         registration: {
             type: Entity,
@@ -41,7 +41,6 @@ app.component('registration-evaluation-actions', {
             }
 
             return this.text('Campo não identificado');
-
         },
         finishEvaluation() {
             console.log(this.registration);
@@ -53,10 +52,10 @@ app.component('registration-evaluation-actions', {
             console.log(this.registration);
         },
         previous() {
-            console.log(this.registration);
+            window.dispatchEvent(new CustomEvent('previousEvaluation', {detail:{registrationId:this.registration.id}}));
         },
         next() {
-            console.log(this.registration);
+            window.dispatchEvent(new CustomEvent('nextEvaluation', {detail:{registrationId:this.registration.id}}));
         },
         save() {
             console.log(this.registration);
