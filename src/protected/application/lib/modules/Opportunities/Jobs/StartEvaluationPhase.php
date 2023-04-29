@@ -27,6 +27,8 @@ class StartEvaluationPhase extends JobType
             $opportunity->syncRegistrations();
         }
 
+        $opportunity->enqueueToPCacheRecreation();
+        
         return true;
     }
 }

@@ -30,6 +30,8 @@ class FinishDataCollectionPhase extends JobType
             $next_phase->syncRegistrations();
         }
 
+        $opportunity->enqueueToPCacheRecreation();
+
         return true;
     }    
 }
