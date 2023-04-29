@@ -84,9 +84,15 @@ $this->breadcrumb = [
         </tab>
 
         <tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="entity.currentUserPermissions.evaluateRegistrations">
-            <evaluations-list :entity="entity"></evaluations-list>
+            <div class="opportunity-container">
+                <v1-embed-tool route="evaluationlist" :id="entity.id"></v1-embed-tool>
+            </div>
+            <!-- <evaluations-list :entity="entity"></evaluations-list> -->
         </tab>
 
+        <?php
+            $this->part('opportunity-tab-results.php', ['entity' => $entity]);
+        ?>
     </tabs>
     <entity-actions :entity="entity"></entity-actions>
 </div>
