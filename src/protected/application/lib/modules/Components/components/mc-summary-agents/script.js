@@ -9,9 +9,9 @@ app.component('mc-summary-agents', {
     props: {},
 
     data() {
+        let entity = $MAPAS.requestedEntity;
         let avaliableEvaluationFields = $MAPAS.avaliableEvaluationFields
         let opportunity = $MAPAS.opportunity;
-        let entity = $MAPAS.requestedEntity;
         let owner = entity.agentsData.owner;
         let colective = entity.agentsData?.coletivo;
         let institution = entity.agentsData?.instituicao;
@@ -23,9 +23,14 @@ app.component('mc-summary-agents', {
 
     methods: {
         canSee(item) {
+            if(this.entity.currentUserPermissions['@control']){
+                return true
+            }
+
             if (this.avaliableEvaluationFields[item]) {
                 return true;
             }
+            
             return false;
         },
         getAvatarRelatedEntity(type) {
