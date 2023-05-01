@@ -1,6 +1,6 @@
 <?php
 $this->import('entity');
-$this->addRequestedEntityToJs();
+$this->addRequestedEntityToJs($entity ? $entity->className : null, $entity ? $entity->id : null);
 if ($entity->usesTypes()) {
     $this->bodyClasses[] = "{$entity->entityType}-{$entity->type->id}";
 } else {
