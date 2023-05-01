@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\i;
 
 /**
  * SealRelation
@@ -96,7 +97,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
      *   @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
-    protected $owner_relation;
+    protected $ownerRelation;
 
     /**
      * @var \DateTime
@@ -110,7 +111,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="renovation_request", type="boolean", nullable=false)
      */
-    protected $renovation_request;
+    protected $renovationRequest;
     
     function setSeal(Seal $seal){
         if($this->isNew()){
@@ -131,8 +132,51 @@ abstract class SealRelation extends \MapasCulturais\Entity
         $result['owner'] = $this->owner->simplify('className,id,name,avatar,singleUrl');
         $result['seal'] = $this->seal->simplify('id,name,avatar,singleUrl,validateDate');
         $result['certificateText'] = $this->getCertificateText(true);
+        
+        $result['requestSealRelationUrl'] = $this->requestSealRelationUrl;
+        $result['renewSealRelationUrl'] = $this->renewSealRelationUrl;
+        $result['ownerSealUserId'] = $this->ownerSealUserId;
+        $result['toExpire'] = $this->toExpire;
+        // $result['renovationRequest'] = $this->renovationRequest; // acho que já vai no parent::jsonSerialize
+        $result['validateDate'] = $this->validateDate->format(i::__('d/m/Y'));
 
         return $result;
+    }
+
+    function getRequestSealRelationUrl() {
+        return $this->owner->getRequestSealrelationUrl($this->id);
+    }
+    function getRenewSealRelationUrl() {
+        return $this->owner->getRenewSealRelationUrl($this->id);
+    }
+    function getOwnerSealUserId() {
+        return $this->seal->ownerUser->id;
+    }
+    
+    /**
+     * Retorna 0 se o certificado está expirado, 
+     * Retorna 1 se o certificado não está expirado
+     * Retorna 2 se o certificado nunca expira
+     * 
+     * @return int 
+     */
+    function getToExpire() {
+        if($this->seal->validPeriod > 0){
+            $expirationDate = $this->validateDate;
+            $now = new \DateTime();
+
+            // Expired
+            if($expirationDate < $now) { 
+                return 0;
+            // To Expire
+            } else {
+                return 1;
+            }
+        
+        // Don't Expire
+        } else {
+            return 2;
+        }
     }
 
     protected function canUserCreate($user){
@@ -175,9 +219,9 @@ abstract class SealRelation extends \MapasCulturais\Entity
         $app = App::i();
         try {
             if($this->owner instanceof Agent){
-                $this->owner_relation = $this->owner;
+                $this->ownerRelation = $this->owner;
             } else {
-                $this->owner_relation = $this->owner->owner;
+                $this->ownerRelation = $this->owner->owner;
             }
             parent::save($flush);
             

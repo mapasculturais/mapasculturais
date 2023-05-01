@@ -27,6 +27,8 @@ class StartDataCollectionPhase extends JobType
             $opportunity->syncRegistrations();
         }
         
+        $opportunity->enqueueToPCacheRecreation();
+        
         return true;
     }
 }

@@ -31,7 +31,6 @@ $this->import('
                 <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave="300" classes="col-6 sm:col-12"></entity-field>
                 <entity-field v-if="lastPhase" :entity="lastPhase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12">
                     <label><?= i::__("Publicação final de resultados (data e hora)") ?></label>
-                    <span class="required">*<?php i::_e('obrigatório') ?></span> 
                 </entity-field>
             </div>
         </template>
