@@ -8,6 +8,8 @@ popover
 modal
     
 ');
+$entity = $this->controller->requestedEntity;
+$url = $app->createUrl('opportunity', 'importFields',[$entity->id]);
 ?>
 
 <div class="opportunity-form-import">
@@ -23,13 +25,13 @@ modal
             </template>
 
             <template #default="{popover, close}">
-                <form @submit="upload(popover); $event.preventDefault();" class="entity-files__newFile import-opp">
+                <form name="importFields" class="entity-files__newFile import-opp" method="post" action="<?= $url ?>" enctype="multipart/form-data">
                     <div class="grid-12">
                         <div class="col-12">
                             <div class="field header-import">
                                 <h4 class="header-import__title"><?php i::_e('Importe o arquivo de formulário') ?></h4>
                                 <label class="header-import__label"><?php i::_e('O arquivo importado deve estar no formato .txt ') ?></label>
-                                <input type="file" @change="setFile" ref="file" accept=".txt">
+                                <input type="file" name="fieldsFile" @change="setFile" ref="file" accept=".txt">
                             </div>
                         </div>
 
