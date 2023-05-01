@@ -36,7 +36,10 @@ $breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
 $app->view->jsObject['avaliableEvaluationFields'] = $entity->opportunity->avaliableEvaluationFields;
 
 $this->breadcrumb = $breadcrumb;
-$userEvaluator = $app->repo("User")->find($this->controller->data['user']);
+$userEvaluator = null;
+if(isset($this->controller->data['user']) && $app->user->is('admin')){
+    $userEvaluator = $app->repo("User")->find($this->controller->data['user']);
+}
 ?>
 
 <div class="main-app registration edit">
@@ -50,7 +53,7 @@ $userEvaluator = $app->repo("User")->find($this->controller->data['user']);
                 </mc-side-menu>
             <?php endif ?>
         </template>
-        <?php if($app->user->is('admin')): ?>    
+        <?php if($userEvaluator): ?>    
             <template #opportunity-header-info-end>
                     <h4><?= i::__('Avaliador: ') ?><?= $userEvaluator->profile->name ?></h4>
             </template>
