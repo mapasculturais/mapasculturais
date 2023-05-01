@@ -29,6 +29,9 @@
     }
 
     .tabs-component {
+      &__buttons {
+        gap: size(48);
+      }
       &__header {
         margin: size(-40) auto size(40);
 
@@ -202,7 +205,7 @@
 
   .form-builder {
     background-color: var(--mc-gray-100);
-
+    
     .subtitle {
       font-size: size(12);
       font-weight: normal;
@@ -247,17 +250,6 @@
 
           .popover-tag {
             padding: size(16) 0 0 0;
-
-            .button-popover {
-
-              button {
-                svg {}
-              }
-            }
-          }
-
-          &__content {
-            // area da tag
           }
         }
 
@@ -286,7 +278,11 @@
       }
 
       p {
-        font-weight: bold;
+        font-family: 'Open Sans';
+        color: var(--mc-opportunities-500);
+        font-weight: 700;
+        font-size: size(24);
+        line-height: size(28);
       }
 
       .period_label {
@@ -298,7 +294,13 @@
 
     &__bg-content {
       background-color: var(--mc-white);
-
+      p {
+        font-family: 'Open Sans';
+        color: var(--mc-opportunities-500);
+        font-weight: 700;
+        font-size: size(24);
+        line-height: size(28);
+      }
       &--spacing {
         padding: size(16);
 
