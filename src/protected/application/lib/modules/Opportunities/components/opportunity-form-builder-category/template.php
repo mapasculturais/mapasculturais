@@ -18,7 +18,7 @@ $this->import('opportunity-form-builder-category-list mapas-card')
         <div class="grid-12">
             <entity-field :entity="entity" prop="registrationCategTitle" classes="col-12"></entity-field>
             <entity-field :entity="entity" prop="registrationCategDescription" classes="col-12"></entity-field>
-            <opportunity-form-builder-category-list class="col-12"></opportunity-form-builder-category-list>
+            <opportunity-form-builder-category-list :entity="entity" class="col-12"></opportunity-form-builder-category-list>
         </div>
     </template>
 

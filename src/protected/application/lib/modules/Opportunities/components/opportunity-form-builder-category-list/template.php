@@ -11,7 +11,7 @@ $this->import('popover mc-icon mc-tag-list')
 <div class="build-list">
     <label class="build-list__title"><?= i::__("Categorias") ?></label>
 
-    <mc-tag-list class="build-list__content" :tags="categories" editable></mc-tag-list>
+    <mc-tag-list class="build-list__content" :tags="entity.registrationCategories" editable></mc-tag-list>
 
     <popover class="popover-tag" openside="down-right" title="<?php i::esc_attr_e('Adicionar categoria') ?>">
         <template #button="popover">
