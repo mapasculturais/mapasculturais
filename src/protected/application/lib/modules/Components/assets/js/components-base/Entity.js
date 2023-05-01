@@ -181,7 +181,11 @@ class Entity {
                 val = val.id;
             }
 
-            result[prop] = val;
+            if (typeof val == 'object') {
+                result[prop] = Object.assign({}, val);
+            } else {
+                result[prop] = val;
+            }
         }
 
         for (let prop in this.$RELATIONS) {
