@@ -1122,17 +1122,19 @@ class Opportunity extends EntityController {
     function GET_opportunityEvaluations() {
         $this->requireAuthentication();
 
-        $this->entityClassName = EvaluationMethodConfiguration::class;
+        $opportunity = $this->requestedEntity;
         
         $app = App::i();
 
-        $entity = $this->requestedEntity;
+        $entity = $opportunity->evaluationMethodConfiguration;
 
         if (!$entity) {
             $app->pass();
         }
 
         $entity->checkPermission('viewUserEvaluation');
+
+        $this->entityClassName = EvaluationMethodConfiguration::class;
 
         $this->render('evaluations-list', ['entity' => $entity]);
     }

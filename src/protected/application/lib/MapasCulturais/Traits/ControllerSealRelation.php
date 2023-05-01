@@ -120,7 +120,7 @@ trait ControllerSealRelation{
         $entity->name,$entity->entityTypeName,$entity->editUrl);
         $notification->save();
 
-        $relation->renovation_request = true;
+        $relation->renovationRequest = true;
         $relation->save(true);
 
         if($this->isAjax()){
@@ -161,7 +161,7 @@ trait ControllerSealRelation{
         $notification->save();
 
         $relation->validateDate = $dateFin;
-        $relation->renovation_request = false;
+        $relation->renovationRequest = false;
         $relation->save(true);
 
         if($this->isAjax()){
