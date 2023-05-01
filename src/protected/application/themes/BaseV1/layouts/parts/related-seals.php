@@ -43,10 +43,10 @@ $this->addRelatedSealsToJs($entity);
                         </p>
                         <p>
                             <div ng-if="relation.ownerSealUserId != <?php echo $app->user->id;?>" align="center">
-                                <a ng-if="!relation.renovation_request && relation.toExpire < 2" ng-href="{{relation.requestSealRelationUrl}}" class="btn btn-default js-toggle-edit">
+                                <a ng-if="!relation.renovationRequest && relation.toExpire < 2" ng-href="{{relation.requestSealRelationUrl}}" class="btn btn-default js-toggle-edit">
                                 <?php \MapasCulturais\i::_e("Solicitar renovação");?>
                                 </a>
-                                <div ng-if="relation.renovation_request && relation.toExpire < 2" class="alert warning">
+                                <div ng-if="relation.renovationRequest && relation.toExpire < 2" class="alert warning">
                                 <?php \MapasCulturais\i::_e("Renovação Solicitada");?>
                                 </div>
                             </div>
