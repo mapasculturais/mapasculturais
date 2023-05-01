@@ -7,9 +7,9 @@ $data['isActive'] = false;
 if($requestedEntity instanceof MapasCulturais\Entities\EvaluationMethodConfiguration){
     $entity = $requestedEntity;
 }else if($requestedEntity instanceof MapasCulturais\Entities\Opportunity){
-    $entity = $requestedEntity->opportunity->EvaluationMethodConfiguration;
+    $entity = $requestedEntity->evaluationMethodConfiguration;
 }else if($requestedEntity instanceof MapasCulturais\Entities\Registration){
-    $entity = $requestedEntity->EvaluationMethodConfiguration;
+    $entity = $requestedEntity->opportunity->evaluationMethodConfiguration;
 }
 
     $conn = $app->em->getConnection();
