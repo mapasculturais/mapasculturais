@@ -11,9 +11,10 @@ app.component('mc-summary-sapaces', {
     data() {
         let entity = $MAPAS.requestedEntity;
         let avaliableEvaluationFields = $MAPAS.avaliableEvaluationFields
-        let space = entity.spaceRelations[0].space;
+        let space = entity.spaceRelations ? entity.spaceRelations[0].space : null;
+        let opportunity = $MAPAS.opportunity;
 
-        return { entity, avaliableEvaluationFields, space }
+        return { entity, avaliableEvaluationFields, space, opportunity }
     },
 
     computed: {},
