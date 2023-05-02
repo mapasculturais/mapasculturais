@@ -11,6 +11,7 @@ $this->import('
     mc-icon
     mc-side-menu
     mc-summary-sapaces
+    mc-summary-project
     opportunity-header
     mc-summary-agents
     mc-summary-evaluate
@@ -82,7 +83,7 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
                         </div>
                     </div>
                 </div>
-                
+                <mc-summary-project></mc-summary-project>
                 <mc-summary-agents></mc-summary-agents>
 
                 <div class="col-12 registration-info">
