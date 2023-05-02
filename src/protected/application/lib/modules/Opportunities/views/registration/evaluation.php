@@ -10,7 +10,10 @@ $this->import('
     mapas-container
     mc-icon
     mc-side-menu
+    mc-summary-sapaces
+    mc-summary-project
     opportunity-header
+    mc-summary-agents
     mc-summary-evaluate
     v1-embed-tool 
     registration-evaluation-actions
@@ -32,8 +35,13 @@ $breadcrumb = [
 
 $breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
 
+$app->view->jsObject['avaliableEvaluationFields'] = $entity->opportunity->avaliableEvaluationFields;
+
 $this->breadcrumb = $breadcrumb;
-$userEvaluator = $app->repo("User")->find($this->controller->data['user']);
+$userEvaluator = null;
+if(isset($this->controller->data['user']) && $app->user->is('admin')){
+    $userEvaluator = $app->repo("User")->find($this->controller->data['user']);
+}
 ?>
 
 <div class="main-app registration edit">
@@ -47,7 +55,7 @@ $userEvaluator = $app->repo("User")->find($this->controller->data['user']);
                 </mc-side-menu>
             <?php endif ?>
         </template>
-        <?php if($app->user->is('admin')): ?>    
+        <?php if($userEvaluator): ?>    
             <template #opportunity-header-info-end>
                     <h4><?= i::__('Avaliador: ') ?><?= $userEvaluator->profile->name ?></h4>
             </template>
@@ -75,33 +83,17 @@ $userEvaluator = $app->repo("User")->find($this->controller->data['user']);
                         </div>
                     </div>
                 </div>
-
-                <section class="section">
-                    <div class="section__content">
-                        <div class="card owner">
-                            <div class="card__title">
-                                <?= i::__('Dados do proponente') ?>
-                            </div>
-                            <p><strong><?= i::__("Nome:") ?></strong> <?= i::__("Lorem ipsum ipsum") ?></p>
-                            <p><strong><?= i::__("Descrição curta:") ?></strong> <?= i::__("Est nesciunt excepturi et laborum exercitationem aut dolor veritatis et omnis velit.") ?></p>
-                            <p><strong><?= i::__("CPF ou CNPJ::") ?></strong> <?= i::__("642.653.000-06") ?></p>
-                            <p><strong><?= i::__("Email:") ?></strong> <?= i::__("emaildecontato@email.com.br") ?></p>
-                            <p><strong><?= i::__("Raça:") ?></strong> <?= i::__("Informação oculta") ?></p>
-                            <p><strong><?= i::__("Gênero:") ?></strong> <?= i::__("Informação oculta") ?></p>
-                            <p><strong><?= i::__("Endereço:") ?></strong> <?= i::__("Rua dos Protótipos, 85, Cidade Fícticia, Ceará, Brasil") ?></p>
-                            <p><strong><?= i::__("CEP:") ?></strong> <?= i::__("18619-408") ?></p>
-                        </div>
-                    </div>
-                </section>
+                <mc-summary-project></mc-summary-project>
+                <mc-summary-agents></mc-summary-agents>
 
                 <div class="col-12 registration-info">
-                    <p class="registration-info__title"><?= i::__('Dados informados no formulário') ?></p>
                     <div class="registration-info__content">
-                        <registration-related-space :registration="entity"></registration-related-space>
+                        <mc-summary-sapaces :entity="entity"></mc-summary-sapaces>
                     </div>
                 </div>
-
+                
                 <section class="section">
+                    <p class="registration-info__title"><?= i::__('Dados informados no formulário') ?></p>
                     <div class="section__content">
                         <div class="card owner">
                             <v1-embed-tool route="registrationevaluationtionformview" :id="entity.id"></v1-embed-tool>
