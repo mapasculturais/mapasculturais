@@ -15,6 +15,15 @@ app.component('entity-list', {
             },
         };
     },
+    methods: {
+        showContent(name){
+            if(name.length > 45){
+                return name.substring(0,45)+'...';
+            } else {
+                return name
+            }
+        },
+    },
 
     props: {    
         title: {
