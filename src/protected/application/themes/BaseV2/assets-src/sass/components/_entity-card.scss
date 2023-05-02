@@ -161,7 +161,8 @@
 		text-align: left;
 
 		&-shortDescription {
-			word-break: break-all;
+				word-break: break-all;
+				font-size: size(14);
 		}
 
 		&--occurrence {
@@ -201,8 +202,6 @@
 					}
 
 					&__adress {
-
-
 						margin-left: size(10);
 
 						@media (max-width:size(600)) {
@@ -251,17 +250,15 @@
 			font-weight: 400;
 			font-size: size(12);
 			line-height: size(16);
-			margin-bottom: size(16);
 			color: var(--mc-low-700);
 			word-break: break-all;
-
-
-
+			
+			&-local,
 			&-adress {
 				color: var(--mc-low-500);
+				line-height: size(22);
 				font-weight: 600;
-				font-size: 12px;
-				line-height: 22px;
+				font-size: size(14);
 			}
 		}
 
