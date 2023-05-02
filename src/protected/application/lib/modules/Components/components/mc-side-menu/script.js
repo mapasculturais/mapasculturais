@@ -111,14 +111,14 @@ app.component('mc-side-menu', {
             this.isOpen = this.isOpen ? false : true;
         },
         showList(){
-            var result = false;
+            result = true;
             if(this.roles.forEach(function(item){
-                if(item.toLowerCase().indexOf('admin') >= 0){
+                if(item.toLowerCase().match('admin')){
                     result = false;
+                    return;
                 }
             }));
-
-            return true;
+            return result;
         }
     },
 });
