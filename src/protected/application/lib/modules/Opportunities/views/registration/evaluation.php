@@ -10,7 +10,7 @@ $this->import('
     mapas-container
     mc-icon
     mc-side-menu
-    mc-summary-sapaces
+    mc-summary-spaces
     mc-summary-project
     opportunity-header
     mc-summary-agents
@@ -82,7 +82,7 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
                 
                 <mc-summary-project :entity="entity"></mc-summary-project>
                 <mc-summary-agents :entity="entity"></mc-summary-agents>
-                <mc-summary-sapaces :entity="entity"></mc-summary-sapaces>
+                <mc-summary-spaces :entity="entity"></mc-summary-spaces>
                 
                 <section class="section">
                     <p class="registration-info__title"><?= i::__('Dados informados no formulário') ?></p>

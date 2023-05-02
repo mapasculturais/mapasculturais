@@ -1,5 +1,5 @@
-app.component('mc-summary-sapaces', {
-    template: $TEMPLATES['mc-summary-sapaces'],
+app.component('mc-summary-spaces', {
+    template: $TEMPLATES['mc-summary-spaces'],
 
     props: {
         entity: {
