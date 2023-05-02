@@ -39,8 +39,12 @@ use MapasCulturais\i;
                 <h1 class="title"> {{entity.name}} </h1>
                 <div class="metadata">
                     <slot name="metadata">
+                        <dl class="metadata__id" v-if="entity.__objectType =='agent' && entity.id">
+                            <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
+                                <dd><strong>{{entity.id}}</strong></dd>
+                        </dl> 
                         <dl v-if="entity.type">
-                            <dt><?= i::__('Tipo') ?></dt>
+                        <dt><?= i::__('Tipo')?></dt>
                             <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
                         </dl>
                     </slot>
@@ -91,6 +95,7 @@ use MapasCulturais\i;
                 </div>
                 <h2 v-if="this.entity.__objectType!='opportunity'">{{titleEdit}}</h2>
                 <h2 v-if="this.entity.__objectType=='opportunity'">{{entity.name}}</h2>
+
             </div>
         </div>
     </div>
