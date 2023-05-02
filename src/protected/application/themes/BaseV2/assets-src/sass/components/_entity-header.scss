@@ -167,7 +167,14 @@
 
             .metadata {
                 display: flex;
-
+                &__id {
+                    &--id{
+                    background-color: yellow;
+                    }
+                    &--value{
+                    background-color: red;
+                    }
+                }
                 dl {
                     display: inline-block;
                     margin: size(8) size(40) size(16) 0;
