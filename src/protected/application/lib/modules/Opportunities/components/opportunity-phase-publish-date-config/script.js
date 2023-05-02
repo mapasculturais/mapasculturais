@@ -48,21 +48,7 @@ app.component('opportunity-phase-publish-date-config' , {
             return this.text('publicacao_com_data_automatica') + ' ' + this.phase.publishTimestamp?.format({ dateStyle: 'full', timeStyle: 'long'});
         },
         minDate () {
-            const currentIndex = this.phases.indexOf(this.phase);
-
-            if(currentIndex === 0) {
-                return undefined;
-            }
-
-            const previousPhase = this.phases[currentIndex - 1];
-
-            if (previousPhase.__objectType == 'evaluationmethodconfiguration') {
-                // fase anterior é uma fase de avaliação
-                return previousPhase.evaluationTo?._date;
-            } else {
-                // fase anterior é uma fase de coleta de dados
-                return previousPhase.registrationFrom?._date;
-            }
+            return this.phase.evaluationTo?._date || this.phase.registrationTo?._date;
         },
         maxDate () {
             if(!this.phase.isLastPhase) {
