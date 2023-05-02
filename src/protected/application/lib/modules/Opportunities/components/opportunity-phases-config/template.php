@@ -25,22 +25,27 @@ $this->import('
             <div class="info">
                 <h2 v-if="index" class="info__title">{{item.name}}</h2>
                 <h2 v-if="!index" class="info__title"><?= i::__('Período de inscrição') ?></h2>
-                <div class="info__type">
+                <div v-if="!item.isLastPhase" class="info__type">
                     <span class="title"> <?= i::__('Tipo') ?>: </span>
                     <span v-if="item.__objectType == 'opportunity' && !item.isLastPhase" class="type"><?= i::__('Coleta de dados') ?></span>
                     <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{evaluationTypes[item.type]}}</span>
                 </div>
             </div>
+
             <div class="dates">
-                <div class="date">
+                <div v-if="!item.isLastPhase" class="date">
                     <div class="date__title"> <?= i::__('Data de início') ?> </div>
                     <div v-if="item.registrationFrom" class="date__content">{{item.registrationFrom.date('2-digit year')}}</div>
                     <div v-if="item.evaluationFrom" class="date__content">{{item.evaluationFrom.date('2-digit year')}}</div>
                 </div>
-                <div class="date">
+                <div v-if="!item.isLastPhase" class="date">
                     <div class="date__title"> <?= i::__('Data final') ?> </div>
                     <div v-if="item.registrationTo" class="date__content">{{item.registrationTo.date('2-digit year')}}</div>
                     <div v-if="item.evaluationTo" class="date__content">{{item.evaluationTo.date('2-digit year')}}</div>
+                </div>
+                <div v-if="showPublishTimestamp(item)" class="date">
+                    <div class="date__title"> <?= i::__('Data publicação') ?> </div>
+                    <div class="date__content">{{publishTimestamp(item)?.date('2-digit year')}}</div>
                 </div>
             </div>
         </div>
