@@ -8,8 +8,8 @@ $this->import('
     
 ');
 ?>
-<mapas-card v-if="canSee('spaceSummary')">
-    <template v-slot:title>
+<mapas-card v-if="space && canSee('spaceSummary')">
+    <template #title>
         <div v-if="opportunity.useSpaceRelationIntituicao && opportunity.useSpaceRelationIntituicao !== 'dontUse'">
             <div>
                 <h4><strong><?= i::__("Espaço Vinculado") ?> </strong></h4>

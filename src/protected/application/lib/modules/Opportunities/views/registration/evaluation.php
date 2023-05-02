@@ -10,7 +10,7 @@ $this->import('
     mapas-container
     mc-icon
     mc-side-menu
-    mc-summary-sapaces
+    mc-summary-spaces
     mc-summary-project
     opportunity-header
     mc-summary-agents
@@ -35,7 +35,6 @@ $breadcrumb = [
 
 $breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
 
-$app->view->jsObject['avaliableEvaluationFields'] = $entity->opportunity->avaliableEvaluationFields;
 
 $this->breadcrumb = $breadcrumb;
 $userEvaluator = null;
@@ -49,17 +48,14 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
     <opportunity-header :opportunity="entity.opportunity">
         <template #footer>
             <mc-summary-evaluate></mc-summary-evaluate>
-            <?php if(!$app->user->is('admin')): ?>
-                <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
-                    <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
-                </mc-side-menu>
-            <?php endif ?>
+            <mc-side-menu v-if="entity.opportunity.currentUserPermissions['@control']" text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
+                <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
+            </mc-side-menu>
+        </template>  
+        <template v-if="entity.opportunity.currentUserPermissions['@control']" #opportunity-header-info-end>
+                <h4><?= i::__('Avaliador: ') ?><?= $userEvaluator->profile->name ?? "" ?></h4>
         </template>
-        <?php if($userEvaluator): ?>    
-            <template #opportunity-header-info-end>
-                    <h4><?= i::__('Avaliador: ') ?><?= $userEvaluator->profile->name ?></h4>
-            </template>
-        <?php endif ?>
+
     </opportunity-header>
     <div class="registration__content">
 
@@ -83,14 +79,10 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
                         </div>
                     </div>
                 </div>
-                <mc-summary-project></mc-summary-project>
-                <mc-summary-agents></mc-summary-agents>
-
-                <div class="col-12 registration-info">
-                    <div class="registration-info__content">
-                        <mc-summary-sapaces :entity="entity"></mc-summary-sapaces>
-                    </div>
-                </div>
+                
+                <mc-summary-project :entity="entity"></mc-summary-project>
+                <mc-summary-agents :entity="entity"></mc-summary-agents>
+                <mc-summary-spaces :entity="entity"></mc-summary-spaces>
                 
                 <section class="section">
                     <p class="registration-info__title"><?= i::__('Dados informados no formulário') ?></p>

@@ -435,13 +435,40 @@ class Module extends \MapasCulturais\Module{
             $value = Module::getLastCreatedPhase($first_phase);
         });
 
-        $app->hook('entity(Opportunity).get(lastPhase)', function(&$value) {
-            /** @var Opportunity $this */
-            $first_phase = $this->firstPhase;
-            $phase = Module::getLastCreatedPhase($first_phase);
-            if ($phase && $phase->isLastPhase) {
-                $value = $phase;
-            }
+        $app->hook('entity(Opportunity).get(lastPhase)', function(&$value) use ($app) {
+             /** @var Opportunity $this */
+             $first_phase = $this->firstPhase;
+             if(!$first_phase->id) {
+                 return;
+             }
+
+             if($this->isNew()) {
+                 $value = $first_phase->lastPhase;
+                 return;
+             }
+
+             if($this->isLastPhase){
+                return $this;
+             }
+
+             $class = Opportunity::class;
+             $meta_class = $this->metadataClassName;
+
+             $query = $app->em->createQuery("
+                 SELECT o 
+                 FROM $class o 
+                 JOIN $meta_class m WITH m.key = 'isLastPhase'
+                 WHERE 
+                     o.parent = :parent AND
+                     m.value = '1'"
+                );
+ 
+             $query->setMaxResults(1);
+             $query->setParameters([
+                 "parent" => $first_phase,
+             ]);
+ 
+             $value = $query->getOneOrNullResult();
         });
 
         /**

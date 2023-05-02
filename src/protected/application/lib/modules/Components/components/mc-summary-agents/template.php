@@ -8,8 +8,8 @@ $this->import('
     
 ');
 ?>
-<mapas-card v-if="canSee('agentsSummary')">
-    <template v-slot:title>
+<mapas-card v-if="opportunity && canSee('agentsSummary')">
+    <template #title>
         <div>
             <div>
                 <h4><strong><?= i::__("Dados do proponente") ?> </strong></h4>
