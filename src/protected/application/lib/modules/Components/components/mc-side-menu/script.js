@@ -109,5 +109,15 @@ app.component('mc-side-menu', {
         toggleMenu() {
             this.isOpen = this.isOpen ? false : true;
         },
+        showList(){
+            var result = false;
+            if(this.roles.forEach(function(item){
+                if(item.toLowerCase().indexOf('admin') >= 0){
+                    result = false;
+                }
+            }));
+
+            return true;
+        }
     },
 });
