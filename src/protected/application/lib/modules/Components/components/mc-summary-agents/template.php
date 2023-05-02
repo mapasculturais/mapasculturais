@@ -8,7 +8,7 @@ $this->import('
     
 ');
 ?>
-<mapas-card v-if="canSee('agentsSummary')">
+<mapas-card v-if="opportunity && canSee('agentsSummary')">
     <template #title>
         <div>
             <div>
