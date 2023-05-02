@@ -35,7 +35,7 @@ $this->import('
                 </confirm-button>
             </div>
 
-            <div v-if="!hideDescription" class="col-7">
+            <div v-if="!hideDescription" class="col-5">
                 <h5><?= i::__("A publicação de um resultado é opcional e só pode ser executada após a aplicação dos resultados das avaliações.") ?></h5>
             </div>
 
@@ -43,9 +43,9 @@ $this->import('
                 <h5>{{ msgPublishDateAuto }}</h5>
             </div>
 
-            <div v-if="!(hideCheckbox && hideDatepicker && !!phase.publishTimestamp)" class="grid-12 col-12">
+            <div v-if="!(hideCheckbox && hideDatepicker && !!phase.publishTimestamp)" class="grid-12 col-3">
                 <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="300" :min="minDate" :max="maxDate" classes="col-4 sm:col-12"></entity-field>
-                <div class="col-4" v-if="hideDatepicker && !!phase.publishTimestamp">
+                <div class="col-3" v-if="hideDatepicker && !!phase.publishTimestamp">
                     <h5>{{ msgPublishDate }}</h5>
                 </div>
                 <entity-field v-if="!hideCheckbox" :entity="phase" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel :disabled="!phase.publishTimestamp" classes="col-6">
@@ -53,7 +53,7 @@ $this->import('
                         <?= i::__("Publicar resultados automaticamente"); ?>
                     </template>
                 </entity-field>
-                <div class="col-4" v-else>
+                <div class="col-3" v-else>
                     <h5>{{ msgAutoPublish }}</h5>
                 </div>
             </div>
