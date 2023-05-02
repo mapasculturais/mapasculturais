@@ -5,6 +5,7 @@ namespace Opportunities;
 use DateTime;
 use Exception;
 use MapasCulturais\App;
+use MapasCulturais\Entities\AgentRelation;
 use MapasCulturais\i;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
@@ -151,17 +152,35 @@ class Module extends \MapasCulturais\Module{
             /** @var Opportunity $entity */
             $entity = $this->controller->requestedEntity;
 
+            $is_valuer = false;
+
             if($entity instanceof EvaluationMethodConfiguration) {
                 $first_phase = $entity->opportunity->firstPhase;
+                $relation = $entity->getUserRelation($app->user);
+
+                $is_valuer = $relation && $relation->status === AgentRelation::STATUS_ENABLED;
             } else {
                 $first_phase = $entity->firstPhase;
+
+                if ($entity->evaluationMethodConfiguration) {
+                    $relation = $entity->evaluationMethodConfiguration->getUserRelation($app->user);
+                    $is_valuer = $relation && $relation->status === AgentRelation::STATUS_ENABLED;
+                }
             }
 
-            $breadcrumb = [
-                ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-                ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
-                ['label'=> $first_phase->name, 'url' => $app->createUrl('opportunity', 'edit', [$first_phase->id])]
-            ];
+            if ($is_valuer) {
+                $breadcrumb = [
+                    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+                    ['label'=> i::__('Minhas avaliações')],
+                    ['label'=> $first_phase->name, 'url' => $app->createUrl('opportunity', 'single', [$first_phase->id])]
+                ];
+            } else {
+                $breadcrumb = [
+                    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+                    ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
+                    ['label'=> $first_phase->name, 'url' => $app->createUrl('opportunity', 'edit', [$first_phase->id])]
+                ];
+            } 
             
             if ($entity->isFirstPhase) {
                 $breadcrumb[] = ['label'=> i::__('Período de inscrição')];
