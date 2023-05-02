@@ -197,6 +197,11 @@ class Module extends \MapasCulturais\Module{
             $this->enqueueScript('components', 'opportunities-api', 'js/OpportunitiesAPI.js', ['components-api']);
         });
 
+        $app->hook('Theme::addAvaliableEvaluationFields', function () use ($app) {
+            $entity = $this->controller->requestedEntity;
+            $app->view->jsObject['avaliableEvaluationFields'] = $entity->opportunity->avaliableEvaluationFields;
+        });
+
         $app->hook('Theme::addOpportunityPhasesToJs', function ($unused = null, $opportunity = null) use ($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */   
             $this->useOpportunityAPI();         
