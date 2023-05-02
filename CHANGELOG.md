@@ -4,6 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.6.11] - 2023-04-17
+### Melhorias
+- garante que os CPFs e CNPJs sejam exibidos e salvos formatados (XXX.XXX.XXX-XX e XX.XXX.XXX/YYYY-ZZ)
+- unserialize nos metadados CPF e CNPJ que retorna do campo documento caso não esteja preenchido
+
 ## [5.6.10] - 2023-04-17
 ### Melhorias
 - refatoração do db-update que popula os metadados dos documentos para rodar mais rapidamente
