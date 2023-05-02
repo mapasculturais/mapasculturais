@@ -2880,6 +2880,10 @@ class ApiQuery {
             $defaults[] = 'relatedSpaces';
         }
 
+        if($this->usesPermissionCache){
+            $defaults[] = 'currentUserPermissions';
+        }
+
         $properties = array_merge(
                     $this->entityProperties,
                     $this->registeredMetadata,
