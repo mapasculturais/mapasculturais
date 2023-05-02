@@ -1,26 +1,21 @@
 app.component('mc-summary-agents', {
     template: $TEMPLATES['mc-summary-agents'],
 
-    setup() {
+    props: {
+        entity:{
+            type: Entity,
+            required: true
+        }
     },
-    mounted() {
-        return {}
-    },
-    props: {},
-
     data() {
-        let entity = $MAPAS.requestedEntity;
         let avaliableEvaluationFields = $MAPAS.avaliableEvaluationFields
-        let opportunity = $MAPAS.opportunity;
-        let owner = entity.agentsData.owner;
-        let colective = entity.agentsData?.coletivo;
-        let institution = entity.agentsData?.instituicao;
+        let opportunity = this.entity.opportunity;
+        let owner = this.entity.agentsData.owner;
+        let colective = this.entity.agentsData?.coletivo;
+        let institution = this.entity.agentsData?.instituicao;
 
-        return { entity, avaliableEvaluationFields, owner, colective, institution, opportunity }
+        return { avaliableEvaluationFields, owner, colective, institution, opportunity }
     },
-
-    computed: {},
-
     methods: {
         canSee(item) {
             if(this.entity.currentUserPermissions['@control']){

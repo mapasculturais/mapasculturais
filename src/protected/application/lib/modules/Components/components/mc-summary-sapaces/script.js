@@ -1,23 +1,20 @@
 app.component('mc-summary-sapaces', {
     template: $TEMPLATES['mc-summary-sapaces'],
 
-    setup() {
+    props: {
+        entity: {
+            type: Entity,
+            required: true
+        }
     },
-    mounted() {
-        return {}
-    },
-    props: {},
 
     data() {
-        let entity = $MAPAS.requestedEntity;
         let avaliableEvaluationFields = $MAPAS.avaliableEvaluationFields
-        let space = entity.spaceRelations ? entity.spaceRelations[0].space : null;
-        let opportunity = $MAPAS.opportunity;
+        let space = this.entity.spaceRelations[0]?.space ? this.entity.spaceRelations[0]?.space : null;
+        let opportunity = this.entity.opportunity;
 
-        return { entity, avaliableEvaluationFields, space, opportunity }
+        return { avaliableEvaluationFields, space, opportunity }
     },
-
-    computed: {},
 
     methods: {
         canSee(item) {

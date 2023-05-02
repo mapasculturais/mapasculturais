@@ -2,22 +2,22 @@ app.component('mc-summary-project', {
     template: $TEMPLATES['mc-summary-project'],
 
     setup() {
+        console.log('Teste')
     },
-    mounted() {
-        return {}
+    props: {
+        entity: {
+            type: Entity,
+            required: true
+        }
     },
-    props: {},
 
     data() {
-        let entity = $MAPAS.requestedEntity;
         let avaliableEvaluationFields = $MAPAS.avaliableEvaluationFields
-        let opportunity = $MAPAS.opportunity;
-        let projectName = entity.projectName;
+        let opportunity = this.entity.opportunity;
+        let projectName = this.entity.projectName;
 
-        return { entity, avaliableEvaluationFields, projectName, opportunity }
+        return { avaliableEvaluationFields, projectName, opportunity }
     },
-
-    computed: {},
 
     methods: {
         canSee(item) {
