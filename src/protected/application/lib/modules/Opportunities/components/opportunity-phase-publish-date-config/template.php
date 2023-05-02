@@ -44,7 +44,7 @@ $this->import('
             </div>
 
             <div v-if="!(hideCheckbox && hideDatepicker && !!phase.publishTimestamp)" class="grid-12 col-12">
-                <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="300" :min="getMinDate?._date" :max="getMaxDate?._date" classes="col-4 sm:col-12"></entity-field>
+                <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="300" :min="minDate" :max="maxDate" classes="col-4 sm:col-12"></entity-field>
                 <div class="col-4" v-if="hideDatepicker && !!phase.publishTimestamp">
                     <h5>{{ msgPublishDate }}</h5>
                 </div>
