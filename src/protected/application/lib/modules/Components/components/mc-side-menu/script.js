@@ -33,6 +33,7 @@ app.component('mc-side-menu', {
             pending: false,
             keywords: "",
             timeOut: null,
+            roles: $MAPAS.currentUserRoles
         }
     },
     watch: {
