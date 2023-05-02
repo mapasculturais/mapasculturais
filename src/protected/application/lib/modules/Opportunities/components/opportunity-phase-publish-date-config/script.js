@@ -47,7 +47,7 @@ app.component('opportunity-phase-publish-date-config' , {
         msgPublishDateAuto () {
             return this.text('publicacao_com_data_automatica') + ' ' + this.phase.publishTimestamp?.format({ dateStyle: 'full', timeStyle: 'long'});
         },
-        getMinDate () {
+        minDate () {
             const currentIndex = this.phases.indexOf(this.phase);
 
             if(currentIndex === 0) {
@@ -58,17 +58,24 @@ app.component('opportunity-phase-publish-date-config' , {
 
             if (previousPhase.__objectType == 'evaluationmethodconfiguration') {
                 // fase anterior é uma fase de avaliação
-                return previousPhase.evaluationTo;
+                return previousPhase.evaluationTo?._date;
             } else {
                 // fase anterior é uma fase de coleta de dados
-                return previousPhase.registrationFrom;
+                return previousPhase.registrationFrom?._date;
             }
         },
-        getMaxDate () {
-            if(this.phase.isLastPhase) {
-                return this.phase.publishTimestamp;
+        maxDate () {
+            if(!this.phase.isLastPhase) {
+                return this.lastPhase?.publishTimestamp?._date;
             }
         },
+
+        lastPhase() {
+            const lastPhase = this.phases[this.phases.length - 1];
+            if (lastPhase.isLastPhase) {
+                return lastPhase;
+            }
+        }
     },
 
     methods: {
