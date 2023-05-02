@@ -9,7 +9,7 @@ $this->import('
 ');
 ?>
 <mapas-card v-if="canSee('agentsSummary')">
-    <template v-slot:title>
+    <template #title>
         <div>
             <div>
                 <h4><strong><?= i::__("Dados do proponente") ?> </strong></h4>

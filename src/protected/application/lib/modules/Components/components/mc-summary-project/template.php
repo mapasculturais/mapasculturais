@@ -9,7 +9,7 @@ $this->import('
 ');
 ?>
 <mapas-card v-if="canSee('projectName')">
-    <template v-slot:title>
+    <template #:title>
         <div>
             <div>
                 <h4><strong><?= i::__("Nome do projeto") ?> </strong></h4>
