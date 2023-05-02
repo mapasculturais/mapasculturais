@@ -10,6 +10,8 @@ $this->import('
     mapas-container
     mc-icon
     mc-side-menu
+    mc-summary-sapaces
+    mc-summary-project
     opportunity-header
     mc-summary-agents
     mc-summary-evaluate
@@ -81,17 +83,17 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
                         </div>
                     </div>
                 </div>
-                
+                <mc-summary-project></mc-summary-project>
                 <mc-summary-agents></mc-summary-agents>
 
                 <div class="col-12 registration-info">
-                    <p class="registration-info__title"><?= i::__('Dados informados no formulário') ?></p>
                     <div class="registration-info__content">
-                        <registration-related-space :registration="entity"></registration-related-space>
+                        <mc-summary-sapaces :entity="entity"></mc-summary-sapaces>
                     </div>
                 </div>
-
+                
                 <section class="section">
+                    <p class="registration-info__title"><?= i::__('Dados informados no formulário') ?></p>
                     <div class="section__content">
                         <div class="card owner">
                             <v1-embed-tool route="registrationevaluationtionformview" :id="entity.id"></v1-embed-tool>
