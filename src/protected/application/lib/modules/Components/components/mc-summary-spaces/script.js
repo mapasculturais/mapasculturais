@@ -1,9 +1,6 @@
-app.component('mc-summary-project', {
-    template: $TEMPLATES['mc-summary-project'],
+app.component('mc-summary-spaces', {
+    template: $TEMPLATES['mc-summary-spaces'],
 
-    setup() {
-        console.log('Teste')
-    },
     props: {
         entity: {
             type: Entity,
@@ -13,10 +10,10 @@ app.component('mc-summary-project', {
 
     data() {
         let avaliableEvaluationFields = $MAPAS.avaliableEvaluationFields
+        let space = this.entity.spaceRelations[0]?.space ? this.entity.spaceRelations[0]?.space : null;
         let opportunity = this.entity.opportunity;
-        let projectName = this.entity.projectName;
 
-        return { avaliableEvaluationFields, projectName, opportunity }
+        return { avaliableEvaluationFields, space, opportunity }
     },
 
     methods: {
