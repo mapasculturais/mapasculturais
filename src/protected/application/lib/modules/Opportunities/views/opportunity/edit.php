@@ -18,7 +18,7 @@ $this->addOpportunityPhasesToJs();
 
 $this->breadcrumb = [
   ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-  ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
+  ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
   ['label'=> $entity->name, 'url' => $app->createUrl('opportunity', 'edit', [$entity->id])],
 ];
 ?>
