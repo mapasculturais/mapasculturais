@@ -20,7 +20,7 @@ $this->import('
                             <img v-if="entity.files.avatar?.transformations?.avatarSmall?.url" :src="entity.files.avatar?.transformations?.avatarSmall?.url">
                             <mc-icon v-if="!entity.files.avatar?.transformations?.avatarSmall?.url" name="agent-1"></mc-icon>
                         </div>
-                        <div class="entity-list__list-item"> {{entity.name}} </div>
+                        <div class="entity-list__list-item"> {{showContent(entity.name)}} </div>
                     </mc-link>
                 </li>
             </ul>
