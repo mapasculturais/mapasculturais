@@ -1054,25 +1054,21 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     protected function canUserSendUserEvaluations($user){
+        if (!$this->evaluationMethodConfiguration) {
+            return false;
+        }
+
+        if($user->is('guest')) {
+            return false;
+        }
+
         $can_evaluate = $this->canUserEvaluateRegistrations($user);
         
         $today = new \DateTime('now');
-        $registrations = $this->getSentRegistrations();
 
         $em = $this->evaluationMethodConfiguration;
-
-        $evaluations_ok = $em && $today >= $em->evaluationFrom && $today <= $em->evaluationTo && $registrations;
-        foreach($registrations as $reg){
-            if($reg->canUser('viewUserEvaluation')){
-                $evaluation = $reg->getUserEvaluation($user);
-                if(is_null($evaluation) || $evaluation->status != RegistrationEvaluation::STATUS_EVALUATED){
-                    $evaluations_ok = false;
-                    break;
-                }
-            }
-        }
         
-        return $can_evaluate && $evaluations_ok;
+        return $can_evaluate && $today >= $em->evaluationFrom && $today <= $em->evaluationTo;
     }
 
     protected function canUserEvaluateRegistrations($user){
