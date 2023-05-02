@@ -168,12 +168,18 @@
             .metadata {
                 display: flex;
                 &__id {
-                    &--id{
-                    background-color: yellow;
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: 19px;
+
+                    &--id {
+                        font-weight: 600;
+                        font-size: 14px;
+                        line-height: 19px;
                     }
-                    &--value{
-                    background-color: red;
-                    }
+                    
                 }
                 dl {
                     display: inline-block;
