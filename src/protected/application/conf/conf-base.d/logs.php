@@ -47,6 +47,7 @@ return [
     'app.log.auth'          => env('LOG_AUTH', false),
 
     'app.log.components'          => env('LOG_COMPONENTS', false),
+    'app.log.assetManager'        => env('LOG_ASSETMANAGER', false),
     
     'app.log.jobs'          => env('LOG_JOBS', false),
     'app.log.pcache'        => env('LOG_PCACHE', false),
