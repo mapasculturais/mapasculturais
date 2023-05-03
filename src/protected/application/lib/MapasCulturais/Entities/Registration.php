@@ -1306,7 +1306,7 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserViewConsolidatedResult($user){
-        if($this->status <= 0) {
+        if($this->status <= 0 || !$this->opportunity->evaluationMethodConfiguration) {
             return false;
         }
 
@@ -1332,7 +1332,7 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getExtraPermissionCacheUsers(){
-        if($this->status > 0) {
+        if($this->status > 0 && $this->opportunity->evaluationMethodConfiguration) {
             $valuers = $this->getEvaluationMethodConfiguration()->getUsersWithControl();
         } else {
             $valuers = [];
