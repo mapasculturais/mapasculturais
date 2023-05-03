@@ -646,7 +646,7 @@ class Opportunity extends EntityController {
 
     }
 
-    function API_findRegistrationsAndEvaluations() {
+    function API_findRegistrationsAndEvaluations($return = false) {
         $app = App::i();
 
         $opportunity = $this->_getOpportunity();
@@ -672,6 +672,19 @@ class Opportunity extends EntityController {
             'user_id' => $app->user->id,
             'opportunity_id' => $opportunity->id,
             ]);
+
+
+        $limit = isset($data['@limit']) ? $data['@limit'] : 50;
+        $page = isset($data['@page'] ) ? $data['@page'] : 1;
+        $offset = ($page -1) * $limit;
+
+        $complement = "LIMIT
+        :limit OFFSET :offset";
+
+        if($limit == 0){
+            unset($this->data['@limit']);
+           $complement = "";
+        }
 
         if(isset($this->data['@pending'])){
             $sql = "
@@ -706,8 +719,7 @@ class Opportunity extends EntityController {
                 )
             ORDER BY
                 r.id
-            LIMIT
-                :limit OFFSET :offset
+                {$complement}
             ";
         }else{
             $sql = "
@@ -737,23 +749,23 @@ class Opportunity extends EntityController {
                 AND r.opportunity_id = :opportunity_id
             ORDER BY
                 r.id
-            LIMIT
-                :limit OFFSET :offset
+                {$complement}
             ";
         }
 
-        
-
-        $limit = isset($data['@limit']) ? $data['@limit'] : 50;
-        $page = isset($data['@page'] ) ? $data['@page'] : 1;
-        $offset = ($page -1) * $limit;
-
-        $registrations = $conn->fetchAll($sql, [
-            'user_id' => $app->user->id,
-            'opportunity_id' => $opportunity->id,
-            'limit' => $limit,
-            'offset' => $offset
+        if($limit > 0){
+            $registrations = $conn->fetchAll($sql, [
+                'user_id' => $app->user->id,
+                'opportunity_id' => $opportunity->id,
+                'limit' => $limit,
+                'offset' => $offset
             ]);
+        }else{
+            $registrations = $conn->fetchAll($sql, [
+                'user_id' => $app->user->id,
+                'opportunity_id' => $opportunity->id,
+            ]);
+        }
 
         $registrationWithResultString = array_map(function($registration) use ($opportunity) {
             return [
@@ -774,6 +786,10 @@ class Opportunity extends EntityController {
             ];
         },$registrations);
 
+        if($return){
+            return $registrationWithResultString;
+        }
+        
         $this->apiAddHeaderMetadata($this->data, $registrationWithResultString, $length[0]['count']);
         $this->apiResponse($registrationWithResultString);
     }
