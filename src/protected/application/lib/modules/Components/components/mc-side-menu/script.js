@@ -74,6 +74,10 @@ app.component('mc-side-menu', {
                 });
                 this.evaluations.sort((a, b) => (a.registrationid - b.registrationid));
             }));
+
+            const globalState = useGlobalState();
+            globalState.firstRegistration = this.evaluations[0];
+            globalState.lastRegistration = this.evaluations[this.evaluations.length -1];
         },
         previousEvaluation(data) {
             this.goTo(data)
