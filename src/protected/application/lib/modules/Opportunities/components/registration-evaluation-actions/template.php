@@ -16,7 +16,7 @@ $this->import('v1-embed-tool')
             <button class="button button--primary" @click="finishEvaluation()"> <?= i::__('Finalizar avaliação') ?> </button>
         </div>
         <div class="col-12">
-            <button class="button button--primary" @click="saveAndContinue()"> <?= i::__('Salvar e continuar depois') ?> </button>
+            <button class="button button--primary" @click="save()"> <?= i::__('Salvar e continuar depois') ?> </button>
         </div>
         <div class="col-6">
             <button v-if="firstRegistration?.registrationid != registration.id" class="button button--primary-outline" @click="previous()"> <?= i::__('Anterior') ?> </button>
