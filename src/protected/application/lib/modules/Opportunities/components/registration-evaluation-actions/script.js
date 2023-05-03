@@ -69,7 +69,8 @@ app.component('registration-evaluation-actions', {
             window.dispatchEvent(new CustomEvent('nextEvaluation', {detail:{registrationId:this.registration.id}}));
         },
         save() {
-            console.log(this.registration);
+            const iframe = document.getElementById('evaluation-form');
+            iframe.contentWindow.postMessage({type: "evaluationForm.save"});
         },
         exit() {
             console.log(this.registration);
