@@ -21,6 +21,17 @@ app.component('registration-evaluation-actions', {
             fields: $MAPAS.registrationFields,
         }
     },
+
+    computed: {
+        firstRegistration(){
+            const globalState = useGlobalState();
+            return globalState.firstRegistration;
+        },
+        lastRegistration(){
+            const globalState = useGlobalState();
+            return globalState.lastRegistration;
+        }
+    },
     
     methods: {
         fieldName(field) {
@@ -43,7 +54,8 @@ app.component('registration-evaluation-actions', {
             return this.text('Campo não identificado');
         },
         finishEvaluation() {
-            console.log(this.registration);
+            const iframe = document.getElementById('evaluation-form');
+            iframe.contentWindow.postMessage({type: "evaluationForm.send", status: 'evaluated'});
         },
         saveAndContinue() {
             console.log(this.registration);
@@ -58,7 +70,8 @@ app.component('registration-evaluation-actions', {
             window.dispatchEvent(new CustomEvent('nextEvaluation', {detail:{registrationId:this.registration.id}}));
         },
         save() {
-            console.log(this.registration);
+            const iframe = document.getElementById('evaluation-form');
+            iframe.contentWindow.postMessage({type: "evaluationForm.save"});
         },
         exit() {
             console.log(this.registration);

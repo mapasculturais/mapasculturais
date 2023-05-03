@@ -16,13 +16,13 @@ $this->import('v1-embed-tool')
             <button class="button button--primary" @click="finishEvaluation()"> <?= i::__('Finalizar avaliação') ?> </button>
         </div>
         <div class="col-12">
-            <button class="button button--primary" @click="saveAndContinue()"> <?= i::__('Salvar e continuar depois') ?> </button>
+            <button class="button button--primary" @click="save()"> <?= i::__('Salvar e continuar depois') ?> </button>
         </div>
         <div class="col-6">
-            <button class="button button--primary-outline" @click="previous()"> <?= i::__('Anterior') ?> </button>
+            <button v-if="firstRegistration?.registrationid != registration.id" class="button button--primary-outline" @click="previous()"> <?= i::__('Anterior') ?> </button>
         </div>
         <div class="col-6">
-            <button class="button button--primary-outline" @click="next()"> <?= i::__('Próximo') ?> </button>
+            <button v-if="lastRegistration?.registrationid != registration.id" class="button button--primary-outline" @click="next()"> <?= i::__('Próximo') ?> </button>
         </div>
         <div class="col-12">
             <button class="button" disabled @click="send()"> <?= i::__('Enviar avaliação') ?> </button>

@@ -1,4 +1,10 @@
 $(function(){
+    const insideEmbedTools = MapasCulturais.insideEmbedTools;
+
+    if(insideEmbedTools){
+         $(".js-evaluation-submit").attr("style", "display:none")
+    }
+
     var $formContainer = $('#registration-evaluation-form');
     var $form = $formContainer.find('form');
     var $list = $('#registrations-list-container');
@@ -9,8 +15,8 @@ $(function(){
         $list.css('margin-top', top);
     });
 
-    $formContainer.find('.js-evaluation-submit').on('click', function(){
-        var $button = $(this);
+    function finishEvaluation(checkButton = null) {
+        var $button = checkButton ? $(checkButton) : null;
         var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': 'evaluated'});
         var data = $form.serialize();
 
@@ -19,9 +25,8 @@ $(function(){
         }
 
         $.post(url, data, function(r){
-            console.log($MAPAS.config);
             MapasCulturais.Messages.success("A avaliação foi salva");
-            if($button.hasClass('js-next')){
+            if($button && $button.hasClass('js-next')){
                 // var $current = $("#registrations-list .registration-item.current");
                 var $current = $(".current");
                 var $next = $current.nextAll('.visible:first');
@@ -46,6 +51,16 @@ $(function(){
                 }
             }
         });
+    }
+
+    window.addEventListener("message", function(event) {          
+        if (event.data?.type == "evaluationForm.send") {
+            finishEvaluation()
+        }
+    });
+
+    $formContainer.find('.js-evaluation-submit').on('click', function(){
+        finishEvaluation(this)
     });
 
     var __onChangeTimeout;
@@ -53,8 +68,7 @@ $(function(){
         clearTimeout(__onChangeTimeout);
         __onChangeTimeout = setTimeout(function(){
             var data = $form.serialize();
-            var status = (MapasCulturais.evaluation && MapasCulturais.evaluation.status == 1) ? 'evaluated' : 'draft';
-            var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': status});
+            var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id});
             $.post(url, data, function(r){
                 MapasCulturais.Messages.success("A avaliação foi salva");
             });
