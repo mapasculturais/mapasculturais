@@ -24,46 +24,56 @@ $this->import('mc-icon');
 
 
         <template v-if="isOpen">
-            <div>
-                <div>
-                    <input type="text" v-model="keywords">
+            <div class="find">
+                <div class="content">
+
+                    <div class="find-text">
+                        <input type="text" v-model="keywords"></input>
+                        <div class="icon">
+                            <mc-icon name="search"></mc-icon>
+                        </div>
+                    </div>
+                    <button class="button-filter button--primary">
+                        <mc-icon name="filter"></mc-icon>
+                        <label class="button-label"><?= i::__('Filtrar') ?></label>
+                    </button>
                 </div>
-                <div>
-                    <label>
-                        <input type="checkbox" v-model="pending">
-                        <?= i::__('Mostrar somente pendentes') ?>
-                    </label>
+                <div class="label-evaluation">
+                    <div class="label-evaluation__check">
+                        <input type="checkbox" v-model="pending" class="label-evaluation__check--pending">
+                        <label class="label-evaluation__check--label"><?= i::__('Mostrar somente pendentes') ?></label>
+                    </div>
                 </div>
             </div>
-            <ul>
-                <li v-for="evaluation in evaluations">
-
-                    <div>
-                        <mc-icon name='agent-1'></mc-icon>
-                        <span>{{evaluation.agentname}}</span>
-                    </div>
-                    <div>
-                        <div>
-                            <label><?= i::__('Inscrição') ?></label>
-                            <span>
-                                <strong>{{evaluation.registrationid}}</strong>
-                            </span>
+            <ul class="evaluation-list">
+                <li v-for="evaluation in evaluations" class="evaluation-list__card">
+                    <a :href="evaluation.url">
+                        <div class="card-header">
+                            <mc-icon name='agent-1'></mc-icon>
+                            <label class="card-header__name">{{evaluation.agentname}}</label>
                         </div>
-                        <div>
-                            <label><?= i::__('Data da inscrição') ?></label>
-                            <span>
-                                <strong>{{dateFormat(entity.createTimestamp)}}</strong>
-                            </span>
+                        <div class="card-content">
+                            <div class=" card-content__middle">
+                                <label class="subscribe"><?= i::__('Inscrição') ?></label>
+                                <span class="value">
+                                    <strong>{{evaluation.registrationid}}</strong>
+                                </span>
+                            </div>
+                            <div class="card-content__middle">
+                                <label class="subscribe"><?= i::__('Data da inscrição') ?></label>
+                                <span class="value">
+                                    <strong>{{dateFormat(entity.createTimestamp)}}</strong>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <label><?= i::__('Status da avaliaçõe') ?></label>
-                        <span v-if="evaluation.resultString">{{evaluation.resultString}}</span>
-                        <span v-if="!evaluation.resultString"> <?= i::__('Pendente') ?></span>
-                    </div>
-                    <div>
-                        <a :href="evaluation.url" type="button"><?= i::__('Acessar') ?></a>
-                    </div>
+                        <div class="card-state">
+                            <label class="state"><?= i::__('Status de avaliação') ?></label>
+                            <button class="button button-state">
+                                <label v-if="evaluation.resultString">{{evaluation.resultString}}</label>
+                                <label v-if="!evaluation.resultString"> <?= i::__('Pendente') ?></label>
+                            </button>
+                        </div>
+                    </a>
                 </li>
             </ul>
         </template>

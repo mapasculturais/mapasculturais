@@ -35,6 +35,8 @@ return [
             'configuracao-de-formulario'  => ['opportunity', 'formBuilder'],
             'lista-de-inscricoes'  => ['opportunity', 'registrations'],
             'lista-de-avaliacoes'  => ['opportunity', 'opportunityEvaluations'],
+            'suporte/lista-de-inscricoes'  => ['support', 'list'],
+            'suporte/formulario'  => ['support', 'form'],
 
             'baixar-rascunhos' => ['opportunity', 'reportDrafts'],
             'baixar-inscritos' => ['opportunity', 'report'],
