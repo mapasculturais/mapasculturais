@@ -88,7 +88,9 @@ class Module extends \MapasCulturais\Module
         // permissões gerais
         $app->hook("can(Registration.support)", function ($user, &$result) use ($self) {
             $result = $self->isSupportUser($this->opportunity, $user);
-            return;
+        });
+        $app->hook("can(Opportunity.support)", function ($user, &$result) use ($self) {
+            $result = $self->isSupportUser($this, $user);
         });
         $app->hook("can(Registration.<<view|modify|viewPrivateData>>)", function ($user, &$result) use ($self) {
             if (!$result) {
@@ -129,6 +131,20 @@ class Module extends \MapasCulturais\Module
                     $app->redirect($app->createUrl('support','registration', [$registration->id]) ) ;
                 }
             }
+        });
+
+        $app->hook('Entities\Opportunity::isSupportUser', function($unused = null, $user) use($app) {
+            if ($this->canUser('@control', $user)) {
+                return true;
+            }
+            if ($this->relatedAgents) {
+                foreach($this->relatedAgents['@support'] as $relation) {
+                    if ($app->user->id == $relation->user->id) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         });
     }
 
