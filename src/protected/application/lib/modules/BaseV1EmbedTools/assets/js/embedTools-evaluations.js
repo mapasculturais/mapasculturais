@@ -1,4 +1,10 @@
 $(function(){
+    const insideEmbedTools = MapasCulturais.insideEmbedTools;
+
+    if(insideEmbedTools){
+         $(".js-evaluation-submit").attr("style", "display:none")
+    }
+
     var $formContainer = $('#registration-evaluation-form');
     var $form = $formContainer.find('form');
     var $list = $('#registrations-list-container');
