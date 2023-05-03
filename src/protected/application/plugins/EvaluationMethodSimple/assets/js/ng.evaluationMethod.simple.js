@@ -30,8 +30,7 @@
                     
             },
             autoSave: function (registrationId, evaluationData, uid) {
-                var status = (MapasCulturais.evaluation && MapasCulturais.evaluation.status == 1) ? 'evaluated' : 'draft';
-                var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {id: registrationId, status: status});
+                var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {id: registrationId});
                 return $http.post(url, {data: evaluationData, uid});
             },
         };
@@ -49,6 +48,25 @@
 
         };
 
+        window.addEventListener("message", function(event) {            
+            if (event.data?.type == "evaluationForm.save") {
+                $scope.save();
+            }
+        });
+
+        $scope.save = function(){
+            var _data = {
+                status:$scope.data.registration,
+                obs: $scope.data.obs
+            }
+
+            ApplySimpleEvaluationService.autoSave(MapasCulturais.entity.id, _data, MapasCulturais.user.id).success(function () {
+                MapasCulturais.Messages.success('Salvo');
+            }).error(function (data) {
+                MapasCulturais.Messages.error(data.data[0]);
+            });
+        }
+
         $scope.getStatusLabel = function(status){
             for(var i in statuses){
                 if(statuses[i].value == status){
@@ -63,15 +81,7 @@
             if(new_val != old_val){
                 clearTimeout($scope.timeOut)               
                 $scope.timeOut = setTimeout(() => {
-                    var _data = {
-                        status:$scope.data.registration,
-                        obs: $scope.data.obs
-                    }
-                    ApplySimpleEvaluationService.autoSave(MapasCulturais.entity.id, _data, MapasCulturais.user.id).success(function () {
-                        MapasCulturais.Messages.success('Salvo');
-                    }).error(function (data) {
-                        MapasCulturais.Messages.error(data.data[0]);
-                    });
+                    $scope.save();
                 }, 15000);
             }
         });
