@@ -58,6 +58,7 @@ app.component('mc-side-menu', {
             args['@select'] = "id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status";
             args['@opportunity'] = this.entity.opportunity.id;
             args['@keyword'] = 'like(' + this.keywords + ')';
+            args['@limit'] = "0";
 
             if (this.pending) {
                 args['@pending'] = true;
