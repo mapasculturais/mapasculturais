@@ -88,7 +88,7 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
                     <p class="registration-info__title"><?= i::__('Dados informados no formulário') ?></p>
                     <div class="section__content">
                         <div class="card owner">
-                            <v1-embed-tool route="registrationevaluationtionformview" :id="entity.id"></v1-embed-tool>
+                            <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
                         </div>
                     </div>
                 </section>
@@ -102,9 +102,9 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
                             <p><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></p>
                         </div>
                         <?php if ($valuer_user) : ?>
-                            <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" :id="entity.id"></v1-embed-tool>
+                            <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
                         <?php else : ?>
-                            <v1-embed-tool route="evaluationforms" :id="entity.id"></v1-embed-tool>
+                            <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
                         <?php endif ?>
 
                     </div>
