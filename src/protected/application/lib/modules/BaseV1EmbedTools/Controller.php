@@ -110,7 +110,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
     {
         $app = App::i();
 
-        $entity = $this->getEntityAndCheckPermission('@control');
+        $entity = $this->getEntityAndCheckPermission('support');
         $this->render("registration-support",['entity' => $entity]);
     }
 
