@@ -12,6 +12,9 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->entityClassName = Opportunity::class;
 
         $this->layout = 'embedtools-opportunity';
+
+        $app = App::i();
+        $app->view->jsObject['insideEmbedTools'] = true;
     }
 
     public function GET_formbuilder()
