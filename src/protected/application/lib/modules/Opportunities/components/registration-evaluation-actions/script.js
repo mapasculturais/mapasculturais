@@ -54,7 +54,8 @@ app.component('registration-evaluation-actions', {
             return this.text('Campo não identificado');
         },
         finishEvaluation() {
-            console.log(this.registration);
+            const iframe = document.getElementById('evaluation-form');
+            iframe.contentWindow.postMessage({type: "evaluationForm.send", status: 'evaluated'});
         },
         saveAndContinue() {
             console.log(this.registration);
