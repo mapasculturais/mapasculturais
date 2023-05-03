@@ -21,6 +21,17 @@ app.component('registration-evaluation-actions', {
             fields: $MAPAS.registrationFields,
         }
     },
+
+    computed: {
+        firstRegistration(){
+            const globalState = useGlobalState();
+            return globalState.firstRegistration;
+        },
+        lastRegistration(){
+            const globalState = useGlobalState();
+            return globalState.lastRegistration;
+        }
+    },
     
     methods: {
         fieldName(field) {
