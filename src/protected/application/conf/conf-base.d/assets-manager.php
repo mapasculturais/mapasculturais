@@ -6,8 +6,8 @@ return [
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem([
         'publishPath' => BASE_PATH . 'assets/',
 
-        'mergeScripts' => $is_production,
-        'mergeStyles' => $is_production,
+        'mergeScripts' =>  env('ASSETS_MERGE_SCRIPTS', $is_production),
+        'mergeStyles' => env('ASSETS_MERGE_STYLES', $is_production),
 
         'process.js' => !$is_production ?
                 'cp {IN} {OUT}':
