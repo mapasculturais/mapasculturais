@@ -17,8 +17,8 @@ class Module extends \MapasCulturais\Module
 
     public function _init()
     {
+        $app = App::i();
         if (strpos($_SERVER['REQUEST_URI'], '/embedtools') === 0) {
-            $app = App::i();
 
             $app->view->enqueueScript('app', 'evaluations', 'js/embedTools-evaluations.js');
 
@@ -36,6 +36,10 @@ class Module extends \MapasCulturais\Module
                 $this->part('dynamic-reports');
             });
         }
+
+        $app->hook('GET(registration.evaluation):before', function() use($app) {
+            $app->view->enqueueScript('app-v2', 'embedtools-evaluations', 'js/embedtools-evaluations.js');
+        });
     }
 
     public function register()

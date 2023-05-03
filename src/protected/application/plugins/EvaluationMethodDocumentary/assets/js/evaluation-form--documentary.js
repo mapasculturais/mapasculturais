@@ -1,11 +1,15 @@
 $(function(){
-    if($('#documentary-evaluation-form').length){
+    window.evaluationForms = {};
+
+    const insideEmbedTools = MapasCulturais.insideEmbedTools;
+
+    if($('#documentary-evaluation-form').length || insideEmbedTools && $MAPAS?.evaluationConfiguration.type == 'documentary'){
         var template = MapasCulturais.TemplateManager.getTemplate('documentary-evaluation-form-template');
 
         var $container = $('#documentary-evaluation-form--container');
 
         function getForm($field){
-            var $form = $field.data('$form');
+            var $form = window.evaluationForms[$field.attr('id')];
             if(!$form){
                 var id = $field.data('fieldId');
                 var label = $field.find('label:first').text().trim();
@@ -54,33 +58,58 @@ $(function(){
 
                 $form = $(Mustache.render(template, data));
                 $container.append($form);
-                $field.data('$form', $form);
+                window.evaluationForms[$field.attr('id')] = $form;
 
                 $form.find('input').on('click', function(){
+                    let className;
                     if($(this).is(':checked') == 1){
                         if($(this).val() == 'valid'){
-                            $field.removeClass('evaluation-empty');
-                            $field.removeClass('evaluation-invalid');
-                            $field.addClass('evaluation-valid');
-
+                            className = 'evaluation-valid';
                         } else if($(this).val() == 'invalid'){
-                            $field.removeClass('evaluation-empty');
-                            $field.removeClass('evaluation-valid');
-                            $field.addClass('evaluation-invalid');
-
+                            className = 'evaluation-invalid';
                         } else {
-                            $field.removeClass('evaluation-valid');
-                            $field.removeClass('evaluation-invalid');
-                            $field.addClass('evaluation-empty');
+                            className = 'evaluation-empty';
                         }
+                    }
+
+                    if(insideEmbedTools) {
+                        window.parent.postMessage({
+                            type: 'evaluationRegistration.setClass',
+                            className: className,
+                        });
+                    } else {
+                        setClass(className);
                     }
                 });
             }
 
+            var __onChangeTimeout;
+
+            $(".autosave").on('keyup change', function() {
+                var $formContainer = $('#registration-evaluation-form');
+                var $_form = $formContainer.find('form');
+                clearTimeout(__onChangeTimeout);
+                __onChangeTimeout = setTimeout(function(){
+                    var data = $_form.serialize();
+                    var status = (MapasCulturais.evaluation && MapasCulturais.evaluation.status == 1) ? 'evaluated' : 'draft';
+                    var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': status});
+                    $.post(url, data, function(r){
+                        MapasCulturais.Messages.success('Avaliação Salva com sucesso');
+                    });
+                },15000);
+            });
+
             return $form;
         }
         $('li.registration-list-item').each(function(){
-            getForm($(this));
+            if (insideEmbedTools) {
+                window.parent.postMessage({
+                    type: 'evaluationForm.getForm',
+                    element: this.outerHTML
+                })
+            } else {
+                getForm($(this));
+            }
         });
 
         var intervalCount = 0;
@@ -104,7 +133,14 @@ $(function(){
 
                     });
 
-                    getForm($field);
+                    if (insideEmbedTools) {
+                        window.parent.postMessage({
+                            type: 'evaluationForm.getForm',
+                            element: $field.get(0).outerHTML
+                        })
+                    } else {
+                        getForm($field);
+                    }
                     if(val.evaluation && val.evaluation == 'invalid'){
                         $field.addClass('evaluation-invalid');
 
@@ -122,38 +158,74 @@ $(function(){
 
         $('body').on('click', 'li.js-field, li.registration-list-item', function(){
             var $field = $(this);
-            var $form = getForm($field);
-
-            var __onChangeTimeout;
-            $(".autosave").on('keyup change', function() {
-                var $formContainer = $('#registration-evaluation-form');
-                var $_form = $formContainer.find('form');
-                clearTimeout(__onChangeTimeout);
-                __onChangeTimeout = setTimeout(function(){
-                    var data = $_form.serialize();
-                    var status = (MapasCulturais.evaluation && MapasCulturais.evaluation.status == 1) ? 'evaluated' : 'draft';
-                    var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': status});
-                    $.post(url, data, function(r){
-                        MapasCulturais.Messages.success('Avaliação Salva com sucesso');
-                    });
-                },15000);
-            });
-
-            // $('window,html,body').animate({scrollTop: $field.offset().top - 75},200);
-            $('.documentary-evaluation-form--field').hide();
-
+            
             if($field.hasClass('field-shadow')){
-                $('#documentary-evaluation-info').slideDown('fast');
-                $('.documentary-evaluation-form--field').hide();
                 $field.removeClass('field-shadow');
+
+                if (insideEmbedTools) {
+                    window.parent.postMessage({
+                        type: 'evaluationForm.closeForm',
+                        element: $field.get(0).outerHTML
+                    })
+                } else {
+                    closeForm($field);
+                }
             } else {
-                $('#documentary-evaluation-info').slideUp('fast');
                 $('li.js-field.field-shadow, li.registration-list-item.field-shadow').removeClass('field-shadow');
                 $field.addClass('field-shadow');
-                $form.fadeIn('fast');
+
+                if (insideEmbedTools) {
+                    window.parent.postMessage({
+                        type: 'evaluationForm.openForm',
+                        element: $field.get(0).outerHTML
+                    })
+                } else {
+                    openForm($field);
+                }
             }
         });
-    } else {
-        
     }
+
+    function openForm($field) {
+        $('.documentary-evaluation-form--field').hide();
+        $('#documentary-evaluation-info').slideUp('fast');
+        
+        var $form = getForm($field);
+        $form.fadeIn('fast');
+    }
+
+    function closeForm($field) {
+        $('#documentary-evaluation-info').slideDown('fast');
+        $('.documentary-evaluation-form--field').hide();
+    }
+
+    function setClass(className) {
+        const $field = $('li.js-field.field-shadow, li.registration-list-item.field-shadow')
+
+        $field.removeClass('evaluation-empty');
+        $field.removeClass('evaluation-valid');
+        $field.removeClass('evaluation-invalid');
+
+        $field.addClass(className);
+    }
+
+
+    window.addEventListener("message", function(event) {
+        
+        switch (event?.data?.type) {
+            case 'evaluationForm.openForm':
+                openForm($(event.data.element));
+            break;
+            case 'evaluationForm.closeForm':
+                closeForm();
+            break;
+            case 'evaluationForm.closeForm':
+                getForm($(event.data.element));
+            break;
+
+            case 'evaluationRegistration.setClass':
+                setClass(event.data.className);
+            break;
+        }
+    });
 });
