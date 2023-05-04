@@ -174,8 +174,13 @@
                             padding: 0;
                             span {
                                 white-space: pre-line;
+                                
                             }
-
+                            @media (max-width:size(400)){
+                                span {
+                                    word-break: break-all;
+                                }
+                            }
                         }
 
                         &__footer {
