@@ -61,6 +61,10 @@ $this->breadcrumb = [
             <mapas-container>
                 <main>
                     <div class="grid-12">
+                        <div class="col-12">
+                            <h3><?= i::__("Apresentação") ?></h3>
+                            <p>{{ entity.shortDescription }}</p>
+                        </div>
                         <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                         <div class="col-12">
                             <entity-links :entity="entity" title="<?php i::esc_attr_e('Links'); ?>"></entity-links>
@@ -87,11 +91,14 @@ $this->breadcrumb = [
             <div class="opportunity-container">
                 <v1-embed-tool route="evaluationlist" :id="entity.id"></v1-embed-tool>
             </div>
-            <!-- <evaluations-list :entity="entity"></evaluations-list> -->
         </tab>
 
         <?php
             $this->part('opportunity-tab-results.php', ['entity' => $entity]);
+        ?>
+
+        <?php
+            $this->part('opportunity-tab-support.php', ['entity' => $entity]);
         ?>
     </tabs>
     <entity-actions :entity="entity"></entity-actions>
