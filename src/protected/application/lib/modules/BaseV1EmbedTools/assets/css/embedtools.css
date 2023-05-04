@@ -1154,3 +1154,59 @@ textarea {
 .log-execution-time {
     display: none;
 }
+
+
+/* Support Edit View */
+.action-supporteditview .registration-header,
+.action-supporteditview .registration-number {
+    display: none;
+}
+
+.action-supporteditview #registration-attachments {
+    border: none;
+    padding: 0;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .section {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 44px;
+    margin: 32px 0 27px;
+}
+.action-supporteditview #registration-attachments .attachment-list .section br {
+    display: none;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item {
+    background-color: #FFFFFF;
+    border: none;
+    padding: 13px 13px 19px 13px;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item .btn.send,
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item .btn.edit {
+    background-color: #FFFFFF;
+    color: #0074C1;
+    border: 2px solid #0074C1;
+    padding: 12px 19px;
+    width: 155px;
+    text-decoration: none;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item .label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.attachment-description {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+}
