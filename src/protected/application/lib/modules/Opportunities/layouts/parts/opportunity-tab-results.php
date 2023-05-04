@@ -6,8 +6,8 @@ if (!$entity->lastPhase->publishedRegistrations) {
 }
 ?>
 
-<tab label="<?= i::__('Resultados') ?>" slug="results" v-if="entity.currentUserPermissions.view">
+<tab label="<?= i::__('Resultados') ?>" slug="results">
     <div class="opportunity-container">
-        <v1-embed-tool route="registrationmanager" :id="entity.id"></v1-embed-tool>
+        <v1-embed-tool route="opportunityresults" :id="<?= $entity->lastPhase->id ?>"></v1-embed-tool>
     </div>
 </tab>

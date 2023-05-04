@@ -88,9 +88,7 @@ $this->breadcrumb = [
             <!-- <evaluations-list :entity="entity"></evaluations-list> -->
         </tab>
 
-        <?php
-            $this->part('opportunity-tab-results.php', ['entity' => $entity]);
-        ?>
+        <?php $this->part('opportunity-tab-results.php', ['entity' => $entity]); ?>
     </tabs>
     <entity-actions :entity="entity"></entity-actions>
 </div>
