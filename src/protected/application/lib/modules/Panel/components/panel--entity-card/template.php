@@ -45,7 +45,6 @@ $this->import('
             <slot name="footer-actions">
                 <div class="panel-entity-card__footer-actions left">
                     <slot name="entity-actions-left" :entity="entity">
-                        {{onDeleteRemoveFromLists}}
                         <panel--entity-actions 
                             :entity="entity" 
                             @undeleted="$emit('undeleted', $event)"
@@ -64,7 +63,7 @@ $this->import('
                     </slot>
                     <slot name="entity-actions-right" >
                         <a :href="entity.singleUrl" class="button button--primary-outline button--icon"><?php i::_e('Acessar') ?> <mc-icon name="arrowPoint-right"></mc-icon></a> 
-                        <a v-if="entity.status>=0" :href="entity.editUrl" class="button button--primary button--icon"><mc-icon name="edit"></mc-icon> <?php i::_e('Editar') ?></a>
+                        <a v-if="entity.status>=0" :href="entity.editUrl" class="button button--primary button--icon editdraft"><mc-icon name="edit"></mc-icon> <?php i::_e('Editar') ?></a>
                         <panel--entity-actions 
                             v-if="rightButtons"
                             :entity="entity" 
