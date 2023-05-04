@@ -25,7 +25,11 @@
                         .carousel__track {}
                     }
                 }
-
+                @media (max-width: size(400)){
+                    .actions{
+                        margin-right:size(18);
+                    }
+                }
                 .actions {
                     display: flex;
                     gap: size(18);
