@@ -91,13 +91,10 @@ $this->breadcrumb = [
             </div>
         </tab>
 
-        <?php
-            $this->part('opportunity-tab-results.php', ['entity' => $entity]);
-        ?>
+        <?php $this->part('opportunity-tab-results.php', ['entity' => $entity]); ?>
+        
+        <?php $this->part('opportunity-tab-support.php', ['entity' => $entity]); ?>
 
-        <?php
-            $this->part('opportunity-tab-support.php', ['entity' => $entity]);
-        ?>
     </tabs>
     <entity-actions :entity="entity"></entity-actions>
 </div>
