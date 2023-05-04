@@ -1,7 +1,6 @@
 @use '../settings/mixins' as *;
 
 .modal-confirm{
-    background-color: red;
     .modal-content {
       height: unset;
       max-height: unset;
