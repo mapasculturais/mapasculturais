@@ -22,7 +22,7 @@ $this->import('
     </a>
 
     <div v-if="editable" class="entity-owner__edit">
-        <select-entity :query="query" type="agent" @select="changeOwner($event)" openside="up-right">
+        <select-entity :query="query" type="agent" @select="changeOwner($event)" permissions="" openside="up-right">
             <template #button="{ toggle }">
                 <a class="entity-owner__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
                     <mc-icon name="exchange"></mc-icon>
