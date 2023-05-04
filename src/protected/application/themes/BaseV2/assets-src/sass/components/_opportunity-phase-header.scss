@@ -1,5 +1,24 @@
-@use '../settings/mixins' as *;
+@use '../settings/mixins'as *;
 
 .opportunity-phase-header {
+    align-items: center;
     margin-bottom: size(32);
+    padding: 0 size(24);
+    background-color: var(--mc-white);
+
+    p {
+        font-family: 'Open Sans';
+        color: var(--mc-opportunities-500);
+        font-weight: 700;
+        font-size: size(24);
+        line-height: size(28);
+    }
+
+    &--spacing {
+        padding: size(16);
+
+        div {
+            margin-bottom: size(16);
+        }
+    }
 }
