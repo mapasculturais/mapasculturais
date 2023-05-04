@@ -101,7 +101,7 @@ $em = $entity->evaluationMethodConfiguration;
         <?php $this->applyTemplateHook('opportunity-evaluations--admin--table-tbody-tr', 'after'); ?>
         <?php $this->applyTemplateHook('opportunity-evaluations--admin--table-tbody', 'end'); ?>
     </tbody>
-    <tfoot>
+    <tfoot ng-if="data.registrationsAPIMetadata.count > data.registrations.length">
         <tr>
             <td colspan='{{numberOfEnabledColumns()}}' align="center">
                 <div ng-if="data.findingEvaluations">

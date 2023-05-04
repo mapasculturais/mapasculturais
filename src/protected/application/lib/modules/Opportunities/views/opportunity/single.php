@@ -49,10 +49,8 @@ $this->breadcrumb = [
                 <aside>
                     <div class="grid-12">
                         <opportunity-phases-timeline class="col-12"></opportunity-phases-timeline>
-                        <div class="col-12">
-                            <button class="button button--primary-outline">
-                            <?= i::__("Baixar regulamento") ?>
-                            </button>
+                        <div v-if="entity.files.rules" class="col-12">
+                            <a :href="entity.files.rules.url" class="button button--primary-outline" target="_blank"><?= i::__("Baixar regulamento") ?></a>
                         </div>
                     </div>
                 </aside>
@@ -90,9 +88,7 @@ $this->breadcrumb = [
             <!-- <evaluations-list :entity="entity"></evaluations-list> -->
         </tab>
 
-        <?php
-            $this->part('opportunity-tab-results.php', ['entity' => $entity]);
-        ?>
+        <?php $this->part('opportunity-tab-results.php', ['entity' => $entity]); ?>
     </tabs>
     <entity-actions :entity="entity"></entity-actions>
 </div>
