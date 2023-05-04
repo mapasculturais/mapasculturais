@@ -568,7 +568,7 @@
 			gap: size(32);
 
 			@media (max-width: size(500)) {
-				.button {
+				.button-action{
 					width: size(297);
 					height: size(48);
 					display: flex;
