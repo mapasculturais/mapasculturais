@@ -1,0 +1,138 @@
+@use '../settings/mixins' as *;
+
+.controller-support {
+    &.action-list {
+        .title {
+            font-weight: 700;
+            font-size: size(32);
+            line-height: size(44);
+        }
+
+        .opportunity-phase-header {
+            margin-top: size(24);
+        }
+    }
+
+    &.action-form {
+        .support {
+            &__content {
+                background-color: var(--mc-gray-100);
+                padding: 0 size(16);
+
+                .title {
+                    font-weight: 700;
+                    font-size: size(32);
+                    line-height: size(44);
+                }
+
+                .container {
+                    grid-template-columns: 74% 23%;
+                    margin: 0 auto;
+                    padding: size(32) 0;
+
+                    @include mobile {
+                        grid-template-columns: 100%;
+                    }
+                }
+
+                .support-agent {
+                    display: grid;
+                    grid-template-columns: size(40) 1fr;
+                    align-items: center;
+                    gap: size(24);
+                    background-color: var(--mc-white);
+                    padding: size(12);
+                    border-radius: var(--mc-border-radius-xs);
+                    margin: size(4) 0 size(12);
+
+                    &__image {
+                        width: size(40);
+                        height: size(40);
+                        border-radius: var(--mc-border-radius-pill);
+                        overflow: hidden;
+
+                        img {
+                            width: 100%;
+                        }
+                    }
+
+                    &__name {
+                        font-weight: 700;
+                        font-size: size(18);
+                        line-height: size(25);
+                    }
+                }
+
+                .support-info {
+                    &__title {
+                        font-size: size(24);
+                        font-weight: 700;
+                        line-height: size(28);
+                        margin: 0 0 size(13);
+                    }
+
+                    &__content {
+                        background: var(--mc-high-500);
+                        border-radius: var(--mc-border-radius-xs);
+                        display: flex;
+                        gap: size(60);
+                        padding: size(10) size(24);
+
+                        .data {
+                            display: flex;
+                            flex-direction: column;
+
+                            p {
+                                margin: 0;
+                            }
+
+                            &__title {
+                                font-size: size(14);
+                                font-weight: 600;
+                                line-height: size(19);
+                            }
+
+                            &__info {
+                                color: var(--mc-opportunities-500);
+                                font-size: size(18);
+                                font-weight: 700;
+                                line-height: size(25);
+                            }
+                        }
+                    }
+
+                    @include mobile {
+                        &__title {
+                            font-size: size(18);
+                            line-height: size(28);
+                        }
+
+                        &__content {
+                            gap: size(28);
+
+                            .data {
+                                &__title {
+                                    font-size: size(12);
+                                    font-weight: 600;
+                                    line-height: size(16);
+                                }
+
+                                &__info {
+                                    font-size: size(14);
+                                    font-weight: 700;
+                                    line-height: size(22);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .actions {
+                    display: flex;
+                    flex-direction: column;
+                    gap: size(24);
+                }
+            }
+        }
+    }
+}

@@ -5,6 +5,23 @@
 
   .tabs-component__panels {
     margin-bottom: 0;
+
+    .tab-component.support {
+      position: relative;
+
+      &::before {
+        content: '';
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        background-color: var(--mc-gray-100);
+      }
+
+      .button-support {
+        min-width: size(270);
+      }
+    }
   }
 
   &.action-edit {
@@ -121,7 +138,8 @@
       
       .opportunity-container {
         max-width: size(1170);
-        margin: size(32) auto;
+        margin: 0 auto;
+        padding: size(32) 0;
       }
     }
   }
