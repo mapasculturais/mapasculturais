@@ -568,21 +568,22 @@
 			gap: size(32);
 
 			@media (max-width: size(500)) {
-				.button {
-					width: size(305);
+				.button-action{
+					width: size(297);
 					height: size(48);
 					display: flex;
-					justify-content: flex-start;
+					justify-content: flex-end;
 					align-items: center;
 					flex-direction: row;
 					gap: size(100)
 				}
-
-				.button:first-of-type {
-					display: flex;
-					// gap: size(97);
-					align-items: center;
-					justify-content: flex-end;
+				.editdraft{
+					justify-content: flex-start;				}
+				.recover{
+					justify-content: center;
+				}
+				.publish-archived {
+					justify-content: center;
 				}
 			}
 		}

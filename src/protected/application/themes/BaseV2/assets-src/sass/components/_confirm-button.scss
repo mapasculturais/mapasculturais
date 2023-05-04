@@ -1,0 +1,8 @@
+@use '../settings/mixins' as *;
+
+.modal-confirm{
+    .modal-content {
+      height: unset;
+      max-height: unset;
+    }
+}

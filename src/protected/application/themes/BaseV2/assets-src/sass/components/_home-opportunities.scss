@@ -34,6 +34,9 @@
 					line-height: size(28);
 				}
 			}
+			@media (max-width: size(600)){
+				width: 100%;
+			}
 		}
 
 		&.description {
@@ -42,6 +45,10 @@
 			line-height: size(22);
 			margin: 0;
 			max-width: calc(100% - 130px);
+			@media (max-width: size(600)){
+				margin: unset;
+				max-width: 100%;
+			}
 		}
 	}
 

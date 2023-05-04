@@ -162,7 +162,7 @@ use MapasCulturais\i;
             <?php $this->applyTemplateHook('registration-list-item','end'); ?>
         </tr>
     </tbody>
-    <tfoot>
+    <tfoot ng-if="data.registrationsAPIMetadata.count > data.registrations.length">
         <tr>
             <td colspan='{{numberOfEnabledColumns()}}' align="center">
                 <div ng-if="data.findingRegistrations">

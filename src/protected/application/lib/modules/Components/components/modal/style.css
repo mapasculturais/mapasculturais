@@ -77,8 +77,10 @@
 
     .modal-content {
         max-width: 100%;
-        margin-top: 50px;
-        height: 100%;
+        /* margin-top: 50px; */
+        max-height: 100%;
+        height: calc(100% - 100px);
+        /* height: 100%; */
         width: 100%;
     }
     .modal__action .button {

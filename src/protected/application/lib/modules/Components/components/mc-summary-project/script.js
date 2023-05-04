@@ -1,9 +1,6 @@
 app.component('mc-summary-project', {
     template: $TEMPLATES['mc-summary-project'],
 
-    setup() {
-        console.log('Teste')
-    },
     props: {
         entity: {
             type: Entity,
