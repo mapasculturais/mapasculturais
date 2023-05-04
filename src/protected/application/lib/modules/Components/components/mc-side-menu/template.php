@@ -28,7 +28,7 @@ $this->import('mc-icon');
                 <div class="content">
 
                     <div class="find-text">
-                        <input type="text" v-model="keywords"></input>
+                        <input type="text" v-model="keywords">
                         <div class="icon">
                             <mc-icon name="search"></mc-icon>
                         </div>
