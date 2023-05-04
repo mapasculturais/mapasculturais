@@ -25,7 +25,11 @@
                         .carousel__track {}
                     }
                 }
-
+                @media (max-width: size(400)){
+                    .actions{
+                        margin-right:size(18);
+                    }
+                }
                 .actions {
                     display: flex;
                     gap: size(18);
@@ -174,8 +178,13 @@
                             padding: 0;
                             span {
                                 white-space: pre-line;
+                                
                             }
-
+                            @media (max-width:size(400)){
+                                span {
+                                    word-break: break-all;
+                                }
+                            }
                         }
 
                         &__footer {

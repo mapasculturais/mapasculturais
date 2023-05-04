@@ -70,6 +70,7 @@ $iconset = [
     'loading' => 'eos-icons:three-dots-loading',
     'login' => 'icon-park-outline:login',
     'logout' => 'ri:logout-box-line',
+    'magnifier' => 'simple-line-icons:magnifier',
     'map-pin' => 'charm:map-pin',
     'map' => 'bxs:map-alt',
     'menu-mobile' => 'icon-park-outline:hamburger-button',

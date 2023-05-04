@@ -102,7 +102,7 @@ use MapasCulturais\i;
                 </td>
             </tr>
         </tbody>
-        <tfoot ng-if="data.registrationsAPIMetadata.numPages > 1 && data.registrationsAPIMetadata.page < data.registrationsAPIMetadata.numPages">
+        <tfoot ng-if="data.registrationsAPIMetadata.count > data.registrations.length">
             <tr>
                 <td colspan='3' align="center">
                     <div ng-if="data.findingRegistrations">

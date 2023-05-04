@@ -18,14 +18,14 @@ $this->import('
 <div v-if="!entity.__processing" class="panel__entity-actions">
     <confirm-button v-if="undeleteButton && entity.status == <?= Entity::STATUS_TRASH ?>"
         @confirm="undeleteEntity($event)" 
-        button-class="button unpublish button--primary button--icon"
+        button-class="button unpublish button--primary button--icon button-action recover"
         message="<?php i::esc_attr_e("Você está certo que deseja recuperar esta entidade da lixeira?") ?>">
             <?php i::_e('Recuperar') ?>
     </confirm-button>
     
     <confirm-button v-if="publishButton && entity.status != <?= Entity::STATUS_TRASH ?> && entity.status != <?= Entity::STATUS_ENABLED ?>"
         @confirm="publishEntity($event)"
-        button-class="button publish button--primary button--icon publish-archived"
+        button-class="button publish button--primary button--icon button-action publish-archived"
         message="<?php i::esc_attr_e("Você está certo que deseja publicar esta entidade?") ?>">
             <?php i::_e('Publicar') ?>
     </confirm-button>
