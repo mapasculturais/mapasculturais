@@ -4,6 +4,7 @@ namespace BaseV1EmbedTools;
 
 use MapasCulturais\App;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\i;
 
 class Controller extends \MapasCulturais\Controllers\Opportunity
 {
@@ -45,6 +46,21 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $evaluation_method = $entity->getEvaluationMethod();
 
         $this->render("evaluation-manager", ['entity' => $entity, 'evaluation_method' => $evaluation_method]);
+    }
+
+    public function GET_opportunityresults()
+    {
+        $app = App::i();
+
+        if (!$entity = $this->requestedEntity) {
+            $app->pass();
+        }
+
+        if (!$entity->publishedRegistrations) {
+            $app->halt(403, i::__('Permissão negada'));
+        }
+
+        $this->render("opportunity-result", ['entity' => $entity]);
     }
 
     public function GET_registrationform()
