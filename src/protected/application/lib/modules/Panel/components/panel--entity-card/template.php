@@ -62,8 +62,8 @@ $this->import('
                     <slot name="entity-actions-center" >
                     </slot>
                     <slot name="entity-actions-right" >
-                        <a :href="entity.singleUrl" class="button button--primary-outline button--icon"><?php i::_e('Acessar') ?> <mc-icon name="arrowPoint-right"></mc-icon></a> 
-                        <a v-if="entity.status>=0" :href="entity.editUrl" class="button button--primary button--icon editdraft"><mc-icon name="edit"></mc-icon> <?php i::_e('Editar') ?></a>
+                        <a :href="entity.singleUrl" class="button button--primary-outline button--icon button-action"><?php i::_e('Acessar') ?> <mc-icon name="arrowPoint-right"></mc-icon></a> 
+                        <a v-if="entity.status>=0" :href="entity.editUrl" class="button button--primary button--icon editdraft button-action"><mc-icon name="edit"></mc-icon> <?php i::_e('Editar') ?></a>
                         <panel--entity-actions 
                             v-if="rightButtons"
                             :entity="entity" 
