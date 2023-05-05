@@ -35,6 +35,17 @@ body {
     gap: 12px;
     justify-content: flex-end;
 }
+.edit-box .mc-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.edit-box label.checkbox-label {
+    display: inline-flex;
+    margin-right: 15px;
+    align-items: center;
+}
 
 .screen-reader-text {
     display: none;
