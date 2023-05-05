@@ -88,8 +88,15 @@ app.component('registration-evaluation-actions', {
             iframe.contentWindow.postMessage({type: "evaluationForm.send", status: 'evaluated'});
             this.reloadPage();
         },
-        saveAndContinue() {
-            console.log(this.registration);
+        send(registration) {
+            api = new API('registration');
+            let url = api.createUrl('sendEvaluation', {id: registration.id});
+
+            var args = {};
+            api.POST(url, args).then(res => res.json()).then(data => {
+                messages.success(this.text('Avaliação enviada'));
+            });
+            this.reloadPage();
         },
         reopen(registration){
             api = new API('registration');
