@@ -177,8 +177,9 @@
                             text-align: left;
                             padding: 0;
                             span {
-                                white-space: pre-line;
                                 word-break: break-all;
+                                white-space: pre-line;
+                                
                             }
                             @media (max-width:size(400)){
                                 span {
