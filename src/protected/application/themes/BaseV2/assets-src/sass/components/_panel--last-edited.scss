@@ -178,7 +178,7 @@
                             padding: 0;
                             span {
                                 white-space: pre-line;
-                                
+                                word-break: break-all;
                             }
                             @media (max-width:size(400)){
                                 span {
