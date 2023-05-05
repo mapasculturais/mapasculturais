@@ -50,7 +50,7 @@ trait EntityPermissionCache {
 
     public function getPermissionCachePrefix() {
         $app = App::i();
-        $prefix = $app->cache->fetch("$this::permission-cache-prefix");
+        $prefix = $app->mscache->fetch("$this::permission-cache-prefix");
 
         if(!$prefix) {
             $prefix = $this->renewPermissionCachePrefix();
@@ -62,13 +62,13 @@ trait EntityPermissionCache {
     public function renewPermissionCachePrefix() {
         $app = App::i();
         $prefix = uniqid();
-        $app->cache->save("$this::permission-cache-prefix", $prefix);
+        $app->mscache->delete("$this::permission-cache-prefix");
+        $app->mscache->save("$this::permission-cache-prefix", $prefix);
         return $prefix;
     }
 
     public function getPermissionCacheKey($user, $action) {
         $prefix = $this->getPermissionCachePrefix();
-
         return "$prefix::{$this->hookClassPath}:{$this->id}::User:{$user->id}::$action";
     }
     
