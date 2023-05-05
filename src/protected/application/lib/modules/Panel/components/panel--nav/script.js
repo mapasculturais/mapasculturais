@@ -5,17 +5,13 @@ app.component('panel--nav', {
         classes: {
             type: [Array, String],
             default: ''
-        },
-        // entity: {
-        //     type: Entity,
-        //     required: true
-        // }
-
+        }
     },
 
     data() {
+        const global = useGlobalState();
         return {
-            entity: $MAPAS.userProfile,
+            entity: global.auth.user?.profile,
             groups: $MAPAS.config.panelNav
 
         }

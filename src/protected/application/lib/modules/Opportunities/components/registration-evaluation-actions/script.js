@@ -14,11 +14,14 @@ app.component('registration-evaluation-actions', {
     },
 
     mounted() {
+        window.addEventListener('evaluationRegistrationList', this.getEvaluationList);
     },
 
     data() {
         return {
             fields: $MAPAS.registrationFields,
+            evaluationRegistrationList: null
+            
         }
     },
 
@@ -34,6 +37,11 @@ app.component('registration-evaluation-actions', {
     },
     
     methods: {
+        getEvaluationList(data){
+            if(data.detail.evaluationRegistrationList){
+                this.evaluationRegistrationList = data.detail.evaluationRegistrationList;
+            }
+        },
         fieldName(field) {
             if (field == 'agent_instituicao') {
                 return this.text('Instituição responsável');
@@ -53,15 +61,52 @@ app.component('registration-evaluation-actions', {
 
             return this.text('Campo não identificado');
         },
+        showActions(registration, action){
+            var result = false;
+            this.evaluationRegistrationList.forEach(function(item){
+                if(item.registrationid == registration.id){
+                    switch (action) {
+                        case 'finishEvaluation':
+                        case 'save':
+                            result = item.status < 1;
+                            break;
+                        case 'send':
+                        case 'reopen':
+                            result = item.status == 1;
+                            break;
+                        default:
+                            result = false;
+                            break;
+                    }
+                }
+            });
+
+            return result;
+        },
         finishEvaluation() {
             const iframe = document.getElementById('evaluation-form');
             iframe.contentWindow.postMessage({type: "evaluationForm.send", status: 'evaluated'});
+            this.reloadPage();
         },
-        saveAndContinue() {
-            console.log(this.registration);
+        send(registration) {
+            api = new API('registration');
+            let url = api.createUrl('sendEvaluation', {id: registration.id});
+
+            var args = {};
+            api.POST(url, args).then(res => res.json()).then(data => {
+                messages.success(this.text('Avaliação enviada'));
+            });
+            this.reloadPage();
         },
-        send() {
-            console.log(this.registration);
+        reopen(registration){
+            api = new API('registration');
+            let url = api.createUrl('reopenEvaluation', {id: registration.id});
+
+            var args = {};
+            api.POST(url, args).then(res => res.json()).then(data => {
+                messages.success(this.text('Avaliação reaberta'));
+            });
+            this.reloadPage();
         },
         previous() {
             window.dispatchEvent(new CustomEvent('previousEvaluation', {detail:{registrationId:this.registration.id}}));
@@ -73,8 +118,10 @@ app.component('registration-evaluation-actions', {
             const iframe = document.getElementById('evaluation-form');
             iframe.contentWindow.postMessage({type: "evaluationForm.save"});
         },
-        exit() {
-            console.log(this.registration);
-        },
+        reloadPage(timeout = 1500){
+            setTimeout(() => {
+                document.location.reload(true)
+            }, timeout);
+        }
     },
 });

@@ -8,8 +8,9 @@ app.component('mc-header-menu-user', {
     },
 
     data() {
+        const global = useGlobalState();
         return {
-            profile: $MAPAS.userProfile,
+            profile: global.auth.user?.profile,
             open: false
         }
     },

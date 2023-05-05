@@ -97,6 +97,10 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     protected $status = self::STATUS_DRAFT;
 
     function save($flush = false){
+        if(empty($this->status)){
+            $this->status = self::STATUS_DRAFT;
+        }
+        
         parent::save($flush);
         $app = App::i();
         $opportunity = $this->registration->opportunity;
@@ -182,7 +186,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return true;
         }
 
-        if($this->registration->canUser('evaluate', $user) && $this->user->equals($user) && $this->status < self::STATUS_SENT){
+        if($this->registration->canUser('evaluate', $user) && $this->user->equals($user) && $this->status <= self::STATUS_SENT){
             return true;
         }
 
