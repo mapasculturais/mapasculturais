@@ -31,14 +31,13 @@ app.component('entities', {
         this.entities.loadMore = () => this.loadMore();
         this.entities.stringifiedQuery = JSON.stringify(this.entities.query)
         if (this.watchQuery) {
-            this.$watch('query', (q1) => {
-                if(this.entities.stringifiedQuery == JSON.stringify(q1)) {
-                    return;
-                }
-                this.entities.stringifiedQuery = JSON.stringify(q1);
-                this.entities.refresh(this.watchDebounce);
-                
-            }, {deep:true});
+            this.$watch(() => ({
+                select: this.select,
+                ids: this.ids,
+                limit: this.limit,
+                query: this.query,
+                order: this.order,
+            }), () => this.entities.refresh(this.watchDebounce), {deep:true});
         }
 
         this.refresh();
@@ -91,8 +90,8 @@ app.component('entities', {
             if (this.ids) {
                 query[this.API.$PK] = 'IN(' + this.ids.join(',') + ')'
             }
-    
-            if (this.order && !query['@order']) {
+
+            if (this.order) {
                 query['@order'] = this.order; 
             }
     
