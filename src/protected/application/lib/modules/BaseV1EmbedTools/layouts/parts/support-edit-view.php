@@ -1,7 +1,7 @@
 <article ng-controller="SupportForm">
     <?php $this->applyTemplateHook('form', 'begin'); ?>
     <h3 class="registration-header"><?php \MapasCulturais\i::_e("Formulário de Inscrição"); ?></h3>
-    <div class="registration-fieldset">
+    <div class="registration-fieldset registration-number">
         <h4><?php \MapasCulturais\i::_e("Número da Inscrição"); ?></h4>
         <div class="registration-id">
             <?php echo $entity->number ?>
@@ -16,7 +16,7 @@
 
         <ul class="attachment-list" ng-controller="RegistrationFieldsController">
             <?php $this->applyTemplateHook('registration-field-list', 'begin') ?>
-            <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''">
+            <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class="{'js-field attachment-list-item registration-view-mode': (field.fieldType != 'section'), 'section': (field.fieldType == 'section')}">
                 <div ng-if="canUserEdit(field)">
                     <?php $this->part('singles/registration-field-edit') ?>
                 </div>
