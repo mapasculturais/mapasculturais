@@ -20,6 +20,8 @@ app.component('registration-evaluation-actions', {
     data() {
         return {
             fields: $MAPAS.registrationFields,
+            evaluationRegistrationList: null
+            
         }
     },
 
@@ -59,9 +61,32 @@ app.component('registration-evaluation-actions', {
 
             return this.text('Campo não identificado');
         },
+        showActions(registration, action){
+            var result = false;
+            this.evaluationRegistrationList.forEach(function(item){
+                if(item.registrationid == registration.id){
+                    switch (action) {
+                        case 'finishEvaluation':
+                        case 'save':
+                            result = item.status < 1;
+                            break;
+                        case 'send':
+                        case 'reopen':
+                            result = item.status == 1;
+                            break;
+                        default:
+                            result = false;
+                            break;
+                    }
+                }
+            });
+
+            return result;
+        },
         finishEvaluation() {
             const iframe = document.getElementById('evaluation-form');
             iframe.contentWindow.postMessage({type: "evaluationForm.send", status: 'evaluated'});
+            this.reloadPage();
         },
         saveAndContinue() {
             console.log(this.registration);
