@@ -46,23 +46,8 @@ globalThis.$DESCRIPTIONS = $MAPAS.EntitiesDescription ?? []
 globalThis.$TAXONOMIES = $MAPAS.Taxonomies ?? {}
 
 document.addEventListener('DOMContentLoaded', () => {
-    const rawProfile = globalThis.$MAPAS.userProfile;
-    if(rawProfile) {
-        const profile = new Entity('agent', rawProfile.id);
-        profile.populate(rawProfile);
-        globalThis.$MAPAS.userProfile = profile;
-    }
-    
-    const rawUser = globalThis.$MAPAS.user;
-    if(rawUser) {
-        const user = new Entity('user', rawUser.id);
-        user.populate(rawUser);
-        globalThis.$MAPAS.user = user;
-    }
-    
     app.mount('#main-app');
-    // document.body.style.opacity = 1;
-
+    
     let opacity = 0.01;
     globalThis.opacityInterval = setInterval(() => {
         if(opacity >= 1) {

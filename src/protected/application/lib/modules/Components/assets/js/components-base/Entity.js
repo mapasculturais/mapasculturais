@@ -682,8 +682,10 @@ class Entity {
     }
 
     async changeOwner(ownerId) {
+        const global = useGlobalState();
+
         this.__processing = this.text('alterando propriedade da entidade');
-        ownerId = ownerId || $MAPAS.userProfile.id;
+        ownerId = ownerId || global.auth.user?.profile?.id;
 
         if (!ownerId) {
             return Promise.reject('ownerId indefinido');

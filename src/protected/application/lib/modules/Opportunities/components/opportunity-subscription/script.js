@@ -45,10 +45,6 @@ app.component('opportunity-subscription' , {
     },
 
     computed: {
-        isLogged() {
-            return $MAPAS.userId != null
-        },
-
         infoRegistration() {
             let description = ''
 
