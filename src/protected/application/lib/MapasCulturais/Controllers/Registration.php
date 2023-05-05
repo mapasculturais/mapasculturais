@@ -226,7 +226,7 @@ class Registration extends EntityController {
         }
     }
 
-    public function GET_sendEvaluation(){
+    public function POST_sendEvaluation(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -244,7 +244,7 @@ class Registration extends EntityController {
             $evaluationMethod = $evaluation->evaluationMethodConfiguration;
            
             if($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo){
-                $evaluation->registration->opportunity->checkPermission('viewUserEvaluation');
+                $evaluation->registration->checkPermission('evaluate');
                 $evaluation->status = RegistrationEvaluation::STATUS_SENT;
                 $evaluation->save(true);
                 $this->json($entity);
