@@ -91,8 +91,15 @@ app.component('registration-evaluation-actions', {
         saveAndContinue() {
             console.log(this.registration);
         },
-        send() {
-            console.log(this.registration);
+        reopen(registration){
+            api = new API('registration');
+            let url = api.createUrl('reopenEvaluation', {id: registration.id});
+
+            var args = {};
+            api.POST(url, args).then(res => res.json()).then(data => {
+                messages.success(this.text('Avaliação reaberta'));
+            });
+            this.reloadPage();
         },
         previous() {
             window.dispatchEvent(new CustomEvent('previousEvaluation', {detail:{registrationId:this.registration.id}}));
