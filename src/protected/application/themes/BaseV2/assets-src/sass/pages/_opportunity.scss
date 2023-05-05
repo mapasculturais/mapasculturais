@@ -31,7 +31,7 @@
       .header-opp {
         &__field {
           &--name {
-            label{
+            label {
               align-items: baseline;
 
             }
@@ -39,6 +39,7 @@
         }
 
       }
+
       .content-opp {
         display: flex;
         flex-direction: column;
@@ -49,6 +50,7 @@
       &__buttons {
         gap: size(48);
       }
+
       &__header {
         margin: size(-40) auto size(40);
 
@@ -135,7 +137,7 @@
           }
         }
       }
-      
+
       .opportunity-container {
         max-width: size(1170);
         margin: 0 auto;
@@ -228,7 +230,7 @@
 
   .form-builder {
     background-color: var(--mc-gray-100);
-    
+
     .subtitle {
       font-size: size(12);
       font-weight: normal;
@@ -251,9 +253,43 @@
       padding: size(20) size(16);
 
       .mapas-card {
+        &__content {
+          .request-data {
+
+            &__subtitle {
+              font-style: "Open Sans";
+              font-weight: 400;
+              font-size: size(14);
+              line-height: size(19);
+              color: var(--mc-gray-700);
+              margin-bottom: size(16);
+            }
+
+            &__inputs {
+              padding: size(16) 0 size(34) 0;
+              display: flex;
+              flex-direction: row;
+              gap: size(24);
+
+              .options {
+                display: flex;
+                gap: size(8);
+
+                input[type="radio"] {
+                  width: size(16);
+                  height: size(16);
+                  border: size(2) var(--mc-black);
+                  border-radius: size(12);
+                }
+              }
+            }
+          }
+        }
+
         .build-list {
           &__content {
             padding-top: size(16);
+
           }
 
           &__title {
@@ -317,6 +353,7 @@
 
     &__bg-content {
       background-color: var(--mc-white);
+
       p {
         font-family: 'Open Sans';
         color: var(--mc-opportunities-500);
@@ -324,6 +361,7 @@
         font-size: size(24);
         line-height: size(28);
       }
+
       &--spacing {
         padding: size(16);
 
@@ -335,6 +373,15 @@
 
     &__label-btn {
       margin: size(20) 0;
+
+      .formtitle {
+
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 700;
+        font-size: size(32p);
+        line-height: size(44);
+      }
     }
   }
 }
