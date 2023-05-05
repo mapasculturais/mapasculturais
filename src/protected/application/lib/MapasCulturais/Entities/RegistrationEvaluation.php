@@ -97,6 +97,10 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     protected $status = self::STATUS_DRAFT;
 
     function save($flush = false){
+        if(empty($this->status)){
+            $this->status = self::STATUS_DRAFT;
+        }
+        
         parent::save($flush);
         $app = App::i();
         $opportunity = $this->registration->opportunity;
