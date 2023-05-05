@@ -131,7 +131,7 @@ abstract class Theme extends \Slim\View {
         $app->hook('app.init:after', function(){
             $this->view->jsObject['userId'] = $this->user->is('guest') ? null : $this->user->id;
             $this->view->jsObject['user'] = $this->user;
-            $this->view->jsObject['userProfile'] = $this->user->profile; 
+            $this->view->jsObject['userProfile'] = $this->user->profile;
         });
 
         $app->hook('app.register', function() use($app){

@@ -6,7 +6,7 @@ $this->import('
 ');
 ?>
 
-<div v-if="isLogged && registrations.length > 0" class="grid-12 opportunity-subscription-list">	
+<div v-if="global.auth.isLoggedIn && registrations.length > 0" class="grid-12 opportunity-subscription-list">	
 	<div class="opportunity-subscription-list__header col-12">
 		<p class="title">
 			<?= i::__("Você tem inscrições neste edital") ?>

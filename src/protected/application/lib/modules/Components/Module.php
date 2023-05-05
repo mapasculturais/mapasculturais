@@ -28,6 +28,7 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueScript('components', 'components-mcdate', 'js/components-base/McDate.js');
             $app->view->enqueueScript('components', 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api', 'components-entityFile', 'components-entityMetalist', 'components-mcdate']);
             $app->view->enqueueScript('components', 'components-utils', 'js/components-base/Utils.js', ['components-init']);
+            $app->view->enqueueScript('components', 'components-global-state', 'js/components-base/global-state.js', ['components-utils']);
             $app->view->enqueueStyle($vendor_group, 'vue-datepicker', '../node_modules/@vuepic/vue-datepicker/dist/main.css');
             $app->view->enqueueStyle($vendor_group, 'floating-vue', '../node_modules/floating-vue/dist/style.css');
             $app->view->enqueueStyle($vendor_group, 'components-carousel', 'css/components-base/carousel.css');
@@ -49,13 +50,20 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('mapas.printJsObject:before', function () use($app) {
             $roles = [];
+            $user = $app->user;
 
-            if (!$app->user->is('guest')) {
-                foreach($app->user->roles as $role){
-                    $roles[] = $role->name;
+            if (!$user->is('guest')) {
+                $subsite_id = $app->getCurrentSubsiteId();
+
+                foreach($user->roles as $role) {
+                    $role_name = $role->name;
+                    $role_definition = $app->getRoleDefinition($role_name);
+
+                    if(!$role_definition->subsiteContext || $role->subsiteId == $subsite_id) {
+                        $roles[] = $role->name;
+                    }
                 }
 
-                $user = $app->user;
                 if ($user->is('admin')) {
                     $roles[] = 'admin';
                 }
@@ -73,7 +81,7 @@ class Module extends \MapasCulturais\Module {
                 }
             }
             
-            $this->jsObject['currentUserRoles'] = $roles;
+            $this->jsObject['currentUserRoles'] = array_unique($roles);
         }); 
 
         $app->hook('mapas.printJsObject:after', function () use($app) {
