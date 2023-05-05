@@ -163,6 +163,8 @@
 
                             .left {
                                 flex-wrap: wrap;
+                                display: grid;
+                                grid-template-columns: 1fr;
                                 @media (max-width:size(956)) {
                                     display: flex;
                                     gap: size(12);
@@ -177,6 +179,7 @@
                             text-align: left;
                             padding: 0;
                             span {
+                                word-break: break-all;
                                 white-space: pre-line;
                                 
                             }
@@ -194,9 +197,14 @@
                                     display: flex;
                                     justify-content: flex-start;
                                     align-items: flex-end;
-
+                                    &.left {
+                                        display: none;
+                                    }
                                     &.right {
                                         gap: size(8);
+                                        .content{
+                                            display: none;
+                                        }
                                     }
                                 }
                             }

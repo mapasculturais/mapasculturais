@@ -22,16 +22,11 @@ app.component('user-profile-avatar', {
 
     computed: {
         avatarUrl() {
-            const globalState = useGlobalState();
-            const avatar = globalState.userProfile.files?.avatar;
+            const global = useGlobalState();
+            const avatar = global.auth.user?.profile?.files?.avatar;
             return this.original ? 
                 avatar?.url:
                 avatar?.transformations?.[this.size]?.url;
         },
-
-        loggedIn() {
-            const globalState = useGlobalState();
-            return !!globalState.userId;
-        }
     }
 });
