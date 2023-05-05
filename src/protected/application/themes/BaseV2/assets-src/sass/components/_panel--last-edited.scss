@@ -197,7 +197,9 @@
                                     display: flex;
                                     justify-content: flex-start;
                                     align-items: flex-end;
-
+                                    &.left {
+                                        display: none;
+                                    }
                                     &.right {
                                         gap: size(8);
                                         .content{
