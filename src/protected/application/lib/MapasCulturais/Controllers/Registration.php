@@ -226,7 +226,7 @@ class Registration extends EntityController {
         }
     }
 
-    public function GET_sendEvaluation(){
+    public function POST_sendEvaluation(){
         $this->requireAuthentication();
 
         $app = App::i();
