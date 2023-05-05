@@ -18,7 +18,7 @@ $this->breadcrumb = [
 ?>
 
 <search entity-type="project" page-title="<?php i::esc_attr_e('Projetos') ?>" :initial-pseudo-query="{type:[]}">
-    <template #create-button>
+    <template v-if="global.auth.isLoggedIn" #create-button>
         <create-project #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">
                 <mc-icon name="add"></mc-icon>
