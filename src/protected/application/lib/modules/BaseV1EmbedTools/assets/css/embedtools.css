@@ -1112,9 +1112,6 @@ textarea {
 
 
 /* sidebarleftevaluations */
-.action-sidebarleftevaluations {
- 
-}
 .action-sidebarleftevaluations .sidebar-left {
     padding: 0;
 }
@@ -1220,4 +1217,62 @@ textarea {
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
+}
+
+
+/* Registration Evaluation Form View */
+.action-registrationevaluationtionformview #registration-attachments {
+    padding: 0;
+    border: none;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .section-title h4 {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    margin: 40px 0 21px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .section-title:first-child h4 {
+    margin-top: 0;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item {
+    background: #E8E8E8;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    padding: 8px 16px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div span,
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div a,
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div p {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    word-break: break-word;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div a{
+    display: flex;
+    gap: 5px;
+    text-decoration: none;
 }
