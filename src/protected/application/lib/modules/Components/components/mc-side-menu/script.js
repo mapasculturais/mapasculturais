@@ -73,6 +73,7 @@ app.component('mc-side-menu', {
                     return item;
                 });
                 this.evaluations.sort((a, b) => (a.registrationid - b.registrationid));
+                window.dispatchEvent(new CustomEvent('evaluationRegistrationList', {detail:{evaluationRegistrationList:this.evaluations}}));
             }));
 
             const globalState = useGlobalState();

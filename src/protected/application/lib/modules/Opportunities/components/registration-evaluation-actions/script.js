@@ -14,6 +14,7 @@ app.component('registration-evaluation-actions', {
     },
 
     mounted() {
+        window.addEventListener('evaluationRegistrationList', this.getEvaluationList);
     },
 
     data() {
@@ -34,6 +35,11 @@ app.component('registration-evaluation-actions', {
     },
     
     methods: {
+        getEvaluationList(data){
+            if(data.detail.evaluationRegistrationList){
+                this.evaluationRegistrationList = data.detail.evaluationRegistrationList;
+            }
+        },
         fieldName(field) {
             if (field == 'agent_instituicao') {
                 return this.text('Instituição responsável');
