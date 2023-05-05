@@ -163,6 +163,8 @@
 
                             .left {
                                 flex-wrap: wrap;
+                                display: grid;
+                                grid-template-columns: 1fr;
                                 @media (max-width:size(956)) {
                                     display: flex;
                                     gap: size(12);
@@ -198,6 +200,9 @@
 
                                     &.right {
                                         gap: size(8);
+                                        .content{
+                                            display: none;
+                                        }
                                     }
                                 }
                             }
