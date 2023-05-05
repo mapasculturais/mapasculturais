@@ -11,6 +11,7 @@ app.component('search-list', {
     data() {
         return {
             query: {},
+            order: "createTimestamp DESC",
             typeText: '',
         }
     },
