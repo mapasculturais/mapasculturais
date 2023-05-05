@@ -114,5 +114,10 @@ app.component('registration-evaluation-actions', {
         exit() {
             console.log(this.registration);
         },
+        reloadPage(timeout = 1500){
+            setTimeout(() => {
+                document.location.reload(true)
+            }, timeout);
+        }
     },
 });
