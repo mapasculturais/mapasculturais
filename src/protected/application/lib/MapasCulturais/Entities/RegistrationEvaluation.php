@@ -186,7 +186,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return true;
         }
 
-        if($this->registration->canUser('evaluate', $user) && $this->user->equals($user) && $this->status < self::STATUS_SENT){
+        if($this->registration->canUser('evaluate', $user) && $this->user->equals($user) && $this->status <= self::STATUS_SENT){
             return true;
         }
 
