@@ -3,10 +3,11 @@ app.component('accept-terms', {
     emits: [],
    
     data() {
+        const global = useGlobalState();
         const terms = $MAPAS.config.LGPD;
         const accepteds = $MAPAS.hashAccepteds;
         const step = this.getStep();
-        const user = $MAPAS.user;
+        const user = global.auth.user;
         return {
             loading: false,
             user, terms, accepteds, step

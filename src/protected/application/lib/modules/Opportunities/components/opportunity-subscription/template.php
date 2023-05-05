@@ -24,7 +24,7 @@ $this->import('
 	<div v-if="isOpen" class="col-12 opportunity-subscription__subscription">
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
-		<div v-if="isLogged" class="logged">
+		<div v-if="global.auth.isLoggedIn" class="logged">
 			<p v-if="categories && entitiesLength > 1" class="logged__description"> <?= i::__("Escolha um Agente Cultural e uma categoria para fazer a inscrição.") ?> </p>			
 			<p v-if="!categories && entitiesLength > 1" class="logged__description"> <?= i::__("Escolha um Agente Cultural para fazer a inscrição.") ?> </p>
 			<p v-if="categories && entitiesLength == 1" class="logged__description"> <?= i::__("Escolha uma categoria para fazer a inscrição.") ?> </p>
@@ -69,7 +69,7 @@ $this->import('
 		</div>
 
 		<!-- Deslogado -->
-		<div v-if="!isLogged" class="loggedOut">
+		<div v-if="!global.auth.isLoggedIn" class="loggedOut">
 			<p class="loggedOut__description">
 				<?= i::__("Você precisa acessar sua conta ou  criar uma cadastro na plataforma para poder se inscrever em editais ou oportunidades") ?>
 			</p>
