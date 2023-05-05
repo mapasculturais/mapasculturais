@@ -18,7 +18,7 @@ $this->breadcrumb = [
 ?>
 
 <search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[],'event:term:linguagem':[], 'event:classificacaoEtaria': []}">
-    <template #create-button>
+    <template v-if="global.auth.isLoggedIn" #create-button>
         <create-event #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">
                 <mc-icon name="add"></mc-icon>
