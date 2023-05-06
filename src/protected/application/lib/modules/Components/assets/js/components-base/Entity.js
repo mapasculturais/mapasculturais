@@ -209,26 +209,27 @@ class Entity {
         }
 
         if(this.terms) {
-            result.terms = this.terms;
+            result.terms = JSON.parse(JSON.stringify(this.terms));
         }
 
         if(onlyModifiedFields) {
-            const modifiedFields = {};
-
             for(let key in result) {
-                if(result[key] == this.__originalValues[key]) {
-                    continue;
-                } else if(JSON.stringify(result[key]) == JSON.stringify(this.__originalValues[key])){
-                    continue;
+                if(JSON.stringify(result[key]) == JSON.stringify(this.__originalValues[key])){
+                    delete result[key];
                 }
-
-                modifiedFields[key] = result[key];
             }
+        } 
 
-            return modifiedFields;
-        } else {
-            return result;
+        for(let key in result) {
+            if(typeof result[key] == 'object' && !result[key] instanceof Entity) {
+                if(result[key] instanceof Array) {
+                    result[key] = [...result[key]];
+                } else {
+                    result[key] = {...result[key]};
+                }
+            }
         }
+        return result;
 
     }
 
