@@ -22,8 +22,6 @@ app.component('entity-terms', {
             allowInsert: this.definition.allowInsert,
             terms: this.definition.terms || [],
             label: this.title || this.definition.name,
-            entityTerms: Vue.ref(this.entity.terms[this.taxonomy]),
-
             filter: '',
         };
     },
@@ -105,8 +103,8 @@ app.component('entity-terms', {
 
 
         addTerm(term) {
-            if (this.entityTerms.indexOf(term) < 0) {
-                this.entityTerms.push(term);
+            if (this.entity.terms[this.taxonomy].indexOf(term) < 0) {
+                this.entity.terms[this.taxonomy].push(term);
             }
 
             if (this.terms.indexOf(term) < 0) {
