@@ -16,7 +16,7 @@ ENV PNPM_HOME=/root/.local/share/pnpm
 ENV PATH=$PATH:/root/.local/share/pnpm
 
 # Install uglify and terser
-RUN pnpm install -g \
+RUN npm install -g \
         terser \
         uglifycss \
         autoprefixer \
