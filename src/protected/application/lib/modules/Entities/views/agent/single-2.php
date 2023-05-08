@@ -78,6 +78,11 @@ $this->breadcrumb = [
                             <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
                         </div>
                     </aside>
+                    <aside>
+                        <div class="grid-12">
+                            <compliant-suggestion :entity="entity"></compliant-suggestion>
+                        </div>
+                    </aside>
                 </mapas-container>
                 <entity-actions :entity="entity"></entity-actions>
             </div>

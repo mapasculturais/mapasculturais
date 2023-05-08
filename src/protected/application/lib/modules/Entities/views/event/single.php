@@ -3,6 +3,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    compliant-suggestion
     entity-actions
     entity-admins
     entity-files-list
@@ -105,6 +106,11 @@ $this->breadcrumb = [
                             <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
                             <entity-owner :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>"></entity-owner>
+                    </aside>
+                    <aside>
+                        <div class="grid-12">
+                            <compliant-suggestion :entity="entity"></compliant-suggestion>
+                        </div>
                     </aside>
                 </mapas-container>
                 <entity-actions :entity="entity"></entity-actions>
