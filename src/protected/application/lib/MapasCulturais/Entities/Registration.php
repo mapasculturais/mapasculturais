@@ -871,6 +871,8 @@ class Registration extends \MapasCulturais\Entity
 
         $opportunity = $this->opportunity;
 
+        $this->registerFieldsMetadata();
+
         $metadata_definitions = $app->getRegisteredMetadata('MapasCulturais\Entities\Registration');
 
         $use_category = (bool) $opportunity->registrationCategories;
@@ -919,7 +921,7 @@ class Registration extends \MapasCulturais\Entity
         if(isset($isSpaceRelationRequired)){
             if($isSpaceRelationRequired === 'required'){
                 if($spaceDefined === null) {
-                    $errorsResult['space'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
+                    $errorsResult['space'] = [\MapasCulturais\i::__('O espaço é obrigatório')];
                 }
             }
             if($isSpaceRelationRequired === 'required' || $isSpaceRelationRequired === 'optional'){
@@ -1020,7 +1022,7 @@ class Registration extends \MapasCulturais\Entity
         // @TODO: validar o campo projectName
 
         if($opportunity->projectName == 2 && !$this->projectName){
-            $errorsResult['projectName'] = \MapasCulturais\i::__('O campo é obrigatório.');
+            $errorsResult['projectName'] = [\MapasCulturais\i::__('O nome do projeto é obrigatório.')];
         }
 
         $app->applyHookBoundTo($this, "entity($this->hookClassPath).sendValidationErrors", [&$errorsResult]);
