@@ -22,7 +22,7 @@ $this->import('mc-link');
             </ul>
         </template>
     </div>
-    <div class="panel-nav__right">
+    <div v-if="!sidebar" class="panel-nav__right">
         <template v-for="group in rightGroups" :key="group.id">
 
             <h3 v-if="group.label">{{group.label}}</h3>
