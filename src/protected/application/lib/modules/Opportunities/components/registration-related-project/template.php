@@ -31,4 +31,7 @@ $this->import('
             <entity-field :entity="registration" prop="projectName" :autosave="60000"></entity-field>
         </div>
     </template>
+    <div v-if="registration.__validationErrors.projectName" class="errors">
+        <span>{{registration.__validationErrors.projectName.join('; ')}}</span>
+    </div>
 </mapas-card>
