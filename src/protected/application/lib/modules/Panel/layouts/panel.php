@@ -11,7 +11,7 @@ $this->import('panel--nav');
 <article class="panel">
     <aside class="panel__sidebar">
         <div class="panel-sidebar">
-            <panel--nav></panel--nav>
+            <panel--nav sidebar></panel--nav>
         </div>
     </aside>
     <main class="panel__main">

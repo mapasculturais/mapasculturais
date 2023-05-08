@@ -33,7 +33,7 @@ $this->import('
         </template>
         <template #default="popover">
             <?php $this->applyTemplateHook('header-menu-user--desktop', 'before') ?>
-            <panel--nav classes="user-menu" :entity="profile">
+            <panel--nav classes="user-menu">
                 <template #begin>
                     <?php $this->applyTemplateHook('header-menu-user--desktop', 'begin') ?>
                     <ul>
@@ -79,7 +79,7 @@ $this->import('
                 </a>
             </div>
             <?php $this->applyTemplateHook('header-menu-user--mobile', 'before') ?>
-            <panel--nav :entity="profile">
+            <panel--nav>
                 <template #begin>
 
                     <?php $this->applyTemplateHook('header-menu-user--mobile', 'begin') ?>
