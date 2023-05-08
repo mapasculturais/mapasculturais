@@ -206,6 +206,7 @@ class Module extends \MapasCulturais\Module {
                     ]);
                 }
             }
+            $this->json(true);
         });
 
         $app->hook('POST(<<agent|space|event|project>>.sendSuggestionMessage)', function() use ($plugin) {
@@ -309,6 +310,7 @@ class Module extends \MapasCulturais\Module {
                     ]);
                 }
             }
+            $this->json(true);  
         });
     }
 
