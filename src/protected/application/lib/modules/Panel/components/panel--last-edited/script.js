@@ -94,8 +94,8 @@ app.component('panel--last-edited', {
                 360: {
                     itemsToScrool: 1.4,
 
-                    itemsToShow: 1.,
-                    snapAlign: "center"
+                    itemsToShow: 1.1,
+                    snapAlign: "start"
                 },
                
             }
