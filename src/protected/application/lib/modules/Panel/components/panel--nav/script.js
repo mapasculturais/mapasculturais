@@ -10,12 +10,34 @@ app.component('panel--nav', {
 
     data() {
         const global = useGlobalState();
+        const leftGroups = $MAPAS.config.panelNav.filter((group)=>{
+            if(group.column != 'right') {
+                return group;
+            }
+        });
+        const rightGroups = $MAPAS.config.panelNav.filter((group)=>{
+            if(group.column == 'right') {
+                return group;
+            }
+        });
+
         return {
             entity: global.auth.user?.profile,
-            groups: $MAPAS.config.panelNav
+            grouspColumn : $MAPAS.config.panelNav,
+            leftGroups,
+            rightGroups,
+
 
         }
     },
+    props: {
+        viewport: {
+            type: String,
+            default: 'desktop'
+        }
+    },
+
+
 
     methods: {
         active(item) {
