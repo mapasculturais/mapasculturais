@@ -5,9 +5,16 @@ use MapasCulturais\i;
 $nav_items = [
     'panel-menu' => [
         'label' => i::__('Menu do Painel de Controle'),
+        'column' => 'left',
         'items' =>[
             ['route' => 'panel/index', 'icon' => 'dashboard', 'label' => i::__('Painel de Controle')]
         ]
+    ],
+   
+ 
+    'opportunities' => [
+        'label' => i::__('Editais e oportunidades'),
+        'items' => []
     ],
     'main' => [
         'label' => 'Gerenciamento de entidades',
@@ -18,14 +25,10 @@ $nav_items = [
             ['route' => 'panel/projects', 'icon' => 'project', 'label' => i::__('Meus Projetos')],
         ]
     ],
- 
-    'opportunities' => [
-        'label' => i::__('Editais e oportunidades'),
-        'items' => []
-    ],
 
     'more' => [
         'label' => i::__('Outras opções'),
+        'column' => 'right',
         'items' => [
             ['route' => 'panel/my-account', 'icon' => 'account', 'label'=> i::__('Conta e Privacidade')],
         ]
@@ -33,6 +36,7 @@ $nav_items = [
 
     'admin' => [
         'label' => i::__('Administração'),
+        'column' => 'right',
         'condition' => function () use($app) {
             return $app->user->is('admin');
         },
@@ -61,6 +65,7 @@ foreach ($nav_items as $id => $group) {
         $result[] = [
             'id' => $id,
             'label' => $group['label'],
+            'column' => $group['column'] ?? 'left',
             'items' => $items
         ];
     }
