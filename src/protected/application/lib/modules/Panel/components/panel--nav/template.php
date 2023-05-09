@@ -23,8 +23,8 @@ $this->import('mc-link');
         <template v-if="sidebar">
             <div class="panel-nav__line"></div>
             <div class="panel-nav__right">
-                <li><mc-link :entity='entity' icon><?= i::__('Meu Perfil') ?></mc-link></li>
-                <li><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li>
+                <li class="myaccount"><mc-link :entity='entity' icon><?= i::__('Meu Perfil') ?></mc-link></li>
+                <li class="exit"><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li>
             </div>
         </template>
     </div>
@@ -40,8 +40,8 @@ $this->import('mc-link');
         </template>
         <div class="panel-nav__line"></div>
         <div class="panel-nav__right">
-            <li><mc-link :entity='entity' icon><?= i::__('Meu Perfil') ?></mc-link></li>
-            <li><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li>
+            <li class="myaccount"><mc-link :entity='entity' icon><?= i::__('Meu Perfil') ?></mc-link></li>
+            <li class="exit"><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li>
         </div>
     </div>
 </nav>
