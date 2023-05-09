@@ -1,18 +1,15 @@
-const rawProfile = globalThis.$MAPAS.userProfile;
-if(rawProfile) {
-    const agentAPI = new API('agent');
-    const profile = agentAPI.getEntityInstance(rawProfile.id);
-    profile.populate(rawProfile);
-    globalThis.$MAPAS.userProfile = profile;
-}
+setTimeout(()=>{
+    const rawUser = globalThis.$MAPAS.user;
+    if (rawUser) {
+        const userAPI = new API('user');
+        const user = userAPI.getEntityInstance(rawUser.id);
+        user.populate(rawUser);
+        globalThis.$MAPAS.user = user;
 
-const rawUser = globalThis.$MAPAS.user;
-if(rawUser) {
-    const userAPI = new API('user');
-    const user = userAPI.getEntityInstance(rawUser.id);
-    user.populate(rawUser);
-    globalThis.$MAPAS.user = user;
-}
+        const global = useGlobalState();
+        global.auth.user = user;
+    }
+},10);
 
 globalThis.useGlobalState = Pinia.defineStore('globalState', {
     state: () => {
