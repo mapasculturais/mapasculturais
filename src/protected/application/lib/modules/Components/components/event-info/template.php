@@ -45,7 +45,7 @@ $this->import('mapas-container mc-tag-list entity-location');
                 <div class="event-info-edit__fields--fields">
                     <label class="options"> <input v-model="entity.traducaoLibras" type="radio" name="traducaoLibras" value="Sim" /> <?= i::_e('Sim') ?> </label>
                     <label class="options"> <input v-model="entity.traducaoLibras" type="radio" name="traducaoLibras" value="Não" /> <?= i::_e('Não') ?> </label>
-                    <label class="options"> <input v-model="entity.traducaoLibras" type="radio" name="traducaoLibras" value="" /> <?= i::_e('Não Informado') ?> </label>
+                    <label class="options"> <input v-model="entity.traducaoLibras" type="radio" name="traducaoLibras" :checked="!entity.traducaoLibras"/> <?= i::_e('Não Informado') ?> </label>
                 </div>
 
             </div>
@@ -54,7 +54,7 @@ $this->import('mapas-container mc-tag-list entity-location');
                 <div class="event-info-edit__fields--fields">
                     <label class="options"> <input v-model="entity.descricaoSonora" type="radio" name="descricaoSonora" value="Sim" /> <?= i::_e('Sim') ?> </label>
                     <label class="options"> <input v-model="entity.descricaoSonora" type="radio" name="descricaoSonora" value="Não" /> <?= i::_e('Não') ?> </label>
-                    <label class="options"> <input v-model="entity.descricaoSonora" type="radio" name="descricaoSonora" value="" /> <?= i::_e('Não Informado') ?> </label>
+                    <label class="options"> <input v-model="entity.descricaoSonora" type="radio" name="descricaoSonora" :checked="!entity.descricaoSonora" /> <?= i::_e('Não Informado') ?> </label>
                 </div>
 
             </div>
