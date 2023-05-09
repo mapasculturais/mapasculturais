@@ -137,7 +137,7 @@ class Module extends \MapasCulturais\Module
             if ($this->canUser('@control', $user)) {
                 return true;
             }
-            if ($this->relatedAgents) {
+            if ($this->relatedAgents['@support'] ?? false) {
                 foreach($this->relatedAgents['@support'] as $relation) {
                     if ($app->user->id == $relation->user->id) {
                         return true;
