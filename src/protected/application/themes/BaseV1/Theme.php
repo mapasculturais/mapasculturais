@@ -855,7 +855,7 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
 
-            $this->jsObject['userProfile'] = $this->user->profile;
+            $this->jsObject['userProfile'] = $app->user->profile;
 
             $this->jsObject['assets'] = array();
             $this->jsObject['templateUrl'] = array();
