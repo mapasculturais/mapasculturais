@@ -27,34 +27,34 @@ class EntityTypeGroup extends \MapasCulturais\Definition{
      *
      * @var string
      */
-    protected $entity_class;
+    public $entity_class;
 
     /**
      * The name of this group.
      * @var type
      */
-    protected $name;
+    public $name;
 
     /**
      * The minimum id for types in this group.
      *
      * @var int
      */
-    protected $min_id;
+    public $min_id;
 
     /**
      * The maximum id for types in this group.
      *
      * @var int
      */
-    protected $max_id;
+    public $max_id;
 
     /**
      * Registered types for this group.
      *
      * @var \MapasCulturais\Definitions\EntityType[]
      */
-    protected $registered_types = [];
+    public $registered_types = [];
 
     /**
      * Create a new Entity Type Group.

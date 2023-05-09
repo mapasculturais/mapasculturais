@@ -47,7 +47,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="evaluation_method_configuration_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * The Evaluation Method Slug

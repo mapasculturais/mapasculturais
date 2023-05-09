@@ -28,7 +28,7 @@ class EventAttendance extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="event_attendance_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
