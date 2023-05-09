@@ -272,8 +272,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             'evaluations' => []
         ];
         
-        $buildQuery = function($colluns = "*", $params = "", $type = "fetchAll") use ($conn, $opportunity){
-            return $conn->$type("SELECT {$colluns} FROM evaluations e WHERE opportunity_id = {$opportunity->id} {$params}");
+        $buildQuery = function($columns = "*", $params = "", $type = "fetchAll") use ($conn, $opportunity, $app){
+            return $conn->$type("SELECT {$columns} FROM evaluations e WHERE opportunity_id = {$opportunity->id} {$params}");
         };
 
         $registrations_ids = array_map(function($evaluation){
@@ -288,7 +288,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
 
         // Conta as inscrições avaliadas
-        $evaluated = $buildQuery("DISTINCT count(e.registration_id) as qtd", "AND e.evaluation_status > 0", "fetchAssoc");
+        $evaluated = $buildQuery("COUNT(DISTINCT(e.registration_id)) as qtd", "AND e.evaluation_status > 0", "fetchAssoc");
         $data['evaluated'] = $evaluated['qtd'];
 
         // Conta as inscrições avaliadas por status
