@@ -86,9 +86,9 @@ abstract class Controller{
     protected $data = [];
 
 
-    protected $action = null;
+    public $action = null;
     
-    protected $method = null;
+    public $method = null;
 
     
     /**
@@ -101,7 +101,7 @@ abstract class Controller{
      * 
      * @var string controller id
      */
-    protected $_id = null;
+    public $id = null;
 
     /**
      * Returns the singleton instance. This method creates the instance when called for the first time.
@@ -114,7 +114,7 @@ abstract class Controller{
 
         if (!key_exists($id, self::$_singletonInstances)) {
             self::$_singletonInstances[$id] = new $class;
-            self::$_singletonInstances[$id]->_id = $controller_id;
+            self::$_singletonInstances[$id]->id = $controller_id;
         }
 
         return self::$_singletonInstances[$id];
@@ -140,17 +140,6 @@ abstract class Controller{
     }
     
     // =================== GETTERS ================== //
-
-    /**
-     * Returns the controller id.
-     *
-     * @see \MapasCulturais\App::getControllerId()
-     *
-     * @return string The controller id.
-     */
-    public function getId(){
-        return $this->_id;
-    }
 
     /**
      * Returns the URL based vars passed in URL after the action name (not by GET).

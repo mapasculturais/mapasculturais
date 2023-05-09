@@ -42,7 +42,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="usr_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var integer
@@ -84,7 +84,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
      *
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
-    protected $status = self::STATUS_ENABLED;
+    public $status = self::STATUS_ENABLED;
 
 
     /**

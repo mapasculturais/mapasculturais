@@ -27,14 +27,14 @@ class ProjectMeta extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="project_meta_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="key", type="string", nullable=false)
      */
-    protected $key;
+    public $key;
 
     /**
      * @var string

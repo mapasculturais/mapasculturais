@@ -21,14 +21,14 @@ class EvaluationMethod extends \MapasCulturais\Definition {
      * The Evaluation Method
      * @var \MapasCuturais\EvaluationMethod
      */
-    protected $evaluationMethod;
-    protected $evaluationMethodClassName;
+    public $evaluationMethod;
+    public $evaluationMethodClassName;
     
-    protected $slug;
-    protected $name;
-    protected $description;
+    public $slug;
+    public $name;
+    public $description;
 
-    protected $internal = false;
+    public $internal = false;
     
     public function __construct(\MapasCulturais\EvaluationMethod $evaluation_method) {
         $this->evaluationMethod = $evaluation_method;

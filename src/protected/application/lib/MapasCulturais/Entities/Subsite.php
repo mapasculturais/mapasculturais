@@ -40,7 +40,7 @@ class Subsite extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="subsite_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
@@ -61,7 +61,7 @@ class Subsite extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
-    protected $status = self::STATUS_ENABLED;
+    public $status = self::STATUS_ENABLED;
 
     /**
      * @var \MapasCulturais\Entities\Agent

@@ -38,7 +38,7 @@ class Job extends \MapasCulturais\Entity{
      * @ORM\Column(name="id", type="string", nullable=false)
      * @ORM\Id
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string

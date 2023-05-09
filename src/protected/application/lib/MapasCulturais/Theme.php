@@ -45,7 +45,7 @@ abstract class Theme extends \Slim\View {
      * The controller that is using this view object.
      * @var \MapasCulturais\Controller
      */
-    protected $_controller;
+    public $controller;
 
     /**
      * The layout to use when rendering the template.
@@ -89,7 +89,7 @@ abstract class Theme extends \Slim\View {
      * MapasCulturais JS Object
      * @var \ArrayObject
      */
-    protected $jsObject = null;
+    public $jsObject = null;
 
     /**
      *
@@ -247,15 +247,7 @@ abstract class Theme extends \Slim\View {
      * @param \MapasCulturais\Controller $controller the controller.
      */
     public function setController(\MapasCulturais\Controller $controller){
-        $this->_controller = $controller;
-    }
-
-    /**
-     * Returns the controller that is using this view object (call render method).
-     * @return \MapasCulturais\Controller the controller that call render method.
-     */
-    public function getController(){
-        return $this->_controller;
+        $this->controller = $controller;
     }
 
     /**
