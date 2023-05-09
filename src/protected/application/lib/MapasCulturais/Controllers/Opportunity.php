@@ -365,7 +365,7 @@ class Opportunity extends EntityController {
         $data['opportunity'] = "EQ({$opportunity->id})";
 
         $_opportunity = $opportunity;
-        $opportunity_tree = [];
+        $opportunity_tree = [$opportunity];
         while($_opportunity && ($parent = $app->modules['OpportunityPhases']->getPreviousPhase($_opportunity))){
             $opportunity_tree[] = $parent;
             $_opportunity = $parent;
@@ -423,14 +423,6 @@ class Opportunity extends EntityController {
         $app->controller('registration')->registerRegistrationMetadata($opportunity);
 
         unset($data['@opportunity']);
-
-        if(!is_null($last_query_ids)){
-            if($last_query_ids){
-                $data['previousPhaseRegistrationId'] = "IN($last_query_ids)";
-            } else {
-                $data['id'] = "IN(-1)";
-            }
-        }
 
         if($select_values){
             $data['@select'] = isset($data['@select']) ? $data['@select'] . ',previousPhaseRegistrationId' : 'previousPhaseRegistrationId';
