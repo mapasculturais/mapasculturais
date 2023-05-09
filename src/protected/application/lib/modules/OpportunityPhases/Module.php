@@ -238,6 +238,8 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
+            $this->enableCacheGetterResult('previousPhase');
+
             $from_field = $this->isLastPhase ? 'publishTimestamp' : 'registrationFrom';
 
             $class = Opportunity::class;
@@ -268,6 +270,9 @@ class Module extends \MapasCulturais\Module{
                 $value = $first_phase->lastPhase->previousPhases;
                 return;
             }
+
+            $this->enableCacheGetterResult('previousPhases');
+
             $class = Opportunity::class;
             $query = $app->em->createQuery("
                 SELECT o 
@@ -295,6 +300,9 @@ class Module extends \MapasCulturais\Module{
                 $value = $first_phase->lastPhase;
                 return;
             }
+
+            $this->enableCacheGetterResult('nextPhase');
+
             $class = Opportunity::class;
             $query = $app->em->createQuery("
                 SELECT o 
@@ -326,6 +334,9 @@ class Module extends \MapasCulturais\Module{
                 $value = [$first_phase->lastPhase];
                 return;
             }
+
+            $this->enableCacheGetterResult('nextPhases');
+
             $class = Opportunity::class;
             $query = $app->em->createQuery("
                 SELECT o 
@@ -348,10 +359,14 @@ class Module extends \MapasCulturais\Module{
          */
         $app->hook('entity(Opportunity).get(allPhases)', function(&$values) use ($app) {
             /** @var Opportunity $this */
+
             $first_phase = $this->firstPhase;
             if(!$first_phase->id) {
                 return;
             }
+
+            $this->enableCacheGetterResult('allPhases');
+
             $values = [$first_phase];
             $class = Opportunity::class;
             $query = $app->em->createQuery("
@@ -384,6 +399,9 @@ class Module extends \MapasCulturais\Module{
          */
         $app->hook('entity(Opportunity).get(phases)', function (&$value) use($app) {
             /** @var Opportunity $this */
+
+            $this->enableCacheGetterResult('phases');
+
             $result = [];
             $app->disableAccessControl();
 
@@ -420,6 +438,9 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Opportunity).get(countEvaluations)', function(&$value) use ($app) {
             /** @var Opportunity $this */
+
+            $this->enableCacheGetterResult('countEvaluations');
+
             $conn = $app->em->getConnection();
 
             $v = 0;
@@ -433,6 +454,9 @@ class Module extends \MapasCulturais\Module{
     
         $app->hook('entity(Opportunity).get(lastCreatedPhase)', function(&$value) {
             /** @var Opportunity $this */
+
+            $this->enableCacheGetterResult('lastCreatedPhase');
+
             $first_phase = $this->firstPhase;
             $value = Module::getLastCreatedPhase($first_phase);
         });
@@ -440,10 +464,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(Opportunity).get(lastPhase)', function(&$value) use ($app) {
              /** @var Opportunity $this */
 
-             if($app->rcache->contains("{$this}::lastPhase")){
-                $value = $app->rcache->fetch("{$this}::lastPhase");
-                return;
-             }
+            $this->enableCacheGetterResult('lastPhase');
 
              $first_phase = $this->firstPhase;
              if(!$first_phase->id) {
@@ -473,8 +494,6 @@ class Module extends \MapasCulturais\Module{
              ]);
  
              $value = $query->getOneOrNullResult();
-
-             $app->rcache->save("{$this}::lastPhase", $value);
              
              return;
         });
@@ -483,8 +502,11 @@ class Module extends \MapasCulturais\Module{
          * Getters das fases de avaliação
          */
 
-         $app->hook('entity(EvaluationMethodConfiguration).get(previousPhase)', function(&$value) {
+         $app->hook('entity(EvaluationMethodConfiguration).get(previousPhase)', function(&$value, $app) {
             /** @var EvaluationMethodConfiguration $this */
+
+            $this->enableCacheGetterResult('previousPhase');
+            
             $previous_phase = $this->opportunity;
             if ($previous_phase->isDataCollection) {
                 $value = $previous_phase;
@@ -501,6 +523,9 @@ class Module extends \MapasCulturais\Module{
 
          $app->hook('entity(EvaluationMethodConfiguration).get(nextPhase)', function(&$value) use($app) {
             /** @var EvaluationMethodConfiguration $this */
+            
+            $this->enableCacheGetterResult('nextPhase');
+
             $phase = $this->opportunity;
             while(!$value && ($phase = $phase->nextPhase)) {
                 if ($phase->isDataCollection || $phase->isLastPhase) {
@@ -517,6 +542,9 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Registration).get(previousPhase)', function(&$value) use($registration_repository) {
             /** @var Registration $this */
+            
+            $this->enableCacheGetterResult('previousPhase');
+
             if($this->previousPhaseRegistrationId) {
                 $value = $registration_repository->find($this->previousPhaseRegistrationId);
             }
@@ -528,6 +556,9 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Registration).get(nextPhase)', function(&$value) use($registration_repository) {
             /** @var Registration $this */
+            
+            $this->enableCacheGetterResult('nextPhase');
+
             if ($this->nextPhaseRegistrationId) {
                 $value = $registration_repository->find($this->nextPhaseRegistrationId);
             }
@@ -554,6 +585,9 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
             /** @var Registration $this */
+            
+            $this->enableCacheGetterResult('firstPhase');
+
             $opportunity = $this->opportunity;
 
             $value = $registration_repository->findOneBy(['opportunity' => $opportunity->firstPhase, 'number' => $this->number]);
