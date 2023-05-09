@@ -238,13 +238,15 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
+            $from_field = $this->isLastPhase ? 'publishTimestamp' : 'registrationFrom';
+
             $class = Opportunity::class;
             $query = $app->em->createQuery("
                 SELECT o 
                 FROM $class o 
                 WHERE 
                     o.id = :parent OR
-                    (o.parent = :parent AND o.registrationFrom < (SELECT this.registrationFrom FROM $class this WHERE this.id = :this))
+                    (o.parent = :parent AND o.registrationFrom < (SELECT this.{$from_field} FROM $class this WHERE this.id = :this))
                 ORDER BY o.registrationFrom DESC");
 
             $query->setMaxResults(1);
@@ -437,14 +439,19 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Opportunity).get(lastPhase)', function(&$value) use ($app) {
              /** @var Opportunity $this */
+
+             if($app->rcache->contains("{$this}::lastPhase")){
+                $value = $app->rcache->fetch("{$this}::lastPhase");
+                return;
+             }
+
              $first_phase = $this->firstPhase;
              if(!$first_phase->id) {
-                 return;
+                 return null;
              }
 
              if($this->isNew()) {
-                 $value = $first_phase->lastPhase;
-                 return;
+                 return $first_phase->lastPhase;
              }
 
              if($this->isLastPhase){
@@ -452,15 +459,12 @@ class Module extends \MapasCulturais\Module{
              }
 
              $class = Opportunity::class;
-             $meta_class = $this->metadataClassName;
 
              $query = $app->em->createQuery("
                  SELECT o 
                  FROM $class o 
-                 JOIN $meta_class m WITH m.key = 'isLastPhase'
-                 WHERE 
-                     o.parent = :parent AND
-                     m.value = '1'"
+                 JOIN o.__metadata m WITH m.key = 'isLastPhase' AND m.value = '1'
+                 WHERE o.parent = :parent"
                 );
  
              $query->setMaxResults(1);
@@ -469,6 +473,10 @@ class Module extends \MapasCulturais\Module{
              ]);
  
              $value = $query->getOneOrNullResult();
+
+             $app->rcache->save("{$this}::lastPhase", $value);
+             
+             return;
         });
 
         /**
