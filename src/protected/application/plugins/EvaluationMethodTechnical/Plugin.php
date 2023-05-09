@@ -28,17 +28,28 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     public function filterEvaluationsSummary(array $data) {
         // encontra o maior valor do array
-        $max_value = $data ? max(array_keys($data)) + 1 : null;
+        $max_value = $data ? max(array_filter(array_keys($data), function($item) {
+            return is_numeric($item) ? $item : null;            
+        })) + 1 : null;
         
-
         // divide em 5 faixas
         $result = [];
+
+        $non_numeric = [];
         if($max_value){
             for($i=0;$i<5;$i++){
                 $min = $i * $max_value / 5;
                 $max = ($i+1) * $max_value / 5;
                 foreach($data as $val => $sum) {
-                    if($val >= $min && $val < $max) {
+                    if(!is_numeric($val)) {
+                        $non_numeric[$val] = $non_numeric[$val] ?? 0;
+                        $non_numeric[$val] += $sum;
+
+                    } else if($val >= $min && $val < $max) {
+
+                        $min = number_format($i * $max_value / 5,       1, ',', '.');
+                        $max = number_format(($i+1) * $max_value / 5,   1, ',', '.');
+
                         $key = "{$min} - {$max}";
                         $result[$key] = $result[$key] ?? 0;
                         $result[$key] += $sum;
@@ -46,6 +57,8 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 }
             }
         }
+
+        $result += $non_numeric;
         
         return $result;
     }
