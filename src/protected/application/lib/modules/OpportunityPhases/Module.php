@@ -666,6 +666,9 @@ class Module extends \MapasCulturais\Module{
                 $result->deleted = $this->removeOrphanRegistrations($registrations);
             }
 
+            if($nextPhase = $this->nextPhase) {
+                $nextPhase->syncRegistrations($registrations);
+            }
             return $result;
         });
 
@@ -683,21 +686,22 @@ class Module extends \MapasCulturais\Module{
 
             $first_phase = $this->firstPhase;
             $previous_phase = $this->previousPhase;
+            $app->log->debug("  >>>>>>>  PREVIOUS  {$previous_phase->name} ({$previous_phase->id})");
 
-            $where_ids = '';
+            $where_numbers = '';
 
             if ($registrations) {
-                $ids = [];
+                $numbers = [];
                 foreach($registrations as $reg) {
                     if($reg instanceof Registration) {
-                        $ids[] = $reg->id;
+                        $numbers[] = "'{$reg->number}'";
                     } else {
-                        $ids[] = $reg['id'] ?? $reg;   
+                        $numbers[] = "'" . ($reg['number'] ?? $reg) . "'";   
                     }
                 }
 
-                $ids = implode(',', $ids);
-                $where_ids = "r1.id IN ({$ids}) AND";
+                $numbers = implode(',', $numbers);
+                $where_numbers = "r1.number IN ({$numbers}) AND";
             } 
 
             // para a última fase vão todas as inscrições que não estejam como rascunho
@@ -710,7 +714,7 @@ class Module extends \MapasCulturais\Module{
                     MapasCulturais\Entities\Registration r1
                 WHERE
                     r1.opportunity = :target_opportunity AND
-                    $where_ids
+                    $where_numbers
                     r1.number NOT IN (
                         SELECT
                             r2.number
@@ -763,21 +767,20 @@ class Module extends \MapasCulturais\Module{
             $first_phase = $this->firstPhase;
             $previous_phase = $this->previousPhase;
             
-
-            $where_ids = '';
+            $where_numbers = '';
             if ($registrations) {
-                $ids = [];
+                $numbers = [];
                 foreach($registrations as $reg) {
                     if($reg instanceof Registration) {
-                        $ids[] = $reg->id;
+                        $numbers[] = "'{$reg->number}'";
                     } else {
-                        $ids[] = $reg['id'] ?? $reg;   
+                        $numbers[] = "'" . ($reg['number'] ?? $reg) . "'";   
                     }
                 }
 
-                $ids = implode(',', $ids);
-                $where_ids = "r1.id IN ({$ids}) AND";
-            } 
+                $numbers = implode(',', $numbers);
+                $where_numbers = "r1.number IN ({$numbers}) AND";
+            }  
 
             // para a última fase vão todas as inscrições que não estejam como rascunho
             $status = $this->isLastPhase ? 'r1.status > 0' : 'r1.status = 10';
@@ -789,7 +792,7 @@ class Module extends \MapasCulturais\Module{
                     MapasCulturais\Entities\Registration r1
                 WHERE
                     r1.opportunity = :previous_opportunity AND
-                    {$where_ids}
+                    {$where_numbers}
                     {$status} AND
                     r1.number NOT IN (
                         SELECT
