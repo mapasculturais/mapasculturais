@@ -1,15 +1,10 @@
-setTimeout(()=>{
-    const rawUser = globalThis.$MAPAS.user;
-    if (rawUser) {
-        const userAPI = new API('user');
-        const user = userAPI.getEntityInstance(rawUser.id);
-        user.populate(rawUser);
-        globalThis.$MAPAS.user = user;
-
-        const global = useGlobalState();
-        global.auth.user = user;
-    }
-},10);
+const rawUser = globalThis.$MAPAS.user;
+if (rawUser) {
+    const userAPI = new API('user');
+    const user = userAPI.getEntityInstance(rawUser.id);
+    user.populate(rawUser);
+    globalThis.$MAPAS.user = user;
+}
 
 globalThis.useGlobalState = Pinia.defineStore('globalState', {
     state: () => {
