@@ -121,6 +121,11 @@
             }
         }
     }
+    @media (max-width:size(400)){
+       &__content{
+        height: size(53);
+       } 
+    }
 
     &__buttons {
         align-items: center;
