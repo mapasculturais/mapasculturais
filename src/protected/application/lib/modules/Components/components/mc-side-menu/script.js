@@ -55,7 +55,7 @@ app.component('mc-side-menu', {
         },
         async getEvaluations() {
             let args = {};
-            args['@select'] = "id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status";
+            args['@select'] = "id,owner.name";
             args['@opportunity'] = this.entity.opportunity.id;
             args['@keyword'] = 'like(' + this.keywords + ')';
             args['@limit'] = "0";
@@ -65,12 +65,17 @@ app.component('mc-side-menu', {
             }
 
             api = new API('opportunity');
-            let url = api.createApiUrl('findRegistrationsAndEvaluations', args);
+            let url = api.createApiUrl('findEvaluations', args);
 
             await api.GET(url).then(response => response.json().then(objs => {
-                this.evaluations = objs.map(function (item) {
-                    item.url = Utils.createUrl('registration', 'evaluation', [item.registrationid]);;
-                    return item;
+                this.evaluations = objs.map(function(item){
+                    return {
+                        registrationid:item.registration.id,
+                        agentname: item.registration.owner?.name,
+                        status: item?.evaluation?.status,
+                        resultString: item?.evaluation?.resultString || null,
+                        url: Utils.createUrl('registration', 'evaluation', [item.registration.id])
+                    }
                 });
                 this.evaluations.sort((a, b) => (a.registrationid - b.registrationid));
                 window.dispatchEvent(new CustomEvent('evaluationRegistrationList', {detail:{evaluationRegistrationList:this.evaluations}}));
