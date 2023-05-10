@@ -80,7 +80,7 @@ $this->breadcrumb = [
                     </aside>
                     <aside>
                         <div class="grid-12">
-                            <compliant-suggestion :entity="entity"></compliant-suggestion>
+                            <complaint-suggestion :entity="entity"></complaint-suggestion>
                         </div>
                     </aside>
                 </mapas-container>

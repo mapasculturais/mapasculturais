@@ -27,9 +27,6 @@ app.component('search-filter-opportunity', {
         }
     },
 
-    computed: {
-    },
-
     methods: {
         clearFilters() {
             this.pseudoQuery.type.length = 0;
