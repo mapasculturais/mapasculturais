@@ -33,7 +33,7 @@ $this->import('mc-icon');
                             <mc-icon name="search"></mc-icon>
                         </div>
                     </div>
-                    <button class="button-filter button--primary">
+                    <button class="button-filter button--primary" @click="filterKeywordExec()">
                         <mc-icon name="filter"></mc-icon>
                         <label class="button-label"><?= i::__('Filtrar') ?></label>
                     </button>

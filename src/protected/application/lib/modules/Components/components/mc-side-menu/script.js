@@ -33,13 +33,11 @@ app.component('mc-side-menu', {
             pending: false,
             keywords: "",
             timeOut: null,
-            roles: $MAPAS.currentUserRoles
+            roles: $MAPAS.currentUserRoles,
+            filterKeyword: false
         }
     },
     watch: {
-        'keywords'(_new, _old) {
-            this.timeOutFind(_new, _old);
-        },
         'pending'(_new, _old) {
             this.timeOutFind(_new, _old);
         }
@@ -51,6 +49,13 @@ app.component('mc-side-menu', {
                 this.timeOut = setTimeout(() => {
                     this.getEvaluations();
                 }, 1500);
+            }
+        },
+        filterKeywordExec(_new, _old) {
+            if(!this.keywords){
+                messages.error(this.text('Informe a palavra chave'));
+            }else{
+                this.getEvaluations();
             }
         },
         async getEvaluations() {
@@ -79,6 +84,7 @@ app.component('mc-side-menu', {
                         url: Utils.createUrl('registration', 'evaluation', [item.registration.id])
                     }
                 });
+                this.filterKeyword = false;
                 this.evaluations.sort((a, b) => (a.registrationid - b.registrationid));
                 window.dispatchEvent(new CustomEvent('evaluationRegistrationList', {detail:{evaluationRegistrationList:this.evaluations}}));
             }));
