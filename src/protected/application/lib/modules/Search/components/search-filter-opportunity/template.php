@@ -20,12 +20,12 @@ $this->import('search-filter mc-multiselect mc-icon mc-tag-list');
         <div class="field">
             <label> <?php i::_e('Tipo de oportunidade') ?></label>
             <mc-multiselect :model="pseudoQuery['type']" :items="types" #default="{popover}" hide-filter hide-button>
-                <input class="mc-multiselect--input" v-model="pseudoQuery['type'].filter" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>">
+                <input class="mc-multiselect--input" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>">
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" classes="opportunity__background opportunity__color"></mc-tag-list>
 
         </div>
-        <a class="clear-filter" @click="clearFilters()"></a>
+        <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
 
     </form>
 </search-filter>
