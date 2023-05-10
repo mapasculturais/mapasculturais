@@ -160,6 +160,11 @@
                 }
             }
         }
+        @media (max-width:size(400)) {
+            .close {
+               height: size(53); 
+            }
+        }
 
         .mc-header-menu-user__itens {
             list-style: none;
