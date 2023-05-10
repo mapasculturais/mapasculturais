@@ -57,8 +57,10 @@ app.component('mc-side-menu', {
             let args = {};
             args['@select'] = "id,owner.name";
             args['@opportunity'] = this.entity.opportunity.id;
-            args['@keyword'] = 'like(' + this.keywords + ')';
-            args['@limit'] = "0";
+
+            if(this.keywords){
+                args['registration:@keyword'] = this.keywords;
+            }
 
             if (this.pending) {
                 args['@pending'] = true;
