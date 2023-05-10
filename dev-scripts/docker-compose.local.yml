@@ -7,6 +7,9 @@ services:
     ports:
       - "80:80"
     volumes:
+      - ../compose/entrypoint.sh:/entrypoint.sh
+      - ../compose/jobs-cron.sh:/jobs-cron.sh
+      - ../compose/recreate-pending-pcache-cron.sh:/recreate-pending-pcache-cron.sh
       - ../src/protected:/var/www/html/protected
       - ../scripts:/var/www/scripts
       - ../compose/config.php:/var/www/html/protected/application/conf/config.php

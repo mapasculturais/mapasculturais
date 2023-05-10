@@ -17,15 +17,15 @@ namespace MapasCulturais\Definitions;
  */
 class RegistrationFieldType extends \MapasCulturais\Definition {
 
-    protected $_config;
-    protected $slug;
-    protected $name;
-    protected $serialize;
-    protected $unserialize;
-    protected $defaultValue;
-    protected $requireValuesConfiguration = false;
-    protected $viewTemplate = '';
-    protected $configTemplate = '';
+    public $_config;
+    public $slug;
+    public $name;
+    public $serialize;
+    public $unserialize;
+    public $defaultValue;
+    public $requireValuesConfiguration = false;
+    public $viewTemplate = '';
+    public $configTemplate = '';
 
     public function __construct(array $config) {
         $default = [
@@ -34,7 +34,7 @@ class RegistrationFieldType extends \MapasCulturais\Definition {
 
         $config = array_merge($default, $config);
 
-        $this->_config = $config;
+        $this->config = $config;
 
         foreach ($config as $key => $val) {
             $this->$key = $val;

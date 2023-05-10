@@ -87,7 +87,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\SequenceGenerator(sequenceName="opportunity_id_seq", allocationSize=1, initialValue=1)
      *
      */
-    protected $id;
+    public $id;
 
     /**
      * @var integer
@@ -337,7 +337,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $committee = array_map(function($r){ return $r->agent; }, $committee);
         }
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.evaluationCommittee", [&$committee, $return_relation]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}.evaluationCommittee", [&$committee, $return_relation]);
         
         return $committee;
     }
@@ -373,7 +373,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             }
         }
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.evaluations", [&$evaluations, $include_empty]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}.evaluations", [&$evaluations, $include_empty]);
         
         return $evaluations;
     }
@@ -612,7 +612,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $app = App::i();
         $app->em->beginTransaction();
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistrations:before");
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).publishRegistrations:before");
         
         $this->publishedRegistrations = true;
         $this->save(true);
@@ -630,13 +630,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
             // @todo: fazer dos selos em oportunidades um módulo separado (OpportunitySeals ??)
             $registration->setAgentsSealRelation();
             
-            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistration", [$registration]);
+            $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).publishRegistration", [$registration]);
 
             $app->em->flush();
             $app->em->clear();
         }
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistrations:after");
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).publishRegistrations:after");
 
         $app->em->commit();
     }
@@ -648,7 +648,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $app = App::i();
         $app->em->beginTransaction();
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).unPublishRegistrations:before");
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).unPublishRegistrations:before");
         
         $this->publishedRegistrations = false;
         $this->save(true);
@@ -665,13 +665,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
             $registration->unsetAgentSealRelation();
             
-            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).unpublishRegistration", [$registration]);
+            $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).unpublishRegistration", [$registration]);
 
             $app->em->flush();
             $app->em->clear();
         }
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).unPublishRegistrations:after");
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).unPublishRegistrations:after");
 
         $app->em->commit();
     }
@@ -685,7 +685,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         $this->checkPermission('sendUserEvaluations', $user);
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).sendUserEvaluations:before", [$user]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).sendUserEvaluations:before", [$user]);
 
         $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUser($this, $user);
 
@@ -704,7 +704,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         
         $app->enableAccessControl();
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).sendUserEvaluations:after", [$user]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).sendUserEvaluations:after", [$user]);
     }
 
     function importFields($importSource) {
@@ -712,7 +712,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         
         $app = App::i();
         
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.importFields:before", [&$importSource]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}.importFields:before", [&$importSource]);
 
         $created_fields = [];
         $created_files = [];
@@ -831,7 +831,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
             $this->save(true);
 
-            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.importFields:after", [&$importSource, &$created_fields, &$created_files]);
+            $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}.importFields:after", [&$importSource, &$created_fields, &$created_files]);
 
         }
     }

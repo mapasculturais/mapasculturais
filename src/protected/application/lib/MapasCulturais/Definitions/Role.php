@@ -14,47 +14,47 @@ use MapasCulturais\UserInterface;
  * @property-read string[] $anotherRoles Outras roles desta role
  */
 class Role extends \MapasCulturais\Definition{
-    protected $_role;
+    public $_role;
 
-    protected $_name;
+    public $_name;
 
-    protected $_pluralName;
+    public $_pluralName;
 
-    protected $_subsiteContext;
+    public $_subsiteContext;
 
-    protected $_canUserManageRole;
+    public $_canUserManageRole;
 
-    protected $_anotherRoles;
+    public $_anotherRoles;
 
     public function __construct($role, $name, $plural_name, bool $subsite_context, callable $can_user_manage_role, array $another_roles = []) {
-        $this->_role = $role;
-        $this->_name = $name;
-        $this->_pluralName = $plural_name;
-        $this->_canUserManageRole = $can_user_manage_role;
-        $this->_subsiteContext = $subsite_context;
+        $this->role = $role;
+        $this->name = $name;
+        $this->pluralName = $plural_name;
+        $this->canUserManageRole = $can_user_manage_role;
+        $this->subsiteContext = $subsite_context;
 
         $another_roles[] = $role;
-        $this->_anotherRoles = array_unique($another_roles);
+        $this->anotherRoles = array_unique($another_roles);
     }
 
     function getRole() {
-        return $this->_role;
+        return $this->role;
     }   
 
     function getName() {
-        return $this->_name;
+        return $this->name;
     }
 
     function getPluralName() {
-        return $this->_pluralName;
+        return $this->pluralName;
     }
 
     function getAnotherRoles() {
-        return $this->_anotherRoles;
+        return $this->anotherRoles;
     }
 
     function getSubsiteContext() {
-        return $this->_subsiteContext;
+        return $this->subsiteContext;
     }
 
     function canUserManageRole(UserInterface $logged_in_user = null, $subsite_id = false) {
@@ -66,12 +66,12 @@ class Role extends \MapasCulturais\Definition{
         if (is_null($logged_in_user)) {
             $logged_in_user = $app->user;
         }
-        $function = $this->_canUserManageRole;
+        $function = $this->canUserManageRole;
         return $function($logged_in_user, $subsite_id);
     }
 
     function hasRole(string $role) {
-        return in_array($role, $this->_anotherRoles);
+        return in_array($role, $this->anotherRoles);
     }
 
 }

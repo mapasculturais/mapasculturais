@@ -52,7 +52,7 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="MapasCulturais\DoctrineMappings\RandomIdGenerator")
      */
-    protected $id;
+    public $id;
 
 
     /**
@@ -60,7 +60,7 @@ class Registration extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="number", type="string", length=24, nullable=true)
      */
-    protected $number;
+    public $number;
 
     /**
      * @var string
@@ -632,7 +632,7 @@ class Registration extends \MapasCulturais\Entity
         $opportunityMetadataSeals = $this->opportunity->registrationSeals;
 
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).unsetAgentsSealRelation:before", [&$opportunityMetadataSeals]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).unsetAgentsSealRelation:before", [&$opportunityMetadataSeals]);
 
         $app->disableAccessControl();
 
@@ -659,7 +659,7 @@ class Registration extends \MapasCulturais\Entity
 
         $app->enableAccessControl();
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).unsetAgentsSealRelation:after", [&$opportunityMetadataSeals]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).unsetAgentsSealRelation:after", [&$opportunityMetadataSeals]);
     }
 
     function setAgentsSealRelation() {
@@ -670,7 +670,7 @@ class Registration extends \MapasCulturais\Entity
         */
         $opportunityMetadataSeals = $this->opportunity->registrationSeals;
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).setAgentsSealRelation:before", [&$opportunityMetadataSeals]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).setAgentsSealRelation:before", [&$opportunityMetadataSeals]);
 
     	$app->disableAccessControl();
 
@@ -719,7 +719,7 @@ class Registration extends \MapasCulturais\Entity
         }
         $app->enableAccessControl();
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).setAgentsSealRelation:after", [&$opportunityMetadataSeals, &$seal_relations]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).setAgentsSealRelation:after", [&$opportunityMetadataSeals, &$seal_relations]);
     }
 
     /**
@@ -806,7 +806,7 @@ class Registration extends \MapasCulturais\Entity
         $this->checkPermission('send');
         $app = App::i();
 
-        $app->applyHookBoundTo($this, "entity($this->hookClassPath).send:before");
+        $app->applyHookBoundTo($this, "entity($this->getHookClassPath()).send:before");
 
         $app->disableAccessControl();
 
@@ -827,7 +827,7 @@ class Registration extends \MapasCulturais\Entity
         
         $app->enqueueEntityToPCacheRecreation($this);
 
-        $app->applyHookBoundTo($this, "entity($this->hookClassPath).send:after");
+        $app->applyHookBoundTo($this, "entity($this->getHookClassPath()).send:after");
 
     }
 
@@ -870,6 +870,8 @@ class Registration extends \MapasCulturais\Entity
         $errorsResult = [];
 
         $opportunity = $this->opportunity;
+
+        $this->registerFieldsMetadata();
 
         $metadata_definitions = $app->getRegisteredMetadata('MapasCulturais\Entities\Registration');
 
@@ -919,7 +921,7 @@ class Registration extends \MapasCulturais\Entity
         if(isset($isSpaceRelationRequired)){
             if($isSpaceRelationRequired === 'required'){
                 if($spaceDefined === null) {
-                    $errorsResult['space'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
+                    $errorsResult['space'] = [\MapasCulturais\i::__('O espaço é obrigatório')];
                 }
             }
             if($isSpaceRelationRequired === 'required' || $isSpaceRelationRequired === 'optional'){
@@ -1020,10 +1022,10 @@ class Registration extends \MapasCulturais\Entity
         // @TODO: validar o campo projectName
 
         if($opportunity->projectName == 2 && !$this->projectName){
-            $errorsResult['projectName'] = \MapasCulturais\i::__('O campo é obrigatório.');
+            $errorsResult['projectName'] = [\MapasCulturais\i::__('O nome do projeto é obrigatório.')];
         }
 
-        $app->applyHookBoundTo($this, "entity($this->hookClassPath).sendValidationErrors", [&$errorsResult]);
+        $app->applyHookBoundTo($this, "entity($this->getHookClassPath()).sendValidationErrors", [&$errorsResult]);
 
         return $errorsResult;
     }

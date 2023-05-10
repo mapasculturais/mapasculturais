@@ -8,21 +8,28 @@
 .panel-nav {
     height: 100%;
     padding: size(40) size(24);
-    .user-menu__line{
-            max-width: 296px;
-            height: 0px;
-            left: 16px;
-            top: 809px;
-            border-top: 1px solid var(--mc-low-500);
-            padding: 0;
-            margin: size(16) size(16);
+    display: flex;
+
+    .user-menu__line {
+        max-width: 296px;
+        height: 0px;
+        left: 16px;
+        top: 809px;
+        border-top: 1px solid var(--mc-low-500);
+        padding: 0;
+        margin: size(16) size(16);
     }
 
     &.user-menu {
+        .vertical__line {
+            border-right: size(1) solid var(--mc-gray-300);
+            width: 0;
+            margin-inline: size(22);
+            height: size(522);
+        }
+
         border: none;
         padding: 0;
-
-        
 
         ul:first-child {
             li>a {
@@ -36,14 +43,25 @@
         height: 0px;
         left: 16px;
         top: 809px;
-        border-top: 1px solid black;
+        border-top: 1px solid var(--mc-gray-300);
         padding: 0;
         margin: size(16) size(16);
+    }
+
+    &__right {
+
+        li.exit,
+        li.myaccount {
+            svg {
+                color: var(--mc-primary-500);
+            }
+        }
     }
 
     @include mobile {
         border: none;
         display: none;
+
         padding: size(24) size(16);
     }
 
