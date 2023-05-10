@@ -17,6 +17,18 @@ use MapasCulturais\i;
                 <a v-if="entity.twitter" :href="entity.twitter" class="button button--text button--icon" aria-label="Twitter" target="_blank">
                     <mc-icon name="twitter"></mc-icon>
                 </a>
+                <a v-if="entity.linkedin" :href="entity.linkedin" class="button button--text button--icon" aria-label="Linkedin" target="_blank">
+                    <mc-icon name="linkedin"></mc-icon>
+                </a>
+                <a v-if="entity.youtube" :href="entity.youtube" class="button button--text button--icon" aria-label="Youtube" target="_blank">
+                    <mc-icon name="youtube"></mc-icon>
+                </a>
+                <a v-if="entity.vimeo" :href="entity.vimeo" class="button button--text button--icon" aria-label="Vimeo" target="_blank">
+                    <mc-icon name="vimeo"></mc-icon>
+                </a>
+                <a v-if="entity.spotify" :href="entity.spotify" class="button button--text button--icon" aria-label="Spotify" target="_blank">
+                    <mc-icon name="spotify"></mc-icon>
+                </a>
                 <a v-if="entity.facebook" :href="entity.facebook" class="button button--text button--icon" aria-label="Facebook" target="_blank">
                     <mc-icon name="facebook"></mc-icon>
                 </a>
