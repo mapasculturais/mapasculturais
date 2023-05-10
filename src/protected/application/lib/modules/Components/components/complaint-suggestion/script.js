@@ -29,7 +29,7 @@ app.component('complaint-suggestion', {
         }
 
         let options = {
-            complaint: definitions.complaint_type.config.options,
+            complaint: definitions.compliant_type.config.options,
             suggestion: definitions.suggestion_type.config.options,
         }
 
