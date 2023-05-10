@@ -16,6 +16,9 @@
             &__type,
             &__message,
             &__email {
+                &.field {
+                    padding-bottom: size(16);
+                }
                 label {
                     font-family: 'Open Sans';
                     font-style: normal;
@@ -25,14 +28,6 @@
                     margin: 0;
 
                 }
-            }
-
-            &__message.field {
-                padding-bottom: size(16);
-            }
-
-            &__name.field {
-                padding-bottom: size(16);
             }
 
             &__inputs {
@@ -51,15 +46,6 @@
                     align-items: center;
                 }
 
-            }
-
-            &__email.field {
-                padding-bottom: size(16);
-
-            }
-
-            &__type.field {
-                padding-bottom: size(16);
             }
         }
     }
