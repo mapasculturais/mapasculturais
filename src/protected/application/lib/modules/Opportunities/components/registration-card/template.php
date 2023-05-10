@@ -61,7 +61,9 @@ use MapasCulturais\i;
             </div>
         </div>
         <div class="right">
-            <a class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Acompanhar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
+            <slot name="button" :entity="entity">
+                <a class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Acompanhar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
+            </slot>
         </div>
     </div>
 </div>

@@ -23,7 +23,6 @@
             .right {
                 display: none;
             }
-
         }
 
         .left {
@@ -75,11 +74,6 @@
                 flex-direction: column;
                 gap: size(6);
 
-                @media (max-width:size(400)) {
-                    max-width: 100%;
-                    width: 264px;
-                }
-
                 &__title {
                     font-size: size(32);
                     font-weight: 700;
@@ -91,13 +85,9 @@
                     }
 
                     @media (max-width:size(500)) {
-                        a {
-                            font-weight: 700;
-                            font-size: 18px;
-                            line-height: 25px;
-                            text-align: center;
-
-                        }
+                        font-weight: 700;
+                        font-size: size(18);
+                        line-height: size(25);
                     }
                 }
 
@@ -105,6 +95,10 @@
                     display: flex;
                     flex-wrap: wrap;
                     gap: size(8) size(50);
+
+                    @media (max-width: size(500)) {
+                        display: none;
+                    }
 
                     .data {
                         display: flex;
