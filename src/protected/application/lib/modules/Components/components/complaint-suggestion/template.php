@@ -11,7 +11,7 @@ use MapasCulturais\i;
 $this->import("mapas-card modal");
 ?>
 <div class="complaint-suggestion">
-    <div class="complaint-sugestion__">
+    <div class="complaint-sugestion__complaint">
         <modal title="<?= i::__('Modal de denuncia') ?>">
             <div>
                 <div>
@@ -50,29 +50,29 @@ $this->import("mapas-card modal");
             </template>
         </modal>
     </div>
-    <div>
-        <modal title="<?= i::__('Modal de Contato') ?>">
-            <div>
-                <div>
+    <div class="complaint-sugestion__suggestion">
+        <modal title="<?= i::__('Contato') ?>">
+            <div class="suggestion-fields">
+                <div class="suggestion-fields__name field">
                     <label><?= i::__('Nome:') ?></label>
                     <input type="text" v-model="formData.name">
                 </div>
-                <div>
+                <div class="suggestion-fields__email field">
                     <label><?= i::__('E-mail:') ?></label>
                     <input type="text" v-model="formData.email">
                 </div>
-                <div>
+                <div class="suggestion-fields__type field">
                     <label><?= i::__('Tipo:') ?></label>
                     <select v-model="formData.type">
                         <option value=""><?= i::__('Selecione') ?></option>
                         <option v-for="(item,index) in options.suggestion" v-bind:value="item">{{item}}</option>
                     </select>
                 </div>
-                <div>
+                <div class="suggestion-fields__message field">
                     <label><?= i::__('Mensagem:') ?></label>
                     <textarea v-model="formData.message"></textarea>
                 </div>
-                <div>
+                <div class="suggestion-fields__inputs field">
                     <label> <input type="checkbox" v-model="formData.anonimous"><?= i::__('Mensagem anônima') ?></label>
                     <label><input type="checkbox" v-model="formData.only_owner"><?= i::__('Enviar somente para o responsável') ?></label>
                     <label><input type="checkbox" v-model="formData.copy"><?= i::__('Receber copia da mensagem') ?></label>
