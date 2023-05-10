@@ -3,10 +3,64 @@
 .complaint-suggestion {
     display: flex;
     gap: size(16);
-    &__complaint{
 
-    }
-    &__suggestion{
+    .modal-content {
+        padding: size(16);
+        min-height: size(600);
 
+        .suggestion-fields {
+
+            &__inputs,
+            &__name,
+            &__type,
+            &__message,
+            &__email {
+                label {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: size(14);
+                    line-height: size(19);
+                    margin: 0;
+
+                }
+            }
+
+            &__message.field {
+                padding-bottom: size(16);
+            }
+
+            &__name.field {
+                padding-bottom: size(16);
+            }
+
+            &__inputs {
+                padding-bottom: size(26);
+
+                label {
+                    display: flex;
+                    align-items: center;
+                }
+
+                input[type="checkbox"] {
+                    border: size(2) solid #3D3D3D;
+                    border-radius: size(2);
+                    height: size(16);
+                    display: flex;
+                    align-items: center;
+                }
+
+            }
+
+            &__email.field {
+                padding-bottom: size(16);
+
+            }
+
+            &__type.field {
+                padding-bottom: size(16);
+                // background-color: ble;
+            }
+        }
     }
 }
