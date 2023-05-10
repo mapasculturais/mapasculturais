@@ -3091,7 +3091,7 @@ class Theme extends MapasCulturais\Theme {
         $app = \MapasCulturais\App::i();
         $view = $app->getView();
 
-        return ( $view->template === "site/index" && $view->getController()->action === "index" );
+        return ( $view->template === "site/index" && $view->controller->action === "index" );
     }
 
     public function getLoginLinkAttributes() {
