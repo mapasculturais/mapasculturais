@@ -27,6 +27,14 @@
         color: var(--mc-error);
     }
 
+    &.disabled {
+        input, textarea, select{
+            cursor: default;
+            opacity: .5;
+            pointer-events: none;
+        }
+    }
+
     label {
         display: flex;
         font-family: var(--mc-font-headings);
