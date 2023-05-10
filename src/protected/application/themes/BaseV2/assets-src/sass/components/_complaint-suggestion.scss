@@ -1,7 +1,12 @@
 @use '../settings/mixins' as *;
 
-.complaint-sughestion {
-    &__
+.complaint-suggestion {
+    display: flex;
+    gap: size(16);
+    &__complaint{
 
+    }
+    &__suggestion{
 
+    }
 }
