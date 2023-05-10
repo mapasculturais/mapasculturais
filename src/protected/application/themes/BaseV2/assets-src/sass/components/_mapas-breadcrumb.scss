@@ -31,6 +31,7 @@
         display: flex;
         list-style: none;
         position: relative;
+        overflow: hidden;
 
         @media (max-width: size(800)) {
             display: none;
@@ -75,6 +76,7 @@
         text-decoration: none;
         text-transform: uppercase;
         font-size: 14px;
+        white-space: nowrap;
     }
 
     &__hasCover {
