@@ -81,7 +81,7 @@ app.component('registration-evaluation-actions', {
                     switch (action) {
                         case 'finishEvaluation':
                         case 'save':
-                            result = item.status < 1;
+                            result = item.status < 1 || !item.status;
                             break;
                         case 'send':
                         case 'reopen':
