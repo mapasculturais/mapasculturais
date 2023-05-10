@@ -1,10 +1,10 @@
-app.component('compliant-suggestion', {
-    template: $TEMPLATES['compliant-suggestion'],
+app.component('complaint-suggestion', {
+    template: $TEMPLATES['complaint-suggestion'],
     components: {
         VueRecaptcha
     },
     setup() {
-        const text = Utils.getTexts('compliant-suggestion')
+        const text = Utils.getTexts('complaint-suggestion')
         return { text }
     },
     props: {
@@ -16,7 +16,7 @@ app.component('compliant-suggestion', {
 
     data() {
         let typeMessage = "";
-        let sitekey = $MAPAS.compliantSuggestionConfig.recaptcha.sitekey;
+        let sitekey = $MAPAS.complaintSuggestionConfig.recaptcha.sitekey;
         let definitions = $MAPAS.notification_type;
         let recaptchaResponse = '';
         let formData = {
@@ -29,7 +29,7 @@ app.component('compliant-suggestion', {
         }
 
         let options = {
-            compliant: definitions.compliant_type.config.options,
+            complaint: definitions.compliant_type.config.options,
             suggestion: definitions.suggestion_type.config.options,
         }
 

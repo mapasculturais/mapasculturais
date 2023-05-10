@@ -30,7 +30,7 @@ class Procuration extends \MapasCulturais\Entity{
      * @ORM\Column(name="token", type="string", length=32, nullable=false)
      * @ORM\Id
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string

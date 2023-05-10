@@ -22,14 +22,14 @@ class Term extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="term_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="taxonomy", type="string", length=64, nullable=false)
      */
-    protected $taxonomy;
+    public $taxonomy;
 
     /**
      * @var string

@@ -52,5 +52,8 @@ use MapasCulturais\i;
                 </button>
             </template>
         </select-entity>
+        <div v-if="registration.__validationErrors.space" class="errors">
+            <span>{{registration.__validationErrors.space.join('; ')}}</span>
+        </div>
     </template>
 </mapas-card>

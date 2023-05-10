@@ -7,15 +7,13 @@ namespace MapasCulturais\Definitions;
 class MetaListGroup{
     use \MapasCulturais\Traits\MagicGetter;
 
-    protected $name = '';
+    public $name = '';
 
-    //protected $unique = false;
+    public $maxFiles = null;
 
-    protected $maxFiles = null;
+    public $metadata = [];
 
-    //protected $errorMessage = '';
-
-    protected $_metadata = [];
+    public $maxItems = null;
 
     /**
      *
@@ -27,7 +25,7 @@ class MetaListGroup{
      */
     function __construct($name, array $metadata = [], $max_items = null) {
         $this->name = $name;
-        $this->_metadata = $metadata;
+        $this->metadata = $metadata;
         //$this->errorMessage = $error_message;
         //$this->unique = $unique;
         $this->maxItems = $max_items;

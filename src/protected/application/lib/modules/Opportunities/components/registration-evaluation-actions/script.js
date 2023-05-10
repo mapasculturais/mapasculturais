@@ -51,6 +51,14 @@ app.component('registration-evaluation-actions', {
                 return this.text('Agente coletivo');
             }
 
+            if (field == 'projectName') {
+                return this.text('Nome do projeto');
+            }
+
+            if (field == 'space') {
+                return this.text('Espaço');
+            }
+
             if (field.slice(0, 6) == 'field_') {
                 for (let regField of this.fields) {
                     if (regField.fieldName == field) {

@@ -1,13 +1,6 @@
-const rawProfile = globalThis.$MAPAS.userProfile;
-if(rawProfile) {
-    const agentAPI = new API('agent');
-    const profile = agentAPI.getEntityInstance(rawProfile.id);
-    profile.populate(rawProfile);
-    globalThis.$MAPAS.userProfile = profile;
-}
-
 const rawUser = globalThis.$MAPAS.user;
-if(rawUser) {
+
+if (rawUser) {
     const userAPI = new API('user');
     const user = userAPI.getEntityInstance(rawUser.id);
     user.populate(rawUser);

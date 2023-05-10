@@ -30,7 +30,7 @@ abstract class TermRelation extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="term_relation_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
     
     /**
      * @var \MapasCulturais\Entities\Term

@@ -16,18 +16,10 @@ use MapasCulturais\Entities\Job;
  */
 abstract class JobType extends \MapasCulturais\Definition {
     
-    protected $_slug;
+    public $slug;
 
     function __construct(string $slug) {
-        $this->_slug = $slug;
-    }
-
-    /**
-     * 
-     * @return string 
-     */
-    function getSlug() {
-        return $this->_slug;
+        $this->slug = $slug;
     }
 
     /**
@@ -41,7 +33,7 @@ abstract class JobType extends \MapasCulturais\Definition {
     function generateId(array $data, string $start_string, string $interval_string, int $iterations) {
         $id = $this->_generateId($data, $start_string, $interval_string, $iterations);
 
-        return md5("{$this->_slug}:{$id}");
+        return md5("{$this->slug}:{$id}");
     }
 
     /**
