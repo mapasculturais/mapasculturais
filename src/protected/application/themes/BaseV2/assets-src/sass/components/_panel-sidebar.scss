@@ -9,15 +9,15 @@
     height: 100%;
     padding: size(40) size(24);
     display: flex;
-   
-    .user-menu__line{
-            max-width: 296px;
-            height: 0px;
-            left: 16px;
-            top: 809px;
-            border-top: 1px solid var(--mc-low-500);
-            padding: 0;
-            margin: size(16) size(16);
+
+    .user-menu__line {
+        max-width: 296px;
+        height: 0px;
+        left: 16px;
+        top: 809px;
+        border-top: 1px solid var(--mc-low-500);
+        padding: 0;
+        margin: size(16) size(16);
     }
 
     &.user-menu {
@@ -27,10 +27,10 @@
             margin-inline: size(22);
             height: size(522);
         }
-        
+
         border: none;
         padding: 0;
-        
+
         ul:first-child {
             li>a {
                 color: var(--mc-primary-500)
@@ -48,9 +48,20 @@
         margin: size(16) size(16);
     }
 
+    &__right {
+
+        li.exit,
+        li.myaccount {
+            svg {
+                color: var(--mc-primary-500);
+            }
+        }
+    }
+
     @include mobile {
         border: none;
         display: none;
+
         padding: size(24) size(16);
     }
 
