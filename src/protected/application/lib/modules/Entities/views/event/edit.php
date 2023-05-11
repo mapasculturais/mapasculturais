@@ -5,6 +5,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+        confirm-before-exit
         entity-actions
         entity-admins
         entity-cover
@@ -136,3 +137,4 @@ $this->breadcrumb = [
     </mapas-container>
     <entity-actions :entity="entity" editable></entity-actions>
 </div>
+<confirm-before-exit unsaved></confirm-before-exit>
