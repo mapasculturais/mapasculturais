@@ -8,7 +8,7 @@ $this->import('
     modal 
 ');
 ?>
- <modal :title="modalTitle" classes="create-modal" button-label="Criar Projeto" @open="createEntity()" @close="destroyEntity()">
+ <modal :title="modalTitle" classes="create-modal create-project-modal" button-label="Criar Projeto" @open="createEntity()" @close="destroyEntity()">
      <template v-if="entity && !entity.id" #default>
          <label><?php i::_e('Crie um projeto com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
          <div class="create-modal__fields">
