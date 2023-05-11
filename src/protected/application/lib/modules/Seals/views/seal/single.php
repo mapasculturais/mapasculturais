@@ -36,9 +36,7 @@ $this->breadcrumb = [
                     <p>{{entity.longDescription}}</p>
                 </div>
                 <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
-                <div class="col-12">
-                    <entity-links :entity="entity" title="<?php i::_e('Links'); ?>"></entity-links>
-                </div>
+                <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
             </div>
         </main>
         <aside>

@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 ?>
 
-<div v-if="entity.metalists.links || editable" class="entity-links">
+<div v-if="entity.metalists.links || editable" :class="['entity-links', classes]">
     <label class="entity-links__title"> {{title}} </label>
 
     <ul class="entity-links__links">
