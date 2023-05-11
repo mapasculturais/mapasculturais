@@ -145,11 +145,9 @@ class Module extends \MapasCulturais\Module {
             $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
             if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
                 $person = \MapasCulturais\i::__("Anônimo");
-                $anonimous = \MapasCulturais\i::__("Anônima");
                 $person_email = \MapasCulturais\i::__("Anônimo");
             } else {
                 $person = $this->data['name'];
-                $anonimous = "";
                 $person_email = $this->data['email'];
             }
 
@@ -220,11 +218,9 @@ class Module extends \MapasCulturais\Module {
             $message = "";
             if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
                 $person = \MapasCulturais\i::__("Anônimo");
-                $anonimous = \MapasCulturais\i::__("Anônima");
                 $person_email = \MapasCulturais\i::__("Anônimo");
             } else {
                 $person = $this->data['name'];
-                $anonimous = "";
                 $person_email = $this->data['email'];
             }
 
