@@ -65,21 +65,19 @@ $this->breadcrumb = [
                             <div v-if="(entity.children && entity.children.length >0) || (entity.relatedOpportunities && entity.relatedOpportunities.length>0)" class="col-12">
                                 <h4><?php i::_e('Propriedades do Espaço');?></h4>
                                 <entity-list v-if="entity.children?.length>0" title="<?php i::esc_attr_e('Subespaços');?>" type="space" :ids="entity.children"></entity-list>
-                                <entity-list title="<php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
-                                
+                                <entity-list title="<php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>                                
                             </div>
                         </div>
                     </main>
                     <aside>
                         <div class="grid-12">
+                            <entity-owner :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>"></entity-owner>
+                            <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Areas de atuação') ?>"></entity-terms>
                             <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
                             <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                             <entity-related-agents :entity="entity" classes="col-12" title="<?= i::_e('Agentes Relacionados'); ?>"></entity-related-agents>
-                            <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
-                            <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?= i::_e('Veja este link:'); ?>"></share-links>
-                            <entity-owner :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>"></entity-owner>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                            
+                            <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?= i::_e('Veja este link:'); ?>"></share-links>                            
                         </div>
                     </aside>
                     <aside>

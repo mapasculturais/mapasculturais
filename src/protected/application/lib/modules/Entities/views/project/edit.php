@@ -5,6 +5,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    confirm-before-exit
     create-project
     entity-actions
     entity-activity-card
@@ -103,9 +104,7 @@ $this->breadcrumb = [
                     <div class="grid-12">
                         <entity-field :entity="entity" classes="col-12" label="<?php i::_e('Descrição') ?>" prop="longDescription"></entity-field>
                         <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Adicionar arquivos para download') ?>" editable></entity-files-list>
-                        <div class="col-12">
-                            <entity-links :entity="entity" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
-                        </div>
+                        <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
                         <entity-gallery-video :entity="entity" classes="col-12" title="<?php i::_e('Adicionar vídeos') ?>" editable></entity-gallery-video>
                         <entity-gallery :entity="entity" classes="col-12" title="<?php i::_e('Adicionar fotos na galeria') ?>" editable></entity-gallery>
                     </div>
@@ -127,3 +126,4 @@ $this->breadcrumb = [
     </mapas-container>
     <entity-actions :entity="entity" editable></entity-actions>
 </div>
+<confirm-before-exit unsaved></confirm-before-exit>

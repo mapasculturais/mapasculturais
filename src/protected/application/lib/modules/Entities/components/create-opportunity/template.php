@@ -10,7 +10,7 @@ $this->import('
     entity-owner
 ');
 ?>
- <modal :title="modalTitle" classes="create-modal" button-label="Criar Oportunidade" @open="createEntity()" @close="destroyEntity()">
+ <modal :title="modalTitle" classes="create-modal create-opportunity-modal" button-label="Criar Oportunidade" @open="createEntity()" @close="destroyEntity()">
      <template v-if="entity && !entity.id" #default>
          <label><?php i::_e('Crie uma oportunidade com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
          <div class="create-modal__fields">

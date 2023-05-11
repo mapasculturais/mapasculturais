@@ -98,9 +98,7 @@ $this->import('
         <div class="grid-12">
             <entity-field :entity="entity" classes="col-12" prop="longDescription"></entity-field>
             <entity-files-list :entity="entity" group="downloads" classes="col-12"  title= "<?php i::_e('Adicionar arquivos para download'); ?>" editable></entity-files-list>
-            <div class="col-12">
-                <entity-links :entity="entity" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
-            </div>
+            <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
         </div>
     </template>
 </mapas-card>
