@@ -91,7 +91,7 @@ $this->breadcrumb = [
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
                             <div v-if="entity.relatedOpportunities && entity.relatedOpportunities.length > 0" class="col-12">
                                 <h4><?php i::_e('Propriedades do Evento');?></h4>
-                                <entity-list title="<php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
+                                <entity-list title="<?php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
                                 
                             </div>
                         </div>
