@@ -29,7 +29,6 @@ app.component('panel--pending-evaluations', {
     },
 
     data() {
-        console.log(this.entities);
         return {
             loading: true,
 
