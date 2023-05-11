@@ -169,6 +169,10 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         }
     }
     
+    static function getControllerId(){
+        return "registrationevaluation";
+    }
+
     protected function genericPermissionVerification($user) {
         return $this->registration->opportunity->evaluationMethodConfiguration->canUser('@control', $user) && $this->user->profile->canUser('@control', $user);
     }

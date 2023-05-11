@@ -75,7 +75,11 @@ app.component('registration-actions', {
             }
         },
         async validate() {
-            await this.registration.POST('validateEntity', {});
+            await this.registration.POST('validateEntity', {}).then( success => {
+                if (success) {
+                    messages.success(this.text('Validado'));
+                }
+            });
         },
         async save() {
             const iframe = document.getElementById('registration-form');
