@@ -1,14 +1,11 @@
 @use '../settings/mixins' as *;
 
-.create-agent-modal{
-    .modal-content {
-        // background-color: red;
-    }
-
-    @media (max-width:size(400)) {
+.create-agent-modal {
+    @media (max-width:size(800)) {
         .modal-content {
             height: 100%;
             margin: 0;
+
         }
     }
 }
