@@ -333,9 +333,16 @@
                     top: 0;
                     width: 100%;
                     z-index: 2;
+                    box-shadow: 3px 3px 3px rgba(0,0,0,.5);
 
                     .stepper {
                         margin: 0 auto;
+
+                        @include mobile {
+                            .step .label {
+                                font-size: size(12);
+                            }
+                        }
                     }
                 }
 
@@ -582,6 +589,7 @@
 
                             &__content {
                                 gap: size(28);
+                                flex-wrap: wrap;
     
                                 .data {
     

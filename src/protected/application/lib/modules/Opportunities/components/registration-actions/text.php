@@ -7,4 +7,5 @@ return [
     'Campo não identificado' => i::__('Campo não identificado'),
     'Nome do projeto' => i::__('Nome do projeto'),
     'Espaço' => i::__('Espaço'),
+    'Validado' => i::__('Campos validados com sucesso!'),
 ];

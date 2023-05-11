@@ -70,13 +70,18 @@ app.component('registration-evaluation-actions', {
             return this.text('Campo não identificado');
         },
         showActions(registration, action){
+
+            if(!registration.currentUserPermissions.evaluate){
+                return false;
+            }
+
             var result = false;
             this.evaluationRegistrationList.forEach(function(item){
                 if(item.registrationid == registration.id){
                     switch (action) {
                         case 'finishEvaluation':
                         case 'save':
-                            result = item.status < 1;
+                            result = item.status < 1 || !item.status;
                             break;
                         case 'send':
                         case 'reopen':
