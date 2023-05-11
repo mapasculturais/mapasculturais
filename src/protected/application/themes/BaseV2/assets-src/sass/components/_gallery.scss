@@ -60,6 +60,7 @@ body.galleryOpen {
                 font-size: size(16);
                 line-height: size(22);
                 margin: size(8) 0 0;
+                word-break: break-word;
             }
 
             &-actions {

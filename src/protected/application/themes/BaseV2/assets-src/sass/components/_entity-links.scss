@@ -40,13 +40,14 @@
                 margin: 0;
                 color: var(--mc-black);
                 text-decoration: none;
-                display: flex;
+                display: grid;
+                grid-template-columns: size(20) 1fr;
                 align-items: center;
-                gap: size(5);
+                gap: size(10);
+                word-break: break-word;
 
-                svg {
+                .iconify {
                     font-size: size(20);
-                    margin: 0 (5);
                 }
 
                 &.editable {
