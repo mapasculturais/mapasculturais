@@ -1,8 +1,6 @@
 @use '../settings/mixins' as *;
 
 .share-links {
-    margin: 20px 0;
-
     &--links {
         display: flex;
         gap: size(13);
