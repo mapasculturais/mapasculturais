@@ -45,7 +45,9 @@ app.component('complaint-suggestion', {
 
             let objt = this.formData;
             objt.entityId = this.entity.id;
-            objt['g-recaptcha-response'] = this.recaptchaResponse;
+            if(this.sitekey){
+                objt['g-recaptcha-response'] = this.recaptchaResponse;
+            }
 
             if (this.typeMessage === "sendSuggestionMessage") {
                 objt.only_owner = this.formData.only_owner;
