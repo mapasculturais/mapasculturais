@@ -152,7 +152,7 @@ class Module extends \MapasCulturais\Module {
             }
 
             $dataValue = [
-                'name'          => $app->user->is('guest') ? \MapasCulturais\i::__("Usuário Guest") : $app->user->profile->name,
+                'name'          => $app->user->is('guest') ? \MapasCulturais\i::__("Usuário Guest") : $entity->owner->name,
                 'entityType'    => $entity->getEntityTypeLabel(),
                 'entityName'    => $entity->name,
                 'person'        => $person,
@@ -226,7 +226,7 @@ class Module extends \MapasCulturais\Module {
             }
 
             $dataValue = [
-                'name'          => $app->user->is('guest') ? \MapasCulturais\i::__("Usuário Guest") : $app->user->profile->name,
+                'name'          => $app->user->is('guest') ? \MapasCulturais\i::__("Usuário Guest") : $entity->owner->name,
                 'entityType'    => $entity->getEntityTypeLabel(),
                 'entityName'    => $entity->name,
                 'person'        => $person,
