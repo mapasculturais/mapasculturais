@@ -60,7 +60,7 @@ class Entity {
                 val.lng = val.lng ?? 0;
             }
 
-            if(prop == 'type' && typeof val == 'number') {
+            if(prop == 'type' && (typeof val == 'number')) {
                 val = {
                     id: val, 
                     name: __properties['type']?.options?.[val]
