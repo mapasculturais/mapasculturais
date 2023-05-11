@@ -3,6 +3,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    confirm-before-exit
     entity-cover
     entity-profile
     entity-field
@@ -73,3 +74,4 @@ $this->import('
         </mapas-card>
     </aside>
 </mapas-container>
+<confirm-before-exit unsaved></confirm-before-exit>

@@ -810,10 +810,16 @@ class Opportunity extends EntityController {
 
         $params = ['opp' => $opportunity->id];
 
+        $where_pending = "";
+        if(isset($this->data['@pending'])){
+            $where_pending = "evaluation_id IS NULL AND ";
+        }
+
         $queryNumberOfResults = $conn->fetchColumn("
             SELECT count(*) 
             FROM evaluations 
             WHERE 
+                {$where_pending}
                 opportunity_id = :opp AND
                 valuer_user_id IN({$users})
         ", $params);
@@ -876,6 +882,7 @@ class Opportunity extends EntityController {
                 valuer_agent_id
             FROM evaluations
             WHERE
+                {$where_pending}
                 opportunity_id = :opp AND
                 valuer_user_id IN({$users}) AND
                 registration_id IN ({$registration_ids})
