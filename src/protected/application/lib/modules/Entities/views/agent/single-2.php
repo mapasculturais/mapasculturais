@@ -5,6 +5,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    complaint-suggestion
     entity-actions
     entity-admins
     entity-files-list
