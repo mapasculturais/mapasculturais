@@ -78,6 +78,18 @@ app.component('complaint-suggestion', {
         validade(objt) {
             let result = null;
             let ignore = ["copy", "anonimous", "only_owner"];
+
+            if(!this.sitekey){
+                ignore.push("g-recaptcha-response");
+            }
+
+            if(this.formData.anonimous){
+                ignore.push("name");
+                ignore.push("email");
+                this.formData.name = "";
+                this.formData.email = "";
+            }
+
             Object.keys(objt).forEach(function (item) {
                 if (!objt[item] && !ignore.includes(item)) {
                     result = item;
@@ -88,8 +100,8 @@ app.component('complaint-suggestion', {
         },
         initFormData() {
             this.formData = {
-                name: "",
-                email: "",
+                name: $MAPAS.complaintSuggestionConfig.senderName,
+                email: $MAPAS.complaintSuggestionConfig.senderEmail,
                 type: "",
                 message: "",
                 anonimous: false,
