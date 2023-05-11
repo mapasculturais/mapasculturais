@@ -29,6 +29,32 @@ app.component('entity-field', {
                 value = [value];
             }
         }
+        
+        let isAdmin = function() {
+            let result = false;
+            $MAPAS.currentUserRoles.forEach(function(item){
+                if(item.toLowerCase().match('admin')){
+                    result = true;
+                    return;
+                }
+            })
+
+            return result;
+        }
+
+        if(this.entity.__objectType === "agent" && this.prop === "type" && !isAdmin()){
+            
+            var typeOptions = {};
+            var optionsOrder = [];
+            Object.keys(description.options).forEach(function(item, index){
+                if(description.options[item] != "Individual"){
+                    typeOptions[index] = description.options[item];
+                    optionsOrder.push(parseInt(index));
+                }
+            });
+            description.options = typeOptions;
+            description.optionsOrder = optionsOrder;
+        }
 
         let fieldType = this.type || description.field_type || description.type;
 

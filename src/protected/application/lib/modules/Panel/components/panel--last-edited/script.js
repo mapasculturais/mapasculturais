@@ -81,20 +81,20 @@ app.component('panel--last-edited', {
                 },
           
                 900: {
-                    itemsToShow: 1.4,
+                    itemsToShow: 1.6,
                     snapAlign: "start"
                 },
                
                 400: {
-                    itemsToScrool: 1.4,
+                    itemsToScrool: 1.2,
 
-                    itemsToShow: 1.2,
+                    itemsToShow: 1.,
                     snapAlign: "start"
                 },
                 360: {
-                    itemsToScrool: 1.4,
+                    itemsToScrool: 1.2,
 
-                    itemsToShow: 1.1,
+                    itemsToShow: 1.,
                     snapAlign: "start"
                 },
                
