@@ -15,13 +15,14 @@ app.component('complaint-suggestion', {
     },
 
     data() {
+        let isAuth = $MAPAS.complaintSuggestionConfig.isAuth;
         let typeMessage = "";
         let sitekey = $MAPAS.complaintSuggestionConfig.recaptcha.sitekey;
         let definitions = $MAPAS.notification_type;
         let recaptchaResponse = '';
         let formData = {
-            name: "",
-            email: "",
+            name: $MAPAS.complaintSuggestionConfig.senderName,
+            email: $MAPAS.complaintSuggestionConfig.email,
             type: "",
             message: "",
             anonimous: false,
@@ -33,7 +34,7 @@ app.component('complaint-suggestion', {
             suggestion: definitions.suggestion_type.config.options,
         }
 
-        return { definitions, options, typeMessage, sitekey, recaptchaResponse, formData }
+        return { definitions, options, typeMessage, sitekey, recaptchaResponse, formData, isAuth }
     },
 
     methods: {
