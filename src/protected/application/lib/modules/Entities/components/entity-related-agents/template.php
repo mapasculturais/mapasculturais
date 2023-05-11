@@ -99,7 +99,7 @@ $this->import('
                     <form @submit="addGroup(newGroupName); $event.preventDefault(); close();">
                         <div class="grid-12">
                             <div class="col-12">
-                                <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
+                                <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" maxlength="64" />
                             </div>
                             <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
                             <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
