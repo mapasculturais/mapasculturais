@@ -22,7 +22,7 @@
             var copy        = $scope.data.copy;
             MapasCulturais.compliant_ok = true;
 
-            if(!anonimous || copy && !email){
+            if((!anonimous || copy ) && !email){
                 MapasCulturais.Messages.error( labels.compliantEmailRequired );
                 MapasCulturais.compliant_ok = false;
             } else if(!type){
@@ -108,7 +108,7 @@
                 name = '';
             }
 
-            if(!anonimous || copy && !email){
+            if((!anonimous || copy ) && !email){
                 MapasCulturais.Messages.error( labels.suggestionEmailRequired );
                 MapasCulturais.suggestion_ok = false;
             } else if(!type){
