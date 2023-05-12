@@ -84,7 +84,7 @@ use MapasCulturais\i;
             </nav>
             <div class="description">
                 <slot name="description">
-                    <p> {{entity.shortDescription}} </p>
+                    <p v-html="entity.shortDescription"></p>
                 </slot>
             </div>
             <div v-if="entity.site" class="site">
