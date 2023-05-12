@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.6.13] - 2023-05-12
+### Correções
+- corrige configuração de vinculação de espaço relacionado na configuração do formulário de inscrição em oportunidades
+
 ## [5.6.12] - 2023-04-17
 ### Correções
 - corrige erro de js que estava quebrando a edição de oportuidades em algumas situações
