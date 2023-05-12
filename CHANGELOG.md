@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.6.14] - 2023-05-12
+### Correções
+- remove botões de adicionar subespaço e de adicionar subagente das páginas single e edit de agente e projeto, pois levavam para uma página que não existe mais
+
 ## [5.6.13] - 2023-05-12
 ### Correções
 - corrige configuração de vinculação de espaço relacionado na configuração do formulário de inscrição em oportunidades
