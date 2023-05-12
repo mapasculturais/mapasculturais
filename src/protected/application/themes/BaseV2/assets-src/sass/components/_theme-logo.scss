@@ -4,10 +4,11 @@
 .theme-logo {
     display: grid;
     grid-template-columns: 35% 59%;
-    gap: 6%;
+    gap: size(20);
     max-width: size(450);
     align-items: center;
     text-decoration: none;
+    flex-wrap: wrap;
 
     -webkit-touch-callout: none;
    -webkit-user-select: none;
@@ -18,23 +19,37 @@
 
     &__logo {
         display: grid;
+        max-width: 117px;
         grid-template-columns: repeat(4, 25%);
         padding: size(9) 0;
 
-        &--part1,
-        &--part2 {
+        .part1, .part2, .part3, .part4 {
             width: 100%;
             aspect-ratio: 10/13;
         }
 
-        &--part1 {
-            background: var(--logo-color1);
+        .part1, .part3 {
             transform: skew(0, -19deg);
         }
 
-        &--part2 {
-            background: var(--logo-color2);
+        .part2, .part4 {
             transform: skew(0, 19deg);
+        }
+
+        .part1 {
+            background-color: var(--logo-bg1);
+        }
+        
+        .part2 {
+            background-color: var(--logo-bg2);
+        }
+
+        .part3 {
+            background-color: var(--logo-bg3);
+        }
+
+        .part4 {
+            background-color: var(--logo-bg4);
         }
     }
 
