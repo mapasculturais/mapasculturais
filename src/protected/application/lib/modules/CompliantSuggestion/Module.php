@@ -112,6 +112,7 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('mapasculturais.head', function() use($app, $plugin){
             $entity = $app->view->controller->requestedEntity;
+            $plugin->addConfigToJs();
 
             if($entity){
                 $app->view->jsObject['angularAppDependencies'][] = 'module.compliantSuggestion';
@@ -351,5 +352,19 @@ class Module extends \MapasCulturais\Module {
 
         $token = $_POST["g-recaptcha-response"];
         return $this->verificarToken($token, $app->_config['app.recaptcha.secret']);
+    }
+
+    public function addConfigToJs()
+    {
+        /** @var App $app */
+        $app = App::i();
+
+        $config = [
+            'recaptcha' => [
+                'sitekey' =>  $app->_config['app.recaptcha.key'],
+            ]
+        ];
+
+        $app->view->jsObject['complaintSuggestionConfig'] = $config;
     }
 }
