@@ -25,7 +25,7 @@ $this->import('
                     <p v-html="certificateText"></p>
                 </div>
                 <div class="seal-relation-view__footer">
-                    <theme-logo title="mapa cultural" subtitle="do Pará" color="#000000"></theme-logo>
+                    <theme-logo href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
                 </div>
             </div>
         </div>
