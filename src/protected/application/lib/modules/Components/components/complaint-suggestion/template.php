@@ -18,7 +18,7 @@ $this->import("mapas-card modal");
                     <label><?= i::__('Nome') ?></label>
                     <input type="text" v-model="formData.name">
                 </div>
-                <div v-if="!formData.anonimous" class="content__email field">
+                <div v-if="!formData.anonimous || formData.copy" class="content__email field">
                     <label><?= i::__('E-mail') ?></label>
                     <input type="text" v-model="formData.email">
                 </div>
@@ -57,7 +57,7 @@ $this->import("mapas-card modal");
                     <label><?= i::__('Nome') ?></label>
                     <input type="text" v-model="formData.name">
                 </div>
-                <div v-if="!formData.anonimous" class="content__email field">
+                <div v-if="!formData.anonimous || formData.copy" class="content__email field">
                     <label><?= i::__('E-mail') ?></label>
                     <input type="text" v-model="formData.email">
                 </div>
