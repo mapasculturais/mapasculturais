@@ -3,6 +3,8 @@
  * See https://github.com/Respect/Validation to know how to write validations
  */
 
+use MapasCulturais\Utils;
+
 return array(
     'metadata' => array(
         'nomeCompleto' => array(
@@ -90,7 +92,7 @@ return array(
                    $this->rcache->save($key, 1);
                 }
 
-                return $value;
+                return Utils::formatCnpjCpf($value);
             },
             'available_for_opportunities' => true
         ),
@@ -107,7 +109,14 @@ return array(
                     }
                     $this->rcache->save($key, 1);
                 }
-                return $value;
+                return Utils::formatCnpjCpf($value);
+            },
+            'unserialize' => function($value, $entity) {
+                if (!$value && $entity->type->id == 2) {
+                    $value = $entity->documento;
+                }
+    
+                return Utils::formatCnpjCpf($value);
             },
             'validations' => array(
                 'v::cnpj()' => \MapasCulturais\i::__('O número de CNPJ informado é inválido.')
@@ -126,7 +135,14 @@ return array(
                     }
                     $this->rcache->save($key, 1);
                 }
-                return $value;
+                return Utils::formatCnpjCpf($value);
+            },
+            'unserialize' => function($value, $entity) {
+                if (!$value) {
+                    $value = $entity->documento;
+                }
+
+                return Utils::formatCnpjCpf($value);
             },
             'validations' => array(
                 'v::cpf()' => \MapasCulturais\i::__('O número de CPF informado é inválido.')
