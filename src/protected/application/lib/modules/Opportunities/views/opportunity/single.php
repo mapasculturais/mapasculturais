@@ -61,7 +61,7 @@ $this->breadcrumb = [
                     <div class="grid-12">
                         <div class="col-12">
                             <h3><?= i::__("Apresentação") ?></h3>
-                            <p>{{ entity.shortDescription }}</p>
+                            <p v-html="entity.shortDescription"></p>
                         </div>
                         <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                         <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Links'); ?>"></entity-links>
