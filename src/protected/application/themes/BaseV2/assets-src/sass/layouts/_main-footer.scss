@@ -43,17 +43,14 @@
                 width: 100%;
 
                 @media (max-width: size(800)) {
-                    .theme-logo {
-                        margin: 0 auto;
-                    }
-                }
-
-                @media (max-width: size(500)) {
                     width: 70%;
 
                     .theme-logo {
                         grid-template-columns: 100%;
                         text-align: center;
+                        justify-content: center;
+                        justify-items: center;
+                        margin: 0 auto;
 
                         &__logo {
                             width: 50%;
