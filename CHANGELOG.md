@@ -11,6 +11,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
 - Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
 
+## [5.6.15] - 2023-05-12
+### Correções
+- Corrige módulo de deníncia e contato para usar o nome do dono da entidade ao invez do usuário logado
+
+## [5.6.14] - 2023-05-12
+### Correções
+- remove botões de adicionar subespaço e de adicionar subagente das páginas single e edit de agente e projeto, pois levavam para uma página que não existe mais
+
+## [5.6.13] - 2023-05-12
+### Correções
+- corrige configuração de vinculação de espaço relacionado na configuração do formulário de inscrição em oportunidades
+
 ## [5.6.12] - 2023-04-17
 ### Correções
 - corrige erro de js que estava quebrando a edição de oportuidades em algumas situações
