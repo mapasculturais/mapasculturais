@@ -1,19 +1,3 @@
-/**
- * Vue Lifecycle
- * 1. setup
- * 2. beforeCreate
- * 3. created
- * 4. beforeMount
- * 5. mounted
- * 
- * // sempre que há modificação nos dados
- *  - beforeUpdate
- *  - updated
- * 
- * 6. beforeUnmount
- * 7. unmounted                  
- */
-
 app.component('theme-logo', {
     template: $TEMPLATES['theme-logo'],
 
@@ -28,24 +12,37 @@ app.component('theme-logo', {
             type: String,
             default: null
         },
-        primaryBackground: {
+        bg1: {
             type: String,
-            default: '#4FC9E0',
-            
+            default: null,
         },
-        secondaryBackground: {
+        bg2: {
             type: String,
-            default: '#0074C1',
+            default: null,
         },
-
-
+        bg3: {
+            type: String,
+            default: null,
+        },
+        bg4: {
+            type: String,
+            default: null,
+        },
     },
 
     data() {
         return {
             title: $MAPAS.config.logo.title,
             subtitle: $MAPAS.config.logo.subtitle,
-            color: $MAPAS.config.logo.color
+            color: $MAPAS.config.logo.color,
+            colors: {},
         }
+    },
+
+    created() {
+        this.colors.bg1 = this.bg1 ?? this.color.bg1;
+        this.colors.bg2 = this.bg2 ?? this.color.bg2;
+        this.colors.bg3 = this.bg3 ?? this.color.bg3;
+        this.colors.bg4 = this.bg4 ?? this.color.bg4;
     },
 });

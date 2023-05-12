@@ -2,12 +2,12 @@
 use MapasCulturais\i;
 ?>
 
-<a class="theme-logo" :style="{'--logo-color1': primaryBackground, '--logo-color2': secondaryBackground}" :href="href">    
+<a class="theme-logo" :style="{'--logo-bg1': colors.bg1, '--logo-bg2': colors.bg2, '--logo-bg3': colors.bg3, '--logo-bg4': colors.bg4}" :href="href">    
     <div class="theme-logo__logo">
-        <div class="theme-logo__logo--part1"></div>
-        <div class="theme-logo__logo--part2"></div>
-        <div class="theme-logo__logo--part1"></div>
-        <div class="theme-logo__logo--part2"></div>
+        <div class="part1"></div>
+        <div class="part2"></div>
+        <div class="part3"></div>
+        <div class="part4"></div>
     </div>
     
     <div class="theme-logo__text">
