@@ -15,7 +15,7 @@ $this->import('
             <!-- botões de ação do grupo -->
             <div v-if="editable" class="act">
                 <!-- renomear grupo -->
-                <popover openside="down-right">
+                <popover  openside="down-right">
                     <template #button="popover">
                         <slot name="button"> 
                             <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
@@ -24,7 +24,7 @@ $this->import('
                     <template #default="{popover, close}">
                         <form @submit="renameGroup(groupName, relations.newGroupName, popover); $event.preventDefault(); close()" class="entity-related-agents__addNew--newGroup">
                             <div class="grid-12">
-                                <div class="col-12">
+                                <div class="related-popover col-12">
                                     <input v-model="relations.newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                                 </div>
 
@@ -98,7 +98,7 @@ $this->import('
                 <div class="entity-related-agents__addNew--newGroup">
                     <form @submit="addGroup(newGroupName); $event.preventDefault(); close();">
                         <div class="grid-12">
-                            <div class="col-12">
+                            <div class="related-input col-12">
                                 <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" maxlength="64" />
                             </div>
                             <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
