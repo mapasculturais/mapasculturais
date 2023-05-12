@@ -8,6 +8,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - corrige configuração de vinculação de espaço relacionado na configuração do formulário de inscrição em oportunidades
 
+### Melhorias 
+- adiciona MailHog no ambiente de desenvolvimento para teste dos envios
+
 ## [5.6.12] - 2023-04-17
 ### Correções
 - corrige erro de js que estava quebrando a edição de oportuidades em algumas situações
