@@ -86,16 +86,16 @@ app.component('panel--last-edited', {
                 },
                
                 400: {
-                    itemsToScrool: 1.2,
+                    itemsToScrool: 1.,
 
-                    itemsToShow: 1.,
-                    snapAlign: "start"
+                    itemsToShow: 1,
+                    snapAlign: "end"
                 },
                 360: {
-                    itemsToScrool: 1.2,
+                    itemsToScrool: 1.,
 
-                    itemsToShow: 1.,
-                    snapAlign: "start"
+                    itemsToShow: 0.8,
+                    snapAlign: "end"
                 },
                
             }
