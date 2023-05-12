@@ -22,7 +22,7 @@
             var copy        = $scope.data.copy;
             MapasCulturais.compliant_ok = true;
 
-            if(!anonimous && !email){
+            if(!anonimous || copy && !email){
                 MapasCulturais.Messages.error( labels.compliantEmailRequired );
                 MapasCulturais.compliant_ok = false;
             } else if(!type){
@@ -31,7 +31,7 @@
             } else if(!message){
                 MapasCulturais.Messages.error( labels.compliantMessageRequired );
                 MapasCulturais.compliant_ok = false;
-            } else if(!grecaptcha){
+            } else if(MapasCulturais.complaintSuggestionConfig.recaptcha.sitekey && !grecaptcha){
                 MapasCulturais.Messages.error( labels.recaptchaRequired );
                 MapasCulturais.compliant_ok = false;
             }
@@ -108,7 +108,7 @@
                 name = '';
             }
 
-            if(!anonimous && !email){
+            if(!anonimous || copy && !email){
                 MapasCulturais.Messages.error( labels.suggestionEmailRequired );
                 MapasCulturais.suggestion_ok = false;
             } else if(!type){
@@ -117,7 +117,7 @@
             } else if(!message){
                 MapasCulturais.Messages.error( labels.suggestionMessageRequired );
                 MapasCulturais.suggestion_ok = false;
-            } else if(!grecaptcha){
+            } else if(MapasCulturais.complaintSuggestionConfig.recaptcha.sitekey && !grecaptcha){
                 MapasCulturais.Messages.error( labels.recaptchaRequired );
                 MapasCulturais.suggestion_ok = false;
             }

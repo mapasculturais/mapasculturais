@@ -145,7 +145,7 @@ class Module extends \MapasCulturais\Module {
             $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
             if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
                 $person = \MapasCulturais\i::__("Anônimo");
-                $person_email = \MapasCulturais\i::__("Anônimo");
+                $person_email =  \MapasCulturais\i::__("Anônimo");
             } else {
                 $person = $this->data['name'];
                 $person_email = $this->data['email'];
@@ -349,5 +349,36 @@ class Module extends \MapasCulturais\Module {
 
         $token = $_POST["g-recaptcha-response"];
         return $this->verificarToken($token, $app->_config['app.recaptcha.secret']);
+    }
+
+    public function addConfigToJs($entity)
+    {
+        /** @var App $app */
+        $app = App::i();
+
+        $isAUth = $app->user->is('guest') ? false : true;
+
+        if($isAUth){
+            $emailTypes = ["emailPrivado", "emailPublico"];
+
+            $ownerEmail = $app->user->email;
+            foreach($emailTypes as $type){
+                if($email = $app->user->profile->$type){
+                    $ownerEmail = $email;
+                    break;
+                }
+            }
+        }
+
+        $config = [
+            'isAuth' => $isAUth,
+            'senderName' => $isAUth ? $app->user->profile->name : "",
+            'senderEmail' => $isAUth ? $ownerEmail : "",
+            'recaptcha' => [
+                'sitekey' =>  $app->_config['app.recaptcha.key'],
+            ]
+        ];
+
+        $app->view->jsObject['complaintSuggestionConfig'] = $config;
     }
 }
