@@ -958,11 +958,7 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
     if($scope.countSelected == $scope.data.fields.length){
         $scope.data.allFields.checked = true;
-    console.log($scope.data.allFields.checked)
-
     }
-
-
 
     $scope.checkedAll = function(){
         $scope.data.avaliableEvaluationFields = {}
