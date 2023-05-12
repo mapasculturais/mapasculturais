@@ -1,8 +1,20 @@
 @use '../settings/mixins' as *;
 
 .modal-confirm{
+    @media (max-width: size(400)){
+     
+      padding-inline: 16px;
+      .modal__action {
+        flex-wrap: unset;
+        flex-direction: row;
+      }
+    }
     .modal-content {
       height: unset;
       max-height: unset;
+    }
+    .modal__action {
+      flex-wrap: unset;
+      flex-direction: row;
     }
 }
