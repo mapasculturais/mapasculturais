@@ -10,6 +10,20 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## Melhorias
 - Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
 - Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
+
+## [5.6.12] - 2023-04-17
+### Correções
+- corrige erro de js que estava quebrando a edição de oportuidades em algumas situações
+
+## [5.6.11] - 2023-04-17
+### Melhorias
+- garante que os CPFs e CNPJs sejam exibidos e salvos formatados (XXX.XXX.XXX-XX e XX.XXX.XXX/YYYY-ZZ)
+- unserialize nos metadados CPF e CNPJ que retorna do campo documento caso não esteja preenchido
+
+## [5.6.10] - 2023-04-17
+### Melhorias
+- refatoração do db-update que popula os metadados dos documentos para rodar mais rapidamente
+
 ## [5.6.9] - 2023-04-17
 ### Melhorias
 - melhora performance do endpoint que retorna avaliações
