@@ -24,7 +24,7 @@ $this->import('
                             <label class="card__content--title"> {{entity.opportunity.name}} </label>              
                             <div class="card__content--description date">
                                 <label><?= i::_e('Data de inscrição') ?></label>
-                                <strong>{{entity.opportunity.registrationFrom.format()}} <?= i::_e('às') ?> {{entity.opportunity.registrationFrom.hour()}}h</strong>
+                                <strong>{{entity.opportunity.registrationFrom?.format()}} <?= i::_e('às') ?> {{entity.opportunity.registrationFrom?.hour()}}h</strong>
                             </div>    
                         </div>
                         <div class="card__action">

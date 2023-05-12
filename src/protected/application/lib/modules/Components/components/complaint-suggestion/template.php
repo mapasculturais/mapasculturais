@@ -14,11 +14,11 @@ $this->import("mapas-card modal");
     <div class="complaint-sugestion__complaint">
         <modal title="<?= i::__('Denúncia') ?>">
             <div class="content">
-                <div class="content__name field">
+                <div v-if="!formData.anonimous" class="content__name field">
                     <label><?= i::__('Nome') ?></label>
                     <input type="text" v-model="formData.name">
                 </div>
-                <div class="content__email field">
+                <div v-if="!formData.anonimous || formData.copy" class="content__email field">
                     <label><?= i::__('E-mail') ?></label>
                     <input type="text" v-model="formData.email">
                 </div>
@@ -53,11 +53,11 @@ $this->import("mapas-card modal");
     <div class="complaint-sugestion__suggestion">
         <modal title="<?= i::__('Contato') ?>">
             <div class="content">
-                <div class="content__name field">
+                <div v-if="!formData.anonimous" class="content__name field">
                     <label><?= i::__('Nome') ?></label>
                     <input type="text" v-model="formData.name">
                 </div>
-                <div class="content__email field">
+                <div v-if="!formData.anonimous || formData.copy" class="content__email field">
                     <label><?= i::__('E-mail') ?></label>
                     <input type="text" v-model="formData.email">
                 </div>
@@ -81,7 +81,7 @@ $this->import("mapas-card modal");
 
             <template #actions="modal">
                 <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="g-recaptcha col-12"></VueRecaptcha>
-                <button class="button button--primary"@click="send"><?= i::__('Enviar Mensagem') ?></button>
+                <button class="button button--primary" @click="send(modal)"><?= i::__('Enviar Mensagem') ?></button>
                 <button class="button button--text button--text-del" @click="modal.close()"><?= i::__('Cancelar') ?></button>
             </template>
 

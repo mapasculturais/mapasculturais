@@ -15,13 +15,14 @@ app.component('complaint-suggestion', {
     },
 
     data() {
+        let isAuth = $MAPAS.complaintSuggestionConfig.isAuth;
         let typeMessage = "";
         let sitekey = $MAPAS.complaintSuggestionConfig.recaptcha.sitekey;
         let definitions = $MAPAS.notification_type;
         let recaptchaResponse = '';
         let formData = {
-            name: "",
-            email: "",
+            name: $MAPAS.complaintSuggestionConfig.senderName,
+            email: $MAPAS.complaintSuggestionConfig.email,
             type: "",
             message: "",
             anonimous: false,
@@ -33,7 +34,7 @@ app.component('complaint-suggestion', {
             suggestion: definitions.suggestion_type.config.options,
         }
 
-        return { definitions, options, typeMessage, sitekey, recaptchaResponse, formData }
+        return { definitions, options, typeMessage, sitekey, recaptchaResponse, formData, isAuth }
     },
 
     methods: {
@@ -44,7 +45,9 @@ app.component('complaint-suggestion', {
 
             let objt = this.formData;
             objt.entityId = this.entity.id;
-            objt['g-recaptcha-response'] = this.recaptchaResponse;
+            if(this.sitekey){
+                objt['g-recaptcha-response'] = this.recaptchaResponse;
+            }
 
             if (this.typeMessage === "sendSuggestionMessage") {
                 objt.only_owner = this.formData.only_owner;
@@ -75,6 +78,18 @@ app.component('complaint-suggestion', {
         validade(objt) {
             let result = null;
             let ignore = ["copy", "anonimous", "only_owner"];
+
+            if(!this.sitekey){
+                ignore.push("g-recaptcha-response");
+            }
+
+            if(this.formData.anonimous){
+                ignore.push("name");
+                ignore.push("email");
+                this.formData.name = "";
+                this.formData.email = "";
+            }
+
             Object.keys(objt).forEach(function (item) {
                 if (!objt[item] && !ignore.includes(item)) {
                     result = item;
@@ -85,8 +100,8 @@ app.component('complaint-suggestion', {
         },
         initFormData() {
             this.formData = {
-                name: "",
-                email: "",
+                name: $MAPAS.complaintSuggestionConfig.senderName,
+                email: $MAPAS.complaintSuggestionConfig.senderEmail,
                 type: "",
                 message: "",
                 anonimous: false,
