@@ -3,7 +3,7 @@
 .modal-confirm{
     @media (max-width: size(400)){
      
-      padding-inline: 16px;
+      padding-inline: size(16);
       .modal__action {
         flex-wrap: unset;
         flex-direction: row;
