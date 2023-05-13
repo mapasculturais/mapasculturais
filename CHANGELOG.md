@@ -3,6 +3,9 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.6.15] - 2023-05-12
+### Correções
+- Corrige módulo de deníncia e contato para usar o nome do dono da entidade ao invez do usuário logado
 
 ## [5.6.14] - 2023-05-12
 ### Correções
