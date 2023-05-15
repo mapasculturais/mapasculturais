@@ -10,6 +10,7 @@ app.component('confirm-button', {
 
     props: {
         buttonClass: [String, Array],
+        title: String,
         message: String,
         yes: String,
         no: String,
