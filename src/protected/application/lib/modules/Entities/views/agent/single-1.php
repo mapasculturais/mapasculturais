@@ -3,6 +3,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    agent-data
     complaint-suggestion
     entity-actions
     entity-admins
@@ -38,6 +39,7 @@ $this->breadcrumb = [
                 <mapas-container>
                     <main>
                         <div class="grid-12">
+                            <agent-data :entity="entity"></agent-data>
                             <entity-location :entity="entity" classes="col-12"></entity-location>
                             <div v-if="entity.longDescription" class="col-12">
                                 <h2><?php i::_e('Descrição Detalhada');?></h2>
