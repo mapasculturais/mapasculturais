@@ -1218,11 +1218,6 @@ class ApiQuery {
                 if (!isset($metadata[$meta['objectId']])) {
                     $metadata[$meta['objectId']] = [];
                 }
-                $unserialize = $definitions[$meta['key']]->unserialize;
-                if($unserialize) {
-                    $meta['value'] = $unserialize($meta['value']);
-                }
-                
                 $metadata[$meta['objectId']][$meta['key']] = $meta['value'];
             }
         }
@@ -1247,6 +1242,13 @@ class ApiQuery {
                 }
                 
                 $entity += $meta;
+
+                foreach($meta as $k => &$v){
+                    $unserialize = $definitions[$k]->unserialize;
+                    if($unserialize) {
+                        $entity[$k] = $unserialize($v, (object) $entity);
+                    }
+                }
             }
         }
     }    
