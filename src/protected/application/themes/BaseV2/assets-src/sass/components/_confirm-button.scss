@@ -4,5 +4,9 @@
     .modal-content {
       height: unset;
       max-height: unset;
+
+      .modal__action {
+        justify-content: flex-end;
+      }
     }
 }
