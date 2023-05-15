@@ -20,6 +20,16 @@
         gap: size(8);
     }
 
+    &__infos {
+        &--capacidade,
+        &--telefone,
+        &--email {
+            span {
+                font-weight: 600;
+            }
+        }
+    }
+
     &__location {
         .entity-location__title {
             display: none;
