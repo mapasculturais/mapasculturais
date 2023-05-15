@@ -2508,12 +2508,13 @@ class ApiQuery {
 
                 $values = $this->addMultipleParams($values);
 
-                if (count($values) < 1) {
-                    $values = [-999999];
+                if (count($values) > 0) {
+                    $dql = $not ? "$key NOT IN (" : "$key IN (";
+                    $dql .= implode(', ', $values) . ')';
+                } else if(!$not) {
+                    $dql .= "$key IS NULL AND $key IS NOT NULL";
                 }
 
-                $dql = $not ? "$key NOT IN (" : "$key IN (";
-                $dql .= implode(', ', $values) . ')';
                 
             }elseif($operator == "IIN"){
                 $values = $this->splitParam($value);
