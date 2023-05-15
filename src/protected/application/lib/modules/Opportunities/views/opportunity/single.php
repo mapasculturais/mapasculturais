@@ -19,6 +19,7 @@ $this->import('
     entity-terms
     evaluations-list
     mapas-breadcrumb
+    opportunity-phase-evaluation
     opportunity-subscription
     opportunity-subscription-list
     opportunity-phases-timeline
@@ -85,7 +86,7 @@ $this->breadcrumb = [
 
         <tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="entity.currentUserPermissions.evaluateRegistrations">
             <div class="opportunity-container">
-                <v1-embed-tool route="evaluationlist" :id="entity.id"></v1-embed-tool>
+                <opportunity-phase-evaluation></opportunity-phase-evaluation>
             </div>
         </tab>
 

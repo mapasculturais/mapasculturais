@@ -116,6 +116,10 @@ app.component('mc-multiselect', {
         close() {
             this.$emit('close', this);
             this.filter = '';
+        },
+
+        setFilter(text) {
+            this.filter = text;
         }
     }
 });
