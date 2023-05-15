@@ -125,7 +125,7 @@ class Entity {
     }
 
     populateMetalists(metalists) {
-        this.metalists = {};
+        this.metalists = this.metalists || {};
         for (let groupName in metalists) {
             const group = metalists[groupName];
             this.metalists[groupName] = group.map((data) => new EntityMetalist(this, groupName, data));
