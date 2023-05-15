@@ -6,7 +6,7 @@ $this->import('popover');
 <div class="mc-multiselect">
     <popover :openside="openside" :title="title">
         <template #button="popover">
-            <slot :popover="popover"></slot>
+            <slot :popover="popover" :setFilter="setFilter"></slot>
         </template>
         <template #default="{close}">
             <div class="mc-multiselect__content">
