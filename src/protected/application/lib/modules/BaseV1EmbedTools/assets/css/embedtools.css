@@ -301,14 +301,23 @@ textarea {
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section {
-    background-color: #E5E5E5 !important;
-    padding: 0 0 32px !important;
+    background-color: #F5F5F5 !important;
+    padding: 40px 0 24px!important;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item:first-child .title_section {
+    padding: 0 0 24px!important;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section br {
+    display: none;
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .label {
     font-weight: 700;
     font-size: 32px;
     line-height: 44px;
+    margin: 0;
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .attachment-description {
