@@ -80,6 +80,38 @@ $this->breadcrumb = [
             </mapas-card>
             <mapas-card>
                 <template #title>
+                    <label><?php i::_e("Acessibilidade"); ?></label>
+                </template>
+                <template #content>
+                    <entity-field :entity="entity" classes="col-12" prop="acessibilidade"></entity-field>
+                </template>
+            </mapas-card>
+            <mapas-card>
+                <template #title>
+                    <label><?php i::_e("Acessibilidade física"); ?></label>
+                </template>
+                <template #content>
+                    <entity-field :entity="entity" classes="col-12" type="multiselect" prop="acessibilidade_fisica"></entity-field>
+                </template>
+            </mapas-card>
+            <mapas-card>
+                <template #title>
+                    <label><?php i::_e("Capacidade"); ?></label>
+                </template>
+                <template #content>
+                    <entity-field :entity="entity" classes="col-12" prop="capacidade"></entity-field>
+                </template>
+            </mapas-card>
+            <mapas-card>
+                <template #title>
+                    <label><?php i::_e("Horário e funcionamento"); ?></label>
+                </template>
+                <template #content>
+                    <entity-field :entity="entity" classes="col-12" prop="horario"></entity-field>
+                </template>
+            </mapas-card>
+            <mapas-card>
+                <template #title>
                     <label><?php i::_e("Informações sobre o espaço"); ?></label>
                 </template>
                 <template #content>
