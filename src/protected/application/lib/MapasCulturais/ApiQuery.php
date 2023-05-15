@@ -2509,7 +2509,7 @@ class ApiQuery {
                 $values = $this->addMultipleParams($values);
 
                 if (count($values) < 1) {
-                    throw new Exceptions\Api\InvalidArgument('expression IN expects at last one value');
+                    $values = [-999999];
                 }
 
                 $dql = $not ? "$key NOT IN (" : "$key IN (";
