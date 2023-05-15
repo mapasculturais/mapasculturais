@@ -24,12 +24,19 @@ $this->import('mapas-container mc-tag-list entity-location');
 
     <div v-if="entity.capacidade || entity.telefonePublico" class="space-info__infos col-12">
         <span class="space-info--label"><?php i::_e("Informações adicionais"); ?></span>
-        <div v-if="entity.capacidade" class="space-info__infos--audio">
-            <span><?php i::_e("Capacidade do espaço:"); ?></span> {{entity.capacidade}}
+
+        <div v-if="entity.capacidade" class="space-info__infos--capacidade">
+            <?php i::_e("Capacidade do espaço:"); ?> <span>{{entity.capacidade}}</span>
         </div>
-        <div v-if="entity.telefonePublico" class="space-info__infos--libras">
-            <span><?php i::_e("Telefone:"); ?></span> {{entity.telefonePublico}}
+
+        <div v-if="entity.telefonePublico" class="space-info__infos--telefone">
+            <?php i::_e("Telefone:"); ?> <span>{{entity.telefonePublico}}</span>
         </div>
+
+        <div v-if="entity.emailPublico" class="space-info__infos--email">
+            <?php i::_e("Email:"); ?> <span>{{entity.emailPublico}}</span>
+        </div>
+
     </div>
 
     
