@@ -12,7 +12,7 @@ use MapasCulturais\i;
                 {{metalist.title}}
             </a>            
             <div v-if="editable" class="edit">
-                <popover openside="down-right" title="<?php i::esc_attr_e('Editar link')?>">
+                <popover openside="down-right" title="<?php i::_e('Editar link')?>">
                     <template #button="popover">
                         <a @click="metalist.newData = {...metalist}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
