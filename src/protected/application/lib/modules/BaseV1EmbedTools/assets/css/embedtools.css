@@ -24,6 +24,7 @@ body {
     position: relative !important;
     margin: 15px auto !important;
     width: calc(95% - 21px) !important;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3) !important;
 }
 
 .edit-box .mc-arrow {
@@ -349,10 +350,14 @@ textarea {
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn,
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .submit-attach-opportunity {  
     background-color: #FFFFFF;
-    border: 0.125rem solid #0074C1;
-    color: #0074C1;
+    border: 0.125rem solid #0074C1 !important;
+    color: #0074C1 !important;
     display: inline-flex;
     position: relative;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .edit-box form .alert {
+    display: none !important;
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn::before {
