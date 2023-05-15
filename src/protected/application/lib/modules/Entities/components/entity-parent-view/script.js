@@ -13,11 +13,16 @@ app.component('entity-parent-view', {
 
     computed: {
         parent() {
+            console.log(this.entity)
             return this.entity.parent || null
         }
     },
     
     props: {
+        label: {
+            type: String,
+            default: __('vinculado a ','entity-parent-edit'),
+        },
         entity: {
             type: Entity,
             required: true
