@@ -17,8 +17,10 @@ $this->import('search-filter');
         <div class="field">
             <label> <?php i::_e('Tipos de projetos') ?></label>
 
-            <mc-multiselect :model="pseudoQuery['type']" :items="types" #default="{popover}" hide-filter hide-button>
-                <input class="mc-multiselect--input" v-model="pseudoQuery['type'].filter" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>">
+            <mc-multiselect :model="pseudoQuery['type']" :items="types" hide-filter hide-button>
+                <template #default="{popover, setFilter}">
+                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>">
+                </template>
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" classes="project__background project__color"></mc-tag-list>
         </div>

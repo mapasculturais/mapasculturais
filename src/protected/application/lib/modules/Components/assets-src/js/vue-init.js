@@ -47,13 +47,4 @@ globalThis.$TAXONOMIES = $MAPAS.Taxonomies ?? {}
 
 document.addEventListener('DOMContentLoaded', () => {
     app.mount('#main-app');
-    
-    let opacity = 0.01;
-    globalThis.opacityInterval = setInterval(() => {
-        if(opacity >= 1) {
-            clearInterval(globalThis.opacityInterval);
-        }
-        document.body.style.opacity = opacity;
-        opacity += 0.02;
-    },5);
 })

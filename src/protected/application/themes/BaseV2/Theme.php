@@ -25,6 +25,23 @@ class Theme extends \MapasCulturais\Theme
         $this->bodyClasses[] = 'base-v2';
         $this->enqueueStyle('app-v2', 'main', 'css/theme-BaseV2.css');
         $this->assetManager->publishFolder('fonts');
+
+        $app->hook('template(<<*>>.head):end', function () {
+            echo "
+        <script>
+        document.addEventListener('DOMContentLoaded', (e) => {
+            let opacity = 0.01;
+            globalThis.opacityInterval = setInterval(() => {
+                if(opacity >= 1) {
+                    clearInterval(globalThis.opacityInterval);
+                }
+                document.body.style.opacity = opacity;
+                opacity += 0.02;
+            },5);
+        });
+        </script>
+";
+        });
     }
 
     function register()
