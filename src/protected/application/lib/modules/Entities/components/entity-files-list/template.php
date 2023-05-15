@@ -49,7 +49,7 @@ $this->import('confirm-button popover modal image-uploader');
         </li>
     </ul>
 
-    <popover v-if="editable" openside="down-right">
+    <popover v-if="editable" title="<?php i::_e('Adicionar arquivo')?>" openside="down-right">
         <template #button="popover">
             <slot name="button"> 
                 <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline button-up">

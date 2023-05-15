@@ -15,7 +15,7 @@ use MapasCulturais\i;
                 <p @click="openVideo(index); open()" class="entity-gallery__list--video-label"> {{metalist.title}} </p>
             </div>
             <div v-if="editable" class="entity-gallery__list--video-actions">                
-                <popover openside="down-right">
+                <popover  openside="down-right">
                     <template #button="popover">
                         <a @click="metalist.newData = {...metalist}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
@@ -45,8 +45,8 @@ use MapasCulturais\i;
             </div>
         </div>
     </div>
-    <div v-if="editable" class="entity-gallery__addNew">
-        <popover v-if="editable" openside="right-up">
+    <div v-if="editable" title="<?php i::_e('Adicionar Vídeo')?>" class="entity-gallery__addNew">
+        <popover v-if="editable" title="<?php i::_e('Adicionar Vídeo')?>" openside="right-up">
             <template #button="popover">
                 <slot name="button"> 
                     <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline">
