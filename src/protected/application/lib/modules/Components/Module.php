@@ -59,7 +59,7 @@ class Module extends \MapasCulturais\Module {
                     $role_name = $role->name;
                     $role_definition = $app->getRoleDefinition($role_name);
 
-                    if(!$role_definition->subsiteContext || $role->subsiteId == $subsite_id) {
+                    if(!($role_definition->subsiteContext ?? false) || $role->subsiteId == $subsite_id) {
                         $roles[] = $role->name;
                     }
                 }
