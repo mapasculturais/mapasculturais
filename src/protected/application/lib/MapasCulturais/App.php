@@ -2577,7 +2577,7 @@ class App extends \Slim\Slim{
         if(is_object($entity))
             $entity = $entity->getClassName();
 
-        return @$this->_register['entity_types'][$entity];
+        return $this->_register['entity_types'][$entity] ?? [];
     }
 
     function registerRegistrationFieldType(Definitions\RegistrationFieldType $registration_field){
