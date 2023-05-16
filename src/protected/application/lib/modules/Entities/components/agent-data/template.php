@@ -61,7 +61,7 @@ mapas-card
             </div>
         </div>
     </div>
-    <div v-if="entity.currentUserPermissions.viewPrivateData" class="agent-data__secondTitle">
+    <div v-if="entity.currentUserPermissions.viewPrivateData && verifyEntity()" class="agent-data__secondTitle">
 
         <h4 class="title">{{secondTitle}}</h4>
     </div>
@@ -70,7 +70,7 @@ mapas-card
         <div class=" agent-data__fields--field">
             <label class="title"><?php i::_e("Data de Nascimento") ?></label>
             <div class="box">
-                <label class="box__content">{{entity.dataDeNascimento}}</label>
+                <label class="box__content">{{createDate(entity.dataDeNascimento)}}</label>
             </div>
         </div>
         <div class=" agent-data__fields--field">
@@ -110,15 +110,15 @@ mapas-card
             </div>
         </div>
         <div class=" agent-data__fields--field">
-            <label class="title"><?php i::_e("Outras Comunidades Tradicionais") ?></label>
-            <div class="box">
-                <label class="box__content">{{entity.comunidadesTradicionalOutros}}</label>
-            </div>
-        </div>
-        <div class=" agent-data__fields--field">
             <label class="title"><?php i::_e("Comunidades Tradicionais") ?></label>
             <div class="box">
                 <label class="box__content">{{entity.comunidadesTradicional}}</label>
+            </div>
+        </div>
+        <div class=" agent-data__fields--field">
+            <label class="title"><?php i::_e("Outras Comunidades Tradicionais") ?></label>
+            <div class="box">
+                <label class="box__content">{{entity.comunidadesTradicionalOutros}}</label>
             </div>
         </div>
         <div class=" agent-data__fields--field">
