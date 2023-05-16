@@ -6,6 +6,7 @@ $this->addOpportunityPhasesToJs();
 $this->useOpportunityAPI();
 
 $this->import('
+    complaint-suggestion
     entity-actions
     entity-files-list
     entity-gallery
@@ -80,6 +81,11 @@ $this->breadcrumb = [
                         <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
                         <share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
                     </div>  
+                </aside>
+                <aside>
+                    <div class="grid-12">
+                        <complaint-suggestion :entity="entity"></complaint-suggestion>
+                    </div>
                 </aside>
             </mapas-container>
         </tab>
