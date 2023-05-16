@@ -18,7 +18,6 @@ $this->import('
     entity-related-agents
     entity-seals
     entity-social-media
-    entity-parent-view
     entity-terms
     link-project
     mapas-breadcrumb
@@ -36,7 +35,18 @@ $this->breadcrumb = [
 
 <div class="main-app">
     <mapas-breadcrumb></mapas-breadcrumb>
-    <entity-header :entity="entity"></entity-header>
+    <entity-header :entity="entity">
+        <template #metadata>
+            <dl>
+                <dt><?= i::__('Tipo') ?></dt>
+                <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
+            </dl>
+            <dl v-if="entity.parent">
+                <dt><?= i::__('Projeto integrante de') ?></dt>
+                <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.parent.name}} </dd>
+            </dl>
+        </template>
+    </entity-header>
     <tabs class="tabs">
         <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
@@ -64,9 +74,6 @@ $this->breadcrumb = [
                         </div>
                     </main>
                     <aside>
-                        <div>
-                            <entity-parent-view :entity="entity" label="<?php i::esc_attr_e('Supra projeto: '); ?>"></entity-parent-view>
-                        </div>
                         <div class="grid-12">
                             <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
                             <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>

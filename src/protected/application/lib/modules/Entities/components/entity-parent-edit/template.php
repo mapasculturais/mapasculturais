@@ -22,7 +22,7 @@ select-entity
         </div>
     </a>
     <div class="entity-parent-edit__edit">
-        <select-entity :type="type" @select="changeParent($event)" :query="{id: `!EQ(${entity.id})`}" openside="right-down">
+        <select-entity :type="type" @select="changeParent($event)" :query="query" openside="right-down">
             <template #button="{ toggle }">
                 <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()">
                     <mc-icon name="exchange"></mc-icon>
@@ -34,7 +34,7 @@ select-entity
     </div>
 </div>
 <div v-if="!parent" class="col-12 entity-parent-edit__edit">
-    <select-entity :type="type" @select="changeParent($event)" :query="{id: `!EQ(${entity.id})`}" openside="right-down">
+    <select-entity :type="type" @select="changeParent($event)" :query="query" openside="right-down">
         <template #button="{ toggle }">
             <h4 class="title"><?php i::_e("{{label}}")?></h4>
             <span v-if="type == 'space'" class="text"><?php i::_e("Selecione um espaço para que o seu espaço atual seja vinculado como integrante") ?></span>
