@@ -45,7 +45,6 @@ app.component('agent-data', {
             else {
                 return false;
             }
-
         },
         createDate(dataDeNascimento) {
             const data = new Date(dataDeNascimento._date);
