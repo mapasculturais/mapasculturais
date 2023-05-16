@@ -6,7 +6,7 @@
     flex-direction: column;
 
     &__title, &__secondTitle {
-        margin: 0 0 size(16) 0
+        margin: size(16) 0 size(16) 0
     }
 
     &__fields {
@@ -37,10 +37,10 @@
             }
 
             .box {
-              
+                margin-top: size(8);
                 max-width: size(300);
                 width: 100%;
-                height: size(49);
+                min-height: size(49);
                 background: var(--mc-gray-300);
                 border-radius: size(4);
                 padding: size(16);
