@@ -22,6 +22,7 @@ $this->import('
     link-project
     mapas-breadcrumb
     mapas-container
+    mc-link
     share-links
     tabs
 ');
@@ -43,7 +44,7 @@ $this->breadcrumb = [
             </dl>
             <dl v-if="entity.parent">
                 <dt><?= i::__('Projeto integrante de') ?></dt>
-                <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.parent.name}} </dd>
+                <mc-link :entity="entity.parent"></mc-link>
             </dl>
         </template>
     </entity-header>
