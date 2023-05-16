@@ -8,7 +8,10 @@ app.component('entity-parent-edit', {
     },
 
     data() {
-        return {  }
+        const query = {
+            id: `!EQ(${this.entity.id})`
+        }
+        return { query }
     },
 
     computed: {
