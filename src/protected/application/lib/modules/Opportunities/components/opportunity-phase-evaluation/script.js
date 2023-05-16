@@ -10,16 +10,16 @@ app.component('opportunity-phase-evaluation', {
     data() {
         const api = new API("evaluationmethodconfiguration");
 
-        evaluationTypes = $DESCRIPTIONS.evaluationmethodconfiguration.type.options;
-
-        let listPhases = $MAPAS.evaluationPhases.map(function(item){
+        let evaluationTypes = $DESCRIPTIONS.evaluationmethodconfiguration.type.options;
+        let phases = [];
+        listPhases = $MAPAS.evaluationPhases?.map(function(item){
             let eval = api.getEntityInstance(item.id);
             return eval
         });
 
         return {
             evaluationTypes,
-            phases: listPhases
+            phases: listPhases || []
         }
     },
     methods: {
