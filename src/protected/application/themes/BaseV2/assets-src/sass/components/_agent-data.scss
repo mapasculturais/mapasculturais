@@ -5,6 +5,10 @@
     display: flex;
     flex-direction: column;
 
+    &__title, &__secondTitle {
+        margin: 0 0 size(16) 0
+    }
+
     &__fields {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -15,7 +19,7 @@
         }
 
         &--field {
-            padding-top: size(16);
+            margin-bottom: size(16);
 
             label {
                 font-family: 'Open Sans';
@@ -33,7 +37,7 @@
             }
 
             .box {
-                margin-top: size(8);
+              
                 max-width: size(300);
                 width: 100%;
                 height: size(49);
