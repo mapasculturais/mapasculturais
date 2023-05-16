@@ -37,10 +37,6 @@ app.component('agent-data', {
                 return false;
             }
         },
-        createDate(dataDeNascimento) {
-            const data = new Date(dataDeNascimento._date);
-            const dataFormatada = `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`;
-            return dataFormatada;
-        },
+        
     },
 });
