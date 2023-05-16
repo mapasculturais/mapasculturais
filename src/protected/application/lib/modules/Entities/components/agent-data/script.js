@@ -26,15 +26,6 @@ app.component('agent-data', {
             default: __('Dados Pessoais Sensíveis', 'agent-data')
         },
     },
-
-    data() {
-        return {
-        }
-    },
-
-    mounted() {
-
-    },
     methods: {
         verifyEntity() {
             if (this.entity.dataDeNascimento != null || this.entity.genero?.length > 0 || this.entity.orientacaoSexual?.length > 0 ||
@@ -52,10 +43,4 @@ app.component('agent-data', {
             return dataFormatada;
         },
     },
-    computed: {
-
-    },
-
-
-
 });
