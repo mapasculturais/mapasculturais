@@ -18,7 +18,6 @@ $this->import('
     entity-related-agents
     entity-seals
     entity-social-media
-    entity-parent-view
     entity-terms
     link-project
     mapas-breadcrumb
@@ -64,9 +63,6 @@ $this->breadcrumb = [
                         </div>
                     </main>
                     <aside>
-                        <div>
-                            <entity-parent-view :entity="entity" label="<?php i::esc_attr_e('Supra projeto: '); ?>"></entity-parent-view>
-                        </div>
                         <div class="grid-12">
                             <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
                             <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
