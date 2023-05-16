@@ -24,24 +24,26 @@ app.component('agent-data', {
         secondTitle: {
             type: String,
             default: __('Dados Pessoais Sensíveis', 'agent-data')
-        }
+        },
     },
-
-    data() {
-        return {
-
-        }
-    },
-
-    mounted() {
-
-    },
-
-    computed: {
-
-    },
-
     methods: {
-    }
+        verifyEntity() {
+            let empty = true;
+            for (let fieldName of $MAPAS.config['agent-data']) {
+                let field = this.entity[fieldName]
+                if (field !== undefined && field !== null) {
+                    if (field instanceof Array) {
+                        if (field.length) {
+                            empty = false;
+                        }
+                    }
+                    else {
+                        empty = false;
+                    }
+                }
+            }
+            return !empty;
+        },
 
+    },
 });
