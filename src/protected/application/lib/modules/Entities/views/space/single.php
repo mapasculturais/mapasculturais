@@ -16,6 +16,7 @@ $this->import('
     entity-owner
     entity-related-agents
     entity-seals
+    entity-parent-view
     entity-social-media
     entity-terms
     mapas-breadcrumb
@@ -78,6 +79,9 @@ $this->breadcrumb = [
                             <entity-related-agents :entity="entity" classes="col-12" title="<?= i::_e('Agentes Relacionados'); ?>"></entity-related-agents>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
                             <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?= i::_e('Veja este link:'); ?>"></share-links>                            
+                        </div>
+                        <div>
+                            <entity-parent-view :entity="entity" label="<?php i::esc_attr_e('Supra espaço: ');?>"></entity-parent-view>
                         </div>
                     </aside>
                     <aside>
