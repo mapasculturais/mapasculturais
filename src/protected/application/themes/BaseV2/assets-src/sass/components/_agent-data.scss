@@ -1,15 +1,22 @@
 @use '../settings/mixins' as *;
 
 .agent-data {
-    max-width: size(860);
-    
+    // max-width: size(860);
+    display: flex;
+    flex-direction: column;
+
     &__fields {
-        @media (max-width:size(1022)) {
-            display: flex;
-            flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        @media (max-width:size(1043)) {
+            display: grid;
+            grid-template-columns: 1fr;
         }
 
         &--field {
+            padding-top: size(16);
+
             label {
                 font-family: 'Open Sans';
                 font-style: normal;
