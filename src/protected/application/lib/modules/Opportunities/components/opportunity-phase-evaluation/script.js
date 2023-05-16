@@ -22,10 +22,4 @@ app.component('opportunity-phase-evaluation', {
             phases: listPhases || []
         }
     },
-    methods: {
-        dateFormat(value) {
-            const dateObj = new Date(value._date);
-            return dateObj.toLocaleDateString("pt-BR");
-        },
-    },
 });
