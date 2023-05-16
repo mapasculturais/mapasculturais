@@ -28,15 +28,22 @@ app.component('agent-data', {
     },
     methods: {
         verifyEntity() {
-            if (this.entity.dataDeNascimento != null || this.entity.genero?.length > 0 || this.entity.orientacaoSexual?.length > 0 ||
-                this.entity.agenteItinerante?.length > 0 || this.entity.raca?.length > 0 || this.entity.escolaridade?.length > 0 ||
-                this.entity.pessoaDeficiente?.length > 0 || this.entity.comunidadesTradicional?.length > 0 || this.entity.comunidadesTradicionalOutros?.length > 0) {
-                return true;
+            let empty = true;
+            for (let fieldName of $MAPAS.config['agent-data']) {
+                let field = this.entity[fieldName]
+                if (field !== undefined && field !== null) {
+                    if (field instanceof Array) {
+                        if (field.length) {
+                            empty = false;
+                        }
+                    }
+                    else {
+                        empty = false;
+                    }
+                }
             }
-            else {
-                return false;
-            }
+            return !empty;
         },
-        
+
     },
 });
