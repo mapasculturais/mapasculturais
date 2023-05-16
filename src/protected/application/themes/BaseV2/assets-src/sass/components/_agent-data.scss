@@ -5,8 +5,14 @@
     display: flex;
     flex-direction: column;
 
-    &__title, &__secondTitle {
-        margin: size(16) 0 size(16) 0
+    &__title,
+    &__secondTitle {
+        margin: size(16) 0 size(16) 0;
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 25px;
     }
 
     &__fields {
@@ -41,7 +47,7 @@
                 max-width: size(300);
                 width: 100%;
                 min-height: size(49);
-                background: var(--mc-gray-300);
+                background: var(--mc-gray-100);
                 border-radius: size(4);
                 padding: size(16);
             }
