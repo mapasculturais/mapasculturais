@@ -101,7 +101,7 @@ $this->import('
                                 :enableTimePicker='false' 
                                 :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
                                 v-model="startsOn"
-                                text-input autoApply>
+                                text-input autoApply :teleport="true">
                                 <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
                                     <input type="text" data-maska="##/##/####" :value="value" maxlength="10" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
                                 </template>
@@ -124,7 +124,7 @@ $this->import('
                                 v-model="dateRange" 
                                 :enableTimePicker='false' 
                                 :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
-                                range multiCalendars multiCalendarsSolo autoApply text-input utc>
+                                range multiCalendars multiCalendarsSolo autoApply text-input utc :teleport="true">
                                 <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
                                     <input type="text" data-maska="##/##/#### - ##/##/####" :value="value" maxlength="23" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
                                 </template>
@@ -149,7 +149,7 @@ $this->import('
                         <div class="create-occurrence__section--field field">
                             <span class="label"><?= i::_e('Horário inicial:') ?></span>
 
-                            <datepicker v-model="startsAt" text-input timePicker autoApply>
+                            <datepicker v-model="startsAt" text-input timePicker autoApply :teleport="true">
                                 <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
                                     <input type="text" data-maska="##:##" :value="value" maxlength="5" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
                                 </template>
@@ -165,7 +165,7 @@ $this->import('
                         <div class="create-occurrence__section--field field">
                             <span class="label"><?= i::_e('Horário final:') ?></span>
 
-                            <datepicker v-model="endsAt" text-input timePicker autoApply>
+                            <datepicker v-model="endsAt" text-input timePicker autoApply :teleport="true">
                                 <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
                                     <input type="text" data-maska="##:##" :value="value" maxlength="5" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
                                 </template>
