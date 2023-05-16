@@ -177,12 +177,12 @@ class Entity {
                 }
             }
             
-            if (prop == 'type' && typeof val == 'object') {
-                val = val.id;
-            }
-
-            if (typeof val == 'object') {
-                result[prop] = Object.assign({}, val);
+            if (val && (typeof val == 'object')) {
+                if (prop == 'type') {
+                    val = val.id;
+                } else {
+                    result[prop] = Object.assign({}, val);
+                }
             } else {
                 result[prop] = val;
             }
