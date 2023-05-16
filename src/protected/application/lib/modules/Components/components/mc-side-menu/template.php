@@ -62,7 +62,7 @@ $this->import('mc-icon');
                             <div class="card-content__middle">
                                 <label class="subscribe"><?= i::__('Data da inscrição') ?></label>
                                 <span class="value">
-                                    <strong>{{dateFormat(entity.createTimestamp)}}</strong>
+                                    <strong>{{entity.createTimestamp.date('numeric year')}}</strong>
                                 </span>
                             </div>
                         </div>
