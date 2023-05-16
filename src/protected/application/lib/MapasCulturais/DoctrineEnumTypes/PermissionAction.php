@@ -50,6 +50,7 @@ class PermissionAction extends DoctrineEnumType
             'send' => 'send',
             'sendUserEvaluations' => 'sendUserEvaluations',
             'unpublish' => 'unpublish',
+            'unarchive' => 'unarchive',
             'view' => 'view',
             'viewConsolidatedResult' => 'viewConsolidatedResult',
             'viewEvaluations' => 'viewEvaluations',
