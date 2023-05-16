@@ -33,10 +33,6 @@ app.component('entity-parent-edit', {
             type: String,
             required: true
         },
-        editable: {
-            type: Boolean,
-            default: false
-        },
         classes: {
             type: [String, Array, Object],
             required: false
