@@ -26,7 +26,7 @@ importers:
       '@mapas/scripts': workspace:0.0.0
       '@types/leaflet': ^1.7.11
       '@vue-leaflet/vue-leaflet': ^0.6.1
-      '@vuepic/vue-datepicker': ^3.4.8
+      '@vuepic/vue-datepicker': ^4.2.3
       date-fns: ^2.29.3
       floating-vue: ^2.0.0-beta.20
       leaflet: 1.7.1
@@ -36,12 +36,13 @@ importers:
       vue: ^3.2.39
       vue-advanced-cropper: ^2.8.3
       vue-final-modal: ^3.4.4
+      vue-recaptcha: ^2.0.3
       vue3-carousel: ^0.1.46
     dependencies:
       '@iconify/vue': 3.2.1_vue@3.2.39
       '@types/leaflet': 1.7.11
       '@vue-leaflet/vue-leaflet': 0.6.1_a37kjaiwtiywsr24daajcbt64m
-      '@vuepic/vue-datepicker': 3.4.8_vue@3.2.39
+      '@vuepic/vue-datepicker': 4.2.3_vue@3.2.39
       date-fns: 2.29.3
       floating-vue: 2.0.0-beta.20_vue@3.2.39
       leaflet: 1.7.1
@@ -51,6 +52,7 @@ importers:
       vue: 3.2.39
       vue-advanced-cropper: 2.8.3_vue@3.2.39
       vue-final-modal: 3.4.4
+      vue-recaptcha: 2.0.3_vue@3.2.39
       vue3-carousel: 0.1.46_vue@3.2.39
     devDependencies:
       '@mapas/scripts': link:../../../../node_scripts
@@ -1643,13 +1645,14 @@ packages:
     resolution: {integrity: sha512-D3dl2ZB9qE6mTuWPk9RlhDeP1dgNRUKC3NJxji74A4yL8M2MwlhLKUC/49WHjrNzSPug58fWx/yFbaTzGAQSBw==}
     dev: false
 
-  /@vuepic/vue-datepicker/3.4.8_vue@3.2.39:
-    resolution: {integrity: sha512-nbuMA7IgjtT99LqcjSTSUcl7omTZSB+7vYSWQ9gQm31Frm/1wn54fT1Q0HaRD9nHXX982AACbqeND4K80SKONw==}
+  /@vuepic/vue-datepicker/4.2.3_vue@3.2.39:
+    resolution: {integrity: sha512-ppfLKOL44X4hOHQA3RGuVmbPLvE+g5pVOmBtNRsxnlTdyq30O5b8B4cdvmCavBp56A6vMLN70YTA+ERu+owW/w==}
     engines: {node: '>=14'}
     peerDependencies:
       vue: '>=3.2.0'
     dependencies:
       date-fns: 2.29.3
+      date-fns-tz: 1.3.8_date-fns@2.29.3
       vue: 3.2.39
     dev: false
 
@@ -2640,6 +2643,14 @@ packages:
 
   /csstype/2.6.20:
     resolution: {integrity: sha512-/WwNkdXfckNgw6S5R125rrW8ez139lBHWouiBvX8dfMFtcn6V81REDqnH7+CRpRipfYlyU1CmOnOxrmGcFOjeA==}
+    dev: false
+
+  /date-fns-tz/1.3.8_date-fns@2.29.3:
+    resolution: {integrity: sha512-qwNXUFtMHTTU6CFSFjoJ80W8Fzzp24LntbjFFBgL/faqds4e5mo9mftoRLgr3Vi1trISsg4awSpYVsOQCRnapQ==}
+    peerDependencies:
+      date-fns: '>=2.0.0'
+    dependencies:
+      date-fns: 2.29.3
     dev: false
 
   /date-fns/2.29.3:
@@ -5554,6 +5565,19 @@ packages:
 
   /vue-final-modal/3.4.4:
     resolution: {integrity: sha512-4nOLU+cMcUqAT0kg+64+Hi96kkQPOph2LOJa7Fl58BXlTyhfRxaMuz3M91wi2ooMIL4poWA8428P5GIAXSpuZg==}
+    dev: false
+
+  /vue-recaptcha/2.0.3_vue@3.2.39:
+    resolution: {integrity: sha512-Rz0kLIETUgmOrp7CxFvaFE65DkhKdWu4pteWOTt2i+yTajTHPqtyOW6DqTg0BvALWTm+WUvWVV7k5XXFijQnBw==}
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-beta.1
+      vue: ^2.0.0 || ^3.0.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.2.39
+      vue-demi: 0.13.11_vue@3.2.39
     dev: false
 
   /vue-resize/2.0.0-alpha.1_vue@3.2.39:

@@ -2,21 +2,18 @@ app.component('confirm-before-exit', {
     template: $TEMPLATES['confirm-before-exit'],
 
     props: {
-        unsaved: {
-            type: Boolean,
+        entity: {
+            type: Entity,
             required: true
         },
     },
-    data() {
-        return {
-            triggered: false,
 
-        }
-    },
     mounted() {
+        
         window.onbeforeunload = (event) => {
-                return Boolean(this.unsaved);
+            if (Object.keys(this.entity.data(true)).length > 0) {
+                return true;
+            }
         }
     },
-    
 });
