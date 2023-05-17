@@ -78,7 +78,7 @@ $this->import('
                 </div>
             </div>
 
-            <div v-if="!showButtons()" class="helper__background">
+            <div v-if="!showButtons()" class="info-message helper">
                 <mc-icon name="exclamation"></mc-icon>
                 <?= i::__('Não se pode criar novas fases após a publicação do resultado final') ?>
             </div>
