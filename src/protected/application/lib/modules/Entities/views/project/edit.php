@@ -126,4 +126,5 @@ $this->breadcrumb = [
     </mapas-container>
     <entity-actions :entity="entity" editable></entity-actions>
 </div>
-<confirm-before-exit unsaved></confirm-before-exit>
+<confirm-before-exit :entity="entity"></confirm-before-exit>
+
