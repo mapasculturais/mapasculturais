@@ -67,14 +67,21 @@ $this->import('
         </template>
     </template>
     <template #after-li="{index, item}">
-        <div v-if="index == phases.length-2" class="add-phase grid-12">
-            <div class="add-phase__evaluation col-12">
-                <opportunity-create-evaluation-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-evaluation-phase>
+        <template v-if="index == phases.length-2">
+            <div v-if="showButtons()" class="add-phase grid-12">
+                <div class="add-phase__evaluation col-12">
+                    <opportunity-create-evaluation-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-evaluation-phase>
+                </div>
+                <p><label class="add-phase__collection"><?= i::__("ou") ?></label></p>
+                <div class="add-phase__collection col-12">
+                    <opportunity-create-data-collect-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-data-collect-phase>
+                </div>
             </div>
-            <p><label class="add-phase__collection"><?= i::__("ou") ?></label></p>
-            <div class="add-phase__collection col-12">
-                <opportunity-create-data-collect-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-data-collect-phase>
+
+            <div v-if="!showButtons()" class="helper__background">
+                <mc-icon name="exclamation"></mc-icon>
+                <?= i::__('Não se pode criar novas fases após a publicação do resultado final') ?>
             </div>
-        </div>
+        </template>
     </template>
 </mc-stepper-vertical>
