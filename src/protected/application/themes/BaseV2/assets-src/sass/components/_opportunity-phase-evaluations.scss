@@ -1,9 +1,10 @@
 @use '../settings/mixins' as *;
-
+.opportunity-container{
+    background-color: var(--mc-gray-100);
+}
 .stepper-evaluations {
     .stepper-header {
-        background-color: yellow;
-        border-radius: 4px;
+        border-radius: size(4);
         max-width: size(1170);
         width: 100%;
         display: flex;
@@ -39,13 +40,52 @@
                     flex-direction: row;
                     gap: size(40);
                     padding: size(16) 0 size(16) size(11);
+
+                    &__title {
+                        &--title {
+                            text-transform: uppercase;
+                            font-family: 'Open Sans';
+                            font-style: normal;
+                            font-weight: 400;
+                            font-size: 14px;
+                            line-height: 19px;
+                        }
+
+                        .item {
+                            font-weight: 600;
+                        }
+                    }
                 }
+
                 .period {
                     padding: 0 0 size(16) size(11);
 
+                    &--label {
+                        text-transform: uppercase;
+                        font-family: "Open Sans";
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: 14px;
+                        line-height: 19px;
+                    }
+
+                    &__content {
+                        font-weight: 600;
+                    }
                 }
             }
         }
 
+        .evaluation-button {
+            height: size(48);
+            width: size(272);
+            border-radius:size(8);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            gap: size(75);
+
+        }
     }
 }
