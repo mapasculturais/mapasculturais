@@ -7,14 +7,11 @@ app.component('confirm-before-exit', {
             required: true
         },
     },
-
     mounted() {
-        
         window.onbeforeunload = (event) => {
-            if(Object.keys(this.entity.data(true)).length > 0){
+            if (Object.keys(this.entity.data(true)).length > 0) {
                 return true;
             }
         }
     },
-
 });
