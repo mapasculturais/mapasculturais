@@ -209,6 +209,13 @@ class Module extends \MapasCulturais\Module{
         $self = $this;
         $registration_repository = $app->repo('Registration');
 
+        $app->hook('view.partial(singles/registration-edit--<<agents|categories>>).params', function(&$params, &$template) use ($app) {
+            if($this->controller->requestedEntity->opportunity->isOpportunityPhase) {
+                $template = '_empty';
+                return;
+            }
+        });
+
         $app->view->enqueueStyle('app', 'plugin-opportunity-phases', 'css/opportunity-phases.css');
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
