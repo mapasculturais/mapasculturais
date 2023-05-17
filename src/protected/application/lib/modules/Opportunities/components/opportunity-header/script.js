@@ -14,8 +14,11 @@ app.component('opportunity-header', {
     },
 
     computed: {
+        firstPhase() {
+            return this.opportunity.parent || this.opportunity;
+        },
         type() {
-            switch (this.opportunity.ownerEntity.__objectType) {
+            switch (this.firstPhase.ownerEntity.__objectType) {
                 case 'agent':
                     return this.text('Agente');
                 case 'event':
