@@ -82,7 +82,7 @@ $this->import('mc-icon');
 					<?php i::_e('Selos') ?> ({{entity.seals.length}}):
 				</label>
 				<div v-for="seal in seals" class="seals__seal" :title="seal.name">
-					<img :src="seal.files.avatar?.transformations?.avatarSmall?.url">
+					<img class="sealImage":src="seal.files.avatar?.transformations?.avatarSmall?.url">
 				</div>
 				<div v-if="seals.length == 2" class="seals__seal more">+1</div>
 			</div>
