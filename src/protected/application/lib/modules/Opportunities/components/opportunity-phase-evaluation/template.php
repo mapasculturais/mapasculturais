@@ -23,7 +23,7 @@ $this->import('mc-stepper-vertical');
                 <div>
                     <div> <?= i::__('Fase') ?>: <strong>{{item.name}}</strong></div>
                     <div> <?= i::__('Tipo') ?>: <strong>{{evaluationTypes[item.type]}}</strong></div>
-                    <div> <?= i::__('PERÍODO DE AVALIAÇÃO') ?>: <strong>{{dateFormat(item.evaluationTo)}} <?= i::__('até') ?> {{dateFormat(item.evaluationFrom)}}</strong></div>
+                    <div> <?= i::__('PERÍODO DE AVALIAÇÃO') ?>: <strong>{{item.evaluationFrom.date('numeric year')}} <?= i::__('até') ?> {{item.evaluationTo.date('numeric year')}} as {{item.evaluationFrom.time('long year')}}</strong></div>
                 </div>
             </div>
         </div>
