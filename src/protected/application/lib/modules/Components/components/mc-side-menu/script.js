@@ -114,6 +114,10 @@ app.component('mc-side-menu', {
             }
 
         },
+        dateFormat(value) {
+            const dateObj = new Date(value._date);
+            return dateObj.toLocaleDateString("pt-BR");
+        },
         emitToggle() {
             this.$emit('toggle');
         },
