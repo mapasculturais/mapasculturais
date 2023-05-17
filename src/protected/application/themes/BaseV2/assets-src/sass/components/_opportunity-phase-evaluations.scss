@@ -1,0 +1,51 @@
+@use '../settings/mixins' as *;
+
+.stepper-evaluations {
+    .stepper-header {
+        background-color: yellow;
+        border-radius: 4px;
+        max-width: size(1170);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .card-evaluation {
+            img {
+                display: none;
+            }
+
+            &__title {
+                font-family: 'Open Sans';
+                font-style: normal;
+                font-weight: 700;
+                font-size: size(24);
+                line-height: size(28);
+                padding: size(16) 0 size(8) size(24);
+
+            }
+
+            &__items {
+                border: 1px solid var(--mc-gray-100);
+                border-radius: 4px;
+                display: flex;
+                flex-direction: column;
+                max-width: size(1122);
+                margin: 0 size(24) size(16) size(24);
+
+
+                .phase {
+                    display: flex;
+                    flex-direction: row;
+                    gap: size(40);
+                    padding: size(16) 0 size(16) size(11);
+                }
+                .period {
+                    padding: 0 0 size(16) size(11);
+
+                }
+            }
+        }
+
+    }
+}

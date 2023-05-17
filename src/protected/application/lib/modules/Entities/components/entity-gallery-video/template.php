@@ -1,5 +1,9 @@
 <?php
 use MapasCulturais\i;
+
+$this->import('
+    mc-icon
+')
 ?>
 
 <?php $this->applyTemplateHook('entity-gallery-video','before'); ?>
@@ -80,7 +84,9 @@ use MapasCulturais\i;
     <div class="entity-gallery__full" v-if="entity.metalists?.videos" :class="{ 'active': galleryOpen }">
         <div @click="close" class="entity-gallery__full--overlay"> </div>
         <div class="entity-gallery__full--video">
-            <iframe v-if="actualVideo?.video?.provider == 'youtube'" :src="'https://www.youtube.com/embed/'+actualVideo.video?.videoID" height="565"></iframe>
+            <mc-icon name="loading"></mc-icon>
+            <iframe v-if="actualVideo?.video?.provider == 'youtube'" :src="'https://www.youtube.com/embed/'+actualVideo.video?.videoID" height="500"></iframe>
+            <iframe v-if="actualVideo?.video?.provider == 'vimeo'" :src="'https://player.vimeo.com/video/'+actualVideo.video?.videoID" height="500" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
             <p v-if="!actualVideo?.video?.provider == 'youtube'"> <?php i::_e("Sem vimeo por enquanto.")?> </p>
             <div class="description">{{actualVideo?.title}}</div>
             <div @click="prev" class="btnPrev"> <mc-icon name="previous"></mc-icon> </div>

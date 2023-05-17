@@ -14,21 +14,21 @@ use MapasCulturais\i;
     <div class="opportunity-header__content">
         <div class="left">
             <div class="image">
-                <img v-if="opportunity?.files?.avatar" :src="opportunity.files?.avatar?.transformations?.avatarMedium?.url" />
-                <mc-icon v-if="!opportunity?.files?.avatar" name="image"></mc-icon>
+                <img v-if="firstPhase.files?.avatar" :src="firstPhase.files?.avatar?.transformations    ?.avatarMedium?.url" />
+                <mc-icon v-if="!firstPhase.files?.avatar" name="image"></mc-icon>
             </div>
             <div class="title">
                 <span class="title__title">
-                    <a :href="opportunity.getUrl('single')">{{opportunity?.name}}</a>
+                    <a :href="firstPhase.getUrl('single')">{{firstPhase.name}}</a>
                 </span>
                 <div class="title__info">
                     <div class="data">
                         <div class="data__title"> <?= i::__('Tipo')?>: </div>
-                        <div class="data__info opportunity__color"> {{opportunity?.type?.name}} </div>
+                        <div class="data__info opportunity__color"> {{firstPhase.type?.name}} </div>
                     </div>
-                    <div v-if="opportunity.ownerEntity?.name" class="data">
+                    <div v-if="firstPhase.ownerEntity?.name" class="data">
                         <div class="data__title"> {{type}}: </div>
-                        <div class="data__info"> <mc-link :entity="opportunity?.ownerEntity"></mc-link> <!-- {{opportunity?.ownerEntity?.name}} --> </div>
+                        <div class="data__info"> <mc-link :entity="firstPhase.ownerEntity"></mc-link> <!-- {{firstPhase.ownerEntity?.name}} --> </div>
                     </div>
                 </div>
                 <div>

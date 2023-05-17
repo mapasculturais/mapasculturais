@@ -69,6 +69,16 @@ app.component('opportunity-phases-config', {
         getNextPhase(phase) {
             const index = this.phases.indexOf(phase);
             return this.phases[index + 1];
-        }
+        },
+
+        showButtons() {
+            const lastPhase = this.phases[this.phases.length - 1];
+
+            if(lastPhase.publishedRegistrations || (lastPhase.publishTimestamp && lastPhase.publishTimestamp.isPast())) {
+                return false;
+            } else {
+                return true;
+            }
+        },
     },
 });

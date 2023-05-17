@@ -70,7 +70,7 @@ mapas-card
         <div v-if="entity.dataDeNascimento!=null" class="agent-data__fields--field">
             <label class="title"><?php i::_e("Data de Nascimento") ?></label>
             <div class="box">
-                <label class="box__content">{{createDate(entity.dataDeNascimento)}}</label>
+                <label class="box__content">{{entity.dataDeNascimento.date('long year')}}</label>
             </div>
         </div>
         <div v-if="entity.genero?.lenght>0" class="agent-data__fields--field">
