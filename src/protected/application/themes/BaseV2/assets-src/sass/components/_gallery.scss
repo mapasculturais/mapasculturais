@@ -48,10 +48,6 @@ body.galleryOpen {
                 justify-content: center;
                 overflow: hidden;
                 width: size(139);
-
-                img {
-                    width: 100%;
-                }
             }
 
             &-label {
@@ -183,6 +179,17 @@ body.galleryOpen {
                 }
             }
 
+            @media (max-width: size(500)) {
+                .btnPrev,
+                .btnNext {
+                    font-size: size(25);
+                    height: size(50);
+                    padding: size(16);
+                    width: size(50);
+                    opacity: .7;
+                }
+            }
+
             .btnPrev {
                 position: absolute;
                 left: 0;
@@ -220,9 +227,23 @@ body.galleryOpen {
 
         &--video {
             z-index: 2;
+            border-radius: 50%;
+
+            .iconify {
+                font-size: size(50);
+            }
 
             iframe {
                 aspect-ratio: 16/9;
+                border: none;
+                bottom: 0;
+                height: auto;
+                left: 0;
+                margin: auto;
+                max-width: 800px;
+                position: absolute;
+                right: 0;
+                top: 0;
                 width: 100%;
             }
         }
