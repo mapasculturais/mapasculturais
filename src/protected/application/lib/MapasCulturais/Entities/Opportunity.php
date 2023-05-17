@@ -692,13 +692,11 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $app->disableAccessControl();
         
         foreach($evaluations as $evaluation){
-            $evaluation->status = RegistrationEvaluation::STATUS_SENT;
-            $evaluation->save(true);
+            if($evaluation->status == 1) {
+                $evaluation->status = RegistrationEvaluation::STATUS_SENT;
+                $evaluation->save(true);
+            }
         }
-
-        $relation = $this->evaluationMethodConfiguration->getUserRelation($user);
-        $relation->status = EvaluationMethodConfigurationAgentRelation::STATUS_SENT;
-        $relation->save(true);
 
         $app->em->flush();
         
