@@ -800,7 +800,13 @@ class Opportunity extends EntityController {
             $valuer_by_id[$valuer['user']] = $valuer;
         }
 
-        $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
+        if ($opportunity->canUser('@control')) {
+            $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
+        } else if($app->auth->isUserAuthenticated()) {
+            $users = [$app->user->id];
+        } else {
+            $users = [];
+        }
 
         if(empty($users)){
             $this->apiAddHeaderMetadata($this->data, [], 0);

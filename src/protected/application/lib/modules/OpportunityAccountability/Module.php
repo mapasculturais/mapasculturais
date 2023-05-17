@@ -35,6 +35,7 @@ class Module extends \MapasCulturais\Module
 
     function _init()
     {
+        return;
         $app = App::i();
         if ($app->view->version >= 2) {
             $this->disabled = true;
@@ -788,6 +789,7 @@ class Module extends \MapasCulturais\Module
 
     function register()
     {
+        return;
         $app = App::i();
         if ($app->view->version >= 2 || $this->disabled) {
             return;
