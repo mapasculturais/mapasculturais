@@ -50,7 +50,9 @@ app.component('entity-files-list', {
 
     methods: {
         setFile() {
+            let description = this.newFile.description;
             this.newFile = this.$refs.file.files[0];
+            this.newFile.description = description;
         },
 
         upload(popover) {
