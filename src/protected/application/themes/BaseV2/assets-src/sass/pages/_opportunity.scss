@@ -253,16 +253,8 @@
       padding: size(20) size(16);
 
       .mapas-card {
-        height: 100%;
-        
         &__content {
           .request-data {
-
-            &__title {
-              font-weight: 700;
-              font-size: size(18);
-              line-height: size(25);
-            }
 
             &__subtitle {
               font-style: "Open Sans";
@@ -274,30 +266,21 @@
             }
 
             &__inputs {
-              padding: size(15) 0;
+              padding: size(16) 0 size(34) 0;
               display: flex;
               flex-direction: row;
               gap: size(24);
 
               .options {
-                align-items: center;
                 display: flex;
                 gap: size(8);
-                font-weight: 400;
-                font-size: size(14);
-                line-height: size(19);
 
                 input[type="radio"] {
                   width: size(16);
                   height: size(16);
                   border: size(2) var(--mc-black);
                   border-radius: size(12);
-                  margin: 0;
                 }
-              }
-
-              &.no-padding-bottom {
-                padding-bottom: 0;
               }
             }
           }
