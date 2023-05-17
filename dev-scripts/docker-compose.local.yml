@@ -35,6 +35,7 @@ services:
       # chaves de teste do google recaptcha
       - GOOGLE_RECAPTCHA_SITEKEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
       - GOOGLE_RECAPTCHA_SECRET=6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+      - REDIRECT_404_ASSETS_TO=https://mapa.iberculturaviva.org/
     depends_on:
       - db
       - redis
@@ -52,13 +53,15 @@ services:
     command: --maxmemory 256Mb --maxmemory-policy allkeys-lru  
 
   db:
-    image: mdillon/postgis:11
+    image: postgis/postgis:14-master
     environment:
       - POSTGRES_PASSWORD=mapas
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
+      
+
     ports:
       - "5470:5432"
     volumes:
-      - ../docker-data/postgres:/var/lib/postgresql/data
+      - ../docker-data/postgres-ibercultura-2023-04-16--1040:/var/lib/postgresql/data
       - ../db/dump.sql:/docker-entrypoint-initdb.d/dump.sql
