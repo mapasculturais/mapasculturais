@@ -1,6 +1,7 @@
 <?php
 namespace OpportunityPhases;
 
+use MapasCulturais\API;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\App;
 use MapasCulturais\Definitions;
@@ -1144,6 +1145,12 @@ class Module extends \MapasCulturais\Module{
                 
                 if (!$opportunity->isDataCollection) {
                     $opportunity->destroy(true);
+                }
+            });
+
+            $app->hook('ApiQuery(Registration).params', function(&$params) {
+                if(!isset($params['opportunity']) && !isset($params['previousPhaseRegistrationId'])) {
+                    $params['previousPhaseRegistrationId'] = API::NULL();
                 }
             });
         }
