@@ -2,6 +2,14 @@
 namespace MapasCulturais;
 
 class API{
+    static function NULL() {
+        return 'NULL()';
+    }
+    
+    static function NOT_NULL() {
+        return '!NULL()';
+    }
+
     static function EQ($value) {
         return "EQ($value)";
     }
