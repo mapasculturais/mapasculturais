@@ -8,9 +8,5 @@
             <?php endforeach; ?>
         </ul>
         <?php endif; ?>
-
-        <?php if($entity->id && $entity->canUser('createChild')): ?>
-        <a class="btn btn-default add" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>"><?php $this->dict('entities: Add child space') ?></a>
-        <?php endif; ?>
     </div>
 <?php endif; ?>
