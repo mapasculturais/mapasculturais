@@ -67,32 +67,36 @@ app.component('opportunity-phases-timeline', {
 		isActive(id) {
 			let item = this.getItemById(id);
 
+			if (item.isLastPhase) {
+				return !item.publishedRegistrations && item.publishTimestamp?.isPast();
+			}
+
 			if (item.registrationFrom && item.registrationTo) {
-				if (item.registrationFrom._date <= new Date() && item.registrationTo._date >= new Date()) {
-					return true;
-				}
+				return item.registrationFrom.isPast() && item.registrationTo.isFuture();
 			}
+
 			if (item.evaluationFrom && item.evaluationTo) {
-				if (item.evaluationFrom._date <= new Date() && item.evaluationTo._date >= new Date()) {
-					return true;
-				}
+				return item.evaluationFrom.isPast() && item.evaluationTo.isFuture();
 			}
+
 			return false;
 		},
 
 		itHappened(id) {
 			let item = this.getItemById(id);
+			
+			if (item.isLastPhase) {
+				return item.publishedRegistrations;
+			}
 
-			if (item.registrationTo) {
-				if (item.registrationTo._date < new Date()) {
-					return true;
-				}
+			if (item.__objectType == 'opportunity') {
+				return item.registrationTo?.isPast();
 			}
-			if (item.evaluationTo) {
-				if (item.evaluationTo._date < new Date()) {
-					return true;
-				}
+			
+			if (item.__objectType == 'evaluationmethodconfiguration') {
+				return item.evaluationTo?.isPast();
 			}
+			
 			return false;
 		},
 
