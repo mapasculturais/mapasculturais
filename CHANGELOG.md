@@ -3,6 +3,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.6.16] - 2023-05-17
+### Correções
+- Corrige formulário de inscrição das fases, ocultando a seleção das categorias e dos agentes relacionados
+
+### Melhorias
+- Atualiza o Node.js para a versão 14
+- Reestruturação dos arquivos Dockerfile para o processo de build aproveitar melhor os caches
+
 ## [5.6.15] - 2023-05-12
 ### Correções
 - Corrige módulo de deníncia e contato para usar o nome do dono da entidade ao invez do usuário logado
