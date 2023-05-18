@@ -61,19 +61,25 @@ RUN pecl install -o -f redis \
 
 # Copy source
 COPY src/index.php /var/www/html/index.php
-COPY src/protected /var/www/html/protected
-
-RUN mkdir /var/www/html/protected/vendor /var/www/.composer && \
-    chown -R www-data:www-data /var/www/html/protected/vendor /var/www/.composer
-
-RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
+COPY src/protected/composer.json /var/www/html/protected/composer.json
+COPY src/protected/composer.lock /var/www/html/protected/composer.lock
 
 WORKDIR /var/www/html/protected
 RUN composer.phar install
 
+RUN mkdir -p /var/www/html/protected/vendor /var/www/.composer && \
+    chown -R www-data:www-data /var/www/html/protected/vendor /var/www/.composer
+
+
+COPY src/protected/application/themes /var/www/html/protected/application/themes
+
 WORKDIR /var/www/html/protected/application/themes/
 
 RUN find . -maxdepth 1 -mindepth 1 -exec echo "compilando sass do tema " {} \; -exec sass {}/assets/css/sass/main.scss {}/assets/css/main.css -E "UTF-8" \;
+
+COPY src/protected /var/www/html/protected
+
+RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
 
 COPY scripts /var/www/scripts
 COPY compose/local/php.ini /usr/local/etc/php/php.ini
