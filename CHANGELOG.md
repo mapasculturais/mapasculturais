@@ -3,6 +3,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [5.6.17] - 2023-05-18
+### Correções
+- Ajusta para que em oportunidades multifases, o preview do formulario das fases posteriores exibam as categorias evitando que os campos condicionados fiquem ocultos
+
 ## [5.6.16] - 2023-05-17
 ### Correções
 - Corrige formulário de inscrição das fases, ocultando a seleção das categorias e dos agentes relacionados
