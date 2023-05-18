@@ -1,0 +1,45 @@
+@use '../settings/mixins' as *;
+
+.permission-publish {
+    &__title {}
+
+    &__label {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 19px;
+    }
+
+    .publish-fields {
+        .field-options {
+            display: flex;
+            flex-direction: column;
+            padding-top: 16px;
+            gap: 6px;
+            
+            .options {
+                display: flex;
+                flex-direction: row;
+                align-items: baseline;
+                gap: 6px;
+
+                &-label {
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: 19px;
+                }
+
+
+
+                .input[type="radio"] {
+                    width: size(16);
+                    height: size(16);
+                    border: size(2) solid var(--mc-black);
+                    border-radius: size(12);
+                }
+            }
+        }
+
+    }
+}
