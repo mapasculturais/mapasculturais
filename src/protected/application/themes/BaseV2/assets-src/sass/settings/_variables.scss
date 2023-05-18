@@ -12,68 +12,68 @@ $white: #FFFFFF !default;
 $gray-500: color.mix($gray-300, $gray-700, 50%) !default;
 
 // Default lightness deltas
-$lightness-300: 85% !default;
+$lightness-300: 25% !default;
 $lightness-700: 25% !default;
 
 // Brand colors
 $primary-500: #0074C1 !default;
-$primary-300: color.change($primary-500, $lightness: $lightness-300) !default;
-$primary-700: color.change($primary-500, $lightness: $lightness-700) !default;
+$primary-300: lighten($primary-500, $lightness-300) !default;
+$primary-700: darken($primary-500, $lightness-700) !default;
 
 $secondary-500: #D50200 !default;
-$secondary-300: color.change($secondary-500, $lightness: $lightness-300) !default;
-$secondary-700: color.change($secondary-500, $lightness: $lightness-700) !default;
+$secondary-300: lighten($secondary-500, $lightness-300) !default;
+$secondary-700: darken($secondary-500, $lightness-700) !default;
 
 // Entities colors
 $seals-500: #1E1E1E !default;
-$seals-300: color.change($seals-500, $lightness: $lightness-300) !default;
-$seals-700: color.change($seals-500, $lightness: $lightness-700) !default;
+$seals-300: lighten($seals-500, $lightness-300) !default;
+$seals-700: darken($seals-500, $lightness-700) !default;
 
 $agents-500: #EF7B45 !default;
-$agents-300: color.change($agents-500, $lightness: $lightness-300) !default;
-$agents-700: color.change($agents-500, $lightness: $lightness-700) !default;
+$agents-300: lighten($agents-500, $lightness-300) !default;
+$agents-700: darken($agents-500, $lightness-700) !default;
 
 $events-500: #9C4EC7 !default;
-$events-300: color.change($events-500, $lightness: $lightness-300) !default;
-$events-700: color.change($events-500, $lightness: $lightness-700) !default;
+$events-300: lighten($events-500, $lightness-300) !default;
+$events-700: darken($events-500, $lightness-700) !default;
 
 $opportunities-500: #D50200 !default;
-$opportunities-300: color.change($opportunities-500, $lightness: $lightness-300) !default;
-$opportunities-700: color.change($opportunities-500, $lightness: $lightness-700) !default;
+$opportunities-300: lighten($opportunities-500, $lightness-300) !default;
+$opportunities-700: darken($opportunities-500, $lightness-700) !default;
 
 $projects-500: #0074C1 !default;
-$projects-300: color.change($projects-500, $lightness: $lightness-300) !default;
-$projects-700: color.change($projects-500, $lightness: $lightness-700) !default;
+$projects-300: lighten($projects-500, $lightness-300) !default;
+$projects-700: darken($projects-500, $lightness-700) !default;
 
 $spaces-500: #498200 !default;
-$spaces-300: color.change($spaces-500, $lightness: $lightness-300) !default;
-$spaces-700: color.change($spaces-500, $lightness: $lightness-700) !default;
+$spaces-300: lighten($spaces-500, $lightness-300) !default;
+$spaces-700: darken($spaces-500, $lightness-700) !default;
 
 // Feedback colors
 $danger-500: #ED0000 !default;
-$danger-300: color.change($danger-500, $lightness: $lightness-300) !default;
-$danger-700: color.change($danger-500, $lightness: $lightness-700) !default;
+$danger-300: lighten($danger-500, $lightness-300) !default;
+$danger-700: darken($danger-500, $lightness-700) !default;
 
 $success-500: #498200 !default;
-$success-300: color.change($success-500, $lightness: $lightness-300) !default;
-$success-700: color.change($success-500, $lightness: $lightness-700) !default;
+$success-300: lighten($success-500, $lightness-300) !default;
+$success-700: darken($success-500, $lightness-700) !default;
 
 $warning-500: #FF9F1C !default;
-$warning-300: color.change($warning-500, $lightness: $lightness-300) !default;
-$warning-700: color.change($warning-500, $lightness: $lightness-700) !default;
+$warning-300: lighten($warning-500, $lightness-300) !default;
+$warning-700: darken($warning-500, $lightness-700) !default;
 
 $helper-500: #0074C1 !default;
-$helper-300: color.change($helper-500, $lightness: $lightness-300) !default;
-$helper-700: color.change($helper-500, $lightness: $lightness-700) !default;
+$helper-300: lighten($helper-500, $lightness-300) !default;
+$helper-700: darken($helper-500, $lightness-700) !default;
 
 // Neutral colors
 $low-500: #1E1E1E !default;
-$low-300: color.change($low-500, $lightness: $lightness-300) !default;
-$low-700: color.change($low-500, $lightness: $lightness-700) !default;
+$low-300: lighten($low-500, $lightness-300) !default;
+$low-700: darken($low-500, $lightness-700) !default;
 
 $high-500: #FFFFFF !default;
-$high-300: color.change($high-500, $lightness: $lightness-300) !default;
-$high-700: color.change($high-500, $lightness: $lightness-700) !default;
+$high-300: lighten($high-500, $lightness-300) !default;
+$high-700: darken($high-500, $lightness-700) !default;
 
 // FONTS
 $font-body: 'Open Sans', sans-serif !default;
