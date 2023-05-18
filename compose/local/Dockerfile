@@ -3,10 +3,11 @@ FROM php:7.2-cli
 RUN apt-get update && apt-get install -y --no-install-recommends \
         curl libcurl4-gnutls-dev locales imagemagick libmagickcore-dev libmagickwand-dev zip \
         ruby ruby-dev libpq-dev gnupg nano iputils-ping git \
-        libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim
+        libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim \
+        sudo
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-    && apt-get install -y nodejs npm
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get install -y nodejs
 
 RUN rm -rf /var/lib/apt/lists
 
