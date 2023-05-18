@@ -67,18 +67,27 @@ app.component('mc-multiselect', {
 
     computed: {
         filteredItems() {
-            const result = {};
+            const result = [];
             for (let value in this.dataItems) {
                 const label = this.dataItems[value];
                 const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 const _item = label.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
                 if(_item.indexOf(_filter) >= 0) {
-                    result[value] = label;
+                    result.push({value, label});
                 }
             }
-            return result;
-        }        
+
+            return result.sort((a,b) => {
+                if (a.label > b.label) {
+                    return 1;
+                } else if (a.label < b.label) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        },
     },
 
     methods: {
