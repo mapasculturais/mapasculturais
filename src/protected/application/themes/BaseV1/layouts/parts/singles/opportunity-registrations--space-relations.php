@@ -1,6 +1,6 @@
 <?php
 use MapasCulturais\App;
-return;
+
 $can_edit = $entity->canUser('modifyRegistrationFields');
 
 $ditable_class = $can_edit ? 'js-editable editable editable-click' : '';
@@ -11,9 +11,10 @@ $metadata_name = 'useSpaceRelation';
 
 $option_label = $entity->$metadata_name ? $entity->$metadata_name : 'dontUse';
 
-$projectMeta = \MapasCulturais\Entities\Opportunity::getPropertiesMetadata();
+$projectMeta = \MapasCulturais\Entities\Project::getPropertiesMetadata();
+
 $optionSelect = \MapasCulturais\Entities\RegistrationSpaceRelation::getOptionSelected($entity->id);
-$message = $projectMeta['useSpaceRelationIntituicao']['options'] ;
+$message = $projectMeta['useSpaceRelation']['options'];
 //PARA PŔEENCHIMENTO DO SELECT
 if(isset($optionSelect[0]['value'])){
     $selectOption = \MapasCulturais\Entities\RegistrationSpaceRelation::getOptionLabel($optionSelect[0]['value']);
