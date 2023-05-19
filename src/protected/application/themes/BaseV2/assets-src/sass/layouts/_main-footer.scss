@@ -10,7 +10,6 @@
     padding: size(80) 0 0;
     position: relative;
     flex-wrap: wrap;
-    z-index: 1;
     
     @include mobile {
         gap: 0;
