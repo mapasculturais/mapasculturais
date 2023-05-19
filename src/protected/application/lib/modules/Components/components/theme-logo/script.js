@@ -34,15 +34,16 @@ app.component('theme-logo', {
         return {
             title: $MAPAS.config.logo.title,
             subtitle: $MAPAS.config.logo.subtitle,
-            color: $MAPAS.config.logo.color,
-            colors: {},
+            colors: $MAPAS.config.logo.colors,
+            logoImg: $MAPAS.config.logo.image,
+            hideLabel: $MAPAS.config.logo.hideLabel,
         }
     },
 
     created() {
-        this.colors.bg1 = this.bg1 ?? this.color.bg1;
-        this.colors.bg2 = this.bg2 ?? this.color.bg2;
-        this.colors.bg3 = this.bg3 ?? this.color.bg3;
-        this.colors.bg4 = this.bg4 ?? this.color.bg4;
+        this.colors.bg1 = this.bg1 ?? this.colors[0];
+        this.colors.bg2 = this.bg2 ?? this.colors[1];
+        this.colors.bg3 = this.bg3 ?? this.colors[2] ?? colors[0];
+        this.colors.bg4 = this.bg4 ?? this.colors[3] ?? colors[1];
     },
 });

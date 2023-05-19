@@ -63,5 +63,5 @@ services:
     ports:
       - "5470:5432"
     volumes:
-      - ../docker-data/postgres-ibercultura-2023-04-16--1040:/var/lib/postgresql/data
+      - ../docker-data/postgres:/var/lib/postgresql/data
       - ../db/dump.sql:/docker-entrypoint-initdb.d/dump.sql
