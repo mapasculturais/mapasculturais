@@ -5,7 +5,7 @@ use MapasCulturais\i;
 <div v-if="entity.metalists.links || editable" :class="['entity-links', classes]">
     <label class="entity-links__title"> {{title}} </label>
 
-    <ul class="entity-links__links">
+    <ul v-if="entity.metalists.links" class="entity-links__links">
         <li class="entity-links__links--item" v-for="metalist in entity.metalists.links">
             <a class="link" :class="{'editable': editable}" :href="metalist.value" target="_blank" >
                 <mc-icon name="link"></mc-icon> 

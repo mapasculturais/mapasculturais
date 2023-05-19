@@ -11,13 +11,14 @@
         font-weight: 700;
         font-size: size(18);
         line-height: size(25);
+        margin-bottom: size(8);
     }
 
     &__links {
         display: flex;
         flex-direction: column; 
         list-style: none;
-        margin: size(10) 0;
+        margin: size(2) 0 size(10);
         padding: 0;
 
         &--item{
