@@ -75,7 +75,7 @@ section.tab-component.evaluations {
                 .period {
                     padding: 0 0 size(16) size(11);
 
-                    &--label {
+                    &__label {
                         text-transform: uppercase;
                         font-family: "Open Sans";
                         font-style: normal;
@@ -86,6 +86,8 @@ section.tab-component.evaluations {
 
                     &__content {
                         font-weight: 600;
+                        font-size: 14px;
+
                     }
                 }
             }
