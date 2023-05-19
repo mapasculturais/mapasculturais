@@ -29,6 +29,7 @@ body.galleryOpen {
         display: flex;
         flex-wrap: wrap;
         gap: size(24);
+        margin-bottom: size(24);
 
         &--image, &--video {
             align-items: center;
@@ -85,8 +86,6 @@ body.galleryOpen {
     }
 
     &__addNew {
-        margin-top: size(16);
-
         .v-popper {
             width: fit-content;
         }

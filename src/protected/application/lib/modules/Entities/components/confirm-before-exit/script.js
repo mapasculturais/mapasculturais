@@ -8,8 +8,7 @@ app.component('confirm-before-exit', {
         },
     },
 
-    mounted() {
-        
+    mounted() {        
         window.onbeforeunload = (event) => {
             if (Object.keys(this.entity.data(true)).length > 0) {
                 return true;

@@ -21,9 +21,10 @@ $this->import('
     evaluations-list
     mapas-breadcrumb
     opportunity-phase-evaluation
+    opportunity-phases-timeline
+    opportunity-rules
     opportunity-subscription
     opportunity-subscription-list
-    opportunity-phases-timeline
     share-links
     tabs
     v1-embed-tool
@@ -65,7 +66,8 @@ $this->breadcrumb = [
                             <h3><?= i::__("Apresentação") ?></h3>
                             <p v-html="entity.shortDescription"></p>
                         </div>
-                        <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
+                        <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Regulamento'); ?>"></opportunity-rules>
+                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                         <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Links'); ?>"></entity-links>
                         <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                         <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
