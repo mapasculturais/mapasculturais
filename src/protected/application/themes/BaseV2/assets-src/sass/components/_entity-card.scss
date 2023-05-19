@@ -331,6 +331,11 @@
 					justify-content: center;
 					line-height: size(16);
 					width: size(32);
+					
+					.sealImage {
+						max-width: 100%;
+						border-radius: size(8);
+					}
 				}
 			}
 		}
