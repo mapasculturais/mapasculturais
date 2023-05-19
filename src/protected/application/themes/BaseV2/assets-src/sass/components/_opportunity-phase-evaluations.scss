@@ -1,5 +1,6 @@
 @use '../settings/mixins' as *;
-section.tab-component.evaluations{
+
+section.tab-component.evaluations {
     background-color: var(--mc-gray-100);
 }
 .stepper-evaluations {
