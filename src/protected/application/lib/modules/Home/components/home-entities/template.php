@@ -32,7 +32,7 @@ $this->import('
                     </div>
 
                     <div class="card__left--img">
-                        <img src="<?php $this->asset('img/home/home-entities/opportunities.png') ?>" />
+                        <img src="<?php $this->asset('img/home/home-entities/opportunities.jpg') ?>" />
                     </div>
                 </div>
 
@@ -60,7 +60,7 @@ $this->import('
                     </div>
 
                     <div class="card__left--img">
-                        <img src="<?php $this->asset('img/home/home-entities/events.png') ?>" />
+                        <img src="<?php $this->asset('img/home/home-entities/events.jpg') ?>" />
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@ $this->import('
                     </div>
 
                     <div class="card__left--img">
-                        <img src="<?php $this->asset('img/home/home-entities/spaces.png') ?>" />
+                        <img src="<?php $this->asset('img/home/home-entities/spaces.jpg') ?>" />
                     </div>
                 </div>
 
@@ -117,7 +117,7 @@ $this->import('
                     </div>
 
                     <div class="card__left--img">
-                        <img src="<?php $this->asset('img/home/home-entities/agents.png') ?>" />
+                        <img src="<?php $this->asset('img/home/home-entities/agents.jpg') ?>" />
                     </div>
                 </div>
 
@@ -145,7 +145,7 @@ $this->import('
                     </div>
 
                     <div class="card__left--img">
-                        <img src="<?php $this->asset('img/home/home-entities/projects.png') ?>" />
+                        <img src="<?php $this->asset('img/home/home-entities/projects.jpg') ?>" />
                     </div>
                 </div>
 

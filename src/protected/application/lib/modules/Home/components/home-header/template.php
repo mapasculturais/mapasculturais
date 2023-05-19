@@ -19,7 +19,7 @@ $this->import('home-search');
         <div class="home-header__content--right">
             <div class="img">
                 <!-- <img src="<?php $this->asset('img/home/home-header/home-header.png') ?>" /> -->
-                <img src="<?php $this->asset('img/home/home-header/home-header2.png') ?>" />
+                <img src="<?php $this->asset('img/home/home-header/home-header2.jpg') ?>" />
             </div>
         </div>
     </div>
