@@ -67,6 +67,7 @@ section.tab-component.evaluations {
 
                         .item {
                             font-weight: 600;
+                            font-size: size(14);
                         }
                     }
                 }
@@ -90,16 +91,24 @@ section.tab-component.evaluations {
             }
         }
 
+        &__button {
+            padding-bottom: size(16);
+            display: flex;
+        }
+
         .evaluation-button {
-            height: size(48);
             width: size(272);
-            border-radius:size(8);
+            border-radius: size(8);
             display: flex;
             flex-direction: row;
+            height: size(48);
             align-items: center;
             justify-content: flex-end;
             gap: size(75);
+            background-color: var(--mc-primary-500);
+            color: var(--mc-white);
 
         }
     }
+
 }
