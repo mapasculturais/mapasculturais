@@ -5,19 +5,19 @@ use MapasCulturais\i;
 $this->import('
     confirm-before-exit
     entity-cover
-    entity-profile
     entity-field
-    entity-terms
-    entity-social-media
-    entity-seals
-    entity-terms
-    entity-related-agents
-    entity-owner
     entity-files-list
-    entity-gallery-video
     entity-gallery
+    entity-gallery-video
     entity-links
-    
+    entity-owner
+    entity-profile
+    entity-related-agents
+    entity-seals
+    entity-social-media
+    entity-terms
+    entity-terms
+    opportunity-rules    
 ');
 ?>
 
@@ -51,12 +51,11 @@ $this->import('
                         <entity-field :entity="entity" label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type" classes="header-opp__field--name col-12"></entity-field>
                     </div>
                     <entity-field :entity="entity" classes="header-opp__field--name col-12" prop="shortDescription"></entity-field>
+                    <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar regulamento'); ?>" editable></opportunity-rules>
                     <entity-files-list :entity="entity" classes="content-fileList col-12" group="downloads" title="<?php i::esc_attr_e('Adicionar arquivos'); ?>" editable></entity-files-list>
                     <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar links'); ?>" editable></entity-links>
                     <entity-gallery-video :entity="entity" classes="col-12" editable></entity-gallery-video>
                     <entity-gallery :entity="entity" classes="col-12" editable></entity-gallery>
-                    
-
                 </div>
             </template>
         </mapas-card>
