@@ -10,8 +10,9 @@ $this->import('
 <div :class="classes" v-if="editable || entity.metalists?.videos" class="entity-gallery">
     <?php $this->applyTemplateHook('entity-gallery-video','begin'); ?>
     <label class="entity-gallery__title"> {{title}} </label>
-    <div class="entity-gallery__list">   
-        <div v-if="entity.metalists?.videos" v-for="(metalist, index) in videos" class="entity-gallery__list--video">
+
+    <div v-if="entity.metalists?.videos" class="entity-gallery__list">   
+        <div v-for="(metalist, index) in videos" class="entity-gallery__list--video">
             <div>
                 <div @click="openVideo(index); open()" class="entity-gallery__list--video-img">
                     <img :src="metalist.video.thumbnail" />
@@ -49,6 +50,7 @@ $this->import('
             </div>
         </div>
     </div>
+
     <div v-if="editable" title="<?php i::_e('Adicionar Vídeo')?>" class="entity-gallery__addNew">
         <popover v-if="editable" title="<?php i::_e('Adicionar Vídeo')?>" openside="right-up">
             <template #button="popover">

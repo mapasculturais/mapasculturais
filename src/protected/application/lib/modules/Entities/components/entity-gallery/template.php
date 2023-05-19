@@ -13,7 +13,8 @@ $this->import('
 <div :class="classes" v-if="editable || images" class="entity-gallery">
     <?php $this->applyTemplateHook('entity-gallery','begin'); ?>
     <label class="entity-gallery__title"> {{title}} </label>
-    <div class="entity-gallery__list" v-if="images">   
+
+    <div v-if="images" class="entity-gallery__list">   
         <div class="entity-gallery__list--image" v-for="(img, index) in images">
             <div>
                 <div @click="open" class="entity-gallery__list--image-img" >
@@ -50,7 +51,8 @@ $this->import('
                 </confirm-button>
             </div>
         </div>    
-    </div>    
+    </div>   
+
     <div v-if="editable" class="entity-gallery__addNew">
         <image-uploader :useDescription="true" :entity="entity" group="gallery" :circular="false">
             <template #default='uploader'>
