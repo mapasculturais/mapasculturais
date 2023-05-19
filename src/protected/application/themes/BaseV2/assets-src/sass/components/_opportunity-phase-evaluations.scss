@@ -14,20 +14,23 @@ section.tab-component.evaluations {
 }
 
 .stepper-evaluations {
-    .stepper-header {
+
+
+    .card-evaluation {
         border-radius: size(4);
-        max-width: size(1170);
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
+        background-color: var(--mc-high-300);
+        padding: 16px;
 
-        .card-evaluation {
-            img {
-                display: none;
-            }
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-items: end;
 
-            &__title {
+        img {
+            display: none;
+        }
+
+        &__content {
+            &--title {
                 font-family: 'Open Sans';
                 font-style: normal;
                 font-weight: 700;
@@ -37,7 +40,7 @@ section.tab-component.evaluations {
 
             }
 
-            &__items {
+            &--items {
                 border: 1px solid var(--mc-gray-100);
                 border-radius: 4px;
                 display: flex;
