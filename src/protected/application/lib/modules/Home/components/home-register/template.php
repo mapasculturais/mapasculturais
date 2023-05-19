@@ -3,7 +3,7 @@ use MapasCulturais\i;
 ?>
 <div class="home-register">
     <div class="home-register__background">
-        <img class="home-register__background--img" src="<?php $this->asset('img/home/home-register/background.png') ?>" />
+        <img class="home-register__background--img" src="<?php $this->asset('img/home/home-register/background.jpg') ?>" />
         <div class="home-register__background--mask"></div>
     </div>
     <div class="home-register__content">
