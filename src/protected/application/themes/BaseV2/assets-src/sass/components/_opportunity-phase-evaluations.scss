@@ -2,7 +2,17 @@
 
 section.tab-component.evaluations {
     background-color: var(--mc-gray-100);
+    padding-inline: size(16);
 }
+
+.action-single.controller-opportunity .tabs-component__buttons {
+    gap: size(49);
+
+    @media (max-width: size(600)) {
+        gap: size(40);
+    }
+}
+
 .stepper-evaluations {
     .stepper-header {
         border-radius: size(4);
