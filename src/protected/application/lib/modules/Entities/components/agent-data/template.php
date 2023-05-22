@@ -15,7 +15,7 @@ mapas-card
         <div class="agent-data__fields--field">
             <label class="title"><?php i::_e("Nome Completo") ?></label>
             <div class="box">
-                <label class="box__content">{{entity.name}}</label>
+                <label class="box__content">{{entity.nomeCompleto}}</label>
             </div>
         </div>
         <div v-if="entity.nomeSocial?.length>0" class="agent-data__fields--field">
