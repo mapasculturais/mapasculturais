@@ -25,12 +25,17 @@ app.component('opportunity-subscription' , {
 
     data () {
         let agent = null;
+        let phases = null;
 
         if ($MAPAS.config.opportunitySubscription.agents.length == 1) {
             agent = $MAPAS.config.opportunitySubscription.agents[0];
         }
         const registrationCategories = this.entity.registrationCategories || {};
         const categories = Object.keys(registrationCategories).length > 0 ? registrationCategories : null;
+
+        if($MAPAS.opportunityPhases && $MAPAS.opportunityPhases.length > 0) {
+            phases = $MAPAS.opportunityPhases;
+        } 
 
         return {
             agent,
@@ -40,7 +45,8 @@ app.component('opportunity-subscription' , {
             dateEnd: this.entity.registrationTo,
             entities: {},
             entitiesLength: $MAPAS.config.opportunitySubscription.agents.length,
-            processing: false
+            processing: false,
+            phases,
         }
     },
 
@@ -50,16 +56,23 @@ app.component('opportunity-subscription' , {
 
             let registrationStatus = this.registrationStatus(this.dateStart, this.dateEnd);
 
-            switch (registrationStatus) {
-                case 'open':
-                    description = this.text('inscrições abertas');
-                    break;
-                case 'closed':
-                    description = this.text('inscrições fechadas');
-                    break;
-                case 'will open':
-                    description = this.text('inscrições irão abrir');
-                    break;
+            console.log(this.isPublished);
+            if (this.isPublished) {
+                description = this.text('resultado publicado');
+            } else if (!this.dateStart) {
+                description = this.text('inscrições indefinidas');
+            } else {
+                switch (registrationStatus) {
+                    case 'open':
+                        description = this.text('inscrições abertas');
+                        break;
+                    case 'closed':
+                        description = this.text('inscrições fechadas');
+                        break;
+                    case 'will open':
+                        description = this.text('inscrições irão abrir');
+                        break;
+                }
             }
 
             description = description.replace("{startAt}", this.startAt);
@@ -77,7 +90,14 @@ app.component('opportunity-subscription' , {
                 return false;
             }
         },
+        isPublished() {
+            let _actualDate = new Date();
 
+            if (this.lastPhase.publishTimestamp?._date < _actualDate) {
+                return true;
+            }
+            return false;
+        },
         startAt() {
             return this.dateStart?.date('2-digit year');
         },
@@ -89,6 +109,10 @@ app.component('opportunity-subscription' , {
         },
         endHour() {
             return this.dateEnd?.time();
+        },
+        lastPhase () {
+            const phase = this.phases.find(item => item.isLastPhase);
+            return phase;
         },
     },
 
