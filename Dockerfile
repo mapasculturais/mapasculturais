@@ -58,7 +58,6 @@ COPY src/protected/composer.lock /var/www/html/protected/composer.lock
 
 WORKDIR /var/www/html/protected
 RUN composer.phar install
-RUN pnpm install --recursive && pnpm run build 
 
 RUN mkdir -p /var/www/html/protected/vendor /var/www/.composer && \
     chown -R www-data:www-data /var/www/html/protected/vendor /var/www/.composer
@@ -71,6 +70,8 @@ WORKDIR /var/www/html/protected/application/themes/
 RUN find . -maxdepth 1 -mindepth 1 -exec echo "compilando sass do tema " {} \; -exec sass {}/assets/css/sass/main.scss {}/assets/css/main.css -E "UTF-8" \;
 
 COPY src/protected /var/www/html/protected
+
+RUN pnpm install --recursive && pnpm run build 
 
 RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
 

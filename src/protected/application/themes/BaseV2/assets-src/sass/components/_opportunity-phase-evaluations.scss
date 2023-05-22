@@ -1,22 +1,55 @@
 @use '../settings/mixins' as *;
-section.tab-component.evaluations{
+
+section.tab-component.evaluations {
     background-color: var(--mc-gray-100);
+    padding-inline: size(16);
 }
+
+.action-single.controller-opportunity .tabs-component__buttons {
+    gap: size(49);
+
+    @media (max-width: size(600)) {
+        gap: size(40);
+    }
+}
+
 .stepper-evaluations {
-    .stepper-header {
-        border-radius: size(4);
-        max-width: size(1170);
+    &__title {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 700;
+        font-size: size(18);
+        line-height: size(25);
+        padding-bottom: size(7);
+
+        &.secondTitle {
+            padding-top: size(44);
+        }
+    }
+
+    .line {
+        max-width: 1170px;
         width: 100%;
+        height: 1px;
+        padding-bottom: size(24);
+        border-top: 0.5px solid var(--mc-gray-300);
+    }
+
+    .card-evaluation {
+        border-radius: size(4);
+        background-color: var(--mc-high-300);
+        padding: 16px;
+
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
+        // justify-items: end;
 
-        .card-evaluation {
-            img {
-                display: none;
-            }
+        img {
+            display: none;
+        }
 
-            &__title {
+        &__content {
+            &--title {
                 font-family: 'Open Sans';
                 font-style: normal;
                 font-weight: 700;
@@ -26,14 +59,13 @@ section.tab-component.evaluations{
 
             }
 
-            &__items {
+            &--items {
                 border: 1px solid var(--mc-gray-100);
                 border-radius: 4px;
                 display: flex;
                 flex-direction: column;
                 max-width: size(1122);
                 margin: 0 size(24) size(16) size(24);
-
 
                 .phase {
                     display: flex;
@@ -53,6 +85,7 @@ section.tab-component.evaluations{
 
                         .item {
                             font-weight: 600;
+                            font-size: size(14);
                         }
                     }
                 }
@@ -60,7 +93,7 @@ section.tab-component.evaluations{
                 .period {
                     padding: 0 0 size(16) size(11);
 
-                    &--label {
+                    &__label {
                         text-transform: uppercase;
                         font-family: "Open Sans";
                         font-style: normal;
@@ -71,21 +104,38 @@ section.tab-component.evaluations{
 
                     &__content {
                         font-weight: 600;
+                        font-size: 14px;
+
                     }
                 }
             }
         }
 
+        .btn {
+            display: flex;
+            justify-content: flex-end;
+        }
+
         .evaluation-button {
-            height: size(48);
             width: size(272);
-            border-radius:size(8);
+            border-radius: size(8);
             display: flex;
             flex-direction: row;
+            height: size(48);
             align-items: center;
             justify-content: flex-end;
             gap: size(75);
+            background-color: var(--mc-primary-500);
+            color: var(--mc-white);
 
         }
+    }
+
+    .out-evalution {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 400;
+        font-size: size(16);
+        line-height: size(22);
     }
 }
