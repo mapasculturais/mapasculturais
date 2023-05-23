@@ -105,6 +105,34 @@ class Module extends \MapasCulturais\Module {
             $this->part('main-app--end');
         },1000);
 
+
+        /** 
+         * Cria um hook para o componente
+         * 
+         * o hook será no formato "component(component-name):param1" quando só um parâmtro for enviado
+         * o hook será no formato "component(component-name).param1:param2" quando 2 parâmtros forem enviados
+         * 
+         * @param string $param1
+         * @param string $param2
+         * @param string $sufix
+         */
+        $app->hook('Theme::applyComponentHook', function ($result, string $sufix, $param1 = [], $param2 = []) use($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
+            $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,3);
+            preg_match("#.+?/([^/]+)/template.php#", $bt[2]['file'], $match);
+            $component_name = $match[1];
+            if(is_string($param1)) {
+                $hook_name = "component($component_name).$sufix:$param1";
+                $params = $param2;
+            } else {
+                $hook_name = "component($component_name):$sufix";
+                $params = $param1;
+            }
+
+            $app->applyHookBoundTo($this, $hook_name, $params);
+        });
+
         /**
          * Importa um componente
          *
@@ -113,6 +141,8 @@ class Module extends \MapasCulturais\Module {
          * @param array $dependences Dependências do componente
          */
         $app->hook('Theme::import', function ($result, string $component, array $data = [], array &$dependences = []) use($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             $component = trim($component);
 
             if (!$this->importedComponents) {
@@ -163,6 +193,8 @@ class Module extends \MapasCulturais\Module {
          * @param array $dependences Dependências do componente
          */
         $app->hook('Theme::enqueueComponentScript', function ($result, string $component, array $dependences = []) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             $texts_filename = $this->resolveFilename("components/{$component}", 'texts.php');
             if($texts_filename && is_file($texts_filename)) {
                 $texts = include $texts_filename;
@@ -178,6 +210,8 @@ class Module extends \MapasCulturais\Module {
          * @param array $dependences Dependências do componente
          */
         $app->hook('Theme::enqueueComponentStyle', function ($result, string $component, array $dependences = []) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             if($this->resolveFilename("components/{$component}", 'style.css')) {
                 $this->enqueueStyle('components', $component, "../components/{$component}/style.css", $dependences);
             }
@@ -192,6 +226,8 @@ class Module extends \MapasCulturais\Module {
          * @return string
          */
         $app->hook('Theme::componentRender', function ($result, string $component, array $__data = []) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             $app = App::i();
 
             $app->applyHookBoundTo($this, "component({$component}):params", [&$component, &$__data]);
@@ -202,27 +238,28 @@ class Module extends \MapasCulturais\Module {
                 throw new Exceptions\TemplateNotFound("Component {$component} not found");
             }
 
-            $app->applyHookBoundTo($this, "component({$component}):before", [&$__template_path]);
-
+            
             ob_start(function ($output) {
                 return $output;
             });
-
+            
             if ($app->mode == APPMODE_DEVELOPMENT) {
                 echo "<!-- $component -->\n";
             }
 
+            $app->applyHookBoundTo($this, "component({$component}):before", [&$__data, &$__template_path]);
+            
             extract($__data);
 
             include $__template_path;
+
+            $app->applyHookBoundTo($this, "component({$component}):after", [$__data]);
 
             if ($app->mode == APPMODE_DEVELOPMENT) {
                 echo "\n<!-- /$component -->\n";
             }
 
             $__html = ob_get_clean();
-
-            $app->applyHookBoundTo($this, "component({$component}):after", [$__template_path, &$__html]);
 
             return $__html;
         });

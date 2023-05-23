@@ -1034,6 +1034,10 @@ class Registration extends \MapasCulturais\Entity
         $this->opportunity->registerRegistrationMetadata();
     }
 
+    function unregisterFieldsMetadata() {
+        $this->opportunity->unregisterRegistrationMetadata();
+    }
+
     protected function _getSpaceData(){
         $app = App::i();
 
