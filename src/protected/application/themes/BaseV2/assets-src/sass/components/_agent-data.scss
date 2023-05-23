@@ -1,11 +1,23 @@
 @use '../settings/mixins' as *;
+
 .controller-agent.action-edit {
     .field {
         label {
             margin: 0;
         }
+
+        &.pcd {
+            // background-color: red;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        &.pcd  input[type='checkbox'] {
+            display: grid;
+            grid-template-columns:1fr
+        }
     }
 }
+
 .agent-data {
     // max-width: size(860);
     display: flex;
