@@ -130,6 +130,11 @@ class Module extends \MapasCulturais\Module {
                 $params = $param1;
             }
 
+            if ($app->mode == APPMODE_DEVELOPMENT) {
+                $this->import('mc-debug');
+                echo "<mc-debug type='component-hook' name='$hook_name'></mc-debug>";
+            }
+
             $app->applyHookBoundTo($this, $hook_name, $params);
         });
 
@@ -242,9 +247,10 @@ class Module extends \MapasCulturais\Module {
             ob_start(function ($output) {
                 return $output;
             });
-            
-            if ($app->mode == APPMODE_DEVELOPMENT) {
-                echo "<!-- $component -->\n";
+
+            if ($component != 'mc-debug' && $app->mode == APPMODE_DEVELOPMENT) {
+                $this->import('mc-debug');
+                echo "<mc-debug type='component' name='" . htmlentities("[$component]") . "'></mc-debug>";
             }
 
             $app->applyHookBoundTo($this, "component({$component}):before", [&$__data, &$__template_path]);
@@ -252,11 +258,13 @@ class Module extends \MapasCulturais\Module {
             extract($__data);
 
             include $__template_path;
-
+            
+            
             $app->applyHookBoundTo($this, "component({$component}):after", [$__data]);
-
-            if ($app->mode == APPMODE_DEVELOPMENT) {
-                echo "\n<!-- /$component -->\n";
+            
+            if ($component != 'mc-debug' && $app->mode == APPMODE_DEVELOPMENT) {
+                $this->import('mc-debug');
+                echo "<mc-debug type='component' name='" . htmlentities("[/$component]") . "'></mc-debug>";
             }
 
             $__html = ob_get_clean();
