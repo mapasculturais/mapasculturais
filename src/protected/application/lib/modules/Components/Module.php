@@ -141,6 +141,8 @@ class Module extends \MapasCulturais\Module {
          * @param array $dependences Dependências do componente
          */
         $app->hook('Theme::import', function ($result, string $component, array $data = [], array &$dependences = []) use($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             $component = trim($component);
 
             if (!$this->importedComponents) {
@@ -191,6 +193,8 @@ class Module extends \MapasCulturais\Module {
          * @param array $dependences Dependências do componente
          */
         $app->hook('Theme::enqueueComponentScript', function ($result, string $component, array $dependences = []) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             $texts_filename = $this->resolveFilename("components/{$component}", 'texts.php');
             if($texts_filename && is_file($texts_filename)) {
                 $texts = include $texts_filename;
@@ -206,6 +210,8 @@ class Module extends \MapasCulturais\Module {
          * @param array $dependences Dependências do componente
          */
         $app->hook('Theme::enqueueComponentStyle', function ($result, string $component, array $dependences = []) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             if($this->resolveFilename("components/{$component}", 'style.css')) {
                 $this->enqueueStyle('components', $component, "../components/{$component}/style.css", $dependences);
             }
@@ -220,6 +226,8 @@ class Module extends \MapasCulturais\Module {
          * @return string
          */
         $app->hook('Theme::componentRender', function ($result, string $component, array $__data = []) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             $app = App::i();
 
             $app->applyHookBoundTo($this, "component({$component}):params", [&$component, &$__data]);
