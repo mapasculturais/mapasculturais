@@ -44,7 +44,7 @@ $this->import('
                             </div>
                         </div>
                         <div v-if="entity.isFirstPhase" class="col-12">
-                            <h4 calss="request-data__title"><?= i::__("Solicitar instituição responsável?") ?></h4>
+                            <h4 class="request-data__title"><?= i::__("Solicitar instituição responsável?") ?></h4>
                             <span class="request-data__subtitle"><?= i::__("Solicite a inscrição de instituções (agentes coletivos com CNPJ).") ?></span>
                             <div class="request-data__inputs">
                                 <label class="options"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
@@ -60,32 +60,36 @@ $this->import('
         </div>
 
         <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
-            <mapas-card>
-                <template #title>
-                    <div class="card-header">
-                        <label class="card-header__title"><?= i::__("Permitir vínculo de Espaço?") ?></label>
-                        <div class="card-header__subtitle"><?= i::__("Permitir um espaço para associar à inscrição.") ?></div>
-                    </div>
-                </template>
+            <mapas-card no-title>
                 <template #default>
-                    <div class="grid-12">
-                        <entity-field :entity="entity" prop="useSpaceRelationIntituicao" classes="col-12"></entity-field>
+                    <div class="request-data grid-12">
+                        <div v-if="entity.isFirstPhase" class="col-12">
+                            <h4 class="request-data__title"><?= i::__("Permitir vínculo de Espaço?") ?></h4>
+                            <span class="request-data__subtitle"><?= i::__("Permitir um espaço para associar à inscrição.") ?></span>
+                            <div class="request-data__inputs no-padding-bottom">
+                                <label class="options"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
+                                <label class="options"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="required" /> <?= i::_e('Obrigatório') ?> </label>
+                                <label class="options"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="optional" /> <?= i::_e('Opcional') ?> </label>
+                            </div>
+                        </div>
                     </div>
                 </template>
             </mapas-card>
         </div>
 
         <div class="col-6 sm:col-12">
-            <mapas-card>
-                <template #title>
-                    <div class="card-header">
-                        <label class="card-header__title"><?= i::__("Habilitar informações de Projeto?") ?></label>
-                        <div class="card-header__subtitle"><?= i::__("Permitir que proponente vizualise informações básicas sobre um projeto.") ?></div>
-                    </div>
-                </template>
+            <mapas-card no-title>
                 <template #default>
-                    <div class="grid-12">
-                        <entity-field :entity="entity" prop="projectName" classes="col-12"></entity-field>
+                    <div class="request-data grid-12">
+                        <div v-if="entity.isFirstPhase" class="col-12">
+                            <h4 class="request-data__title"><?= i::__("Habilitar informações de Projeto?") ?></h4>
+                            <span class="request-data__subtitle"><?= i::__("Permitir que proponente vizualise informações básicas sobre um projeto.") ?></span>
+                            <div class="request-data__inputs no-padding-bottom">
+                                <label class="options"> <input v-model="entity.projectName" type="radio" name="projectName" value="0" /> <?= i::_e('Não Utilizar') ?> </label>
+                                <label class="options"> <input v-model="entity.projectName" type="radio" name="projectName" value="2" /> <?= i::_e('Obrigatório') ?> </label>
+                                <label class="options"> <input v-model="entity.projectName" type="radio" name="projectName" value="1" /> <?= i::_e('Opcional') ?> </label>
+                            </div>
+                        </div>
                     </div>
                 </template>
             </mapas-card>
