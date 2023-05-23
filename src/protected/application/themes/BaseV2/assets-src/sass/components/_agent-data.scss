@@ -1,5 +1,11 @@
 @use '../settings/mixins' as *;
-
+.controller-agent.action-edit {
+    .field {
+        label {
+            margin: 0;
+        }
+    }
+}
 .agent-data {
     // max-width: size(860);
     display: flex;
