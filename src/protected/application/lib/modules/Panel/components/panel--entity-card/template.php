@@ -11,7 +11,7 @@ $this->import('
     panel--entity-actions 
 ');
 ?>
-<article class="panel__row panel-entity-card">
+<article class="panel__row panel-entity-card" :class="classes">
     <header class="panel-entity-card__header">
         <div class="left">
             <div class="panel-entity-card__header--picture">

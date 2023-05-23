@@ -15,6 +15,10 @@ app.component('popover', {
     },
 
     props: {
+        class: {
+            type: [String, Array],
+            default: []
+        },
         classes: {
             type: [String, Array],
             default: []
