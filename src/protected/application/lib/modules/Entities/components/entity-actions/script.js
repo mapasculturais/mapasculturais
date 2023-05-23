@@ -59,19 +59,11 @@ app.component('entity-actions', {
     methods: {
         save() {
             this.entity.save().then(() => {
-                if (window.history.length > 2) {
-                    window.history.back();
-                } else {
-                    window.location.href = $MAPAS.baseURL+'panel';
-                }
+                this.exit();
             });
         },
         exit() {
-            if (window.history.length > 2) {
-                window.history.back();
-            } else {
-                window.location.href = $MAPAS.baseURL+'panel';
-            }
+            window.location.href = this.entity.getUrl('single');
         },
     },
 });
