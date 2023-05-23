@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->layout = 'registrations';
 
 $this->addOpportunityPhasesToJs();
+$this->addRegistrationPhasesToJs();
 
 $this->import('
     mapas-breadcrumb
