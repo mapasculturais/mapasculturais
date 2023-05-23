@@ -73,4 +73,4 @@ $this->import('
         </mapas-card>
     </aside>
 </mapas-container>
-<confirm-before-exit unsaved></confirm-before-exit>
+<confirm-before-exit :entity="entity"></confirm-before-exit>
