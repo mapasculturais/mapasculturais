@@ -943,6 +943,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $data;
     }
 
+    function unregisterRegistrationMetadata(){
+        $app = App::i();
+
+        $registered_metadata = $app->getRegisteredMetadata(Registration::class);
+        if (isset($registered_metadata['projectName'])) {
+            $app->unregisterEntityMetadata(Registration::class, 'projectName');
+        }
+
+        foreach($this->registrationFieldConfigurations as $field){
+            $field_name = $field->fieldName;
+            if (isset($registered_metadata[$field_name])) {
+                $app->unregisterEntityMetadata(Registration::class, $field_name);
+            }
+        }
+    }
+
     function registerRegistrationMetadata(){
        
         $app = App::i();
