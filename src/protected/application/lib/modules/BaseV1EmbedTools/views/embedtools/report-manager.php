@@ -40,7 +40,7 @@ if ($registrationsByStatus = $module->registrationsByStatus($opportunity)) {
     $sendHook['registrationsByStatus'] = $registrationsByStatus;
 }
 
-if ($opportunity->evaluationMethod->slug == 'technical') {
+if ($opportunity->evaluationMethod && $opportunity->evaluationMethod->slug == 'technical') {
     if ($registrationsByEvaluation = $module->registrationsByEvaluationStatusBar($opportunity)) {
         $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
     }
