@@ -47,3 +47,17 @@ if ($MAPAS.opportunityPhases) {
 
     $MAPAS.opportunityPhases[0].isFirstPhase = true;
 }
+
+if ($MAPAS.registrationPhases) {
+    const api = new API('registration');
+
+    const rawProcessor = (item) => {
+        const instance = api.getEntityInstance(item.id);
+        instance.populate(item);
+        return instance;
+    };
+
+    for(let key in $MAPAS.registrationPhases) {
+        $MAPAS.registrationPhases[key] = rawProcessor($MAPAS.registrationPhases[key]);
+    }
+}
