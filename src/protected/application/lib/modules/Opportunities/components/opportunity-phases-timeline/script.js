@@ -28,9 +28,7 @@ app.component('opportunity-phases-timeline', {
     },
 
 	methods: {
-		dateFrom(id) {
-			let item = this.getItemById(id);
-
+		dateFrom(item) {
 			if (item.registrationFrom) {
 				return item.registrationFrom.date('2-digit year');
 			}	
@@ -40,9 +38,7 @@ app.component('opportunity-phases-timeline', {
 			return false;
 		},
 
-		dateTo(id) {
-			let item = this.getItemById(id);
-
+		dateTo(item) {
 			if (item.registrationTo) {
 				return item.registrationTo.date('2-digit year');
 			}	
@@ -52,9 +48,7 @@ app.component('opportunity-phases-timeline', {
 			return false;
 		},
 
-		hour(id) {
-			let item = this.getItemById(id);
-
+		hour(item) {
 			if (item.registrationTo) {
 				return item.registrationTo.time();
 			}
@@ -64,9 +58,7 @@ app.component('opportunity-phases-timeline', {
 			return false;
 		},
 
-		isActive(id) {
-			let item = this.getItemById(id);
-
+		isActive(item) {
 			if (item.isLastPhase) {
 				return !item.publishedRegistrations && item.publishTimestamp?.isPast();
 			}
@@ -82,9 +74,15 @@ app.component('opportunity-phases-timeline', {
 			return false;
 		},
 
-		itHappened(id) {
-			let item = this.getItemById(id);
-			
+		isDataCollectionPhase(item) {
+			return item.__objectType == 'opportunity' && !item.isLastPhase;
+		},
+
+		isEvaluationPhase(item) {
+			return item.__objectType == 'evaluationmethodconfiguration';
+		},
+
+		itHappened(item) {
 			if (item.isLastPhase) {
 				return item.publishedRegistrations;
 			}
@@ -100,8 +98,23 @@ app.component('opportunity-phases-timeline', {
 			return false;
 		},
 
-		getItemById(id) {
-			return this.phases.find(x => x.id === id);
+		shouldShowResults(item) {
+			// se é uma fase de avaliação que não tem uma fase de coleta de dados anterior
+			const isEvaluation = item.__objectType == 'evaluationmethodconfiguration';
+
+			// se é uma fase de coleta de dados que não tem uma fase de avaliação posterior
+			const isRegistrationOnly = item.__objectType == 'opportunity' && !item.evaluationMethodConfiguration;
+
+			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
+
+			return phaseOpportunity.publishedRegistrations && (isRegistrationOnly || isEvaluation);
+		
 		},
+
+		getRegistration(item) {
+			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
+			
+			return $MAPAS.registrationPhases ? $MAPAS.registrationPhases[phaseOpportunity.id] : null;
+		}
 	}
 });
