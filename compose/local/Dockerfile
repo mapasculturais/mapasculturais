@@ -83,6 +83,9 @@ RUN find . -maxdepth 1 -mindepth 1 -exec echo "compilando sass do tema " {} \; -
 
 COPY src/protected /var/www/html/protected
 
+RUN mkdir /var/www/html/protected/DoctrineProxies
+RUN chown www-data: /var/www/html/protected/DoctrineProxies
+
 RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
 
 COPY scripts /var/www/scripts
