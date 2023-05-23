@@ -44,6 +44,7 @@ return array(
             'label' => 'Pessoa com deficiência',
             'type' => 'multiselect',
             'options' => [
+                '' => MapasCulturais\i::__('Não sou'),
                 MapasCulturais\i::__('Visual'),
                 MapasCulturais\i::__('Mental'),
                 MapasCulturais\i::__('Física'),
