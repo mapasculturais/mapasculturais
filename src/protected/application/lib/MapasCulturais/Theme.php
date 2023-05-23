@@ -688,7 +688,11 @@ abstract class Theme extends \Slim\View {
         }
 
         if ($app->mode == APPMODE_DEVELOPMENT) {
-            echo "<!-- TEMPLATE HOOK: $hook -->";
+            echo "\n<!-- TEMPLATE HOOK: $hook -->\n";
+            if($this->version >= 2) {
+                $this->import('mc-debug');
+                echo "<mc-debug type='template-hook' name='$hook'></mc-debug>\n";
+            }
         }
         $app->applyHookBoundTo($this, $hook, $args);
     }

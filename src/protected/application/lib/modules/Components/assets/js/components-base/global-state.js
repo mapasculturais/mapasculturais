@@ -19,7 +19,8 @@ globalThis.useGlobalState = Pinia.defineStore('globalState', {
         }
         return {
             visibleFooter: true,
-            auth
+            auth,
+            showTemplateHook: false,
         }
     },
 
@@ -39,3 +40,10 @@ globalThis.app.use({
         app.config.globalProperties.global = useGlobalState();
     }
 });
+
+globalThis.addEventListener('keydown', function(event) {
+    if(event.ctrlKey && event.shiftKey && event.altKey) {
+        const global = useGlobalState();
+        global.showTemplateHook = !global.showTemplateHook;
+    }
+})

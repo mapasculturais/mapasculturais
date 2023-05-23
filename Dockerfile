@@ -73,6 +73,9 @@ COPY src/protected /var/www/html/protected
 
 RUN pnpm install --recursive && pnpm run build 
 
+RUN mkdir /var/www/html/protected/DoctrineProxies
+RUN chown www-data: /var/www/html/protected/DoctrineProxies
+
 RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
 
 COPY scripts /var/www/scripts
