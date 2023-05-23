@@ -46,8 +46,6 @@
     }
 
     &.isOpen {
-        position: absolute;
-        z-index: 2;
         width: 100%;
         max-width: size(311);
 
