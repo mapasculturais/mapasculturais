@@ -29,7 +29,7 @@ $prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => 
                 <?php $this->part('registrationsStatus', ['data' => $registrationsByStatus, 'opportunity' => $opportunity, 'self' => $self]);?>
             <?php } ?>
 
-            <?php if ($opportunity->evaluationMethod->slug == 'technical') { ?>
+            <?php if ($opportunity->evaluationMethod && $opportunity->evaluationMethod->slug == 'technical') { ?>
                 <?php if (isset($registrationsByEvaluation)) {?>
                     <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation, 'opportunity' => $opportunity, 'self' => $self, 'statusRegistration' => $statusRegistration]);?>
                 <?php } ?>

@@ -113,8 +113,8 @@ app.component('opportunity-phases-timeline', {
 
 		getRegistration(item) {
 			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
-
-			return $MAPAS.registrationPhases[phaseOpportunity.id];
+			
+			return $MAPAS.registrationPhases ? $MAPAS.registrationPhases[phaseOpportunity.id] : null;
 		}
 	}
 });
