@@ -56,7 +56,6 @@ app.component('opportunity-subscription' , {
 
             let registrationStatus = this.registrationStatus(this.dateStart, this.dateEnd);
 
-            console.log(this.isPublished);
             if (this.isPublished) {
                 description = this.text('resultado publicado');
             } else if (!this.dateStart) {
@@ -143,7 +142,7 @@ app.component('opportunity-subscription' , {
                 }
             }     
         },
-        subscribe() {
+        async subscribe() {
             const messages = useMessages();
 
             if (!this.agent && this.categories?.length && !this.category) {
@@ -167,9 +166,33 @@ app.component('opportunity-subscription' , {
             }
 
             registration.disableMessages();
-            registration.save().then(() => {
-                window.location.href = registration.editUrl;
-            });
+            try {
+                await registration.save().then(res => {
+                    window.location.href = registration.editUrl;
+                });    
+            } catch (error) {
+                if (error.error) {
+                    for (let key in error.data) {
+                        if (error.data[key] instanceof Array) {
+                            for (let val of error.data[key]) {
+                                messages.error(val);
+                            }
+                        }
+                        if (!(error.data[key] instanceof Array)) {
+                            for (let _key in error.data[key]) {
+                                if (error.data[key][_key] instanceof Array) {
+                                    for (let _val of error.data[key][_key]) {
+                                        messages.error(_val);
+                                    }
+                                } else {
+                                    messages.error(error.data[key][_key]);
+                                }
+                            }
+                        }
+                    }
+                    this.processing = false;
+                }
+            }
         }
     }
 });
