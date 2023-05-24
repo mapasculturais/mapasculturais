@@ -971,7 +971,7 @@ class Module extends \MapasCulturais\Module{
                     $validations['registrationFrom']["\$value >= new DateTime('$previous_date')"] = i::__('A data inicial deve ser maior que a data final da fase anterior');
                     
                     if ($this->isLastPhase && $this->publishTimestamp < $previous->registrationTo) {
-                        $validations['publishTimestamp']["\$value >= new DateTime('$previous_date')"] = i::__('A data de publicação do resultado deve ser maior que a data final das inscrições');
+                        $validations['publishTimestamp']["\$value >= new DateTime('$previous_date')"] = i::__('A data de publicação do resultado deve ser maior que a data final da fase anterior');
                     }
                 }
             }
