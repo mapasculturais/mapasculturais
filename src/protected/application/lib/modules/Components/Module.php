@@ -28,6 +28,7 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueScript('components', 'components-mcdate', 'js/components-base/McDate.js');
             $app->view->enqueueScript('components', 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api', 'components-entityFile', 'components-entityMetalist', 'components-mcdate']);
             $app->view->enqueueScript('components', 'components-utils', 'js/components-base/Utils.js', ['components-init']);
+            $app->view->enqueueScript('components', 'components-global-state', 'js/components-base/global-state.js', ['components-utils']);
             $app->view->enqueueStyle($vendor_group, 'vue-datepicker', '../node_modules/@vuepic/vue-datepicker/dist/main.css');
             $app->view->enqueueStyle($vendor_group, 'floating-vue', '../node_modules/floating-vue/dist/style.css');
             $app->view->enqueueStyle($vendor_group, 'components-carousel', 'css/components-base/carousel.css');
@@ -49,13 +50,20 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('mapas.printJsObject:before', function () use($app) {
             $roles = [];
+            $user = $app->user;
 
-            if (!$app->user->is('guest')) {
-                foreach($app->user->roles as $role){
-                    $roles[] = $role->name;
+            if (!$user->is('guest')) {
+                $subsite_id = $app->getCurrentSubsiteId();
+
+                foreach($user->roles as $role) {
+                    $role_name = $role->name;
+                    $role_definition = $app->getRoleDefinition($role_name);
+
+                    if(!($role_definition->subsiteContext ?? false) || $role->subsiteId == $subsite_id) {
+                        $roles[] = $role->name;
+                    }
                 }
 
-                $user = $app->user;
                 if ($user->is('admin')) {
                     $roles[] = 'admin';
                 }
@@ -73,7 +81,7 @@ class Module extends \MapasCulturais\Module {
                 }
             }
             
-            $this->jsObject['currentUserRoles'] = $roles;
+            $this->jsObject['currentUserRoles'] = array_unique($roles);
         }); 
 
         $app->hook('mapas.printJsObject:after', function () use($app) {
@@ -91,11 +99,53 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('template(<<*>>.body):begin', function () {
             $this->part('main-app--begin');
+            $this->insideApp = true;
         });
 
         $app->hook('template(<<*>>.body):end', function () {
+            $this->insideApp = false;
             $this->part('main-app--end');
         },1000);
+        
+        $app->hook('template(<<*>>):<<*>>', function () use($app) {
+            $hook = $app->hookStack[count($app->hookStack) - 1]->name;
+            if($this->version >= 2 && $this->insideApp) {
+                $this->import('mc-debug');
+                echo "<mc-debug type='template-hook' name='$hook'></mc-debug>\n";
+            }
+        });
+
+        /** 
+         * Cria um hook para o componente
+         * 
+         * o hook será no formato "component(component-name):param1" quando só um parâmtro for enviado
+         * o hook será no formato "component(component-name).param1:param2" quando 2 parâmtros forem enviados
+         * 
+         * @param string $param1
+         * @param string $param2
+         * @param string $sufix
+         */
+        $app->hook('Theme::applyComponentHook', function ($result, string $sufix, $param1 = [], $param2 = []) use($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
+            $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,3);
+            preg_match("#.+?/([^/]+)/template.php#", $bt[2]['file'], $match);
+            $component_name = $match[1];
+            if(is_string($param1)) {
+                $hook_name = "component($component_name).$sufix:$param1";
+                $params = $param2;
+            } else {
+                $hook_name = "component($component_name):$sufix";
+                $params = $param1;
+            }
+
+            if ($app->mode == APPMODE_DEVELOPMENT) {
+                $this->import('mc-debug');
+                echo "<mc-debug type='component-hook' name='$hook_name'></mc-debug>";
+            }
+
+            $app->applyHookBoundTo($this, $hook_name, $params);
+        });
 
         /**
          * Importa um componente
@@ -105,6 +155,8 @@ class Module extends \MapasCulturais\Module {
          * @param array $dependences Dependências do componente
          */
         $app->hook('Theme::import', function ($result, string $component, array $data = [], array &$dependences = []) use($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             $component = trim($component);
 
             if (!$this->importedComponents) {
@@ -155,6 +207,8 @@ class Module extends \MapasCulturais\Module {
          * @param array $dependences Dependências do componente
          */
         $app->hook('Theme::enqueueComponentScript', function ($result, string $component, array $dependences = []) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             $texts_filename = $this->resolveFilename("components/{$component}", 'texts.php');
             if($texts_filename && is_file($texts_filename)) {
                 $texts = include $texts_filename;
@@ -170,6 +224,8 @@ class Module extends \MapasCulturais\Module {
          * @param array $dependences Dependências do componente
          */
         $app->hook('Theme::enqueueComponentStyle', function ($result, string $component, array $dependences = []) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             if($this->resolveFilename("components/{$component}", 'style.css')) {
                 $this->enqueueStyle('components', $component, "../components/{$component}/style.css", $dependences);
             }
@@ -184,6 +240,8 @@ class Module extends \MapasCulturais\Module {
          * @return string
          */
         $app->hook('Theme::componentRender', function ($result, string $component, array $__data = []) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
             $app = App::i();
 
             $app->applyHookBoundTo($this, "component({$component}):params", [&$component, &$__data]);
@@ -194,27 +252,29 @@ class Module extends \MapasCulturais\Module {
                 throw new Exceptions\TemplateNotFound("Component {$component} not found");
             }
 
-            $app->applyHookBoundTo($this, "component({$component}):before", [&$__template_path]);
-
+            
             ob_start(function ($output) {
                 return $output;
             });
 
             if ($app->mode == APPMODE_DEVELOPMENT) {
-                echo "<!-- $component -->\n";
+                echo "<!-- $component -->";
             }
 
+            $app->applyHookBoundTo($this, "component({$component}):before", [&$__data, &$__template_path]);
+            
             extract($__data);
 
             include $__template_path;
-
+            
+            
+            $app->applyHookBoundTo($this, "component({$component}):after", [$__data]);
+            
             if ($app->mode == APPMODE_DEVELOPMENT) {
-                echo "\n<!-- /$component -->\n";
+                echo "<!-- /$component -->";
             }
 
             $__html = ob_get_clean();
-
-            $app->applyHookBoundTo($this, "component({$component}):after", [$__template_path, &$__html]);
 
             return $__html;
         });

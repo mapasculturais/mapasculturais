@@ -98,6 +98,9 @@ $this->import('
                     </div>
                 </div>
             </template>
+            <template #empty>
+                <p></p>
+            </template>
             <template #loading>
                 <div>
                     <mc-icon name="loading"></mc-icon>

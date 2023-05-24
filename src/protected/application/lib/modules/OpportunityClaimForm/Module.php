@@ -32,17 +32,6 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        // adiciona seção de configuração do formulário de recurso
-        $app->hook("view.partial(singles/opportunity-registrations--export):after", function(){
-            $this->part('claim-configuration', ['opportunity' => $this->controller->requestedEntity]);
-        });
-
-        // adiciona o botão de recurso na lista de
-        $app->hook("template(opportunity.<<*>>.user-registration-table--registration--status):end", function ($registration, $opportunity){
-            if($registration->canUser('sendClaimMessage')){
-                $this->part('claim-form', ['registration' => $registration, 'opportunity' => $opportunity]);
-            }
-        });
 
         // ação de enviar recurso
         $app->hook('POST(opportunity.sendOpportunityClaimMessage)', function() use($app) {
@@ -89,6 +78,27 @@ class Module extends \MapasCulturais\Module{
                     'subject' => $message['title'],
                     'body' => $message['body']
                 ]);
+            }
+        });
+
+        $app->hook('app.init:after', function () use($app) {
+            if ($app->view->version >= 2) {
+                $app->hook('component(opportunity-phases-timeline).registration:end', function () {
+                    $this->part('opportunity-claim-form-component');
+                });
+
+            } else {
+                // adiciona seção de configuração do formulário de recurso
+                $app->hook("view.partial(singles/opportunity-registrations--export):after", function(){
+                    $this->part('claim-configuration', ['opportunity' => $this->controller->requestedEntity]);
+                });
+        
+                // adiciona o botão de recurso na lista de
+                $app->hook("template(opportunity.<<*>>.user-registration-table--registration--status):end", function ($registration, $opportunity){
+                    if($registration->canUser('sendClaimMessage')){
+                        $this->part('claim-form', ['registration' => $registration, 'opportunity' => $opportunity]);
+                    }
+                });
             }
         });
     }

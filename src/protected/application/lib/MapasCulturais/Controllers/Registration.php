@@ -195,37 +195,38 @@ class Registration extends EntityController {
 
         }        
     }
-    
-    public function POST_reopenEvaluation(){
-      $this->requireAuthentication();
 
-      $app = App::i();
+    public function POST_reopenEvaluation()
+    {
+        $this->requireAuthentication();
 
-      if(!$this->urlData['id'] || !$this->urlData['uid']){
-        $app->pass();
+        $app = App::i();
+
+        if (!$this->urlData['id']) {
+            $app->pass();
         }
 
-      $entity = $this->repository->find($this->data['id']);
-      $user = $app->repo("User")->find($this->data['uid']);
+        $uid = isset($this->data['uid']) ? $this->data['uid'] : $app->user->id;
+        $entity = $this->repository->find($this->data['id']);
+        $user = $app->repo("User")->find($uid);
 
-      if($evaluation = $entity->getUserEvaluation($user)){
+        if ($evaluation = $entity->getUserEvaluation($user)) {
 
-        $today = new DateTime("now");
-        $evaluationMethod = $evaluation->evaluationMethodConfiguration;
+            $today = new DateTime("now");
+            $evaluationMethod = $evaluation->evaluationMethodConfiguration;
 
-            if($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo){
-            $evaluation->registration->opportunity->checkPermission('reopenValuerEvaluations');
-            $evaluation->status = RegistrationEvaluation::STATUS_EVALUATED;
-            $evaluation->save(true);
-            $this->json($entity);
+            if ($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo) {
+                $evaluation->registration->checkPermission('evaluate');
+                $evaluation->status = RegistrationEvaluation::STATUS_DRAFT;
+                $evaluation->save(true);
+                $this->json($entity);
             }
-       
+
             return null;
         }
-
     }
 
-    public function GET_sendEvaluation(){
+    public function POST_sendEvaluation(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -243,7 +244,7 @@ class Registration extends EntityController {
             $evaluationMethod = $evaluation->evaluationMethodConfiguration;
            
             if($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo){
-                $evaluation->registration->opportunity->checkPermission('viewUserEvaluation');
+                $evaluation->registration->checkPermission('evaluate');
                 $evaluation->status = RegistrationEvaluation::STATUS_SENT;
                 $evaluation->save(true);
                 $this->json($entity);

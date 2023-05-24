@@ -68,71 +68,28 @@ app.component('panel--last-edited', {
 
             // carousel settings
             settings: {
-
+                itemsToScrool: 1.4,
                 itemsToShow: 1.2,
                 snapAlign: 'center',
             },
             breakpoints: {
-                1300: {
-                    itemsToScrool: 2.95,
-                    itemsToShow: 2.3,
-                    snapAlign: "start"
-                },
+            
                 1200: {
                     itemsToScrool: 2.8,
                     itemsToShow: 2.2,
                     snapAlign: "start"
                 },
-                1100: {
-                    itemsToScrool: 2.6,
-                    itemsToShow: 2,
-                    snapAlign: "start"
-                },
-                1000: {
-                    itemsToShow: 1.8,
-                    snapAlign: "start"
-                },
+          
                 900: {
-                    itemsToShow: 1.4,
+                    itemsToShow: 1.6,
                     snapAlign: "start"
                 },
-                800: {
-                    itemsToShow: 1.2,
-                    snapAlign: "start"
-                },
-                700: {
-                    itemsToShow: 1.8,
-                    snapAlign: "start"
-                },
-                600: {
-                    itemsToScrool: 1.8,
-
-                    itemsToShow: 1.9,
-                    snapAlign: "start"
-                },
-                500: {
-                    itemsToScrool: 1.5,
-
-                    itemsToShow: 1.25,
-                    snapAlign: "start"
-                },
+               
                 400: {
-                    itemsToScrool: 1.4,
+                    itemsToScrool: 1.25,
 
-                    itemsToShow: 1.2,
-                    snapAlign: "start"
-                },
-                360: {
-                    itemsToScrool: 1,
-
-                    itemsToShow: 1.,
-                    snapAlign: "start"
-                },
-                340: {
-                    itemsToScrool: 1,
-
-                    itemsToShow: 1.,
-                    snapAlign: "start"
+                    itemsToShow: 1.15,
+                    snapAlign: "center"
                 },
             }
         }

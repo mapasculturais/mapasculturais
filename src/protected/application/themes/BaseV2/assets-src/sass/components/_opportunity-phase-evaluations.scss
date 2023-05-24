@@ -1,0 +1,141 @@
+@use '../settings/mixins' as *;
+
+section.tab-component.evaluations {
+    background-color: var(--mc-gray-100);
+    padding-inline: size(16);
+}
+
+.action-single.controller-opportunity .tabs-component__buttons {
+    gap: size(49);
+
+    @media (max-width: size(600)) {
+        gap: size(40);
+    }
+}
+
+.stepper-evaluations {
+    &__title {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 700;
+        font-size: size(18);
+        line-height: size(25);
+        padding-bottom: size(7);
+
+        &.secondTitle {
+            padding-top: size(44);
+        }
+    }
+
+    .line {
+        max-width: 1170px;
+        width: 100%;
+        height: 1px;
+        padding-bottom: size(24);
+        border-top: 0.5px solid var(--mc-gray-300);
+    }
+
+    .card-evaluation {
+        border-radius: size(4);
+        background-color: var(--mc-high-300);
+        padding: 16px;
+
+        display: flex;
+        flex-direction: column;
+        // justify-items: end;
+
+        img {
+            display: none;
+        }
+
+        &__content {
+            &--title {
+                font-family: 'Open Sans';
+                font-style: normal;
+                font-weight: 700;
+                font-size: size(24);
+                line-height: size(28);
+                padding: size(16) 0 size(8) size(24);
+
+            }
+
+            &--items {
+                border: 1px solid var(--mc-gray-100);
+                border-radius: 4px;
+                display: flex;
+                flex-direction: column;
+                max-width: size(1122);
+                margin: 0 size(24) size(16) size(24);
+
+                .phase {
+                    display: flex;
+                    flex-direction: row;
+                    gap: size(40);
+                    padding: size(16) 0 size(16) size(11);
+
+                    &__title {
+                        &--title {
+                            text-transform: uppercase;
+                            font-family: 'Open Sans';
+                            font-style: normal;
+                            font-weight: 400;
+                            font-size: 14px;
+                            line-height: 19px;
+                        }
+
+                        .item {
+                            font-weight: 600;
+                            font-size: size(14);
+                        }
+                    }
+                }
+
+                .period {
+                    padding: 0 0 size(16) size(11);
+
+                    &__label {
+                        text-transform: uppercase;
+                        font-family: "Open Sans";
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: 14px;
+                        line-height: 19px;
+                    }
+
+                    &__content {
+                        font-weight: 600;
+                        font-size: 14px;
+
+                    }
+                }
+            }
+        }
+
+        .btn {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .evaluation-button {
+            width: size(272);
+            border-radius: size(8);
+            display: flex;
+            flex-direction: row;
+            height: size(48);
+            align-items: center;
+            justify-content: flex-end;
+            gap: size(75);
+            background-color: var(--mc-primary-500);
+            color: var(--mc-white);
+
+        }
+    }
+
+    .out-evalution {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 400;
+        font-size: size(16);
+        line-height: size(22);
+    }
+}

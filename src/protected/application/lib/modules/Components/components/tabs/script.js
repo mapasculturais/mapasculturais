@@ -2,6 +2,10 @@ app.component('tabs', {
     template: $TEMPLATES['tabs'],
 
     props: {
+        class: {
+            type: [String, Array, Object],
+            default: ''
+        },
         defaultTab: {
             type: String,
             default: null
@@ -77,7 +81,13 @@ app.component('tabs', {
             ...Vue.toRefs(state),
             isActive,
             findTab,
-            selectTab
+            selectTab,
+        }
+    },
+
+    computed: {
+        classes() {
+            return this.class;
         }
     }
 });

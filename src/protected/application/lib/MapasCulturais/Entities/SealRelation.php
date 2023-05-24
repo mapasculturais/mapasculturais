@@ -39,7 +39,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="seal_relation_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * A entidade que recebe o selo

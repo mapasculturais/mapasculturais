@@ -855,6 +855,8 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
 
+            $this->jsObject['userProfile'] = $app->user->profile;
+
             $this->jsObject['assets'] = array();
             $this->jsObject['templateUrl'] = array();
             $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false, false);
@@ -3089,7 +3091,7 @@ class Theme extends MapasCulturais\Theme {
         $app = \MapasCulturais\App::i();
         $view = $app->getView();
 
-        return ( $view->template === "site/index" && $view->getController()->action === "index" );
+        return ( $view->template === "site/index" && $view->controller->action === "index" );
     }
 
     public function getLoginLinkAttributes() {

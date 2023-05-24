@@ -91,8 +91,9 @@ $this->import('
 
                 <div class="grid-12">
                     <div v-if="frequency=='once'" class="col-6 sm:col-12">
-                        <div class="create-occurrence__section--field">
-                            <span class="label"><?= i::_e('Data inicial:') ?></span>                            
+                        <div class="create-occurrence__section--field field">
+                            <span class="label"><?= i::_e('Data inicial:') ?></span>   
+
                             <datepicker 
                                 :locale="locale" 
                                 format="dd/MM/yyyy"
@@ -100,7 +101,11 @@ $this->import('
                                 :enableTimePicker='false' 
                                 :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
                                 v-model="startsOn"
-                                multiCalendarsSolo autoApply utc></datepicker>
+                                text-input autoApply :teleport="true">
+                                <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
+                                    <input type="text" data-maska="##/##/####" :value="value" maxlength="10" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
+                                </template>
+                            </datepicker>
                         </div>
 
                         <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsOn']">        
@@ -109,8 +114,9 @@ $this->import('
                     </div>
 
                     <div v-if="frequency!=='once'" class="col-6 sm:col-12">
-                        <div class="create-occurrence__section--field">
-                            <span class="label"><?= i::_e('Data inicial - Data final:') ?></span>                            
+                        <div class="create-occurrence__section--field field">
+                            <span class="label"><?= i::_e('Data inicial - Data final:') ?></span>            
+
                             <datepicker 
                                 :locale="locale" 
                                 format="dd/MM/yyyy"
@@ -118,7 +124,11 @@ $this->import('
                                 v-model="dateRange" 
                                 :enableTimePicker='false' 
                                 :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
-                                range multiCalendars multiCalendarsSolo autoApply utc></datepicker>
+                                range multiCalendars multiCalendarsSolo autoApply text-input utc :teleport="true">
+                                <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
+                                    <input type="text" data-maska="##/##/#### - ##/##/####" :value="value" maxlength="23" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
+                                </template>
+                            </datepicker>
                         </div>
 
                         <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsOn']">        
@@ -136,9 +146,15 @@ $this->import('
 
                 <div class="grid-12">
                     <div class="col-6 sm:col-12">                        
-                        <div class="create-occurrence__section--field">
+                        <div class="create-occurrence__section--field field">
                             <span class="label"><?= i::_e('Horário inicial:') ?></span>
-                            <datepicker v-model="startsAt" timePicker autoApply></datepicker>
+
+                            <datepicker v-model="startsAt" text-input timePicker autoApply :teleport="true">
+                                <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
+                                    <input type="text" data-maska="##:##" :value="value" maxlength="5" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
+                                </template>
+                            </datepicker>
+
                             <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsAt']">        
                                 {{this.newOccurrence.__validationErrors['startsAt'].join('; ')}}
                             </small>
@@ -146,9 +162,15 @@ $this->import('
                     </div>
 
                     <div class="col-6 sm:col-12">
-                        <div class="create-occurrence__section--field">
+                        <div class="create-occurrence__section--field field">
                             <span class="label"><?= i::_e('Horário final:') ?></span>
-                            <datepicker v-model="endsAt" timePicker autoApply></datepicker>
+
+                            <datepicker v-model="endsAt" text-input timePicker autoApply :teleport="true">
+                                <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
+                                    <input type="text" data-maska="##:##" :value="value" maxlength="5" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
+                                </template>
+                            </datepicker>
+
                             <small class="field__error" v-if="this.newOccurrence.__validationErrors['endsAt']">        
                                 {{this.newOccurrence.__validationErrors['endsAt'].join('; ')}}
                             </small>                            
@@ -174,7 +196,7 @@ $this->import('
                         <div class="col-6 sm:col-12" v-if="!free">
                             <div class="create-occurrence__section--field">
                                 <span class="label"><?= i::_e('Valor da entrada:') ?></span>
-                                <input type="text" @input="priceMask" v-model="price" /> <!-- v-model="entity.rule.price" -->
+                                <input type="text" @input="priceMask" v-model="price" />
                                 <small class="field__error" v-if="this.newOccurrence.__validationErrors['price']">        
                                     {{this.newOccurrence.__validationErrors['price'].join('; ')}}
                                 </small>  

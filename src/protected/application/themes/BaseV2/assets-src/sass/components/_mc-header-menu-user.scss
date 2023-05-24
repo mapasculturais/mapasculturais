@@ -102,6 +102,8 @@
                 display: block;
                 height: calc(100% - 90px);
                 padding: size(16) size(16) size(70);
+                display: flex;
+                flex-direction: column;
             }
         }
 
@@ -156,6 +158,11 @@
                         line-height: size(15);
                     }
                 }
+            }
+        }
+        @media (max-width:size(400)) {
+            .close {
+               height: size(53); 
             }
         }
 

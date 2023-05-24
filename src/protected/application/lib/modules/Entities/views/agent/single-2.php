@@ -5,6 +5,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    complaint-suggestion
     entity-actions
     entity-admins
     entity-files-list
@@ -61,7 +62,7 @@ $this->breadcrumb = [
                                 <entity-list v-if="entity.events?.length>0" title="<?php i::esc_attr_e('Eventos');?>" type="event" :ids="entity.events"></entity-list>
                                 <entity-list v-if="entity.children?.length>0" title="<?php i::esc_attr_e('Agentes');?>" type="agent" :ids="entity.children"></entity-list>
                                 <entity-list v-if="entity.projects?.length>0" title="<?php i::esc_attr_e('Projetos');?>" type="project" :ids="entity.projects"></entity-list>                                
-                                <entity-list title="<php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
+                                <entity-list title="<?php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
                             </div>
                         </div>
                     </main>
@@ -76,6 +77,11 @@ $this->breadcrumb = [
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
                             
                             <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
+                        </div>
+                    </aside>
+                    <aside>
+                        <div class="grid-12">
+                            <complaint-suggestion :entity="entity"></complaint-suggestion>
                         </div>
                     </aside>
                 </mapas-container>

@@ -2,16 +2,13 @@
 
 use MapasCulturais\i;
 
-$this->import('mc-icon');
+$this->import('mc-icon mc-avatar');
 ?>
 
-<div :class="['entity-card', {'portrait':portrait}]">
+<div class="entity-card" :class="classes">
 	<div class="entity-card__header" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
 		<div class="entity-card__header user-details">
-			<div class="user-image">
-				<img v-if="entity.files?.avatar" :src="entity.files?.avatar?.transformations?.avatarMedium.url" />
-				<mc-icon v-else :entity="entity"></mc-icon>
-			</div>
+			<mc-avatar class="user-image" :entity="entity"></mc-avatar>
 			<div class="user-info" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
 				<label class="user-info__name">
 					{{entity.name}}
@@ -20,7 +17,7 @@ $this->import('mc-icon');
 					<slot name="type">
 						<span v-if="entity.type"> <?php i::_e('Tipo:') ?> {{entity.type.name}} </span>
 					</slot>
-					
+
 				</div>
 			</div>
 		</div>
@@ -32,7 +29,7 @@ $this->import('mc-icon');
 	</div>
 
 	<div class="entity-card__content">
-	
+
 		<div v-if="entity.__objectType=='space'" class="entity-card__content--description">
 
 			<label v-if="entity.endereco" class="entity-card__content--description-local"><?= i::_e('ONDE: ') ?></label> <strong class="entity-card__content--description-adress">{{entity.endereco}}</strong>
@@ -41,7 +38,7 @@ $this->import('mc-icon');
 			<span class="short-span">{{showShortDescription}}</span>
 		</div>
 		<div v-if="entity.__objectType=='space'" class="entity-card__content--description">
-		
+
 			<label><?= i::_e('ACESSIBILIDADE:') ?>
 				<strong v-if="entity.acessibility">
 					<strong><?= i::_e('Oferece: ') ?></strong>
@@ -51,7 +48,7 @@ $this->import('mc-icon');
 			</label>
 		</div>
 		<div class="entity-card__content--terms">
-			
+
 			<div v-if="areas" class="entity-card__content--terms-area">
 				<label class="area__title">
 					<?php i::_e('Áreas de atuação:') ?> ({{entity.terms.area.length}}):
@@ -81,7 +78,9 @@ $this->import('mc-icon');
 				<label class="seals__title">
 					<?php i::_e('Selos') ?> ({{entity.seals.length}}):
 				</label>
-				<div v-for="seal in seals" class="seals__seal"></div>
+				<div v-for="seal in seals" class="seals__seal" :title="seal.name">
+					<img class="sealImage" :src="seal.files.avatar?.transformations?.avatarSmall?.url">
+				</div>
 				<div v-if="seals.length == 2" class="seals__seal more">+1</div>
 			</div>
 		</div>

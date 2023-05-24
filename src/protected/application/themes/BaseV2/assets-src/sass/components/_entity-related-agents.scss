@@ -56,25 +56,25 @@
                 position: relative;
                 width: size(40);
 
-                    &__img {
-                        align-items: center;
-                        background: var(--mc-gray-500);
-                        border-radius: 50%;
-                        display: flex;
-                        height: size(40);
-                        justify-content: center;
-                        overflow: hidden;
-                        width: 100%;
-                        width: size(40);
+                &__img {
+                    align-items: center;
+                    background: var(--mc-gray-500);
+                    border-radius: 50%;
+                    display: flex;
+                    height: size(40);
+                    justify-content: center;
+                    overflow: hidden;
+                    width: 100%;
+                    width: size(40);
 
-                        &--img {
-                            max-width: 100%;
-                        }
-
-                        .iconify {
-                            color: var(--mc-high-500);
-                        }
+                    &--img {
+                        max-width: 100%;
                     }
+
+                    .iconify {
+                        color: var(--mc-high-500);
+                    }
+                }
 
                 &__delete {
                     align-items: center;
@@ -118,6 +118,18 @@
         display: flex;
         flex-direction: column;
         gap: size(8);
+
+        &--newGroup {
+            input[type="text"] {
+                height: size(46);
+                width: size(290);
+            }
+            input::placeholder {
+                font-size: size(16);
+                padding-left: size(3);
+            }
+        }
+
 
         &--title {
             color: var(--mc-black);

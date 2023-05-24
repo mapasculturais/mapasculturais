@@ -119,7 +119,7 @@
         }
 
         &-outline {
-            background-color: transparent;
+            background-color: var(--mc-white);
             border: size(2) solid var(--mc-primary-500);
             color: var(--mc-primary-500);
 

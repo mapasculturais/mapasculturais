@@ -60,7 +60,7 @@ class Entity {
                 val.lng = val.lng ?? 0;
             }
 
-            if(prop == 'type' && typeof val == 'number') {
+            if(prop == 'type' && (typeof val == 'number')) {
                 val = {
                     id: val, 
                     name: __properties['type']?.options?.[val]
@@ -125,7 +125,7 @@ class Entity {
     }
 
     populateMetalists(metalists) {
-        this.metalists = {};
+        this.metalists = this.metalists || {};
         for (let groupName in metalists) {
             const group = metalists[groupName];
             this.metalists[groupName] = group.map((data) => new EntityMetalist(this, groupName, data));
@@ -177,12 +177,12 @@ class Entity {
                 }
             }
             
-            if (prop == 'type' && typeof val == 'object') {
-                val = val.id;
-            }
-
-            if (typeof val == 'object') {
-                result[prop] = Object.assign({}, val);
+            if (val && (typeof val == 'object')) {
+                if (prop == 'type') {
+                    val = val.id;
+                } else {
+                    result[prop] = Object.assign({}, val);
+                }
             } else {
                 result[prop] = val;
             }
@@ -209,26 +209,27 @@ class Entity {
         }
 
         if(this.terms) {
-            result.terms = this.terms;
+            result.terms = JSON.parse(JSON.stringify(this.terms));
         }
 
         if(onlyModifiedFields) {
-            const modifiedFields = {};
-
             for(let key in result) {
-                if(result[key] == this.__originalValues[key]) {
-                    continue;
-                } else if(JSON.stringify(result[key]) == JSON.stringify(this.__originalValues[key])){
-                    continue;
+                if(JSON.stringify(result[key]) == JSON.stringify(this.__originalValues[key])){
+                    delete result[key];
                 }
-
-                modifiedFields[key] = result[key];
             }
+        } 
 
-            return modifiedFields;
-        } else {
-            return result;
+        for(let key in result) {
+            if(typeof result[key] == 'object' && !result[key] instanceof Entity) {
+                if(result[key] instanceof Array) {
+                    result[key] = [...result[key]];
+                } else {
+                    result[key] = {...result[key]};
+                }
+            }
         }
+        return result;
 
     }
 
@@ -682,8 +683,10 @@ class Entity {
     }
 
     async changeOwner(ownerId) {
+        const global = useGlobalState();
+
         this.__processing = this.text('alterando propriedade da entidade');
-        ownerId = ownerId || $MAPAS.userProfile.id;
+        ownerId = ownerId || global.auth.user?.profile?.id;
 
         if (!ownerId) {
             return Promise.reject('ownerId indefinido');

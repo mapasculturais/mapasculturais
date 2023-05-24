@@ -39,6 +39,14 @@ app.component('registration-actions', {
                 return this.text('Agente coletivo');
             }
 
+            if (field == 'projectName') {
+                return this.text('Nome do projeto');
+            }
+
+            if (field == 'space') {
+                return this.text('Espaço');
+            }
+
             if (field.slice(0, 6) == 'field_') {
                 for (let regField of this.fields) {
                     if (regField.fieldName == field) {
@@ -67,7 +75,11 @@ app.component('registration-actions', {
             }
         },
         async validate() {
-            await this.registration.POST('validateEntity', {});
+            await this.registration.POST('validateEntity', {}).then( success => {
+                if (success) {
+                    messages.success(this.text('Validado'));
+                }
+            });
         },
         async save() {
             const iframe = document.getElementById('registration-form');

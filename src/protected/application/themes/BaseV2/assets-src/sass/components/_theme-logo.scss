@@ -2,11 +2,12 @@
 @use 'sass:color';
 
 .theme-logo {
-    display: grid;
-    grid-template-columns: 35% 59%;
-    gap: 6%;
-    max-width: size(450);
     align-items: center;
+    display: grid;
+    flex-wrap: wrap;
+    gap: size(20);
+    grid-template-columns: 35% 59%;
+    max-width: size(450);
     text-decoration: none;
 
     -webkit-touch-callout: none;
@@ -16,36 +17,85 @@
    -ms-user-select: none;
    user-select: none;
 
+    &.onlyImg {
+        display: flex;
+        max-height: size(55);
+        width: unset;
+
+        .theme-logo {
+            &__logo {
+                &--img {
+                    padding: 0;
+
+                    img {
+                        max-height: size(55);
+                    }
+                }
+            }
+        }
+    }
+
     &__logo {
         display: grid;
         grid-template-columns: repeat(4, 25%);
+        margin: 0 auto;
+        max-width: 117px;
         padding: size(9) 0;
+        width: 100%;
 
-        &--part1,
-        &--part2 {
+        .part1, .part2, .part3, .part4 {
             width: 100%;
             aspect-ratio: 10/13;
         }
 
-        &--part1 {
-            background: var(--logo-color1);
+        .part1, .part3 {
             transform: skew(0, -19deg);
         }
 
-        &--part2 {
-            background: var(--logo-color2);
+        .part2, .part4 {
             transform: skew(0, 19deg);
         }
+
+        .part1 {
+            background-color: var(--logo-bg1);
+        }
+        
+        .part2 {
+            background-color: var(--logo-bg2);
+        }
+
+        .part3 {
+            background-color: var(--logo-bg3);
+        }
+
+        .part4 {
+            background-color: var(--logo-bg4);
+        }
+
+        &--img {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+            width: 100%;
+            max-height: size(55);
+
+            img {
+                width: auto;
+                max-height: size(55);
+            }
+        }
     }
+    
 
     &__text {
-        font-weight: 700;
-        font-size: size(18);
-        line-height: size(23);
-        letter-spacing: size(6.4);
         color: var(--mc-low-500);
         display: flex;
         flex-direction: column;
+        font-size: size(18);
+        font-weight: 700;
+        letter-spacing: size(6.4);
+        line-height: size(23);
 
         &--subtitle {
             font-weight: 400;

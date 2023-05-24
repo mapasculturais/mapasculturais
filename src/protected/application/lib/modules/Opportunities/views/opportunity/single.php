@@ -6,6 +6,7 @@ $this->addOpportunityPhasesToJs();
 $this->useOpportunityAPI();
 
 $this->import('
+    complaint-suggestion
     entity-actions
     entity-files-list
     entity-gallery
@@ -19,9 +20,11 @@ $this->import('
     entity-terms
     evaluations-list
     mapas-breadcrumb
+    opportunity-phase-evaluation
+    opportunity-phases-timeline
+    opportunity-rules
     opportunity-subscription
     opportunity-subscription-list
-    opportunity-phases-timeline
     share-links
     tabs
     v1-embed-tool
@@ -59,10 +62,13 @@ $this->breadcrumb = [
             <mapas-container>
                 <main>
                     <div class="grid-12">
-                        <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                         <div class="col-12">
-                            <entity-links :entity="entity" title="<?php i::esc_attr_e('Links'); ?>"></entity-links>
+                            <h3><?= i::__("Apresentação") ?></h3>
+                            <p v-html="entity.shortDescription"></p>
                         </div>
+                        <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Regulamento'); ?>"></opportunity-rules>
+                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
+                        <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Links'); ?>"></entity-links>
                         <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                         <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
                     </div>
@@ -78,17 +84,24 @@ $this->breadcrumb = [
                         <share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
                     </div>  
                 </aside>
+                <aside>
+                    <div class="grid-12">
+                        <complaint-suggestion :entity="entity"></complaint-suggestion>
+                    </div>
+                </aside>
             </mapas-container>
         </tab>
 
         <tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="entity.currentUserPermissions.evaluateRegistrations">
             <div class="opportunity-container">
-                <v1-embed-tool route="evaluationlist" :id="entity.id"></v1-embed-tool>
+                <opportunity-phase-evaluation></opportunity-phase-evaluation>
             </div>
-            <!-- <evaluations-list :entity="entity"></evaluations-list> -->
         </tab>
 
         <?php $this->part('opportunity-tab-results.php', ['entity' => $entity]); ?>
+        
+        <?php $this->part('opportunity-tab-support.php', ['entity' => $entity]); ?>
+
     </tabs>
     <entity-actions :entity="entity"></entity-actions>
 </div>

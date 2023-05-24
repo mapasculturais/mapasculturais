@@ -31,10 +31,14 @@ class Module extends \MapasCulturais\Module
 
     protected $inTransaction = false;
 
+    protected $disabled = false;
+
     function _init()
     {
+        return;
         $app = App::i();
         if ($app->view->version >= 2) {
+            $this->disabled = true;
             return;
         }
         
@@ -785,8 +789,9 @@ class Module extends \MapasCulturais\Module
 
     function register()
     {
+        return;
         $app = App::i();
-        if ($app->view->version >= 2) {
+        if ($app->view->version >= 2 || $this->disabled) {
             return;
         }
         $opportunity_repository = $app->repo('Opportunity');

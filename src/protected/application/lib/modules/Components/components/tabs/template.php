@@ -4,7 +4,7 @@ $this->import('
     tab
 ');
 ?>
-<div class="tabs-component">
+<div class="tabs-component" :class="classes">
     <div class="tabs-component__header">
         <div class="tabs-component__header--left">
             <slot name="before-tablist"></slot>

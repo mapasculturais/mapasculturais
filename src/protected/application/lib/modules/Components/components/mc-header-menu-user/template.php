@@ -20,7 +20,6 @@ $this->import('
     <!-- Menu desktop -->
     <?php $this->applyTemplateHook('header-menu-user--desktop', 'before'); ?>
     <popover openside="down-left" class="mc-header-menu-user__desktop">
-        <?php $this->applyTemplateHook('header-menu-user--desktop', 'begin'); ?>
         <template #button="{ toggle }">
             <a class="mc-header-menu-user__user" @click="toggle()">
                 <div class="mc-header-menu-user__user--name">
@@ -33,7 +32,7 @@ $this->import('
         </template>
         <template #default="popover">
             <?php $this->applyTemplateHook('header-menu-user--desktop', 'before') ?>
-            <panel--nav classes="user-menu" :entity="profile">
+            <panel--nav classes="user-menu">
                 <template #begin>
                     <?php $this->applyTemplateHook('header-menu-user--desktop', 'begin') ?>
                     <ul>
@@ -51,9 +50,7 @@ $this->import('
                     <?php $this->applyTemplateHook('header-menu-user--desktop', 'end') ?>
                 </template>
             </panel--nav>
-            <?php $this->applyTemplateHook('header-menu-user--desktop', 'after') ?>
         </template>
-        <?php $this->applyTemplateHook('header-menu-user--desktop', 'end'); ?>
     </popover>
     <?php $this->applyTemplateHook('header-menu-user--desktop', 'after'); ?>
 
@@ -79,7 +76,7 @@ $this->import('
                 </a>
             </div>
             <?php $this->applyTemplateHook('header-menu-user--mobile', 'before') ?>
-            <panel--nav :entity="profile">
+            <panel--nav>
                 <template #begin>
 
                     <?php $this->applyTemplateHook('header-menu-user--mobile', 'begin') ?>

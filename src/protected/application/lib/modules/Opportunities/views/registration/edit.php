@@ -52,11 +52,11 @@ $this->breadcrumb = $breadcrumb;
         <?= i::__('Formulário de inscrição') ?>
     </div>
 
-    <div class="registration__steps">
-        <registration-steps></registration-steps>
-    </div>
-
     <div class="registration__content">
+        <div class="registration__steps">
+            <registration-steps></registration-steps>
+        </div>
+
         <mapas-container>
             <main class="grid-12">
                 <div class="col-12 registration-info">

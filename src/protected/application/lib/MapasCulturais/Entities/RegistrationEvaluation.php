@@ -39,7 +39,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="registration_evaluation_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
@@ -97,6 +97,10 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     protected $status = self::STATUS_DRAFT;
 
     function save($flush = false){
+        if(empty($this->status)){
+            $this->status = self::STATUS_DRAFT;
+        }
+        
         parent::save($flush);
         $app = App::i();
         $opportunity = $this->registration->opportunity;
@@ -165,6 +169,10 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         }
     }
     
+    static function getControllerId(){
+        return "registrationevaluation";
+    }
+
     protected function genericPermissionVerification($user) {
         return $this->registration->opportunity->evaluationMethodConfiguration->canUser('@control', $user) && $this->user->profile->canUser('@control', $user);
     }
@@ -182,7 +190,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return true;
         }
 
-        if($this->registration->canUser('evaluate', $user) && $this->user->equals($user) && $this->status < self::STATUS_SENT){
+        if($this->registration->canUser('evaluate', $user) && $this->user->equals($user) && $this->status <= self::STATUS_SENT){
             return true;
         }
 

@@ -27,16 +27,15 @@ if($this->controller->action === 'create')
 
 <?php if(isset($compliant)): ?>
     <form ng-show="data.showForm === 'compliant'" class="form-complaint-suggestion js-compliant-form" ng-controller="CompliantController">
-        <?php if($user->is('guest')):?>
-        <p>
+        <p ng-if="!data.anonimous">
             <?php i::_e("Nome");?>:<br />
             <input ng-model="data.name" type="text" rows="5" name="nome" class="input-name">
         </p>
-        <p>
+        <p ng-if="!data.anonimous ||  data.copy">
             <?php i::_e("E-mail");?>:<br />
             <input ng-model="data.email" type="email" rows="5" name="email" class="input-email">
         </p>
-        <?php endif;?>
+        
         <p>
             <?php i::_e("Tipo");?>:</br>
             <select ng-model="data.type" ng-options="item for item in compliant_type" class="compliant-type"></select>
@@ -73,23 +72,19 @@ if($this->controller->action === 'create')
 
 <?php if(isset($suggestion)): ?>
     <form ng-show="data.showForm === 'suggestion';" class="form-complaint-suggestion js-suggestion-form" ng-controller="SuggestionController" <?php if(!$app->user->is('guest')): ?> ng-init="data.name='<?php echo htmlentities($app->user->profile->name) ?>'; data.email='<?php echo htmlentities($app->user->email) ?>';" <?php endif; ?>>
-        <?php if($user->is('guest')):?>
-            <p>
-                <label>
-                    <?php i::_e("Nome");?>:<br />
-                    <input ng-model="data.name" type="text" rows="5" name="name" class="input-name">
-                </label>
-            </p>
-            <p>
-                <label>
-                    <?php i::_e("E-mail");?>:<br />
-                    <input ng-model="data.email" type="email" rows="5" name="email" class="input-email">
-                </label>
-            </p>
-        <?php else: ?>
-            <input ng-model="data.name" type="hidden" name="name" >
-            <input ng-model="data.email" type="hidden" name="email">
-        <?php endif;?>
+        <p ng-fi="!data.anonimous">
+            <label>
+                <?php i::_e("Nome");?>:<br />
+                <input ng-model="data.name" type="text" rows="5" name="name" class="input-name">
+            </label>
+        </p>
+        <p ng-fi="!data.anonimous || data.copy">
+            <label>
+                <?php i::_e("E-mail");?>:<br />
+                <input ng-model="data.email" type="email" rows="5" name="email" class="input-email">
+            </label>
+        </p>
+           
         <p>
             <label>
                 <?php i::_e("Tipo");?>:</br>

@@ -54,8 +54,9 @@ app.component('notification-list', {
     },
 
     data() {
+        const global = useGlobalState();
         return {
-            currentUserId: $MAPAS.userId
+            currentUserId: global.auth.user?.id
         }
     },
 
