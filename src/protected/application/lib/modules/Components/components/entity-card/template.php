@@ -5,7 +5,7 @@ use MapasCulturais\i;
 $this->import('mc-icon mc-avatar');
 ?>
 
-<div :class="['entity-card', {'portrait':portrait}]">
+<div class="entity-card" :class="classes">
 	<div class="entity-card__header" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
 		<div class="entity-card__header user-details">
 			<mc-avatar class="user-image" :entity="entity"></mc-avatar>

@@ -14,6 +14,10 @@ app.component('entity-card', {
     },
 
     props: {
+        class: {
+            type: [String, Object, Array],
+            default: ''
+        },
         entity: {
             type: Entity,
             required: true
@@ -25,6 +29,9 @@ app.component('entity-card', {
     },
 
     computed: {
+        classes() {
+            return [this.class, {'portrait': this.portrait}]
+        },
         showShortDescription() {
             if (this.entity.shortDescription) {
                 if (this.entity.shortDescription.length > 400) {
