@@ -84,9 +84,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('app.init:after', function () use($app) {
             if ($app->view->version >= 2) {
                 $app->hook('component(opportunity-phases-timeline).registration:end', function () {
-                    $this->import('opportunity-claim-form');
-
-                    echo '<opportunity-claim-form v-if="shouldShowResults(item)" :registration="registration"></opportunity-claim-form>';
+                    $this->part('opportunity-claim-form-component');
                 });
 
             } else {
