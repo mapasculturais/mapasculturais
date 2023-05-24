@@ -55,13 +55,25 @@ app.component('opportunity-phase-publish-date-config' , {
                 return this.lastPhase?.publishTimestamp?._date;
             }
         },
-
+        firstPhase() {
+            const firstPhase = this.phases[0];
+            if (firstPhase.isFirstPhase) {
+                return firstPhase;
+            }
+        },
         lastPhase() {
             const lastPhase = this.phases[this.phases.length - 1];
             if (lastPhase.isLastPhase) {
                 return lastPhase;
             }
-        }
+        },
+        isPublished() {
+            let _actualDate = new Date();
+            if (this.lastPhase.publishTimestamp?._date < _actualDate) {
+                return true;
+            }
+            return false;
+        },
     },
 
     methods: {
