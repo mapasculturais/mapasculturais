@@ -99,12 +99,21 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('template(<<*>>.body):begin', function () {
             $this->part('main-app--begin');
+            $this->insideApp = true;
         });
 
         $app->hook('template(<<*>>.body):end', function () {
+            $this->insideApp = false;
             $this->part('main-app--end');
         },1000);
-
+        
+        $app->hook('template(<<*>>):<<*>>', function () use($app) {
+            $hook = $app->hookStack[count($app->hookStack) - 1]->name;
+            if($this->version >= 2 && $this->insideApp) {
+                $this->import('mc-debug');
+                echo "<mc-debug type='template-hook' name='$hook'></mc-debug>\n";
+            }
+        });
 
         /** 
          * Cria um hook para o componente
