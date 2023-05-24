@@ -118,7 +118,7 @@ $this->breadcrumb = [
             </mapas-card>
             <mapas-card>
                 <template #title>
-                    <label><?php i::_e("Mais informações públicas"); ?></label>
+                    <label><?php i::_e("Informações públicas"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
                 </template>
                 <template #content>
