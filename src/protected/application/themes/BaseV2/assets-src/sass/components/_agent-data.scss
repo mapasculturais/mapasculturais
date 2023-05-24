@@ -1,25 +1,48 @@
 @use '../settings/mixins' as *;
 
 .controller-agent.action-edit {
+    .content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: size(21) 0;
+    }
+
+    .input__label {
+        display: flex;
+        align-items: flex-end;
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 600;
+        font-size: size(14);
+        line-height: size(19);
+
+        input[type="checkbox"] {
+            box-sizing: border-box;
+            height: size(16);
+            width: size(16);
+            border: size(3) solid var(--mc-black);
+            border-radius: size(2);
+        }
+    }
+
+    .pcd {
+        gap: size(11);
+
+        &.field {
+            gap: size(8);
+        }
+    }
+
+
     .field {
+
         label {
             margin: 0;
-        }
-
-        &.pcd {
-            // background-color: red;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-        &.pcd  input[type='checkbox'] {
-            display: grid;
-            grid-template-columns:1fr
         }
     }
 }
 
 .agent-data {
-    // max-width: size(860);
     display: flex;
     flex-direction: column;
 
@@ -29,8 +52,8 @@
         font-family: 'Open Sans';
         font-style: normal;
         font-weight: 700;
-        font-size: 18px;
-        line-height: 25px;
+        font-size: size(18);
+        line-height: size(25);
     }
 
     &__fields {
@@ -49,8 +72,8 @@
                 font-family: 'Open Sans';
                 font-style: normal;
                 font-weight: 600;
-                font-size: 14px;
-                line-height: 19px;
+                font-size: size(14);
+                line-height: size(19);
                 margin-bottom: size(8);
             }
 

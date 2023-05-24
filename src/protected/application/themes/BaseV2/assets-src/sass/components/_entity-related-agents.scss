@@ -109,7 +109,7 @@
         &--actions {
             align-items: center;
             display: flex;
-            gap: 13px;
+            gap: size(13);
         }
     }
 
@@ -119,11 +119,21 @@
         flex-direction: column;
         gap: size(8);
 
+        .add-agent {
+            margin-bottom: size(8);
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 600;
+            font-size: size(14);
+            line-height: size(19);
+        }
+
         &--newGroup {
             input[type="text"] {
                 height: size(46);
                 width: size(290);
             }
+
             input::placeholder {
                 font-size: size(16);
                 padding-left: size(3);
