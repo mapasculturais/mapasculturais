@@ -27,10 +27,12 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     }
 
     public function filterEvaluationsSummary(array $data) {
-        // encontra o maior valor do array
-        $max_value = $data ? max(array_filter(array_keys($data), function($item) {
+        $items = array_filter(array_keys($data), function($item) {
             return is_numeric($item) ? $item : null;            
-        })) + 1 : null;
+        });
+        
+        // encontra o maior valor do array
+        $max_value = $items ? max($items) + 1 : null;
         
         // divide em 5 faixas
         $result = [];
