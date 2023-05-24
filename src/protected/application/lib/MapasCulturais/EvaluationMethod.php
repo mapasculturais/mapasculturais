@@ -4,7 +4,7 @@ namespace MapasCulturais;
 use DateTime;
 use \MapasCulturais\i;
 
-abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
+abstract class EvaluationMethod extends Module implements \JsonSerializable{
     abstract protected function _register();
 
     abstract function enqueueScriptsAndStyles();
