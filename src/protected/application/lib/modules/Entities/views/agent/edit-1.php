@@ -93,26 +93,21 @@ $this->breadcrumb = [
                 </template>
                 <template #content>
                     <div class="grid-12">
-                        <entity-field :entity="entity" classes="col-12" prop="dataDeNascimento" label="<?= i::__('Data de Nascimento') ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="dataDeNascimento" label="<?= i::__('Data de Nascimento') ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="genero" label="<?= i::__('Selecione o Gênero') ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="orientacaoSexual" label="<?= i::__('Selecione a Orientação Sexual') ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="raca" label="<?= i::__('Selecione a Raça/Cor') ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="escolaridade" label="<?= i::__('Selecione a sua Escolaridade') ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="agenteItinerante" label="<?= i::__('É agente itinerante?') ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" prop="pessoaDeficiente" class="pcd col-12" label="<?= i::__('Pessoa com Deficiência') ?>"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="comunidadesTradicional" label="<?= i::__('Comunidades tradicionais') ?>"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="comunidadesTradicionalOutros" label="<?= i::__('Não encontrou sua comunidade Tradicional') ?>"></entity-field>
-                        <entity-field :entity="entity" classes="col-12" prop="pessoaDeficiente" class="pcd"label="<?= i::__('Pessoa com Deficiência') ?>" ></entity-field>                        
-                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="escolaridade" label="<?= i::__('Escolaridade') ?>"></entity-field>
-                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="agenteItinerante" label="<?= i::__('Agente Itinerante') ?>"></entity-field>
-                        <div class="disabled field col-12">
-                            <label><?= i::__("Pessoa idosa") ?></label>
-                            <input v-if="entity.idoso==1" value="<?= i::__('Sim') ?>">
-                            <input v-if="entity.idoso==0" value="<?= i::__('Não') ?>">
-                        </div>
-                        <entity-field :entity="entity" classes="col-12" prop="genero" label="<?= i::__('Selecione o Gênero') ?>"></entity-field>
-                        <entity-field :entity="entity" classes="col-12" prop="orientacaoSexual" label="<?= i::__('Selecione a Orientação Sexual') ?>"></entity-field>
-                        <entity-field :entity="entity" classes="col-12" prop="raca" label="<?= i::__('Selecione a Raça/Cor') ?>"></entity-field>
                     </div>
                 </template>
             </mapas-card>
             <mapas-card>
                 <template #title>
-                    <label><?php i::_e("Mais informações públicas"); ?></label>
+                    <label><?php i::_e("Informações públicas"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
                 </template>
                 <template #content>

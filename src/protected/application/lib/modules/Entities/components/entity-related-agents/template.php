@@ -1,5 +1,7 @@
 <?php
+
 use MapasCulturais\i;
+
 $this->import('
     popover
     confirm-button
@@ -8,16 +10,16 @@ $this->import('
 ?>
 
 <div :class="classes" class="entity-related-agents" v-if="editable || hasGroups()">
-    <h3><?php i::_e("Agentes relacionados")?></h3>
+    <h3><?php i::_e("Agentes relacionados") ?></h3>
     <div v-for="(relations, groupName) in groups" class="entity-related-agents__group">
         <div class="entity-related-agents__group--name">
-            <label> {{groupName}} </label> 
+            <label> {{groupName}} </label>
             <!-- botões de ação do grupo -->
             <div v-if="editable" class="act">
                 <!-- renomear grupo -->
-                <popover  openside="down-right">
+                <popover openside="down-right">
                     <template #button="popover">
-                        <slot name="button"> 
+                        <slot name="button">
                             <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                         </slot>
                     </template>
@@ -37,10 +39,10 @@ $this->import('
                 <!-- remover grupo -->
                 <confirm-button @confirm="removeGroup(groupName)">
                     <template #button="modal">
-                        <a @click="modal.open()"> 
+                        <a @click="modal.open()">
                             <mc-icon name="trash"></mc-icon>
                         </a>
-                    </template> 
+                    </template>
                     <template #message="message">
                         <?php i::_e('Remover grupo de agentes relacionados?') ?>
                     </template>
@@ -63,34 +65,38 @@ $this->import('
                     <confirm-button @confirm="removeAgent(groupName, relation.agent)">
                         <template #button="modal">
                             <mc-icon @click="modal.open()" name="delete"></mc-icon>
-                        </template> 
+                        </template>
                         <template #message="message">
                             <?php i::_e('Remover agente relacionado?') ?>
-                        </template> 
+                        </template>
                     </confirm-button>
                 </div>
                 <!-- relação de agente pendente -->
                 <div v-if="relation.status == -5" class="agent__pending"></div>
-            </div>            
-        </div>    
+            </div>
+        </div>
         <div v-if="editable" class="entity-related-agents__group--actions">
             <select-entity type="agent" @select="addAgent(groupName, $event)" permissions="" select="id,name,files.avatar,terms,type" :query="queries[groupName]" openside="down-right">
                 <template #button="{ toggle }">
-                    <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()"> 
-                        <?php i::_e('Adicionar agente') ?> 
+                    <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()">
+                        <?php i::_e('Adicionar agente') ?>
                         <mc-icon name="add"></mc-icon>
                     </button>
                 </template>
-            </select-entity>            
-        </div>        
+            </select-entity>
+        </div>
     </div>
     <div v-if="editable" class="entity-related-agents__addNew">
         <popover openside="down-right">
             <template #button="popover">
-                <slot name="button"> 
-                    <button @click="popover.toggle()" class="button button--primary-outline button--icon"> 
+
+                <slot name="button">
+                    <div class="add-agent">
+                        <?php i::_e("Adicionar novo grupo de Agentes") ?>
+                    </div>
+                    <button @click="popover.toggle()" class="button button--primary-outline button--icon">
                         <mc-icon name="add"></mc-icon>
-                        <?php i::_e("Adicionar grupo") ?> 
+                        <?php i::_e("Adicionar grupo") ?>
                     </button>
                 </slot>
             </template>

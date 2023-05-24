@@ -25,7 +25,7 @@ $this->import('
         </div>
 
         <div v-if="!phase.publishedRegistrations" class="grid-12 col-12 notPublished">
-            <div v-if="!hideButton" class="col-4">
+            <div v-if="!hideButton && isPublished && firstPhase.status != 0" class="col-4">
                 <confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
                     <template #button="modal">
                         <button class="button button--primary button-config" @click="modal.open()">
