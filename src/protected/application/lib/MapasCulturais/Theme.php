@@ -183,7 +183,7 @@ abstract class Theme extends \Slim\View {
                 }
                 $reflaction = $reflaction->getParentClass();
             }
-        });
+        }, 100);
 
     }
 
@@ -574,7 +574,8 @@ abstract class Theme extends \Slim\View {
     function resolveFilename($folder, $file){
         if(!substr($folder, -1) !== '/') $folder .= '/';
 
-        $path = array_reverse($this->path->getArrayCopy());
+        $path = $this->path->getArrayCopy();
+
         foreach($path as $dir){
             if(file_exists($dir . $folder . $file)){
                 return $dir . $folder . $file;
