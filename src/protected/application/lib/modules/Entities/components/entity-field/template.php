@@ -39,9 +39,11 @@ $this->import('
         </template>
         
         <template v-if="is('multiselect')">
-            <label class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
-                <input :checked="value == optionValue" type="checkbox" :value="optionValue" @input="change($event)"> {{description.options[optionValue]}} 
-            </label>
+           <div class="content">
+               <label class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
+                   <input :checked="value == optionValue" type="checkbox" :value="optionValue" @input="change($event)"> {{description.options[optionValue]}} 
+                </label>
+            </div>
         </template>
 
         <template v-if="is('boolean')">
