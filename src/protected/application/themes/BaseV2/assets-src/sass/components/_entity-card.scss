@@ -161,8 +161,8 @@
 		text-align: left;
 
 		&-shortDescription {
-				word-break: break-all;
-				font-size: size(14);
+			word-break: break-all;
+			font-size: size(14);
 		}
 
 		&--occurrence {
@@ -252,7 +252,7 @@
 			line-height: size(16);
 			color: var(--mc-low-700);
 			word-break: break-all;
-			
+
 			&-local,
 			&-adress {
 				color: var(--mc-low-500);
@@ -331,6 +331,11 @@
 					justify-content: center;
 					line-height: size(16);
 					width: size(32);
+					
+					.sealImage {
+						max-width: 100%;
+						border-radius: size(8);
+					}
 				}
 			}
 		}
@@ -369,14 +374,14 @@
 		align-items: flex-start;
 		display: flex;
 		justify-content: space-between;
-		
+
 		.left {
 			display: grid;
 			grid-template-columns: size(70) 1fr;
 			gap: size(7) size(16);
 		}
-		
-		
+
+
 		&> :first-child {
 			align-items: start;
 			display: grid;
@@ -543,7 +548,7 @@
 				padding-top: size(16);
 				justify-content: center;
 				flex-wrap: wrap;
-				
+
 			}
 		}
 
@@ -568,21 +573,27 @@
 			gap: size(32);
 
 			@media (max-width: size(500)) {
-				.button {
-					width: size(305);
+				.button-action{
+					width: size(297);
+					max-width: 100%;
 					height: size(48);
 					display: flex;
-					justify-content: flex-start;
+					justify-content: flex-end;
 					align-items: center;
 					flex-direction: row;
 					gap: size(100)
 				}
 
-				.button:first-of-type {
-					display: flex;
-					// gap: size(97);
-					align-items: center;
-					justify-content: flex-end;
+				.editdraft {
+					justify-content: flex-start;
+				}
+
+				.recover {
+					justify-content: center;
+				}
+
+				.publish-archived {
+					justify-content: center;
 				}
 			}
 		}

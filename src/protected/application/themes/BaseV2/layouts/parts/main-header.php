@@ -19,14 +19,14 @@ $this->import('
 
         <?php $this->applyTemplateHook('mc-header-menu', 'before') ?>
         <mc-header-menu>
-            <?php $this->applyTemplateHook('mc-header-menu', 'begin') ?>
 
             <!-- Logo -->
             <template #logo>
-                <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
+                <theme-logo href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
             </template>
             <!-- Menu principal -->
             <template #default>
+                <?php $this->applyTemplateHook('mc-header-menu', 'begin') ?>
                 <li>
                     <a href="<?= $app->createUrl('site', 'index') ?>" class="mc-header-menu--item home">
                         <span class="icon"> <mc-icon name="home"></mc-icon> </span>
@@ -63,9 +63,9 @@ $this->import('
                         <p class="label"> <?php i::_e('Projetos') ?> </p>
                     </a>
                 </li>
+                <?php $this->applyTemplateHook('mc-header-menu', 'end') ?>
             </template>
 
-            <?php $this->applyTemplateHook('mc-header-menu', 'end') ?>
         </mc-header-menu>
         <?php $this->applyTemplateHook('mc-header-menu', 'after') ?>
 

@@ -8,10 +8,6 @@ app.component('mc-multiselect', {
         return { text }
     },
 
-    created() {
-        this.model.filter = '';
-    },
-
     props: {
         editable: {
             type: Boolean,
@@ -66,34 +62,43 @@ app.component('mc-multiselect', {
         } else {
             dataItems = Object.assign({}, this.items);
         }
-        return { dataItems };
+        return { dataItems, filter: '' };
     },
 
     computed: {
         filteredItems() {
-            const result = {};
+            const result = [];
             for (let value in this.dataItems) {
                 const label = this.dataItems[value];
-                const _filter = this.model.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 const _item = label.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
                 if(_item.indexOf(_filter) >= 0) {
-                    result[value] = label;
+                    result.push({value, label});
                 }
             }
-            return result;
-        }        
+
+            return result.sort((a,b) => {
+                if (a.label > b.label) {
+                    return 1;
+                } else if (a.label < b.label) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        },
     },
 
     methods: {
         highlightedItem(item) {
-            const _filter = this.model.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const _item = item.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const indexOf = _item.indexOf(_filter);
             if(indexOf >= 0) {
                 const part0 = item.substr(0, indexOf); 
-                const part1 = item.substr(indexOf, this.model.filter.length); 
-                const part2 = item.substr(indexOf + this.model.filter.length);
+                const part1 = item.substr(indexOf, this.filter.length); 
+                const part2 = item.substr(indexOf + this.filter.length);
                 return `${part0}<b><u>${part1}</u></b>${part2}`;
             } else {
                 return item;
@@ -119,7 +124,11 @@ app.component('mc-multiselect', {
         
         close() {
             this.$emit('close', this);
-            this.model.filter = '';
+            this.filter = '';
+        },
+
+        setFilter(text) {
+            this.filter = text;
         }
     }
 });

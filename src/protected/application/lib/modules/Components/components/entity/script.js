@@ -50,6 +50,8 @@ app.component('entity', {
             this.entity = api.getEntityInstance(entity.id); 
             this.entity.populate(entity);
             this.loading = false;
+
+            globalThis.$entity = this.entity;
         }
     },
 

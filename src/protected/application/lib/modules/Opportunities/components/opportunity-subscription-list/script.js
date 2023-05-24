@@ -21,9 +21,6 @@ app.component('opportunity-subscription-list' , {
     },
 
     computed: {
-        isLogged() {
-            return $MAPAS.userId != null
-        },
         registrationStatus() {
             let _actualDate = new Date();
             let _fromDate = new McDate(this.opportunity.registrationFrom?.date)._date;

@@ -110,6 +110,8 @@
 
             @media (max-width: size(1170)) {
                 padding: size(14) size(32);
+                max-width: size(77);
+                justify-content: center;
             }
         }
 
@@ -120,6 +122,11 @@
                 gap: size(30);
             }
         }
+    }
+    @media (max-width:size(400)){
+       &__content{
+        height: size(53);
+       } 
     }
 
     &__buttons {

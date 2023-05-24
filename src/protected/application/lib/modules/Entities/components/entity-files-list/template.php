@@ -7,7 +7,7 @@ $this->import('confirm-button popover modal image-uploader');
 <div :class="classes" v-if="files || editable" class="files-list">
     <label class="files-list__title"> {{title}} </label>
 
-    <ul class="files-list__list">
+    <ul v-if="files" class="files-list__list">
         <li class="files-list__list--item" v-for="file in files">
             <a class="files-list__list--item-link" :download="file.name" :href="file.url">
                 <mc-icon name="download" :class="entity.__objectType+'__color'"></mc-icon>
@@ -49,7 +49,7 @@ $this->import('confirm-button popover modal image-uploader');
         </li>
     </ul>
 
-    <popover v-if="editable" openside="down-right">
+    <popover v-if="editable" title="<?php i::_e('Adicionar arquivo')?>" openside="down-right">
         <template #button="popover">
             <slot name="button"> 
                 <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline button-up">

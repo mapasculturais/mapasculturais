@@ -35,3 +35,4 @@ src/geojson
 node_modules/
 mix-manifest.json
 compose/local/config.d
+compose/local/config.d/0.zz.php

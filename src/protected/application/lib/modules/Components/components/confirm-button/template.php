@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 $this->import('modal');
 ?>
-<modal :close-button="false">
+<modal classes="modal-confirm" :close-button="false" :title="title">
     <slot v-if="hasSlot('message')" name="message" :cancel="cancel" :confirm="confirm"></slot>
     <div v-if="!hasSlot('message')">{{message}}</div>
 

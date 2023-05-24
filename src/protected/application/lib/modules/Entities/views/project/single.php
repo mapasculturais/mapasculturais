@@ -5,6 +5,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    complaint-suggestion
     entity-actions
     entity-admins
     entity-files-list
@@ -21,6 +22,7 @@ $this->import('
     link-project
     mapas-breadcrumb
     mapas-container
+    mc-link
     share-links
     tabs
 ');
@@ -34,7 +36,18 @@ $this->breadcrumb = [
 
 <div class="main-app">
     <mapas-breadcrumb></mapas-breadcrumb>
-    <entity-header :entity="entity"></entity-header>
+    <entity-header :entity="entity">
+        <template #metadata>
+            <dl>
+                <dt><?= i::__('Tipo') ?></dt>
+                <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
+            </dl>
+            <dl v-if="entity.parent">
+                <dt><?= i::__('Projeto integrante de') ?></dt>
+                <mc-link :entity="entity.parent"></mc-link>
+            </dl>
+        </template>
+    </entity-header>
     <tabs class="tabs">
         <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
@@ -59,12 +72,6 @@ $this->breadcrumb = [
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download'); ?>"></entity-files-list>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
-                            <div v-if=" entity.relatedOpportunities?.length>0 || entity.children?.length>0" class="col-12">
-                                <h4><?php i::_e('Propriedades do Projeto'); ?></h4>
-                                    <entity-list v-if="entity.children?.length>0" title="<?php i::esc_attr_e('Subprojetos'); ?>" type="project" :ids="entity.children"></entity-list>
-                                    <entity-list title="<php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
-                                    
-                            </div>
                         </div>
                     </main>
                     <aside>
@@ -76,7 +83,16 @@ $this->breadcrumb = [
                             <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></share-links>
                             <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
-
+                            <div v-if="entity.relatedOpportunities?.length > 0 || entity.children?.length > 0" class="col-12">
+                                <h4><?php i::_e('Propriedades do Projeto'); ?></h4>
+                                <entity-list v-if="entity.children?.length > 0" title="<?php i::esc_attr_e('Subprojetos'); ?>" type="project" :ids="entity.children"></entity-list>
+                                <entity-list title="<php i::esc_attr_e('Oportunidades');?>" type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
+                            </div>
+                        </div>
+                    </aside>
+                    <aside>
+                        <div class="grid-12">
+                            <complaint-suggestion :entity="entity"></complaint-suggestion>
                         </div>
                     </aside>
                 </mapas-container>

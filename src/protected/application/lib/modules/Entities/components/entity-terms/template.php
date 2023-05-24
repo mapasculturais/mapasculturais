@@ -21,7 +21,7 @@ $this->import('popover mc-tag-list mc-multiselect')
         <template #default="{toggle}">
             <div class="entity-terms__tags">
                 <form class="entity-terms__tags--form" @submit.prevent="insertTag(toggle)">
-                    <input type="text"  class="input" placeholder="<?= i::__('Adicione uma nova tag') ?>"  v-model="filter">
+                    <input type="text"  class="input" placeholder="<?= i::__('Adicione uma nova tag') ?>" v-model="filter">
                     <button class="button button--primary button--icon entity-terms__tags--form-addBtn" type="submit">
                         <mc-icon name="add"></mc-icon>
                     </button>
@@ -35,11 +35,11 @@ $this->import('popover mc-tag-list mc-multiselect')
         </template>
     </popover>
 
-    <mc-multiselect v-if="!allowInsert && editable" :model="entityTerms" :items="terms" @open="loadTerms()" #default="{popover}">
+    <mc-multiselect v-if="!allowInsert && editable" :model="entity.terms[this.taxonomy]" :items="terms" @open="loadTerms()" #default="{popover}">
         <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
             <?php i::_e("Adicionar nova") ?>
             <mc-icon name="add"></mc-icon>
         </button>
     </mc-multiselect>
-    <mc-tag-list :editable="editable" :classes="entity.__objectType+'__background'" :tags="entityTerms"></mc-tag-list>
+    <mc-tag-list :editable="editable" :classes="entity.__objectType+'__background'" :tags="entity.terms[this.taxonomy]"></mc-tag-list>
 </div>

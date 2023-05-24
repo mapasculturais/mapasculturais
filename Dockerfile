@@ -16,7 +16,7 @@ ENV PNPM_HOME=/root/.local/share/pnpm
 ENV PATH=$PATH:/root/.local/share/pnpm
 
 # Install uglify and terser
-RUN pnpm install -g \
+RUN npm install -g \
         terser \
         uglifycss \
         autoprefixer \
@@ -41,33 +41,42 @@ RUN pecl install apcu \
 RUN pecl install imagick-beta \
     && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini
 
-# Install redis
-RUN pecl install -o -f redis \
-    &&  rm -rf /tmp/pear \
-    &&  docker-php-ext-enable redis
-
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --version=1.10.16 --install-dir=/usr/local/bin && \
     rm composer-setup.php
 
+# Install redis
+RUN pecl install -o -f redis \
+    &&  rm -rf /tmp/pear \
+    &&  docker-php-ext-enable redis
+
 # Copy source
 COPY src/index.php /var/www/html/index.php
-COPY --chown=www-data:www-data src/protected /var/www/html/protected
-
-
-RUN mkdir -p /var/www/html/protected/vendor /var/www/html/protected/DoctrineProxies /var/www/.composer && \
-    chown -R www-data:www-data /var/www/html/protected/vendor /var/www/html/protected/DoctrineProxies /var/www/.composer
-
-RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
+COPY src/protected/composer.json /var/www/html/protected/composer.json
+COPY src/protected/composer.lock /var/www/html/protected/composer.lock
 
 WORKDIR /var/www/html/protected
 RUN composer.phar install
-RUN pnpm install --recursive && pnpm run build 
+
+RUN mkdir -p /var/www/html/protected/vendor /var/www/.composer && \
+    chown -R www-data:www-data /var/www/html/protected/vendor /var/www/.composer
+
+
+COPY src/protected/application/themes /var/www/html/protected/application/themes
 
 WORKDIR /var/www/html/protected/application/themes/
 
 RUN find . -maxdepth 1 -mindepth 1 -exec echo "compilando sass do tema " {} \; -exec sass {}/assets/css/sass/main.scss {}/assets/css/main.css -E "UTF-8" \;
+
+COPY src/protected /var/www/html/protected
+
+RUN pnpm install --recursive && pnpm run build 
+
+RUN mkdir /var/www/html/protected/DoctrineProxies
+RUN chown www-data: /var/www/html/protected/DoctrineProxies
+
+RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
 
 COPY scripts /var/www/scripts
 COPY compose/production/php.ini /usr/local/etc/php/php.ini

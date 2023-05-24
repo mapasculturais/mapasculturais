@@ -365,7 +365,7 @@ class Opportunity extends EntityController {
         $data['opportunity'] = "EQ({$opportunity->id})";
 
         $_opportunity = $opportunity;
-        $opportunity_tree = [];
+        $opportunity_tree = [$opportunity];
         while($_opportunity && ($parent = $app->modules['OpportunityPhases']->getPreviousPhase($_opportunity))){
             $opportunity_tree[] = $parent;
             $_opportunity = $parent;
@@ -423,14 +423,6 @@ class Opportunity extends EntityController {
         $app->controller('registration')->registerRegistrationMetadata($opportunity);
 
         unset($data['@opportunity']);
-
-        if(!is_null($last_query_ids)){
-            if($last_query_ids){
-                $data['previousPhaseRegistrationId'] = "IN($last_query_ids)";
-            } else {
-                $data['id'] = "IN(-1)";
-            }
-        }
 
         if($select_values){
             $data['@select'] = isset($data['@select']) ? $data['@select'] . ',previousPhaseRegistrationId' : 'previousPhaseRegistrationId';
@@ -808,7 +800,13 @@ class Opportunity extends EntityController {
             $valuer_by_id[$valuer['user']] = $valuer;
         }
 
-        $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
+        if ($opportunity->canUser('@control')) {
+            $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
+        } else if($app->auth->isUserAuthenticated()) {
+            $users = [$app->user->id];
+        } else {
+            $users = [];
+        }
 
         if(empty($users)){
             $this->apiAddHeaderMetadata($this->data, [], 0);
@@ -818,10 +816,17 @@ class Opportunity extends EntityController {
 
         $params = ['opp' => $opportunity->id];
 
+        $where_pending = "";
+        if(isset($this->data['@pending'])){
+            $where_pending = "evaluation_id IS NULL AND ";
+        }
+
+        $users = implode(",", $users);
         $queryNumberOfResults = $conn->fetchColumn("
             SELECT count(*) 
             FROM evaluations 
             WHERE 
+                {$where_pending}
                 opportunity_id = :opp AND
                 valuer_user_id IN({$users})
         ", $params);
@@ -884,6 +889,7 @@ class Opportunity extends EntityController {
                 valuer_agent_id
             FROM evaluations
             WHERE
+                {$where_pending}
                 opportunity_id = :opp AND
                 valuer_user_id IN({$users}) AND
                 registration_id IN ({$registration_ids})

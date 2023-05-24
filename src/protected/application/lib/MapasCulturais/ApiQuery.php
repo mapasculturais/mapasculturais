@@ -6,6 +6,7 @@ use Doctrine\ORM\Query;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Types\GeoPoint;
 
@@ -1218,11 +1219,6 @@ class ApiQuery {
                 if (!isset($metadata[$meta['objectId']])) {
                     $metadata[$meta['objectId']] = [];
                 }
-                $unserialize = $definitions[$meta['key']]->unserialize;
-                if($unserialize) {
-                    $meta['value'] = $unserialize($meta['value']);
-                }
-                
                 $metadata[$meta['objectId']][$meta['key']] = $meta['value'];
             }
         }
@@ -1247,6 +1243,13 @@ class ApiQuery {
                 }
                 
                 $entity += $meta;
+
+                foreach($meta as $k => &$v){
+                    $unserialize = $definitions[$k]->unserialize;
+                    if($unserialize) {
+                        $entity[$k] = $unserialize($v, (object) $entity);
+                    }
+                }
             }
         }
     }    
@@ -2305,6 +2308,16 @@ class ApiQuery {
 
             $relations = $query->getResult(Query::HYDRATE_ARRAY);
 
+            $seal_ids = array_map(function($item) {
+                return $item['seal_id'];
+            }, $relations);
+
+
+            $seals_api_query = new ApiQuery(Seal::class, ['@select' => 'files', 'id' => API::IN($seal_ids)]);
+            $files = [];
+            foreach($seals_api_query->find() as $seal) {
+                $files[$seal['id']] = $seal['files'] ?? null; 
+            }
             foreach($relations as $relation){
                 $relation = (object) $relation;
                 
@@ -2318,6 +2331,7 @@ class ApiQuery {
                     'sealRelationId' => $relation->relation_id,
                     'sealId' => $relation->seal_id,
                     'name' => $relation->seal_name,
+                    'files' => $files[$relation->seal_id] ?? null,
                     'singleUrl' => $app->createUrl('seal', 'sealRelation', [$relation->relation_id]),
                     'createTimestamp' => $relation->relation_create_timestamp,
                     'isVerificationSeal' => in_array($relation->seal_id, $app->config['app.verifiedSealsIds']),
@@ -2376,11 +2390,6 @@ class ApiQuery {
             }
         }
     }
-
-    protected function _appendSeals(array &$entities, $prop_name, array $seals){
-
-    }
-
     
     private $__viewPrivateDataPermissions = null;
     
@@ -2499,12 +2508,13 @@ class ApiQuery {
 
                 $values = $this->addMultipleParams($values);
 
-                if (count($values) < 1) {
-                    throw new Exceptions\Api\InvalidArgument('expression IN expects at last one value');
+                if (count($values) > 0) {
+                    $dql = $not ? "$key NOT IN (" : "$key IN (";
+                    $dql .= implode(', ', $values) . ')';
+                } else if(!$not) {
+                    $dql .= "$key IS NULL AND $key IS NOT NULL";
                 }
 
-                $dql = $not ? "$key NOT IN (" : "$key IN (";
-                $dql .= implode(', ', $values) . ')';
                 
             }elseif($operator == "IIN"){
                 $values = $this->splitParam($value);

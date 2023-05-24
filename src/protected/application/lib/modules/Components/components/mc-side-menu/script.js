@@ -33,13 +33,11 @@ app.component('mc-side-menu', {
             pending: false,
             keywords: "",
             timeOut: null,
-            roles: $MAPAS.currentUserRoles
+            roles: $MAPAS.currentUserRoles,
+            filterKeyword: false
         }
     },
     watch: {
-        'keywords'(_new, _old) {
-            this.timeOutFind(_new, _old);
-        },
         'pending'(_new, _old) {
             this.timeOutFind(_new, _old);
         }
@@ -53,26 +51,42 @@ app.component('mc-side-menu', {
                 }, 1500);
             }
         },
+        filterKeywordExec(_new, _old) {
+            if(!this.keywords){
+                messages.error(this.text('Informe a palavra chave'));
+            }else{
+                this.getEvaluations();
+            }
+        },
         async getEvaluations() {
             let args = {};
-            args['@select'] = "id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status";
+            args['@select'] = "id,owner.name";
             args['@opportunity'] = this.entity.opportunity.id;
-            args['@keyword'] = 'like(' + this.keywords + ')';
-            args['@limit'] = "0";
+
+            if(this.keywords){
+                args['registration:@keyword'] = this.keywords;
+            }
 
             if (this.pending) {
                 args['@pending'] = true;
             }
 
             api = new API('opportunity');
-            let url = api.createApiUrl('findRegistrationsAndEvaluations', args);
+            let url = api.createApiUrl('findEvaluations', args);
 
             await api.GET(url).then(response => response.json().then(objs => {
-                this.evaluations = objs.map(function (item) {
-                    item.url = Utils.createUrl('registration', 'evaluation', [item.registrationid]);;
-                    return item;
+                this.evaluations = objs.map(function(item){
+                    return {
+                        registrationid:item.registration.id,
+                        agentname: item.registration.owner?.name,
+                        status: item?.evaluation?.status,
+                        resultString: item?.evaluation?.resultString || null,
+                        url: Utils.createUrl('registration', 'evaluation', [item.registration.id])
+                    }
                 });
+                this.filterKeyword = false;
                 this.evaluations.sort((a, b) => (a.registrationid - b.registrationid));
+                window.dispatchEvent(new CustomEvent('evaluationRegistrationList', {detail:{evaluationRegistrationList:this.evaluations}}));
             }));
 
             const globalState = useGlobalState();

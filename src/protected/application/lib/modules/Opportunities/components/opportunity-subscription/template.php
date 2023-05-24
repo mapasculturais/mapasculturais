@@ -21,10 +21,10 @@ $this->import('
 		</div>
 	</div>
 
-	<div v-if="isOpen" class="col-12 opportunity-subscription__subscription">
+	<div v-if="isOpen && !isPublished" class="col-12 opportunity-subscription__subscription">
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
-		<div v-if="isLogged" class="logged">
+		<div v-if="global.auth.isLoggedIn" class="logged">
 			<p v-if="categories && entitiesLength > 1" class="logged__description"> <?= i::__("Escolha um Agente Cultural e uma categoria para fazer a inscrição.") ?> </p>			
 			<p v-if="!categories && entitiesLength > 1" class="logged__description"> <?= i::__("Escolha um Agente Cultural para fazer a inscrição.") ?> </p>
 			<p v-if="categories && entitiesLength == 1" class="logged__description"> <?= i::__("Escolha uma categoria para fazer a inscrição.") ?> </p>
@@ -32,7 +32,7 @@ $this->import('
 
 			<!-- Logado -->
 			<form class="logged__form grid-12" @submit.prevent>
-				<select-entity v-if="entitiesLength > 1" type="agent" class="col-6" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)">
+				<select-entity type="agent" class="col-6" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)">
 					<template #button="{ toggle }">
 						<span v-if="!agent" class="fakeInput" @click="toggle()">
 							<div class="fakeInput__img">
@@ -69,7 +69,7 @@ $this->import('
 		</div>
 
 		<!-- Deslogado -->
-		<div v-if="!isLogged" class="loggedOut">
+		<div v-if="!global.auth.isLoggedIn" class="loggedOut">
 			<p class="loggedOut__description">
 				<?= i::__("Você precisa acessar sua conta ou  criar uma cadastro na plataforma para poder se inscrever em editais ou oportunidades") ?>
 			</p>

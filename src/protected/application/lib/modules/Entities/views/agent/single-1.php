@@ -3,6 +3,8 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    agent-data
+    complaint-suggestion
     entity-actions
     entity-admins
     entity-files-list
@@ -37,10 +39,11 @@ $this->breadcrumb = [
                 <mapas-container>
                     <main>
                         <div class="grid-12">
+                            <agent-data :entity="entity"></agent-data>
                             <entity-location :entity="entity" classes="col-12"></entity-location>
                             <div v-if="entity.longDescription" class="col-12">
                                 <h2><?php i::_e('Descrição Detalhada');?></h2>
-                                <p>{{entity.longDescription}}</p>
+                                <p v-html="entity.longDescription"></p>
                             </div>
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
@@ -51,7 +54,7 @@ $this->breadcrumb = [
                                 <entity-list v-if="entity.events?.length>0" title="<?php i::esc_attr_e('Eventos');?>" type="event" :ids="entity.events"></entity-list>
                                 <entity-list v-if="entity.children?.length>0" title="<?php i::esc_attr_e('Agentes');?>" type="agent" :ids="entity.children"></entity-list>
                                 <entity-list v-if="entity.projects?.length>0" title="<?php i::esc_attr_e('Projetos');?>" type="project" :ids="entity.projects"></entity-list>                                
-                                <entity-list title="<php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
+                                <entity-list title="<?php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
                             </div>
                         </div>
                     </main>
@@ -66,6 +69,11 @@ $this->breadcrumb = [
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
                             
                             <entity-owner classes="col-12"  title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>                        
+                        </div>
+                    </aside>
+                    <aside>
+                        <div class="grid-12">
+                            <complaint-suggestion :entity="entity"></complaint-suggestion>
                         </div>
                     </aside>
                 </mapas-container>

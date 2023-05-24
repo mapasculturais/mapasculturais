@@ -1,7 +1,7 @@
 <?php
 $this->import('mc-icon');
 ?>
-<a :href="url" :class="classes">
+<a :href="url" :class="classes" :id="id">
     <template v-if="!rightIcon">
     <mc-icon v-if="typeof icon != 'string' && icon && entity" :entity="entity"></mc-icon>
     <mc-icon v-else-if="icon && !entity" :name="icon"></mc-icon>

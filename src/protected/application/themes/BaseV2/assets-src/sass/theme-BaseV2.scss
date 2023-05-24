@@ -8,13 +8,18 @@
 @import 'settings/atoms';
 
 // COMPONENTS
+@import 'components/agent-data';
+@import 'components/avatar';
 @import 'components/app-card-content';
 @import 'components/button';
 @import 'components/container';
+@import 'components/confirm-button';
 @import 'components/create-app';
+@import 'components/create-entity-modal';
 @import 'components/create-modal';
 @import 'components/create-occurrence';
 @import 'components/datepicker';
+@import 'components/debug';
 @import 'components/entity-actions';
 @import 'components/entity-activity-card';
 @import 'components/entity-card';
@@ -33,6 +38,7 @@
 @import 'components/entity-request-ownership';
 @import 'components/entity-seals';
 @import 'components/entity-social-media';
+@import 'components/complaint-suggestion';
 @import 'components/entity-terms';
 @import 'components/event-info';
 @import 'components/field';
@@ -64,6 +70,7 @@
 @import 'components/mc-tag-list';
 @import 'components/messages';
 @import 'components/navbar';
+@import 'components/info-message';
 @import 'components/notification-card';
 @import 'components/notification-modal';
 @import 'components/opportunity-basic-info';
@@ -71,10 +78,12 @@
 @import 'components/opportunity-form-export';
 @import 'components/opportunity-evaluations';
 @import 'components/opportunity-phase-header';
+@import 'components/opportunity-phase-evaluations';
 @import 'components/opportunity-phase-list-data-collection';
 @import 'components/opportunity-phase-list-evaluation';
 @import 'components/opportunity-phase-publish-date-config';
 @import 'components/opportunity-registrations';
+@import 'components/opportunity-rules';
 @import 'components/opportunity-subscription-list';
 @import 'components/opportunity-subscription';
 @import 'components/panel--entities-summary';
@@ -85,6 +94,7 @@
 @import 'components/panel-home';
 @import 'components/panel-sidebar';
 @import 'components/panel';
+@import 'components/permission-publish';
 @import 'components/popover';
 @import 'components/popover-form';
 @import 'components/registration-actions';
@@ -124,5 +134,6 @@
 @import 'pages/registrations';
 @import 'pages/search';
 @import 'pages/spaces';
+@import 'pages/support';
 @import 'pages/terms';
 @import 'pages/user-detail';

@@ -6,17 +6,38 @@ app.component('panel--nav', {
             type: [Array, String],
             default: ''
         },
-        // entity: {
-        //     type: Entity,
-        //     required: true
-        // }
 
+        sidebar: {
+            type: Boolean,
+            default: false
+        },
+
+        viewport: {
+            type: String,
+            default: 'desktop'
+        }
     },
 
     data() {
+        const global = useGlobalState();
+        const sidebar = this.sidebar;
+        const leftGroups = $MAPAS.config.panelNav.filter((group)=>{
+            if(group.column != 'right' || sidebar) {
+                return group;
+            }
+        });
+        const rightGroups = $MAPAS.config.panelNav.filter((group)=>{
+            if(group.column == 'right' && !sidebar) {
+                return group;
+            }
+        });
+
         return {
-            entity: $MAPAS.userProfile,
-            groups: $MAPAS.config.panelNav
+            entity: global.auth.user?.profile,
+            grouspColumn : $MAPAS.config.panelNav,
+            leftGroups,
+            rightGroups,
+
 
         }
     },

@@ -28,12 +28,12 @@ $this->import('mc-icon');
                 <div class="content">
 
                     <div class="find-text">
-                        <input type="text" v-model="keywords"></input>
+                        <input type="text" v-model="keywords">
                         <div class="icon">
                             <mc-icon name="search"></mc-icon>
                         </div>
                     </div>
-                    <button class="button-filter button--primary">
+                    <button class="button-filter button--primary" @click="filterKeywordExec()">
                         <mc-icon name="filter"></mc-icon>
                         <label class="button-label"><?= i::__('Filtrar') ?></label>
                     </button>

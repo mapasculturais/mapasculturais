@@ -3,6 +3,28 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.6.16] - 2023-05-17
+### Correções
+- Corrige formulário de inscrição das fases, ocultando a seleção das categorias e dos agentes relacionados
+
+### Melhorias
+- Atualiza o Node.js para a versão 14
+- Reestruturação dos arquivos Dockerfile para o processo de build aproveitar melhor os caches
+
+## [5.6.15] - 2023-05-12
+### Correções
+- Corrige módulo de deníncia e contato para usar o nome do dono da entidade ao invez do usuário logado
+
+## [5.6.14] - 2023-05-12
+### Correções
+- remove botões de adicionar subespaço e de adicionar subagente das páginas single e edit de agente e projeto, pois levavam para uma página que não existe mais
+
+## [5.6.13] - 2023-05-12
+### Correções
+- corrige configuração de vinculação de espaço relacionado na configuração do formulário de inscrição em oportunidades
+
+### Melhorias 
+- adiciona MailHog no ambiente de desenvolvimento para teste dos envios
 
 [unreleased]
 ## Novas Funcionalidades
@@ -10,6 +32,32 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## Melhorias
 - Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
 - Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
+
+## [5.6.15] - 2023-05-12
+### Correções
+- Corrige módulo de deníncia e contato para usar o nome do dono da entidade ao invez do usuário logado
+
+## [5.6.14] - 2023-05-12
+### Correções
+- remove botões de adicionar subespaço e de adicionar subagente das páginas single e edit de agente e projeto, pois levavam para uma página que não existe mais
+
+## [5.6.13] - 2023-05-12
+### Correções
+- corrige configuração de vinculação de espaço relacionado na configuração do formulário de inscrição em oportunidades
+
+## [5.6.12] - 2023-04-17
+### Correções
+- corrige erro de js que estava quebrando a edição de oportuidades em algumas situações
+
+## [5.6.11] - 2023-04-17
+### Melhorias
+- garante que os CPFs e CNPJs sejam exibidos e salvos formatados (XXX.XXX.XXX-XX e XX.XXX.XXX/YYYY-ZZ)
+- unserialize nos metadados CPF e CNPJ que retorna do campo documento caso não esteja preenchido
+
+## [5.6.10] - 2023-04-17
+### Melhorias
+- refatoração do db-update que popula os metadados dos documentos para rodar mais rapidamente
+
 ## [5.6.9] - 2023-04-17
 ### Melhorias
 - melhora performance do endpoint que retorna avaliações

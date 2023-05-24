@@ -5,6 +5,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    confirm-before-exit 
     entity-actions
     entity-admins
     entity-cover
@@ -24,6 +25,7 @@ $this->import('
     mapas-breadcrumb
     mapas-card
     mapas-container
+    permission-publish
 ');
 
 $this->breadcrumb = [
@@ -79,6 +81,38 @@ $this->breadcrumb = [
             </mapas-card>
             <mapas-card>
                 <template #title>
+                    <label><?php i::_e("Acessibilidade"); ?></label>
+                </template>
+                <template #content>
+                    <entity-field :entity="entity" classes="col-12" prop="acessibilidade"></entity-field>
+                </template>
+            </mapas-card>
+            <mapas-card>
+                <template #title>
+                    <label><?php i::_e("Acessibilidade física"); ?></label>
+                </template>
+                <template #content>
+                    <entity-field :entity="entity" classes="col-12" type="multiselect" prop="acessibilidade_fisica"></entity-field>
+                </template>
+            </mapas-card>
+            <mapas-card>
+                <template #title>
+                    <label><?php i::_e("Capacidade"); ?></label>
+                </template>
+                <template #content>
+                    <entity-field :entity="entity" classes="col-12" prop="capacidade"></entity-field>
+                </template>
+            </mapas-card>
+            <mapas-card>
+                <template #title>
+                    <label><?php i::_e("Horário e funcionamento"); ?></label>
+                </template>
+                <template #content>
+                    <entity-field :entity="entity" classes="col-12" prop="horario"></entity-field>
+                </template>
+            </mapas-card>
+            <mapas-card>
+                <template #title>
                     <label><?php i::_e("Informações sobre o espaço"); ?></label>
                 </template>
                 <template #content>
@@ -101,11 +135,8 @@ $this->breadcrumb = [
                         <label class="col-12 long-description"><?php i::_e('Apresente melhor o seu Espaço. 
                          Adicione documentos, links, vídeos e imagens que contem a sua história.')?></label>
                         <entity-field :entity="entity" classes="col-12" prop="longDescription" label="<?php i::_e('Descrição'); ?>"></entity-field>
-
                         <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Adicionar arquivos para download') ?>" editable></entity-files-list>
-                        <div class="col-12">
-                            <entity-links :entity="entity" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
-                        </div>
+                        <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
                         <entity-gallery-video :entity="entity" classes="col-12" title="<?php i::_e('Adicionar vídeos') ?>" editable></entity-gallery-video>
                         <entity-gallery :entity="entity" classes="col-12" title="<?php i::_e('Adicionar fotos na galeria') ?>" editable></entity-gallery>
                     </div>
@@ -119,6 +150,7 @@ $this->breadcrumb = [
                         <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
                         <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="Tags" editable></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
+                        <permission-publish :entity="entity"></permission-publish>
                         <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
                         <entity-parent-edit :entity="entity" classes="col-12" type="space" editable label="<?php i::esc_attr_e('Adicionar Supra Espaço')?>"></entity-parent-edit>
                     </div>
@@ -128,3 +160,5 @@ $this->breadcrumb = [
     </mapas-container>
     <entity-actions :entity="entity" editable></entity-actions>
 </div>
+<confirm-before-exit :entity="entity"></confirm-before-exit>
+

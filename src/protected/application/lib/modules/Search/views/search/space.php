@@ -18,7 +18,7 @@ $this->breadcrumb = [
 
 <search page-title="<?php i::esc_attr_e('Espaços') ?>" entity-type="space" :initial-pseudo-query="{'term:area':[], type:[]}">    
     <template #create-button>
-        <create-space #default="{modal}">
+        <create-space v-if="global.auth.isLoggedIn" #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">
                 <mc-icon name="add"></mc-icon>
                 <span><?= i::__('Criar Espaço') ?></span>

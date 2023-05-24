@@ -202,9 +202,30 @@ class Module extends \MapasCulturais\Module{
             $app->view->jsObject['avaliableEvaluationFields'] = $entity->opportunity->avaliableEvaluationFields;
         });
 
+        $app->hook('Theme::addRegistrationPhasesToJs', function ($unused = null, $registration = null) use ($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            $this->useOpportunityAPI();
+            if (!$registration) {
+                $registration = $this->controller->requestedEntity;
+            }
+
+            $number = $registration->number;
+
+            $registrations = $app->repo('Registration')->findBy(['number' => $number]);
+
+            $phases = [];
+
+            foreach($registrations as $reg) {
+                /** @var \MapasCulturais\Entities\Registration $reg */
+                $phases[$reg->opportunity->id] = $reg->jsonSerialize();
+            }
+
+            $this->jsObject['registrationPhases'] = $phases;
+        });
+
         $app->hook('Theme::addOpportunityPhasesToJs', function ($unused = null, $opportunity = null) use ($app) {
-            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */   
-            $this->useOpportunityAPI();         
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            $this->useOpportunityAPI();
             if (!$opportunity) {
                 $entity = $this->controller->requestedEntity;
 

@@ -22,8 +22,10 @@ $this->import('search-filter mc-multiselect mc-tag-list mc-icon');
         </div>
         <div class="field">
             <label> <?php i::_e('Área de atuação') ?></label>
-            <mc-multiselect :model="pseudoQuery['term:area']" :items="terms" #default="{popover}" hide-filter hide-button>
-                <input class="mc-multiselect--input" v-model="pseudoQuery['term:area'].filter" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
+            <mc-multiselect :model="pseudoQuery['term:area']" :items="terms" hide-filter hide-button>
+                <template #default="{setFilter, popover}">
+                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
+                </template>
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['term:area']" classes="agent__background agent__color"></mc-tag-list>
         </div>

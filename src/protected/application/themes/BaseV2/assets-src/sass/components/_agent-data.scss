@@ -1,0 +1,74 @@
+@use '../settings/mixins' as *;
+
+.controller-agent.action-edit {
+    .field {
+        label {
+            margin: 0;
+        }
+
+        &.pcd {
+            // background-color: red;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        &.pcd  input[type='checkbox'] {
+            display: grid;
+            grid-template-columns:1fr
+        }
+    }
+}
+
+.agent-data {
+    // max-width: size(860);
+    display: flex;
+    flex-direction: column;
+
+    &__title,
+    &__secondTitle {
+        margin: size(16) 0 size(16) 0;
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 25px;
+    }
+
+    &__fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        @media (max-width:size(1043)) {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        &--field {
+            margin-bottom: size(16);
+
+            label {
+                font-family: 'Open Sans';
+                font-style: normal;
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 19px;
+                margin-bottom: size(8);
+            }
+
+            @media (max-width:size(600)) {
+                .box {
+                    margin: size(8) 0 size(27) 0;
+                }
+            }
+
+            .box {
+                margin-top: size(8);
+                max-width: size(300);
+                width: 100%;
+                min-height: size(49);
+                background: var(--mc-gray-100);
+                border-radius: size(4);
+                padding: size(16);
+            }
+        }
+    }
+}

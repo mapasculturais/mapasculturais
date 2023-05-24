@@ -24,6 +24,7 @@ body {
     position: relative !important;
     margin: 15px auto !important;
     width: calc(95% - 21px) !important;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3) !important;
 }
 
 .edit-box .mc-arrow {
@@ -34,6 +35,17 @@ body {
     display: flex;
     gap: 12px;
     justify-content: flex-end;
+}
+.edit-box .mc-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.edit-box label.checkbox-label {
+    display: inline-flex;
+    margin-right: 15px;
+    align-items: center;
 }
 
 .screen-reader-text {
@@ -290,14 +302,23 @@ textarea {
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section {
-    background-color: #E5E5E5 !important;
-    padding: 0 0 32px !important;
+    background-color: #F5F5F5 !important;
+    padding: 40px 0 24px!important;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item:first-child .title_section {
+    padding: 0 0 24px!important;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section br {
+    display: none;
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .label {
     font-weight: 700;
     font-size: 32px;
     line-height: 44px;
+    margin: 0;
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .attachment-description {
@@ -329,10 +350,14 @@ textarea {
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn,
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .submit-attach-opportunity {  
     background-color: #FFFFFF;
-    border: 0.125rem solid #0074C1;
-    color: #0074C1;
+    border: 0.125rem solid #0074C1 !important;
+    color: #0074C1 !important;
     display: inline-flex;
     position: relative;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .edit-box form .alert {
+    display: none !important;
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn::before {
@@ -1101,9 +1126,6 @@ textarea {
 
 
 /* sidebarleftevaluations */
-.action-sidebarleftevaluations {
- 
-}
 .action-sidebarleftevaluations .sidebar-left {
     padding: 0;
 }
@@ -1153,4 +1175,118 @@ textarea {
 
 .log-execution-time {
     display: none;
+}
+
+
+/* Support Edit View */
+.action-supporteditview .registration-header,
+.action-supporteditview .registration-number {
+    display: none;
+}
+
+.action-supporteditview #registration-attachments {
+    border: none;
+    padding: 0;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .section {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 44px;
+    margin: 32px 0 27px;
+}
+.action-supporteditview #registration-attachments .attachment-list .section br {
+    display: none;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item {
+    background-color: #FFFFFF;
+    border: none;
+    padding: 13px 13px 19px 13px;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item .btn.send,
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item .btn.edit {
+    background-color: #FFFFFF;
+    color: #0074C1;
+    border: 2px solid #0074C1;
+    padding: 12px 19px;
+    width: 155px;
+    text-decoration: none;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item .label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.attachment-description {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+
+/* Registration Evaluation Form View */
+.action-registrationevaluationtionformview #registration-attachments {
+    padding: 0;
+    border: none;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .section-title h4 {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    margin: 40px 0 21px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .section-title:first-child h4 {
+    margin-top: 0;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item {
+    background: #E8E8E8;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    padding: 8px 16px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div span,
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div a,
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div p {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    word-break: break-word;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div a{
+    display: flex;
+    gap: 5px;
+    text-decoration: none;
 }

@@ -26,6 +26,12 @@
                     }
                 }
 
+                @media (max-width: size(400)) {
+                    .actions {
+                        margin-right: size(18);
+                    }
+                }
+
                 .actions {
                     display: flex;
                     gap: size(18);
@@ -55,7 +61,7 @@
                     }
 
                     @media (max-width:size(400)) {
-
+                        margin-right: 0;
                         button.carousel__prev,
                         button.carousel__next {
                             background-color: var(--mc-high-500);
@@ -89,7 +95,7 @@
                     &--active {
                         &.carousel__slide {
                             &--active {
-                                min-width: 328px;
+                                min-width: 318px;
                                 max-width: 100%;
                             }
                         }
@@ -118,8 +124,13 @@
                             @media (max-width: 400px) {
                                 //background-color: red;
                                 margin-left: 0;
-                                max-width: 328px;
+                                max-width: 300px;
                                 width: 100%;
+
+                                .panel-entity-card__footer-actions.right .button-action {
+                                    max-width: 75%;
+                                    gap: 60%;
+                                }
 
                                 &.panel-home__tabs,
                                 &.tab-component {
@@ -128,7 +139,7 @@
                                 }
 
                                 .card {
-                                    width: 328px;
+                                    width: 318px;
                                 }
                             }
                         }
@@ -159,6 +170,9 @@
 
                             .left {
                                 flex-wrap: wrap;
+                                display: grid;
+                                grid-template-columns: 1fr;
+
                                 @media (max-width:size(956)) {
                                     display: flex;
                                     gap: size(12);
@@ -172,10 +186,18 @@
                             line-height: size(16);
                             text-align: left;
                             padding: 0;
+
                             span {
+                                word-break: break-all;
                                 white-space: pre-line;
+
                             }
 
+                            @media (max-width:size(400)) {
+                                span {
+                                    word-break: break-all;
+                                }
+                            }
                         }
 
                         &__footer {
@@ -183,11 +205,19 @@
 
                                 @media (max-width: size(956)) {
                                     display: flex;
-                                    justify-content: flex-start;
-                                    align-items: flex-end;
+                                    justify-content: center;
+                                    align-items: center;
+
+                                    &.left {
+                                        display: none;
+                                    }
 
                                     &.right {
                                         gap: size(8);
+
+                                        .content {
+                                            display: none;
+                                        }
                                     }
                                 }
                             }

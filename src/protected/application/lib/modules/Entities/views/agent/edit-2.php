@@ -3,6 +3,7 @@ use MapasCulturais\i;
 $this->layout = 'entity'; 
 
 $this->import('
+    confirm-before-exit 
     entity-actions
     entity-admins
     entity-cover
@@ -87,9 +88,7 @@ $this->breadcrumb = [
                     <div class="grid-12">
                         <entity-field :entity="entity" classes="col-12" prop="longDescription" label="Descrição"></entity-field>
                         <entity-files-list :entity="entity" classes="col-12" group="downloads" title="Adicionar arquivos para download" editable></entity-files-list>
-                        <div class="col-12">
-                            <entity-links :entity="entity" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>                    
-                        </div>
+                        <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
                         <entity-gallery-video title="<?php i::_e('Adicionar vídeos') ?>" :entity="entity" classes="col-12" editable></entity-gallery-video>
                         <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" classes="col-12" editable></entity-gallery>
                     </div>
@@ -111,3 +110,4 @@ $this->breadcrumb = [
     </mapas-container>
     <entity-actions :entity="entity" editable></entity-actions>
 </div>
+<confirm-before-exit :entity="entity"></confirm-before-exit>

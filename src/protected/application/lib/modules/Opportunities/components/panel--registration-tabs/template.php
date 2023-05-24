@@ -36,7 +36,11 @@ $this->import('
             </template>
             <template #default="{entities}">
                 <div class="registrations__list">
-                    <registration-card v-for="registration in entities" :entity="registration" pictureCard></registration-card>
+                    <registration-card v-for="registration in entities" :entity="registration" pictureCard>
+                        <template #button="{entity}">
+                            <a class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Continuar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
+                        </template>
+                    </registration-card>
                 </div>
             </template>
         </entities>
@@ -58,7 +62,7 @@ $this->import('
                             <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
                         </select>
                     </form>
-                    <mc-alert type="warning" :startOpen="showAlert" closeButton>
+                    <mc-alert type="warning" :state="showAlert" closeButton>
                         <?= i::__('Você tem inscrições não finalizadas. Acesse a aba')?> <strong><?= i::__('Não Enviadas') ?></strong> <?= i::__('para visualizar.') ?>
                     </mc-alert>
                 </div>

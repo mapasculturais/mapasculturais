@@ -22,12 +22,6 @@ return [
 
     /* Breve descrição do site. É utilizado como texto de compartilhamento da página principal do site. */
     'app.siteDescription' => env('SITE_DESCRIPTION', i::__('O Mapas Culturais é uma plataforma livre para mapeamento cultural.')),
-
-    /* Primeira linha do logo configurável */
-    'logo.title' => env('LOGO_TITLE', i::__('Mapas')),
-
-    /* Segunda linha do logo configurável */
-    'logo.subtitle' => env('LOGO_SUBTITLE', i::__('Culturais')),
     
     /* Ids dos selos verificadores. Para utilizar múltiplos selos informe os ids separados por vírgula. */
     'app.verifiedSealsIds' => explode(',', env('VERIFIED_SEALS', '1')),
