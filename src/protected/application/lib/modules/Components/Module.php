@@ -257,9 +257,8 @@ class Module extends \MapasCulturais\Module {
                 return $output;
             });
 
-            if ($component != 'mc-debug' && $app->mode == APPMODE_DEVELOPMENT) {
-                $this->import('mc-debug');
-                echo "<mc-debug type='component' name='" . htmlentities("[$component]") . "'></mc-debug>";
+            if ($app->mode == APPMODE_DEVELOPMENT) {
+                echo "<!-- $component -->";
             }
 
             $app->applyHookBoundTo($this, "component({$component}):before", [&$__data, &$__template_path]);
@@ -271,9 +270,8 @@ class Module extends \MapasCulturais\Module {
             
             $app->applyHookBoundTo($this, "component({$component}):after", [$__data]);
             
-            if ($component != 'mc-debug' && $app->mode == APPMODE_DEVELOPMENT) {
-                $this->import('mc-debug');
-                echo "<mc-debug type='component' name='" . htmlentities("[/$component]") . "'></mc-debug>";
+            if ($app->mode == APPMODE_DEVELOPMENT) {
+                echo "<!-- /$component -->";
             }
 
             $__html = ob_get_clean();
