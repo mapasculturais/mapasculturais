@@ -651,12 +651,18 @@ abstract class Theme extends \Slim\View {
         return (bool) $this->controller->id === 'site' && $this->action === 'search';
     }
 
+    public $insideBody = false;
+
     function bodyBegin(){
+        $this->insideBody = true;
         App::i()->applyHook('mapasculturais.body:before');
+        $this->applyTemplateHook('body','begin');
     }
 
     function bodyEnd(){
+        $this->applyTemplateHook('body','end');
         App::i()->applyHook('mapasculturais.body:after');
+        $this->insideBody = false;
     }
 
     function bodyProperties(){
@@ -689,10 +695,6 @@ abstract class Theme extends \Slim\View {
 
         if ($app->mode == APPMODE_DEVELOPMENT) {
             echo "\n<!-- TEMPLATE HOOK: $hook -->\n";
-            if($this->version >= 2) {
-                $this->import('mc-debug');
-                echo "<mc-debug type='template-hook' name='$hook'></mc-debug>\n";
-            }
         }
         $app->applyHookBoundTo($this, $hook, $args);
     }
