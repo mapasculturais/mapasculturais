@@ -11,7 +11,7 @@ mapas-card
     <div v-if="verifyEntity()" class="agent-data__title">
         <h4 class="title">{{title}}</h4>
     </div>
-    <div v-if="entity.name?.length>0" class="agent-data__fields">
+    <div class="agent-data__fields">
         <div class="agent-data__fields--field">
             <label class="title"><?php i::_e("Nome Completo") ?></label>
             <div class="box">
@@ -36,6 +36,12 @@ mapas-card
                 <label class="box__content">{{entity.cnpj}}</label>
             </div>
         </div>
+        <div v-if="entity.telefonePublico!=null" class="agent-data__fields--field">
+            <label class="title"><?php i::_e("Telefone Público") ?></label>
+            <div class="box">
+                <label class="box__content">{{entity.telefonePublico}}</label>
+            </div>
+        </div>
         <div v-if="entity.telefonePublico?.length>0" class="agent-data__fields--field">
             <label class="title"><?php i::_e("Telefone Público") ?></label>
             <div class="box">
@@ -43,24 +49,18 @@ mapas-card
             </div>
         </div>
         <div v-if="entity.telefonePublico?.length>0" class="agent-data__fields--field">
-            <label class="title"><?php i::_e("Telefone Público 1") ?></label>
+            <label class="title"><?php i::_e("Telefone Privado 1") ?></label>
             <div class="box">
                 <label class="box__content">{{entity.telefone1}}</label>
             </div>
         </div>
         <div v-if="entity.telefonePublico?.length>0" class="agent-data__fields--field">
-            <label class="title"><?php i::_e("Telefone Público 2") ?></label>
+            <label class="title"><?php i::_e("Telefone Privado 2") ?></label>
             <div class="box">
                 <label class="box__content">{{entity.telefone2}}</label>
             </div>
         </div>
-        <div v-if="entity.emailPrivado?.lenght>0" class="agent-data__fields--field">
-            <label class="title"><?php i::_e("Email Pessoal") ?></label>
-            <div class="box">
-                <label class="box__content">{{entity.emailPrivado}}</label>
-            </div>
-        </div>
-        <div v-if="entity.emailPrivado?.lenght>0 && verifyEntity()" class="agent-data__fields--field">
+        <div v-if="entity.emailPrivado!=null && verifyEntity()" class="agent-data__fields--field">
             <label class="title"><?php i::_e("Email Público") ?></label>
             <div class="box">
                 <label class="box__content">{{entity.emailPublico}}</label>
