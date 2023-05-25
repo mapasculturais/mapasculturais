@@ -55,7 +55,7 @@ mapas-card
                 <label class="box__content">{{entity.telefone2}}</label>
             </div>
         </div>
-        <div v-if="entity.emailPrivado?.lenght>0" class="agent-data__fields--field">
+        <div v-if="entity.emailPrivado!=null" class="agent-data__fields--field">
             <label class="title"><?php i::_e("Email Pessoal") ?></label>
             <div class="box">
                 <label class="box__content">{{entity.emailPrivado}}</label>
