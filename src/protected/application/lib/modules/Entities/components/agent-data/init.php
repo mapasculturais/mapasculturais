@@ -10,6 +10,8 @@ $fields = [
     'orientacaoSexual',
     'pessoaDeficiente',
     'raca',
+    'emailPublico',
+    'emailPrivado',
 ]; 
 
 $app->applyHook('component(agent-data).fields', [&$fields]);
