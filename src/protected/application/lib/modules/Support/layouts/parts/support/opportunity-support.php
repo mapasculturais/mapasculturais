@@ -6,10 +6,6 @@ use MapasCulturais\i;
     <header id="header-inscritos" class="clearfix">
         <?php $this->applyTemplateHook('header-inscritos-support','begin'); ?>
         <h3><?php i::_e("Inscritos");?></h3>
-        <div class="alert info hide-tablet">
-            <?php i::_e("Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.");?>
-            <div class="close"></div>
-        </div>
         <?php $this->applyTemplateHook('header-inscritos-support','actions'); ?>
         <?php $this->applyTemplateHook('header-inscritos-support','end'); ?>
     </header>
@@ -18,9 +14,7 @@ use MapasCulturais\i;
     <div id="filtro-inscritos">
         <span class="label"> <?php i::_e("Filtrar inscrição:");?> </span>
         <input ng-model="data.registrationsFilter" placeholder="<?php i::_e('Busque pelo número de inscrição, status da avaliação, nome ou cpf do responsável') ?>" />
-    </div>
-
-    
+    </div>    
 
     <style>
         table.fullscreen {
