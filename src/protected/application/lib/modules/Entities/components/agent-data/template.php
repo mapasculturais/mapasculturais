@@ -8,10 +8,10 @@ mapas-card
 ?>
 <div class="col-12 agent-data">
 
-    <div class="agent-data__title">
+    <div v-if="verifyEntity()" class="agent-data__title">
         <h4 class="title">{{title}}</h4>
     </div>
-    <div v-if="entity.name?.length>0" class="agent-data__fields">
+    <div v-if="entity.name?.length>0  verifyEntity()" class="agent-data__fields">
         <div class="agent-data__fields--field">
             <label class="title"><?php i::_e("Nome Completo") ?></label>
             <div class="box">
@@ -30,8 +30,8 @@ mapas-card
                 <label class="box__content">{{entity.cpf}}</label>
             </div>
         </div>
-        <div v-if="entity.cnpj?.length>0" class="agent-data__fields--field">
-            <label class="title"><?php i::_e("MEI") ?></label>
+        <div v-if="entity.cnpj?.length!=null" class="agent-data__fields--field">
+            <label class="title"><?php i::_e("MEI (CNPJ do MEI)") ?></label>
             <div class="box">
                 <label class="box__content">{{entity.cnpj}}</label>
             </div>
@@ -48,7 +48,7 @@ mapas-card
                 <label class="box__content">{{entity.telefonePublico}}</label>
             </div>
         </div>
-        <div v-if="entity.currentUserPermissions.viewPrivateData && entity.emailPrivado?.lenght>0" class="agent-data__fields--field">
+        <div v-if="entity.emailPrivado?.lenght>0" class="agent-data__fields--field">
             <label class="title"><?php i::_e("Email Secundário") ?></label>
             <div class="box">
                 <label class="box__content">{{entity.emailPrivado}}</label>
@@ -121,6 +121,5 @@ mapas-card
                 <label class="box__content">{{entity.comunidadesTradicionalOutros}}</label>
             </div>
         </div>
-
     </div>
 </div>
