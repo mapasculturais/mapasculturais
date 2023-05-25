@@ -3,6 +3,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.6.18] - 2023-05-25
+### Correções
+- Melhorias na visualização das telas com tabelas de inscrições em dispositivos mobile
+
+## [5.6.17] - 2023-05-18
+### Correções
+- Ajusta para que em oportunidades multifases, o preview do formulario das fases posteriores exibam as categorias evitando que os campos condicionados fiquem ocultos
+
 ## [5.6.16] - 2023-05-17
 ### Correções
 - Corrige formulário de inscrição das fases, ocultando a seleção das categorias e dos agentes relacionados
@@ -32,6 +40,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## Melhorias
 - Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
 - Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
+
+## [5.6.17] - 2023-05-18
+### Correções
+- Ajusta para que em oportunidades multifases, o preview do formulario das fases posteriores exibam as categorias evitando que os campos condicionados fiquem ocultos
+
+## [5.6.16] - 2023-05-17
+### Correções
+- Corrige formulário de inscrição das fases, ocultando a seleção das categorias e dos agentes relacionados
+
+### Melhorias
+- Atualiza o Node.js para a versão 14
+- Reestruturação dos arquivos Dockerfile para o processo de build aproveitar melhor os caches
 
 ## [5.6.15] - 2023-05-12
 ### Correções
