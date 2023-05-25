@@ -2,12 +2,14 @@
     list-style-type: none;
     overflow: hidden;
     margin: 0;
-    position: absolute;
     z-index: 100;
+
     @media screen and (max-width: 1366px) and (min-width: 1200px) {
+        position: absolute;
         margin: -1px 0 0 20%;
     }
     @media screen and (min-width: 1367px) {
+        position: absolute;
         margin: -1px 0 0 15%;
     }
 
