@@ -60,8 +60,14 @@ mapas-card
                 <label class="box__content">{{entity.telefone2}}</label>
             </div>
         </div>
-        <div v-if="entity.emailPrivado!=null && verifyEntity()" class="agent-data__fields--field">
-            <label class="title"><?php i::_e("Email Público") ?></label>
+        <div v-if="entity.emailPrivado?.length>0 && verifyEntity()" class="agent-data__fields--field">
+            <label class="title"><?php i::_e("Email Pessoal") ?></label>
+            <div class="box">
+                <label class="box__content">{{entity.emailPrivado}}</label>
+            </div>
+        </div>
+        <div v-if="entity.emailPublico?.length>0 && verifyEntity()" class="agent-data__fields--field">
+            <label class="title"><?php i::_e("Email Púbico") ?></label>
             <div class="box">
                 <label class="box__content">{{entity.emailPublico}}</label>
             </div>
