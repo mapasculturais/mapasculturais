@@ -1,6 +1,27 @@
 @use '../settings/mixins' as *;
 
+.controller-agent.action-edit.Agent-2.Agent-1 {
+    .data-subtitle {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 600;
+        font-size: size(14);
+        line-height: size(19);
+    }
+}
+
 .controller-agent.action-edit {
+    .mapas-card__title {
+        p {
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 600;
+            font-size: size(14);
+            line-height: size(19);
+        }
+
+    }
+
     .content {
         display: grid;
         grid-template-columns: 1fr 1fr;

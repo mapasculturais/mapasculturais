@@ -89,7 +89,7 @@ $this->breadcrumb = [
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Dados pessoais sensíveis"); ?></label>
-                    <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
+                    <p class="data-subtitle"><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
                 </template>
                 <template #content>
                     <div class="grid-12">
