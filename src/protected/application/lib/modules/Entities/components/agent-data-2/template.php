@@ -9,7 +9,7 @@ mapas-card
 <div class="col-12 agent-data">
     <template v-if="entity.currentUserPermissions.viewPrivateData && verifyEntity()">
         <div class="agent-data__title">
-            <h4 class="title">{{title}}</h4>
+            <h4 class="title"><?php i::_e("Dados Pessoais")?></h4>
         </div>
         <div v-if="entity.name" class="agent-data__fields">
             <div class="agent-data__fields--field">
