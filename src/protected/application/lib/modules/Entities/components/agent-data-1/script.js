@@ -1,10 +1,10 @@
-app.component('agent-data', {
-    template: $TEMPLATES['agent-data'],
+app.component('agent-data-1', {
+    template: $TEMPLATES['agent-data-1'],
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('entity-owner')
-        return { text }
+        // const text = Utils.getTexts('entity-owner')
+        // return { text }
     },
 
     props: {
@@ -12,24 +12,16 @@ app.component('agent-data', {
             type: Entity,
             required: true
         },
-        title: {
-            type: String,
-            default: __('Dados Pessoais', 'agent-data')
-        },
-
         classes: {
             type: [String, Array, Object],
             required: false
         },
-        secondTitle: {
-            type: String,
-            default: __('Dados Pessoais Sensíveis', 'agent-data')
-        },
     },
     methods: {
-        verifyEntity() {
+        verifyAllFields(fields) {
             let empty = true;
-            for (let fieldName of $MAPAS.config['agent-data']) {
+
+            for (let fieldName of fields) {
                 let field = this.entity[fieldName]
                 if (field !== undefined && field !== null) {
                     if (field instanceof Array) {
@@ -44,6 +36,13 @@ app.component('agent-data', {
             }
             return !empty;
         },
+        
+        verifySensitiveFields() {
+            return this.verifyAllFields($MAPAS.config['agent-data-1'].sensitiveFields)
+        },
+        verifyFields () {
+            return this.verifyAllFields($MAPAS.config['agent-data-1'].fields)
 
+        },
     },
 });
