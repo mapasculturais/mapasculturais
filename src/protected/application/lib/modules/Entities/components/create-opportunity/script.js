@@ -76,7 +76,10 @@ app.component('create-opportunity', {
 
     destroyEntity() {
         // para o conteúdo da modal não sumir antes dela fechar
-        setTimeout(() => this.entity = null, 200);
+        setTimeout(() => {
+            this.entity = null;
+            this.entityTypeSelected = null;
+        }, 200);
     }
 },
 });
