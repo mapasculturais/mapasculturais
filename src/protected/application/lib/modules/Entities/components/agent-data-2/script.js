@@ -12,11 +12,6 @@ app.component('agent-data-2', {
             type: Entity,
             required: true
         },
-        title: {
-            type: String,
-            default: __('Dados Pessoais', 'agent-data-2')
-        },
-
         classes: {
             type: [String, Array, Object],
             required: false
