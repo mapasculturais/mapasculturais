@@ -2,8 +2,8 @@
 use MapasCulturais\i;
 
 $this->import('
-    confirm-button
     entity-field
+    mc-confirm-button
 ');
 ?>
 
@@ -11,13 +11,13 @@ $this->import('
     <div class="grid-12 opportunity-phase-publish-date-config">
         <div v-if="phase.publishedRegistrations" class="published">
             <div class="col-4">
-                <confirm-button :message="text('despublicar')" @confirm="unpublishRegistration()">
+                <mc-confirm-button :message="text('despublicar')" @confirm="unpublishRegistration()">
                     <template #button="modal">
                         <button class="button button--text button--text-danger" @click="modal.open()">
                             <?= i::__("Despublicar") ?>
                         </button>
                     </template>
-                </confirm-button>
+                </mc-confirm-button>
             </div>
             <div v-if="!!phase.publishTimestamp" class="col-4">
                 <h5>{{ msgPublishDate }}</h5>
@@ -26,13 +26,13 @@ $this->import('
 
         <div v-if="!phase.publishedRegistrations" class="grid-12 col-12 notPublished">
             <div v-if="!hideButton && isPublished && firstPhase.status != 0" class="col-4">
-                <confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
+                <mc-confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
                     <template #button="modal">
                         <button class="button button--primary button-config" @click="modal.open()">
                             <?= i::__("Publicar Resultados") ?>
                         </button>
                     </template>
-                </confirm-button>
+                </mc-confirm-button>
             </div>
 
             <div v-if="!hideDescription" class="col-4">

@@ -1,5 +1,9 @@
 <?php 
 use MapasCulturais\i;
+
+$this->import('
+    mc-confirm-button
+');
 ?>
 
 <div v-if="entity.metalists.links || editable" :class="['entity-links', classes]">
@@ -40,14 +44,14 @@ use MapasCulturais\i;
                     </template>
                 </popover>
                 
-                <confirm-button @confirm="metalist.delete()">
+                <mc-confirm-button @confirm="metalist.delete()">
                     <template #button="{open}">
                         <a @click="open()"> <mc-icon name="trash"></mc-icon> </a>
                     </template> 
                     <template #message="message">
                         <?php i::_e('Deseja remover o link?') ?>
                     </template> 
-                </confirm-button>
+                </mc-confirm-button>
                 
             </div>
         </li>

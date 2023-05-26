@@ -8,7 +8,7 @@
 use MapasCulturais\i;
 
 $this->import('
-    confirm-button
+    mc-confirm-button
     mc-loading
 ');
 ?>
@@ -23,7 +23,7 @@ $this->import('
             <div class="entity-actions__content--groupBtn rowBtn" ref="buttons1">
                 <?php $this->applyTemplateHook('entity-actions--primary', 'begin') ?>
 
-                <confirm-button v-if="entity.currentUserPermissions?.archive" @confirm="entity.archive()">
+                <mc-confirm-button v-if="entity.currentUserPermissions?.archive" @confirm="entity.archive()">
                     <template #button="modal">
                         <button @click="modal.open()" class="button button--icon button--sm arquivar">
                             <mc-icon name="archive"></mc-icon>
@@ -33,8 +33,8 @@ $this->import('
                     <template #message="message">
                         <?php i::_e('Você está certo qeu deseja arquivar?') ?>
                     </template>
-                </confirm-button>
-                <confirm-button v-if="entity.currentUserPermissions?.remove && canDelete" @confirm="entity.delete()">
+                </mc-confirm-button>
+                <mc-confirm-button v-if="entity.currentUserPermissions?.remove && canDelete" @confirm="entity.delete()">
                     <template #button="modal">
                         <button @click="modal.open()" class="button button--icon button--sm excluir">
                             <mc-icon name="trash"></mc-icon>
@@ -44,14 +44,14 @@ $this->import('
                     <template #message="message">
                         <?php i::_e('Você está certo que deseja excluir?') ?>
                     </template>
-                </confirm-button>
+                </mc-confirm-button>
                 <?php $this->applyTemplateHook('entity-actions--primary', 'end') ?>
             </div>
             <?php $this->applyTemplateHook('entity-actions--leftGroupBtn', 'after'); ?>
 
             <div v-if="editable" class="entity-actions__content--groupBtn" ref="buttons2">
                 <?php $this->applyTemplateHook('entity-actions--secondary', 'begin') ?>
-                <confirm-button v-if="entity.status == 0" @confirm="exit()">
+                <mc-confirm-button v-if="entity.status == 0" @confirm="exit()">
                     <template #button="modal">
                         <button @click="modal.open()" class="button button--md publish publish-exit">
                             <?php i::_e("Sair") ?>
@@ -60,11 +60,11 @@ $this->import('
                     <template #message="message">
                         <?php i::_e('Deseja sair?') ?>
                     </template>
-                </confirm-button>
+                </mc-confirm-button>
                 <button v-if="entity.currentUserPermissions?.modify" @click="entity.save()" class="button button--md publish publish-exit">
                     <?php i::_e("Salvar") ?>
                 </button>
-                <confirm-button v-if="entity.status == 0 && entity.currentUserPermissions?.publish" @confirm="entity.publish()">
+                <mc-confirm-button v-if="entity.status == 0 && entity.currentUserPermissions?.publish" @confirm="entity.publish()">
                     <template #button="modal">
                         <button @click="modal.open()" class="button button--md publish publish-exit">
                             <?php i::_e("Publicar") ?>
@@ -73,7 +73,7 @@ $this->import('
                     <template #message="message">
                         <?php i::_e('Você está certo que deseja publicar esta entidade?') ?>
                     </template>
-                </confirm-button>
+                </mc-confirm-button>
                 <button v-if="entity.status == 1 && entity.currentUserPermissions?.modify" @click="save()" class="button button--md publish publish-exit">
                     <?php i::_e("Concluir Edição e Sair") ?>
                 </button>

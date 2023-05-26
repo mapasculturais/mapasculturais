@@ -2,7 +2,6 @@
 use MapasCulturais\i;
 
 $this->import('
-    confirm-button
     opportunity-phase-publish-date-config
 ')
 ?>

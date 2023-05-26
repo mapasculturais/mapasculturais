@@ -1,7 +1,7 @@
 <?php
 use MapasCulturais\i;
 $this->import('
-    confirm-button
+    mc-confirm-button
     opportunity-phase-publish-date-config
 ');
 ?>
@@ -26,7 +26,7 @@ $this->import('
         <!-- <div class="config-phase__line col-12 "></div> -->
 
         <div class="phase-delete col-12" v-if="!phase.isLastPhase && !phase.isFirstPhase">
-            <confirm-button message="Confirma a execução da ação?" @confirm="deletePhase($event, phase, index)">
+            <mc-confirm-button message="Confirma a execução da ação?" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
                     <a class="phase-delete__trash" @click="modal.open">
                         <div class="icon">
@@ -35,7 +35,7 @@ $this->import('
                         <label class="label">{{ text('excluir_fase_coleta_dados') }}</label>
                     </a>
                 </template>
-            </confirm-button>
+            </mc-confirm-button>
         </div>
     </div>
 </mc-card>

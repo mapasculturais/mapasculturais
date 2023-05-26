@@ -4,7 +4,7 @@ use MapasCulturais\i;
 
 $this->import('
     popover
-    confirm-button
+    mc-confirm-button
     mc-relation-card
 ');
 ?>
@@ -37,7 +37,7 @@ $this->import('
                     </template>
                 </popover>
                 <!-- remover grupo -->
-                <confirm-button @confirm="removeGroup(groupName)">
+                <mc-confirm-button @confirm="removeGroup(groupName)">
                     <template #button="modal">
                         <a @click="modal.open()">
                             <mc-icon name="trash"></mc-icon>
@@ -46,7 +46,7 @@ $this->import('
                     <template #message="message">
                         <?php i::_e('Remover grupo de agentes relacionados?') ?>
                     </template>
-                </confirm-button>
+                </mc-confirm-button>
             </div>
         </div>
         <!-- lista de agentes -->
@@ -62,14 +62,14 @@ $this->import('
                 </mc-relation-card>
                 <!-- remover agente -->
                 <div v-if="editable" class="agent__delete">
-                    <confirm-button @confirm="removeAgent(groupName, relation.agent)">
+                    <mc-confirm-button @confirm="removeAgent(groupName, relation.agent)">
                         <template #button="modal">
                             <mc-icon @click="modal.open()" name="delete"></mc-icon>
                         </template>
                         <template #message="message">
                             <?php i::_e('Remover agente relacionado?') ?>
                         </template>
-                    </confirm-button>
+                    </mc-confirm-button>
                 </div>
                 <!-- relação de agente pendente -->
                 <div v-if="relation.status == -5" class="agent__pending"></div>

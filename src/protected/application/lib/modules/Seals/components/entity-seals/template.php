@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 
 $this->import('
-    confirm-button
+    mc-confirm-button
     mc-icon
     select-entity
 ');
@@ -25,14 +25,14 @@ $this->import('
                     </div>
                 </a>
                 <div v-if="editable" class="icon">
-                    <confirm-button @confirm="removeSeal(seal)">
+                    <mc-confirm-button @confirm="removeSeal(seal)">
                         <template #button="modal">
                             <mc-icon @click="modal.open()" name="delete"></mc-icon>
                         </template>
                         <template #message="message">
                             <?php i::_e('Remover selo?') ?>
                         </template>
-                    </confirm-button>
+                    </mc-confirm-button>
                 </div>
             </div>
             <span class="seal-label" v-if="showName">{{seal.name}}</span>

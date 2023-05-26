@@ -1,7 +1,6 @@
 <?php
 use MapasCulturais\i;
 $this->import('
-    confirm-button
     mc-icon
     seal-content-share
     theme-logo

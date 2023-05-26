@@ -3,6 +3,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-icon
+    mc-confirm-button
 ')
 ?>
 
@@ -39,14 +40,14 @@ $this->import('
                         </form>
                     </template>
                 </popover>
-                <confirm-button @confirm="metalist.delete()">
+                <mc-confirm-button @confirm="metalist.delete()">
                     <template #button="{open}">
                         <a @click="open()"> <mc-icon name="trash"></mc-icon> </a>
                     </template> 
                     <template #message="message">
                         <?php i::_e('Deseja remover este vídeo?') ?>
                     </template> 
-                </confirm-button>
+                </mc-confirm-button>
             </div>
         </div>
     </div>

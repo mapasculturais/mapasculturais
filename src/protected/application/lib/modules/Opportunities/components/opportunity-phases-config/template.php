@@ -9,7 +9,6 @@ use MapasCulturais\i;
 
 $this->import('
     mc-link
-    confirm-button
     mc-stepper-vertical
     mc-link
     opportunity-create-evaluation-phase

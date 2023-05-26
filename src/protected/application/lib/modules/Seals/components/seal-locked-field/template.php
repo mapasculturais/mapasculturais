@@ -1,7 +1,6 @@
 <?php
 use MapasCulturais\i;
 $this->import('
-    confirm-button
     mc-icon
     select-entity
     mc-card
