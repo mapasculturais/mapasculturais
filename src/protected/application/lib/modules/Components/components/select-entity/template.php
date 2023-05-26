@@ -4,7 +4,7 @@ use MapasCulturais\i;
 
  $this->import('entities popover') ?>
 
-    <popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']"> 
+    <popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" classes="select-entity__popover"> 
         <template #button="{ toggle }">
             <slot name="button" :toggle="toggle"></slot>
         </template>

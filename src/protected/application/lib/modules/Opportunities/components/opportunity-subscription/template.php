@@ -21,7 +21,7 @@ $this->import('
 		</div>
 	</div>
 
-	<div v-if="isOpen && !isPublished" class="col-12 opportunity-subscription__subscription">
+	<div v-if="isOpen && !isPublished && !registrationsLimit" class="col-12 opportunity-subscription__subscription">
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
 		<div v-if="global.auth.isLoggedIn" class="logged">
@@ -32,25 +32,27 @@ $this->import('
 
 			<!-- Logado -->
 			<form class="logged__form grid-12" @submit.prevent>
-				<select-entity type="agent" class="col-6" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)">
-					<template #button="{ toggle }">
-						<span v-if="!agent" class="fakeInput" @click="toggle()">
-							<div class="fakeInput__img">
-								<mc-icon name="image"></mc-icon>
-							</div>
-							<?= i::_e('Agente Cultural') ?>
-						</span>
+				<div class="col-6">
+					<select-entity type="agent" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)">
+						<template #button="{ toggle }">
+							<span v-if="!agent" class="fakeInput" @click="toggle()">
+								<div class="fakeInput__img">
+									<mc-icon name="image"></mc-icon>
+								</div>
+								<?= i::_e('Agente Cultural') ?>
+							</span>
 
-						<span v-if="agent" class="fakeInput" @click="toggle()">
-							<mc-icon name="selected"></mc-icon>
-							<div class="fakeInput__img">
-								<img :src="agent.files?.avatar?.transformations?.avatarSmall?.url" />
-							</div>
-							{{agent.name}}
-						</span>
+							<span v-if="agent" class="fakeInput" @click="toggle()">
+								<mc-icon name="selected"></mc-icon>
+								<div class="fakeInput__img">
+									<img :src="agent.files?.avatar?.transformations?.avatarSmall?.url" />
+								</div>
+								{{agent.name}}
+							</span>
 
-					</template>
-				</select-entity>
+						</template>
+					</select-entity>
+				</div>
 
 				<div v-if="categories" class="col-6 field">
 					<select name="category" v-model="category">
