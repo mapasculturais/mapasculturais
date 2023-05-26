@@ -11,14 +11,6 @@ $white: #FFFFFF !default;
 
 $gray-500: color.mix($gray-300, $gray-700, 50%) !default;
 
-// Home colors
-$home-opportunities: #FFA4A3 !default;
-$home-entities: #E8E8E8 !default;
-$home-feature: #75C8FF !default;
-$home-register: #002842 !default;
-$home-map: #FFFFFF !default;
-$home-developers: #E8E8E8 !default;
-
 // Default lightness deltas
 $lightness-300: 25% !default;
 $lightness-700: 25% !default;
@@ -74,6 +66,15 @@ $helper-500: #0074C1 !default;
 $helper-300: lighten($helper-500, $lightness-300) !default;
 $helper-700: darken($helper-500, $lightness-700) !default;
 
+// Home 
+$home-opportunities: $secondary-300 !default;
+$home-entities: $gray-100 !default;
+$home-feature: $primary-300 !default;
+$home-register: $secondary-700 !default;
+$home-map: $white !default;
+$home-developers: $gray-100 !default;
+$home-header-gradient: linear-gradient(180deg, rgba(0, 116, 193, 0.45) 0%, rgba(255, 164, 163, 0.45) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+
 // Neutral colors
 $low-500: #1E1E1E !default;
 $low-300: lighten($low-500, $lightness-300) !default;
@@ -103,12 +104,13 @@ $shadow-lv-3: 0px 8px 24px rgba(0, 0, 0, 0.16);
 $shadow-lv-4: 0px 16px 48px rgba(0, 0, 0, 0.16);
 $shadow-lv-1-up: 0px -4px 8px rgba(0, 0, 0, 0.16);
 :root {
-    --home-developers: #{$home-developers};
-    --home-entities: #{$home-entities};
-    --home-feature: #{$home-feature};
-    --home-map: #{$home-map};
-    --home-opportunities: #{$home-opportunities};
-    --home-register: #{$home-register};
+    --mc-home-developers: #{$home-developers};
+    --mc-home-entities: #{$home-entities};
+    --mc-home-feature: #{$home-feature};
+    --mc-home-map: #{$home-map};
+    --mc-home-opportunities: #{$home-opportunities};
+    --mc-home-register: #{$home-register};
+    --mc-home-header-gradient: #{$home-header-gradient};
     --mc-agents-300: #{$agents-300};
     --mc-agents-500: #{$agents-500};
     --mc-agents-700: #{$agents-700};
