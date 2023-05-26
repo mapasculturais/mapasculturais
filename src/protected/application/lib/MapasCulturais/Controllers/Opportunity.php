@@ -821,7 +821,10 @@ class Opportunity extends EntityController {
             $where_pending = "evaluation_id IS NULL AND ";
         }
 
-        $users = implode(",", $users);
+        if(is_array($users)){
+            $users = implode(",", $users);
+        }
+        
         $queryNumberOfResults = $conn->fetchColumn("
             SELECT count(*) 
             FROM evaluations 
