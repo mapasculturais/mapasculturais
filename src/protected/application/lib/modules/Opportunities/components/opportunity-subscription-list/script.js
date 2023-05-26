@@ -14,8 +14,11 @@ app.component('opportunity-subscription-list' , {
     },
 
     data() {
+        const registrations = $MAPAS.config.opportunitySubscriptionList.registrations;
+        const totalRegistrations = Object.keys(registrations).length;
         return {
-            registrations: $MAPAS.config.opportunitySubscriptionList.registrations,
+            registrations,
+            totalRegistrations,
             opportunity: $MAPAS.requestedEntity,
         }
     },
@@ -35,6 +38,9 @@ app.component('opportunity-subscription-list' , {
             }
 
             return false;
+        },
+        registrationsLimit() {
+            return this.totalRegistrations >= this.opportunity.registrationLimit;
         },
     }
 });

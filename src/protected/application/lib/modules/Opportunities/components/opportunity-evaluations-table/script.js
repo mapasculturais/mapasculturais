@@ -16,6 +16,9 @@ app.component('opportunity-evaluations-table' , {
       }
     },
     methods: {
+        isAdmi(){
+            return $MAPAS.config.opportunityEvaluationsTable.isAdmin;
+        },
         isFuture() {
             return this.phase.evaluationFrom?.isFuture();
         },
