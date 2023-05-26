@@ -1,7 +1,7 @@
 @use '../settings/mixins' as *;
 
 .home-feature {
-	background-color: var(--mc-primary-300);
+	background-color: var(--home-feature);
 	display: flex;
 	flex-direction: column;
 	gap: size(40);
