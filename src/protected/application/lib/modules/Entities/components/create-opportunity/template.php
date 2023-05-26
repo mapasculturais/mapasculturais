@@ -22,7 +22,7 @@ $this->import('
             <div v-if="!entity.ownerEntity" class="select-list">
                 <label class="select-list__label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></label>
                 <div class="select-list__item">
-                    <select-entity type="project" @select="setEntity($event)" openside="down-right" classes="list-box">
+                    <select-entity type="project" @select="setEntity($event)" openside="down-right">
                         <template #button="{ toggle }">
                             <div class="inner">
                                 <label class="itemLabel" for="btnProject">
@@ -36,7 +36,7 @@ $this->import('
                     </select-entity>
                 </div>
                 <div class="select-list__item">
-                    <select-entity type="event" @select="setEntity($event)" openside="down-right" classes="list-box">
+                    <select-entity type="event" @select="setEntity($event)" openside="down-right">
                         <template #button="{ toggle }">
                             <div class="inner">
                                 <label class="itemLabel" @click="toggle()" for="btnEvent">
@@ -50,7 +50,7 @@ $this->import('
                     </select-entity>
                 </div>
                 <div class="select-list__item">
-                    <select-entity type="space" @select="setEntity($event)" openside="down-right" classes="list-box">
+                    <select-entity type="space" @select="setEntity($event)" openside="down-right">
                         <template #button="{ toggle }">
                             <div class="inner">
                                 <label class="itemLabel" @click="toggle()" for="btnSpace">
@@ -64,7 +64,7 @@ $this->import('
                     </select-entity>
                 </div>
                 <div class="select-list__item">
-                    <select-entity type="agent" @select="setEntity($event)" openside="down-right" classes="list-box">
+                    <select-entity type="agent" @select="setEntity($event)" openside="down-right">
                         <template #button="{ toggle }">
                             <div class="inner">
                                 <label class="itemLabel" @click="toggle()" for="btnAgent">
