@@ -8,8 +8,11 @@ $fields = [
     'emailPublico',
     'emailPrivado',
     'telefonePublico',
+    'telefone1',
+    'telefone2',
     'telefonePrivado',
     'emailPrivado',
+    'emailPublico',
 
 ]; 
 
