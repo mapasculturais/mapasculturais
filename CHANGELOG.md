@@ -3,6 +3,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.6.19] - 2023-05-25
+### Correções
+- Cria pasta DoctrineProxies durante o build, corrindo redeploy da aplicação que estava quebrado por falta da pasta
+
 ## [5.6.18] - 2023-05-25
 ### Correções
 - Melhorias na visualização das telas com tabelas de inscrições em dispositivos mobile
