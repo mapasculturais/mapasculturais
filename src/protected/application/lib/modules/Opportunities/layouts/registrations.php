@@ -14,7 +14,7 @@ $this->addRegistrationFieldsToJs($entity->opportunity);
 ?>
 <?php $this->part('header', $render_data) ?>
 <?php $this->part('main-header', $render_data) ?>
-<entity #default="{entity}">
+<mc-entity #default="{entity}">
 <?= $TEMPLATE_CONTENT ?>
-</entity>
+</mc-entity>
 <?php $this->part('footer', $render_data); 

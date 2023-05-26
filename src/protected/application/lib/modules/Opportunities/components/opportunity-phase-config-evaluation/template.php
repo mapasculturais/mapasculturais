@@ -7,7 +7,7 @@ $this->import('
 ');
 ?>
 
-<mapas-card>
+<mc-card>
     <div class="evaluation-step grid-12">
 
         <section class="evaluation-section col-12 grid-12">
@@ -77,4 +77,4 @@ $this->import('
         </div>
 
     </div>
-</mapas-card>
+</mc-card>

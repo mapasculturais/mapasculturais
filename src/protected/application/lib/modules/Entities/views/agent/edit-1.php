@@ -22,7 +22,7 @@ $this->import('
     entity-social-media
     entity-terms
     mapas-breadcrumb
-    mapas-card
+    mc-card
     mapas-container
 ');
 
@@ -37,7 +37,7 @@ $this->breadcrumb = [
     <mapas-breadcrumb></mapas-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
     <mapas-container>
-        <mapas-card class="feature">
+        <mc-card class="feature">
             <template #title>
                 <label><?php i::_e("Informações de Apresentação") ?></label>
                 <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários") ?></p>
@@ -63,9 +63,9 @@ $this->breadcrumb = [
                     </div>
                 </div>
             </template>
-        </mapas-card>
+        </mc-card>
         <main>
-            <mapas-card>
+            <mc-card>
                 <template #title>
                     <label><?php i::_e("Dados Pessoais"); ?></label>
                     <p><?php i::_e("Não se preocupe, esses dados não serão exibidos publicamente."); ?></p>
@@ -85,8 +85,8 @@ $this->breadcrumb = [
                         <entity-location :entity="entity" classes="col-12" editable></entity-location>
                     </div>
                 </template>
-            </mapas-card>
-            <mapas-card>
+            </mc-card>
+            <mc-card>
                 <template #title>
                     <label><?php i::_e("Dados pessoais sensíveis"); ?></label>
                     <p class="data-subtitle"><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
@@ -104,8 +104,8 @@ $this->breadcrumb = [
                         <entity-field :entity="entity" classes="col-12" prop="comunidadesTradicionalOutros" label="<?= i::__('Não encontrou sua comunidade Tradicional') ?>"></entity-field>
                     </div>
                 </template>
-            </mapas-card>
-            <mapas-card>
+            </mc-card>
+            <mc-card>
                 <template #title>
                     <label><?php i::_e("Informações públicas"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
@@ -119,10 +119,10 @@ $this->breadcrumb = [
                         <entity-gallery :entity="entity" classes="col-12" title="<?php i::_e('Adicionar fotos na galeria') ?>" editable></entity-gallery>
                     </div>
                 </template>
-            </mapas-card>
+            </mc-card>
         </main>
         <aside>
-            <mapas-card>
+            <mc-card>
                 <template #content>
                     <div class="grid-12">
                         <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
@@ -130,7 +130,7 @@ $this->breadcrumb = [
                         <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
                     </div>
                 </template>
-            </mapas-card>
+            </mc-card>
         </aside>
     </mapas-container>
     <entity-actions :entity="entity" editable></entity-actions>

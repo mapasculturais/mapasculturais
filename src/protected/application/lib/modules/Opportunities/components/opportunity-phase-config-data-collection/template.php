@@ -6,7 +6,7 @@ $this->import('
 ');
 ?>
 
-<mapas-card>
+<mc-card>
     <div class="config-phase grid-12">
         <div class="config-phase__line col-12 "></div>
         <div class="config-phase__title col-12">
@@ -38,4 +38,4 @@ $this->import('
             </confirm-button>
         </div>
     </div>
-</mapas-card>
+</mc-card>

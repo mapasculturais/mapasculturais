@@ -77,13 +77,13 @@
         margin: 0 auto;
         max-width: 100%;
 
-        .mapas-card {
+        .mc-card {
             &__title {
                 display: none;
             }
         }
 
-        .mapas-card,
+        .mc-card,
         .btn {
             max-width: size(1170);
             margin: 0 auto;
@@ -95,7 +95,7 @@
             margin: size(46) auto;
         }
 
-        .mapas-card {
+        .mc-card {
             @media (max-width:size(500)) {
                 padding-left: 0;
             }

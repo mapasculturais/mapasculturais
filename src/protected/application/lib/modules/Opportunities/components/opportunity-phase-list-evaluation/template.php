@@ -7,7 +7,7 @@ $this->import('
 ');
 ?>
 
-<mapas-card>
+<mc-card>
     <div class="grid-12 opportunity-phase-list-evaluation">
         <div class="col-6">
             <h3><?php i::_e("Status das inscrições") ?></h3>
@@ -36,4 +36,4 @@ $this->import('
         <div class="config-phase__line-bottom col-12"></div>
         <opportunity-phase-publish-date-config :phase="entity.opportunity" :phases="phases" hide-datepicker></opportunity-phase-publish-date-config>
     </div>
-</mapas-card>
+</mc-card>

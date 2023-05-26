@@ -8,7 +8,7 @@
 
 use MapasCulturais\i;
 
-$this->import("mapas-card modal");
+$this->import("mc-card modal");
 ?>
 <div class="complaint-suggestion">
     <div class="complaint-sugestion__complaint">

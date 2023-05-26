@@ -1,10 +1,10 @@
 <?php use MapasCulturais\i;
 $this->layout = 'entity'; 
-$this->import('mapas-card');
+$this->import('mc-card');
 ?>
 
 <div class="space-card">
-    <mapas-card class="space-card__card">
+    <mc-card class="space-card__card">
         <template #profile>
         <div class="profile">
             <mc-icon name="space"></mc-icon>
@@ -18,5 +18,5 @@ $this->import('mapas-card');
 
 
         </template>
-    </mapas-card>
+    </mc-card>
 </div>

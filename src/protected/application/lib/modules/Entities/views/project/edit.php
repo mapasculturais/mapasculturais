@@ -25,7 +25,7 @@ $this->import('
     entity-terms
     link-project
     mapas-breadcrumb
-    mapas-card
+    mc-card
     mapas-container
 ');
 
@@ -40,7 +40,7 @@ $this->breadcrumb = [
     <mapas-breadcrumb></mapas-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
     <mapas-container>
-        <mapas-card class="feature">
+        <mc-card class="feature">
             <template #title>
                 <label><?php i::_e("Informações de Apresentação") ?></label>
                 <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários") ?></p>
@@ -68,9 +68,9 @@ $this->breadcrumb = [
                     <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
                 </div>
             </template>
-        </mapas-card>
+        </mc-card>
         <main>
-            <mapas-card>
+            <mc-card>
                 <template #title>
                     <label><?php i::_e("Período de execução do projeto"); ?></label>
                 </template>
@@ -80,8 +80,8 @@ $this->breadcrumb = [
                         <entity-field :entity="entity" classes="col-12" label="<?php i::_e('Data Final') ?>" prop="endsOn"></entity-field>
                     </div>
                 </template>
-            </mapas-card>
-            <mapas-card>
+            </mc-card>
+            <mc-card>
                 <template #title>
                     <label><?php i::_e("Contatos do projeto"); ?></label>
                 </template>
@@ -94,8 +94,8 @@ $this->breadcrumb = [
                         <entity-field :entity="entity" classes="col-12" label="Telefone privado 2" prop="telefone2"></entity-field>
                     </div>
                 </template>
-            </mapas-card>
-            <mapas-card>
+            </mc-card>
+            <mc-card>
                 <template #title>
                     <label><?php i::_e("Mais informações públicas"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
@@ -109,10 +109,10 @@ $this->breadcrumb = [
                         <entity-gallery :entity="entity" classes="col-12" title="<?php i::_e('Adicionar fotos na galeria') ?>" editable></entity-gallery>
                     </div>
                 </template>
-            </mapas-card>
+            </mc-card>
         </main>
         <aside>
-            <mapas-card>
+            <mc-card>
                 <template #content>
                     <div class="grid-12">
                         <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
@@ -121,7 +121,7 @@ $this->breadcrumb = [
                         <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por') ?>" editable></entity-owner>
                     </div>
                 </template>
-            </mapas-card>
+            </mc-card>
         </aside>
     </mapas-container>
     <entity-actions :entity="entity" editable></entity-actions>

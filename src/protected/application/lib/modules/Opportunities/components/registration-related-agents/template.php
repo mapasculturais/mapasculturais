@@ -7,7 +7,7 @@
 use MapasCulturais\i;
 ?>
 
-<mapas-card v-for="relation in agentRelations">
+<mc-card v-for="relation in agentRelations">
     <template #title>
         <div class="card__title"> 
             {{relation.label}} 
@@ -52,4 +52,4 @@ use MapasCulturais\i;
             <span>{{registration.__validationErrors[`agent_${relation.agentRelationGroupName}`].join('; ')}}</span>
         </div>
     </template>
-</mapas-card>
+</mc-card>

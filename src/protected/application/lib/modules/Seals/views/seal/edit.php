@@ -11,7 +11,7 @@ $this->import('
     entity-owner
     entity-profile
     mapas-breadcrumb
-    mapas-card
+    mc-card
     mapas-container
     seal-locked-field
     seal-form-information-seal
@@ -38,7 +38,7 @@ $this->breadcrumb = [
                         <seal-form-information-seal :entity="entity"></seal-form-information-seal>
                     </main>
                     <aside>
-                        <mapas-card>
+                        <mc-card>
                             <template #content>
                                 <div class="grid-12">
                                     <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
@@ -47,7 +47,7 @@ $this->breadcrumb = [
                                     <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                                 </div>
                             </template>
-                        </mapas-card>
+                        </mc-card>
                     </aside>
                 </mapas-container>
             </div>
