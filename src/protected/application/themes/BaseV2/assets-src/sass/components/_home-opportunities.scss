@@ -1,7 +1,7 @@
 @use '../settings/mixins' as *;
 
 .home-opportunities {
-	background-color: var(--home-opportunities);
+	background-color: var(--mc-home-opportunities);
 	display: flex;
 	flex-direction: column;
 	gap: size(40);
