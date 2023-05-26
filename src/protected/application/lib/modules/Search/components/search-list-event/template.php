@@ -2,7 +2,12 @@
 
 use MapasCulturais\i;
 
-$this->import('entities mc-card occurrence-card loading');
+$this->import('
+    entities
+    mc-card
+    mc-loading
+    occurrence-card
+');
 ?>
 
 <div class="grid-12 search-list">
@@ -11,7 +16,7 @@ $this->import('entities mc-card occurrence-card loading');
             <search-filter-event :pseudo-query="pseudoQuery"></search-filter-event>
         </div>
     </div>
-    <loading :condition="loading"></loading>
+    <mc-loading :condition="loading"></mc-loading>
     <div v-if="!loading" class="col-9 search-list__cards">
         <div class="grid-12">
             <div  v-for="occurrence in occurrences" :key="occurrence._reccurrence_string" class="col-12">

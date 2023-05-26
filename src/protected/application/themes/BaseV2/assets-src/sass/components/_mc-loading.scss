@@ -1,6 +1,6 @@
 @use '../settings/mixins' as *;
 
-.loading {
+.mc-loading {
     align-items: center;
     display: flex;
     gap: size(12);

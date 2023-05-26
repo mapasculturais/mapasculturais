@@ -1,6 +1,9 @@
 <?php
 use MapasCulturais\i;
-$this->import('loading');
+
+$this->import('
+    mc-loading
+');
 ?>
 <slot 
     name="header" 
@@ -11,7 +14,7 @@ $this->import('loading');
 </slot>
 
 <slot v-if="entities.loading" name="loading" :entities="entities">
-    <loading :condition="entities.loading"></loading>
+    <mc-loading :condition="entities.loading"></mc-loading>
 </slot>
 <template v-if="!entities.loading">
     <slot 
@@ -29,7 +32,7 @@ $this->import('loading');
 
 <slot v-if="showLoadMore()" name="load-more" :entities="entities">
     <div class="search-list__loadMore">
-        <loading :condition="entities.loadingMore"></loading>
+        <mc-loading :condition="entities.loadingMore"></mc-loading>
         <button class="button--large button button--primary-outline" v-if="!entities.loadingMore" @click="loadMore()"><?php i::_e('Carregar Mais') ?></button>
     </div>
 </slot>
