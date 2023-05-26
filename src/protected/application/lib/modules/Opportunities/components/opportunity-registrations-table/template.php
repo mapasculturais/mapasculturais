@@ -3,7 +3,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
-    mapas-card
+    mc-card
     v1-embed-tool
 ')
 ?>

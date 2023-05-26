@@ -28,9 +28,9 @@ $this->import('
     </template>
     <template #default="{index, item}">
 
-        <mapas-card v-if="item.id">
+        <mc-card v-if="item.id">
             <v1-embed-tool route="reportmanager" :id="item.id"></v1-embed-tool>
-        </mapas-card>
+        </mc-card>
 
     </template>
 </mc-stepper-vertical>

@@ -22,7 +22,7 @@ $this->import('
 ?>
 
 <div class="opportunity-basic-info__container">
-    <mapas-card>
+    <mc-card>
         <template #title>
             <h3><?= i::__("Informações obrigatórias") ?></h3>
         </template>
@@ -35,11 +35,11 @@ $this->import('
                 </entity-field>
             </div>
         </template>
-    </mapas-card>
+    </mc-card>
 </div>
 <mapas-container>
     <main>
-        <mapas-card>
+        <mc-card>
             <template #content>
                 <div class="header-opp grid-12 v-bottom">
                     <entity-cover :entity="entity" classes=" header-opp__cover col-12"></entity-cover>
@@ -58,10 +58,10 @@ $this->import('
                     <entity-gallery :entity="entity" classes="col-12" editable></entity-gallery>
                 </div>
             </template>
-        </mapas-card>
+        </mc-card>
     </main>
     <aside>
-        <mapas-card>
+        <mc-card>
             <div class="grid-12">
                 <entity-terms :entity="entity" taxonomy="area" classes="col-12" title="<?php i::esc_attr_e('Áreas de interesse'); ?>" editable></entity-terms>
                 <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
@@ -70,7 +70,7 @@ $this->import('
                 <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>" editable></entity-related-agents>
                 <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
             </div>
-        </mapas-card>
+        </mc-card>
     </aside>
 </mapas-container>
 <confirm-before-exit :entity="entity"></confirm-before-exit>

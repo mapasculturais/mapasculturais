@@ -3,7 +3,7 @@
 use MapasCulturais\i;
 
 $this->import('
-mapas-card
+mc-card
 ');
 ?>
 <div class="col-12 agent-data">

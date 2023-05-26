@@ -5,7 +5,7 @@ use Doctrine\ORM\Query\Expr\Select;
 use MapasCulturais\i;
 
 $this->import('
-    mapas-card
+    mc-card
     notification-list
     tab
 ');

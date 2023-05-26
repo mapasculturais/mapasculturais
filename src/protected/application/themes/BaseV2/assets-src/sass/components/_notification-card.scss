@@ -8,11 +8,11 @@
         padding: size(16);
         margin-bottom: size(16);
 
-        .mapas-card__title {
+        .mc-card__title {
             display: none;
         }
 
-        .mapas-card__content {
+        .mc-card__content {
             display: grid;
             gap: size(0) size(16);
             grid-template-columns: size(32) 1fr;
@@ -87,7 +87,7 @@
                 margin-bottom: 0;
             }
 
-            .mapas-card__content {
+            .mc-card__content {
                 gap: size(0) size(12);
             }
         }

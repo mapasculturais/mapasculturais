@@ -3,12 +3,12 @@
 use MapasCulturais\i;
 
 $this->import('
-    mapas-card
+    mc-card
     mc-icon
     
 ');
 ?>
-<mapas-card v-if="space && canSee('spaceSummary')">
+<mc-card v-if="space && canSee('spaceSummary')">
     <template #title>
         <div v-if="opportunity.useSpaceRelationIntituicao && opportunity.useSpaceRelationIntituicao !== 'dontUse'">
             <div>
@@ -25,4 +25,4 @@ $this->import('
             </div>
         </div>
     </template>
-</mapas-card>
+</mc-card>

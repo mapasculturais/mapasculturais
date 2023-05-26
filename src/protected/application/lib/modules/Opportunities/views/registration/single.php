@@ -13,7 +13,7 @@ $this->addRegistrationPhasesToJs();
 
 $this->import('
     mapas-breadcrumb
-    mapas-card
+    mc-card
     opportunity-header
     tabs
     opportunity-phases-timeline
@@ -35,7 +35,7 @@ $this->breadcrumb = [
     <tabs>
         <tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
             <div class="registration__content">
-                <mapas-card>
+                <mc-card>
                     <template #content>
                         <div class="registration-info">
                             <div class="registration-info__header">
@@ -83,21 +83,21 @@ $this->breadcrumb = [
                             </div>
                         </div>
                     </template>
-                </mapas-card>
+                </mc-card>
 
-                <mapas-card>
+                <mc-card>
                     <template #content>
 
                         <opportunity-phases-timeline center big></opportunity-phases-timeline>
 
                     </template>
-                </mapas-card>
+                </mc-card>
             </div>
         </tab>
 
         <tab label="<?= i::_e('Ficha de inscrição') ?>" slug="ficha">
             <div class="registration__content">
-                <mapas-card>
+                <mc-card>
                     <template #content>
                         <div class="registered-info">
                             <span class="info"> 
@@ -141,9 +141,9 @@ $this->breadcrumb = [
                             </span>
                         </div>
                     </template>
-                </mapas-card>
+                </mc-card>
 
-                <mapas-card>
+                <mc-card>
                     <template #title>
                         <label> <?= i::__('Espaço Vinculado') ?> </label>
                     </template>
@@ -167,7 +167,7 @@ $this->breadcrumb = [
                             </div>
                         </div>
                     </template>
-                </mapas-card>
+                </mc-card>
 
                 <v1-embed-tool route="registrationview" :id="entity.id"></v1-embed-tool>
             </div>

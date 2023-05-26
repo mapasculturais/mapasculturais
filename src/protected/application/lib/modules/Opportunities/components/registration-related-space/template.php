@@ -10,7 +10,7 @@
 use MapasCulturais\i;
 ?>
 
-<mapas-card v-if="useSpaceRelation !== 'dontUse'">
+<mc-card v-if="useSpaceRelation !== 'dontUse'">
     <template #title>
         <div class="card__title"> 
             <?= i::__("Espaço") ?>
@@ -56,4 +56,4 @@ use MapasCulturais\i;
             <span>{{registration.__validationErrors.space.join('; ')}}</span>
         </div>
     </template>
-</mapas-card>
+</mc-card>

@@ -8,7 +8,7 @@
 
 $this->import('
     popover
-    mapas-card
+    mc-card
 ');
 
 use MapasCulturais\i;
@@ -19,7 +19,7 @@ use MapasCulturais\i;
         <slot :open="open" :close="close" :toggle="toggle"> </slot>
     </template>
     <template #default="{close}">
-        <mapas-card class="relation-card">
+        <mc-card class="relation-card">
             <div class="relation-card__close" @click="close()">
                 <mc-icon name="close"></mc-icon>
             </div>
@@ -52,6 +52,6 @@ use MapasCulturais\i;
                 <mc-icon name="exclamation"></mc-icon>
                 <?= i::__('A solicitação para `entidade` está pendente') ?>
             </div>
-        </mapas-card>
+        </mc-card>
     </template>
 </popover>

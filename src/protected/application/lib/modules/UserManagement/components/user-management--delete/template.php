@@ -7,11 +7,11 @@ modal
 loading 
 panel--entity-actions 
 select-entity 
-mapas-card
+mc-card
 ');
 ?>
 
-<mapas-card>
+<mc-card>
     <div>
         <p><?= i::__('A remoção da conta fará com que a maioria de suas informações não sejas mas acessíveis publicamente.') ?></p>
         <p><?= i::__('Algumas informações, como por exemplo as inscrições em editais continuarão acessíveis. Você pode escolher por transferir suas entidades para outro usuário, 
@@ -30,4 +30,4 @@ mapas-card
     <div>
         <!-- <panel--entity-actions :entity="user"></panel--entity-actions> -->
     </div>
-</mapas-card>
+</mc-card>

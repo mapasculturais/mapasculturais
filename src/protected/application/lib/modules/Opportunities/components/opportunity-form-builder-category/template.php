@@ -1,11 +1,11 @@
 <?php
 use MapasCulturais\i;
 $this->layout = 'entity';
-$this->import('opportunity-form-builder-category-list mapas-card')
+$this->import('opportunity-form-builder-category-list mc-card')
 ?>
 
 <!-- class="form-builder__bg-content form-builder__bg-content--spacing" poderia ser um mc-card -->
-<mapas-card>
+<mc-card>
     <template #title>
         <div class="card-header">
             <label class="card-header__title"><?= i::__("Categorias de inscrição") ?></label>
@@ -22,4 +22,4 @@ $this->import('opportunity-form-builder-category-list mapas-card')
         </div>
     </template>
 
-</mapas-card>
+</mc-card>

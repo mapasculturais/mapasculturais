@@ -2,7 +2,7 @@
 
 use MapasCulturais\i;
 
-$this->import('entities mapas-card occurrence-card loading');
+$this->import('entities mc-card occurrence-card loading');
 ?>
 
 <div class="grid-12 search-list">

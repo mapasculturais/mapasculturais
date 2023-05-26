@@ -5,7 +5,7 @@ use MapasCulturais\i;
 $this->import('
     entities
     entity-card
-    mapas-card
+    mc-card
     mc-icon
 ');
 ?>

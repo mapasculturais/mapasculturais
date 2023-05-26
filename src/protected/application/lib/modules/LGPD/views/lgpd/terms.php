@@ -2,7 +2,7 @@
 
 use MapasCulturais\i;
 
-$this->import('accept-terms mapas-breadcrumb mapas-card  tabs mc-link');
+$this->import('accept-terms mapas-breadcrumb mc-card  tabs mc-link');
 
 $this->breadcrumb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],

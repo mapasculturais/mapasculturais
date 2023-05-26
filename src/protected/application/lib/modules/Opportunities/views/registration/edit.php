@@ -11,7 +11,7 @@ $this->layout = 'registrations';
 
 $this->import('
     mapas-breadcrumb
-    mapas-card
+    mc-card
     mapas-container
     mc-icon
     opportunity-header

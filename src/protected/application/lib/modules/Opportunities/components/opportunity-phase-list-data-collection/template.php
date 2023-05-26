@@ -7,7 +7,7 @@ $this->import('
 ')
 ?>
 
-<mapas-card>
+<mc-card>
     <div class="grid-12 opportunity-phase-list-data-collection">
         <div v-if="entity.summary?.registrations" class="col-12">
             <h3><?php i::_e("Status das inscrições") ?></h3>
@@ -28,4 +28,4 @@ $this->import('
             <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-datepicker></opportunity-phase-publish-date-config>
         </template>
     </div>
-</mapas-card>
+</mc-card>
