@@ -23,56 +23,49 @@
     }
 
     &__fields {
-        &--choice {
-            .label {
+        .select-list {
+            &__label {
                 font-weight: 600;
-                font-size: 14px;
-                line-height: 19px;
+                font-size: size(14);
+                line-height: size(19);
             }
 
-            .list {
-                &-box {
+            &__item {
+                margin-top: size(8);
+                
+                .inner {
                     display: flex;
                     align-items: center;
-                    height: 48px;
+                    height: size(48);
                     background: #FFFFFF;
-                    border: 1px solid #313131;
-                    border-radius: 4px;
+                    border: size(1) solid #313131;
+                    border-radius: size(4);
                     justify-content: space-between;
                     padding: 0 size(10);
 
-                    .v-popper {
-                        display: flex;
-                        align-items: center;
-                        width: 100%;
-                        justify-content: space-between;
-                    }
-
-                    .input {
+                    .itemLabel {
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
-                        gap: 10px;
+                        gap: size(10);
 
                         input {
                             margin: 0;
                         }
-
+                        
+                        span {
+                            font-weight: 400;
+                            font-size: size(14);
+                            line-height: size(19);
+                        }
                     }
 
-
-                    &-label {
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 19px;
-                    }
-
-                    &-button {
+                    .selectButton {
                         cursor: pointer;
                         color: var(--mc-primary-500);
                         font-weight: 700;
-                        font-size: 12px;
-                        line-height: 16px;
+                        font-size: size(12);
+                        line-height: size(16);
                         text-align: center;
 
                         &.disabled {
@@ -83,24 +76,21 @@
                         }
                     }
                 }
-
-                margin-top: 8px;
             }
-
         }
 
         &--selected {
 
             &-label {
                 font-weight: 600;
-                font-size: 14px;
-                line-height: 19px;
+                font-size: size(14);
+                line-height: size(19);
             }
 
             .entity-selected {
                 margin: size(8) 0;
                 display: flex;
-                gap: 8px;
+                gap: size(8);
                 flex-direction: column;
                 flex-wrap: nowrap;
 
@@ -114,8 +104,8 @@
                     grid-template-columns: size(40) 1fr;
 
                     .img {
-                        width: 40px;
-                        height: 40px;
+                        width: size(40);
+                        height: size(40);
                         border-radius: var(--mc-border-radius-pill);
 
                         &-fake {
@@ -124,16 +114,16 @@
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            width: 40px;
-                            height: 40px;
+                            width: size(40);
+                            height: size(40);
 
                         }
                     }
 
                     .name {
                         font-weight: 600;
-                        font-size: 14px;
-                        line-height: 19px;
+                        font-size: size(14);
+                        line-height: size(19);
                         word-break: break-word;
                     }
 
@@ -176,7 +166,7 @@
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
-        gap: 24px;
+        gap: size(24);
 
         .button {
             place-content: center;
