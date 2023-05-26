@@ -2,6 +2,13 @@
 @use '../settings/mixins' as *;
 
 .select-entity {
+    &__popover {
+        max-width: size(350);
+
+        @media (max-width: size(500)) {
+            max-width: 100%;
+        }
+    }
 
     &__form {
         align-items: center;
@@ -14,6 +21,8 @@
             border-radius: size(20) 0 0 size(20);
             border: size(1) solid var(--mc-gray-100);
             border-right: 0;    
+            width: 100%;
+
             &:focus-visible {
                 outline-style: none;
             }
