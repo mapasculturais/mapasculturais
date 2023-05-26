@@ -64,7 +64,9 @@
                     }
                 }
 
-                data.criteria[index].options = $scope.data.options[crit.id]?.split("\n")
+                if($scope.data.options[crit.id]){
+                    data.criteria[index].options = $scope.data.options[crit.id]?.split("\n")
+                }
             });
 
             QualificationEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
