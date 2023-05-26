@@ -68,11 +68,11 @@ mapas-card
             </div>
         </div>
     </template>
-    <template v-if="verifySensitiveFields && entity.currentUserPermissions.viewPrivateData">
+    <template v-if="verifySensitiveFields()">
         <div class="agent-data__secondTitle">
             <h4 class="title"><?php i::_e("Dados pessoais sensíveis") ?></h4>
         </div>
-        <div class="agent-data__fields">
+        <div v-if="entity.currentUserPermissions.viewPrivateData" class="agent-data__fields">
             <div v-if="entity.dataDeNascimento" class="agent-data__fields--field">
                 <label class="title"><?php i::_e("Data de Nascimento") ?></label>
                 <div class="box">

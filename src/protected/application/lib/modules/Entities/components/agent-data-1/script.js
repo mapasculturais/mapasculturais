@@ -43,8 +43,6 @@ app.component('agent-data-1', {
         verifyFields () {
             return this.verifyAllFields($MAPAS.config['agent-data-1'].fields)
 
-        }
-
-
+        },
     },
 });
