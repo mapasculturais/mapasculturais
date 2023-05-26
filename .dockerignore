@@ -5,6 +5,7 @@ docker-data/**
 temp?
 Dockerfile
 src/protected/vendor
+src/protected/DoctrineProxies
 **/.sass-cache/**
 db*
 **/node_modules/**
