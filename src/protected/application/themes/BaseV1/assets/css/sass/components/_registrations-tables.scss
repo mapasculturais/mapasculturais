@@ -36,9 +36,15 @@
 	}
 }
 
+.header-inscritos {
+	@media screen and (max-width: $screen-desktop) {
+		text-align: right;
+	}
+}
+
 //**  Table that shows on opportunities tab "Inscritos".
 .registrations-table {
-	display: none;
+	// display: none;
 	width: 100%;
 	max-width: 100%;
 	margin-bottom: 2*$line-height-base;
