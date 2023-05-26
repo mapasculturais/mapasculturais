@@ -3,7 +3,7 @@ use MapasCulturais\i;
 
 $this->import('
     confirm-button 
-    image-uploader
+    mc-image-uploader
     modal 
     popover 
 ');
@@ -54,14 +54,14 @@ $this->import('
     </div>   
 
     <div v-if="editable" class="entity-gallery__addNew">
-        <image-uploader :useDescription="true" :entity="entity" group="gallery" :circular="false">
+        <mc-image-uploader :useDescription="true" :entity="entity" group="gallery" :circular="false">
             <template #default='uploader'>
                 <a class="button button--primary button--icon button--primary-outline" @click="toggle()">
                     <mc-icon name="add"></mc-icon>
                     <?php i::_e("Adicionar imagem")?>
                 </a>
             </template>
-        </image-uploader>
+        </mc-image-uploader>
     </div>
     <div class="entity-gallery__full" v-if="images" :class="{ 'active': galleryOpen }">
         <div @click="close" class="entity-gallery__full--overlay"> </div>

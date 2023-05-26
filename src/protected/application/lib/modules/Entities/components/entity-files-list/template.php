@@ -1,7 +1,11 @@
 <?php 
 use MapasCulturais\i;
 
-$this->import('confirm-button popover modal image-uploader');
+$this->import('
+    confirm-button 
+    popover 
+    modal 
+');
 ?>
 
 <div :class="classes" v-if="files || editable" class="files-list">

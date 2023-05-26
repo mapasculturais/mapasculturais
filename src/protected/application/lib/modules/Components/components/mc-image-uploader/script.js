@@ -20,8 +20,8 @@ function getMimeType(file, fallback = null) {
     }
 }
 
-app.component('image-uploader', {
-    template: $TEMPLATES['image-uploader'],
+app.component('mc-image-uploader', {
+    template: $TEMPLATES['mc-image-uploader'],
     emits: ['uploaded', 'cropped'],
 
 	components: {
