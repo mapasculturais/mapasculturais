@@ -7,9 +7,9 @@ app.component('mapas-card', {
         return { hasSlot }
     },
     props: {
-        noTitle: {
-            type: Boolean,
-            default: false
-        },
+        tag: {
+            type: String,
+            default: 'article'
+        }
     }
 });

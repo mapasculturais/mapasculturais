@@ -19,7 +19,7 @@ use MapasCulturais\i;
         <slot :open="open" :close="close" :toggle="toggle"> </slot>
     </template>
     <template #default="{close}">
-        <mapas-card class="relation-card" noTitle>
+        <mapas-card class="relation-card">
             <div class="relation-card__close" @click="close()">
                 <mc-icon name="close"></mc-icon>
             </div>
