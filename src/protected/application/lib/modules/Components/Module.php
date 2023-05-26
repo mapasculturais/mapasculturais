@@ -15,6 +15,10 @@ class Module extends \MapasCulturais\Module {
     {
         $app = App::i();
 
+        if($app->view->version < 2) {
+            return;
+        }
+
         $app->hook('view.render(<<*>>):before', function () use($app) {
             $theme = $app->view;
 
