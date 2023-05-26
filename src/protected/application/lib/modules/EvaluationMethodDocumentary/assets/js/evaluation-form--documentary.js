@@ -3,7 +3,7 @@ $(function(){
 
     const insideEmbedTools = MapasCulturais.insideEmbedTools;
 
-    if($('#documentary-evaluation-form').length || insideEmbedTools && $MAPAS?.evaluationConfiguration?.type == 'documentary'){
+    if($('#documentary-evaluation-form').length || insideEmbedTools && MapasCulturais?.evaluationConfiguration?.type == 'documentary'){
         var template = MapasCulturais.TemplateManager.getTemplate('documentary-evaluation-form-template');
 
         var $container = $('#documentary-evaluation-form--container');
