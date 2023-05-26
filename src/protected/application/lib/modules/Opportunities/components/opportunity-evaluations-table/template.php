@@ -20,7 +20,7 @@ $this->import('
 
     <template v-if="!isFuture()">
         <div class="col-3">
-            <mc-link :entity="phase.opportunity" route="reportEvaluations" class="button button--secondarylight"><?= i::__("Baixar lista de avaliações") ?></mc-link>
+            <mc-link v-if="isAdmi()" :entity="phase.opportunity" route="reportEvaluations" class="button button--secondarylight" :param="phase.opportunity.id"><?= i::__("Baixar lista de avaliações") ?></mc-link>
         </div>
 
         <div class="col-12">
