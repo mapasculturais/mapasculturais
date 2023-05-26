@@ -4,7 +4,7 @@ use MapasCulturais\i;
 $this->import('modal'); 
 ?>
 
-<div class="upload-example">
+<div class="mc-image-uploader">
     
     <modal title="<?php i::_e("Recorte a imagem") ?>" @open="reset()">
         <template #default>

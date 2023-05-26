@@ -5,7 +5,6 @@ $this->import('
     seal-form-valid-period
     entity-field
     seal-activity-card
-    image-uploader
     entity-files-list
     entity-links
     entity-profile
