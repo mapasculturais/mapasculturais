@@ -1,7 +1,6 @@
 <?php
 use MapasCulturais\i;
 $this->import('
-    confirm-button
     mc-notification
     opportunity-phase-publish-date-config
 ');

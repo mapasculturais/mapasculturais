@@ -4,7 +4,6 @@ use MapasCulturais\i;
 
 $this->import('
     mc-card
-    confirm-button
 ');
 ?>
 <entities type="notification" name="notification-list" :query='query' #default='{entities, refresh}'>

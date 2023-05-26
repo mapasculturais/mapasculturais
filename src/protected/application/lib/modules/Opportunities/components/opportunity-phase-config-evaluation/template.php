@@ -1,7 +1,7 @@
 <?php
 use MapasCulturais\i;
 $this->import('
-    confirm-button
+    mc-confirm-button
     v1-embed-tool
     opportunity-phase-publish-date-config
 ');
@@ -64,7 +64,7 @@ $this->import('
         <div class="config-phase__line col-12"></div>
 
         <div class="phase-delete col-12">
-            <confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
+            <mc-confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
                     <a class="phase-delete__trash" @click="modal.open()">
                         <div class="icon">
@@ -73,7 +73,7 @@ $this->import('
                         <label class="label"><?= i::__("Excluir fase de avaliação") ?></label>
                     </a>
                 </template>
-            </confirm-button>
+            </mc-confirm-button>
         </div>
 
     </div>

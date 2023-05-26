@@ -1,5 +1,5 @@
-app.component('confirm-button', {
-    template: $TEMPLATES['confirm-button'],
+app.component('mc-confirm-button', {
+    template: $TEMPLATES['mc-confirm-button'],
 
     emits: ['confirm', 'cancel'],
 

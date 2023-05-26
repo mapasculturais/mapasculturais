@@ -4,7 +4,6 @@ use MapasCulturais\i;
 
 $this->activeNav = 'panel/user-management';
 $this->import('
-    confirm-button
     entity
     entity-field
     entity-seals

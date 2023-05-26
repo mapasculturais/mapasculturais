@@ -1,14 +1,17 @@
 <?php
 use MapasCulturais\i;
-?>
 
+$this->import('
+    mc-confirm-button
+');
+?>
 <div class="entity-request-ownership">
-    <confirm-button>
+    <mc-confirm-button>
         <template #button="modal">
             <button @click="modal.open()" class="entity-request-ownership__button button button--primary button--md"><?= i::_e('Reivindicar Propriedade') ?></button>
         </template> 
         <template #message="message">
             <?php i::_e('Deseja reivindicar essa propriedade?') ?>
         </template> 
-    </confirm-button>
+    </mc-confirm-button>
 </div>

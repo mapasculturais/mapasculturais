@@ -3,7 +3,7 @@ use MapasCulturais\i;
 
 $this->import('
     select-entity
-    confirm-button
+    mc-confirm-button
     mc-relation-card
 ');
 ?>
@@ -25,14 +25,14 @@ $this->import('
                 </mc-relation-card>
                 <!-- remover agente -->
                 <div v-if="editable" class="agent__delete">
-                    <confirm-button @confirm="removeAgent(relation.agent)">
+                    <mc-confirm-button @confirm="removeAgent(relation.agent)">
                         <template #button="modal">
                             <mc-icon @click="modal.open()" name="delete"></mc-icon>
                         </template>
                         <template #message="message">
                             <?php i::_e('Remover agente relacionado?') ?>
                         </template>
-                    </confirm-button>
+                    </mc-confirm-button>
                 </div>
                 <!-- relação de agente pendente -->
                 <div v-if="relation.status == -5" class="agent__pending"></div>

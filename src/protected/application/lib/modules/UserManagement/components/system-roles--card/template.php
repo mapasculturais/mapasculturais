@@ -2,7 +2,6 @@
 use MapasCulturais\i;
 
 $this->import('
-    confirm-button
     mc-icon
     panel--entity-card
     system-roles--modal 

@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 
 $this->import('
-    confirm-button 
+    mc-confirm-button
     mc-image-uploader
     modal 
     popover 
@@ -41,14 +41,14 @@ $this->import('
                         </form>
                     </template>
                 </popover>
-                <confirm-button @confirm="img.delete()">
+                <mc-confirm-button @confirm="img.delete()">
                     <template #button="modal">
                         <a @click="modal.open()"> <mc-icon name="trash"></mc-icon> </a>
                     </template> 
                     <template #message="message">
                         <?php i::_e('Deseja excluir essa imagem?') ?>
                     </template> 
-                </confirm-button>
+                </mc-confirm-button>
             </div>
         </div>    
     </div>   

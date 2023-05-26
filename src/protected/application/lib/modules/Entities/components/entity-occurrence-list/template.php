@@ -3,7 +3,7 @@
 use MapasCulturais\i;
 
 $this->import('
-    confirm-button
+    mc-confirm-button
     create-occurrence
     entities
     entity-map
@@ -85,7 +85,7 @@ $this->import('
                             </a>
                         </create-occurrence> -->
 
-                        <confirm-button @confirm="occurrence.delete(true)">
+                        <mc-confirm-button @confirm="occurrence.delete(true)">
                             <template #button="modal">
                                 <a class="occurrence__actions--delete" @click="modal.open();">
                                     <mc-icon name="trash"></mc-icon><?= i::_e('Excluir') ?>
@@ -94,7 +94,7 @@ $this->import('
                             <template #message="message">
                                 <?php i::_e('Deseja remover essa ocorrência?') ?>
                             </template>
-                        </confirm-button>
+                        </mc-confirm-button>
                     </div>
                 </div>
             </template>

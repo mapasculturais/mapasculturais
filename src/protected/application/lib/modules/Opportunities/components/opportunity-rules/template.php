@@ -2,9 +2,9 @@
 use MapasCulturais\i;
 
 $this->import('
-    confirm-button 
-    popover 
-    modal 
+    mc-confirm-button
+    modal
+    popover
 ');
 ?>
 
@@ -20,14 +20,14 @@ $this->import('
             </a>
 
             <div v-if="editable" class="edit">                
-                <confirm-button @confirm="file.delete()">
+                <mc-confirm-button @confirm="file.delete()">
                     <template #button="modal">
                         <a @click="modal.open()"> <mc-icon name="trash"></mc-icon> </a>
                     </template> 
                     <template #message="message">
                         <?php i::_e('Deseja remover o link?') ?>
                     </template> 
-                </confirm-button>                
+                </mc-confirm-button>                
             </div>
         </li>
     </ul>
