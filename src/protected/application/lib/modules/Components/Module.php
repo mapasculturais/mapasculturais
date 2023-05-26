@@ -49,7 +49,7 @@ class Module extends \MapasCulturais\Module {
                 $app->components->templates = [];
             }
 
-            $this->import('entity');
+            $this->import('mc-entity');
         });
 
         $app->hook('mapas.printJsObject:before', function () use($app) {

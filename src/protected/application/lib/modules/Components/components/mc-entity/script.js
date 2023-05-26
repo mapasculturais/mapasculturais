@@ -2,15 +2,15 @@
  * uso:
  * 
  * // omitindo o id, pega a entity do Mapas.requestedEntity
- * <entity v-slot='{entity}'>{{entity.id}} - {{entity.name}}</entity>
+ * <mc-entity v-slot='{entity}'>{{entity.id}} - {{entity.name}}</mc-entity>
  * 
  * // passango o id sem select, não faz consulta na api
- * <entity v-slot='{entity}' :type='space' :id='33'>{{entity.id}}</entity>
+ * <mc-entity v-slot='{entity}' :type='space' :id='33'>{{entity.id}}</mc-entity>
  * 
  * // passando o id e passando um select, faz a consulta na api
- * <entity v-slot='{entity}' :type='space' :id='33' :select="id,name">{{entity.id}} - {{entity.name}}</entity>
+ * <mc-entity v-slot='{entity}' :type='space' :id='33' :select="id,name">{{entity.id}} - {{entity.name}}</mc-entity>
  */
-app.component('entity', {
+app.component('mc-entity', {
     data() {
         return {
             entity: null,
@@ -55,5 +55,5 @@ app.component('entity', {
         }
     },
 
-    template: $TEMPLATES['entity']
+    template: $TEMPLATES['mc-entity']
 });
