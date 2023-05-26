@@ -35,7 +35,7 @@ $this->breadcrumb = [
     <tabs>
         <tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
             <div class="registration__content">
-                <mapas-card no-title>
+                <mapas-card>
                     <template #content>
                         <div class="registration-info">
                             <div class="registration-info__header">
@@ -85,7 +85,7 @@ $this->breadcrumb = [
                     </template>
                 </mapas-card>
 
-                <mapas-card no-title>
+                <mapas-card>
                     <template #content>
 
                         <opportunity-phases-timeline center big></opportunity-phases-timeline>
@@ -97,7 +97,7 @@ $this->breadcrumb = [
 
         <tab label="<?= i::_e('Ficha de inscrição') ?>" slug="ficha">
             <div class="registration__content">
-                <mapas-card no-title>
+                <mapas-card>
                     <template #content>
                         <div class="registered-info">
                             <span class="info"> 

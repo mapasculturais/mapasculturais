@@ -31,7 +31,7 @@ $this->import('
         </div>
 
         <div class="col-6 sm:col-12">
-            <mapas-card no-title>
+            <mapas-card>
                 <template #default>
                     <div class="request-data grid-12">
                         <div v-if="entity.isFirstPhase" class="col-12">
@@ -60,7 +60,7 @@ $this->import('
         </div>
 
         <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
-            <mapas-card no-title>
+            <mapas-card>
                 <template #default>
                     <div class="request-data grid-12">
                         <div v-if="entity.isFirstPhase" class="col-12">
@@ -78,7 +78,7 @@ $this->import('
         </div>
 
         <div class="col-6 sm:col-12">
-            <mapas-card no-title>
+            <mapas-card>
                 <template #default>
                     <div class="request-data grid-12">
                         <div v-if="entity.isFirstPhase" class="col-12">
