@@ -28,7 +28,7 @@ $this->import('loading');
 </template>
 
 <slot v-if="showLoadMore()" name="load-more" :entities="entities">
-    <div class="col-9 search-list__loadMore">
+    <div class="search-list__loadMore">
         <loading :condition="entities.loadingMore"></loading>
         <button class="button--large button button--primary-outline" v-if="!entities.loadingMore" @click="loadMore()"><?php i::_e('Carregar Mais') ?></button>
     </div>
