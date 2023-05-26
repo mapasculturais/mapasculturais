@@ -1,0 +1,14 @@
+@use '../settings/mixins' as *;
+
+.complaint-suggestion {
+    display: flex;
+    flex-direction: column;
+
+    .modal-content {
+        padding: size(16);
+        min-height: size(600);
+        max-width: size(570);
+        width: 100%;
+       
+    }
+}
