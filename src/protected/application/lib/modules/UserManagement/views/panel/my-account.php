@@ -19,7 +19,7 @@ $this->import('
     user-management--delete
 ');
 ?>
-<entity #default='{entity}'>
+<mc-entity #default='{entity}'>
 
     <div class="p-user-detail account-privacy">
         <header class="p-user-detail__header account-privacy__header">
@@ -77,4 +77,4 @@ $this->import('
         </div>
 
     </div>
-</entity>
+</mc-entity>

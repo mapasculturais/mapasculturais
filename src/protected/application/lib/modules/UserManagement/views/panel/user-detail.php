@@ -17,7 +17,7 @@ $this->import('
     user-management--ownership-tabs
 ');
 ?>
-<entity #default='{entity}'>
+<mc-entity #default='{entity}'>
     <div class="p-user-detail">
         <div class="panel-main">
             <header class="p-user-detail__header">
@@ -92,4 +92,4 @@ $this->import('
                 </div>
             </div>
         </div>
-</entity>
+</mc-entity>

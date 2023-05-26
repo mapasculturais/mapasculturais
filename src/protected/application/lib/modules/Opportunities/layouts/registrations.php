@@ -2,7 +2,6 @@
 
 use MapasCulturais\ApiQuery;
 
-$this->import('entity');
 $this->addRequestedEntityToJs($entity ? $entity->className : null, $entity ? $entity->id : null);
 $query = new ApiQuery(\MapasCulturais\Entities\Opportunity::class, [
     'id' => "EQ({$entity->opportunity->id})",
