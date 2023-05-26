@@ -13,15 +13,8 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
 
         <div class="close"></div>
     </div>
-<?php else: ?>
-    <div id='status-info' class="alert info">
-        <span><?php \MapasCulturais\i::_e("Após avaliar todas as inscrições clique no botão <strong>Enviar Avaliações</strong>:");?></span>
-
-        <div class="close"></div>
-    </div>
 <?php endif?>
 
-<?php $this->part('singles/opportunity-evaluations--committee--buttons', ['entity' => $entity]) ?>
 
 <table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}">
 <thead>
