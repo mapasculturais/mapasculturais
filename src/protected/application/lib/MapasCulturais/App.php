@@ -254,6 +254,8 @@ class App extends \Slim\Slim{
             closedir($handle);
         }
 
+        sort($available_modules);
+        
         // list of themes
         foreach (scandir(THEMES_PATH) as $ff) {
             if ($ff != '.' && $ff != '..' ) {
