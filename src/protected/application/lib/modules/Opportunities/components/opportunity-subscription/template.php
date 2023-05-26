@@ -3,9 +3,8 @@
 use MapasCulturais\i;
 
 $this->import('
-	loading
-	mc-icon
 	select-entity
+	mc-loading
 ');
 ?>
 
@@ -65,7 +64,7 @@ $this->import('
 					<?= i::__("Fazer inscrição") ?>
 				</button>
 				<div v-if="processing" class="col-12">
-					<loading :condition="processing"> <?= i::__('Fazendo inscrição') ?></loading>
+					<mc-loading :condition="processing"> <?= i::__('Fazendo inscrição') ?></mc-loading>
 				</div>
 			</form>
 		</div>

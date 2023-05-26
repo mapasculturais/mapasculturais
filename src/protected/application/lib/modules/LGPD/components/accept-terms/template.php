@@ -7,9 +7,8 @@
 use MapasCulturais\i;
 
 $this->import('
-    loading
-    mc-icon
     user-accepted-terms
+    mc-loading
 ');
 ?>
 <?php $this->applyTemplateHook('accepted-terms', 'before'); ?>
@@ -25,7 +24,7 @@ $this->import('
     </header>
 
     <mc-card>
-        <loading :condition="loading"><?= i::__('Salvando aceite dos termos...') ?></loading>
+        <mc-loading :condition="loading"><?= i::__('Salvando aceite dos termos...') ?></mc-loading>
     </mc-card>
 
     <tabs v-if="!loading" class="tabs mapas-terms__content" :defaultTab="step" iconPosition="right">

@@ -1,5 +1,7 @@
 <?php
-$this->import('loading');
+$this->import('
+    mc-loading
+');
 ?>
-<loading :condition="loading"></loading>
+<mc-loading :condition="loading"></mc-loading>
 <slot v-if="!loading" :entity="entity"></slot> 

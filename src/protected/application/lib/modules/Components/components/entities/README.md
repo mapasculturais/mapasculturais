@@ -18,7 +18,7 @@ Serve para implementar listagens de entidades baseadas em consultas na API.
 
 ## Slots
 - **header** `{Entity[]* entities, Object query, Function loadMore, Function refresh}` - espaço antes da listagem, ideal para posicionar um formulário de busca ou filtro. Vazio por padrão.
-- **loading** `{Entity[]* entities}` _(renderizado somente enquanto a consulta na API está sendo feita)_ - espaço para personalizar a mensagem de _loading_. Por padrão é exibido um componente `<loading>`. 
+- **loading** `{Entity[]* entities}` _(renderizado somente enquanto a consulta na API está sendo feita)_ - espaço para personalizar a mensagem de _loading_. Por padrão é exibido um componente `<mc-loading>`. 
 - **empty** - Exibido no lugar da lista quando nenhum resultado foi encontrado. Por padrão exibe a mensagem 'Nenhuma entidade encontrada'.
 - **default** `{Entity[]* entities, Object query, Function loadMore, Function refresh}` _(não renderizado enquanto a consulta na API está sendo feita)_ - Lugar para implementar a listagem do resultado.
 

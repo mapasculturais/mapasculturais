@@ -1,4 +1,4 @@
-app.component('loading', {
+app.component('mc-loading', {
     props: {
         condition: Boolean,
         entity: Entity
@@ -6,5 +6,5 @@ app.component('loading', {
     setup() {
 
     },
-    template: $TEMPLATES['loading']
+    template: $TEMPLATES['mc-loading']
 });

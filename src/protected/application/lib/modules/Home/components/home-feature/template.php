@@ -4,7 +4,7 @@ use MapasCulturais\i;
 $this->import('
 	entities 
 	entity-card 
-	loading
+    mc-loading
 	tabs
 ');
 ?>
@@ -20,7 +20,7 @@ $this->import('
     </div>
     <div class="home-feature__content">
         <div class="home-feature__content cards">
-            <loading :condition="!entities.length"></loading>
+            <mc-loading :condition="!entities.length"></mc-loading>
             <tabs v-if="entities.length > 0">
                 <tab label="Todos" slug="all">
                     <carousel :settings="settings" :breakpoints="breakpoints">

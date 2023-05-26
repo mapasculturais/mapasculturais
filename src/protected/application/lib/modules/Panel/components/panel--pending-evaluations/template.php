@@ -8,11 +8,10 @@ use MapasCulturais\i;
 
 $this->import('
     entity-card
-    loading
-    mc-link
+    mc-loading
 ');
 ?>
-<loading :condition="loading"></loading>
+<mc-loading :condition="loading"></mc-loading>
 
 <div v-if="entities.length > 0" class="panel--pending-evaluations">
 

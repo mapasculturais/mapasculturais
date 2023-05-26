@@ -7,13 +7,16 @@
 
 use MapasCulturais\i;
 
-$this->import('loading confirm-button');
+$this->import('
+    confirm-button
+    mc-loading
+');
 ?>
 <div v-if="!empty" class="entity-actions">
     <?php $this->applyTemplateHook('entity-actions', 'before') ?>
     <div class="entity-actions__content">
         <?php $this->applyTemplateHook('entity-actions', 'begin'); ?>
-        <loading :entity="entity"></loading>
+        <mc-loading :entity="entity"></mc-loading>
         <template v-if="!entity.__processing">
             <?php $this->applyTemplateHook('entity-actions', 'begin') ?>
 

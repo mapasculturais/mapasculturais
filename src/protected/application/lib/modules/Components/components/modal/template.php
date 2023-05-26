@@ -1,6 +1,9 @@
 <?php
-
 use MapasCulturais\i;
+
+$this->import('
+    mc-loading
+');
 ?>
 <vue-final-modal v-model="modalOpen" :classes="['modal-container',classes]" content-class="modal-content" transition="modal" modalPosition="fixed" :modalClasses="['modal-fixed']" esc-to-close>
     <template v-if="modalOpen">
@@ -12,7 +15,7 @@ use MapasCulturais\i;
             <slot :close="close" :open="open" :isOpen="modalOpen" :toggle="toggle" :loading="loading"></slot>
         </div>
         <div class="modal__action">
-            <loading :condition="processing"></loading>
+            <mc-loading :condition="processing"></mc-loading>
             <slot v-if="!processing" name="actions" :close="close" :open="open" :toggle="toggle" :loading="loading"></slot>
         </div>
     </template>

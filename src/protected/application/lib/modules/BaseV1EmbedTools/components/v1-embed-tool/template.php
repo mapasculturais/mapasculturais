@@ -5,8 +5,9 @@
  * 
  */
 
-use MapasCulturais\i;
-$this->import('loading');
+$this->import('
+    mc-loading
+');
 ?>
-<loading :condition="!loaded"></loading>
+<mc-loading :condition="!loaded"></mc-loading>
 <iframe v-show="loaded" :id="iframeId" :src="url" ref="iframe" :style="{height: iframeHeight, maxHeight: maxHeight, minHeight: minHeight, maxWidth: maxWidth, minWidth: minWidth, width: '100%', border: 'none'}" ></iframe>

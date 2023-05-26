@@ -9,11 +9,11 @@ use MapasCulturais\Entity;
 
 $this->import('
     confirm-button
-    loading
+    mc-loading
 ');
 ?>
 <div v-if="entity.__processing" class="panel__entity-actions">
-    <loading :entity="entity"></loading>
+    <mc-loading :entity="entity"></mc-loading>
 </div>
 <div v-if="!entity.__processing" class="panel__entity-actions">
     <confirm-button v-if="undeleteButton && entity.status == <?= Entity::STATUS_TRASH ?>"
