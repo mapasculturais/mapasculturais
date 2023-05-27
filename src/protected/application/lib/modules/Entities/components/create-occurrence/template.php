@@ -9,11 +9,11 @@ use MapasCulturais\i;
 $this->import('
     create-space
     mc-link
-    modal 
+    mc-modal
     select-entity
 ');
 ?>
-<modal title="Inserir ocorrência no evento" classes="create-occurrence">
+<mc-modal title="Inserir ocorrência no evento" classes="create-occurrence">
     <template #default>
         <div class="grid-12">
             <div :class="['col-12', 'create-occurrence__section', {'active' : step==0}]">
@@ -278,4 +278,4 @@ $this->import('
             </div>
         </div>
     </template>
-</modal>
+</mc-modal>

@@ -1,5 +1,5 @@
-app.component('modal', {
-    template: $TEMPLATES['modal'],
+app.component('mc-modal', {
+    template: $TEMPLATES['mc-modal'],
     emits: ['open', 'close'],
 
     data() {

@@ -10,7 +10,6 @@ $this->import('
     mc-confirm-button
     mc-image-uploader
     mc-popover 
-    modal 
 ');
 ?>
 <?php $this->applyTemplateHook('entity-gallery','before'); ?>

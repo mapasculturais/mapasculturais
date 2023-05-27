@@ -9,10 +9,10 @@ use MapasCulturais\i;
 $this->import('
     loading
     mc-entities 
-    modal 
+    mc-modal 
 ');
 ?>
-<modal title="<?php i::esc_attr_e('Adicionar função ao usuário') ?> " @open="createInstance()"> 
+<mc-modal title="<?php i::esc_attr_e('Adicionar função ao usuário') ?> " @open="createInstance()"> 
     <template #default>
         <div class="field">
             <mc-entities #default="{entities}" type="system-role" select="id,status,name,slug,permissions" v-if="instance">
@@ -43,4 +43,4 @@ $this->import('
             <mc-icon name="add"></mc-icon>
         </a>
     </template>   
-</modal>
+</mc-modal>

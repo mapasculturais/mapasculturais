@@ -1,4 +1,4 @@
-# Componente `<modal>`
+# Componente `<mc-modal>`
 Componente que cria uma modal
 
 ### Eventos
@@ -20,38 +20,38 @@ Componente que cria uma modal
 ### Importando componente
 ```PHP
 <?php 
-$this->import('modal');
+$this->import('mc-modal');
 ?>
 ```
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<modal button-label="abrir">
+<mc-modal button-label="abrir">
     <p>conteúdo da modal</p>
-</modal>
+</mc-modal>
 
 <!-- definindo um título para a modal -->
-<modal button-label="abrir" title="Título da modal">
+<mc-modal button-label="abrir" title="Título da modal">
     <p>conteúdo da modal</p>
-</modal>
+</mc-modal>
 
 <!-- definindo uma classe para o botão de abrir a modal -->
-<modal button-label="abrir" button-classes="button--secondary" title="Título da modal">
+<mc-modal button-label="abrir" button-classes="button--secondary" title="Título da modal">
     <p>conteúdo da modal</p>
-</modal>
+</mc-modal>
 
 <!-- definindo botões de ação -->
-<modal button-label="abrir" title="Título da modal">
+<mc-modal button-label="abrir" title="Título da modal">
     <p>conteúdo da modal</p>
 
     <template #actions="modal">
         <button @click="doSomething(modal)">fazer algo</button>
         <button @click="modal.close()">cancelar</button>
     </template>
-</modal>
+</mc-modal>
 
 <!-- definindo um botão customizado para abrir a modal -->
-<modal title="Título da modal">
+<mc-modal title="Título da modal">
     <p>conteúdo da modal</p>
 
     <template #actions="modal">
@@ -62,10 +62,10 @@ $this->import('modal');
     <template #button="modal">
         <a href="#" @click="modal.open()">abrir a modal</a>
     </template>
-</modal>
+</mc-modal>
 
 <!-- usando uma tag <template> para o slot padrao -->
-<modal title="Título da modal">
+<mc-modal title="Título da modal">
     <template #default="modal">
         <p>conteúdo da modal</p>
         <a @click="modal.close()">você pode fechar a modal por aqui também</a>
@@ -79,4 +79,4 @@ $this->import('modal');
     <template #button-label="modal">
         <a href="#" @click="modal.open()">abrir a modal</a>
     </template>
-</modal>
+</mc-modal>

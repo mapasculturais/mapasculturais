@@ -7,11 +7,11 @@
 use MapasCulturais\i;
 
 $this->import('
-    modal
+    mc-modal
 '); 
 ?>
 <div class="mc-image-uploader">  
-    <modal title="<?php i::_e("Recorte a imagem") ?>" @open="reset()">
+    <mc-modal title="<?php i::_e("Recorte a imagem") ?>" @open="reset()">
         <template #default>
             <div class="field">
                 <input v-if="useDescription" v-model="description" class="input" placeholder="<?php i::esc_attr_e('Descrição da imagem') ?>">
@@ -35,5 +35,5 @@ $this->import('
             <a class="button button--primary" @click="crop(modal)"><?php i::_e('Recortar e subir imagem') ?></a>
             <a class="button button--secondary" @click="modal.close()"><?php i::_e('Cancelar') ?></a>
         </template>
-    </modal>
+    </mc-modal>
 </div>

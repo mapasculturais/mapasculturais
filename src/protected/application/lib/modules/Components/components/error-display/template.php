@@ -7,12 +7,12 @@
 use MapasCulturais\i;
 
 $this->import("
-    modal
+    mc-modal
 ");
 ?>
 <div class="error-display">
     <div class="error-display__content">
-        <modal title="<?= i::__('Erro 403') ?>">
+        <mc-modal title="<?= i::__('Erro 403') ?>">
             <div class="content">
                     Teste
 
@@ -23,6 +23,6 @@ $this->import("
             </template>
 
 
-        </modal>
+        </mc-modal>
     </div>
 </div>

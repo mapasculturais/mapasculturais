@@ -9,13 +9,13 @@ use MapasCulturais\i;
 $this->import('
     entity-field
     mc-confirm-button
+    mc-modal
     opportunity-phase-publish-date-config
     v1-embed-tool
 ');
 ?>
 <mc-card>
     <div class="evaluation-step grid-12">
-
         <section class="evaluation-section col-12 grid-12">
             <entity-field :entity="phase" prop="name" :autosave="300" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
             <entity-field :entity="phase" prop="evaluationFrom" :autosave="300" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de início') ?>" :min="minDate?._date" :max="phase.evaluationTo?._date"></entity-field>    
@@ -34,14 +34,14 @@ $this->import('
                 <span class="subtitle"><?= i::__('Defina quais campos serão habilitados para avaliação.') ?></span>
             </div>
 
-            <modal title="<?= i::esc_attr__('Configurar campos visíveis para os avaliadores')?>" classes="modalEmbedTools">
+            <mc-modal title="<?= i::esc_attr__('Configurar campos visíveis para os avaliadores')?>" classes="modalEmbedTools">
                 <template #default="modal">
                     <v1-embed-tool route="fieldsvisible" :id="phase.opportunity.id"></v1-embed-tool>
                 </template>
                 <template #button="modal">
                     <button class="evaluation-fields-button button button--bg button--secondarylight" @click="modal.open"><?= i::__('Abrir campos') ?></button>
                 </template>
-            </modal>  
+            </mc-modal>  
 
         </section>
 
