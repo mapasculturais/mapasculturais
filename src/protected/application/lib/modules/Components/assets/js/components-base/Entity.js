@@ -11,7 +11,7 @@ class Entity {
         this.__originalValues = {};
 
         // as traduções estão no arquivo texts.php do componente <entity>
-        this.text = Utils.getTexts('entity');
+        this.text = Utils.getTexts('mc-entity');
     }
 
     populate(obj, preserveValues = true) {
