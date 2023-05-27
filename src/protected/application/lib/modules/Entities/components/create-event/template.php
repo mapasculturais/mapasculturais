@@ -11,10 +11,10 @@ $this->import('
     entity-field 
     entity-terms
     mc-link
-    modal 
+    mc-modal 
 ');
 ?>
-<modal :title="modalTitle" classes="create-modal create-event-modal" button-label="Criar Evento" @open="createEntity()" @close="destroyEntity()">
+<mc-modal :title="modalTitle" classes="create-modal create-event-modal" button-label="Criar Evento" @open="createEntity()" @close="destroyEntity()">
      <template v-if="entity && !entity.id" #default>
          <label id="title"><?php i::_e('Crie um evento com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
          <div class="create-modal__fields">
@@ -54,4 +54,4 @@ $this->import('
         <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
         <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
     </template>
- </modal>
+ </mc-modal>

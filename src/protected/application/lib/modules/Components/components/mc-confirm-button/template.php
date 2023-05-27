@@ -7,10 +7,10 @@
 use MapasCulturais\i;
 
 $this->import('
-    modal
+    mc-modal
 ');
 ?>
-<modal classes="modal-confirm" :close-button="false" :title="title">
+<mc-modal classes="modal-confirm" :close-button="false" :title="title">
     <slot v-if="hasSlot('message')" name="message" :cancel="cancel" :confirm="confirm"></slot>
     <div v-if="!hasSlot('message')">{{message}}</div>
 
@@ -24,4 +24,4 @@ $this->import('
         <button class="button button--text" @click="cancel(modal)">{{no || "<?php i::_e("Não") ?>"}}</button>
         <button class="button button--primary" @click="confirm(modal)">{{yes || "<?php i::_e("Sim") ?>"}}</button>
     </template>
-</modal>
+</mc-modal>

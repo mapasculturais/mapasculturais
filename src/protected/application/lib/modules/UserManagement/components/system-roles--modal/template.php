@@ -10,10 +10,10 @@ $this->import('
     entity-field
     loading
     mc-icon
-    modal
+    mc-modal
 ')
 ?>
-<modal :title="title" classes="create-modal" @close="destroyInstance()" @open="createInstance()">
+<mc-modal :title="title" classes="create-modal" @close="destroyInstance()" @open="createInstance()">
     <template v-if="instance" #default>
         <entity-field v-if="!entity" :entity="instance" prop="name" hide-required></entity-field>
         <section v-for="(entityPermissions,entitySlug) in permissions" :key="entitySlug"> 
@@ -51,4 +51,4 @@ $this->import('
         <button class="button button--primary" @click="save(modal)">{{saveLabel}}</button>
         <button class="button button--text button--text-del" @click="modal.close()"><?php i::_e("Cancelar") ?></button>
     </template>
-</modal>
+</mc-modal>

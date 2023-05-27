@@ -8,7 +8,6 @@ use MapasCulturais\i;
 $this->import('
     mc-link
     mc-popover
-    modal 
     notification-list
 ');
 ?>

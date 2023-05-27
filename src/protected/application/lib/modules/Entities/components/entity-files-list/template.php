@@ -9,7 +9,6 @@ use MapasCulturais\i;
 $this->import('
     mc-confirm-button
     mc-popover 
-    modal 
 ');
 ?>
 <div :class="classes" v-if="files || editable" class="files-list">

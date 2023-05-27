@@ -10,12 +10,10 @@ $this->import('
     entity-field 
     entity-terms
     mc-link
-    modal 
+    mc-modal 
 '); 
 ?>
-
-
-<modal :title="modalTitle" classes="create-modal create-app" button-label='<php? i::_e("Criar app") ?>' @open="createEntity()" @close="destroyEntity()">
+<mc-modal :title="modalTitle" classes="create-modal create-app" button-label='<php? i::_e("Criar app") ?>' @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.publicKey" #default>
         <div class="create-modal__fields">
             <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Nome ou título")?>  prop="name"></entity-field>
@@ -42,4 +40,4 @@ $this->import('
     <template v-if="entity?.id && entity.status==1" #actions="modal">
         <button @click="modal.close()" class="button button--primary-outline button--icon"><?php i::_e('ok');?></button>
     </template>
-</modal>
+</mc-modal>
