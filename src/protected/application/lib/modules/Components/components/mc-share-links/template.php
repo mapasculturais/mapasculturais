@@ -4,11 +4,11 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 ?>
-<div :class="classes" class="share-links">
+<div :class="classes" class="mc-share-links">
 
-    <h4 class="share-links--title"> {{title}} </h4>
+    <h4 class="mc-share-links--title"> {{title}} </h4>
 
-    <div class="share-links--links">
+    <div class="mc-share-links--links">
         <a  class="fa fa-twitter" 
             title="Share on Tweet" target="_blank" 
             @click="click('twitter')">

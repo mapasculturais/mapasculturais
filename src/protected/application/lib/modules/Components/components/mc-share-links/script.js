@@ -1,5 +1,5 @@
-app.component('share-links', {
-    template: $TEMPLATES['share-links'],
+app.component('mc-share-links', {
+    template: $TEMPLATES['mc-share-links'],
     emits: [],
 
     setup(props, { slots }) {
