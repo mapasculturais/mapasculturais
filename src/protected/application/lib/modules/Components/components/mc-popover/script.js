@@ -1,5 +1,5 @@
-app.component('popover', {
-    template: $TEMPLATES['popover'],
+app.component('mc-popover', {
+    template: $TEMPLATES['mc-popover'],
     emits: ['open', 'close', 'confirm'],
 
     setup(props, { slots }) {
