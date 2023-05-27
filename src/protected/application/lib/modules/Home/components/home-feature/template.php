@@ -1,14 +1,18 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
-	entities 
 	entity-card 
-	loading
-	tabs
+    mc-loading
+    mc-tab
+	mc-tabs
 ');
 ?>
-
 <div class="home-feature">
     <div class="home-feature__header">
         <div class="home-feature__header title">
@@ -20,9 +24,9 @@ $this->import('
     </div>
     <div class="home-feature__content">
         <div class="home-feature__content cards">
-            <loading :condition="!entities.length"></loading>
-            <tabs v-if="entities.length > 0">
-                <tab label="Todos" slug="all">
+            <mc-loading :condition="!entities.length"></mc-loading>
+            <mc-tabs v-if="entities.length > 0">
+                <mc-tab label="Todos" slug="all">
                     <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in entities" :key="entity.__objectId">
                             <entity-card :entity="entity" portrait>
@@ -41,8 +45,8 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
-                <tab label="Agentes" slug="agents" v-if="agents.length > 0">
+                </mc-tab>
+                <mc-tab label="Agentes" slug="agents" v-if="agents.length > 0">
                     <carousel v-if="agents.length > 0" :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in agents" :key="entity.__objectId">
                             <entity-card :entity="entity">
@@ -62,8 +66,8 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
-                <tab label="Espaços" slug="spaces">
+                </mc-tab>
+                <mc-tab label="Espaços" slug="spaces">
                     <carousel v-if="spaces.length > 0" :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in spaces" :key="entity.__objectId">
                             <entity-card :entity="entity">
@@ -83,8 +87,8 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
-                <tab label="Projetos" slug="projects">
+                </mc-tab>
+                <mc-tab label="Projetos" slug="projects">
                     <carousel v-if="projects.length > 0" :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in projects" :key="entity.__objectId">
                             <entity-card :entity="entity">
@@ -104,8 +108,8 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
-            </tabs>
+                </mc-tab>
+            </mc-tabs>
         </div>
     </div>
 </div>

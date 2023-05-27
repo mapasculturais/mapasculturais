@@ -1,7 +1,7 @@
 <?php
-
-use MapasCulturais\i;
-
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 ?>
-<div>
-</div>
+<div></div>

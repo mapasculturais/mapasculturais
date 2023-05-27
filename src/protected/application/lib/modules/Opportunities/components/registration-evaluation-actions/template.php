@@ -1,13 +1,14 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
-$this->import('v1-embed-tool')
+$this->import('
+    v1-embed-tool
+');
 ?>
 <div class="registration-evaluation-actions__buttons" v-if="evaluationRegistrationList">
     <div class="grid-12">

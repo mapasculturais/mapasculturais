@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 ?>
@@ -6,7 +10,6 @@ use MapasCulturais\i;
 
 <div class="user-accepted-terms__privacy">
     <?php $this->applyTemplateHook('user-accepted-terms', 'begin'); ?>
-
     <div class="user-accepted-terms__privacy--accept">
         <label class="user-accepted-terms__privacy--accept-title"><?= i::__('Aceite de termos') ?></label>
         <div v-if="user" class="user-accepted-terms__privacy--accept-title-box">
@@ -25,6 +28,5 @@ use MapasCulturais\i;
         </div>
     </div>
     <?php $this->applyTemplateHook('user-accepted-terms', 'end'); ?>
-
 </div>
 <?php $this->applyTemplateHook('user-accepted-terms', 'after'); ?>

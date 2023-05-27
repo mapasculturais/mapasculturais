@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->layout = 'entity';
 
 $this->import('
@@ -9,15 +15,16 @@ $this->import('
     entity-field
     entity-header
     entity-owner
-    entity-profile
-    mapas-breadcrumb
-    mapas-card
-    mapas-container
-    seal-locked-field
-    seal-form-information-seal
-    tabs
-    entity-related-agents
     entity-parent-edit
+    entity-profile
+    entity-related-agents
+    mc-breadcrumb
+    mc-card
+    mc-container
+    mc-tab
+    mc-tabs
+    seal-form-information-seal
+    seal-locked-field
 ');
 
 $this->breadcrumb = [
@@ -28,17 +35,17 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
-  <mapas-breadcrumb></mapas-breadcrumb>
+  <mc-breadcrumb></mc-breadcrumb>
   <entity-header :entity="entity"></entity-header>
-    <tabs class="tabs tabs-seal-edit">
-        <tab label="<?= i::__('Informações gerais') ?>" slug="info">
+    <mc-tabs class="tabs tabs-seal-edit">
+        <mc-tab label="<?= i::__('Informações gerais') ?>" slug="info">
             <div class="tabs__info">
-                <mapas-container>
+                <mc-container>
                     <main>
                         <seal-form-information-seal :entity="entity"></seal-form-information-seal>
                     </main>
                     <aside>
-                        <mapas-card>
+                        <mc-card>
                             <template #content>
                                 <div class="grid-12">
                                     <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
@@ -47,17 +54,17 @@ $this->breadcrumb = [
                                     <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                                 </div>
                             </template>
-                        </mapas-card>
+                        </mc-card>
                     </aside>
-                </mapas-container>
+                </mc-container>
             </div>
-        </tab>
-        <tab label="<?= i::__('Bloqueio de campos') ?>" slug="info_block">
+        </mc-tab>
+        <mc-tab label="<?= i::__('Bloqueio de campos') ?>" slug="info_block">
             <div class="tabs__info">
                 <seal-locked-field classes="tabs-seal-edit" :entity="entity"></seal-locked-field>
             </div>
-        </tab>
-    </tabs>
+        </mc-tab>
+    </mc-tabs>
 
   <entity-actions :entity="entity" editable></entity-actions>
 </div>

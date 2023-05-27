@@ -21,9 +21,9 @@ $this->import('
     entity-related-agents
     entity-social-media
     entity-terms
-    mapas-breadcrumb
-    mapas-card
-    mapas-container
+    mc-breadcrumb
+    mc-card
+    mc-container
 ');
 
 $this->breadcrumb = [
@@ -34,10 +34,10 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
-    <mapas-container>
-        <mapas-card class="feature">
+    <mc-container>
+        <mc-card class="feature">
             <template #title>
                 <label><?php i::_e("Informações de Apresentação") ?></label>
                 <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários") ?></p>
@@ -62,9 +62,9 @@ $this->breadcrumb = [
                     </div>
                 </div>
             </template>
-        </mapas-card>
+        </mc-card>
         <main>
-            <mapas-card>
+            <mc-card>
                 <template #title>
                     <label><?php i::_e("Dados do Agente Coletivo"); ?></label>
                     <p class="data-subtitle"><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente")?></p>
@@ -82,8 +82,8 @@ $this->breadcrumb = [
                         <entity-location :entity="entity" classes="col-12" editable></entity-location>
                     </div>
                 </template>
-            </mapas-card>
-            <mapas-card>
+            </mc-card>
+            <mc-card>
                 <template #title>
                     <label><?php i::_e("informações públicas"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
@@ -97,10 +97,10 @@ $this->breadcrumb = [
                         <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" classes="col-12" editable></entity-gallery>
                     </div>
                 </template>
-            </mapas-card>
+            </mc-card>
         </main>
         <aside>
-            <mapas-card>
+            <mc-card>
                 <template #content>
                     <div class="grid-12">
                         <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
@@ -109,9 +109,9 @@ $this->breadcrumb = [
                         <entity-owner :entity="entity" title="Publicado por" classes="col-12" editable></entity-owner>
                     </div>
                 </template>
-            </mapas-card>
+            </mc-card>
         </aside>
-    </mapas-container>
+    </mc-container>
     <entity-actions :entity="entity" editable></entity-actions>
 </div>
 <confirm-before-exit :entity="entity"></confirm-before-exit>

@@ -1,17 +1,17 @@
 <?php
-
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 use MapasCulturais\i;
 
 $this->import('
     mc-link
-    modal 
+    mc-popover
     notification-list
-    popover
 ');
 ?>
-
-<popover v-if="notificationsCount>0" classes="notification-modal" title="<?= i::esc_attr_e('Notificações') ?>" openside="down-right">
-    
+<mc-popover v-if="notificationsCount>0" classes="notification-modal" title="<?= i::esc_attr_e('Notificações') ?>" openside="down-right">  
     <template #default>
         <div style="max-width: 500px;">
             <div class="notification-modal__header">
@@ -53,4 +53,4 @@ $this->import('
             <label class="label"><?= i::__('Notificações') ?></label>
         </a>
     </template>
-</popover>
+</mc-popover>

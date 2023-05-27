@@ -1,9 +1,11 @@
 <?php
-use MapasCulturais\i;
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 $this->import('
-    confirm-button
     mc-icon
-    seal-content-share
     theme-logo
 ');
 ?>
@@ -29,13 +31,5 @@ $this->import('
                 </div>
             </div>
         </div>
-<!--        <div class="seal-relation-view__actions">-->
-<!--            <button class="button button--primary">-->
-<!--                <seal-content-share></seal-content-share>-->
-<!--            </button>-->
-<!--            <button class="button button--primary" @click="print">-->
-<!--              --><?//= i::__('Imprimir') ?>
-<!--            </button>-->
-<!--        </div>-->
     </div>
 </div>

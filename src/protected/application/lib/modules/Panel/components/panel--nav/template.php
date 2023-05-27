@@ -1,13 +1,14 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
-$this->import('mc-link');
+$this->import('
+    mc-link
+');
 ?>
 <nav v-if="viewport=='desktop'" class="panel-nav" :class="classes">
     <slot name='begin'></slot>

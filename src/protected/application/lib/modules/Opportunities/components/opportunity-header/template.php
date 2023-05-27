@@ -1,13 +1,11 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 ?>
-
 <?php $this->applyTemplateHook('opportunity-header', 'before'); ?>
 <header class="opportunity-header">
     <?php $this->applyTemplateHook('opportunity-header', 'begin'); ?>

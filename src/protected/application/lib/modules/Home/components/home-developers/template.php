@@ -1,8 +1,11 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 use MapasCulturais\i;
 ?>
-<div class="home-developers">
-    
+<div class="home-developers"> 
     <div class="home-developers__content">
         <span class="dev-icon"><mc-icon name="code"></mc-icon></span>
         <label class="home-developers__content--title"><?php i::_e('Alô desenvolvedores,') ?></label>

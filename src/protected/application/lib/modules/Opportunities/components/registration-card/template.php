@@ -1,13 +1,11 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 ?>
-
 <div :class="['registration-card', {'border': hasBorder}, {'picture': pictureCard}]">
     <div class="registration-card__content">    
 

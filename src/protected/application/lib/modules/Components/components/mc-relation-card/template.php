@@ -1,25 +1,22 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
+ use MapasCulturais\i;
+
 $this->import('
-    popover
-    mapas-card
+    mc-card
+    mc-popover
 ');
-
-use MapasCulturais\i;
 ?>
-
-<popover classes="relation-popover">
+<mc-popover classes="relation-popover">
     <template #button="{open, close, toggle}">
         <slot :open="open" :close="close" :toggle="toggle"> </slot>
     </template>
     <template #default="{close}">
-        <mapas-card class="relation-card" noTitle>
+        <mc-card class="relation-card">
             <div class="relation-card__close" @click="close()">
                 <mc-icon name="close"></mc-icon>
             </div>
@@ -52,6 +49,6 @@ use MapasCulturais\i;
                 <mc-icon name="exclamation"></mc-icon>
                 <?= i::__('A solicitação para `entidade` está pendente') ?>
             </div>
-        </mapas-card>
+        </mc-card>
     </template>
-</popover>
+</mc-popover>

@@ -20,11 +20,12 @@ $this->import('
     entity-social-media
     entity-terms
     link-project
-    mapas-breadcrumb
-    mapas-container
+    mc-breadcrumb
     mc-link
-    share-links
-    tabs
+    mc-container
+    mc-share-links
+    mc-tab
+    mc-tabs
 ');
 
 $this->breadcrumb = [
@@ -35,7 +36,7 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity">
         <template #metadata>
             <dl>
@@ -48,10 +49,10 @@ $this->breadcrumb = [
             </dl>
         </template>
     </entity-header>
-    <tabs class="tabs">
-        <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
+    <mc-tabs class="tabs">
+        <mc-tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
-                <mapas-container>
+                <mc-container>
                     <main>
                         <div class="grid-12">
                             <div class="col-12 additional">
@@ -80,7 +81,7 @@ $this->breadcrumb = [
                             <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
                             <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
                             <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
-                            <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></share-links>
+                            <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></mc-share-links>
                             <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
                             <div v-if="entity.relatedOpportunities?.length > 0 || entity.children?.length > 0" class="col-12">
@@ -95,9 +96,9 @@ $this->breadcrumb = [
                             <complaint-suggestion :entity="entity"></complaint-suggestion>
                         </div>
                     </aside>
-                </mapas-container>
+                </mc-container>
                 <entity-actions :entity="entity"></entity-actions>
             </div>
-        </tab>
-    </tabs>
+        </mc-tab>
+    </mc-tabs>
 </div>

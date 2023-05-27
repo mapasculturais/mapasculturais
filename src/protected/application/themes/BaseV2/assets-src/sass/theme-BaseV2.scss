@@ -13,7 +13,6 @@
 @import 'components/app-card-content';
 @import 'components/button';
 @import 'components/container';
-@import 'components/confirm-button';
 @import 'components/create-app';
 @import 'components/create-entity-modal';
 @import 'components/create-modal';
@@ -54,12 +53,13 @@
 @import 'components/home-register';
 @import 'components/home-search';
 @import 'components/link-project';
-@import 'components/loading';
-@import 'components/mapas-breadcrumb';
-@import 'components/mapas-card';
+@import 'components/mc-breadcrumb';
 @import 'components/mc-alert';
+@import 'components/mc-card';
+@import 'components/mc-confirm-button';
 @import 'components/mc-header-menu-user';
 @import 'components/mc-header-menu';
+@import 'components/mc-loading';
 @import 'components/mc-summary-evaluate';
 @import 'components/mc-map-card';
 @import 'components/mc-map';
@@ -108,7 +108,7 @@
 @import 'components/seal-relation-view';
 @import 'components/search-filter';
 @import 'components/select-entity';
-@import 'components/share-links';
+@import 'components/mc-share-links';
 @import 'components/space-info';
 @import 'components/stack';
 @import 'components/stepper';

@@ -1,10 +1,13 @@
 <?php
-
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 use MapasCulturais\i;
 
 $this->import('
-mc-icon
-select-entity
+    mc-icon
+    select-entity
 ');
 ?>
 <div v-if="project" :class="['entity-link-project' ,classes]">

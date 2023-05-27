@@ -1,8 +1,13 @@
 <?php
-use MapasCulturais\i;
-$this->import('home-search');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+$this->import('
+    home-search
+');
+?>
 <div class="home-header">
     <div class="home-header__content">
         <div class="home-header__content--left">

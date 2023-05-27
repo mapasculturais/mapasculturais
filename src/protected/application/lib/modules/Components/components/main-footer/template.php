@@ -1,8 +1,13 @@
 <?php
-
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 use MapasCulturais\i;
 
-$this->import('theme-logo');
+$this->import('
+    theme-logo
+');
 $config = $app->config['social-media'];
 ?>
 <div v-if="globalState.visibleFooter" class="main-footer">
