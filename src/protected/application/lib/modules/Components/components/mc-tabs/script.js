@@ -1,5 +1,5 @@
-app.component('tabs', {
-    template: $TEMPLATES['tabs'],
+app.component('mc-tabs', {
+    template: $TEMPLATES['mc-tabs'],
 
     props: {
         class: {

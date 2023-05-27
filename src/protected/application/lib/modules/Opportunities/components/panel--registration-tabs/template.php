@@ -9,11 +9,11 @@ use MapasCulturais\i;
 $this->import('
     mc-alert
     mc-entities
+    mc-tabs
     registration-card
-    tabs
 ');
 ?>
-<tabs :class="{'hasDrafts': this.totalDrafts>0}" @changed="changed($event)">
+<mc-tabs :class="{'hasDrafts': this.totalDrafts>0}" @changed="changed($event)">
     <tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem">
         <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
             <template #header="{entities}">
@@ -73,4 +73,4 @@ $this->import('
             </template>
         </mc-entities>
     </tab>
-</tabs>
+</mc-tabs>

@@ -21,13 +21,13 @@ $this->import('
     evaluations-list
     mc-breadcrumb
     mc-container
+    mc-share-links
+    mc-tabs
     opportunity-phase-evaluation
     opportunity-phases-timeline
     opportunity-rules
     opportunity-subscription
     opportunity-subscription-list
-    mc-share-links
-    tabs
     v1-embed-tool
 ');
 
@@ -37,13 +37,11 @@ $this->breadcrumb = [
   ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
 ];
 ?>
-
 <div class="main-app single">
   <mc-breadcrumb></mc-breadcrumb>
   <entity-header :entity="entity"></entity-header>
 
-    <tabs class="tabs">
-
+    <mc-tabs class="tabs">
         <tab label="<?= i::__('Informações') ?>" slug="info">
             <mc-container class="opportunity">
                 <main class="grid-12">
@@ -103,6 +101,6 @@ $this->breadcrumb = [
         
         <?php $this->part('opportunity-tab-support.php', ['entity' => $entity]); ?>
 
-    </tabs>
+    </mc-tabs>
     <entity-actions :entity="entity"></entity-actions>
 </div>

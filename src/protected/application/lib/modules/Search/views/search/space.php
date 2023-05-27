@@ -3,11 +3,11 @@ use MapasCulturais\i;
 
 $this->import('
     create-space
+    mc-tabs
     search
     search-filter-space
     search-list
     search-map
-    tabs
 ');
 
 $this->breadcrumb = [
@@ -26,7 +26,7 @@ $this->breadcrumb = [
         </create-space>
     </template>
     <template #default="{pseudoQuery, changeTab}">        
-        <tabs @changed="changeTab($event)" class="search__tabs">
+        <mc-tabs @changed="changeTab($event)" class="search__tabs">
             <template  #before-tablist>
                 <label class="search__tabs--before">
                     <?= i::_e('Visualizar como:') ?>
@@ -50,6 +50,6 @@ $this->breadcrumb = [
                     </search-map>
                 </div>
             </tab>
-        </tabs>
+        </mc-tabs>
     </template>
 </search>
