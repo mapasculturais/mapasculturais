@@ -8,9 +8,9 @@ use MapasCulturais\i;
 
 $this->import('
     mc-entities
+    mc-tab
     mc-tabs
     panel--entity-card
-    tab
 ');
 
 $tabs = $tabs ?? [
@@ -30,7 +30,7 @@ $tabs = $tabs ?? [
         {{ tab.label }}
     </template>
     <?php foreach($tabs as $status => $label): ?>
-    <tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
+    <mc-tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
         <mc-entities :name="type + ':<?=$status?>'" :type="type" 
             :select="select"
             :query="queries['<?=$status?>']" 
@@ -104,7 +104,7 @@ $tabs = $tabs ?? [
                 <slot name='after-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
            </template>
         </mc-entities>
-    </tab>
+    </mc-tab>
     <?php endforeach ?>
     <?php $this->applyTemplateHook('entity-tabs', 'end') ?>
 </mc-tabs>

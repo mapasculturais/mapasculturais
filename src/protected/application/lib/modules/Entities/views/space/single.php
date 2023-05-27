@@ -22,6 +22,7 @@ $this->import('
     mc-container
     mc-share-links
     space-info
+    mc-tab
     mc-tabs
 ');
 
@@ -47,7 +48,7 @@ $this->breadcrumb = [
         </template>
     </entity-header>
     <mc-tabs class="tabs">
-        <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
+        <mc-tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
                 <mc-container>
                     <main>
@@ -88,6 +89,6 @@ $this->breadcrumb = [
                 </mc-container>
                 <entity-actions :entity="entity"></entity-actions>
             </div>
-        </tab>
+        </mc-tab>
     </mc-tabs>
 </div>

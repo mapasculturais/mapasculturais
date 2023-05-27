@@ -1,9 +1,15 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
     create-event
-    mc-breadcrumb 
+    mc-breadcrumb
+    mc-tab
     mc-tabs 
     search 
     search-filter-event
@@ -16,7 +22,6 @@ $this->breadcrumb = [
     ['label' => i::__('Eventos'), 'url' => $app->createUrl('events')],
 ];
 ?>
-
 <search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[],'event:term:linguagem':[], 'event:classificacaoEtaria': []}">
     <template v-if="global.auth.isLoggedIn" #create-button>
         <create-event #default="{modal}">
@@ -33,16 +38,16 @@ $this->breadcrumb = [
                     <?= i::_e('Visualizar como:') ?>
                 </label>
             </template>
-            <tab icon="list" label="<?php i::esc_attr_e('Lista') ?>" slug="list">
+            <mc-tab icon="list" label="<?php i::esc_attr_e('Lista') ?>" slug="list">
                 <div class="search__tabs--list">
                     <search-list-event :pseudo-query="pseudoQuery"></search-list-event>
                 </div>
-            </tab>
-            <tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>"  slug="map">
+            </mc-tab>
+            <mc-tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>"  slug="map">
                 <div class="search__tabs--map">
                     <search-map-event :pseudo-query="pseudoQuery" position="map"></search-map-event>
                 </div>
-            </tab>
+            </mc-tab>
         </mc-tabs>
     </template>
 </search>

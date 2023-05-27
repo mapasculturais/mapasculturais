@@ -7,11 +7,11 @@ use MapasCulturais\i;
 $this->import('
     mc-card
     notification-list
-    tab
+    mc-tab
 ');
 
 ?>
 
-<tab label="<?php i::esc_attr_e('Notificações') ?>" slug="notifications">
+<mc-tab label="<?php i::esc_attr_e('Notificações') ?>" slug="notifications">
     <notification-list></notification-list>
-</tab>
+</mc-tab>

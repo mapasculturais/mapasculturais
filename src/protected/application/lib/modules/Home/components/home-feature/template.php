@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->import('
 	entity-card 
     mc-loading
+    mc-tab
 	mc-tabs
 ');
 ?>
@@ -25,7 +26,7 @@ $this->import('
         <div class="home-feature__content cards">
             <mc-loading :condition="!entities.length"></mc-loading>
             <mc-tabs v-if="entities.length > 0">
-                <tab label="Todos" slug="all">
+                <mc-tab label="Todos" slug="all">
                     <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in entities" :key="entity.__objectId">
                             <entity-card :entity="entity" portrait>
@@ -44,8 +45,8 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
-                <tab label="Agentes" slug="agents" v-if="agents.length > 0">
+                </mc-tab>
+                <mc-tab label="Agentes" slug="agents" v-if="agents.length > 0">
                     <carousel v-if="agents.length > 0" :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in agents" :key="entity.__objectId">
                             <entity-card :entity="entity">
@@ -65,8 +66,8 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
-                <tab label="Espaços" slug="spaces">
+                </mc-tab>
+                <mc-tab label="Espaços" slug="spaces">
                     <carousel v-if="spaces.length > 0" :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in spaces" :key="entity.__objectId">
                             <entity-card :entity="entity">
@@ -86,8 +87,8 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
-                <tab label="Projetos" slug="projects">
+                </mc-tab>
+                <mc-tab label="Projetos" slug="projects">
                     <carousel v-if="projects.length > 0" :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in projects" :key="entity.__objectId">
                             <entity-card :entity="entity">
@@ -107,7 +108,7 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
+                </mc-tab>
             </mc-tabs>
         </div>
     </div>

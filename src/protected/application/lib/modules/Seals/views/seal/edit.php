@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->layout = 'entity';
 
 $this->import('
@@ -15,6 +21,7 @@ $this->import('
     mc-breadcrumb
     mc-card
     mc-container
+    mc-tab
     mc-tabs
     seal-form-information-seal
     seal-locked-field
@@ -31,7 +38,7 @@ $this->breadcrumb = [
   <mc-breadcrumb></mc-breadcrumb>
   <entity-header :entity="entity"></entity-header>
     <mc-tabs class="tabs tabs-seal-edit">
-        <tab label="<?= i::__('Informações gerais') ?>" slug="info">
+        <mc-tab label="<?= i::__('Informações gerais') ?>" slug="info">
             <div class="tabs__info">
                 <mc-container>
                     <main>
@@ -51,12 +58,12 @@ $this->breadcrumb = [
                     </aside>
                 </mc-container>
             </div>
-        </tab>
-        <tab label="<?= i::__('Bloqueio de campos') ?>" slug="info_block">
+        </mc-tab>
+        <mc-tab label="<?= i::__('Bloqueio de campos') ?>" slug="info_block">
             <div class="tabs__info">
                 <seal-locked-field classes="tabs-seal-edit" :entity="entity"></seal-locked-field>
             </div>
-        </tab>
+        </mc-tab>
     </mc-tabs>
 
   <entity-actions :entity="entity" editable></entity-actions>

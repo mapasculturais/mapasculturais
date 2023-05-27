@@ -6,7 +6,7 @@
 
 $this->import('
     mc-icon
-    tab
+    mc-tab
 ');
 ?>
 <div class="tabs-component" :class="classes">
