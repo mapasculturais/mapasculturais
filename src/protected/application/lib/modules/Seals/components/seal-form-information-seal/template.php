@@ -1,19 +1,23 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
-    mapas-card
-    seal-form-valid-period
+    entity-cover
     entity-field
-    seal-activity-card
-    image-uploader
     entity-files-list
     entity-links
     entity-profile
-    entity-cover
+    mc-card
+    seal-activity-card
+    seal-form-valid-period
 ');
 ?>
-
-<mapas-card>
+<mc-card>
     <template #title>
         <label><?= i::__("Informações de selos")?></label>
         <p><?= i::__("Texto exemplo de texto")?></p>
@@ -34,9 +38,9 @@ $this->import('
             <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
         </div>
     </template>
-</mapas-card>
+</mc-card>
 
-<mapas-card>
+<mc-card>
     <template #title>
         <label>{{ text('custom_information_title') }}</label>
         <p>{{ text('custom_information_tip') }}</p>
@@ -87,9 +91,9 @@ $this->import('
             </div>
         </div>
     </template>
-</mapas-card>
+</mc-card>
 
-<mapas-card>
+<mc-card>
     <template #title>
         <label><?= i::__("Outras informações")?></label>
         <p><?= i::__("Os dados inseridos abaixo também são exibidos publicamente")?></p>
@@ -101,4 +105,4 @@ $this->import('
             <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
         </div>
     </template>
-</mapas-card>
+</mc-card>

@@ -1,11 +1,9 @@
 <?php
 /**
+ * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
-
-use MapasCulturais\i;
 ?>
-
 <a class="theme-logo" :class="{'onlyImg': hideLabel}" :style="{'--logo-bg1': colors.bg1, '--logo-bg2': colors.bg2, '--logo-bg3': colors.bg3, '--logo-bg4': colors.bg4}" :href="href">    
     <div v-if="!logoImg" class="theme-logo__logo">
         <div class="part1"></div>

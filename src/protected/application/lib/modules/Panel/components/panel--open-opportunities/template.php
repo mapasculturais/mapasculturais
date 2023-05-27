@@ -1,13 +1,16 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
-    entities 
     entity-card 
     mc-icon
 ');
 ?>
-
 <div v-if="entities.length > 0" class="panel--open-opportunities">
     <div class="panel--open-opportunities__content">
         <div class="panel--open-opportunities__content--title">

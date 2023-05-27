@@ -27,7 +27,7 @@
   &.action-edit {
     background-color: var(--mc-gray-100);
 
-    .mapas-card__content {
+    .mc-card__content {
       .header-opp {
         &__field {
           &--name {
@@ -252,7 +252,7 @@
       margin: 0 auto;
       padding: size(20) size(16);
 
-      .mapas-card {
+      .mc-card {
         height: 100%;
 
         &__content {

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $phases = $entity->firstPhase->phases;
@@ -21,11 +26,11 @@ $this->jsObject['supportPhases'] = $phasesToJs;
 
 $this->import('
     opportunity-phase-support
+    mc-tab
 ');
 ?>
-
-<tab label="<?= i::__('Suporte') ?>" slug="support">
+<mc-tab label="<?= i::__('Suporte') ?>" slug="support">
     <div class="opportunity-container">
         <opportunity-phase-support></opportunity-phase-support>
     </div>
-</tab>
+</mc-tab>

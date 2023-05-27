@@ -10,9 +10,9 @@ use MapasCulturais\i;
 $this->layout = 'registrations';
 
 $this->import('
-    mapas-breadcrumb
-    mapas-card
-    mapas-container
+    mc-breadcrumb
+    mc-card
+    mc-container
     mc-icon
     opportunity-header
     registration-actions
@@ -45,7 +45,7 @@ $this->breadcrumb = $breadcrumb;
 ?>
 
 <div class="main-app registration edit">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
     <div class="registration__title">
@@ -57,7 +57,7 @@ $this->breadcrumb = $breadcrumb;
             <registration-steps></registration-steps>
         </div>
 
-        <mapas-container>
+        <mc-container>
             <main class="grid-12">
                 <div class="col-12 registration-info">
                     <p class="registration-info__title"> <?= i::__('Informações da inscrição') ?> </p>
@@ -112,6 +112,6 @@ $this->breadcrumb = $breadcrumb;
             <aside>
                 <registration-actions :registration="entity"></registration-actions>
             </aside>
-        </mapas-container>
+        </mc-container>
     </div>
 </div>

@@ -1,14 +1,17 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
-    mapas-card
-    mc-icon
-    
+    mc-card
+    mc-icon    
 ');
 ?>
-<mapas-card v-if="opportunity && canSee('agentsSummary')">
+<mc-card v-if="opportunity && canSee('agentsSummary')">
     <template #title>
         <div>
             <div>
@@ -103,4 +106,4 @@ $this->import('
             </div>
         </div>
     </template>
-</mapas-card>
+</mc-card>

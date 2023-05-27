@@ -1,22 +1,18 @@
 <?php
-
 /**
- * @var MapasCulturais\Themes\BaseV2\Theme $this
  * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
 $this->import('
-    mc-link
-    confirm-button
     mc-stepper-vertical
-    mc-link
-    opportunity-create-evaluation-phase
     opportunity-create-data-collect-phase
+    opportunity-create-evaluation-phase
     opportunity-phase-config-data-collection
-    opportunity-phase-config-results
     opportunity-phase-config-evaluation
+    opportunity-phase-config-results
 ');
 ?>
 <mc-stepper-vertical :items="phases" allow-multiple>

@@ -1,16 +1,19 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
-    confirm-button
     create-occurrence
-    entities
     entity-map
+    mc-confirm-button
+    mc-entities
     mc-icon
 ');
 ?>
-
 <div class="entity-occurrence-list">
     <div v-if="editable && !createEvent" class="entity-occurrence-list__editable">
         <label class="entity-occurrence-list__editable--title">
@@ -32,7 +35,7 @@ $this->import('
     </div>
     <div class="entity-occurrence-list__occurrences">
         <label class="occurrence__title">Agenda</label>
-        <entities name="occurrenceList" type="eventoccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
+        <mc-entities name="occurrenceList" type="eventoccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
             <template #default="{entities}">
                 <div v-for="occurrence in entities" class="occurrence" :class="{'edit': editable}" :key="occurrence._reccurrence_string">
                     <div class="occurrence__card">
@@ -85,7 +88,7 @@ $this->import('
                             </a>
                         </create-occurrence> -->
 
-                        <confirm-button @confirm="occurrence.delete(true)">
+                        <mc-confirm-button @confirm="occurrence.delete(true)">
                             <template #button="modal">
                                 <a class="occurrence__actions--delete" @click="modal.open();">
                                     <mc-icon name="trash"></mc-icon><?= i::_e('Excluir') ?>
@@ -94,7 +97,7 @@ $this->import('
                             <template #message="message">
                                 <?php i::_e('Deseja remover essa ocorrência?') ?>
                             </template>
-                        </confirm-button>
+                        </mc-confirm-button>
                     </div>
                 </div>
             </template>
@@ -106,6 +109,6 @@ $this->import('
                     <mc-icon name="loading"></mc-icon>
                 </div>
             </template>
-        </entities>
+        </mc-entities>
     </div>
 </div>

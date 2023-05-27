@@ -1,8 +1,14 @@
 <?php 
-use MapasCulturais\i;
-$this->import('entity-field');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+use MapasCulturais\i;
+$this->import('
+    entity-field
+');
+?>
 <div :class="classes" v-if="editable || show" class="entity-social-media">
 
     <h4 v-if="!editable" class="entity-social-media__title"> <?php i::_e("Redes sociais") ?> </h4>

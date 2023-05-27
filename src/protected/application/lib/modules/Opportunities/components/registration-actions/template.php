@@ -1,13 +1,15 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
-?>
 
+$this->import('
+    mc-confirm-button
+');
+?>
 <div class="registration-actions">
     <div class="registration-actions__primary">
         <div v-if="Object.keys(registration.__validationErrors).length > 0" class="errors">
@@ -21,7 +23,7 @@ use MapasCulturais\i;
             </div>
         </div>
 
-        <confirm-button @confirm="send()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Quer enviar sua inscrição?') ?>">
+        <mc-confirm-button @confirm="send()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Quer enviar sua inscrição?') ?>">
             <template #button="modal">
                 <button @click="modal.open()" class="button button--large button--xbg button--primary">
                     <?= i::__("Enviar") ?>
@@ -30,14 +32,14 @@ use MapasCulturais\i;
             <template #message="message">
                 <?php i::_e('Ao enviar sua inscrição você já estará participando da oportunidade.') ?>
             </template>
-        </confirm-button> 
+        </mc-confirm-button> 
 
         <!-- <button class="button button--large button--xbg button--primary" @click="send()"> <?= i::__('Enviar') ?> </button> -->
     </div>
     <div class="registration-actions__secondary">
         <button class="button button--large button--primary-outline" @click="validate()"> <?= i::__('Validar inscrição') ?> </button>
 
-        <confirm-button @confirm="send()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Quer continuar sua inscrição depois?') ?>">
+        <mc-confirm-button @confirm="send()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Quer continuar sua inscrição depois?') ?>">
             <template #button="modal">
                 <button @click="modal.open(); save();" class="button button--large button--primary-outline">
                     <?= i::__("Salvar para depois") ?>
@@ -51,9 +53,9 @@ use MapasCulturais\i;
                 <?php i::_e('na aba') ?> 
                 <strong> <?php i::_e('Não enviadas') ?>  </strong>
             </template>
-        </confirm-button> 
+        </mc-confirm-button> 
 
-        <confirm-button @confirm="send()" @cancel="exit()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Falta tão pouco! Quer mesmo sair?') ?>">
+        <mc-confirm-button @confirm="send()" @cancel="exit()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Falta tão pouco! Quer mesmo sair?') ?>">
             <template #button="modal">
                 <button @click="modal.open()" class="button button--large button--primary-outline">
                     <?= i::__("Sair") ?>
@@ -62,6 +64,6 @@ use MapasCulturais\i;
             <template #message="message">
                 <?php i::_e('As informações preenchidas não serão salvas. Se você sair agora, vai precisar fazer a inscrição do começo de novo quando voltar.') ?>
             </template>
-        </confirm-button> 
+        </mc-confirm-button> 
     </div>
 </div>
