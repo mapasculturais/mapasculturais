@@ -1,6 +1,6 @@
 @use '../settings/mixins' as *;
 
-.mapas-breadcrumb {
+.mc-breadcrumb {
     margin: 0 auto;
     max-width: 1170px;
 
@@ -106,7 +106,7 @@
 
 // Comportamento nas páginas de edição das entidades
 .action-edit {
-    .mapas-breadcrumb {
+    .mc-breadcrumb {
         &__hasCover {
             ul {
                 background: transparent;

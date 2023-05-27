@@ -12,7 +12,7 @@ $this->addOpportunityPhasesToJs();
 $this->addRegistrationPhasesToJs();
 
 $this->import('
-    mapas-breadcrumb
+    mc-breadcrumb
     mc-card
     opportunity-header
     tabs
@@ -29,7 +29,7 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app registration single">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
     <tabs>

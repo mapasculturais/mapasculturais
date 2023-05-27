@@ -17,7 +17,7 @@ $this->import('
     entity-seals
     entity-social-media
     entity-terms
-    mapas-breadcrumb
+    mc-breadcrumb
     mc-container
     share-links
     tabs
@@ -30,7 +30,7 @@ $this->breadcrumb = [
 ];
 ?>
 <div class="main-app">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity">
         <template #metadata>
             <dl>

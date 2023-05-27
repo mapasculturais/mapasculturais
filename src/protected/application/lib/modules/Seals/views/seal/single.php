@@ -6,7 +6,7 @@ $this->import('
     entity-actions
     entity-header
     entity-owner
-    mapas-breadcrumb
+    mc-breadcrumb
     mc-container
     entity-files-list
     entity-related-agents
@@ -22,7 +22,7 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app single">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity"></entity-header>
     <mc-container>
         <main>

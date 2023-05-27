@@ -6,7 +6,7 @@ $this->import('
     entity-actions
     entity-header
     entity-links
-    mapas-breadcrumb
+    mc-breadcrumb
     opportunity-basic-info
     opportunity-phases-config
     opportunity-subscribe-results
@@ -24,7 +24,7 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
     <tabs class="tabs">
         <tab label="<?= i::__('Informações') ?>" slug="info">

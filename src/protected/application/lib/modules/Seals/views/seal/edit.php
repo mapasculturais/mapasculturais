@@ -12,7 +12,7 @@ $this->import('
     entity-parent-edit
     entity-profile
     entity-related-agents
-    mapas-breadcrumb
+    mc-breadcrumb
     mc-card
     mc-container
     seal-form-information-seal
@@ -28,7 +28,7 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
-  <mapas-breadcrumb></mapas-breadcrumb>
+  <mc-breadcrumb></mc-breadcrumb>
   <entity-header :entity="entity"></entity-header>
     <tabs class="tabs tabs-seal-edit">
         <tab label="<?= i::__('Informações gerais') ?>" slug="info">

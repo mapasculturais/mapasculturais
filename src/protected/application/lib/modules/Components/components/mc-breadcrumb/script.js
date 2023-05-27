@@ -1,5 +1,5 @@
-app.component('mapas-breadcrumb', {
-    template: $TEMPLATES['mapas-breadcrumb'],
+app.component('mc-breadcrumb', {
+    template: $TEMPLATES['mc-breadcrumb'],
     
     data() {
         return {

@@ -5,7 +5,7 @@ use MapasCulturais\i;
 $this->layout = 'registrations';
 
 $this->import('
-    mapas-breadcrumb
+    mc-breadcrumb
     mc-card
     mc-icon
     mc-container
@@ -44,7 +44,7 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
 ?>
 
 <div class="main-app registration edit">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity">
         <template #footer>
             <mc-summary-evaluate></mc-summary-evaluate>
