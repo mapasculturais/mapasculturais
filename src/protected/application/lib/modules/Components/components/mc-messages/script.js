@@ -44,9 +44,9 @@ const useMessages = Pinia.defineStore('messages', {
         
     }
 });
-window.messages = useMessages();
-app.component('messages', {
-    template: $TEMPLATES['messages'],
+
+app.component('mc-messages', {
+    template: $TEMPLATES['mc-messages'],
     
     setup() {
         const store = useMessages();
@@ -54,9 +54,7 @@ app.component('messages', {
     },
 
     computed: {
-
         messages() {
-            
             return this.store.activeMessages;
         },
     },
