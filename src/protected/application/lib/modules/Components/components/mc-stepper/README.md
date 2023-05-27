@@ -1,4 +1,4 @@
-# Componente `<stepper>`
+# Componente `<mc-stepper>`
 Componente para listar um passo-a-passo
 
 ### Eventos
@@ -14,23 +14,23 @@ Componente para listar um passo-a-passo
 ### Importando componente
 ```PHP
 <?php 
-$this->import('stepper');
+$this->import('mc-stepper');
 ?>
 ```
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<stepper :steps="['step 1', 'step 2', 'step 3', ...]"></stepper>
+<mc-stepper :steps="['step 1', 'step 2', 'step 3', ...]"></mc-stepper>
 
 <!-- Utilização com step definido -->
-<stepper :steps="['step 1', 'step 2', 'step 3', ...]" :stepped="2"></stepper>
+<mc-stepper :steps="['step 1', 'step 2', 'step 3', ...]" :stepped="2"></mc-stepper>
 
 <!-- Utilização com a versão small -->
-<stepper :steps="['step 1', 'step 2', 'step 3', ...]" small></stepper>
+<mc-stepper :steps="['step 1', 'step 2', 'step 3', ...]" small></mc-stepper>
 
 <!-- Utilização apenas com labels ativas -->
-<stepper :steps="['step 1', 'step 2', 'step 3', ...]" only-active-label></stepper>
+<mc-stepper :steps="['step 1', 'step 2', 'step 3', ...]" only-active-label></mc-stepper>
 
 <!-- Utilização sem labels -->
-<stepper :steps="['step 1', 'step 2', 'step 3', ...]" no-labels></stepper>
+<mc-stepper :steps="['step 1', 'step 2', 'step 3', ...]" no-labels></mc-stepper>
 ```

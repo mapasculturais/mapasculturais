@@ -1,11 +1,11 @@
-app.component('stepper', {
-    template: $TEMPLATES['stepper'],
+app.component('mc-stepper', {
+    template: $TEMPLATES['mc-stepper'],
 
     emits: ['stepChanged'],
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('stepper')
+        const text = Utils.getTexts('mc-stepper')
         return { text }
     },
 
