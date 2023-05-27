@@ -18,7 +18,7 @@ $this->import('
     entity-social-media
     entity-terms
     mapas-breadcrumb
-    mapas-container
+    mc-container
     share-links
     tabs
 ');
@@ -41,7 +41,7 @@ $this->breadcrumb = [
     <tabs class="tabs">
         <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
-                <mapas-container>
+                <mc-container>
                     <main>
                         <div class="grid-12">
                             <div class="col-12">
@@ -111,7 +111,7 @@ $this->breadcrumb = [
                             <complaint-suggestion :entity="entity"></complaint-suggestion>
                         </div>
                     </aside>
-                </mapas-container>
+                </mc-container>
                 <entity-actions :entity="entity"></entity-actions>
             </div>  
         </tab>

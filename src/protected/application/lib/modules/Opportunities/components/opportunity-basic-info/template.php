@@ -21,6 +21,7 @@ $this->import('
     entity-social-media
     entity-terms
     entity-terms
+    mc-container
     opportunity-rules    
 ');
 ?>
@@ -40,7 +41,7 @@ $this->import('
         </template>
     </mc-card>
 </div>
-<mapas-container>
+<mc-container>
     <main>
         <mc-card>
             <template #content>
@@ -75,5 +76,5 @@ $this->import('
             </div>
         </mc-card>
     </aside>
-</mapas-container>
+</mc-container>
 <confirm-before-exit :entity="entity"></confirm-before-exit>

@@ -7,21 +7,21 @@ $this->layout = 'registrations';
 $this->import('
     mapas-breadcrumb
     mc-card
-    mapas-container
     mc-icon
+    mc-container
     mc-side-menu
-    mc-summary-spaces
-    mc-summary-project
-    opportunity-header
     mc-summary-agents
     mc-summary-evaluate
-    v1-embed-tool 
+    mc-summary-project
+    mc-summary-spaces
+    opportunity-header
     registration-evaluation-actions
     registration-related-agents
-    registration-related-space
     registration-related-project
+    registration-related-space
     registration-steps
     select-entity
+    v1-embed-tool 
 ');
 
 $opportunity = $entity->opportunity;
@@ -59,7 +59,7 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
     </opportunity-header>
     <div class="registration__content">
 
-        <mapas-container>
+        <mc-container>
             <main class="grid-12">
                 <div class="col-12 registration-info">
                     <p class="registration-info__title"> <?= i::__('Informações da inscrição') ?> </p>
@@ -111,6 +111,6 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
                     <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
                 </div>
             </aside>
-        </mapas-container>
+        </mc-container>
     </div>
 </div>

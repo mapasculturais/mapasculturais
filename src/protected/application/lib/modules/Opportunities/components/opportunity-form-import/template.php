@@ -6,7 +6,6 @@
 use MapasCulturais\i;
 
 $this->import('
-    mapas-container
     mc-popover
     modal
 ');

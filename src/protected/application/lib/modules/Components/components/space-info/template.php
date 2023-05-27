@@ -9,7 +9,6 @@ use MapasCulturais\i;
 $this->layout = 'entity'; 
 
 $this->import('
-    mapas-container 
     mc-tag-list 
     entity-location
 ');

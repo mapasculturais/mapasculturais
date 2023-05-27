@@ -10,7 +10,6 @@ $this->layout = 'entity';
 
 $this->import('
     entity-location
-    mapas-container 
     mc-tag-list 
 ');
 ?>
