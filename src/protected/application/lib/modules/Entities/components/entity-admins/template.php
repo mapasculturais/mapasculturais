@@ -1,13 +1,17 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
-    select-entity
     mc-confirm-button
     mc-relation-card
+    select-entity
 ');
 ?>
-
 <?php $this->applyTemplateHook('entity-related-agents', 'before'); ?>
 <div :class="classes" class="entity-related-agents" v-if="editable || group.length > 0">
     <?php $this->applyTemplateHook('entity-related-agents', 'begin'); ?>

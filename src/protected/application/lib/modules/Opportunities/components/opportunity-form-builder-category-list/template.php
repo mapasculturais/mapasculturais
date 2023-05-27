@@ -1,13 +1,19 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->layout = 'entity';
 
-$this->import('popover mc-icon mc-tag-list')
-
+$this->import('
+    mc-icon 
+    mc-tag-list
+    popover 
+');
 ?>
-
 <div class="build-list">
     <label class="build-list__title"><?= i::__("Categorias") ?></label>
 

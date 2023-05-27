@@ -1,9 +1,13 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 $this->import('
- mc-icon
- mc-side-menu
+    mc-icon
+    mc-side-menu
 ');
 ?>
 <div class="mc-summary-evaluate" v-if="summary.isActive">

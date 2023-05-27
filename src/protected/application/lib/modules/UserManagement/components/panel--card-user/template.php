@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
@@ -9,7 +13,6 @@ $this->import('
     user-management--add-role-modal
 ');
 ?>
-
 <panel--entity-card :entity="entity">
     <template #title>
         <slot name="card-title" :entity="entity" v-if="entity.profile">{{username}}</slot>

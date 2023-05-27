@@ -1,20 +1,20 @@
 <?php
-
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 use MapasCulturais\i;
 
 $this->import('
-mapas-container
-popover
-modal
-    
+    mapas-container
+    popover
+    modal
 ');
 $entity = $this->controller->requestedEntity;
 $url = $app->createUrl('opportunity', 'importFields',[$entity->id]);
 ?>
-
 <div class="opportunity-form-import">
     <div class="import-buttons">
-
         <popover openside="down-right" classes="opportunity-form-import--popover">
             <template #button="popover">
                 <slot name="button">

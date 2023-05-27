@@ -1,17 +1,15 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
 $this->import('
     mc-confirm-button
-')
+');
 ?>
-
 <div class="registration-actions">
     <div class="registration-actions__primary">
         <div v-if="Object.keys(registration.__validationErrors).length > 0" class="errors">

@@ -1,6 +1,12 @@
- <?php
-    use MapasCulturais\i;
-    $this->import('
+<?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
+use MapasCulturais\i;
+
+$this->import('
     entity-occurrence-list
     entity-field 
     mc-link
@@ -8,8 +14,7 @@
     seal-form-valid-period
 ');
 ?>
-
- <modal :title="modalTitle" classes="create-modal" button-label="Criar Selo" @open="createEntity()" @close="destroyEntity()">
+<modal :title="modalTitle" classes="create-modal" button-label="Criar Selo" @open="createEntity()" @close="destroyEntity()">
      <template v-if="entity && !entity.id" #default>
          <label><?php i::_e('Crie um selo com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
          <div class="create-modal__fields">

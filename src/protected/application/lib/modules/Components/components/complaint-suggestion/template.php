@@ -1,14 +1,14 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
-$this->import("mc-card modal");
+$this->import(" 
+    modal
+");
 ?>
 <div class="complaint-suggestion">
     <div class="complaint-sugestion__complaint">

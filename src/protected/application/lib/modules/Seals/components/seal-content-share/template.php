@@ -1,12 +1,17 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
     mc-link
     modal
     mc-icon
 ');
 ?>
-
 <modal :title="modalTitle" classes="create-modal" button-label="<?= i::__('Compartilhar') ?>" @open="" @close="">
     <template #default>
         <div class="seal-content-share__socialnetwork">

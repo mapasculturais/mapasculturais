@@ -11,11 +11,10 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field
+    mc-card
 ');
 ?>
-
 <mc-card v-if="useProjectRelation !== 'dontUse'">
-
     <template #title>
         <div class="card__title"> 
             <?= i::__("Projeto") ?>

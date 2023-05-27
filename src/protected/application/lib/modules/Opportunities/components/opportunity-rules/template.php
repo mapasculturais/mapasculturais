@@ -1,13 +1,16 @@
 <?php 
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
     mc-confirm-button
-    modal
     popover
 ');
 ?>
-
 <div :class="classes" v-if="file || editable" class="opportunity-rules">
     <label class="opportunity-rules__title"> {{title}} </label>
 

@@ -1,16 +1,19 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
-    mc-confirm-button
     create-occurrence
     entities
     entity-map
+    mc-confirm-button
     mc-icon
 ');
 ?>
-
 <div class="entity-occurrence-list">
     <div v-if="editable && !createEvent" class="entity-occurrence-list__editable">
         <label class="entity-occurrence-list__editable--title">

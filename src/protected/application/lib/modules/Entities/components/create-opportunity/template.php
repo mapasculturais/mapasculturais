@@ -1,14 +1,16 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
     entity-field 
-    entity-terms
     mc-link
     modal 
     select-entity
-    entity-owner
 ');
 ?>
 <modal :title="modalTitle" classes="create-modal create-opportunity-modal" button-label="Criar Oportunidade" @open="createEntity()" @close="destroyEntity()">

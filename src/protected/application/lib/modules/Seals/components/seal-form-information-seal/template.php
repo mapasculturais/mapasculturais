@@ -1,17 +1,22 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
-    mc-card
-    seal-form-valid-period
+    entity-cover
     entity-field
-    seal-activity-card
     entity-files-list
     entity-links
     entity-profile
-    entity-cover
+    mc-card
+    seal-activity-card
+    seal-form-valid-period
 ');
 ?>
-
 <mc-card>
     <template #title>
         <label><?= i::__("Informações de selos")?></label>

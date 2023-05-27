@@ -1,15 +1,17 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
- * 
- * @todo renomear componente
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
-?>
 
+$this->import('
+    mc-card
+    mc-icon
+    select-entity
+');
+?>
 <mc-card v-if="useSpaceRelation !== 'dontUse'">
     <template #title>
         <div class="card__title"> 

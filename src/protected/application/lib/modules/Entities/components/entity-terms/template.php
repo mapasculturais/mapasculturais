@@ -1,11 +1,18 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
-$this->import('popover mc-tag-list mc-multiselect')
+$this->import('
+    mc-multiselect
+    mc-tag-list 
+    popover 
+');
 ?>
 <div v-if="editable || entity.terms?.[taxonomy].length > 0" :class="['entity-terms', classes]">
-
     <h4 class="entity-terms__title" v-if="title == ''"> {{taxonomy}} </h4>
     <h4 class="entity-terms__title" v-else> {{title}} </h4>
 

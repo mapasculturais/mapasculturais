@@ -1,8 +1,7 @@
 <?php
-
 /**
- * @var MapasCulturais\Themes\BaseV2\Theme $this
  * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
@@ -14,7 +13,6 @@ $this->import('
 ?>
 <mc-stepper-vertical :items="newPhases" allow-multiple>
     <template #header-title="{index, item}">
-
         <div class="stepper-header__content">
             <div class="info">
                 <h2 class="info__title">{{item.label}}</h2>
@@ -27,10 +25,8 @@ $this->import('
         </div>
     </template>
     <template #default="{index, item}">
-
         <mc-card v-if="item.id">
             <v1-embed-tool route="reportmanager" :id="item.id"></v1-embed-tool>
         </mc-card>
-
     </template>
 </mc-stepper-vertical>

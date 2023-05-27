@@ -1,5 +1,12 @@
 <?php
-$this->import('mc-icon');
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
+$this->import('
+    mc-icon
+');
 ?>
 <a :href="url" :class="classes" :id="id">
     <template v-if="!rightIcon">

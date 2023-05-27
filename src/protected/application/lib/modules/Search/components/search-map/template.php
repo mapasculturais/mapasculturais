@@ -1,12 +1,15 @@
 <?php
-use MapasCulturais\i;
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 $this->import('
     mc-map 
     mc-map-card
     mc-loading
 ');
 ?>
-
 <div class="search-map">
     <div class="search-map__filter">
         <div class="search-map__filter--filter">

@@ -1,9 +1,16 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
- $this->import('entities popover') ?>
-
+$this->import('
+    entities
+    popover
+');
+?>
     <popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" classes="select-entity__popover"> 
         <template #button="{ toggle }">
             <slot name="button" :toggle="toggle"></slot>

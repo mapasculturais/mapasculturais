@@ -1,15 +1,17 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
-	select-entity
 	mc-loading
+	select-entity
 ');
 ?>
-
 <div class="grid-12 opportunity-subscription">
-
 	<div class="col-12 opportunity-subscription__info">
 		<p class="title">
 			<?= i::__("Período de inscrição") ?>

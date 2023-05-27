@@ -1,12 +1,15 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
-    mc-icon
-    select-entity
     mc-card
 ');
 ?>
-
 <div :class="classes">
     <div class="seal-locked-field__title">
         <h4><?php i::_e("Selecione abaixo os campos que devem ser bloqueados nos agentes e espaços que possuírem este selo") ?></h4>

@@ -1,6 +1,12 @@
 <?php
-use MapasCulturais\i;
-$this->import('mapas-container');
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
+$this->import('
+    mapas-container
+');
 ?>
 <div class="messages">
     <div class="messages__content">

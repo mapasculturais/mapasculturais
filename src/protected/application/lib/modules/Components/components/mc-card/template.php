@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+?>
 <component :is="tag" class="mc-card">
     <header v-if="hasSlot('title')" class="mc-card__title">
         <slot name="title"></slot>

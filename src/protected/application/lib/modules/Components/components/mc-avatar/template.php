@@ -1,6 +1,12 @@
 <?php
-use MapasCulturais\i;
-$this->import('mc-icon');
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
+$this->import('
+    mc-icon
+');
 ?>
 <div class="avatar" :class="classes"> 
     <img v-if="image" :src="image" alt="">

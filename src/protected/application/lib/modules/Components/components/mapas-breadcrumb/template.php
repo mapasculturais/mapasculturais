@@ -1,5 +1,8 @@
 <?php
-/** @var MapasCulturais\Theme $this */
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 use MapasCulturais\i;
 ?>
 <?php $this->applyTemplateHook('breadcrumb', 'before') ?>

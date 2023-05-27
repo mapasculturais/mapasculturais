@@ -1,13 +1,16 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
     modal
 ');
 ?>
-
 <div ref="content">
-
     <VDropdown v-if="!$media('max-width: 500px')" :triggers="[]" :shown="active" :autoHide="false" :popperClass="classes" @apply-show="focus()">
         <slot name="button" :open="open" :close="close" :toggle="toggle" :active="active">
             <button :class="['button', buttonClasses]">{{buttonLabel || '<?= i::__('Defina a propriedade button-label do componente popover') ?>'}}</button>
@@ -31,7 +34,5 @@ $this->import('
                 <button :class="['button', buttonClasses]">{{buttonLabel || '<?= i::__('Defina a propriedade button-label do componente popover') ?>'}}</button>
             </slot>
         </template>
-
     </modal>
-
 </div>

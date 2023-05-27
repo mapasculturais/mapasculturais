@@ -3,13 +3,13 @@
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
+
 use MapasCulturais\i;
 
 $this->import('
     mc-link
     modal
 ');
-
 ?>
 <section :class="['timeline', {'center': center}, {'big': big}]">
     <div v-for="item in phases" :class="['item', {'active': isActive(item)}, {'happened': itHappened(item)}]" :set="registration = getRegistration(item)">

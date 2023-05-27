@@ -1,11 +1,16 @@
 <?php 
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
-$this->import('modal'); 
+$this->import('
+    modal
+'); 
 ?>
-
-<div class="mc-image-uploader">
-    
+<div class="mc-image-uploader">  
     <modal title="<?php i::_e("Recorte a imagem") ?>" @open="reset()">
         <template #default>
             <div class="field">

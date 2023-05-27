@@ -1,12 +1,16 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
-    mc-icon
     mc-confirm-button
+    mc-icon
 ')
 ?>
-
 <?php $this->applyTemplateHook('entity-gallery-video','before'); ?>
 <div :class="classes" v-if="editable || entity.metalists?.videos" class="entity-gallery">
     <?php $this->applyTemplateHook('entity-gallery-video','begin'); ?>

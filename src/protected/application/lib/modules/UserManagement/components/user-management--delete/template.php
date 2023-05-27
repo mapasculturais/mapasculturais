@@ -1,13 +1,17 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ * 
+ */
 
 use MapasCulturais\i;
 
 $this->import('
-modal 
-loading 
-panel--entity-actions 
-select-entity 
-mc-card
+    mc-card
+    modal 
+    panel--entity-actions 
+    select-entity 
 ');
 ?>
 
