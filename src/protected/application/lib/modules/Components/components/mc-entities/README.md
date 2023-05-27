@@ -1,4 +1,4 @@
-# Componente `<entities>`
+#mc- Componente `<mc-entities>`
 Serve para implementar listagens de entidades baseadas em consultas na API.
 
 ## Propriedades
@@ -47,30 +47,30 @@ $this->import('entities');
 ## Exemplos de uso
 ```HTML
 <!-- obtendo entidades pelos ids -->
-<entities type="agent" select="id,name" :ids="[33,44,55,66]" #default='{entities}'>
+<mc-entities type="agent" select="id,name" :ids="[33,44,55,66]" #default='{entities}'>
     <article v-for="entity in entities" :key="entity.__objectId">
         <strong>{{entity.id}}</strong> - {{entity.name}}
     </article>
-</entities>
+</mc-entities>
 
 <!-- definindo paginação. somente 10 elementos por vez e botào carregar mais -->
-<entities type="agent" select="id,name" :limit='10' #default='{entities}'>
+<mc-entities type="agent" select="id,name" :limit='10' #default='{entities}'>
     <article v-for="entity in entities" :key="entity.__objectId">
         <strong>{{entity.id}}</strong> - {{entity.name}}
     </article>
-</entities>
+</mc-entities>
 
 <!-- definindo ordenação -->
-<entities type="agent" select="id,name" order="name ASC" :limit='10'>
+<mc-entities type="agent" select="id,name" order="name ASC" :limit='10'>
     <template #default='{entities}'>
         <article v-for="entity in entities" :key="entity.__objectId">
             <strong>{{entity.id}}</strong> - {{entity.name}}
         </article>
     </template>
-</entities>
+</mc-entities>
 
 <!-- busca por palavra-chave -->
-<entities type="agent" select="id,name" order="name ASC" :limit='10'>
+<mc-entities type="agent" select="id,name" order="name ASC" :limit='10'>
     <template #header='{query, refresh}'>
         <input v-model="query['@keyword']" placeholder="palavra-chave">
         <button @click="refresh()">buscar</button>
@@ -80,10 +80,10 @@ $this->import('entities');
             <strong>{{entity.id}}</strong> - {{entity.name}}
         </article>
     </template>
-</entities>
+</mc-entities>
 
 <!-- busca por palavra-chave com ordenação-->
-<entities type="agent" select="id,name" order="name ASC" :limit='10'>
+<mc-entities type="agent" select="id,name" order="name ASC" :limit='10'>
     <template #header='{query, refresh}'>
         <input v-model="query['@keyword']" placeholder="palavra-chave">
         <select v-model="query['@order']">
@@ -98,10 +98,10 @@ $this->import('entities');
             <strong>{{entity.id}}</strong> - {{entity.name}}
         </article>
     </template>
-</entities>
+</mc-entities>
 
 <!-- busca por palavra-chave com ordenação e recarregamento automático-->
-<entities type="agent" select="id,name" order="name ASC" :limit='10' watch-query>
+<mc-entities type="agent" select="id,name" order="name ASC" :limit='10' watch-query>
     <template #header='{query, refresh}'>
         <input v-model="query['@keyword']" placeholder="palavra-chave">
         <select v-model="query['@order']">
@@ -115,5 +115,5 @@ $this->import('entities');
             <strong>{{entity.id}}</strong> - {{entity.name}}
         </article>
     </template>
-</entities>
+</mc-entities>
 ```

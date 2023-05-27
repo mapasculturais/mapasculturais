@@ -5,7 +5,7 @@
  */
 
 $this->import('
-    entities
+    mc-entities
     mc-link
 ');
 ?>
@@ -14,7 +14,7 @@ $this->import('
 <div v-if="this.ids.length>0" class="entity-list">
     <?php $this->applyTemplateHook('entity-list','begin'); ?>
     <label class="col-12 entity-list__title"> {{title}} </label>
-    <entities select="id,name,files.avatar" order="name ASC" :type="type" :query="query" #default="{entities}">
+    <mc-entities select="id,name,files.avatar" order="name ASC" :type="type" :query="query" #default="{entities}">
         <slot :entities="entities">
             <ul v-if="entities.length>0" class="entity-list__list">
                 <li v-for="entity in entities" class="col-12 entity-list__list-item">
@@ -28,7 +28,7 @@ $this->import('
                 </li>
             </ul>
         </slot>
-    </entities>
+    </mc-entities>
     <?php $this->applyTemplateHook('entity-list','end'); ?>
 </div>
 <?php $this->applyTemplateHook('entity-list','after'); ?>

@@ -8,9 +8,9 @@ use MapasCulturais\i;
 
 $this->import('
     create-occurrence
-    entities
     entity-map
     mc-confirm-button
+    mc-entities
     mc-icon
 ');
 ?>
@@ -35,7 +35,7 @@ $this->import('
     </div>
     <div class="entity-occurrence-list__occurrences">
         <label class="occurrence__title">Agenda</label>
-        <entities name="occurrenceList" type="eventoccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
+        <mc-entities name="occurrenceList" type="eventoccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
             <template #default="{entities}">
                 <div v-for="occurrence in entities" class="occurrence" :class="{'edit': editable}" :key="occurrence._reccurrence_string">
                     <div class="occurrence__card">
@@ -109,6 +109,6 @@ $this->import('
                     <mc-icon name="loading"></mc-icon>
                 </div>
             </template>
-        </entities>
+        </mc-entities>
     </div>
 </div>

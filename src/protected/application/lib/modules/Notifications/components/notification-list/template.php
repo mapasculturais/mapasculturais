@@ -7,11 +7,11 @@
 use MapasCulturais\i;
 
 $this->import('
-    entities
     mc-card
+    mc-entities
 ');
 ?>
-<entities type="notification" name="notification-list" :query='query' #default='{entities, refresh}'>
+<mc-entities type="notification" name="notification-list" :query='query' #default='{entities, refresh}'>
     <mc-card :class="['notification-card', styleCss]" v-for="entity in entities" :key="entity.__objectId">
         <div class="avatar">
             <img v-if="hasAvatar(entity)" :src="avatarUrl(entity)">
@@ -59,4 +59,4 @@ $this->import('
             </div>
         </div>
     </mc-card>
-</entities>
+</mc-entities>

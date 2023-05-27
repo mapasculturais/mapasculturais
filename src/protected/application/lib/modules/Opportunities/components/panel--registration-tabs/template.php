@@ -8,13 +8,14 @@ use MapasCulturais\i;
 
 $this->import('
     mc-alert
+    mc-entities
     registration-card
     tabs
 ');
 ?>
 <tabs :class="{'hasDrafts': this.totalDrafts>0}" @changed="changed($event)">
     <tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem">
-        <entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -41,10 +42,10 @@ $this->import('
                     </registration-card>
                 </div>
             </template>
-        </entities>
+        </mc-entities>
     </tab>
     <tab label="<?= i::_e('Enviadas') ?>" class="tabs_sent" slug="sent">
-        <entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">            
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">            
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -70,6 +71,6 @@ $this->import('
                     <registration-card v-for="registration in entities" :entity="registration" picture-card></registration-card>
                 </div>
             </template>
-        </entities>
+        </mc-entities>
     </tab>
 </tabs>

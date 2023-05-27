@@ -7,8 +7,8 @@
 use MapasCulturais\i;
 
 $this->import('
-	entities
 	entity-card
+	mc-entities
 ');
 ?>
 <div class="home-opportunities">
@@ -22,7 +22,7 @@ $this->import('
 	</div>    
 	<div class="home-opportunities__content">
 		<div class="home-opportunities__content cards">
-			<entities type="opportunity" :query="getQuery">
+			<mc-entities type="opportunity" :query="getQuery">
 				<template #default="{entities}">                    
 					<carousel v-if="entities.length > 0" :settings="settings" :breakpoints="breakpoints">
 						<slide v-for="entity in entities" :key="entity.id">
@@ -35,7 +35,7 @@ $this->import('
 						</template>
 					</carousel>
 				</template>
-			</entities>
+			</mc-entities>
 		</div>
 	</div>
 </div>
