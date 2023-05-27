@@ -8,10 +8,10 @@
 
 $this->import('
     mc-card
-    popover
+    mc-popover
 ');
 ?>
-<popover classes="relation-popover">
+<mc-popover classes="relation-popover">
     <template #button="{open, close, toggle}">
         <slot :open="open" :close="close" :toggle="toggle"> </slot>
     </template>
@@ -51,4 +51,4 @@ $this->import('
             </div>
         </mc-card>
     </template>
-</popover>
+</mc-popover>

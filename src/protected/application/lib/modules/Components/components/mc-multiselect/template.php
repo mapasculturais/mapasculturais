@@ -7,11 +7,11 @@
 use MapasCulturais\i;
 
 $this->import('
-    popover
+    mc-popover
 ');
 ?>
 <div class="mc-multiselect">
-    <popover :openside="openside" :title="title">
+    <mc-popover :openside="openside" :title="title">
         <template #button="popover">
             <slot :popover="popover" :setFilter="setFilter"></slot>
         </template>
@@ -35,5 +35,5 @@ $this->import('
                 </div>
             </div>
         </template>
-    </popover>
+    </mc-popover>
 </div>
