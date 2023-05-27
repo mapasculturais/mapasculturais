@@ -1,4 +1,4 @@
-# Componente `<popover>`
+# Componente `<mc-popover>`
 Componente que cria uma caixinha popover
 
 ### Eventos
@@ -24,47 +24,47 @@ $this->import('popover');
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<popover openside="down-right" button-label="abrir">
+<mc-popover openside="down-right" button-label="abrir">
     <p>conteúdo da popover</p>
-</popover>
+</mc-popover>
 
 <!-- definindo uma classe para o botão de abrir a popover -->
-<popover openside="down-right" button-label="abrir" button-classes="button--secondary">
+<mc-popover openside="down-right" button-label="abrir" button-classes="button--secondary">
     <p>conteúdo da popover</p>
-</popover>
+</mc-popover>
 
 <!-- customizando o botão de abrir a popover -->
-<popover openside="down-right">
+<mc-popover openside="down-right">
     <p>conteúdo da popover</p>
 
     <template #button="popover">
         <a href="#" @click="popover.toggle()">abrir a popover</a>
     </template>
-</popover>
+</mc-popover>
 
 <!-- botão de abrir diferente do botão fechar -->
-<popover openside="down-right">
+<mc-popover openside="down-right">
     <p>conteúdo da popover</p>
 
     <template #button="popover">
         <a v-if="!popover.active" href="#" @click="popover.open()">abrir</a> 
         <a v-if="popover.active" href="#" @click="popover.close()">fechar</a>
     </template>
-</popover>
+</mc-popover>
 
 <!-- botão de fechar dentro do conteúdo da popover -->
-<popover openside="down-right" button-label="abrir">
+<mc-popover openside="down-right" button-label="abrir">
     <template #default="popover">
         <p>conteúdo da popover</p>
         <a @click="popover.close()" href="#">fechar</a>
     </template>
-</popover>
+</mc-popover>
 
 
 <!-- utilizando eventos -->
-<popover @open="doSomething('abriu')" @close="doSomething('fechou')" openside="down-right" button-label="abrir">
+<mc-popover @open="doSomething('abriu')" @close="doSomething('fechou')" openside="down-right" button-label="abrir">
     <template #default="popover">
         <p>conteúdo da popover</p>
         <a @click="popover.close()" href="#">fechar</a>
     </template>
-</popover>
+</mc-popover>

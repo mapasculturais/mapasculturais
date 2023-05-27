@@ -8,18 +8,16 @@ use MapasCulturais\i;
 
 $this->import('
     mc-entities
-    popover
+    mc-popover
 ');
 ?>
-    <popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" classes="select-entity__popover"> 
+    <mc-popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" classes="select-entity__popover"> 
         <template #button="{ toggle }">
             <slot name="button" :toggle="toggle"></slot>
         </template>
 
         <template #default="{ close }">
-
             <div class="select-entity">
-
                 <mc-entities :type="type" :select="select" :query="query" :limit="limit" :scope="scope" :permissions="permissions" @fetch="fetch($event)" watch-query>
                     <template #header="{entities}">
                         <form class="select-entity__form" @submit="entities.refresh(); $event.preventDefault();">
@@ -41,9 +39,7 @@ $this->import('
                                 <span class="label"> {{entity.name}} </span>
                             </li>
                         </ul>
-
                     </template>
-
                 </mc-entities>
 
                 <div v-if="createNew" class="select-entity__add">
@@ -52,10 +48,6 @@ $this->import('
                         {{buttonText}}
                     </a>
                 </div>
-
             </div>
-
         </template>
-
-    </popover>
-
+    </mc-popover>

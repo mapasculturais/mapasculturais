@@ -8,8 +8,8 @@ use MapasCulturais\i;
 
 $this->import('
     mc-confirm-button
+    mc-popover
     mc-relation-card
-    popover
 ');
 ?>
 <div :class="classes" class="entity-related-agents" v-if="editable || hasGroups()">
@@ -20,7 +20,7 @@ $this->import('
             <!-- botões de ação do grupo -->
             <div v-if="editable" class="act">
                 <!-- renomear grupo -->
-                <popover openside="down-right">
+                <mc-popover openside="down-right">
                     <template #button="popover">
                         <slot name="button">
                             <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
@@ -38,7 +38,7 @@ $this->import('
                             </div>
                         </form>
                     </template>
-                </popover>
+                </mc-popover>
                 <!-- remover grupo -->
                 <mc-confirm-button @confirm="removeGroup(groupName)">
                     <template #button="modal">
@@ -90,7 +90,7 @@ $this->import('
         </div>
     </div>
     <div v-if="editable" class="entity-related-agents__addNew">
-        <popover openside="down-right">
+        <mc-popover openside="down-right">
             <template #button="popover">
 
                 <slot name="button">
@@ -116,6 +116,6 @@ $this->import('
                     </form>
                 </div>
             </template>
-        </popover>
+        </mc-popover>
     </div>
 </div>

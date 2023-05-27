@@ -8,8 +8,8 @@ use MapasCulturais\i;
 
 $this->import('
     mc-confirm-button
+    mc-popover 
     modal 
-    popover 
 ');
 ?>
 <div :class="classes" v-if="files || editable" class="files-list">
@@ -24,7 +24,7 @@ $this->import('
             </a>
 
             <div v-if="editable" class="edit">
-                <popover @open="file.newDescription = file.description" openside="down-right">
+                <mc-popover @open="file.newDescription = file.description" openside="down-right">
                     <template #button="{toggle}">
                         <a @click="toggle"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
@@ -43,7 +43,7 @@ $this->import('
                             </div>
                         </form>
                     </template>
-                </popover>
+                </mc-popover>
                 
                 <mc-confirm-button @confirm="file.delete()">
                     <template #button="modal">
@@ -57,7 +57,7 @@ $this->import('
         </li>
     </ul>
 
-    <popover v-if="editable" title="<?php i::_e('Adicionar arquivo')?>" openside="down-right">
+    <mc-popover v-if="editable" title="<?php i::_e('Adicionar arquivo')?>" openside="down-right">
         <template #button="popover">
             <slot name="button"> 
                 <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline button-up">
@@ -89,5 +89,5 @@ $this->import('
                 </div>
             </form>
         </template>
-    </popover>
+    </mc-popover>
 </div>

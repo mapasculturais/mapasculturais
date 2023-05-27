@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-confirm-button
+    mc-popover
 ');
 ?>
 <div v-if="entity.metalists.links || editable" :class="['entity-links', classes]">
@@ -20,7 +21,7 @@ $this->import('
                 {{metalist.title}}
             </a>            
             <div v-if="editable" class="edit">
-                <popover openside="down-right" title="<?php i::_e('Editar link')?>">
+                <mc-popover openside="down-right" title="<?php i::_e('Editar link')?>">
                     <template #button="popover">
                         <a @click="metalist.newData = {...metalist}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
@@ -46,7 +47,7 @@ $this->import('
                             </div>
                         </form>
                     </template>
-                </popover>
+                </mc-popover>
                 
                 <mc-confirm-button @confirm="metalist.delete()">
                     <template #button="{open}">
@@ -61,7 +62,7 @@ $this->import('
         </li>
     </ul>
 
-    <popover v-if="editable" openside="down-right" title="<?php i::esc_attr_e('Adicionar Link')?>">
+    <mc-popover v-if="editable" openside="down-right" title="<?php i::esc_attr_e('Adicionar Link')?>">
         <template #button="popover">
             <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline">
                 <mc-icon name="add"></mc-icon>
@@ -91,5 +92,5 @@ $this->import('
                 </div>
             </form>
         </template>
-    </popover>
+    </mc-popover>
 </div>

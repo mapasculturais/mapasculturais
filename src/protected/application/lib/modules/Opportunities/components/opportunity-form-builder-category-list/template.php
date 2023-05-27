@@ -10,8 +10,8 @@ $this->layout = 'entity';
 
 $this->import('
     mc-icon 
+    mc-popover 
     mc-tag-list
-    popover 
 ');
 ?>
 <div class="build-list">
@@ -19,7 +19,7 @@ $this->import('
 
     <mc-tag-list class="build-list__content" :tags="entity.registrationCategories" editable></mc-tag-list>
 
-    <popover class="popover-tag" openside="down-right" title="<?php i::esc_attr_e('Adicionar categoria') ?>">
+    <mc-popover class="popover-tag" openside="down-right" title="<?php i::esc_attr_e('Adicionar categoria') ?>">
         <template #button="popover">
             <button @click="popover.toggle()" class="button-popover button button--primary button--icon button--primary-outline">
                 <mc-icon name="add"></mc-icon><label><?php i::_e("Adicionar categoria") ?></label>
@@ -41,5 +41,5 @@ $this->import('
                 </div>
             </form>
         </template>
-    </popover>
+    </mc-popover>
 </div>

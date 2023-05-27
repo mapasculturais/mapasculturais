@@ -8,7 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-confirm-button
-    popover
+    mc-popover
 ');
 ?>
 <div :class="classes" v-if="file || editable" class="opportunity-rules">
@@ -35,7 +35,7 @@ $this->import('
         </li>
     </ul>
 
-    <popover v-if="editable" title="<?php i::_e('Adicionar arquivo')?>" openside="down-right">
+    <mc-popover v-if="editable" title="<?php i::_e('Adicionar arquivo')?>" openside="down-right">
         <template #button="popover">
             <slot name="button"> 
                 <a v-if="!file" @click="popover.toggle()" class="button button--primary button--icon button--primary-outline button-up">
@@ -65,5 +65,5 @@ $this->import('
                 </div>
             </form>
         </template>
-    </popover>
+    </mc-popover>
 </div>

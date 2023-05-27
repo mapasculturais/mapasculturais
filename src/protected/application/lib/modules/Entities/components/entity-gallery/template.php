@@ -9,8 +9,8 @@ use MapasCulturais\i;
 $this->import('
     mc-confirm-button
     mc-image-uploader
+    mc-popover 
     modal 
-    popover 
 ');
 ?>
 <?php $this->applyTemplateHook('entity-gallery','before'); ?>
@@ -27,7 +27,7 @@ $this->import('
                 <p @click="openImg(index); open()" class="entity-gallery__list--image-label"> {{img.description}} </p>
             </div>
             <div v-if="editable" class="entity-gallery__list--image-actions">
-                <popover @open="img.newDescription = img.description" openside="down-right">
+                <mc-popover @open="img.newDescription = img.description" openside="down-right">
                     <template #button="popover">
                         <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
@@ -44,7 +44,7 @@ $this->import('
                             </div>
                         </form>
                     </template>
-                </popover>
+                </mc-popover>
                 <mc-confirm-button @confirm="img.delete()">
                     <template #button="modal">
                         <a @click="modal.open()"> <mc-icon name="trash"></mc-icon> </a>

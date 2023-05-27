@@ -52,7 +52,6 @@ class Module extends \MapasCulturais\Module {
                 mc-entity
                 mc-icon
                 mc-loading
-                popover
             ');
         });
 

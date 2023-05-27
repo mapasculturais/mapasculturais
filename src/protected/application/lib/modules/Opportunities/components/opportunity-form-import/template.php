@@ -7,7 +7,7 @@ use MapasCulturais\i;
 
 $this->import('
     mapas-container
-    popover
+    mc-popover
     modal
 ');
 $entity = $this->controller->requestedEntity;
@@ -15,7 +15,7 @@ $url = $app->createUrl('opportunity', 'importFields',[$entity->id]);
 ?>
 <div class="opportunity-form-import">
     <div class="import-buttons">
-        <popover openside="down-right" classes="opportunity-form-import--popover">
+        <mc-popover openside="down-right" classes="opportunity-form-import--popover">
             <template #button="popover">
                 <slot name="button">
                     <button type="button" @click="popover.toggle()" class="import-buttons__import button">
@@ -40,7 +40,7 @@ $url = $app->createUrl('opportunity', 'importFields',[$entity->id]);
                     </div>
                 </form>
             </template>
-        </popover>
+        </mc-popover>
     </div>
 
 </div>
