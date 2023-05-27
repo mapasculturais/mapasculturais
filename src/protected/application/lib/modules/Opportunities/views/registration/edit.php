@@ -12,7 +12,7 @@ $this->layout = 'registrations';
 $this->import('
     mapas-breadcrumb
     mc-card
-    mapas-container
+    mc-container
     mc-icon
     opportunity-header
     registration-actions
@@ -57,7 +57,7 @@ $this->breadcrumb = $breadcrumb;
             <registration-steps></registration-steps>
         </div>
 
-        <mapas-container>
+        <mc-container>
             <main class="grid-12">
                 <div class="col-12 registration-info">
                     <p class="registration-info__title"> <?= i::__('Informações da inscrição') ?> </p>
@@ -112,6 +112,6 @@ $this->breadcrumb = $breadcrumb;
             <aside>
                 <registration-actions :registration="entity"></registration-actions>
             </aside>
-        </mapas-container>
+        </mc-container>
     </div>
 </div>

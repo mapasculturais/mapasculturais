@@ -20,6 +20,7 @@ $this->import('
     entity-terms
     evaluations-list
     mapas-breadcrumb
+    mc-container
     opportunity-phase-evaluation
     opportunity-phases-timeline
     opportunity-rules
@@ -44,7 +45,7 @@ $this->breadcrumb = [
     <tabs class="tabs">
 
         <tab label="<?= i::__('Informações') ?>" slug="info">
-            <mapas-container class="opportunity">
+            <mc-container class="opportunity">
                 <main class="grid-12">
                     <opportunity-subscription class="col-12" :entity="entity"></opportunity-subscription>
                     <opportunity-subscription-list class="col-12"></opportunity-subscription-list>
@@ -57,9 +58,9 @@ $this->breadcrumb = [
                         </div>
                     </div>
                 </aside>
-            </mapas-container>
+            </mc-container>
 
-            <mapas-container>
+            <mc-container>
                 <main>
                     <div class="grid-12">
                         <div class="col-12">
@@ -89,7 +90,7 @@ $this->breadcrumb = [
                         <complaint-suggestion :entity="entity"></complaint-suggestion>
                     </div>
                 </aside>
-            </mapas-container>
+            </mc-container>
         </tab>
 
         <tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="entity.currentUserPermissions.evaluateRegistrations">

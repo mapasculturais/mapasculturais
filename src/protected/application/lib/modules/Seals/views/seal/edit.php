@@ -9,15 +9,15 @@ $this->import('
     entity-field
     entity-header
     entity-owner
+    entity-parent-edit
     entity-profile
+    entity-related-agents
     mapas-breadcrumb
     mc-card
-    mapas-container
-    seal-locked-field
+    mc-container
     seal-form-information-seal
+    seal-locked-field
     tabs
-    entity-related-agents
-    entity-parent-edit
 ');
 
 $this->breadcrumb = [
@@ -33,7 +33,7 @@ $this->breadcrumb = [
     <tabs class="tabs tabs-seal-edit">
         <tab label="<?= i::__('Informações gerais') ?>" slug="info">
             <div class="tabs__info">
-                <mapas-container>
+                <mc-container>
                     <main>
                         <seal-form-information-seal :entity="entity"></seal-form-information-seal>
                     </main>
@@ -49,7 +49,7 @@ $this->breadcrumb = [
                             </template>
                         </mc-card>
                     </aside>
-                </mapas-container>
+                </mc-container>
             </div>
         </tab>
         <tab label="<?= i::__('Bloqueio de campos') ?>" slug="info_block">

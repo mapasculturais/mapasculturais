@@ -23,7 +23,7 @@ $this->import('
         entity-social-media
         entity-terms
         event-info
-        mapas-container
+        mc-container
         mc-card
         mapas-breadcrumb
         mc-tag-list
@@ -39,7 +39,7 @@ $this->breadcrumb = [
 <div class="main-app">
     <mapas-breadcrumb></mapas-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
-    <mapas-container>
+    <mc-container>
         <mc-card class="feature">
             <template #title>
                 <label><?php i::_e("Informações de Apresentação") ?></label>
@@ -130,7 +130,7 @@ $this->breadcrumb = [
                 </template>
             </mc-card>
         </aside>
-    </mapas-container>
+    </mc-container>
     <entity-actions :entity="entity" editable></entity-actions>
 </div>
 <confirm-before-exit :entity="entity"></confirm-before-exit>
