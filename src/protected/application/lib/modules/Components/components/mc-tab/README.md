@@ -1,4 +1,4 @@
-# Componente `<tab>`
+# Componente `<mc-tab>`
 
 Uma aba associada ao componente `<mc-tabs>`.
 
@@ -60,7 +60,7 @@ Conteúdo exibido quando a aba está ativa.
 ## Importando o componente
 
 ```php
-$this->import('tab')
+$this->import('mc-tab')
 ```
 
 ## Exemplo de uso
@@ -70,12 +70,12 @@ Ver também componente `<mc-tabs>`.
 ```html
 <!-- utilização básica -->
 <mc-tabs>
-    <tab label="Principal" slug="primary">
+    <mc-tab label="Principal" slug="primary">
         <h2>Conteúdo principal</h2>
-    </tab>
-    <tab label="Secondary" slug="secondary">
+    </mc-tab>
+    <mc-tab label="Secondary" slug="secondary">
         <h2>Conteúdo secundário</h2>
-    </tab>
+    </mc-tab>
 </mc-tabs>
 ```
 

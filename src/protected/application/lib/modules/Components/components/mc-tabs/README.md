@@ -36,7 +36,7 @@ Se a aba deve ser sincronizada com o *hash* da URL da página. Abas secundárias
 
 ### `default`
 
-Componentes `<tab>` associados ao componente.
+Componentes `<mc-tab>` associados ao componente.
 
 ### `header`
 
@@ -67,17 +67,17 @@ $this->import('mc-tabs')
 
 ## Exemplo de uso
 
-Ver também componente `<tab>`.
+Ver também componente `<mc-tab>`.
 
 ```html
 <!-- utilização básica -->
 <mc-tabs>
-    <tab label="Principal" slug="primary">
+    <mc-tab label="Principal" slug="primary">
         <h2>Conteúdo principal</h2>
-    </tab>
-    <tab label="Secondary" slug="secondary">
+    </mc-tab>
+    <mc-tab label="Secondary" slug="secondary">
         <h2>Conteúdo secundário</h2>
-    </tab>
+    </mc-tab>
 </mc-tabs>
 
 <!-- personalização do botão de seleção da aba -->
@@ -85,9 +85,9 @@ Ver também componente `<tab>`.
     <template #header="{ tab }">
         <strong>{{ tab.label }}</strong>
     </template>
-    <tab label="Principal" slug="primary">
+    <mc-tab label="Principal" slug="primary">
         <h2>Conteúdo principal</h2>
-    </tab>
+    </mc-tab>
 </mc-tabs>
 ```
 

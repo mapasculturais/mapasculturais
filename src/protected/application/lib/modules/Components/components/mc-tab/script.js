@@ -1,4 +1,4 @@
-app.component('tab', {
+app.component('mc-tab', {
     props: {
         cache: {
             type: [Boolean, Number],
@@ -73,5 +73,5 @@ app.component('tab', {
             isActive,
         }
     },
-    template: $TEMPLATES['tab']
+    template: $TEMPLATES['mc-tab']
 });

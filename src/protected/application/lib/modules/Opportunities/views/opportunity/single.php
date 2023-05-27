@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->layout = 'entity';
 
 $this->addOpportunityPhasesToJs();
@@ -22,6 +28,7 @@ $this->import('
     mc-breadcrumb
     mc-container
     mc-share-links
+    mc-tab
     mc-tabs
     opportunity-phase-evaluation
     opportunity-phases-timeline
@@ -42,7 +49,7 @@ $this->breadcrumb = [
   <entity-header :entity="entity"></entity-header>
 
     <mc-tabs class="tabs">
-        <tab label="<?= i::__('Informações') ?>" slug="info">
+        <mc-tab label="<?= i::__('Informações') ?>" slug="info">
             <mc-container class="opportunity">
                 <main class="grid-12">
                     <opportunity-subscription class="col-12" :entity="entity"></opportunity-subscription>
@@ -89,13 +96,13 @@ $this->breadcrumb = [
                     </div>
                 </aside>
             </mc-container>
-        </tab>
+        </mc-tab>
 
-        <tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="entity.currentUserPermissions.evaluateRegistrations">
+        <mc-tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="entity.currentUserPermissions.evaluateRegistrations">
             <div class="opportunity-container">
                 <opportunity-phase-evaluation></opportunity-phase-evaluation>
             </div>
-        </tab>
+        </mc-tab>
 
         <?php $this->part('opportunity-tab-results.php', ['entity' => $entity]); ?>
         

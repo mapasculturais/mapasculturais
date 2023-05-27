@@ -9,12 +9,13 @@ use MapasCulturais\i;
 $this->import('
     mc-alert
     mc-entities
+    mc-tab
     mc-tabs
     registration-card
 ');
 ?>
 <mc-tabs :class="{'hasDrafts': this.totalDrafts>0}" @changed="changed($event)">
-    <tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem">
+    <mc-tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem">
         <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
             <template #header="{entities}">
                 <div class="registrations__filter">
@@ -43,8 +44,8 @@ $this->import('
                 </div>
             </template>
         </mc-entities>
-    </tab>
-    <tab label="<?= i::_e('Enviadas') ?>" class="tabs_sent" slug="sent">
+    </mc-tab>
+    <mc-tab label="<?= i::_e('Enviadas') ?>" class="tabs_sent" slug="sent">
         <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">            
             <template #header="{entities}">
                 <div class="registrations__filter">
@@ -72,5 +73,5 @@ $this->import('
                 </div>
             </template>
         </mc-entities>
-    </tab>
+    </mc-tab>
 </mc-tabs>
