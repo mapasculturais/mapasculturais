@@ -3,7 +3,7 @@ use MapasCulturais\i;
 
 $this->import('
     create-event
-    mapas-breadcrumb 
+    mc-breadcrumb 
     search 
     search-filter-event
     search-list-event 

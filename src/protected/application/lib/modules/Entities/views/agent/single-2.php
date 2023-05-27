@@ -21,7 +21,7 @@ $this->import('
     entity-seals
     entity-social-media
     entity-terms
-    mapas-breadcrumb
+    mc-breadcrumb
     mc-container
     share-links
     tabs
@@ -35,7 +35,7 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity"></entity-header>
     <tabs class="tabs">
         <tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">

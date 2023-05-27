@@ -5,11 +5,11 @@
  */
 
 $this->import('
-    mapas-breadcrumb
+    mc-breadcrumb
 ');
 ?>
 <div class="search">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
 
     <header class="search__header">
         <div class="search__header--content">

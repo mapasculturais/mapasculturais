@@ -19,7 +19,7 @@ $this->import('
     entity-social-media
     entity-terms
     evaluations-list
-    mapas-breadcrumb
+    mc-breadcrumb
     mc-container
     opportunity-phase-evaluation
     opportunity-phases-timeline
@@ -39,7 +39,7 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app single">
-  <mapas-breadcrumb></mapas-breadcrumb>
+  <mc-breadcrumb></mc-breadcrumb>
   <entity-header :entity="entity"></entity-header>
 
     <tabs class="tabs">

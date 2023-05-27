@@ -25,7 +25,7 @@ $this->import('
         event-info
         mc-container
         mc-card
-        mapas-breadcrumb
+        mc-breadcrumb
         mc-tag-list
 ');
 
@@ -37,7 +37,7 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
     <mc-container>
         <mc-card class="feature">

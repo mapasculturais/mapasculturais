@@ -10,7 +10,7 @@ use MapasCulturais\i;
 $this->layout = 'registrations';
 
 $this->import('
-    mapas-breadcrumb
+    mc-breadcrumb
     mc-card
     mc-container
     mc-icon
@@ -45,7 +45,7 @@ $this->breadcrumb = $breadcrumb;
 ?>
 
 <div class="main-app registration edit">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
     <div class="registration__title">
