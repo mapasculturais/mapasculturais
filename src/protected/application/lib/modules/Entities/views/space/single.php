@@ -20,7 +20,7 @@ $this->import('
     entity-terms
     mc-breadcrumb
     mc-container
-    share-links
+    mc-share-links
     space-info
     tabs
 ');
@@ -77,7 +77,7 @@ $this->breadcrumb = [
                             <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                             <entity-related-agents :entity="entity" classes="col-12" title="<?= i::_e('Agentes Relacionados'); ?>"></entity-related-agents>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                            <share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?= i::_e('Veja este link:'); ?>"></share-links>                            
+                            <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?= i::_e('Veja este link:'); ?>"></mc-share-links>                            
                         </div>
                     </aside>
                     <aside>

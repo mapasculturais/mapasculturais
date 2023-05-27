@@ -1,4 +1,4 @@
-# Componente `<share-links>`
+# Componente `<mc-share-links>`
 Mostra os termos da entidade,
   
 ## Propriedades
@@ -8,12 +8,12 @@ Mostra os termos da entidade,
 ### Importando componente
 ```PHP
 <?php 
-$this->import('share-links');
+$this->import('mc-share-links');
 ?>
 ```
 ### Exemplos de uso
 ```PHP
 <!-- utilizaçao básica para listagem dos links de compartilhamento -->
-<share-links title="Compartilhar" text="Veja este link:"></share-links>
+<mc-share-links title="Compartilhar" text="Veja este link:"></mc-share-links>
 
 ```
