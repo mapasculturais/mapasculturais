@@ -7,7 +7,6 @@
 use MapasCulturais\i;
 
 $this->import('
-	entities 
 	entity-card 
     mc-loading
 	tabs
