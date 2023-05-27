@@ -15,9 +15,9 @@ $this->import('
     mc-breadcrumb
     mc-card
     mc-container
+    mc-tabs
     seal-form-information-seal
     seal-locked-field
-    tabs
 ');
 
 $this->breadcrumb = [
@@ -30,7 +30,7 @@ $this->breadcrumb = [
 <div class="main-app">
   <mc-breadcrumb></mc-breadcrumb>
   <entity-header :entity="entity"></entity-header>
-    <tabs class="tabs tabs-seal-edit">
+    <mc-tabs class="tabs tabs-seal-edit">
         <tab label="<?= i::__('Informações gerais') ?>" slug="info">
             <div class="tabs__info">
                 <mc-container>
@@ -57,7 +57,7 @@ $this->breadcrumb = [
                 <seal-locked-field classes="tabs-seal-edit" :entity="entity"></seal-locked-field>
             </div>
         </tab>
-    </tabs>
+    </mc-tabs>
 
   <entity-actions :entity="entity" editable></entity-actions>
 </div>

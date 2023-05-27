@@ -27,7 +27,7 @@ $this->import('search');
     </template>
 
     <template #default="{pseudoQuery}">
-        <tabs class="search__tabs">
+        <mc-tabs class="search__tabs">
             <tab icon="list" label="Lista" slug="list">
                 <div class="search__tabs--list">
                     <search-list :pseudo-query="pseudoQuery" type="agent">
@@ -37,7 +37,7 @@ $this->import('search');
                     </search-list>
                 </div>
             </tab>
-        </tabs>
+        </mc-tabs>
     </template>
 </search>
 ```

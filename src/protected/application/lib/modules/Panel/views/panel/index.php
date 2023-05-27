@@ -4,6 +4,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-tabs
     panel--entities-summary 
     panel--entity-tabs 
     panel--last-edited
@@ -49,7 +50,7 @@ $this->import('
     <?php $this->applyTemplateHook('header', 'after') ?>
     
     <?php $this->applyTemplateHook('tabs', 'before') ?>
-    <tabs class="panel-home__tabs">
+    <mc-tabs class="panel-home__tabs">
         <?php $this->applyTemplateHook('tabs', 'begin') ?>
         <tab label="<?php i::esc_attr_e('Principal') ?>" slug="main">
             <div class="panel-home__tabs--main">
@@ -67,6 +68,6 @@ $this->import('
             </div>
         </tab>
         <?php $this->applyTemplateHook('tabs', 'end') ?>
-    </tabs>
+    </mc-tabs>
     <?php $this->applyTemplateHook('tabs', 'after') ?>
 </div>

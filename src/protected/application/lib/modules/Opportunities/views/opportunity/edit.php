@@ -7,11 +7,11 @@ $this->import('
     entity-header
     entity-links
     mc-breadcrumb
+    mc-tabs
     opportunity-basic-info
+    opportunity-phase-reports
     opportunity-phases-config
     opportunity-subscribe-results
-    opportunity-phase-reports
-    tabs
 ');
 
 $this->addOpportunityPhasesToJs();
@@ -26,7 +26,7 @@ $this->breadcrumb = [
 <div class="main-app">
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
-    <tabs class="tabs">
+    <mc-tabs class="tabs">
         <tab label="<?= i::__('Informações') ?>" slug="info">
             <opportunity-basic-info :entity="entity"></opportunity-basic-info>
         </tab>
@@ -39,6 +39,6 @@ $this->breadcrumb = [
         <tab label="<?= i::__('Relatórios') ?>" slug="report">
             <opportunity-phase-reports :entity="entity"></opportunity-phase-reports>
         </tab>
-    </tabs>
+    </mc-tabs>
     <entity-actions :entity="entity" editable></entity-actions>
 </div>

@@ -8,9 +8,9 @@ use MapasCulturais\i;
 
 $this->import('
     mc-entities
+    mc-tabs
     panel--entity-card
     tab
-    tabs
 ');
 
 $tabs = $tabs ?? [
@@ -22,7 +22,7 @@ $tabs = $tabs ?? [
 ];
 ?>
 <?php $this->applyTemplateHook('entity-tabs', 'before') ?>
-<tabs class="entity-tabs">
+<mc-tabs class="entity-tabs">
     <?php $this->applyTemplateHook('entity-tabs', 'begin') ?>
     <template #header="{ tab }">
         <mc-icon v-if="tab.slug === 'archived'" name="archive"></mc-icon>
@@ -107,5 +107,5 @@ $tabs = $tabs ?? [
     </tab>
     <?php endforeach ?>
     <?php $this->applyTemplateHook('entity-tabs', 'end') ?>
-</tabs>
+</mc-tabs>
 <?php $this->applyTemplateHook('entity-tabs', 'after') ?>

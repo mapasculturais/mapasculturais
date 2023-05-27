@@ -1,4 +1,4 @@
-# Componente `<tabs>`
+# Componente `<mc-tabs>`
 
 Um conjunto de abas.
 
@@ -62,7 +62,7 @@ interface ITab {
 ## Importando o componente
 
 ```php
-$this->import('tabs')
+$this->import('mc-tabs')
 ```
 
 ## Exemplo de uso
@@ -71,24 +71,24 @@ Ver também componente `<tab>`.
 
 ```html
 <!-- utilização básica -->
-<tabs>
+<mc-tabs>
     <tab label="Principal" slug="primary">
         <h2>Conteúdo principal</h2>
     </tab>
     <tab label="Secondary" slug="secondary">
         <h2>Conteúdo secundário</h2>
     </tab>
-</tabs>
+</mc-tabs>
 
 <!-- personalização do botão de seleção da aba -->
-<tabs>
+<mc-tabs>
     <template #header="{ tab }">
         <strong>{{ tab.label }}</strong>
     </template>
     <tab label="Principal" slug="primary">
         <h2>Conteúdo principal</h2>
     </tab>
-</tabs>
+</mc-tabs>
 ```
 
 ## Créditos

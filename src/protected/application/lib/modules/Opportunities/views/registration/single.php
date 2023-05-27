@@ -14,8 +14,8 @@ $this->addRegistrationPhasesToJs();
 $this->import('
     mc-breadcrumb
     mc-card
+    mc-tabs
     opportunity-header
-    tabs
     opportunity-phases-timeline
     v1-embed-tool
 ');
@@ -32,7 +32,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
-    <tabs>
+    <mc-tabs>
         <tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
             <div class="registration__content">
                 <mc-card>
@@ -172,5 +172,5 @@ $this->breadcrumb = [
                 <v1-embed-tool route="registrationview" :id="entity.id"></v1-embed-tool>
             </div>
         </tab>
-    </tabs>
+    </mc-tabs>
 </div>

@@ -1,6 +1,6 @@
 # Componente `<tab>`
 
-Uma aba associada ao componente `<tabs>`.
+Uma aba associada ao componente `<mc-tabs>`.
 
 ## Propriedades
 
@@ -43,7 +43,7 @@ Texto associado ao botão de seleção da aba.
 - Tipo: `Object`
 - Valor padrão: `{}`
 
-Metadados associados à aba. Útil para a customização de *slots* do componente `<tabs>`.
+Metadados associados à aba. Útil para a customização de *slots* do componente `<mc-tabs>`.
 
 ### `slug`
 
@@ -65,18 +65,18 @@ $this->import('tab')
 
 ## Exemplo de uso
 
-Ver também componente `<tabs>`.
+Ver também componente `<mc-tabs>`.
 
 ```html
 <!-- utilização básica -->
-<tabs>
+<mc-tabs>
     <tab label="Principal" slug="primary">
         <h2>Conteúdo principal</h2>
     </tab>
     <tab label="Secondary" slug="secondary">
         <h2>Conteúdo secundário</h2>
     </tab>
-</tabs>
+</mc-tabs>
 ```
 
 ## Créditos
