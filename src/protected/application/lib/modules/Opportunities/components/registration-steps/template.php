@@ -6,7 +6,7 @@
  */
 
 $this->import('
-    stepper
+    mc-stepper
 ');
 ?>
-<stepper :steps="sections" only-active-label small @step-changed="goToSection($event)"></stepper>
+<mc-stepper :steps="sections" only-active-label small @step-changed="goToSection($event)"></mc-stepper>
