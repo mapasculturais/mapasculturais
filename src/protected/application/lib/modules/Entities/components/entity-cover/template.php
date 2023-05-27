@@ -1,11 +1,15 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
     mc-image-uploader
 ');
 ?>
-
 <?php $this->applyTemplateHook('entity-cover', 'before'); ?>
 <div :class="classes" class="entity-cover">
     <?php $this->applyTemplateHook('entity-cover', 'begin'); ?>

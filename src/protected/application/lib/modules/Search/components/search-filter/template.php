@@ -1,12 +1,16 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
-$this->import('mc-icon mc-header-menu mc-header-menu-user theme-logo');
+$this->import('
+    mc-icon 
+');
 ?>
-
 <div class="search-filter">
-
     <div :class="position">
         <div class="search-filter__actions">
             <form class="search-filter__actions--form" @submit.prevent>

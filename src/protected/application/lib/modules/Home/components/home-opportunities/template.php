@@ -1,9 +1,16 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
-$this->import('entities entity-card');
+$this->import('
+	entities
+	entity-card
+');
 ?>
-
 <div class="home-opportunities">
 	<div class="home-opportunities__header">
 		<div class="home-opportunities__header title">

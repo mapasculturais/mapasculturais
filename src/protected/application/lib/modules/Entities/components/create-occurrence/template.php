@@ -1,13 +1,18 @@
 <?php 
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
+    create-space
+    mc-link
     modal 
     select-entity
-    mc-link
-    create-space
-    ');
+');
 ?>
-
 <modal title="Inserir ocorrência no evento" classes="create-occurrence">
     <template #default>
         <div class="grid-12">

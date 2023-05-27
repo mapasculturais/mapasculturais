@@ -1,8 +1,15 @@
 <?php
-use MapasCulturais\i;
-$this->import('popover');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+use MapasCulturais\i;
+
+$this->import('
+    popover
+');
+?>
 <div class="mc-multiselect">
     <popover :openside="openside" :title="title">
         <template #button="popover">

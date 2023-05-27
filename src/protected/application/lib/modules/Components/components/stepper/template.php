@@ -1,13 +1,9 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
-
-use MapasCulturais\i;
 ?>
-
 <div :class="['stepper' , {'small' : small}, {'noNavigation' : disableNavigation}]">
     <div v-for="(steped, n) in steps" :class="['step', {'passedby' : step>=n}, {'active' : step==n}]" @click="!disableNavigation && goToStep(n)">
         <div class="count">

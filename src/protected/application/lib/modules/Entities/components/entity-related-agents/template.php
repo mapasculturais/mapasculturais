@@ -1,14 +1,17 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
-    popover
     mc-confirm-button
     mc-relation-card
+    popover
 ');
 ?>
-
 <div :class="classes" class="entity-related-agents" v-if="editable || hasGroups()">
     <h3><?php i::_e("Agentes relacionados") ?></h3>
     <div v-for="(relations, groupName) in groups" class="entity-related-agents__group">

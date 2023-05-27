@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
@@ -6,7 +11,6 @@ $this->import('
     mc-confirm-button
 ');
 ?>
-
 <div class="col-12">
     <div class="grid-12 opportunity-phase-publish-date-config">
         <div v-if="phase.publishedRegistrations" class="published">

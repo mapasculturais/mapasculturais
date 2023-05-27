@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+?>
 <div :class="classes" class="share-links">
 
     <h4 class="share-links--title"> {{title}} </h4>

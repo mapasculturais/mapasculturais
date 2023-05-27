@@ -1,14 +1,14 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
-$this->import('mc-icon')
+$this->import('
+    mc-icon
+')
 ?>
 <div class="mc-stepper-vertical-wrapper">
     <ol class="mc-stepper-vertical">

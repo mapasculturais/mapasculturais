@@ -1,11 +1,15 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
     opportunity-phase-publish-date-config
 ')
 ?>
-
 <mc-card>
     <div class="grid-12 opportunity-phase-list-data-collection">
         <div v-if="entity.summary?.registrations" class="col-12">

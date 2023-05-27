@@ -1,8 +1,13 @@
 <?php
-use MapasCulturais\i;
-$this->import('mapas-breadcrumb');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+$this->import('
+    mapas-breadcrumb
+');
+?>
 <div class="search">
     <mapas-breadcrumb></mapas-breadcrumb>
 

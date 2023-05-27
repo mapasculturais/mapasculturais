@@ -1,18 +1,17 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
 $this->import('
-    user-accepted-terms
     mc-loading
+    user-accepted-terms
 ');
 ?>
 <?php $this->applyTemplateHook('accepted-terms', 'before'); ?>
-
 <div class="mapas-terms">
 
     <header class="mapas-terms__header">

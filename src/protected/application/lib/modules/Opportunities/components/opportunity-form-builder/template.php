@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
@@ -9,13 +13,12 @@ $this->addOpportunityPhasesToJs();
 $this->import('
     entity-field
     opportunity-form-builder-category
-    opportunity-phase-header
-    opportunity-form-import
     opportunity-form-export
+    opportunity-form-import
+    opportunity-phase-header
     v1-embed-tool
-')
+');
 ?>
-
 <div class="form-builder__content">
     <opportunity-phase-header :phase="entity"></opportunity-phase-header>
 

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
@@ -9,8 +14,7 @@ $this->import('
     modal 
 ');
 ?>
-
- <modal :title="modalTitle" classes="create-modal create-event-modal" button-label="Criar Evento" @open="createEntity()" @close="destroyEntity()">
+<modal :title="modalTitle" classes="create-modal create-event-modal" button-label="Criar Evento" @open="createEntity()" @close="destroyEntity()">
      <template v-if="entity && !entity.id" #default>
          <label id="title"><?php i::_e('Crie um evento com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
          <div class="create-modal__fields">

@@ -1,10 +1,16 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
-$this->import('mc-icon mc-avatar');
+$this->import('
+	mc-avatar
+	mc-icon 
+');
 ?>
-
 <div class="entity-card" :class="classes">
 	<div class="entity-card__header" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
 		<div class="entity-card__header user-details">

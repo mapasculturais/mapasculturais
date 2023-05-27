@@ -1,11 +1,18 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
-$this->import('modal entities loading');
+$this->import('
+    modal 
+    entities 
+    loading
+');
 ?>
- 
- <modal title="<?php i::esc_attr_e('Adicionar função ao usuário') ?> " @open="createInstance()"> 
+<modal title="<?php i::esc_attr_e('Adicionar função ao usuário') ?> " @open="createInstance()"> 
     <template #default>
         <div class="field">
             <entities #default="{entities}" type="system-role" select="id,status,name,slug,permissions" v-if="instance">

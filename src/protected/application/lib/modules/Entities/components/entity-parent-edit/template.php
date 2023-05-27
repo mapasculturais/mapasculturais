@@ -1,14 +1,17 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
-mc-icon
-select-entity
+    mc-icon
+    select-entity
 ');
 ?>
 <div v-if="parent" :class="['entity-parents-edit' ,classes]">
-    
     <h4 class="entity-parent-edit__title">{{entity.name}} {{title}}</h4>
     <a class="entity-parent-edit__parent" :href="parent.singleUrl" :title="parent.shortDescription">
         <div class="entity-parent-edit__parent--img">

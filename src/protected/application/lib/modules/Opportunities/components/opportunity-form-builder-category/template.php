@@ -1,10 +1,18 @@
 <?php
-use MapasCulturais\i;
-$this->layout = 'entity';
-$this->import('opportunity-form-builder-category-list mc-card')
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
-<!-- class="form-builder__bg-content form-builder__bg-content--spacing" poderia ser um mc-card -->
+use MapasCulturais\i;
+
+$this->layout = 'entity';
+
+$this->import('
+    opportunity-form-builder-category-list 
+    mc-card
+');
+?>
 <mc-card>
     <template #title>
         <div class="card-header">
@@ -14,7 +22,6 @@ $this->import('opportunity-form-builder-category-list mc-card')
         </div>
     </template>
     <template #default>
-
         <div class="grid-12">
             <entity-field :entity="entity" prop="registrationCategTitle" classes="col-12"></entity-field>
             <entity-field :entity="entity" prop="registrationCategDescription" classes="col-12"></entity-field>

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
@@ -20,7 +24,6 @@ $this->import('
     opportunity-rules    
 ');
 ?>
-
 <div class="opportunity-basic-info__container">
     <mc-card>
         <template #title>

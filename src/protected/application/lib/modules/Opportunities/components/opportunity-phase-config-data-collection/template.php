@@ -1,11 +1,17 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
+    entity-field
     mc-confirm-button
     opportunity-phase-publish-date-config
 ');
 ?>
-
 <mc-card>
     <div class="config-phase grid-12">
         <div class="config-phase__line col-12 "></div>
@@ -20,7 +26,7 @@ $this->import('
             </mc-link>
         </div>
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
-            <div  class="config-phase__line col-12 "></div>
+            <div class="config-phase__line col-12 "></div>
             <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
         </template>
         <!-- <div class="config-phase__line col-12 "></div> -->

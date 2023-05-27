@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
@@ -8,7 +13,6 @@ $this->import('
     popover 
 ');
 ?>
-
 <?php $this->applyTemplateHook('entity-gallery','before'); ?>
 <div :class="classes" v-if="editable || images" class="entity-gallery">
     <?php $this->applyTemplateHook('entity-gallery','begin'); ?>

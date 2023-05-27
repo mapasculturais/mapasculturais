@@ -1,12 +1,18 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
+    entity-field
     mc-confirm-button
-    v1-embed-tool
     opportunity-phase-publish-date-config
+    v1-embed-tool
 ');
 ?>
-
 <mc-card>
     <div class="evaluation-step grid-12">
 
@@ -48,9 +54,7 @@ $this->import('
                 <label><?= i::__("Texto configuração geral") ?></label>
                 <textarea v-model="phase.infos['general']" @change="savePhase()" class="evaluation-config__area" rows="10"></textarea>
             </div>
-        </section>        
-
-        
+        </section>
 
         <div class="col-6 sm:col-12 field" v-for="(category, index) in categories">
             <label :key="index"> {{ category }}
@@ -58,8 +62,7 @@ $this->import('
             </label>
         </div>
 
-
-       <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
+        <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
     
         <div class="config-phase__line col-12"></div>
 

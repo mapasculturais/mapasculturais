@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
@@ -8,7 +13,6 @@ $this->import('
 	tabs
 ');
 ?>
-
 <div class="home-feature">
     <div class="home-feature__header">
         <div class="home-feature__header title">

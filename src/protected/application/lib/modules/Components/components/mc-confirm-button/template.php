@@ -1,6 +1,14 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
-$this->import('modal');
+
+$this->import('
+    modal
+');
 ?>
 <modal classes="modal-confirm" :close-button="false" :title="title">
     <slot v-if="hasSlot('message')" name="message" :cancel="cancel" :confirm="confirm"></slot>

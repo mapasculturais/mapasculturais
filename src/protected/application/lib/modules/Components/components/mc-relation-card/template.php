@@ -1,19 +1,16 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
+ use MapasCulturais\i;
+
 $this->import('
-    popover
     mc-card
+    popover
 ');
-
-use MapasCulturais\i;
 ?>
-
 <popover classes="relation-popover">
     <template #button="{open, close, toggle}">
         <slot :open="open" :close="close" :toggle="toggle"> </slot>

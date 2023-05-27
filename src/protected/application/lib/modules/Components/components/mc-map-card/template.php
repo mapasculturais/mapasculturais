@@ -1,8 +1,14 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
-$this->import('mc-link');
+$this->import('
+    mc-link
+');
 ?>
 <div class="mc-map-card">
     <div class="mc-map-card__header">

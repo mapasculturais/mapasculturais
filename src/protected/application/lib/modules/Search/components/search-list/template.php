@@ -1,15 +1,16 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
     entities
     entity-card
-    mc-card
-    mc-icon
 ');
 ?>
-
 <div class="grid-12 search-list">
     <entities :type="type" :select="select" :query="query" :order="order" :limit="limit" watch-query>
         <template #header="{entities}">
