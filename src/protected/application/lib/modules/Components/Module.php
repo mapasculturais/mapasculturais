@@ -49,7 +49,6 @@ class Module extends \MapasCulturais\Module {
             
             // Importa componentes globais
             $this->import('
-                entities
                 mc-entity
                 mc-icon
                 mc-loading

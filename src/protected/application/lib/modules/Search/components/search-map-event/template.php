@@ -7,9 +7,9 @@
 use MapasCulturais\i;
 
 $this->import('
-    entities
-    mc-link
+    mc-entities
     mc-icon
+    mc-link
     occurrence-card
     search-filter-event
     search-map
@@ -39,7 +39,7 @@ $this->import('
         </p>
 
     </div>
-    <entities type="event" endpoint="occurrences" :raw-processor="occurrenceRawProcessor" :query="spaceQuery" watch-query>
+    <mc-entities type="event" endpoint="occurrences" :raw-processor="occurrenceRawProcessor" :query="spaceQuery" watch-query>
         <template #default="{entities}">
             <template v-for="occurrence in entities" :key="occurrence._reccurrence_string">
                 <div class="search-map__card">
@@ -65,5 +65,5 @@ $this->import('
                 <mc-icon name="loading"></mc-icon>
             </div>
         </template>
-    </entities>
+    </mc-entities>
 </div>

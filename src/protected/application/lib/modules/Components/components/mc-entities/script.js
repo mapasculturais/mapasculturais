@@ -1,5 +1,5 @@
-app.component('entities', {
-    template: $TEMPLATES['entities'],
+app.component('mc-entities', {
+    template: $TEMPLATES['mc-entities'],
     emits: ['fetch'],
 
     data() {
@@ -12,7 +12,7 @@ app.component('entities', {
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('entities')
+        const text = Utils.getTexts('mc-entities')
         return { text }
     },
 

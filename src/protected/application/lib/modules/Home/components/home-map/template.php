@@ -5,7 +5,6 @@
  */
 use MapasCulturais\i;
 $this->import('
-    entities 
     mc-map 
     mc-map-card
 ');

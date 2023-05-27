@@ -7,7 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
-    entities
+    mc-entities
     popover
 ');
 ?>
@@ -20,7 +20,7 @@ $this->import('
 
             <div class="select-entity">
 
-                <entities :type="type" :select="select" :query="query" :limit="limit" :scope="scope" :permissions="permissions" @fetch="fetch($event)" watch-query>
+                <mc-entities :type="type" :select="select" :query="query" :limit="limit" :scope="scope" :permissions="permissions" @fetch="fetch($event)" watch-query>
                     <template #header="{entities}">
                         <form class="select-entity__form" @submit="entities.refresh(); $event.preventDefault();">
                             <input v-model="entities.query['@keyword']" type="text" class="select-entity__form--input" name="search" :placeholder="placeholder" @input="entities.refresh(500)"/>
@@ -44,7 +44,7 @@ $this->import('
 
                     </template>
 
-                </entities>
+                </mc-entities>
 
                 <div v-if="createNew" class="select-entity__add">
                     <p> <?php i::__('ou') ?> </p>
