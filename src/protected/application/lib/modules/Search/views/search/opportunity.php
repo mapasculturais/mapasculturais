@@ -7,7 +7,6 @@ $this->import('
     search-filter-opportunity
     search-list
     search-map
-    tabs
 ');
 
 $this->breadcrumb = [

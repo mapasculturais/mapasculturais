@@ -5,9 +5,5 @@
  */
 
 use MapasCulturais\i;
-
-$this->import('
-    modal
-');
 ?>
 <button> <?= i::__("entrar com recurso") ?> </button>
