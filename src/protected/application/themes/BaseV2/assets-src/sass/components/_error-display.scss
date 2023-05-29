@@ -17,6 +17,117 @@ body.base-v2.controller-site.action-error {
         padding: size(16);
     }
 
+    &.error-404 {
+        .error-card {
+            .content {
+
+                .left__content {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 72px;
+                    // line-height: 98px;
+                }
+
+                .right {
+                    img {
+                        max-width: 432px;
+                        max-height: 466px;
+                        width: 100%;
+                    }
+
+                }
+            }
+        }
+    }
+
+    &.error-403 {
+        @media (max-width:size(1000)) {
+            &.error-page {
+                padding: 16px 16px 53px 16px
+            }
+        }
+
+        .error-card {
+            padding: 127px 138px 199px 138px;
+
+            @media (max-width: size(1000)) {
+                padding: 24px 16px 53px 16px;
+
+                .content {
+                    gap: size(49);
+                    display: flex;
+                    flex-direction: column-reverse;
+
+                    .left {
+                        display: flex;
+                        align-items: center;
+
+                        &__content {
+                            text-align: center;
+                        }
+
+                        &__title,
+                        &__message {
+                            font-family: 'Open Sans';
+                            font-style: normal;
+                            font-weight: 700;
+                            font-size: 24px;
+                            line-height: 28px;
+                        }
+                    }
+                }
+
+                .btn {
+                    justify-content: center;
+                    display: flex;
+                    align-items: center;
+                   
+                    button {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: 18px;
+                        line-height: 25px;
+                        max-width: 304px;
+                    }
+                }
+            }
+        }
+
+        .content {
+            gap: size(49);
+
+
+
+            .left {
+                max-width: 592px;
+
+                &__content {
+                    line-height: 25px;
+                }
+            }
+        }
+
+        .btn {
+            @media (max-width:size(500)){
+                
+                padding-top: size(32);
+            }
+            button {
+                padding: 24px 26px;
+                font-family: "Open Sans";
+                font-style: normal;
+                font-weight: 700;
+                font-size: 1.5rem;
+                line-height: 1.75rem;
+                max-width: 387px;
+            }
+        }
+    }
+
+
+
     .error-card {
         padding: 75px 55px;
         background: var(--mc-high-300);
@@ -47,23 +158,9 @@ body.base-v2.controller-site.action-error {
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 600;
-                    font-size: 72px;
-
-                    padding-top: size(9);
-
-
+                    font-size: 18px;
                 }
 
-                &.error-404 {
-                    &__content {
-
-                        font-family: 'Open Sans';
-                        font-style: normal;
-                        font-weight: 700;
-                        font-size: 72px;
-                        line-height: 98px;
-                    }
-                }
 
                 &__title {
                     padding-top: size(24);
@@ -121,14 +218,12 @@ body.base-v2.controller-site.action-error {
 
                     margin: 0 auto;
 
-                    button {
-                        max-height: size(72);
-                        max-width: size(280);
-
+                        
                         button {
+                            max-width: size(280);
+                            max-height: size(72);
                             padding: size(24) size(19);
                             font-size: size(24);
-                        }
 
                     }
                 }
