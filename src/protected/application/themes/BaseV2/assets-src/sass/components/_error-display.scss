@@ -18,25 +18,95 @@ body.base-v2.controller-site.action-error {
     }
 
     &.error-404 {
+        @media (max-width: size(800)) {
+            padding: 17px;
+        }
+
         .error-card {
+            @media (max-width: size(800)) {
+                padding: 19px 16px 19px 16px;
+
+                .error-footer {
+                    .message-error {
+                        text-align: center;
+                    }
+
+                    .btn {
+                        button {
+                            padding: 19px 21px;
+                            font-family: "Open Sans";
+                            font-style: normal;
+                            font-weight: 700;
+                            font-size: 18px;
+                            line-height: 25px;
+                            max-width: 304px;
+                        }
+                    }
+                }
+            }
+
             .content {
 
-                .left__content {
+                .left__warning {
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 700;
                     font-size: 72px;
-                    // line-height: 98px;
+                    line-height: 98px;
                 }
 
-                .right {
-                    img {
-                        max-width: 432px;
-                        max-height: 466px;
-                        width: 100%;
+                @media (max-width:size(800)) {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: size(54);
+
+                    .left__title {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: 18px;
+                        line-height: 25px;
                     }
 
+                    .left__warning {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: 32px;
+                        line-height: 44px;
+                        max-width: size(280);
+                    }
+
+                    .right {
+                        img {
+                            max-width: 202px;
+                            max-height: 156px;
+                            width: 100%;
+                        }
+
+                    }
                 }
+
+
+
+
+                // .right {
+                //     img {
+                //         max-width: 432px;
+                //         max-height: 466px;
+                //         width: 100%;
+                //     }
+
+                // }
+            }
+
+            .left__content {
+                font-family: 'Open Sans';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 72px;
+                line-height: 98px;
             }
         }
     }
@@ -82,7 +152,7 @@ body.base-v2.controller-site.action-error {
                     justify-content: center;
                     display: flex;
                     align-items: center;
-                   
+
                     button {
                         font-family: 'Open Sans';
                         font-style: normal;
@@ -110,10 +180,11 @@ body.base-v2.controller-site.action-error {
         }
 
         .btn {
-            @media (max-width:size(500)){
-                
+            @media (max-width:size(500)) {
+
                 padding-top: size(32);
             }
+
             button {
                 padding: 24px 26px;
                 font-family: "Open Sans";
@@ -218,12 +289,12 @@ body.base-v2.controller-site.action-error {
 
                     margin: 0 auto;
 
-                        
-                        button {
-                            max-width: size(280);
-                            max-height: size(72);
-                            padding: size(24) size(19);
-                            font-size: size(24);
+
+                    button {
+                        max-width: size(280);
+                        max-height: size(72);
+                        padding: size(24) size(19);
+                        font-size: size(24);
 
                     }
                 }
