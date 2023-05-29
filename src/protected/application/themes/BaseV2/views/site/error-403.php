@@ -4,14 +4,17 @@ use MapasCulturais\i;
 
 ?>
 
-<div class="error-page error-404">
+
+<div class="error-page error-403">
     <div class="error-card">
         <div class="content">
             <div class="left">
                 <h1 class="left__title"><?= i::__('Erro 403') ?></h1>
                 <label class="left__message"><?= i::__('Acesso Privado') ?></label>
-                <label class="left__content"><?= i::__(' A página que você está tentando acessar é particular. 
-            Faça login com outra conta ou solicite acesso.') ?></label>
+                <div class="left__content">
+                    <label><?= i::__(' A página que você está tentando acessar é particular.') ?></label>
+                    <label> <br><?= i::__('Faça login com outra conta ou solicite acesso.') ?></br></label>
+                </div>
             </div>
             <div class="right">
                 <img src="<?php $this->asset('/img/error403.png', true, true) ?>">
