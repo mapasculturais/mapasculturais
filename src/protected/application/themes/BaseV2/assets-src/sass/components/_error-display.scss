@@ -12,9 +12,11 @@ body.base-v2.controller-site.action-error {
     border-radius: size(4);
     margin: 0 auto;
     padding: size(55) size(135);
-    @media (max-width: size(900)){
+
+    @media (max-width: size(900)) {
         padding: size(16);
     }
+
     .error-card {
         padding: 75px 55px;
         background: var(--mc-high-300);
@@ -29,7 +31,6 @@ body.base-v2.controller-site.action-error {
 
         .content {
             display: flex;
-            padding-top: size(127);
 
             @media (max-width:size(800)) {
                 display: grid;
@@ -40,14 +41,28 @@ body.base-v2.controller-site.action-error {
                 display: flex;
                 flex-direction: column;
                 gap: size(23);
+                max-width: 560px;
 
                 &__content {
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 600;
-                    font-size: 18px;
-                    line-height: 25px;
+                    font-size: 72px;
+
                     padding-top: size(9);
+
+
+                }
+
+                &.error-404 {
+                    &__content {
+
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: 72px;
+                        line-height: 98px;
+                    }
                 }
 
                 &__title {
