@@ -11,7 +11,6 @@ $this->import('
     mc-link
     panel--entity-actions
     panel--entity-tabs
-    tabs
     user-mail
     user-management--ownership-tabs
     user-accepted-terms
