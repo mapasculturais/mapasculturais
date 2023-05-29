@@ -19,12 +19,12 @@ body.base-v2.controller-site.action-error {
 
     &.error-404 {
         @media (max-width: size(800)) {
-            padding: 17px;
+            padding: size(17);
         }
 
         .error-card {
             @media (max-width: size(800)) {
-                padding: 19px 16px 19px 16px;
+                padding: size(19) size(16) size(19) size(16);
 
                 .error-footer {
                     .message-error {
@@ -33,13 +33,13 @@ body.base-v2.controller-site.action-error {
 
                     .btn {
                         button {
-                            padding: 19px 21px;
+                            padding: size(19) size(21);
                             font-family: "Open Sans";
                             font-style: normal;
                             font-weight: 700;
-                            font-size: 18px;
-                            line-height: 25px;
-                            max-width: 304px;
+                            font-size: size(18);
+                            line-height: size(25);
+                            max-width: size(304);
                         }
                     }
                 }
@@ -51,8 +51,8 @@ body.base-v2.controller-site.action-error {
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 700;
-                    font-size: 72px;
-                    line-height: 98px;
+                    font-size: size(72);
+                    line-height: size(98);
                 }
 
                 @media (max-width:size(800)) {
@@ -65,48 +65,37 @@ body.base-v2.controller-site.action-error {
                         font-family: 'Open Sans';
                         font-style: normal;
                         font-weight: 700;
-                        font-size: 18px;
-                        line-height: 25px;
+                        font-size: size(18);
+                        line-height: size(25);
                     }
 
                     .left__warning {
                         font-family: 'Open Sans';
                         font-style: normal;
                         font-weight: 700;
-                        font-size: 32px;
-                        line-height: 44px;
+                        font-size: size(32);
+                        line-height: size(44);
                         max-width: size(280);
                     }
 
                     .right {
                         img {
-                            max-width: 202px;
-                            max-height: 156px;
+                            max-width: size(202);
+                            max-height: size(156);
                             width: 100%;
                         }
 
                     }
                 }
 
-
-
-
-                // .right {
-                //     img {
-                //         max-width: 432px;
-                //         max-height: 466px;
-                //         width: 100%;
-                //     }
-
-                // }
             }
 
             .left__content {
                 font-family: 'Open Sans';
                 font-style: normal;
                 font-weight: 700;
-                font-size: 72px;
-                line-height: 98px;
+                font-size: size(72);
+                line-height: size(98);
             }
         }
     }
@@ -114,15 +103,15 @@ body.base-v2.controller-site.action-error {
     &.error-403 {
         @media (max-width:size(1000)) {
             &.error-page {
-                padding: 16px 16px 53px 16px
+                padding: size(16) size(16) size(53) size(16)
             }
         }
 
         .error-card {
-            padding: 127px 138px 199px 138px;
+            padding: size(127) size(138) size(199) 138size();
 
             @media (max-width: size(1000)) {
-                padding: 24px 16px 53px 16px;
+                padding: size(24) size(16) size(53) 16size();
 
                 .content {
                     gap: size(49);
@@ -142,8 +131,8 @@ body.base-v2.controller-site.action-error {
                             font-family: 'Open Sans';
                             font-style: normal;
                             font-weight: 700;
-                            font-size: 24px;
-                            line-height: 28px;
+                            font-size: size(24);
+                            line-height: size(28);
                         }
                     }
                 }
@@ -157,9 +146,9 @@ body.base-v2.controller-site.action-error {
                         font-family: 'Open Sans';
                         font-style: normal;
                         font-weight: 700;
-                        font-size: 18px;
-                        line-height: 25px;
-                        max-width: 304px;
+                        font-size: size(18);
+                        line-height: size(25);
+                        max-width: size(304);
                     }
                 }
             }
@@ -171,10 +160,10 @@ body.base-v2.controller-site.action-error {
 
 
             .left {
-                max-width: 592px;
+                max-width: size(592);
 
                 &__content {
-                    line-height: 25px;
+                    line-height: size(25);
                 }
             }
         }
@@ -186,13 +175,13 @@ body.base-v2.controller-site.action-error {
             }
 
             button {
-                padding: 24px 26px;
+                padding: size(24) size(26);
                 font-family: "Open Sans";
                 font-style: normal;
                 font-weight: 700;
                 font-size: 1.5rem;
                 line-height: 1.75rem;
-                max-width: 387px;
+                max-width: size(387);
             }
         }
     }
@@ -200,11 +189,11 @@ body.base-v2.controller-site.action-error {
 
 
     .error-card {
-        padding: 75px 55px;
+        padding: size(75) size(55);
         background: var(--mc-high-300);
 
         .message-error {
-            padding: 24px 0 16px 0;
+            padding: size(24) 0 size(16) 0;
         }
 
         @media (max-width:size(800)) {
@@ -223,13 +212,13 @@ body.base-v2.controller-site.action-error {
                 display: flex;
                 flex-direction: column;
                 gap: size(23);
-                max-width: 560px;
+                max-width: size(560);
 
                 &__content {
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 600;
-                    font-size: 18px;
+                    font-size: size(18);
                 }
 
 
@@ -238,8 +227,8 @@ body.base-v2.controller-site.action-error {
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 700;
-                    font-size: 40px;
-                    line-height: 54px;
+                    font-size: size(40);
+                    line-height: size(54);
                 }
 
                 &__message {
@@ -300,7 +289,7 @@ body.base-v2.controller-site.action-error {
                 }
 
                 button {
-                    padding: 19px 33px;
+                    padding: size(19) size(33);
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 700;
