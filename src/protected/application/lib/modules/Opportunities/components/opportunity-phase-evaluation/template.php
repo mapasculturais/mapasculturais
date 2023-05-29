@@ -22,7 +22,7 @@ use MapasCulturais\i;
                 </div>
             </div>
             <div class="btn">
-                <mc-link route="opportunity/opportunityEvaluations" :params="[item.id]" class="button button--primary evaluation-button"> <?= i::__('Avaliar') ?><mc-icon name="arrow-right-ios"></mc-icon></mc-link>
+                <mc-link route="opportunity/opportunityEvaluations" :params="[item.opportunity.id]" class="button button--primary evaluation-button"> <?= i::__('Avaliar') ?><mc-icon name="arrow-right-ios"></mc-icon></mc-link>
             </div>
         </div>
     </div>
