@@ -7,7 +7,6 @@ use MapasCulturais\i;
 
 $this->import('
     mc-popover
-    modal
 ');
 $entity = $this->controller->requestedEntity;
 $url = $app->createUrl('opportunity', 'importFields',[$entity->id]);

@@ -12,7 +12,6 @@ $this->import('
     entity-related-agents
     entity-links
     entity-request-ownership
-    tabs
 ');
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
