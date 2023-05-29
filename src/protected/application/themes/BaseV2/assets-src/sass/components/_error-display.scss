@@ -1,116 +1,114 @@
 @use '../settings/mixins' as *;
 
-.controller-site.action-error {
-    section {
-        background-color: (--mc-gray-100);
-    }
+body.base-v2.controller-site.action-error {
+    background-color: var(--mc-gray-100);
 }
 
-.error-404,
-.error-403 {
+.error-page {
+
     display: flex;
     flex-direction: column;
-    background-color: var(--mc-high-300);
+    background-color: var(--mc-gray-100);
     border-radius: size(4);
-    padding-inline: size(135);
     margin: 0 auto;
-
-    .message-error {
-        padding: 24px 0 16px 0;
-    }
-
-    @media (max-width:size(800)) {
-        padding-inline: size(16);
-    }
-
-    .content {
-        display: flex;
-        padding-top: size(127);
+    padding: size(55) size(135);
+    .error-card {
+        padding: 75px 55px;
+        background: var(--mc-high-300);
+        .message-error {
+            padding: 24px 0 16px 0;
+        }
 
         @media (max-width:size(800)) {
-            display: grid;
-            grid-template-columns: 1fr;
+            padding-inline: size(16);
         }
-
-        .left {
+        .content {
             display: flex;
-            flex-direction: column;
-            gap: size(23);
+            padding-top: size(127);
 
-            &__content {
-                font-family: 'Open Sans';
-                font-style: normal;
-                font-weight: 600;
-                font-size: 18px;
-                line-height: 25px;
-                padding-top: size(9);
+            @media (max-width:size(800)) {
+                display: grid;
+                grid-template-columns: 1fr;
             }
 
-            &__title {
-                padding-top: size(24);
-                font-family: 'Open Sans';
-                font-style: normal;
-                font-weight: 700;
-                font-size: 40px;
-                line-height: 54px;
-            }
+            .left {
+                display: flex;
+                flex-direction: column;
+                gap: size(23);
 
-            &__message {
-                font-size: size(64);
-                line-height: size(50);
-                font-weight: 700;
-                font-family: "Open Sans";
-                font-style: normal;
-
-            }
-        }
-
-        .right {
-            img {
-
-                max-width: size(381);
-                max-height: size(459);
-                width: 100%;
-            }
-        }
-    }
-
-    .btn {
-        padding: size(16) 0 size(122) 0;
-        margin: 0 auto;
-        @media (max-width:size(600)) {
-
-            .text {
-                label {
-
-                    padding: size(24) 0 size(16) 0;
+                &__content {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 18px;
+                    line-height: 25px;
+                    padding-top: size(9);
                 }
 
+                &__title {
+                    padding-top: size(24);
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 40px;
+                    line-height: 54px;
+                }
+
+                &__message {
+                    font-size: size(64);
+                    line-height: size(50);
+                    font-weight: 700;
+                    font-family: "Open Sans";
+                    font-style: normal;
+
+                }
             }
 
+            .right {
+                img {
+
+                    max-width: size(381);
+                    max-height: size(459);
+                    width: 100%;
+                }
+            }
+        }
+
+        .btn {
+            padding: size(16) 0 size(122) 0;
             margin: 0 auto;
 
-            button {
+            @media (max-width:size(600)) {
 
-                max-height: size(72);
-                max-width: size(280);
+                .text {
+                    label {
 
-                button {
-                    padding: size(24) size(19);
-                    font-size: size(24);
+                        padding: size(24) 0 size(16) 0;
+                    }
                 }
 
+                margin: 0 auto;
+
+                button {
+                    max-height: size(72);
+                    max-width: size(280);
+
+                    button {
+                        padding: size(24) size(19);
+                        font-size: size(24);
+                    }
+
+                }
+            }
+
+            button {
+                padding: 19px 33px;
+                font-family: 'Open Sans';
+                font-style: normal;
+                font-weight: 700;
+                font-size: size(24);
+                line-height: size(28);
             }
         }
-
-        button {
-            padding: 19px 33px;
-            font-family: 'Open Sans';
-            font-style: normal;
-            font-weight: 700;
-            font-size: size(24);
-            line-height: size(28);
-        }
-
     }
 }
