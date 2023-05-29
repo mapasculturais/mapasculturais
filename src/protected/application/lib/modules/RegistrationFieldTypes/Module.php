@@ -412,7 +412,7 @@ class Module extends \MapasCulturais\Module
                     }
                     return json_encode($value);
                 },
-                'unserialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module, $app) {
+                'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
                     if(is_null($registration) || $registration->status > 0){
                         $result = json_decode($value);
                     } else {
@@ -455,7 +455,7 @@ class Module extends \MapasCulturais\Module
                     }
                     return json_encode($value);
                 },
-                'unserialize' => function($value, Registration $registration = null, Metadata $metadata_definition = null) use ($module, $app) {
+                'unserialize' => function($value, $registration = null, Metadata $metadata_definition = null) use ($module, $app) {
                     if(is_null($registration) || $registration->status > 0){
                         $result = json_decode($value);
                     } else {
