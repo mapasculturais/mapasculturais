@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
@@ -9,13 +13,12 @@ $this->addOpportunityPhasesToJs();
 $this->import('
     entity-field
     opportunity-form-builder-category
-    opportunity-phase-header
-    opportunity-form-import
     opportunity-form-export
+    opportunity-form-import
+    opportunity-phase-header
     v1-embed-tool
-')
+');
 ?>
-
 <div class="form-builder__content">
     <opportunity-phase-header :phase="entity"></opportunity-phase-header>
 
@@ -31,7 +34,7 @@ $this->import('
         </div>
 
         <div class="col-6 sm:col-12">
-            <mapas-card no-title>
+            <mc-card>
                 <template #default>
                     <div class="request-data grid-12">
                         <div v-if="entity.isFirstPhase" class="col-12">
@@ -56,11 +59,11 @@ $this->import('
                         <entity-field :entity="entity" prop="registrationLimitPerOwner" classes="col-12"></entity-field>
                     </div>
                 </template>
-            </mapas-card>
+            </mc-card>
         </div>
 
         <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
-            <mapas-card no-title>
+            <mc-card>
                 <template #default>
                     <div class="request-data grid-12">
                         <div v-if="entity.isFirstPhase" class="col-12">
@@ -74,11 +77,11 @@ $this->import('
                         </div>
                     </div>
                 </template>
-            </mapas-card>
+            </mc-card>
         </div>
 
         <div class="col-6 sm:col-12">
-            <mapas-card no-title>
+            <mc-card>
                 <template #default>
                     <div class="request-data grid-12">
                         <div v-if="entity.isFirstPhase" class="col-12">
@@ -92,7 +95,7 @@ $this->import('
                         </div>
                     </div>
                 </template>
-            </mapas-card>
+            </mc-card>
         </div>
         <div class="col-12 form-export">
             <opportunity-form-export :entity="entity"></opportunity-form-export>

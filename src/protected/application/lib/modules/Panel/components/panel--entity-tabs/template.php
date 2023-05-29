@@ -7,10 +7,10 @@
 use MapasCulturais\i;
 
 $this->import('
-    entities
+    mc-entities
+    mc-tab
+    mc-tabs
     panel--entity-card
-    tab
-    tabs
 ');
 
 $tabs = $tabs ?? [
@@ -22,7 +22,7 @@ $tabs = $tabs ?? [
 ];
 ?>
 <?php $this->applyTemplateHook('entity-tabs', 'before') ?>
-<tabs class="entity-tabs">
+<mc-tabs class="entity-tabs">
     <?php $this->applyTemplateHook('entity-tabs', 'begin') ?>
     <template #header="{ tab }">
         <mc-icon v-if="tab.slug === 'archived'" name="archive"></mc-icon>
@@ -30,8 +30,8 @@ $tabs = $tabs ?? [
         {{ tab.label }}
     </template>
     <?php foreach($tabs as $status => $label): ?>
-    <tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
-        <entities :name="type + ':<?=$status?>'" :type="type" 
+    <mc-tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
+        <mc-entities :name="type + ':<?=$status?>'" :type="type" 
             :select="select"
             :query="queries['<?=$status?>']" 
             :limit="50" 
@@ -103,9 +103,9 @@ $tabs = $tabs ?? [
                 </slot>
                 <slot name='after-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
            </template>
-        </entities>
-    </tab>
+        </mc-entities>
+    </mc-tab>
     <?php endforeach ?>
     <?php $this->applyTemplateHook('entity-tabs', 'end') ?>
-</tabs>
+</mc-tabs>
 <?php $this->applyTemplateHook('entity-tabs', 'after') ?>

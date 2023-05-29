@@ -6,8 +6,8 @@ $this->import('
     entity-actions
     entity-header
     entity-owner
-    mapas-breadcrumb
-    mapas-container
+    mc-breadcrumb
+    mc-container
     entity-files-list
     entity-related-agents
     entity-links
@@ -22,9 +22,9 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app single">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity"></entity-header>
-    <mapas-container>
+    <mc-container>
         <main>
             <div class="grid-12">
                 <div v-if="entity.validPeriod" class="col-12">
@@ -45,6 +45,6 @@ $this->breadcrumb = [
                 <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
             </div>
         </aside>
-    </mapas-container>
+    </mc-container>
     <entity-actions :entity="entity"></entity-actions>
 </div>

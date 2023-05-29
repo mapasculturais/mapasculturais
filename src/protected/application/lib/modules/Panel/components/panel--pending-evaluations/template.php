@@ -1,19 +1,17 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
  * @var \MapasCulturais\App $app
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
 $this->import('
     entity-card
-    loading
-    mc-link
+    mc-loading
 ');
 ?>
-<loading :condition="loading"></loading>
-
+<mc-loading :condition="loading"></mc-loading>
 <div v-if="entities.length > 0" class="panel--pending-evaluations">
 
     <div class="panel--pending-evaluations__title">

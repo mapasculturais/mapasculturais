@@ -1,17 +1,24 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->layout = 'entity';
 
 $this->import('
     entity-actions
     entity-header
     entity-links
-    mapas-breadcrumb
+    mc-breadcrumb
+    mc-tab
+    mc-tabs
     opportunity-basic-info
+    opportunity-phase-reports
     opportunity-phases-config
     opportunity-subscribe-results
-    opportunity-phase-reports
-    tabs
 ');
 
 $this->addOpportunityPhasesToJs();
@@ -24,21 +31,21 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
-    <tabs class="tabs">
-        <tab label="<?= i::__('Informações') ?>" slug="info">
+    <mc-tabs class="tabs">
+        <mc-tab label="<?= i::__('Informações') ?>" slug="info">
             <opportunity-basic-info :entity="entity"></opportunity-basic-info>
-        </tab>
-        <tab label="<?= i::__('Configuração de fases') ?>" slug="config">
+        </mc-tab>
+        <mc-tab label="<?= i::__('Configuração de fases') ?>" slug="config">
             <opportunity-phases-config :entity="entity"></opportunity-phases-config>
-        </tab>
-        <tab label="<?= i::__('Inscrições e Resultados') ?>" slug="registrations">
+        </mc-tab>
+        <mc-tab label="<?= i::__('Inscrições e Resultados') ?>" slug="registrations">
             <opportunity-subscribe-results :entity="entity"></opportunity-subscribe-results>
-        </tab>
-        <tab label="<?= i::__('Relatórios') ?>" slug="report">
+        </mc-tab>
+        <mc-tab label="<?= i::__('Relatórios') ?>" slug="report">
             <opportunity-phase-reports :entity="entity"></opportunity-phase-reports>
-        </tab>
-    </tabs>
+        </mc-tab>
+    </mc-tabs>
     <entity-actions :entity="entity" editable></entity-actions>
 </div>

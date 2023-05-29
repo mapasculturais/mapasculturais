@@ -11,7 +11,7 @@ $this->layout = 'entity';
 $this->addOpportunityPhasesToJs();
 
 $this->import('
-    mapas-breadcrumb
+    mc-breadcrumb
     v1-embed-tool
     opportunity-header
     mc-link
@@ -19,7 +19,7 @@ $this->import('
 ')
 ?>
 <div class="main-app opportunity-registrations">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity">
         <template #button>
             <mc-link class="button button--primary-outline" :entity="entity.parent || entity" route="edit" hash="registrations" icon="arrow-left"><?= i::__('Voltar') ?></mc-link>

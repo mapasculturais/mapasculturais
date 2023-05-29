@@ -1,9 +1,16 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
-$this->import('entities entity-card');
+$this->import('
+	entity-card
+	mc-entities
+');
 ?>
-
 <div class="home-opportunities">
 	<div class="home-opportunities__header">
 		<div class="home-opportunities__header title">
@@ -15,7 +22,7 @@ $this->import('entities entity-card');
 	</div>    
 	<div class="home-opportunities__content">
 		<div class="home-opportunities__content cards">
-			<entities type="opportunity" :query="getQuery">
+			<mc-entities type="opportunity" :query="getQuery">
 				<template #default="{entities}">                    
 					<carousel v-if="entities.length > 0" :settings="settings" :breakpoints="breakpoints">
 						<slide v-for="entity in entities" :key="entity.id">
@@ -28,7 +35,7 @@ $this->import('entities entity-card');
 						</template>
 					</carousel>
 				</template>
-			</entities>
+			</mc-entities>
 		</div>
 	</div>
 </div>

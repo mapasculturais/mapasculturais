@@ -1,9 +1,16 @@
 <?php 
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
-$this->import('confirm-button popover modal image-uploader');
+$this->import('
+    mc-confirm-button
+    mc-popover 
+');
 ?>
-
 <div :class="classes" v-if="files || editable" class="files-list">
     <label class="files-list__title"> {{title}} </label>
 
@@ -16,7 +23,7 @@ $this->import('confirm-button popover modal image-uploader');
             </a>
 
             <div v-if="editable" class="edit">
-                <popover @open="file.newDescription = file.description" openside="down-right">
+                <mc-popover @open="file.newDescription = file.description" openside="down-right">
                     <template #button="{toggle}">
                         <a @click="toggle"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
@@ -35,21 +42,21 @@ $this->import('confirm-button popover modal image-uploader');
                             </div>
                         </form>
                     </template>
-                </popover>
+                </mc-popover>
                 
-                <confirm-button @confirm="file.delete()">
+                <mc-confirm-button @confirm="file.delete()">
                     <template #button="modal">
                         <a @click="modal.open()"> <mc-icon name="trash"></mc-icon> </a>
                     </template> 
                     <template #message="message">
                         <?php i::_e('Deseja remover o link?') ?>
                     </template> 
-                </confirm-button>                
+                </mc-confirm-button>                
             </div>
         </li>
     </ul>
 
-    <popover v-if="editable" title="<?php i::_e('Adicionar arquivo')?>" openside="down-right">
+    <mc-popover v-if="editable" title="<?php i::_e('Adicionar arquivo')?>" openside="down-right">
         <template #button="popover">
             <slot name="button"> 
                 <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline button-up">
@@ -81,5 +88,5 @@ $this->import('confirm-button popover modal image-uploader');
                 </div>
             </form>
         </template>
-    </popover>
+    </mc-popover>
 </div>

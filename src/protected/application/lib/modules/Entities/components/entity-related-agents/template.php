@@ -1,14 +1,17 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
-    popover
-    confirm-button
+    mc-confirm-button
+    mc-popover
     mc-relation-card
 ');
 ?>
-
 <div :class="classes" class="entity-related-agents" v-if="editable || hasGroups()">
     <h3><?php i::_e("Agentes relacionados") ?></h3>
     <div v-for="(relations, groupName) in groups" class="entity-related-agents__group">
@@ -17,7 +20,7 @@ $this->import('
             <!-- botões de ação do grupo -->
             <div v-if="editable" class="act">
                 <!-- renomear grupo -->
-                <popover openside="down-right">
+                <mc-popover openside="down-right">
                     <template #button="popover">
                         <slot name="button">
                             <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
@@ -35,9 +38,9 @@ $this->import('
                             </div>
                         </form>
                     </template>
-                </popover>
+                </mc-popover>
                 <!-- remover grupo -->
-                <confirm-button @confirm="removeGroup(groupName)">
+                <mc-confirm-button @confirm="removeGroup(groupName)">
                     <template #button="modal">
                         <a @click="modal.open()">
                             <mc-icon name="trash"></mc-icon>
@@ -46,7 +49,7 @@ $this->import('
                     <template #message="message">
                         <?php i::_e('Remover grupo de agentes relacionados?') ?>
                     </template>
-                </confirm-button>
+                </mc-confirm-button>
             </div>
         </div>
         <!-- lista de agentes -->
@@ -62,14 +65,14 @@ $this->import('
                 </mc-relation-card>
                 <!-- remover agente -->
                 <div v-if="editable" class="agent__delete">
-                    <confirm-button @confirm="removeAgent(groupName, relation.agent)">
+                    <mc-confirm-button @confirm="removeAgent(groupName, relation.agent)">
                         <template #button="modal">
                             <mc-icon @click="modal.open()" name="delete"></mc-icon>
                         </template>
                         <template #message="message">
                             <?php i::_e('Remover agente relacionado?') ?>
                         </template>
-                    </confirm-button>
+                    </mc-confirm-button>
                 </div>
                 <!-- relação de agente pendente -->
                 <div v-if="relation.status == -5" class="agent__pending"></div>
@@ -87,7 +90,7 @@ $this->import('
         </div>
     </div>
     <div v-if="editable" class="entity-related-agents__addNew">
-        <popover openside="down-right">
+        <mc-popover openside="down-right">
             <template #button="popover">
 
                 <slot name="button">
@@ -113,6 +116,6 @@ $this->import('
                     </form>
                 </div>
             </template>
-        </popover>
+        </mc-popover>
     </div>
 </div>

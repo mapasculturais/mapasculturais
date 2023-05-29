@@ -1,13 +1,13 @@
 @use '../settings/mixins' as *;
 
 .search {
-    .loading {
+    .mc-loading {
         color: var(--mc-low-500);
     }
 
     .tab-component {
         &.map {
-            .loading {
+            .mc-loading {
                 left: 50%;
                 margin-left: size(-50);
                 position: fixed;
@@ -19,7 +19,7 @@
 
         &.list {
 
-            .loading,
+            .mc-loading,
             .panel__row {
                 grid-column-end: span 9;
                 text-align: center;
@@ -581,7 +581,7 @@
 
         .search__tabs--list {
 
-            .loading,
+            .mc-loading,
             .panel__row {
                 grid-column-end: span 9;
                 text-align: center;

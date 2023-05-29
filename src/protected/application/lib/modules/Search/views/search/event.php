@@ -1,14 +1,20 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
     create-event
-    mapas-breadcrumb 
+    mc-breadcrumb
+    mc-tab
+    mc-tabs 
     search 
     search-filter-event
     search-list-event 
     search-map-event 
-    tabs 
 ');
 
 $this->breadcrumb = [
@@ -16,7 +22,6 @@ $this->breadcrumb = [
     ['label' => i::__('Eventos'), 'url' => $app->createUrl('events')],
 ];
 ?>
-
 <search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[],'event:term:linguagem':[], 'event:classificacaoEtaria': []}">
     <template v-if="global.auth.isLoggedIn" #create-button>
         <create-event #default="{modal}">
@@ -27,22 +32,22 @@ $this->breadcrumb = [
         </create-event>
     </template>
     <template #default="{pseudoQuery, changeTab}">
-        <tabs  @changed="changeTab($event)" class="search__tabs">
+        <mc-tabs  @changed="changeTab($event)" class="search__tabs">
             <template #before-tablist>
                 <label class="search__tabs--before">
                     <?= i::_e('Visualizar como:') ?>
                 </label>
             </template>
-            <tab icon="list" label="<?php i::esc_attr_e('Lista') ?>" slug="list">
+            <mc-tab icon="list" label="<?php i::esc_attr_e('Lista') ?>" slug="list">
                 <div class="search__tabs--list">
                     <search-list-event :pseudo-query="pseudoQuery"></search-list-event>
                 </div>
-            </tab>
-            <tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>"  slug="map">
+            </mc-tab>
+            <mc-tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>"  slug="map">
                 <div class="search__tabs--map">
                     <search-map-event :pseudo-query="pseudoQuery" position="map"></search-map-event>
                 </div>
-            </tab>
-        </tabs>
+            </mc-tab>
+        </mc-tabs>
     </template>
 </search>

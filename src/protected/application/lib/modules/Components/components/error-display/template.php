@@ -1,18 +1,18 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
-$this->import("modal");
+$this->import("
+    mc-modal
+");
 ?>
 <div class="error-display">
     <div class="error-display__content">
-        <modal title="<?= i::__('Erro 403') ?>">
+        <mc-modal title="<?= i::__('Erro 403') ?>">
             <div class="content">
                     Teste
 
@@ -23,6 +23,6 @@ $this->import("modal");
             </template>
 
 
-        </modal>
+        </mc-modal>
     </div>
 </div>

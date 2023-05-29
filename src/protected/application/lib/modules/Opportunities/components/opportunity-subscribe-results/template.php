@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  * @var MapasCulturais\App $app
@@ -8,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-modal
     mc-stepper-vertical
     opportunity-phase-list-data-collection
     opportunity-phase-list-evaluation
@@ -30,14 +30,14 @@ $this->import('
     </template>
     <template #header-actions="{step, item}">     
         <div class="stepper-header__actions">
-            <modal title="<?= i::esc_attr__('Configurações de suporte')?>" classes="modalEmbedTools" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
+            <mc-modal title="<?= i::esc_attr__('Configurações de suporte')?>" classes="modalEmbedTools" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
                 <template #default="modal">
                     <v1-embed-tool route="supportbuilder" :id="item.id"></v1-embed-tool>
                 </template>
                 <template #button="modal">
                     <a class="support" @click="modal.open"><?= i::__('Suporte') ?> <mc-icon name="external"></mc-icon></a>
                 </template>
-            </modal>   
+            </mc-modal>   
 
             <a class="expand-stepper" v-if="step.active" @click="step.close()"><label><?= i::__('Fechar') ?></label><mc-icon name="arrowPoint-up"></mc-icon></a>
             <a class="expand-stepper" v-if="!step.active" @click="step.open()"><label><?= i::__('Expandir') ?></label> <mc-icon name="arrowPoint-down"></mc-icon></a>

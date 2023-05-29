@@ -3,7 +3,6 @@ use MapasCulturais\i;
 $this->layout = 'panel';
 
 $this->import('
-    confirm-button
     mc-icon mc-icon
     panel--entity-tabs
     system-roles--card

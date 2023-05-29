@@ -4,20 +4,20 @@ use MapasCulturais\i;
 
 $this->activeNav = 'panel/user-management';
 $this->import('
-    confirm-button
     entity
     entity-field
     entity-seals
     mc-icon
     mc-link
+    mc-tab
+    mc-tabs
     panel--entity-actions
     panel--entity-tabs
-    tabs
     user-mail
     user-management--ownership-tabs
 ');
 ?>
-<entity #default='{entity}'>
+<mc-entity #default='{entity}'>
     <div class="p-user-detail">
         <div class="panel-main">
             <header class="p-user-detail__header">
@@ -64,32 +64,32 @@ $this->import('
             <div class="p-user-detail__property-content">
                 <div class="tabs-component">
 
-                    <tabs class="tabs-component__entities">
-                        <tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" icon='agent' classes="tabs-component-button--active-agent">
+                    <mc-tabs class="tabs-component__entities">
+                        <mc-tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" icon='agent' classes="tabs-component-button--active-agent">
                             <user-management--ownership-tabs :user="entity" type="agent" classes="tabs-component__header footer-content-tabs"></user-management--ownership-tabs>
-                        </tab>
+                        </mc-tab>
 
-                        <tab label="<?= i::esc_attr__('Espaços') ?>" slug="spaces" icon='space' classes="tabs-component-button--active-space">
+                        <mc-tab label="<?= i::esc_attr__('Espaços') ?>" slug="spaces" icon='space' classes="tabs-component-button--active-space">
                             <user-management--ownership-tabs :user="entity" type="space"></user-management--ownership-tabs>
-                        </tab>
+                        </mc-tab>
 
-                        <tab label="<?= i::esc_attr__('Eventos') ?>" slug="events" icon='event' classes="tabs-component-button--active-event">
+                        <mc-tab label="<?= i::esc_attr__('Eventos') ?>" slug="events" icon='event' classes="tabs-component-button--active-event">
                             <user-management--ownership-tabs :user="entity" type="event"></user-management--ownership-tabs>
-                        </tab>
+                        </mc-tab>
 
-                        <tab label="<?= i::esc_attr__('Projetos') ?>" slug="projects" icon='project' classes="tabs-component-button--active-project">
+                        <mc-tab label="<?= i::esc_attr__('Projetos') ?>" slug="projects" icon='project' classes="tabs-component-button--active-project">
                             <user-management--ownership-tabs :user="entity" type="project"></user-management--ownership-tabs>
-                        </tab>
+                        </mc-tab>
 
-                        <tab label="<?= i::esc_attr__('Oportunidades') ?>" slug="opportunities" icon='opportunity' classes="tabs-component-button--active-opportunity">
+                        <mc-tab label="<?= i::esc_attr__('Oportunidades') ?>" slug="opportunities" icon='opportunity' classes="tabs-component-button--active-opportunity">
                             <user-management--ownership-tabs :user="entity" type="opportunity"></user-management--ownership-tabs>
-                        </tab>
+                        </mc-tab>
 
-                        <tab label="<?= i::esc_attr__('Inscrições') ?>" slug="registrations" icon='opportunity' classes="tabs-component-button--active-registration">
+                        <mc-tab label="<?= i::esc_attr__('Inscrições') ?>" slug="registrations" icon='opportunity' classes="tabs-component-button--active-registration">
                             <user-management--ownership-tabs :user="entity" type="registration"></user-management--ownership-tabs>
-                        </tab>
-                    </tabs>
+                        </mc-tab>
+                    </mc-tabs>
                 </div>
             </div>
         </div>
-</entity>
+</mc-entity>

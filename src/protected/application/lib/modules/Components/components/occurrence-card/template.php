@@ -1,10 +1,16 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
-$this->import('mc-icon mc-link');
+$this->import('
+    mc-icon 
+    mc-link
+');
 ?>
-
 <div class="entity-card">
     <div class="entity-card__header">
         <div class="entity-card__header user-details">

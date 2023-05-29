@@ -1,13 +1,17 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
  * @var \MapasCulturais\App $app
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
-?>
 
-<mapas-card v-for="relation in agentRelations">
+$this->import('
+    mc-card
+    select-entity
+');
+?>
+<mc-card v-for="relation in agentRelations">
     <template #title>
         <div class="card__title"> 
             {{relation.label}} 
@@ -52,4 +56,4 @@ use MapasCulturais\i;
             <span>{{registration.__validationErrors[`agent_${relation.agentRelationGroupName}`].join('; ')}}</span>
         </div>
     </template>
-</mapas-card>
+</mc-card>

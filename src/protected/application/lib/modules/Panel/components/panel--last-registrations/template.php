@@ -1,7 +1,7 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
@@ -10,7 +10,6 @@ $this->import('
     entity-card
 ');
 ?>
-
 <div v-if="entities.length > 0" class="panel--last-registrations">
     <div class="panel--last-registrations__content">
         <div class="panel--last-registrations__content-title">
