@@ -1,12 +1,16 @@
 <?php
-use MapasCulturais\i;
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 $this->import('
+    mc-card
     opportunity-phase-publish-date-config
 ');
 ?>
-
-<mapas-card>
+<mc-card>
     <div class="config-phase grid-12">
         <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
     </div>
-</mapas-card>
+</mc-card>

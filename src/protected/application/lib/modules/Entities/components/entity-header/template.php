@@ -1,8 +1,11 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 ?>
-
 <?php $this->applyTemplateHook('entity-header', 'before'); ?>
 <header v-if="!editable" class="entity-header" :class="{ 'entity-header--no-image': !entity.files.header }">
     <?php $this->applyTemplateHook('entity-header', 'begin'); ?>

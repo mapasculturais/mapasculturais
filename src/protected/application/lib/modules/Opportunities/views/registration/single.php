@@ -12,10 +12,11 @@ $this->addOpportunityPhasesToJs();
 $this->addRegistrationPhasesToJs();
 
 $this->import('
-    mapas-breadcrumb
-    mapas-card
+    mc-breadcrumb
+    mc-card
+    mc-tab
+    mc-tabs
     opportunity-header
-    tabs
     opportunity-phases-timeline
     v1-embed-tool
 ');
@@ -29,13 +30,13 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app registration single">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
-    <tabs>
-        <tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
+    <mc-tabs>
+        <mc-tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
             <div class="registration__content">
-                <mapas-card no-title>
+                <mc-card>
                     <template #content>
                         <div class="registration-info">
                             <div class="registration-info__header">
@@ -83,21 +84,21 @@ $this->breadcrumb = [
                             </div>
                         </div>
                     </template>
-                </mapas-card>
+                </mc-card>
 
-                <mapas-card no-title>
+                <mc-card>
                     <template #content>
 
                         <opportunity-phases-timeline center big></opportunity-phases-timeline>
 
                     </template>
-                </mapas-card>
+                </mc-card>
             </div>
-        </tab>
+        </mc-tab>
 
-        <tab label="<?= i::_e('Ficha de inscrição') ?>" slug="ficha">
+        <mc-tab label="<?= i::_e('Ficha de inscrição') ?>" slug="ficha">
             <div class="registration__content">
-                <mapas-card no-title>
+                <mc-card>
                     <template #content>
                         <div class="registered-info">
                             <span class="info"> 
@@ -141,9 +142,9 @@ $this->breadcrumb = [
                             </span>
                         </div>
                     </template>
-                </mapas-card>
+                </mc-card>
 
-                <mapas-card>
+                <mc-card>
                     <template #title>
                         <label> <?= i::__('Espaço Vinculado') ?> </label>
                     </template>
@@ -167,10 +168,10 @@ $this->breadcrumb = [
                             </div>
                         </div>
                     </template>
-                </mapas-card>
+                </mc-card>
 
                 <v1-embed-tool route="registrationview" :id="entity.id"></v1-embed-tool>
             </div>
-        </tab>
-    </tabs>
+        </mc-tab>
+    </mc-tabs>
 </div>

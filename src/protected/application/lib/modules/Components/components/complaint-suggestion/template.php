@@ -1,18 +1,18 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
-$this->import("mapas-card modal");
+$this->import(" 
+    mc-modal
+");
 ?>
 <div class="complaint-suggestion">
     <div class="complaint-sugestion__complaint">
-        <modal title="<?= i::__('Denúncia') ?>">
+        <mc-modal title="<?= i::__('Denúncia') ?>">
             <div class="content">
                 <div v-if="!formData.anonimous" class="content__name field">
                     <label><?= i::__('Nome') ?></label>
@@ -48,10 +48,10 @@ $this->import("mapas-card modal");
             <template #button="modal">
                 <button type="button" @click="modal.open();typeMessage='sendComplaintMessage'; initFormData()" class="button button--primary-outline"><?= i::__('Denúncia') ?></button>
             </template>
-        </modal>
+        </mc-modal>
     </div>
     <div class="complaint-sugestion__suggestion">
-        <modal title="<?= i::__('Contato') ?>">
+        <mc-modal title="<?= i::__('Contato') ?>">
             <div class="content">
                 <div v-if="!formData.anonimous" class="content__name field">
                     <label><?= i::__('Nome') ?></label>
@@ -88,6 +88,6 @@ $this->import("mapas-card modal");
             <template #button="modal">
                 <button type="button" @click="modal.open();typeMessage='sendSuggestionMessage';initFormData()" class="button button--primary"><?= i::__('Contato') ?></button>
             </template>
-        </modal>
+        </mc-modal>
     </div>
 </div>

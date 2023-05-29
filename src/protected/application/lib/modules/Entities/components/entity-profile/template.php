@@ -1,11 +1,18 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
-$this->import('image-uploader');
+$this->import('
+    mc-image-uploader
+');
 ?>
 
 <div class="entity-profile">
-    <image-uploader :entity="entity" group="avatar" :aspect-ratio="1" :circular="true">
+    <mc-image-uploader :entity="entity" group="avatar" :aspect-ratio="1" :circular="true">
         <template #default="modal">
             <div class="entity-profile__profile">
                 <div class="entity-profile__profile--img">
@@ -15,5 +22,5 @@ $this->import('image-uploader');
                 <label class="entity-profile__profile--label" for="avatar<?= date('Ymd') ?>"> <?php i::_e("Adicionar imagem de perfil"); ?> </label>
             </div>
         </template>
-    </image-uploader>
+    </mc-image-uploader>
 </div>

@@ -15,7 +15,6 @@ $this->import('
     mc-link
 ');
 ?>
-
 <div class="panel--entities-summary">                    
     <!-- agentes -->
     <div class="panel--entities-summary__card">

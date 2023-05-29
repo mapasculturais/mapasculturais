@@ -42,14 +42,17 @@ class Module extends \MapasCulturais\Module {
             $app->view->assetManager->publishFolder('js/vue-init/', 'js/vue-init/');
             $app->view->assetManager->publishFolder('js/media-query/', 'js/media-query/');
             
-            // Importa componentes globais
-            $app->view->import('mc-icon popover entities');
             
             if (isset($app->components->templates)) {
                 $app->components->templates = [];
             }
-
-            $this->import('entity');
+            
+            // Importa componentes globais
+            $this->import('
+                mc-entity
+                mc-icon
+                mc-loading
+            ');
         });
 
         $app->hook('mapas.printJsObject:before', function () use($app) {

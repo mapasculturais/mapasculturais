@@ -1,14 +1,17 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
-    confirm-button 
-    image-uploader
-    modal 
-    popover 
+    mc-confirm-button
+    mc-image-uploader
+    mc-popover 
 ');
 ?>
-
 <?php $this->applyTemplateHook('entity-gallery','before'); ?>
 <div :class="classes" v-if="editable || images" class="entity-gallery">
     <?php $this->applyTemplateHook('entity-gallery','begin'); ?>
@@ -23,7 +26,7 @@ $this->import('
                 <p @click="openImg(index); open()" class="entity-gallery__list--image-label"> {{img.description}} </p>
             </div>
             <div v-if="editable" class="entity-gallery__list--image-actions">
-                <popover @open="img.newDescription = img.description" openside="down-right">
+                <mc-popover @open="img.newDescription = img.description" openside="down-right">
                     <template #button="popover">
                         <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
@@ -40,28 +43,28 @@ $this->import('
                             </div>
                         </form>
                     </template>
-                </popover>
-                <confirm-button @confirm="img.delete()">
+                </mc-popover>
+                <mc-confirm-button @confirm="img.delete()">
                     <template #button="modal">
                         <a @click="modal.open()"> <mc-icon name="trash"></mc-icon> </a>
                     </template> 
                     <template #message="message">
                         <?php i::_e('Deseja excluir essa imagem?') ?>
                     </template> 
-                </confirm-button>
+                </mc-confirm-button>
             </div>
         </div>    
     </div>   
 
     <div v-if="editable" class="entity-gallery__addNew">
-        <image-uploader :useDescription="true" :entity="entity" group="gallery" :circular="false">
+        <mc-image-uploader :useDescription="true" :entity="entity" group="gallery" :circular="false">
             <template #default='uploader'>
                 <a class="button button--primary button--icon button--primary-outline" @click="toggle()">
                     <mc-icon name="add"></mc-icon>
                     <?php i::_e("Adicionar imagem")?>
                 </a>
             </template>
-        </image-uploader>
+        </mc-image-uploader>
     </div>
     <div class="entity-gallery__full" v-if="images" :class="{ 'active': galleryOpen }">
         <div @click="close" class="entity-gallery__full--overlay"> </div>

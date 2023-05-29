@@ -1,10 +1,15 @@
 <?php
-use MapasCulturais\i;
-$this->import('mapas-breadcrumb');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+$this->import('
+    mc-breadcrumb
+');
+?>
 <div class="search">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
 
     <header class="search__header">
         <div class="search__header--content">

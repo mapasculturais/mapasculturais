@@ -1,8 +1,15 @@
 <?php
-use MapasCulturais\i;
-$this->import('mc-icon');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+use MapasCulturais\i;
+
+$this->import('
+    mc-icon
+');
+?>
 <!-- Logo -->
 <?php $this->applyTemplateHook('mc-header-logo','before'); ?>
 <div class="mc-header-logo">
@@ -15,7 +22,6 @@ $this->import('mc-icon');
 </div>
 <?php $this->applyTemplateHook('mc-header-logo','after'); ?>
 
-
 <!-- Menu principal -->
 <?php $this->applyTemplateHook('mc-entity-menu','before'); ?>
 <ul class="mc-header-menu">   
@@ -24,7 +30,6 @@ $this->import('mc-icon');
     <?php $this->applyTemplateHook('mc-entity-menu','end'); ?>
 </ul>
 <?php $this->applyTemplateHook('mc-entity-menu','after'); ?>
-
 
 <!-- Menu principal mobile -->
 <div v-if="openMobile" class="mc-header-menu mobile">

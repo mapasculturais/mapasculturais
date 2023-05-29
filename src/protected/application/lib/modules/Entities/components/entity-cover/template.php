@@ -1,11 +1,19 @@
 <?php
-use MapasCulturais\i;
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+use MapasCulturais\i;
+
+$this->import('
+    mc-image-uploader
+');
+?>
 <?php $this->applyTemplateHook('entity-cover', 'before'); ?>
 <div :class="classes" class="entity-cover">
     <?php $this->applyTemplateHook('entity-cover', 'begin'); ?>
-    <image-uploader :entity="entity" group="header" :aspect-ratio="3/1" :circular="false">
+    <mc-image-uploader :entity="entity" group="header" :aspect-ratio="3/1" :circular="false">
         <template #default="modal">
             <div class="entity-cover__cover">
                 <div v-if="entity.files.header" id="header<?= date("Ymd") ?>" class="entity-cover__cover--img" :style="{ '--url': 'url('+entity.files.header?.transformations?.header.url+')' }">
@@ -17,7 +25,7 @@ use MapasCulturais\i;
                 </div>
             </div>
         </template>
-    </image-uploader>
+    </mc-image-uploader>
     <?php $this->applyTemplateHook('entity-cover', 'end'); ?>
 </div>
 <?php $this->applyTemplateHook('entity-cover', 'after'); ?>
