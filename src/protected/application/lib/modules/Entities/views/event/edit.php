@@ -23,9 +23,9 @@ $this->import('
         entity-social-media
         entity-terms
         event-info
-        mapas-container
-        mapas-card
-        mapas-breadcrumb
+        mc-container
+        mc-card
+        mc-breadcrumb
         mc-tag-list
 ');
 
@@ -37,10 +37,10 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
-    <mapas-container>
-        <mapas-card class="feature">
+    <mc-container>
+        <mc-card class="feature">
             <template #title>
                 <label><?php i::_e("Informações de Apresentação") ?></label>
                 <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários") ?></p>
@@ -72,9 +72,9 @@ $this->breadcrumb = [
                     </div>
                 </div>
             </template>
-        </mapas-card>
+        </mc-card>
         <main>
-            <mapas-card>
+            <mc-card>
                 <template #content>
                     <div class="grid-12">
                         <div class="col-12">
@@ -82,8 +82,8 @@ $this->breadcrumb = [
                         </div>
                     </div>
                 </template>
-            </mapas-card>
-            <mapas-card>
+            </mc-card>
+            <mc-card>
                 <template #title>
                     <label><?php i::_e("Informações sobre o evento"); ?></label>
                 </template>
@@ -94,15 +94,15 @@ $this->breadcrumb = [
                         <entity-field :entity="entity" classes="col-12" label="Informações sobre a inscrição" prop="registrationInfo"></entity-field>
                     </div>
                 </template>
-            </mapas-card>
-            <mapas-card>
+            </mc-card>
+            <mc-card>
                 <template #title>
                     <event-info :entity="entity" editable></event-info>
                 </template>
                 <template #content>
                 </template>
-            </mapas-card>
-            <mapas-card>
+            </mc-card>
+            <mc-card>
                 <template #title>
                     <label><?php i::_e("Informações públicas do Evento"); ?></label>
                     <p class="info-event"><?php i::_e("Este é um espaço para você apresentar melhor o seu Evento. Adicione documentos, links, vídeos e imagens."); ?></p>
@@ -116,10 +116,10 @@ $this->breadcrumb = [
                         <entity-gallery :entity="entity" classes="col-12" title="<?= i::esc_attr_e('Adicionar fotos na galeria') ?>" editable></entity-gallery>
                     </div>
                 </template>
-            </mapas-card>
+            </mc-card>
         </main>
         <aside>
-            <mapas-card>
+            <mc-card>
                 <template #content>
                     <div class="grid-12">
                         <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
@@ -128,9 +128,9 @@ $this->breadcrumb = [
                         <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
                     </div>
                 </template>
-            </mapas-card>
+            </mc-card>
         </aside>
-    </mapas-container>
+    </mc-container>
     <entity-actions :entity="entity" editable></entity-actions>
 </div>
 <confirm-before-exit :entity="entity"></confirm-before-exit>

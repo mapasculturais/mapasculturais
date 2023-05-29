@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+?>
 <div class="circle-stencil" :style="style">
   <draggable-element class="circle-stencil__handler" @drag="onResize" @drag-end="onResizeEnd">
     <svg 

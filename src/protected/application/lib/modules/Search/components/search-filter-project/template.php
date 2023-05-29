@@ -1,8 +1,15 @@
 <?php
-use MapasCulturais\i;
-$this->import('search-filter');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+use MapasCulturais\i;
+
+$this->import('
+    search-filter
+');
+?>
 <search-filter :position="position" :pseudo-query="pseudoQuery">
     <form class="form">
         <label class="form__label">

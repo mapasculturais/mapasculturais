@@ -1,9 +1,14 @@
 <?php
-/** @var MapasCulturais\Theme $this */
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
+    mc-tab
+    mc-tabs
     panel--entities-summary 
     panel--entity-tabs 
     panel--last-edited
@@ -49,9 +54,9 @@ $this->import('
     <?php $this->applyTemplateHook('header', 'after') ?>
     
     <?php $this->applyTemplateHook('tabs', 'before') ?>
-    <tabs class="panel-home__tabs">
+    <mc-tabs class="panel-home__tabs">
         <?php $this->applyTemplateHook('tabs', 'begin') ?>
-        <tab label="<?php i::esc_attr_e('Principal') ?>" slug="main">
+        <mc-tab label="<?php i::esc_attr_e('Principal') ?>" slug="main">
             <div class="panel-home__tabs--main">
 
                 <panel--entities-summary></panel--entities-summary>
@@ -65,8 +70,8 @@ $this->import('
                 <panel--last-edited></panel--last-edited>
 
             </div>
-        </tab>
+        </mc-tab>
         <?php $this->applyTemplateHook('tabs', 'end') ?>
-    </tabs>
+    </mc-tabs>
     <?php $this->applyTemplateHook('tabs', 'after') ?>
 </div>

@@ -40,7 +40,7 @@ ol.mc-stepper-vertical li {
         // margin: 0 45px;
     }
 
-    .mapas-card {
+    .mc-card {
         padding: size(16);
 
         .evaluation-box {
@@ -367,7 +367,7 @@ ol.mc-stepper-vertical li.active::before {
         max-width: 1096px;
         width: 100%;
 
-        .mapas-card {
+        .mc-card {
             margin-bottom: 0;
             max-width: 100%;
             padding-top: 0;

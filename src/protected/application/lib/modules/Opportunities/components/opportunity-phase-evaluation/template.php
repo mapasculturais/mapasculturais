@@ -1,14 +1,11 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 ?>
-
 <div class="stepper-evaluations">
     <div class="stepper-evaluations__title"><label><?= i::__('Avaliações abertas e disponíveis') ?></label></div>
     <div class="line"></div>

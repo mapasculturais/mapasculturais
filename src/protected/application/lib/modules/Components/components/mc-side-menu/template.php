@@ -1,17 +1,15 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
-$this->import('mc-icon');
+$this->import('
+    mc-icon
+');
 ?>
-
-
 <div v-if="showList()">
     <div :class="['mc-side-menu', {'isOpen': isOpen}]">
         <button class="mc-side-menu__button" @click="toggleMenu()">
@@ -21,7 +19,6 @@ $this->import('mc-icon');
                 <mc-icon v-if="isOpen" name="arrow-left-ios"></mc-icon>
             </div>
         </button>
-
 
         <template v-if="isOpen">
             <div class="find">

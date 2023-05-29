@@ -1,15 +1,12 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 ?>
 <div class="permission-publish col-12 grid-12">
-
     <h2 class="permission-publish__title col-12"><?php i::_e("Permissões") ?></h2>
     <label class="permission-publish__label col-12"><?php i::_e("Você pode permitir que outras pessoas criem Eventos neste Espaço."); ?></label>
 

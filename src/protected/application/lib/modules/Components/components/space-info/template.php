@@ -1,9 +1,18 @@
 <?php
-use MapasCulturais\i;
-$this->layout = 'entity'; 
-$this->import('mapas-container mc-tag-list entity-location');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+use MapasCulturais\i;
+
+$this->layout = 'entity'; 
+
+$this->import('
+    mc-tag-list 
+    entity-location
+');
+?>
 <div class="space-info grid-12">
     <div v-if="entity.horario" class="space-info__hour col-12">
         <span class="space-info--label"><?= i::_e("Horário de funcionamento"); ?></span>

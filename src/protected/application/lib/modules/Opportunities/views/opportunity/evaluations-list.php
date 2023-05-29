@@ -13,7 +13,7 @@ $this->addOpportunityPhasesToJs();
 $this->import('
     entity-actions
     entity-header
-    mapas-breadcrumb
+    mc-breadcrumb
     mc-link
     mc-summary-evaluate
     opportunity-evaluations-table
@@ -22,7 +22,7 @@ $this->import('
 ')
 ?>
 <div class="main-app opportunity-evaluations">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity">
         <template #button>
             <mc-link v-if="entity.currentUserPermissions.modify" class="button button--primary-outline" :entity="entity.opportunity" route="edit" hash="registrations" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>

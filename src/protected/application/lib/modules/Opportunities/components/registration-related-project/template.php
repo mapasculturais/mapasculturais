@@ -11,11 +11,10 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field
+    mc-card
 ');
 ?>
-
-<mapas-card v-if="useProjectRelation !== 'dontUse'">
-
+<mc-card v-if="useProjectRelation !== 'dontUse'">
     <template #title>
         <div class="card__title"> 
             <?= i::__("Projeto") ?>
@@ -34,4 +33,4 @@ $this->import('
     <div v-if="registration.__validationErrors.projectName" class="errors">
         <span>{{registration.__validationErrors.projectName.join('; ')}}</span>
     </div>
-</mapas-card>
+</mc-card>

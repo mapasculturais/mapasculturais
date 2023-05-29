@@ -1,5 +1,11 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->layout = 'entity';
 
 $this->addOpportunityPhasesToJs();
@@ -19,14 +25,16 @@ $this->import('
     entity-social-media
     entity-terms
     evaluations-list
-    mapas-breadcrumb
+    mc-breadcrumb
+    mc-container
+    mc-share-links
+    mc-tab
+    mc-tabs
     opportunity-phase-evaluation
     opportunity-phases-timeline
     opportunity-rules
     opportunity-subscription
     opportunity-subscription-list
-    share-links
-    tabs
     v1-embed-tool
 ');
 
@@ -36,15 +44,13 @@ $this->breadcrumb = [
   ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
 ];
 ?>
-
 <div class="main-app single">
-  <mapas-breadcrumb></mapas-breadcrumb>
+  <mc-breadcrumb></mc-breadcrumb>
   <entity-header :entity="entity"></entity-header>
 
-    <tabs class="tabs">
-
-        <tab label="<?= i::__('Informações') ?>" slug="info">
-            <mapas-container class="opportunity">
+    <mc-tabs class="tabs">
+        <mc-tab label="<?= i::__('Informações') ?>" slug="info">
+            <mc-container class="opportunity">
                 <main class="grid-12">
                     <opportunity-subscription class="col-12" :entity="entity"></opportunity-subscription>
                     <opportunity-subscription-list class="col-12"></opportunity-subscription-list>
@@ -57,9 +63,9 @@ $this->breadcrumb = [
                         </div>
                     </div>
                 </aside>
-            </mapas-container>
+            </mc-container>
 
-            <mapas-container>
+            <mc-container>
                 <main>
                     <div class="grid-12">
                         <div class="col-12">
@@ -81,7 +87,7 @@ $this->breadcrumb = [
                         <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags')?>"></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
                         <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
-                        <share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
+                        <mc-share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></mc-share-links>
                     </div>  
                 </aside>
                 <aside>
@@ -89,19 +95,19 @@ $this->breadcrumb = [
                         <complaint-suggestion :entity="entity"></complaint-suggestion>
                     </div>
                 </aside>
-            </mapas-container>
-        </tab>
+            </mc-container>
+        </mc-tab>
 
-        <tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="entity.currentUserPermissions.evaluateRegistrations">
+        <mc-tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="entity.currentUserPermissions.evaluateRegistrations">
             <div class="opportunity-container">
                 <opportunity-phase-evaluation></opportunity-phase-evaluation>
             </div>
-        </tab>
+        </mc-tab>
 
         <?php $this->part('opportunity-tab-results.php', ['entity' => $entity]); ?>
         
         <?php $this->part('opportunity-tab-support.php', ['entity' => $entity]); ?>
 
-    </tabs>
+    </mc-tabs>
     <entity-actions :entity="entity"></entity-actions>
 </div>
