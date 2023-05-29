@@ -12,9 +12,13 @@ body.base-v2.controller-site.action-error {
     border-radius: size(4);
     margin: 0 auto;
     padding: size(55) size(135);
+    @media (max-width: size(900)){
+        padding: size(16);
+    }
     .error-card {
         padding: 75px 55px;
         background: var(--mc-high-300);
+
         .message-error {
             padding: 24px 0 16px 0;
         }
@@ -22,6 +26,7 @@ body.base-v2.controller-site.action-error {
         @media (max-width:size(800)) {
             padding-inline: size(16);
         }
+
         .content {
             display: flex;
             padding-top: size(127);
@@ -74,40 +79,53 @@ body.base-v2.controller-site.action-error {
             }
         }
 
-        .btn {
-            padding: size(16) 0 size(122) 0;
-            margin: 0 auto;
+        .error-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: column;
 
-            @media (max-width:size(600)) {
-
-                .text {
-                    label {
-
-                        padding: size(24) 0 size(16) 0;
-                    }
-                }
-
-                margin: 0 auto;
-
-                button {
-                    max-height: size(72);
-                    max-width: size(280);
-
-                    button {
-                        padding: size(24) size(19);
-                        font-size: size(24);
-                    }
-
-                }
+            .message-error {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
 
-            button {
-                padding: 19px 33px;
-                font-family: 'Open Sans';
-                font-style: normal;
-                font-weight: 700;
-                font-size: size(24);
-                line-height: size(28);
+            .btn {
+                padding: size(16) 0 0 0;
+                margin: 0 uto;
+
+                @media (max-width:size(600)) {
+
+                    .text {
+                        label {
+
+                            padding: size(24) 0 size(16) 0;
+                        }
+                    }
+
+                    margin: 0 auto;
+
+                    button {
+                        max-height: size(72);
+                        max-width: size(280);
+
+                        button {
+                            padding: size(24) size(19);
+                            font-size: size(24);
+                        }
+
+                    }
+                }
+
+                button {
+                    padding: 19px 33px;
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: size(24);
+                    line-height: size(28);
+                }
             }
         }
     }
