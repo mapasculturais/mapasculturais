@@ -1,22 +1,22 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
 $this->import('
-    tabs
-    registration-card
     mc-alert
-')
+    mc-entities
+    mc-tab
+    mc-tabs
+    registration-card
+');
 ?>
-
-<tabs :class="{'hasDrafts': this.totalDrafts>0}" @changed="changed($event)">
-    <tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem">
-        <entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
+<mc-tabs :class="{'hasDrafts': this.totalDrafts>0}" @changed="changed($event)">
+    <mc-tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem">
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -43,10 +43,10 @@ $this->import('
                     </registration-card>
                 </div>
             </template>
-        </entities>
-    </tab>
-    <tab label="<?= i::_e('Enviadas') ?>" class="tabs_sent" slug="sent">
-        <entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">            
+        </mc-entities>
+    </mc-tab>
+    <mc-tab label="<?= i::_e('Enviadas') ?>" class="tabs_sent" slug="sent">
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">            
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -72,6 +72,6 @@ $this->import('
                     <registration-card v-for="registration in entities" :entity="registration" picture-card></registration-card>
                 </div>
             </template>
-        </entities>
-    </tab>
-</tabs>
+        </mc-entities>
+    </mc-tab>
+</mc-tabs>

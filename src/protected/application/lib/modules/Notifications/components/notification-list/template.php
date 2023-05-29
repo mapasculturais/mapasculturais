@@ -1,15 +1,18 @@
 <?php
-/** @var MapasCulturais\Theme $this */
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
-    mapas-card
-    confirm-button
+    mc-card
+    mc-entities
 ');
 ?>
-<entities type="notification" name="notification-list" :query='query' #default='{entities, refresh}'>
-
-    <mapas-card :class="['notification-card', styleCss]" v-for="entity in entities" :key="entity.__objectId">
+<mc-entities type="notification" name="notification-list" :query='query' #default='{entities, refresh}'>
+    <mc-card :class="['notification-card', styleCss]" v-for="entity in entities" :key="entity.__objectId">
         <div class="avatar">
             <img v-if="hasAvatar(entity)" :src="avatarUrl(entity)">
             <mc-icon v-if="!hasAvatar(entity)" name='agent-1'></mc-icon>
@@ -55,6 +58,5 @@ $this->import('
                 </div>
             </div>
         </div>
-    </mapas-card>
-
-</entities>
+    </mc-card>
+</mc-entities>

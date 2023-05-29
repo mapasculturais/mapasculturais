@@ -1,19 +1,25 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->layout = 'entity';
 
-$this->import('popover mc-icon mc-tag-list')
-
+$this->import('
+    mc-icon 
+    mc-popover 
+    mc-tag-list
+');
 ?>
-
 <div class="build-list">
     <label class="build-list__title"><?= i::__("Categorias") ?></label>
 
     <mc-tag-list class="build-list__content" :tags="entity.registrationCategories" editable></mc-tag-list>
 
-    <popover class="popover-tag" openside="down-right" title="<?php i::esc_attr_e('Adicionar categoria') ?>">
+    <mc-popover class="popover-tag" openside="down-right" title="<?php i::esc_attr_e('Adicionar categoria') ?>">
         <template #button="popover">
             <button @click="popover.toggle()" class="button-popover button button--primary button--icon button--primary-outline">
                 <mc-icon name="add"></mc-icon><label><?php i::_e("Adicionar categoria") ?></label>
@@ -35,5 +41,5 @@ $this->import('popover mc-icon mc-tag-list')
                 </div>
             </form>
         </template>
-    </popover>
+    </mc-popover>
 </div>

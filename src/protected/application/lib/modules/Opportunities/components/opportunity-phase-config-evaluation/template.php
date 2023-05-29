@@ -1,15 +1,21 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
-    confirm-button
-    v1-embed-tool
+    entity-field
+    mc-confirm-button
+    mc-modal
     opportunity-phase-publish-date-config
+    v1-embed-tool
 ');
 ?>
-
-<mapas-card>
+<mc-card>
     <div class="evaluation-step grid-12">
-
         <section class="evaluation-section col-12 grid-12">
             <entity-field :entity="phase" prop="name" :autosave="300" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
             <entity-field :entity="phase" prop="evaluationFrom" :autosave="300" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de início') ?>" :min="minDate?._date" :max="phase.evaluationTo?._date"></entity-field>    
@@ -28,14 +34,14 @@ $this->import('
                 <span class="subtitle"><?= i::__('Defina quais campos serão habilitados para avaliação.') ?></span>
             </div>
 
-            <modal title="<?= i::esc_attr__('Configurar campos visíveis para os avaliadores')?>" classes="modalEmbedTools">
+            <mc-modal title="<?= i::esc_attr__('Configurar campos visíveis para os avaliadores')?>" classes="modalEmbedTools">
                 <template #default="modal">
                     <v1-embed-tool route="fieldsvisible" :id="phase.opportunity.id"></v1-embed-tool>
                 </template>
                 <template #button="modal">
                     <button class="evaluation-fields-button button button--bg button--secondarylight" @click="modal.open"><?= i::__('Abrir campos') ?></button>
                 </template>
-            </modal>  
+            </mc-modal>  
 
         </section>
 
@@ -48,9 +54,7 @@ $this->import('
                 <label><?= i::__("Texto configuração geral") ?></label>
                 <textarea v-model="phase.infos['general']" @change="savePhase()" class="evaluation-config__area" rows="10"></textarea>
             </div>
-        </section>        
-
-        
+        </section>
 
         <div class="col-6 sm:col-12 field" v-for="(category, index) in categories">
             <label :key="index"> {{ category }}
@@ -58,13 +62,12 @@ $this->import('
             </label>
         </div>
 
-
-       <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
+        <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
     
         <div class="config-phase__line col-12"></div>
 
         <div class="phase-delete col-12">
-            <confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
+            <mc-confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
                     <a class="phase-delete__trash" @click="modal.open()">
                         <div class="icon">
@@ -73,8 +76,8 @@ $this->import('
                         <label class="label"><?= i::__("Excluir fase de avaliação") ?></label>
                     </a>
                 </template>
-            </confirm-button>
+            </mc-confirm-button>
         </div>
 
     </div>
-</mapas-card>
+</mc-card>

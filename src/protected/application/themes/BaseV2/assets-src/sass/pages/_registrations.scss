@@ -45,7 +45,7 @@
                     margin: size(32) auto;
                     padding: 0 size(16);
 
-                    .mapas-card {
+                    .mc-card {
                         border-radius: var(--mc-border-radius-xs);
                         padding: size(17) size(24);
                     }
@@ -240,7 +240,7 @@
             @include mobile {
                 .registration {
                     &__content {
-                        .mapas-card {
+                        .mc-card {
                             padding: size(16);
                         }
 
@@ -405,7 +405,7 @@
                             flex-direction: column;
                             gap: size(32);
 
-                            .mapas-card {
+                            .mc-card {
                                 padding: size(16);
                             }
 

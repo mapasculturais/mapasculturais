@@ -1,19 +1,24 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
- $this->import('entities popover') ?>
-
-    <popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" classes="select-entity__popover"> 
+$this->import('
+    mc-entities
+    mc-popover
+');
+?>
+    <mc-popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" classes="select-entity__popover"> 
         <template #button="{ toggle }">
             <slot name="button" :toggle="toggle"></slot>
         </template>
 
         <template #default="{ close }">
-
             <div class="select-entity">
-
-                <entities :type="type" :select="select" :query="query" :limit="limit" :scope="scope" :permissions="permissions" @fetch="fetch($event)" watch-query>
+                <mc-entities :type="type" :select="select" :query="query" :limit="limit" :scope="scope" :permissions="permissions" @fetch="fetch($event)" watch-query>
                     <template #header="{entities}">
                         <form class="select-entity__form" @submit="entities.refresh(); $event.preventDefault();">
                             <input v-model="entities.query['@keyword']" type="text" class="select-entity__form--input" name="search" :placeholder="placeholder" @input="entities.refresh(500)"/>
@@ -34,10 +39,8 @@ use MapasCulturais\i;
                                 <span class="label"> {{entity.name}} </span>
                             </li>
                         </ul>
-
                     </template>
-
-                </entities>
+                </mc-entities>
 
                 <div v-if="createNew" class="select-entity__add">
                     <p> <?php i::__('ou') ?> </p>
@@ -45,10 +48,6 @@ use MapasCulturais\i;
                         {{buttonText}}
                     </a>
                 </div>
-
             </div>
-
         </template>
-
-    </popover>
-
+    </mc-popover>

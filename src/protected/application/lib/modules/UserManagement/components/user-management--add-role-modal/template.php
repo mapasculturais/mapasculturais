@@ -1,14 +1,21 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
-$this->import('modal entities loading');
+$this->import('
+    loading
+    mc-entities 
+    mc-modal 
+');
 ?>
- 
- <modal title="<?php i::esc_attr_e('Adicionar função ao usuário') ?> " @open="createInstance()"> 
+<mc-modal title="<?php i::esc_attr_e('Adicionar função ao usuário') ?> " @open="createInstance()"> 
     <template #default>
         <div class="field">
-            <entities #default="{entities}" type="system-role" select="id,status,name,slug,permissions" v-if="instance">
+            <mc-entities #default="{entities}" type="system-role" select="id,status,name,slug,permissions" v-if="instance">
                 <label><?= i::__('Função') ?></label>
                     <select v-model="instance.name">
                     <option value="saasSuperAdmin" ><?= i::__('Super Administrador da Rede') ?></option>
@@ -17,7 +24,7 @@ $this->import('modal entities loading');
                     <option value="admin" ><?= i::__('Administrador') ?></option>
                     <option v-for="role in entities" v-bind:value="role.slug">{{role.name}}</option>
                 </select>
-            </entities>
+            </mc-entities>
             <label><?= i::__('Subsite') ?></label>
             <select v-model="instance.subsiteId">
                 <option v-for="subsite in subsites" :value="subsite.id" >{{subsite.name}}</option>
@@ -36,4 +43,4 @@ $this->import('modal entities loading');
             <mc-icon name="add"></mc-icon>
         </a>
     </template>   
-</modal>
+</mc-modal>

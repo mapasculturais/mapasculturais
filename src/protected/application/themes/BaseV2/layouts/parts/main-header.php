@@ -1,16 +1,19 @@
 <?php
-use MapasCulturais\App;
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
-    messages 
     mc-header-menu
     mc-header-menu-user
     mc-icon
+    mc-messages 
     theme-logo 
 ');
-
 ?>
-
 <?php $this->applyTemplateHook('main-header', 'before') ?>
 <header class="main-header" id="main-header">
     <?php $this->applyTemplateHook('main-header', 'begin') ?>
@@ -89,4 +92,4 @@ $this->import('
 </header>
 <?php $this->applyTemplateHook('main-header', 'after') ?>
 
-<messages></messages>
+<mc-messages></mc-messages>

@@ -1,14 +1,19 @@
 <?php 
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
     entity-field 
     entity-terms
     mc-link
-    modal 
+    mc-modal 
 '); 
 ?>
-<modal :title="modalTitle" classes="create-modal create-space-modal" button-label="Criar Espaço" @open="createEntity()" @close="destroyEntity()">
+<mc-modal :title="modalTitle" classes="create-modal create-space-modal" button-label="Criar Espaço" @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.id" #default>
         <label><?php i::_e('Crie um espaço com informações básicas')?><br><?php i::_e('e de forma rápida')?></label>
         <div class="create-modal__fields">
@@ -46,4 +51,4 @@ $this->import('
         <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
         <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
     </template>
-</modal>
+</mc-modal>

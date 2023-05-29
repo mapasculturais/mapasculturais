@@ -1,15 +1,22 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
-$this->import('popover mc-tag-list mc-multiselect')
+$this->import('
+    mc-multiselect
+    mc-popover 
+    mc-tag-list 
+');
 ?>
 <div v-if="editable || entity.terms?.[taxonomy].length > 0" :class="['entity-terms', classes]">
-
     <h4 class="entity-terms__title" v-if="title == ''"> {{taxonomy}} </h4>
     <h4 class="entity-terms__title" v-else> {{title}} </h4>
 
-    <popover v-if="allowInsert && editable" openside="down-right"  @open="loadTerms()" :title="popoverTitle">
+    <mc-popover v-if="allowInsert && editable" openside="down-right"  @open="loadTerms()" :title="popoverTitle">
         <template #button="popover">
             <button @click="popover.toggle()" class="button button--rounded button--sm button--icon button--primary" v-if="editable">
                 <?php i::_e("Adicionar nova") ?>
@@ -33,7 +40,7 @@ $this->import('popover mc-tag-list mc-multiselect')
                 </ul>
             </div>
         </template>
-    </popover>
+    </mc-popover>
 
     <mc-multiselect v-if="!allowInsert && editable" :model="entity.terms[this.taxonomy]" :items="terms" @open="loadTerms()" #default="{popover}">
         <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >

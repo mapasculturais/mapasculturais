@@ -1,10 +1,18 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
-$this->import('search-filter mc-multiselect mc-icon mc-tag-list');
+$this->import('
+    mc-icon 
+    mc-multiselect 
+    mc-tag-list
+    search-filter 
+');
 ?>
-
 <search-filter :position="position" :pseudo-query="pseudoQuery">
     <form ref="form" class="form" @submit="$event.preventDefault()">
         <label class="form__label">

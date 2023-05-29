@@ -1,16 +1,17 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
-	loading
-	mc-icon
+	mc-loading
 	select-entity
 ');
 ?>
-
 <div class="grid-12 opportunity-subscription">
-
 	<div class="col-12 opportunity-subscription__info">
 		<p class="title">
 			<?= i::__("Período de inscrição") ?>
@@ -65,7 +66,7 @@ $this->import('
 					<?= i::__("Fazer inscrição") ?>
 				</button>
 				<div v-if="processing" class="col-12">
-					<loading :condition="processing"> <?= i::__('Fazendo inscrição') ?></loading>
+					<mc-loading :condition="processing"> <?= i::__('Fazendo inscrição') ?></mc-loading>
 				</div>
 			</form>
 		</div>

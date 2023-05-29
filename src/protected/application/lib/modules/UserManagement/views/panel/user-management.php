@@ -2,7 +2,7 @@
 use MapasCulturais\i; 
 
 $this->import('
-    entities 
+    mc-entities 
     mc-icon
     mc-link
     panel--card-user 
@@ -27,7 +27,7 @@ $profile = $app->user->profile;
     
     <panel--entity-tabs type="user" user="" select="id,email,status,profile.{id,name,type},roles.{id,name,subsite.{id,name}}">
         <template #filters-additional="{query, entities}">
-            <entities #default="roles" type="system-role" select="name,slug">
+            <mc-entities #default="roles" type="system-role" select="name,slug">
                 <label> <?= i::__("Filtrar por função:") ?>
                 <select 
                     v-model="query['@roles']" 
@@ -41,7 +41,7 @@ $profile = $app->user->profile;
                     <option v-for="role in roles.entities" v-bind:value="role.slug">{{role.name}}</option>
                 </select>
                 </label>
-            </entities>
+            </mc-entities>
         </template>
         <template #default="{entity,moveEntity}">
             <panel--card-user :entity="entity"></panel--card-user>    

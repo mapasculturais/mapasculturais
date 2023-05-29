@@ -1,17 +1,18 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
-    entities
     entity-card
-    mapas-card
-    mc-icon
+    mc-entities
 ');
 ?>
-
 <div class="grid-12 search-list">
-    <entities :type="type" :select="select" :query="query" :order="order" :limit="limit" watch-query>
+    <mc-entities :type="type" :select="select" :query="query" :order="order" :limit="limit" watch-query>
         <template #header="{entities}">
             <div class="col-3 search-list__filter">
                 <div class="search-list__filter--filter">
@@ -68,5 +69,5 @@ $this->import('
                 </div>
             </div>
         </template>
-    </entities>
+    </mc-entities>
 </div>
