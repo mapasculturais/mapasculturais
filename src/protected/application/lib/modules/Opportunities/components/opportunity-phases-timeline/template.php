@@ -8,7 +8,6 @@ use MapasCulturais\i;
 
 $this->import('
     mc-link
-    modal
 ');
 ?>
 <section :class="['timeline', {'center': center}, {'big': big}]">
