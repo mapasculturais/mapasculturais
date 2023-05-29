@@ -18,13 +18,18 @@ não encontrada.') ?></label>
             </div>
 
         </div>
-        <div class="message-error">
-            <label class="text"><?= i::__('Essa página não existe mais ou mudou de endereço. Mas não se preocupe, 
-        existem muitas outras páginas para conhecer aqui no Mapas.') ?></label>
-        </div>
-        <div class="btn">
+        <div class="error-footer">
 
-            <button class="button button--primary btn-error"><label class="btn__label"></label><?= i::__('Voltar para a página inicial') ?></label></button>
+            <div class="message-error">
+                <label class="text"><br><?= i::__('Essa página não existe mais ou mudou de endereço.') ?></br></label> 
+                <label class="text">
+                    <?= i::__('Mas não se preocupe, existem muitas outras páginas para conhecer aqui no Mapas.') ?></label>
+                </label>
+            </div>
+            <div class="btn">
+
+                <button class="button button--primary btn-error"><label class="btn__label"></label><?= i::__('Voltar para a página inicial') ?></label></button>
+            </div>
         </div>
     </div>
 
