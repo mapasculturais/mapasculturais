@@ -55,8 +55,6 @@ $this->import('
                                 <label class="options"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="optional" /> <?= i::_e('Opcional') ?> </label>
                             </div>
                         </div>
-                        <entity-field :entity="entity" prop="registrationLimit" classes="col-12"></entity-field>
-                        <entity-field :entity="entity" prop="registrationLimitPerOwner" classes="col-12"></entity-field>
                     </div>
                 </template>
             </mc-card>
