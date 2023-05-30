@@ -51,6 +51,8 @@ class Opportunity extends EntityController {
             if($parent){
                 $this->entityClassName = get_class($parent);   
             }
+        } else {
+            $this->errorJson(['objectType' => [i::__('A entidade é obrigatória')]]);
         }
 
 
