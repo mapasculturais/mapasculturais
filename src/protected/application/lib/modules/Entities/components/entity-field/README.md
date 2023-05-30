@@ -54,11 +54,4 @@ $this->import('entity-field');
 
 <!-- utilização com restrição de data -->
 <entity-field :entity="entity" classes="col-12" prop="createTimestamp" :min-date="2012-01-01" :max-date="2012-02-01"></entity-field>
-
-<!-- utilizacao com checkbox -->
-<entity-field :entity="entity" prop="autoPublish" :autosave="300" checkbox hideRequired hideLabel>
-    <template #checkboxLabel>
-        <?= i::__("Publicar resultados automaticamente"); ?>
-    </template>
-</entity-field>
 ```
