@@ -27,7 +27,8 @@ use \MapasCulturais\App;
  *
  * The template files for this controller is located in the folder themes/active/views/{$controller_id}/
  *
- *
+ * @property string $layout
+ * 
  * @property-read string $action
  *
  * @property-read array $data URL + GET + POST + PUT + DELETE data
@@ -90,6 +91,8 @@ abstract class Controller{
     
     public $method = null;
 
+    protected $_layout = 'default';
+
     
     /**
      * Array of instances of this class and all subclasses.
@@ -128,7 +131,6 @@ abstract class Controller{
         return true;
     }
 
-
     /**
      * Is this an AJAX request?
      *
@@ -140,6 +142,15 @@ abstract class Controller{
     }
     
     // =================== GETTERS ================== //
+
+    /**
+     * Returns the controller layout
+     * 
+     * @return string 
+     */
+    public function getLayout() {
+        return $this->_layout;
+    }
 
     /**
      * Returns the URL based vars passed in URL after the action name (not by GET).
@@ -202,14 +213,10 @@ abstract class Controller{
     /**
      * Set the layout to use to render the template.
      *
-     * This method sets the layout in the view object.
-     *
-     * @see \MapasCulturais\View::setLayout()
-     *
      * @param string $layout
      */
     public function setLayout($layout){
-        App::i()->view()->layout = $layout;
+        $this->_layout = $layout;
     }
 
     /**
@@ -221,8 +228,6 @@ abstract class Controller{
         $this->_urlData = $args;
         $this->data = $args + App::i()->request()->params();
     }
-
-
 
 
     /**
