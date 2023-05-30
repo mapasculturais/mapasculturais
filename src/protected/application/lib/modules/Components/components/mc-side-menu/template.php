@@ -10,9 +10,9 @@ $this->import('
     mc-icon
 ');
 ?>
-<div v-if="showList()">
-    <div :class="['mc-side-menu', {'isOpen': isOpen}]">
-        <button class="mc-side-menu__button" @click="toggleMenu()">
+<div class="mc-side-menu" v-if="showList()">
+    <div :class="['mc-side-menu__container', {'isOpen': isOpen}]">
+        <button class="act-button" @click="toggleMenu()">
             <label class="label">{{textButton }}</label>
             <div class="icon">
                 <mc-icon v-if="!isOpen" name="arrow-right-ios"></mc-icon>
@@ -23,13 +23,8 @@ $this->import('
         <template v-if="isOpen">
             <div class="find">
                 <div class="content">
-
-                    <div class="find-text">
-                        <input type="text" v-model="keywords">
-                        <div class="icon">
-                            <mc-icon name="search"></mc-icon>
-                        </div>
-                    </div>
+                    <input type="text" v-model="keywords">
+                    
                     <button class="button-filter button--primary" @click="filterKeywordExec()">
                         <mc-icon name="filter"></mc-icon>
                         <label class="button-label"><?= i::__('Filtrar') ?></label>
