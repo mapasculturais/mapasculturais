@@ -152,7 +152,7 @@ $this->breadcrumb = [
                         <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                         <permission-publish :entity="entity"></permission-publish>
                         <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
-                        <entity-parent-edit :entity="entity" classes="col-12" type="space" editable label="<?php i::esc_attr_e('Adicionar Supra Espaço')?>"></entity-parent-edit>
+                        <entity-parent-edit :entity="entity" classes="col-12" type="space" label="<?php i::esc_attr_e('Adicionar Supra Espaço')?>"></entity-parent-edit>
                     </div>
                 </template>
             </mc-card>
