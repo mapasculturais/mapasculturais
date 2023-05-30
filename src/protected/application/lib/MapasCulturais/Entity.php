@@ -1213,13 +1213,12 @@ abstract class Entity implements \JsonSerializable{
         
         $hook_prefix = $this->getHookPrefix();
 
-        $repo = $app->repo($this->className);
-        if($repo->usesCache()){
-            $repo->deleteEntityCache($this->id);
-        }
-
         $app->applyHookBoundTo($this, "{$hook_prefix}.insert:after", $args);
         $app->applyHookBoundTo($this, "{$hook_prefix}.save:after", $args);
+
+        if ($this->usesPermissionCache()) {
+            $this->createPermissionsCacheForUsers([$app->user]);
+        }
     }
 
     /**
@@ -1258,11 +1257,6 @@ abstract class Entity implements \JsonSerializable{
      */
     public function postRemove($args = null){
         $app = App::i();
-        $repo = $app->repo($this->className);
-
-        if ($repo->usesCache()) {
-            $repo->deleteEntityCache($this->id);
-        }
         
         $hook_prefix = $this->getHookPrefix();
 

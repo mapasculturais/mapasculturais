@@ -1110,7 +1110,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if(!in_array($this->opportunity->status, [-1,1])){
+        if(!in_array($this->opportunity->status, [-1,1]) && !$this->opportunity->canUser('@control', $user)){
             return false;
         }
 
@@ -1173,7 +1173,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if(!in_array($this->opportunity->status, [-1,1])){
+        if(!in_array($this->opportunity->status, [-1,1]) && !$this->opportunity->canUser('@control', $user)){
             return false;
         }
 
