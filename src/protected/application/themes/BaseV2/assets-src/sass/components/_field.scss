@@ -92,11 +92,17 @@
 
     &.error {
         input, textarea, select {
-            background: 
+            background: url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(16) center / size(20);
+            border: size(2) solid #FF0000;
+        }
+
+        .dp__input_wrap {
+            input {
+                background: 
                 url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(32) center / size(20),
                 url(https://api.iconify.design/material-symbols/date-range.svg) no-repeat size(10) center/size(20);
-            border: size(2) solid #FF0000;
-            padding-right: size(45);
+                padding-right: size(45);
+            }
         }
     }
 }
