@@ -18,9 +18,6 @@ $this->import('entity-parent-edit');
 <!-- utilizaçao básica -->
 <entity-parent-edit :entity="entity" type="project"></entity-parent-edit>
 
-<!-- utilização nas telas de edição -->
-<entity-parent-edit :entity="entity" type="project" editable></entity-parent-edit>
-
 <!-- utilização com classes personalizadas -->
 <entity-parent-edit :entity="entity" classes="col-12" type="project" ></entity-parent-edit>
 
