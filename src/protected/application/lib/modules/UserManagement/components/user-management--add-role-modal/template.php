@@ -7,7 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
-    loading
+    mc-loading
     mc-entities 
     mc-modal 
 ');

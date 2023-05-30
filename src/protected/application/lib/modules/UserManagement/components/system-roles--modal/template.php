@@ -8,7 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field
-    loading
+    mc-loading
     mc-icon
     mc-modal
 ')
