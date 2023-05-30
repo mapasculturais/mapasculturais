@@ -28,7 +28,7 @@ $this->import('
 
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div class="config-phase__line col-12"></div>
-            <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-datepicker></opportunity-phase-publish-date-config>
+            <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-datepicker hide-checkbox></opportunity-phase-publish-date-config>
         </template>
     </div>
 </mc-card>
