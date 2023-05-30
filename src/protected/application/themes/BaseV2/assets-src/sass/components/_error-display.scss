@@ -202,6 +202,7 @@ body.base-v2.controller-site.action-error {
 
         .content {
             display: flex;
+            justify-content: center;
 
             @media (max-width:size(800)) {
                 display: grid;
