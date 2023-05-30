@@ -34,19 +34,6 @@ app.component('opportunity-phase-publish-date-config' , {
     },
 
     computed: {
-        isBlockPublish () {
-            const date = this.phase.evaluationMethodConfiguration?.evaluationTo || this.phase.registrationTo;
-            return !!date ? date.isFuture() : false;
-        },
-        msgAutoPublish () {
-            return this.text('publicacao_automatica');
-        },
-        msgPublishDate () {
-            return this.text('publicacao_com_data') + ' ' + this.phase.publishTimestamp?.format({ dateStyle: 'full', timeStyle: 'long'});
-        },
-        msgPublishDateAuto () {
-            return this.text('publicacao_com_data_automatica') + ' ' + this.phase.publishTimestamp?.format({ dateStyle: 'full', timeStyle: 'long'});
-        },
         minDate () {
             return this.phase.evaluationTo?._date || this.phase.registrationTo?._date;
         },
@@ -68,11 +55,7 @@ app.component('opportunity-phase-publish-date-config' , {
             }
         },
         isPublished() {
-            let _actualDate = new Date();
-            if (this.lastPhase.publishTimestamp?._date < _actualDate) {
-                return true;
-            }
-            return false;
+            return this.firstPhase.status > 0;
         },
     },
 

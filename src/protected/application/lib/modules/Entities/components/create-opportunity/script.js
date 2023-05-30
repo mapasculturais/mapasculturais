@@ -80,6 +80,14 @@ app.component('create-opportunity', {
             this.entity = null;
             this.entityTypeSelected = null;
         }, 200);
-    }
+    },
+
+    hasObjectTypeErrors() {
+        return !this.entity.ownerEntity && this.entity.__validationErrors?.objectType;
+    },
+
+    getObjectTypeErrors() {
+        return this.hasObjectTypeErrors() ? this.entity.__validationErrors?.objectType : [];
+    },
 },
 });

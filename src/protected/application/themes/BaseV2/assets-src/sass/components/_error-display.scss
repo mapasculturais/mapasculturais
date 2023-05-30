@@ -17,12 +17,183 @@ body.base-v2.controller-site.action-error {
         padding: size(16);
     }
 
+    &.error-404 {
+        @media (max-width: size(800)) {
+            padding: size(17);
+        }
+
+        .error-card {
+            @media (max-width: size(800)) {
+                padding: size(19) size(16) size(19) size(16);
+
+                .error-footer {
+                    .message-error {
+                        text-align: center;
+                    }
+
+                    .btn {
+                        button {
+                            padding: size(19) size(21);
+                            font-family: "Open Sans";
+                            font-style: normal;
+                            font-weight: 700;
+                            font-size: size(18);
+                            line-height: size(25);
+                            max-width: size(304);
+                        }
+                    }
+                }
+            }
+
+            .content {
+
+                .left__warning {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: size(72);
+                    line-height: size(98);
+                }
+
+                @media (max-width:size(800)) {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: size(54);
+
+                    .left__title {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: size(18);
+                        line-height: size(25);
+                    }
+
+                    .left__warning {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: size(32);
+                        line-height: size(44);
+                        max-width: size(280);
+                    }
+
+                    .right {
+                        img {
+                            max-width: size(202);
+                            max-height: size(156);
+                            width: 100%;
+                        }
+
+                    }
+                }
+
+            }
+
+            .left__content {
+                font-family: 'Open Sans';
+                font-style: normal;
+                font-weight: 700;
+                font-size: size(72);
+                line-height: size(98);
+            }
+        }
+    }
+
+    &.error-403 {
+        @media (max-width:size(1000)) {
+            &.error-page {
+                padding: size(16) size(16) size(53) size(16)
+            }
+        }
+
+        .error-card {
+            padding: size(127) size(138) size(199) 138size();
+
+            @media (max-width: size(1000)) {
+                padding: size(24) size(16) size(53) 16size();
+
+                .content {
+                    gap: size(49);
+                    display: flex;
+                    flex-direction: column-reverse;
+
+                    .left {
+                        display: flex;
+                        align-items: center;
+
+                        &__content {
+                            text-align: center;
+                        }
+
+                        &__title,
+                        &__message {
+                            font-family: 'Open Sans';
+                            font-style: normal;
+                            font-weight: 700;
+                            font-size: size(24);
+                            line-height: size(28);
+                        }
+                    }
+                }
+
+                .btn {
+                    justify-content: center;
+                    display: flex;
+                    align-items: center;
+
+                    button {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: size(18);
+                        line-height: size(25);
+                        max-width: size(304);
+                    }
+                }
+            }
+        }
+
+        .content {
+            gap: size(49);
+
+
+
+            .left {
+                max-width: size(592);
+
+                &__content {
+                    line-height: size(25);
+                }
+            }
+        }
+
+        .btn {
+            @media (max-width:size(500)) {
+
+                padding-top: size(32);
+            }
+
+            button {
+                padding: size(24) size(26);
+                font-family: "Open Sans";
+                font-style: normal;
+                font-weight: 700;
+                font-size: 1.5rem;
+                line-height: 1.75rem;
+                max-width: size(387);
+            }
+        }
+    }
+
+
+
     .error-card {
-        padding: 75px 55px;
+        padding: size(75) size(55);
         background: var(--mc-high-300);
 
         .message-error {
-            padding: 24px 0 16px 0;
+            padding: size(24) 0 size(16) 0;
         }
 
         @media (max-width:size(800)) {
@@ -41,37 +212,23 @@ body.base-v2.controller-site.action-error {
                 display: flex;
                 flex-direction: column;
                 gap: size(23);
-                max-width: 560px;
+                max-width: size(560);
 
                 &__content {
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 600;
-                    font-size: 72px;
-
-                    padding-top: size(9);
-
-
+                    font-size: size(18);
                 }
 
-                &.error-404 {
-                    &__content {
-
-                        font-family: 'Open Sans';
-                        font-style: normal;
-                        font-weight: 700;
-                        font-size: 72px;
-                        line-height: 98px;
-                    }
-                }
 
                 &__title {
                     padding-top: size(24);
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 700;
-                    font-size: 40px;
-                    line-height: 54px;
+                    font-size: size(40);
+                    line-height: size(54);
                 }
 
                 &__message {
@@ -121,20 +278,18 @@ body.base-v2.controller-site.action-error {
 
                     margin: 0 auto;
 
-                    button {
-                        max-height: size(72);
-                        max-width: size(280);
 
-                        button {
-                            padding: size(24) size(19);
-                            font-size: size(24);
-                        }
+                    button {
+                        max-width: size(280);
+                        max-height: size(72);
+                        padding: size(24) size(19);
+                        font-size: size(24);
 
                     }
                 }
 
                 button {
-                    padding: 19px 33px;
+                    padding: size(19) size(33);
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 700;

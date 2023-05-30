@@ -11,7 +11,7 @@ $this->import('
 ')
 ?>
 <div class="field" :class="[{error: hasErrors}, classes]" :style="checkbox ? { flexDirection: 'row' } : {}">
-    <label class="field__title" v-if="!hideLabel" :for="propId">
+    <label class="field__title" v-if="!hideLabel && !is('checkbox')" :for="propId">
         <slot>{{label || description.label}}</slot>
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
     </label>
@@ -52,13 +52,14 @@ $this->import('
             </div>
         </template>
 
+        <template v-if="is('checkbox')">
+            <label>
+                <input :id="propId" type="checkbox" :disabled="disabled" :checked="value" @click="change($event)" />
+                <slot>{{label || description.label}}</slot>
+            </label>
+        </template>
+
         <template v-if="is('boolean')">
-            <template v-if="checkbox">
-                <label >
-                    <input type="checkbox" :disabled="disabled" :checked="value" @click="change($event)" />
-                    <slot name="checkboxLabel"><?= i::__("Ativo") ?></slot>
-                </label>
-            </template>
             <select v-else :value="value" :id="propId" :name="prop" @input="change($event)">
                 <option :value='true' :selected="value"> <?= i::_e('Sim')?> </option>
                 <option :value='false' :selected="!value"> <?= i::_e('Não')?>  </option>

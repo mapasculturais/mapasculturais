@@ -143,7 +143,6 @@ class Module extends \MapasCulturais\Module{
             $nav_items['opportunities']['items'] = [
                 ['route' => 'panel/opportunities', 'icon' => 'opportunity', 'label' => i::__('Minhas oportunidades')],
                 ['route' => 'panel/registrations', 'icon' => 'opportunity', 'label' => i::__('Minhas inscrições')],
-                ['route' => 'panel/accountability', 'icon' => 'opportunity', 'label' => i::__('Prestações de contas')],
             ];
         });
 
