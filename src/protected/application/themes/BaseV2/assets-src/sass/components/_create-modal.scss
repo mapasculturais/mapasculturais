@@ -75,6 +75,10 @@
                             pointer-events: none;
                         }
                     }
+
+                    &--error {
+                        border: 1px solid var(--mc-error);
+                    }
                 }
             }
         }

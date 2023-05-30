@@ -14,9 +14,9 @@ $this->import('
 ');
 ?>
 <mc-modal :title="modalTitle" classes="create-modal create-opportunity-modal" button-label="Criar Oportunidade" @open="createEntity()" @close="destroyEntity()">
-    <template v-if="entity && !entity.id" #default>
+    <template v-if="entity && !entity.id" #default="modal">
         <label><?php i::_e('Crie uma oportunidade com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
-        <div class="create-modal__fields">
+        <form @submit.prevent="createDraft(modal)" class="create-modal__fields">
             <entity-field :entity="entity" hide-required :editable="true" label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type"></entity-field>
             <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Título") ?> prop="name"></entity-field>
             <small class="field__error" v-if="areaErrors">{{areaErrors.join(', ')}}</small>
@@ -26,7 +26,7 @@ $this->import('
                 <div class="select-list__item">
                     <select-entity type="project" @select="setEntity($event)" openside="down-right">
                         <template #button="{ toggle }">
-                            <label class="inner">
+                            <label class="inner" :class="{'inner--error': hasObjectTypeErrors()}">
                                 <span class="itemLabel">
                                     <input v-model="entityTypeSelected" @click="toggle()" type="radio" name="inputName" value="project" />
                                     <span><?php i::_e('Projeto') ?> </span>
@@ -40,7 +40,7 @@ $this->import('
                 <div class="select-list__item">
                     <select-entity type="event" @select="setEntity($event)" openside="down-right">
                         <template #button="{ toggle }">
-                            <label class="inner">
+                            <label class="inner" :class="{'inner--error': hasObjectTypeErrors()}">
                                 <span class="itemLabel">
                                     <input v-model="entityTypeSelected" @click="toggle()" type="radio" name="inputName" value="event" />
                                     <span><?php i::_e('Evento') ?> </span>
@@ -54,7 +54,7 @@ $this->import('
                 <div class="select-list__item">
                     <select-entity type="space" @select="setEntity($event)" openside="down-right">
                         <template #button="{ toggle }">
-                            <label class="inner">
+                            <label class="inner" :class="{'inner--error': hasObjectTypeErrors()}">
                                 <span class="itemLabel">
                                     <input v-model="entityTypeSelected" @click="toggle()" type="radio" name="inputName" value="space" />
                                     <span><?php i::_e('Espaço') ?> </span>
@@ -68,7 +68,7 @@ $this->import('
                 <div class="select-list__item">
                     <select-entity type="agent" @select="setEntity($event)" openside="down-right">
                         <template #button="{ toggle }">
-                            <label class="inner">
+                            <label class="inner" :class="{'inner--error': hasObjectTypeErrors()}">
                                 <span class="itemLabel">
                                     <input v-model="entityTypeSelected" @click="toggle()" type="radio" name="inputName" value="agent" />
                                     <span><?php i::_e('Agente') ?> </span>
@@ -80,6 +80,8 @@ $this->import('
                     </select-entity>
                 </div>
             </div>
+
+            <small v-if="hasObjectTypeErrors()" class="field__error">{{getObjectTypeErrors().join('; ')}}</small>
 
             <div v-if="entity.ownerEntity" class="create-modal__fields--selected">
                 <label class="create-modal__fields--selected-label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></label>
@@ -105,7 +107,7 @@ $this->import('
             </div>
 
             <entity-field :entity="entity" hide-required v-for="field in fields" :prop="field"></entity-field>
-        </div>
+        </form>
     </template>
 
     <template v-if="entity?.id" #default>
