@@ -48,17 +48,17 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
     <opportunity-header :opportunity="entity.opportunity">
         <template #footer>
             <mc-summary-evaluate></mc-summary-evaluate>
-            <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
-                <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
-            </mc-side-menu>
         </template>  
         <template v-if="entity.opportunity.currentUserPermissions['@control']" #opportunity-header-info-end>
                 <h4><?= i::__('Avaliador: ') ?><?= $userEvaluator->profile->name ?? "" ?></h4>
         </template>
-
     </opportunity-header>
-    <div class="registration__content">
 
+    <div class="registration__content">
+        <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
+            <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
+        </mc-side-menu>
+        
         <mc-container>
             <main class="grid-12">
                 <div class="col-12 registration-info">
