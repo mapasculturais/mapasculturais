@@ -4,6 +4,19 @@
     &.action-index {
         background: linear-gradient(90deg, white, white 50%, var(--mc-gray-100) 50%, var(--mc-gray-100));
     }
+
+    &.action-agents,
+    &.action-spaces,
+    &.action-projects,
+    &.action-opportunities,
+    &.action-events {
+        .panel {
+            .tabs-component__buttons {
+                gap: size(40);
+            }
+        }
+    }
+
 }
 
 
@@ -60,7 +73,7 @@
         }
     }
 
-   
+
 
     &__row {
         margin: size(32);
@@ -260,11 +273,9 @@
             }
 
 
-            &-before {
-            }
+            &-before {}
 
-            &-after {
-            }
+            &-after {}
 
         }
 
