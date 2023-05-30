@@ -15,14 +15,18 @@ use MapasCulturais\i;
                     <label><?= i::__(' A página que você está tentando acessar é particular.') ?></label>
                     <label> <br><?= i::__('Faça login com outra conta ou solicite acesso.') ?></br></label>
                 </div>
+                <div class="error-footer">
+                    <div class="btn">
+                        <button class="button button--primary btn-error"><label class="btn__label"><?= i::__('Voltar para a página inicial') ?></label></button>
+                    </div>
+                </div>
             </div>
             <div class="right">
                 <img src="<?php $this->asset('/img/error403.png', true, true) ?>">
             </div>
         </div>
-        <div class="btn">
-            <button class="button button--primary btn-error"><label class="btn__label"></label><?= i::__('Voltar para a página inicial') ?></label></button>
-        </div>
     </div>
 
 </div>
+
+
