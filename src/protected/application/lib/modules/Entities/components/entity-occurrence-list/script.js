@@ -23,13 +23,17 @@ app.component('entity-occurrence-list', {
     },
 
     data() {
-        return {}
+        
+        return {
+            showMap: false,
+        }
     },
 
     methods: {
         toggleMap(event) {
-            const occurrenceMap = event.target.parentElement.parentElement.nextSibling;
-            occurrenceMap.classList.toggle('showMap');
+            this.showMap = !this.showMap;
+            // const occurrenceMap = event.target.parentElement.parentElement.nextSibling;
+            // occurrenceMap.classList.toggle('showMap');
         },
 
         formatPrice(price) {
