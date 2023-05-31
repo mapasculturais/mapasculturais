@@ -36,7 +36,7 @@ $this->import('
 </template>
 
 <slot v-if="showLoadMore()" name="load-more" :entities="entities">
-    <div class="search-list__loadMore">
+    <div class="col-12 search-list__loadMore">
         <mc-loading :condition="entities.loadingMore"></mc-loading>
         <button class="button--large button button--primary-outline" v-if="!entities.loadingMore" @click="loadMore()"><?php i::_e('Carregar Mais') ?></button>
     </div>
