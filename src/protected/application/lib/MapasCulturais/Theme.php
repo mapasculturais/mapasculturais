@@ -91,8 +91,6 @@ abstract class Theme extends \Slim\View {
      */
     protected $path = null;
 
-    protected $_dict = [];
-
     abstract protected function _init();
 
     abstract function register();
@@ -188,31 +186,100 @@ abstract class Theme extends \Slim\View {
         $app->applyHookBoundTo($this, 'theme.init:after');
     }
 
-    protected function _addTexts(array $dict = []){
-        $this->_dict = array_merge($dict, $this->_dict);
-    }
+    /**
+     * Retorna um texto configurável
+     * 
+     * Quando chamada passando um $name = 'title', a função procurará o texto
+     * nas seguintes chaves de configuração respeitando a ordem:
+     * 
+     * Se for chamada no template.php de um componente chamado `component-name`
+     * - **text:controllerId.action.component-name.title**
+     * - **text:*.action.component-name.title**
+     * - **text:controllerId.*.component-name.title**
+     * - **text:component-name.title**
+     * 
+     * Se for chamada dentro do template part `layouts/parts/singles/avatar.php`
+     * - **text:controllerId.action.part(singles/avatar).title**
+     * - **text:*.action.part(singles/avatar).title**
+     * - **text:controllerId.*.part(singles/avatar).title**
+     * - **text:part(singles/avatar).title**
+     * 
+     * Se for chamada dentro do arquivo de layout `layouts/entity.php`
+     * - **text:controllerId.action.layout(entity).title**
+     * - **text:*.action.layout(entity).title**
+     * - **text:controllerId.*.layout(entity).title**
+     * - **text:layout(entity).title**
+     * 
+     * Se for chamada dentro de um arquivo de visão `views/agent/single-1.php`
+     * - **text:controllerId.action.view(agent/single-1).title**
+     * - **text:*.action.view(agent/single-1).title**
+     * - **text:controllerId.*.view(agent/single-1).title**
+     * - **text:view(agent/single-1).title**
+     * 
+     * **Não encontrando nenhuma configuração, a função retornará o texto padrão**
+     * 
+     * @param string $name 
+     * @param string $default_localized_text 
+     * 
+     * @return string 
+     */
+    function text(string $name, string $default_localized_text) {
+        $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,1);
+        $caller_filename = $bt[0]['file'];
 
-    function dict($key, $print = true){
-        if(!$this->_dict){
-            $class = get_called_class();
-            while($class !== __CLASS__){
-                if(!method_exists($class, '_getTexts'))
-                    throw new \Exception ("_getTexts method is required for theme classes and is not present in {$class} class");
+        error_log($caller_filename);
 
-                $this->_addTexts($class::_getTexts());
-                $class = get_parent_class($class);
+        $keys = [];
+
+        // TEMPLATE PART
+        if(preg_match("#layouts/parts/(.*?)\.php$#", $caller_filename, $matches)){
+            $match = $matches[1];
+            $keys = [
+                "text:controllerId.action.part($match).title",
+                "text:*.action.part($match).title",
+                "text:controllerId.*.part($match).title",
+                "text:part($match).title",
+            ];
+
+        // LAYOUT
+        }elseif(preg_match("#layouts/([^/]*?)\.php$#", $caller_filename, $matches)) {
+            $match = $matches[1];
+            $keys = [
+                "text:controllerId.action.layout({$match}).{$name}",
+                "text:*.action.layout({$match}).{$name}",
+                "text:controllerId.*.layout({$match}).{$name}",
+                "text:layout({$match}).{$name}",
+            ];
+
+        // VIEWS
+        }elseif(preg_match("#views/([^/]*?)\.php$#", $caller_filename, $matches)) {
+            $match = $matches[1];
+            $keys = [
+                "text:controllerId.action.view({$match}).{$name}",
+                "text:*.action.view({$match}).{$name}",
+                "text:controllerId.*.view({$match}).{$name}",
+                "text:view({$match}).{$name}",
+            ];
+
+        // COMPONENTS
+        } else if (preg_match("#components/([^/]+)/[^/]+.php#", $caller_filename, $matches)) {
+            $match = $matches[1];
+            $keys = [
+                "text:controllerId.action.{$match}.{$name}",
+                "text:*.action.{$match}.{$name}",
+                "text:controllerId.*.{$match}.{$name}",
+                "text:{$match}.{$name}",
+            ];
+        }
+        $app = App::i();
+        foreach($keys as $key) {
+            $app->log->debug('text >> ' . $key);
+            if($text = $app->_config[$key] ?? false) {
+                return $text;
             }
         }
-        $text = '';
-        if(key_exists($key, $this->_dict)){
-            $text = $this->_dict[$key];
-        }
 
-        if($print){
-            echo $text;
-        }else{
-            return $text;
-        }
+        return $default_localized_text;
     }
 
     /**
@@ -611,7 +678,7 @@ abstract class Theme extends \Slim\View {
             }
         }
 
-        if(preg_match_all('#\{\{dict:([^\}]+)\}\}#', $markdown, $matches)){
+        if(method_exists($this, 'dict') && preg_match_all('#\{\{dict:([^\}]+)\}\}#', $markdown, $matches)){
             foreach($matches[0] as $i => $tag){
                 $markdown = str_replace($tag, $this->dict(trim($matches[1][$i]), false), $markdown);
             }
