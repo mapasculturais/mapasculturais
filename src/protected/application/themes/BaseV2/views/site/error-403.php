@@ -2,6 +2,9 @@
 
 use MapasCulturais\i;
 
+$this->import('
+    mc-link
+');
 ?>
 
 
@@ -17,7 +20,7 @@ use MapasCulturais\i;
                 </div>
                 <div class="error-footer">
                     <div class="btn">
-                        <button class="button button--primary btn-error"><label class="btn__label"><?= i::__('Voltar para a página inicial') ?></label></button>
+                        <mc-link route="panel/index" class="button button--primary btn-error"><label class="btn__label"><?= i::__('Voltar para a página inicial') ?></label></mc-link>
                     </div>
                 </div>
             </div>
@@ -28,5 +31,3 @@ use MapasCulturais\i;
     </div>
 
 </div>
-
-

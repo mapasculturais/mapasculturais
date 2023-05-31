@@ -1,5 +1,10 @@
 <?php
+
 use MapasCulturais\i;
+
+$this->import('
+    mc-link
+');
 ?>
 
 
@@ -19,7 +24,9 @@ Tente novamente após alguns minutos..') ?></label>
                     </div>
                     <div class="btn">
 
-                        <button class="button button--primary btn-error"><label class="btn__label"><?= i::__('Voltar para a página inicial') ?></label></button>
+                        <mc-link route="panel/index" class="button button--primary btn-error"><label class="btn__label"><?= i::__('Voltar para a página inicial') ?></label></mc-link>
+
+
                     </div>
                 </div>
             </div>
