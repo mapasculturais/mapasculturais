@@ -126,6 +126,9 @@
         display: flex;
         transition: all 0.2s ease-in-out;
         padding: size(8) size(16);
+        font-size: 14px;
+        font-weight: 600;
+        font-family: 'Open Sans';
         text-decoration: none;
 
         &:focus,
