@@ -1668,15 +1668,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             return 1;
         }
         
-        if(field.conditional){
-            var requiredFieldName = field.conditionalField;
-            var requeredFieldValue = field.conditionalValue;
-
-            if($scope.entity[requiredFieldName] == requeredFieldValue){
-                return 2;
-            }
-        }
-
         return false;
     }
 
