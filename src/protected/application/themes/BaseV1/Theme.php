@@ -24,6 +24,8 @@ class Theme extends MapasCulturais\Theme {
         'x-editable' => 'jquery-editable-dev-1.5.2'
     );
 
+    protected $_dict = [];
+
     // The default fields that are queried to display the search results both on map and list modes
     public $searchQueryFields = array('id','singleUrl','name','subTitle','type','shortDescription','terms','project.name','project.singleUrl, user, owner.userId'); //user funciona bem para agente e outras entidade, não creio que seja a melhor opção.
 
@@ -33,6 +35,33 @@ class Theme extends MapasCulturais\Theme {
 
     static function getThemeFolder() {
         return __DIR__;
+    }
+
+    protected function _addTexts(array $dict = []){
+        $this->_dict = array_merge($dict, $this->_dict);
+    }
+
+    function dict($key, $print = true){
+        if(!$this->_dict){
+            $class = get_called_class();
+            while($class !== __CLASS__){
+                if(!method_exists($class, '_getTexts'))
+                    throw new \Exception ("_getTexts method is required for theme classes and is not present in {$class} class");
+
+                $this->_addTexts($class::_getTexts());
+                $class = get_parent_class($class);
+            }
+        }
+        $text = '';
+        if(key_exists($key, $this->_dict)){
+            $text = $this->_dict[$key];
+        }
+
+        if($print){
+            echo $text;
+        }else{
+            return $text;
+        }
     }
 
     static function getDictGroups(){

@@ -14,10 +14,10 @@ $this->import('
 <div class="home-opportunities">
 	<div class="home-opportunities__header">
 		<div class="home-opportunities__header title">
-			<label> <?php i::_e('Oportunidades do momento')?> </label>
+			<label> <?= $this->text('title', i::__('Oportunidades do momento'))?> </label>
 		</div>        
 		<div class="home-opportunities__header description">
-			<label> <?php i::_e('Cadastre-se, participe de editais e oportunidade e concorra aos benefícios sem sair de casa')?> </label>
+			<label> <?= $this->text('description', i::__('Cadastre-se, participe de editais e oportunidade e concorra aos benefícios sem sair de casa'))?> </label>
 		</div>
 	</div>    
 	<div class="home-opportunities__content">
