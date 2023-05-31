@@ -1874,4 +1874,10 @@ $$
         __exec("ALTER TABLE registration_field_configuration ADD conditional_value  VARCHAR(255);");
         return false;
     },
+    "Adiciona novas coluna na tabela registration_file_configuration" => function() use ($conn){
+        __exec("ALTER TABLE registration_file_configuration ADD conditional  BOOLEAN;");
+        __exec("ALTER TABLE registration_file_configuration ADD conditional_field  VARCHAR(255);");
+        __exec("ALTER TABLE registration_file_configuration ADD conditional_value  VARCHAR(255);");
+        return false;
+    },
 ] + $updates ;
