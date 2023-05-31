@@ -1,9 +1,9 @@
 @use '../settings/mixins' as *;
 
 .mc-side-menu {
+    max-width: size(1824) !important;
     position: sticky;
     top: size(40);
-    margin: unset !important;
     z-index: 1;
 
     &__container {
