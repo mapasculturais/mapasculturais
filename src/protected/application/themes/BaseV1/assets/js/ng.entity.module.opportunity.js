@@ -325,7 +325,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         title: null,
         description: null,
         required: false,
-        categories: []
+        categories: [],
+        conditional : false,
+        conditionalField : null,
+        conditionalValue : null,
     };
 
     var fieldConfigurationSkeleton = {
