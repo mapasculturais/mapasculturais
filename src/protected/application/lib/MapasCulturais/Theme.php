@@ -48,12 +48,6 @@ abstract class Theme extends \Slim\View {
     public $controller;
 
     /**
-     * The layout to use when rendering the template.
-     * @var string
-     */
-    protected $_layout = 'default';
-
-    /**
      * The template that this view is rendering.
      * @var string
      */
@@ -237,7 +231,7 @@ abstract class Theme extends \Slim\View {
      * @param string $name
      */
     public function setLayout($name){
-        $this->_layout = $name;
+        $this->controller->layout = $name;
     }
 
     /**
@@ -296,13 +290,15 @@ abstract class Theme extends \Slim\View {
             $$k = $this->data->get($k);
         }
 
-        if ($this->controller){
-            $this->bodyClasses[] = "controller-{$this->controller->id}";
-            $this->bodyClasses[] = "action-{$this->controller->action}";
-        }
-
-	if (isset($entity))
+        $controller = $this->controller;
+        
+        $this->bodyClasses[] = "controller-{$controller->id}";
+        $this->bodyClasses[] = "action-{$controller->action}";
+        $this->bodyClasses[] = "layout-{$controller->layout}";
+        
+	    if(isset($entity)){
             $this->bodyClasses[] = 'entity';
+        }
 
         // render the template
         $__templatePath = $this->resolveFilename('views', $__template_filename);
@@ -317,7 +313,7 @@ abstract class Theme extends \Slim\View {
 
         $TEMPLATE_CONTENT = $this->partialRender($__template_name, $this->data);
 
-        $__layout_filename = strtolower(substr($this->_layout, -4)) === '.php' ? $this->_layout : $this->_layout . '.php';
+        $__layout_filename = strtolower(substr($controller->layout, -4)) === '.php' ? $controller->layout : $controller->layout . '.php';
 
         // render the layout with template
         $__layoutPath = $this->resolveFilename('layouts', $__layout_filename);
@@ -329,11 +325,11 @@ abstract class Theme extends \Slim\View {
             return $output;
         });
 
-        $app->applyHookBoundTo($this, 'view.renderLayout(' . $this->_layout . '):before', ['template' => $__template_name]);
-
+        $app->applyHookBoundTo($this, 'view.renderLayout(' . $controller->layout . '):before', ['template' => $__template_name]);
+        
         include $__layoutPath;
 
-        $app->applyHookBoundTo($this, 'view.renderLayout(' . $this->_layout . '):after', ['template' => $__template_name]);
+        $app->applyHookBoundTo($this, 'view.renderLayout(' . $controller->layout . '):after', ['template' => $__template_name]);
 
         $__html = ob_get_clean();
 

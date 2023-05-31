@@ -1,264 +1,249 @@
 @use '../settings/mixins' as *;
 
 .mc-side-menu {
-    max-width: size(125);
-    display: flex;
-    flex-direction: column;
-    box-shadow: 2px 3px 4px -1px rgb(0 0 0 / 16%);
-    border-radius: 0px 4px 4px 0px;
-    position: fixed;
-    z-index: 100;
-    top: size(350);
-    max-height: size(800);
-
-    &__button {
-        border: 1px solid var(--mc-gray-100);
-        padding: size(13) size(18);
-        width: size(125);
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: size(15);
-        background-color: var(--mc-white);
-
-        .label {
-            font-family: 'Open Sans';
-            font-style: normal;
-            font-size: size(14);
-            font-weight: 700;
-            line-height: size(19);
-            color: var(--mc-primary-500);
-            width: size(74);
-        }
-
-        .icon {
-            .iconify {
-                font-size: size(14);
-                color: var(--mc-primary-500);
-
-            }
-        }
-    }
+    position: sticky;
+    top: size(40);
+    margin: unset !important;
+    z-index: 1;
 
     &__container {
-        background-color: var(--mc-white);
-        border-top: 1px solid var(--mc-low-300);
-    }
+        width: size(140);
+        display: flex;
+        flex-direction: column;
+        box-shadow: 2px 3px 4px -1px rgb(0 0 0 / 16%);
+        border-radius: 0px 4px 4px 0px;
+        position: absolute;
+        max-height: size(800);
+        transition: width .5s;
 
-    &.isOpen {
-        width: 100%;
-        max-width: size(311);
-
-        .find {
-            border-top: 1px solid var(--mc-gray-100);
-            padding: size(29) size(16) size(50) size(16);
+        .act-button {
+            border: 1px solid var(--mc-gray-100);
+            padding: size(13) size(18);
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: size(15);
             background-color: var(--mc-white);
+            justify-content: space-between;
 
-            .content {
-                display: flex;
-                gap: size(5);
+            .label {
+                font-family: 'Open Sans';
+                font-style: normal;
+                font-size: size(14);
+                font-weight: 700;
+                line-height: size(19);
+                color: var(--mc-primary-500);
+            }
 
-                .find-text {
+            .icon {
+                .iconify {
+                    font-size: size(14);
+                    color: var(--mc-primary-500);
+                }
+            }
+        }
+
+        &.isOpen {
+            width: size(311);
+
+            .find {
+                border-top: 1px solid var(--mc-gray-100);
+                padding: size(29) size(16) size(50) size(16);
+                background-color: var(--mc-white);
+
+                .content {
+                    display: flex;
+                    gap: size(5);
+                    align-items: center;
+
                     input[type="text"] {
                         position: relative;
                         border-radius: size(69);
                         height: size(40);
                         border: size(1) solid var(--mc-gray-100);
+                        background: url(https://api.iconify.design/ant-design/search-outlined.svg) no-repeat calc(100% - size(10)) center/size(20);
+                        width: 100%;
+                        padding: size(12) size(30) size(12) size(20);
                     }
 
-                    svg {
-
-                        top: 107px;
-                        position: absolute;
-                        right: 129px;
-                    }
-                }
-
-                .button-filter {
-                    max-width: size(100);
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    width: size(100);
-                    height: size(36);
-                    border-radius: size(4);
-                    border: size(2) solid var(--mc-primary-500);
-                    color: var(--mc-white);
-                    gap: size(12);
-
-                    label {
-                        font-family: 'Open Sans';
-                        font-style: normal;
-                        font-weight: 700;
-                        font-size: size(14);
-                        line-height: sie(19);
-                    }
-
-                    svg {
-                        font-size: size(16);
+                    .button-filter {
+                        max-width: size(100);
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        width: size(100);
+                        height: size(36);
+                        border-radius: size(4);
+                        border: size(2) solid var(--mc-primary-500);
                         color: var(--mc-white);
-                        width: size(16);
-                        height: size(16);
+                        gap: size(12);
+
+                        label {
+                            font-family: 'Open Sans';
+                            font-style: normal;
+                            font-weight: 700;
+                            font-size: size(14);
+                            line-height: sie(19);
+                        }
+
+                        svg {
+                            font-size: size(16);
+                            color: var(--mc-white);
+                            width: size(16);
+                            height: size(16);
+                        }
                     }
                 }
             }
-        }
 
-        .label-evaluation {
-            &__check {
-                margin-top: size(15);
-                display: flex;
-                flex-direction: row;
-                gap: size(8);
+            .label-evaluation {
+                &__check {
+                    margin-top: size(15);
+                    display: flex;
+                    flex-direction: row;
+                    gap: size(8);
 
-                &--pending {
-                    background: #FFFFFF;
-                    /* sombra nv 01 */
-
-                    box-shadow: 0px 4px 4px -3px rgba(0, 0, 0, 0.16);
-                    border-radius: 0px 4px 4px 0px;
-
-                    input[type="checkbox"] {
-                        background: var(--mc-white);
+                    &--pending {
+                        background: #FFFFFF;
                         box-shadow: 0px 4px 4px -3px rgba(0, 0, 0, 0.16);
                         border-radius: 0px 4px 4px 0px;
 
+                        input[type="checkbox"] {
+                            background: var(--mc-white);
+                            box-shadow: 0px 4px 4px -3px rgba(0, 0, 0, 0.16);
+                            border-radius: 0px 4px 4px 0px;
+                        }
                     }
-                }
 
-                &--label {
-
-                    font-family: 'Open Sans';
-                    font-style: normal;
-                    font-weight: 600;
-                    font-size: 16px;
-                    line-height: 22px;
+                    &--label {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: 16px;
+                        line-height: 22px;
+                    }
                 }
             }
 
-
-        }
-
-        ul.evaluation-list {
-            background-color: var(--mc-gray-300);
-            list-style: none;
-            padding: size(16);
-            margin: 0;
-            overflow-y: scroll;
-            max-height: size(880);
-
-            li.evaluation-list__card {
-                background-color: var(--mc-white);
-                border: 1px solid var(--mc-gray-300);
-                border-radius: 4px;
+            ul.evaluation-list {
+                background-color: var(--mc-gray-300);
+                list-style: none;
                 padding: size(16);
-                margin-bottom: size(16);
-               
-                a {
-                    text-decoration: none;
-                    color: unset;
+                margin: 0;
+                overflow-y: auto;
+                overflow-x: none;
+                max-height: size(880);
 
-                    .card {
-                        &-header {
-                            display: flex;
-                            flex-direction: row;
-                            gap: size(8);
-                            margin-bottom: size(12);
+                li.evaluation-list__card {
+                    background-color: var(--mc-white);
+                    border: 1px solid var(--mc-gray-300);
+                    border-radius: 4px;
+                    padding: size(16);
+                    margin-bottom: size(16);
+                
+                    a {
+                        text-decoration: none;
+                        color: unset;
 
-                            svg {
-                                font-size: (12);
-                                color: var(--mc-gray-300);
-                            }
-
-                            &__name {
-                                font-family: 'Open Sans';
-                                font-style: normal;
-                                font-weight: 700;
-                                font-size: size(14);
-                                line-height: size(19);
-                                color: var(--mc-gray-300);
-
-                            }
-                        }
-
-                        &-content {
-                            display: flex;
-                            flex-direction: row;
-                            gap: size(33);
-
-                            &__middle {
+                        .card {
+                            &-header {
                                 display: flex;
-                                flex-direction: column;
+                                flex-direction: row;
+                                gap: size(8);
+                                margin-bottom: size(12);
 
-                                .subscribe {
-                                    font-family: 'Open Sans';
-                                    font-style: normal;
-                                    font-weight: 600;
-                                    font-size: 12px;
-                                    line-height: 16px;
-                                    text-transform: uppercase;
-                                    color: var(--mc-gray-500)
+                                svg {
+                                    font-size: (12);
+                                    color: var(--mc-gray-300);
                                 }
 
-                                .value {
+                                &__name {
                                     font-family: 'Open Sans';
                                     font-style: normal;
                                     font-weight: 700;
                                     font-size: size(14);
                                     line-height: size(19);
+                                    color: var(--mc-gray-300);
+                                }
+                            }
 
+                            &-content {
+                                display: flex;
+                                flex-direction: row;
+                                gap: size(33);
+
+                                &__middle {
+                                    display: flex;
+                                    flex-direction: column;
+
+                                    .subscribe {
+                                        font-family: 'Open Sans';
+                                        font-style: normal;
+                                        font-weight: 600;
+                                        font-size: 12px;
+                                        line-height: 16px;
+                                        text-transform: uppercase;
+                                        color: var(--mc-gray-500)
+                                    }
+
+                                    .value {
+                                        font-family: 'Open Sans';
+                                        font-style: normal;
+                                        font-weight: 700;
+                                        font-size: size(14);
+                                        line-height: size(19);
+
+                                    }
                                 }
                             }
                         }
 
-
-                    }
-
-                    .card-state {
-                        padding-top: size(16);
-                        display: flex;
-                        flex-direction: column;
-                        gap: size(4);
-                        .state,
-                        &label {
-                            font-family: 'Open Sans';
-                            font-style: normal;
-                            font-weight: 600;
-                            font-size: 12px;
-                            line-height: 16px;
-                            color: var(--mc-gray-500);
-                            text-transform: uppercase;
-                        }
-
-                        button {
-                            background-color: var(--mc-gray-500);
-                            border-radius: size(64);
-                            max-width: size(100);
-                            label {
-                                color: var(--mc-white);
+                        .card-state {
+                            padding-top: size(16);
+                            display: flex;
+                            flex-direction: column;
+                            gap: size(4);
+                            .state,
+                            &label {
                                 font-family: 'Open Sans';
                                 font-style: normal;
-                                font-weight: 700;
-                                font-size: size(12);
-                                line-height: size(16);
-                                text-align: center;
-                                text-transform: capitalize;
+                                font-weight: 600;
+                                font-size: 12px;
+                                line-height: 16px;
+                                color: var(--mc-gray-500);
+                                text-transform: uppercase;
+                            }
+
+                            button {
+                                background-color: var(--mc-gray-500);
+                                border-radius: size(64);
+                                max-width: size(100);
+                                label {
+                                    color: var(--mc-white);
+                                    font-family: 'Open Sans';
+                                    font-style: normal;
+                                    font-weight: 700;
+                                    font-size: size(12);
+                                    line-height: size(16);
+                                    text-align: center;
+                                    text-transform: capitalize;
+                                }
                             }
                         }
                     }
                 }
             }
 
-        }
+            .mc-side-menu__button {
+                border: none;
+                padding: size(23) size(17);
+                width: 100%;
+                justify-content: space-between;
 
-        .mc-side-menu__button {
-            border: none;
-            padding: size(23) size(17);
-            width: 100%;
-            justify-content: space-between;
-
-            .label {
-                width: unset;
+                .label {
+                    width: unset;
+                }
             }
         }
     }

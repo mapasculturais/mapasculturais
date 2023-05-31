@@ -52,7 +52,7 @@ foreach ($agent_fields as $field) {
         $fields_options[$field] = $field;
     }
 }
-// eval(\psy\sh());
+
 ?>
 <div ng-if="field.fieldType === 'agent-owner-field'" >
     <?php i::_e('Campo do agente responsável:') ?>
