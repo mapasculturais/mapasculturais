@@ -76,7 +76,7 @@ $this->import('
                             </div>
                         </div>
                     </div>
-                    <div v-if="occurrence.space?.endereco" class="occurrence__map">
+                    <div v-if="occurrence.space?.endereco" class="occurrence__map" :class="{showMap }">
                         <entity-map :entity="occurrence.space"></entity-map>
                     </div>
                     <div v-if="editable" class="occurrence__actions">
