@@ -40,6 +40,7 @@ return [
     'app.log.query'         => env('LOG_QUERY', false),
     'app.log.hook'          => env('LOG_HOOK', false),
     'app.log.requestData'   => env('LOG_REQUESTDATA', false),
+    'app.log.texts'         => env('LOG_TEXTS', false),
     'app.log.translations'  => env('LOG_TRANSLATIONS', false),
     'app.log.apiCache'      => env('LOG_APICACHE', false),
     'app.log.apiDql'        => env('LOG_APIDQL', false),
