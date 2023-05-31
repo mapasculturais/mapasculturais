@@ -487,6 +487,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     return;
                 }
             }
+            
+            if($scope.data.newFieldConfiguration.fieldType == "section"){
+                $scope.data.newFieldConfiguration.required = false;
+            }
 
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
@@ -565,6 +569,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 conditionalValue: model.conditionalValue
 
             };
+
+            if(data.fieldType == "section"){
+                data.required = false;
+            }
 
             $scope.data.fieldSpinner = true;
             fieldService.edit(data).then(function(response){
