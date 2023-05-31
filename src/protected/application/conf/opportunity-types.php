@@ -14,6 +14,7 @@ return array(
         ),
 
         'registrationLimitPerOwner' => array(
+            'type' => 'integer',
             'label' => \MapasCulturais\i::__('Número máximo de inscrições por agente responsável'),
             'validations' => array(
                 "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições por agente responsável deve ser um número inteiro")
@@ -21,6 +22,7 @@ return array(
         ),
 
         'registrationLimit' => array(
+            'type' => 'integer',
             'label' => \MapasCulturais\i::__('Número máximo de inscrições na oportunidade'),
             'validations' => array(
                 "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições na oportunidade deve ser um número inteiro")

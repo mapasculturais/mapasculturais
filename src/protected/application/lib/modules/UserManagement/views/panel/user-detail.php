@@ -1,10 +1,8 @@
 <?php
-
 use MapasCulturais\i;
-
 $this->activeNav = 'panel/user-management';
 $this->import('
-    entity
+    mc-entity
     entity-field
     entity-seals
     mc-icon

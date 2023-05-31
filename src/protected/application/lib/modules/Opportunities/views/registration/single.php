@@ -79,7 +79,15 @@ $this->breadcrumb = [
                                         <span v-if="entity.status == 0"> <?= i::__('Não enviada') ?> </span>
                                         <span v-if="entity.status > 0"> <?= i::__('Enviada') ?> </span>
                                     </div>
-                                    <div class="sentDate"> <?= i::__('Inscrição realizada em') ?> {{entity.sentTimestamp.date('2-digit year')}} <?= i::__('as') ?> {{entity.sentTimestamp.time('long')}} </div>
+                                    <div v-if="entity.sentTimestamp" class="sentDate"> 
+                                        <?= i::__('Inscrição realizada em') ?> {{entity.sentTimestamp.date('2-digit year')}} <?= i::__('às') ?> {{entity.sentTimestamp.time('long')}} 
+                                    </div>
+                                    <div v-if="!entity.sentTimestamp" class="sentDate">
+                                        <?= i::__('Inscrição sem data de envio.') ?><br>
+                                        <small><em>
+                                            <?= i::__('Isto pode ter acontecido por uma mudança do status da inscrição, pelo gestor ou administrador da oportunidade, diretamente do status de rascunho para o de enviada, inválida, não selecionada, suplente ou selecionada sem que o botão de enviar inscrição tenha sido apertado.') ?>
+                                        </em></small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
