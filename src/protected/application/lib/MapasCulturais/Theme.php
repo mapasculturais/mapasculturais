@@ -231,13 +231,16 @@ abstract class Theme extends \Slim\View {
 
         $keys = [];
 
+        $controller_id = $this->controller->id;
+        $action = $this->controller->action;
+
         // TEMPLATE PART
         if(preg_match("#layouts/parts/(.*?)\.php$#", $caller_filename, $matches)){
             $match = $matches[1];
             $keys = [
-                "text:controllerId.action.part($match).title",
-                "text:*.action.part($match).title",
-                "text:controllerId.*.part($match).title",
+                "text:{$controller_id}.{$action}.part($match).title",
+                "text:*.{$action}.part($match).title",
+                "text:{$controller_id}.*.part($match).title",
                 "text:part($match).title",
             ];
 
@@ -245,9 +248,9 @@ abstract class Theme extends \Slim\View {
         }elseif(preg_match("#layouts/([^/]*?)\.php$#", $caller_filename, $matches)) {
             $match = $matches[1];
             $keys = [
-                "text:controllerId.action.layout({$match}).{$name}",
-                "text:*.action.layout({$match}).{$name}",
-                "text:controllerId.*.layout({$match}).{$name}",
+                "text:{$controller_id}.{$action}.layout({$match}).{$name}",
+                "text:*.{$action}.layout({$match}).{$name}",
+                "text:{$controller_id}.*.layout({$match}).{$name}",
                 "text:layout({$match}).{$name}",
             ];
 
@@ -255,9 +258,9 @@ abstract class Theme extends \Slim\View {
         }elseif(preg_match("#views/([^/]*?)\.php$#", $caller_filename, $matches)) {
             $match = $matches[1];
             $keys = [
-                "text:controllerId.action.view({$match}).{$name}",
-                "text:*.action.view({$match}).{$name}",
-                "text:controllerId.*.view({$match}).{$name}",
+                "text:{$controller_id}.{$action}.view({$match}).{$name}",
+                "text:*.{$action}.view({$match}).{$name}",
+                "text:{$controller_id}.*.view({$match}).{$name}",
                 "text:view({$match}).{$name}",
             ];
 
@@ -265,15 +268,20 @@ abstract class Theme extends \Slim\View {
         } else if (preg_match("#components/([^/]+)/[^/]+.php#", $caller_filename, $matches)) {
             $match = $matches[1];
             $keys = [
-                "text:controllerId.action.{$match}.{$name}",
-                "text:*.action.{$match}.{$name}",
-                "text:controllerId.*.{$match}.{$name}",
+                "text:{$controller_id}.{$action}.{$match}.{$name}",
+                "text:*.{$action}.{$match}.{$name}",
+                "text:{$controller_id}.*.{$match}.{$name}",
                 "text:{$match}.{$name}",
             ];
         }
         $app = App::i();
         foreach($keys as $key) {
-            $app->log->debug('text >> ' . $key);
+            if ($conf = $app->_config['app.log.texts']) {
+                if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#i', $key)){
+                    $app->log->debug("text >> \033[33m{$key}\033[0m");
+                }
+            }
+
             if($text = $app->_config[$key] ?? false) {
                 return $text;
             }
