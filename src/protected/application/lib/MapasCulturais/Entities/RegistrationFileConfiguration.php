@@ -140,7 +140,10 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'template' => $this->getFile('registrationFileTemplate'),
             'groupName' => $this->fileGroupName,
             'categories' => $this->categories,
-            'displayOrder' => $this->displayOrder
+            'displayOrder' => $this->displayOrder,
+            'conditional' => $this->conditional ? true : false,
+            'conditionalField' => $this->conditionalField,
+            'conditionalValue' => $this->conditionalValue
         ];
     }
 
