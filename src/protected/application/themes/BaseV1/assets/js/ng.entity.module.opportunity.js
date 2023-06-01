@@ -491,6 +491,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 }
             }
 
+            if($scope.data.newFieldConfiguration.fieldType == "section"){
+                $scope.data.newFieldConfiguration.required = false;
+            }
+
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
 
@@ -570,6 +574,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
             };
 
+            if(data.fieldType == "section"){
+                data.required = false;
+            }
+
             $scope.data.fieldSpinner = true;
             fieldService.edit(data).then(function(response){
                 $scope.data.fieldSpinner = false;
@@ -600,6 +608,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         $scope.createFileConfiguration = function(){
             $scope.data.uploadSpinner = true;
             $scope.data.newFileConfiguration.displayOrder = $scope.data.fields.length +1;
+
+            if($scope.data.newFileConfiguration.fieldType == "section"){
+                $scope.data.newFileConfiguration.required = false;
+            }
+
             fileService.create($scope.data.newFileConfiguration).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
@@ -638,6 +651,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 template: model.template,
                 categories: model.categories.length ? model.categories : '',
             };
+
+            if(data.fieldType == "section"){
+                data.required = false;
+            }
+
             fileService.edit(data).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
