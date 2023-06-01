@@ -267,7 +267,7 @@ class Module extends \MapasCulturais\Module {
             });
 
             if ($app->mode == APPMODE_DEVELOPMENT) {
-                echo "<!-- $component -->";
+                echo "<!-- $component -->\n";
             }
 
             $app->applyHookBoundTo($this, "component({$component}):before", [&$__data, &$__template_path]);
@@ -280,7 +280,7 @@ class Module extends \MapasCulturais\Module {
             $app->applyHookBoundTo($this, "component({$component}):after", [$__data]);
             
             if ($app->mode == APPMODE_DEVELOPMENT) {
-                echo "<!-- /$component -->";
+                echo "\n<!-- /$component -->";
             }
 
             $__html = ob_get_clean();
