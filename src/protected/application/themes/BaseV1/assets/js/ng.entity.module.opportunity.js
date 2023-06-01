@@ -649,8 +649,25 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.editFileConfiguration = function(attrs) {
             $scope.data.uploadSpinner = true;
-            var model = $scope.data.fields[attrs.index],
-            data = {
+            var model = $scope.data.fields[attrs.index];
+
+            if(model.conditional ){
+                if(!model.conditionalField){
+                    MapasCulturais.Messages.error(labels['conditionMandatory']);
+                    return;
+                }
+                if(!model.conditionalValue){
+                    MapasCulturais.Messages.error(labels['fieldCondition']);
+                    return;
+                }
+            }
+
+            if(!model.conditional){
+                model.conditionalField = '';
+                model.conditionalValue = '';
+            }
+            
+            var data = {
                 id: model.id,
                 title: model.title,
                 description: model.description,
