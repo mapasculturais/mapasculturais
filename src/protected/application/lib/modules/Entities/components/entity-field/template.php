@@ -10,7 +10,7 @@ $this->import('
     entity-field-datepicker
 ')
 ?>
-<div class="field" :class="[{error: hasErrors}, classes]" :style="checkbox ? { flexDirection: 'row' } : {}">
+<div class="field" :class="[{error: hasErrors}, classes]" :style="is('checkbox') ? { flexDirection: 'row' } : {}">
     <label class="field__title" v-if="!hideLabel && !is('checkbox')" :for="propId">
         <slot>{{label || description.label}}</slot>
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
@@ -60,7 +60,7 @@ $this->import('
         </template>
 
         <template v-if="is('boolean')">
-            <select v-else :value="value" :id="propId" :name="prop" @input="change($event)">
+            <select :value="value" :id="propId" :name="prop" @input="change($event)">
                 <option :value='true' :selected="value"> <?= i::_e('Sim')?> </option>
                 <option :value='false' :selected="!value"> <?= i::_e('Não')?>  </option>
             </select>
