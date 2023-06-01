@@ -29,7 +29,7 @@ app.component('mc-side-menu', {
     data() {
         return {
             evaluations: [],
-            isOpen: false,
+            isOpen: window.matchMedia('(min-width: 120rem)').matches ? true : false,
             pending: false,
             keywords: "",
             timeOut: null,
