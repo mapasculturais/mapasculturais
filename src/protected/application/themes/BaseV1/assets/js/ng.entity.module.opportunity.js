@@ -657,6 +657,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 required: model.required,
                 template: model.template,
                 categories: model.categories.length ? model.categories : '',
+                conditional: model.conditional ? true : false,
+                conditionalField: model.conditionalField,
+                conditionalValue: model.conditionalValue
             };
 
             if(data.fieldType == "section"){
