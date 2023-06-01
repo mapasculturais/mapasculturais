@@ -51,7 +51,9 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
             }
             ?>
         
-            <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
+            <div ng-init="field = data.newFieldConfiguration">
+                <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
+            </div>
 
             <p ng-if="data.categories.length > 1">
                 <small><?php i::_e("Selecione em quais categorias este campo é utilizado");?>:</small><br>
@@ -64,7 +66,9 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
             <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files" position="right" title="<?php i::esc_attr_e("Adicionar anexo");?>" cancel-label="<?php i::esc_attr_e("Cancelar");?>" submit-label="<?php i::esc_attr_e("Criar");?>" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
                 <input type="text" ng-model="data.newFileConfiguration.title" placeholder="<?php i::esc_attr_e("Nome do anexo");?>"/>
                 <textarea ng-model="data.newFileConfiguration.description" placeholder="<?php i::esc_attr_e("Descrição do anexo");?>"></textarea>
-                <?php $this->part('singles/opportunity-registrations--fields--file-require');?>
+                <div ng-init="field = data.newFileConfiguration">
+                    <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
+                </div>
                 <p ng-if="data.categories.length > 1">
                     <small><?php i::_e("Selecione em quais categorias este anexo é utilizado");?>:</small><br>
                     <label><input type="checkbox" onclick="if (!this.checked)
