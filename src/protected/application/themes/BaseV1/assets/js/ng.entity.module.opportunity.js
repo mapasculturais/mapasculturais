@@ -412,7 +412,14 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldsOptionalLabel: labels['optionalLabel'],
             categories: MapasCulturais.entity.registrationCategories
         };
-
+        
+        $scope.allowedFieldCondition = function(type){
+            let notAllowed = ['section', 'file'];
+            if(!notAllowed.includes(type.fieldType)){
+                return true;
+            }
+            return false;
+        }
 
         $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
 
