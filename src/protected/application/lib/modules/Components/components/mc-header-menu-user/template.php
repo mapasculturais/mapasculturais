@@ -15,19 +15,21 @@ $this->import('
 ?>
 <?php $this->applyTemplateHook('header-menu-user', 'before') ?>
 <div class="mc-header-menu-user">
-    <?php $this->applyTemplateHook('header-menu-user', 'begin') ?>
+    <!-- <?php $this->applyTemplateHook('header-menu-user', 'begin') ?> -->
     <!-- Menu desktop -->
     <?php $this->applyTemplateHook('header-menu-user--desktop', 'before'); ?>
-    <mc-popover openside="down-left" class="mc-header-menu-user__desktop">
+    <mc-popover openside="down-left">
         <template #button="{ toggle }">
-            <a class="mc-header-menu-user__user" @click="toggle()">
-                <div class="mc-header-menu-user__user--name">
+        <div class="mc-header-menu-user__desktop">
+            <a class="user" @click="toggle()">
+                <div class="user__name">
                     <?= i::_e('Minha conta') ?>
                 </div>
-                <div class="mc-header-menu-user__user--avatar">
+                <div class="user__avatar">
                     <user-profile-avatar></user-profile-avatar>
                 </div>
             </a>
+        </div>
         </template>
         <template #default="popover">
             <?php $this->applyTemplateHook('header-menu-user--desktop', 'before') ?>
@@ -58,11 +60,11 @@ $this->import('
     <div class="mc-header-menu-user__mobile">
         <?php $this->applyTemplateHook('header-menu-user--mobile', 'begin'); ?>
         <div class="mc-header-menu-user__mobile--button">
-            <a href="#main-app" class="mc-header-menu-user__user" @click="toggleMobile()">
-                <div class="mc-header-menu-user__user--name">
+            <a href="#main-app" class="user" @click="toggleMobile()">
+                <div class="user__name">
                     <?= i::_e('Minha conta') ?>
                 </div>
-                <div class="mc-header-menu-user__user--avatar">
+                <div class="user__avatar">
                     <user-profile-avatar></user-profile-avatar>
                 </div>
             </a>
