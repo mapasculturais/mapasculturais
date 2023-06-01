@@ -9,10 +9,10 @@
     "devDependencies": {
         "fast-glob": "^3.2.12",
         "laravel-mix": "^6.0.49",
-        "postcss": "^8.4.16",
+        "postcss": "^8.4.24",
         "resolve-url-loader": "^5.0.0",
-        "sass": "^1.54.9",
+        "sass": "^1.62.1",
         "sass-loader": "^12.6.0",
-        "webpack": "^5.74.0"
+        "webpack": "^5.85.0"
     }
 }
