@@ -15,7 +15,7 @@ $this->import('
 ?>
 <?php $this->applyTemplateHook('header-menu-user', 'before') ?>
 <div class="mc-header-menu-user">
-    <!-- <?php $this->applyTemplateHook('header-menu-user', 'begin') ?> -->
+    <?php $this->applyTemplateHook('header-menu-user', 'begin') ?>
     <!-- Menu desktop -->
     <?php $this->applyTemplateHook('header-menu-user--desktop', 'before'); ?>
     <mc-popover openside="down-left">
