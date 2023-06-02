@@ -1236,6 +1236,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                     $scope.validateRegistration().success(function(){
                         $scope.scrollToError();
                     });
+                }).error(function(){
+                    $scope.validateRegistration().success(function(){
+                        $scope.scrollToError();
+                    });
                 });
             });
         }
