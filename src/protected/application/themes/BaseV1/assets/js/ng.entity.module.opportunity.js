@@ -325,7 +325,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         title: null,
         description: null,
         required: false,
-        categories: []
+        categories: [],
+        conditional : false,
+        conditionalField : null,
+        conditionalValue : null,
     };
 
     var fieldConfigurationSkeleton = {
@@ -409,7 +412,14 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldsOptionalLabel: labels['optionalLabel'],
             categories: MapasCulturais.entity.registrationCategories
         };
-
+        
+        $scope.allowedFieldCondition = function(type){
+            let notAllowed = ['section', 'file'];
+            if(!notAllowed.includes(type.fieldType)){
+                return true;
+            }
+            return false;
+        }
 
         $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
 
@@ -488,6 +498,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 }
             }
             
+            if($scope.data.newFieldConfiguration.fieldType == "section"){
+                $scope.data.newFieldConfiguration.required = false;
+            }
+
             if($scope.data.newFieldConfiguration.fieldType == "section"){
                 $scope.data.newFieldConfiguration.required = false;
             }
@@ -604,6 +618,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         $scope.createFileConfiguration = function(){
             $scope.data.uploadSpinner = true;
             $scope.data.newFileConfiguration.displayOrder = $scope.data.fields.length +1;
+
+            if($scope.data.newFileConfiguration.fieldType == "section"){
+                $scope.data.newFileConfiguration.required = false;
+            }
+
             fileService.create($scope.data.newFileConfiguration).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
@@ -633,15 +652,40 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.editFileConfiguration = function(attrs) {
             $scope.data.uploadSpinner = true;
-            var model = $scope.data.fields[attrs.index],
-            data = {
+            var model = $scope.data.fields[attrs.index];
+
+            if(model.conditional ){
+                if(!model.conditionalField){
+                    MapasCulturais.Messages.error(labels['conditionMandatory']);
+                    return;
+                }
+                if(!model.conditionalValue){
+                    MapasCulturais.Messages.error(labels['fieldCondition']);
+                    return;
+                }
+            }
+
+            if(!model.conditional){
+                model.conditionalField = '';
+                model.conditionalValue = '';
+            }
+            
+            var data = {
                 id: model.id,
                 title: model.title,
                 description: model.description,
                 required: model.required,
                 template: model.template,
                 categories: model.categories.length ? model.categories : '',
+                conditional: model.conditional ? true : false,
+                conditionalField: model.conditionalField,
+                conditionalValue: model.conditionalValue
             };
+
+            if(data.fieldType == "section"){
+                data.required = false;
+            }
+
             fileService.edit(data).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
@@ -1189,8 +1233,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             });
 
             $('#editable-entity .js-validade-registration').click(function(e) {
-                $scope.validateRegistration();
-                $scope.scrollToError();
+                $scope.saveRegistration().success(function(){
+                    $scope.validateRegistration().success(function(){
+                        $scope.scrollToError();
+                    });
+                }).error(function(){
+                    $scope.validateRegistration().success(function(){
+                        $scope.scrollToError();
+                    });
+                });
             });
         }
     }else{
@@ -1199,7 +1250,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.saveRegistration = function () {
        return RegistrationService.updateFields($scope.data.editableEntity).success(function(){
-            MapasCulturais.Messages.success(labels['changesSaved']);
        }).error(function(req, status){
             if(status == 400){
                 MapasCulturais.Messages.success(labels['changesSaved']);
