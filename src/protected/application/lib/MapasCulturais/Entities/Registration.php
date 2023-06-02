@@ -847,8 +847,15 @@ class Registration extends \MapasCulturais\Entity
                 continue;
             }
 
+            $field_required = $rfc->required;
+            if($rfc->conditional){
+                $_fied_name = $rfc->conditionalField;
+                $_fied_value = $rfc->conditionalValue;
+                $field_required = $this->$_fied_name == $_fied_value && $rfc->required;
+            }
+
             $errors = [];
-            if($rfc->required){
+            if($field_required){
                 if(!isset($this->files[$rfc->fileGroupName])){
                     $errors[] = \MapasCulturais\i::__('O arquivo é obrigatório.');
                 }
@@ -871,20 +878,13 @@ class Registration extends \MapasCulturais\Entity
 
             $field_name = $field_prefix . $field->id;
             $field_required = $field->required;
-            if(isset($metadata_definition->config['registrationFieldConfiguration']->config['require'])){
-                $cond_require =  $metadata_definition->config['registrationFieldConfiguration']->config['require'];
-
-                if ($cond_require['condition']) {
-
-                    if(is_object($cond_require)){
-                        $cond_require = (array) $cond_require;
-                    }
-                    
-                    $_fied_name = isset($cond_require['field']) ? $cond_require['field'] : null;
-                    $_fied_value = isset($cond_require['value']) ? $cond_require['value'] : null;
-        
-                    $field_required = $_fied_name && $this->$_fied_name == $_fied_value;
-                }
+            
+            if($metadata_definition->config['registrationFieldConfiguration']->conditional){
+                $conf =  $metadata_definition->config['registrationFieldConfiguration'];
+              
+                $_fied_name = $conf->conditionalField;
+                $_fied_value = $conf->conditionalValue;
+                $field_required = $this->$_fied_name == $_fied_value && $field->required;
             }
 
             $errors = [];
