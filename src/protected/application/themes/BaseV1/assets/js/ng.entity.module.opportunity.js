@@ -1245,7 +1245,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.saveRegistration = function () {
        return RegistrationService.updateFields($scope.data.editableEntity).success(function(){
-            MapasCulturais.Messages.success(labels['changesSaved']);
        }).error(function(req, status){
             if(status == 400){
                 MapasCulturais.Messages.success(labels['changesSaved']);
