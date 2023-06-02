@@ -24,12 +24,12 @@ $this->import('
 			<strong><?= i::__('O prazo de inscrição se encerrou.') ?></strong> <?= i::__('Não é mais possível enviar uma inscrição') ?> <strong><?= i::__('“Não enviada”.') ?></strong>
 		</mc-alert>
 
-		<mc-alert v-if="registrationStatus == 'open' && !registrationsLimit" type="warning">
-			<strong><?= i::__('Você possui inscrições não enviadas.') ?></strong> <?= i::__('Fique atento ao período das inscrições para enviá-las dentro do prazo. ') ?>
+		<mc-alert v-if="registrationStatus == 'open' && registrationsLimitPerUser" type="warning">
+			<strong><?= i::__('O limite de inscrições por usuário foi atingido.') ?></strong> <?= i::__('Não é mais possível enviar uma inscrição') ?> <strong><?= i::__('“Não enviada”.') ?></strong>
 		</mc-alert>
 
-		<mc-alert v-if="registrationsLimit" type="warning">
-			<?= i::__('O limite de inscrições nessa oportunidade foi atingido.') ?>
+		<mc-alert v-if="registrationStatus == 'open' && !registrationsLimitPerUser" type="warning">
+			<strong><?= i::__('Você possui inscrições não enviadas.') ?></strong> <?= i::__('Fique atento ao período das inscrições para enviá-las dentro do prazo. ') ?>
 		</mc-alert>
 	</div>
 	<div class="opportunity-subscription-list__content col-12 grid-12">

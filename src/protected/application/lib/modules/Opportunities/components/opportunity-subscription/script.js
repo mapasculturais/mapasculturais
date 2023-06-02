@@ -37,9 +37,6 @@ app.component('opportunity-subscription' , {
             phases = $MAPAS.opportunityPhases;
         } 
 
-        const registrations = $MAPAS.config.opportunitySubscriptionList.registrations;
-        const totalRegistrations = Object.keys(registrations).length;
-
         return {
             agent,
             category: null,
@@ -50,8 +47,8 @@ app.component('opportunity-subscription' , {
             entitiesLength: $MAPAS.config.opportunitySubscription.agents.length,
             processing: false,
             phases,
-            registrations,
-            totalRegistrations,
+            totalRegistrations: $MAPAS.config.opportunitySubscription.totalRegistrations,
+            totalRegistrationsPerUser: $MAPAS.config.opportunitySubscription.totalRegistrationsPerUser,
         }
     },
 
@@ -65,8 +62,10 @@ app.component('opportunity-subscription' , {
                 description = this.text('resultado publicado');
             } else if (!this.dateStart) {
                 description = this.text('inscrições indefinidas');
-            } else if (this.registrationsLimit) {
+            } else if (this.registrationLimit) {
                 description = this.text('limite de inscrições');
+            } else if (this.registrationLimitPerOwner) {
+                description = this.text('limite de inscrições por usuário');
             } else {
                 switch (registrationStatus) {
                     case 'open':
@@ -104,8 +103,11 @@ app.component('opportunity-subscription' , {
             }
             return false;
         },
-        registrationsLimit() {
+        registrationLimit() {
             return this.totalRegistrations >= this.entity.registrationLimit;
+        },
+        registrationLimitPerOwner() {
+            return this.totalRegistrationsPerUser >= this.entity.registrationLimitPerOwner;
         },
         startAt() {
             return this.dateStart?.date('2-digit year');
