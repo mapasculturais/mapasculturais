@@ -3,6 +3,16 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+[unreleased]
+## Novas Funcionalidades
+- Implementa novo método de avaliação EvaluationMethodQualification
+- Implementa opção para condicionar campos do tipo a nexos
+## Melhorias
+- Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
+- Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
+- Ajusta estrutura de condicionalidade de campo criando colunas específicas na tabela registration_field_configuration
+- Não obriga mais um campos ser obrigatorio para ser condicionado a outro campo
 ## [5.6.19] - 2023-05-25
 ### Correções
 - Cria pasta DoctrineProxies durante o build, corrindo redeploy da aplicação que estava quebrado por falta da pasta
@@ -37,13 +47,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias 
 - adiciona MailHog no ambiente de desenvolvimento para teste dos envios
-
-[unreleased]
-## Novas Funcionalidades
-- Implementa novo método de avaliação EvaluationMethodQualification
-## Melhorias
-- Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
-- Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
 
 ## [5.6.17] - 2023-05-18
 ### Correções
