@@ -15,7 +15,7 @@ app.component('opportunity-subscription-list' , {
 
     data() {
         const registrations = $MAPAS.config.opportunitySubscriptionList.registrations;
-        const totalRegistrations = Object.keys(registrations).length;
+        const totalRegistrations = $MAPAS.config.opportunitySubscriptionList.totalRegistrations;
         return {
             registrations,
             totalRegistrations,
@@ -39,8 +39,8 @@ app.component('opportunity-subscription-list' , {
 
             return false;
         },
-        registrationsLimit() {
-            return this.totalRegistrations >= this.opportunity.registrationLimit;
+        registrationsLimitPerUser() {
+            return this.totalRegistrations >= this.opportunity.registrationLimitPerOwner;
         },
     }
 });
