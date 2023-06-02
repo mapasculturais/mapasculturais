@@ -53,7 +53,6 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
             foreach ($definitions as $def) {
                 $this->part($def->configTemplate);
             }
-            $this->part('singles/opportunity-registrations--fields--field-require');
             ?>
         
             <div ng-init="field = data.newFieldConfiguration">
