@@ -1232,8 +1232,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             });
 
             $('#editable-entity .js-validade-registration').click(function(e) {
-                $scope.validateRegistration();
-                $scope.scrollToError();
+                $scope.saveRegistration().success(function(){
+                    $scope.validateRegistration().success(function(){
+                        $scope.scrollToError();
+                    });
+                });
             });
         }
     }else{
