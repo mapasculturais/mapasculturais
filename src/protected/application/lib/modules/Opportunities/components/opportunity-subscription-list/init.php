@@ -21,7 +21,8 @@ $q = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Registration::class, [
 
 $q->addFilterByApiQuery($qa, 'id', 'owner');
 
+$registrations = $q->getFindResult();
+$totalRegistrations = $q->getCountResult();
 
-$result = $q->getFindResult();
-
-$this->jsObject['config']['opportunitySubscriptionList']['registrations'] = $result;
+$this->jsObject['config']['opportunitySubscriptionList']['registrations'] = $registrations;
+$this->jsObject['config']['opportunitySubscriptionList']['totalRegistrations'] = $totalRegistrations;
