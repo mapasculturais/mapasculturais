@@ -19,6 +19,7 @@ use MapasCulturais\Definitions\Metadata as MetadataDefinition;
  * @property-read boolean $autoPublish
  * @property \DateTime $publishTimestamp
  * @property-read boolean $publishedRegistrations
+ * @property-read int $totalRegistrations 
  * 
  * 
  * @property string $name
@@ -513,7 +514,29 @@ abstract class Opportunity extends \MapasCulturais\Entity
         });
     }
 
+    /**
+     * Retorna total de inscrições na oportunidade
+     * @return integer
+     */
+    function getTotalRegistrations(){
+        $app = App::i();
 
+        $params = ["opp" => $this];
+
+        $query = $app->em->createQuery("
+            SELECT 
+                COUNT(o) AS totalRegistrations
+            FROM 
+                MapasCulturais\\Entities\\Registration o 
+            WHERE 
+                o.opportunity = :opp");
+
+        $query->setParameters($params);
+
+        $result = $query->getArrayResult();
+
+        return $result[0]['totalRegistrations'];
+    }
 
     function setRegistrationFrom($date){
         if($date instanceof \DateTime){
