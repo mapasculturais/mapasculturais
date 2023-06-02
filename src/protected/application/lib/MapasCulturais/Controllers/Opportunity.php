@@ -2,6 +2,7 @@
 namespace MapasCulturais\Controllers;
 
 use Exception;
+use MapasCulturais\API;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
@@ -534,54 +535,17 @@ class Opportunity extends EntityController {
     }
 
     function _getOpportunityRegistrations($opportunity, array $registration_ids){
-        $app = App::i();
-
         if (empty($registration_ids)) {
             return [];
         }
 
         sort($registration_ids);
-
-        $registration_ids = implode(',', $registration_ids);
-
-        $committee = $this->_getOpportunityCommittee($opportunity->id);
-        $params = [
-            'opp' => $opportunity,
-            'aids' => array_map(function ($el){ return $el['id']; }, $committee),
-        ];
-        $q = $app->em->createQuery("
-            SELECT
-                r.id AS registration, a.userId AS user, a.id AS valuer
-            FROM
-                MapasCulturais\Entities\RegistrationPermissionCache p
-                JOIN p.owner r WITH r.opportunity = :opp
-                JOIN p.user u
-                INNER JOIN u.profile a WITH a.id IN (:aids)
-            WHERE 
-                p.action = 'viewUserEvaluation' AND
-                r.id IN ({$registration_ids})
-
-        ");
-
-        $q->setParameters($params);
-
-        $permissions = $q->getArrayResult();
-
-        $registrations_by_valuer = [];
-
-        foreach($permissions as $p){
-            if(!isset($registrations_by_valuer[$p['valuer']])){
-                $registrations_by_valuer[$p['valuer']] = [];
-            }
-            $registrations_by_valuer[$p['valuer']][$p['registration']] = true;
-        }
-
-        $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
-        $registration_idsSplittedUsingComma = implode(',', $registration_ids);
         if($registration_ids){
             $rdata = [
                 '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name,previousPhaseRegistrationId',
-                'id' => "IN({$registration_idsSplittedUsingComma})"
+                'id' => API::IN($registration_ids),
+                'opportunity' => API::EQ($opportunity->id),
+                '@permissions' => 'view'
             ];
 
             foreach($this->data as $k => $v){
@@ -611,11 +575,10 @@ class Opportunity extends EntityController {
         }
 
         sort($evaluation_ids);
-        $evaluation_ids = implode(',', $evaluation_ids);
 
         $edata = [
             '@select' => 'id,result,evaluationData,registration,user,status',
-            'id' => "IN({$evaluation_ids})"
+            'id' => API::IN($evaluation_ids)
         ];
 
         foreach($this->data as $k => $v){
