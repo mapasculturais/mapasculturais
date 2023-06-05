@@ -60,26 +60,26 @@ $this->breadcrumb = [
                             </div>        
                             <div class="col-12">
                                 <div v-if="entity.descricaoSonora || entity.traducaoLibras" class="acessibility">
-                                    <span class="acessibility__label"><?php i::_e("Acessibilidade"); ?></label>
+                                    <span class="acessibility__label"><?php i::_e("Acessibilidade"); ?></span>
                                     <div v-if="entity.descricaoSonora" class="acessibility__audio">
-                                        <span><?php i::_e("Libras:"); ?></span>{{entity.descricaoSonora}}
+                                        <span class="title"><?php i::_e("Libras:"); ?></span> <span class="content">{{entity.descricaoSonora}}</span>
                                     </div>
                                     <div v-if="entity.traducaoLibras" class="acessibility__libras">
-                                        <span><?php i::_e("Áudio de Descrição:"); ?></span> {{entity.traducaoLibras}}
+                                        <span class="title"><?php i::_e("Áudio de Descrição:"); ?></span> <span class="content">{{entity.traducaoLibras}}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 acessibility ">
-                                <div v-if="entity.event_attendance || entity.telefonePublico || entity.registrationInfo" class="event_info__infos">
+                            <div class="col-12">
+                                <div v-if="entity.event_attendance || entity.telefonePublico || entity.registrationInfo" class=" acessibility event_info__infos">
                                     <span class="acessibility__label"><?php i::_e("Informações adicionais"); ?></span>
                                     <div v-if="entity.event_attendance" class="acessibility__attendance">
-                                        <span><?php i::_e("Total de público:"); ?></span> {{entity.event_attendance}}
+                                        <span class="title"><?php i::_e("Total de público:"); ?></span> <span class="content">{{entity.event_attendance}}</span>
                                     </div>
                                     <div v-if="entity.telefonePublico" class="acessibility__phone">
-                                        <span><?php i::_e("telefone:"); ?></span> {{entity.telefonePublico}}
+                                        <span  class="title"><?php i::_e("telefone:"); ?></span> <span class="content">{{entity.telefonePublico}}</span>
                                     </div>
                                     <div v-if="entity.registrationInfo" class="acessibility__infos">
-                                        <span><?php i::_e("Informações sobre a inscrição:"); ?></span> {{entity.registrationInfo}}
+                                        <span class="title"><?php i::_e("Informações sobre a inscrição:"); ?></span> <span class="content">{{entity.registrationInfo}}</span>
                                     </div>
                                 </div>
                             </div>
