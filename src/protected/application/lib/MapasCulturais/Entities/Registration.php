@@ -939,8 +939,15 @@ class Registration extends \MapasCulturais\Entity
                 continue;
             }
 
+            $field_required = $rfc->required;
+            if($rfc->conditional){
+                $_fied_name = $rfc->conditionalField;
+                $_fied_value = $rfc->conditionalValue;
+                $field_required = $this->$_fied_name == $_fied_value && $rfc->required;
+            }
+
             $errors = [];
-            if($rfc->required){
+            if($field_required){
                 if(!isset($this->files[$rfc->fileGroupName])){
                     $errors[] = \MapasCulturais\i::__('O arquivo é obrigatório.');
                 }
