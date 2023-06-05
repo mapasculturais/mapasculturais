@@ -1290,3 +1290,113 @@ textarea {
     gap: 5px;
     text-decoration: none;
 }
+
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  tbody tr {
+    border-spacing: 0 10px; /* Adicione a quantidade de espaçamento desejada aqui */
+  }
+
+  tbody tr:first-child {
+    border-top: none;
+  }
+
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+
+
+/* Evaluation Form */
+.action-evaluationforms hr {
+    display: none;
+}
+
+.action-evaluationforms .technical-evaluation-form table {
+    border-collapse: separate;
+    border-spacing: 0 16px;
+    border: 0;
+    margin: unset;
+    border-bottom: 1px solid #BBBBBB;
+    padding: 0 16px;
+}
+
+
+.action-evaluationforms .technical-evaluation-form table tr th,
+.action-evaluationforms .technical-evaluation-form table tr td {
+    border: none;
+}
+
+.action-evaluationforms .technical-evaluation-form table tr.title th {
+    background-color: #FFFFFF;
+    font-family: 'Open Sans';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 25px;
+    padding: 0;
+}
+
+.action-evaluationforms .technical-evaluation-form table tr.criteria td {
+    background-color: #F5F5F5;
+    vertical-align: middle;
+}
+.action-evaluationforms .technical-evaluation-form table tr.criteria td input[type=number]{
+    padding: 5.5px 10px;
+    width: 70px !important;
+}
+.action-evaluationforms .technical-evaluation-form table tr.criteria td:first-child {
+    border-radius: 4px 0 0 4px;
+    padding: 7px 0 7px 15px;
+}
+.action-evaluationforms .technical-evaluation-form table tr.criteria td:last-child {
+    border-radius: 0 4px 4px 0;
+    padding: 7px 15px 7px 0;
+}
+
+.action-evaluationforms .technical-evaluation-form table tr.subtotal {
+    background-color: #FFFFFF;
+    font-family: 'Open Sans';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 25px;
+}
+.action-evaluationforms .technical-evaluation-form table tr.subtotal td {
+    padding: 0 8px;
+}
+
+.action-evaluationforms .technical-evaluation-form .feedback {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Open Sans';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    gap: 8px;
+    line-height: 25px;
+    padding: 32px 14px;
+}
+
+.action-evaluationforms .technical-evaluation-form .total {
+    display: flex;
+    flex-wrap: wrap;
+    background: #F5F5F5;
+    gap: 16px 5px;
+    box-shadow: 0px 4px 4px -3px rgba(0, 0, 0, 0.16);
+    border-radius: 4px;
+    padding: 16px;
+    margin: 14px;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 25px;
+}
+
+.action-evaluationforms .technical-evaluation-form .total br {
+    display: none;
+}
