@@ -132,7 +132,7 @@
                 padding: size(16);
                 margin: 0;
                 overflow-y: auto;
-                overflow-x: none;
+                overflow-x: hidden;
                 max-height: size(880);
 
                 li.evaluation-list__card {
