@@ -49,12 +49,22 @@ $this->import('
                     </div>
                 </div>
             </header>
-            <?php $this->applyTemplateHook('p-user-details__seals', 'before'); ?>
+            
+            <?php $this->applyTemplateHook('seals', 'before') ?>
             <div class="p-user-detail__seals">
+                <?php $this->applyTemplateHook('seals', 'begin') ?>
                 <entity-seals :entity="entity.profile" :editable="entity.profile.currentUserPermissions?.createSealRelation"></entity-seals>
+                <?php $this->applyTemplateHook('seals', 'after') ?>
             </div>
-            <?php $this->applyTemplateHook('p-user-details__seals', 'after'); ?>
+            <?php $this->applyTemplateHook('seals', 'after') ?>
 
+            <?php $this->applyTemplateHook('config', 'before') ?>
+            <div class="account-config">
+                <?php $this->applyTemplateHook('config', 'begin') ?>
+                <user-mail :entity="entity"></user-mail>
+                <?php $this->applyTemplateHook('config', 'after') ?>
+            </div>
+            <?php $this->applyTemplateHook('config', 'after') ?>
 
             <div class="p-user-detail__property-label">
                 <h3><?= i::__('Propriedades do usuário') ?></h3>

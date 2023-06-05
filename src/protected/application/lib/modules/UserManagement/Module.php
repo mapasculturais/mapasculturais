@@ -229,22 +229,7 @@ class Module extends \MapasCulturais\Module {
             $app->view->addRequestedEntityToJs(User::class, $app->user->id);
             $this->render('my-account');
         });
-        /**
-         * Componente user-mail
-         */
-        $app->hook('template(panel.my-account.p-user-details__seals):after', function () use ($app) {
-            /** @var \MapasCulturais\Theme $this */
-            $this->part('userMail/user-mail');
-        });
-
-
-        /**
-         * Componente user -mail - user-detail
-         */
-        $app->hook('template(panel.user-detail.p-user-details__seals):after', function () use ($app) {
-            /** @var \MapasCulturais\Theme $this */
-            $this->part('userMail/user-mail');
-        });
+        
         /**
          * Página de apps
          */
