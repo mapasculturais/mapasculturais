@@ -104,10 +104,16 @@ app.component('opportunity-subscription' , {
             return false;
         },
         registrationLimit() {
-            return this.totalRegistrations >= this.entity.registrationLimit;
+            if (this.entity.registrationLimit) {
+                return this.totalRegistrations >= this.entity.registrationLimit;
+            }
+            return false;
         },
         registrationLimitPerOwner() {
-            return this.totalRegistrationsPerUser >= this.entity.registrationLimitPerOwner;
+            if (this.entity.registrationLimitPerOwner) {
+                return this.totalRegistrationsPerUser >= this.entity.registrationLimitPerOwner;
+            }
+            return false;
         },
         startAt() {
             return this.dateStart?.date('2-digit year');
