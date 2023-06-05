@@ -25,4 +25,3 @@ $registrations = $q->getFindResult();
 $totalRegistrations = $q->getCountResult();
 
 $this->jsObject['config']['opportunitySubscriptionList']['registrations'] = $registrations;
-$this->jsObject['config']['opportunitySubscriptionList']['totalRegistrations'] = $totalRegistrations;

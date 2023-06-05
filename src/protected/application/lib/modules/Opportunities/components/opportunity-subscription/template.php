@@ -22,7 +22,7 @@ $this->import('
 		</div>
 	</div>
 
-	<div v-if="isOpen && !isPublished && !registrationsLimit && !registrationLimitPerOwner" class="col-12 opportunity-subscription__subscription">
+	<div v-if="isOpen && !isPublished && !registrationLimit && !registrationLimitPerOwner" class="col-12 opportunity-subscription__subscription">
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
 		<div v-if="global.auth.isLoggedIn" class="logged">
