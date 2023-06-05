@@ -40,7 +40,10 @@ app.component('opportunity-subscription-list' , {
             return false;
         },
         registrationsLimitPerUser() {
-            return this.totalRegistrations >= this.opportunity.registrationLimitPerOwner;
+            if (this.opportunity.registrationLimitPerOwner) {
+                return this.totalRegistrations >= this.opportunity.registrationLimitPerOwner;
+            }
+            return false;
         },
     }
 });
