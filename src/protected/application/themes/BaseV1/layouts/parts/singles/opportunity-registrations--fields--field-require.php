@@ -18,7 +18,7 @@
                 <?php i::_e('Campo Relacionado') ?><br>
                 <select ng-model="field.conditionalField">
                     <option></option>
-                    <option ng-repeat="f in data.fields" ng-if="f != field" value="field_{{f.id}}">#{{f.id}} - {{f.title}}</option>
+                    <option ng-repeat="f in data.fields" ng-if="f != field && allowedFieldCondition(f)" value="field_{{f.id}}">#{{f.id}} - {{f.title}}</option>
                 </select>
             </label>
             <label class="checkbox-label" style="display:block;">
