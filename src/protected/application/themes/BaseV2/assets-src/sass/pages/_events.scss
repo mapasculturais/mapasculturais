@@ -96,23 +96,49 @@
                             line-height: size(25);
                         }
 
+                        @media (max-width: size(400)) {
+                            display: flex;
+                            flex-direction: column;
+                            gap: size(8);
+                            padding-bottom: size(8);
+
+                        }
+
                         &__audio,
                         &__libras,
                         &__phone,
                         &__infos,
                         &__attendance {
-                            align-items: center;
                             display: flex;
                             font-weight: 500;
                             font-size: size(16);
                             line-height: size(22);
                             color: var(--mc-low-700);
                             gap: 8px;
-
-                            span {
+                            .title {
                                 text-transform: uppercase;
+                                font-weight: 600;
                             }
 
+                            .content {
+                                padding-bottom: size(8);
+                            }
+                        }
+
+                        @media (max-width: size(400)) {
+
+                            &__audio,
+                            &__libras,
+                            &__phone,
+                            &__infos,
+                            &__attendance {
+                                display: flex;
+                                flex-direction: column;
+                                gap: size(8);
+                                align-items: flex-start;
+                                padding: 8px 0 0 0;
+
+                            }
                         }
 
                     }
