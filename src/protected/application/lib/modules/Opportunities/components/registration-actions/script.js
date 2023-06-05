@@ -75,6 +75,7 @@ app.component('registration-actions', {
             }
         },
         async validate() {
+            const messages = useMessages();
             await this.registration.POST('validateEntity', {}).then( success => {
                 if (success) {
                     messages.success(this.text('Validado'));
