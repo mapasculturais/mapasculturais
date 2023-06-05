@@ -9,12 +9,12 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
     <?php $this->applyTemplateHook('evaluationForm.technical', 'begin', $params); ?>
     <section ng-repeat="section in ::data.sections">
         <table>
-            <tr>
+            <tr class="title" >
                 <th colspan="2">
                     {{section.name}}
                 </th>
             </tr>
-            <tr ng-repeat="cri in ::data.criteria" ng-if="cri.sid == section.id">
+            <tr class="criteria" ng-repeat="cri in ::data.criteria" ng-if="cri.sid == section.id">
                 <td><?php echo $plugin->step ?><label for="{{cri.id}}">{{cri.title}}:</label></td>
                 <td><input id="{{cri.id}}" name="data[{{cri.id}}]" type="number" step="<?php echo $plugin->step ?>" min="{{cri.min}}" max="{{cri.max}}" ng-model="evaluation[cri.id]" class="hltip autosave" title="Configurações: min: {{cri.min}}<br>max: {{cri.max}}<br>peso: {{cri.weight}}"></td>
             </tr>
@@ -25,7 +25,7 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
         </table>
     </section>
     <hr>
-    <label>
+    <label class="feedback">
         <?php i::_e('Parecer Técnico') ?>
         <textarea name="data[obs]" ng-model="evaluation['obs']" class="autosave"></textarea>
     </label>
