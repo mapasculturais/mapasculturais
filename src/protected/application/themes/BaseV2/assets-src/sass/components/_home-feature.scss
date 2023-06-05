@@ -107,11 +107,20 @@
 				&__viewport {
 					ol {
 						li{
+							
 							justify-content: flex-start;
 							padding: 0 size(40) 0 0;
 
 							@media (max-width: size(600)) {
 								padding: 0 size(20);
+							}
+							.entity-card.portrait {
+								.user-info.with-labels{
+									text-align: left;
+									.user-info__name{
+										font-size: size(18);
+									}
+								}
 							}
 						}
 					}
