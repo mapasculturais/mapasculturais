@@ -8,7 +8,7 @@ $evaluationMethod = $definition->evaluationMethod;
 $evaluation_form_part_name = $evaluationMethod->getEvaluationFormPartName();
 $evaluation_view_part_name = $evaluationMethod->getEvaluationViewPartName();
 
-$params = ['opportunity' => $opportunity, 'entity' => $entity, 'evaluationMethod' => $evaluationMethod];
+$params = ['opportunity' => $opportunity, 'entity' => $entity, 'evaluationMethod' => $evaluationMethod, 'plugin' => $entity->evaluationMethod];
 
 $evaluation = $this->getCurrentRegistrationEvaluation($entity);
 
