@@ -4,9 +4,9 @@ use MapasCulturais\i;
 
 $this->activeNav = 'panel/my-account';
 $this->import('
-    entity
     entity-field
     entity-seals
+    mc-entity
     mc-icon
     mc-link
     panel--entity-actions
@@ -73,16 +73,5 @@ $this->import('
         <?php $this->applyTemplateHook('config', 'after') ?>
 
         <user-accepted-terms :user="entity"></user-accepted-terms>
-
-        <div class="user-function">
-            <label class="user-function__label"><?= i::__('Funções da pessoa usuária') ?></label>
-            <div class="user-function__box">
-                <label class="user-function__box--label"><?= i::__('Função de usuário em Subsite') ?> </label>
-                <div class="user-function__box--content">
-                    <label class="user-function__box--content-text">texto qualquer do subsite</label>
-                </div>
-            </div>
-        </div>
-
     </div>
 </mc-entity>

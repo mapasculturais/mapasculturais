@@ -13,13 +13,15 @@ class Module extends \MapasCulturais\Module {
     function _init() {
         $app = App::i();
 
+        $app->hook('mapas.printJsObject:before', function () {
+            $this->jsObject['EntitiesDescription']['system-role'] = Entities\SystemRole::getPropertiesMetadata();
+            $this->jsObject['EntitiesDescription']['role'] = \MapasCulturais\Entities\Role::getPropertiesMetadata();
+        });
+
         /**
          * Adiciona a descrição da entiade ao jsObject
          */
-        $app->hook('view.render(<<*>>):before', function () {
-            $this->jsObject['EntitiesDescription']['system-role'] = Entities\SystemRole::getPropertiesMetadata();
-            $this->jsObject['EntitiesDescription']['role'] = \MapasCulturais\Entities\Role::getPropertiesMetadata();
-
+        $app->hook('view.render(<<*>>):before', function () use($app) {
             $subsite_query = new ApiQuery(MapasEntities\Subsite::class, ['@select' => 'id,name']);
             $this->jsObject['subsites'] = array_merge([], $subsite_query->find());
 
@@ -73,6 +75,9 @@ class Module extends \MapasCulturais\Module {
             $permission_descriptions = [
                 'requestEventRelation' => 'O usuário poderá solicitar que o evento que está criando/editando seja relacionado aos projetos'
             ];
+            
+            $app->applyHook('module(UserManagement).permissionsLabels', [&$permission_labels]);
+            $app->applyHook('module(UserManagement).permissionsDescriptions', [&$permission_descriptions]);
 
             $entity_classes = [
                 'user' => MapasEntities\User::class,
