@@ -7,6 +7,16 @@ $files = $entity->getFiles('event-import-file');
 $url_file_example =  $app->createUrl('eventimporter','downloadExample');
 $processed_file_meta = json_decode(json_encode($app->user->profile->event_importer_processed_file), true) ?? [];
 
+usort($files, function($a, $b){
+    $dateA = $a->createTimestamp->getTimestamp();
+    $dateB = $b->createTimestamp->getTimestamp();
+
+    if ($dateA == $dateB) {
+        return 0;
+    }
+    return ($dateA > $dateB) ? -1 : 1;
+});
+
 $template = '
 <article id="file-{{id}}" class="objeto">
     <h1><a href="{{url}}" rel="noopener noreferrer">{{description}}</a></h1> 
