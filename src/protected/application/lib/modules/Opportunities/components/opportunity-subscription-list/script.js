@@ -37,5 +37,13 @@ app.component('opportunity-subscription-list' , {
 
             return false;
         },
+        registrationsOpen() {
+            for (const registration of this.registrations) {
+                if (registration.status == 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 });

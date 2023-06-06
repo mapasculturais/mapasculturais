@@ -23,8 +23,7 @@ $this->import('
 		<mc-alert v-if="registrationStatus == 'closed'" type="warning">
 			<strong><?= i::__('O prazo de inscrição se encerrou.') ?></strong> <?= i::__('Não é mais possível enviar uma inscrição') ?> <strong><?= i::__('“Não enviada”.') ?></strong>
 		</mc-alert>
-
-		<mc-alert v-if="registrationStatus == 'open'" type="warning">
+		<mc-alert v-if="registrationStatus == 'open' && registrationsOpen" type="warning">
 			<strong><?= i::__('Você possui inscrições não enviadas.') ?></strong> <?= i::__('Fique atento ao período das inscrições para enviá-las dentro do prazo. ') ?>
 		</mc-alert>
 	</div>
