@@ -567,9 +567,13 @@ abstract class Entity implements \JsonSerializable{
                 }
             }
 
+            $app = App::i();
+            $prefix = self::getHookPrefix();
+            $app->applyHook("{$prefix}.permissionsList", [&$permissions]);
+
             self::$__permissions[$class_name] = $permissions;
         }
-
+        
         return self::$__permissions[$class_name];
     }
 
