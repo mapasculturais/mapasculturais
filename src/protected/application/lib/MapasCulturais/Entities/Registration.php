@@ -1046,17 +1046,15 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function _getSpaceData(){
-        $app = App::i();
 
-        $propertiesToExport = $app->config['registration.spaceProperties'];
         $spaceRelation =  $this->getSpaceRelation(); 
 
         $exportData = [];       
         if($spaceRelation && $spaceRelation->status == \MapasCulturais\Entities\SpaceRelation::STATUS_ENABLED){
             $space = $spaceRelation->space;
-            foreach($propertiesToExport as $p){
-                $exportData[$p] = $space->$p;
-            }
+            $result =  $space->jsonSerialize();
+            unset($result['currentUserPermissions']);
+            $exportData = $result;
         }       
 
         return $exportData;
@@ -1083,20 +1081,15 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function _getAgentsData(){
-        $app = App::i();
-
-        $propertiesToExport = $app->config['registration.propertiesToExport'];
 
         $exportData = [];
 
         foreach($this->_getAgentsWithDefinitions() as $agent){
-            $exportData[$agent->definition->agentRelationGroupName] = [];
-
-            foreach($propertiesToExport as $p){
-                $exportData[$agent->definition->agentRelationGroupName][$p] = $agent->$p;
-            }
+            $result =  $agent->jsonSerialize();
+            unset($result['currentUserPermissions']);
+            $exportData[$agent->definition->agentRelationGroupName] = $result;
         }
-
+        
         return $exportData;
     }
 
