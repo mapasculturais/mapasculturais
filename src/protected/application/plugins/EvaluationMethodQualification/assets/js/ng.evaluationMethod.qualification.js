@@ -162,9 +162,14 @@
 
         $scope.subtotalSection = function (section) {
             var approved = false;
+            var hasEvaluation = false;
             for (var i in $scope.data.criteria) {
                 var cri = $scope.data.criteria[i];
                 if (cri.sid == section.id) {
+                    if($scope.evaluation[cri.id]){
+                        hasEvaluation = true;
+                    }
+
                     if ($scope.evaluation[cri.id] == labels['notApplicable'] || $scope.evaluation[cri.id] == labels['enabled']) {
                         approved = true;
                     } else {
@@ -174,7 +179,7 @@
                 }
             }
 
-            var result = approved ? labels['enabled'] : labels['disabled'];
+            var result = hasEvaluation ? (approved ? labels['enabled'] : labels['disabled']) : labels['notAvaliable'];
             $scope.data.consolidate[section.id] = result;
             return result
         };
@@ -189,7 +194,7 @@
                 }
             })
 
-            var result = approved ?  labels['enabled'] : labels['disabled'];
+            var result = Object.keys($scope.evaluation).length != 0 ? (approved ?  labels['enabled'] : labels['disabled']) : labels['notAvaliable'];
             return result
         };
 
