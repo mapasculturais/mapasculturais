@@ -121,7 +121,7 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $consolidatedResult = self::STATUS_DRAFT;
     
-    /*
+    /**
      * @var array
      *
      * @ORM\Column(name="space_data", type="json_array", nullable=true)
@@ -1045,48 +1045,60 @@ class Registration extends \MapasCulturais\Entity
         $this->opportunity->unregisterRegistrationMetadata();
     }
 
+    protected function skipFieldsEntityRelations(){
+        return [
+            "@entityType",
+            "opportunityTabName",
+            "useOpportunityTab",
+            "event_importer_processed_file",
+            "event_importer_files_processed",
+            "sentNotification",
+            "controllerId",
+            "deleteUrl",
+            "editUrl",
+            "singleUrl",
+            "lockedFields",
+            "currentUserPermissions"
+        ];
+    }
+
     protected function _getSpaceData(){
-
+        
         $spaceRelation =  $this->getSpaceRelation(); 
 
-        $exportData = [];       
-        if($spaceRelation && $spaceRelation->status == \MapasCulturais\Entities\SpaceRelation::STATUS_ENABLED){
-            $space = $spaceRelation->space;
-            $result =  $space->jsonSerialize();
-            unset($result['currentUserPermissions']);
-            $exportData = $result;
-        }       
-
-        return $exportData;
-
-       /* $app = App::i();
-
-        $spacePropertiesToExport = $app->config['registration.spaceProperties'];
-        $spaceRelation =  $this->getSpaceRelation(); 
-        //$app->repo('RegistrationSpaceRelation')->findBy(['owner'=>$this, 'status'=>]);
-        //dump($spacePropertiesToExport);
-        //var_dump($spaceRelation->status);
+        $exportData = [];
        
         if($spaceRelation && $spaceRelation->status == \MapasCulturais\Entities\SpaceRelation::STATUS_ENABLED){
             $space = $spaceRelation->space;
-            $exportData = [];
+            $result =  $space->jsonSerialize();
+            $skip_fields = $this->skipFieldsEntityRelations();
 
-            foreach($spacePropertiesToExport as $p){
-                $exportData[$p] = $space->$p;
+            foreach($skip_fields as $field ){
+                if(in_array($field,array_keys($result))){
+                    unset($result[$field]);
+                }
             }
-
-            return $exportData;
-        }
-        return null; */
+            
+            $exportData = $result;
+        }       
+        
+        return $exportData;
+      
     }
 
     protected function _getAgentsData(){
-
         $exportData = [];
 
+        $skip_fields = $this->skipFieldsEntityRelations();
         foreach($this->_getAgentsWithDefinitions() as $agent){
             $result =  $agent->jsonSerialize();
-            unset($result['currentUserPermissions']);
+
+            foreach($skip_fields as $field ){
+                if(in_array($field,array_keys($result))){
+                    unset($result[$field]);
+                }
+            }
+
             $exportData[$agent->definition->agentRelationGroupName] = $result;
         }
         
