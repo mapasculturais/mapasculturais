@@ -92,14 +92,15 @@
         &__header {
             padding: size(50) size(32) size(30);
             max-width: size(1088);
-
+            @media (max-width:size(400)){
+                padding: size(18) size(16) size(30);
+            }
             .header-top {
                 margin-bottom: size(26);
                 display: flex;
                 align-items: center;
                 flex-direction: row;
                 justify-content: space-between;
-
             }
 
             &-title {
