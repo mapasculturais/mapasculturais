@@ -1,10 +1,14 @@
 @use '../settings/mixins'as *;
 
 .controller-registration {
-
+    .opportunity-header {
+        &__content {
+            padding: size(47) size(16) size(67)  size(16);
+        }
+    }
     .registration {
         background-color: var(--mc-gray-100);
-
+        
         .container {
             gap: size(32) 2.56%;
             grid-template-columns: 74.36% 23.08%;
@@ -22,7 +26,6 @@
             margin: 0 auto;
             position: relative;
             width: 100%;
-
             padding: size(40) 0;
 
             &>* {
