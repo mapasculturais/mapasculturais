@@ -43,7 +43,7 @@ $this->import('
         </div>
         <div class="field">
             <label> <?php i::_e('Classificação Etária') ?></label>
-            <mc-multiselect :model="pseudoQuery['event:classificacaoEtaria']" :items="ageRating" title="<?php i::_e('Selecione Classificação etária')?>" hide-filter hide-button>
+            <mc-multiselect :model="pseudoQuery['event:classificacaoEtaria']" title="<?php i::_e('Classificação Etária')?>" :items="ageRating" title="<?php i::_e('Selecione Classificação etária')?>" hide-filter hide-button>
                 <template #default="{popover, setFilter}">
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" :triggers="['click']" placeholder="<?= i::esc_attr__('Selecione') ?>">
                 </template>
