@@ -152,7 +152,7 @@ $this->breadcrumb = [
                     </template>
                 </mc-card>
 
-                <mc-card>
+                <mc-card v-if="entity.relatedSpaces[0]">
                     <template #title>
                         <label> <?= i::__('Espaço Vinculado') ?> </label>
                     </template>
