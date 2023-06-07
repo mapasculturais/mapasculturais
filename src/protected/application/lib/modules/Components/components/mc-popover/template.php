@@ -22,7 +22,7 @@ $this->import('
         </template>
     </VDropdown>
 
-    <mc-modal :title="title" :classes="['popover-modal', classes]" v-if="$media('max-width: 500px')">
+    <mc-modal :title="title" teleport="body" :classes="['popover-modal', classes]" v-if="$media('max-width: 500px')">
         <template #default="modal">
             <div ref="content" class="popover__content--modal popover-form">
                 <slot  :open="modal.open" :close="modal.close" :toggle="modal.toggle" :active="modal.isOpen"></slot>
