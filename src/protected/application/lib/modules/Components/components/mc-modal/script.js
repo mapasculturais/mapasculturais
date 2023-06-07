@@ -29,6 +29,10 @@ app.component('mc-modal', {
             type: Boolean,
             default: true
         },
+        teleport: {
+            type: null,
+            default: false
+        },
     },
     methods: {
         open () {
