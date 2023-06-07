@@ -8,7 +8,6 @@ $this->import('
     search-filter-project
     search-list
     search-map
-    tabs
 ');
 
 $this->breadcrumb = [
