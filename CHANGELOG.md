@@ -3,6 +3,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.6.20] - 2023-06-06
+### Melhorias
+- define o tempo de duração das sessões para 2 horas, por padrão
+- possibilidade de configurar o tempo de duração das sessões pela variável de ambiente `SESSION_TIMEOUT`
+
 ## [5.6.19] - 2023-05-25
 ### Correções
 - Cria pasta DoctrineProxies durante o build, corrindo redeploy da aplicação que estava quebrado por falta da pasta
