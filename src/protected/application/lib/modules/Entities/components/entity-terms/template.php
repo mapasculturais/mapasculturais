@@ -42,7 +42,7 @@ $this->import('
         </template>
     </mc-popover>
 
-    <mc-multiselect v-if="!allowInsert && editable" :model="entity.terms[this.taxonomy]" :items="terms" @open="loadTerms()" #default="{popover}">
+    <mc-multiselect v-if="!allowInsert && editable" :model="entity.terms[this.taxonomy]" :title="title" :items="terms" @open="loadTerms()" #default="{popover}">
         <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
             <?php i::_e("Adicionar nova") ?>
             <mc-icon name="add"></mc-icon>
