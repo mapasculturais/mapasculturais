@@ -37,7 +37,7 @@ use MapasCulturais\i;
                             </div>
                             <div>
                                 <label> <?php i::esc_attr_e("Opções ou motivos de "); ?> <strong><?php i::esc_attr_e("inabilitação"); ?></strong></label>
-                                <textarea ng-model="data.options[cri.id]" ng-model-options='{ debounce: data.debounce }' cols="70" rows="5" ng-change="save({sections: data.sections})" placeholder="<?php i::_e(' As opções Habilidado e inabilitado já são definidas automaticamente pelo sistema') ?>"></textarea>
+                                <textarea ng-model="data.options[cri.id]" ng-model-options='{ debounce: data.debounce }' cols="70" rows="5" ng-change="save({sections: data.sections})" placeholder="<?php i::_e('As opções Habilitado ou inabilitado já são definidas automaticamente pelo sistema') ?>"></textarea>
                             </div>
                             <div>
                                 <label>
