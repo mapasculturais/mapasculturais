@@ -136,9 +136,9 @@ class Plugin extends \MapasCulturais\EvaluationMethod
 
         if(!$errors){
             foreach($data as $key => $val){
-                if($key === i::__('obs') && !trim($val)) {
-                    $errors[] = i::__('O campo Observações é obrigatório');
-                }
+                // if($key === i::__('obs') && !trim($val)) {
+                //     $errors[] = i::__('O campo Observações é obrigatório');
+                // }
             }
         }
 
