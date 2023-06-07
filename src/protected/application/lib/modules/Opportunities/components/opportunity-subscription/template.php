@@ -18,7 +18,7 @@ $this->import('
 		</p>
 
 		<div class="content">
-			<p class="content__description" v-html="infoRegistration"></p>
+			<div class="content__description" v-html="infoRegistration"></div>
 		</div>
 	</div>
 
@@ -33,7 +33,7 @@ $this->import('
 
 			<!-- Logado -->
 			<form class="logged__form grid-12" @submit.prevent>
-				<div class="col-6">
+				<div class="col-6 sm:col-12">
 					<select-entity type="agent" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)">
 						<template #button="{ toggle }">
 							<span v-if="!agent" class="fakeInput" @click="toggle()">
@@ -55,7 +55,7 @@ $this->import('
 					</select-entity>
 				</div>
 
-				<div v-if="categories" class="col-6 field">
+				<div v-if="categories" class="col-6 sm:col-12 field">
 					<select name="category" v-model="category">
 						<option value="null" disabled selected> <?= i::__('Categoria') ?> </option>
 						<option v-for="category in categories" :value="category"> {{category}} </option>
