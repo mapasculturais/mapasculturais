@@ -13,7 +13,7 @@ $this->import('
     select-entity
 ');
 ?>
-<mc-modal :title="modalTitle" classes="create-modal create-opportunity-modal" button-label="Criar Oportunidade" @open="createEntity()" @close="destroyEntity()">
+<mc-modal :title="modalTitle" classes="create-modal create-opportunity-modal" button-label="<?php i::_e('Criar Oportunidade')?>" @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.id" #default="modal">
         <label><?php i::_e('Crie uma oportunidade com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
         <form @submit.prevent="createDraft(modal)" class="create-modal__fields">
