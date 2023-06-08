@@ -1260,6 +1260,11 @@ textarea {
     padding: 8px 16px;
 }
 
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item.field-shadow {
+    box-shadow: unset;
+    border: 1px solid #000;
+}
+
 .action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div {
     display: flex;
     flex-direction: column;
@@ -1315,6 +1320,7 @@ table {
     display: none;
 }
 
+/* Technical evaluation */
 .action-evaluationforms .technical-evaluation-form table {
     border-collapse: separate;
     border-spacing: 0 16px;
@@ -1399,4 +1405,64 @@ table {
 
 .action-evaluationforms .technical-evaluation-form .total br {
     display: none;
+}
+
+/* Documentary evaluation */
+
+.action-evaluationforms .documentary-evaluation-form--field {
+    margin: 0 14px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field h6 {
+    background: #FFCF8F;
+    border-radius: 4px;
+    padding: 19px 16px;
+    text-align: center;
+    margin: 0 0 21px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field br {
+    display: none;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field label.input-label {
+    display: flex;
+    margin: 0 0 18px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field label.input-label:last-child {
+    margin: 0 0 26px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field label.input-label em {
+    color: #3E3E3E;
+    font-family: 'Open Sans';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field label.textarea-label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 0 40px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field label.textarea-label:last-child {
+    margin: 0;
+}
+
+
+/* Evaluation Valid */
+
+.action-evaluationforms .evaluation-valid {
+    padding: 14px;
+    margin: 0;
 }
