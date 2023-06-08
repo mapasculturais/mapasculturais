@@ -14,7 +14,7 @@ $this->import('
     seal-form-valid-period
 ');
 ?>
-<mc-modal :title="modalTitle" classes="create-modal" button-label="Criar Selo" @open="createEntity()" @close="destroyEntity()">
+<mc-modal :title="modalTitle" classes="create-modal" button-label="<?php i::_e('Criar Selo')?>" @open="createEntity()" @close="destroyEntity()">
      <template v-if="entity && !entity.id" #default>
          <label><?php i::_e('Crie um selo com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
          <div class="create-modal__fields">
