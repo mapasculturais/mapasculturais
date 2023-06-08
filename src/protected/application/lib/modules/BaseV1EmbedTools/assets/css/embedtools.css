@@ -1458,3 +1458,11 @@ table {
 .action-evaluationforms .documentary-evaluation-form--field label.textarea-label:last-child {
     margin: 0;
 }
+
+
+/* Evaluation Valid */
+
+.action-evaluationforms .evaluation-valid {
+    padding: 14px;
+    margin: 0;
+}
