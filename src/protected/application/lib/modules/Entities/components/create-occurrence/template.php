@@ -13,7 +13,7 @@ $this->import('
     select-entity
 ');
 ?>
-<mc-modal title="<?= i::_e('Inserir ocorrência no evento')?>" classes="create-occurrence">
+<mc-modal title="<?= i::esc_attr__('Inserir ocorrência no evento')?>" classes="create-occurrence">
     <template #default>
         <div class="grid-12">
             <div :class="['col-12', 'create-occurrence__section', {'active' : step==0}]">
