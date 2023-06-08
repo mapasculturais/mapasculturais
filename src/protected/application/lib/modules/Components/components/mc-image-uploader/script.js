@@ -68,7 +68,7 @@ app.component('mc-image-uploader', {
             } else {
                 return {
                     maxAspectRatio: 16/8,
-                    minAspectRatio: 3/4 
+                    minAspectRatio: 3/1 
                 }
             }
         },

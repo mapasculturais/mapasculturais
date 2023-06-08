@@ -9,7 +9,7 @@ use MapasCulturais\i;
 <?php $this->applyTemplateHook('entity-header', 'before'); ?>
 <header v-if="!editable" class="entity-header" :class="{ 'entity-header--no-image': !entity.files.header }">
     <?php $this->applyTemplateHook('entity-header', 'begin'); ?>
-    <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.transformations?.header?.url) }"></div>
+    <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.url) }"></div>
     <div class="entity-header__single--content">
         <div class="leftSide">
             <div class="avatar">
