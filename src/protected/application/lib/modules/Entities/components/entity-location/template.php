@@ -28,7 +28,7 @@ $this->import('
             <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Municipio"></entity-field>
             <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Estado"></entity-field>
             <div class="col-6 sm:col-12 public-location">
-                <entity-field v-if="hasPublicLocation" @change="address()" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::_e('Privacidade')?>"></entity-field>
+                <entity-field v-if="hasPublicLocation" @change="address()" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::_e('Localização pública')?>"></entity-field>
                 <label class="public-location__label col-12"><?php i::_e('Escolha se o endereço ficará público ou privado')?></label>
             </div>
         </div>
