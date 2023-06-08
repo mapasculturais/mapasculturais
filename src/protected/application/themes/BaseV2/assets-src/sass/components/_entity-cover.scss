@@ -18,7 +18,7 @@
     &__cover{
         &--img {
             align-items: center;
-            aspect-ratio: 99/16;
+            aspect-ratio: 3/1;
             background-image: var(--url);
             background-position: center;
             background-size: 100%;
@@ -93,7 +93,6 @@
 
     svg {
         color: var(--mc-gray-500);
-        font-size: 40px;
     }
 
     h5 {
