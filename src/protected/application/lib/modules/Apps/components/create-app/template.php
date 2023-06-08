@@ -13,7 +13,7 @@ $this->import('
     mc-modal 
 '); 
 ?>
-<mc-modal :title="modalTitle" classes="create-modal create-app" button-label='<php? i::_e("Criar app") ?>' @open="createEntity()" @close="destroyEntity()">
+<mc-modal :title="modalTitle" classes="create-modal create-app" button-label="<?php i::_e('Criar App')?>" @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.publicKey" #default>
         <div class="create-modal__fields">
             <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Nome ou título")?>  prop="name"></entity-field>

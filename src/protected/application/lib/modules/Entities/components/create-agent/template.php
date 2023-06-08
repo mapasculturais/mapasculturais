@@ -13,7 +13,7 @@ $this->import('
     mc-modal 
 '); 
 ?>
-<mc-modal :title="modalTitle" classes="create-modal create-agent-modal" button-label="Criar Agente" @open="createEntity()" @close="destroyEntity()">
+<mc-modal :title="modalTitle" classes="create-modal create-agent-modal" button-label="<?php i::_e('Criar Agente')?>"  @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.id" #default>
         <label><?php i::_e('Crie um agente com informações básicas')?><br><?php i::_e('e de forma rápida')?></label>
         <div class="create-modal__fields">
