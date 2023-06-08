@@ -13,7 +13,7 @@ $this->import('
     mc-modal 
 '); 
 ?>
-<mc-modal :title="modalTitle" classes="create-modal create-space-modal" button-label="Criar Espaço" @open="createEntity()" @close="destroyEntity()">
+<mc-modal :title="modalTitle" classes="create-modal create-space-modal" button-label="<?php i::_e('Criar Espaço')?>"  @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.id" #default>
         <label><?php i::_e('Crie um espaço com informações básicas')?><br><?php i::_e('e de forma rápida')?></label>
         <div class="create-modal__fields">
