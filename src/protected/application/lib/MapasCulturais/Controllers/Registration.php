@@ -244,9 +244,7 @@ class Registration extends EntityController {
             $evaluationMethod = $evaluation->evaluationMethodConfiguration;
            
             if($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo){
-                $evaluation->registration->checkPermission('evaluate');
-                $evaluation->status = RegistrationEvaluation::STATUS_SENT;
-                $evaluation->save(true);
+                $evaluation->send(true);
                 $this->json($entity);
             }
 
