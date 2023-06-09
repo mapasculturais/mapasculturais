@@ -2890,8 +2890,12 @@ class ApiQuery {
             $defaults[] = 'relatedSpaces';
         }
 
-        if($this->usesPermissionCache){
+        if ($this->usesPermissionCache){
             $defaults[] = 'currentUserPermissions';
+        }
+
+        if ($this->entityClassName == Opportunity::class) {
+            $defaults[] = 'ownerEntity.{name,shortDescription,files.avatar,terms}';
         }
 
         $properties = array_merge(
