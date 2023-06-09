@@ -46,7 +46,18 @@ $this->breadcrumb = [
 ?>
 <div class="main-app single">
   <mc-breadcrumb></mc-breadcrumb>
-  <entity-header :entity="entity"></entity-header>
+  <entity-header :entity="entity">
+    <template #metadata>
+        <dl>
+            <dt><?= i::__('Tipo') ?></dt>
+            <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
+        </dl>
+        <dl>
+            <dt><?= i::__('Opportunidade de') ?></dt>
+            <mc-link :entity="entity.ownerEntity"></mc-link>
+        </dl>
+    </template>
+  </entity-header>
 
     <mc-tabs class="tabs">
         <mc-tab label="<?= i::__('Informações') ?>" slug="info">
