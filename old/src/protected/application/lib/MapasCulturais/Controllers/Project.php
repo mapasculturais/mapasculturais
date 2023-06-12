@@ -87,7 +87,7 @@ class Project extends EntityController {
 
         $project->publishRegistrations();
 
-        if($app->request->isAjax()){
+        if($this->isAjax()){
             $this->json($project);
         }else{
             $app->redirect($app->request->getReferer());

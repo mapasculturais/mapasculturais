@@ -3,7 +3,6 @@ use MapasCulturais\i;
 $this->layout = 'panel';
 
 $this->import('
-    confirm-button
     mc-icon mc-icon
     panel--entity-tabs
     system-roles--card
@@ -18,9 +17,6 @@ $this->import('
             <div class="title">
                 <div class="title__icon default"> <mc-icon name="role"></mc-icon> </div>
                 <div class="title__title"> <?= i::_e('Funções de usuários') ?> </div>
-            </div>
-            <div class="help">
-                <a class="panel__help-link" href="#"><?=i::__('Ajuda?')?></a>
             </div>
         </div>
         <p class="panel-page__header-subtitle">

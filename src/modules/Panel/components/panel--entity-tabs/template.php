@@ -1,22 +1,28 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ */
+
 use MapasCulturais\i;
 
 $this->import('
-    tabs,tab,
+    mc-entities
+    mc-tab
+    mc-tabs
     panel--entity-card
-    entities
 ');
 
 $tabs = $tabs ?? [
     'publish' => i::esc_attr__('Publicados'),
     'draft' => i::esc_attr__('Em rascunho'),
-    'granted' => i::esc_attr__('Concedidos'),
+    'granted' => i::esc_attr__('Com permissão'),
     'archived' => i::esc_attr__('Arquivados'),
     'trash' => i::esc_attr__('Lixeira'),
 ];
 ?>
 <?php $this->applyTemplateHook('entity-tabs', 'before') ?>
-<tabs class="entity-tabs">
+<mc-tabs class="entity-tabs">
     <?php $this->applyTemplateHook('entity-tabs', 'begin') ?>
     <template #header="{ tab }">
         <mc-icon v-if="tab.slug === 'archived'" name="archive"></mc-icon>
@@ -24,8 +30,8 @@ $tabs = $tabs ?? [
         {{ tab.label }}
     </template>
     <?php foreach($tabs as $status => $label): ?>
-    <tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
-        <entities :name="type + ':<?=$status?>'" :type="type" 
+    <mc-tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
+        <mc-entities :name="type + ':<?=$status?>'" :type="type" 
             :select="select"
             :query="queries['<?=$status?>']" 
             :limit="50" 
@@ -58,10 +64,10 @@ $tabs = $tabs ?? [
                 <slot name='before-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
                 <slot v-for="entity in entities" :key="entity.__objectId" :entity="entity" :moveEntity="moveEntity">
                     <panel--entity-card :key="entity.id" :entity="entity" 
-                        @undeleted="moveEntity(entity)" 
-                        @deleted="moveEntity(entity)" 
-                        @archived="moveEntity(entity)" 
-                        @published="moveEntity(entity)"
+                        @undeleted="moveEntity(entity, $event)" 
+                        @deleted="moveEntity(entity, $event)" 
+                        @archived="moveEntity(entity, $event)" 
+                        @published="moveEntity(entity, $event)"
                         :on-delete-remove-from-lists="false"
                         >
                         <template #title="{ entity }">
@@ -97,9 +103,9 @@ $tabs = $tabs ?? [
                 </slot>
                 <slot name='after-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
            </template>
-        </entities>
-    </tab>
+        </mc-entities>
+    </mc-tab>
     <?php endforeach ?>
     <?php $this->applyTemplateHook('entity-tabs', 'end') ?>
-</tabs>
+</mc-tabs>
 <?php $this->applyTemplateHook('entity-tabs', 'after') ?>

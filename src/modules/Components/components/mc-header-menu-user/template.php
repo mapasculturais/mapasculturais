@@ -1,15 +1,14 @@
 <?php
-
 /**
- * @var MapasCulturais\Themes\BaseV2 $this
  * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
 $this->import('
+    mc-popover
     panel--nav
-    popover
     theme-logo
     user-profile-avatar
 ');
@@ -19,21 +18,22 @@ $this->import('
     <?php $this->applyTemplateHook('header-menu-user', 'begin') ?>
     <!-- Menu desktop -->
     <?php $this->applyTemplateHook('header-menu-user--desktop', 'before'); ?>
-    <popover openside="down-left" class="mc-header-menu-user__desktop">
-        <?php $this->applyTemplateHook('header-menu-user--desktop', 'begin'); ?>
+    <mc-popover openside="down-left">
         <template #button="{ toggle }">
-            <a class="mc-header-menu-user__user" @click="toggle()">
-                <div class="mc-header-menu-user__user--name">
+        <div class="mc-header-menu-user__desktop">
+            <a class="user" @click="toggle()">
+                <div class="user__name">
                     <?= i::_e('Minha conta') ?>
                 </div>
-                <div class="mc-header-menu-user__user--avatar">
+                <div class="user__avatar">
                     <user-profile-avatar></user-profile-avatar>
                 </div>
             </a>
+        </div>
         </template>
         <template #default="popover">
             <?php $this->applyTemplateHook('header-menu-user--desktop', 'before') ?>
-            <panel--nav classes="user-menu" :entity="profile">
+            <panel--nav classes="user-menu">
                 <template #begin>
                     <?php $this->applyTemplateHook('header-menu-user--desktop', 'begin') ?>
                     <ul>
@@ -45,15 +45,14 @@ $this->import('
                 </template>
 
                 <template #end>
+                    <div class="user-menu__line"></div>
                     <li><mc-link :entity='profile' icon><?= i::__('Meu Perfil') ?></mc-link></li>
                     <li><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li>
                     <?php $this->applyTemplateHook('header-menu-user--desktop', 'end') ?>
                 </template>
             </panel--nav>
-            <?php $this->applyTemplateHook('header-menu-user--desktop', 'after') ?>
         </template>
-        <?php $this->applyTemplateHook('header-menu-user--desktop', 'end'); ?>
-    </popover>
+    </mc-popover>
     <?php $this->applyTemplateHook('header-menu-user--desktop', 'after'); ?>
 
     <!-- Menu mobile -->
@@ -61,11 +60,11 @@ $this->import('
     <div class="mc-header-menu-user__mobile">
         <?php $this->applyTemplateHook('header-menu-user--mobile', 'begin'); ?>
         <div class="mc-header-menu-user__mobile--button">
-            <a href="#main-app" class="mc-header-menu-user__user" @click="toggleMobile()">
-                <div class="mc-header-menu-user__user--name">
+            <a href="#main-app" class="user" @click="toggleMobile()">
+                <div class="user__name">
                     <?= i::_e('Minha conta') ?>
                 </div>
-                <div class="mc-header-menu-user__user--avatar">
+                <div class="user__avatar">
                     <user-profile-avatar></user-profile-avatar>
                 </div>
             </a>
@@ -78,7 +77,7 @@ $this->import('
                 </a>
             </div>
             <?php $this->applyTemplateHook('header-menu-user--mobile', 'before') ?>
-            <panel--nav :entity="profile">
+            <panel--nav>
                 <template #begin>
 
                     <?php $this->applyTemplateHook('header-menu-user--mobile', 'begin') ?>

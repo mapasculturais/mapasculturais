@@ -3,7 +3,17 @@ app.component('opportunity-basic-info' , {
 
     data () {
         return {
+            phases: []
         };
+    },
+
+    async created() {
+        if($MAPAS.opportunityPhases && $MAPAS.opportunityPhases.length > 0) {
+            this.phases = $MAPAS.opportunityPhases;
+        } else {
+            const api = new OpportunitiesAPI();
+            this.phases = await api.getPhases(this.entity.id);
+        }
     },
 
     props: {
@@ -12,4 +22,12 @@ app.component('opportunity-basic-info' , {
             required: true
         }
     },
+
+
+    computed: {
+        lastPhase () {
+            const phase = this.phases.find(item => item.isLastPhase);
+            return phase;
+        }
+    }
 });

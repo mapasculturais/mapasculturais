@@ -1,12 +1,14 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
-use MapasCulturais\Definitions;
 use MapasCulturais\Entities;
-use MapasCulturais\Entities\RegistrationSpaceRelation as RegistrationSpaceRelationEntity;
+use MapasCulturais\Definitions;
 use MapasCulturais\Entities\OpportunityMeta;
+use MapasCulturais\Entities\RegistrationEvaluation;
+use MapasCulturais\Entities\RegistrationSpaceRelation as RegistrationSpaceRelationEntity;
 
 /**
  * Registration Controller
@@ -181,16 +183,74 @@ class Registration extends EntityController {
         $space = $app->repo('Space')->find($this->postData['id']);
         
         if(is_object($registrationEntity) && !is_null($space)){
-            $spaceRelation = $app->repo('SpaceRelation')->findOneBy(array('objectId'=>$registrationEntity->id, 'space'=>(array('id'=>$space->id))));
-            $spaceRelation->delete(true);
-            
-            $this->refresh();
-            $this->deleteUsersWithControlCache();
-            $this->usesPermissionCache();
-            
-            $this->json(true);
+            if ($spaceRelation = $app->repo('SpaceRelation')->findOneBy([
+                'objectId' => $registrationEntity->id, 
+                'space' => $space->id 
+            ])) {
+                $spaceRelation->delete(true);
+                $this->json(true);
+            } else {
+                $this->json(false);
+            }
+
         }        
-    }   
+    }
+
+    public function POST_reopenEvaluation()
+    {
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        if (!$this->urlData['id']) {
+            $app->pass();
+        }
+
+        $uid = isset($this->data['uid']) ? $this->data['uid'] : $app->user->id;
+        $entity = $this->repository->find($this->data['id']);
+        $user = $app->repo("User")->find($uid);
+
+        if ($evaluation = $entity->getUserEvaluation($user)) {
+
+            $today = new DateTime("now");
+            $evaluationMethod = $evaluation->evaluationMethodConfiguration;
+
+            if ($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo) {
+                $evaluation->registration->checkPermission('evaluate');
+                $evaluation->status = RegistrationEvaluation::STATUS_DRAFT;
+                $evaluation->save(true);
+                $this->json($entity);
+            }
+
+            return null;
+        }
+    }
+
+    public function POST_sendEvaluation(){
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        if(!$this->urlData['id']){
+        $app->pass();
+        }
+
+        $entity = $this->repository->find($this->data['id']);
+        $user = $app->user;
+        
+        if($evaluation = $entity->getUserEvaluation($user)){
+            
+            $today = new DateTime("now");
+            $evaluationMethod = $evaluation->evaluationMethodConfiguration;
+           
+            if($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo){
+                $evaluation->send(true);
+                $this->json($entity);
+            }
+
+            return null;
+        }
+    }
 
     public function createUrl($actionName, array $data = array()) {
         if($actionName == 'single' || $actionName == 'edit'){
@@ -323,7 +383,7 @@ class Registration extends EntityController {
         $method_name = 'setStatusTo' . ucfirst($status);
 
         if(!method_exists($registration, $method_name)){
-            if($app->request->isAjax()){
+            if($this->isAjax()){
                 $this->errorJson('Invalid status name');
             }else{
                 $app->halt(200, 'Invalid status name');
@@ -334,7 +394,7 @@ class Registration extends EntityController {
 
         $app->applyHookBoundTo($this, 'registration.setStatusTo:after', [$registration]);
 
-        if($app->request->isAjax()){
+        if($this->isAjax()){
             $this->json($registration);
         }else{
             $app->redirect($app->request->getReferer());
@@ -393,7 +453,7 @@ class Registration extends EntityController {
             $registration->cleanMaskedRegistrationFields();
             $registration->send();
 
-            if($app->request->isAjax()){
+            if($this->isAjax()){
                 $this->json($registration);
             }else{
                 $app->redirect($app->request->getReferer());
@@ -418,7 +478,7 @@ class Registration extends EntityController {
                 $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
             } else if ($this->urlData['status'] === 'draft') {
                 $evaluation = $registration->getUserEvaluation($user);
-                if (!$evaluation || !$evaluation->canUser('modify', $user)) {
+                if ($evaluation && !$evaluation->canUser('modify', $user)) {
                     $this->errorJson("User {$user->id} is trying to modify evaluation {$evaluation->id}.", 401);
                     return;
                 }
@@ -556,4 +616,24 @@ class Registration extends EntityController {
         
         $this->json(true);
     }
+
+
+  function GET_evaluation() {
+    
+    $this->requireAuthentication();
+    $app = App::i();
+
+    $entity = $app->repo('Registration')->find($this->data['id']);
+    
+    if (!$entity) {
+        $app->pass();
+    }
+
+    $valuer_user = $app->repo('User')->find($this->data['user'] ?? -1);
+   
+    
+    $entity->checkPermission('viewUserEvaluation');
+
+    $this->render('evaluation', ['entity' => $entity, 'valuer_user' => $valuer_user]);
+  }
 }

@@ -31,20 +31,28 @@ return [
             '_type' => i::__('Tipo'),
             'createTimestamp' => i::__('Data de Criação'),
             'updateTimestamp' => i::__('Data de Atualização'),
+            'publishTimestamp' => i::__('Data de publicação'),
             'shortDescription' => i::__('Descrição Curta'),
             'longDescription' => i::__('Descrição Longa'),
             'certificateText' => i::__('Conteúdo da Impressão do Certificado'),
             'validPeriod'	=> i::__('Período de Validade'),
             'status' => i::__('Status'),
             'registrationFrom' => i::__('Data de início das inscrições'), 
-            'registrationTo' => i::__('Data final das inscrições')
+            'registrationTo' => i::__('Data final das inscrições'),
+            'evaluationFrom' => i::__('Data de início das avaliações'), 
+            'evaluationTo' => i::__('Data final das avaliações'),
         ),
 
         'MapasCulturais\Entities\Agent' => array(
-            'publicLocation' => i::__('Localização publicada'),
+            'publicLocation' => i::__('Localização pública'),
             'location' => i::__('Localização'),
             'userId' => i::__('ID usuário'),
-        )
+        ),
+
+        'MapasCulturais\Entities\Opportunity' => array(
+            'publishTimestamp' => i::__('Data de publicação dos resultados'),
+            'autoPublish' => i::__('Publicar resultado automaticamente')
+        ),
     ),
 
 ];

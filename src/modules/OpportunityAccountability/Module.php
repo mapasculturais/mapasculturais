@@ -31,10 +31,14 @@ class Module extends \MapasCulturais\Module
 
     protected $inTransaction = false;
 
+    protected $disabled = false;
+
     function _init()
     {
+        return;
         $app = App::i();
         if ($app->view->version >= 2) {
+            $this->disabled = true;
             return;
         }
         
@@ -317,7 +321,7 @@ class Module extends \MapasCulturais\Module
 
             $this->registerRegistrationMetadata();
 
-            $module->importLastPhaseRegistrations($this, $this->firstPhase->accountabilityPhase, true);
+            $module->importPreviousPhaseRegistrations($this, $this->firstPhase->accountabilityPhase, true);
         });
 
         // fecha os campos abertos pelo parecerista após o reenvio da prestação de contas
@@ -785,8 +789,9 @@ class Module extends \MapasCulturais\Module
 
     function register()
     {
+        return;
         $app = App::i();
-        if ($app->view->version >= 2) {
+        if ($app->view->version >= 2 || $this->disabled) {
             return;
         }
         $opportunity_repository = $app->repo('Opportunity');

@@ -1,21 +1,21 @@
 <?php
-
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
 
-$this->import('mc-icon')
+$this->import('
+    mc-icon
+')
 ?>
 <div class="mc-stepper-vertical-wrapper">
     <ol class="mc-stepper-vertical">
         <template v-for="(step, index) in steps">
             <li :class="{active: step.active}">
                 <section class="stepper-step">
-                    <header class="stepper-header">
+                    <header :class="['stepper-header', {'open':step.active}]">
                         <slot class="stepper-header-title" name="header" :index="index" :step="step" :item="step.item">
                             <slot name="header-title" :index="index" :step="step" :item="step.item">{{step.item.name || step.item.title || step.item.label}}</slot>
                             <slot name="header-actions" :index="index" :step="step" :item="step.item">

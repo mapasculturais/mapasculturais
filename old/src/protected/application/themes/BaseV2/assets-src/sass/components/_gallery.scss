@@ -29,6 +29,7 @@ body.galleryOpen {
         display: flex;
         flex-wrap: wrap;
         gap: size(24);
+        margin-bottom: size(24);
 
         &--image, &--video {
             align-items: center;
@@ -48,10 +49,6 @@ body.galleryOpen {
                 justify-content: center;
                 overflow: hidden;
                 width: size(139);
-
-                img {
-                    width: 100%;
-                }
             }
 
             &-label {
@@ -60,6 +57,7 @@ body.galleryOpen {
                 font-size: size(16);
                 line-height: size(22);
                 margin: size(8) 0 0;
+                word-break: break-word;
             }
 
             &-actions {
@@ -88,8 +86,6 @@ body.galleryOpen {
     }
 
     &__addNew {
-        margin-top: size(16);
-
         .v-popper {
             width: fit-content;
         }
@@ -182,6 +178,17 @@ body.galleryOpen {
                 }
             }
 
+            @media (max-width: size(500)) {
+                .btnPrev,
+                .btnNext {
+                    font-size: size(25);
+                    height: size(50);
+                    padding: size(16);
+                    width: size(50);
+                    opacity: .7;
+                }
+            }
+
             .btnPrev {
                 position: absolute;
                 left: 0;
@@ -219,9 +226,23 @@ body.galleryOpen {
 
         &--video {
             z-index: 2;
+            border-radius: 50%;
+
+            .iconify {
+                font-size: size(50);
+            }
 
             iframe {
                 aspect-ratio: 16/9;
+                border: none;
+                bottom: 0;
+                height: auto;
+                left: 0;
+                margin: auto;
+                max-width: 800px;
+                position: absolute;
+                right: 0;
+                top: 0;
                 width: 100%;
             }
         }

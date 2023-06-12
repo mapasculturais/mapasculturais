@@ -1,13 +1,13 @@
 @use '../settings/mixins' as *;
 
 .search {
-    .loading {
+    .mc-loading {
         color: var(--mc-low-500);
     }
 
     .tab-component {
         &.map {
-            .loading {
+            .mc-loading {
                 left: 50%;
                 margin-left: size(-50);
                 position: fixed;
@@ -19,7 +19,7 @@
 
         &.list {
 
-            .loading,
+            .mc-loading,
             .panel__row {
                 grid-column-end: span 9;
                 text-align: center;
@@ -84,8 +84,9 @@
                     }
                 }
             }
+
             &--right {
-                .button{
+                .button {
 
                     display: flex;
                     gap: 24px;
@@ -148,17 +149,6 @@
             background-color: var(--mc-gray-100);
             margin: 0;
             min-height: size(500);
-
-            .search-list {
-                main {
-                    grid-row-start: 1;
-                }
-
-                aside {
-                    grid-column-start: 2;
-                }
-            }
-
         }
 
         // grupo de botões - tabs
@@ -218,6 +208,64 @@
             width: 100%;
 
             .search-list {
+                &__order {
+                    align-items: flex-end;
+                    display: flex;
+                    gap: size(16);
+            
+                    .field {
+                        width: auto;
+
+                        select {
+                            border-radius: var(--mc-border-radius-sm);
+                            border: var(--mc-border-solid) var(--mc-primary-500);
+                            font-size: size(14);
+                            font-weight: 800;
+                            line-height: size(19);
+                            padding: size(9) size(32) size(8) size(12);
+                        }
+                    }
+
+                    .foundResults {
+                        background-color: var(--mc-white);
+                        border-radius: var(--mc-border-radius-sm);
+                        font-weight: 700;
+                        font-size: size(14);
+                        line-height: size(18);
+                        padding: size(11) size(16);
+                    }
+                    
+                    .buttons {
+                        display: flex;
+                        gap: size(8);
+
+                        .orderBtn {
+                            align-items: center;
+                            background-color: var(--mc-white);
+                            border-radius: var(--mc-border-radius-sm);
+                            border: none;
+                            display: flex;
+                            height: size(40);
+                            justify-content: center;
+                            width: size(40);
+
+                            .iconify {
+                                color: var(--mc-gray-300);
+                                font-size: size(24);
+                                margin-top: size(2);
+                            }
+
+                            &.active {
+                                background-color: var(--mc-primary-500);
+
+                                .iconify {
+                                    color: var(--mc-white);
+                                }
+                            }
+                        }
+                    }
+                }
+                
                 &__filter {
                     display: flex;
                     grid-row-start: 1;
@@ -270,6 +318,23 @@
 
                             .weekend {
                                 font-size: size(13);
+                            }
+
+                            .actual-date {
+                                display: flex;
+                                flex-direction: column;
+                                left: 0;
+                                position: relative;
+                                text-align: right;
+                                font-size: 700;
+
+                                h2 {
+                                }
+
+                                label {
+                                    font-size: 18px;
+                                    font-weight: 600;
+                                }
                             }
                         }
 
@@ -516,7 +581,7 @@
 
         .search__tabs--list {
 
-            .loading,
+            .mc-loading,
             .panel__row {
                 grid-column-end: span 9;
                 text-align: center;

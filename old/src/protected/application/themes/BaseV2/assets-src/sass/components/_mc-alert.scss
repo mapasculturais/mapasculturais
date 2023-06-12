@@ -1,0 +1,51 @@
+@use '../settings/mixins' as *;
+
+.alert {
+    border-radius: var(--mc-border-radius-xs);
+    display: flex;
+    flex-wrap: wrap;
+    gap: size(8);
+    justify-content: space-between;
+    margin-top: size(24);
+    padding: size(18);
+
+    &.success {
+        background-color: var(--mc-success-300);
+    }
+
+    &.helper {
+        background-color: var(--mc-helper-300);
+    }
+
+    &.warning {
+        background-color: var(--mc-warning-300);
+    }
+
+    &__message {
+        align-items: start;
+        display: grid;
+        gap: size(10);
+        grid-template-columns: 21px 1fr;
+
+        .text {
+            font-size: size(16);
+            font-weight: 400;
+            line-height: size(22);
+            margin: 0;
+        }
+
+        .iconify {
+            font-size: size(21);
+        }
+    }
+
+    &__button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: size(14);
+        font-weight: 700;
+        line-height: size(19);
+        margin-left: auto;
+    }
+}

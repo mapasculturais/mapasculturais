@@ -1,15 +1,15 @@
 <div ng-controller="EvaluationsFieldsConfigController" class="registration-fieldset">
-    <div>
+    <div class="fields-visible">
         <h4><?php \MapasCulturais\i::_e("Configurar campos visíveis para os avaliadores");?></h4>
         <div class="evaluationFields">
-            <div>
+            <div class="search">
                 <label>
                     <?php \MapasCulturais\i::_e("Filtrar campo");?> <br>
                     <small><i><?php \MapasCulturais\i::_e("Pesquise pelo título ou pelo ID");?></i></small> <br>
                     <input type="text" ng-model="evaluationsFieldsFilter" class="evaluation-fields-filter">
                 </label>
 
-                <div>
+                <div class="select-all">
                     <label><input type="checkbox" ng-model="data.allFields.checked" ng-click="checkedAll()"> <?php \MapasCulturais\i::_e("Selecionar todos os campos");?></label> <br>
                 </div>
                 <hr>

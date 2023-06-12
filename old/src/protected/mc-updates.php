@@ -221,6 +221,7 @@ return [
          */
         $txt = "";
         DB_UPDATE::enqueue('Agent', "status > 0", function (MapasCulturais\Entities\Agent $agent) use ($app, &$txt){
+            $conn = $app->em->getConnection();
 
             $_types = [
                 1 => "individual",
@@ -243,21 +244,13 @@ return [
 
                 if ($validate) {
                     $_type = strtolower($type);
-                    $agent->$_type = $agent->documento;
-
+                    $id = $conn->fetchColumn("SELECT nextval('agent_meta_id_seq'::regclass)");
+                    $conn->insert('agent_meta', ['id' => $id, 'object_id' => $agent->id, 'key' => $_type, 'value' => $agent->documento]);
+                    
                     $op = "Definido {$type} para o agente";
                     $txt .= "{$agent->id} | {$agent->name} | {$agent->nomeCompleto} | {$agent->emailPrivado} | {$_types[$agent->type->id]} | {$op} \n";
                     $app->log->debug($agent->id . " " . $op);
-
-                    $app->disableAccessControl();
-
-                    if(!$agent->getRevisions()){
-                        $agent->_newCreatedRevision();
-                        $app->log->debug("Revision do agente {$agent->id} Criada");
-                    }
-
-                    $agent->save(true);
-                    $app->enableAccessControl();
+                    
                 } else {
                     $op = "{$type} do agente é inválido";
                     $txt .= "{$agent->id} | {$agent->name} | {$agent->nomeCompleto} | {$agent->emailPrivado} | {$_types[$agent->type->id]} | {$op} \n";
@@ -278,8 +271,7 @@ return [
         });
 
         
-    }
-
+    },
     'Atualiza os campos das ocorrencias para o novo padrao' => function(){
         $app = App::i();
         DB_UPDATE::enqueue('EventOccurrence', 'id > 0', function (MapasCulturais\Entities\EventOccurrence $entity) use ($app) {

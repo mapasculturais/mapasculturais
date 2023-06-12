@@ -1,10 +1,17 @@
 app.component('search-list', {
     template: $TEMPLATES['search-list'],
 
-    data() {
+    setup() {
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('search-list');
 
+        return { text }
+    },
+
+    data() {
         return {
             query: {},
+            order: "createTimestamp DESC",
             typeText: '',
         }
     },
@@ -14,9 +21,9 @@ app.component('search-list', {
             this.typeText = __('text', 'search-list');
         }else {
             this.typeText = __('label', 'search-list');
-
         }
     },
+
     watch: {
         pseudoQuery: {
             handler(pseudoQuery) {
@@ -37,7 +44,7 @@ app.component('search-list', {
         },
         select: {
             type: String,
-            default: 'id,name,type,shortDescription,files.avatar,seals,endereco,acessibility,terms,singleUrl'
+            required: true
         },
         pseudoQuery: {
             type: Object,
@@ -45,7 +52,20 @@ app.component('search-list', {
         }
     },
 
-    methods: {
-
+    computed: {
+        entityType() {
+            switch (this.type) {
+                case 'agent':
+                    return this.text('agente');
+                case 'space':
+                    return this.text('espaço');
+                case 'event':
+                    return this.text('evento');
+                case 'opportunity':
+                    return this.text('opportunidade');
+                case 'project':
+                    return this.text('projeto');
+            }
+        },
     },
 });

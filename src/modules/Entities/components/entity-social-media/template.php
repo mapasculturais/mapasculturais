@@ -1,8 +1,14 @@
 <?php 
-use MapasCulturais\i;
-$this->import('entity-field');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+use MapasCulturais\i;
+$this->import('
+    entity-field
+');
+?>
 <div :class="classes" v-if="editable || show" class="entity-social-media">
 
     <h4 v-if="!editable" class="entity-social-media__title"> <?php i::_e("Redes sociais") ?> </h4>
@@ -33,7 +39,10 @@ $this->import('entity-field');
             <mc-icon name="linkedin"></mc-icon>
             {{entity.linkedin}}
         </div>
-
+        <div v-if="entity.vimeo" class="entity-social-media__links--link">
+            <mc-icon name="vimeo"></mc-icon>
+            {{entity.vimeo}}
+        </div>
         <div v-if="entity.spotify" class="entity-social-media__links--link">
             <mc-icon name="spotify"></mc-icon>
             {{entity.spotify}}
@@ -64,7 +73,10 @@ $this->import('entity-field');
             <mc-icon name="facebook"></mc-icon>
             <entity-field :entity="entity" prop="facebook"></entity-field>
         </div>
-
+        <div class="entity-social-media__edit--link">
+            <mc-icon name="vimeo"></mc-icon>
+            <entity-field :entity="entity" prop="vimeo"></entity-field>
+        </div>
         <div class="entity-social-media__edit--link">
             <mc-icon name="youtube"></mc-icon>
             <entity-field :entity="entity" prop="youtube"></entity-field>

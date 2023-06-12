@@ -5,15 +5,22 @@ namespace Support;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\i;
+use MapasCulturais\Entities;
 
 class Controller extends \MapasCulturais\Controller
 {
     use Traits\ControllerAPI;
+    use Traits\ControllerEntity;
 
     function GET_registration()
-    {
+    {   
         $this->requireAuthentication();
         $app = App::i();
+
+        if ($app->view->version >= 2) {
+            $app->redirect($app->createUrl('support', 'form', [$this->data['id']]));
+        }
+
         $registration = $app->repo("Registration")->find($this->data["id"]);
         if (!($registration && $registration->canUser("support"))) {
             $this->pass();
@@ -126,5 +133,37 @@ class Controller extends \MapasCulturais\Controller
         $this->requireAuthentication();
         $opportunity_id = $this->urlData['opportunityId'] ?? null;      
         return App::i()->repo("Opportunity")->find($opportunity_id);
+    }
+
+    function GET_list() {
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $this->entityClassName = Entities\Opportunity::class;
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            $app->pass();
+        }   
+
+        $entity->checkPermission('support');
+
+        $this->render('support', ['entity' => $entity]);
+    }
+
+    function GET_form() {
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $this->entityClassName = Entities\Registration::class;
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            $app->pass();
+        }   
+
+        $entity->checkPermission('support');
+
+        $this->render('support-edit', ['entity' => $entity]);
     }
 }

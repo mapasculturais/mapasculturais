@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
+use MapasCulturais\Exceptions\WorkflowRequest;
 
 /**
  * Define as rotas POST, PUT, PATCH e DELETE para as entidades.
@@ -295,7 +296,7 @@ trait ControllerEntityActions {
         $entity->delete(true);
 
         if($this->isAjax()){
-            $this->json($entity->simplify('id,name'));
+            $this->json($entity->simplify('id,name,type,status'));
         }else{
             //e redireciona de volta para o referer
             $redirect_url = $app->request()->getReferer();
@@ -335,7 +336,7 @@ trait ControllerEntityActions {
 
         if(isset($this->getData['redirectTo'])){
             $app->redirect($this->getData['redirectTo'], $status);
-        }elseif($app->request->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
+        }elseif($this->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
             $this->json($data, $status);
         }else{
             $app->redirect($app->request()->getReferer(), $status);

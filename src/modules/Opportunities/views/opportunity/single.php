@@ -1,11 +1,18 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->layout = 'entity';
 
 $this->addOpportunityPhasesToJs();
 $this->useOpportunityAPI();
 
 $this->import('
+    complaint-suggestion
     entity-actions
     entity-files-list
     entity-gallery
@@ -14,16 +21,21 @@ $this->import('
     entity-links
     entity-owner
     entity-related-agents
-    entity-request-ownership
     entity-seals
     entity-social-media
     entity-terms
-    mapas-breadcrumb
+    evaluations-list
+    mc-breadcrumb
+    mc-container
+    mc-share-links
+    mc-tab
+    mc-tabs
+    opportunity-phase-evaluation
+    opportunity-phases-timeline
+    opportunity-rules
     opportunity-subscription
     opportunity-subscription-list
-    opportunity-phases-timeline
-    share-links
-    tabs
+    v1-embed-tool
 ');
 
 $this->breadcrumb = [
@@ -32,15 +44,24 @@ $this->breadcrumb = [
   ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
 ];
 ?>
-
 <div class="main-app single">
-  <mapas-breadcrumb></mapas-breadcrumb>
-  <entity-header :entity="entity"></entity-header>
+  <mc-breadcrumb></mc-breadcrumb>
+  <entity-header :entity="entity">
+    <template #metadata>
+        <dl>
+            <dt><?= i::__('Tipo') ?></dt>
+            <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
+        </dl>
+        <dl>
+            <dt><?= i::__('Opportunidade de') ?></dt>
+            <mc-link :entity="entity.ownerEntity"></mc-link>
+        </dl>
+    </template>
+  </entity-header>
 
-    <tabs class="tabs">
-
-        <tab label="<?= i::__('Informações') ?>" slug="info">
-            <mapas-container class="opportunity">
+    <mc-tabs class="tabs">
+        <mc-tab label="<?= i::__('Informações') ?>" slug="info">
+            <mc-container class="opportunity">
                 <main class="grid-12">
                     <opportunity-subscription class="col-12" :entity="entity"></opportunity-subscription>
                     <opportunity-subscription-list class="col-12"></opportunity-subscription-list>
@@ -48,57 +69,56 @@ $this->breadcrumb = [
                 <aside>
                     <div class="grid-12">
                         <opportunity-phases-timeline class="col-12"></opportunity-phases-timeline>
-                        <div class="col-12">
-                            <button class="button button--primary-outline">
-                            <?= i::__("Baixar regulamento") ?>
-                            </button>
+                        <div v-if="entity.files.rules" class="col-12">
+                            <a :href="entity.files.rules.url" class="button button--primary-outline" target="_blank"><?= i::__("Baixar regulamento") ?></a>
                         </div>
                     </div>
                 </aside>
-            </mapas-container>
+            </mc-container>
 
-            <mapas-container>
+            <mc-container>
                 <main>
                     <div class="grid-12">
                         <div class="col-12">
                             <h3><?= i::__("Apresentação") ?></h3>
-                            <p>{{ entity.shortDescription }}</p>
+                            <p v-html="entity.shortDescription"></p>
                         </div>
-                        <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
-                        <div class="col-12">
-                            <entity-links :entity="entity" title="<?php i::esc_attr_e('Links'); ?>"></entity-links>
-                        </div>
+                        <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Regulamento'); ?>"></opportunity-rules>
+                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
+                        <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Links'); ?>"></entity-links>
                         <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                         <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
-                        <div class="col-12">
-                            <entity-request-ownership></entity-request-ownership>
-                        </div>
-                        <div class="col-12 controller-opportunity__helpers">
-                            <button class="button button--primary-outline">Denúncia</button>
-                            <button class="button button--primary">Contato</button>
-                        </div>
                     </div>
                 </main>
                 <aside>
                     <div class="grid-12">
                         <entity-terms :entity="entity" taxonomy="area" classes="col-12" title="<?php i::esc_attr_e('Áreas de interesse'); ?>"></entity-terms>
                         <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
-                        <entity-seals :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
+                        <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                         <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags')?>"></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
                         <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
-                        <share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></share-links>
+                        <mc-share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></mc-share-links>
+                    </div>  
+                </aside>
+                <aside>
+                    <div class="grid-12">
+                        <complaint-suggestion :entity="entity"></complaint-suggestion>
                     </div>
                 </aside>
-            </mapas-container>
-        </tab>
+            </mc-container>
+        </mc-tab>
 
-        <tab label="<?= i::__('Projetos contemplados') ?>" slug="project">
-        </tab>
+        <mc-tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="entity.currentUserPermissions.evaluateRegistrations">
+            <div class="opportunity-container">
+                <opportunity-phase-evaluation></opportunity-phase-evaluation>
+            </div>
+        </mc-tab>
 
-        <tab label="<?= i::__('Suporte') ?>" slug="support">
-        </tab>
+        <?php $this->part('opportunity-tab-results.php', ['entity' => $entity]); ?>
+        
+        <?php $this->part('opportunity-tab-support.php', ['entity' => $entity]); ?>
 
-    </tabs>
+    </mc-tabs>
     <entity-actions :entity="entity"></entity-actions>
 </div>

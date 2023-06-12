@@ -1,7 +1,17 @@
 @use '../settings/mixins' as *;
 
 .entity-location {
-    
+    .public-location {
+        &__label {
+
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 600;
+            font-size: size(14);
+            line-height: size(19);
+        }
+    }
+
     &__title {
         font-weight: 600;
         font-size: size(18);

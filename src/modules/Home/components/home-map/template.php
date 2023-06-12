@@ -1,11 +1,18 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 use MapasCulturais\i;
-$this->import('mc-map entities mc-map-card');
+$this->import('
+    mc-map 
+    mc-map-card
+');
 ?>
 <div class="home-map">
     <div class="home-map__header">
-        <label class="title"><?php i::_e('Visualize também no mapa') ?></label>
-        <label class="description"><?= i::_e('Os agentes, espaços e eventos cadastrados contam com a geo localização de seus endereços, encontre-os aqui:') ?></label>
+        <label class="title"><?= $this->text('title', i::__('Visualize também no mapa')) ?></label>
+        <label class="description"><?= $this->text('description', i::__('Os agentes, espaços e eventos cadastrados contam com a geo localização de seus endereços, encontre-os aqui:')) ?></label>
     </div>
 
     <div class="home-map__content">

@@ -16,17 +16,17 @@ use \MapasCulturais\App;
 class FileGroup extends \MapasCulturais\Definition{
     use \MapasCulturais\Traits\MagicGetter;
 
-    protected $name = '';
+    public $name = '';
 
-    protected $unique = false;
+    public $unique = false;
 
-    protected $maxFiles = null;
+    public $maxFiles = null;
 
-    protected $errorMessage = '';
+    public $errorMessage = '';
 
-    protected $_validations = [];
+    public $_validations = [];
     
-    protected $private = false;
+    public $private = false;
 
     /**
      *

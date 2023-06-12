@@ -48,7 +48,7 @@
                 registrationFieldConfigurations: [],
                 criteriaAffirmativePolicies: MapasCulturais.affirmativePolicies || [],
                 fieldsAffiermativePolicie: {},
-                isActiveAffirmativePolicies: MapasCulturais.isActiveAffirmativePolicies == "true" ? true : false,
+                isActiveAffirmativePolicies: MapasCulturais.isActiveAffirmativePolicies ? true : false,
                 affirmativePolicieRoof: parseFloat(MapasCulturais.affirmativePoliciesRoof) || 0.00,
                 
                 debounce: 2000
@@ -212,7 +212,7 @@
                      item.fieldType == "space-field"
                 ){
 
-                    var fieldType = (Object.keys(item.config).length > 0 && item.config.hasOwnProperty('entityField')) ? item.config.entityField : item.fieldType;
+                    var fieldType = item?.config?.entityField ? item.config.entityField : item.fieldType;
 
                     var _ismultiple = false;
                     switch(fieldType) {

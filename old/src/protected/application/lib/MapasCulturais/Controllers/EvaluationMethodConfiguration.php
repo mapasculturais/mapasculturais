@@ -32,7 +32,7 @@ class EvaluationMethodConfiguration extends Controller {
 
     function POST_index($data = null) {
         $this->_POST_index();
-    } 
+    }
 
     protected function _getValuerAgentRelation() {
         $this->requireAuthentication();

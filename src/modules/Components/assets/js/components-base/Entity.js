@@ -8,14 +8,20 @@ class Entity {
         this.__messagesEnabled = true;
         this.__processing = false;
 
+        this.__originalValues = {};
+
         // as traduções estão no arquivo texts.php do componente <entity>
-        this.text = Utils.getTexts('entity');
+        this.text = Utils.getTexts('mc-entity');
     }
 
     populate(obj, preserveValues = true) {
         const __properties = this.$PROPERTIES;
         const __relations = this.$RELATIONS;
-        const defaultProperties = ['terms', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
+        const defaultProperties = [
+            'terms', 'seals', , 'currentUserPermissions', 
+            'relatedAgents', 'agentRelations',
+            'relatedSpaces', 'spaceRelations',
+        ];
         
         this.populateId(obj);
 
@@ -46,28 +52,38 @@ class Entity {
                 }
             }
 
-            if (prop == 'location') {
-                val = {lat: parseFloat(val?.latitude), lng: parseFloat(val?.longitude)};
+            if (prop == 'location' && val) {
+                if(val?.latitude && val?.longitude) {
+                    val = {lat: parseFloat(val?.latitude), lng: parseFloat(val?.longitude)};
+                }
+                val.lat = val.lat ?? 0;
+                val.lng = val.lng ?? 0;
             }
 
-            if(prop == 'type' && typeof val == 'number') {
+            if(prop == 'type' && (typeof val == 'number')) {
                 val = {
                     id: val, 
                     name: __properties['type']?.options?.[val]
                 };
             }
-
             this[prop] = val;
         }
 
         for (let key in __relations) {
             let prop = obj[key];
+            let value;
             if (prop instanceof Array) {
                 for (let i in prop) {
-                    prop[i] = this.parseRelation(prop[i], key);
+                    value = value || [];
+                    value[i] = this.parseRelation(prop[i], key);
                 }
-            } 
-            this[key] = this.parseRelation(prop, key);
+            } else {
+                value = this.parseRelation(prop, key);
+            }
+
+            if (value) {
+                this[key] = value;
+            }
         }
 
         this.populateFiles(obj.files);
@@ -75,11 +91,12 @@ class Entity {
 
         this.cleanErrors();
         
+        this.__originalValues = this.data();
         return this;
     }
 
     parseRelation(prop, key) {
-        const type = prop?.['@entityType'] || $DESCRIPTIONS?.[this.__objectType]?.[key]?.targetEntity.toLocaleLowerCase();
+        const type = prop?.['@entityType'] || this.$RELATIONS[key]?.targetEntity?.toLocaleLowerCase();
         if (type && prop?.id) {
             const propAPI = new API(type, this.__scope);
             const instance = propAPI.getEntityInstance(prop.id);
@@ -94,12 +111,8 @@ class Entity {
         this.id = obj[this.$PK];
     }
 
-    populateFiles(files) {
-        if (this.files && Object.keys(this.files).length) {
-            return;
-        }
-        
-        this.files = {};
+    populateFiles(files) {        
+        this.files = this.files || {};
         for (let groupName in files) {
             const group = files[groupName];
             if (group instanceof Array) {
@@ -112,7 +125,7 @@ class Entity {
     }
 
     populateMetalists(metalists) {
-        this.metalists = {};
+        this.metalists = this.metalists || {};
         for (let groupName in metalists) {
             const group = metalists[groupName];
             this.metalists[groupName] = group.map((data) => new EntityMetalist(this, groupName, data));
@@ -137,7 +150,7 @@ class Entity {
         }
     }
 
-    data() {
+    data(onlyModifiedFields) {
         const skipProperties = ['id', 'createTimestamp', 'updateTimestamp', 'lastLoginTimestamp'];
         const skipRelations = ['user', 'subsite'];
 
@@ -164,11 +177,15 @@ class Entity {
                 }
             }
             
-            if (prop == 'type' && typeof val == 'object') {
-                val = val.id;
+            if (val && (typeof val == 'object')) {
+                if (prop == 'type') {
+                    val = val.id;
+                } else {
+                    result[prop] = Object.assign({}, val);
+                }
+            } else {
+                result[prop] = val;
             }
-
-            result[prop] = val;
         }
 
         for (let prop in this.$RELATIONS) {
@@ -192,10 +209,28 @@ class Entity {
         }
 
         if(this.terms) {
-            result.terms = this.terms;
+            result.terms = JSON.parse(JSON.stringify(this.terms));
         }
 
+        if(onlyModifiedFields) {
+            for(let key in result) {
+                if(JSON.stringify(result[key]) == JSON.stringify(this.__originalValues[key])){
+                    delete result[key];
+                }
+            }
+        } 
+
+        for(let key in result) {
+            if(typeof result[key] == 'object' && !result[key] instanceof Entity) {
+                if(result[key] instanceof Array) {
+                    result[key] = [...result[key]];
+                } else {
+                    result[key] = {...result[key]};
+                }
+            }
+        }
         return result;
+
     }
 
     get API () {
@@ -323,7 +358,7 @@ class Entity {
     }
 
     async POST(action, {callback, data}) {        
-        const res = await this.API.POST(this.getUrl(action));
+        const res = await this.API.POST(this.getUrl(action), data);
         callback = callback || (() => {});
 
         try {
@@ -386,17 +421,14 @@ class Entity {
             const res = await this.API.undeleteEntity(this);
             return this.doPromise(res, (entity) => {
                 this.sendMessage(this.text('entidade recuperada'));
-                
+                this.populate(entity);
                 if(removeFromLists) {
                     this.removeFromLists();
                 }
-
-                this.populate(entity);
             });
-
         } catch (error) {
-            return this.doCatch(error)
-        }        
+            return this.doCatch(error);
+        }       
     }
 
     async destroy() {
@@ -415,8 +447,11 @@ class Entity {
 
     async publish(removeFromLists) {
         this.__processing = this.text('publicando');
-
         try {
+            // se há modificações não salvas, primeiro salva as alterações, só depois publica a entidade
+            if(Object.keys(this.data(true)).length > 0) {
+                await this.save();
+            }
             const res = await this.API.publishEntity(this);
             return this.doPromise(res, (entity) => {
                 this.sendMessage(this.text('entidade publicada'));
@@ -518,6 +553,8 @@ class Entity {
                 delete agentRelation.objectId;
                 delete agentRelation.owner;
                 delete agentRelation.ownerUserId;
+                
+                agentRelation.agent = agent;
 
                 this.agentRelations[group] = this.agentRelations[group] || [];
                 this.agentRelations[group].push(agentRelation);
@@ -525,6 +562,12 @@ class Entity {
                 this.relatedAgents[group] = this.relatedAgents[group] || [];
                 this.relatedAgents[group].push(agent);
             
+            }).then(response => {
+                const messages = useMessages();
+
+                if (response.status == -5) {
+                    messages.success(this.text('solicitação enviada com sucesso'));
+                }
             });
         } catch (error) {
             this.doCatch(error);
@@ -640,8 +683,10 @@ class Entity {
     }
 
     async changeOwner(ownerId) {
+        const global = useGlobalState();
+
         this.__processing = this.text('alterando propriedade da entidade');
-        ownerId = ownerId || $MAPAS.userProfile.id;
+        ownerId = ownerId || global.auth.user?.profile?.id;
 
         if (!ownerId) {
             return Promise.reject('ownerId indefinido');
@@ -651,7 +696,7 @@ class Entity {
             const res = await this.API.POST(this.getUrl('changeOwner'), {ownerId});
             this.doPromise(res, (data) => {
 
-                console.log(data);
+                console.log('NÃO IMPLEMENTADO', data);
 
                 /* let index;
                 index = this.seals.indexOf(seal);

@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+?>
 <!DOCTYPE html>
 <html lang="<?= $app->currentLCode ?>" dir="ltr">
     <head>
@@ -19,4 +25,4 @@
     </head>
 
     <body <?php $this->bodyProperties() ?> style="opacity:0" >
-        <?php $this->applyTemplateHook('body','begin'); ?>
+        <?php $this->bodyBegin() ?>

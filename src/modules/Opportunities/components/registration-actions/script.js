@@ -7,24 +7,55 @@ app.component('registration-actions', {
             required: true
         },
     },
+
+    setup() {
+        const text = Utils.getTexts('registration-actions')
+        return { text }
+    },
+
+    mounted() {
+        window.addEventListener("message", (event) => {
+            if (event.data.type == 'registration.update') {
+                for (let key in event.data.data) {
+                    this.registration[key] = event.data.data[key];
+                }
+            }
+        });
+    },
+
+    data() {
+        return {
+            fields: $MAPAS.registrationFields,
+        }
+    },
     
     methods: {
         fieldName(field) {
-            console.log(field.slice(0, 6));
-
             if (field == 'agent_instituicao') {
-                return 'Instituição responsável'; 
+                return this.text('Instituição responsável'); 
             }
 
             if (field == 'agent_coletivo') {
-                return 'Agente coletivo';
+                return this.text('Agente coletivo');
+            }
+
+            if (field == 'projectName') {
+                return this.text('Nome do projeto');
+            }
+
+            if (field == 'space') {
+                return this.text('Espaço');
             }
 
             if (field.slice(0, 6) == 'field_') {
-                return 'Campo no formulário';
+                for (let regField of this.fields) {
+                    if (regField.fieldName == field) {
+                        return regField.title;
+                    }
+                }
             }
 
-            return 'Campo não identificado';
+            return this.text('Campo não identificado');
 
         },
         async send() {
@@ -37,44 +68,31 @@ app.component('registration-actions', {
                 this.registration.disableMessages();
                 await this.save();
                 this.registration.enableMessages();
-
-                await this.registration.POST('send', {data}).then((response) => {
-                    console.log(response);
-                });
+                await this.registration.POST('send', {data});
+                document.location.reload();
             } catch(error) {
-                console.log(error);
+                console.error(error);
             }
+        },
+        async validate() {
+            const messages = useMessages();
+            await this.registration.POST('validateEntity', {}).then( success => {
+                if (success) {
+                    messages.success(this.text('Validado'));
+                }
+            });
         },
         async save() {
             const iframe = document.getElementById('registration-form');
             const registration = this.registration;
             if (iframe) {
-                registration.disableMessages();
                 const promise = new Promise((resolve, reject) => {
                     Promise.all([
                         registration.save(false),
-                        new Promise((resolve, reject) => {
-                            const saved = function(event) {    
-                                if (event.data.type == "registration.saved") {
-                                    if (event.data.error) {
-                                        registration.__validationErrors = event.data.data;
-                                    } else {
-                                        registration.__validationErrors = {};
-                                    }
-                                    resolve(registration);
-                                    window.removeEventListener("message", saved);
-                                }
-                            };
-                            window.addEventListener("message", saved)
-                        })
                     ]).then((values) => {
-                        registration.enableMessages();
                         resolve(values[0]);
                     });
-
                 });
-
-                iframe.contentWindow.postMessage('registration.save');
                 return promise;
 
             } else {

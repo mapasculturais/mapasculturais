@@ -29,17 +29,56 @@ app.component('opportunity-phases-config', {
     data() {
         return {
             phases: [],
-            evaluationMethods: $MAPAS.config.evaluationMethods
+            evaluationMethods: $MAPAS.config.evaluationMethods,
+            evaluationTypes: $DESCRIPTIONS.evaluationmethodconfiguration.type.options
         }
     },
-
-    computed: {
-
-    },
-    
     methods: {
         addInPhases (phase) {
             this.phases.splice(this.phases.length - 1, 0, phase);
-        }
+        },
+        showPublishTimestamp(phase) {
+            const previousPhase = this.getPreviousPhase(phase);
+            const nextPhase = this.getNextPhase(phase);
+
+            if (phase.isLastPhase) {
+                return true;
+            } else if (phase.__objectType == 'opportunity' && nextPhase.__objectType != 'evaluationmethodconfiguration' && phase.publishTimestamp) {
+                return true;
+            } else if (phase.__objectType == 'evaluationmethodconfiguration' && previousPhase.__objectType == 'opportunity' && previousPhase.publishTimestamp) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        publishTimestamp(phase) {
+            if (phase.__objectType == 'opportunity') {
+                return phase.publishTimestamp;
+            } 
+            
+            if (phase.__objectType == 'evaluationmethodconfiguration') {
+                return phase.opportunity.publishTimestamp;
+            }
+        },
+
+        getPreviousPhase(phase) {
+            const index = this.phases.indexOf(phase);
+            return this.phases[index - 1];
+        },
+
+        getNextPhase(phase) {
+            const index = this.phases.indexOf(phase);
+            return this.phases[index + 1];
+        },
+
+        showButtons() {
+            const lastPhase = this.phases[this.phases.length - 1];
+
+            if(lastPhase.publishedRegistrations || (lastPhase.publishTimestamp && lastPhase.publishTimestamp.isPast())) {
+                return false;
+            } else {
+                return true;
+            }
+        },
     },
 });

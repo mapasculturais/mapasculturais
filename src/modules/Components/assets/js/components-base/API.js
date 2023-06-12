@@ -23,16 +23,19 @@ globalThis.useEntitiesCache = Pinia.defineStore('entitiesCache', {
 
     actions: {
         store(entity, scope) {
+            scope = scope || 'default';
             this[scope] = this[scope] || {};
             this[scope][entity.cacheId] = entity;
         },
 
         remove(entity, scope) {
+            scope = scope || 'default';
             this[scope] = this[scope] || {};
             delete this[scope][entity.cacheId];
         },
         
         fetch(cacheId, scope) {
+            scope = scope || 'default';
             this[scope] = this[scope] || {};
             return this[scope][cacheId];
         }
@@ -203,7 +206,7 @@ class API {
             return this.POST(url, entity.data())
             
         } else {
-            return this.PATCH(entity.singleUrl, entity.data())
+            return this.PATCH(entity.singleUrl, entity.data(true))
         }
     }
 

@@ -56,7 +56,7 @@ class Event extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="event_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var integer
@@ -298,12 +298,14 @@ class Event extends \MapasCulturais\Entity
     }
 
     function setProject($project) {
-        if (is_object($this->project)) {
-            if (!$this->project->equals($project)) {
+        if(is_numeric($project)) {
+            $this->setProjectId($project);
+        } else if (is_object($project)) {
+            if(!$this->project || !$this->project->equals($project)) {
                 $this->_newProject = $project;
             }
         } else {
-            $this->_newProject = $project;
+            throw new \Exception(\MapasCulturais\i::__('Tipo inválido para o campo project'));
         }
     }
 

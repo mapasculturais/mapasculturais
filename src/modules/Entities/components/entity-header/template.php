@@ -1,12 +1,15 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 ?>
-
 <?php $this->applyTemplateHook('entity-header', 'before'); ?>
 <header v-if="!editable" class="entity-header" :class="{ 'entity-header--no-image': !entity.files.header }">
     <?php $this->applyTemplateHook('entity-header', 'begin'); ?>
-    <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.transformations?.header?.url) }"></div>
+    <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.url) }"></div>
     <div class="entity-header__single--content">
         <div class="leftSide">
             <div class="avatar">
@@ -16,6 +19,18 @@ use MapasCulturais\i;
             <nav class="share" aria-label="<?= i::__('Compartilhar') ?>">
                 <a v-if="entity.twitter" :href="entity.twitter" class="button button--text button--icon" aria-label="Twitter" target="_blank">
                     <mc-icon name="twitter"></mc-icon>
+                </a>
+                <a v-if="entity.linkedin" :href="entity.linkedin" class="button button--text button--icon" aria-label="Linkedin" target="_blank">
+                    <mc-icon name="linkedin"></mc-icon>
+                </a>
+                <a v-if="entity.youtube" :href="entity.youtube" class="button button--text button--icon" aria-label="Youtube" target="_blank">
+                    <mc-icon name="youtube"></mc-icon>
+                </a>
+                <a v-if="entity.vimeo" :href="entity.vimeo" class="button button--text button--icon" aria-label="Vimeo" target="_blank">
+                    <mc-icon name="vimeo"></mc-icon>
+                </a>
+                <a v-if="entity.spotify" :href="entity.spotify" class="button button--text button--icon" aria-label="Spotify" target="_blank">
+                    <mc-icon name="spotify"></mc-icon>
                 </a>
                 <a v-if="entity.facebook" :href="entity.facebook" class="button button--text button--icon" aria-label="Facebook" target="_blank">
                     <mc-icon name="facebook"></mc-icon>
@@ -39,8 +54,12 @@ use MapasCulturais\i;
                 <h1 class="title"> {{entity.name}} </h1>
                 <div class="metadata">
                     <slot name="metadata">
+                        <dl class="metadata__id" v-if="entity.__objectType =='agent' && entity.id">
+                            <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
+                                <dd><strong>{{entity.id}}</strong></dd>
+                        </dl> 
                         <dl v-if="entity.type">
-                            <dt><?= i::__('Tipo') ?></dt>
+                        <dt><?= i::__('Tipo')?></dt>
                             <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
                         </dl>
                     </slot>
@@ -68,7 +87,7 @@ use MapasCulturais\i;
             </nav>
             <div class="description">
                 <slot name="description">
-                    <p> {{entity.shortDescription}} </p>
+                    <p v-html="entity.shortDescription"></p>
                 </slot>
             </div>
             <div v-if="entity.site" class="site">
@@ -89,7 +108,9 @@ use MapasCulturais\i;
                 <div :class="['icon', entity.__objectType+'__background']">
                     <mc-icon :entity="entity"></mc-icon>
                 </div>
-                <h2>{{titleEdit}}</h2>
+                <h2 v-if="this.entity.__objectType!='opportunity'">{{titleEdit}}</h2>
+                <h2 v-if="this.entity.__objectType=='opportunity'">{{entity.name}}</h2>
+
             </div>
         </div>
     </div>

@@ -42,7 +42,7 @@ app.component('opportunity-create-data-collect-phase' , {
         createEntity() {
             this.phase = Vue.ref(new Entity('opportunity'));
             this.phase.ownerEntity = this.opportunity.ownerEntity;
-            this.phase.type = this.opportunity.type;
+            this.phase.type = this.opportunity.type.id;
             this.phase.status = -1;
             this.phase.parent = this.opportunity;
 
@@ -51,16 +51,16 @@ app.component('opportunity-create-data-collect-phase' , {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
         },
-        save(modal) {
+        async save(modal) {
             modal.loading(true);
-            this.phase.save().then((response) => {
-                this.$emit('create', response);
+            try{
+                await this.phase.save();
+                this.$emit('create', this.phase);
                 modal.loading(false);
                 modal.close();
-            }).catch((e) => {
+            } catch(e) {
                 modal.loading(false);
-
-            });
+            }
         },
     }
 });

@@ -8,7 +8,8 @@
     cursor: pointer;
     display: inline-flex;
     font-size: size(16);
-    font-weight: bold;
+    font-weight: 600;
+    font-family: 'Open Sans';
     justify-content: center;
     line-height: size(18);
     padding: size(9) size(19);
@@ -118,14 +119,14 @@
         }
 
         &-outline {
-            background-color: transparent;
+            background-color: var(--mc-white);
             border: size(2) solid var(--mc-primary-500);
             color: var(--mc-primary-500);
 
             &:hover {
                 border-color: var(--mc-primary-700);
-                background-color: var(--mc-primary-700);
-                color: var(--mc-white);                
+                background-color: var(--mc-primary-700);   
+                color: var(--mc-white);       
             }
         }
     }

@@ -49,18 +49,21 @@ app.component('entity-actions', {
         editable: {
             type: Boolean,
             default: false
+        },
+        canDelete: {
+            type: Boolean,
+            default: true
         }
     },
     
     methods: {
         save() {
             this.entity.save().then(() => {
-                if (window.history.length > 2) {
-                    window.history.back();
-                } else {
-                    window.location.href = $MAPAS.baseURL+'panel';
-                }
+                this.exit();
             });
-        }
+        },
+        exit() {
+            window.location.href = this.entity.getUrl('single');
+        },
     },
 });

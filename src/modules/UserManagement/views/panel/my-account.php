@@ -4,27 +4,25 @@ use MapasCulturais\i;
 
 $this->activeNav = 'panel/my-account';
 $this->import('
-    confirm-button
-    entity
     entity-field
     entity-seals
+    mc-entity
     mc-icon
     mc-link
     panel--entity-actions
     panel--entity-tabs
-    tabs
     user-mail
     user-management--ownership-tabs
     user-accepted-terms
     user-management--delete
 ');
 ?>
-<entity #default='{entity}'>
+<mc-entity #default='{entity}'>
 
-    <div class="p-user-detail">
-        <header class="p-user-detail__header">
+    <div class="p-user-detail account-privacy">
+        <header class="p-user-detail__header account-privacy__header">
 
-            <div class="p-user-detail__header-top">
+            <div class="p-user-detail__header-top account-privacy__header">
                 <div class="left">
                     <div class="left-icon">
                         <mc-icon class="icon" name="account"></mc-icon>
@@ -58,23 +56,22 @@ $this->import('
             </div>
         </header>
         
-        <?php $this->applyTemplateHook('p-user-details__seals', 'before'); ?>
+        <?php $this->applyTemplateHook('seals', 'before') ?>
         <div class="p-user-detail__seals">
-            <entity-seals :entity="entity.profile" title="<?= i::__('Verificações da pessoa usuária') ?>" show-name></entity-seals>
+            <?php $this->applyTemplateHook('seals', 'begin') ?>
+            <entity-seals :entity="entity.profile" :editable="entity.currentUserPermissions?.createSealRelation" title="<?= i::__('Verificações da pessoa usuária') ?>" show-name></entity-seals>
+            <?php $this->applyTemplateHook('seals', 'end') ?>
         </div>
-        <?php $this->applyTemplateHook('p-user-details__seals', 'after'); ?>
+        <?php $this->applyTemplateHook('seals', 'after') ?>
+
+        <?php $this->applyTemplateHook('config', 'before') ?>
+        <div class="account-config">
+            <?php $this->applyTemplateHook('config', 'begin') ?>
+            <user-mail :entity="entity"></user-mail>
+            <?php $this->applyTemplateHook('config', 'after') ?>
+        </div>
+        <?php $this->applyTemplateHook('config', 'after') ?>
 
         <user-accepted-terms :user="entity"></user-accepted-terms>
-
-        <div class="user-function">
-            <label class="user-function__label"><?= i::__('Funções da pessoa usuária') ?></label>
-            <div class="user-function__box">
-                <label class="user-function__box--label"><?= i::__('Função de usuário em Subsite') ?> </label>
-                <div class="user-function__box--content">
-                    <label class="user-function__box--content-text">texto qualquer do subsite</label>
-                </div>
-            </div>
-        </div>
-
     </div>
-</entity>
+</mc-entity>

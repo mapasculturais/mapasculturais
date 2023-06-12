@@ -17,9 +17,6 @@ $this->import('
                 </div>
                 <div class="title__title"> <?= i::_e('Minhas oportunidades') ?> </div>
             </div>
-            <div class="help">
-                <a class="panel__help-link" href="#"><?= i::__('Ajuda?') ?></a>
-            </div>
         </div>
         <p class="panel-page__header-subtitle">
             <?= i::_e('Nesta seção você pode adicionar e gerenciar suas oportunidades') ?>

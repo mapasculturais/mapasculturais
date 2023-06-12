@@ -75,7 +75,8 @@ app.component('panel--entity-tabs', {
             }
         },
 
-        moveEntity(entity) {
+        async moveEntity(entity, event) {
+            await event.promise;
             const lists = useEntitiesLists();
             const status = `${entity.status}`;
 
@@ -83,12 +84,13 @@ app.component('panel--entity-tabs', {
                 '1': `${this.type}:publish`,
                 '-10': `${this.type}:trash`,
                 '-2': `${this.type}:archived`,
+                '0': `${this.type}:draft`,
             };
 
             const list = lists.fetch(listnames[status]);
 
-            entity.removeFromLists();
-
+            entity.removeFromLists([list]);
+            
             if (list instanceof Array) {
                 list.push(entity);
                 entity.$LISTS.push(list);

@@ -3,6 +3,8 @@
  * See https://github.com/Respect/Validation to know how to write validations
  */
 
+use MapasCulturais\Utils;
+
 return array(
     'metadata' => array(
         'nomeCompleto' => array(
@@ -42,6 +44,7 @@ return array(
             'label' => 'Pessoa com deficiência',
             'type' => 'multiselect',
             'options' => [
+                '' => MapasCulturais\i::__('Não sou'),
                 MapasCulturais\i::__('Visual'),
                 MapasCulturais\i::__('Mental'),
                 MapasCulturais\i::__('Física'),
@@ -90,7 +93,7 @@ return array(
                    $this->rcache->save($key, 1);
                 }
 
-                return $value;
+                return Utils::formatCnpjCpf($value);
             },
             'available_for_opportunities' => true
         ),
@@ -98,6 +101,7 @@ return array(
         'cnpj' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CNPJ'),
+            'type' => 'cnpj',
             'serialize' => function($value, $entity = null){
                 /**@var MapasCulturais\App $this */
                 $key = "hook:cnpj:{$entity}";
@@ -107,7 +111,14 @@ return array(
                     }
                     $this->rcache->save($key, 1);
                 }
-                return $value;
+                return Utils::formatCnpjCpf($value);
+            },
+            'unserialize' => function($value, $entity) {
+                if (!$value && $entity->type->id == 2) {
+                    $value = $entity->documento;
+                }
+    
+                return Utils::formatCnpjCpf($value);
             },
             'validations' => array(
                 'v::cnpj()' => \MapasCulturais\i::__('O número de CNPJ informado é inválido.')
@@ -117,6 +128,7 @@ return array(
         'cpf' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF'),
+            'type' => 'cpf',
             'serialize' => function($value, $entity = null){
                 $key = "hook:cpf:{$entity}";
                 if(!$this->rcache->contains($key)){
@@ -126,7 +138,14 @@ return array(
                     }
                     $this->rcache->save($key, 1);
                 }
-                return $value;
+                return Utils::formatCnpjCpf($value);
+            },
+            'unserialize' => function($value, $entity) {
+                if (!$value) {
+                    $value = $entity->documento;
+                }
+
+                return Utils::formatCnpjCpf($value);
             },
             'validations' => array(
                 'v::cpf()' => \MapasCulturais\i::__('O número de CPF informado é inválido.')
@@ -305,6 +324,7 @@ return array(
                     
         'En_CEP' => [
             'label' => \MapasCulturais\i::__('CEP'),
+            'type' => 'cep',
             'private' => function(){
                 return !$this->publicLocation;
             },
@@ -443,6 +463,12 @@ return array(
                 "v::url('linkedin.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             ),
             'available_for_opportunities' => true
+        ),
+        'vimeo' => array(
+            'label' => \MapasCulturais\i::__('Vimeo'),
+            'validations' => array(
+                "v::url('vimeo.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            )
         ),
         'spotify' => array(
             'label' => \MapasCulturais\i::__('Spotify'),

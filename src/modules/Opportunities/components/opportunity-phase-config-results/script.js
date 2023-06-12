@@ -7,43 +7,19 @@ app.component('opportunity-phase-config-results' , {
     },
 
     props: {
-        phases: {
-            type: Array,
-            required: true
-        },
         phase: {
             type: Entity,
+            required: true
+        },
+        phases: {
+            type: Array,
             required: true
         }
     },
 
     computed: {
-        index() {
-            return this.phases.indexOf(this.phase);
-        },
-
-        previousPhase() {
-            return this.phases[this.index - 1];
-        },
-
-        previousPhaseDateTo() {
-            const previousPhase = this.previousPhase;
-            return previousPhase.registrationTo || previousPhase.evaluationTo;
-        },
-
-        minDate() {
-            return this.previousPhaseDateTo;
-        },
-
-        isPublishLocked() {
-            const previousPhaseDateTo = this.previousPhaseDateTo
-            return previousPhaseDateTo ? this.previousPhaseDateTo.isFuture() : true;
-        }
     },
 
     methods: {
-        addPublishRegistrations () {
-            this.phase.POST('publishRegistrations');
-        }
     }
 });

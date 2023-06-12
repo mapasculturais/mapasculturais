@@ -18,12 +18,28 @@ app.component('entity-admins', {
 
     computed: {
         query() {
-            const ids = this.group.map((item) => item.id).join(',');
-            return ids ? {id: `!IN(${ids})`} : {};
+            const ids = this.group.map((item) => item.agent.id).join(',');
+
+            let idFilter = '';
+            let query = {}
+
+            if (this.entity.__objectType === 'agent') {
+                idFilter = ids ? `!IN(${ids}, ${this.entity.id})` : `!EQ(${this.entity.id})`;
+            } else {
+                idFilter = ids ? `!IN(${ids})` : '';
+            }
+
+            query['type'] = 'EQ(1)';
+
+            if (idFilter) {
+                query['id'] = idFilter;
+            }
+
+            return query;
 
         },
         group() {
-            return  this.entity.relatedAgents?.['group-admin'] || [];
+            return this.entity.agentRelations?.['group-admin'] || [];
         }
     },
 

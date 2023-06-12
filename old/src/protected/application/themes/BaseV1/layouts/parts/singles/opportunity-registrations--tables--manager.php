@@ -5,13 +5,11 @@ use MapasCulturais\i;
 <header id="header-inscritos" class="clearfix">
     <?php $this->applyTemplateHook('header-inscritos','begin'); ?>
     <h3><?php i::_e("Inscritos");?></h3>
-    <div class="alert info hide-tablet">
-        <?php i::_e("Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.");?>
-        <div class="close"></div>
+    <div class="header-inscritos">
+        <?php $this->applyTemplateHook('header-inscritos','actions'); ?>
+        <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>"><?php i::_e("Baixar inscritos");?></a>
+        <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('reportDrafts', [$entity->id]); ?>"><?php i::_e("Baixar rascunhos");?></a>
     </div>
-    <?php $this->applyTemplateHook('header-inscritos','actions'); ?>
-    <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>"><?php i::_e("Baixar inscritos");?></a>
-    <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('reportDrafts', [$entity->id]); ?>"><?php i::_e("Baixar rascunhos");?></a>
     <?php $this->applyTemplateHook('header-inscritos','end'); ?>
 </header>
 <div id='status-info' class="alert info">
@@ -162,12 +160,17 @@ use MapasCulturais\i;
             <?php $this->applyTemplateHook('registration-list-item','end'); ?>
         </tr>
     </tbody>
-    <tfoot>
+    <tfoot ng-if="data.registrationsAPIMetadata.count > data.registrations.length">
         <tr>
             <td colspan='{{numberOfEnabledColumns()}}' align="center">
                 <div ng-if="data.findingRegistrations">
                     <img src="<?php $this->asset('img/spinner_192.gif')?>" width="48">
                 </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='{{numberOfEnabledColumns()}}' align="center" ng-if="!data.findingRegistrations">
+                <button ng-click="findRegistrations();data.findingRegistrations = true"><?php MapasCulturais\i::_e("Carregar mais");?></button>
             </td>
         </tr>
     </tfoot>

@@ -16,16 +16,24 @@ app.component('entity-occurrence-list', {
             type: Boolean,
             default: false
         },
+        createEvent: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
-        return {}
+        
+        return {
+            showMap: false,
+        }
     },
 
     methods: {
         toggleMap(event) {
-            const occurrenceMap = event.target.parentElement.parentElement.nextSibling;
-            occurrenceMap.classList.toggle('showMap');
+            this.showMap = !this.showMap;
+            // const occurrenceMap = event.target.parentElement.parentElement.nextSibling;
+            // occurrenceMap.classList.toggle('showMap');
         },
 
         formatPrice(price) {

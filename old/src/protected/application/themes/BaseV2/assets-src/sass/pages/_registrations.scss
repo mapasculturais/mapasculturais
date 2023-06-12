@@ -1,10 +1,14 @@
 @use '../settings/mixins'as *;
 
 .controller-registration {
-
+    .opportunity-header {
+        &__content {
+            padding: size(47) size(16) size(67)  size(16);
+        }
+    }
     .registration {
         background-color: var(--mc-gray-100);
-
+        
         .container {
             gap: size(32) 2.56%;
             grid-template-columns: 74.36% 23.08%;
@@ -22,6 +26,7 @@
             margin: 0 auto;
             position: relative;
             width: 100%;
+            padding: size(40) 0;
 
             &>* {
                 margin: 0 auto;
@@ -43,7 +48,7 @@
                     margin: size(32) auto;
                     padding: 0 size(16);
 
-                    .mapas-card {
+                    .mc-card {
                         border-radius: var(--mc-border-radius-xs);
                         padding: size(17) size(24);
                     }
@@ -213,6 +218,11 @@
                             height: size(40);
                             justify-content: center;
                             width: size(40);
+                            overflow: hidden;
+
+                            img {
+                                width: 100%;
+                            }
 
                             .iconify {
                                 color: var(--mc-high-500);
@@ -233,7 +243,7 @@
             @include mobile {
                 .registration {
                     &__content {
-                        .mapas-card {
+                        .mc-card {
                             padding: size(16);
                         }
 
@@ -325,10 +335,23 @@
                     position: sticky;
                     top: 0;
                     width: 100%;
-                    z-index: 2;
+                    z-index: 1;
+                    box-shadow: 3px 3px 3px rgba(0,0,0,.5);
 
                     .stepper {
                         margin: 0 auto;
+
+                        @include mobile {
+                            .step .label {
+                                font-size: size(12);
+                            }
+                        }
+
+                        @media (max-width: size(500)) {
+                            .step .label {
+                                display: none;
+                            }
+                        }
                     }
                 }
 
@@ -385,7 +408,7 @@
                             flex-direction: column;
                             gap: size(32);
 
-                            .mapas-card {
+                            .mc-card {
                                 padding: size(16);
                             }
 
@@ -409,6 +432,7 @@
                                     font-weight: 700;
                                     gap: size(10);
                                     line-height: size(25);
+                                    margin-bottom: size(16);
 
                                     .obrigatory {
                                         color: var(--mc-error);
@@ -461,6 +485,18 @@
                                     }
                                 }
 
+                                .evaluation-form-card {
+                                    background-color: var(--mc-gray-100);
+                                    padding: size(8) size(16);
+                                    h4 {
+                                        color: var(--mc-gray-500);
+                                        font-size: size(14);
+                                    }
+                                    h5 {
+                                        font-size: size(18);
+                                    }
+                                }
+
                             }
 
                             .errors {
@@ -475,6 +511,7 @@
                                 align-items: center;
                                 display: flex;
                                 flex-direction: row;
+                                flex-wrap: wrap;
                                 gap: size(5);
                                 width: 100%;
 
@@ -483,11 +520,12 @@
                                     border-color: var(--mc-primary-500);
                                     border-radius: var(--mc-border-radius-xs);
                                     border: var(--mc-border-hairline);
-                                    display: flex;
+                                    display: grid;
                                     gap: size(15);
                                     max-width: size(520);
                                     padding: size(8);
                                     width: 100%;
+                                    grid-template-columns: size(40) 1fr;
 
                                     .image {
                                         align-items: center;
@@ -562,6 +600,7 @@
 
                             &__content {
                                 gap: size(28);
+                                flex-wrap: wrap;
     
                                 .data {
     

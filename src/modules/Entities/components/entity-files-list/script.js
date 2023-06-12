@@ -14,7 +14,7 @@ app.component('entity-files-list', {
 
     computed: {
         files() {
-            return this.entity.files?.[this.group] || []
+            return this.entity.files?.[this.group] || null
         }
     },
 
@@ -50,7 +50,9 @@ app.component('entity-files-list', {
 
     methods: {
         setFile() {
+            let description = this.newFile.description;
             this.newFile = this.$refs.file.files[0];
+            this.newFile.description = description;
         },
 
         upload(popover) {
@@ -60,7 +62,6 @@ app.component('entity-files-list', {
             };
 
             this.entity.upload(this.newFile, data).then((response) => {
-                console.log(response)
                 this.$emit('uploaded', this);
                 popover.close()
             });

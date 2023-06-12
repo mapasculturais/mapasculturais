@@ -5,8 +5,10 @@ namespace Opportunities;
 use DateTime;
 use Exception;
 use MapasCulturais\App;
+use MapasCulturais\Entities\AgentRelation;
 use MapasCulturais\i;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Registration;
 use PHPUnit\Util\Annotation\Registry;
 
@@ -25,42 +27,104 @@ class Module extends \MapasCulturais\Module{
 
         // Registro de Jobs
         $app->registerJobType(new Jobs\StartEvaluationPhase(Jobs\StartEvaluationPhase::SLUG));
-        $app->registerJobType(new Jobs\StartRegistrationPhase(Jobs\StartRegistrationPhase::SLUG));
-        $app->registerJobType(new Jobs\StartPhaseDataCollection(Jobs\StartPhaseDataCollection::SLUG));
+        $app->registerJobType(new Jobs\StartDataCollectionPhase(Jobs\StartDataCollectionPhase::SLUG));
+        $app->registerJobType(new Jobs\FinishEvaluationPhase(Jobs\FinishEvaluationPhase::SLUG));
+        $app->registerJobType(new Jobs\FinishDataCollectionPhase(Jobs\FinishDataCollectionPhase::SLUG));
+        $app->registerJobType(new Jobs\PublishResult(Jobs\PublishResult::SLUG));
 
-        // Executa Job no início da fase
-        $app->hook("entity(Opportunity).save:finish ", function() use ($app){
+        $app->hook('entity(Opportunity).validations', function(&$validations) {
+            /** @var Opportunity $this */
+            if (!$this->isNew() && !$this->isLastPhase) {
+                $validations['registrationFrom']['required'] = i::__('A data inicial das inscrições é obrigatória');
+                $validations['registrationTo']['required'] = i::__('A data final das inscrições é obrigatória');
+                $validations['shortDescription']['required'] = i::__('A descrição curtá é obrigatória');
+            }
+        });
+
+        /**
+         * Na publicação da oportunidade cria efetua o salvamento para de todas as fases
+         * para que dessa maneira os jobs sejam criados.
+         * 
+         * @todo pensar uma maneira de ativas os jobs sem necessidade de salvar as fases
+         */
+        $app->hook("entity(Opportunity).<<(un)?publish|(un)?archive|(un)?delete|destroy>>:after", function() use ($app){
+            /** @var Opportunity $this */
+
+            foreach($this->allPhases as $phase) {
+                $phase->scheduleJobs();
+
+                if($phase->evaluationMethodConfiguration) {
+                    $phase->evaluationMethodConfiguration->scheduleJobs();
+                }
+            }
+        });
+
+        $app->hook("entity(Opportunity).save:finish", function() use ($app){
+            /** @var Opportunity $this */
+            $this->scheduleJobs();
+        });
+
+        $app->hook("Entities\\Opportunity::scheduleJobs", function() use ($app){
+            /** @var Opportunity $this */
             $data = ['opportunity' => $this];
 
-            if ($this->registrationFrom) {
-                $app->enqueueJob(Jobs\StartRegistrationPhase::SLUG, $data, $this->registrationFrom->format("Y-m-d H:i:s"));
+            // verifica se a oportunidade e a fase estão públicas
+            $active = in_array($this->status, [-1, Opportunity::STATUS_ENABLED]) && $this->firstPhase->status === Opportunity::STATUS_ENABLED;
+
+            $now = new \DateTime;
+
+            // Executa Job no momento da publicação automática dos resultados da fase
+            if($active && $this->autoPublish && $this->publishTimestamp && $this->publishTimestamp >= $now){
+                $app->enqueueOrReplaceJob(Jobs\PublishResult::SLUG, $data, $this->publishTimestamp->format("Y-m-d H:i:s"));
+            } else {
+                $app->unqueueJob(Jobs\PublishResult::SLUG, $data);
+            }
+
+            // Executa Job no início da fase de coleta de dados
+            if ($active && $this->registrationFrom && $this->registrationFrom >= $now) {
+                $app->enqueueOrReplaceJob(Jobs\StartDataCollectionPhase::SLUG, $data, $this->registrationFrom->format("Y-m-d H:i:s"));
+            } else {
+                $app->unqueueJob(Jobs\StartDataCollectionPhase::SLUG, $data);
+            }
+
+            // Executa Job no final da fase de coleta de dados
+            if ($active && $this->registrationTo && $this->registrationTo >= $now) {
+                $app->enqueueOrReplaceJob(Jobs\FinishDataCollectionPhase::SLUG, $data, $this->registrationTo->format("Y-m-d H:i:s"));
+            } else {
+                $app->unqueueJob(Jobs\FinishDataCollectionPhase::SLUG, $data);
             }
         });
 
-        // Executa Job no início da avaliação
-        $app->hook("entity(EvaluationMethodConfiguration).save:finish ", function() use ($app){
-            $data = ['opportunity' => $this->opportunity];
-
-            if ($this->evaluationFrom) {
-                $app->enqueueJob(Jobs\StartEvaluationPhase::SLUG, $data, $this->evaluationFrom->format("Y-m-d H:i:s"));
-            }
-            
+        
+        $app->hook("entity(EvaluationMethodConfiguration).save:finish", function() use ($app){
+            /** @var EvaluationMethodConfiguration $this */
+            $this->scheduleJobs();
         });
 
-        /* == ROTAS DO PAINEL == */
-        // Executa Job no início de uma fase de coleta de dados
-        $app->hook("module(OpportunityPhases).createNextPhase(<<*>>):after", function() use ($app){
-            if($this->isDataCollection){
-                $data = ['opportunity' => $this];
-                $app->enqueueJob(Jobs\StartPhaseDataCollection::SLUG, $data, $this->registrationFrom->format("Y-m-d H:i:s"));
-            }
-        });
+        $app->hook("Entities\EvaluationMethodConfiguration::scheduleJobs", function() use ($app){
+            /** @var EvaluationMethodConfiguration $this */
+            $data = [
+                'opportunity' => $this->opportunity,
+                'phase' => $this,
+            ];
 
-        // Executa Job no momento da publicação automática dos resultados da fase
-        $app->hook("entity(Opportunity).save:finish", function() use ($app){
-            if($this->publish_timestamp){
-                $data = ['opportunity' => $this];            
-                $app->enqueueJob(Jobs\PublisResultPhase::SLUG, $data, $this->publish_timestamp->format("Y-m-d H:i:s"));
+            $active = in_array($this->opportunity->status, [-1, Opportunity::STATUS_ENABLED]) && $this->opportunity->firstPhase->status === Opportunity::STATUS_ENABLED;
+
+            $now = new \DateTime;
+
+            // Executa Job no início de fase de avaliação
+            if ($active && $this->evaluationFrom && $this->evaluationFrom >= $now) {
+                $app->enqueueOrReplaceJob(Jobs\StartEvaluationPhase::SLUG, $data, $this->evaluationFrom->format("Y-m-d H:i:s"));
+            }else {
+                $app->unqueueJob(Jobs\StartEvaluationPhase::SLUG, $data);
+            }
+
+            // Executa Job no início de fase de avaliação
+            if ($active && $this->evaluationTo && $this->evaluationTo >= $now) {
+                $app->enqueueOrReplaceJob(Jobs\FinishEvaluationPhase::SLUG, $data, $this->evaluationTo->format("Y-m-d H:i:s"));
+            }else {
+                $app->unqueueJob(Jobs\FinishEvaluationPhase::SLUG, $data);
+
             }
         });
         
@@ -79,8 +143,52 @@ class Module extends \MapasCulturais\Module{
             $nav_items['opportunities']['items'] = [
                 ['route' => 'panel/opportunities', 'icon' => 'opportunity', 'label' => i::__('Minhas oportunidades')],
                 ['route' => 'panel/registrations', 'icon' => 'opportunity', 'label' => i::__('Minhas inscrições')],
-                ['route' => 'panel/accountability', 'icon' => 'opportunity', 'label' => i::__('Prestações de contas')],
             ];
+        });
+
+        $app->hook('Theme::addOpportunityBreadcramb', function($unused = null, $label) use($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            /** @var Opportunity $entity */
+            $entity = $this->controller->requestedEntity;
+
+            $is_valuer = false;
+
+            if($entity instanceof EvaluationMethodConfiguration) {
+                $first_phase = $entity->opportunity->firstPhase;
+                $relation = $entity->getUserRelation($app->user);
+
+                $is_valuer = $relation && $relation->status === AgentRelation::STATUS_ENABLED;
+            } else {
+                $first_phase = $entity->firstPhase;
+
+                if ($entity->evaluationMethodConfiguration) {
+                    $relation = $entity->evaluationMethodConfiguration->getUserRelation($app->user);
+                    $is_valuer = $relation && $relation->status === AgentRelation::STATUS_ENABLED;
+                }
+            }
+
+            if ($is_valuer) {
+                $breadcrumb = [
+                    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+                    ['label'=> i::__('Minhas avaliações')],
+                    ['label'=> $first_phase->name, 'url' => $app->createUrl('opportunity', 'single', [$first_phase->id])]
+                ];
+            } else {
+                $breadcrumb = [
+                    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+                    ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
+                    ['label'=> $first_phase->name, 'url' => $app->createUrl('opportunity', 'edit', [$first_phase->id])]
+                ];
+            } 
+            
+            if ($entity->isFirstPhase) {
+                $breadcrumb[] = ['label'=> i::__('Período de inscrição')];
+            } else {
+                $breadcrumb[] = ['label'=> $entity->name];
+            }
+            $breadcrumb[] = ['label'=> $label];
+            
+            $this->breadcrumb = $breadcrumb;
         });
 
         $app->hook('Theme::useOpportunityAPI', function () use ($app) {
@@ -88,8 +196,53 @@ class Module extends \MapasCulturais\Module{
             $this->enqueueScript('components', 'opportunities-api', 'js/OpportunitiesAPI.js', ['components-api']);
         });
 
-        $app->hook('Theme::addOpportunityPhasesToJs', function ($opportunity = null) use ($app) {
-            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */            
+        $app->hook('Theme::addAvaliableEvaluationFields', function () use ($app) {
+            $entity = $this->controller->requestedEntity;
+            $app->view->jsObject['avaliableEvaluationFields'] = $entity->opportunity->avaliableEvaluationFields;
+        });
+
+        $app->hook('Theme::addRegistrationPhasesToJs', function ($unused = null, $registration = null) use ($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            $this->useOpportunityAPI();
+            if (!$registration) {
+                $registration = $this->controller->requestedEntity;
+            }
+
+            $number = $registration->number;
+
+            $registrations = $app->repo('Registration')->findBy(['number' => $number]);
+
+            $phases = [];
+
+            foreach($registrations as $reg) {
+                /** @var \MapasCulturais\Entities\Registration $reg */
+                $phases[$reg->opportunity->id] = $reg->jsonSerialize();
+            }
+
+            $this->jsObject['registrationPhases'] = $phases;
+        });
+
+        $app->hook('Theme::addOpportunityPhasesToJs', function ($unused = null, $opportunity = null) use ($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            $this->useOpportunityAPI();
+            if (!$opportunity) {
+                $entity = $this->controller->requestedEntity;
+
+                if ($entity instanceof Opportunity) {
+                    $opportunity = $entity;
+                } else if ($entity instanceof Registration) {
+                    $opportunity = $entity->opportunity;
+                } else if ($entity instanceof EvaluationMethodConfiguration) {
+                    $opportunity = $entity->opportunity;
+                } else {
+                    throw new Exception();
+                }
+            }
+
+            $this->jsObject['opportunityPhases'] = $opportunity->firstPhase->phases;
+        });
+
+        $app->hook('Theme::addRegistrationFieldsToJs', function ($unused = null, $opportunity = null) use ($app) {
             if (!$opportunity) {
                 $entity = $this->controller->requestedEntity;
 
@@ -101,8 +254,14 @@ class Module extends \MapasCulturais\Module{
                     throw new Exception();
                 }
             }
+            
+            $fields = array_merge((array) $opportunity->registrationFileConfigurations, (array) $opportunity->registrationFieldConfigurations);
 
-            $this->jsObject['opportunityPhases'] = $opportunity->firstPhase->phases;
+            usort($fields, function($a, $b) {                
+                return $a->displayOrder <=> $b->displayOrder;
+            });
+
+            $this->jsObject['registrationFields'] = $fields;
         });
 
         $app->hook('mapas.printJsObject:before', function() use($app) {
@@ -112,12 +271,19 @@ class Module extends \MapasCulturais\Module{
     }
 
     function register(){
-        
-            $app = App::i();
-            $controllers = $app->getRegisteredControllers();
-            if (!isset($controllers['opportunities'])) {
-                $app->registerController('opportunities', Controller::class);
-            }
+        $app = App::i();
+        $controllers = $app->getRegisteredControllers();
+        if (!isset($controllers['opportunities'])) {
+            $app->registerController('opportunities', Controller::class);
+        }
+
+        // after plugin registration that creates the configuration types
+        $app->hook('app.register', function(){
+            $this->view->registerMetadata(EvaluationMethodConfiguration::class, 'infos', [
+                'label' => i::__("Textos informativos para as fichas de avaliação"),
+                'type' => 'json',
+            ]);
+        });
            
     }
 }

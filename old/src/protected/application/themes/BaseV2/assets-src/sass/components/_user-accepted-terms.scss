@@ -19,7 +19,15 @@
 
                 &-box {
                     margin-top: 24px;
-
+                    @media (max-width: size(500)){
+                        .boxterm__list-subterm{
+                           label{
+                               font-weight: 600;
+                               font-size: 14px;
+                               line-height: 19px;
+                           }
+                        }
+                    }
                     .boxterm {
                         padding-bottom: 24px;
 
@@ -51,6 +59,7 @@
                         @media (max-width: size(500)) {
                             .boxterm {
                                 max-width: fit-content;
+                                background-color: red;
                             }
                         }
                     }

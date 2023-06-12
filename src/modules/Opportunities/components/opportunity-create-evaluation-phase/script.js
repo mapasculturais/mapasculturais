@@ -29,11 +29,15 @@ app.component('opportunity-create-evaluation-phase' , {
         maxDate () {
             return this.lastPhase.publishTimestamp?._date || null;
         },
-        minDate () {
-            return this.previousPhase.registrationTo?._date || this.previousPhase.evaluationTo?._date;
-        },
-        minDateEvaluationTo () {
-            return this.phase.evaluationFrom?._date || '';
+
+        minDate() {
+            if (this.previousPhase.__objectType == 'evaluationmethodconfiguration') {
+                // fase anterior é uma fase de avaliação
+                return this.previousPhase.evaluationTo;
+            } else {
+                // fase anterior é uma fase de coleta de dados
+                return this.previousPhase.registrationFrom;
+            }
         }
     },
 
@@ -41,21 +45,24 @@ app.component('opportunity-create-evaluation-phase' , {
 
         createEntity() {
             this.phase = Vue.ref(new Entity('evaluationmethodconfiguration'));
+            this.phase.infos = {general: ''};
             this.phase.opportunity = this.opportunity;
         },
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar
             setTimeout(() => this.entity = null, 200);
         },
-        save(modal) {
+        async save(modal) {
             modal.loading(true);
-            this.phase.save().then((response) => {
-                this.$emit('create', response);
-                modal.loading(false);
+            try{
+                await this.phase.save();
+                this.$emit('create', this.phase);
                 modal.close();
-            }).catch((e) => {
                 modal.loading(false);
-            });
+            
+            } catch(e) {
+                modal.loading(false);
+            }
         },
     }
 });

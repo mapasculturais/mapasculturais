@@ -159,17 +159,12 @@ app.component('search-filter-event', {
 
     methods: {
         clearFilters() {
-            console.log(this.pseudoQuery);
-            const d0 = new McDate(new Date(date[0]));
-            const d1 = new McDate(new Date(date[1]));
+            this.date = [this.defaultDateFrom, this.defaultDateTo];
             this.pseudoQuery['@from'] = d0.date('sql');
             this.pseudoQuery['@to'] = d1.date('sql');
-            // delete this.pseudoQuery['@verified'];
-            // delete this.pseudoQuery['type'];
-            // this.pseudoQuery['term:area'].length = 0;
-            // @  event:classificacaoEtaria
-            // delete this.pseudoQuery['@from'];
-        
+            delete this.pseudoQuery['event:@verified'];
+            this.pseudoQuery['event:classificacaoEtaria'].length = 0;
+            this.pseudoQuery['event:term:linguagem'].length = 0;        
         },
         dateFormat(date) {
             const d0 = new Date(date[0]);
@@ -215,10 +210,8 @@ app.component('search-filter-event', {
             const d0 = this.parseDate(this.date[0]);
             const d1 = this.parseDate(this.date[1]);
 
-            console.log([d0,d1]);
             // trocando o ano
             if(this.isFirstDayOfYear(d0) && this.isLastDayOfYear(d1)) {
-                console.log('trocando o ano');
                 
                 const firstDay = Dates.addYears(d0, 1);
                 this.date = [
@@ -236,7 +229,6 @@ app.component('search-filter-event', {
 
             // trocando a semana
             } else if (Dates.isSunday(d0) && Dates.isSaturday(d1)) {
-                console.log('trocando a semana');
                 const firstDay = Dates.addWeeks(d0, 1);
                 this.date = [
                     firstDay,
@@ -245,7 +237,6 @@ app.component('search-filter-event', {
 
             // trocando o fim de semana
             } else if (Dates.isFriday(d0) && Dates.isSunday(d1)) {
-                console.log('trocando o fim de semana');
                 this.date = [
                     Dates.addWeeks(d0,1),
                     Dates.addWeeks(d1,1),
@@ -253,7 +244,6 @@ app.component('search-filter-event', {
 
             // trocando o dia
             } else if (Dates.isSameDay(d0, d1)) {
-                console.log('trocando o dia');
                 this.date = [
                     Dates.addDays(d0,1),
                     Dates.addDays(d1,1),
@@ -275,7 +265,6 @@ app.component('search-filter-event', {
             
             // trocando o ano
             if(this.isFirstDayOfYear(d0) && this.isLastDayOfYear(d1)) {
-                console.log('trocando o ano');
                 const firstDay = Dates.subYears(d0, 1);
                 this.date = [
                     firstDay,
@@ -292,7 +281,6 @@ app.component('search-filter-event', {
 
             // trocando a semana
             } else if (Dates.isSunday(d0) && Dates.isSaturday(d1)) {
-                console.log('trocando a semana');
                 this.date = [
                     Dates.subWeeks(d0, 1),
                     Dates.subWeeks(d1, 1)
@@ -300,7 +288,6 @@ app.component('search-filter-event', {
 
             // trocando o fim de semana
             } else if (Dates.isFriday(d0) && Dates.isSunday(d1)) {
-                console.log('trocando o fim de semana');
                 this.date = [
                     Dates.subWeeks(d0,1),
                     Dates.subWeeks(d1,1),
@@ -308,7 +295,6 @@ app.component('search-filter-event', {
 
             // trocando o dia
             } else if (Dates.isSameDay(d0, d1)) {
-                console.log('trocando o dia');
                 this.date = [
                     Dates.subDays(d0,1),
                     Dates.subDays(d1,1),

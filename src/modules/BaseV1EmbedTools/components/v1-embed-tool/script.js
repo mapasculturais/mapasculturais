@@ -7,12 +7,18 @@ app.component('v1-embed-tool', {
             required: true,
         },
         id: {
-            type: String,
+            type: [String, Number],
             default: null,
         },
         hash: {
             type: String,
             default: null,
+        },
+        maxWidth: {
+            type: String,
+        },
+        minWidth: {
+            type: String,
         },
         maxHeight: {
             type: String,
@@ -32,6 +38,13 @@ app.component('v1-embed-tool', {
         window.addEventListener("message", this.listener, false);
     },
 
+    mounted() {
+        const self = this;
+        this.$refs.iframe.addEventListener('load', (event) => {
+            self.loaded = true;
+        });
+    },
+
     unmounted() {
         window.removeEventListener("message", this.listener);
     },
@@ -40,8 +53,13 @@ app.component('v1-embed-tool', {
         const self = this;
 
         return {
+            loaded: false,
             iframeHeight: this.height,
             listener: function(event) {            
+                if (event.source !== self.$refs.iframe.contentWindow) {
+                    return;
+                }
+
                 if (event.data.type == "resize") {
                     self.iframeHeight = event.data.data.height + 'px';
                 }

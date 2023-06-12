@@ -8,6 +8,8 @@ app.component('mc-link', {
     },
 
     props: {
+        id: String,
+        
         entity: {
             type: Entity,
             required: false

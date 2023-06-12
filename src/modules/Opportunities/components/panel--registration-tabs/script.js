@@ -14,7 +14,7 @@ app.component('panel--registration-tabs', {
             '@order': 'createTimestamp DESC',
         };
 
-        if ($MAPAS.currentUserRoles.includes('admin')) {
+        if (Object.values($MAPAS.currentUserRoles).includes('admin')) {
             query['@permissions'] = 'view';
             query['user'] = 'EQ(@me)';
         }
@@ -28,23 +28,20 @@ app.component('panel--registration-tabs', {
     
     methods: {
         changed(event) {
-            console.log(event.tab);
             switch (event.tab.slug) {
-                case 'sent':
+                case 'sent':                    
+                    if (Object.values($MAPAS.currentUserRoles).includes('admin')) {
+                        this.query['@permissions'] = 'view';
+                    }else{
+                        this.query['@permissions'] = '@control';
+                    }
                     this.query['status'] = 'GT(0)';
                     break;
                 case 'notSent':
                     this.query['status'] = 'EQ(0)';
+                    this.query['@permissions'] = 'view';
                     break;
             }
-        },
-
-        consoleLog(text){
-            console.log(text)
-        },
-
-        closeAlert() {
-            this.showAlert = false;
         },
     },
 });
