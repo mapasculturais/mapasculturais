@@ -34,7 +34,6 @@ $this->import('
         <create-occurrence :entity="entity" @create="addToOccurrenceList($event)"></create-occurrence>
     </div>
     <div class="entity-occurrence-list__occurrences">
-        <label class="occurrence__title">Agenda</label>
         <mc-entities name="occurrenceList" type="eventoccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
             <template #default="{entities}">
                 <div v-for="occurrence in entities" class="occurrence" :class="{'edit': editable}" :key="occurrence._reccurrence_string">

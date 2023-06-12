@@ -1,4 +1,4 @@
-app.component('opportunity-form-builder-category' , {
+app.component('opportunity-category' , {
     template: $TEMPLATES['opportunity-form-builder-category'],
     props: {
         entity: {
@@ -7,7 +7,7 @@ app.component('opportunity-form-builder-category' , {
         }
     },
     setup() {
-        const text = Utils.getTexts('opportunity-form-builder-category');
+        const text = Utils.getTexts('opportunity-category');
         return { text }
     },
 

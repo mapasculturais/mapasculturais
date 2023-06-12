@@ -155,7 +155,11 @@ class Site extends \MapasCulturais\Controller {
     function API_version() {
         $app = App::i();
         $data = [];
-        $data['name'] = $app->view->dict('site: name', false);
+        if ($app->view->version >= 2) {
+            $data['name'] = $app->siteName;
+        } else {
+            $data['name'] = $app->view->dict('site: name', false);
+        }
         $data['version'] = $app->getVersion();
 
         $tagVersion = trim(exec('git describe --tags --abbrev=0'));
@@ -175,8 +179,13 @@ class Site extends \MapasCulturais\Controller {
         
         if(!($info = $app->cache->fetch(__METHOD__))){
             $info = [];
-            $info['name'] = $app->view->dict('site: name', false);
-            $info['description'] = $app->view->dict('site: description', false);
+            if ($app->view->version >= 2) {
+                $data['name'] = $app->siteName;
+                $info['description'] = $app->siteDescription;
+            } else {
+                $data['name'] = $app->view->dict('site: name', false);
+                $info['description'] = $app->view->dict('site: description', false);
+            }
             $info['version'] = $app->getVersion();
     
             $info['timezone'] = date_default_timezone_get();
