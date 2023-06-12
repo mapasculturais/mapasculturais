@@ -12,7 +12,7 @@ $this->import('
     select-entity
 ');
 ?>
-<div v-if="owner && global.auth.user.profile.id != owner.id" class="entity-owner" :class="classes">
+<div v-if="owner && global.auth.user?.profile?.id != owner.id" class="entity-owner" :class="classes">
         <h4>{{title}}</h4>
         <a class="entity-owner__owner" :href="owner.singleUrl" :title="owner.shortDescription">
             <div class="entity-owner__owner--img">
