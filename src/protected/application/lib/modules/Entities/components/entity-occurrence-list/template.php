@@ -14,7 +14,7 @@ $this->import('
     mc-icon
 ');
 ?>
-<div class="entity-occurrence-list">
+<div class="entity-occurrence-list" :class="classes">
     <div v-if="editable && !createEvent" class="entity-occurrence-list__editable">
         <label class="entity-occurrence-list__editable--title">
             <?= i::_e('Data, hora e local do evento') ?>
