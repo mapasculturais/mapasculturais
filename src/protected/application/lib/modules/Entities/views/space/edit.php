@@ -128,12 +128,10 @@ $this->breadcrumb = [
             <mc-card>
                 <template #title>
                     <label><?php i::_e("Mais informações públicas"); ?></label>
-                    <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
+                    <p><?= i::__('Apresente melhor o seu Espaço.'); ?> <br> <?=  i::__('Adicione documentos, links, vídeos e imagens que contem a sua história.')?></p>
                 </template>
                 <template #content>
                     <div class="grid-12">
-                        <label class="col-12 long-description"><?php i::_e('Apresente melhor o seu Espaço. 
-                         Adicione documentos, links, vídeos e imagens que contem a sua história.')?></label>
                         <entity-field :entity="entity" classes="col-12" prop="longDescription" label="<?php i::_e('Descrição'); ?>"></entity-field>
                         <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Adicionar arquivos para download') ?>" editable></entity-files-list>
                         <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>

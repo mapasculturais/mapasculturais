@@ -1,11 +1,10 @@
 @use '../settings/mixins' as *;
 
 .opportunity-form-import {
-    padding: size(16) 0 size(35) 0;
+    padding-bottom: size(19);
 
     &--popover {
         .popover__content {
-
             .header-import {
                 &__title {
                     font-family: 'Open Sans';
@@ -32,8 +31,6 @@
                     max-width: size(140);
                 }
             }
-
-
         }
     }
 
@@ -65,7 +62,5 @@
         &__save {
             max-width: 100%
         }
-
-
     }
 }
