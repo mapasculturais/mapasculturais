@@ -34,7 +34,8 @@ $this->import('
             <div class="grid-12">
                 <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date" :autosave="300" classes="col-6 sm:col-12"></entity-field>
                 <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave="300" classes="col-6 sm:col-12"></entity-field>
-                <entity-field v-if="lastPhase" :entity="lastPhase" prop="publishTimestamp" :autosave="300" classes="col-6 sm:col-12">
+
+                <entity-field v-if="lastPhase" :entity="lastPhase" prop="publishTimestamp" :autosave="300" classes="col-6">
                     <label><?= i::__("Publicação final de resultados (data e hora)") ?></label>
                 </entity-field>
             </div>
@@ -67,7 +68,6 @@ $this->import('
     <aside>
         <mc-card>
             <div class="grid-12">
-                <entity-terms :entity="entity" taxonomy="area" classes="col-12" title="<?php i::esc_attr_e('Áreas de interesse'); ?>" editable></entity-terms>
                 <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
                 <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
                 <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags') ?>" editable></entity-terms>
