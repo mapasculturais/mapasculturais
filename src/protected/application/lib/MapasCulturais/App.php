@@ -3060,9 +3060,16 @@ class App extends \Slim\Slim{
 
         $templateData = (object) $templateData;
 
-        $templateData->siteName = $this->view->dict('site: name', false);
-        $templateData->siteDescription = $this->view->dict('site: description', false);
-        $templateData->siteOwner = $this->view->dict('site: owner', false);
+        if ($this->view->version >= 2) {
+            $templateData->siteName = $this->siteName;
+            $templateData->siteDescription = $this->siteDescription;
+
+        } else {
+            $templateData->siteName = $this->view->dict('site: name', false);
+            $templateData->siteDescription = $this->view->dict('site: description', false);
+            $templateData->siteOwner = $this->view->dict('site: owner', false);
+        }
+        
         $templateData->baseUrl = $this->getBaseUrl();
 
         if(!($footer_name = $this->view->resolveFileName('templates/' . i::get_locale(), '_footer.html'))) {

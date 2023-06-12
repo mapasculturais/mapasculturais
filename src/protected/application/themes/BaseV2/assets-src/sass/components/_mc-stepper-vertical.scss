@@ -29,7 +29,7 @@ ol.mc-stepper-vertical {
 
 }
 
-ol.mc-stepper-vertical li {
+ol.mc-stepper-vertical>li {
     position: relative;
     counter-increment: item;
     border-left: 3px solid red;
@@ -161,7 +161,7 @@ ol.mc-stepper-vertical li {
     }
 }
 
-ol.mc-stepper-vertical li::before {
+ol.mc-stepper-vertical>li::before {
     content: counters(item, ".") "";
     position: absolute;
     left: 0;
@@ -181,7 +181,7 @@ ol.mc-stepper-vertical li::before {
     font-size: 25px;
 }
 
-ol.mc-stepper-vertical li.active::before {
+ol.mc-stepper-vertical>li.active::before {
     background-color: var(--mc-secondary-500);
     font-size: 25px;
     color: var(--mc-high-500);

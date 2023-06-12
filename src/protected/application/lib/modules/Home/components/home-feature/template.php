@@ -33,7 +33,7 @@ $this->import('
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        <?= i::__('Todos') ?>
+                                        {{text(entity.__objectType)}}
                                     </div>
                                 </template>
                             </entity-card>
@@ -46,14 +46,14 @@ $this->import('
                         </template>
                     </carousel>
                 </mc-tab>
-                <mc-tab label="<?= i::esc_attr__('Agentes') ?>" slug="agents" v-if="agents.length > 0">
-                    <carousel v-if="agents.length > 0" :settings="settings" :breakpoints="breakpoints">
+                <mc-tab v-if="agents.length > 0" label="<?= i::esc_attr__('Agentes') ?>" slug="agents">
+                    <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in agents" :key="entity.__objectId">
                             <entity-card :entity="entity">
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        <?= i::__('Agentes') ?>
+                                        <?= i::__('Agente') ?>
                                     </div>
                                 </template>
                             </entity-card>
@@ -66,14 +66,14 @@ $this->import('
                         </template>
                     </carousel>
                 </mc-tab>
-                <mc-tab label="<?= i::esc_attr__('Espaços') ?>" slug="spaces">
-                    <carousel v-if="spaces.length > 0" :settings="settings" :breakpoints="breakpoints">
+                <mc-tab v-if="spaces.length > 0" label="<?= i::esc_attr__('Espaços') ?>" slug="spaces">
+                    <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in spaces" :key="entity.__objectId">
                             <entity-card :entity="entity">
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        <?= i::__('Espaços') ?>
+                                        <?= i::__('Espaço') ?>
                                     </div>
                                 </template>
                             </entity-card>
@@ -86,14 +86,14 @@ $this->import('
                         </template>
                     </carousel>
                 </mc-tab>
-                <mc-tab label="<?= i::esc_attr__('Projetos') ?>" slug="projects">
-                    <carousel v-if="projects.length > 0" :settings="settings" :breakpoints="breakpoints">
+                <mc-tab v-if="projects.length > 0" label="<?= i::esc_attr__('Projetos') ?>" slug="projects">
+                    <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in projects" :key="entity.__objectId">
                             <entity-card :entity="entity">
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        <?= i::__('Projetos') ?>
+                                        <?= i::__('Projeto') ?>
                                     </div>
                                 </template>
                             </entity-card>

@@ -48,7 +48,7 @@ class ChatThreadType extends \MapasCulturais\Definition
         $template = file_get_contents($filename);
         $mustache = new \Mustache_Engine();
         $params = [
-            "siteName" => $app->view->dict("site: name", false),
+            "siteName" => $app->view->version >= 2 ? $app->siteName : $app->view->dict("site: name", false),
             "user" => $notification->user->profile->name,
             "baseUrl" => $app->getBaseUrl(),
             "messagePayload" => ($message->payload ??

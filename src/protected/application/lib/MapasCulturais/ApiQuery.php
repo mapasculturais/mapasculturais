@@ -1083,6 +1083,7 @@ class ApiQuery {
     }
     
     protected function processEntities(array &$entities) {
+        $this->appendCurrentUserPermissions($entities);
         $this->appendMetadata($entities);
         $this->appendRelations($entities);
         $this->appendTerms($entities);
@@ -1092,7 +1093,6 @@ class ApiQuery {
         $this->appendRelatedAgents($entities);
         $this->appendSpaceRelations($entities);
         $this->appendRelatedSpaces($entities);
-        $this->appendCurrentUserPermissions($entities);
         $this->appendIsVerified($entities);
         $this->appendVerifiedSeals($entities);
         $this->appendSeals($entities);
@@ -1812,7 +1812,27 @@ class ApiQuery {
             foreach($entities as &$entity) {
                 $entity_id = $entity[$this->pk];
 
-                $entity['agentRelations'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
+                $entity['agentRelations'] = $relations_by_owner_id[$entity_id] ?? (object)[];
+                $permisions = $entity['currentUserPermissions'];
+
+                $can_view_pending = ($permisions['@controll'] ?? false) || 
+                                    ($permisions['viewPrivateData'] ?? false) ||
+                                    ($permisions['createAgentRelation'] ?? false) ||
+                                    ($permisions['removeAgentRelation'] ?? false);
+
+                if (!$can_view_pending) {
+                    foreach ($entity['agentRelations'] as $group => &$relations) {
+                        $relations = array_filter($relations, function($item) {
+                            if($item['status'] > 0) {
+                                return $item;
+                            }
+                        });
+
+                        if (empty($relations)) {
+                            unset($entity['agentRelations'][$group]);
+                        }
+                    }
+                }
             }
 
         }
@@ -1850,8 +1870,9 @@ class ApiQuery {
 
         $dql = "
             SELECT
-                ar.objectId as ownerId,
+                ar.objectId AS ownerId,
                 ar.group,
+                ar.status AS relationStatus,
                 a.id as agentId
 
             FROM
@@ -1901,14 +1922,37 @@ class ApiQuery {
                 }
 
                 $relations_by_owner_id[$owner_id][$group] = $relations_by_owner_id[$owner_id][$group] ?? [];
+                $agent = $agents_by_id[$agent_id];
+                $agent['relationStatus'] = $relation['relationStatus'];
 
-                $relations_by_owner_id[$owner_id][$group][] =  $agents_by_id[$agent_id];
+                $relations_by_owner_id[$owner_id][$group][] = $agent;
             }
 
             foreach($entities as &$entity) {
                 $entity_id = $entity[$this->pk];
 
                 $entity['relatedAgents'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
+                
+                $permisions = $entity['currentUserPermissions'];
+
+                $can_view_pending = ($permisions['@controll'] ?? false) || 
+                                    ($permisions['viewPrivateData'] ?? false) ||
+                                    ($permisions['createAgentRelation'] ?? false) ||
+                                    ($permisions['removeAgentRelation'] ?? false);
+
+                if (!$can_view_pending) {
+                    foreach ($entity['relatedAgents'] as $group => &$relations) {
+                        $relations = array_filter($relations, function($item) {
+                            if($item['relationStatus'] > 0) {
+                                return $item;
+                            }
+                        });
+
+                        if (empty($relations)) {
+                            unset($entity['relatedAgents'][$group]);
+                        }
+                    }
+                }
             }
 
         }
@@ -2890,8 +2934,12 @@ class ApiQuery {
             $defaults[] = 'relatedSpaces';
         }
 
-        if($this->usesPermissionCache){
+        if ($this->usesPermissionCache){
             $defaults[] = 'currentUserPermissions';
+        }
+
+        if ($this->entityClassName == Opportunity::class) {
+            $defaults[] = 'ownerEntity.{name,shortDescription,files.avatar,terms}';
         }
 
         $properties = array_merge(

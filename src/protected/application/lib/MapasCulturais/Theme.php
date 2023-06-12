@@ -186,6 +186,13 @@ abstract class Theme extends \Slim\View {
         $app->applyHookBoundTo($this, 'theme.init:after');
     }
 
+    
+    /**
+     * Nome do último arquivo que teve o log de texto impresso.     * 
+     * @var string
+     */
+    private $__previousLoggedFilename = '';
+
     /**
      * Retorna um texto configurável
      * 
@@ -224,10 +231,18 @@ abstract class Theme extends \Slim\View {
      * @return string 
      */
     function text(string $name, string $default_localized_text) {
+        $app = App::i();
+
         $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,1);
         $caller_filename = $bt[0]['file'];
 
-        error_log($caller_filename);
+        if ($conf = $app->_config['app.log.texts']) {
+            $filename = str_replace(APPLICATION_PATH, '', $caller_filename);
+            if($filename != $this->__previousLoggedFilename) {
+                $this->__previousLoggedFilename = $filename;
+                $app->log->debug("text > \033[37m{$filename}\033[0m");
+            }
+        }
 
         $keys = [];
 
@@ -274,7 +289,7 @@ abstract class Theme extends \Slim\View {
                 "text:{$match}.{$name}",
             ];
         }
-        $app = App::i();
+
         foreach($keys as $key) {
             if ($conf = $app->_config['app.log.texts']) {
                 if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#i', $key)){
