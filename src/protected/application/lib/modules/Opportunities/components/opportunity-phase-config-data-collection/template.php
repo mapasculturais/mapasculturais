@@ -10,7 +10,7 @@ $this->import('
     entity-field
     mc-confirm-button
     opportunity-phase-publish-date-config
-    opportunity-form-builder-category
+    opportunity-category
 ');
 ?>
 <mc-card>
@@ -20,7 +20,7 @@ $this->import('
         <entity-field :entity="phase" prop="registrationTo" :autosave="300" :min="phase.registrationFrom?._date" :max="maxDate?._date" classes="col-6 sm:col-12"></entity-field>
 
         <div v-if="phase.isFirstPhase" class="col-6">
-            <opportunity-form-builder-category :entity="phase"></opportunity-form-builder-category>
+            <opportunity-category :entity="phase"></opportunity-category>
         </div>
         
         <div class="col-6">
