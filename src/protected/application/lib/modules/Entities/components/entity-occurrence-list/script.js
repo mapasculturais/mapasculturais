@@ -20,6 +20,10 @@ app.component('entity-occurrence-list', {
             type: Boolean,
             default: false,
         },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
 
     data() {

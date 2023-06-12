@@ -6,6 +6,10 @@ app.component('opportunity-phase-header', {
             type: Entity,
             required: true
         },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
     
     setup(props, { slots }) {
