@@ -19,7 +19,6 @@ $this->import('
     entity-seals
     entity-social-media
     entity-terms
-    link-project
     mc-breadcrumb
     mc-link
     mc-container
@@ -55,15 +54,17 @@ $this->breadcrumb = [
                 <mc-container>
                     <main>
                         <div class="grid-12">
-                            <div class="col-12 additional">
-                                <div v-if="entity.emailPublico || entity.telefonePublico" class="additional-info">
-                                    <span class="additional-info__title"><?php i::_e("Informações adicionais"); ?></span>
-                                    <div v-if="entity.telefonePublico" class="additional-info__content">
-                                        <span class="info-item"><?php i::_e("telefone:"); ?></span> <label class="info-content">{{entity.telefonePublico}}</label>
-                                    </div>
-                                    <div v-if="entity.emailPublico" class="additional-info__content">
-                                        <span class="info-item"><?php i::_e("email:"); ?></span> <label class="info-content">{{entity.emailPublico}}</label>
-                                    </div>
+                            <div v-if="entity.emailPublico || entity.telefonePublico" class="col-12 additional-info">
+                                <h4 class="additional-info__title"><?php i::_e("Informações adicionais"); ?></h4>
+
+                                <div v-if="entity.telefonePublico" class="additional-info__item">
+                                    <p class="additional-info__item__title"><?php i::_e("telefone:"); ?></p>
+                                    <p class="additional-info__item__content">{{entity.telefonePublico}}</p>
+                                </div>  
+
+                                <div v-if="entity.emailPublico" class="additional-info__item">
+                                    <p class="additional-info__item__title"><?php i::_e("email:"); ?></p>
+                                    <p class="additional-info__item__content">{{entity.emailPublico}}</p>
                                 </div>
                             </div>
                             <div v-if="entity.longDescription!=null" class="col-12">
