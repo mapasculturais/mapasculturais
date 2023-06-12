@@ -30,7 +30,7 @@ class EventOccurrence extends \MapasCulturais\Entity
      * @ORM\SequenceGenerator(sequenceName="event_occurrence_id_seq", allocationSize=1, initialValue=1)
      */
 
-    protected $id;
+    public $id;
 
     /**
      * @var \DateTime

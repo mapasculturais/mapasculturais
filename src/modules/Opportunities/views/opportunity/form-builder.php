@@ -2,16 +2,12 @@
 use MapasCulturais\i;
 $this->layout = 'entity';
 
-$this->breadcrumb = [
-  ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-  ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
-  ['label'=> $entity->name, 'url' => $app->createUrl('opportunity', 'formBuilder', [$entity->id])],
-];
+$this->addOpportunityBreadcramb(i::__('Configuração do formulário'));
 
 $this->import('
     entity-header
     entity-actions
-    mapas-breadcrumb
+    mc-breadcrumb
     mc-link
     opportunity-form-builder
     opportunity-header
@@ -19,14 +15,14 @@ $this->import('
 ?>
 
 <div class="main-app form-builder">
-    <mapas-breadcrumb></mapas-breadcrumb>
-    <opportunity-header :opportunity="entity">
+    <mc-breadcrumb></mc-breadcrumb>
+    <opportunity-header :opportunity="entity.parent || entity">
         <template #button>
-            <mc-link class="button button--primary-outline" :entity="entity.parent || entity" route="edit" hash="config" icon="arrow-left">Voltar</mc-link>
+            <mc-link class="button button--primary-outline" :entity="entity.parent || entity" route="edit" hash="config" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
         </template>
     </opportunity-header>
 
-    <opportunity-form-builder :entity="entity.parent ? entity.parent : entity" :is-first-phase="entity.parent == null || entity.isFirstPhase"></opportunity-form-builder>
+    <opportunity-form-builder :entity="entity"></opportunity-form-builder>
 
-    <entity-actions :entity="entity.parent ? entity.parent : entity" editable></entity-actions>
+    <entity-actions :entity="entity" editable :can-delete="false"></entity-actions>
 </div>

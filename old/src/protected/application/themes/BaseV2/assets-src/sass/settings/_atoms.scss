@@ -237,3 +237,95 @@
         border-color: var(--mc-secondary-500);
     }
 }
+
+.danger  {
+    &__color {
+        color: var(--mc-danger-500);
+    }
+    &__background {
+        background-color: var(--mc-danger-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-danger-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-danger-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-danger-500);
+    }
+}
+
+.helper  {
+    &__color {
+        color: var(--mc-helper-500);
+    }
+    &__background {
+        background-color: var(--mc-helper-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-helper-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-helper-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-helper-500);
+    }
+}
+
+.success  {
+    &__color {
+        color: var(--mc-success-500);
+    }
+    &__background {
+        background-color: var(--mc-success-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-success-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-success-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-success-500);
+    }
+}
+
+.warning  {
+    &__color {
+        color: var(--mc-warning-500);
+    }
+    &__background {
+        background-color: var(--mc-warning-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-warning-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-warning-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-warning-500);
+    }
+}

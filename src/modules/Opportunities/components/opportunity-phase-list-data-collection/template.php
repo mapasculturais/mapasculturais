@@ -1,40 +1,34 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
+$this->import('
+    opportunity-phase-publish-date-config
+')
 ?>
-
-<mapas-card>
+<mc-card>
     <div class="grid-12 opportunity-phase-list-data-collection">
-        <div class="col-12">
-            <p><?= i::__("Quantidade inscrições:") ?> <strong>xxx inscrições</strong></p>
-        </div>
-        <div class="col-4 sm:col-12 subscribe_prev_phase">
-            <button class="button button--primary-outline"><?= i::__("Trazer inscrições da fase anterior") ?></button>
-        </div>
-        <div class="col-8 sm:col-12 subscribe_prev_phase">
-            <p><strong><?= i::__("Ao trazer as inscrições, você garante que apenas participantes classificados na fase anterior sigam para a póxima fase.") ?></strong></p>
+        <div v-if="entity.summary?.registrations" class="col-12">
+            <h3><?php i::_e("Status das inscrições") ?></h3>
+            <p v-if="entity.summary.registrations"><?= i::__("Quantidade de inscrições:") ?> <strong>{{entity.summary.registrations}}</strong> <?= i::__('inscrições') ?></p>
+            <p v-if="entity.summary?.sent"><?= i::__("Quantidade de inscrições <strong>enviadas</strong>:") ?> <strong>{{entity.summary.sent}}</strong> <?= i::__('inscrições') ?></p>
+            <p v-if="entity.summary?.Pending"><?= i::__("Quantidade de inscrições <strong>pendentes</strong>:") ?> <strong>{{entity.summary.Pending}}</strong> <?= i::__('inscrições') ?></p>
+            <p v-if="entity.summary?.Draft"><?= i::__("Quantidade de inscrições <strong>rascunho</strong>:") ?> <strong>{{entity.summary.Draft}}</strong> <?= i::__('inscrições') ?></p>
         </div>
         <div class="col-12 opportunity-phase-list-data-collection_action--center">
-            <confirm-button message="<?= i::__("Confirma a execução da ação?") ?>" @confirm="console.log('Lista de Inscricoes da Fase')">
-                <template #button="modal">
-                    <a class="opportunity-phase-list-data-collection_action--button" @click="modal.open()">
-                        <label><?= i::__("Lista de inscrições da fase") ?></label>
-                        <mc-icon name="external"></mc-icon>
-                    </a>
-                </template>
-            </confirm-button>
+            <mc-link :entity="entity" class="opportunity-phase-list-data-collection_action--button" icon="external" route="registrations" right-icon>
+              <?= i::__("Lista de inscrições da fase") ?>
+              <!-- Refatorar  -->
+            </mc-link>
         </div>
-        <div class="config-phase__line-bottom col-12"></div>
-        <div class="col-3">
-            <button class="button button--primary-outline"><?= i::__("Publicar resultado") ?></button>
-        </div>
-        <div class="col-6">
-            <h5><?= i::__("A publicação de um resultado é opcional e só pode ser executada após a aplicação dos resultados das avaliações.") ?></h5>
-        </div>
-        <div class="col-3 field">
-            <label>
-                <input type="checkbox" /> <?= i::__("Publicar resultados automaticamente") ?>
-            </label>
-        </div>
+
+        <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
+            <div class="config-phase__line col-12"></div>
+            <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-datepicker hide-checkbox></opportunity-phase-publish-date-config>
+        </template>
     </div>
-</mapas-card>
+</mc-card>

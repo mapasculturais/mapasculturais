@@ -20,7 +20,11 @@ app.component('entity-links', {
         editable: {
             type: Boolean,
             default: false
-        }
+        },
+        classes: {
+            type: String,
+            default: '',
+        },
     },
 
     data() {

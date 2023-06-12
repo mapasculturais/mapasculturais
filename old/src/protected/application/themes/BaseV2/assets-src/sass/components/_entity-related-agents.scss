@@ -50,26 +50,31 @@
             gap: size(16);
 
             .agent {
+                cursor: pointer;
                 display: flex;
                 height: size(40);
                 position: relative;
                 width: size(40);
 
-                    &__img {
-                        border-radius: 50%;
-                        display: flex;
-                        overflow: hidden;
-                        justify-content: center;
-                        align-items: center;
-                        width: 100%;
-                        background: var(--mc-gray-500);
-                        &--img {
-                            max-width: 100%;
-                        }
-                        .iconify {
-                            color: var(--mc-high-500);
-                        }
+                &__img {
+                    align-items: center;
+                    background: var(--mc-gray-500);
+                    border-radius: 50%;
+                    display: flex;
+                    height: size(40);
+                    justify-content: center;
+                    overflow: hidden;
+                    width: 100%;
+                    width: size(40);
+
+                    &--img {
+                        max-width: 100%;
                     }
+
+                    .iconify {
+                        color: var(--mc-high-500);
+                    }
+                }
 
                 &__delete {
                     align-items: center;
@@ -88,13 +93,23 @@
                         font-size: size(14);
                     }
                 }
+
+                &__pending {
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                    width: size(10);
+                    height: size(10);
+                    background-color: var(--mc-warning-500);
+                    border-radius: var(--mc-border-radius-pill);
+                }
             }
         }
 
         &--actions {
             align-items: center;
             display: flex;
-            gap: 13px;
+            gap: size(13);
         }
     }
 
@@ -103,6 +118,28 @@
         display: flex;
         flex-direction: column;
         gap: size(8);
+
+        .add-agent {
+            margin-bottom: size(8);
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 600;
+            font-size: size(14);
+            line-height: size(19);
+        }
+
+        &--newGroup {
+            input[type="text"] {
+                height: size(46);
+                width: size(290);
+            }
+
+            input::placeholder {
+                font-size: size(16);
+                padding-left: size(3);
+            }
+        }
+
 
         &--title {
             color: var(--mc-black);

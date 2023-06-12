@@ -16,6 +16,11 @@ use MapasCulturais\Definitions\Metadata as MetadataDefinition;
  * @property-read \DateTime $createTimestamp
  * @property-read \DateTime $updateTimestamp
  * @property-read array $summary
+ * @property-read boolean $autoPublish
+ * @property \DateTime $publishTimestamp
+ * @property-read boolean $publishedRegistrations
+ * @property-read int $totalRegistrations 
+ * 
  * 
  * @property string $name
  * @property string $shortDescription
@@ -83,7 +88,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\SequenceGenerator(sequenceName="opportunity_id_seq", allocationSize=1, initialValue=1)
      *
      */
-    protected $id;
+    public $id;
 
     /**
      * @var integer
@@ -154,6 +159,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="publish_timestamp", type="datetime", nullable=true)
      */
     protected $publishTimestamp;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="auto_publish", type="boolean", options={"default" : false})
+     */
+    protected $autoPublish = false;
 
     /**
      * @var integer
@@ -277,7 +289,11 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @return \MapasCulturais\Definitions\EvaluationMethod
      */
     public function getEvaluationMethodDefinition() {
-        return $this->evaluationMethodConfiguration->getDefinition();
+        if ($this->evaluationMethodConfiguration) {
+            return $this->evaluationMethodConfiguration->getDefinition();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -285,7 +301,11 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @return \MapasCulturais\EvaluationMethod
      */
     public function getEvaluationMethod() {
-        return $this->evaluationMethodConfiguration->getEvaluationMethod();
+        if ($this->evaluationMethodConfiguration) {
+            return $this->evaluationMethodConfiguration->getEvaluationMethod();
+        } else {
+            return null;
+        }
     }
     
     function setParent($parent = null) {
@@ -308,13 +328,17 @@ abstract class Opportunity extends \MapasCulturais\Entity
     function getEvaluationCommittee($return_relation = true){
         $app = App::i();
 
+        if (!$this->evaluationMethodConfiguration) {
+            return [];
+        }
+
         $committee = $this->evaluationMethodConfiguration->getAgentRelations(null, true);
         
         if(!$return_relation) {
             $committee = array_map(function($r){ return $r->agent; }, $committee);
         }
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.evaluationCommittee", [&$committee, $return_relation]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}.evaluationCommittee", [&$committee, $return_relation]);
         
         return $committee;
     }
@@ -350,7 +374,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             }
         }
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.evaluations", [&$evaluations, $include_empty]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}.evaluations", [&$evaluations, $include_empty]);
         
         return $evaluations;
     }
@@ -388,7 +412,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             ],
             'registrationFrom' => [
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
-                '!empty($this->registrationTo)' => \MapasCulturais\i::__('Data final obrigatória caso data inicial preenchida')
             ],
             'registrationTo' => [
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
@@ -491,14 +514,35 @@ abstract class Opportunity extends \MapasCulturais\Entity
         });
     }
 
+    /**
+     * Retorna total de inscrições na oportunidade
+     * @return integer
+     */
+    function getTotalRegistrations(){
+        $app = App::i();
 
+        $params = ["opp" => $this];
+
+        $query = $app->em->createQuery("
+            SELECT 
+                COUNT(o) AS totalRegistrations
+            FROM 
+                MapasCulturais\\Entities\\Registration o 
+            WHERE 
+                o.opportunity = :opp");
+
+        $query->setParameters($params);
+
+        $result = $query->getArrayResult();
+
+        return $result[0]['totalRegistrations'];
+    }
 
     function setRegistrationFrom($date){
         if($date instanceof \DateTime){
             $this->registrationFrom = $date;
         }elseif($date){
             $this->registrationFrom = new \DateTime($date);
-            $this->registrationFrom->setTime(0,0,0);
         }else{
             $this->registrationFrom = null;
         }
@@ -591,7 +635,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $app = App::i();
         $app->em->beginTransaction();
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistrations:before");
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).publishRegistrations:before");
         
         $this->publishedRegistrations = true;
         $this->save(true);
@@ -609,13 +653,48 @@ abstract class Opportunity extends \MapasCulturais\Entity
             // @todo: fazer dos selos em oportunidades um módulo separado (OpportunitySeals ??)
             $registration->setAgentsSealRelation();
             
-            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistration", [$registration]);
+            $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).publishRegistration", [$registration]);
 
             $app->em->flush();
             $app->em->clear();
         }
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistrations:after");
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).publishRegistrations:after");
+
+        $app->em->commit();
+    }
+
+    function unPublishRegistrations()
+    {
+        $this->checkPermission('unPublishRegistrations');
+        
+        $app = App::i();
+        $app->em->beginTransaction();
+
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).unPublishRegistrations:before");
+        
+        $this->publishedRegistrations = false;
+        $this->save(true);
+        
+        $query = new ApiQuery(Registration::class, [
+            'opportunity' => "EQ({$this->id})", 
+            'status'=>'EQ(10)'
+        ]);
+
+        $registration_ids = $query->findIds();
+
+        foreach ($registration_ids as $registration_id) {
+            $registration = $app->repo('Registration')->find($registration_id);
+
+            $registration->unsetAgentSealRelation();
+            
+            $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).unpublishRegistration", [$registration]);
+
+            $app->em->flush();
+            $app->em->clear();
+        }
+
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).unPublishRegistrations:after");
 
         $app->em->commit();
     }
@@ -629,26 +708,24 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         $this->checkPermission('sendUserEvaluations', $user);
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).sendUserEvaluations:before", [$user]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).sendUserEvaluations:before", [$user]);
 
         $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUser($this, $user);
 
         $app->disableAccessControl();
         
         foreach($evaluations as $evaluation){
-            $evaluation->status = RegistrationEvaluation::STATUS_SENT;
-            $evaluation->save(true);
+            if($evaluation->status == 1) {
+                $evaluation->status = RegistrationEvaluation::STATUS_SENT;
+                $evaluation->save(true);
+            }
         }
-
-        $relation = $this->evaluationMethodConfiguration->getUserRelation($user);
-        $relation->status = EvaluationMethodConfigurationAgentRelation::STATUS_SENT;
-        $relation->save(true);
 
         $app->em->flush();
         
         $app->enableAccessControl();
 
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).sendUserEvaluations:after", [$user]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).sendUserEvaluations:after", [$user]);
     }
 
     function importFields($importSource) {
@@ -656,7 +733,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         
         $app = App::i();
         
-        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.importFields:before", [&$importSource]);
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}.importFields:before", [&$importSource]);
 
         $created_fields = [];
         $created_files = [];
@@ -775,7 +852,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
             $this->save(true);
 
-            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.importFields:after", [&$importSource, &$created_fields, &$created_files]);
+            $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}.importFields:after", [&$importSource, &$created_fields, &$created_files]);
 
         }
     }
@@ -826,39 +903,83 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     public function getSummary()
     {
+        if($this->isNew()) {
+            return [];
+        }
+
         /** @var App $app */
         $app = App::i();
 
-        $cache_key = __METHOD__ . ':' . $this->id; 
-        if($cache = $app->cache->fetch($cache_key)){
-            return $cache;
+        if($app->config['app.useOpportunitySummaryCache']) {
+            $cache_key = __METHOD__ . ':' . $this->id; 
+            if ($app->cache->contains($cache_key)) {
+                return $app->cache->fetch($cache_key);
+            }
         }
 
         $params = ["opp" => $this];
 
-        $complement = "";
-        if($this->evaluationMethodConfiguration){
-            $complement.= " AND o.status IN (0,1)";
-        }
-
-        $query = $app->em->createQuery("SELECT o.status, COUNT(o.status) AS qtd FROM MapasCulturais\\Entities\\Registration o  WHERE o.opportunity = :opp {$complement} GROUP BY o.status");
+        $query = $app->em->createQuery("
+            SELECT 
+                o.status, 
+                COUNT(o.status) AS qtd 
+            FROM 
+                MapasCulturais\\Entities\\Registration o 
+            WHERE 
+                o.opportunity = :opp
+            GROUP BY o.status");
 
         $query->setParameters($params);
 
-        $data = [];
-        $total_registrations = 0;
-        $status_list = \MapasCulturais\Entities\Registration::getStatuses();
+        $data = [
+            'registrations' => 0,
+            'sent' => 0,
+        ];
+
+        $status_list = Registration::getStatuses();
+        
         if($result = $query->getResult()){
             foreach($result as $value){
                 $status = $status_list[$value['status']];
-                $total_registrations += $value['qtd'];
-                $data[$status] = $value['qtd'];
+                $data['registrations'] += $value['qtd'];
+                
+                if ($value['status'] > 0) {
+                    $data['sent'] += $value['qtd'];
+                }
+                
+                if ($this->evaluationMethodConfiguration){
+                    if (in_array($value['status'], [0,1])){
+                        $data[$status] = $value['qtd'];
+                    } 
+                } else {
+                    $data[$status] = $value['qtd'];
+                }
             }
         }
-        $data['registrations'] = $total_registrations;
 
-        $app->cache->save($cache_key, $data, 30);
+        if($app->config['app.useOpportunitySummaryCache']) {
+            $app->cache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
+        }
+
+        $app->applyHookBoundTo($this, "opportunity.summary", [&$data]);
+
         return $data;
+    }
+
+    function unregisterRegistrationMetadata(){
+        $app = App::i();
+
+        $registered_metadata = $app->getRegisteredMetadata(Registration::class);
+        if (isset($registered_metadata['projectName'])) {
+            $app->unregisterEntityMetadata(Registration::class, 'projectName');
+        }
+
+        foreach($this->registrationFieldConfigurations as $field){
+            $field_name = $field->fieldName;
+            if (isset($registered_metadata[$field_name])) {
+                $app->unregisterEntityMetadata(Registration::class, $field_name);
+            }
+        }
     }
 
     function registerRegistrationMetadata(){
@@ -970,23 +1091,21 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     protected function canUserSendUserEvaluations($user){
+        if (!$this->evaluationMethodConfiguration) {
+            return false;
+        }
+
+        if($user->is('guest')) {
+            return false;
+        }
+
         $can_evaluate = $this->canUserEvaluateRegistrations($user);
         
         $today = new \DateTime('now');
-        $registrations = $this->getSentRegistrations();
 
-        $evaluations_ok = (($today >= $this->registrationTo) && $registrations) ? true : false;
-        foreach($registrations as $reg){
-            if($reg->canUser('evaluate')){
-                $evaluation = $reg->getUserEvaluation($user);
-                if(is_null($evaluation) || $evaluation->status != RegistrationEvaluation::STATUS_EVALUATED){
-                    $evaluations_ok = false;
-                    break;
-                }
-            }
-        }
+        $em = $this->evaluationMethodConfiguration;
         
-        return $can_evaluate && $evaluations_ok;
+        return $can_evaluate && $today >= $em->evaluationFrom && $today <= $em->evaluationTo;
     }
 
     protected function canUserEvaluateRegistrations($user){
@@ -1031,12 +1150,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
         } else {
             return false;
         }
-    }
-
-    /** @ORM\PreRemove */
-    public function unlinkEvents(){
-        foreach($this->events as $event)
-            $event->opportunity = null;
     }
 
     //============================================================= //

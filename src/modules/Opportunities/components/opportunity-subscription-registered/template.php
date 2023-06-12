@@ -1,8 +1,11 @@
 <?php
-use MapasCulturais\i;
-$this->import('');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+use MapasCulturais\i;
+?>
 <div class="grid-12">
     <div class="col-12">
         <p class="opportunity__period--title">

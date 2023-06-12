@@ -8,7 +8,10 @@ app.component('entity-parent-edit', {
     },
 
     data() {
-        return {  }
+        const query = {
+            id: `!EQ(${this.entity.id})`
+        }
+        return { query }
     },
 
     computed: {
@@ -30,10 +33,6 @@ app.component('entity-parent-edit', {
             type: String,
             required: true
         },
-        editable: {
-            type: Boolean,
-            default: false
-        },
         classes: {
             type: [String, Array, Object],
             required: false
@@ -47,7 +46,7 @@ app.component('entity-parent-edit', {
 
     methods: {
         changeParent(entity) {
-                this.entity.parent = entity;
+            this.entity.parent = entity;
         }
     }
     

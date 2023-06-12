@@ -8,10 +8,6 @@ app.component('cropper-stencil', {
         return { hasSlot }
     },
 
-	/* created() {
-		console.log(VueAdvancedCropper);
-    }, */
-
     components: {
 		StencilPreview: VueAdvancedCropper.StencilPreview,
 		DraggableArea: VueAdvancedCropper.DraggableArea,

@@ -5,7 +5,7 @@ Adiciona um link para uma entidade ou rota
 - *Entity **entity** = null* - Entidade
 - *Bollean **icon** = false* - Se deve exibir o ícone da entidade antes do label
 - *String **route** = 'single'* - Rota da entidade (single|edit|etc)
-- *String **urlParams** = []* - Parâmetros para incluir na url.
+- *String **params** = []* - Parâmetros para incluir na url.
 - *String **getParams** = {}* - Parâmetros GET para incluir na url.
 - *String **class** = ''* - classes para incluir na tag a do link
 
@@ -45,6 +45,6 @@ $this->import('mc-link');
 <mc-link route="controller/action" get-params="{param1: 'valor1', param2: 'valor2'}">Link</mc-link>
 
 <!-- passando parâmetros GET: /controller/action/param1:valor1/param2:valor2/-->
-<mc-link route="controller/action" url-params="{param1: 'valor1', param2: 'valor2'}">Link</mc-link>
+<mc-link route="controller/action" params="{param1: 'valor1', param2: 'valor2'}">Link</mc-link>
 
 ```

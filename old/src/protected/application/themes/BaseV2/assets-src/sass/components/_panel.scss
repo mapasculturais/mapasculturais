@@ -4,6 +4,19 @@
     &.action-index {
         background: linear-gradient(90deg, white, white 50%, var(--mc-gray-100) 50%, var(--mc-gray-100));
     }
+
+    &.action-agents,
+    &.action-spaces,
+    &.action-projects,
+    &.action-opportunities,
+    &.action-events {
+        .panel {
+            .tabs-component__buttons {
+                gap: size(40);
+            }
+        }
+    }
+
 }
 
 
@@ -60,21 +73,7 @@
         }
     }
 
-    &__help-link {
-        background-color: var(--mc-gray-100);
-        border-radius: var(--mc-border-radius-pill);
-        color: var(--mc-low-500);
-        font-size: size(12);
-        font-weight: 800;
-        line-height: size(16);
-        padding: size(8) size(14);
-        text-decoration: none;
 
-        &:focus,
-        &:hover {
-            background-color: var(--mc-gray-300);
-        }
-    }
 
     &__row {
         margin: size(32);
@@ -93,14 +92,15 @@
         &__header {
             padding: size(50) size(32) size(30);
             max-width: size(1088);
-
+            @media (max-width:size(400)){
+                padding: size(18) size(16) size(30);
+            }
             .header-top {
                 margin-bottom: size(26);
                 display: flex;
                 align-items: center;
                 flex-direction: row;
                 justify-content: space-between;
-
             }
 
             &-title {
@@ -110,7 +110,7 @@
                 .title {
                     align-items: center;
                     display: grid;
-                    grid-template-columns: size(40) 1fr;
+                    grid-template-columns: size(40) 1.2fr;
                     gap: size(16);
 
 
@@ -147,8 +147,6 @@
                         line-height: size(44);
                     }
                 }
-
-
             }
 
             @include mobile {
@@ -181,8 +179,8 @@
                         }
 
                         &__title {
-                            font-size: size(18);
-
+                            font-size: size(20.8);
+                            letter-spacing: -0.05em;
                         }
                     }
                 }
@@ -268,28 +266,25 @@
 
         .actions-left {
             display: inline-flex;
+
             .panel__entity-actions:first-of-type {
 
                 display: flex;
                 flex-direction: row-reverse;
             }
-        
 
-        &-before {
-            // background-color: red;
+
+            &-before {}
+
+            &-after {}
+
         }
 
-        &-after {
-            // background-color: blue;
-        }
+        .tabs-component {
+            &__panels {
+                margin: 0;
+            }
 
+        }
     }
-
-    .tabs-component {
-        &__panels {
-            margin: 0;
-        }
-
-    }
-}
 }

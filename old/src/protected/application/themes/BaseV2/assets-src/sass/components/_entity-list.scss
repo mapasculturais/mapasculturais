@@ -19,13 +19,17 @@
 
     &__list {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         list-style: none;
         padding: 0;
         gap: size(16);
         margin: size(8) 0;
+        justify-content: space-between;
 
         &-item {
+            word-wrap: break-word;
+            font-size: size(14);
             &-img {
                 border-radius: 50%;
                 display: flex;
@@ -35,18 +39,18 @@
                 overflow: hidden;
                 height: size(40);
                 width: size(40);
-                
+                max-width: 100%;
+
                 .iconify {
                     color: var(--mc-high-500);
                 }
             }
-
             &-link {
-                display: flex;
-                align-items: center;
+                display: grid;
+                grid-template-columns: 48px size(155);
                 gap: size(8);
-                color: var(--mc-agents-500);
                 text-decoration: none;
+                align-items: center;
             }
         }
     }

@@ -24,6 +24,8 @@ class Theme extends MapasCulturais\Theme {
         'x-editable' => 'jquery-editable-dev-1.5.2'
     );
 
+    protected $_dict = [];
+
     // The default fields that are queried to display the search results both on map and list modes
     public $searchQueryFields = array('id','singleUrl','name','subTitle','type','shortDescription','terms','project.name','project.singleUrl, user, owner.userId'); //user funciona bem para agente e outras entidade, não creio que seja a melhor opção.
 
@@ -33,6 +35,33 @@ class Theme extends MapasCulturais\Theme {
 
     static function getThemeFolder() {
         return __DIR__;
+    }
+
+    protected function _addTexts(array $dict = []){
+        $this->_dict = array_merge($dict, $this->_dict);
+    }
+
+    function dict($key, $print = true){
+        if(!$this->_dict){
+            $class = get_called_class();
+            while($class !== __CLASS__){
+                if(!method_exists($class, '_getTexts'))
+                    throw new \Exception ("_getTexts method is required for theme classes and is not present in {$class} class");
+
+                $this->_addTexts($class::_getTexts());
+                $class = get_parent_class($class);
+            }
+        }
+        $text = '';
+        if(key_exists($key, $this->_dict)){
+            $text = $this->_dict[$key];
+        }
+
+        if($print){
+            echo $text;
+        }else{
+            return $text;
+        }
     }
 
     static function getDictGroups(){
@@ -855,6 +884,8 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
 
+            $this->jsObject['userProfile'] = $app->user->profile;
+
             $this->jsObject['assets'] = array();
             $this->jsObject['templateUrl'] = array();
             $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false, false);
@@ -1001,85 +1032,6 @@ class Theme extends MapasCulturais\Theme {
 
         $app->hook('entity(event).save:before', function() {
             $this->type = 1;
-        });
-
-
-        $format_doc = function($documento){
-            $documento = preg_replace('#[^\d]*#','',$documento);
-            $formatted = false;
-            if (strlen($documento) == 11) {
-                $b1 = substr($documento,0,3);
-                $b2 = substr($documento,3,3);
-                $b3 = substr($documento,6,3);
-                $dv = substr($documento,-2);
-                $formatted = "$b1.$b2.$b3-$dv";
-            } else if(strlen($documento)==14) {
-                $b1 = substr($documento,0,2);
-                $b2 = substr($documento,2,3);
-                $b3 = substr($documento,5,3);
-                $b4 = substr($documento,8,4);
-                $dv = substr($documento,-2);
-                $formatted = "$b1.$b2.$b3/$b4-$dv";
-            }
-
-            return $formatted;
-        };
-
-        // faz a keyword buscar pelo documento do owner nas inscrições
-        $app->hook('repo(Registration).getIdsByKeywordDQL.join', function(&$joins, $keyword) use($format_doc) {
-
-            if ($format_doc($keyword)) {
-                $joins .= " LEFT JOIN o.__metadata doc WITH doc.key = 'documento'";
-            }
-        });
-
-        $app->hook('repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword) use($format_doc) {
-
-            if ($doc = $format_doc($keyword)) {
-                $doc2 = trim(str_replace(['%','.','/','-'],'', $keyword));
-                $where .= " OR doc.value = '$doc' OR doc.value = '$doc2'";
-            }
-        });
-
-        // faz a keyword buscar pelos termos das taxonomias
-        $app->hook('repo(<<agent|space|event|project|ppportunity>>).getIdsByKeywordDQL.join,-repo(Registration).getIdsByKeywordDQL.join', function(&$joins, $keyword) {
-            $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
-
-            $class = $this->getClassName();
-
-            $joins .= "LEFT JOIN e.__termRelations tr
-                LEFT JOIN
-                        tr.term
-                            t
-                        WITH
-                            t.taxonomy = '{$taxonomy->slug}'";
-        });
-
-        $app->hook('repo(<<agent|space|event|project|ppportunity>>).getIdsByKeywordDQL.where,-repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword) {
-            $where .= " OR unaccent(lower(t.term)) LIKE unaccent(lower(:keyword)) ";
-        });
-
-        $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins, $keyword) {
-            $joins .= " LEFT JOIN e.project p
-                    LEFT JOIN e.__metadata m
-                    WITH
-                        m.key = 'subTitle'
-                     JOIN e.occurrences oc
-                     JOIN oc.space sp
-                ";
-        });
-
-        $app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where, $keyword) use($app) {
-            $projects = $app->repo('Project')->findByKeyword($keyword);
-            $project_ids = [];
-            foreach($projects as $project){
-                $project_ids = array_merge($project_ids, [$project->id], $project->getChildrenIds());
-            }
-            if($project_ids){
-                $where .= " OR p.id IN ( " . implode(',', $project_ids) . ")";
-            }
-            $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
-            $where .= " OR unaccent(lower(sp.name)) LIKE unaccent(lower(:keyword))";
         });
 
         $theme = $this;
@@ -1339,7 +1291,7 @@ class Theme extends MapasCulturais\Theme {
                 return;
             }
 
-            while($registration = self::getPreviousPhaseRegistration($registration)){
+            while($registration = Phases::getPreviousPhaseRegistration($registration)){
                 $opportunity = $registration->opportunity;
 
                 $this->registerRegistrationMetadata($opportunity);
@@ -1565,7 +1517,7 @@ class Theme extends MapasCulturais\Theme {
             }
     
             if($opportunity->isOpportunityPhase){
-                $template_name = 'opportunity-phase-status';
+                $template_name = 'opportunity-phases/opportunity-phase-status';
             }
         });
     
@@ -1751,14 +1703,7 @@ class Theme extends MapasCulturais\Theme {
             }
         }
 
-        // after plugin registration that creates the configuration types
-        $app->hook('app.register', function(){
-            $this->view->registerMetadata('MapasCulturais\Entities\EvaluationMethodConfiguration', 'infos', [
-                'label' => i::__("Textos informativos para as fichas de avaliação"),
-                'serialize' => function($val){ return json_encode($val); },
-                'unserialize' => function($val){ return json_decode($val); },
-            ]);
-        });
+        
     }
 
     function getLockedFieldsSeal(){
@@ -2336,7 +2281,22 @@ class Theme extends MapasCulturais\Theme {
             'Anexos' => i::__('Anexos'),
             'Avaliação' => i::__('Avaliação'),
             'Status' => i::__('Status'),
-            'spaceRelationRequestSent' =>  i::__('Sua requisição para relacionar o espaço {{space}} foi enviada.')
+            'spaceRelationRequestSent' =>  i::__('Sua requisição para relacionar o espaço {{space}} foi enviada.'),
+
+            'conditionMandatory' => i::__('Informe a qual campo quer condicionar a obrigatoriedade'),
+            'fieldCondition' => i::__('Informe o valor condicionante do campo'),
+            'category' => i::__('Categoria'),
+            'removeField' => i::__('Deseja remover este campo?'),
+            'projectName' => i::__('Nome do projeto'),
+            'agentSummaries' => i::__('Resumo dos agentes'),
+            'spaceSummaries' => i::__('Resumo dos espaços'),
+            'disableCategories' => i::__('Você desativou a categoria, todos os campos vinculado a alguma categoria serão também desativados'),
+            'successFullySaved' => i::__('Salvo com sucesso'),
+            'activateField' => i::__('Para ativar este campo, ative também o campo Categoria'),
+            'fieldsDisabled' => i::__('Atenção, você tentou marcar campos que estão debilitados por algum tipo de condicional ou vinculado a alguma categoria, verifique se todos foram que deseja marcar foram marcados corretamente'),
+            'providingAccount' => i::__('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?'),
+            'disableColumns' => i::__('Não é permitido desabilitar todas as colunas da tabela'),
+            'columnDisabling' => i::__('Não é permitido desabilitar a coluna')
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
@@ -2921,10 +2881,10 @@ class Theme extends MapasCulturais\Theme {
     function getCurrentRegistrationEvaluation(Entities\Registration $entity){
         $evaluation = null;
 
-        if(isset($entity->controller->urlData['uid'])){
+        if(isset($this->controller->urlData['uid'])){
             $evaluation = App::i()->repo('RegistrationEvaluation')->findOneBy([
                 'registration' => $entity,
-                'user' => $entity->controller->urlData['uid']
+                'user' => $this->controller->urlData['uid']
             ]);
             if($evaluation && !$evaluation->registration->equals($entity)){
                 $evaluation = null;
@@ -3160,7 +3120,7 @@ class Theme extends MapasCulturais\Theme {
         $app = \MapasCulturais\App::i();
         $view = $app->getView();
 
-        return ( $view->template === "site/index" && $view->getController()->action === "index" );
+        return ( $view->template === "site/index" && $view->controller->action === "index" );
     }
 
     public function getLoginLinkAttributes() {

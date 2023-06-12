@@ -325,7 +325,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         title: null,
         description: null,
         required: false,
-        categories: []
+        categories: [],
+        conditional : false,
+        conditionalField : null,
+        conditionalValue : null,
     };
 
     var fieldConfigurationSkeleton = {
@@ -336,7 +339,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         description: null,
         maxSize: null,
         required: false,
-        categories: []
+        categories: [],
+        conditional : false,
+        conditionalField : null,
+        conditionalValue : null,
     };
 
     $scope.isBlockedFields = function(fieldID){
@@ -406,7 +412,14 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldsOptionalLabel: labels['optionalLabel'],
             categories: MapasCulturais.entity.registrationCategories
         };
-
+        
+        $scope.allowedFieldCondition = function(type){
+            let notAllowed = ['section', 'file'];
+            if(!notAllowed.includes(type.fieldType)){
+                return true;
+            }
+            return false;
+        }
 
         $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
 
@@ -470,8 +483,29 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.createFieldConfiguration = function(){
+            var labels = MapasCulturais.gettext.moduleOpportunity;
             $scope.data.fieldSpinner = true;
             $scope.data.newFieldConfiguration.displayOrder = $scope.data.fields.length +1;
+
+            if($scope.data.newFieldConfiguration.conditional){
+                if(!$scope.data.newFieldConfiguration.conditionalField){
+                    MapasCulturais.Messages.error(labels['conditionMandatory']);
+                    return;
+                }
+                if(!$scope.data.newFieldConfiguration.conditionalValue){
+                    MapasCulturais.Messages.error(labels['fieldCondition']);
+                    return;
+                }
+            }
+            
+            if($scope.data.newFieldConfiguration.fieldType == "section"){
+                $scope.data.newFieldConfiguration.required = false;
+            }
+
+            if($scope.data.newFieldConfiguration.fieldType == "section"){
+                $scope.data.newFieldConfiguration.required = false;
+            }
+
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
 
@@ -489,7 +523,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.removeFieldConfiguration = function (id, $index) {
-            if(confirm('Deseja remover este campo?')){
+            if(confirm(labels['fieldRemoved'])){
                 fieldService.delete(id).then(function(response){
                     if(!response.error){
                         $scope.data.fields.splice($index, 1);
@@ -500,6 +534,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.editFieldConfiguration = function(attrs) {
+            var labels = MapasCulturais.gettext.moduleOpportunity;
             var model = $scope.data.fields[attrs.index];
            
             var field_types_entity_list = [];
@@ -516,13 +551,21 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 }
             }
 
-            if(model.config.hasOwnProperty("require") && model.config.require.condition  && (!model.config.require.field)){
-                MapasCulturais.Messages.error("Informe a qual campo quer condicionar a obrigatoriedade");
-                return;
-            }
+            if(model.conditional ){
+                if(!model.conditionalField){
+                    MapasCulturais.Messages.error(labels['conditionMandatory']);
+                    return;
+                }
+                if(!model.conditionalValue){
+                    MapasCulturais.Messages.error(labels['fieldCondition']);
+                    return;
+                }
 
-            if(model.config.hasOwnProperty("require") && !model.config.require.condition){
-                model.config = ""
+            }
+            
+            if(!model.conditional){
+                model.conditionalField = '';
+                model.conditionalValue = '';
             }
             
             var data = {
@@ -535,8 +578,15 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 maxSize: model.maxSize,
                 required: model.required,
                 categories: model.categories.length ? model.categories : '',
+                conditional: model.conditional ? true : false,
+                conditionalField: model.conditionalField,
+                conditionalValue: model.conditionalValue
 
             };
+
+            if(data.fieldType == "section"){
+                data.required = false;
+            }
 
             $scope.data.fieldSpinner = true;
             fieldService.edit(data).then(function(response){
@@ -568,6 +618,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         $scope.createFileConfiguration = function(){
             $scope.data.uploadSpinner = true;
             $scope.data.newFileConfiguration.displayOrder = $scope.data.fields.length +1;
+
+            if($scope.data.newFileConfiguration.fieldType == "section"){
+                $scope.data.newFileConfiguration.required = false;
+            }
+
             fileService.create($scope.data.newFileConfiguration).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
@@ -597,15 +652,40 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.editFileConfiguration = function(attrs) {
             $scope.data.uploadSpinner = true;
-            var model = $scope.data.fields[attrs.index],
-            data = {
+            var model = $scope.data.fields[attrs.index];
+
+            if(model.conditional ){
+                if(!model.conditionalField){
+                    MapasCulturais.Messages.error(labels['conditionMandatory']);
+                    return;
+                }
+                if(!model.conditionalValue){
+                    MapasCulturais.Messages.error(labels['fieldCondition']);
+                    return;
+                }
+            }
+
+            if(!model.conditional){
+                model.conditionalField = '';
+                model.conditionalValue = '';
+            }
+            
+            var data = {
                 id: model.id,
                 title: model.title,
                 description: model.description,
                 required: model.required,
                 template: model.template,
                 categories: model.categories.length ? model.categories : '',
+                conditional: model.conditional ? true : false,
+                conditionalField: model.conditionalField,
+                conditionalValue: model.conditionalValue
             };
+
+            if(data.fieldType == "section"){
+                data.required = false;
+            }
+
             fileService.edit(data).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
@@ -857,28 +937,29 @@ module.factory('EvaluationsFieldsConfigService', ['$http', '$rootScope', functio
 }]);
 
 module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFieldsConfigService', '$timeout', function ($scope, EvaluationsFieldsConfigService, $timeout) {
+    var labels = MapasCulturais.gettext.moduleOpportunity;
     $scope.data = {
         fields: [],
         avaliableEvaluationFields: {},
         category:{
             fieldName: "category",
             checked: false,
-            title: "Categoria"
+            title: labels['category']
         },
         projectName:{
             fieldName: "projectName",
             checked: false,
-            title: "Nome do projeto"
+            title: labels['projectName']
         },
         agentsSummary:{
             fieldName: "agentsSummary",
             checked: false,
-            title: "Resumo dos agentes"
+            title: labels['agentSummaries']
         },
         spaceSummary:{
             fieldName: "spaceSummary",
             checked: false,
-            title: "Resumo dos espaços"
+            title: labels['spaceSummaries']
         },
         allFields: {
             checked:false
@@ -888,12 +969,13 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
     
     $scope.selectFields = function(field){
+        var labels = MapasCulturais.gettext.moduleOpportunity;
         $scope.data.avaliableEvaluationFields = {}
 
         $scope.dependenceVeriry(field);
 
         if(field.ref == "category" && !field.checked){
-            MapasCulturais.Messages.alert("Você desativou a categoria, todos os campos vinculado a alguma categoria serão também desativados");
+            MapasCulturais.Messages.alert(labels['disableCategories']);
         }
 
         $scope.data.fields.forEach(function(item){
@@ -903,7 +985,7 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
         });
 
         EvaluationsFieldsConfigService.save($scope.data.avaliableEvaluationFields).success(function(r) {
-            MapasCulturais.Messages.success("Salvo com sucesso");            
+            MapasCulturais.Messages.success(labels['successFullySaved']);            
         });
     }
 
@@ -932,13 +1014,14 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
     });
 
     $scope.data.fields.map(function(item){
+        var labels = MapasCulturais.gettext.moduleOpportunity;
         if(MapasCulturais.entity.object.avaliableEvaluationFields[item.ref] == "true"){
             item.checked = true;
         }
 
         if(MapasCulturais.entity.object.avaliableEvaluationFields["category"] != "true" && item.categories?.length > 0){
             item.disabled = true;
-            item.titleDisabled = "Para ativar este campo, ative também o campo Categoria";
+            item.titleDisabled = labels['activateField'];
             
         }
 
@@ -958,13 +1041,10 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
     if($scope.countSelected == $scope.data.fields.length){
         $scope.data.allFields.checked = true;
-    console.log($scope.data.allFields.checked)
-
     }
 
-
-
     $scope.checkedAll = function(){
+        var labels = MapasCulturais.gettext.moduleOpportunity;
         $scope.data.avaliableEvaluationFields = {}
         $scope.hasDisabled = false;
 
@@ -1007,9 +1087,9 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
         EvaluationsFieldsConfigService.save($scope.data.avaliableEvaluationFields).success(function(r) {
             if($scope.hasDisabled && $scope.data.allFields.checked){
-                MapasCulturais.Messages.alert("Atenção, você tentou marcar campos que estão debilitados por algum tipo de condicional ou vinculado a alguma categoria, verifique se todos foram que deseja marcar foram marcados corretamente");            
+                MapasCulturais.Messages.alert(labels['fieldsDisabled']);            
             }else{
-                MapasCulturais.Messages.success("Salvo com sucesso");            
+                MapasCulturais.Messages.success(labels['successFullySaved']);            
             }
         });
 
@@ -1059,6 +1139,8 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 }]);
 
 module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RelatedAgentsService', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RelatedAgentsService, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
+    window.$registrationScope = $scope;
+    
     var registrationsUrl = new UrlService('registration');
 
     var labels = MapasCulturais.gettext.moduleOpportunity;
@@ -1151,8 +1233,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             });
 
             $('#editable-entity .js-validade-registration').click(function(e) {
-                $scope.validateRegistration();
-                $scope.scrollToError();
+                $scope.saveRegistration().success(function(){
+                    $scope.validateRegistration().success(function(){
+                        $scope.scrollToError();
+                    });
+                }).error(function(){
+                    $scope.validateRegistration().success(function(){
+                        $scope.scrollToError();
+                    });
+                });
             });
         }
     }else{
@@ -1161,7 +1250,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.saveRegistration = function () {
        return RegistrationService.updateFields($scope.data.editableEntity).success(function(){
-            MapasCulturais.Messages.success(labels['changesSaved']);
        }).error(function(req, status){
             if(status == 400){
                 MapasCulturais.Messages.success(labels['changesSaved']);
@@ -1354,6 +1442,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     };
 
     $scope.sendRegistration = function(redirectUrl = false, isAccountability = false){
+        var labels = MapasCulturais.gettext.moduleOpportunity;
         $timeout.cancel(saveTimeout); 
 
         $scope.saveRegistration().success(function(){
@@ -1366,7 +1455,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             req.success(function () { 
                 // TODO: i18n
                 if(isAccountability){
-                    if(!confirm('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?')){
+                    if(!confirm(labels['providingAccount'])){
                         return;
                     }                    
                 }
@@ -1442,7 +1531,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.data.fields.forEach(function(field) {
         $scope.$watch('entity.' + field.fieldName, function(current, old){
 
-            $scope.saveField(field, current, 10000);
+            if (current != old) {
+                $scope.saveField(field, current, 10000);
+            }
             
         }, true);
     });
@@ -1601,53 +1692,38 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             result = field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0;
         }
 
+        if(field.conditional){
+            result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
+        }
+
         if (field.config && field.config.require && field.config.require.condition && field.config.require.hide) {
             var requiredFieldName = field.config.require.field;
             var requeredFieldValue = field.config.require.value;
 
-            result = result && $scope.entity[requiredFieldName] == requeredFieldValue;
         }
 
         if(MapasCulturais.entity.canUserEvaluate){
-
-            if(MapasCulturais.entity.object.category){
-                if(!MapasCulturais.entity.object.category.includes(field.categories)){
-                    return false;
-                }   
+            if(result && !$scope.isAvaliableEvaluationFields(field)){
+                result = false;
             }
-            
-            if(field.config && field.config.require && field.config.require.condition){
-                var _field = field.config.require.field;
-                if(field.config.require.value != MapasCulturais.entity.object[_field]){
-                    return false;
-                }
-            }
-
-            if($scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
-                return true;
-            }
-            
-            return false;
         }
 
         return result;
     };
 
+    $scope.isAvaliableEvaluationFields = function(field){
+        if($scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
+            return true;
+        }
+        
+        return false;
+    }
     
     $scope.requiredField = function(field) {
         if(field.required) {
             return 1;
         }
         
-        if(field.config && field.config.require){
-            var requiredFieldName = field.config.require.field;
-            var requeredFieldValue = field.config.require.value;
-    
-            if(field.config.require && field.config.require.condition && $scope.entity[requiredFieldName] == requeredFieldValue){
-                return 2;
-            }
-        }
-
         return false;
     }
 
@@ -2044,19 +2120,19 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
     };
 
     $scope.toggleSelectionColumn = function(object, key){
-
+        var labels = MapasCulturais.gettext.moduleOpportunity;
         $scope.toggleSelection(object, key);
 
         if ($scope.numberOfEnabledColumns() == 0) {
             object[key] = true;
-            alert('Não é permitido desabilitar todas as colunas da tabela');
+            alert(labels['disableColumns']);
             return;
         }
 
         if (key == 'number' ) {
             var columnObj = $scope.getColumnByKey(key);
             object[key] = true;
-            alert('Não é permitido desabilitar a coluna ' + columnObj.title);
+            alert(labels['columnDisabling'] + columnObj.title);
             return;
         }
 
@@ -2143,30 +2219,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             });
         });
     }
-
-    angular.element($window).bind("scroll", function(){
-        // @TODO: refatorar este if
-        if(document.location.hash.indexOf("tab=inscritos") >= 0){
-            if(!$scope.data.findingRegistrations){
-                if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
-                    $scope.findRegistrations();
-                }
-            }
-        } else if (document.location.hash.indexOf("tab=evaluations") >= 0){
-            if(!$scope.data.findingEvaluations){
-                if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
-                    $scope.findEvaluations();
-                }
-            }
-        } else  if(document.location.hash.indexOf("tab=support") >= 0){
-            if(!$scope.data.findingRegistrations){
-                if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
-                    $scope.findRegistrations();
-                }
-            }
-        }
-    });
-
+   
     var adjustingBoxPosition = false,
     categories = MapasCulturais.entity.registrationCategories.length ? MapasCulturais.entity.registrationCategories.map(function(e){
         return { value: e, label: e };

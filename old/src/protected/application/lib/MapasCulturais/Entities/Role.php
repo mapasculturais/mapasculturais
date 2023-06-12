@@ -24,14 +24,14 @@ class Role extends \MapasCulturais\Entity{
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="role_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=32, nullable=false)
      */
-    protected $name;
+    public $name;
 
     /**
      * @var \MapasCulturais\Entities\User

@@ -5,8 +5,8 @@
         margin: 24px 0;
         padding: size(12) 0 size(24) size(16);
         background-color: var(--mc-high-500);
-        
-    
+
+
         &-label {
 
             font-weight: 700;
@@ -42,7 +42,6 @@
         }
 
         &-form {
-
             margin: 16px 0;
             align-items: center;
 
@@ -61,7 +60,18 @@
 
     @media (max-width: size(800)) {
         &__account-config {
+
             // margin-inline: size(32);
+            &-form {
+                display: flex;
+                flex-direction: column;
+
+                .mail-buttons {
+                    flex-direction: column;
+                    display: flex;
+                    gap: 10px;
+                }
+            }
 
             p {
                 display: flex;

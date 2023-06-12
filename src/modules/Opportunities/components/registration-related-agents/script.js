@@ -22,6 +22,10 @@ app.component('registration-related-agents', {
                 const groupName = relation.agentRelationGroupName;
                 const metadata = 'useAgentRelation' + groupName[0].toUpperCase() + groupName.slice(1);
                 
+                if(!this.opportunity[metadata]) {
+                    continue;
+                }
+                
                 if (this.opportunity[metadata] != 'dontUse') {
                     if (this.opportunity[metadata] == 'required') {
                         relation.required = true;

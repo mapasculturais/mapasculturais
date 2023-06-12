@@ -39,6 +39,7 @@ return [
     'app.log.query'         => env('LOG_QUERY', false),
     'app.log.hook'          => env('LOG_HOOK', false),
     'app.log.requestData'   => env('LOG_REQUESTDATA', false),
+    'app.log.texts'         => env('LOG_TEXTS', false),
     'app.log.translations'  => env('LOG_TRANSLATIONS', false),
     'app.log.apiCache'      => env('LOG_APICACHE', false),
     'app.log.apiDql'        => env('LOG_APIDQL', false),
@@ -46,9 +47,11 @@ return [
     'app.log.auth'          => env('LOG_AUTH', false),
 
     'app.log.components'          => env('LOG_COMPONENTS', false),
+    'app.log.assetManager'        => env('LOG_ASSETMANAGER', false),
     
-    'app.log.pcache'        => env('LOG_PCACHE', false),
     'app.log.jobs'          => env('LOG_JOBS', false),
+    'app.log.pcache'        => env('LOG_PCACHE', false),
+    'app.log.pcache.users'  => env('LOG_PCACHE_USERS', false),
 
     'app.queryLogger' => env('LOG_QUERYLOG_CLASS', null)
 

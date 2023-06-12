@@ -1,12 +1,17 @@
 <?php
+/**
+ * @var \MapasCulturais\App $app
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
     entity-card
-    loading
+    mc-loading
 ');
 ?>
-<loading :condition="loading"></loading>
+<mc-loading :condition="loading"></mc-loading>
 <div v-if="entities.length > 0" class="panel--last-edited">
     <div class="panel--last-edited__content">
         <div class="panel--last-edited__content-title">
@@ -36,7 +41,7 @@ $this->import('
                                 </div>
                             </div>
                             <span v-if="entity.shortDescription">
-                               {{entity.shortDescription}}
+                               {{showShort(entity.shortDescription)}}
                             </span>
                         </template>
                         <template #entity-actions-left="{entity}">

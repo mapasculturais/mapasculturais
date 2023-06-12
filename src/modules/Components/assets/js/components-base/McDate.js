@@ -1,6 +1,5 @@
 class McDate {
     constructor(date) {
-        this.timezone = 'UTC';
         this.locale = $MAPAS.config.locale;
         if (date instanceof Date) {
             this._date = date;
@@ -14,7 +13,6 @@ class McDate {
     }
 
     format(config) {
-        config = {timeZone: this.timezone, ...config};
         return Intl.DateTimeFormat(this.locale, config).format(this._date);
     }
 
@@ -38,7 +36,7 @@ class McDate {
         }
 
         options = options?.split(' ') || ['long'];
-        const config = {timeZone: this.timezone, day:'numeric'};
+        const config = {day:'numeric'};
 
         if (options.indexOf('year') >= 0) {
             config.year = 'numeric';
@@ -143,7 +141,7 @@ class McDate {
     addDays (days) {
         const now = this._date;
         now.setDate(now.getDate() + days);
-        const config = { timeZone: this.timezone,  year: 'numeric', month: 'long', day: 'numeric' };
+        const config = { year: 'numeric', month: 'long', day: 'numeric' };
         return Intl.DateTimeFormat(this.locale, config).format(now);
     }
 }

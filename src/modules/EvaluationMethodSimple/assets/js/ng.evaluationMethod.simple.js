@@ -13,29 +13,6 @@
         };
     }]);
 
-    module.controller('SimpleEvaluationForm',['$scope', 'RegistrationService',function($scope, RegistrationService){
-        var evaluation = MapasCulturais.evaluation;
-        var statuses = RegistrationService.registrationStatusesNames.filter(function(status) {
-            if(status.value > 1) return status;
-        });
-        $scope.data = {
-            registration: evaluation ? evaluation.evaluationData.status : null,
-            obs: evaluation ? evaluation.evaluationData.obs : null,
-            registrationStatusesNames: statuses,
-
-        };
-
-        $scope.getStatusLabel = function(status){
-            for(var i in statuses){
-                if(statuses[i].value == status){
-                    return statuses[i].label;
-                }
-            }
-            return '';
-        };
-    }]);
-
-
     module.factory('ApplySimpleEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
         
         return {
@@ -50,8 +27,64 @@
                     error(function (data, status) {
                         $rootScope.$emit('error', {message: "Cannot create opportunity registration", data: data, status: status});
                     });
+                    
+            },
+            autoSave: function (registrationId, evaluationData, uid) {
+                var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {id: registrationId});
+                return $http.post(url, {data: evaluationData, uid});
             },
         };
+    }]);
+
+    module.controller('SimpleEvaluationForm',['$scope', 'RegistrationService','ApplySimpleEvaluationService',function($scope, RegistrationService, ApplySimpleEvaluationService){
+        var evaluation = MapasCulturais.evaluation;
+        var statuses = RegistrationService.registrationStatusesNames.filter(function(status) {
+            if(status.value > 1) return status;
+        });
+        $scope.data = {
+            registration: evaluation ? evaluation.evaluationData.status : null,
+            obs: evaluation ? evaluation.evaluationData.obs : null,
+            registrationStatusesNames: statuses,
+
+        };
+
+        window.addEventListener("message", function(event) {            
+            if (event.data?.type == "evaluationForm.save") {
+                $scope.save();
+            }
+        });
+
+        $scope.save = function(){
+            var _data = {
+                status:$scope.data.registration,
+                obs: $scope.data.obs
+            }
+
+            ApplySimpleEvaluationService.autoSave(MapasCulturais.entity.id, _data, MapasCulturais.user.id).success(function () {
+                MapasCulturais.Messages.success('Salvo');
+            }).error(function (data) {
+                MapasCulturais.Messages.error(data.data[0]);
+            });
+        }
+
+        $scope.getStatusLabel = function(status){
+            for(var i in statuses){
+                if(statuses[i].value == status){
+                    return statuses[i].label;
+                }
+            }
+            return '';
+        };
+
+        $scope.timeOut = null;
+        $scope.$watchGroup(['data.obs', 'data.registration'], function(new_val, old_val) {
+            if(new_val != old_val){
+                clearTimeout($scope.timeOut)               
+                $scope.timeOut = setTimeout(() => {
+                    $scope.save();
+                }, 15000);
+            }
+        });
     }]);
 
     module.controller('ApplySimpleEvaluationResults',['$scope', 'RegistrationService', 'ApplySimpleEvaluationService', 'EditBox', function($scope, RegistrationService, ApplySimpleEvaluationService, EditBox){

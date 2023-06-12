@@ -1,35 +1,39 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
-	entities 
 	entity-card 
-	loading
-	tabs
+    mc-loading
+    mc-tab
+	mc-tabs
 ');
 ?>
-
 <div class="home-feature">
     <div class="home-feature__header">
         <div class="home-feature__header title">
-            <label> <?php i::_e('Em destaque')?> </label>
+            <label><?= $this->text('title', i::__('Em destaque')) ?></label>
         </div>
         <div class="home-feature__header description">
-            <label><?php i::_e('Confira os últimos destaques de cada uma das entidades')?></label>
+            <label><?= $this->text('description', i::__('Confira os últimos destaques de cada uma das entidades')) ?></label>
         </div>
     </div>
     <div class="home-feature__content">
         <div class="home-feature__content cards">
-            <loading :condition="!entities.length"></loading>
-            <tabs v-if="entities.length > 0">
-                <tab label="Todos" slug="all">
+            <mc-loading :condition="!entities.length"></mc-loading>
+            <mc-tabs v-if="entities.length > 0">
+                <mc-tab label="<?= i::esc_attr__('Todos') ?>" slug="all">
                     <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in entities" :key="entity.__objectId">
                             <entity-card :entity="entity" portrait>
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        <?php i::_e('{{entityType(entity.__objectType)}}')?>
+                                        {{text(entity.__objectType)}}
                                     </div>
                                 </template>
                             </entity-card>
@@ -41,16 +45,15 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
-                <tab label="Agentes" slug="agents" v-if="agents.length > 0">
-                    <carousel v-if="agents.length > 0" :settings="settings" :breakpoints="breakpoints">
+                </mc-tab>
+                <mc-tab v-if="agents.length > 0" label="<?= i::esc_attr__('Agentes') ?>" slug="agents">
+                    <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in agents" :key="entity.__objectId">
                             <entity-card :entity="entity">
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        <?php i::_e('{{entityType(entity.__objectType)}}')?>
-
+                                        <?= i::__('Agente') ?>
                                     </div>
                                 </template>
                             </entity-card>
@@ -62,16 +65,15 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
-                <tab label="Espaços" slug="spaces">
-                    <carousel v-if="spaces.length > 0" :settings="settings" :breakpoints="breakpoints">
+                </mc-tab>
+                <mc-tab v-if="spaces.length > 0" label="<?= i::esc_attr__('Espaços') ?>" slug="spaces">
+                    <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in spaces" :key="entity.__objectId">
                             <entity-card :entity="entity">
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        <?php i::_e('{{entityType(entity.__objectType)}}')?>
-
+                                        <?= i::__('Espaço') ?>
                                     </div>
                                 </template>
                             </entity-card>
@@ -83,16 +85,15 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
-                <tab label="Projetos" slug="projects">
-                    <carousel v-if="projects.length > 0" :settings="settings" :breakpoints="breakpoints">
+                </mc-tab>
+                <mc-tab v-if="projects.length > 0" label="<?= i::esc_attr__('Projetos') ?>" slug="projects">
+                    <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in projects" :key="entity.__objectId">
                             <entity-card :entity="entity">
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
-                                        <?php i::_e('{{entityType(entity.__objectType)}}')?>
-
+                                        <?= i::__('Projeto') ?>
                                     </div>
                                 </template>
                             </entity-card>
@@ -104,8 +105,8 @@ $this->import('
                             </div>
                         </template>
                     </carousel>
-                </tab>
-            </tabs>
+                </mc-tab>
+            </mc-tabs>
         </div>
     </div>
 </div>

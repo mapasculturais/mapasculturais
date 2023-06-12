@@ -1,13 +1,24 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ */
+
 use MapasCulturais\i;
 
-$this->import('mc-link create-agent create-space create-event create-project create-opportunity');
+$this->import('
+    create-agent
+    create-event
+    create-opportunity
+    create-project
+    create-space
+    mc-link
+');
 ?>
-
 <div class="panel--entities-summary">                    
     <!-- agentes -->
     <div class="panel--entities-summary__card">
-        <mc-link route="panel/agents">
+        <mc-link id="summary" route="panel/agents" class="card-summary">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon agent__background agent__color"> <mc-icon name="agent-1"></mc-icon> </div>
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Agentes') ?> </div>
@@ -28,7 +39,7 @@ $this->import('mc-link create-agent create-space create-event create-project cre
 
     <!-- oportunidades -->
     <div class="panel--entities-summary__card">
-        <mc-link route="panel/opportunities">
+        <mc-link id="summary" route="panel/opportunities" class="card-summary">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon opportunity__background opportunity__color"> <mc-icon name="opportunity"></mc-icon> </div>
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Oportunidades') ?> </div>
@@ -47,7 +58,7 @@ $this->import('mc-link create-agent create-space create-event create-project cre
 
     <!-- eventos -->
     <div class="panel--entities-summary__card">
-        <mc-link route="panel/events">
+        <mc-link id="summary" route="panel/events" class="card-summary">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon event__background event__color"> <mc-icon name="event"></mc-icon> </div>
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Eventos') ?> </div>
@@ -66,7 +77,7 @@ $this->import('mc-link create-agent create-space create-event create-project cre
 
     <!-- espaços -->
     <div class="panel--entities-summary__card">
-        <mc-link route="panel/spaces">
+        <mc-link id="summary" route="panel/spaces" class="card-summary">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon space__background space__color"> <mc-icon name="space"></mc-icon> </div>
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Espaços') ?> </div>
@@ -85,7 +96,7 @@ $this->import('mc-link create-agent create-space create-event create-project cre
 
     <!-- projetos -->
     <div class="panel--entities-summary__card">
-        <mc-link route="panel/projects">
+        <mc-link id="summary" route="panel/projects" class="card-summary">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon project__background project__color"> <mc-icon name="project"></mc-icon> </div>
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Projetos') ?> </div>

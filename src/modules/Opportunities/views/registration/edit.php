@@ -1,30 +1,43 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ * @var \MapasCulturais\Entities\Registration $entity
+ */
 
 use MapasCulturais\i;
 
 $this->layout = 'registrations';
 
 $this->import('
-    mapas-breadcrumb
-    mapas-card
-    mapas-container
+    mc-breadcrumb
+    mc-card
+    mc-container
     mc-icon
-    registration-actions
     opportunity-header
+    registration-actions
     registration-related-agents
     registration-related-space
+    registration-related-project
+    registration-steps
     select-entity
-    stepper
     v1-embed-tool
 ');
 
-$this->breadcrumb = [
-    ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
-    ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
+$opportunity = $entity->opportunity;
+
+$breadcrumb = [
+    ['label' => i::__('Oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
+    ['label' => $opportunity->firstPhase->name, 'url' => $app->createUrl('opportunity', 'single', [$opportunity->firstPhase->id])],
 ];
 
-$stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6', 'teste 7', 'teste 8', 'teste 9', 'teste 10', 'teste 11']";
+if (!$opportunity->isFirstPhase) {
+    $breadcrumb[] = ['label' => $opportunity->name, 'url' => $app->createUrl('opportunity', 'single', [$opportunity->id])];
+}
+
+$breadcrumb[] = ['label' => i::__('Formulário')];
+
+$this->breadcrumb = $breadcrumb;
 
 /**
  * @todo registration-form
@@ -32,19 +45,19 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
 ?>
 
 <div class="main-app registration edit">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
     <div class="registration__title">
         <?= i::__('Formulário de inscrição') ?>
     </div>
 
-    <div class="registration__steps">
-        <stepper :steps="<?= $stepsLabels ?>" :actual-step="3" only-active-label small></stepper>
-    </div>
-
     <div class="registration__content">
-        <mapas-container>
+        <div class="registration__steps">
+            <registration-steps></registration-steps>
+        </div>
+
+        <mc-container>
             <main class="grid-12">
                 <div class="col-12 registration-info">
                     <p class="registration-info__title"> <?= i::__('Informações da inscrição') ?> </p>
@@ -60,13 +73,13 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
                         <div class="data">
                             <p class="data__title"> <?= i::__('Categoria') ?> </p>
                             <p v-if="entity.category" class="data__info">{{entity.category}}</p>
-                            <p v-if="!entity.category" class="data__info">Sem categoria</p>
+                            <p v-if="!entity.category" class="data__info"><?php i::_e('Sem categoria') ?></p>
                         </div>
                     </div>
                 </div>
                 <section class="section">
-                    <div class="section__title">
-                        <?= i::__('Título da seção') ?>
+                    <div class="section__title" id="main-info">
+                        <?= i::__('Informações básicas') ?>
                     </div>
                     <div class="section__content">                         
                         <div class="card owner">                            
@@ -87,6 +100,7 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
                         </div>
                         <registration-related-agents :registration="entity"></registration-related-agents>
                         <registration-related-space :registration="entity"></registration-related-space>
+                        <registration-related-project :registration="entity"></registration-related-project>
                     </div>
                 </section>
 
@@ -98,6 +112,6 @@ $stepsLabels = "['teste 1', 'teste 2', 'teste 3', 'teste 4', 'teste 5', 'teste 6
             <aside>
                 <registration-actions :registration="entity"></registration-actions>
             </aside>
-        </mapas-container>
+        </mc-container>
     </div>
 </div>

@@ -1,7 +1,10 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 use MapasCulturais\i;
 ?>
-
 <div :class="classes">
     <h4><?= i::__('Histórico de alterações') ?></h4>
     <div>

@@ -1,7 +1,7 @@
 @use '../settings/mixins' as *;
 
 .home-opportunities {
-	background-color: var(--mc-secondary-300);
+	background-color: var(--mc-home-opportunities);
 	display: flex;
 	flex-direction: column;
 	gap: size(40);
@@ -34,6 +34,9 @@
 					line-height: size(28);
 				}
 			}
+			@media (max-width: size(600)){
+				width: 100%;
+			}
 		}
 
 		&.description {
@@ -42,6 +45,10 @@
 			line-height: size(22);
 			margin: 0;
 			max-width: calc(100% - 130px);
+			@media (max-width: size(600)){
+				margin: unset;
+				max-width: 100%;
+			}
 		}
 	}
 
@@ -103,7 +110,14 @@
 						li{
 							justify-content: flex-start;
 							padding: 0 size(40) 0 0;
-
+							.entity-card.portrait {
+								.user-info.with-labels{
+									text-align: left;
+									.user-info__name{
+										font-size: size(18);
+									}
+								}
+							}
 							@media (max-width: size(600)) {
 								padding: 0 size(20);
 							}

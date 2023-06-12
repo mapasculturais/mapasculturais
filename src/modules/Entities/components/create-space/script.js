@@ -88,7 +88,6 @@ app.component('create-space', {
                 this.$emit('create', response)
                 modal.loading(false);
                 Utils.pushEntityToList(this.entity);
-                console.log(response);
 
             }).catch((e) => {
                 modal.loading(false);

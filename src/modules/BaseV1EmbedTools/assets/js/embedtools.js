@@ -25,14 +25,34 @@
         }
     });
 
-    function sendSizes() {
+    function postToParent() {
         window.parent.postMessage({
             type: 'resize',
             data: {
-                height: document.body.offsetHeight+1,
+                height: document.body.offsetHeight + 30,
             }
+        }, '*');
+
+        const registrationFields = {};
+        for (let key in MapasCulturais.registration) {
+            if (key.indexOf('field_') === 0) {
+                registrationFields[key] = MapasCulturais.registration[key];
+            } 
+        }
+
+        window.parent.postMessage({
+            type: 'registration.update',
+            data: registrationFields,
         }, '*');
     }
 
-    setInterval(sendSizes, 100);
+    setInterval(postToParent, 50);
+
+    $(document).ready(function() {
+        $("body").on("click", "a[href]", function(event) {
+            event.preventDefault();
+            window.open($(this).attr("href"), "_top");
+        });
+    });
+  
 })(jQuery)

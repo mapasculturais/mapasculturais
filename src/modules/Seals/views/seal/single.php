@@ -6,13 +6,12 @@ $this->import('
     entity-actions
     entity-header
     entity-owner
-    mapas-breadcrumb
-    mapas-container
+    mc-breadcrumb
+    mc-container
     entity-files-list
     entity-related-agents
     entity-links
     entity-request-ownership
-    tabs
 ');
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
@@ -22,9 +21,9 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app single">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity"></entity-header>
-    <mapas-container>
+    <mc-container>
         <main>
             <div class="grid-12">
                 <div v-if="entity.validPeriod" class="col-12">
@@ -36,9 +35,7 @@ $this->breadcrumb = [
                     <p>{{entity.longDescription}}</p>
                 </div>
                 <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
-                <div class="col-12">
-                    <entity-links :entity="entity" title="<?php i::_e('Links'); ?>"></entity-links>
-                </div>
+                <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
             </div>
         </main>
         <aside>
@@ -47,6 +44,6 @@ $this->breadcrumb = [
                 <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
             </div>
         </aside>
-    </mapas-container>
+    </mc-container>
     <entity-actions :entity="entity"></entity-actions>
 </div>

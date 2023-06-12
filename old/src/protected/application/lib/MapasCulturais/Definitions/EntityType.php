@@ -22,7 +22,7 @@ class EntityType extends \MapasCulturais\Definition{
      *
      * @var string
      */
-    protected $entity_class;
+    public $entity_class;
 
     /**
      * The id of this entity type.
@@ -32,14 +32,14 @@ class EntityType extends \MapasCulturais\Definition{
      *
      * @var int
      */
-    protected $id;
+    public $id;
 
     /**
      * Name of this entity type.
      *
      * @var string
      */
-    protected $name;
+    public $name;
 
     /**
      * Creates a new entity type for the given entity class.

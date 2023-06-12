@@ -35,7 +35,7 @@ class ChatThread extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="chat_thread_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var integer
@@ -63,7 +63,7 @@ class ChatThread extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="identifier", type="string", nullable=false)
      */
-    protected $identifier;
+    public $identifier;
 
     /**
      * @var string

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
@@ -19,10 +24,13 @@ $this->import('
             <entity-field @change="address()" classes="col-8 sm:col-12" :entity="entity" prop="En_Nome_Logradouro"></entity-field>
             <entity-field @change="address()" classes="col-2 sm:col-4" :entity="entity" prop="En_Num"></entity-field>
             <entity-field @change="address()" classes="col-10 sm:col-8" :entity="entity" prop="En_Bairro"></entity-field>
-            <entity-field @change="address()" classes="col-12" :entity="entity" prop="En_Complemento"></entity-field>
+            <entity-field @change="address()" classes="col-12" :entity="entity" prop="En_Complemento" label="<?php i::_e('Complemento ou ponto de referência')?>"></entity-field>
             <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Municipio"></entity-field>
             <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Estado"></entity-field>
-            <entity-field v-if="hasPublicLocation" @change="address()" classes="col-6" :entity="entity" prop="publicLocation"></entity-field>
+            <div class="col-6 sm:col-12 public-location">
+                <entity-field v-if="hasPublicLocation" @change="address()" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::_e('Localização pública')?>"></entity-field>
+                <label class="public-location__label col-12"><?php i::_e('Escolha se o endereço ficará público ou privado')?></label>
+            </div>
         </div>
     </div>
     <div class="col-12">

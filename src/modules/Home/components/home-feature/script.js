@@ -119,12 +119,4 @@ app.component('home-feature', {
             default: {...$MAPAS.home.featured.filter}
         }
     },
-
-    methods: {
-     
-        entityType(type) {
-            return __(type, 'home-feature');
-    
-        }
-    },
 });

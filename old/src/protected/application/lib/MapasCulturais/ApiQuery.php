@@ -4,7 +4,9 @@ namespace MapasCulturais;
 
 use Doctrine\ORM\Query;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Types\GeoPoint;
 
@@ -96,6 +98,14 @@ class ApiQuery {
     protected $agentRelationClassName;
     
     /**
+     * The Entity Space Relation Class Name
+     *
+     * @example "MapasCulturais\Entities\AgentSpaceRelation"
+     * @var string
+     */
+    protected $spaceRelationClassName;
+    
+    /**
      * The Entity Permission Cache Class Name
      *
      * @example "MapasCulturais\Entities\AgentPermissionCache"
@@ -122,6 +132,12 @@ class ApiQuery {
      * @var \MapasCulturais\Repository
      */
     protected $entityRepository;
+    
+    /**
+     * The entity uses space relations?
+     * @var bool
+     */
+    protected $usesSpaceRelations;
     
     /**
      * The entity uses agent relations?
@@ -310,6 +326,18 @@ class ApiQuery {
     protected $_selectingRelatedAgents = [];
 
     /**
+     * Space relations that are being selected
+     * @var array
+     */
+    protected $_selectingSpaceRelations = [];
+
+    /**
+     * Related Spaces that are being selected
+     * @var array
+     */
+    protected $_selectingRelatedSpaces = [];
+
+    /**
      * Files that are being selected
      * @var array
      */
@@ -496,6 +524,8 @@ class ApiQuery {
         $this->usesMetalists = $class::usesMetalists();
 
         $this->usesAgentRelations = $class::usesAgentRelation();
+        $this->usesSpaceRelations = $class::usesSpaceRelation();
+        
         $this->usesPermissionCache = $class::usesPermissionCache();
         $this->usesTaxonomies = $class::usesTaxonomies();
         $this->usesMetadata = $class::usesMetadata();
@@ -516,6 +546,10 @@ class ApiQuery {
         
         if ($this->usesAgentRelations) {
             $this->agentRelationClassName = $class::getAgentRelationEntityClassName();
+        }
+        
+        if ($this->usesSpaceRelations) {
+            $this->spaceRelationClassName = $class::getSpaceRelationEntityClassName();
         }
 
         if ($this->usesSealRelation) {
@@ -847,8 +881,14 @@ class ApiQuery {
             
             $_keyword_dql = $this->entityRepository->getIdsByKeywordDQL($this->_keyword, $alias);
             $_keyword_dql = preg_replace('#([^a-z0-9_])e\.#i', "$1{$alias}.", $_keyword_dql);
+            foreach ($this->entityClassMetadata->subClasses as $class) {
+                $_keyword_dql = str_replace("{$class} e", "{$class} {$alias}", $_keyword_dql);
+            }
+            foreach ($this->entityClassMetadata->parentClasses as $class) {
+                $_keyword_dql = str_replace("{$class} e", "{$class} {$alias}", $_keyword_dql);
+            }
             $_keyword_dql = str_replace("{$this->entityClassName} e", "{$this->entityClassName} {$alias}", $_keyword_dql);
-            
+        
             $dql = "e.{$this->pk} IN ($_keyword_dql)";
             $this->_dqlParams['keyword'] = "%{$this->_keyword}%";
         }
@@ -1043,6 +1083,7 @@ class ApiQuery {
     }
     
     protected function processEntities(array &$entities) {
+        $this->appendCurrentUserPermissions($entities);
         $this->appendMetadata($entities);
         $this->appendRelations($entities);
         $this->appendTerms($entities);
@@ -1050,7 +1091,8 @@ class ApiQuery {
         $this->appendFiles($entities);
         $this->appendAgentRelations($entities);
         $this->appendRelatedAgents($entities);
-        $this->appendCurrentUserPermissions($entities);
+        $this->appendSpaceRelations($entities);
+        $this->appendRelatedSpaces($entities);
         $this->appendIsVerified($entities);
         $this->appendVerifiedSeals($entities);
         $this->appendSeals($entities);
@@ -1177,11 +1219,6 @@ class ApiQuery {
                 if (!isset($metadata[$meta['objectId']])) {
                     $metadata[$meta['objectId']] = [];
                 }
-                $unserialize = $definitions[$meta['key']]->unserialize;
-                if($unserialize) {
-                    $meta['value'] = $unserialize($meta['value']);
-                }
-                
                 $metadata[$meta['objectId']][$meta['key']] = $meta['value'];
             }
         }
@@ -1206,6 +1243,13 @@ class ApiQuery {
                 }
                 
                 $entity += $meta;
+
+                foreach($meta as $k => &$v){
+                    $unserialize = $definitions[$k]->unserialize;
+                    if($unserialize) {
+                        $entity[$k] = $unserialize($v, (object) $entity);
+                    }
+                }
             }
         }
     }    
@@ -1320,7 +1364,7 @@ class ApiQuery {
 
                     $qdata = ['@select' => $select];
 
-                    if ($this->entityClassName == Entities\User::class && $prop == 'profile') {
+                    if ($this->entityClassName == Entities\User::class && $prop == 'profile' || $mapping['isOwningSide']) {
                         $qdata['status'] = 'GTE(-10)';
                         $qdata['@permissions'] = 'view';
                     }
@@ -1740,7 +1784,7 @@ class ApiQuery {
                 return $item['agentId'];
             }, $relations)));
 
-            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
+            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
             $agents = $agents_query->find();
             $agents_by_id = [];
             foreach($agents as $agent) {
@@ -1768,7 +1812,27 @@ class ApiQuery {
             foreach($entities as &$entity) {
                 $entity_id = $entity[$this->pk];
 
-                $entity['agentRelations'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
+                $entity['agentRelations'] = $relations_by_owner_id[$entity_id] ?? (object)[];
+                $permisions = $entity['currentUserPermissions'];
+
+                $can_view_pending = ($permisions['@controll'] ?? false) || 
+                                    ($permisions['viewPrivateData'] ?? false) ||
+                                    ($permisions['createAgentRelation'] ?? false) ||
+                                    ($permisions['removeAgentRelation'] ?? false);
+
+                if (!$can_view_pending) {
+                    foreach ($entity['agentRelations'] as $group => &$relations) {
+                        $relations = array_filter($relations, function($item) {
+                            if($item['status'] > 0) {
+                                return $item;
+                            }
+                        });
+
+                        if (empty($relations)) {
+                            unset($entity['agentRelations'][$group]);
+                        }
+                    }
+                }
             }
 
         }
@@ -1806,8 +1870,9 @@ class ApiQuery {
 
         $dql = "
             SELECT
-                ar.objectId as ownerId,
+                ar.objectId AS ownerId,
                 ar.group,
+                ar.status AS relationStatus,
                 a.id as agentId
 
             FROM
@@ -1839,7 +1904,7 @@ class ApiQuery {
                 return $item['agentId'];
             }, $relations)));
 
-            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
+            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
             $agents = $agents_query->find();
             $agents_by_id = [];
             foreach($agents as $agent) {
@@ -1857,14 +1922,234 @@ class ApiQuery {
                 }
 
                 $relations_by_owner_id[$owner_id][$group] = $relations_by_owner_id[$owner_id][$group] ?? [];
+                $agent = $agents_by_id[$agent_id];
+                $agent['relationStatus'] = $relation['relationStatus'];
 
-                $relations_by_owner_id[$owner_id][$group][] =  $agents_by_id[$agent_id];
+                $relations_by_owner_id[$owner_id][$group][] = $agent;
             }
 
             foreach($entities as &$entity) {
                 $entity_id = $entity[$this->pk];
 
                 $entity['relatedAgents'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
+                
+                $permisions = $entity['currentUserPermissions'];
+
+                $can_view_pending = ($permisions['@controll'] ?? false) || 
+                                    ($permisions['viewPrivateData'] ?? false) ||
+                                    ($permisions['createAgentRelation'] ?? false) ||
+                                    ($permisions['removeAgentRelation'] ?? false);
+
+                if (!$can_view_pending) {
+                    foreach ($entity['relatedAgents'] as $group => &$relations) {
+                        $relations = array_filter($relations, function($item) {
+                            if($item['relationStatus'] > 0) {
+                                return $item;
+                            }
+                        });
+
+                        if (empty($relations)) {
+                            unset($entity['relatedAgents'][$group]);
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    protected function appendSpaceRelations(array &$entities) {
+        if (!$this->_selectingSpaceRelations || !$this->usesSpaceRelations) {
+            return;
+        }
+
+        $relation_class_name = $this->spaceRelationClassName;
+        
+        $where = [];
+        $all = false;
+        foreach($this->_selectingSpaceRelations as $select){
+            if ($select == '*') {
+                $where[] = '1 = 1';
+                $all = true;
+            } else {
+                $where[] = "'{$select}'";
+            }
+        }
+
+        $sub = $this->getSubqueryInIdentities($entities);
+        
+        if(!$sub) {
+            return;
+        }
+        
+        
+        $where = implode(',', $where);
+
+        if($where) {
+            $where = " AND ($where)";
+        }
+
+        $dql = "
+            SELECT
+                sr.objectId as ownerId,
+                sr.id,
+                sr.status,
+                sr.createTimestamp,
+                s.id as spaceId
+                
+            FROM
+                $relation_class_name sr
+                JOIN sr.space s
+            WHERE
+                sr.objectId IN ({$sub}) {$where}
+            ORDER BY 
+                sr.createTimestamp ASC";
+                        
+        
+        $this->logDql($dql, __FUNCTION__);
+    
+        $query = $this->em->createQuery($dql);
+        if($this->__useDQLCache){
+            $query->enableResultCache($this->__cacheTLS);
+        }
+
+        if($this->_usingSubquery){
+            $query->setParameters($this->_dqlParams);
+        }
+        
+        $relations = $query->getResult(Query::HYDRATE_ARRAY);
+        if ($relations) {
+            $relations_by_owner_id = [];
+            $space_ids = implode(',', array_unique(array_map(function($item) {
+                return $item['spaceId'];
+            }, $relations)));
+
+            $spaces_query = new ApiQuery(Space::class, [
+                    '@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl', 
+                    'id' => "IN($space_ids)"
+                ]);
+            $spaces = $spaces_query->find();
+            $spaces_by_id = [];
+            foreach($spaces as $space) {
+                $spaces_by_id[$space['id']] = $space;
+            }
+
+            foreach($relations as $relation) {
+                $owner_id = $relation['ownerId'];
+                $space_id = $relation['spaceId'];
+
+                unset($relation['spaceId'], $relation['ownerId']);
+
+                // o espaço pode estar na lixeira e por isso não ter sido retornado na query
+                if (!isset($spaces_by_id[$space_id])) {
+                    continue;
+                }
+
+                $relations_by_owner_id[$owner_id] = $relations_by_owner_id[$owner_id] ?? [];
+                $relation['space'] = $spaces_by_id[$space_id];
+
+                $relations_by_owner_id[$owner_id][] = $relation;
+            }
+
+            foreach($entities as &$entity) {
+                $entity_id = $entity[$this->pk];
+
+                $entity['spaceRelations'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
+            }
+
+        }
+    }
+
+    protected function appendRelatedSpaces(array &$entities) {
+        
+        if (!$this->_selectingSpaceRelations || !$this->usesSpaceRelations) {
+            return;
+        }
+
+        $relation_class_name = $this->spaceRelationClassName;
+        
+        $where = [];
+        $all = false;
+        foreach($this->_selectingRelatedSpaces as $select){
+            if ($select == '*') {
+                $where[] = '1 = 1';
+                $all = true;
+            } else {
+                $where[] = "'{$select}'";
+            }
+        }
+
+        $sub = $this->getSubqueryInIdentities($entities);
+
+        if(!$sub) {
+            return;
+        }
+
+        $where = implode(',', $where);
+
+        if($where) {
+            $where = " AND ($where)";
+        }
+
+        $dql = "
+            SELECT
+                sr.objectId as ownerId,
+                s.id as spaceId
+
+            FROM
+                $relation_class_name sr
+                JOIN sr.space s
+            WHERE
+                
+                sr.objectId IN ({$sub}) {$where}
+            ORDER BY 
+                sr.createTimestamp ASC";
+                        
+        
+        $this->logDql($dql, __FUNCTION__);
+    
+        $query = $this->em->createQuery($dql);
+        if($this->__useDQLCache){
+            $query->enableResultCache($this->__cacheTLS);
+        }
+
+        if($this->_usingSubquery){
+            $query->setParameters($this->_dqlParams);
+        }
+        
+        $relations = $query->getResult(Query::HYDRATE_ARRAY);
+
+        if ($relations) {
+            $relations_by_owner_id = [];
+            $space_ids = implode(',', array_unique(array_map(function($item) {
+                return $item['spaceId'];
+            }, $relations)));
+
+            $spaces_query = new ApiQuery(Space::class, ['@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($space_ids)"]);
+            $spaces = $spaces_query->find();
+            $spaces_by_id = [];
+            foreach($spaces as $space) {
+                $spaces_by_id[$space['id']] = $space;
+            }
+
+            foreach($relations as $relation) {
+                $owner_id = $relation['ownerId'];
+                $space_id = $relation['spaceId'];
+
+                // o espaço pode estar na lixeira e por isso não ter sido retornado na query
+                if (!isset($spaces_by_id[$space_id])) {
+                    continue;
+                }
+
+                $relations_by_owner_id[$owner_id] = $relations_by_owner_id[$owner_id] ?? [];
+
+                $relations_by_owner_id[$owner_id][] =  $spaces_by_id[$space_id];
+            }
+
+            foreach($entities as &$entity) {
+                $entity_id = $entity[$this->pk];
+
+                $entity['relatedSpaces'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
             }
 
         }
@@ -2067,6 +2352,16 @@ class ApiQuery {
 
             $relations = $query->getResult(Query::HYDRATE_ARRAY);
 
+            $seal_ids = array_map(function($item) {
+                return $item['seal_id'];
+            }, $relations);
+
+
+            $seals_api_query = new ApiQuery(Seal::class, ['@select' => 'files', 'id' => API::IN($seal_ids)]);
+            $files = [];
+            foreach($seals_api_query->find() as $seal) {
+                $files[$seal['id']] = $seal['files'] ?? null; 
+            }
             foreach($relations as $relation){
                 $relation = (object) $relation;
                 
@@ -2080,6 +2375,7 @@ class ApiQuery {
                     'sealRelationId' => $relation->relation_id,
                     'sealId' => $relation->seal_id,
                     'name' => $relation->seal_name,
+                    'files' => $files[$relation->seal_id] ?? null,
                     'singleUrl' => $app->createUrl('seal', 'sealRelation', [$relation->relation_id]),
                     'createTimestamp' => $relation->relation_create_timestamp,
                     'isVerificationSeal' => in_array($relation->seal_id, $app->config['app.verifiedSealsIds']),
@@ -2138,11 +2434,6 @@ class ApiQuery {
             }
         }
     }
-
-    protected function _appendSeals(array &$entities, $prop_name, array $seals){
-
-    }
-
     
     private $__viewPrivateDataPermissions = null;
     
@@ -2261,12 +2552,13 @@ class ApiQuery {
 
                 $values = $this->addMultipleParams($values);
 
-                if (count($values) < 1) {
-                    throw new Exceptions\Api\InvalidArgument('expression IN expects at last one value');
+                if (count($values) > 0) {
+                    $dql = $not ? "$key NOT IN (" : "$key IN (";
+                    $dql .= implode(', ', $values) . ')';
+                } else if(!$not) {
+                    $dql .= "$key IS NULL AND $key IS NOT NULL";
                 }
 
-                $dql = $not ? "$key NOT IN (" : "$key IN (";
-                $dql .= implode(', ', $values) . ')';
                 
             }elseif($operator == "IIN"){
                 $values = $this->splitParam($value);
@@ -2489,6 +2781,9 @@ class ApiQuery {
     }
     
     protected function _addFilterBySeals($seals_ids){
+        if(is_string($seals_ids)) {
+            $seals_ids = explode(',', $seals_ids);
+        }
         foreach($seals_ids as $seal){
             $s = intval($seal);
             if($s && !in_array($s, $this->_seals)){
@@ -2635,6 +2930,18 @@ class ApiQuery {
             $defaults[] = 'relatedAgents';
         }
 
+        if ($this->usesSpaceRelations) {
+            $defaults[] = 'relatedSpaces';
+        }
+
+        if ($this->usesPermissionCache){
+            $defaults[] = 'currentUserPermissions';
+        }
+
+        if ($this->entityClassName == Opportunity::class) {
+            $defaults[] = 'ownerEntity.{name,shortDescription,files.avatar,terms}';
+        }
+
         $properties = array_merge(
                     $this->entityProperties,
                     $this->registeredMetadata,
@@ -2763,6 +3070,10 @@ class ApiQuery {
                 $this->_selectingAgentRelations = ['*'];
             } elseif ($prop === 'relatedAgents') {
                 $this->_selectingRelatedAgents = ['*'];
+            } elseif ($prop === 'spaceRelations') {
+                $this->_selectingSpaceRelations = ['*'];
+            } elseif ($prop === 'relatedSpaces') {
+                $this->_selectingSpaceRelations = ['*'];
             } elseif ($prop === 'metalists') {
                 $this->_selectingMetalists = ['*'];
             } elseif ($prop === 'currentUserPermissions') {

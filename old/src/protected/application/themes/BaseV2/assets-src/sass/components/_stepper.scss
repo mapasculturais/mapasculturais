@@ -144,4 +144,10 @@
             }
         }
     }
+
+    &.noNavigation {
+        .step {
+            cursor: default;
+        }
+    }
 }

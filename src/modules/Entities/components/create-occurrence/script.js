@@ -275,6 +275,12 @@ app.component('create-occurrence', {
                 document.querySelector("input[name='description']").value = description.innerHTML;
                 document.querySelector("input[name='description']").focus();
             }
-        }
+        },
+
+        onChange(event, onInput) {
+            if(event instanceof InputEvent) {
+                setTimeout(() => onInput(event), 50);
+            }
+        },
     },
 });

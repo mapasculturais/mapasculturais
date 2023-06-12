@@ -14,6 +14,7 @@ return array(
         ),
 
         'registrationLimitPerOwner' => array(
+            'type' => 'integer',
             'label' => \MapasCulturais\i::__('Número máximo de inscrições por agente responsável'),
             'validations' => array(
                 "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições por agente responsável deve ser um número inteiro")
@@ -21,13 +22,20 @@ return array(
         ),
 
         'registrationLimit' => array(
-            'label' => \MapasCulturais\i::__('Número máximo de inscrições no projeto'),
+            'type' => 'integer',
+            'label' => \MapasCulturais\i::__('Número máximo de inscrições na oportunidade'),
             'validations' => array(
-                "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições no projeto deve ser um número inteiro")
+                "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições na oportunidade deve ser um número inteiro")
             )
         ),
         'useSpaceRelationIntituicao' => array(
             'label' => \MapasCulturais\i::__('Espaço Cultural'),
+            'type' => 'select',
+            'options' => (object) array(
+                'dontUse' => \MapasCulturais\i::__('Não utilizar'),
+                'required' => \MapasCulturais\i::__('Obrigatório'),
+                'optional' => \MapasCulturais\i::__('Opcional')
+            ),
         ),
         'site' => array(
             'label' => \MapasCulturais\i::__('Site'),
@@ -46,6 +54,12 @@ return array(
             'label' => \MapasCulturais\i::__('Twitter'),
             'validations' => array(
                 "v::url('twitter.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            )
+        ),
+        'vimeo' => array(
+            'label' => \MapasCulturais\i::__('Vimeo'),
+            'validations' => array(
+                "v::url('vimeo.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
         'linkedin' => array(

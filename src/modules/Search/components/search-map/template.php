@@ -1,8 +1,15 @@
 <?php
-use MapasCulturais\i;
-$this->import('mc-map mc-map-card loading');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+$this->import('
+    mc-map 
+    mc-map-card
+    mc-loading
+');
+?>
 <div class="search-map">
     <div class="search-map__filter">
         <div class="search-map__filter--filter">
@@ -19,5 +26,5 @@ $this->import('mc-map mc-map-card loading');
             <mc-map-card :entity="entity"></mc-map-card>
         </template>
     </mc-map>
-    <loading :condition="loading"></loading>
+    <mc-loading :condition="loading"></mc-loading>
 </div> 

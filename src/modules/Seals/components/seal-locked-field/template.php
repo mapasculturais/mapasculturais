@@ -1,19 +1,21 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
-    confirm-button
-    mc-icon
-    select-entity
-    mapas-card
+    mc-card
 ');
 ?>
-
 <div :class="classes">
     <div class="seal-locked-field__title">
         <h4><?php i::_e("Selecione abaixo os campos que devem ser bloqueados nos agentes e espaços que possuírem este selo") ?></h4>
     </div>
 
-    <mapas-card class="seal-locked-field__card">
+    <mc-card class="seal-locked-field__card">
         <template #title>
             <h3><?php i::_e("Agentes") ?></h3>
         </template>
@@ -34,9 +36,9 @@ $this->import('
                 </div>
             </div>
         </template>
-    </mapas-card>
+    </mc-card>
 
-    <mapas-card class="seal-locked-field__card">
+    <mc-card class="seal-locked-field__card">
         <template #title>
             <h3><?php i::_e("Espaços") ?></h3>
         </template>
@@ -63,5 +65,5 @@ $this->import('
 
             </div>
         </template>
-    </mapas-card>
+    </mc-card>
 </div>

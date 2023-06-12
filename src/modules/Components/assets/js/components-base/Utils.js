@@ -1,5 +1,3 @@
-
-
 globalThis.__ = (key, componentName) => {
     const dict = Utils.getTexts(componentName);
     const text = dict(key);
@@ -10,26 +8,6 @@ globalThis.__ = (key, componentName) => {
 
     return text || key;
 }
-
-globalThis.useGlobalState = Pinia.defineStore('globalState', {
-    state: () => {
-        return {
-            visibleFooter: true,
-            userProfile: $MAPAS.userProfile || null,
-            userId: $MAPAS.userId || null,
-        }
-    },
-
-    actions: {
-        showFooter() {
-            this.visibleFooter = true
-        },
-
-        hideFooter() {
-            this.visibleFooter = false
-        },
-    }
-});
 
 globalThis.Utils = {
     getTexts(componentName) {

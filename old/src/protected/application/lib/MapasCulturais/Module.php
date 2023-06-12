@@ -17,6 +17,10 @@ abstract class Module {
     abstract function _init();
     
     abstract function register();
+
+    static function isPlugin() {
+        return false;
+    }
     
     function __construct(array $config = []) {
         $this->_config = $config;
@@ -24,17 +28,23 @@ abstract class Module {
         $app = App::i();
         $active_theme = $app->view;
         $class = get_called_class();
-        $reflaction = new \ReflectionClass($class);
-        
-        while($reflaction->getName() != __CLASS__){
-            $dir = dirname($reflaction->getFileName());
 
-            if($dir != __DIR__) {
-                $active_theme->addPath($dir);
+        $priority = $class::isPlugin() ? 50 : 200;
+        
+        $app->hook('app.modules.init:after', function() use($class, $active_theme){
+            $reflaction = new \ReflectionClass($class);
+        
+            while($reflaction->getName() != __CLASS__){
+                $dir = dirname($reflaction->getFileName());
+    
+                if($dir != __DIR__) {
+                    $active_theme->addPath($dir);
+                }
+                
+                $reflaction = $reflaction->getParentClass();
             }
-            
-            $reflaction = $reflaction->getParentClass();
-        }
+        }, $priority);
+        
 
         // include Module Entities path to doctrine path
         $path = self::getPath('Entities');

@@ -1,8 +1,14 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
-$this->import('mc-link');
+$this->import('
+    mc-link
+');
 ?>
 <div class="mc-map-card">
     <div class="mc-map-card__header">
@@ -30,12 +36,12 @@ $this->import('mc-link');
             </p>
         </div>
         <div v-if="areas" class="mc-map-card__content--info">
-            <p class="info">
+            <p v-if="entity.__objectType != 'agent'" class="info">
             <?= i::_e('ACESSIBILIDADE:') ?>
-                <strong v-if="entity.acessibility">
-                   <strong><?= i::_e('Oferece: ') ?></strong>
+                <strong v-if="entity.acessibilidade">
+                   <strong><?= i::_e('Oferece') ?></strong>
                 </strong>
-                <strong v-else> <?= i::_e('Não') ?> {{entity.acessibility}}
+                <strong v-else> <?= i::_e('Não') ?>
                 </strong>
 
             </p>

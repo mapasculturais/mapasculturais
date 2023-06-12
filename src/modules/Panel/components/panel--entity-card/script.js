@@ -1,8 +1,12 @@
 app.component('panel--entity-card', {
     template: $TEMPLATES['panel--entity-card'],
-    emits: ['deleted', 'destroyed', 'published', 'unpublished', 'archived' ],
+    emits: ['deleted', 'destroyed', 'published', 'unpublished', 'archived', 'undeleted' ],
 
     props: {
+        class: {
+            type: [String, Array, Object],
+            default: ''
+        },
         entity: {
             type: Entity,
             required: true
@@ -15,6 +19,9 @@ app.component('panel--entity-card', {
     },
 
     computed: {
+        classes() {
+            return this.class;
+        }, 
         leftButtons() {
             let buttons = 'archive,delete,destroy';
 

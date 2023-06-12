@@ -2,21 +2,31 @@ app.component('user-accepted-terms', {
     template: $TEMPLATES['user-accepted-terms'],
     emits: [],
 
-    data() {
-        const terms = $MAPAS.config.LGPD;
-
-        return {
-            terms
-        };
-    },
-
     props: {
         user: {
             type: Entity,
             required: true
         },
 
+        onlyTerm: {
+            type: String
+        }
     },
+    
+    computed: {
+        terms() {
+            let terms = {};
+            if (this.onlyTerm) {
+                terms[this.onlyTerm] = $MAPAS.config.LGPD[this.onlyTerm];
+            } else {
+                terms = $MAPAS.config.LGPD;
+            }
+            
+            return terms;
+        }
+    },
+
+    
     methods: {
 
         formatDate(timestamp) {

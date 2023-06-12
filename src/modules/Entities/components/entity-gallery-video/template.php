@@ -1,13 +1,24 @@
 <?php
-use MapasCulturais\i;
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+use MapasCulturais\i;
+
+$this->import('
+    mc-confirm-button
+    mc-icon
+    mc-popover
+')
+?>
 <?php $this->applyTemplateHook('entity-gallery-video','before'); ?>
 <div :class="classes" v-if="editable || entity.metalists?.videos" class="entity-gallery">
     <?php $this->applyTemplateHook('entity-gallery-video','begin'); ?>
     <label class="entity-gallery__title"> {{title}} </label>
-    <div class="entity-gallery__list">   
-        <div v-if="entity.metalists?.videos" v-for="(metalist, index) in videos" class="entity-gallery__list--video">
+
+    <div v-if="entity.metalists?.videos" class="entity-gallery__list">   
+        <div v-for="(metalist, index) in videos" class="entity-gallery__list--video">
             <div>
                 <div @click="openVideo(index); open()" class="entity-gallery__list--video-img">
                     <img :src="metalist.video.thumbnail" />
@@ -15,7 +26,7 @@ use MapasCulturais\i;
                 <p @click="openVideo(index); open()" class="entity-gallery__list--video-label"> {{metalist.title}} </p>
             </div>
             <div v-if="editable" class="entity-gallery__list--video-actions">                
-                <popover openside="down-right">
+                <mc-popover  openside="down-right">
                     <template #button="popover">
                         <a @click="metalist.newData = {...metalist}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
@@ -33,20 +44,21 @@ use MapasCulturais\i;
                             </div>
                         </form>
                     </template>
-                </popover>
-                <confirm-button @confirm="metalist.delete()">
+                </mc-popover>
+                <mc-confirm-button @confirm="metalist.delete()">
                     <template #button="{open}">
                         <a @click="open()"> <mc-icon name="trash"></mc-icon> </a>
                     </template> 
                     <template #message="message">
                         <?php i::_e('Deseja remover este vídeo?') ?>
                     </template> 
-                </confirm-button>
+                </mc-confirm-button>
             </div>
         </div>
     </div>
-    <div v-if="editable" class="entity-gallery__addNew">
-        <popover v-if="editable" openside="right-up">
+
+    <div v-if="editable" title="<?php i::_e('Adicionar Vídeo')?>" class="entity-gallery__addNew">
+        <mc-popover v-if="editable" title="<?php i::_e('Adicionar Vídeo')?>" openside="right-up">
             <template #button="popover">
                 <slot name="button"> 
                     <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline">
@@ -75,12 +87,14 @@ use MapasCulturais\i;
                     </div>                    
                 </form>
             </template>        
-        </popover>
+        </mc-popover>
     </div>
     <div class="entity-gallery__full" v-if="entity.metalists?.videos" :class="{ 'active': galleryOpen }">
         <div @click="close" class="entity-gallery__full--overlay"> </div>
         <div class="entity-gallery__full--video">
-            <iframe v-if="actualVideo?.video?.provider == 'youtube'" :src="'https://www.youtube.com/embed/'+actualVideo.video?.videoID" height="565"></iframe>
+            <mc-icon name="loading"></mc-icon>
+            <iframe v-if="actualVideo?.video?.provider == 'youtube'" :src="'https://www.youtube.com/embed/'+actualVideo.video?.videoID" height="500"></iframe>
+            <iframe v-if="actualVideo?.video?.provider == 'vimeo'" :src="'https://player.vimeo.com/video/'+actualVideo.video?.videoID" height="500" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
             <p v-if="!actualVideo?.video?.provider == 'youtube'"> <?php i::_e("Sem vimeo por enquanto.")?> </p>
             <div class="description">{{actualVideo?.title}}</div>
             <div @click="prev" class="btnPrev"> <mc-icon name="previous"></mc-icon> </div>

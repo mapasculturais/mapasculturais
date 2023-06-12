@@ -6,7 +6,9 @@ use MapasCulturais;
 use MapasCulturais\i;
 use MapasCulturais\Traits;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Persistence\Mapping\MappingException;
 use MapasCulturais\App;
+use ReflectionException;
 
 /**
  * RegistrationMeta
@@ -39,7 +41,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="registration_evaluation_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
@@ -96,13 +98,30 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      */
     protected $status = self::STATUS_DRAFT;
 
+    /**
+     * flag que diz que a avaliação está sendo enviada
+     * @var boolean
+     */
+    private $_sending = false;
+
     function save($flush = false){
+        if(empty($this->status)){
+            $this->status = self::STATUS_DRAFT;
+        }
+        
         parent::save($flush);
         $app = App::i();
         $opportunity = $this->registration->opportunity;
         
         // cache utilizado pelo endpoint findEvaluations
         $app->mscache->delete("api:opportunity:{$opportunity->id}:evaluations");
+    }
+
+    function send($flush = false) {
+        $this->registration->checkPermission('evaluate');
+        $this->_sending = true;
+        $this->status = RegistrationEvaluation::STATUS_SENT;
+        $this->save($flush);
     }
     
     function getEvaluationData(){
@@ -165,6 +184,10 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         }
     }
     
+    static function getControllerId(){
+        return "registrationevaluation";
+    }
+
     protected function genericPermissionVerification($user) {
         return $this->registration->opportunity->evaluationMethodConfiguration->canUser('@control', $user) && $this->user->profile->canUser('@control', $user);
     }
@@ -182,7 +205,9 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return true;
         }
 
-        if($this->registration->canUser('evaluate', $user) && $this->user->equals($user) && $this->status < self::STATUS_SENT){
+        $can_evaluate = $this->_sending || $this->registration->canUser('evaluate', $user);
+
+        if($can_evaluate && $this->user->equals($user) && $this->status <= self::STATUS_SENT){
             return true;
         }
 

@@ -11,10 +11,4 @@ app.component('opportunity-subscription-registered' , {
             required: true
         }
     },
-
-    computed: {
-        isLogged () {
-            return $MAPAS.userId != null
-        }
-    }
 });

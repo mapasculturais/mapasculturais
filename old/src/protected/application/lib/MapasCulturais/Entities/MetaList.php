@@ -34,7 +34,7 @@ class MetaList extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="file_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
 
     /**

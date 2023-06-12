@@ -1,13 +1,18 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
-    mc-link
-    modal
     mc-icon
+    mc-link
+    mc-modal
 ');
 ?>
-
-<modal :title="modalTitle" classes="create-modal" button-label="<?= i::__('Compartilhar') ?>" @open="" @close="">
+<mc-modal :title="modalTitle" classes="create-modal" button-label="<?= i::__('Compartilhar') ?>" @open="" @close="">
     <template #default>
         <div class="seal-content-share__socialnetwork">
             <p class="seal-content-share__socialnetwork--title">
@@ -44,4 +49,4 @@ $this->import('
     <template #button="modal">
         <label class="label" @click="modal.open"><?= i::__('Compartilhar') ?></label>
     </template>
-</modal>
+</mc-modal>

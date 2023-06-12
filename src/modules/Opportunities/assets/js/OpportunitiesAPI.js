@@ -18,7 +18,8 @@ class OpportunitiesAPI {
 }   
 
 if ($MAPAS.opportunity) {
-    let opportunity = new Entity('opportunity', $MAPAS.opportunity.id);
+    let api = new API('opportunity');
+    let opportunity = api.getEntityInstance($MAPAS.opportunity.id);
     opportunity.populate($MAPAS.opportunity);
 
     $MAPAS.opportunity = opportunity;
@@ -45,4 +46,18 @@ if ($MAPAS.opportunityPhases) {
     $MAPAS.opportunityPhases = $MAPAS.opportunityPhases.map(rawProcessor);
 
     $MAPAS.opportunityPhases[0].isFirstPhase = true;
+}
+
+if ($MAPAS.registrationPhases) {
+    const api = new API('registration');
+
+    const rawProcessor = (item) => {
+        const instance = api.getEntityInstance(item.id);
+        instance.populate(item);
+        return instance;
+    };
+
+    for(let key in $MAPAS.registrationPhases) {
+        $MAPAS.registrationPhases[key] = rawProcessor($MAPAS.registrationPhases[key]);
+    }
 }

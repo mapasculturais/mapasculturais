@@ -1,16 +1,19 @@
 <?php
-use MapasCulturais\App;
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->import('
-    messages 
     mc-header-menu
     mc-header-menu-user
     mc-icon
+    mc-messages 
     theme-logo 
 ');
-
 ?>
-
 <?php $this->applyTemplateHook('main-header', 'before') ?>
 <header class="main-header" id="main-header">
     <?php $this->applyTemplateHook('main-header', 'begin') ?>
@@ -19,14 +22,14 @@ $this->import('
 
         <?php $this->applyTemplateHook('mc-header-menu', 'before') ?>
         <mc-header-menu>
-            <?php $this->applyTemplateHook('mc-header-menu', 'begin') ?>
 
             <!-- Logo -->
             <template #logo>
-                <theme-logo title="mapa cultural" subtitle="do Pará" href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
+                <theme-logo href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
             </template>
             <!-- Menu principal -->
             <template #default>
+                <?php $this->applyTemplateHook('mc-header-menu', 'begin') ?>
                 <li>
                     <a href="<?= $app->createUrl('site', 'index') ?>" class="mc-header-menu--item home">
                         <span class="icon"> <mc-icon name="home"></mc-icon> </span>
@@ -63,24 +66,25 @@ $this->import('
                         <p class="label"> <?php i::_e('Projetos') ?> </p>
                     </a>
                 </li>
+                <?php $this->applyTemplateHook('mc-header-menu', 'end') ?>
             </template>
 
-            <?php $this->applyTemplateHook('mc-header-menu', 'end') ?>
         </mc-header-menu>
         <?php $this->applyTemplateHook('mc-header-menu', 'after') ?>
 
-
-        <?php $this->applyTemplateHook('mc-header-menu-user', 'before') ?>
-        <?php if ($app->user->is('guest')): ?>
-            <!-- Botão login -->
-            <a href="<?= $app->createUrl('auth') ?>" class="logIn">
-                <?php i::_e('Entrar') ?>
-            </a>
-        <?php else: ?>
-            <!-- Menu do usuário -->
-            <mc-header-menu-user></mc-header-menu-user>
-        <?php endif; ?>
-        <?php $this->applyTemplateHook('mc-header-menu-user', 'after') ?>
+        <div class="main-header__buttons">
+            <?php $this->applyTemplateHook('mc-header-menu-user', 'before') ?>
+            <?php if ($app->user->is('guest')): ?>
+                <!-- Botão login -->
+                <a href="<?= $app->createUrl('auth') ?>" class="logIn">
+                    <?php i::_e('Entrar') ?>
+                </a>
+            <?php else: ?>
+                <!-- Menu do usuário -->
+                <mc-header-menu-user></mc-header-menu-user>
+            <?php endif; ?>
+            <?php $this->applyTemplateHook('mc-header-menu-user', 'after') ?>
+        </div>
 
     </div>
 
@@ -88,4 +92,4 @@ $this->import('
 </header>
 <?php $this->applyTemplateHook('main-header', 'after') ?>
 
-<messages></messages>
+<mc-messages></mc-messages>

@@ -37,9 +37,10 @@ return [
     'app.useFileUrlCache'            => __env_not_false('CACHE_FILE_URL'),
     'app.useEventsCache'             => __env_not_false('CACHE_EVENTS'),
     'app.useSubsiteIdsCache'         => __env_not_false('CACHE_SUBSITE_ID'),
-    'app.usePermissionsCache'        => __env_not_false('CACHE_PERMISSIONS'),
+    'app.usePermissionsCache'        => (bool) env('CACHE_PERMISSIONS', env('REDIS_CACHE', false)),
     'app.useRegisterCache'           => __env_not_false('CACHE_REGISTER'),
-    'app.useApiCache'                => __env_not_false('CACHE_API'),
+    'app.useApiCache'                => env('CACHE_API', false),
+    'app.useOpportunitySummaryCache' => __env_not_false('CACHE_OPPORTUNITY_SUMARY'),
 
 
     'app.registeredAutoloadCache.lifetime'  => env('CACHE_AUTOLOAD', 0),
@@ -47,9 +48,10 @@ return [
     'app.fileUrlCache.lifetime'             => env('CACHE_FILE_URL', 604800),
     'app.eventsCache.lifetime'              => env('CACHE_EVENTS', 600),
     'app.subsiteIdsCache.lifetime'          => env('CACHE_SUBSITE_ID', 120),
-    'app.permissionsCache.lifetime'         => env('CACHE_PERMISSIONS', 120),
+    'app.permissionsCache.lifetime'         => env('CACHE_PERMISSIONS', 0),
     'app.registerCache.lifeTime'            => env('CACHE_REGISTER', 600),
     'app.apiCache.lifetime'                 => env('CACHE_API', 30),
+    'app.opportunitySummaryCache.lifetime'  => env('CACHE_OPPORTUNITY_SUMARY', 30 * MINUTE_IN_SECONDS),
 
     'app.apiCache.lifetimeByController' => [
         'notification'  => env('CACHE_API_NOTIFICATION', 10)

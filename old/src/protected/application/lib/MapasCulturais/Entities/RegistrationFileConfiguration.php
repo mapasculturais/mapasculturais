@@ -26,7 +26,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="registration_file_configuration_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var \MapasCulturais\Entities\Opportunity
@@ -73,6 +73,27 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      */
     protected $displayOrder = 255;
     
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="conditional", type="boolean", nullable=false)
+     */
+    protected $conditional ;
+
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="conditional_field", type="string",length=255 ,nullable=false)
+     */
+    protected $conditionalField;
+
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="conditional_value", type="string",length=255 ,nullable=false)
+     */
+    protected $conditionalValue;
+
     /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
@@ -125,7 +146,10 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'template' => $this->getFile('registrationFileTemplate'),
             'groupName' => $this->fileGroupName,
             'categories' => $this->categories,
-            'displayOrder' => $this->displayOrder
+            'displayOrder' => $this->displayOrder,
+            'conditional' => $this->conditional ? true : false,
+            'conditionalField' => $this->conditionalField,
+            'conditionalValue' => $this->conditionalValue
         ];
     }
 

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
@@ -23,8 +27,10 @@ $this->import('
         <div class="col-4">
             <entity-field :entity="entity" prop="email" hide-required></entity-field>
         </div>
-        <button class="col-2 button button--primary button--md"><?php i::_e('Salvar') ?></button>
-        <button class="col-2 button button--secondary button--md" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
+        <div class="mail-buttons">
+            <button class="col-2 button button--primary button--md"><?php i::_e('Salvar') ?></button>
+            <button class="col-2 button button--secondary button--md" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
+        </div>
     </form>
     <?php $this->applyTemplateHook('user-mail', 'end'); ?>
 </div>

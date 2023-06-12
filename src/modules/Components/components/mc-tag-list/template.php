@@ -1,7 +1,9 @@
 <?php
-use MapasCulturais\i;
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 ?>
-
 <div class="mc-tag-list">
     <ul class="mc-tag-list__tagList">
         <li :class="[classes, 'mc-tag-list__tagList--tag']" v-for="tag in tags"> 

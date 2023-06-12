@@ -1,92 +1,102 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
+
 $this->layout = 'entity';
+
+$this->addOpportunityPhasesToJs();
 
 $this->import('
     entity-field
     opportunity-form-builder-category
+    opportunity-form-export
+    opportunity-form-import
+    opportunity-phase-header
     v1-embed-tool
-')
+');
 ?>
-
 <div class="form-builder__content">
-    <div class="grid-12 form-builder__bg-content">
-        <div class="col-8 sm:col-12 form-builder__title">
-            <p class="opportunity__color"><?= i::__("1. {{ getTitleForm }}") ?></p>
-        </div>
-        <div class="col-2 sm:col-6 form-builder__period">
-            <h5 class="period_label"><?= i::__("Data de início") ?></h5>
-            <h5 class="opportunity__color">{{ getDateRegistrationFrom }}</h5>
-        </div>
-        <div class="col-2 sm:col-6 form-builder__period">
-            <h5 class="period_label"><?= i::__("Data final") ?></h5>
-            <h5 class="opportunity__color">{{ getDateRegistrationTo }}</h5>
-        </div>
-    </div>
+    <opportunity-phase-header :phase="entity"></opportunity-phase-header>
 
     <div class="grid-12 form-builder__label-btn">
         <div class="col-12">
-            <h3><?= i::__("Configuração de formulário de coleta de dados") ?></h3>
+            <h3 class="formtitle"><?= i::__("Configuração de formulário de coleta de dados") ?></h3>
         </div>
     </div>
-
+    <opportunity-form-import :entity="entity"></opportunity-form-import>
     <div class="grid-12">
-        <div class="col-6 sm:col-12">
-            <opportunity-form-builder-category v-if="entity.isFirstPhase || !entity.parent" :entity="entity"></opportunity-form-builder-category>
+        <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
+            <opportunity-form-builder-category :entity="entity"></opportunity-form-builder-category>
         </div>
+
         <div class="col-6 sm:col-12">
-            <div class="form-builder__bg-content form-builder__bg-content--spacing">
-                <div>
-                    <h4><?= i::__("Permitir Agente Coletivo?") ?></h4>
-                    <span class="subtitle"><?= i::__("Permitir inscrição de Agente Coletivo") ?></span>
-                    <div>
-                        <input type="radio" value="use" v-model="entity.useAgentRelationColetivo">
-                        <label for="html"><?= i::__("Sim") ?></label>
-                        <input type="radio" value="dontUse" v-model="entity.useAgentRelationColetivo">
-                        <label for="css"><?= i::__("Não") ?></label>
+            <mc-card>
+                <template #default>
+                    <div class="request-data grid-12">
+                        <div v-if="entity.isFirstPhase" class="col-12">
+                            <h4 class="request-data__title"><?= i::__("Solicitar Agente Coletivo?") ?></h4>
+                            <span class="request-data__subtitle"><?= i::__("Permitir inscrição de Agente Coletivo") ?></span>
+                            <div class="request-data__inputs">
+                                <label class="options"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
+                                <label class="options"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="required" /> <?= i::_e('Obrigatório') ?> </label>
+                                <label class="options"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="optional" /> <?= i::_e('Opcional') ?> </label>
+                            </div>
+                        </div>
+                        <div v-if="entity.isFirstPhase" class="col-12">
+                            <h4 class="request-data__title"><?= i::__("Solicitar instituição responsável?") ?></h4>
+                            <span class="request-data__subtitle"><?= i::__("Solicite a inscrição de instituções (agentes coletivos com CNPJ).") ?></span>
+                            <div class="request-data__inputs">
+                                <label class="options"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
+                                <label class="options"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="required" /> <?= i::_e('Obrigatório') ?> </label>
+                                <label class="options"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="optional" /> <?= i::_e('Opcional') ?> </label>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <h4><?= i::__("Permitir instituição responsável?") ?></h4>
-                    <span class="subtitle"><?= i::__("Permitir inscrição de instituições") ?></span>
-                    <div>
-                        <input type="radio" value="use" v-model="entity.useAgentRelationInstituicao">
-                        <label for="html"><?= i::__("Sim") ?></label>
-                        <input type="radio" value="dontUse" v-model="entity.useAgentRelationInstituicao">
-                        <label for="css"><?= i::__("Não") ?></label>
+                </template>
+            </mc-card>
+        </div>
+
+        <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
+            <mc-card>
+                <template #default>
+                    <div class="request-data grid-12">
+                        <div v-if="entity.isFirstPhase" class="col-12">
+                            <h4 class="request-data__title"><?= i::__("Permitir vínculo de Espaço?") ?></h4>
+                            <span class="request-data__subtitle"><?= i::__("Permitir um espaço para associar à inscrição.") ?></span>
+                            <div class="request-data__inputs no-padding-bottom">
+                                <label class="options"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
+                                <label class="options"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="required" /> <?= i::_e('Obrigatório') ?> </label>
+                                <label class="options"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="optional" /> <?= i::_e('Opcional') ?> </label>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <entity-field :entity="entity" prop="registrationLimit"></entity-field>
-                </div>
-                <div>
-                    <entity-field :entity="entity" prop="registrationLimitPerOwner"></entity-field>
-                </div>
-            </div>
+                </template>
+            </mc-card>
         </div>
+
         <div class="col-6 sm:col-12">
-            <div class="form-builder__bg-content form-builder__bg-content--spacing">
-                <h4><?= i::__("Permitir vínculo de Espaço?") ?></h4>
-                <span class="subtitle"><?= i::__("Permitir um espaço para associar à inscrição.") ?></span>
-                <div>
-                    <input type="radio" value="use" v-model="entity.useSpaceRelationIntituicao">
-                    <label for="html"><?= i::__("Sim") ?></label>
-                    <input type="radio" value="dontUse" v-model="entity.useSpaceRelationIntituicao">
-                    <label for="css"><?= i::__("Não") ?></label>
-                </div>
-            </div>
+            <mc-card>
+                <template #default>
+                    <div class="request-data grid-12">
+                        <div v-if="entity.isFirstPhase" class="col-12">
+                            <h4 class="request-data__title"><?= i::__("Habilitar informações de Projeto?") ?></h4>
+                            <span class="request-data__subtitle"><?= i::__("Permitir que proponente vizualise informações básicas sobre um projeto.") ?></span>
+                            <div class="request-data__inputs no-padding-bottom">
+                                <label class="options"> <input v-model="entity.projectName" type="radio" name="projectName" value="0" /> <?= i::_e('Não Utilizar') ?> </label>
+                                <label class="options"> <input v-model="entity.projectName" type="radio" name="projectName" value="2" /> <?= i::_e('Obrigatório') ?> </label>
+                                <label class="options"> <input v-model="entity.projectName" type="radio" name="projectName" value="1" /> <?= i::_e('Opcional') ?> </label>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </mc-card>
         </div>
-        <div class="col-6 sm:col-12">
-            <div class="form-builder__bg-content form-builder__bg-content--spacing">
-                <h4><?= i::__("Habilitar informações de Projeto?") ?></h4>
-                <span class="subtitle"><?= i::__("Permitir que proponente vizualise informações básicas sobre um projeto.") ?></span>
-                <div>
-                    <input type="radio" value="0" v-model="entity.projectName">
-                    <label for="html"><?= i::__("Sim") ?></label>
-                    <input type="radio" value="1" v-model="entity.projectName">
-                    <label for="css"><?= i::__("Não") ?></label>
-                </div>
-            </div>
+        <div class="col-12 form-export">
+            <opportunity-form-export :entity="entity"></opportunity-form-export>
         </div>
 
         <div class="col-12">

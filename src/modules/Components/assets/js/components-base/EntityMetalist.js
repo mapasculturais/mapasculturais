@@ -18,6 +18,10 @@ class EntityMetalist {
         return Utils.createUrl('metalist', 'single', [this.id]);
     }
 
+    get objectType() {
+        return 'metalist';
+    }
+
     data() {
         return {
             id: this.id,

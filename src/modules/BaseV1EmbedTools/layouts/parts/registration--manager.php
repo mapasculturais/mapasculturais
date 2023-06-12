@@ -136,7 +136,7 @@ use MapasCulturais\i;
                 <?php $this->applyTemplateHook('registration-list-item', 'end'); ?>
             </tr>
         </tbody>
-        <tfoot>
+        <tfoot  ng-if="data.registrationsAPIMetadata.count > data.registrations.length">
             <tr>
                 <td colspan='{{numberOfEnabledColumns()}}' align="center">
                     <div ng-if="data.findingRegistrations">
@@ -144,12 +144,17 @@ use MapasCulturais\i;
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td colspan='{{numberOfEnabledColumns()}}' align="center" ng-if="!data.findingRegistrations">
+                    <button ng-click="findRegistrations();data.findingRegistrations = true"><?php MapasCulturais\i::_e("Carregar mais");?></button>
+                </td>
+            </tr>
         </tfoot>
     </table>
 
     <?php
-    $_evaluation_type = $entity->evaluationMethodConfiguration->getType();
-    if (is_object($_evaluation_type) && property_exists($_evaluation_type, "id") && $_evaluation_type->id === "simple") : ?>
+    $em = $entity->evaluationMethodConfiguration;
+    if ($em && is_object($em->type) && property_exists($em->type, "id") && $em->type->id === "simple") : ?>
         <div ng-if="hasEvaluations()">
             <button class="btn btn-primary" ng-click="applyEvaluations()"> {{ data.confirmEvaluationLabel }} </button>
         </div>

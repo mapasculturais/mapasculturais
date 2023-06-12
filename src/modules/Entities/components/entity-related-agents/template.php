@@ -1,32 +1,36 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
-$this->import('popover confirm-button');
+
+$this->import('
+    mc-confirm-button
+    mc-popover
+    mc-relation-card
+');
 ?>
-
 <div :class="classes" class="entity-related-agents" v-if="editable || hasGroups()">
-
-    <h3><?php i::_e("Agentes relacionados")?></h3>
-
-    <div v-for="(groupAgents, groupName) in groups" class="entity-related-agents__group">
-
+    <h3><?php i::_e("Agentes relacionados") ?></h3>
+    <div v-for="(relations, groupName) in groups" class="entity-related-agents__group">
         <div class="entity-related-agents__group--name">
-            <label> {{groupName}} </label> 
-
+            <label> {{groupName}} </label>
             <!-- botões de ação do grupo -->
             <div v-if="editable" class="act">
                 <!-- renomear grupo -->
-                <popover openside="down-right">
+                <mc-popover openside="down-right">
                     <template #button="popover">
-                        <slot name="button"> 
+                        <slot name="button">
                             <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                         </slot>
                     </template>
-
                     <template #default="{popover, close}">
-                        <form @submit="renameGroup(groupName, groupAgents.newGroupName, popover); $event.preventDefault(); close()" class="entity-related-agents__addNew--newGroup">
+                        <form @submit="renameGroup(groupName, relations.newGroupName, popover); $event.preventDefault(); close()" class="entity-related-agents__addNew--newGroup">
                             <div class="grid-12">
-                                <div class="col-12">
-                                    <input v-model="groupAgents.newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
+                                <div class="related-popover col-12">
+                                    <input v-model="relations.newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                                 </div>
 
                                 <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
@@ -34,90 +38,84 @@ $this->import('popover confirm-button');
                             </div>
                         </form>
                     </template>
-                </popover>
-                
-
+                </mc-popover>
                 <!-- remover grupo -->
-                <confirm-button @confirm="removeGroup(groupName)">
+                <mc-confirm-button @confirm="removeGroup(groupName)">
                     <template #button="modal">
-                        <a @click="modal.open()"> 
+                        <a @click="modal.open()">
                             <mc-icon name="trash"></mc-icon>
                         </a>
-                    </template> 
+                    </template>
                     <template #message="message">
                         <?php i::_e('Remover grupo de agentes relacionados?') ?>
                     </template>
-                </confirm-button>
+                </mc-confirm-button>
             </div>
         </div>
-
-
         <!-- lista de agentes -->
         <div class="entity-related-agents__group--agents">
-            <div v-for="agent in groupAgents" class="agent">
-                <a :href="agent.singleUrl" class="agent__img">
-                    <img v-if="agent.files.avatar" :src="agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
-                    <mc-icon v-else name="agent"></mc-icon>
-                </a>
-
+            <div v-for="relation in relations" class="agent">
+                <mc-relation-card :relation="relation">
+                    <template #default="{open, close, toggle}">
+                        <a class="agent__img" @click="$event.preventDefault(); toggle()">
+                            <img v-if="relation.agent.files.avatar" :src="relation.agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
+                            <mc-icon v-if="!relation.agent.files.avatar" name="agent"></mc-icon>
+                        </a>
+                    </template>
+                </mc-relation-card>
+                <!-- remover agente -->
                 <div v-if="editable" class="agent__delete">
-                    <!-- remover agente -->
-                    <confirm-button @confirm="removeAgent(groupName, agent)">
+                    <mc-confirm-button @confirm="removeAgent(groupName, relation.agent)">
                         <template #button="modal">
                             <mc-icon @click="modal.open()" name="delete"></mc-icon>
-                        </template> 
+                        </template>
                         <template #message="message">
                             <?php i::_e('Remover agente relacionado?') ?>
-                        </template> 
-                    </confirm-button>
+                        </template>
+                    </mc-confirm-button>
                 </div>
+                <!-- relação de agente pendente -->
+                <div v-if="relation.status == -5" class="agent__pending"></div>
             </div>
-            
         </div>
-    
         <div v-if="editable" class="entity-related-agents__group--actions">
-            <select-entity type="agent" @select="addAgent(groupName, $event)" :query="queries[groupName]" openside="down-right">
+            <select-entity type="agent" @select="addAgent(groupName, $event)" permissions="" select="id,name,files.avatar,terms,type" :query="queries[groupName]" openside="down-right">
                 <template #button="{ toggle }">
-                    <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()"> 
-                        <?php i::_e('Adicionar agente') ?> 
+                    <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()">
+                        <?php i::_e('Adicionar agente') ?>
                         <mc-icon name="add"></mc-icon>
                     </button>
                 </template>
-            </select-entity>            
+            </select-entity>
         </div>
-        
     </div>
-
-
     <div v-if="editable" class="entity-related-agents__addNew">
-
-        <popover openside="down-right">
+        <mc-popover openside="down-right">
             <template #button="popover">
-                <slot name="button"> 
-                    <button @click="popover.toggle()" class="button button--primary-outline button--icon"> 
+
+                <slot name="button">
+                    <div class="add-agent">
+                        <?php i::_e("Adicionar novo grupo de Agentes") ?>
+                    </div>
+                    <button @click="popover.toggle()" class="button button--primary-outline button--icon">
                         <mc-icon name="add"></mc-icon>
-                        <?php i::_e("Adicionar grupo") ?> 
+                        <?php i::_e("Adicionar grupo") ?>
                     </button>
                 </slot>
             </template>
-
             <template #default="{close}">
                 <div class="entity-related-agents__addNew--newGroup">
                     <form @submit="addGroup(newGroupName); $event.preventDefault(); close();">
                         <div class="grid-12">
-                            <div class="col-12">
-                                <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
+                            <div class="related-input col-12">
+                                <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" maxlength="64" />
                             </div>
-
                             <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
                             <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                         </div>
                     </form>
                 </div>
-
             </template>
-        </popover>
-
+        </mc-popover>
     </div>
-
 </div>

@@ -1,15 +1,18 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->import('
-    confirm-button
+    mc-confirm-button
     mc-link
     panel--entity-card 
     user-management--add-role-modal
 ');
 ?>
-
 <panel--entity-card :entity="entity">
     <template #title>
         <slot name="card-title" :entity="entity" v-if="entity.profile">{{username}}</slot>
@@ -29,14 +32,14 @@ $this->import('
                 <li v-for="role in entity.roles" class="primary__border-solid primary__color mc-tag-list__tagList--tag">
                     <strong v-if="role.subsite">{{`<?= i::esc_attr__('${role.name} em ${role.subsite.name}') ?>`}}</strong>
                     <strong v-else>{{role.name}}</strong>
-                    <confirm-button 
+                    <mc-confirm-button 
                         :message="`<?= i::esc_attr__('Deseja remover a função "${role.name}" do usuário "${username}"?') ?>`"
                         @confirm="role.delete(true)">
                         <template #button="modal">
                             <mc-icon @click="modal.open()" name='delete'></mc-icon>
                         </template>
                         
-                    </confirm-button>
+                    </mc-confirm-button>
                 </li>
                 <li class="primary__background mc-tag-list__tagList--tag">    
                     <user-management--add-role-modal :user="entity"></user-management--add-role-modal>                

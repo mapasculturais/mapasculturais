@@ -7,6 +7,9 @@ services:
     ports:
       - "80:80"
     volumes:
+      - ../compose/entrypoint.sh:/entrypoint.sh
+      - ../compose/jobs-cron.sh:/jobs-cron.sh
+      - ../compose/recreate-pending-pcache-cron.sh:/recreate-pending-pcache-cron.sh
       - ../src/protected:/var/www/html/protected
       - ../scripts:/var/www/scripts
       - ../compose/config.php:/var/www/html/protected/application/conf/config.php
@@ -23,22 +26,40 @@ services:
       - PENDING_PCACHE_RECREATION_INTERVAL=15
       - JOBS_INTERVAL=15
       - REDIS_CACHE=redis
+
+      - MAILER_SERVER=mailhog
+      - MAILER_PORT=1025
+      - MAILER_FROM=sysadmin@localhost
+      - MAILER_PROTOCOL= #precisa ficar vazio para o mailhog funcionar
+      
+      # chaves de teste do google recaptcha
+      - GOOGLE_RECAPTCHA_SITEKEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+      - GOOGLE_RECAPTCHA_SECRET=6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+      - REDIRECT_404_ASSETS_TO=https://mapa.iberculturaviva.org/
     depends_on:
       - db
       - redis
-
+      - mailhog
     stdin_open: true
     tty: true
+    
+  mailhog: 
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
 
   redis:
     image: redis:6
     command: --maxmemory 256Mb --maxmemory-policy allkeys-lru  
+
   db:
-    image: mdillon/postgis:11
+    image: postgis/postgis:14-master
     environment:
       - POSTGRES_PASSWORD=mapas
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
+      
+
     ports:
       - "5470:5432"
     volumes:

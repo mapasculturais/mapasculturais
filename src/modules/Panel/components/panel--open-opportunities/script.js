@@ -93,9 +93,9 @@ app.component('panel--open-opportunities', {
             if (this.opportunities.metadata) {
                 const entities = this.opportunities;                
                 entities.sort((a,b) => {
-                    let dateA = a.updateTimestamp.date('sql');
-                    let dateB = b.updateTimestamp.date('sql');
-                    return (dateA.localeCompare(dateB));                    
+                    let dateA = a.updateTimestamp?.date('sql');
+                    let dateB = b.updateTimestamp?.date('sql');
+                    return (dateA?.localeCompare(dateB));                    
                 });
                 return entities.slice(0, this.limit);;
             } else {

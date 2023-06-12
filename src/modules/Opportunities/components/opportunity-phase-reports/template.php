@@ -1,8 +1,7 @@
 <?php
-
 /**
- * @var MapasCulturais\Themes\BaseV2\Theme $this
  * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
@@ -12,27 +11,22 @@ $this->import('
     v1-embed-tool
 ');
 ?>
-<mc-stepper-vertical :items="phases" allow-multiple>
+<mc-stepper-vertical :items="newPhases" allow-multiple>
     <template #header-title="{index, item}">
-        <div class="phase-stepper">
-            <h2 v-if="index" class="phase-stepper__name">{{item.name}}</h2>
-            <h2 v-if="!index" class="phase-stepper__period"><?= i::__("Fase 1") ?></h2>
+        <div class="stepper-header__content">
+            <div class="info">
+                <h2 class="info__title">{{item.label}}</h2>
+                <div v-if="item.type && item.type != ''" class="info__type">
+                    <span class="title"> <?= i::__('Tipo') ?>: </span>
+                    <span v-if="item.__objectType == 'opportunity' && !item.isLastPhase" class="type"><?= i::__('Coleta de dados') ?></span>
+                    <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{item.type}}</span>
+                </div>
+            </div>
         </div>
     </template>
     <template #default="{index, item}">
-
-        <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
-            <mapas-card>
-                <v1-embed-tool route="opportunityreport" :id="entity.id"></v1-embed-tool>
-                <!-- entity.opportunity.id esta undefined -->
-            </mapas-card>
-        </template>
-
-        <template v-if="item.__objectType == 'opportunity'">
-            <mapas-card>
-                <v1-embed-tool route="opportunityreport" :id="entity.id"></v1-embed-tool>
-            </mapas-card>
-        </template>
-
+        <mc-card v-if="item.id">
+            <v1-embed-tool route="reportmanager" :id="item.id"></v1-embed-tool>
+        </mc-card>
     </template>
 </mc-stepper-vertical>

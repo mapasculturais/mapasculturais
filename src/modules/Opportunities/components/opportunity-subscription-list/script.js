@@ -14,14 +14,36 @@ app.component('opportunity-subscription-list' , {
     },
 
     data() {
+        const registrations = $MAPAS.config.opportunitySubscriptionList.registrations;
         return {
-            registrations: $MAPAS.config.opportunitySubscriptionList.registrations,
+            registrations,
+            opportunity: $MAPAS.requestedEntity,
         }
     },
 
     computed: {
-        isLogged() {
-            return $MAPAS.userId != null
+        registrationStatus() {
+            let _actualDate = new Date();
+            let _fromDate = new McDate(this.opportunity.registrationFrom?.date)._date;
+            let _toDate = new McDate(this.opportunity.registrationTo?.date)._date;
+
+            if (_fromDate < _actualDate && _toDate > _actualDate) {
+                return 'open';
+            }
+
+            if (_toDate < _actualDate) {
+                return 'closed';
+            }
+
+            return false;
+        },
+        registrationsOpen() {
+            for (const registration of this.registrations) {
+                if (registration.status == 0) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 });

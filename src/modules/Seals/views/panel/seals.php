@@ -15,9 +15,6 @@ $this->import('
                 <div class="title__icon primary__background"> <mc-icon name="seal"></mc-icon></div>
                 <div class="title__title"> <?= i::_e('Meus selos') ?> </div>
             </div>
-            <div class="help">
-                <a class="panel__help-link" href="#"><?=i::__('Ajuda?')?></a>
-            </div>
         </div>
         <p class="panel-page__header-subtitle">
             <?= i::_e('Nesta seção você visualiza e gerencia seu perfil de usuário e outros selos criados') ?>

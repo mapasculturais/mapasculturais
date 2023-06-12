@@ -40,12 +40,11 @@
     text-align: left; //to make sure it's always aligned to the left.
 
     @media screen and (max-width: $screen-tablet) {
-        display: block !important;
-        position: absolute !important;
+        clear: both;
+        display: block;
         left: 0;
         right: 0;
-        margin: 0;
-        margin-right: 1em;
+        margin: 1em;
         padding: 0.20rem 2.5rem;
     }
     
@@ -98,4 +97,7 @@
 
 #editable-entity .alert {
     margin-bottom: -1em;
+    @media screen and (max-width: $screen-tablet) {
+        position: absolute !important;
+    }
 }

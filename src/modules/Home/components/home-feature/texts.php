@@ -1,10 +1,10 @@
 <?php
+
 use MapasCulturais\i;
 
 return [
-    'agent' => 'Agente',
-    'space' => 'Espaço',
-    'event' => 'Evento',
-    'project' => 'Projeto',
-    'opportunity' => 'Oportunidade'
+    'agent' => i::__('Agente'),
+    'space' => i::__('Espaço'),
+    'event' => i::__('Evento'),
+    'project' => i::__('Projeto'),
 ];

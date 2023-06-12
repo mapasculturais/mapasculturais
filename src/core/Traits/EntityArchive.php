@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\Entities\User;
 
 trait EntityArchive{
 
@@ -64,5 +65,13 @@ trait EntityArchive{
 
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unarchive:before');
+    }
+
+    protected function canUserArchive($user) {
+        return $this->genericPermissionVerification($user);
+    }
+
+    protected function canUserUnarchive($user) {
+        return $this->genericPermissionVerification($user);
     }
 }

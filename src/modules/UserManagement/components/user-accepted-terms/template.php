@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 ?>
@@ -6,7 +10,6 @@ use MapasCulturais\i;
 
 <div class="user-accepted-terms__privacy">
     <?php $this->applyTemplateHook('user-accepted-terms', 'begin'); ?>
-
     <div class="user-accepted-terms__privacy--accept">
         <label class="user-accepted-terms__privacy--accept-title"><?= i::__('Aceite de termos') ?></label>
         <div v-if="user" class="user-accepted-terms__privacy--accept-title-box">
@@ -15,7 +18,9 @@ use MapasCulturais\i;
                     <div v-if="user['lgpd_'+ slug]?.[term.md5]">
                         <label class="boxterm__list-subterm">
                             <label class="boxterm__list-subterm-title"><?= i::__('{{term.title}}') ?></label>
-                            <label class="boxterm__list-subterm-content"><?= i::__(' aceitos em {{formatDate(user["lgpd_"+slug][term.md5].timestamp)}} pelo ip {{user["lgpd_"+slug][term.md5].ip}}') ?></label>
+                            <label class="boxterm__list-subterm-content"><label><?= i::__(' aceitos em {{formatDate(user["lgpd_"+slug][term.md5].timestamp)}}') ?></label>
+                                <label><?= i::__(' pelo ip {{user["lgpd_"+slug][term.md5].ip}}') ?></label>
+                            </label>
                         </label>
                     </div>
                 </div>
@@ -23,6 +28,5 @@ use MapasCulturais\i;
         </div>
     </div>
     <?php $this->applyTemplateHook('user-accepted-terms', 'end'); ?>
-
 </div>
 <?php $this->applyTemplateHook('user-accepted-terms', 'after'); ?>

@@ -25,43 +25,59 @@ app.component('opportunity-subscription' , {
 
     data () {
         let agent = null;
+        let phases = null;
 
         if ($MAPAS.config.opportunitySubscription.agents.length == 1) {
             agent = $MAPAS.config.opportunitySubscription.agents[0];
         }
+        const registrationCategories = this.entity.registrationCategories || {};
+        const categories = Object.keys(registrationCategories).length > 0 ? registrationCategories : null;
+
+        if($MAPAS.opportunityPhases && $MAPAS.opportunityPhases.length > 0) {
+            phases = $MAPAS.opportunityPhases;
+        } 
 
         return {
             agent,
             category: null,
-            categories: this.entity.registrationCategories,
+            categories,
             dateStart: this.entity.registrationFrom, 
             dateEnd: this.entity.registrationTo,
             entities: {},
             entitiesLength: $MAPAS.config.opportunitySubscription.agents.length,
-            processing: false
+            processing: false,
+            phases,
+            totalRegistrations: $MAPAS.config.opportunitySubscription.totalRegistrations,
+            totalRegistrationsPerUser: $MAPAS.config.opportunitySubscription.totalRegistrationsPerUser,
         }
     },
 
     computed: {
-        isLogged() {
-            return $MAPAS.userId != null
-        },
-
         infoRegistration() {
             let description = ''
 
             let registrationStatus = this.registrationStatus(this.dateStart, this.dateEnd);
 
-            switch (registrationStatus) {
-                case 'open':
-                    description = this.text('inscrições abertas');
-                    break;
-                case 'closed':
-                    description = this.text('inscrições fechadas');
-                    break;
-                case 'will open':
-                    description = this.text('inscrições irão abrir');
-                    break;
+            if (this.isPublished) {
+                description = this.text('resultado publicado');
+            } else if (!this.dateStart) {
+                description = this.text('inscrições indefinidas');
+            } else if (this.registrationLimit) {
+                description = this.text('limite de inscrições');
+            } else if (this.registrationLimitPerOwner) {
+                description = this.text('limite de inscrições por usuário');
+            } else {
+                switch (registrationStatus) {
+                    case 'open':
+                        description = this.text('inscrições abertas');
+                        break;
+                    case 'closed':
+                        description = this.text('inscrições fechadas');
+                        break;
+                    case 'will open':
+                        description = this.text('inscrições irão abrir');
+                        break;
+                }
             }
 
             description = description.replace("{startAt}", this.startAt);
@@ -79,7 +95,26 @@ app.component('opportunity-subscription' , {
                 return false;
             }
         },
+        isPublished() {
+            let _actualDate = new Date();
 
+            if (this.lastPhase.publishTimestamp?._date < _actualDate) {
+                return true;
+            }
+            return false;
+        },
+        registrationLimit() {
+            if (this.entity.registrationLimit) {
+                return this.totalRegistrations >= this.entity.registrationLimit;
+            }
+            return false;
+        },
+        registrationLimitPerOwner() {
+            if (this.entity.registrationLimitPerOwner) {
+                return this.totalRegistrationsPerUser >= this.entity.registrationLimitPerOwner;
+            }
+            return false;
+        },
         startAt() {
             return this.dateStart?.date('2-digit year');
         },
@@ -91,6 +126,10 @@ app.component('opportunity-subscription' , {
         },
         endHour() {
             return this.dateEnd?.time();
+        },
+        lastPhase () {
+            const phase = this.phases.find(item => item.isLastPhase);
+            return phase;
         },
     },
 
@@ -121,7 +160,7 @@ app.component('opportunity-subscription' , {
                 }
             }     
         },
-        subscribe() {
+        async subscribe() {
             const messages = useMessages();
 
             if (!this.agent && this.categories?.length && !this.category) {
@@ -145,9 +184,33 @@ app.component('opportunity-subscription' , {
             }
 
             registration.disableMessages();
-            registration.save().then(() => {
-                window.location.href = registration.editUrl;
-            });
+            try {
+                await registration.save().then(res => {
+                    window.location.href = registration.editUrl;
+                });    
+            } catch (error) {
+                if (error.error) {
+                    for (let key in error.data) {
+                        if (error.data[key] instanceof Array) {
+                            for (let val of error.data[key]) {
+                                messages.error(val);
+                            }
+                        }
+                        if (!(error.data[key] instanceof Array)) {
+                            for (let _key in error.data[key]) {
+                                if (error.data[key][_key] instanceof Array) {
+                                    for (let _val of error.data[key][_key]) {
+                                        messages.error(_val);
+                                    }
+                                } else {
+                                    messages.error(error.data[key][_key]);
+                                }
+                            }
+                        }
+                    }
+                    this.processing = false;
+                }
+            }
         }
     }
 });

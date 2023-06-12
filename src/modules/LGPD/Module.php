@@ -32,7 +32,7 @@ class Module extends \MapasCulturais\Module
             $this->jsObject['hashAccepteds'] = $self->hashAccepteds();
         });
 
-        $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function () use ($app) {
+        $app->hook('GET(<<*>>):before,-GET(<<lgpd|auth>>.<<*>>):before', function () use ($app) {
 
             if ($app->user->is('guest'))
                 return;

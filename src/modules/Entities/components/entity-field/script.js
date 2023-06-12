@@ -18,7 +18,7 @@ app.component('entity-field', {
         try{
             description = this.entity.$PROPERTIES[this.prop];
         } catch (e) {
-            console.log(`Propriedade ${this.prop} não existe na entidade`);
+            console.error(`Propriedade ${this.prop} não existe na entidade`);
             return {};
         }
         
@@ -28,6 +28,32 @@ app.component('entity-field', {
             } else {
                 value = [value];
             }
+        }
+        
+        let isAdmin = function() {
+            let result = false;
+            $MAPAS.currentUserRoles.forEach(function(item){
+                if(item.toLowerCase().match('admin')){
+                    result = true;
+                    return;
+                }
+            })
+
+            return result;
+        }
+
+        if(this.entity.__objectType === "agent" && this.prop === "type" && !isAdmin()){
+            
+            var typeOptions = {};
+            var optionsOrder = [];
+            Object.keys(description.options).forEach(function(item, index){
+                if(description.options[item] != "Individual"){
+                    typeOptions[index] = description.options[item];
+                    optionsOrder.push(parseInt(index));
+                }
+            });
+            description.options = typeOptions;
+            description.optionsOrder = optionsOrder;
         }
 
         let fieldType = this.type || description.field_type || description.type;
@@ -91,7 +117,11 @@ app.component('entity-field', {
         },
         autosave: {
             type: Number,
-        }
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
     },
 
     computed: {
@@ -107,7 +137,7 @@ app.component('entity-field', {
             return this.entity.__validationErrors[this.prop];
         },
         value() {
-            return this.entity[this.prop];
+            return this.entity[this.prop]?.id ?? this.entity[this.prop];
         }
     },
     
@@ -120,13 +150,21 @@ app.component('entity-field', {
 
             this.__timeout = setTimeout(() => {
                 if(this.is('date') || this.is('datetime') || this.is('time')) {
-                    this.entity[this.prop] = new McDate(event);
+                    if(event) {
+                        this.entity[this.prop] = new McDate(event);
+                    } else {
+                        this.entity[this.prop] = '';
+                    }
+                } else if(this.is('checkbox')) {
+                    this.entity[this.prop] = event.target.checked;
                 } else {
                     this.entity[this.prop] = event.target.value;
                 }
 
                 if(this.is('date') || this.is('datetime') || this.is('time')) {
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event});
+                } else if(this.is('checkbox')) {
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.checked});
                 } else {
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
                 }

@@ -34,7 +34,11 @@ app.component('entity-owner', {
     },
 
     mounted() {
-        this.query.id = `!IN(${this.owner?.id})`;
+        if (this.entity.__objectType === 'agent') {
+            this.query.id = `!EQ(${this.entity.id})`;
+        } else {
+            this.query.id = `!IN(${this.owner?.id})`;
+        }
     },
 
     computed: {

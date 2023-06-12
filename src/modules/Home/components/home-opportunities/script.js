@@ -22,7 +22,7 @@ app.component('home-opportunities', {
             // query
             query: {
                 '@order' : 'registrationFrom ASC',
-                '@select' : 'id,name,shortDescription,terms,seals,singleUrl',
+                '@select' : 'id,name,shortDescription,terms,seals,singleUrl,registrationFrom,registrationTo',
                 ...$MAPAS.home.opportunities.filter,
             },
 

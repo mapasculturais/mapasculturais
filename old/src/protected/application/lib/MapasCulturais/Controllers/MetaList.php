@@ -10,6 +10,4 @@ use MapasCulturais\Traits;
  *
  */
 class MetaList extends EntityController {
-    use Traits\ControllerEntity,
-        Traits\ControllerEntityActions;
 }

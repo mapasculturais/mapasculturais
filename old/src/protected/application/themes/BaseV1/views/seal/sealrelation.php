@@ -64,11 +64,11 @@
                     <?php echo $relation->validateDate->format('d/m/Y'); ?>
                 <?php endif; ?>
                 <?php if($seal->owner->userId <> $app->user->id): ?>
-                    <?php if(!$relation->renovation_request && $relation->isExpired() && $app->config['notifications.seal.toExpire']):?>
+                    <?php if(!$relation->renovationRequest && $relation->isExpired() && $app->config['notifications.seal.toExpire']):?>
                         <a href="<?php echo $relation->getRequestSealRelationUrl($relation->id);?>" class="btn btn-default js-toggle-edit">
                             <?php \MapasCulturais\i::_e("Solicitar renovação");?>
                         </a>
-                    <?php elseif($relation->renovation_request && $relation->isExpired() && $app->config['notifications.seal.toExpire']):?>
+                    <?php elseif($relation->renovationRequest && $relation->isExpired() && $app->config['notifications.seal.toExpire']):?>
                         <div class="alert warning">
                             <?php \MapasCulturais\i::_e("Renovação Solicitada");?>
                         <!--</div>-->

@@ -1,12 +1,62 @@
+@use 'sass:math';
 @use '../settings/mixins' as *;
 
 
 .mapas-terms {
+    .tabs-component {
+        &__header {
+            background-color: var(--mc-high-500);
+            max-width: unset;
+
+            @media (min-width:size(1170)) {
+                padding-inline: calc(50vw - size(math.div(1170, 2)));
+
+            }
+
+        }
+
+        &__button--active::after {
+            background-color: var(--mc-primary-500);
+        }
+
+        &__panels {
+            margin-bottom: 0;
+            
+                @media (max-width:size(600)){
+                    .btn {
+                       display: flex;
+                       flex-direction: column-reverse;
+                       gap: size(16);
+                    }
+                }
+            
+            .tab-component.termsOfUsage {
+                padding: size(24) size(16) 0;
+
+            }
+
+            .tab-component.privacyPolicy {
+                padding: size(24) size(16) 0;
+
+            }
+
+            .tab-component.termsUse {
+                padding: size(24) size(16) 0;
+            }
+        }
+    }
+
+
+
     &__header {
         max-width: size(1170);
         width: 100%;
         margin: 0 auto;
         border-radius: size(4);
+
+        @media (max-width: size(360)) {
+            padding-left: 0;
+        }
 
         &-title {
             margin: size(75) 0 size(48);
@@ -25,16 +75,15 @@
 
         background: var(--mc-gray-100);
         margin: 0 auto;
-        padding: size(24) size(16);
-        width: 100%;
+        max-width: 100%;
 
-        .mapas-card {
+        .mc-card {
             &__title {
                 display: none;
             }
         }
 
-        .mapas-card,
+        .mc-card,
         .btn {
             max-width: size(1170);
             margin: 0 auto;
@@ -44,6 +93,32 @@
             display: flex;
             justify-content: space-evenly;
             margin: size(46) auto;
+        }
+
+        .mc-card {
+            @media (max-width:size(500)) {
+                padding-left: 0;
+            }
+
+            &__content {
+                .term {
+                    &__content {
+                        ol {
+                            @media (max-width:size(500)) {
+                                padding-left: 25px;
+                            }
+
+                            li {
+                                @media (max-width:size(340)) {
+                                    text-align: left;
+                                    line-height: 1.5;
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         .accept,

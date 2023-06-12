@@ -26,6 +26,45 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return i::__('Consiste em avaliação por critérios e cotas.');
     }
 
+    public function filterEvaluationsSummary(array $data) {
+        $items = array_filter(array_keys($data), function($item) {
+            return is_numeric($item) ? $item : null;            
+        });
+        
+        // encontra o maior valor do array
+        $max_value = $items ? max($items) + 1 : null;
+        
+        // divide em 5 faixas
+        $result = [];
+
+        $non_numeric = [];
+        if($max_value){
+            for($i=0;$i<5;$i++){
+                $min = $i * $max_value / 5;
+                $max = ($i+1) * $max_value / 5;
+                foreach($data as $val => $sum) {
+                    if(!is_numeric($val)) {
+                        $non_numeric[$val] = $non_numeric[$val] ?? 0;
+                        $non_numeric[$val] += $sum;
+
+                    } else if($val >= $min && $val < $max) {
+
+                        $min = number_format($i * $max_value / 5,       1, ',', '.');
+                        $max = number_format(($i+1) * $max_value / 5,   1, ',', '.');
+
+                        $key = "{$min} - {$max}";
+                        $result[$key] = $result[$key] ?? 0;
+                        $result[$key] += $sum;
+                    }
+                }
+            }
+        }
+
+        $result += $non_numeric;
+        
+        return $result;
+    }
+
     public function cmpValues($value1, $value2){
         $value1 = (float) $value1;
         $value2 = (float) $value2;
@@ -87,6 +126,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $this->registerEvaluationMethodConfigurationMetadata('isActiveAffirmativePolicies', [
             'label' => i::__('Controla se as politicas afirmativas estão ou não ativadas'),
             'type' => 'boolean',
+            'serialize' => function ($val){
+                return ($val == "true") ? true : false;
+            }
         ]);
 
         $this->registerEvaluationMethodConfigurationMetadata('affirmativePoliciesRoof', [
@@ -142,12 +184,12 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $phase = $this;
             
             do{
-                $em = $phase->getEvaluationMethod();
-
-                if($em->getSlug() == "technical"){
-                    $app->disableAccessControl();
-                    $phase->consolidateResult();
-                    $app->enableAccessControl();
+                if($em = $phase->getEvaluationMethod()){
+                    if($em->getSlug() == "technical"){
+                        $app->disableAccessControl();
+                        $phase->consolidateResult();
+                        $app->enableAccessControl();
+                    }
                 }
             }while($phase = $phase->nextPhase);
         });
@@ -167,7 +209,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
                     $policies = $reg->appliedAffirmativePolicy;
 
-                    if(!$policies->rules){
+                    if(!$policies || !$policies->rules){
                         continue;
                     }
 

@@ -17,6 +17,10 @@ app.component('opportunity-phase-config-evaluation' , {
         }
     },
 
+    beforeMount() {
+        this.phase.infos = this.phase.infos || {general: ''};
+    },
+
     computed: {
         index() {
             return this.phases.indexOf(this.phase);
@@ -63,7 +67,7 @@ app.component('opportunity-phase-config-evaluation' , {
         },
 
         categories(){
-            return this.phase.registrationCategories instanceof Array ?  this.phase.registrationCategories : [];
+            return this.phases[0].registrationCategories || [];
         }
     },
 

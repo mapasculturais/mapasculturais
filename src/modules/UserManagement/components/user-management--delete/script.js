@@ -24,7 +24,7 @@ app.component('user-management--delete', {
     
     methods: {
         switchUser (user) {
-            console.log(user)
+            console.log('NÃO IMPLEMENTADO', user)
         }
     },
 });

@@ -74,7 +74,7 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="agent_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var integer
@@ -95,7 +95,7 @@ class Agent extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="public_location", type="boolean", nullable=true)
      */
-    protected $publicLocation = false;
+    public $publicLocation = false;
 
     /**
      * @var \MapasCulturais\Types\GeoPoint
@@ -520,7 +520,8 @@ class Agent extends \MapasCulturais\Entity
             return true;
         }
 
-        return $this->getOwner()->canUser('modify') && $this->canUser('modify');
+        $owner = $this->getOwner();
+        return $owner && $owner->canUser('modify') && $this->canUser('modify');
     }
 
     protected function canUserArchive($user){

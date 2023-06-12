@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  * EvaluationMethodConfiguration
  *
  * @property \MapasCulturais\Entities\Opportunity $opportunity Opportunity
+ * @property \DateTime $evaluationFrom
+ * @property \DateTime $evaluationTo
  * 
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
  * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
@@ -45,7 +47,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="evaluation_method_configuration_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * The Evaluation Method Slug
@@ -112,10 +114,11 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
                 'required' => \MapasCulturais\i::__('O nome da fase de avaliação é obrigatório')
             ],
             'evaluationFrom' => [
+                'required' => \MapasCulturais\i::__('A data inicial das avaliações é obrigatória'),
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
-                '!empty($this->evaluationTo)' => \MapasCulturais\i::__('Data final obrigatória caso data inicial preenchida')
             ],
             'evaluationTo' => [
+                'required' => \MapasCulturais\i::__('A data final das avaliações é obrigatória'),
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
                 '$this->validateEvaluationDates()' => \MapasCulturais\i::__('A data final das avaliações deve ser maior ou igual a data inicial')
             ]
@@ -249,20 +252,28 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     public function getSummary()
     {
+        if($this->isNew()) {
+            return [];
+        }
+        
         /** @var App $app */
         $app = App::i();
 
-        $cache_key = __METHOD__ . ':' . $this->id; 
-        if($cache = $app->cache->fetch($cache_key)){
-            return $cache;
+        if($app->config['app.useOpportunitySummaryCache']) {
+            $cache_key = __METHOD__ . ':' . $this->id; 
+            if ($app->cache->contains($cache_key)) {
+                return $app->cache->fetch($cache_key);
+            }
         }
 
         $conn = $app->em->getConnection();
         $opportunity = $this->owner;
-        $data = [];
+        $data = [
+            'evaluations' => []
+        ];
         
-        $buildQuery = function($colluns = "*", $params = "", $type = "fetchAll") use ($conn, $opportunity){
-            return $conn->$type("SELECT {$colluns} FROM evaluations e WHERE opportunity_id = {$opportunity->id} {$params}");
+        $buildQuery = function($columns = "*", $params = "", $type = "fetchAll") use ($conn, $opportunity, $app){
+            return $conn->$type("SELECT {$columns} FROM evaluations e WHERE opportunity_id = {$opportunity->id} {$params}");
         };
 
         $registrations_ids = array_map(function($evaluation){
@@ -277,26 +288,71 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
 
         // Conta as inscrições avaliadas
-        $evaluated = $buildQuery("DISTINCT count(e.registration_id) as qtd", "AND e.evaluation_status > 0", "fetchAssoc");
+        $evaluated = $buildQuery("COUNT(DISTINCT(e.registration_id)) as qtd", "AND e.evaluation_status > 0", "fetchAssoc");
         $data['evaluated'] = $evaluated['qtd'];
 
         // Conta as inscrições avaliadas por status
-        $query = $app->em->createQuery("SELECT r.consolidatedResult as status, count(r.consolidatedResult) as qtd FROM MapasCulturais\\Entities\\Registration r  WHERE r.opportunity = :opp AND r.consolidatedResult > :status_evaluate AND r.id IN (:reg_ids) GROUP BY r.consolidatedResult");
+        $query = $app->em->createQuery("
+            SELECT 
+                r.status, 
+                count(r) as qtd 
+            FROM 
+                MapasCulturais\\Entities\\Registration r  
+            WHERE 
+                r.opportunity = :opp AND r.status > 0 AND 
+                r.id IN (:reg_ids) GROUP BY r.status
+        ");
 
         $query->setParameters([
             "opp" => $opportunity,
-            "reg_ids" => $registrations_ids,
-            'status_evaluate' => 0
+            "reg_ids" => $registrations_ids
         ]);
         
         if($result = $query->getResult()){
             foreach($result as $values){
-                $status = $this->getStatuses($values['status']);
-                $data[$status] = $values['qtd'];
+                $data[$values['status']] = $values['qtd'];
             }
         }
 
-        $app->cache->save($cache_key, $data, 30);
+        // status das avaliações
+
+        // Conta as inscrições avaliadas por status
+        $query = $app->em->createQuery("
+            SELECT 
+                r.consolidatedResult, 
+                count(r) as qtd 
+            FROM 
+                MapasCulturais\\Entities\\Registration r  
+            WHERE 
+                r.opportunity = :opp AND r.status > 0 AND 
+                r.id IN (:reg_ids) GROUP BY r.consolidatedResult
+        ");
+
+        $query->setParameters([
+            "opp" => $opportunity,
+            "reg_ids" => $registrations_ids
+        ]);
+        
+        $em = $this->evaluationMethod;
+        if($result = $query->getResult()){
+            foreach($result as $values){
+                $status = $em->valueToString($values['consolidatedResult']);
+                if($status) {
+                    $data['evaluations'][$status] = $values['qtd'];
+                } else {
+                    $data['evaluations'][i::__('Não Avaliada')] = $values['qtd'];
+                }
+            }
+        }
+
+        $data['evaluations'] = $em->filterEvaluationsSummary($data['evaluations']);
+        $slug = $em->slug;
+        $app->applyHookBoundTo($this, "evaluations({$slug}).summary", [&$data]);
+
+        if($app->config['app.useOpportunitySummaryCache']) {
+            $app->cache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
+        }
+
         return $data;
     }
 
@@ -312,33 +368,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         return false;
     }
-    
-    /**
-     * @param int $status
-     * @return string
-     */
-    public function getStatuses($status)
-    {
-        $em = $this->owner->getEvaluationMethod();
-        $status = $em->valueToString($status);
-
-        switch ($status) {
-            case 'Inválida':
-                return i::__('invalid');
-                break;
-            case 'Não selecionada':
-                return i::__('notapproved');
-                break;
-            case 'Suplente':
-                return i::__('waitlist');
-                break;
-            case 'Selecionada':
-                return i::__('approved');
-                break;
-            default:
-                return $status ?: '';
-        }
-    }
 
     protected function canUserCreate($user){
         return $this->opportunity->canUser('modify', $user);
@@ -349,7 +378,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
     
     function getExtraEntitiesToRecreatePermissionCache(){
-        return [$this->opportunity];
+        return [$this->opportunity->parent ?: $this->opportunity];
     }
     
     

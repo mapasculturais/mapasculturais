@@ -1,38 +1,40 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
- * 
- * @todo renomear componente
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
 use MapasCulturais\i;
-?>
 
-<mapas-card v-for="relation in spaceRelation">
+$this->import('
+    mc-card
+    mc-icon
+    select-entity
+');
+?>
+<mc-card v-if="useSpaceRelation !== 'dontUse'">
     <template #title>
         <div class="card__title"> 
-            {{relation.label}}
+            <?= i::__("Espaço") ?>
+            <div v-if="useSpaceRelation == 'required'" class="obrigatory"> <?= i::__('* Obrigatório') ?> </div>
         </div>
         <div class="card__subtitle">
-            {{relation.description}}
+            <?= i::__("Vincule um espaço a sua inscrição") ?>
         </div>
     </template>
     <template #content>
-        <!-- v-if="hasRelations()" -->
-        <div class="registration-select-entity">
+        <div v-if="relatedSpace" class="registration-select-entity">
             <div class="registration-select-entity__entity">
                 <div class="image">
-                    <!-- <img v-if="registration.relatedSpaces[relation.spaceRelationGroupName][0].files.avatar" :src="registration.relatedSpaces[relation.spaceRelationGroupName][0].files?.avatar?.transformations?.avatarMedium.url" /> -->
-                    <mc-icon name="image"></mc-icon> <!-- v-if="!registration.relatedSpaces[relation.spaceRelationGroupName][0].files.avatar" -->
+                    <img v-if="relatedSpace.files.avatar" :src="relatedSpace.files?.avatar?.transformations?.avatarMedium.url" />
+                    <mc-icon v-if="!relatedSpace.files.avatar" name="image"></mc-icon>
                 </div>
                 <div class="name">
-                    <!-- {{registration.relatedSpaces[relation.spaceRelationGroupName][0].name}} -->
+                    {{relatedSpace.name}}
                 </div>
             </div>
             <div class="registration-select-entity__actions">
-                <select-entity type="space" @select="selectSpace()">
+                <select-entity type="space" @select="selectSpace($event)">
                     <template #button="{toggle}">
                         <button class="button button--text button--icon button--sm change" @click="toggle()"> 
                             <mc-icon name="exchange"></mc-icon> <?= i::__('Trocar') ?> 
@@ -44,13 +46,16 @@ use MapasCulturais\i;
                 </button>
             </div>
         </div>
-        <!-- v-if="!hasRelations()" -->
-        <select-entity type="space" @select="selectSpace($event)">
+        
+        <select-entity v-if="!relatedSpace" type="space" @select="selectSpace($event)">
             <template #button="{toggle}">
                 <button class="button button--primary-outline button--icon button--md" @click="toggle()"> 
                     <mc-icon name="add"></mc-icon> <?= i::__('Adicionar') ?> 
                 </button>
             </template>
         </select-entity>
+        <div v-if="registration.__validationErrors.space" class="errors">
+            <span>{{registration.__validationErrors.space.join('; ')}}</span>
+        </div>
     </template>
-</mapas-card>
+</mc-card>

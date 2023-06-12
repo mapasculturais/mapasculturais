@@ -166,6 +166,7 @@
         }
         &.event__background {
             background: white;
+            color: var(--mc-low-500);
             &::before {
                 background: var(--mc-events-500);
             }

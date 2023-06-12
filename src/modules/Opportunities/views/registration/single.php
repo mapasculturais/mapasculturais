@@ -1,34 +1,42 @@
 <?php
+/**
+ * @var \MapasCulturais\Themes\BaseV2\Theme $this
+ * @var \MapasCulturais\App $app
+ */
 
 use MapasCulturais\i;
 
 $this->layout = 'registrations';
 
 $this->addOpportunityPhasesToJs();
+$this->addRegistrationPhasesToJs();
 
 $this->import('
-    mapas-breadcrumb
-    mapas-card
+    mc-breadcrumb
+    mc-card
+    mc-tab
+    mc-tabs
     opportunity-header
-    tabs
     opportunity-phases-timeline
+    v1-embed-tool
 ');
 
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
-    ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
+    ['label' => i::__('Oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
+    ['label' => $entity->opportunity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->opportunity->id])],
+    ['label' => i::__('Inscrição')]
 ];
 ?>
 
 <div class="main-app registration single">
-    <mapas-breadcrumb></mapas-breadcrumb>
+    <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
-    <tabs>
-        <tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
+    <mc-tabs>
+        <mc-tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
             <div class="registration__content">
-                <mapas-card no-title>
+                <mc-card>
                     <template #content>
                         <div class="registration-info">
                             <div class="registration-info__header">
@@ -47,7 +55,8 @@ $this->breadcrumb = [
                                         </div>
                                         <div class="category">
                                             <div class="category__label"> <?= i::__('Categoria de inscrição') ?> </div>
-                                            <div class="category__info"> {{entity.category}} </div>
+                                            <div v-if="entity.category" class="category__info"> {{entity.category}} </div>
+                                            <div v-if="!entity.category" class="category__info"> <?= i::__('Sem categoria') ?> </div>
                                         </div>
                                     </div>
                                 </div>
@@ -60,9 +69,9 @@ $this->breadcrumb = [
                             </div>
                             <div class="registration-info__footer">
                                 <div class="left">
-                                    <div class="project">
+                                    <div v-if="entity.projectName" class="project">
                                         <div class="project__label"> <?= i::__('Nome do projeto') ?> </div>
-                                        <div class="project__name project__color"> Nome do projeto aqui </div>
+                                        <div class="project__name project__color"> {{entity.projectName}} </div>
                                     </div>
                                 </div>
                                 <div class="right">
@@ -70,58 +79,107 @@ $this->breadcrumb = [
                                         <span v-if="entity.status == 0"> <?= i::__('Não enviada') ?> </span>
                                         <span v-if="entity.status > 0"> <?= i::__('Enviada') ?> </span>
                                     </div>
-                                    <div class="sentDate"> <?= i::__('Inscrição realizada em') ?> {{entity.sentTimestamp.date('2-digit year')}} <?= i::__('as') ?> {{entity.sentTimestamp.hour('numeric')}}h </div>
+                                    <div v-if="entity.sentTimestamp" class="sentDate"> 
+                                        <?= i::__('Inscrição realizada em') ?> {{entity.sentTimestamp.date('2-digit year')}} <?= i::__('às') ?> {{entity.sentTimestamp.time('long')}} 
+                                    </div>
+                                    <div v-if="!entity.sentTimestamp" class="sentDate">
+                                        <?= i::__('Inscrição sem data de envio.') ?><br>
+                                        <small><em>
+                                            <?= i::__('Isto pode ter acontecido por uma mudança do status da inscrição, pelo gestor ou administrador da oportunidade, diretamente do status de rascunho para o de enviada, inválida, não selecionada, suplente ou selecionada sem que o botão de enviar inscrição tenha sido apertado.') ?>
+                                        </em></small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </template>
-                </mapas-card>
+                </mc-card>
 
-                <mapas-card no-title>
+                <mc-card>
                     <template #content>
 
                         <opportunity-phases-timeline center big></opportunity-phases-timeline>
 
                     </template>
-                </mapas-card>
+                </mc-card>
             </div>
-        </tab>
+        </mc-tab>
 
-        <tab label="<?= i::_e('Ficha de inscrição') ?>" slug="ficha">
+        <mc-tab label="<?= i::_e('Ficha de inscrição') ?>" slug="ficha">
             <div class="registration__content">
-                <mapas-card no-title>
+                <mc-card>
                     <template #content>
                         <div class="registered-info">
-                            <span class="info"> <strong> <?= i::__('Dados do proponente') ?> </strong> </span>
-                            <span class="info"> <strong> <?= i::__('Nome') ?>: </strong> {{entity.owner.name}} </span>
-                            <span class="info"> <strong> <?= i::__('Descrição curta') ?>: </strong> {{entity.owner.shortDescription}} </span>
-                            <span class="info"> <strong> <?= i::__('CPF ou CNPJ') ?>: </strong> {{entity.owner.document}} </span>
-                            <span class="info"> <strong> <?= i::__('Data de nascimento ou fundação') ?>: </strong> <!-- {{entity.owner.dataDeNascimento.date('2-digit year')}} --> </span>
-                            <span class="info"> <strong> <?= i::__('Email') ?>: </strong> {{entity.owner.emailPublico}} </span>
-                            <span class="info"> <strong> <?= i::__('Raça') ?>: </strong> {{entity.owner.raca}} </span>
-                            <span class="info"> <strong> <?= i::__('Genero') ?>: </strong> {{entity.owner.genero}} </span>
-                            <span class="info"> <strong> <?= i::__('Endereço') ?>: </strong> {{entity.owner.endereco}} </span>
-                            <span class="info"> <strong> <?= i::__('CEP') ?>: </strong> {{entity.owner.En_CEP}} </span>
+                            <span class="info"> 
+                                <strong><?= i::__('Dados do proponente') ?></strong> 
+                            </span>
+                            <span class="info" v-if="entity.agentsData.owner.name"> 
+                                <strong> <?= i::__('Nome') ?>: </strong> 
+                                <span>{{entity.agentsData.owner.name}}</span>
+                            </span>
+                            <span class="info" v-if="entity.agentsData.owner.shortDescription"> 
+                                <strong> <?= i::__('Descrição curta') ?>: </strong> 
+                                <span>{{entity.agentsData.owner.shortDescription}}</span>
+                            </span>                            
+                            <span class="info" v-if="entity.agentsData.owner.documento || entity.agentsData.owner.cnpj"> 
+                                <strong> <?= i::__('CPF ou CNPJ') ?>: </strong> 
+                                <span>{{entity.agentsData.owner.documento || entity.agentsData.owner.cnpj}}</span>
+                            </span>                            
+                            <span class="info" v-if="entity.agentsData.owner.dataDeNascimento"> 
+                                <strong> <?= i::__('Data de nascimento ou fundação') ?>: </strong> 
+                                <span>{{entity.agentsData.owner.dataDeNascimento}}</span><!-- .date('2-digit year') -->
+                            </span>  
+                            <span class="info" v-if="entity.agentsData.owner.emailPublico"> 
+                                <strong> <?= i::__('Email') ?>: </strong> 
+                                <span>{{entity.agentsData.owner.emailPublico}}</span>
+                            </span>                            
+                            <span class="info" v-if="entity.agentsData.owner.raca"> 
+                                <strong> <?= i::__('Raça') ?>: </strong> 
+                                <span>{{entity.agentsData.owner.raca}}</span>
+                            </span>                            
+                            <span class="info" v-if="entity.agentsData.owner.genero"> 
+                                <strong> <?= i::__('Genero') ?>: </strong> 
+                                <span>{{entity.agentsData.owner.genero}}</span>
+                            </span>                            
+                            <span class="info" v-if="entity.agentsData.owner.endereco"> 
+                                <strong> <?= i::__('Endereço') ?>: </strong> 
+                                <span>{{entity.agentsData.owner.endereco}}</span>
+                            </span>                            
+                            <span class="info" v-if="entity.agentsData.owner.En_CEP"> 
+                                <strong> <?= i::__('CEP') ?>: </strong> 
+                                <span>{{entity.agentsData.owner.En_CEP}}</span>
+                            </span>
                         </div>
                     </template>
-                </mapas-card>
+                </mc-card>
 
-                <mapas-card>
-                    <template #title>
+                <mc-card v-if="useSpaceRelation !== 'dontUse'"> 
+                    <template v-if="" #title>
                         <label> <?= i::__('Espaço Vinculado') ?> </label>
                     </template>
                     <template #content>
-                        <div class="space">
+                        <div v-if="entity.relatedSpaces[0]" class="space">
                             <div class="image">
+                                <mc-icon v-if="!entity.relatedSpaces[0]?.files?.avatar" name="image"></mc-icon>
+                                <img v-if="entity.relatedSpaces[0]?.files?.avatar" :src="entity.relatedSpaces[0].files.avatar.transformations.avatarMedium.url" />
+                            </div>
+                            <div class="name">
+                                <a href="entity?.relatedSpaces[0]?.singleUrl" :class="[entity.relatedSpaces[0]['@entityType'] + '__color']"> {{entity?.relatedSpaces[0]?.name}} </a>
+                            </div>
+                        </div>
+
+                        <div v-if="!entity.relatedSpaces[0]" class="space">
+                        <div class="image">
                                 <mc-icon name="image"></mc-icon>
                             </div>
                             <div class="name">
-                                Nome do espaço
+                                <?= i::__('Sem espaço vinculado') ?>
                             </div>
                         </div>
                     </template>
-                </mapas-card>
+                </mc-card>
+
+                <v1-embed-tool route="registrationview" :id="entity.id"></v1-embed-tool>
             </div>
-        </tab>
-    </tabs>
+        </mc-tab>
+    </mc-tabs>
 </div>

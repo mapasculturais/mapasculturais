@@ -1,13 +1,10 @@
 <?php
 /**
- * @var \MapasCulturais\Themes\BaseV2\Theme $this
- * @var \MapasCulturais\App $app
- * 
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
-
-use MapasCulturais\i;
 ?>
-<template v-if="loggedIn">
+<template v-if="global.auth.isLoggedIn">
     <img v-if="avatarUrl" :src="avatarUrl" />
     <mc-icon v-if="!avatarUrl" name="user"></mc-icon>
 </template>
