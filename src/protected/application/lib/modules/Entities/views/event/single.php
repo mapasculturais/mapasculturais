@@ -17,6 +17,7 @@ $this->import('
     entity-seals
     entity-social-media
     entity-terms
+    event-info
     event-age-rating 
     mc-breadcrumb
     mc-container
@@ -47,35 +48,8 @@ $this->breadcrumb = [
                     <main>
                         <div class="grid-12">
                             <event-age-rating :event="entity" classes="col-12"></event-age-rating>
-                            <entity-occurrence-list classes="col-12" :entity="entity"></entity-occurrence-list>       
-                            
-                            <div v-if="entity.descricaoSonora || entity.traducaoLibras" class="col-12 acessibility">
-                                <h4 class="acessibility__title"><?php i::_e("Acessibilidade"); ?></h4>
-                                <p v-if="entity.descricaoSonora" class="acessibility__audio">
-                                    <span class="acessibility__label"><?php i::_e("Libras:"); ?></span> 
-                                    <span class="acessibility__value">{{entity.descricaoSonora}}</span>
-                                </p>
-                                <p v-if="entity.traducaoLibras" class="acessibility__libras">
-                                    <span class="acessibility__label"><?php i::_e("Áudio de Descrição:"); ?></span>
-                                    <span class="acessibility__value">{{entity.traducaoLibras}}</span>
-                                </p>
-                            </div>
-
-                            <div v-if="entity.event_attendance || entity.telefonePublico || entity.registrationInfo" class="col-12 acessibility event_info__infos">
-                                <h4 class="acessibility__title"><?php i::_e("Informações adicionais"); ?></h4>
-                                <p v-if="entity.event_attendance" class="acessibility__attendance">
-                                    <span class="acessibility__label"><?php i::_e("Total de público:"); ?></span>
-                                    <span class="acessibility__value">{{entity.event_attendance}}</span>
-                                </p>
-                                <p v-if="entity.telefonePublico" class="acessibility__phone">
-                                    <span class="acessibility__label"><?php i::_e("telefone:"); ?></span> 
-                                    <span class="acessibility__value">{{entity.telefonePublico}}</span>
-                                </p>
-                                <p v-if="entity.registrationInfo" class="acessibility__infos">
-                                    <span class="acessibility__label"><?php i::_e("Informações sobre a inscrição:"); ?></span>
-                                    <span class="acessibility__value">{{entity.registrationInfo}}</span>
-                                </p>
-                            </div>
+                            <entity-occurrence-list classes="col-12" :entity="entity"></entity-occurrence-list>    
+                            <event-info classes="col-12" :entity="entity"></event-info>
 
                             <div v-if="entity.longDescription" class="col-12 long-description">
                                 <h3><?php i::_e('Descrição Detalhada');?></h3>

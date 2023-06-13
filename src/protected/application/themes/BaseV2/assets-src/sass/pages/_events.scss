@@ -1,58 +1,12 @@
 @use '../settings/mixins' as *;
 
 .controller-event {
-
     &.action-edit {
         .long-description {
             .field__title {
                 font-weight: 700;
                 font-size: size(18);
                 line-height: size(25);
-            }
-        }
-    }
-
-    &.action-single {
-        .acessibility {
-            display: flex;
-            flex-direction: column;
-            gap: size(5);
-            padding-bottom: size(32);
-
-            @media (max-width: size(400)) {
-                gap: size(8);
-                padding-bottom: size(8);
-            }
-
-            &__title {
-                font-weight: 700;
-            }
-
-            &__label {
-                text-transform: uppercase;
-                font-weight: 600;
-            }
-
-            &___value {
-                padding-bottom: size(8);
-                word-break: break-word;
-            }
-
-            &__audio,
-            &__libras,
-            &__phone,
-            &__infos,
-            &__attendance {
-                color: var(--mc-low-700);
-                display: flex;
-                font-weight: 500;
-                gap: size(8);
-
-                @media (max-width: size(400)) {
-                    flex-direction: column;
-                    align-items: flex-start;
-                    padding: size(8) 0 0 0;
-                }
             }
         }
     }
