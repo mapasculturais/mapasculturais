@@ -436,13 +436,15 @@ class i {
             }
         }
 
-        foreach (self::$replacements as $replacement) {
-            list($from, $to) = $replacement;
-            
-            $translation = str_replace(ucwords($from), ucwords($to), $translation);
-            $translation = str_replace(ucfirst($from), ucfirst($to), $translation);
-            $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
-            $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
+        if (is_array(self::$replacements)) {
+            foreach (self::$replacements as $replacement) {
+                list($from, $to) = $replacement;
+                
+                $translation = str_replace(ucwords($from), ucwords($to), $translation);
+                $translation = str_replace(ucfirst($from), ucfirst($to), $translation);
+                $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
+                $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
+            }
         }
 
         return $translation;
