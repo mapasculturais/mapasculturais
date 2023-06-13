@@ -1,5 +1,5 @@
 app.component('opportunity-category' , {
-    template: $TEMPLATES['opportunity-form-builder-category'],
+    template: $TEMPLATES['opportunity-category'],
     props: {
         entity: {
             type: Entity,
