@@ -1,8 +1,7 @@
 @use '../settings/mixins' as *;
 
 .opportunity-category {
-
-
+ 
   &__header {
     .card-header {
       &__title {
@@ -10,24 +9,14 @@
       }
 
       &__subtitle {
-        font-family: 'Open Sans';
-        font-style: normal;
-        font-weight: 400;
-        font-size: size(14);
-        line-height: size(19);
         padding-bottom: size(5);
       }
     }
   }
 
   &__content {
-
-    .card-content__field {
-      &__field {
-        & >.field__title {
-          margin: 0;
-        }
-      }
+    & >.field__title {
+      margin: 0;
     }
   }
 }
