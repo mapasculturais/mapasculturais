@@ -1,10 +1,30 @@
 @use '../settings/mixins' as *;
 
 .opportunity-category {
-  &__header {
 
+  &__header {
+    .card-header {
+      &__title {
+        padding-bottom: size(8);
+      }
+
+      &__subtitle {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 400;
+        font-size: size(14);
+        line-height: size(19);
+        padding-bottom: size(5);
+      }
+    }
   }
+
   &__content {
 
+    .card-content__field {}
+
+    .card-content__field>.field__title {
+      margin: 0;
+    }
   }
 }
