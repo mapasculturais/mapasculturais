@@ -13,22 +13,6 @@
     }
 
     &.action-single {
-        .age-rating {
-            display: flex;
-            flex-direction: column;
-            gap: size(12);
-
-            &__title {
-                font-weight: var(--mc-font-bold);
-            }
-
-            &__content {
-                background-color: var(--mc-gray-300);
-                border-radius: var(--mc-border-radius-xs);
-                padding: size(19) size(13);
-            }
-        }
-
         .acessibility {
             display: flex;
             flex-direction: column;

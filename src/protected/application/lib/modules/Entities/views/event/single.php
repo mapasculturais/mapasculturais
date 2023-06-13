@@ -17,6 +17,7 @@ $this->import('
     entity-seals
     entity-social-media
     entity-terms
+    event-age-rating 
     mc-breadcrumb
     mc-container
     mc-share-links
@@ -45,13 +46,7 @@ $this->breadcrumb = [
                 <mc-container>
                     <main>
                         <div class="grid-12">
-                            <div class="col-12 age-rating">
-                                <h4 class="age-rating__title"> <?= i::_e("Classificação Etária"); ?> </h4>
-                                <div class="age-rating__content">
-                                    {{entity.classificacaoEtaria}}
-                                </div>
-                            </div>
-
+                            <event-age-rating :event="entity" classes="col-12"></event-age-rating>
                             <entity-occurrence-list classes="col-12" :entity="entity"></entity-occurrence-list>       
                             
                             <div v-if="entity.descricaoSonora || entity.traducaoLibras" class="col-12 acessibility">
