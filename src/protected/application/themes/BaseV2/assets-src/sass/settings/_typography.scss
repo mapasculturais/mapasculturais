@@ -100,3 +100,23 @@ small {
     font-size: size(12);
     line-height: size(16);
 }
+
+.bold {
+    font-weight: var(--mc-font-bold);
+}
+
+.semibold {
+    font-weight: var(--mc-font-semibold);
+}
+
+.regular {
+    font-weight: var(--mc-font-regular);
+}
+
+.uppercase {
+    text-transform: var(--mc-font-transform-uppercase);
+}
+
+.lowercase {
+    text-transform: var(--mc-font-transform-lowercase);
+}
