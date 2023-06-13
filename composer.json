@@ -11,7 +11,9 @@
         "pomo/pomo": "^1.5",
         "symfony/cache": "^6.2",
         "monolog/monolog": "^3.3",
-        "sinergi/browser-detector": "^6.1"
+        "sinergi/browser-detector": "^6.1",
+        "swiftmailer/swiftmailer": "5.*",
+        "mustache/mustache": "^2.11"
     },
     "autoload": {
         "psr-4": {
