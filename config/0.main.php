@@ -65,6 +65,11 @@ return [
     /* Valor do header Access-Control-Allow-Origin da api de leitura. */
     'api.accessControlAllowOrigin' => env('API_ACCESS_CONTROL_ALLOW_ORIGIN', '*'),
 
+    /** função para sanitizar o nome do arquivo */
+    'app.sanitize_filename_function' => function($filename) {
+        return $filename;
+    }
+
     /*
     Define valores de inicialização do PHP para rotas específicas
     
