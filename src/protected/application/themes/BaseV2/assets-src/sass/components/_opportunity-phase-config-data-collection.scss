@@ -1,0 +1,8 @@
+@use '../settings/mixins' as *;
+
+.mc-card__content {
+
+    .config-phase__category{
+        background-color: red;
+    }
+}
