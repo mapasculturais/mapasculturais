@@ -2,6 +2,7 @@
 
 .opportunity-category {
 
+
   &__header {
     .card-header {
       &__title {
@@ -21,10 +22,12 @@
 
   &__content {
 
-    .card-content__field {}
-
-    .card-content__field>.field__title {
-      margin: 0;
+    .card-content__field {
+      &__field {
+        & >.field__title {
+          margin: 0;
+        }
+      }
     }
   }
 }
