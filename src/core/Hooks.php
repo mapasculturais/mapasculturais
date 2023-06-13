@@ -3,13 +3,19 @@ declare(strict_types=1);
 
 namespace MapasCulturais;
 
+/**
+ * Gerenciador de hooks
+ * 
+ * @package MapasCulturais
+ */
 class Hooks {
     protected App $app;
 
     protected array $_hooks = [];
     protected array $_excludeHooks = [];
     protected array $_hookCache = [];
-    protected int $hook_count = 0;
+    
+    protected int $hookCount = 0;
     protected array $hookStack = [];
 
     function __construct(App $app) {
@@ -66,8 +72,8 @@ class Hooks {
      * @param  int      $priority   The hook priority; 0 = high, 10 = low
      */
     function hook(string $name, callable $callable, int $priority = 10) {
-        $this->hook_count++;
-        $priority += ($this->hook_count / 100000);
+        $this->hookCount++;
+        $priority += ($this->hookCount / 100000);
 
         $this->_hookCache = [];
         $_hooks = explode(',', $name);
