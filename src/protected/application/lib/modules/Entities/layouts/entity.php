@@ -5,6 +5,9 @@ if ($entity->usesTypes()) {
 } else {
     $this->bodyClasses[] = "{$entity->entityType}";
 }
+
+$this->bodyClasses[] = 'layout-entity';
+
 ?>
 <?php $this->part('header', $render_data) ?>
 <?php $this->part('main-header', $render_data) ?>

@@ -23,7 +23,6 @@ $this->import('
     entity-related-agents
     entity-social-media
     entity-terms
-    link-project
     mc-breadcrumb
     mc-card
     mc-container

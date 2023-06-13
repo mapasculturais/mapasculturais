@@ -1,116 +1,31 @@
 @use '../settings/mixins' as *;
 
 .controller-project {
-    background-color: var(--mc-white);
-
-    .tabs-component__panels {
-        margin-bottom: 0;
-    }
-
-    &.action-edit {
-        background-color: var(--mc-gray-100);
-
-        .divider {
-            width: 100%;
-            border-bottom: size(1) solid;
-        }
-    }
-
     &.action-single {
-        .tabs {
-            &-component {
-                &__header {
-                    border-bottom: 1px solid;
-                    padding: 0;
+        .additional-info {
+            display: flex;
+            flex-direction: column;
+            gap: size(5);
+            padding-bottom: size(32);
 
-                    @media (max-width: size(1200)) {
-                        margin: 0 size(16);
-                    }
-                }
-
-                &__buttons {
-                    margin: size(35) 0 0;
-                }
-
-                &__button {
-                    &--active::after {
-                        background-color: var(--mc-primary-500);
-                    }
-                }
+            &__title {
+                font-weight: 700;
             }
 
-            &__info {
-                .container main {
-
-                    h3 {
-                        font-weight: 700;
-                        font-size: size(24);
-                        line-height: size(28);
-                        padding-bottom: size(16);
-                    }
-
-                    h2 {
-                        font-weight: 700;
-                        font-size: 24px;
-                        line-height: 28px;
-                    }
-
-                    .property {
-                        button {
-                            background-color: var(--mc-danger-300);
-                            color: var(--mc-low-500);
-                            border-color: var(--mc-danger-300);
-                        }
-
-                        padding-top: 176px;
-                    }
-
-                    .additional {
-                        &-info {
-                            display: flex;
-                            flex-direction: column;
-                            gap: size(5);
-                            padding-bottom: size(32);
-
-                            &__title {
-                                font-weight: 700;
-                                font-size: size(18);
-                                line-height: size(25);
-                            }
-
-                            &__content {
-                                .info {
-                                    align-items: center;
-                                    display: flex;
-                                    font-weight: 500;
-                                    font-size: 1rem;
-                                    line-height: size(22);
-                                    color: var(--mc-low-700);
-                                    gap: 8px;
-
-                                    &-item {
-                                        text-transform: uppercase;
-                                    }
-
-                                    &-content {}
-                                }
-                            }
-                        }
-                    }
-
+            &__item {
+                align-items: center;
+                display: flex;
+                color: var(--mc-low-700);
+                gap: size(8);
+                
+                &__title {
+                    font-weight: var(--mc-font-semibold);
                 }
 
-                .divider {
-                    background-color: var(--mc-gray-300);
-                    grid-column-end: span 3;
-                    height: size(0.5);
-                    width: 100%;
-
-                    @media (max-width: size(800)) {
-                        grid-column-end: 2;
-                    }
+                &__content {
+                    text-transform: uppercase;
                 }
-            }
+            }            
         }
     }
 }

@@ -45,48 +45,48 @@ $this->breadcrumb = [
                 <mc-container>
                     <main>
                         <div class="grid-12">
-                            <div class="col-12">
-                                <div class="age-rating">
-                                    <label class="age-rating__label">
-                                        <?= i::_e("Classificação Etária"); ?>
-                                    </label>
-                                    <div class="age-rating__content">
-                                        {{entity.classificacaoEtaria}}
-                                    </div>
+                            <div class="col-12 age-rating">
+                                <h4 class="age-rating__title"> <?= i::_e("Classificação Etária"); ?> </h4>
+                                <div class="age-rating__content">
+                                    {{entity.classificacaoEtaria}}
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <entity-occurrence-list :entity="entity"></entity-occurrence-list>
-                            </div>        
-                            <div class="col-12">
-                                <div v-if="entity.descricaoSonora || entity.traducaoLibras" class="acessibility">
-                                    <span class="acessibility__label"><?php i::_e("Acessibilidade"); ?></span>
-                                    <div v-if="entity.descricaoSonora" class="acessibility__audio">
-                                        <span class="title"><?php i::_e("Libras:"); ?></span> <span class="content">{{entity.descricaoSonora}}</span>
-                                    </div>
-                                    <div v-if="entity.traducaoLibras" class="acessibility__libras">
-                                        <span class="title"><?php i::_e("Áudio de Descrição:"); ?></span> <span class="content">{{entity.traducaoLibras}}</span>
-                                    </div>
-                                </div>
+
+                            <entity-occurrence-list classes="col-12" :entity="entity"></entity-occurrence-list>       
+                            
+                            <div v-if="entity.descricaoSonora || entity.traducaoLibras" class="col-12 acessibility">
+                                <h4 class="acessibility__title"><?php i::_e("Acessibilidade"); ?></h4>
+                                <p v-if="entity.descricaoSonora" class="acessibility__audio">
+                                    <span class="acessibility__label"><?php i::_e("Libras:"); ?></span> 
+                                    <span class="acessibility__value">{{entity.descricaoSonora}}</span>
+                                </p>
+                                <p v-if="entity.traducaoLibras" class="acessibility__libras">
+                                    <span class="acessibility__label"><?php i::_e("Áudio de Descrição:"); ?></span>
+                                    <span class="acessibility__value">{{entity.traducaoLibras}}</span>
+                                </p>
                             </div>
-                            <div class="col-12">
-                                <div v-if="entity.event_attendance || entity.telefonePublico || entity.registrationInfo" class=" acessibility event_info__infos">
-                                    <span class="acessibility__label"><?php i::_e("Informações adicionais"); ?></span>
-                                    <div v-if="entity.event_attendance" class="acessibility__attendance">
-                                        <span class="title"><?php i::_e("Total de público:"); ?></span> <span class="content">{{entity.event_attendance}}</span>
-                                    </div>
-                                    <div v-if="entity.telefonePublico" class="acessibility__phone">
-                                        <span  class="title"><?php i::_e("telefone:"); ?></span> <span class="content">{{entity.telefonePublico}}</span>
-                                    </div>
-                                    <div v-if="entity.registrationInfo" class="acessibility__infos">
-                                        <span class="title"><?php i::_e("Informações sobre a inscrição:"); ?></span> <span class="content">{{entity.registrationInfo}}</span>
-                                    </div>
-                                </div>
+
+                            <div v-if="entity.event_attendance || entity.telefonePublico || entity.registrationInfo" class="col-12 acessibility event_info__infos">
+                                <h4 class="acessibility__title"><?php i::_e("Informações adicionais"); ?></h4>
+                                <p v-if="entity.event_attendance" class="acessibility__attendance">
+                                    <span class="acessibility__label"><?php i::_e("Total de público:"); ?></span>
+                                    <span class="acessibility__value">{{entity.event_attendance}}</span>
+                                </p>
+                                <p v-if="entity.telefonePublico" class="acessibility__phone">
+                                    <span class="acessibility__label"><?php i::_e("telefone:"); ?></span> 
+                                    <span class="acessibility__value">{{entity.telefonePublico}}</span>
+                                </p>
+                                <p v-if="entity.registrationInfo" class="acessibility__infos">
+                                    <span class="acessibility__label"><?php i::_e("Informações sobre a inscrição:"); ?></span>
+                                    <span class="acessibility__value">{{entity.registrationInfo}}</span>
+                                </p>
                             </div>
-                            <div v-if="entity.longDescription" class="col-12 longDescription">
-                                <h2><?php i::_e('Descrição Detalhada');?></h2>
+
+                            <div v-if="entity.longDescription" class="col-12 long-description">
+                                <h3><?php i::_e('Descrição Detalhada');?></h3>
                                 <p>{{entity.longDescription}}</p>
-                            </div>                      
+                            </div> 
+
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity"  classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download') ?>"></entity-files-list>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
