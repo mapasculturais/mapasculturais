@@ -34,7 +34,7 @@ use MapasCulturais\Entities\Opportunity;
  * @hook **view.render:after ($template_name, $html)** - executed after the render of the template and the layout
  * @hook **view.render({$template_name}):before ($template_name, $html)** - executed after the render of the template and the layout
  */
-abstract class Theme extends \Slim\View {
+abstract class Theme {
     use Traits\MagicGetter,
         Traits\MagicSetter,
         Traits\MagicCallers,
@@ -98,8 +98,6 @@ abstract class Theme extends \Slim\View {
     abstract function getVersion();
 
     public function __construct(AssetManager $asset_manager) {
-        parent::__construct();
-
         $this->_assetManager = $asset_manager;
 
         $app = App::i();
