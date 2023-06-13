@@ -18,14 +18,15 @@ $this->import('
         <div class="config-phase__line col-12 "></div>
         <entity-field :entity="phase" prop="registrationFrom" :autosave="300" :min="minDate?._date" :max="phase.registrationTo?._date" classes="col-6 sm:col-12"></entity-field>
         <entity-field :entity="phase" prop="registrationTo" :autosave="300" :min="phase.registrationFrom?._date" :max="maxDate?._date" classes="col-6 sm:col-12"></entity-field>
-
-        <div v-if="phase.isFirstPhase" class="col-6">
-            <opportunity-category :entity="phase"></opportunity-category>
-        </div>
-        
-        <div class="col-6">
-            <entity-field :entity="phase" prop="registrationLimit" :autosave="300" classes="col-3"></entity-field>
-            <entity-field :entity="phase" prop="registrationLimitPerOwner" :autosave="300" classes="col-3"></entity-field>
+        <div class="config-phase__category col-12">
+            <div v-if="phase.isFirstPhase">
+                <opportunity-category :entity="phase"></opportunity-category>
+            </div>
+            <div class="vertLine"></div>
+            <div class="config-phase__registration">
+                <entity-field :entity="phase" prop="registrationLimit" :autosave="300" classes="col-3"></entity-field>
+                <entity-field :entity="phase" prop="registrationLimitPerOwner" :autosave="300" classes="col-3"></entity-field>
+            </div>
         </div>
 
         <div class="col-6 sm:col-12">
