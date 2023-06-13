@@ -137,6 +137,17 @@ ol.mc-stepper-vertical>li {
             border-bottom: 1px solid var(--mc-gray-100);
         }
 
+        &__category {
+            display: grid;
+            grid-template-columns: 1fr size(67) 1fr;
+
+            .vertLine {
+                max-height: 100%;
+                margin: 0 auto;
+                border-left: 1px solid var(--mc-gray-300)
+            }
+        }
+
         .phase-delete {
             margin: 0 auto;
 
@@ -313,6 +324,7 @@ ol.mc-stepper-vertical>li.active::before {
             max-width: 100%;
             gap: size(4);
             justify-content: center;
+
             .icon {
 
                 // justify-content: center;
