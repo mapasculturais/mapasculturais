@@ -16,14 +16,14 @@ $this->import('
 ?>
 <div class="opportunity-category">
     <div class="opportunity-category__header">
-            <label class="card-header__title"><?= i::__("Categorias de inscrição") ?></label>
+            <h4 class="card-header__title bold"><?= i::__("Categorias de inscrição") ?></h4>
             <!-- classe antiga class="subtitle" -->
             <div class="card-header__subtitle"><?= i::__("Crie opções para as pessoas escolherem na hora de se inscrever, como, por exemplo, \"categorias\" ou \"modalidades\".") ?></div>
         </div>
     
         <div class="opportunity-category__content grid-12">
-            <entity-field :entity="entity" prop="registrationCategTitle" classes="col-12"></entity-field>
-            <entity-field :entity="entity" prop="registrationCategDescription" classes="col-12"></entity-field>
-            <opportunity-form-builder-category-list :entity="entity" class="col-12"></opportunity-form-builder-category-list>
+            <entity-field :entity="entity" prop="registrationCategTitle" classes="card-content__field col-12"></entity-field>
+            <entity-field :entity="entity" prop="registrationCategDescription" classes="card-content__field col-12"></entity-field>
+            <opportunity-form-builder-category-list :entity="entity" class="card__content__field col-12"></opportunity-form-builder-category-list>
         </div>
 </div>
