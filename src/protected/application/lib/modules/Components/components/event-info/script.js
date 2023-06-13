@@ -1,6 +1,5 @@
 app.component('event-info', {
     template: $TEMPLATES['event-info'],
-    emits: [],
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -8,30 +7,24 @@ app.component('event-info', {
         return { text }
     },
 
-    data() {
-
-        return {
-
-        };
-    },
-
     props: {
-
         entity: {
             type: Entity,
             required: true
         },
-
         editable: {
             type: Boolean,
             default: false
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
         },
     },
 
     mounted() {
         this.descricaoSonora = "";
         this.traducaoLibras = "";
-
     },
 
     methods: {
@@ -40,6 +33,5 @@ app.component('event-info', {
                 return this.entity.acessibilidade_fisica.split(';');
             }
         }
-
     }
 });
