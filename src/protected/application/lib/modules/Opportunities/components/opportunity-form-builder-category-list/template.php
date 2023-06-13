@@ -15,7 +15,7 @@ $this->import('
 ');
 ?>
 <div class="build-list">
-    <label class="build-list__title"><?= i::__("Categorias") ?></label>
+    <h6 class="build-list__title"><?= i::__("Categorias") ?></h6>
 
     <mc-tag-list class="build-list__content" :tags="entity.registrationCategories" editable></mc-tag-list>
 
