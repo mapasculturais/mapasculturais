@@ -12,7 +12,7 @@ $this->addOpportunityPhasesToJs();
 
 $this->import('
     entity-field
-    opportunity-form-builder-category
+    opportunity-category
     opportunity-form-export
     opportunity-form-import
     opportunity-phase-header
@@ -29,7 +29,7 @@ $this->import('
     <opportunity-form-import classes="col-12" :entity="entity"></opportunity-form-import>
     
     <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
-        <opportunity-form-builder-category :entity="entity"></opportunity-form-builder-category>
+        <opportunity-category :entity="entity"></opportunity-category>
     </div>
 
     <div class="col-6 sm:col-12">
