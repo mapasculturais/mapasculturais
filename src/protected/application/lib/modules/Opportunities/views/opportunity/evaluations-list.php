@@ -25,8 +25,7 @@ $this->import('
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity">
         <template #button>
-            <mc-link v-if="entity.currentUserPermissions.modify" class="button button--primary-outline" :entity="entity.opportunity" route="edit" hash="registrations" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
-            <mc-link v-if="!entity.currentUserPermissions.modify" class="button button--primary-outline" route="panel/index" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
+            <mc-link  v-if="entity.currentUserPermissions.modify" class="button button--primary-outline" :entity="entity.opportunity"  hash="evaluations" route="single" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
         </template>
         <template #opportunity-header-info-end>
         </template>
