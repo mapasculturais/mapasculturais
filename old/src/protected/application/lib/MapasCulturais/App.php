@@ -1,203 +1,291 @@
 <?php
+declare(strict_types=1);
+
 namespace MapasCulturais;
 
-use Doctrine\ORM\Tools\Setup;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-
-use Acelaya\Doctrine\Type\PhpEnumType;
 use DateTime;
-use Exception;
+use Slim\Factory\AppFactory;
+use Slim;
+
+
+use Doctrine\ORM\ORMSetup;
+use Doctrine\ORM\EntityManager;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\Common\Annotations\AnnotationReader;
+use ErrorException;
+use LogicException;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\Exception\NotSupported;
+use InvalidArgumentException;
+use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\Entities\Job;
-use MapasCulturais\Entities\PermissionCachePending;
-use MapasCulturais\Entities\User;
+
+use Doctrine\ORM\ORMInvalidArgumentException;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\TransactionRequiredException;
+use Exception as GlobalException;
+use Doctrine\Persistence\Mapping\MappingException;
+use MapasCulturais\Definitions\ChatThreadType;
+use MapasCulturais\Definitions\JobType;
+use MapasCulturais\Definitions\RegistrationAgentRelation;
+use MapasCulturais\Definitions\RegistrationFieldType;
+use MapasCulturais\Exceptions\MailTemplateNotFound;
+use MapasCulturais\Exceptions\WorkflowRequest;
+use ReflectionException;
+use RuntimeException;
+use Slim\App as SlimApp;
+use Swift_IoException;
+use Swift_Message;
+use Swift_SwiftException;
 
 /**
- * MapasCulturais Application class.
- *
- *
- * @property-read \Doctrine\ORM\EntityManager $em The Doctrine Entity Manager
- * @property-read \Slim\Log $log Slim Logger
- * @property-read \Doctrine\Common\Cache\CacheProvider $cache Cache Provider
- * @property-read \Doctrine\Common\Cache\CacheProvider $mscache Multisite Cache Provider
- * @property-read \Doctrine\Common\Cache\ArrayCache $rcache Runtime Cache Provider
- * @property-read \MapasCulturais\AuthProvider $auth The Authentication Manager Component.
- * @property-read \MapasCulturais\Theme $view The MapasCulturais View object
- * @property-read \MapasCulturais\Storage\FileSystem $storage File Storage Component.
- * @property-read \MapasCulturais\Entities\User $user The Logged in user.
- * @property-read String $opportunityRegistrationAgentRelationGroupName Opportunity Registration Agent Relation Group Name
+ * @property-read string $id id da aplicação
+ * @property-read Slim\App $slim instância do Slim
+ * @property-read Hooks $hooks gerenciador de hooks
+ * @property-read string $siteName nome do site
+ * @property-read string $siteDescription descrição do site
+ * @property-read string $currentLCode código da linguagem configurada. ex: pt_BR
+ * @property-read int|null $currentSubsiteId id do subsite atual
+ * @property-read string|float|int $maxUploadSize tamanho máximo de arquivo para upload aceito pelo PHP
+ * @property-read array $registeredGeoDivisions divisões geográficas configuradas
+ * @property-read Definitions\Role[] $roles roles registrados 
+ * @property-read Definitions\JobType[] registeredJobTypes lista de job tipes registrados
+ * @property-read Definitions\RegistrationAgentRelation[] $registrationAgentsDefinitions Retorna as definições dos agentes relacionados das inscrições
+ * @property-read Definitions\RegistrationAgentRelation[] $registeredRegistrationAgentRelations definições de agentes relacionados de inscrições registrados
+ * @property-read Definitions\RegistrationAgentRelation $registrationOwnerDefinition definição do agente owner de inscrição
+ * @property-read Definitions\ChatThreadType $registeredChatThreadTypes definições dos tipos de chat registrados
+
+
  * 
- * @property Boolean $permissionCacheEnabled
- *
- * From Slim Class Definition
- * @property-read array[\Slim] $apps = []
- * @property-read string $name The Slim Application name
- * @property-read array $environment
- * @property-read \Slim\Http\Request $request
- * @property-read \Slim\Http\Response $response
- * @property-read \Slim\Router $router
- * @property-read array $settings
- * @property-read string $mode
- * @property-read array $middleware
- * @property-read mixed $error Callable to be invoked if application error
- * @property-read mixed $notFound Callable to be invoked if no matching routes are found
- *
- * @property-read string $siteName
- * @property-read string $siteDescription
- *
- * @property-read array $config
- *
- * @property-read \MapasCulturais\Module[] $modules active modules
- * @property-read \MapasCulturais\Plugin[] $plugins active plugins
- *
- * @method \MapasCulturais\App i() Returns the application object
+ * @package MapasCulturais
  */
-class App extends \Slim\Slim{
-    use Traits\MagicGetter,
-        Traits\MagicSetter,
-        Traits\MagicCallers,
-        Traits\Singleton;
+class App {
+    use Traits\MagicCallers,
+        Traits\MagicGetter,
+        Traits\MagicSetter;
 
     /**
-     * Is the App initiated?
-     * @var boolean
+     * Array de instâncias de aplicação
+     * @var App[]
      */
-    protected $_initiated = false;
+    protected static array $_instances = [];
 
     /**
-     * Doctrine Entity Manager
-     * @var \Doctrine\ORM\EntityManager
+     * Id da aplicação
+     * @var string
      */
-    protected $_em = null;
+    protected string $id;
 
     /**
-     * Cache Component
-     * @var \Doctrine\Common\Cache\CacheProvider
+     * Instância do Slim
+     * @var SlimApp
      */
-    protected $_cache = null;
+    protected Slim\App $slim;
 
     /**
-     * Cache Component
-     * @var \Doctrine\Common\Cache\CacheProvider
+     * O Entity Manager do Doctrine
+     * @var EntityManager
      */
-    protected $_mscache = null;
+    protected EntityManager $_em;
+
+    /**
+     * Hooks
+     * @var Hooks
+     */
+    public Hooks $hooks;
+
+    /**
+     * Instância do tema
+     * @var Theme
+     */
+    public Theme $view;
+
+    /**
+     * Instância do subsite ativo
+     * @var Entities\Subsite|null
+     */
+    protected Entities\Subsite $subsite;
+
+    /**
+     * Instância dos módulos ativos
+     * @var Module[]
+     */
+    public array $modules = [];
+
+    /**
+     * Instância dos plugins ativos
+     * @var Plugin[]
+     */
+    public array $plugins = [];
+
+    /**
+     * Provedor de autenticação
+     * @var AuthProvider
+     */
+    protected AuthProvider $auth;
+    
+    /**
+     * Persistent Cache
+     * @var Cache
+     */
+    public Cache $cache;
+
+    /**
+     * Multisite Persistent Cache
+     * @var Cache
+     */
+    public Cache $mscache;
 
     /**
      * Runtime Cache
-     * @var \Doctrine\Common\Cache\ArrayCache
+     * @var Cache
      */
-    protected $_rcache = null;
+    public Cache $rcache;
+    
+    /**
+     * App Configuration.
+     * @var array
+     */
+    public array $_config = [];
 
     /**
-     * The MapasCulturais Auth Manager.
-     * @var \MapasCulturais\Auth
+     * The Application Registry.
+     *
+     * Here is stored the registered controllers, entity types, entity type groups, 
+     * entity metadata definitions, file groups definitions and taxonomy definitions.
+     *
+     * @var array
      */
-    protected $_auth = null;
+    protected $_register = [
+        'controllers' => [],
+        'auth_providers' => [],
+        'controllers-by-class' => [],
+        'controllers_default_actions' => [],
+        'controllers_view_dirs' => [],
+        'entity_type_groups' => [],
+        'entity_types' => [],
+        'entity_metadata_definitions' => [],
+        'file_groups' => [],
+        'metalist_groups' => [],
+        'taxonomies' => [
+            'by-id' => [],
+            'by-slug' => [],
+            'by-entity' => [],
+        ],
+        'api_outputs' => [],
+        'image_transformations' => [],
+        'registration_agent_relations' => [],
+        'registration_fields' => [],
+        'evaluation_method' => [],
+        'roles' => [],
+        'chat_thread_types' => [],
+        'job_types' => [],
+    ];
 
     /**
      * The Route Manager.
-     * @var \MapasCulturais\RoutesManager
+     * @var RoutesManager
      */
     protected $_routesManager = null;
 
+
     /**
-     * File Storage Component
-     * @var \MapasCulturais\Storage
+     * Lista de entidades para colocar na fila de processamento de cache de permissão
+     * 
+     * @var Entity[]
      */
-    protected $_storage = null;
+    private $_permissionCachePendingQueue = [];
 
 
-    protected $_debugbar = null;
+    /**
+     * Lista das entidades já processadas pelo job recria os caches de permissão
+     * @var array
+     */
+    private $_recreatedPermissionCacheList = [];
+
+
+    /** FLAGS */
+
+    /**
+     * Indica se o cache de permissão está ativo
+     * 
+     * não tem relação com o pcache, é cache do resultado da fução canUser
+     * 
+     * @var true
+     */
+    public $permissionCacheEnabled = true;
+
+    /**
+     * Contador de vezes que o disableAccessControl foi chamado
+     * @var int
+     */
+    protected int $_disableAccessControlCount = 0;
+
+    /**
+     * Contador de vezes que o disableWorkflow foi chamado
+     * @var int
+     */
+    protected int $_disableWorkflowCount = 0;
+
+    /**
+     * Indica se o registro da aplicação já foi executado
+     * 
+     * @var bool
+     */
+    private bool $_registered = false;
 
     /**
      * Hibilita os magic getter hooks
      */
     protected $__enableMagicGetterHook = true;
+    
+    /**
+     * Retorna uma instância da aplicação
+     * 
+     * @param string $id 
+     * @return App 
+     */
+    static function i(string $id = 'web'): App {
+        $class = get_called_class();
+        if (!(self::$_instances[$id] ?? null)) {
+            self::$_instances[$id] = new $class($id);;
+        }
+        return self::$_instances[$id];
+    }
 
     /**
-     * App Configuration.
-     * @var array
+     * Construtor da aplicação
+     * 
+     * @param string $id 
+     * @return void 
+     * @throws RuntimeException 
      */
-    public $_config = [];
+    protected function __construct(string $id) {
+        $this->id = $id;
+
+        $this->slim = AppFactory::create();
+        $this->slim->addRoutingMiddleware();
+        $this->slim->addErrorMiddleware(true, true, true);
+
+        $this->hooks = new Hooks($this);
+    }
 
     /**
-     * The Application Registry.
-     *
-     * Here is stored the registered controllers, entity types, entity type groups, entity metadata definitions, file groups definitions and taxonomy definitions.
-     *
-     * @var type
+     * Inicializa a aplicação
+     * 
+     * @param array $config array de configuração da aplicação
+     * 
+     * @return App 
+     * 
+     * @throws RuntimeException 
+     * @throws ErrorException 
+     * @throws LogicException 
+     * @throws Exception 
      */
-    protected $_register = [
-            'controllers' => [],
-            'auth_providers' => [],
-            'controllers-by-class' => [],
-            'controllers_default_actions' => [],
-            'controllers_view_dirs' => [],
-            'entity_type_groups' => [],
-            'entity_types' => [],
-            'entity_metadata_definitions' => [],
-            'file_groups' => [],
-            'metalist_groups' => [],
-            'taxonomies' => [
-                'by-id' => [],
-                'by-slug' => [],
-                'by-entity' => [],
-            ],
-            'api_outputs' => [],
-            'image_transformations' => [],
-            'registration_agent_relations' => [],
-            'registration_fields' => [],
-            'evaluation_method' => [],
-            'roles' => [],
-            'chat_thread_types' => [],
-            'job_types' => [],
-        ];
+    function init(array $config) {
 
-    protected $_registerLocked = true;
-
-    protected $_hooks = [];
-    protected $_excludeHooks = [];
-
-
-    protected $_disableAccessControlCount = 0;
-    protected $_workflowEnabled = true;
-
-    protected $_plugins = [];
-
-    protected $_modules = [];
-
-    protected $_subsite = null;
-
-    protected $permissionCacheEnabled = true;
-    /**
-     * Initializes the application instance.
-     *
-     * This method
-     * starts the session,
-     * call Slim constructor,
-     * set the custom log writer (if is defined in config),
-     * bootstraps the Doctrine,
-     * bootstraps the Auth Manager,
-     * creates the cache and rcache components,
-     * sets the file storage,
-     * adds midlewares,
-     * instantiates the Route Manager and
-     * includes the theme.php file of the active theme if the file exists.
-     *
-     *
-     * If the application was previously initiated, this method returns the application in the first line.
-     *
-     * @return \MapasCulturais\App
-     */
-    public function init($config = []){
-        if($this->_initiated)
-            return $this;
-
-        $this->_initiated = true;
-
-        $this->permissionCacheEnabled = $config['app.usePermissionsCache'] ?? true;
+        $this->_config = $config;
 
         if(empty($config['base.url'])){
             $config['base.url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://') . 
@@ -208,12 +296,14 @@ class App extends \Slim\Slim{
             $config['base.assetUrl'] = $config['base.url'] . 'assets/';
         }
 
-        if($config['slim.debug'])
-            error_reporting(E_ALL ^ E_STRICT);
 
+        $this->permissionCacheEnabled = $config['app.usePermissionsCache'] ?? true;
+
+        if($config['app.mode'] == APPMODE_DEVELOPMENT || $config['slim.debug']){
+            error_reporting(E_ALL ^ E_STRICT);
+        }
 
         session_save_path(SESSIONS_SAVE_PATH);
-        
         session_start();
 
         if($config['app.offline']){
@@ -226,28 +316,72 @@ class App extends \Slim\Slim{
             }
         }
 
-        // =============== CACHE =============== //
-        if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
-            $this->_cache = $config['app.cache'];
-            $this->_mscache = clone $this->_cache;
+        $this->_initAutoloader();
+        $this->_initCache();
+        $this->_initDoctrine();
 
-        }else{
-            $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
-            $this->_mscache = new \Doctrine\Common\Cache\ArrayCache ();
-        }
+        $this->_initSubsite();
+        $this->_initAuthProvider();
+        $this->_initTheme();
 
-        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
+        $this->applyHookBoundTo($this, 'app.init:before');
 
+        $this->_initModules();
+        $this->_initPlugins();
 
-        $this->_mscache->setNamespace(__DIR__);
+        $this->_initRouteManager();
+
+        $this->applyHookBoundTo($this, 'mapasculturais.init');
+
+        // chama o registro da aplicação
+        $this->register();
+
+        // chama o inicializador do tema ativo
+        $this->view->init();
+
+        if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
+            $this->_dbUpdates();
+
+        $this->applyHookBoundTo($this, 'app.init:after');
+        return $this;
+    }
+
+    /**
+     * Executa a aplicação
+     * 
+     * Basicamente esta função executa o slim->run() e 
+     * persiste a fila de recriação de cache
+     * 
+     * @return void 
+     * @throws RuntimeException 
+     * @throws InvalidArgumentException 
+     * @throws PermissionDenied 
+     * @throws ORMInvalidArgumentException 
+     * @throws ORMException 
+     * @throws OptimisticLockException 
+     * @throws TransactionRequiredException 
+     * @throws WorkflowRequest 
+     */
+    public function run() {
+        $this->applyHookBoundTo($this, 'mapasculturais.run:before');
+        $this->slim->run();
+        $this->persistPCachePendingQueue();
+        $this->applyHookBoundTo($this, 'mapasculturais.run:after');
+    }
+
+    /**
+     * Inicializa o autoloader de classes
+     * 
+     * @return void 
+     */
+    protected function _initAutoloader() {
+        $config = $this->_config;
 
         // list of modules
-        $available_modules = [];
         if($handle = opendir(MODULES_PATH)){
             while (false !== ($file = readdir($handle))) {
                 $dir = MODULES_PATH . $file . '/';
-                if ($file != "." && $file != ".." && is_dir($dir) && file_exists($dir."/Module.php")) {
-                    $available_modules[] = $file;
+                if ($file != "." && $file != ".." && is_dir($dir) && file_exists("$dir/Module.php")) {
                     $config['namespaces'][$file] = $dir;
                 }
             }
@@ -273,8 +407,8 @@ class App extends \Slim\Slim{
 
         spl_autoload_register(function($class) use ($config){
             $cache_id = "AUTOLOAD_CLASS:$class";
-            if($config['app.useRegisteredAutoloadCache'] && $this->_mscache->contains($cache_id)){
-                $path = $this->_mscache->fetch($cache_id);
+            if($config['app.useRegisteredAutoloadCache'] && $this->mscache->contains($cache_id)){
+                $path = $this->mscache->fetch($cache_id);
                 require_once $path;
                 return true;
             }
@@ -283,11 +417,7 @@ class App extends \Slim\Slim{
 
             $namespaces['MapasCulturais\\DoctrineProxies'] = DOCTRINE_PROXIES_PATH;
 
-            $subfolders = [
-                'Controllers',
-                'Entities',
-                'Repositories'
-            ];
+            $subfolders = ['Controllers','Entities','Repositories','Jobs'];
 
             foreach($config['plugins'] as $plugin){
                 $namespace = $plugin['namespace'];
@@ -309,58 +439,51 @@ class App extends \Slim\Slim{
 
                     if(\file_exists($path)){
                         require_once $path;
-                        if($config['app.useRegisteredAutoloadCache'])
-                            $this->_mscache->save($cache_id, $path, $config['app.registeredAutoloadCache.lifetime']);
+                        if ($config['app.useRegisteredAutoloadCache']) {
+                            $this->mscache->save($cache_id, $path, $config['app.registeredAutoloadCache.lifetime']);
+                        }
                         return true;
                     }
                 }
             }
         });
 
-        // extende a config with theme config files
-        
-        $theme_class = "\\" . $config['themes.active'] . '\Theme';
-        $theme_path = $theme_class::getThemeFolder() . '/';
-
-        if (file_exists($theme_path . 'conf-base.php')) {
-            $theme_config = require $theme_path . 'conf-base.php';
-            $config = array_merge($config, $theme_config);
-        }
-
-        if (file_exists($theme_path . 'config.php')) {
-            $theme_config = require $theme_path . 'config.php';
-            $config = array_merge($config, $theme_config);
-        }
-
-
-        $config['app.mode'] = key_exists('app.mode', $config) ? $config['app.mode'] : 'production';
-
         $this->_config = $config;
+    }
 
-        $this->_config['path.layouts'] = APPLICATION_PATH.'themes/active/layouts/';
-        $this->_config['path.templates'] = APPLICATION_PATH.'themes/active/views/';
-        $this->_config['path.metadata_inputs'] = APPLICATION_PATH.'themes/active/metadata-inputs/';
+    /**
+     * Inicializa os gerenciadores de cache da aplicação,
+     * como configurado nas chaves `app.cache` e `app.mscache`
+     * 
+     * @return void 
+     */
+    protected function _initCache() {
+        $this->cache = new Cache($this->_config['app.cache']);
+        $this->mscache = new Cache($this->_config['app.mscache']);
+        $this->mscache->setNamespace(__DIR__);
+        
+        $rcache_adapter = new \Symfony\Component\Cache\Adapter\ArrayAdapter(0, false);
+        $this->rcache = new Cache($rcache_adapter);
+    }
 
-        if(!key_exists('app.sanitize_filename_function', $this->_config))
-                $this->_config['app.sanitize_filename_function'] = null;
-
-        // ========== BOOTSTRAPING DOCTRINE ========== //
+    /**
+     * Inicializa o Doctrine
+     * 
+     * @return void 
+     * @throws RuntimeException 
+     * @throws ErrorException 
+     * @throws LogicException 
+     * @throws Exception 
+     */
+    protected function _initDoctrine() {
         // annotation driver
-        $doctrine_config = Setup::createConfiguration($config['doctrine.isDev']);
-
-        $driver = new AnnotationDriver(new AnnotationReader());
-
-        $driver->addPaths([__DIR__ . '/Entities/']);
+        $doctrine_config = ORMSetup::createAnnotationMetadataConfiguration(
+            paths: [__DIR__ . '/Entities/'],
+            isDevMode: $this->_config['doctrine.isDev'],
+        );
 
         // tells the doctrine to ignore hook annotation.
         AnnotationReader::addGlobalIgnoredName('hook');
-
-        // driver must be pdo_pgsql
-        $config['doctrine.database']['driver'] = 'pdo_pgsql';
-
-        // registering noop annotation autoloader - allow all annotations by default
-        AnnotationRegistry::registerLoader('class_exists');
-        $doctrine_config->setMetadataDriverImpl($driver);
 
         $doctrine_config->setProxyDir(DOCTRINE_PROXIES_PATH);
         $doctrine_config->setProxyNamespace('MapasCulturais\DoctrineProxies');
@@ -395,27 +518,31 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomNumericFunction('st_within', 'MapasCulturais\DoctrineMappings\Functions\STWithin');
         $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
 
-        $doctrine_config->setMetadataCacheImpl($this->_mscache);
-        $doctrine_config->setQueryCacheImpl($this->_mscache);
-        $doctrine_config->setResultCacheImpl($this->_mscache);
-
+        $metadata_cache_adapter = new \Symfony\Component\Cache\Adapter\PhpFilesAdapter();
+        $doctrine_config->setMetadataCache($metadata_cache_adapter);
+        $doctrine_config->setQueryCache($this->mscache->adapter);
+        $doctrine_config->setResultCache($this->mscache->adapter);
 
         $doctrine_config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS);
         
         // obtaining the entity manager
-        $this->_em = EntityManager::create($config['doctrine.database'], $doctrine_config);
+        $connection = DriverManager::getConnection([
+            'driver' => 'pdo_pgsql',
+        ], $doctrine_config);
+        
+        // obtaining the entity manager
+        $this->_em = new EntityManager($connection, $doctrine_config);
 
-        \MapasCulturais\DoctrineMappings\Types\Frequency::register();
+        DoctrineMappings\Types\Frequency::register();
+        DoctrineMappings\Types\Point::register();
+        DoctrineMappings\Types\Geography::register();
+        DoctrineMappings\Types\Geometry::register();
 
-        \MapasCulturais\DoctrineMappings\Types\Point::register();
-        \MapasCulturais\DoctrineMappings\Types\Geography::register();
-        \MapasCulturais\DoctrineMappings\Types\Geometry::register();
 
-
-        PhpEnumType::registerEnumTypes([
-            DoctrineEnumTypes\ObjectType::getTypeName() => DoctrineEnumTypes\ObjectType::class,
-            DoctrineEnumTypes\PermissionAction::getTypeName() => DoctrineEnumTypes\PermissionAction::class
-        ]);
+        // PhpEnumType::registerEnumTypes([
+        //     DoctrineEnumTypes\ObjectType::getTypeName() => DoctrineEnumTypes\ObjectType::class,
+        //     DoctrineEnumTypes\PermissionAction::getTypeName() => DoctrineEnumTypes\PermissionAction::class
+        // ]);
 
         $platform = $this->_em->getConnection()->getDatabasePlatform();
 
@@ -425,25 +552,14 @@ class App extends \Slim\Slim{
         $platform->registerDoctrineTypeMapping('geometry', 'geometry');
         $platform->registerDoctrineTypeMapping('object_type', 'object_type');
         $platform->registerDoctrineTypeMapping('permission_action', 'permission_action');
-        
+    }
 
-        // QUERY LOGGER
-        if(@$config['app.log.query']){
-            if (isset($config['app.queryLogger']) && is_object($config['app.queryLogger'])) {
-                $query_logger = $config['app.queryLogger'];
-            } elseif (isset($config['app.queryLogger']) && is_string($config['app.queryLogger']) && class_exists($config['app.queryLogger'])) {
-                $query_logger_class = $config['app.queryLogger'];
-                $query_logger = new $query_logger_class;
-            } else {
-                $query_logger = new Loggers\DoctrineSQL\SlimLog();
-            }
-            $doctrine_config->setSQLLogger($query_logger);
-        }
-
-        // ===================================== //
-
-
-
+    /**
+     * Inicializa o subsite ativo
+     * 
+     * @return void 
+     */
+    protected function _initSubsite() {
         $domain = @$_SERVER['HTTP_HOST'];
 
         if(($pos = strpos($domain, ':')) !== false){
@@ -455,12 +571,52 @@ class App extends \Slim\Slim{
             $domain = substr($domain, 0, $pos);
         }
         try{
-            $this->_subsite = $this->repo('Subsite')->findOneBy(['url' => $domain, 'status' => 1]);
+            $this->subsite = $this->repo('Subsite')->findOneBy(['url' => $domain, 'status' => 1]);
 
-            if(!$this->_subsite){
-                $this->_subsite = $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain, 'status' => 1]);
+            if(!$this->subsite){
+                $this->subsite = $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain, 'status' => 1]);
             }
         } catch ( \Exception $e) { }
+
+
+        if($this->_subsite){
+            $this->subsite->applyApiFilters();
+
+            $this->subsite->applyConfigurations($this->_config);
+        }
+    }
+
+    /**
+     * Inicializa o provedor de autenticação
+     * @return void 
+     */
+    protected function _initAuthProvider() {
+        if (!$this->_auth) {
+            $auth_class_name = strpos($this->config['auth.provider'], '\\') !== false ? 
+                $this->config['auth.provider'] : 
+                'MapasCulturais\AuthProviders\\' . $this->config['auth.provider'];
+            $this->_auth = new $auth_class_name($this->config['auth.config']);
+            $this->_auth->setCookies();
+        }
+    }
+
+    /**
+     * Inicializa a instância do tema
+     * @return void 
+     */
+    protected function _initTheme() {
+        $theme_class = "\\" . $this->_config['themes.active'] . '\Theme';
+        $theme_path = $theme_class::getThemeFolder() . '/';
+
+        if (file_exists($theme_path . 'conf-base.php')) {
+            $theme_config = require $theme_path . 'conf-base.php';
+            $this->_config = array_merge($this->_config, $theme_config);
+        }
+
+        if (file_exists($theme_path . 'config.php')) {
+            $theme_config = require $theme_path . 'config.php';
+            $this->_config = array_merge($this->_config, $theme_config);
+        }
 
 
         if($this->_subsite){
@@ -475,18 +631,61 @@ class App extends \Slim\Slim{
             $theme_instance = new $theme_class($config['themes.assetManager']);
         }
 
+        $this->view = $theme_instance;
+    }
 
-        parent::__construct([
-            'log.level' => $config['slim.log.level'],
-            'log.enabled' => $config['slim.log.enabled'],
-            'debug' => $config['slim.debug'],
-            'templates.path' => $this->_config['path.templates'],
-            'view' => $theme_instance,
-            'mode' => $this->_config['app.mode']
-        ]);
+    /**
+     * Inicializa os módulos
+     * 
+     * @hook app.modules.init:before
+     * @hook app.module({$module}).init:before
+     * @hook app.module({$module}).init:after
+     * @hook app.modules.init:after
+     * 
+     * @return void 
+     */
+    protected function _initModules() {
+        $available_modules = [];
+        if($handle = opendir(MODULES_PATH)){
+            while (false !== ($file = readdir($handle))) {
+                $dir = MODULES_PATH . $file . '/';
+                if ($file != "." && $file != ".." && is_dir($dir) && file_exists($dir."/Module.php")) {
+                    $available_modules[] = $file;
+                }
+            }
+            closedir($handle);
+        }
 
+        sort($available_modules);
+
+        $this->applyHookBoundTo($this, 'app.modules.init:before', [&$available_modules]);
+        foreach ($available_modules as $module){
+            $module_class_name = "$module\Module";
+            $module_config = isset($config["module.$module"]) ? 
+            $config["module.$module"] : [];
+            
+            $this->applyHookBoundTo($this, "app.module({$module}).init:before", [&$module_config]);
+            $this->modules[$module] = new $module_class_name($module_config);
+            $this->applyHookBoundTo($this, "app.module({$module}).init:after");
+        }
+        $this->applyHookBoundTo($this, 'app.modules.init:after');
+    }
+
+    /**
+     * Inicializa os plugins
+     * 
+     * @hook app.plugins.init:before
+     * @hook app.plugins.init:after
+     * 
+     * @return void 
+     */
+    protected function _initPlugins() {
+        // esta constante é usada no script que executa os db-updates, 
+        // para que na primeira rodada do db-update não sejam incluídos os plugins
         if(!env('DISABLE_PLUGINS')) {
-            foreach($config['plugins'] as $slug => $plugin){
+            $this->applyHookBoundTo($this, 'app.plugins.init:before');
+
+            foreach($this->config['plugins'] as $slug => $plugin){
                 $_namespace = $plugin['namespace'];
                 $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
                 $plugin_class_name = "$_namespace\\$_class";
@@ -496,308 +695,1209 @@ class App extends \Slim\Slim{
 
                     $slug = is_numeric($slug) ? $_namespace : $slug;
 
-                    $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+                    $this->plugins[$slug] = new $plugin_class_name($plugin_config);
                 }
             }
+
+            $this->applyHookBoundTo($this, 'app.plugins.init:after');
         }
+    }    
 
-        $this->applyHookBoundTo($this, 'app.init:before');
-
-        $config = $this->_config;
-
-        $this->applyHookBoundTo($this, 'app.modules.init:before', [&$available_modules]);
-        foreach ($available_modules as $module){
-            $module_class_name = "$module\Module";
-            $module_config = isset($config["module.$module"]) ? 
-            $config["module.$module"] : [];
-            
-            $this->applyHookBoundTo($this, "app.module({$module}).init:before", [&$module_config]);
-            $this->_modules[$module] = new $module_class_name($module_config);
-            $this->applyHookBoundTo($this, "app.module({$module}).init:after");
-        }
-        $this->applyHookBoundTo($this, 'app.modules.init:after');
-
-
-        // ===================================== //
-
-        // custom log writer
-        if(isset($config['slim.log.writer']) && is_object($config['slim.log.writer']) && method_exists($config['slim.log.writer'], 'write')){
-            $log = $this->getLog();
-            $log->setWriter($config['slim.log.writer']);
-        }
-
-
-        // creates runtime cache component
-        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
-
-        // ===================================== //
-
-
-
-
-        // ============= STORAGE =============== //
-        if(key_exists('storage.driver', $config) && class_exists($config['storage.driver']) && is_subclass_of($config['storage.driver'], '\MapasCulturais\Storage')){
-            $storage_class = $config['storage.driver'];
-            $this->_storage = key_exists('storage.config', $config) ? $storage_class::i($config['storage.config']) : $storage_class::i();
+    /**
+     * Inicializa o gerenciador de rotas
+     * @return void 
+     */
+    protected function _initStorage() {
+        $storage_class = $this->_config['storage.driver'] ?? '';
+        if($storage_class && class_exists($storage_class) && is_subclass_of($storage_class, Storage::class)){
+            $storage_config = $this->_config['storage.config'] ?? null;
+            $this->_storage =  $storage_class::i($storage_config);
         }else{
-            $this->_storage = \MapasCulturais\Storage\FileSystem::i();
+            $this->_storage = Storage\FileSystem::i();
         }
-        // ===================================== //
+    }
+
+    /**
+     * Inicializa o gerenciador de rotas
+     * @return void 
+     */
+    protected function _initRouteManager() {
+        $this->_routesManager = new RoutesManager($this->_config['routes'] ?? []);
+    }
 
 
 
-        // add middlewares
-        if(is_array($config['slim.middlewares']))
-            foreach($config['slim.middlewares'] as $middleware)
-                $this->add($middleware);
+    /**************************************
+     *              SETTERS 
+     **************************************/
 
-        // instantiate the route manager
-        $this->_routesManager = new RoutesManager(key_exists('routes', $config) ? $config['routes'] : []);
+    /**
+     * Define o subsite pelo id
+     * 
+     * @param int|null $subsite_id 
+     * @return void 
+     * @throws NotSupported 
+     * @throws GlobalException 
+     */
+    public function setCurrentSubsiteId(int $subsite_id = null) {
+        if(is_null($subsite_id)) {
+            $this->subsite = null;
+        } else {
+            $subsite = $this->repo('Subsite')->find($subsite_id);
 
-        $this->applyHookBoundTo($this, 'mapasculturais.init');
-
-        $this->register();
-
-
-        // =============== AUTH ============== //
-
-        if (!$this->_auth) {
-            $auth_class_name = strpos($config['auth.provider'], '\\') !== false ? $config['auth.provider'] : 'MapasCulturais\AuthProviders\\' . $config['auth.provider'];
-            $this->_auth = new $auth_class_name($config['auth.config']);
-            $this->_auth->setCookies();
-        }
-
-        // initialize theme
-        $this->view->init();
-
-        // ===================================== //
-        
-        // run plugins
-        if(isset($config['plugins.enabled']) && is_array($config['plugins.enabled'])){
-            foreach($config['plugins.enabled'] as $plugin){
-                if(file_exists(PLUGINS_PATH.$plugin.'.php')){
-                    include PLUGINS_PATH.$plugin.'.php';
-                }
+            if(!$subsite) {
+                throw new \Exception('Subsite not found');
             }
+
+            $this->subsite = $subsite;
         }
-        // ===================================== //
-
-
-        if($this->_subsite){
-            // apply subsite filters
-            $this->_subsite->applyApiFilters();
-
-            $this->_subsite->applyConfigurations($this->_config);
-        }
-
-        if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
-            $this->_dbUpdates();
-
-        $this->applyHookBoundTo($this, 'app.init:after');
-        return $this;
     }
 
-    public function run() {
-        $this->applyHookBoundTo($this, 'mapasculturais.run:before');
-        parent::run();
-        $this->persistPCachePendingQueue();
-        $this->applyHookBoundTo($this, 'mapasculturais.run:after');
-    }
 
+    /**************************************
+     *              GETTERS 
+     **************************************/
+
+    /**
+     * Retorna o prefixo dos hooks
+     * 
+     * @return string 
+     */
     public static function getHookPrefix() {
         return 'App';
     }
 
+    /**
+     * Retorna a versão do core da aplicação
+     * 
+     * @return string 
+     */
     public function getVersion(){
-        $version = trim($this->getVersionFile());
-        return sprintf('v%s', $version);
-    }
-
-    private function getVersionFile() {
-        $version = \MapasCulturais\i::__("versão indefinida");
-        $path = getcwd() . "/../version.txt";
-        if (file_exists($path) && $versionFile = fopen($path, "r")) {
-            $version = fgets($versionFile);
-            fclose($versionFile);
+        $version_filename = PROTECTED_PATH . 'version.txt';
+        $version = trim(file_get_contents($version_filename));
+        if(is_numeric($version[0])) {
+            return sprintf('v%s', $version);
+        } else {
+            return $version;
         }
-        return $version;
     }
 
     /**
-     * http://stackoverflow.com/questions/1846202/php-how-to-generate-a-random-unique-alphanumeric-string/13733588#13733588
+     * Retorna o nome do site
+     * 
+     * configurado pela chave `app.siteName`
+     * 
+     * @return string 
      */
-    protected static function crypto_rand_secure($min, $max) {
-        $range = $max - $min;
-        if ($range < 1)
-            return $min; // not so random...
-        $log = ceil(log($range, 2));
-        $bytes = (int) ($log / 8) + 1; // length in bytes
-        $bits = (int) $log + 1; // length in bits
-        $filter = (int) (1 << $bits) - 1; // set all lower bits to 1
-        do {
-            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
-            $rnd = $rnd & $filter; // discard irrelevant bits
-        } while ($rnd >= $range);
-        return $min + $rnd;
+    public function getSiteName(): string {
+        return $this->_config['app.siteName'];
     }
 
-    static function getToken($length) {
+    /**
+     * Retorna a descrição do site
+     * 
+     * configurado pela chave `app.siteDescription`
+     * 
+     * @return string 
+     */
+    public function getSiteDescription(): string {
+        return $this->_config['app.siteDescription'];
+    }
+    
+    /**
+     * Returns the RoutesManager
+     * @return RoutesManager
+     */
+    public function getRoutesManager(): RoutesManager{
+        return $this->_routesManager;
+    }
+
+    /**
+     * Returns the Doctrine Entity Manager
+     * @return \Doctrine\ORM\EntityManager the Doctrine Entity Manager
+     */
+    public function getEm(): \Doctrine\ORM\EntityManager {
+        return $this->_em;
+    }
+
+    /**
+     * Returns the Auth Manager Component
+     * @return \MapasCulturais\Auth
+     */
+    public function getAuth(){
+        return $this->_auth;
+    }
+
+    /**
+     * Returns the base url of the project
+     * @return string the base url
+     */
+    public function getBaseUrl(){
+        return $this->_config['base.url'];
+    }
+
+    /**
+     * Returns the asset url of the project
+     * @return string the asset url
+     */
+    public function getAssetUrl(){
+        return isset($this->_config['base.assetUrl']) ? $this->_config['base.assetUrl'] : $this->getBaseUrl() . 'assets/';
+    }
+
+    /**
+     * Returns the logged in user
+     * @return UserInterface
+     */
+    public function getUser(): UserInterface {
+        return $this->auth->getAuthenticatedUser();
+    }
+
+    /**
+     * Returns the File Storage Component
+     * @return Storage
+     */
+    public function getStorage(): Storage {
+        return $this->_storage;
+    }
+
+
+    /**
+     * Instância do subsite atual
+     * 
+     * @return Entities\Subsite|null 
+     */
+    public function getCurrentSubsite(): Entities\Subsite|null {
+        return $this->_subsite;
+    }
+
+    /**
+     * Returns the current subsite ID, or null if current site is the main site
+     *
+     * @return int|null ID of the current site or Null for main site
+     */
+    public function getCurrentSubsiteId(): int|null {
+        // @TODO: alterar isto quando for implementada a possibilidade de termos 
+        // instalações de subsite com o tema diferente do Subsite
+        if($this->_subsite){
+            return $this->_subsite->id;
+        }
+
+        return null;
+    }
+
+    /**
+     * Retorna o tamanho máximo de upload configurado no PHP
+     * 
+     * @param bool $useSuffix 
+     * @return mixed 
+     */
+    public function getMaxUploadSize(bool $useSuffix = true): string|float|int {
+        $MB = 1024;
+        $GB = $MB * 1024;
+
+        $convertToKB = function($size) use($MB, $GB){
+            switch(strtolower(substr($size, -1))){
+                case 'k';
+                    $size = intval($size);
+                break;
+
+                case 'm':
+                    $size = intval($size) * $MB;
+                break;
+
+                case 'g':
+                    $size = intval($size) * $GB;
+                break;
+            }
+
+            return $size;
+        };
+
+        $max_upload = $convertToKB(ini_get('upload_max_filesize'));
+        $max_post = $convertToKB(ini_get('post_max_size'));
+        $memory_limit = $convertToKB(ini_get('memory_limit'));
+
+        $result = min($max_upload, $max_post, $memory_limit);
+
+        if(!$useSuffix)
+            return $result;
+
+        if($result < $MB){
+            $result .= ' KB';
+        }else if($result < $GB){
+            $result = number_format($result / $MB, 0) . ' MB';
+        }else{
+            $result = $result / $GB;
+            $formated = number_format($result, 1);
+            if( $formated == (int) $result )
+                $result = intval($result) . ' GB';
+            else
+                $result = $formated . ' GB';
+        }
+
+        return $result;
+    }
+
+    /**
+     * Retorna as divisões geográficas (geoDivisions) configuradas
+     * 
+     * @return array 
+     */
+    function getRegisteredGeoDivisions(): array {
+        $result = [];
+        foreach($this->_config['app.geoDivisionsHierarchy'] as $key => $division) {
+
+            $display = true;
+            if (substr($key, 0, 1) == '_') {
+                $display = false;
+                $key = substr($key, 1);
+            }
+            
+            if (!is_array($division)) { // for backward compability version < 4.0, $division is string not a array.
+                $d = new \stdClass();
+                $d->key = $key;
+                $d->name = $division;
+                $d->metakey = 'geo' . ucfirst($key);
+                $d->display = $display;
+                $result[] = $d;
+            } else {
+                $d = new \stdClass();
+                $d->key = $key;
+                $d->name = $division['name'];
+                $d->metakey = 'geo' . ucfirst($key);
+                $d->display = $display;
+                $result[] = $d;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Retorna o código de linguagem atual
+     * 
+     * @return string 
+     */
+    static function getCurrentLCode(): string{
+        return i::get_locale();
+    }
+
+    /**
+     * Retorna o nome do grupo de agente relacionado das inscrições
+     * @return string 
+     */
+    public function getOpportunityRegistrationAgentRelationGroupName(): string {
+        return 'registration';
+    }
+
+    /**
+     * Returns the configuration array or the specified configuration
+     *
+     * @param string $key configuration key
+     *
+     * @return mixed
+     */
+    public function getConfig(string $key = null){
+        if(is_null($key))
+            return $this->_config;
+        else
+            return key_exists ($key, $this->_config) ? $this->_config[$key] : null;
+
+    }
+
+    /**
+     * Retorna um token aleatório
+     * 
+     * @param int $length 
+     * @return string 
+     */
+    static function getToken(int $length):string {
+        /**
+         * http://stackoverflow.com/questions/1846202/php-how-to-generate-a-random-unique-alphanumeric-string/13733588#13733588
+         */
+        $crypto_rand_secure = function ($min, $max) {
+            $range = $max - $min;
+            if ($range < 1)
+                return $min; // not so random...
+            $log = ceil(log($range, 2));
+            $bytes = (int) ($log / 8) + 1; // length in bytes
+            $bits = (int) $log + 1; // length in bits
+            $filter = (int) (1 << $bits) - 1; // set all lower bits to 1
+            do {
+                $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
+                $rnd = $rnd & $filter; // discard irrelevant bits
+            } while ($rnd >= $range);
+            return $min + $rnd;
+        };
+
         $token = "";
         $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
         $codeAlphabet.= "0123456789";
         $max = strlen($codeAlphabet) - 1;
         for ($i = 0; $i < $length; $i++) {
-            $token .= $codeAlphabet[self::crypto_rand_secure(0, $max)];
+            $token .= $codeAlphabet[$crypto_rand_secure(0, $max)];
         }
         
         return $token;
     }
 
-    function isEnabled($entity){
-        return $this->_config['app.enabled.' . $entity];
+
+    /**
+     * Retorna o nome legível de um termo
+     * 
+     * @todo remover essa função e refatorar onde for usada
+     * 
+     * @param mixed $slug 
+     * @return string 
+     */
+    function getReadableName(string $slug): string {
+        if (array_key_exists($slug, $this->_config['routes']['readableNames'])) {
+            return $this->_config['routes']['readableNames'][$slug];
+        }
+        return null;
     }
 
+
+    /**********************************************
+     *  FLAGS - FUNÇÕES QUE MANIPULAM AS FLAGS 
+     **********************************************/
+
+    /**
+     * Verifica se uma entidade está ativa
+     * 
+     * @param string $entity 
+     * @return bool 
+     */
+    function isEnabled(string $entity){
+        return (bool) $this->_config['app.enabled.' . $entity];
+    }
+
+     /**
+      * Habilita o controle de acesso
+      * @return void 
+      */
     function enableAccessControl(){
         if ($this->_disableAccessControlCount > 0) {
             $this->_disableAccessControlCount--;
         }
     }
 
+    /**
+     * Desabilita o controle de acesso
+     * @return void 
+     */
     function disableAccessControl(){
         $this->_disableAccessControlCount++;
     }
 
+    /**
+     * Indica se o controle de acesso está habilitado
+     * @return bool 
+     */
     function isAccessControlEnabled(){
-        return $this->_disableAccessControlCount == 0;
+        return $this->_disableAccessControlCount === 0;
     }
 
+    /**
+     * Habilita a criação de Requests
+     * @return void 
+     */
     function enableWorkflow(){
-        $this->_workflowEnabled = true;
+        if ($this->_disableWorkflowCount > 0) {
+            $this->_disableWorkflowCount--;
+        }
     }
 
+    /**
+     * Desabilita a criação de Requests
+     * @return void 
+     */
     function disableWorkflow(){
-        $this->_workflowEnabled = false;
+        $this->_disableWorkflowCount++;
     }
 
+    /**
+     * Indica se a criação de Requests está habilitada
+     * @return bool 
+     */
     function isWorkflowEnabled(){
-        return $this->_workflowEnabled;
+        return $this->_disableWorkflowCount === 0;
     }
 
-    function _dbUpdates(){
-        $this->disableAccessControl();
+    /*******************************
+     *            Utils
+     *******************************/
 
-        $executed_updates = [];
+     /**
+      * Transforma o texto num slug
+      * @param string $text 
+      * @return string 
+      */
+    function slugify(string $text): string {        
+        return Utils::slugify($text);
+    }
 
-        foreach($this->repo('DbUpdate')->findAll() as $up)
-            $executed_updates[] = $up->name;
+    /**
+     * Remove os acentos de um texto
+     * 
+     * @param string $string 
+     * @return string 
+     */
+    function removeAccents(string $string): string {
+        return Utils::removeAccents($string);
+    }
 
-        $updates = include DB_UPDATES_FILE;
+    /**
+     * Creates a URL to an controller action action
+     *
+     * @param string $controller_id the controller id
+     * @param string $action_name the action name
+     * @param array $data the data to pass to action
+     *
+     * @see RoutesManager::createUrl()
+     *
+     * @return string the URL to action
+     */
+    public function createUrl(string $controller_id, string $action_name = '', array $data = []): string {
+        return $this->_routesManager->createUrl($controller_id, $action_name, $data);
+    }
 
-        foreach($this->view->path as $path){
-            $db_update_file = $path . 'db-updates.php';
-            if(file_exists($db_update_file)){
-                $updates += include $db_update_file;
+    /**
+     * Retorna o repositório de uma entidade dada a entidade
+     *
+     * if the given repository class name not starts with a slash this function will prepend \MapasCulturais\Entities\ to the class name
+     *
+     * @param string $entity_name Repository Class Name
+     * @return Repository the Entity Repository
+     */
+    public function repo(string $entity_name): Repository {
+
+        // add MapasCulturais\Entities namespace if no namespace in repo name
+        if(strpos($entity_name, '\\') === false)
+                $entity_name = "\MapasCulturais\Entities\\{$entity_name}";
+
+        return $this->em->getRepository($entity_name);
+    }
+
+    /**
+     * Renderiza um template Mustache
+     * 
+     * @param string $template_name 
+     * @param array|object $template_data 
+     * @return string 
+     * @throws GlobalException 
+     */
+    function renderMustacheTemplate(string $template_name, array|object $template_data): string {
+        if(!is_array($template_data) && !is_object($template_data)) {
+            throw new \Exception('Template data not object or array');
+        }
+
+        $template_data = (object) $template_data;
+
+        if ($this->view->version >= 2) {
+            $template_data->siteName = $this->siteName;
+            $template_data->siteDescription = $this->siteDescription;
+
+        } else {
+            $template_data->siteName = $this->view->dict('site: name', false);
+            $template_data->siteDescription = $this->view->dict('site: description', false);
+            $template_data->siteOwner = $this->view->dict('site: owner', false);
+        }
+        
+        $template_data->baseUrl = $this->getBaseUrl();
+
+        if(!($footer_name = $this->view->resolveFileName('templates/' . i::get_locale(), '_footer.html'))) {
+            if(!($footer_name = $this->view->resolveFileName('templates/pt_BR', '_footer.html'))) {
+                throw new \Exception('Email footer template not found');
             }
         }
 
-        $new_updates = false;
+        if(!($header_name = $this->view->resolveFileName('templates/' . i::get_locale(), '_header.html'))) {
+            if(!($header_name = $this->view->resolveFileName('templates/pt_BR', '_header.html'))) {
+                throw new \Exception('Email header template not found');
+            }
+        }
 
-        foreach($updates as $name => $function){
-            if(!in_array($name, $executed_updates)){
-                $new_updates = true;
-                echo "\nApplying db update \"$name\":";
-                echo "\n-------------------------------------------------------------------------------------------------------\n";
-                try{
-                    if($function() !== false){
-                        $up = new Entities\DbUpdate();
-                        $up->name = $name;
-                        $up->save();
+        if(!($file_name = $this->view->resolveFileName('templates/' . i::get_locale(), $template_name))) {
+            if(!($file_name = $this->view->resolveFileName('templates/pt_BR', $template_name))) {
+                throw new \Exception('Email Template undefined');
+            }
+        }
+
+        $header = file_get_contents($header_name);
+        $footer = file_get_contents($footer_name);
+        $content = file_get_contents($file_name);
+
+        $matches = [];
+        if(preg_match_all('#\{\{asset:([^\}]+)\}\}#', $header, $matches)){
+            foreach($matches[0] as $i => $tag){
+                $header = str_replace($tag, $this->view->asset($matches[1][$i], false), $header);
+            }
+        }
+
+        $matches = [];
+        if(preg_match_all('#\{\{asset:([^\}]+)\}\}#', $footer, $matches)){
+            foreach($matches[0] as $i => $tag){
+                $footer = str_replace($tag, $this->view->asset($matches[1][$i], false), $footer);
+            }
+        }
+
+        $matches = [];
+        if(preg_match_all('#\{\{asset:([^\}]+)\}\}#', $content, $matches)){
+            foreach($matches[0] as $i => $tag){
+                $content = str_replace($tag, $this->view->asset($matches[1][$i], false), $content);
+            }
+        }
+        
+        $mustache = new \Mustache_Engine();
+
+        $headerData = $template_data;
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template_name}).headerData", [&$headerData]);
+        $_header = $mustache->render($header, $headerData);
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template_name}).header", [&$_header]);
+
+        $footerData = $template_data;
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template_name}).footerData", [&$footerData]);
+        $_footer = $mustache->render($footer, $footerData);
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template_name}).footer", [&$_footer]);
+
+        $template_data->_footer = $_footer;
+        $template_data->_header = $_header;
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template_name}).templateData", [&$template_data]);
+        $content = $mustache->render($content, $template_data);
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template_name}).content", [&$content]);
+
+        return $content;
+    }
+
+
+    /**********************************************
+     * Handle Uploads
+     **********************************************/
+
+    /**
+     * Handle file uploads.
+     *
+     * This method handle file uploads and returns an instance, or an array of instances of File Entity. The uploaded file name is sanitized by the method App::sanitizeFilename
+     *
+     * If the key not exists in $_FILES array, this method returns null.
+     *
+     * @param string $key the key of the $_FILE array to handle
+     *
+     * @see App::sanitizeFilename()
+     *
+     * @return Entities\File|Entities\File[]
+     */
+    public function handleUpload($key, $file_class_name){
+        if(is_array($_FILES) && key_exists($key, $_FILES)){
+
+            if(is_array($_FILES[$key]['name'])){
+                $result = [];
+                foreach(array_keys($_FILES[$key]['name']) as $i){
+                    $tmp_file = [];
+                    foreach(array_keys($_FILES[$key]) as $k){
+                        $tmp_file[$k] = $k == 'name' ? $this->sanitizeFilename($_FILES[$key][$k][$i]) : $_FILES[$key][$k][$i];
                     }
-                }catch(\Exception $e){
-                    echo "\nERROR " . $e . "\n";
+
+                    $result[] = new $file_class_name($tmp_file);
                 }
-                echo "\n-------------------------------------------------------------------------------------------------------\n\n";
+            }else{
+
+                if($_FILES[$key]['error']){
+                    throw new Exceptions\FileUploadError($key, $_FILES[$key]['error']);
+                }
+
+                $mime = mime_content_type($_FILES[$key]['tmp_name']);
+                $_FILES[$key]['name'] = $this->sanitizeFilename($_FILES[$key]['name'], $mime);
+                $result = new $file_class_name($_FILES[$key]);
+
+            }
+            return $result;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * Sanitizes the uploaded files names replaceing spaces with underscores and setting the name to lower case.
+     *
+     * If the 'app.sanitize_filename_function' configuration key is callable, this method call it after sanitizes the filename.
+     *
+     * @param type $filename
+     *
+     * @return string The sanitized filename.
+     */
+    function sanitizeFilename($filename, $mimetype = false){
+        $filename = str_replace(' ','_', strtolower($filename));
+        if(is_callable($this->_config['app.sanitize_filename_function'])){
+            $cb = $this->_config['app.sanitize_filename_function'];
+            $filename = $cb($filename);
+        }
+
+        // If the file does not have an extension and is a image, lets put it
+        // Wide Image relies on it and we know that cropped images come without extension (blob upload)
+        if (empty(pathinfo($filename, PATHINFO_EXTENSION)) && $mimetype) {
+
+            $imagetypes = array(
+                'image/jpeg' => 'jpeg',
+                'image/bmp' => 'bmp',
+                'image/gif' => 'gif',
+                'image/tiff' => 'tif',
+                'image/png' => 'png',
+                'image/x-png' => 'png',
+            );
+
+            if (array_key_exists($mimetype, $imagetypes))
+                $filename .= '.' . $imagetypes[$mimetype];
+
+        }
+
+        return $filename;
+    }
+
+    /**********************************************
+     * Hooks System
+     **********************************************/ 
+
+    /**
+     * Clear hook listeners
+     *
+     * Clear all listeners for all hooks. If `$name` is
+     * a valid hook name, only the listeners attached
+     * to that hook will be cleared.
+     *
+     * @param  string   $name   A hook name (Optional)
+     */
+    public function clearHooks(string $name = null) {
+        $this->hooks->clear($name);
+    }
+
+    /**
+     * Get hook listeners
+     *
+     * Return an array of registered hooks. If `$name` is a valid
+     * hook name, only the listeners attached to that hook are returned.
+     * Else, all listeners are returned as an associative array whose
+     * keys are hook names and whose values are arrays of listeners.
+     *
+     * @param  string     $name     A hook name (Optional)
+     * @return array|null
+     */
+    public function getHooks(string $name = null) {
+        return $this->hooks->get($name);
+    }
+
+    /**
+     * Assign hook
+     * @param  string   $name       The hook name
+     * @param  callable    $callable   A callable object
+     * @param  int      $priority   The hook priority; 0 = high, 10 = low
+     */
+    function hook(string $name, callable $callable, int $priority = 10) {
+        $this->hooks->hook($name, $callable, $priority);
+    }
+
+    /**
+     * Invoke hook
+     * @param  string   $name       The hook name
+     * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
+     * 
+     * @return callable[]
+     */
+    function applyHook(string $name, array $hookArg = []): array {
+        return $this->hooks->apply($name, $hookArg);
+    }
+
+    /**
+     * Invoke hook binding callbacks to the target object
+     *
+     * @param  object $target_object Object to bind hook
+     * @param  string   $name       The hook name
+     * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
+     * 
+     * @return callable[]
+     */
+    function applyHookBoundTo(object $target_object, string $name, array $hookArg = []) {
+        return $this->hooks->applyBoundTo($target_object, $name, $hookArg);
+    }
+
+
+
+    /**********************************************
+     *              Background Jobs
+     **********************************************/
+
+    /**
+     * Enfileira um job, substituindo um já existente
+     * 
+     * @param string $type_slug 
+     * @param array $data 
+     * @param string $start_string 
+     * @param string $interval_string 
+     * @param int $iterations 
+     * @return Job 
+     * @throws Exception 
+     */
+    public function enqueueOrReplaceJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
+        return $this->enqueueJob($type_slug, $data, $start_string, $interval_string, $iterations, true);
+    }
+
+    
+    /**
+     * Enfileira um job
+     * 
+     * @param string $type_slug 
+     * @param array $data 
+     * @param string $start_string 
+     * @param string $interval_string 
+     * @param int $iterations 
+     * @param bool $replace
+     * @return Job 
+     * @throws Exception 
+     */
+    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false) {
+        if($this->config['app.log.jobs']) {
+            $this->log->debug("ENQUEUED JOB: $type_slug");
+        }
+
+        $type = $this->getRegisteredJobType($type_slug);
+        
+        if (!$type) {
+            throw new \Exception("invalid job type: {$type_slug}");
+        }
+
+        $id = $type->generateId($data, $start_string, $interval_string, $iterations);
+
+        if ($job = $this->repo('Job')->find($id)) {
+            $this->log->debug('JOB ID JÁ EXISTE: ' . $id);
+            if ($replace) {
+                $job->delete(true);
+            } else {
+                return $job;
             }
         }
 
-        if($new_updates){
-            $this->_em->flush();
-            $this->cache->deleteAll();
+        $job = new Job($type);
+
+        $job->id = $id;
+
+        $job->iterations = $iterations;
+
+        $job->nextExecutionTimestamp = new DateTime($start_string);
+        $job->intervalString = $interval_string;
+
+        foreach ($data as $key => $value) {
+            $job->$key = $value;
         }
 
-        $this->enableAccessControl();
+        $job->save(true);
+
+        return $job;
     }
 
-    private $_registered = false;
+    /**
+     * Desinfileira um job
+     * 
+     * @param string $type_slug 
+     * @param array $data 
+     * @param string $start_string 
+     * @param string $interval_string 
+     * @param int $iterations 
+     * @return void 
+     * @throws GlobalException 
+     * @throws PermissionDenied 
+     * @throws ORMInvalidArgumentException 
+     * @throws ORMException 
+     * @throws OptimisticLockException 
+     */
+    public function unqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
+        if($this->config['app.log.jobs']) {
+            $this->log->debug("UNQUEUED JOB: $type_slug");
+        }
 
-    public function register(){
-        //        phpdbg_break_next();
+        $type = $this->getRegisteredJobType($type_slug);
+        
+        if (!$type) {
+            throw new \Exception("invalid job type: {$type_slug}");
+        }
 
+        $id = $type->generateId($data, $start_string, $interval_string, $iterations);
+
+        if ($job = $this->repo('Job')->find($id)) {
+            $job->delete(true);
+        }
+    }
+
+    /**
+     * Executa um job
+     * 
+     * @return int|false 
+     * @throws Exception 
+     */
+    public function executeJob(): int|false {
+        $conn = $this->em->getConnection();
+
+        $job_id = $conn->fetchColumn("
+            SELECT id
+            FROM job
+            WHERE
+                next_execution_timestamp <= now() AND
+                iterations_count < iterations AND
+                status = 0
+            ORDER BY next_execution_timestamp ASC
+            LIMIT 1");
+
+        if ($job_id) {
+            /** @var Job $job */
+            $conn->executeQuery("UPDATE job SET status = 1 WHERE id = '{$job_id}'");
+            $job = $this->repo('Job')->find($job_id);
+            
+            $this->disableAccessControl();
+            $this->applyHookBoundTo($this, "app.executeJob:before");
+            $job->execute();
+            $this->applyHookBoundTo($this, "app.executeJob:after");
+            $this->enableAccessControl();
+
+            return $job_id;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**********************************************
+     * Permissions Cache
+     **********************************************/
+
+    /**
+     * Adiciona a entidade na fila de reprocessamento de cache de permissão 
+     * @param Entity $entity 
+     * @return void 
+     */
+    public function enqueueEntityToPCacheRecreation(Entity $entity) {
+        if (!$entity->__skipQueuingPCacheRecreation) {
+            $entity_key = $entity->id ? "$entity" : "$entity".spl_object_id($entity);
+            $this->_permissionCachePendingQueue["$entity_key"] = $entity;
+        }
+    }
+
+    /**
+     * Verifica se a entidade já está na fila de reprocessamento de cache de permissão
+     * 
+     * @param Entity $entity 
+     * @return bool 
+     */
+    public function isEntityEnqueuedToPCacheRecreation(Entity $entity) {
+        return isset($this->_permissionCachePendingQueue["$entity"]);
+    }
+
+    /**
+     * Persiste a fila de entidades para reprocessamento de cache de permissão
+     */
+    public function persistPCachePendingQueue() {
+        $created = false;
+        foreach($this->_permissionCachePendingQueue as $entity) {
+            if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
+                    'objectId' => $entity->id, 'objectType' => $entity->getClassName()
+                ])) {
+                $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
+                $pendingCache->objectId = $entity->id;
+                $pendingCache->objectType = $entity->getClassName();
+                $pendingCache->save(true);
+                $this->log->debug("pcache pending: $entity");
+                $created = true;
+            }
+        }
+
+        if ($created) {
+            $this->em->flush();
+        }
+
+        $this->_permissionCachePendingQueue = [];
+    }
+
+    /**
+     * Marca uma entidade como já tendo o cache de permissão recriado
+     * 
+     * @param Entity $entity 
+     * @return void 
+     */
+    public function setEntityPermissionCacheAsRecreated(Entity $entity) {
+        $this->_recreatedPermissionCacheList["$entity"] = $entity;
+    }
+
+    /**
+     * Verifica se a entidade já teve o cache de permissão recriado
+     * 
+     * @param Entity $entity 
+     * 
+     * @return bool 
+     */
+    public function isEntityPermissionCacheRecreated(Entity $entity) {
+        return isset($this->_recreatedPermissionCacheList["$entity"]);
+    }
+
+    /**
+     * Processa a primeira entidade da fila de reprocessamento de cache de permissão
+     * 
+     * @return void 
+     * 
+     * @throws NotSupported 
+     * @throws RuntimeException 
+     * @throws PermissionDenied 
+     * @throws ORMInvalidArgumentException 
+     * @throws ORMException 
+     * @throws OptimisticLockException 
+     * @throws TransactionRequiredException 
+     * @throws WorkflowRequest 
+     * @throws GlobalException 
+     */
+    public function recreatePermissionsCache(){
+        $item = $this->repo('PermissionCachePending')->findOneBy(['status' => 0], ['id' => 'ASC']);
+        if ($item) {
+            $start_time = microtime(true);
+
+            $this->disableAccessControl();
+            $item->status = 1;
+            $item->save(true);
+            $this->enableAccessControl();
+
+            try {
+                $entity = $this->repo($item->objectType)->find($item->objectId);
+                if ($entity) {
+                    $entity->recreatePermissionCache();
+                }
+                $item = $this->repo('PermissionCachePending')->find($item->id);
+                $this->em->remove($item);
+                $this->em->flush();
+            } catch (\Exception $e ){
+                $this->disableAccessControl();
+                $item = $this->repo('PermissionCachePending')->find($item->id);
+                $item->status = 2; // ERROR
+                $item->save(true);
+                $this->enableAccessControl();
+
+                if(php_sapi_name()==="cli"){
+                    echo "\n\t - ERROR - {$e->getMessage()}";
+                }
+                throw $e;
+            }
+
+            if($this->config['app.log.pcache']){
+                $end_time = microtime(true);
+                $total_time = number_format($end_time - $start_time, 1);
+
+                $this->log->info("PCACHE RECREATED FOR $item IN {$total_time} seconds\n--------\n");
+            }
+            $this->_permissionCachePendingQueue = [];
+        }
+    }
+
+    /*********************************************************
+     *                       MAILER
+     *********************************************************/
+    
+    /**
+     * Retorna uma instância configurada do Swift_Mailer
+     * 
+     * @return false|\Swift_Mailer 
+     */
+     function getMailer() {
+        $transport = [];
+
+        // server
+        $server = isset($this->_config['mailer.server']) &&  !empty($this->_config['mailer.server']) ? $this->_config['mailer.server'] : false;
+
+        // default transport SMTP
+        $transport_type = isset($this->_config['mailer.transport']) &&  !empty($this->_config['mailer.transport']) ? $this->_config['mailer.transport'] : 'smtp';
+
+        // default port to 25
+        $port = isset($this->_config['mailer.port']) &&  !empty($this->_config['mailer.port']) ? $this->_config['mailer.port'] : 25;
+
+        // default encryption protocol to ssl
+        $protocol = isset($this->_config['mailer.protocol']) ? $this->_config['mailer.protocol'] : null;
+
+        if ($transport_type == 'smtp' && false !== $server) {
+
+            $transport = \Swift_SmtpTransport::newInstance($server, $port, $protocol);
+
+            // Maybe add username and password
+            if (isset($this->_config['mailer.user']) && !empty($this->_config['mailer.user']) &&
+                isset($this->_config['mailer.psw']) && !empty($this->_config['mailer.psw']) ) {
+
+                $transport->setUsername($this->_config['mailer.user'])->setPassword($this->_config['mailer.psw']);
+            }
+
+        } elseif ($transport_type == 'sendmail' && false !== $server) {
+            $transport = \Swift_SendmailTransport::newInstance($server);
+        } elseif ($transport_type == 'mail') {
+            $transport = \Swift_MailTransport::newInstance();
+        } else {
+            return false;
+        }
+
+        $instance = \Swift_Mailer::newInstance($transport);
+
+        return $instance;
+    }
+
+
+    /**
+     * Cria uma mensagem de email
+     * 
+     * @param array $args 
+     * @return Swift_Message 
+     * 
+     * @throws Swift_IoException 
+     * @throws Swift_SwiftException 
+     */
+    function createMailMessage(array $args = []){
+        $message = \Swift_Message::newInstance();
+
+        if($this->_config['mailer.from']){
+            $message->setFrom($this->_config['mailer.from']);
+        }
+
+        if($this->_config['mailer.alwaysTo']){
+            $message->setTo($this->_config['mailer.alwaysTo']);
+        }
+
+        if($this->_config['mailer.bcc']){
+            $message->setBcc($this->_config['mailer.bcc']);
+        }
+
+        if($this->_config['mailer.replyTo']){
+            $message->setReplyTo($this->_config['mailer.replyTo']);
+        }
+
+        $type = $message->getHeaders()->get('Content-Type');
+        $type->setValue('text/html');
+        $type->setParameter('charset', 'utf-8');
+
+        $original = [];
+        foreach($args as $key => $value){
+            if(in_array(strtolower($key), ['to', 'cc', 'bcc']) && $this->_config['mailer.alwaysTo']){
+                $original[$key] = $value;
+                continue;
+            }
+
+            $key = ucfirst($key);
+            $method_name = 'set' . $key;
+
+            if(method_exists($message, $method_name)){
+                $message->$method_name($value);
+            }
+        }
+
+        if($this->_config['mailer.alwaysTo']){
+            foreach($original as $key => $val){
+                if(is_array($val)){
+                    $val = implode(', ', $val);
+                }
+                $message->setBody("<strong>ORIGINALMENTE $key:</strong> $val <br>\n" . $message->getBody());
+            }
+        }
+
+        return $message;
+    }
+
+    /**
+     * Envia uma mensagem de email
+     * 
+     * @param Swift_Message $message 
+     * @return bool 
+     */
+    function sendMailMessage(\Swift_Message $message){
+        $failures = [];
+        $mailer = $this->getMailer();
+
+        if (!is_object($mailer))
+            return false;
+
+        try {
+            $mailer->send($message,$failures);
+            return true;
+        } catch(\Swift_TransportException $exception) {
+            App::i()->log->info('Swift Mailer error: ' . $exception->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Cria e envia uma mensagem de email
+     * 
+     * @param array $args 
+     * @return bool 
+     * 
+     * @throws Swift_IoException 
+     * @throws Swift_SwiftException 
+     */
+    function createAndSendMailMessage(array $args = []){
+        $message = $this->createMailMessage($args);
+        return $this->sendMailMessage($message);
+    }    
+    
+    /**
+     * Renderiza um template de email
+     * 
+     * O template deve ser um template mustache
+     * 
+     * @param string $template_name 
+     * @param array|object $template_data 
+     * @return string 
+     * @throws GlobalException 
+     * @throws MailTemplateNotFound 
+     */
+    function renderMailerTemplate(string $template_name, array|object $template_data = []): string {
+        if(array_key_exists($template_name, $this->_config['mailer.templates'])) {
+            $message = $this->_config['mailer.templates'][$template_name];
+            $message['body'] = $this->renderMustacheTemplate($message['template'], $template_data);
+            return $message;
+        } else {
+            throw new Exceptions\MailTemplateNotFound($template_name);
+        }
+    }
+
+
+
+    /*********************************************************
+     *                REGISTRO DA APLICAÇÃO  
+     *********************************************************/
+
+    /**
+     * Executa o registro da aplicação
+     * 
+     * 1. Registra os controladores
+     * 2. Registra os tipos de outputs da API
+     * 3. Registra os roles
+     * 4. Registra os grupos de arquivos
+     * 5. Registra as transformações de imagens
+     * 6. Registra os grupos de agentes relacionados das registrations
+     * 7. Registra os grupos de metalists
+     * 8. Registra os tipos e metadados das entidades 
+     * 9. Registra as taxonomias
+     * 10. Chama o register do tema
+     * 11. Chama o register dos módulos
+     * 11. Chama o register dos plugins
+     * 
+     * @hook app.register:before
+     * @hook app.register
+     * @hook app.register:after
+     * 
+     * @return void 
+     * 
+     * @throws GlobalException 
+     * @throws ReflectionException 
+     * @throws MappingException 
+     */
+    protected function register(){
         if($this->_registered)
             return;
 
         $this->_registered = true;
 
         $this->applyHookBoundTo($this, 'app.register:before');
-
-        // get types and metadata configurations
-        if ($theme_space_types = $this->view->resolveFilename('','space-types.php')) {
-            $space_types = include $theme_space_types;
-        } else {
-            $space_types = include APPLICATION_PATH.'/conf/space-types.php';
-        }
-        $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : [];
-
-        if ($theme_agent_types = $this->view->resolveFilename('','agent-types.php')) {
-            $agent_types = include $theme_agent_types;
-        } else {
-            $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
-        }
-        $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : [];
-
-        if ($theme_event_types = $this->view->resolveFilename('','event-types.php')) {
-            $event_types = include $theme_event_types;
-        } else {
-            $event_types = include APPLICATION_PATH.'/conf/event-types.php';
-        }
-        $event_meta = key_exists('metadata', $event_types) && is_array($event_types['metadata']) ? $event_types['metadata'] : [];
-
-        if ($theme_project_types = $this->view->resolveFilename('','project-types.php')) {
-            $project_types = include $theme_project_types;
-        } else {
-            $project_types = include APPLICATION_PATH.'/conf/project-types.php';
-        }
-        $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : [];
-
-        if ($theme_opportunity_types = $this->view->resolveFilename('','opportunity-types.php')) {
-            $opportunity_types = include $theme_opportunity_types;
-        } else {
-            $opportunity_types = include APPLICATION_PATH.'/conf/opportunity-types.php';
-        }
-        $opportunities_meta = key_exists('metadata', $opportunity_types) && is_array($opportunity_types['metadata']) ? $opportunity_types['metadata'] : [];
-
-        // get types and metadata configurations
-        if ($theme_subsite_types = $this->view->resolveFilename('','subsite-types.php')) {
-            $subsite_types = include $theme_subsite_types;
-        } else {
-            $subsite_types = include APPLICATION_PATH.'/conf/subsite-types.php';
-        }
-        $subsite_meta = key_exists('metadata', $subsite_types) && is_array($subsite_types['metadata']) ? $subsite_types['metadata'] : [];
-
-        if ($theme_seal_types = $this->view->resolveFilename('','seal-types.php')) {
-            $seal_types = include $theme_seal_types;
-        } else {
-            $seal_types = include APPLICATION_PATH.'/conf/seal-types.php';
-        }
-        $seals_meta = key_exists('metadata', $seal_types) && is_array($seal_types['metadata']) ? $seal_types['metadata'] : [];
-
-        if ($theme_notification_types = $this->view->resolveFilename('','notification-types.php')) {
-            $notification_types = include $theme_notification_types;
-        } else {
-            $notification_types = include APPLICATION_PATH.'/conf/notification-types.php';
-        }
-        $notification_meta = key_exists('metadata', $notification_types) && is_array($notification_types['metadata']) ? $notification_types['metadata'] : [];
 
         // register auth providers
         // @TODO veridicar se isto está sendo usado, se não remover
@@ -906,17 +2006,17 @@ class App extends \Slim\Slim{
         // all file groups
         $file_groups = [
             'downloads' => new Definitions\FileGroup('downloads'),
-            'avatar' => new Definitions\FileGroup('avatar', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
-            'header' => new Definitions\FileGroup('header', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
-            'gallery' => new Definitions\FileGroup('gallery', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), false),
-            'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
-            'rules' => new Definitions\FileGroup('rules', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
-            'logo'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
-            'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
-            'share' => new Definitions\FileGroup('share',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
-            'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
-            'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
-            'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], \MapasCulturais\i::__('O arquivo não é um ZIP.'), true, null, true),
+            'avatar' => new Definitions\FileGroup('avatar', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'header' => new Definitions\FileGroup('header', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'gallery' => new Definitions\FileGroup('gallery', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), false),
+            'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', ['^application/.*'], i::__('O arquivo enviado não é um documento válido.'), true),
+            'rules' => new Definitions\FileGroup('rules', ['^application/.*'], i::__('O arquivo enviado não é um documento válido.'), true),
+            'logo'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'),true),
+            'share' => new Definitions\FileGroup('share',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'),true),
+            'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], i::__('O arquivo não é um ZIP.'), true, null, true),
         ];
 
         // register file groups
@@ -993,11 +2093,11 @@ class App extends \Slim\Slim{
                     'value' => [
                         'label' => 'Link',
                         'validations' => [
-                            'required' => \MapasCulturais\i::__('O link é obrigatório')
+                            'required' => i::__('O link é obrigatório')
                         ]
                     ],
                 ],
-                \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),
+                i::__('O arquivo enviado não é uma imagem válida.'),
                 true
             ),
             'videos' => new Definitions\MetaListGroup('videos',
@@ -1008,11 +2108,11 @@ class App extends \Slim\Slim{
                     'value' => [
                         'label' => 'Vídeo',
                         'validations' => [
-                            'required' => \MapasCulturais\i::__('O link do vídeo é obrigatório')
+                            'required' => i::__('O link do vídeo é obrigatório')
                         ]
                     ],
                 ],
-                \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),
+                i::__('O arquivo enviado não é uma imagem válida.'),
                 true
             ),
         ];
@@ -1038,6 +2138,66 @@ class App extends \Slim\Slim{
 
         // register job types
         $this->registerJobType(new JobTypes\ReopenEvaluations(JobTypes\ReopenEvaluations::SLUG));
+
+
+        // get types and metadata configurations
+        if ($theme_space_types = $this->view->resolveFilename('','space-types.php')) {
+            $space_types = include $theme_space_types;
+        } else {
+            $space_types = include APPLICATION_PATH.'/conf/space-types.php';
+        }
+        $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : [];
+
+        if ($theme_agent_types = $this->view->resolveFilename('','agent-types.php')) {
+            $agent_types = include $theme_agent_types;
+        } else {
+            $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
+        }
+        $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : [];
+
+        if ($theme_event_types = $this->view->resolveFilename('','event-types.php')) {
+            $event_types = include $theme_event_types;
+        } else {
+            $event_types = include APPLICATION_PATH.'/conf/event-types.php';
+        }
+        $event_meta = key_exists('metadata', $event_types) && is_array($event_types['metadata']) ? $event_types['metadata'] : [];
+
+        if ($theme_project_types = $this->view->resolveFilename('','project-types.php')) {
+            $project_types = include $theme_project_types;
+        } else {
+            $project_types = include APPLICATION_PATH.'/conf/project-types.php';
+        }
+        $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : [];
+
+        if ($theme_opportunity_types = $this->view->resolveFilename('','opportunity-types.php')) {
+            $opportunity_types = include $theme_opportunity_types;
+        } else {
+            $opportunity_types = include APPLICATION_PATH.'/conf/opportunity-types.php';
+        }
+        $opportunities_meta = key_exists('metadata', $opportunity_types) && is_array($opportunity_types['metadata']) ? $opportunity_types['metadata'] : [];
+
+        // get types and metadata configurations
+        if ($theme_subsite_types = $this->view->resolveFilename('','subsite-types.php')) {
+            $subsite_types = include $theme_subsite_types;
+        } else {
+            $subsite_types = include APPLICATION_PATH.'/conf/subsite-types.php';
+        }
+        $subsite_meta = key_exists('metadata', $subsite_types) && is_array($subsite_types['metadata']) ? $subsite_types['metadata'] : [];
+
+        if ($theme_seal_types = $this->view->resolveFilename('','seal-types.php')) {
+            $seal_types = include $theme_seal_types;
+        } else {
+            $seal_types = include APPLICATION_PATH.'/conf/seal-types.php';
+        }
+        $seals_meta = key_exists('metadata', $seal_types) && is_array($seal_types['metadata']) ? $seal_types['metadata'] : [];
+
+        if ($theme_notification_types = $this->view->resolveFilename('','notification-types.php')) {
+            $notification_types = include $theme_notification_types;
+        } else {
+            $notification_types = include APPLICATION_PATH.'/conf/notification-types.php';
+        }
+        $notification_meta = key_exists('metadata', $notification_types) && is_array($notification_types['metadata']) ? $notification_types['metadata'] : [];
+
 
         // register space types and spaces metadata
         foreach($space_types['items'] as $group_name => $group_config){
@@ -1235,832 +2395,17 @@ class App extends \Slim\Slim{
         $this->applyHookBoundTo($this, 'app.register:after');
     }
 
-
-
-    function getRegisteredGeoDivisions(){
-        $result = [];
-        foreach($this->_config['app.geoDivisionsHierarchy'] as $key => $division) {
-
-            $display = true;
-            if (substr($key, 0, 1) == '_') {
-                $display = false;
-                $key = substr($key, 1);
-            }
-            
-            if (!is_array($division)) { // for backward compability version < 4.0, $division is string not a array.
-                $d = new \stdClass();
-                $d->key = $key;
-                $d->name = $division;
-                $d->metakey = 'geo' . ucfirst($key);
-                $d->display = $display;
-                $result[] = $d;
-            } else {
-                $d = new \stdClass();
-                $d->key = $key;
-                $d->name = $division['name'];
-                $d->metakey = 'geo' . ucfirst($key);
-                $d->display = $display;
-                $result[] = $d;
-            }
-        }
-
-        return $result;
-    }
-
-
-    /**
-     * Returns the configuration array or the specified configuration
-     *
-     * @param string $key configuration key
-     *
-     * @return mixed
-     */
-    public function getConfig($key = null){
-        if(is_null($key))
-            return $this->_config;
-        else
-            return key_exists ($key, $this->_config) ? $this->_config[$key] : null;
-
-    }
-
-    public function getPlugins(){
-        return $this->_plugins;
-    }
-
-    public function getModules(){
-        return $this->_modules;
-    }
-
-    /**
-     * Creates a URL to an controller action action
-     *
-     * @param string $controller_id the controller id
-     * @param string $action_name the action name
-     * @param array $data the data to pass to action
-     *
-     * @see \MapasCulturais\RoutesManager::createUrl()
-     *
-     * @return string the URL to action
-     */
-    public function createUrl($controller_id, $action_name = '', $data = []){
-        return $this->_routesManager->createUrl($controller_id, $action_name, $data);
-    }
-
-
-    /**********************************************
-     * Handle Uploads
-     **********************************************/
-
-    /**
-     * Handle file uploads.
-     *
-     * This method handle file uploads and returns an instance, or an array of instances of File Entity. The uploaded file name is sanitized by the method App::sanitizeFilename
-     *
-     * If the key not exists in $_FILES array, this method returns null.
-     *
-     * @param string $key the key of the $_FILE array to handle
-     *
-     * @see \MapasCulturais\App::sanitizeFilename()
-     *
-     * @return \MapasCulturais\Entities\File|\MapasCulturais\Entities\File[]
-     */
-    public function handleUpload($key, $file_class_name){
-        if(is_array($_FILES) && key_exists($key, $_FILES)){
-
-            if(is_array($_FILES[$key]['name'])){
-                $result = [];
-                foreach(array_keys($_FILES[$key]['name']) as $i){
-                    $tmp_file = [];
-                    foreach(array_keys($_FILES[$key]) as $k){
-                        $tmp_file[$k] = $k == 'name' ? $this->sanitizeFilename($_FILES[$key][$k][$i]) : $_FILES[$key][$k][$i];
-                    }
-
-                    $result[] = new $file_class_name($tmp_file);
-                }
-            }else{
-
-                if($_FILES[$key]['error']){
-                    throw new \MapasCulturais\Exceptions\FileUploadError($key, $_FILES[$key]['error']);
-                }
-
-                $mime = mime_content_type($_FILES[$key]['tmp_name']);
-                $_FILES[$key]['name'] = $this->sanitizeFilename($_FILES[$key]['name'], $mime);
-                $result = new $file_class_name($_FILES[$key]);
-
-            }
-            return $result;
-        }else{
-            return null;
-        }
-    }
-
-    /**
-     * Sanitizes the uploaded files names replaceing spaces with underscores and setting the name to lower case.
-     *
-     * If the 'app.sanitize_filename_function' configuration key is callable, this method call it after sanitizes the filename.
-     *
-     * @param type $filename
-     *
-     * @return string The sanitized filename.
-     */
-    function sanitizeFilename($filename, $mimetype = false){
-        $filename = str_replace(' ','_', strtolower($filename));
-        if(is_callable($this->_config['app.sanitize_filename_function'])){
-            $cb = $this->_config['app.sanitize_filename_function'];
-            $filename = $cb($filename);
-        }
-
-        // If the file does not have an extension and is a image, lets put it
-        // Wide Image relies on it and we know that cropped images come without extension (blob upload)
-        if (empty(pathinfo($filename, PATHINFO_EXTENSION)) && $mimetype) {
-
-            $imagetypes = array(
-                'image/jpeg' => 'jpeg',
-                'image/bmp' => 'bmp',
-                'image/gif' => 'gif',
-                'image/tiff' => 'tif',
-                'image/png' => 'png',
-                'image/x-png' => 'png',
-            );
-
-            if (array_key_exists($mimetype, $imagetypes))
-                $filename .= '.' . $imagetypes[$mimetype];
-
-        }
-
-        return $filename;
-    }
-
-    /*     * ********************************************
-     * Hooks System
-     * ******************************************** */
-
-    /**
-     * Clear hook listeners
-     *
-     * Clear all listeners for all hooks. If `$name` is
-     * a valid hook name, only the listeners attached
-     * to that hook will be cleared.
-     *
-     * @param  string   $name   A hook name (Optional)
-     */
-    public function clearHooks($name = null) {
-        if (is_null($name)) {
-            $this->_hooks = [];
-            $this->_excludeHooks = [];
-        } else {
-            $hooks = $this->_getHookCallables($name);
-            foreach ($this->_excludeHooks as $hook => $cb) {
-                if (in_array($cb, $hooks))
-                    unset($this->_excludeHooks[$hook]);
-            }
-
-            foreach ($this->_hooks as $hook => $cbs) {
-                foreach ($cbs as $i => $cb)
-                    unset($this->_hooks[$hook][$i]);
-            }
-        }
-    }
-
-    protected $_hookCache = [];
-
-    /**
-     * Get hook listeners
-     *
-     * Return an array of registered hooks. If `$name` is a valid
-     * hook name, only the listeners attached to that hook are returned.
-     * Else, all listeners are returned as an associative array whose
-     * keys are hook names and whose values are arrays of listeners.
-     *
-     * @param  string     $name     A hook name (Optional)
-     * @return array|null
-     */
-    public function getHooks($name = null) {
-        return $this->_getHookCallables($name);
-    }
-
-    /**
-     * Assign hook
-     * @param  string   $name       The hook name
-     * @param  mixed    $callable   A callable object
-     * @param  int      $priority   The hook priority; 0 = high, 10 = low
+    /** 
+     * ============ JOBS ============ 
      */
 
-
-    protected $hook_count = 0;
-
-    function hook($name, $callable, $priority = 10) {
-        $this->hook_count++;
-        $priority += ($this->hook_count / 100000);
-
-        $this->_hookCache = [];
-        $_hooks = explode(',', $name);
-        foreach ($_hooks as $hook) {
-            if (trim($hook)[0] === '-') {
-                $hook = $this->_compileHook($hook);
-                if (!key_exists($hook, $this->_excludeHooks))
-                    $this->_excludeHooks[$hook] = [];
-
-                $this->_excludeHooks[$hook][] = $callable;
-            }else {
-                $priority_key = "$priority";
-                $hook = $this->_compileHook($hook);
-
-                if (!key_exists($hook, $this->_hooks))
-                    $this->_hooks[$hook] = [];
-
-                if (!key_exists($priority_key, $this->_hooks[$hook]))
-                    $this->_hooks[$hook][$priority_key] = [];
-
-                $this->_hooks[$hook][$priority_key][] = $callable;
-
-                ksort($this->_hooks[$hook]);
-            }
-        }
-    }
-
-    function _logHook($name){
-        $n = 1;
-
-        if(strpos($name, 'template(') === 0){
-            $n = 2;
-        }
-
-        $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        $filename = $bt[$n]['file'];
-        $fileline = $bt[$n]['line'];
-        $lines = file($filename);
-        $line = trim($lines[$fileline - 1]);
-
-        $this->log->debug("hook >> \033[37m$name \033[0m(\033[33m$filename:$fileline\033[0m)");
-        $this->log->debug("     >> \033[32m$line\033[0m\n");
-    }
-
-    protected $hookStack = [];
-
     /**
-     * Invoke hook
-     * @param  string   $name       The hook name
-     * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
+     * Registra um tipo de Job
      * 
-     * @return callable[]
-     */
-    function applyHook($name, $hookArg = null) {
-        if (is_null($hookArg))
-            $hookArg = [];
-        else if (!is_array($hookArg))
-            $hookArg = [$hookArg];
-
-        if ($this->_config['app.log.hook']){
-            $conf = $this->_config['app.log.hook'];
-            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#i', $name)){
-                $this->_logHook($name);
-
-            }
-        }
-
-        $this->hookStack[] = (object) [
-            'name' => $name,
-            'args' => $hookArg,
-            'bound' => false,
-        ];
-
-        $callables = $this->_getHookCallables($name);
-        foreach ($callables as $callable) {
-            call_user_func_array($callable, $hookArg);
-        }
-
-        array_pop($this->hookStack);
-
-        return $callables;
-    }
-
-    /**
-     * Invoke hook binding callbacks to the target object
-     *
-     * @param  object $target_object Object to bind hook
-     * @param  string   $name       The hook name
-     * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
-     * 
-     * @return callable[]
-     */
-    function applyHookBoundTo($target_object, $name, $hookArg = null) {
-        if (is_null($hookArg))
-            $hookArg = [];
-        else if (!is_array($hookArg))
-            $hookArg = [$hookArg];
-
-        if ($this->_config['app.log.hook']){
-            $conf = $this->_config['app.log.hook'];
-            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#i', $name)){
-                $this->_logHook($name);
-            }
-        }
-
-        $this->hookStack[] = (object) [
-            'name' => $name,
-            'args' => $hookArg,
-            'bound' => false,
-        ];
-
-        $callables = $this->_getHookCallables($name);
-        foreach ($callables as $callable) {
-            $callable = \Closure::bind($callable, $target_object);
-            call_user_func_array($callable, $hookArg);
-        }
-
-        array_pop($this->hookStack);
-
-        return $callables;
-    }
-
-
-    function _getHookCallables($name) {
-        if(isset($this->_hookCache[$name])){
-            return $this->_hookCache[$name];
-        }
-        $exclude_list = [];
-        $result = [];
-
-        foreach ($this->_excludeHooks as $hook => $callables) {
-            if (preg_match($hook, $name))
-                $exclude_list = array_merge($callables);
-        }
-
-        foreach ($this->_hooks as $hook => $_callables) {
-            if (preg_match($hook, $name)) {
-                foreach ($_callables as $priority => $callables) {
-                    foreach ($callables as $callable) {
-                        if (!in_array($callable, $exclude_list)){
-                            $result[] = (object) ['callable' => $callable, 'priority' => (float) $priority];
-                        }
-                    }
-                }
-            }
-        }
-
-        usort($result, function($a,$b){
-            if($a->priority > $b->priority){
-                return 1;
-            } elseif ($a->priority < $b->priority) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
-
-        $result = array_map(function($el) { return $el->callable; }, $result);
-
-        $this->_hookCache[$name] = $result;
-
-        return $result;
-    }
-
-    protected function _compileHook($hook) {
-        $hook = trim($hook);
-
-        if ($hook[0] === '-')
-            $hook = substr($hook, 1);
-
-        $replaces = [];
-
-        while (preg_match("#\<\<([^<>]+)\>\>#", $hook, $matches)) {
-            $uid = uniqid('@');
-            $replaces[$uid] = $matches;
-
-            $hook = str_replace($matches[0], $uid, $hook);
-        }
-
-        $hook = '#^' . preg_quote($hook) . '$#i';
-
-        foreach ($replaces as $uid => $matches) {
-            $regex = str_replace('*', '[^\(\)\:]*', $matches[1]);
-
-            $hook = str_replace($uid, '(' . $regex . ')', $hook);
-        }
-
-        return $hook;
-    }
-
-    /**********************************************
-     * Background Jobs
-     **********************************************/
-
-    /**
-     * Enfileira um job, substituindo um já existente
-     * 
-     * @param string $type_slug 
-     * @param array $data 
-     * @param string $start_string 
-     * @param string $interval_string 
-     * @param int $iterations 
+     * @param JobType $definition 
      * @return void 
-     * @throws Exception 
+     * @throws GlobalException 
      */
-    public function enqueueOrReplaceJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
-        $this->enqueueJob($type_slug, $data, $start_string, $interval_string, $iterations, true);
-    }
-
-    
-    /**
-     * Enfileira um job
-     * @param string $type_slug 
-     * @param array $data 
-     * @param string $start_string 
-     * @param string $interval_string 
-     * @param int $iterations 
-     * @param bool $replace
-     * @return Job 
-     * @throws Exception 
-     */
-    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false) {
-        if($this->config['app.log.jobs']) {
-            $this->log->debug("ENQUEUED JOB: $type_slug");
-        }
-
-        $type = $this->getRegisteredJobType($type_slug);
-        
-        if (!$type) {
-            throw new \Exception("invalid job type: {$type_slug}");
-        }
-
-        $id = $type->generateId($data, $start_string, $interval_string, $iterations);
-
-        if ($job = $this->repo('Job')->find($id)) {
-            $this->log->debug('JOB ID JÁ EXISTE: ' . $id);
-            if ($replace) {
-                $job->delete(true);
-            } else {
-                return $job;
-            }
-        }
-
-        $job = new Job($type);
-
-        $job->id = $id;
-
-        $job->iterations = $iterations;
-
-        $job->nextExecutionTimestamp = new DateTime($start_string);
-        $job->intervalString = $interval_string;
-
-        foreach ($data as $key => $value) {
-            $job->$key = $value;
-        }
-
-        $job->save(true);
-
-        return $job;
-    }
-
-    public function unqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
-        if($this->config['app.log.jobs']) {
-            $this->log->debug("UNQUEUED JOB: $type_slug");
-        }
-
-        $type = $this->getRegisteredJobType($type_slug);
-        
-        if (!$type) {
-            throw new \Exception("invalid job type: {$type_slug}");
-        }
-
-        $id = $type->generateId($data, $start_string, $interval_string, $iterations);
-
-        if ($job = $this->repo('Job')->find($id)) {
-            $job->delete(true);
-        }
-    }
-
-    public function executeJob() {
-        $conn = $this->em->getConnection();
-
-        $job_id = $conn->fetchColumn("
-            SELECT id
-            FROM job
-            WHERE
-                next_execution_timestamp <= now() AND
-                iterations_count < iterations AND
-                status = 0
-            ORDER BY next_execution_timestamp ASC
-            LIMIT 1");
-
-        if ($job_id) {
-            /** @var Job $job */
-            $conn->executeQuery("UPDATE job SET status = 1 WHERE id = '{$job_id}'");
-            $job = $this->repo('Job')->find($job_id);
-            
-            $this->disableAccessControl();
-            $this->applyHookBoundTo($this, "app.executeJob:before");
-            $job->execute();
-            $this->applyHookBoundTo($this, "app.executeJob:after");
-            $this->enableAccessControl();
-
-            return $job_id;
-        } else {
-            return false;
-        }
-    }
-
-    /**********************************************
-     * Permissions Cache
-     **********************************************/
-    private $permissionCachePendingQueue = [];
-
-    public function enqueueEntityToPCacheRecreation(Entity $entity){
-        if (!$entity->__skipQueuingPCacheRecreation) {
-            $entity_key = $entity->id ? "$entity" : "$entity".spl_object_id($entity);
-            $this->permissionCachePendingQueue["$entity_key"] = $entity;
-        }
-    }
-
-    public function isEntityEnqueuedToPCacheRecreation(Entity $entity){
-        return isset($this->permissionCachePendingQueue["$entity"]);
-    }
-
-    public function persistPCachePendingQueue(){
-        $created = false;
-        foreach($this->permissionCachePendingQueue as $entity) {
-            if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
-                    'objectId' => $entity->id, 'objectType' => $entity->getClassName()
-                ])) {
-                $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
-                $pendingCache->objectId = $entity->id;
-                $pendingCache->objectType = $entity->getClassName();
-                $pendingCache->save(true);
-                $this->log->debug("pcache pending: $entity");
-                $created = true;
-            }
-        }
-
-        if ($created) {
-            $this->em->flush();
-        }
-
-        $this->permissionCachePendingQueue = [];
-    }
-
-    public function setCurrentSubsiteId(int $subsite_id = null) {
-        if(is_null($subsite_id)) {
-            $this->_subsite = null;
-        } else {
-            $subsite = $this->repo('Subsite')->find($subsite_id);
-
-            if(!$subsite) {
-                throw new \Exception('Subsite not found');
-            }
-
-            $this->_subsite = $subsite;
-        }
-    }
-
-    private $recreatedPermissionCacheList = [];
-
-    public function setEntityPermissionCacheAsRecreated(Entity $entity){
-        $this->recreatedPermissionCacheList["$entity"] = $entity;
-    }
-
-    public function isEntityPermissionCacheRecreated(Entity $entity){
-        return isset($this->recreatedPermissionCacheList["$entity"]);
-    }
-
-    public function recreatePermissionsCache(){
-        $item = $this->repo('PermissionCachePending')->findOneBy(['status' => 0], ['id' => 'ASC']);
-        if ($item) {
-            $start_time = microtime(true);
-
-            $this->disableAccessControl();
-            $item->status = 1;
-            $item->save(true);
-            $this->enableAccessControl();
-
-            try {
-                $entity = $this->repo($item->objectType)->find($item->objectId);
-                if ($entity) {
-                    $entity->recreatePermissionCache();
-                }
-                $item = $this->repo('PermissionCachePending')->find($item->id);
-                $this->em->remove($item);
-                $this->em->flush();
-            } catch (\Exception $e ){
-                $this->disableAccessControl();
-                $item = $this->repo('PermissionCachePending')->find($item->id);
-                $item->status = 2; // ERROR
-                $item->save(true);
-                $this->enableAccessControl();
-
-                if(php_sapi_name()==="cli"){
-                    echo "\n\t - ERROR - {$e->getMessage()}";
-                }
-                throw $e;
-            }
-
-            if($this->config['app.log.pcache']){
-                $end_time = microtime(true);
-                $total_time = number_format($end_time - $start_time, 1);
-
-                $this->log->info("PCACHE RECREATED FOR $item IN {$total_time} seconds\n--------\n");
-            }
-            $this->permissionCachePendingQueue = [];
-        }
-    }
-
-    /**********************************************
-     * Getters
-     **********************************************/
-
-    /**
-     * Returns the current subsite ID, or null if current site is the main site
-     *
-     * @return (int|null) ID of the current site or Null for main site
-     */
-    public function getCurrentSubsiteId(){
-        // @TODO: alterar isto quando for implementada a possibilidade de termos instalações de subsite com o tema diferente do Subsite
-        if($this->_subsite){
-            return $this->_subsite->id;
-        }
-
-        return null;
-    }
-
-    public function getCurrentSubsite(){
-        return $this->_subsite;
-    }
-
-    public function getMaxUploadSize($useSuffix=true){
-        $MB = 1024;
-        $GB = $MB * 1024;
-
-        $convertToKB = function($size) use($MB, $GB){
-            switch(strtolower(substr($size, -1))){
-                case 'k';
-                    $size = intval($size);
-                break;
-
-                case 'm':
-                    $size = intval($size) * $MB;
-                break;
-
-                case 'g':
-                    $size = intval($size) * $GB;
-                break;
-            }
-
-            return $size;
-        };
-
-        $max_upload = $convertToKB(ini_get('upload_max_filesize'));
-        $max_post = $convertToKB(ini_get('post_max_size'));
-        $memory_limit = $convertToKB(ini_get('memory_limit'));
-
-        $result = min($max_upload, $max_post, $memory_limit);
-
-        if(!$useSuffix)
-            return $result;
-
-        if($result < $MB){
-            $result .= ' KB';
-        }else if($result < $GB){
-            $result = number_format($result / $MB, 0) . ' MB';
-        }else{
-            $result = $result / $GB;
-            $formated = number_format($result, 1);
-            if( $formated == (int) $result )
-                $result = intval($result) . ' GB';
-            else
-                $result = $formated . ' GB';
-        }
-
-        return $result;
-    }
-
-    public function getOpportunityRegistrationAgentRelationGroupName(){
-        return 'registration';
-    }
-
-    public function getSiteName(){
-        return $this->_config['app.siteName'];
-    }
-
-    public function getSiteDescription(){
-        return $this->_config['app.siteDescription'];
-    }
-
-    /**
-     * Returns the RoutesManager
-     * @return \MapasCulturais\RoutesManager
-     */
-    public function getRoutesManager(){
-        return $this->_routesManager;
-    }
-
-    /**
-     * Returns the Doctrine Entity Manager
-     * @return \Doctrine\ORM\EntityManager the Doctrine Entity Manager
-     */
-    public function getEm(){
-        return $this->_em;
-    }
-
-    /**
-     * Returns the view object
-     * @return \MapasCulturais\Theme
-     */
-    public function getView(){
-        return $this->view;
-    }
-
-    /**
-     * Returns the Cache Component
-     * @return \Doctrine\Common\Cache\CacheProvider
-     */
-    public function getCache(){
-        return $this->_cache;
-    }
-
-    /**
-     * Returns the Multisite Cache Component
-     * @return \Doctrine\Common\Cache\CacheProvider
-     */
-    public function getMsCache(){
-        return $this->_mscache;
-    }
-
-    /**
-     * Runtime Runtime Cache Component
-     * @return \Doctrine\Common\Cache\ArrayCache
-     */
-    public function getRCache(){
-        return $this->_rcache;
-    }
-
-    /**
-     * Returns the Auth Manager Component
-     * @return \MapasCulturais\Auth
-     */
-    public function getAuth(){
-        return $this->_auth;
-    }
-
-    /**
-     * Returns the base url of the project
-     * @return string the base url
-     */
-    public function getBaseUrl(){
-        return $this->_config['base.url'];
-    }
-
-    /**
-     * Returns the asset url of the project
-     * @return string the asset url
-     */
-    public function getAssetUrl(){
-        return isset($this->_config['base.assetUrl']) ? $this->_config['base.assetUrl'] : $this->getBaseUrl() . 'assets/';
-    }
-
-    /**
-     * Returns the logged in user
-     * @return \MapasCulturais\Entities\User
-     */
-    public function getUser(){
-        return $this->auth->getAuthenticatedUser();
-    }
-
-    /**
-     * Returns the File Storage Component
-     * @return \MapasCulturais\Storage
-     */
-    public function getStorage(){
-        return $this->_storage;
-    }
-
-
-
-    /**********************************************
-     * Doctrine Helpers
-     **********************************************/
-
-    /**
-     * Returns a Doctrine Entity Repository
-     *
-     * if the given repository class name not starts with a slash this function will prepend \MapasCulturais\Entities\ to the class name
-     *
-     * @param string $name Repository Class Name
-     * @return Repository the Entity Repository
-     */
-    public function repo($name){
-
-        // add MapasCulturais\Entities namespace if no namespace in repo name
-        if(strpos($name, '\\') === false)
-                $name = "\MapasCulturais\Entities\\{$name}";
-
-        return $this->em->getRepository($name);
-    }
-
-
-    /**********************************************
-     * Register functions
-     **********************************************/
-
     public function registerJobType(Definitions\JobType $definition) {
         if(key_exists($definition->slug, $this->_register['job_types'])){
             throw new \Exception("Job type {$definition->slug} already registered");
@@ -2069,20 +2414,27 @@ class App extends \Slim\Slim{
     }
 
     /**
+     * Retorna a os tipos de Job registrados
      * 
      * @return Definitions\JobType[]
      */
-    public function getRegisteredJobTypes() {
+    public function getRegisteredJobTypes(): array {
         return $this->_register['job_types'];
     }
 
     /**
+     * Retorna um tipo de job registrado dado o slug
      * 
      * @return Definitions\JobType
      */
-    public function getRegisteredJobType(string $slug) {
+    public function getRegisteredJobType(string $slug): Definitions\JobType|null {
         return $this->_register['job_types'][$slug] ?? null;
     }
+
+
+    /** 
+     * ============ ROLES ============ 
+     */
 
     /**
      * Register a new role
@@ -2090,42 +2442,53 @@ class App extends \Slim\Slim{
      * @param Definitions\Role $role the role definition
      * @return void
      */
-    public function registerRole(Definitions\Role $role){
+    public function registerRole(Definitions\Role $role) {
         $this->_register['roles'][$role->getRole()] = $role;
     }
 
     /**
-     * Returns the registered roles definitions
+     * Retorna a lista de roles registradas
      *
-     * @return \MapasCulturais\Definitions\Role[]
+     * @return Definitions\Role[]
      */
-    public function getRoles() {
+    public function getRoles(): array {
         return $this->_register['roles'];
     }
 
     /**
      * Returns the role definition
      *
-     * @param string $role
-     * @return \MapasCulturais\Definitions\Role|null
+     * @param string $role_slug
+     * @return Definitions\Role|null
      */
-    public function getRoleDefinition(string $role) {
-        return $this->_register['roles'][$role] ?? null;
+    public function getRoleDefinition(string $role_slug): Definitions\Role|null {
+        return $this->_register['roles'][$role_slug] ?? null;
     }
 
     /**
-     * Returns the role name
-     *
-     * @param string $role
-     * @return string
+     * Retorna o nome de uma role
+     * 
+     * @param string $role_slug 
+     * @return string|null 
      */
-    public function getRoleName(string $role){
-        $def = $this->_register['roles'][$role] ?? null;
-        return $def ? $def->name : $role;
+    public function getRoleName(string $role_slug): string|null {
+        $def = $this->_register['roles'][$role_slug] ?? null;
+        return $def ? $def->name : $role_slug;
     }
 
 
-    function registerRegistrationAgentRelation(Definitions\RegistrationAgentRelation $def){
+    /** 
+     * ============ AGENTES RELACIONADOS DAS INSCRIÇÕES ============ 
+     */
+
+    /**
+     * Registra um grupo de agente relacionado de inscrição
+     * 
+     * @param RegistrationAgentRelation $def 
+     * @return void 
+     * @throws GlobalException 
+     */
+    function registerRegistrationAgentRelation(Definitions\RegistrationAgentRelation $def) {
         if(key_exists($def->agentRelationGroupName, $this->_register['registration_agent_relations'])){
             throw new \Exception('There is already a RegistrationAgentRelation with agent relation group name "' . $def->agentRelationGroupName . '"');
         }
@@ -2134,20 +2497,31 @@ class App extends \Slim\Slim{
     }
 
     /**
-     *
-     * @return \MapasCulturais\Definitions\RegistrationAgentRelation[]
+     * Retorna os grupos de agente relacionado de inscrição registrados
+     * 
+     * @return Definitions\RegistrationAgentRelation[]
      */
-    function getRegisteredRegistrationAgentRelations(){
+    function getRegisteredRegistrationAgentRelations(): array {
         return $this->_register['registration_agent_relations'];
     }
 
-    function getRegistrationOwnerDefinition(){
+    /**
+     * Retorna a definição do agente relacionado owner de inscrição
+     * 
+     * @return Definitions\RegistrationAgentRelation 
+     */
+    function getRegistrationOwnerDefinition(): Definitions\RegistrationAgentRelation{
         $config = $this->getConfig('registration.ownerDefinition');
         $definition = new Definitions\RegistrationAgentRelation($config);
         return $definition;
     }
 
-    function getRegistrationAgentsDefinitions(){
+    /**
+     * Retorna as definições dos agentes relacionados das inscrições
+     * 
+     * @return Definitions\RegistrationAgentRelation[] 
+     */
+    function getRegistrationAgentsDefinitions(): array {
         $definitions =  ['owner' => $this->getRegistrationOwnerDefinition()];
         foreach ($this->getRegisteredRegistrationAgentRelations() as $groupName => $def){
             $definitions[$groupName] = $def;
@@ -2155,31 +2529,50 @@ class App extends \Slim\Slim{
         return $definitions;
     }
 
-    function getRegisteredRegistrationAgentRelationByAgentRelationGroupName($group_name){
-        if(key_exists($group_name, $this->_register['registration_agent_relations'])){
-            return $this->_register['registration_agent_relations'][$group_name];
-        }else{
-            return null;
-        }
+    /**
+     * Retorna a definição de um agente relacionado de inscrição dado o nome do grupo
+     * @param string $group_name 
+     * @return RegistrationAgentRelation|null 
+     */
+    function getRegisteredRegistrationAgentRelationByAgentRelationGroupName(string $group_name): Definitions\RegistrationAgentRelation|null {
+        return $this->_register['registration_agent_relations'][$group_name] ?? null;
     }
 
-    function registerChatThreadType(Definitions\ChatThreadType $definition)
-    {
+
+    /** 
+     * ============ AGENTES RELACIONADOS DAS INSCRIÇÕES ============ 
+     */
+
+     /**
+      * Registra um tipo de thread de chat
+      *
+      * @param ChatThreadType $definition 
+      * @return void 
+      * @throws GlobalException 
+      */
+    function registerChatThreadType(Definitions\ChatThreadType $definition) {
         if (isset($this->_register['chat_thread_types'][$definition->slug])) {
-            throw new \Exception("Attempting to re-register " .
-                                 "{$definition->slug}.");
+            throw new \Exception("Attempting to re-register {$definition->slug}.");
         }
         $this->_register['chat_thread_types'][$definition->slug] = $definition;
-        return;
     }
 
-    function getRegisteredChatThreadTypes(): array
-    {
+    /**
+     * Retorna as definições dos tipos de chat registrados
+     * 
+     * @return array 
+     */
+    function getRegisteredChatThreadTypes(): array {
         return $this->_register['chat_thread_types'];
     }
 
-    function getRegisteredChatThreadType($slug)
-    {
+    /**
+     * Retorna um tipo de chat registrado dado o slug
+     * 
+     * @param mixed $slug 
+     * @return ChatThreadType|null 
+     */
+    function getRegisteredChatThreadType($slug): Definitions\ChatThreadType|null    {
         return ($this->_register['chat_thread_types'][$slug] ?? null);
     }
 
@@ -2206,18 +2599,18 @@ class App extends \Slim\Slim{
      * Returns the API Output by the class name.
      *
      * This method returns null if the api_output class name is not registered or
-     * is not a subclass of \MapasCulturais\ApiOutput
+     * is not a subclass of ApiOutput
      *
      * @param string $api_output_class_name The API Output class name
      *
-     * @return \MapasCulturais\ApiOutput the API Output
+     * @return ApiOutput|null the API Output
      */
-    public function getRegisteredApiOutputByClassName($api_output_class_name){
-        if(in_array($api_output_class_name, $this->_register['api_outputs']) && class_exists($api_output_class_name) && is_subclass_of($api_output_class_name, '\MapasCulturais\ApiOutput'))
+    public function getRegisteredApiOutputByClassName($api_output_class_name): ApiOutput|null {
+        if(in_array($api_output_class_name, $this->_register['api_outputs']) && class_exists($api_output_class_name) && is_subclass_of($api_output_class_name, '\MapasCulturais\ApiOutput')) {
             return $api_output_class_name::i();
-        else
+        } else {
             return null;
-
+        }
     }
 
     /**
@@ -2227,9 +2620,9 @@ class App extends \Slim\Slim{
      *
      * @param string $api_output_id The API Output Id
      *
-     * @return \MapasCulturais\ApiOutput The API Output
+     * @return ApiOutput|null The API Output
      */
-    public function getRegisteredApiOutputById($api_output_id){
+    public function getRegisteredApiOutputById(string $api_output_id): ApiOutput|null {
         $api_output_id = strtolower($api_output_id);
         if(key_exists($api_output_id, $this->_register['api_outputs']) && class_exists($this->_register['api_outputs'][$api_output_id]) && is_subclass_of($this->_register['api_outputs'][$api_output_id], '\MapasCulturais\ApiOutput')){
             $api_output_class_name = $this->_register['api_outputs'][$api_output_id];
@@ -2245,27 +2638,49 @@ class App extends \Slim\Slim{
      *
      * If the $api_output is not a valid registered API Output this method returns null.
      *
-     * @param \MapasCulturais\ApiOutput|string $api_output The API Output or class name
+     * @param ApiOutput|string $api_output The API Output or class name
      *
-     * @return sring the API Output id
+     * @return string|null the API Output id
      */
-    public function getRegisteredApiOutputId($api_output){
-        if(is_object($api_output))
+    public function getRegisteredApiOutputId($api_output): string|null {
+        if (is_object($api_output)) {
             $api_output = get_class($api_output);
+        }
 
         $api_output_id = array_search($api_output, $this->_register['api_outputs']);
 
         return $api_output_id ? $api_output_id : null;
     }
 
-    public function registerAuthProvider($name){
+
+    /** 
+     * ============ PROVEDORES DE AUTENTICAÇÃO ============ 
+     */
+
+    /**
+     * Registra um provedor de autenticação
+     * 
+     * @param string $name 
+     * @return void 
+     */
+    public function registerAuthProvider(string $name) {
         $nextId = count($this->_register['auth_providers']) + 1;
         $this->_register['auth_providers'][$nextId] = strtolower($name);
     }
 
+    /**
+     * Retorna o id de um provedor de autenticação
+     * @param mixed $name 
+     * @return int|string|false 
+     */
     public function getRegisteredAuthProviderId($name){
         return array_search(strtolower($name), $this->_register['auth_providers']);
     }
+
+
+    /** 
+     * ============ CONTROLADORES ============ 
+     */
 
     /**
      * Register a controller class.
@@ -2277,7 +2692,7 @@ class App extends \Slim\Slim{
      *
      * @throws \Exception
      */
-    public function registerController($id, $controller_class_name, $default_action = 'index', $view_dir = null){
+    public function registerController(string $id, string $controller_class_name, string $default_action = 'index', $view_dir = null) {
         $id = strtolower($id);
 
         if(key_exists($id, $this->_register['controllers']))
@@ -2290,7 +2705,14 @@ class App extends \Slim\Slim{
         $this->_register['controllers_view_dirs'][$id] = $view_dir ? $view_dir : $id;
     }
 
-    public function getRegisteredControllers($return_controller_object = false){
+    /**
+     * Retorna os controladores registrados
+     * 
+     * @param bool $return_controller_object 
+     * 
+     * @return array 
+     */
+    public function getRegisteredControllers(bool $return_controller_object = false): array {
         $controllers = $this->_register['controllers'];
         if($return_controller_object){
             foreach($controllers as $id => $class){
@@ -2306,17 +2728,17 @@ class App extends \Slim\Slim{
      *
      * If the controller is registered, returns the instance calling the method i() (singleton getInstance).
      *
-     * @param string $id The controller id.
+     * @param string $controller_id
      *
-     * @see \MapasCulturais\Traits\Singleton::i()
+     * @see Traits\Singleton::i()
      *
-     * @return \MapasCulturais\Controller|null
+     * @return Controller|null
      */
-    public function getController($id){
-        $id = strtolower($id);
-        if(key_exists($id, $this->_register['controllers']) && class_exists($this->_register['controllers'][$id])){
-            $class = $this->_register['controllers'][$id];
-            return $class::i($id);
+    public function getController(string $controller_id): Controller|null {
+        $controller_id = strtolower($controller_id);
+        if(key_exists($controller_id, $this->_register['controllers']) && class_exists($this->_register['controllers'][$controller_id])){
+            $class = $this->_register['controllers'][$controller_id];
+            return $class::i($controller_id);
         }else{
             return null;
         }
@@ -2325,14 +2747,14 @@ class App extends \Slim\Slim{
     /**
      * Alias to getController
      *
-     * @param string $idThe controller id.
+     * @param string $controller_id
      *
-     * @see \MapasCulturais\App::getController()
+     * @see App::getController()
      *
-     * @return \MapasCulturais\Controller
+     * @return Controller|null
      */
-    public function controller($id){
-        return $this->getController($id);
+    public function controller(string $controller_id): Controller|null {
+        return $this->getController($controller_id);
     }
 
 
@@ -2343,9 +2765,9 @@ class App extends \Slim\Slim{
      *
      * @param string $controller_class The controller class name.
      *
-     * @return \MapasCulturais\Controller|null The controller
+     * @return Controller|null The controller
      */
-    public function getControllerByClass($controller_class){
+    public function getControllerByClass(string $controller_class): Controller|null {
         if(key_exists($controller_class, $this->_register['controllers-by-class']) && class_exists($controller_class)){
             return $controller_class::i($this->_register['controllers-by-class'][$controller_class]);
         }else{
@@ -2360,13 +2782,13 @@ class App extends \Slim\Slim{
      *
      * This method calls the getControllerByClass() to return the controller
      *
-     * @param \MapasCulturais\Entity|string $entity The entity object or class name
+     * @param Entity|string $entity The entity object or class name
      *
-     * @see \MapasCulturais\App::getControllerByClass()
+     * @see App::getControllerByClass()
      *
-     * @return \MapasCulturais\Controllers\EntityController|null The controller
+     * @return Controllers\EntityController|null The controller
      */
-    public function getControllerByEntity($entity){
+    public function getControllerByEntity(Entity|string $entity): Controllers\EntityController|null {
         if(is_object($entity))
             $entity = $entity->getClassName();
         
@@ -2379,13 +2801,13 @@ class App extends \Slim\Slim{
      *
      * If the namespace is omited in the class name this method assumes MapasCulturais\Entities as the namespace of the entity.
      *
-     * @param \MapasCulturais\Entity|string $entity The entity object or class name
+     * @param Entity|string $entity The entity object or class name
      *
-     * @see \MapasCulturais\App::getControllerId()
+     * @see App::getControllerId()
      *
-     * @return \MapasCulturais\Controller|null The controller
+     * @return Controller|null The controller
      */
-    public function getControllerIdByEntity($entity){
+    public function getControllerIdByEntity(Entity|string $entity): string|null {
         if(is_object($entity))
             $entity = $entity->getClassName();
 
@@ -2397,28 +2819,28 @@ class App extends \Slim\Slim{
     /**
      * Return the controller id of the given controller object or class.
      *
-     * @param mixed $object controller object or full class name
+     * @param Controller|string $controller controller object or full class name
      *
-     * @return string
+     * @return string|null
      */
-    public function getControllerId($object){
-        if(is_object($object))
-            $object = get_class($object);
+    public function getControllerId(Controller|string $controller): string|null {
+        if(is_object($controller))
+            $controller = get_class($controller);
 
-        return array_search($object, $this->_register['controllers']);
+        return array_search($controller, $this->_register['controllers']);
     }
 
     /**
      * Alias to getControllerId.
      *
-     * @param mixed $object controller object or full class name
+     * @param Controller|string $controller controller object or full class name
      *
-     * @see \MapasCulturais\App::getControllerId()
+     * @see App::getControllerId()
      *
-     * @return string
+     * @return string|null
      */
-    public function controllerId($object){
-        return $this->getControllerId($object);
+    public function controllerId(Controller|string $controller): string|null {
+        return $this->getControllerId($controller);
     }
 
 
@@ -2427,9 +2849,9 @@ class App extends \Slim\Slim{
      *
      * @param string $controller_id
      *
-     * @return string
+     * @return string|null
      */
-    public function getControllerDefaultAction($controller_id){
+    public function getControllerDefaultAction(string $controller_id): string|null {
         $controller_id = strtolower($controller_id);
         if(key_exists($controller_id, $this->_register['controllers_default_actions'])){
             return $this->_register['controllers_default_actions'][$controller_id];
@@ -2442,20 +2864,25 @@ class App extends \Slim\Slim{
     /**
      * Alias to getControllerDefaultAction.
      *
-     * @param string $controller_id The id of the controller.
+     * @param string $controller_id
      *
-     * @see \MapasCulturais\App::getControllerDefaultAction()
+     * @see App::getControllerDefaultAction()
      *
-     * @return string
+     * @return string|null
      */
-    public function controllerDefaultAction($controller_id){
+    public function controllerDefaultAction(string $controller_id): string|null {
         return $this->getControllerDefaultAction($controller_id);
     }
+
+
+    /** 
+     * ============ TIPOS DE ENTIDADE ============ 
+     */
 
     /**
      * Register an Entity Type Group.
      *
-     * @param \MapasCulturais\Definitions\EntityTypeGroup $group The Entity Type Group to register.
+     * @param Definitions\EntityTypeGroup $group The Entity Type Group to register.
      */
     function registerEntityTypeGroup(Definitions\EntityTypeGroup $group){
         if(!key_exists($group->entity_class, $this->_register['entity_type_groups']))
@@ -2467,12 +2894,12 @@ class App extends \Slim\Slim{
     /**
      * Returns the Entity Type Group of the given entity class and type id.
      *
-     * @param string $entity The entity object or class name..
+     * @param Entity|string $entity The entity object or class name..
      * @param int $type_id The Entity Type id.
      *
-     * @return \MapasCulturais\Definitions\EntityTypeGroup|null
+     * @return Definitions\EntityTypeGroup|null
      */
-    function getRegisteredEntityTypeGroupByTypeId($entity, $type_id){
+    function getRegisteredEntityTypeGroupByTypeId(Entity|string $entity, int $type_id): Definitions\EntityTypeGroup|null {
         if(is_object($entity))
             $entity = $entity->getClassName();
 
@@ -2490,11 +2917,11 @@ class App extends \Slim\Slim{
     /**
      * Returns an array with the registererd Entity Type Groups for the given entity object or class
      *
-     * @param \MapasCulturais\Entity|string $entity The entity object or class name
+     * @param Entity|string $entity The entity object or class name
      *
-     * @return \MapasCulturais\Definitions\EntityTypeGroup[]
+     * @return Definitions\EntityTypeGroup[]
      */
-    function getRegisteredEntityTypeGroupsByEntity($entity){
+    function getRegisteredEntityTypeGroupsByEntity(Entity|string $entity): array {
         if(is_object($entity))
             $entity = $entity->getClassName();
 
@@ -2506,59 +2933,71 @@ class App extends \Slim\Slim{
     }
 
     /**
-     * Register an Entity Type.
-     *
-     * @param \MapasCulturais\Definitions\EntityType $type The Entity Type to register.
+     * Registra um tipo de entidade
+     * 
+     * @param Definitions\EntityType $type 
+     * @return void 
      */
     function registerEntityType(Definitions\EntityType $type){
-        if(!key_exists($type->entity_class, $this->_register['entity_types']))
-                $this->_register['entity_types'][$type->entity_class] = [];
+        if (!key_exists($type->entity_class, $this->_register['entity_types'])){
+            $this->_register['entity_types'][$type->entity_class] = [];
+        }
 
         $this->_register['entity_types'][$type->entity_class][$type->id] = $type;
     }
 
     /**
-     * Returns the Entity Type Definition if it exists.
-     *
-     * @param type $entity The entity object or class name
-     * @param type $type_id The id of the type
-     *
-     * @return \MapasCulturais\Definitions\EntityType|null
+     * Retorna a definição do tipo de entidade
+     * 
+     * @param Entity|string $entity a entidade ou a classe
+     * @param int $type_id 
+     * @return mixed 
+     * 
+     * @throws ReflectionException 
+     * @throws MappingException 
      */
-    function getRegisteredEntityTypeById($entity, $type_id){
-        if(is_object($entity))
+    function getRegisteredEntityTypeById(Entity|string $entity, int $type_id): Definitions\EntityType|null {
+        if (is_object($entity)) {
             $entity = $entity->getClassName();
+        }
 
-        if(isset($this->_register['entity_types'][$entity][$type_id]))
-            return $this->_register['entity_types'][$entity][$type_id];
-        else
-            return null;
+        return $this->_register['entity_types'][$entity][$type_id] ?? null;
     }
 
     /**
-     * Check if the Entity Type exists.
+     * Verifica se o tipo de entidade existe
      *
-     * @param tring $entity The entity object or class name
-     * @param int $type_id The type id
+     * @param Entity|string $entity a entidade ou a classe
+     * @param int $type_id 
      *
-     * @return boolean true if the entity type exists or false otherwise
+     * @return boolean
      */
-    function entityTypeExists($entity, $type_id){
+    function entityTypeExists(Entity|string $entity, int $type_id): bool {
         return !!$this->getRegisteredEntityTypeById($entity, $type_id);
     }
 
     /**
-     * Returns the Entity Type of the given entity.
+     * Retorna a definição do tipo de uma entidade
      *
-     * @param \MapasCulturais\Entity $object The entity.
+     * @param Entity $entity 
      *
-     * @return \MapasCulturais\Definitions\EntityType
+     * @return Definitions\EntityType
      */
-    function getRegisteredEntityType(Entity $object){
-        return $this->_register['entity_types'][$object->getClassName()][(string)$object->type] ?? null;
+    function getRegisteredEntityType(Entity $entity): Definitions\EntityType|null {
+        return $this->_register['entity_types'][$entity->getClassName()][(string)$entity->type] ?? null;
     }
 
-    function getRegisteredEntityTypeByTypeName($entity, string $type_name) {
+    /**
+     * Retorna a definição de um tipo de entidade
+     * 
+     * @param Entity|string $entity 
+     * @param string $type_name 
+     * @return Definitions\EntityType|null 
+     * 
+     * @throws ReflectionException 
+     * @throws MappingException 
+     */
+    function getRegisteredEntityTypeByTypeName(Entity|string $entity, string $type_name): Definitions\EntityType|null {
         foreach($this->getRegisteredEntityTypes($entity) as $type) {
             if (strtolower($type->name) == trim(strtolower($type_name))) {
                 return $type;
@@ -2571,41 +3010,66 @@ class App extends \Slim\Slim{
     /**
      * Returns the registered entity types for the given entity class or object.
      *
-     * @param \MapasCulturais\Entity|string $entity The entity.
+     * @param Entity|string $entity The entity.
      *
-     * @return \MapasCulturais\Definitions\EntityType[]
+     * @return Definitions\EntityType[]
      */
-    function getRegisteredEntityTypes($entity){
+    function getRegisteredEntityTypes(Entity|string $entity): array {
         if(is_object($entity))
             $entity = $entity->getClassName();
 
         return $this->_register['entity_types'][$entity] ?? [];
     }
 
-    function registerRegistrationFieldType(Definitions\RegistrationFieldType $registration_field){
+
+
+    /** 
+     * ============ TIPOS DE CAMPOS DE FORMULÁRIO DE OPORTUNIDADE ============ 
+     */
+
+    /**
+     * Registra um tipo de campo de formulário de inscrição
+     * 
+     * @param RegistrationFieldType $registration_field 
+     * @return void 
+     */
+    function registerRegistrationFieldType(Definitions\RegistrationFieldType $registration_field) {
         $this->_register['registration_fields'][$registration_field->slug] = $registration_field;
     }
 
-    function getRegisteredRegistrationFieldTypes(){
+    /**
+     * Retornaos tipos de campo de formulário de inscrição registrados
+     * 
+     * @return Definitions\RegistrationFieldType[] 
+     */
+    function getRegisteredRegistrationFieldTypes(): array {
         return $this->_register['registration_fields'];
     }
 
-    function getRegisteredRegistrationFieldTypeBySlug($slug) {
-        if (isset($this->_register['registration_fields'][$slug])) {
-            return $this->_register['registration_fields'][$slug];
-        } else {
-            return null;
-        }
+    /**
+     * Retorna a definição do campo de formulário de inscrição pelo slug informado
+     * 
+     * @param string $slug 
+     * @return RegistrationFieldType|null 
+     */
+    function getRegisteredRegistrationFieldTypeBySlug(string $slug): Definitions\RegistrationFieldType|null {
+        return $this->_register['registration_fields'][$slug] ?? null;
     }
 
-    /**
-     * Register an Entity Metadata Definition.
-     *
-     * @param \MapasCulturais\Definitions\Metadata $metadata The metadata definition
-     * @param string $entity_class The Entity Class Name
-     * @param int $entity_type_id The Entity Type id
+
+
+    /** 
+     * ============ METADADOS ============ 
      */
-    function registerMetadata(Definitions\Metadata $metadata, $entity_class, $entity_type_id = null){
+
+    /**
+     * Registra um metadado para a entidade especificada
+     *
+     * @param Definitions\Metadata $metadata
+     * @param string $entity_class 
+     * @param int|null $entity_type_id
+     */
+    function registerMetadata(Definitions\Metadata $metadata, string $entity_class, int $entity_type_id = null) {
         if($entity_class::usesTypes() && is_null($entity_type_id)){
             foreach($this->getRegisteredEntityTypes($entity_class) as $type){
                 if($type){
@@ -2629,13 +3093,23 @@ class App extends \Slim\Slim{
         }
     }
 
-    function unregisterEntityMetadata($entity_class, $key = null){
-        foreach($this->_register['entity_metadata_definitions'] as $k => $metadata){
-            if($k === $entity_class || strpos($k . ':', $entity_class) === 0){
+    /**
+     * Desregistra um metadado de uma entidade
+     * 
+     * Se a chave do metadado não for informada, desregistra todos os metadados
+     * 
+     * @param string $entity_class 
+     * @param string $key 
+     * 
+     * @return void 
+     */
+    function unregisterEntityMetadata(string $entity_class, string $key = null) {
+        foreach($this->_register['entity_metadata_definitions'] as $class => $metadata){
+            if($class === $entity_class || strpos($class . ':', $entity_class) === 0){
                 if($key){
-                    unset($this->_register['entity_metadata_definitions'][$k][$key]);
+                    unset($this->_register['entity_metadata_definitions'][$class][$key]);
                 } else {
-                    $this->_register['entity_metadata_definitions'][$k] = [];
+                    $this->_register['entity_metadata_definitions'][$class] = [];
                 }
             }
         }
@@ -2647,43 +3121,57 @@ class App extends \Slim\Slim{
      *
      * If the given entity class has no registered metadata, returns an empty array
      *
-     * @param \MapasCulturais\Entity $entity
+     * @param Entity|string $entity
      *
-     * @return \MapasCulturais\Definitions\Metadata[]
+     * @return Definitions\Metadata[]
      */
-    function getRegisteredMetadata($entity, $type = null){
-        if(is_object($entity))
+    function getRegisteredMetadata(Entity|string $entity, int $type = null){
+        if (is_object($entity)) {
             $entity = $entity->getClassName();
+        }
 
         $key = $entity::usesTypes() && $type ? "{$entity}:{$type}" : $entity;
-        return key_exists($key, $this->_register['entity_metadata_definitions']) ? $this->_register['entity_metadata_definitions'][$key] : [];
+
+        return key_exists($key, $this->_register['entity_metadata_definitions']) ? 
+            $this->_register['entity_metadata_definitions'][$key] : [];
     }
 
     /**
-     * Return a metada definition
+     * Retorna a definição de um metadado
+     * 
      * @param string $metakey
      * @param string $entity
      * @param int $type
-     * @return \MapasCulturais\Definitions\Metadata
+     * @return Definitions\Metadata|null
      */
-    function getRegisteredMetadataByMetakey($metakey, $entity, $type = null){
-        if(is_object($entity))
+    function getRegisteredMetadataByMetakey(string $metakey, Entity|string $entity, int $type = null): Definitions\Metadata|null {
+        if (is_object($entity)) {
             $entity = $entity->getClassName();
+        }
+        
         $metas = $this->getRegisteredMetadata($entity, $type);
-        return key_exists($metakey, $metas) ? $metas[$metakey] : null;
 
+        return $metas[$metakey] ?? null;
     }
+
+
+
+    /** 
+     * ============ GRUPOS DE ARQUIVO ============ 
+     */
 
     /**
      * Register a new File Group Definition to the specified controller.
      *
      * @param string $controller_id The id of the controller.
-     * @param \MapasCulturais\Definitions\FileGroup $group The group to register
+     * @param Definitions\FileGroup $group The group to register
      */
-    function registerFileGroup($controller_id, Definitions\FileGroup $group){
+    function registerFileGroup(string $controller_id, Definitions\FileGroup $group){
         $controller_id = strtolower($controller_id);
-        if(!key_exists($controller_id, $this->_register['file_groups']))
+
+        if(!key_exists($controller_id, $this->_register['file_groups'])){
             $this->_register['file_groups'][$controller_id] = [];
+        }
 
         $this->_register['file_groups'][$controller_id][$group->name] = $group;
     }
@@ -2696,34 +3184,46 @@ class App extends \Slim\Slim{
      * @param string $controller_id The controller id.
      * @param string $group_name The group name.
      *
-     * @return \MapasCulturais\Definitions\FileGroup|null The File Group Definition
+     * @return Definitions\FileGroup|null The File Group Definition
      */
-    function getRegisteredFileGroup($controller_id, $group_name){
-        if($controller_id && $group_name && key_exists($controller_id, $this->_register['file_groups']) && key_exists($group_name, $this->_register['file_groups'][$controller_id]))
-            return $this->_register['file_groups'][$controller_id][$group_name];
-        else
-            return null;
+    function getRegisteredFileGroup(string $controller_id, string $group_name): Definitions\FileGroup|null {
+        return $this->_register['file_groups'][$controller_id][$group_name] ?? null;
     }
 
-    function getRegisteredFileGroupsByEntity($entity){
-        if(is_object($entity))
+    /**
+     * Retorna os grupos de arquivo registrados para a entidade
+     * 
+     * @param Entity|string $entity 
+     * @return Definitions\FileGroup[]|null 
+     * 
+     * @throws ReflectionException 
+     * @throws MappingException 
+     */
+    function getRegisteredFileGroupsByEntity(Entity|string $entity): array {
+        if (is_object($entity)) {
             $entity = $entity->getClassName();
+        }
 
         $controller_id = $this->getControllerIdByEntity($entity);
 
-        return $controller_id && key_exists($controller_id, $this->_register['file_groups']) ? $this->_register['file_groups'][$controller_id] : [];
-
+        return $this->_register['file_groups'][$controller_id] ?? [];
     }
+
+
+
+    /** 
+     * ============ TRANSFORMAÇÕES DE IMAGENS ============ 
+     */
 
     /**
      * Register a new image transformation.
      *
-     * @see \MapasCulturais\Entities\File::_transform()
+     * @see Entities\File::_transform()
      *
-     * @param type $name
-     * @param type $transformation
+     * @param string $name
+     * @param string $transformation
      */
-    function registerImageTransformation($name, $transformation){
+    function registerImageTransformation(string $name, string $transformation) {
         $this->_register['image_transformations'][$name] = trim($transformation);
     }
 
@@ -2734,19 +3234,23 @@ class App extends \Slim\Slim{
      *
      * @return string The Transformation Expression
      */
-    function getRegisteredImageTransformation($name){
-        return key_exists($name, $this->_register['image_transformations']) ?
-                $this->_register['image_transformations'][$name] :
-                null;
+    function getRegisteredImageTransformation(string $name): string {
+        return $this->_register['image_transformations'][$name] ?? null;
     }
+
+
+
+    /** 
+     * ============ METALISTS ============ 
+     */
 
     /**
      * Register a new MetaList Group Definition to the specified controller.
      *
      * @param string $controller_id The id of the controller.
-     * @param \MapasCulturais\Definitions\MetaListGroup $group The group to register
+     * @param Definitions\MetaListGroup $group The group to register
      */
-    function registerMetaListGroup($controller_id, Definitions\MetaListGroup $group){
+    function registerMetaListGroup(string $controller_id, Definitions\MetaListGroup $group) {
         if(!key_exists($controller_id, $this->_register['metalist_groups']))
             $this->_register['metalist_groups'][$controller_id] = [];
 
@@ -2761,33 +3265,41 @@ class App extends \Slim\Slim{
      * @param string $controller_id The controller id.
      * @param string $group_name The group name.
      *
-     * @return \MapasCulturais\Definitions\MetaListGroup|null The MetaList Group Definition
+     * @return Definitions\MetaListGroup|null The MetaList Group Definition
      */
-    function getRegisteredMetaListGroup($controller_id, $group_name){
-        if(key_exists($controller_id, $this->_register['metalist_groups']) && key_exists($group_name, $this->_register['metalist_groups'][$controller_id]))
-            return $this->_register['metalist_groups'][$controller_id][$group_name];
-        else
-            return null;
+    function getRegisteredMetaListGroup(string $controller_id, string $group_name): Definitions\MetaListGroup|null {
+        return $this->_register['metalist_groups'][$controller_id][$group_name] ?? null;
     }
 
-    function getRegisteredMetaListGroupsByEntity($entity){
+    /**
+     * Retorna os grupos de metalists registrados para entiadde informada
+     * 
+     * @param Entity|string $entity 
+     * 
+     * @return Definitions\MetaListGroup[]
+     * 
+     * @throws ReflectionException 
+     * @throws MappingException 
+     */
+    function getRegisteredMetaListGroupsByEntity(Entity|string $entity): array {
         if(is_object($entity))
             $entity = $entity->getClassName();
 
         $controller_id = $this->getControllerIdByEntity($entity);
 
-        return key_exists($controller_id, $this->_register['metalist_groups']) ? $this->_register['metalist_groups'][$controller_id] : [];
+        return $this->_register['metalist_groups'][$controller_id] ?? [];
     }
 
     /**
      * Register a Taxonomy Definition to an entity class.
      *
      * @param string $entity_class The entity class name to register.
-     * @param \MapasCulturais\Definitions\Taxonomy $definition
+     * @param Definitions\Taxonomy $definition
      */
-    function registerTaxonomy($entity_class, Definitions\Taxonomy $definition){
-        if(!key_exists($entity_class, $this->_register['taxonomies']['by-entity']))
-                $this->_register['taxonomies']['by-entity'][$entity_class] = [];
+    function registerTaxonomy($entity_class, Definitions\Taxonomy $definition) {
+        if (!key_exists($entity_class, $this->_register['taxonomies']['by-entity'])) {
+            $this->_register['taxonomies']['by-entity'][$entity_class] = [];
+        }
 
         $this->_register['taxonomies']['by-entity'][$entity_class][$definition->slug] = $definition;
 
@@ -2800,10 +3312,10 @@ class App extends \Slim\Slim{
      *
      * @param int $taxonomy_id The id of the taxonomy to return
      *
-     * @return \MapasCulturais\Definitions\Taxonomy The Taxonomy Definition
+     * @return Definitions\Taxonomy The Taxonomy Definition
      */
-    function getRegisteredTaxonomyById($taxonomy_id){
-        return key_exists($taxonomy_id, $this->_register['taxonomies']['by-id']) ? $this->_register['taxonomies']['by-id'][$taxonomy_id] : null;
+    function getRegisteredTaxonomyById($taxonomy_id): Definitions\Taxonomy|null {
+        return $this->_register['taxonomies']['by-id'][$taxonomy_id] ?? null;
     }
 
     /**
@@ -2811,10 +3323,10 @@ class App extends \Slim\Slim{
      *
      * @param string $taxonomy_slug The slug of the taxonomy to return
      *
-     * @return \MapasCulturais\Definitions\Taxonomy The Taxonomy Definition
+     * @return Definitions\Taxonomy The Taxonomy Definition
      */
-    function getRegisteredTaxonomyBySlug($taxonomy_slug){
-        return key_exists($taxonomy_slug, $this->_register['taxonomies']['by-slug']) ? $this->_register['taxonomies']['by-slug'][$taxonomy_slug] : null;
+    function getRegisteredTaxonomyBySlug(string $taxonomy_slug): Definitions\Taxonomy|null {
+        return $this->_register['taxonomies']['by-slug'][$taxonomy_slug] ?? null;
     }
 
     /**
@@ -2822,18 +3334,19 @@ class App extends \Slim\Slim{
      *
      * If there is no registered taxonomies to the given entity returns an empty array.
      *
-     * @param \MapasCulturais\Entity|string $entity The entity object or class name
+     * @param Entity|string $entity The entity object or class name
      *
-     * @return \MapasCulturais\Definitions\Taxonomy[] The Taxonomy Definitions objects or an empty array
+     * @return Definitions\Taxonomy[] The Taxonomy Definitions objects or an empty array
      */
-    function getRegisteredTaxonomies($entity = null){
-        if(is_object($entity))
+    function getRegisteredTaxonomies(Entity|string $entity = null): array {
+        if (is_object($entity)) {
             $entity = $entity->getClassName();
+        }
 
         if(is_null($entity)){
             return $this->_register['taxonomies']['by-slug'];
         }else{
-            return key_exists($entity, $this->_register['taxonomies']['by-entity']) ? $this->_register['taxonomies']['by-entity'][$entity] : [];
+            return $this->_register['taxonomies']['by-entity'][$entity] ?? [];
         }
     }
 
@@ -2842,34 +3355,43 @@ class App extends \Slim\Slim{
      *
      * If the given entity don't have the given taxonomy slug registered, returns null.
      *
-     * @param type $entity The entity object or class name.
-     * @param type $taxonomy_slug The taxonomy slug.
+     * @param Entity|string $entity The entity object or class name.
+     * @param string $taxonomy_slug The taxonomy slug.
      *
-     * @return \MapasCulturais\Definitions\Taxonomy The Taxonomy Definition.
+     * @return Definitions\Taxonomy|null The Taxonomy Definition.
      */
-    function getRegisteredTaxonomy($entity, $taxonomy_slug){
-        if(is_object($entity))
+    function getRegisteredTaxonomy(Entity|string $entity, string $taxonomy_slug): Definitions\Taxonomy|null {
+        if (is_object($entity)) {
             $entity = $entity->getClassName();
+        }
 
-        return key_exists($entity, $this->_register['taxonomies']['by-entity']) && key_exists($taxonomy_slug, $this->_register['taxonomies']['by-entity'][$entity]) ?
-                    $this->_register['taxonomies']['by-entity'][$entity][$taxonomy_slug] : null;
+        return $this->_register['taxonomies']['by-entity'][$entity][$taxonomy_slug] ?? null;
     }
 
 
-    /**
-     * Register an Evaluation Method
-     * @param \MapasCulturais\Definitions\EvaluationMethod $def
+
+    /** 
+     * ============ MÉTODOS DE AVALIAÇÃO ============ 
      */
-    function registerEvaluationMethod(Definitions\EvaluationMethod $def){
+
+    /**
+     * Registra um método de avaliação
+     * 
+     * @param Definitions\EvaluationMethod $def
+     */
+    function registerEvaluationMethod(Definitions\EvaluationMethod $def) {
         $this->_register['evaluation_method'][$def->slug] = $def;
     }
 
 
     /**
      * Returns the evaluation methods definitions
-     * @return \MapasCulturais\Definitions\EvaluationMethod[];
+     * 
+     * @param bool $return_internal 
+     * 
+     * @return Definitions\EvaluationMethod[];
      */
-    function getRegisteredEvaluationMethods($return_internal = false){
+    function getRegisteredEvaluationMethods(bool $return_internal = false): array {
         return array_filter($this->_register['evaluation_method'], function(Definitions\EvaluationMethod $em) use ($return_internal) {
             if($return_internal || !$em->internal) {
                 return $em;
@@ -2878,357 +3400,76 @@ class App extends \Slim\Slim{
     }
 
     /**
-     * Unregister an Evaluation Method
-     * @param \MapasCulturais\Definitions\EvaluationMethod $def
+     * Desregistra um método de avaliação
+     * 
+     * @param Definitions\EvaluationMethod $def
      */
-    function unregisterEvaluationMethod($slug){
+    function unregisterEvaluationMethod(string $slug){
         unset($this->_register['evaluation_method'][$slug]);
     }
 
     /**
-     * Returns the evaluation method definition
+     * Retorna o método de avaliação pelo slug
      *
      * @param string $slug
      *
-     * @return \MapasCulturais\Definitions\EvaluationMethod;
+     * @return Definitions\EvaluationMethod;
      */
-    function getRegisteredEvaluationMethodBySlug($slug){
-        if(isset($this->_register['evaluation_method'][$slug])){
-            return $this->_register['evaluation_method'][$slug];
-        } else {
-            return null;
-        }
+    function getRegisteredEvaluationMethodBySlug(string $slug){
+        return $this->_register['evaluation_method'][$slug] ?? null;
     }
 
-    /*************
-     * Utils
-     ************/
 
-    function slugify($text) {        
-        return Utils::slugify($text);
-    }
-
-    function removeAccents($string) {
-        return Utils::removeAccents($string);
-    }
-
-    function detachRS($rs){
-        $em = $this->_em;
-
-        foreach($rs as $r){
-            $em->detach($r);
-        }
-    }
-
-    /**************
-     * Utils
-     **************/
-
-    function getManagedEntity(Entity $entity){
-        if($entity->getEntityState() > 2){
-            $entity = App::i()->repo($entity->getClassName())->find($entity->id);
-            $entity->refresh();
-        }
-
-        return $entity;
-    }
+    /**************************************
+     *              DB UPDATES 
+     **************************************/
 
     /**
-     * returns Swift_Mailer instance
-     *
-     * @return \Swift_Mailer Mailer object
+     * Aplica os db-uptades
      */
-    function getMailer() {
-        $transport = [];
+    function _dbUpdates(){
+        $this->disableAccessControl();
 
-        // server
-        $server = isset($this->_config['mailer.server']) &&  !empty($this->_config['mailer.server']) ? $this->_config['mailer.server'] : false;
+        $executed_updates = [];
 
-        // default transport SMTP
-        $transport_type = isset($this->_config['mailer.transport']) &&  !empty($this->_config['mailer.transport']) ? $this->_config['mailer.transport'] : 'smtp';
+        foreach($this->repo('DbUpdate')->findAll() as $update)
+            $executed_updates[] = $update->name;
 
-        // default port to 25
-        $port = isset($this->_config['mailer.port']) &&  !empty($this->_config['mailer.port']) ? $this->_config['mailer.port'] : 25;
+        $updates = include DB_UPDATES_FILE;
 
-        // default encryption protocol to ssl
-        $protocol = isset($this->_config['mailer.protocol']) ? $this->_config['mailer.protocol'] : null;
-
-        if ($transport_type == 'smtp' && false !== $server) {
-
-            $transport = \Swift_SmtpTransport::newInstance($server, $port, $protocol);
-
-            // Maybe add username and password
-            if (isset($this->_config['mailer.user']) && !empty($this->_config['mailer.user']) &&
-                isset($this->_config['mailer.psw']) && !empty($this->_config['mailer.psw']) ) {
-
-                $transport->setUsername($this->_config['mailer.user'])->setPassword($this->_config['mailer.psw']);
-            }
-
-        } elseif ($transport_type == 'sendmail' && false !== $server) {
-            $transport = \Swift_SendmailTransport::newInstance($server);
-        } elseif ($transport_type == 'mail') {
-            $transport = \Swift_MailTransport::newInstance();
-        } else {
-            return false;
-        }
-
-        $instance = \Swift_Mailer::newInstance($transport);
-
-        return $instance;
-    }
-
-    /**
-     *
-     * @param array $args
-     * @return \Swift_Message
-     */
-    function createMailMessage(array $args = []){
-        $message = \Swift_Message::newInstance();
-
-        if($this->_config['mailer.from']){
-            $message->setFrom($this->_config['mailer.from']);
-        }
-
-        if($this->_config['mailer.alwaysTo']){
-            $message->setTo($this->_config['mailer.alwaysTo']);
-        }
-
-        if($this->_config['mailer.bcc']){
-            $message->setBcc($this->_config['mailer.bcc']);
-        }
-
-        if($this->_config['mailer.replyTo']){
-            $message->setReplyTo($this->_config['mailer.replyTo']);
-        }
-
-        $type = $message->getHeaders()->get('Content-Type');
-        $type->setValue('text/html');
-        $type->setParameter('charset', 'utf-8');
-
-        $original = [];
-        foreach($args as $key => $value){
-            if(in_array(strtolower($key), ['to', 'cc', 'bcc']) && $this->_config['mailer.alwaysTo']){
-                $original[$key] = $value;
-                continue;
-            }
-
-            $key = ucfirst($key);
-            $method_name = 'set' . $key;
-
-            if(method_exists($message, $method_name)){
-                $message->$method_name($value);
+        foreach($this->view->path as $path){
+            $db_update_file = $path . 'db-updates.php';
+            if(file_exists($db_update_file)){
+                $updates += include $db_update_file;
             }
         }
 
-        if($this->_config['mailer.alwaysTo']){
-            foreach($original as $key => $val){
-                if(is_array($val)){
-                    $val = implode(', ', $val);
+        $new_updates = false;
+
+        foreach($updates as $name => $function){
+            if(!in_array($name, $executed_updates)){
+                $new_updates = true;
+                echo "\nApplying db update \"$name\":";
+                echo "\n-------------------------------------------------------------------------------------------------------\n";
+                try{
+                    if($function() !== false){
+                        $update = new Entities\DbUpdate();
+                        $update->name = $name;
+                        $update->save();
+                    }
+                }catch(\Exception $e){
+                    echo "\nERROR " . $e . "\n";
                 }
-                $message->setBody("<strong>ORIGINALMENTE $key:</strong> $val <br>\n" . $message->getBody());
+                echo "\n-------------------------------------------------------------------------------------------------------\n\n";
             }
         }
 
-        return $message;
+        if($new_updates){
+            $this->_em->flush();
+            $this->cache->deleteAll();
+        }
+
+        $this->enableAccessControl();
     }
 
-    function sendMailMessage(\Swift_Message $message){
-        $failures = [];
-        $mailer = $this->getMailer();
-
-        if (!is_object($mailer))
-            return false;
-
-        try {
-            $mailer->send($message,$failures);
-            return true;
-        } catch(\Swift_TransportException $exception) {
-            App::i()->log->info('Swift Mailer error: ' . $exception->getMessage());
-            return false;
-        }
-    }
-
-    function createAndSendMailMessage(array $args = []){
-        $message = $this->createMailMessage($args);
-        return $this->sendMailMessage($message);
-    }
-
-    function renderMustacheTemplate($template,$templateData) {
-        if(!is_array($templateData) && !is_object($templateData)) {
-            throw new \Exception('Template data not object or array');
-        }
-
-        $templateData = (object) $templateData;
-
-        if ($this->view->version >= 2) {
-            $templateData->siteName = $this->siteName;
-            $templateData->siteDescription = $this->siteDescription;
-
-        } else {
-            $templateData->siteName = $this->view->dict('site: name', false);
-            $templateData->siteDescription = $this->view->dict('site: description', false);
-            $templateData->siteOwner = $this->view->dict('site: owner', false);
-        }
-        
-        $templateData->baseUrl = $this->getBaseUrl();
-
-        if(!($footer_name = $this->view->resolveFileName('templates/' . i::get_locale(), '_footer.html'))) {
-            if(!($footer_name = $this->view->resolveFileName('templates/pt_BR', '_footer.html'))) {
-                throw new \Exception('Email footer template not found');
-            }
-        }
-
-        if(!($header_name = $this->view->resolveFileName('templates/' . i::get_locale(), '_header.html'))) {
-            if(!($header_name = $this->view->resolveFileName('templates/pt_BR', '_header.html'))) {
-                throw new \Exception('Email header template not found');
-            }
-        }
-
-        if(!($file_name = $this->view->resolveFileName('templates/' . i::get_locale(), $template))) {
-            if(!($file_name = $this->view->resolveFileName('templates/pt_BR', $template))) {
-                throw new \Exception('Email Template undefined');
-            }
-        }
-
-        $header = file_get_contents($header_name);
-        $footer = file_get_contents($footer_name);
-        $content = file_get_contents($file_name);
-
-        $matches = [];
-        if(preg_match_all('#\{\{asset:([^\}]+)\}\}#', $header, $matches)){
-            foreach($matches[0] as $i => $tag){
-                $header = str_replace($tag, $this->view->asset($matches[1][$i], false), $header);
-            }
-        }
-
-        $matches = [];
-        if(preg_match_all('#\{\{asset:([^\}]+)\}\}#', $footer, $matches)){
-            foreach($matches[0] as $i => $tag){
-                $footer = str_replace($tag, $this->view->asset($matches[1][$i], false), $footer);
-            }
-        }
-
-        $matches = [];
-        if(preg_match_all('#\{\{asset:([^\}]+)\}\}#', $content, $matches)){
-            foreach($matches[0] as $i => $tag){
-                $content = str_replace($tag, $this->view->asset($matches[1][$i], false), $content);
-            }
-        }
-
-        
-        $mustache = new \Mustache_Engine();
-
-        $headerData = $templateData;
-        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).headerData", [&$headerData]);
-        $_header = $mustache->render($header, $headerData);
-        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).header", [&$_header]);
-
-        $footerData = $templateData;
-        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).footerData", [&$footerData]);
-        $_footer = $mustache->render($footer, $footerData);
-        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).footer", [&$_footer]);
-
-        $templateData->_footer = $_footer;
-        $templateData->_header = $_header;
-        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).templateData", [&$templateData]);
-        $content = $mustache->render($content, $templateData);
-        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).content", [&$content]);
-
-        return $content;
-    }
-
-    function renderMailerTemplate($slug, $templateData = []) {
-        if(array_key_exists($slug,$this->_config['mailer.templates'])) {
-            $message = $this->_config['mailer.templates'][$slug];
-            $message['body'] = $this->renderMustacheTemplate($message['template'],$templateData);
-            return $message;
-        } else {
-            throw new Exceptions\MailTemplateNotFound($slug);
-        }
-    }
-
-    /**************
-     * GetText
-     **************/
-    /* deprecated, use MapasCulturais\i::get_locale();
-     *
-     *
-     *
-     */
-    static function getCurrentLCode(){
-        return \MapasCulturais\i::get_locale();
-    }
-
-    static function getTranslations($lcode, $domain = null) {
-        $app = App::i();
-        $log = key_exists('app.log.translations', $app->_config) && $app->_config['app.log.translations'];
-
-        $cache_id = $domain ? "app.translation:{$domain}:{$lcode}" : "app.translation::{$lcode}";
-
-        $use_cache = key_exists('app.useTranslationsCache', $app->_config) && $app->_config['app.useTranslationsCache'];
-
-        if ($use_cache && $app->cache->contains($cache_id)) {
-            return $app->cache->fetch($cache_id);
-        }
-
-        $translations_filename = APPLICATION_PATH . ( $domain ? "translations/{$domain}/{$lcode}.php" : "translations/{$lcode}.php" );
-
-        if (file_exists($translations_filename)) {
-            $translations = include $translations_filename;
-        } else {
-            if ($log) {
-                $app->applyHook("txt({$domain}.{$lcode}).missingFile");
-                $app->log->warn("TXT > missing '$lcode' translation file for domain '$domain'");
-            }
-            $translations = [];
-        }
-        if ($use_cache) {
-            $app->cache->save($cache_id, $translations);
-        }
-
-        return $translations;
-    }
-
-    static function txt($message, $domain = null, $lcode = null){
-        $app = App::i();
-        $message = trim($message);
-
-        if(is_null($lcode)){
-            $lcode = $app->getCurrentLCode();
-        }
-
-        $translations = self::getTranslations($lcode, $domain);
-        $backtrace = debug_backtrace(3,1)[0];
-        $file = str_replace(APPLICATION_PATH,'',$backtrace['file']);
-
-        $log = key_exists('app.log.translations', $app->_config) && $app->_config['app.log.translations'];
-
-        if(key_exists($file, $translations) && is_array($translations[$file]) && key_exists($message, $translations[$file])){
-            $message = $translations[$file][$message];
-        }elseif(key_exists($message, $translations)){
-            $message = $translations[$message];
-        }elseif($log){
-            $app->applyHook("txt({$domain}.{$lcode}).missingTranslation");
-            $app->log->warn ("TXT > missing '$lcode' translation for message '$message' in domain '$domain'");
-        }
-
-
-        return $message;
-
-    }
-
-    static function txts($singular_message, $plural_message, $n, $domain = null) {
-        if ($n === 1) {
-            return self::txt($singular_message, $domain);
-        } else {
-            return self::txt($plural_message, $domain);
-        }
-    }
-
-    function getReadableName($id) {
-        if (array_key_exists($id, $this->_config['routes']['readableNames'])) {
-            return $this->_config['routes']['readableNames'][$id];
-        }
-        return null;
-    }
 }
