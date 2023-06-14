@@ -35,7 +35,6 @@ services:
       # chaves de teste do google recaptcha
       - GOOGLE_RECAPTCHA_SITEKEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
       - GOOGLE_RECAPTCHA_SECRET=6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
-      - REDIRECT_404_ASSETS_TO=https://mapa.iberculturaviva.org/
     depends_on:
       - db
       - redis
