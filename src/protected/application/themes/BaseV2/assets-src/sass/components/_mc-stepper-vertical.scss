@@ -124,10 +124,13 @@ ol.mc-stepper-vertical>li {
                 }
             }
 
-            &--button {
-                display: flex;
-                gap: size(22);
-                align-items: center;
+            &-button {
+                display: grid;
+                grid-template-columns: 1fr auto;
+                text-align: center;
+                svg {
+                    justify-self: end;
+                }
 
             }
         }
