@@ -20,17 +20,12 @@ case $i in
             DOWN="1"
 	    shift
     ;;
-    -u|--update)
-            BUILD="1"
-	    rm ../src/protected/composer.lock
-	    shift
     ;;
     -h|--help)
     	    echo "
 	run-tests.sh [-b] [-u] [-d] [-s=25]
 
     -b=  | --build      builda a imagem Docker
-    -u=  | --update     atualiza os pacotes do composer
 	-d=  | --down       executa o docker-compose down antes do docker-compose run
     -h=  | --help       Imprime este texto de ajuda
 		    "
