@@ -140,6 +140,10 @@ app.component('opportunity-subscription' , {
         removeAgent() {
             this.agent = null;
         },
+        redirectLogin() {
+            let url = Utils.createUrl('auth', '');
+            window.location.href = url;
+        },
         fetch(entities) {
             this.entities = entities;
 
