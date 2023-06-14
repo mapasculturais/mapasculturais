@@ -1,8 +1,7 @@
 @use '../settings/mixins'as *;
 
 .opportunity-category {
-  border-right: 1px solid var(--mc-gray-300);
-  padding-right: size(16);
+ 
   &__header {
     .card-header {
       &__title {
