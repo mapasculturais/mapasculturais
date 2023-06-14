@@ -153,7 +153,7 @@ $this->breadcrumb = [
                 </mc-card>
 
                 <mc-card v-if="useSpaceRelation !== 'dontUse'"> 
-                    <template v-if="" #title>
+                    <template #title>
                         <label> <?= i::__('Espaço Vinculado') ?> </label>
                     </template>
                     <template #content>
