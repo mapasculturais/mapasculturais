@@ -1,4 +1,4 @@
-@use '../settings/mixins' as *;
+@use '../settings/mixins'as *;
 
 .opportunity-category {
   border-right: 1px solid var(--mc-gray-300);
@@ -7,17 +7,10 @@
     .card-header {
       &__title {
         padding-bottom: size(8);
-      }
-
-      &__subtitle {
-        padding-bottom: size(5);
-      }
     }
-  }
 
-  &__content {
-    & >.field__title {
-      margin: 0;
+    &__subtitle {
+        padding-bottom: size(5);
     }
   }
 }

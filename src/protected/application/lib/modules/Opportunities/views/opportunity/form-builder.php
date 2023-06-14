@@ -5,7 +5,6 @@ $this->layout = 'entity';
 $this->addOpportunityBreadcramb(i::__('Configuração do formulário'));
 
 $this->import('
-    entity-header
     entity-actions
     mc-breadcrumb
     mc-link

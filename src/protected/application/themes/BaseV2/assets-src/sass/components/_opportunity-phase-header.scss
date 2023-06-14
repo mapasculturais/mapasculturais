@@ -2,8 +2,12 @@
 
 .opportunity-phase-header {
     align-items: center;
-    padding: size(24);
+    padding: size(13) size(24);
     background-color: var(--mc-white);
+
+    &__label {
+        color: var(--mc-gray-500);
+    }
 
     &--spacing {
         padding: size(16);
