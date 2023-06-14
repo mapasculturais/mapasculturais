@@ -40,14 +40,14 @@ esac
 done
 
 if [ $BUILD = "1" ]; then
-   docker-compose -f docker-compose.local.yml build
+   docker-compose build
 fi
 
 if [ $DOWN = "1" ]; then
-   docker-compose -f docker-compose.local.yml down
+   docker-compose down
 fi
 
-docker-compose -f docker-compose.local.yml run --name=$MAPAS_NAME --service-ports mapas 
+docker-compose run --name=$MAPAS_NAME --service-ports mapas 
 
-docker-compose -f docker-compose.local.yml down --remove-orphans
+docker-compose down --remove-orphans
 cd $CDIR
