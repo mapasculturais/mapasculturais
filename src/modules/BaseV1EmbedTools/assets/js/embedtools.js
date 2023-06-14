@@ -36,7 +36,11 @@
         const registrationFields = {};
         for (let key in MapasCulturais.registration) {
             if (key.indexOf('field_') === 0) {
-                registrationFields[key] = MapasCulturais.registration[key];
+                if(MapasCulturais.registration[key] instanceof Date){
+                    registrationFields[key] = moment(MapasCulturais.registration[key]).format("YYYY-MM-DD");
+                }else{
+                    registrationFields[key] = MapasCulturais.registration[key];
+                }
             } 
         }
 

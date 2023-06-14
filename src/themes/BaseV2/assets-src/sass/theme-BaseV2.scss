@@ -37,6 +37,7 @@
 @import 'components/entity-request-ownership';
 @import 'components/entity-seals';
 @import 'components/entity-social-media';
+@import 'components/event-age-rating';
 @import 'components/error-display';
 @import 'components/complaint-suggestion';
 @import 'components/entity-terms';
@@ -76,6 +77,7 @@
 @import 'components/notification-modal';
 @import 'components/opportunity-basic-info';
 @import 'components/opportunity-category';
+@import 'components/opportunity-phase-config-data-collection';
 @import 'components/opportunity-form-import';
 @import 'components/opportunity-form-export';
 @import 'components/opportunity-evaluations';
@@ -123,6 +125,7 @@
 
 // LAYOUTS
 @import 'layouts/entity-tabs';
+@import 'layouts/entity';
 @import 'layouts/main-header';
 @import 'layouts/main-footer';
 
@@ -139,3 +142,4 @@
 @import 'pages/support';
 @import 'pages/terms';
 @import 'pages/user-detail';
+@import 'pages/form-builder';

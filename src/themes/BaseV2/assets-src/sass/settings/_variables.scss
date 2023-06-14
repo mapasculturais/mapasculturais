@@ -87,6 +87,12 @@ $high-700: darken($high-500, $lightness-700) !default;
 // FONTS
 $font-body: 'Open Sans', sans-serif !default;
 $font-headings: 'Open Sans', sans-serif !default;
+$font-weight-bold: 700;
+$font-weight-regular: 400;
+$font-weight-semibold: 600;
+$text-transform-lowercase: lowercase;
+$text-transform-none: none;
+$text-transform-uppercase: uppercase;
 
 // Borders radius
 $border-radius-xs: 4px !default;
@@ -129,6 +135,12 @@ $shadow-lv-1-up: 0px -4px 8px rgba(0, 0, 0, 0.16);
     --mc-events-700: #{$events-700};
     --mc-font-body: #{$font-body};
     --mc-font-headings: #{$font-headings};
+    --mc-font-bold: #{$font-weight-bold};
+    --mc-font-regular: #{$font-weight-regular};
+    --mc-font-semibold: #{$font-weight-semibold};
+    --mc-font-transform-lowercase: #{$text-transform-lowercase};
+    --mc-font-transform-none: #{$text-transform-none};
+    --mc-font-transform-uppercase: #{$text-transform-uppercase};
     --mc-gray-100: #{$gray-100};
     --mc-gray-300: #{$gray-300};
     --mc-gray-500: #{$gray-500};

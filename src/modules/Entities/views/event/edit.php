@@ -109,7 +109,7 @@ $this->breadcrumb = [
                 </template>
                 <template #content>
                     <div class="grid-12">
-                        <entity-field :entity="entity" classes="col-12 long-field" prop="longDescription" label="<?php i::esc_attr_e('Apresentação'); ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-12 long-description" prop="longDescription" label="<?php i::esc_attr_e('Apresentação'); ?>"></entity-field>
                         <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::esc_attr_e('Adicionar arquivos para download') ?>" editable></entity-files-list>
                         <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar links'); ?>" editable></entity-links>
                         <entity-gallery-video :entity="entity" classes="col-12" title="<?= i::esc_attr_e('Adicionar vídeos') ?>" editable></entity-gallery-video>
