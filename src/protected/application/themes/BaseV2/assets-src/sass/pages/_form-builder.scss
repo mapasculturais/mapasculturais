@@ -50,27 +50,13 @@
             }
         }
 
-
         .build-list {
             &__content {
                 padding-top: size(16);
-
             }
 
             &__title {
                 font-weight: 600;
-            }
-
-            .mc-tag-list__tagList {
-                padding-bottom: size(16);
-
-                &--tag {
-                    background-color: var(--mc-primary-500);
-                }
-            }
-
-            .popover-tag {
-                padding: size(16) 0 0 0;
             }
         }
     }

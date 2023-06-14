@@ -1,16 +1,11 @@
 @use '../settings/mixins' as *;
 
-.opportunity-phase-config-data-collection {
-    &__hLine {
+.opportunity-data-collection {
+    &__horizontal-line {
         max-width: size(1038);
         border-bottom: 1px solid var(--mc-gray-100);
     }
 
-    &__vLine {
-        max-height: 100%;
-        margin: 0 auto;
-        border-left: 1px solid var(--mc-gray-300)
-    }
 
     &__delete {
         margin: 0 auto;
@@ -33,10 +28,12 @@
 
     &__category {
         display: grid;
-        grid-template-columns: 1fr size(23) 1fr;
+        grid-template-columns: 1fr 1fr;
+      
     }
 
     &__registration {
+        padding-left: size(16);
         .field {
             padding-bottom: size(24);
 
