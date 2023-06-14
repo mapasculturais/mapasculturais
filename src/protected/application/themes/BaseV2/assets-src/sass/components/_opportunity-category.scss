@@ -1,22 +1,11 @@
-@use '../settings/mixins' as *;
+@use '../settings/mixins'as *;
 
 .opportunity-category {
- 
-  &__header {
-    .card-header {
-      &__title {
+    &__title {
         padding-bottom: size(8);
-      }
+    }
 
-      &__subtitle {
+    &__subtitle {
         padding-bottom: size(5);
-      }
     }
-  }
-
-  &__content {
-    & >.field__title {
-      margin: 0;
-    }
-  }
 }
