@@ -1,0 +1,47 @@
+@use '../settings/mixins' as *;
+
+.layout-entity {
+    background-color: var(--mc-white);
+
+    &.action-edit {
+        background-color: var(--mc-gray-100);
+
+        .divider {
+            width: 100%;
+            border-bottom: size(1) solid;
+        }
+
+        .container > main {
+            gap: size(40);
+        }
+    }
+
+    &.action-single {
+        .tabs-component {
+            &__header {
+                border-bottom: 1px solid;
+                padding: 0;
+
+                @media (max-width: size(1200)) {
+                    margin: 0 size(16);
+                }
+            }
+
+            &__buttons {
+                margin: size(35) 0 0;
+
+                &--active::after {
+                    background-color: var(--mc-primary-500);
+                }
+            }
+
+            &__panels {
+                margin-bottom: 0;
+
+                .property-list {
+                    padding-bottom: size(16);
+                }
+            }
+        }
+    }
+}

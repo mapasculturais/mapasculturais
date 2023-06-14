@@ -1,10 +1,11 @@
-@use '../settings/mixins' as *;
+@use '../settings/mixins'as *;
 
 .opportunity-category {
-  &__header {
+    &__title {
+        padding-bottom: size(8);
+    }
 
-  }
-  &__content {
-
-  }
+    &__subtitle {
+        padding-bottom: size(5);
+    }
 }

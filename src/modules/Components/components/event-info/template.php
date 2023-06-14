@@ -7,56 +7,53 @@
 use MapasCulturais\i;
 
 $this->layout = 'entity';
-
-$this->import('
-    entity-location
-    mc-tag-list 
-');
 ?>
-<div class="event_info">
-    <div class="event_info__single" v-if="!editable">
-        <div v-if="entity.descricaoSonora || entity.traducaoLibras" class="acessibility">
-            <label class="acessibility__label"><?php i::_e("Acessibilidade"); ?></label>
-            <div v-if="entity.descricaoSonora" class="acessibility__audio">
-                <span><?php i::_e("Libras:"); ?></span> {{entity.traducaoLibras}}
-            </div>
-            <div v-if="entity.traducaoLibras" class="acessibility__libras">
-                <span><?php i::_e("Áudio de Descrição:"); ?></span> {{entity.descricaoSonora}}
-            </div>
-        </div>
 
-        <div v-if="entity.event_attendance || entity.telefonePublico || entity.registrationInfo" class="event_info__infos">
-            <span class="event_info--label acessibility__label"><?php i::_e("Informações adicionais"); ?></span>
-            <div v-if="entity.event_attendance" class="event_info__infos--audio">
-                <span><?php i::_e("TOTAL DE PÚBLICO:"); ?></span> {{entity.event_attendance}}
-            </div>
-            <div v-if="entity.telefonePublico" class="event_info__infos--libras">
-                <span><?php i::_e("TELEFONE:"); ?></span> {{entity.telefonePublico}}
-            </div>
-            <div v-if="entity.registrationInfo" class="event_info__infos--libras">
-                <span><?php i::_e("INFORMAÇÕES SOBRE AS INSCRIÇÕES:"); ?></span> {{entity.registrationInfo}}
-            </div>
-        </div>
+<div class="event-info" :class="classes">
+    <div v-if="(entity.descricaoSonora || entity.traducaoLibras) && !editable" class="event-info__accessibility">
+        <h4 class="event-info__title"><?= i::__("Acessibilidade"); ?></h4>
+        <p v-if="entity.descricaoSonora" class="event-info__item">
+            <span class="semibold uppercase"><?= i::__("Libras:"); ?></span> 
+            <span class="event-info__value">{{entity.descricaoSonora}}</span>
+        </p>
+        <p v-if="entity.traducaoLibras" class="event-info__item">
+            <span class="semibold uppercase"><?= i::__("Áudio de Descrição:"); ?></span>
+            <span class="event-info__value">{{entity.traducaoLibras}}</span>
+        </p>
     </div>
-    <div class="event-info" v-if="editable">
-        <div class="event-info-edit">
-            <label class="edit-label"><?php i::_e("Acessibilidade"); ?></label>
-            <div class="event-info-edit__fields">
-                <span class="event-info-edit__fields-label"><?php i::_e("Libras:"); ?></span>
-                <div class="event-info-edit__fields--fields">
-                    <label class="options"> <input v-model="entity.traducaoLibras" type="radio" name="traducaoLibras" value="Sim" /> <?= i::_e('Sim') ?> </label>
-                    <label class="options"> <input v-model="entity.traducaoLibras" type="radio" name="traducaoLibras" value="Não" /> <?= i::_e('Não') ?> </label>
-                    <label class="options"> <input v-model="entity.traducaoLibras" type="radio" name="traducaoLibras" :checked="!entity.traducaoLibras"/> <?= i::_e('Não Informado') ?> </label>
-                </div>
-            </div>
+    <div v-if="(entity.event_attendance || entity.telefonePublico || entity.registrationInfo) && !editable" class="event-info__accessibility">
+        <h4 class="bold"><?= i::__("Informações adicionais"); ?></h4>
+        <p v-if="entity.event_attendance" class="event-info__item">
+            <span class="semibold uppercase"><?= i::__("Total de público:"); ?></span>
+            <span class="event-info__value">{{entity.event_attendance}}</span>
+        </p>
+        <p v-if="entity.telefonePublico" class="event-info__item">
+            <span class="semibold uppercase"><?= i::__("telefone:"); ?></span> 
+            <span class="event-info__value">{{entity.telefonePublico}}</span>
+        </p>
+        <p v-if="entity.registrationInfo" class="event-info__item">
+            <span class="semibold uppercase"><?= i::__("Informações sobre a inscrição:"); ?></span>
+            <span class="event-info__value">{{entity.registrationInfo}}</span>
+        </p>
+    </div>
 
-            <div class="event-info-edit__fields">
-                <span class="event-info-edit__fields-label"><?php i::_e("Áudio Descrição:"); ?></span>
-                <div class="event-info-edit__fields--fields">
-                    <label class="options"> <input v-model="entity.descricaoSonora" type="radio" name="descricaoSonora" value="Sim" /> <?= i::_e('Sim') ?> </label>
-                    <label class="options"> <input v-model="entity.descricaoSonora" type="radio" name="descricaoSonora" value="Não" /> <?= i::_e('Não') ?> </label>
-                    <label class="options"> <input v-model="entity.descricaoSonora" type="radio" name="descricaoSonora" :checked="!entity.descricaoSonora" /> <?= i::_e('Não Informado') ?> </label>
-                </div>
+    <div class="event-info__editable" v-if="editable">
+        <h3 class="bold"><?php i::_e("Acessibilidade"); ?></h3>
+        <div class="event-info__fields">
+            <h6 class="semibold"><?php i::_e("Libras:"); ?></h6>
+            <div class="event-info__group">
+                <label class="event-info__field"> <input v-model="entity.traducaoLibras" type="radio" name="traducaoLibras" value="Sim" /> <h6><?= i::_e('Sim') ?></h6> </label>
+                <label class="event-info__field"> <input v-model="entity.traducaoLibras" type="radio" name="traducaoLibras" value="Não" /> <h6><?= i::_e('Não') ?></h6> </label>
+                <label class="event-info__field"> <input v-model="entity.traducaoLibras" type="radio" name="traducaoLibras" :checked="!entity.traducaoLibras"/> <h6><?= i::_e('Não Informado') ?></h6> </label>
+            </div>
+        </div>
+
+        <div class="event-info__fields">
+            <h6 class="semibold"><?php i::_e("Áudio Descrição:"); ?></h6>
+            <div class="event-info__group">
+                <label class="event-info__field"> <input v-model="entity.descricaoSonora" type="radio" name="descricaoSonora" value="Sim" /> <h6><?= i::_e('Sim') ?></h6> </label>
+                <label class="event-info__field"> <input v-model="entity.descricaoSonora" type="radio" name="descricaoSonora" value="Não" /> <h6><?= i::_e('Não') ?></h6> </label>
+                <label class="event-info__field"> <input v-model="entity.descricaoSonora" type="radio" name="descricaoSonora" :checked="!entity.descricaoSonora" /> <h6><?= i::_e('Não Informado') ?></h6> </label>
             </div>
         </div>
     </div>

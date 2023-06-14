@@ -434,6 +434,8 @@ class i {
                     self::$replacements[] = [trim($from_to[0]), trim($from_to[1])];
                 }
             }
+        } else {
+            self::$replacements = [];
         }
 
         foreach (self::$replacements as $replacement) {

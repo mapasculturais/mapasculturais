@@ -11,7 +11,7 @@ $this->import('
 $entity = $this->controller->requestedEntity;
 $url = $app->createUrl('opportunity', 'importFields',[$entity->id]);
 ?>
-<div class="opportunity-form-import">
+<div class="opportunity-form-import" :class="classes">
     <div class="import-buttons">
         <mc-popover openside="down-right" classes="opportunity-form-import--popover">
             <template #button="popover">

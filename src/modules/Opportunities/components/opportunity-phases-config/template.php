@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-card
     mc-stepper-vertical
     opportunity-create-data-collect-phase
     opportunity-create-evaluation-phase
@@ -49,7 +50,7 @@ $this->import('
     <template #default="{index, item}">
         <!-- fase de coleta de dados -->
         <template v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
-            <opportunity-phase-config-data-collection :phases="phases" :phase="item"></opportunity-phase-config-data-collection>
+            <mc-card><opportunity-phase-config-data-collection :phases="phases" :phase="item"></opportunity-phase-config-data-collection></mc-card>
         </template>
 
         <!-- fase de avaliação -->

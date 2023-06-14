@@ -1,0 +1,48 @@
+@use '../settings/mixins' as *;
+
+.opportunity-phase-config-data-collection {
+    &__hLine {
+        max-width: size(1038);
+        border-bottom: 1px solid var(--mc-gray-100);
+    }
+
+    &__vLine {
+        max-height: 100%;
+        margin: 0 auto;
+        border-left: 1px solid var(--mc-gray-300)
+    }
+
+    &__delete {
+        margin: 0 auto;
+
+
+    }
+
+    &__trash {
+        display: flex;
+        gap: size(11);
+        text-decoration: none;
+
+        .iconify {
+            svg {
+                font-size: 20px;
+                color: var(--mc-danger-500);
+            }
+        }
+    }
+
+    &__category {
+        display: grid;
+        grid-template-columns: 1fr size(23) 1fr;
+    }
+
+    &__registration {
+        .field {
+            padding-bottom: size(24);
+
+            &__title {
+                margin: 0;
+            }
+        }
+    }
+}

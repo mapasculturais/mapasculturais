@@ -61,6 +61,7 @@ $this->breadcrumb = [
                                 <entity-list v-if="entity.projects?.length>0" title="<?php i::esc_attr_e('Projetos');?>" type="project" :ids="entity.projects"></entity-list>                                
                                 <entity-list title="<?php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
                             </div>
+                            <complaint-suggestion :entity="entity"></complaint-suggestion>
                         </div>
                     </main>
                     <aside>
@@ -74,11 +75,6 @@ $this->breadcrumb = [
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
                             
                             <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
-                        </div>
-                    </aside>
-                    <aside>
-                        <div class="grid-12">
-                            <complaint-suggestion :entity="entity"></complaint-suggestion>
                         </div>
                     </aside>
                 </mc-container>
