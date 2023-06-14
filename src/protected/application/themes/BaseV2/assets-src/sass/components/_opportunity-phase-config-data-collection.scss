@@ -11,11 +11,13 @@
         margin: 0 auto;
         border-left: 1px solid var(--mc-gray-300)
     }
+
     &__delete {
         margin: 0 auto;
 
-        
+
     }
+
     &__trash {
         display: flex;
         gap: size(11);
@@ -24,17 +26,23 @@
         .iconify {
             svg {
                 font-size: 20px;
-                color: red;
+                color: var(--mc-danger-500);
             }
         }
     }
+
     &__category {
         display: grid;
         grid-template-columns: 1fr size(23) 1fr;
     }
-    // &__registration {
-    //     display: grid;
-    //     grid-template-columns: 1fr;
-    //     gap: size(24) ;
-    // }
+
+    &__registration {
+        .field {
+            padding-bottom: size(24);
+
+            &__title {
+                margin: 0;
+            }
+        }
+    }
 }
