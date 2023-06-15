@@ -110,7 +110,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var array
      *
-     * @ORM\Column(name="agents_data", type="json_array", nullable=true)
+     * @ORM\Column(name="agents_data", type="json", nullable=true)
      */
     protected $agentsData = [];
     
@@ -124,7 +124,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var array
      *
-     * @ORM\Column(name="space_data", type="json_array", nullable=true)
+     * @ORM\Column(name="space_data", type="json", nullable=true)
      */
     protected $_spaceData = [];
 

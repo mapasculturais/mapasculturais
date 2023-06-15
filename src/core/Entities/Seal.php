@@ -111,7 +111,7 @@ class Seal extends \MapasCulturais\Entity
     /**
      * @var object
      *
-     * @ORM\Column(name="locked_fields", type="json_array", nullable=true, options={"default" : "[]"})
+     * @ORM\Column(name="locked_fields", type="json", nullable=true, options={"default" : "[]"})
      */
     protected $lockedFields;
 
