@@ -5,15 +5,10 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 $_cache_namespace = env('CACHE_NAMESPACE', md5(@$_SERVER['HTTP_HOST']));
 
-if (env('REDIS_CACHE', false)) {
-    
+if (env('REDIS_CACHE')) {
     $redis = new \Redis();
     $redis->connect(env('REDIS_CACHE'));
     
-    $redis = new \Redis();
-    $redis->connect(env('REDIS_CACHE'));
-
-
     $_cache = new RedisAdapter($redis, $_cache_namespace);
     $_mscache = new RedisAdapter($redis, "ms.$_cache_namespace");
 } else {
