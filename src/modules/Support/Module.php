@@ -133,7 +133,7 @@ class Module extends \MapasCulturais\Module
             }
         });
 
-        $app->hook('Entities\Opportunity::isSupportUser', function($unused = null, $user) use($app) {
+        $app->hook('Entities\Opportunity::isSupportUser', function($unused, $user) use($app) {
             if ($this->canUser('@control', $user)) {
                 return true;
             }
