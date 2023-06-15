@@ -20,14 +20,14 @@ $this->import('
     </div>
 
     <template v-if="!isFuture()">
-        <div class="col-3">
+        <div class="col-3" v-if="canSee('sendUserEvaluations')">
             <mc-link :entity="phase.opportunity" route="sendEvaluations" class="button button--primary-outline" :param="phase.opportunity.id"><?= i::__("Enviar avaliações") ?></mc-link>
         </div>
-        <div class="col-3">
-            <mc-link v-if="isAdmi()" :entity="phase.opportunity" route="reportEvaluations" class="button button--secondarylight" :param="phase.opportunity.id"><?= i::__("Baixar lista de avaliações") ?></mc-link>
+        <div class="col-3" v-if="canSee('@control')">
+            <mc-link :entity="phase.opportunity" route="reportEvaluations" class="button button--secondarylight" :param="phase.opportunity.id"><?= i::__("Baixar lista de avaliações") ?></mc-link>
         </div>
 
-        <div class="col-12">
+        <div class="col-12" >
             <v1-embed-tool route="evaluationlist" :id="phase.opportunity.id"></v1-embed-tool>
         </div>
     </template>
