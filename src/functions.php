@@ -1,15 +1,16 @@
 <?php
-
-function env($name, $default = null) {
+function env(string $name, string $default = null) {
     if(defined('GENERATING_CONFIG_DOCUMENTATION')){
         __log_env($name, $default);
     }
 
     $result = isset($_ENV[$name]) ? $_ENV[$name] : $default;
 
-    if (strtolower(trim($result)) == 'true') {
+    $result = trim($result ?: '');
+
+    if (strtolower($result) == 'true') {
         $result = true;
-    } else if (strtolower(trim($result)) == 'false') {
+    } else if (strtolower($result) == 'false') {
         $result = false;
     }
 
