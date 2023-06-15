@@ -35,7 +35,7 @@ trait MagicCallers {
         $hooks = [];
 
         foreach ($classes as $class) {
-            $class_hooks = $app->_getHookCallables("{$class}::{$name}");
+            $class_hooks = $app->hooks->getCallables("{$class}::{$name}");
             $hooks = array_merge($class_hooks, $hooks);
         }
 
