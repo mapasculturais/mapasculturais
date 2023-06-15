@@ -12,7 +12,7 @@ $this->import('
 ');
 ?>
 <div v-if="parent" :class="['entity-parents-edit' ,classes]">
-    <h4 class="entity-parent-edit__title">{{entity.name}} {{title}}</h4>
+    <h4 class="entity-parent-edit__title bold">{{entity.name}} {{title}}</h4>
     <a class="entity-parent-edit__parent" :href="parent.singleUrl" :title="parent.shortDescription">
         <div class="entity-parent-edit__parent--img">
             <img v-if="parent.files.avatar" class="profile" :src="parent.files?.avatar?.url">
@@ -39,7 +39,7 @@ $this->import('
 <div v-if="!parent" class="col-12 entity-parent-edit__edit">
     <select-entity :type="type" @select="changeParent($event)" :query="query" openside="right-down">
         <template #button="{ toggle }">
-            <h4 class="title"><?php i::_e("{{label}}")?></h4>
+            <h4 class="title bold"><?php i::_e("{{label}}")?></h4>
             <span v-if="type == 'space'" class="text"><?php i::_e("Selecione um espaço para que o seu espaço atual seja vinculado como integrante") ?></span>
             <span v-if="type == 'project'" class="text"><?php i::_e("Selecione um projeto para que o seu projeto atual seja vinculado como integrante") ?></span>
             <a class="entity-parent-edit__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()">
