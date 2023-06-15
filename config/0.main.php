@@ -68,7 +68,7 @@ return [
     /** função para sanitizar o nome do arquivo */
     'app.sanitize_filename_function' => function($filename) {
         return $filename;
-    }
+    },
 
     /*
     Define valores de inicialização do PHP para rotas específicas
