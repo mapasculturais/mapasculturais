@@ -16,7 +16,7 @@ $this->import('
 
 <div :class="classes" v-if="entity.seals.length > 0 || editable" class="entity-seals">
     <?php $this->applyTemplateHook('entity-seals', 'begin'); ?>
-    <h4 class="entity-seals__title"> {{title}} </h4>
+    <h4 class="entity-seals__title bold"> {{title}} </h4>
     <div class="entity-seals__seals">
 
         <div class="entity-seals__seals--seal" v-for="seal in entity.seals">
