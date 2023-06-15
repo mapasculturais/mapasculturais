@@ -4,8 +4,74 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c680019e29fa3ffc0bc0b24b6f3f4db7",
+    "content-hash": "a203bb4783df5b5fb1c85430fe961719",
     "packages": [
+        {
+            "name": "acelaya/doctrine-enum-type",
+            "version": "v2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/acelaya/doctrine-enum-type.git",
+                "reference": "1a37ad15c35258890ecd2a18992bcd88b64937cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/acelaya/doctrine-enum-type/zipball/1a37ad15c35258890ecd2a18992bcd88b64937cb",
+                "reference": "1a37ad15c35258890ecd2a18992bcd88b64937cb",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^2.12 || ^3.0",
+                "myclabs/php-enum": "^1.7",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "infection/infection": "^0.20",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpstan/phpstan": "^0.12.52",
+                "phpunit/phpunit": "^9.4",
+                "roave/security-advisories": "dev-master",
+                "shlinkio/php-coding-standard": "~2.1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Acelaya\\Doctrine\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alejandro Celaya",
+                    "email": "alejandro@alejandrocelaya.com"
+                }
+            ],
+            "description": "A custom Doctrine type that maps column values to enum objects using myclabs/php-enum",
+            "keywords": [
+                "doctrine",
+                "enum",
+                "type"
+            ],
+            "support": {
+                "issues": "https://github.com/acelaya/doctrine-enum-type/issues",
+                "source": "https://github.com/acelaya/doctrine-enum-type/tree/v2.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://acel.me/donate",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/acelaya",
+                    "type": "github"
+                }
+            ],
+            "abandoned": true,
+            "time": "2021-01-25T14:38:39+00:00"
+        },
         {
             "name": "doctrine/annotations",
             "version": "2.0.1",
@@ -1098,16 +1164,16 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v6.5.0",
+            "version": "v6.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "e94e7353302b0c11ec3cfff7180cd0b1743975d2"
+                "reference": "71278f20b0a623389beefe87a641d03948a38870"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/e94e7353302b0c11ec3cfff7180cd0b1743975d2",
-                "reference": "e94e7353302b0c11ec3cfff7180cd0b1743975d2",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/71278f20b0a623389beefe87a641d03948a38870",
+                "reference": "71278f20b0a623389beefe87a641d03948a38870",
                 "shasum": ""
             },
             "require": {
@@ -1155,9 +1221,9 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v6.5.0"
+                "source": "https://github.com/firebase/php-jwt/tree/v6.7.0"
             },
-            "time": "2023-05-12T15:47:07+00:00"
+            "time": "2023-06-14T15:29:26+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -1311,6 +1377,69 @@
             "time": "2022-08-23T13:07:01+00:00"
         },
         {
+            "name": "myclabs/php-enum",
+            "version": "1.8.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/php-enum.git",
+                "reference": "a867478eae49c9f59ece437ae7f9506bfaa27483"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/a867478eae49c9f59ece437ae7f9506bfaa27483",
+                "reference": "a867478eae49c9f59ece437ae7f9506bfaa27483",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "1.*",
+                "vimeo/psalm": "^4.6.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MyCLabs\\Enum\\": "src/"
+                },
+                "classmap": [
+                    "stubs/Stringable.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP Enum contributors",
+                    "homepage": "https://github.com/myclabs/php-enum/graphs/contributors"
+                }
+            ],
+            "description": "PHP Enum implementation",
+            "homepage": "http://github.com/myclabs/php-enum",
+            "keywords": [
+                "enum"
+            ],
+            "support": {
+                "issues": "https://github.com/myclabs/php-enum/issues",
+                "source": "https://github.com/myclabs/php-enum/tree/1.8.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/mnapoli",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/myclabs/php-enum",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-08-04T09:53:51+00:00"
+        },
+        {
             "name": "nikic/fast-route",
             "version": "v1.3.0",
             "source": {
@@ -1415,6 +1544,111 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v4.15.5"
             },
             "time": "2023-05-19T20:20:00+00:00"
+        },
+        {
+            "name": "opauth/opauth",
+            "version": "0.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opauth/opauth.git",
+                "reference": "3f979012d0bdf2d447bb02b97f7f7d9f482c77e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opauth/opauth/zipball/3f979012d0bdf2d447bb02b97f7f7d9f482c77e8",
+                "reference": "3f979012d0bdf2d447bb02b97f7f7d9f482c77e8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "suggest": {
+                "opauth/facebook": "Allows Facebook authentication",
+                "opauth/google": "Allows Google authentication",
+                "opauth/twitter": "Allows Twitter authentication"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/Opauth/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "U-Zyn Chua",
+                    "email": "chua@uzyn.com",
+                    "homepage": "http://uzyn.com"
+                }
+            ],
+            "description": "Multi-provider authentication framework for PHP",
+            "homepage": "http://opauth.org",
+            "keywords": [
+                "Authentication",
+                "OpenId",
+                "auth",
+                "facebook",
+                "google",
+                "oauth",
+                "omniauth",
+                "twitter"
+            ],
+            "support": {
+                "issues": "https://github.com/opauth/opauth/issues",
+                "source": "https://github.com/opauth/opauth/tree/master"
+            },
+            "time": "2018-02-25T03:18:21+00:00"
+        },
+        {
+            "name": "opauth/openid",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opauth/openid.git",
+                "reference": "ebf166cddbaff78e740234189073ab6919e85eb7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opauth/openid/zipball/ebf166cddbaff78e740234189073ab6919e85eb7",
+                "reference": "ebf166cddbaff78e740234189073ab6919e85eb7",
+                "shasum": ""
+            },
+            "require": {
+                "opauth/opauth": ">=0.2.0",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "U-Zyn Chua",
+                    "email": "chua@uzyn.com",
+                    "homepage": "http://uzyn.com"
+                }
+            ],
+            "description": "OpenID strategy for Opauth",
+            "homepage": "http://opauth.org",
+            "keywords": [
+                "Authentication",
+                "OpenId",
+                "auth"
+            ],
+            "support": {
+                "issues": "https://github.com/opauth/openid/issues",
+                "source": "https://github.com/opauth/openid/tree/0.1.0"
+            },
+            "time": "2012-06-08T07:00:03+00:00"
         },
         {
             "name": "pomo/pomo",
