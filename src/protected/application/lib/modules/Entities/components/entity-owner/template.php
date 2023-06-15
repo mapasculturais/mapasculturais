@@ -13,7 +13,7 @@ $this->import('
 ');
 ?>
 <div v-if="entity != owner" class="entity-owner" :class="classes">
-        <h4>{{title}}</h4>
+        <h4 class="bold">{{title}}</h4>
         <a class="entity-owner__owner" :href="owner.singleUrl" :title="owner.shortDescription">
             <div class="entity-owner__owner--img">
                 <img v-if="owner.files.avatar" class="profile" :src="owner.files?.avatar?.url">
