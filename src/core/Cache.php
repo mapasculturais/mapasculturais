@@ -17,12 +17,26 @@ class Cache {
 
     protected array $items = [];
 
+    protected string $namespace = '';
+
     function __construct(AdapterInterface $adapter)
     {
         $this->adapter = $adapter;
     }
 
-    protected function getCacheItem(string $key):CacheItem {
+    private function parseKey(string $key): string {
+        // caracteres reservados: {}()/\@:
+        $key = str_replace (
+            ['{', '}', '(', ')', '/', '\\', '@', ':'],
+            ['<', '>', '[', ']', '|', '|',  '%', '#'], 
+            $key);
+
+        return $this->namespace . $key;
+    }
+
+    protected function getCacheItem(string $key): CacheItem {
+        $key = $this->parseKey($key);
+
         if (!isset($this->items[$key])) {
             $this->items[$key] = $this->adapter->getItem($key);
         } 
@@ -42,11 +56,16 @@ class Cache {
     }
 
     function delete(string $key) {
+        $key = $this->parseKey($key);
         $this->adapter->deleteItem($key);
         unset($this->items[$key]);
     }
 
     function flushAll() {
         $this->adapter->clear();
+    }
+
+    function setNamespace(string $namespace = null) {
+        $this->namespace = $namespace ?: '';
     }
 }
