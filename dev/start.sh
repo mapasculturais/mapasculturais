@@ -20,7 +20,6 @@ case $i in
             DOWN="1"
 	    shift
     ;;
-    ;;
     -h|--help)
     	    echo "
 	run-tests.sh [-b] [-u] [-d] [-s=25]
