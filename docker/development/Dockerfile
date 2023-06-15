@@ -43,7 +43,7 @@ RUN autodetect | pecl install imagick \
 # Install xdebug
 RUN yes | pecl install xdebug \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.mode=develop" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 # Install igbinary
@@ -85,8 +85,9 @@ COPY docker/development/router.php /var/www/html/router.php
 COPY docker/development/php.ini /usr/local/etc/php/php.ini
 COPY docker/development/mapas.sh /mapas.sh
 
-WORKDIR /var/www/
+RUN ln -s /var/www/html /var/www/public
 
 EXPOSE 80
 ENTRYPOINT ["/entrypoint.sh"]
-CMD php -S 0.0.0.0:80 -t /var/www/html /var/www/html/router.php
+
+CMD /mapas.sh
