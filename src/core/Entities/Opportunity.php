@@ -135,7 +135,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var array
      *
-     * @ORM\Column(name="registration_categories", type="json_array", nullable=true)
+     * @ORM\Column(name="registration_categories", type="json", nullable=true)
      */
     protected $registrationCategories = [];
 
@@ -262,7 +262,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      /**
      * @var object
      *
-     * @ORM\Column(name="avaliable_evaluation_fields", type="json_array", nullable=true)
+     * @ORM\Column(name="avaliable_evaluation_fields", type="json", nullable=true)
      */
     protected $avaliableEvaluationFields = [];
     

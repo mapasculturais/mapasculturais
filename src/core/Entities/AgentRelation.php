@@ -105,7 +105,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
      /**
      * @var object
      *
-     * @ORM\Column(name="metadata", type="json_array", nullable=true)
+     * @ORM\Column(name="metadata", type="json", nullable=true)
      */
     protected $metadata;
 

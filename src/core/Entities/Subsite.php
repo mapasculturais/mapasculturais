@@ -104,7 +104,7 @@ class Subsite extends \MapasCulturais\Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="verified_seals", type="json_array", nullable=true)
+     * @ORM\Column(name="verified_seals", type="json", nullable=true)
      */
     protected $verifiedSeals = [];
 
