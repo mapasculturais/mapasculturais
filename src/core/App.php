@@ -147,7 +147,13 @@ class App {
      * App Configuration.
      * @var array
      */
-    public array $_config = [];
+    public array $config;
+    
+    /**
+     * Alias da prop config para compatibilidade
+     * @var array
+     */
+    public array $_config;
 
     /**
      * The Application Registry.
@@ -285,7 +291,8 @@ class App {
      */
     function init(array $config) {
 
-        $this->_config = $config;
+        $this->_config = &$config;
+        $this->config = &$config;
 
         if(empty($config['base.url'])){
             $config['base.url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://') . 
@@ -295,7 +302,6 @@ class App {
         if(empty($config['base.assetUrl'])){
             $config['base.assetUrl'] = $config['base.url'] . 'assets/';
         }
-
 
         $this->permissionCacheEnabled = $config['app.usePermissionsCache'] ?? true;
 
@@ -375,7 +381,7 @@ class App {
      * @return void 
      */
     protected function _initAutoloader() {
-        $config = $this->_config;
+        $config = $this->config;
 
         // list of modules
         if($handle = opendir(MODULES_PATH)){
@@ -387,8 +393,6 @@ class App {
             }
             closedir($handle);
         }
-
-        sort($available_modules);
         
         // list of themes
         foreach (scandir(THEMES_PATH) as $ff) {
@@ -406,13 +410,6 @@ class App {
         }
 
         spl_autoload_register(function($class) use ($config){
-            $cache_id = "AUTOLOAD_CLASS:$class";
-            if($config['app.useRegisteredAutoloadCache'] && $this->mscache->contains($cache_id)){
-                $path = $this->mscache->fetch($cache_id);
-                require_once $path;
-                return true;
-            }
-
             $namespaces = $config['namespaces'];
 
             $namespaces['MapasCulturais\\DoctrineProxies'] = DOCTRINE_PROXIES_PATH;
@@ -439,16 +436,13 @@ class App {
 
                     if(\file_exists($path)){
                         require_once $path;
-                        if ($config['app.useRegisteredAutoloadCache']) {
-                            $this->mscache->save($cache_id, $path, $config['app.registeredAutoloadCache.lifetime']);
-                        }
                         return true;
                     }
                 }
             }
         });
 
-        $this->_config = $config;
+        $this->config = $config;
     }
 
     /**
@@ -458,8 +452,8 @@ class App {
      * @return void 
      */
     protected function _initCache() {
-        $this->cache = new Cache($this->_config['app.cache']);
-        $this->mscache = new Cache($this->_config['app.mscache']);
+        $this->cache = new Cache($this->config['app.cache']);
+        $this->mscache = new Cache($this->config['app.mscache']);
         $this->mscache->setNamespace(__DIR__);
         
         $rcache_adapter = new \Symfony\Component\Cache\Adapter\ArrayAdapter(0, false);
@@ -479,8 +473,11 @@ class App {
         // annotation driver
         $doctrine_config = ORMSetup::createAnnotationMetadataConfiguration(
             paths: [__DIR__ . '/Entities/'],
-            isDevMode: $this->_config['doctrine.isDev'],
+            isDevMode: (bool) $this->config['doctrine.isDev'],
+            cache: $this->cache->adapter
         );
+
+        
 
         // tells the doctrine to ignore hook annotation.
         AnnotationReader::addGlobalIgnoredName('hook');
@@ -528,7 +525,12 @@ class App {
         // obtaining the entity manager
         $connection = DriverManager::getConnection([
             'driver' => 'pdo_pgsql',
+            'dbname' => $this->config['db.dbname'],
+            'user' => $this->config['db.user'],
+            'password' => $this->config['db.password'],
+            'host' => $this->config['db.host'],
         ], $doctrine_config);
+        
         
         // obtaining the entity manager
         $this->_em = new EntityManager($connection, $doctrine_config);
@@ -538,11 +540,10 @@ class App {
         DoctrineMappings\Types\Geography::register();
         DoctrineMappings\Types\Geometry::register();
 
-
-        // PhpEnumType::registerEnumTypes([
-        //     DoctrineEnumTypes\ObjectType::getTypeName() => DoctrineEnumTypes\ObjectType::class,
-        //     DoctrineEnumTypes\PermissionAction::getTypeName() => DoctrineEnumTypes\PermissionAction::class
-        // ]);
+        \Acelaya\Doctrine\Type\PhpEnumType::registerEnumTypes([
+            DoctrineEnumTypes\ObjectType::getTypeName() => DoctrineEnumTypes\ObjectType::class,
+            DoctrineEnumTypes\PermissionAction::getTypeName() => DoctrineEnumTypes\PermissionAction::class
+        ]);
 
         $platform = $this->_em->getConnection()->getDatabasePlatform();
 
@@ -581,8 +582,7 @@ class App {
 
         if($this->_subsite){
             $this->subsite->applyApiFilters();
-
-            $this->subsite->applyConfigurations($this->_config);
+            $this->subsite->applyConfigurations($this->config);
         }
     }
 
@@ -591,13 +591,13 @@ class App {
      * @return void 
      */
     protected function _initAuthProvider() {
-        if (!$this->_auth) {
-            $auth_class_name = strpos($this->config['auth.provider'], '\\') !== false ? 
-                $this->config['auth.provider'] : 
-                'MapasCulturais\AuthProviders\\' . $this->config['auth.provider'];
-            $this->_auth = new $auth_class_name($this->config['auth.config']);
-            $this->_auth->setCookies();
-        }
+        $auth_class_name = strpos($this->config['auth.provider'], '\\') !== false ? 
+            $this->config['auth.provider'] : 
+            'MapasCulturais\AuthProviders\\' . $this->config['auth.provider'];
+        $auth = new $auth_class_name($this->config['auth.config']);
+        
+        $auth->setCookies();
+        $this->auth = $auth;
     }
 
     /**
@@ -605,30 +605,30 @@ class App {
      * @return void 
      */
     protected function _initTheme() {
-        $theme_class = "\\" . $this->_config['themes.active'] . '\Theme';
+        $theme_class = "\\" . $this->config['themes.active'] . '\Theme';
         $theme_path = $theme_class::getThemeFolder() . '/';
 
         if (file_exists($theme_path . 'conf-base.php')) {
             $theme_config = require $theme_path . 'conf-base.php';
-            $this->_config = array_merge($this->_config, $theme_config);
+            $this->config = array_merge($this->config, $theme_config);
         }
 
         if (file_exists($theme_path . 'config.php')) {
             $theme_config = require $theme_path . 'config.php';
-            $this->_config = array_merge($this->_config, $theme_config);
+            $this->config = array_merge($this->config, $theme_config);
         }
 
 
         if($this->_subsite){
-            $this->_cache->setNamespace($config['app.cache.namespace'] . ':' . $this->_subsite->id);
+            $this->cache->setNamespace($this->config['app.cache.namespace'] . ':' . $this->_subsite->id);
 
             $theme_class = $this->_subsite->namespace . "\Theme";
-            $theme_instance = new $theme_class($config['themes.assetManager'], $this->_subsite);
+            $theme_instance = new $theme_class($this->config['themes.assetManager'], $this->_subsite);
         } else {
-            $this->_cache->setNamespace($config['app.cache.namespace']);
+            $this->cache->setNamespace($this->config['app.cache.namespace']);
 
-            $theme_class = $config['themes.active'] . '\Theme';
-            $theme_instance = new $theme_class($config['themes.assetManager']);
+            $theme_class = $this->config['themes.active'] . '\Theme';
+            $theme_instance = new $theme_class($this->config['themes.assetManager']);
         }
 
         $this->view = $theme_instance;
@@ -708,9 +708,9 @@ class App {
      * @return void 
      */
     protected function _initStorage() {
-        $storage_class = $this->_config['storage.driver'] ?? '';
+        $storage_class = $this->config['storage.driver'] ?? '';
         if($storage_class && class_exists($storage_class) && is_subclass_of($storage_class, Storage::class)){
-            $storage_config = $this->_config['storage.config'] ?? null;
+            $storage_config = $this->config['storage.config'] ?? null;
             $this->_storage =  $storage_class::i($storage_config);
         }else{
             $this->_storage = Storage\FileSystem::i();
@@ -722,7 +722,7 @@ class App {
      * @return void 
      */
     protected function _initRouteManager() {
-        $this->_routesManager = new RoutesManager($this->_config['routes'] ?? []);
+        $this->_routesManager = new RoutesManager($this->config['routes'] ?? []);
     }
 
 
@@ -790,7 +790,7 @@ class App {
      * @return string 
      */
     public function getSiteName(): string {
-        return $this->_config['app.siteName'];
+        return $this->config['app.siteName'];
     }
 
     /**
@@ -801,7 +801,7 @@ class App {
      * @return string 
      */
     public function getSiteDescription(): string {
-        return $this->_config['app.siteDescription'];
+        return $this->config['app.siteDescription'];
     }
     
     /**
@@ -833,7 +833,7 @@ class App {
      * @return string the base url
      */
     public function getBaseUrl(){
-        return $this->_config['base.url'];
+        return $this->config['base.url'];
     }
 
     /**
@@ -841,7 +841,7 @@ class App {
      * @return string the asset url
      */
     public function getAssetUrl(){
-        return isset($this->_config['base.assetUrl']) ? $this->_config['base.assetUrl'] : $this->getBaseUrl() . 'assets/';
+        return isset($this->config['base.assetUrl']) ? $this->config['base.assetUrl'] : $this->getBaseUrl() . 'assets/';
     }
 
     /**
@@ -945,7 +945,7 @@ class App {
      */
     function getRegisteredGeoDivisions(): array {
         $result = [];
-        foreach($this->_config['app.geoDivisionsHierarchy'] as $key => $division) {
+        foreach($this->config['app.geoDivisionsHierarchy'] as $key => $division) {
 
             $display = true;
             if (substr($key, 0, 1) == '_') {
@@ -997,11 +997,12 @@ class App {
      *
      * @return mixed
      */
-    public function getConfig(string $key = null){
-        if(is_null($key))
-            return $this->_config;
-        else
-            return key_exists ($key, $this->_config) ? $this->_config[$key] : null;
+    public function getConfig(string $key = null) {
+        if (is_null($key)) {
+            return $this->config;
+        } else {
+            return key_exists ($key, $this->config) ? $this->config[$key] : null;
+        }
 
     }
 
@@ -1052,8 +1053,8 @@ class App {
      * @return string 
      */
     function getReadableName(string $slug): string {
-        if (array_key_exists($slug, $this->_config['routes']['readableNames'])) {
-            return $this->_config['routes']['readableNames'][$slug];
+        if (array_key_exists($slug, $this->config['routes']['readableNames'])) {
+            return $this->config['routes']['readableNames'][$slug];
         }
         return null;
     }
@@ -1070,7 +1071,7 @@ class App {
      * @return bool 
      */
     function isEnabled(string $entity){
-        return (bool) $this->_config['app.enabled.' . $entity];
+        return (bool) $this->config['app.enabled.' . $entity];
     }
 
      /**
@@ -1330,8 +1331,8 @@ class App {
      */
     function sanitizeFilename($filename, $mimetype = false){
         $filename = str_replace(' ','_', strtolower($filename));
-        if(is_callable($this->_config['app.sanitize_filename_function'])){
-            $cb = $this->_config['app.sanitize_filename_function'];
+        if(is_callable($this->config['app.sanitize_filename_function'])){
+            $cb = $this->config['app.sanitize_filename_function'];
             $filename = $cb($filename);
         }
 
@@ -1707,26 +1708,26 @@ class App {
         $transport = [];
 
         // server
-        $server = isset($this->_config['mailer.server']) &&  !empty($this->_config['mailer.server']) ? $this->_config['mailer.server'] : false;
+        $server = isset($this->config['mailer.server']) &&  !empty($this->config['mailer.server']) ? $this->config['mailer.server'] : false;
 
         // default transport SMTP
-        $transport_type = isset($this->_config['mailer.transport']) &&  !empty($this->_config['mailer.transport']) ? $this->_config['mailer.transport'] : 'smtp';
+        $transport_type = isset($this->config['mailer.transport']) &&  !empty($this->config['mailer.transport']) ? $this->config['mailer.transport'] : 'smtp';
 
         // default port to 25
-        $port = isset($this->_config['mailer.port']) &&  !empty($this->_config['mailer.port']) ? $this->_config['mailer.port'] : 25;
+        $port = isset($this->config['mailer.port']) &&  !empty($this->config['mailer.port']) ? $this->config['mailer.port'] : 25;
 
         // default encryption protocol to ssl
-        $protocol = isset($this->_config['mailer.protocol']) ? $this->_config['mailer.protocol'] : null;
+        $protocol = isset($this->config['mailer.protocol']) ? $this->config['mailer.protocol'] : null;
 
         if ($transport_type == 'smtp' && false !== $server) {
 
             $transport = \Swift_SmtpTransport::newInstance($server, $port, $protocol);
 
             // Maybe add username and password
-            if (isset($this->_config['mailer.user']) && !empty($this->_config['mailer.user']) &&
-                isset($this->_config['mailer.psw']) && !empty($this->_config['mailer.psw']) ) {
+            if (isset($this->config['mailer.user']) && !empty($this->config['mailer.user']) &&
+                isset($this->config['mailer.psw']) && !empty($this->config['mailer.psw']) ) {
 
-                $transport->setUsername($this->_config['mailer.user'])->setPassword($this->_config['mailer.psw']);
+                $transport->setUsername($this->config['mailer.user'])->setPassword($this->config['mailer.psw']);
             }
 
         } elseif ($transport_type == 'sendmail' && false !== $server) {
@@ -1755,20 +1756,20 @@ class App {
     function createMailMessage(array $args = []){
         $message = \Swift_Message::newInstance();
 
-        if($this->_config['mailer.from']){
-            $message->setFrom($this->_config['mailer.from']);
+        if($this->config['mailer.from']){
+            $message->setFrom($this->config['mailer.from']);
         }
 
-        if($this->_config['mailer.alwaysTo']){
-            $message->setTo($this->_config['mailer.alwaysTo']);
+        if($this->config['mailer.alwaysTo']){
+            $message->setTo($this->config['mailer.alwaysTo']);
         }
 
-        if($this->_config['mailer.bcc']){
-            $message->setBcc($this->_config['mailer.bcc']);
+        if($this->config['mailer.bcc']){
+            $message->setBcc($this->config['mailer.bcc']);
         }
 
-        if($this->_config['mailer.replyTo']){
-            $message->setReplyTo($this->_config['mailer.replyTo']);
+        if($this->config['mailer.replyTo']){
+            $message->setReplyTo($this->config['mailer.replyTo']);
         }
 
         $type = $message->getHeaders()->get('Content-Type');
@@ -1777,7 +1778,7 @@ class App {
 
         $original = [];
         foreach($args as $key => $value){
-            if(in_array(strtolower($key), ['to', 'cc', 'bcc']) && $this->_config['mailer.alwaysTo']){
+            if(in_array(strtolower($key), ['to', 'cc', 'bcc']) && $this->config['mailer.alwaysTo']){
                 $original[$key] = $value;
                 continue;
             }
@@ -1790,7 +1791,7 @@ class App {
             }
         }
 
-        if($this->_config['mailer.alwaysTo']){
+        if($this->config['mailer.alwaysTo']){
             foreach($original as $key => $val){
                 if(is_array($val)){
                     $val = implode(', ', $val);
@@ -1850,8 +1851,8 @@ class App {
      * @throws MailTemplateNotFound 
      */
     function renderMailerTemplate(string $template_name, array|object $template_data = []): string {
-        if(array_key_exists($template_name, $this->_config['mailer.templates'])) {
-            $message = $this->_config['mailer.templates'][$template_name];
+        if(array_key_exists($template_name, $this->config['mailer.templates'])) {
+            $message = $this->config['mailer.templates'][$template_name];
             $message['body'] = $this->renderMustacheTemplate($message['template'], $template_data);
             return $message;
         } else {
@@ -2075,7 +2076,7 @@ class App {
 
         // registration agent relations
 
-        foreach($this->_config['registration.agentRelations'] as $config){
+        foreach($this->config['registration.agentRelations'] as $config){
             $def = new Definitions\RegistrationAgentRelation($config);
             $opportunities_meta[$def->metadataName] = $def->getMetadataConfiguration();
 
