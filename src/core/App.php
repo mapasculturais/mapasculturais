@@ -335,8 +335,6 @@ class App {
         $this->_initModules();
         $this->_initPlugins();
 
-        $this->_initRouteManager();
-
         $this->applyHookBoundTo($this, 'mapasculturais.init');
 
         // chama o registro da aplicação
@@ -344,6 +342,8 @@ class App {
 
         // chama o inicializador do tema ativo
         $this->view->init();
+
+        $this->_initRouteManager();
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
@@ -2385,11 +2385,11 @@ class App {
 
         $this->view->register();
 
-        foreach($this->_modules as $module){
+        foreach($this->modules as $module){
             $module->register();
         }
 
-        foreach($this->_plugins as $plugin){
+        foreach($this->plugins as $plugin){
             $plugin->register();
         }
 
@@ -3069,9 +3069,9 @@ class App {
      *
      * @param Definitions\Metadata $metadata
      * @param string $entity_class 
-     * @param int|null $entity_type_id
+     * @param int|string|null $entity_type_id
      */
-    function registerMetadata(Definitions\Metadata $metadata, string $entity_class, int $entity_type_id = null) {
+    function registerMetadata(Definitions\Metadata $metadata, string $entity_class, int|string $entity_type_id = null) {
         if($entity_class::usesTypes() && is_null($entity_type_id)){
             foreach($this->getRegisteredEntityTypes($entity_class) as $type){
                 if($type){
