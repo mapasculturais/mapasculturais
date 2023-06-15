@@ -1,19 +1,21 @@
 {
     "require": {
-        "slim/slim": "4.*",
-        "slim/psr7": "^1.6",
-        "doctrine/orm": "^2.14",
-        "doctrine/dbal": "^3.6",
+        "acelaya/doctrine-enum-type": "^2.3",
         "doctrine/annotations": "^2.0",
-        "respect/validation": "^2.2",
-        "psy/psysh": "^0.11.12",
+        "doctrine/dbal": "^3.6",
+        "doctrine/orm": "^2.14",
         "firebase/php-jwt": "^6.4",
-        "pomo/pomo": "^1.5",
-        "symfony/cache": "^6.2",
         "monolog/monolog": "^3.3",
+        "mustache/mustache": "^2.11",
+        "pomo/pomo": "^1.5",
+        "psy/psysh": "^0.11.12",
+        "respect/validation": "^2.2",
         "sinergi/browser-detector": "^6.1",
+        "slim/psr7": "^1.6",
+        "slim/slim": "4.*",
         "swiftmailer/swiftmailer": "5.*",
-        "mustache/mustache": "^2.11"
+        "symfony/cache": "^6.2",
+        "opauth/openid": "*"
     },
     "autoload": {
         "psr-4": {
