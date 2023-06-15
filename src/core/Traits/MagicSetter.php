@@ -11,6 +11,9 @@ use MapasCulturais\Entity;
  * else if the property name doesn't starts with an undercore set the value of the property directly.
  */
 trait MagicSetter{
+
+    // @todo dynamic property
+
     /**
      * If a setter method with the same name of the property exists, for example **set*PropertyName***, use it,
      * else if the property name doesn't starts with an undercore set the value of the property directly.

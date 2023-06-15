@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace MapasCulturais;
 
+use Throwable;
+
 /**
  * Gerenciador de hooks
  * 
@@ -163,6 +165,11 @@ class Hooks {
      * @return callable[]
      */
     function applyBoundTo(object $target_object, string $name, array $hookArg = []) {
+        $args = [];
+
+        foreach($hookArg as &$val) {
+            $args[] = &$val;
+        }
 
         if ($this->app->config['app.log.hook']){
             $conf = $this->app->config['app.log.hook'];
@@ -173,14 +180,18 @@ class Hooks {
 
         $this->hookStack[] = (object) [
             'name' => $name,
-            'args' => $hookArg,
+            'args' => $args,
             'bound' => false,
         ];
-
         $callables = $this->getCallables($name);
-        foreach ($callables as $callable) {
-            $callable = \Closure::bind($callable, $target_object);
-            call_user_func_array($callable, $hookArg);
+        try{
+            foreach ($callables as $callable) {
+                $callable = \Closure::bind($callable, $target_object);
+                call_user_func_array($callable, $args);
+            }
+
+        } catch (Throwable $e) {
+            eval(\psy\sh());
         }
 
         array_pop($this->hookStack);

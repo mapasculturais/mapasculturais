@@ -6,27 +6,51 @@ use MapasCulturais\UserInterface;
 
 /**
  * Definição de Role
- * 
- * @property-read string $role Slug da role
- * @property-read string $name Nome da role
- * @property-read string $pluralName Nome da role no plural
- * @property-read bool $subsiteContext O role é válido somente no contexto do subsite?
- * @property-read string[] $anotherRoles Outras roles desta role
  */
 class Role extends \MapasCulturais\Definition{
-    public $_role;
+    /**
+     * Slug da role
+     * @var string
+     */
+    public string $role;
 
-    public $_name;
+    /**
+     * Nome da role, legível para humanos
+     * @var string
+     */
+    public string $name;
 
-    public $_pluralName;
+    /**
+     * Nome da role no plural, legível para humanos
+     * @var string
+     */
+    public string $pluralName;
 
-    public $_subsiteContext;
+    /**
+     * Indica se a role, quando aplicada a um usuário, se limita a um subsite 
+     * ou se é para todo o SaaS
+     * 
+     * @var bool
+     */
+    public $subsiteContext;
 
-    public $_canUserManageRole;
+    /**
+     * 
+     * @var callable
+     */
+    public $canUserManageRole;
 
-    public $_anotherRoles;
+    /**
+     * Lista das roles que um usuário que tenha a role que está sendo registrada também terá implicitamente
+     * 
+     * por exemplo: Um Super Admin também é um Admin, implicitamente, então no registro da role `superAdmin`, 
+     * deve ser indicado neste campo a role `admin`
+     * 
+     * @var array
+     */
+    public $anotherRoles;
 
-    public function __construct($role, $name, $plural_name, bool $subsite_context, callable $can_user_manage_role, array $another_roles = []) {
+    public function __construct(string $role, string $name, string $plural_name, bool $subsite_context, callable $can_user_manage_role, array $another_roles = []) {
         $this->role = $role;
         $this->name = $name;
         $this->pluralName = $plural_name;
@@ -34,6 +58,7 @@ class Role extends \MapasCulturais\Definition{
         $this->subsiteContext = $subsite_context;
 
         $another_roles[] = $role;
+        
         $this->anotherRoles = array_unique($another_roles);
     }
 

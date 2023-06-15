@@ -267,7 +267,6 @@ abstract class Controller{
      */
     public function callAction($method, $action_name, $arguments) {
         $app = App::i();
-
         if(@$app->config['app.log.requestData'] && $app->config['slim.log.level'] === \Slim\Log::DEBUG){
             $app->log->debug('===== POST DATA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
             $app->log->debug(print_r($this->postData,true));
@@ -323,7 +322,9 @@ abstract class Controller{
         if($call_method || $call_hook){
             $app->applyHookBoundTo($this, $hook . ':before', $arguments);
 
-            $app->applyHookBoundTo($this, $call_hook, $arguments);
+            if ($call_hook) {
+                $app->applyHookBoundTo($this, $call_hook, $arguments);
+            }
 
             if($call_method) {
                 $call_method();
