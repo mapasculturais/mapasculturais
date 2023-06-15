@@ -16,8 +16,11 @@ app.component('opportunity-evaluations-table' , {
       }
     },
     methods: {
-        isAdmi(){
-            return $MAPAS.config.opportunityEvaluationsTable.isAdmin;
+        canSee(action){
+            if(this.phase.opportunity.currentUserPermissions[action]){
+                return true;
+            }
+            return false
         },
         isFuture() {
             return this.phase.evaluationFrom?.isFuture();

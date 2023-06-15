@@ -29,7 +29,7 @@ $action = 'single';
     <div id="registration-evaluation-form" >
         <?php if ($evaluationAgent && $entity->canUser('evaluate')) : ?>
             <form>
-                <?php if ($opportunity->canUser('@control') && $evaluation) : ?>
+                <?php if ($evaluationAgent && $entity->canUser('evaluate') && (!$evaluation || $evaluation->status <= 0) ) : ?>
                     <div>
                         <strong><?php i::_e('Avaliador') ?>:</strong> <?php echo $evaluation->user->profile->name ?>
                         <input type="hidden" name="uid" value="<?php echo $evaluation->user->id; ?>" />
