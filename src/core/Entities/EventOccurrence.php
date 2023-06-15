@@ -420,7 +420,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         return 'eventOccurrence';
     }
 
-    function jsonSerialize() {
+    function jsonSerialize(): array {
         return [
             '@entityType' => $this->getControllerId(),
             'id' => $this->id,

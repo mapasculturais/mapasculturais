@@ -186,7 +186,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         return App::i()->getRegisteredRegistrationFieldTypeBySlug($this->fieldType);
     }
 
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
 
         return [
         'id' => $this->id,

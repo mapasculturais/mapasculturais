@@ -117,7 +117,7 @@ class EventAttendance extends \MapasCulturais\Entity {
         $this->user = App::i()->user;
     }
 
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         return [
             'id' => $this->id,
             'type' => $this->type,

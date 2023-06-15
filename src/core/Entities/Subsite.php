@@ -325,7 +325,7 @@ class Subsite extends \MapasCulturais\Entity
         return isset($this->_entityApiQueryFilters[$entity_class]) ? $this->_entityApiQueryFilters[$entity_class] : null;
     }
 
-    function jsonSerialize() {
+    function jsonSerialize(): array {
         $result = [
             'id' => $this->id,
             'name' => $this->name,

@@ -301,7 +301,7 @@ abstract class File extends \MapasCulturais\Entity
         return $result;
     }
 
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         return [
             'id' => $this->id,
             'md5' => $this->md5,

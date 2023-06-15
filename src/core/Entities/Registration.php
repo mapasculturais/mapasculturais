@@ -290,7 +290,7 @@ class Registration extends \MapasCulturais\Entity
         return $validations;
     }
     
-    function jsonSerialize() {
+    function jsonSerialize(): array {
         $this->registerFieldsMetadata();
         
         $json = [

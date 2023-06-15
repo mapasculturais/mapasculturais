@@ -126,7 +126,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
         }
     }
 
-    function jsonSerialize() {
+    function jsonSerialize(): array {
         $result = parent::jsonSerialize();
         $result['@entityType'] = 'sealRelation';
         $result['owner'] = $this->owner->simplify('className,id,name,avatar,singleUrl');

@@ -67,7 +67,7 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
      */
     protected $space;
 
-    function jsonSerialize() {
+    function jsonSerialize(): array {
         $result = parent::jsonSerialize();
         $result['owner'] = $this->owner->simplify('className,id,name,terms,avatar,singleUrl');
         $result['space'] = $this->space->simplify('id,name,type,terms,avatar,singleUrl');

@@ -947,8 +947,7 @@ abstract class Entity implements \JsonSerializable{
      * 
      * @return array
      */
-    public function jsonSerialize() {
-        $app = App::i();
+    public function jsonSerialize(): array {
         $result = [
             '@entityType' => $this->getControllerId()
         ];

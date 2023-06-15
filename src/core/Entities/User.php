@@ -190,7 +190,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $agent->setParentAsNull(true);
     }
 
-    function jsonSerialize() {
+    function jsonSerialize(): array {
         $result = parent::jsonSerialize();
         $result['profile'] = $this->profile->simplify('id,name,type,terms,avatar,singleUrl');
         unset($result['authUid']);

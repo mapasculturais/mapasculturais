@@ -459,7 +459,7 @@ class Agent extends \MapasCulturais\Entity
         }
     }
 
-    function jsonSerialize() {
+    function jsonSerialize(): array {
         $result = parent::jsonSerialize();
         unset($result['user']);
         return $result;

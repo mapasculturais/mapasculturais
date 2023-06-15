@@ -362,7 +362,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return true;
     }
 
-    public function jsonSerialize() {
-        return null;
+    public function jsonSerialize(): array {
+        return [];
     }
 }

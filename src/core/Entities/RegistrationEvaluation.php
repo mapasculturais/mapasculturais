@@ -234,7 +234,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         return false;
     }
 
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         $result = parent::jsonSerialize();
 
         $result['resultString'] = $this->getResultString();
