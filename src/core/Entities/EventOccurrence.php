@@ -120,7 +120,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Event
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event", cascade="persist")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      * })

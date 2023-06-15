@@ -82,7 +82,7 @@ class ChatMessage extends \MapasCulturais\Entity
     protected $createTimestamp;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ChatMessagePermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ChatMessagePermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 

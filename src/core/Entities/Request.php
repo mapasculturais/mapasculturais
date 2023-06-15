@@ -119,13 +119,13 @@ abstract class Request extends \MapasCulturais\Entity{
     /**
      *
      * @var \MapasCulturais\Entities\Notification[] Notifications
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Notification", mappedBy="request", cascade="all", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Notification", mappedBy="request", cascade={"all"}, orphanRemoval=true)
      */
     protected $notifications;
     
     
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RequestPermissionCache", mappedBy="owner", cascade="all", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RequestPermissionCache", mappedBy="owner", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 

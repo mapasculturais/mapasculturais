@@ -91,7 +91,7 @@ class Notification extends \MapasCulturais\Entity{
     
     
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\NotificationPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\NotificationPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 
