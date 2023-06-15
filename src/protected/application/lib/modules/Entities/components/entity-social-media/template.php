@@ -11,7 +11,7 @@ $this->import('
 ?>
 <div :class="classes" v-if="editable || show" class="entity-social-media">
 
-    <h4 v-if="!editable" class="entity-social-media__title"> <?php i::_e("Redes sociais") ?> </h4>
+    <h4 v-if="!editable" class="entity-social-media__title bold"> <?php i::_e("Redes sociais") ?> </h4>
 
     <div v-if="!editable" class="entity-social-media__links">
 
@@ -55,7 +55,7 @@ $this->import('
     </div>
 
 
-    <h4 v-if="editable" class="entity-social-media__title"> <?php i::_e("Adicionar redes sociais") ?> </h4>
+    <h4 v-if="editable" class="entity-social-media__title bold"> <?php i::_e("Adicionar redes sociais") ?> </h4>
 
     <div v-if="editable" class="entity-social-media__edit">
 
