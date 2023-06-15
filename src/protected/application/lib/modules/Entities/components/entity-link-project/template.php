@@ -12,7 +12,7 @@ $this->import('
 ?>
 <div v-if="project" :class="['entity-link-project' ,classes]">
     
-    <h4 class="entity-link-project__title">{{entity.name}} {{title}}</h4>
+    <h4 class="entity-link-project__title bold">{{entity.name}} {{title}}</h4>
     <a class="entity-link-project__project" :href="project.singleUrl" :title="project.shortDescription">
         <div class="entity-link-project__project--img">
             <img v-if="project.files.avatar" class="profile" :src="project.files?.avatar?.url">
