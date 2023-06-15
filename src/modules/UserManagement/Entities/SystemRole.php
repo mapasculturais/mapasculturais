@@ -57,7 +57,7 @@ class SystemRole extends \MapasCulturais\Entity {
     /**
      * @var object
      *
-     * @ORM\Column(name="permissions", type="json_array", nullable=true)
+     * @ORM\Column(name="permissions", type="json", nullable=true)
      */
     protected $permissions = [];
 

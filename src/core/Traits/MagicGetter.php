@@ -12,6 +12,8 @@ use MapasCulturais\App;
  */
 trait MagicGetter{
 
+    // @todo dynamic property
+
     public $__magicGetterCache;
     public $__enabledMagicGetterCaches;
     /**

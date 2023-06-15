@@ -38,6 +38,26 @@ class RoutesManager{
 
     protected function addRoutes(){
         $app = App::i();
+        $slim = $app->slim;
+        $self = $this;
+
+        $controllers = $app->getRegisteredControllers();
+
+        foreach($controllers as $controller_id => $controller_class) {
+            $slim->any("/{$controller_id}/{action}[/{params:.*}]", function($request, $response, array $args) use($app, $controller_id, $self) {
+                $controller = $app->controller($controller_id);
+
+                $params = $self->extractArgs(explode('/', $args['params'] ?? ''));
+
+                $controller->callAction($request->getMethod(), $args['action'], $params);
+            });
+        }
+
+        $routes = $app->config['routes'];
+
+        
+
+        return ;
         $app->map('/(:args+)', function ($url_args = []) use ($app){
             $api_call = false;
             if(key_exists(0, $url_args) && $url_args[0] === 'api'){
@@ -140,7 +160,7 @@ class RoutesManager{
      *
      * @return array Extracted data
      */
-    protected function extractArgs($url_args){
+    protected function extractArgs(array $url_args){
         $data = [];
         $i = 0;
 
