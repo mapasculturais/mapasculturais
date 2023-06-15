@@ -13,8 +13,8 @@ $this->import('
 ');
 ?>
 <div v-if="editable || entity.terms?.[taxonomy].length > 0" :class="['entity-terms', classes]">
-    <h4 class="entity-terms__title" v-if="title == ''"> {{taxonomy}} </h4>
-    <h4 class="entity-terms__title" v-else> {{title}} </h4>
+    <h4 class="entity-terms__title bold" v-if="title == ''"> {{taxonomy}} </h4>
+    <h4 class="entity-terms__title bold" v-else> {{title}} </h4>
 
     <mc-popover v-if="allowInsert && editable" openside="down-right"  @open="loadTerms()" :title="popoverTitle">
         <template #button="popover">
