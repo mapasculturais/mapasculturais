@@ -176,7 +176,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
     }
 
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         $result = parent::jsonSerialize();
 
         $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl');

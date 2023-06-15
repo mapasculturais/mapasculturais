@@ -65,7 +65,7 @@ class ProjectAgentRelation extends AgentRelation {
 
     }
 
-    function jsonSerialize() {
+    function jsonSerialize(): array {
         $result = parent::jsonSerialize();
         return $result;
     }

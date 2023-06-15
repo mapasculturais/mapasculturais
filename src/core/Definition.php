@@ -10,7 +10,7 @@ class Definition implements \JsonSerializable{
         return true;
     }
 
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         $result = [];
         foreach ($this as $prop => $val)
             if($prop[0] !== '_')

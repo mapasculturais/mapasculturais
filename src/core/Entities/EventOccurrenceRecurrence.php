@@ -55,7 +55,7 @@ class EventOccurrenceRecurrence extends \MapasCulturais\Entity
      */
     protected $eventOccurrence;
     
-    function jsonSerialize() {
+    function jsonSerialize(): array {
         return [
             'id' => $this->id,
             'month' => $this->month,

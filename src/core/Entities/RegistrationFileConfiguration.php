@@ -136,7 +136,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         $this->categories = $value;
     }
 
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         return [
             'id' => $this->id,
             'ownerId' => $this->owner->id,
