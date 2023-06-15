@@ -86,7 +86,7 @@ class EntityTypeGroup extends \MapasCulturais\Definition{
             $this->registered_types[] = $type;
     }
 
-    function jsonSerialize() {
+    function jsonSerialize(): array {
         return [
             'name' => $this->name,
             'minId' => $this->min_id,
