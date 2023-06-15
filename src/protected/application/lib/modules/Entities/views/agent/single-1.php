@@ -42,8 +42,8 @@ $this->breadcrumb = [
                         <agent-data-1 :entity="entity"></agent-data-1>
                         <entity-location :entity="entity" classes="col-12"></entity-location>
                         <div v-if="entity.longDescription" class="col-12">
-                            <span class="label">
-                                <?php i::_e('Descrição Detalhada');?>
+                            <span>
+                                <h3 class="single-1__description bold"><?php i::_e('Descrição Detalhada');?></h3>
                             </span>
                             <p v-html="entity.longDescription"></p>
                         </div>
