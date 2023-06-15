@@ -50,7 +50,7 @@ class PermissionCachePending extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\User
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", )
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade={"persist"}, )
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })

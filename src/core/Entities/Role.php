@@ -36,7 +36,7 @@ class Role extends \MapasCulturais\Entity{
     /**
      * @var \MapasCulturais\Entities\User
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade={"persist"}, fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })

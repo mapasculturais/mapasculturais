@@ -90,12 +90,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     /**
      *
      * @var \MapasCulturais\Entities\Role[] User Roles
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
      */
     protected $roles;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
      * @ORM\OrderBy({"createTimestamp" = "ASC"})
      */
     protected $agents;
@@ -113,14 +113,14 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     /**
      *
      * @var \MapasCulturais\Entities\Procuration[] 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="user", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
      */
     protected $_userProcurations;
 
     /**
      *
      * @var \MapasCulturais\Entities\Procuration[] 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="attorney", cascade="remove", orphanRemoval=true, fetch="LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="attorney", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
      */
     protected $_attorneyProcurations;
 

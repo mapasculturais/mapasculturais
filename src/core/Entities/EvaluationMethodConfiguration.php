@@ -61,7 +61,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\Opportunity
      *
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Opportunity", inversedBy="evaluationMethodConfiguration", cascade="persist" )
+     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Opportunity", inversedBy="evaluationMethodConfiguration", cascade={"persist"} )
      * @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $opportunity;
@@ -91,7 +91,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation[] Agent Relations
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
      */
     protected $__agentRelations;
@@ -102,7 +102,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     protected $__metadata;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
     

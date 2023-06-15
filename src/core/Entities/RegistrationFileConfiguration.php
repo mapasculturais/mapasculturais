@@ -97,7 +97,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationFileConfigurationFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationFileConfigurationFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;

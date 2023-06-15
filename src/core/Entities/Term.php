@@ -47,7 +47,7 @@ class Term extends \MapasCulturais\Entity
 
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\TermRelation", mappedBy="term", cascade="remove", orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\TermRelation", mappedBy="term", cascade={"remove"}, orphanRemoval=true)
     */
     protected $relations;
 
