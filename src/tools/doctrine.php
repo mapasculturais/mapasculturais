@@ -24,8 +24,7 @@ $_SERVER['REMOTE_ADDR'] = 'localhost';
 $_SERVER['REQUEST_URI'] = './doctrine';
 $_SERVER['SERVER_NAME'] = 'localhost';
 
-(@include_once __DIR__ . '/../vendor/autoload.php') || @include_once __DIR__ . '/../../../autoload.php';
-
+include_once __DIR__ . '/../../vendor/autoload.php';
 
 $configFile = getcwd() . DIRECTORY_SEPARATOR . 'cli-config.php';
 
@@ -47,6 +46,7 @@ if (file_exists($configFile)) {
     }
 }
 
-$helperSet = ($helperSet) ?: new \Symfony\Component\Console\Helper\HelperSet();
+$helperSet = new \Symfony\Component\Console\Helper\HelperSet();
+
 
 \Doctrine\ORM\Tools\Console\ConsoleRunner::run($helperSet);
