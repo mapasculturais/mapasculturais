@@ -572,10 +572,11 @@ class App {
             $domain = substr($domain, 0, $pos);
         }
         try{
-            $this->subsite = $this->repo('Subsite')->findOneBy(['url' => $domain, 'status' => 1]);
+            $subsite = $this->repo('Subsite')->findOneBy(['url' => $domain, 'status' => 1]) ?:
+                       $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain, 'status' => 1]);
 
-            if(!$this->subsite){
-                $this->subsite = $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain, 'status' => 1]);
+            if ($subsite){
+                $this->subsite = $subsite;
             }
         } catch ( \Exception $e) { }
 
