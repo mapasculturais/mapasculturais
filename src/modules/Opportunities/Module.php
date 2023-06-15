@@ -146,7 +146,7 @@ class Module extends \MapasCulturais\Module{
             ];
         });
 
-        $app->hook('Theme::addOpportunityBreadcramb', function($unused = null, $label) use($app) {
+        $app->hook('Theme::addOpportunityBreadcramb', function($unused, $label) use($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
             /** @var Opportunity $entity */
             $entity = $this->controller->requestedEntity;
