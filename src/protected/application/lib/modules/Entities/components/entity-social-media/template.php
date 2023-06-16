@@ -17,40 +17,44 @@ $this->import('
 
         <div v-if="entity.instagram" class="entity-social-media__links--link">
             <mc-icon name="instagram"></mc-icon>
-            {{entity.instagram}}
+            <a :href="entity.instagram">{{entity.instagram}}</a>
+
         </div>
 
         <div v-if="entity.twitter" class="entity-social-media__links--link">
             <mc-icon name="twitter"></mc-icon>
-            {{entity.twitter}}
+            <a :href="entity.twitter">{{entity.twitter}}</a>
         </div>
 
         <div v-if="entity.facebook" class="entity-social-media__links--link">
             <mc-icon name="facebook"></mc-icon>
-            {{entity.facebook}}
+            <a :href="entity.facebook">{{entity.facebook}}</a>
         </div>
 
         <div v-if="entity.youtube" class="entity-social-media__links--link">
             <mc-icon name="youtube"></mc-icon>
-            {{entity.youtube}}
+            <a :href="entity.youtube">{{entity.youtube}}</a>
         </div>
 
         <div v-if="entity.linkedin" class="entity-social-media__links--link">
             <mc-icon name="linkedin"></mc-icon>
-            {{entity.linkedin}}
+            <a :href="entity.linkedin">{{entity.linkedin}}</a>
+
         </div>
         <div v-if="entity.vimeo" class="entity-social-media__links--link">
             <mc-icon name="vimeo"></mc-icon>
-            {{entity.vimeo}}
+            <a :href="entity.vimeo">{{entity.vimeo}}</a>
+
         </div>
         <div v-if="entity.spotify" class="entity-social-media__links--link">
             <mc-icon name="spotify"></mc-icon>
-            {{entity.spotify}}
+            <a :href="entity.spotify">{{entity.spotify}}</a>
         </div>
 
         <div v-if="entity.pinterest" class="entity-social-media__links--link">
             <mc-icon name="pinterest"></mc-icon>
-            {{entity.pinterest}}
+            <a :href="entity.pinterest">{{entity.pinterest}}</a>
+
         </div>
     </div>
 
