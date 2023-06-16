@@ -52,7 +52,7 @@ $this->breadcrumb = [
             <dt><?= i::__('Tipo') ?></dt>
             <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
         </dl>
-        <dl class="single-opportunity__type">
+        <dl class="single-opportunity__owner">
             <dt><?= i::__('Opportunidade de') ?></dt>
             <mc-link :entity="entity.ownerEntity"></mc-link>
         </dl>
