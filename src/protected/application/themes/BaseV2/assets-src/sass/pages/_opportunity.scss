@@ -1,7 +1,19 @@
 @use '../settings/mixins'as *;
 
 .controller-opportunity {
-
+    &.action-single {
+       .entity-header__single--content {
+            .rightSide {
+                .metadata {
+                    .single-opportunity__type {
+                        a {
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+       }
+    }
     .tabs-component__panels {
         .tab-component.support {
             position: relative;
