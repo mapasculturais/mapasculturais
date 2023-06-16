@@ -448,28 +448,31 @@ class Opportunity extends EntityController {
             $em = $opportunity->previousPhase->evaluationMethod;
         }
 
-        foreach($registrations as &$reg) {
-            if(in_array('consolidatedResult', $query->selecting)){
-                $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
-            }
-
-            if(isset($reg['previousPhaseRegistrationId']) && $reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
-                $values = $select_values[$reg['previousPhaseRegistrationId']];
-                foreach($reg as $key => $val){
-                    if(is_null($val) && isset($values[$key])){
-                        $reg[$key] = $values[$key];
+        if($em){
+            foreach($registrations as &$reg) {
+                if(in_array('consolidatedResult', $query->selecting)){
+                    $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
+                }
+    
+                if(isset($reg['previousPhaseRegistrationId']) && $reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
+                    $values = $select_values[$reg['previousPhaseRegistrationId']];
+                    foreach($reg as $key => $val){
+                        if(is_null($val) && isset($values[$key])){
+                            $reg[$key] = $values[$key];
+                        }
                     }
                 }
             }
+    
+            if(in_array('consolidatedResult', $query->selecting)){
+                /* @TODO: considerar parâmetro @order da api */
+    
+                usort($registrations, function($e1, $e2) use($em){
+                    return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
+                });
+            }
         }
-
-        if(in_array('consolidatedResult', $query->selecting)){
-            /* @TODO: considerar parâmetro @order da api */
-
-            usort($registrations, function($e1, $e2) use($em){
-                return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
-            });
-        }
+        
 
         $this->apiAddHeaderMetadata($this->data, $registrations, $query->count());
         $this->apiResponse($registrations);
