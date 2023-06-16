@@ -44,7 +44,7 @@ $this->breadcrumb = [
   ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
 ];
 ?>
-<div class="main-app single">
+<div class="main-app single single-opportunity">
   <mc-breadcrumb></mc-breadcrumb>
   <entity-header :entity="entity">
     <template #metadata>
@@ -52,7 +52,7 @@ $this->breadcrumb = [
             <dt><?= i::__('Tipo') ?></dt>
             <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
         </dl>
-        <dl>
+        <dl class="single-opportunity__type">
             <dt><?= i::__('Opportunidade de') ?></dt>
             <mc-link :entity="entity.ownerEntity"></mc-link>
         </dl>
