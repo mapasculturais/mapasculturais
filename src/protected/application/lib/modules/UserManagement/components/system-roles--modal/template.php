@@ -13,7 +13,7 @@ $this->import('
     mc-modal
 ')
 ?>
-<mc-modal :title="title" classes="create-modal" @close="destroyInstance()" @open="createInstance()">
+<mc-modal :title="title" classes="create-modal " @close="destroyInstance()" @open="createInstance()">
     <template v-if="instance" #default>
         <entity-field v-if="!entity" :entity="instance" prop="name" hide-required></entity-field>
         <section v-for="(entityPermissions,entitySlug) in permissions" :key="entitySlug"> 
@@ -39,7 +39,7 @@ $this->import('
                 </button>
             </template>
             <template v-else>
-                <button @click="modal.open()" class="button button--icon button button--solid">
+                <button @click="modal.open()" class="button button--icon button">
                     <mc-icon name="add"></mc-icon>
                     <?php i::_e("Criar nova função de usuário") ?>
                 </button>
