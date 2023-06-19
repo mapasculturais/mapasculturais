@@ -3,13 +3,10 @@
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
-
 use MapasCulturais\i;
 
 $this->layout = 'entity';
-
 $this->addOpportunityPhasesToJs();
-
 $this->import('
     entity-field
     opportunity-form-export
@@ -20,13 +17,10 @@ $this->import('
 ?>
 <div class="form-builder__content grid-12">
     <opportunity-phase-header classes="col-12" :phase="entity"></opportunity-phase-header>
-
     <div class="col-12">
         <h2><?= i::__("Configuração de formulário de coleta de dados") ?></h2>
     </div>
-
     <opportunity-form-import classes="col-12" :entity="entity"></opportunity-form-import>
-    
     <div class="form-builder__cards col-12 grid-12">
         <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
             <mc-card>
@@ -41,14 +35,22 @@ $this->import('
                                 <label class="input-group__input"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="optional" /> <?= i::_e('Opcional') ?> </label>
                             </div>
                         </div>
-                        <div v-if="entity.isFirstPhase" class="col-12">
-                            <h4 class="input-group__title"><?= i::__("Solicitar instituição responsável?") ?></h4>
-                            <h6 class="input-group__subtitle"><?= i::__("Solicite a inscrição de instituções (agentes coletivos com CNPJ).") ?></h6>
-                            <div class="input-group__inputs">
-                                <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
-                                <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="required" /> <?= i::_e('Obrigatório') ?> </label>
-                                <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="optional" /> <?= i::_e('Opcional') ?> </label>
-                            </div>
+
+                    </div>
+                </template>
+            </mc-card>
+        </div>
+
+        <div class="col-6 sm:col-12 grid-12" v-if="entity.isFirstPhase">
+            <mc-card class="col-12">
+                <template #default>
+                    <div v-if="entity.isFirstPhase" class="col-12">
+                        <h4 class="input-group__title"><?= i::__("Solicitar instituição responsável?") ?></h4>
+                        <h6 class="input-group__subtitle"><?= i::__("Solicite a inscrição de instituções (agentes coletivos com CNPJ).") ?></h6>
+                        <div class="input-group__inputs">
+                            <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
+                            <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="required" /> <?= i::_e('Obrigatório') ?> </label>
+                            <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="optional" /> <?= i::_e('Opcional') ?> </label>
                         </div>
                     </div>
                 </template>
@@ -69,7 +71,9 @@ $this->import('
                     </div>
                 </template>
             </mc-card>
-            
+        </div>
+        <div class="col-6 sm:col-12 grid-12" v-if="entity.isFirstPhase">
+
             <mc-card class="col-12">
                 <template #default>
                     <div class="input-group">
