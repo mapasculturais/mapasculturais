@@ -24,6 +24,9 @@
 
 .sidebar-left {
     overflow: visible;
+    position: relative;
+    height: calc(100vh - 78px);
+
     //tablet
     @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
         float: right;
@@ -32,6 +35,11 @@
         margin-bottom: 0;
         overflow: visible;
     }
+
+    @media screen and (max-width: $screen-md-max) {
+        height: 100%;
+    }
+    
     //note
     @media screen and (min-width: $screen-lg-desktop) and (max-width: 1366px) {
         float: left;
@@ -64,12 +72,11 @@
     }
 
     #registrations-list-container {
-        position: fixed;
-        margin-right: -1.5em;
-        margin-left: -1.5em;
-        width:14.5%;
+        width:100%;
         display:block;
         font-size: .75em;
+        top: 20px;
+        position: sticky;
 
         h4 { margin-bottom: 10px; }
 
