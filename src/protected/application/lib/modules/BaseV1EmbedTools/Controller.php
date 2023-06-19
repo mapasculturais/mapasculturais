@@ -134,7 +134,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $app = App::i();
         $this->entityClassName = "MapasCulturais\\Entities\\Registration";
         $this->layout = "embedtools-registration";
-        $entity = $this->getEntityAndCheckPermission('support');
+        $entity = $this->getEntityAndCheckPermission('@support');
 
         $entity->registerFieldsMetadata();
         $relation = $app->repo("AgentRelation")->findOneBy([
@@ -183,6 +183,11 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->requireAuthentication();
         if (!$entity = $this->requestedEntity) {
             $app->pass();
+        }
+
+        if($permission == "support"){
+            $entity->isSupportUser($app->user);
+            return $entity;
         }
         
         $entity->checkPermission($permission);
