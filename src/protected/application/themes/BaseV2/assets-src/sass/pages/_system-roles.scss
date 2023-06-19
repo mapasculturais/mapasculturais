@@ -1,0 +1,41 @@
+@use '../settings/mixins' as *;
+
+.controller-panel.action-system-roles {
+
+    .panel-entity-card {
+        &__main {
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-items: start;
+
+            .system-roles-card {
+                &__content {}
+
+                &__close,
+                &__expand {
+                    padding-top: size(21);
+                    align-items: center;
+                    color: var(--mc-primary-500);
+                    display: flex;
+                    gap: size(4);
+                    justify-content: flex-end;
+                    min-width: size(82);
+
+                    label {
+                        font-weight: 700;
+                        font-size: size(18.5);
+                        line-height: size(24.5);
+
+                    }
+                }
+
+            }
+        }
+
+        &__footer-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+        }
+    }
+}
