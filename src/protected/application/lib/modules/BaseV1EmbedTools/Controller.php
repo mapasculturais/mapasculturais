@@ -189,6 +189,11 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
             $entity->isSupportUser($app->user);
             return $entity;
         }
+
+        if($permission == "evaluateRegistrations" && $entity->publishedRegistrations){
+            $entity->checkPermission('viewEvaluations');
+            return $entity;
+        }
         
         $entity->checkPermission($permission);
         return $entity;
