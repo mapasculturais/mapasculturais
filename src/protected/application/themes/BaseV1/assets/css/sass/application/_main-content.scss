@@ -8,6 +8,9 @@
     background: #fff;
     border-radius: 0 0 $border-radius-base $border-radius-base;
     padding: $padding-base;
+    position: relative;
+    z-index: 2;
+    
     @media screen and (min-width: $screen-tablet) {
         float: left;
         padding: 2rem;
