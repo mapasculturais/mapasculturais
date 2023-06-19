@@ -9,15 +9,12 @@ $this->import('
     system-roles--modal 
 ') 
 ?>
-<panel--entity-card 
-    :entity="entity"
-    :on-delete-remove-from-lists="false"
-    @deleted="$emit('deleted', $event)"
-    @published="$emit('deleted', $event)">
+<panel--entity-card :entity="entity" :on-delete-remove-from-lists="false" @deleted="$emit('deleted', $event)" @published="$emit('deleted', $event)">
     <code>ID {{entity.id}}</code>
     <code>slug: {{entity.slug}}</code>
-
-    <div class="grid-12">
+    <a class="system-roles-card__close" v-if="showItem" @click="toggle()"><label class="system-roles-card__label">Permissões</label><mc-icon name="arrowPoint-up"></mc-icon></a>
+    <a class="system-roles-card__expand" v-if="!showItem"  @click="toggle()"><label>Permissões</label> <mc-icon name="arrowPoint-down"></mc-icon></a>
+    <div class="grid-12 system-roles-card__content" v-if="showItem">
         <section v-for="grp in permissions" :key="grp.entity" class="col-4"> 
             <h4>{{text(grp.entity)}}</h4>
             <div>
