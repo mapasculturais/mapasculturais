@@ -146,7 +146,7 @@ class Controller extends \MapasCulturais\Controller
             $app->pass();
         }   
 
-        $entity->checkPermission('support');
+        $entity->checkPermission('@support');
 
         $this->render('support', ['entity' => $entity]);
     }
@@ -162,7 +162,7 @@ class Controller extends \MapasCulturais\Controller
             $app->pass();
         }   
 
-        $entity->checkPermission('support');
+        $entity->checkPermission('@support');
 
         $this->render('support-edit', ['entity' => $entity]);
     }
