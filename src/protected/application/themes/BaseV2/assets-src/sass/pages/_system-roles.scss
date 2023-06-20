@@ -19,7 +19,24 @@
                     columns: 3;
                     column-gap: size(16);
                 }
-
+                @media (max-width: size(1180)) {
+                    &__columns {
+                        columns: 2;
+                    }
+                    &__column {
+                        break-inside: avoid;
+                        padding-right: size(40);
+                    }
+                }
+                @media (max-width: size(940)) {
+                    &__columns {
+                        columns: 1;
+                    }
+                    &__column {
+                        break-inside: avoid;
+                        padding-right: 0;
+                    }
+                }
                 &__column {
                     break-inside: avoid;
                     padding-right: size(80);
