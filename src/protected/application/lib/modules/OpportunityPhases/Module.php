@@ -1159,7 +1159,7 @@ class Module extends \MapasCulturais\Module{
             });
 
             $app->hook('ApiQuery(Registration).params', function(&$params) {
-                if(!isset($params['opportunity']) && !isset($params['previousPhaseRegistrationId'])) {
+                if(!isset($params['opportunity']) && !isset($params['previousPhaseRegistrationId']) && !isset($params['id'])) {
                     $params['previousPhaseRegistrationId'] = API::NULL();
                 }
             });
