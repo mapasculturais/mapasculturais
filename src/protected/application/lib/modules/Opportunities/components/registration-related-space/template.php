@@ -23,8 +23,8 @@ $this->import('
         </div>
     </template>
     <template #content>
-        <div v-if="relatedSpace" class="registration-select-entity">
-            <div class="registration-select-entity__entity">
+        <div v-if="relatedSpace" class="registration-related-entity">
+            <div class="registration-related-entity__entity">
                 <div class="image">
                     <img v-if="relatedSpace.files.avatar" :src="relatedSpace.files?.avatar?.transformations?.avatarMedium.url" />
                     <mc-icon v-if="!relatedSpace.files.avatar" name="image"></mc-icon>
@@ -33,8 +33,8 @@ $this->import('
                     {{relatedSpace.name}}
                 </div>
             </div>
-            <div class="registration-select-entity__actions">
-                <select-entity type="space" @select="selectSpace($event)">
+            <div class="registration-related-entity__actions">
+                <select-entity type="space" @select="selectSpace($event)" permissions="">
                     <template #button="{toggle}">
                         <button class="button button--text button--icon button--sm change" @click="toggle()"> 
                             <mc-icon name="exchange"></mc-icon> <?= i::__('Trocar') ?> 
@@ -45,9 +45,13 @@ $this->import('
                     <mc-icon name="trash"></mc-icon> <?= i::__('Excluir') ?> 
                 </button>
             </div>
+            <div v-if="relatedSpace.status == -5" class="registration-related-entity__status">
+                <mc-icon name="exclamation"></mc-icon>
+                <?= i::__('A solicitação está pendente') ?>
+            </div>
         </div>
         
-        <select-entity v-if="!relatedSpace" type="space" @select="selectSpace($event)">
+        <select-entity v-if="!relatedSpace" type="space" @select="selectSpace($event)" permissions="">
             <template #button="{toggle}">
                 <button class="button button--primary-outline button--icon button--md" @click="toggle()"> 
                     <mc-icon name="add"></mc-icon> <?= i::__('Adicionar') ?> 
