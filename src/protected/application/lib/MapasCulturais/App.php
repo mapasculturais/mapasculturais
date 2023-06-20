@@ -1733,12 +1733,12 @@ class App extends \Slim\Slim{
 
     public function executeJob() {
         $conn = $this->em->getConnection();
-
+        $now = date('Y-m-d H:i:s');
         $job_id = $conn->fetchColumn("
             SELECT id
             FROM job
             WHERE
-                next_execution_timestamp <= now() AND
+                next_execution_timestamp <= '$now' AND
                 iterations_count < iterations AND
                 status = 0
             ORDER BY next_execution_timestamp ASC
@@ -1754,7 +1754,7 @@ class App extends \Slim\Slim{
             $job->execute();
             $this->applyHookBoundTo($this, "app.executeJob:after");
             $this->enableAccessControl();
-
+            $this->persistPCachePendingQueue();
             return $job_id;
         } else {
             return false;

@@ -15,6 +15,32 @@
             justify-items: start;
 
             .system-roles-card {
+                &__columns {
+                    columns: 3;
+                    column-gap: size(16);
+                }
+                @media (max-width: size(1180)) {
+                    &__columns {
+                        columns: 2;
+                    }
+                    &__column {
+                        break-inside: avoid;
+                        padding-right: size(40);
+                    }
+                }
+                @media (max-width: size(940)) {
+                    &__columns {
+                        columns: 1;
+                    }
+                    &__column {
+                        break-inside: avoid;
+                        padding-right: 0;
+                    }
+                }
+                &__column {
+                    break-inside: avoid;
+                    padding-right: size(80);
+                }
 
                 &__info,
                 &__slug {
@@ -50,7 +76,7 @@
 
                 &__content {
                     background: var(--mc-gray-100);
-                    border-radius: 8px;
+                    border-radius: size(8);
                     padding: size(20);
                     margin-top: size(35);
                 }
@@ -78,6 +104,7 @@
                     font-weight: 700;
                     font-size: size(12);
                     line-height: size(16.34);
+
                 }
 
                 &__users {
@@ -117,6 +144,42 @@
                     font-size: size(16);
                 }
             }
+
+            @media (max-width: size(500)) {
+
+                display: grid;
+                grid-template-columns: 1fr;
+
+                .button.delete {
+                    height: size(48);
+                    display: flex;
+                    align-items: center;
+
+                    span {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: size(18);
+                        line-height: size(25);
+                    }
+                }
+
+
+                .right {
+                    .button {
+                        height: size(48);
+                        gap: calc(36%);
+                        align-items: center;
+                        justify-content: flex-start;
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: size(18);
+                        line-height: size(25);
+                    }
+                }
+            }
+
         }
     }
 }
