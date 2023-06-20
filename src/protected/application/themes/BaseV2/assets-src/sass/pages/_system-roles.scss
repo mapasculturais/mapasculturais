@@ -1,7 +1,6 @@
 @use '../settings/mixins' as *;
 
 .controller-panel.action-system-roles {
-
     .panel-entity-card {
 
         &__header> :first-child {
@@ -105,6 +104,7 @@
                 display: flex;
                 align-items: flex-start;
                 padding: size(9) size(19);
+
                 span {
                     font-family: 'Open Sans';
                     font-style: normal;
@@ -114,7 +114,7 @@
                 }
 
                 svg {
-               font-size: size(16);
+                    font-size: size(16);
                 }
             }
         }
