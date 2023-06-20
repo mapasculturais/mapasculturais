@@ -39,7 +39,7 @@ $this->import('
                 </button>
             </template>
             <template v-else>
-                <button @click="modal.open()" class="button button--icon button">
+                <button @click="modal.open()" class="button button--icon button--primary">
                     <mc-icon name="add"></mc-icon>
                     <?php i::_e("Criar nova função de usuário") ?>
                 </button>
