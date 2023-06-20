@@ -11,16 +11,9 @@ $this->layout = 'registrations';
 
 $this->import('
     mc-breadcrumb
-    mc-card
     mc-container
-    mc-icon
     opportunity-header
-    registration-actions
-    registration-related-agents
-    registration-related-space
-    registration-related-project
-    registration-steps
-    select-entity
+    support-actions
     v1-embed-tool
     mc-alert
 ');
@@ -79,15 +72,16 @@ $this->import('
                 </div>
 
                 <div class="col-12">
-                    <v1-embed-tool route="supporteditview" :id="entity.id"></v1-embed-tool>
+                    <v1-embed-tool iframe-id="support-form" route="supporteditview" :id="entity.id"></v1-embed-tool>
                 </div>
             </main>
 
             <aside>
-                <div class="actions">
+                <support-actions :registration="entity"></support-actions>
+                <!-- <div class="actions">
                     <button class="button button--primary button--md"> <?= i::__('Salvar alterações') ?> </button>
                     <button class="button button--primary-outline button--md"> <?= i::__('Sair') ?> </button>
-                </div>
+                </div> -->
             </aside>
         </mc-container>
     </div>
