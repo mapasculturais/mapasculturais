@@ -39,6 +39,7 @@ class Module extends \MapasCulturais\Module {
                 'publish' => i::__('publicar'),
                 'unpublish' => i::__('despublicar'),
                 'archive' => i::__('arquivar'),
+                'unarchive' => i::__('desarquivar'),
                 'viewPrivateData' => i::__('visualizar dados privados'),
                 'viewPrivateFiles' => i::__('visualizar arquivos privados'),
 
@@ -73,7 +74,8 @@ class Module extends \MapasCulturais\Module {
             ];
 
             $permission_descriptions = [
-                'requestEventRelation' => 'O usuário poderá solicitar que o evento que está criando/editando seja relacionado aos projetos'
+                'requestEventRelation' => 'O usuário poderá solicitar que o evento que está criando/editando seja relacionado aos projetos',
+                '@control' => 'Usuário com controle total'
             ];
             
             $app->applyHook('module(UserManagement).permissionsLabels', [&$permission_labels]);
