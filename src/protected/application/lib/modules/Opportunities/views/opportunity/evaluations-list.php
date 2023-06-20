@@ -31,9 +31,9 @@ $this->import('
         </template>
     </opportunity-header>
 
-    <div class="opportunity-registrations__container">
-        <opportunity-phase-header :phase="entity"></opportunity-phase-header>
-        <mc-summary-evaluate></mc-summary-evaluate>
-        <opportunity-evaluations-table :phase="entity"></opportunity-evaluations-table>
+    <div class="opportunity-registrations__container grid-12">
+        <opportunity-phase-header :phase="entity" classes="col-12"></opportunity-phase-header>
+        <mc-summary-evaluate classes="col-12"></mc-summary-evaluate>
+        <opportunity-evaluations-table :phase="entity" classes="col-12"></opportunity-evaluations-table>
     </div>
 </div>
