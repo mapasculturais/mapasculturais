@@ -3,7 +3,12 @@ app.component('mc-summary-evaluate', {
 
     setup() { },
 
-    props: {},
+    props: {
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
+    },
 
     data() {
         return {

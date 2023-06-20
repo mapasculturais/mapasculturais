@@ -3,26 +3,23 @@
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
-
+use MapasCulturais\i;
 $this->import('
     panel--entity-card
     system-roles--modal 
 ') 
 ?>
-<panel--entity-card 
-    :entity="entity"
-    :on-delete-remove-from-lists="false"
-    @deleted="$emit('deleted', $event)"
-    @published="$emit('deleted', $event)">
-    <code>ID {{entity.id}}</code>
-    <code>slug: {{entity.slug}}</code>
-
-    <div class="grid-12">
+<panel--entity-card :entity="entity" class="system-roles-card":on-delete-remove-from-lists="false" @deleted="$emit('deleted', $event)" @published="$emit('deleted', $event)">
+    <div class="system-roles-card__info"><label class="system-roles-card__label">ID:</label><code class="system-roles-card__entityInfo">{{entity.id}}</code></div>
+    <div class="system-roles-card__slug"><label class="system-roles-card__label">Slug:</label><code class="system-roles-card__entityInfo">{{entity.slug}}</code></div>
+    <a class="system-roles-card__close" v-if="showItem" @click="toggle()"><label class="system-roles-card__permissions">Permissões</label><mc-icon name="arrowPoint-up"></mc-icon></a>
+    <a class="system-roles-card__expand" v-if="!showItem"  @click="toggle()"><label class="system-roles-card__permissions">Permissões</label> <mc-icon name="arrowPoint-down"></mc-icon></a>
+    <div class="grid-12 system-roles-card__content" v-if="showItem">
         <section v-for="grp in permissions" :key="grp.entity" class="col-4"> 
-            <h4>{{text(grp.entity)}}</h4>
-            <div>
+            <h5 class="system-roles-card__users">{{text(grp.entity)}}</h5>
+            <div class="system-roles-card__list">
                 <ul>
-                    <li v-for="perm in grp.actions" :key="perm.action">{{perm.label}}</li>
+                    <li v-for="perm in grp.actions" :key="perm.action" class="system-roles-card__item">{{perm.label}}</li>
                 </ul>
             </div>
         </section>
