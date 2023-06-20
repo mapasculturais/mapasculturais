@@ -3,13 +3,58 @@
 .controller-panel.action-system-roles {
 
     .panel-entity-card {
+
+        &__header> :first-child {
+            grid-template-columns: 1fr;
+            align-items: start;
+            display: grid;
+        }
+
         &__main {
             display: grid;
             grid-template-columns: 1fr;
             justify-items: start;
 
             .system-roles-card {
-                &__content {}
+
+                &__info,
+                &__slug {
+
+                    font-size: size(12);
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: size(14);
+                    line-height: size(16);
+                }
+
+                &__slug {
+                    padding-top: size(9);
+                }
+
+                &__label {
+                    color: var(--mc-gray-700);
+                    font-size: size(12);
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: size(14);
+                    line-height: size(16);
+                    text-transform: uppercase
+                }
+
+                &__entityInfo {
+                    font-size: size(14);
+                    font-weight: 700;
+                    line-height: size(16);
+                    margin-left: size(5);
+                    font-size: 0.875rem;
+                }
+
+                &__content {
+                    background: var(--mc-gray-100);
+                    border-radius: 8px;
+                    padding: size(20);
+                    margin-top: size(35);
+                }
 
                 &__close,
                 &__expand {
@@ -29,7 +74,26 @@
                     }
                 }
 
+                &__list {
+                    font-family: 'Open Sans';
+                    font-weight: 700;
+                    font-size: size(12);
+                    line-height: size(16.34);
+                }
+
+                &__users {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: size(14);
+                    line-height: size(19);
+                }
+
             }
+        }
+
+        &__header--picture {
+            display: none;
         }
 
         &__footer-actions {
