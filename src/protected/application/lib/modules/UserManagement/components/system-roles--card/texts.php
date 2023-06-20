@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 
 return [
-    'user' => i::__('Usuários'),
+    'user' => i::__('Pessoas Usuárias'),
     'agent' => i::__('Agentes'),
     'space' => i::__('Espaços'),
     'event' => i::__('Eventos'),
