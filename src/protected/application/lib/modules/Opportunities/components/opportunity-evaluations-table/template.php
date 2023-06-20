@@ -12,7 +12,7 @@ $this->import('
     v1-embed-tool
 ')
 ?>
-<div class="grid-12">
+<div :class="['grid-12', classes]">
     <div class="col-6">
         <h2 v-if="isPast()"><?= i::__("As avaliações já estão encerradas") ?></h2>
         <h2 v-if="isHappening()"><?= i::__("As avaliações estão em andamento") ?></h2>
