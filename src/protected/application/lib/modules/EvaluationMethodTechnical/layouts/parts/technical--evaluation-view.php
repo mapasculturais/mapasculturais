@@ -9,8 +9,8 @@ use MapasCulturais\i;
         </section>
         <hr>
         <section class='total'>
-            <?php i::_e('Total'); ?>: <strong>{{total(total)}}</strong><br>
-            <?php i::_e('Máxima'); ?>: <strong>{{max(total)}}</strong>
+            <div class="nota-total"><?php i::_e('Total'); ?>: <strong>{{total(total)}}</strong></div><br>
+            <div class="nota-maxima"><?php i::_e('Máxima'); ?>: <strong>{{max(total)}}</strong></div>
         </section>
         <hr>
         <label>

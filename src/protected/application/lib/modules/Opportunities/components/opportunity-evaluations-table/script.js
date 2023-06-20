@@ -4,7 +4,11 @@ app.component('opportunity-evaluations-table' , {
         phase: {
             type: Entity,
             required: true
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
