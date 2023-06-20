@@ -36,6 +36,23 @@
             display: flex;
             justify-content: flex-end;
             align-items: flex-end;
+
+            .button.delete {
+                display: flex;
+                align-items: flex-start;
+                padding: size(8) size(18);
+                span {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: size(14);
+                    line-height: size(19);
+                }
+
+                svg {
+               font-size: size(16);
+                }
+            }
         }
     }
 }
