@@ -14,8 +14,8 @@ $this->import('
     <div class="system-roles-card__slug"><label class="system-roles-card__label">Slug:</label><code class="system-roles-card__entityInfo">{{entity.slug}}</code></div>
     <a class="system-roles-card__close" v-if="showItem" @click="toggle()"><label class="system-roles-card__permissions">Permissões</label><mc-icon name="arrowPoint-up"></mc-icon></a>
     <a class="system-roles-card__expand" v-if="!showItem"  @click="toggle()"><label class="system-roles-card__permissions">Permissões</label> <mc-icon name="arrowPoint-down"></mc-icon></a>
-    <div class="grid-12 system-roles-card__content" v-if="showItem">
-        <section v-for="grp in permissions" :key="grp.entity" class="col-4"> 
+    <div class="system-roles-card__columns system-roles-card__content" v-if="showItem">
+        <section v-for="grp in permissions" :key="grp.entity" class="system-roles-card__column"> 
             <h5 class="system-roles-card__users">{{text(grp.entity)}}</h5>
             <div class="system-roles-card__list">
                 <ul>
