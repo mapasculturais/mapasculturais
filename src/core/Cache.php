@@ -7,6 +7,8 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\CacheItem;
 
 /**
+ * Classe adaptadora para o Synfony Cache mantendo a interface do Doctrine Cache
+ * 
  * @property-read AdapterInterface $adapter
  * @package MapasCulturais
  */
@@ -17,7 +19,10 @@ class Cache {
 
     protected array $items = [];
 
-    protected string $namespace = '';
+    protected string $namespace = 'NAMESPACE#';
+
+    private static $parseFrom = ['{', '}', '(', ')', '/', '\\', '@', ':'];
+    private static $parseTo = ['<', '>', '[', ']', '_', '|',  '%', '#'];
 
     function __construct(AdapterInterface $adapter)
     {
@@ -26,12 +31,7 @@ class Cache {
 
     private function parseKey(string $key): string {
         // caracteres reservados: {}()/\@:
-        $key = str_replace (
-            ['{', '}', '(', ')', '/', '\\', '@', ':'],
-            ['<', '>', '[', ']', '|', '|',  '%', '#'], 
-            $this->namespace . $key);
-
-        return $key;
+        return $this->namespace . str_replace(self::$parseFrom, self::$parseTo, $key);
     }
 
     protected function getCacheItem(string $key): CacheItem {
@@ -43,11 +43,11 @@ class Cache {
         return $this->items[$key];
     }
 
-    function save(string $key, $value, int $cache_ttl = null) {
+    function save(string $key, $value, int $cache_ttl = DAY_IN_SECONDS) {
         $item = $this->getCacheItem($key);
         $item->expiresAfter($cache_ttl);
         $item->set($value);
-
+        $this->adapter->save($item);
     }
 
     function contains(string $key):bool {
@@ -62,11 +62,13 @@ class Cache {
     }
 
     function flushAll() {
-        $this->adapter->clear();
+        $this->adapter->clear($this->namespace);
     }
 
     function setNamespace(string $namespace = null) {
-        $this->namespace = $namespace ?: '';
+        // caracteres reservados: {}()/\@:
+        $namespace = str_replace(self::$parseFrom, self::$parseTo, $namespace);
+        $this->namespace = "NAMESPACE<{$namespace}>#";
     }
 
     function fetch(string $key) {
