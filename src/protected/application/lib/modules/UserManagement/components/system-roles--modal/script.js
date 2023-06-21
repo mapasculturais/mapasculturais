@@ -12,7 +12,7 @@ app.component('system-roles--modal', {
         return {
             instance: null,
             permissions: $MAPAS.EntityPermissionsList || [],
-            saveLabel: this.entity ? this.text('atualizar função') : this.text('criar função'),
+            saveLabel: this.entity ? this.text('atualizar função') : this.text('Adicionar'),
             title: this.entity ? this.text('editar função') + ' ' + this.entity.name : this.text('criar nova função de usuário')
         }
     },
