@@ -63,7 +63,7 @@ class Notification extends EntityController {
             $this->json(true);
         }else{
             //e redireciona de volta para o referer
-            $app->redirect($app->request()->getReferer());
+            $app->redirect($app->request->getReferer());
         }
     }
 
@@ -85,7 +85,7 @@ class Notification extends EntityController {
             $this->json(true);
         }else{
             //e redireciona de volta para o referer
-            $app->redirect($app->request()->getReferer());
+            $app->redirect($app->request->getReferer());
         }
     }
 }

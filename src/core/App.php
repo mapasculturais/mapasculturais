@@ -2751,11 +2751,6 @@ class App {
         return $controllers;
     }
 
-    public function request() {
-        
-        return $this->request;
-    }
-
     /**
      * Returns the controller object with the given id.
      *

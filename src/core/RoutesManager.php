@@ -176,7 +176,7 @@ class RoutesManager{
 
                 }  catch (\MapasCulturais\Exceptions\WorkflowRequest $e){
                     $requests = array_map(function($e){ return $e->getRequestType(); }, $e->requests);
-                    if($app->request()->isAjax()){
+                    if($app->request->isAjax()){
                         $app->halt(202, json_encode($requests) );
                     }else{
                         $app->halt(202, \MapasCulturais\i::__('Created requests: ') . implode(', ',$requests) );
@@ -231,7 +231,7 @@ class RoutesManager{
             App::i()->pass();
         }else{
             App::i()->view->setController($controller);
-            $controller->callAction( $api_call ? 'API' : App::i()->request()->getMethod(), $action_name, $args );
+            $controller->callAction( $api_call ? 'API' : App::i()->request->getMethod(), $action_name, $args );
         }
     }
 

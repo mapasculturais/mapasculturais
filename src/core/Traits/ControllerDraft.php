@@ -26,7 +26,7 @@ trait ControllerDraft{
             $this->json($entity);
         }else{
             //e redireciona de volta para o referer
-            $app->redirect($app->request()->getReferer());
+            $app->redirect($app->request->getReferer());
         }
     }
 
@@ -49,10 +49,10 @@ trait ControllerDraft{
             $this->json($entity);
         }else{
             //e redireciona de volta para o referer
-            if(in_array($app->request()->getReferer(), $urls))
+            if(in_array($app->request->getReferer(), $urls))
                 $app->redirect($app->createUrl('panel'));
             else
-                $app->redirect($app->request()->getReferer());
+                $app->redirect($app->request->getReferer());
         }
 
     }

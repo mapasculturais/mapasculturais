@@ -12,7 +12,7 @@ class Fake extends \MapasCulturais\AuthProvider {
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app) {
 
-            $searchQuery = trim($app->request()->get('q', ''));
+            $searchQuery = trim($app->request->get('q', ''));
             if ($searchQuery !== '') {
                 $searchQuery = '%' . $searchQuery . '%';
             }
@@ -33,7 +33,7 @@ class Fake extends \MapasCulturais\AuthProvider {
                 $searchQuery, $searchQuery, $searchQuery, $searchQuery
             ]);
 
-            if ($app->request()->isXhr()) {
+            if ($app->request->isXhr()) {
                 $this->json($users);
             } else {
                 $this->render('fake-authentication', [

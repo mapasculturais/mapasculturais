@@ -299,7 +299,7 @@ trait ControllerEntityActions {
             $this->json($entity->simplify('id,name,type,status'));
         }else{
             //e redireciona de volta para o referer
-            $redirect_url = $app->request()->getReferer();
+            $redirect_url = $app->request->getReferer();
             if($redirect_url === $single_url)
                 $redirect_url = $app->createUrl ('panel');
 
@@ -339,7 +339,7 @@ trait ControllerEntityActions {
         }elseif($this->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
             $this->json($data, $status);
         }else{
-            $app->redirect($app->request()->getReferer(), $status);
+            $app->redirect($app->request->getReferer(), $status);
         }
     }
 }
