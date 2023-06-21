@@ -219,9 +219,9 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save("php://output");
 
-        $app->response()->header('Content-Type', 'application/vnd.ms-word');
-        $app->response()->header('Content-Disposition', 'attachment;filename="Em Cartaz de '.$from->format('d-m-Y').' a '.$to->format('d-m-Y').'.docx"');
-        $app->response()->header('Cache-Control', 'max-age=0');
+        $app->response = $app->response->withHeader('Content-Type', 'application/vnd.ms-word');
+        $app->response = $app->response->withHeader('Content-Disposition', 'attachment;filename="Em Cartaz de '.$from->format('d-m-Y').' a '.$to->format('d-m-Y').'.docx"');
+        $app->response = $app->response->withHeader('Cache-Control', 'max-age=0');
     }
 
 });

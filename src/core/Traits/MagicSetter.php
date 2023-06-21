@@ -12,7 +12,7 @@ use MapasCulturais\Entity;
  */
 trait MagicSetter{
 
-    // @todo dynamic property
+    protected $__dynamicProperties = [];
 
     /**
      * If a setter method with the same name of the property exists, for example **set*PropertyName***, use it,
@@ -47,7 +47,11 @@ trait MagicSetter{
                 $app->applyHookBoundTo($this, $hook_name, [&$value, $name]);
             }
 
-            $this->$name = $value;
+            if (property_exists($this, $name)) {
+                $this->$name = $value;
+            } else {
+                $this->__dynamicProperties[$name] = &$value;
+            }
             return true;
         }
 

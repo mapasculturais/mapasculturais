@@ -120,7 +120,7 @@ class Project extends EntityController {
         $response['Content-Disposition'] ='attachment; filename=mapas-culturais-dados-exportados.xls';
         $response['Pragma'] ='no-cache';
 
-        $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+        $app->response = $app->response->withHeader('Content-Type', 'application/vnd.ms-excel; charset=UTF-8');
         
         ob_start();
         $this->partial('report', ['entity' => $entity]);

@@ -84,8 +84,14 @@ abstract class Controller{
      * @example for the URL .../actionname/id:1/a-data/name:Fulano?age=33 the resultant array will be [id=>1, 0=>a-data, name=>Fulano, age=>33]
      * @var array
      */
-    protected $data = [];
+    public array $data = [];
 
+
+    public array $getData = [];
+    public array $postData = [];
+    public array $putData = [];
+    public array $patchData = [];
+    public array $deleteData = [];
 
     public $action = null;
     
@@ -226,7 +232,9 @@ abstract class Controller{
      */
     public function setRequestData(array $args){
         $this->_urlData = $args;
-        $this->data = $args + App::i()->request()->params();
+        $request = App::i()->request();
+        $this->data = $args + $request->params();
+        $this->getData = $request->params();
     }
 
 
@@ -318,7 +326,7 @@ abstract class Controller{
             $call_hook = $ALL_hook;
 
         }
-
+        
         if($call_method || $call_hook){
             $app->applyHookBoundTo($this, $hook . ':before', $arguments);
 
@@ -333,6 +341,7 @@ abstract class Controller{
             $app->applyHookBoundTo($this, $hook . ':after', $arguments);
         // else pass to 404?
         }else{
+            eval(\psy\sh());
             $app->pass();
         }
 
@@ -357,7 +366,7 @@ abstract class Controller{
             "data" => &$data
         ]);
         $template = "{$this->templatePrefix}/$template";
-        $app->render($template, $data);
+        $app->view->render($template, $data);
     }
 
     /**
@@ -375,7 +384,7 @@ abstract class Controller{
         ]);
         $template = "{$this->templatePrefix}/$template";
         $app->view->partial = true;
-        $app->render($template, $data);
+        $app->view->render($template, $data);
     }
 
     /**
@@ -385,7 +394,7 @@ abstract class Controller{
      */
     public function json($data, $status = 200){
         $app = App::i();
-        $app->contentType('application/json');
+        $app->response = $app->response->withHeader('Content-Type', 'application/json');
         $app->halt($status, json_encode($data));
     }
 
@@ -398,7 +407,7 @@ abstract class Controller{
      */
     public function errorJson($data, $status = 400){
         $app = App::i();
-        $app->contentType('application/json');
+        $app->response = $app->response->withHeader('Content-Type', 'application/json');
         $app->halt($status, json_encode(['error' => true, 'data' => $data]));
     }
 

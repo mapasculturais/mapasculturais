@@ -14,7 +14,7 @@ class FileSystem extends \MapasCulturais\Storage{
      * The FileSystem Sotarage configuration.
      * @var array
      */
-    private $_config = [];
+    public $config = [];
 
     /**
      * Creates the FileSystem Storage component.

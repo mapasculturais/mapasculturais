@@ -29,14 +29,14 @@ class Cache {
         $key = str_replace (
             ['{', '}', '(', ')', '/', '\\', '@', ':'],
             ['<', '>', '[', ']', '|', '|',  '%', '#'], 
-            $key);
+            $this->namespace . $key);
 
-        return $this->namespace . $key;
+        return $key;
     }
 
     protected function getCacheItem(string $key): CacheItem {
         $key = $this->parseKey($key);
-
+        
         if (!isset($this->items[$key])) {
             $this->items[$key] = $this->adapter->getItem($key);
         } 
@@ -67,5 +67,12 @@ class Cache {
 
     function setNamespace(string $namespace = null) {
         $this->namespace = $namespace ?: '';
+    }
+
+    function fetch(string $key) {
+        if ($this->contains($key)) {
+            $item = $this->getCacheItem($key);
+            return $item->get();
+        }
     }
 }

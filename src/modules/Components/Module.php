@@ -190,8 +190,10 @@ class Module extends \MapasCulturais\Module {
             if (in_array($component, $this->importedComponents)) {
                 return;
             }
-            $this->importedComponents[] = $component;
-
+            $imported_components = $this->importedComponents;
+            $imported_components[] = $component;
+            $this->importedComponents = $imported_components;
+            
             if ($app->config['app.log.components']) {
                 $app->log->debug("importing component {$component}");
             }

@@ -19,14 +19,14 @@ class Module extends \MapasCulturais\Module{
             if (!$entity) {
                 $app->pass();
             } elseif (!isset($this->getData['from']) || !isset($this->getData['to'])) {
-                $app->stop();
+                die;
             }
             
             $date_from = \DateTime::createFromFormat('Y-m-d', $this->getData['from']);
             $date_to = \DateTime::createFromFormat('Y-m-d', $this->getData['to']);
 
             if (!$date_from || !$date_to) {
-                $app->stop();
+                die;
             }
 
             if ($entity->className === 'MapasCulturais\Entities\Space') {
@@ -44,7 +44,7 @@ class Module extends \MapasCulturais\Module{
             }
 
             if (empty($events)) {
-                $app->stop();
+                die;
             }
             $app->view->part('agenda-singles--content', array('events' => $events, 'entity' => $entity));
         });

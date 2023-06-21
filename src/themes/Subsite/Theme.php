@@ -77,7 +77,7 @@ class Theme extends BaseV1\Theme{
 
         $cache_id = $this->subsiteInstance->getSassCacheId();
 
-        if($app->isEnabled('subsite') && !$app->msCache->contains($cache_id)){
+        if($app->isEnabled('subsite') && !$app->mscache->contains($cache_id)){
 
             $app->cache->deleteAll();
             if(!is_dir($this->subsitePath . '/assets/css/sass/')) {
@@ -283,7 +283,7 @@ class Theme extends BaseV1\Theme{
                 if(file_exists($assets_path.'css/sass/main.scss'))
                     exec("sass " . $assets_path.'css/sass/main.scss ' . $this->subsitePath . '/assets/css/main.css');
             }
-            $app->msCache->save($cache_id, true);
+            $app->mscache->save($cache_id, true);
         }
 
         parent::_init();

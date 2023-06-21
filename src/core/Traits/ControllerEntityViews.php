@@ -48,7 +48,7 @@ trait ControllerEntityViews {
         $app = App::i();
 
         $entity = $this->requestedEntity;;
-
+        
         if (!$entity) {
             $app->pass();
         }

@@ -39,10 +39,14 @@ use Swift_IoException;
 use Swift_Message;
 use Swift_SwiftException;
 
+
+use Psr\Http\Message\ResponseInterface as ResponseInterface;
+
 /**
  * @property-read string $id id da aplicação
  * @property-read Slim\App $slim instância do Slim
  * @property-read Hooks $hooks gerenciador de hooks
+ * @property-read EntityManager $em Doctrine Entity Manager
  * @property-read string $siteName nome do site
  * @property-read string $siteDescription descrição do site
  * @property-read string $currentLCode código da linguagem configurada. ex: pt_BR
@@ -94,6 +98,8 @@ class App {
      * @var Hooks
      */
     public Hooks $hooks;
+
+    public Storage $storage;
 
     /**
      * Instância do tema
@@ -245,6 +251,10 @@ class App {
      * Hibilita os magic getter hooks
      */
     protected $__enableMagicGetterHook = true;
+
+    public Request $request;
+
+    public ResponseInterface $response;
     
     /**
      * Retorna uma instância da aplicação
@@ -342,6 +352,8 @@ class App {
 
         // chama o inicializador do tema ativo
         $this->view->init();
+
+        $this->_initStorage();
 
         $this->_initRouteManager();
 
@@ -452,6 +464,16 @@ class App {
      * @return void 
      */
     protected function _initCache() {
+        $this->config['app.registeredAutoloadCache.lifetime'] = (int) $this->config['app.registeredAutoloadCache.lifetime'];
+        $this->config['app.assetsUrlCache.lifetime'] = (int) $this->config['app.assetsUrlCache.lifetime'];
+        $this->config['app.fileUrlCache.lifetime'] = (int) $this->config['app.fileUrlCache.lifetime'];
+        $this->config['app.eventsCache.lifetime'] = (int) $this->config['app.eventsCache.lifetime'];
+        $this->config['app.subsiteIdsCache.lifetime'] = (int) $this->config['app.subsiteIdsCache.lifetime'];
+        $this->config['app.permissionsCache.lifetime'] = (int) $this->config['app.permissionsCache.lifetime'];
+        $this->config['app.registerCache.lifeTime'] = (int) $this->config['app.registerCache.lifeTime'];
+        $this->config['app.apiCache.lifetime'] = (int) $this->config['app.apiCache.lifetime'];
+        $this->config['app.opportunitySummaryCache.lifetime'] = (int) $this->config['app.opportunitySummaryCache.lifetime'];
+
         $this->cache = new Cache($this->config['app.cache']);
         $this->mscache = new Cache($this->config['app.mscache']);
         $this->mscache->setNamespace(__DIR__);
@@ -529,6 +551,7 @@ class App {
             'user' => $this->config['db.user'],
             'password' => $this->config['db.password'],
             'host' => $this->config['db.host'],
+            'wrapperClass' => Connection::class
         ], $doctrine_config);
         
         
@@ -712,9 +735,9 @@ class App {
         $storage_class = $this->config['storage.driver'] ?? '';
         if($storage_class && class_exists($storage_class) && is_subclass_of($storage_class, Storage::class)){
             $storage_config = $this->config['storage.config'] ?? null;
-            $this->_storage =  $storage_class::i($storage_config);
+            $this->storage =  $storage_class::i($storage_config);
         }else{
-            $this->_storage = Storage\FileSystem::i();
+            $this->storage = Storage\FileSystem::i();
         }
     }
 
@@ -852,15 +875,6 @@ class App {
     public function getUser(): UserInterface {
         return $this->auth->getAuthenticatedUser();
     }
-
-    /**
-     * Returns the File Storage Component
-     * @return Storage
-     */
-    public function getStorage(): Storage {
-        return $this->_storage;
-    }
-
 
     /**
      * Instância do subsite atual
@@ -2725,6 +2739,11 @@ class App {
         return $controllers;
     }
 
+    public function request() {
+        
+        return $this->request;
+    }
+
     /**
      * Returns the controller object with the given id.
      *
@@ -2790,7 +2809,7 @@ class App {
      *
      * @return Controllers\EntityController|null The controller
      */
-    public function getControllerByEntity(Entity|string $entity): Controllers\EntityController|null {
+    public function getControllerByEntity(Entity|string $entity): Controller|null {
         if(is_object($entity))
             $entity = $entity->getClassName();
         

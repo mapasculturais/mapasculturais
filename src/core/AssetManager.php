@@ -96,7 +96,7 @@ abstract class AssetManager{
         }
 
         if($app->config['app.useAssetsUrlCache'])
-            $app->cache->save ($cache_id, $scripts, $app->config['app.assetsUrlCache.lifetime']);
+            $app->cache->save ($cache_id, $scripts, (int) $app->config['app.assetsUrlCache.lifetime']);
 
         echo $scripts;
 
@@ -129,7 +129,7 @@ abstract class AssetManager{
         }
 
         if($app->config['app.useAssetsUrlCache'])
-            $app->cache->save ($cache_id, $styles, $app->config['app.assetsUrlCache.lifetime']);
+            $app->cache->save ($cache_id, $styles, (int) $app->config['app.assetsUrlCache.lifetime']);
 
         echo $styles;
     }
@@ -146,7 +146,7 @@ abstract class AssetManager{
             $asset_url = $this->publishAsset($asset, null, $include_hash_in_filename);
 
             if($app->config['app.useAssetsUrlCache'])
-                $app->cache->save ($cache_id, $asset_url, $app->config['app.assetsUrlCache.lifetime']);
+                $app->cache->save ($cache_id, $asset_url, (int) $app->config['app.assetsUrlCache.lifetime']);
 
         }
 

@@ -75,7 +75,6 @@ trait ControllerAPI{
 
         if(!$responder){
             echo sprintf(\MapasCulturais\i::__("tipo %s não está registrado."), $type);
-            App::i()->stop();
         }else{
             return $responder;
         }
@@ -88,7 +87,6 @@ trait ControllerAPI{
     protected function apiErrorResponse($error_message){
         $responder = $this->getApiOutput();
         $responder->outputError($error_message);
-        App::i()->stop();
     }
 
     protected function apiResponse($data){
@@ -108,7 +106,6 @@ trait ControllerAPI{
     protected function apiArrayResponse(array $data, $singular_name = 'Entity', $plural_name = 'Entities'){
         $responder = $this->getApiOutput();
         $responder->outputArray($data, $singular_name, $plural_name);
-        App::i()->stop();
     }
 
     protected function apiAddHeaderMetadata($qdata, $data, $count){
@@ -143,7 +140,6 @@ trait ControllerAPI{
     protected function apiItemResponse($data, $singular_name = 'Entity', $plural_name = 'Entities'){
         $responder = $this->getApiOutput();
         $responder->outputItem($data, $singular_name, $plural_name);
-        App::i()->stop();
     }
 
     /**

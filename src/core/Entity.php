@@ -445,8 +445,8 @@ abstract class Entity implements \JsonSerializable{
         if ($uses_cache) {
             $cache_key = $this->getPermissionCacheKey($user, $action);
     
-            if ($this->permissionCacheEnabled && $app->permissionCacheEnabled && $app->msCache->contains($cache_key)) {
-                return $app->msCache->fetch($cache_key);
+            if ($this->permissionCacheEnabled && $app->permissionCacheEnabled && $app->mscache->contains($cache_key)) {
+                return $app->mscache->fetch($cache_key);
             }
         }
 
@@ -482,7 +482,7 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if($uses_cache && $this->permissionCacheEnabled && $app->permissionCacheEnabled) {
-            $app->msCache->save($cache_key, $result, $app->config['app.permissionsCache.lifetime']);
+            $app->mscache->save($cache_key, $result, $app->config['app.permissionsCache.lifetime']);
         }
 
         return $result;
