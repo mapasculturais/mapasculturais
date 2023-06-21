@@ -1,5 +1,5 @@
 packages:
-  - 'application/lib/modules/*'
-  - 'application/plugins/*'
-  - 'application/themes/*'
+  - 'modules/*'
+  - 'plugins/*'
+  - 'themes/*'
   - 'node_scripts'
