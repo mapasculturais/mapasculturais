@@ -11,7 +11,7 @@ return [
     'registration' => i::__('Inscrições'),
     'seal' => i::__('Selos'),
     'criar nova função de usuário' => i::__('Criar nova função de usuário'),
-    'criar função' => i::__('Criar função'),
+    'adicionar' => i::__('Adicionar'),
     'editar função de usuário' => i::__('Editar função de usuário'),
     'atualizar função' => i::__('Atualizar função'),
 ];
