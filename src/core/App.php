@@ -99,6 +99,10 @@ class App {
      */
     public Hooks $hooks;
 
+    /**
+     * Gerenciador de armazenamento de arquivos
+     * @var Storage
+     */
     public Storage $storage;
 
     /**
@@ -252,8 +256,16 @@ class App {
      */
     protected $__enableMagicGetterHook = true;
 
+    /**
+     * Objeto da requisição atual
+     * @var Request
+     */
     public Request $request;
 
+    /**
+     * Objeto que será a resposta final do gerenciador de rotas
+     * @var ResponseInterface
+     */
     public ResponseInterface $response;
     
     /**
