@@ -488,7 +488,7 @@ class App {
 
         $this->cache = new Cache($this->config['app.cache']);
         $this->mscache = new Cache($this->config['app.mscache']);
-        $this->mscache->setNamespace(__DIR__);
+        $this->mscache->setNamespace('MS');
         
         $rcache_adapter = new \Symfony\Component\Cache\Adapter\ArrayAdapter(0, false);
         $this->rcache = new Cache($rcache_adapter);
@@ -661,8 +661,6 @@ class App {
             $theme_class = $this->_subsite->namespace . "\Theme";
             $theme_instance = new $theme_class($this->config['themes.assetManager'], $this->_subsite);
         } else {
-            $this->cache->setNamespace($this->config['app.cache.namespace']);
-
             $theme_class = $this->config['themes.active'] . '\Theme';
             $theme_instance = new $theme_class($this->config['themes.assetManager']);
         }
