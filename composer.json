@@ -5,8 +5,10 @@
         "doctrine/dbal": "^3.6",
         "doctrine/orm": "^2.14",
         "firebase/php-jwt": "^6.4",
+        "michelf/php-markdown": "1.*",
         "monolog/monolog": "^3.3",
         "mustache/mustache": "^2.11",
+        "opauth/openid": "*",
         "pomo/pomo": "^1.5",
         "psy/psysh": "^0.11.12",
         "respect/validation": "^2.2",
@@ -14,8 +16,7 @@
         "slim/psr7": "^1.6",
         "slim/slim": "4.*",
         "swiftmailer/swiftmailer": "5.*",
-        "symfony/cache": "^6.2",
-        "opauth/openid": "*"
+        "symfony/cache": "^6.2"
     },
     "autoload": {
         "psr-4": {
