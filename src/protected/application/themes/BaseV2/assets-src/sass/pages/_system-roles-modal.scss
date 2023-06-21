@@ -14,11 +14,23 @@
             line-height: size(28);
             margin-left: size(16);
         }
+
+        &__action {
+            justify-content: flex-start;
+            flex-direction: row-reverse;
+
+            @media (max-width:size(800)) {
+                justify-content: center;
+                flex-direction: unset;
+            }
+        }
     }
+
     .field {
         max-width: size(580);
 
     }
+
     .field label {
         font-family: 'Open Sans';
         font-style: normal;
