@@ -134,7 +134,7 @@ abstract class Controller{
      */
     public function isAjax(){
         $app = App::i();
-        return $app->request->isAjax() || $app->request->headers()->get('Content-Type') === 'application/json';
+        return $app->request->isAjax();
     }
     
     // =================== GETTERS ================== //
