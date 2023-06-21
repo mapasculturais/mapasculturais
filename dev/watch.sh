@@ -6,6 +6,6 @@ cd $DIR
 
 MAPAS_NAME=mapas-run
 
-docker exec -w /var/www/html/protected -i $MAPAS_NAME bash -c "pnpm install --recursive && pnpm run watch"
+docker exec -w /var/www/src -i $MAPAS_NAME bash -c "pnpm install --recursive && pnpm run watch"
 
 cd $CDIR
