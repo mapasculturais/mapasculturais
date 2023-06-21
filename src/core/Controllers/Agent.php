@@ -138,7 +138,7 @@ class Agent extends EntityController {
             else
                 $this->json (false);
         }else{
-            $app->redirect($app->request()->getReferer());
+            $app->redirect($app->request->getReferer());
         }
     }
 
@@ -183,7 +183,7 @@ class Agent extends EntityController {
             else
                 $this->json (false);
         }else{
-            $app->redirect($app->request()->getReferer());
+            $app->redirect($app->request->getReferer());
         }
     }
 
@@ -249,7 +249,7 @@ class Agent extends EntityController {
             else
                 $this->json (false);
         }else{
-            $app->redirect($app->request()->getReferer());
+            $app->redirect($app->request->getReferer());
         }
     }
 }

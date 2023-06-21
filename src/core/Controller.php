@@ -28,17 +28,6 @@ use \MapasCulturais\App;
  * The template files for this controller is located in the folder themes/active/views/{$controller_id}/
  *
  * @property string $layout
- * 
- * @property-read string $action
- *
- * @property-read array $data URL + GET + POST + PUT + DELETE data
- * @property-read array $urlData URL data
- * @property-read array $requestData GET + POST + PUT + DELETE data
- * @property-read array $getData GET data
- * @property-read array $postData POST data
- * @property-read array $putData PUT data
- * @property-read array $deleteData DELETE data
- *
  *
  * @see \MapasCulturais\App::registerController()
  *
@@ -92,6 +81,7 @@ abstract class Controller{
     public array $putData = [];
     public array $patchData = [];
     public array $deleteData = [];
+    public array $requestData = [];
 
     public $action = null;
     
@@ -144,7 +134,7 @@ abstract class Controller{
      */
     public function isAjax(){
         $app = App::i();
-        return $app->request->isAjax() || $app->request()->headers()->get('Content-Type') === 'application/json';
+        return $app->request->isAjax() || $app->request->headers()->get('Content-Type') === 'application/json';
     }
     
     // =================== GETTERS ================== //
@@ -167,53 +157,6 @@ abstract class Controller{
         return $this->_urlData;
     }
 
-    /**
-     * Returns the GET + POST + PUT + DELETE data
-     *
-     * @return array GET + POST + PUT + DELETE data
-     */
-    public function getRequestData(){
-        return App::i()->request()->params();
-    }
-
-    /**
-     * Returns the GET data
-     *
-     * @return array GET data
-     */
-    public function getGetData(){
-        return App::i()->request()->get();
-    }
-
-    /**
-     * Returns the POST data
-     *
-     * @return array POST data
-     */
-    public function getPostData(){
-        return App::i()->request()->post();
-    }
-
-    /**
-     * Returns the PUT data
-     *
-     * @return array PUT data
-     */
-    public function getPutData(){
-        return App::i()->request()->put();
-    }
-
-    /**
-     * Returns the DELETE data
-     *
-     * @return array DELETE data
-     */
-    public function getDeleteData(){
-        return App::i()->request()->delete();
-    }
-
-
-
     // =================== SETTERS ===================== //
 
     /**
@@ -232,7 +175,7 @@ abstract class Controller{
      */
     public function setRequestData(array $args){
         $this->_urlData = $args;
-        $request = App::i()->request();
+        $request = App::i()->request;
         $this->data = $args + $request->params();
         $this->getData = $request->params();
     }

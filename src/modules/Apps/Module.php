@@ -13,7 +13,7 @@ class Module extends \MapasCulturais\Module {
         // define o JWT como Auth Provider caso venha um header authorization
         // $app->hook('app.register:after', function () {
         //     /** @var App $this */
-        //     if($token = $this->request()->headers->get('authorization')){
+        //     if($token = $this->request->headers->get('authorization')){
         //         $this->_auth = new \Apps\JWTAuthProvider(['token' => $token]);
         //     }
         // });

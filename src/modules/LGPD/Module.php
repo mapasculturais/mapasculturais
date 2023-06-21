@@ -44,7 +44,7 @@ class Module extends \MapasCulturais\Module
 
             $route = [$this->id, $this->action];
 
-            if (!in_array($route, $skip_routes) && !$app->request()->isAjax()) {
+            if (!in_array($route, $skip_routes) && !$app->request->isAjax()) {
                 $_SESSION[self::key] = $_SERVER['REQUEST_URI'] ?? "";
             }
 
@@ -85,8 +85,8 @@ class Module extends \MapasCulturais\Module
                 'timestamp' => (new DateTime())->getTimestamp(),
                 'md5' => Module::createHash($text),
                 'text' => $text,
-                'ip' => $app->request()->getIp(),
-                'userAgent' => $app->request()->getUserAgent(),
+                'ip' => $app->request->getIp(),
+                'userAgent' => $app->request->getUserAgent(),
             ];
         }
 
