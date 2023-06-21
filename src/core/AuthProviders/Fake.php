@@ -33,7 +33,7 @@ class Fake extends \MapasCulturais\AuthProvider {
                 $searchQuery, $searchQuery, $searchQuery, $searchQuery
             ]);
 
-            if ($app->request->isXhr()) {
+            if ($app->request->isAjax()) {
                 $this->json($users);
             } else {
                 $this->render('fake-authentication', [
