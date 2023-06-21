@@ -342,12 +342,17 @@ abstract class Theme {
      * @return string The rendered template
      */
     public function render($template, $data = null){
+        $app = App::i();
+
         $this->template = $template;
 
-        if($this->_partial)
-            return $this->partialRender ($template, $this->data);
-        else
-            return $this->fullRender ($template);
+        if ($this->_partial) {
+            $output = $this->partialRender ($template, $data);
+        } else {
+            $output = $this->fullRender ($template, $data);
+        }
+
+        $app->response->getBody()->write($output);
     }
 
     /**
@@ -367,15 +372,15 @@ abstract class Theme {
      *
      * @return string The rendered template.
      */
-    public function fullRender($__template){
+    public function fullRender($__template, $data = null){
         $app = App::i();
 
         $__template_filename = strtolower(substr($__template, -4)) === '.php' ? $__template : $__template . '.php';
         $render_data = [];
 
-        foreach($this->data->keys() as $k){
-            $render_data[$k] = $this->data->get($k);
-            $$k = $this->data->get($k);
+        foreach($data as $k => $val){
+            $render_data[$k] = $val;
+            $$k = $val;
         }
 
         $controller = $this->controller;
@@ -399,7 +404,7 @@ abstract class Theme {
 
         $app->applyHookBoundTo($this, 'view.render(' . $__template_name . '):before', ['template' => $__template_name]);
 
-        $TEMPLATE_CONTENT = $this->partialRender($__template_name, $this->data);
+        $TEMPLATE_CONTENT = $this->partialRender($__template_name, $data);
 
         $__layout_filename = strtolower(substr($controller->layout, -4)) === '.php' ? $controller->layout : $controller->layout . '.php';
 

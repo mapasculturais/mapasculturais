@@ -210,7 +210,7 @@ class Opportunity extends EntityController {
             $response['Content-Disposition'] = 'attachment; filename=' . $filename . '.csv';
             $response['Pragma'] = 'no-cache';
 
-            $app->contentType('text/csv; charset=UTF-8');
+            $app->response = $app->response->withHeader('Content-Type', 'text/csv; charset=UTF-8');
 
             ob_start();
             $this->partial($view, $view_params);
@@ -242,7 +242,7 @@ class Opportunity extends EntityController {
                 $response['Content-Disposition'] = 'attachment; filename=' . $filename . '.xls';
                 $response['Pragma'] = 'no-cache';
 
-                $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+                $app->response = $app->response->withHeader('Content-Type', 'application/vnd.ms-excel; charset=UTF-8');
             }
 
             ob_start();

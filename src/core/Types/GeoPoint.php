@@ -59,7 +59,7 @@ class GeoPoint implements \JsonSerializable{
     }
 
 
-    public function jsonSerialize(){
+    public function jsonSerialize(): array {
         return [
             'latitude' => $this->latitude,
             'longitude' => $this->longitude

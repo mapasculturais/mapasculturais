@@ -341,10 +341,13 @@ class Event extends \MapasCulturais\Repository{
         $conn = $this->_em->getConnection();
 
         if($params){
-            $rs = $conn->fetchAll($sql, $params);
+            $rs = $conn->fetchAssociative($sql, $params);
         } else {
-            $rs = $conn->fetchAll($sql);
+            $rs = $conn->fetchAssociative($sql);
         }
+
+        $rs = $rs ?: [];
+        
         $ids = array_map(function($e){ return $e['id']; }, $rs);
         
         return $ids;

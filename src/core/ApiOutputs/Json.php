@@ -13,13 +13,13 @@ class Json extends \MapasCulturais\ApiOutput{
 
     protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entities') {
         $app = App::i();
-        $app->response()->header('Access-Control-Allow-Origin', \MapasCulturais\App::i()->config['api.accessControlAllowOrigin']);
+        $app->response = $app->response->withHeader('Access-Control-Allow-Origin', \MapasCulturais\App::i()->config['api.accessControlAllowOrigin']);
         echo json_encode($data);
     }
 
     protected function _outputItem($data, $object_name = 'Entity') {
         $app = App::i();
-        $app->response()->header('Access-Control-Allow-Origin', \MapasCulturais\App::i()->config['api.accessControlAllowOrigin']);
+        $app->response = $app->response->withHeader('Access-Control-Allow-Origin', \MapasCulturais\App::i()->config['api.accessControlAllowOrigin']);
         echo json_encode($data);
     }
 }

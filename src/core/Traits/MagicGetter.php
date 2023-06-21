@@ -16,6 +16,7 @@ trait MagicGetter{
 
     public $__magicGetterCache;
     public $__enabledMagicGetterCaches;
+
     /**
     * If a getter method with the same name of the property exists, for example **set*PropertyName***, then returns it,
     * Else if the property name doesn't start with an undercore returns the value of the property directly.
@@ -41,6 +42,9 @@ trait MagicGetter{
 
         }else if($name[0] !== '_' && property_exists($this, $name)){
             $value =  $this->$name;
+
+        }else if($this->usesMagicSetter() && isset($this->__dynamicProperties[$name])) {
+            $value = &$this->__dynamicProperties[$name];
 
         }else if(method_exists($this,'usesMetadata') && $this->usesMetadata()){
             $value =  $this->__metadata__get($name);

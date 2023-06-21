@@ -1,5 +1,11 @@
 <?php
 namespace MapasCulturais;
+
+use Error;
+use Psr\Http\Message\ResponseInterface as ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as RequestInterface;
+use Throwable;
+
 /**
  * The MapasCulturais default route manager.
  *
@@ -36,6 +42,18 @@ class RoutesManager{
         $this->addRoutes();
     }
 
+    public function route(RequestInterface $request, ResponseInterface $response, $controller_id, $action, $params = [], $api = false) {
+        $app = App::i();
+        $app->request = new Request($request);
+        $app->response = $response;
+        
+        $controller = $app->controller($controller_id);
+        $app->view->controller = $controller;
+        $controller->setRequestData($params);
+
+        $controller->callAction($api ? 'API' : $request->getMethod(), $action, $params);
+    }
+
     protected function addRoutes(){
         $app = App::i();
         $slim = $app->slim;
@@ -43,19 +61,46 @@ class RoutesManager{
 
         $controllers = $app->getRegisteredControllers();
 
+        $slim->get('/api/{controller}/{action}[/{args:.*}]', function(RequestInterface $request, ResponseInterface $response, array $args) use($self, $app) {
+            $params = $self->extractArgs(explode('/', $args['args'] ?? ''));
+            $self->route($request, $response, $args['controller'], $args['action'], $params, api: true);
+
+            return $app->response;
+        });
+
         foreach($controllers as $controller_id => $controller_class) {
-            $slim->any("/{$controller_id}/{action}[/{params:.*}]", function($request, $response, array $args) use($app, $controller_id, $self) {
-                $controller = $app->controller($controller_id);
+            $slim->any("/{$controller_id}/{action}[/{args:.*}]", function(RequestInterface $request, ResponseInterface $response, array $args) use($app, $controller_id, $self) {
+                $params = $self->extractArgs(explode('/', $args['args'] ?? ''));
+                $self->route($request, $response, $controller_id, $args['action'], $params);
 
-                $params = $self->extractArgs(explode('/', $args['params'] ?? ''));
-
-                $controller->callAction($request->getMethod(), $args['action'], $params);
+                return $app->response;
             });
         }
 
-        $routes = $app->config['routes'];
+        $shortcuts = $app->config['routes']['shortcuts'] ?? [];
 
-        
+        foreach($shortcuts as $shortcut => $target) {
+            $slim->any("/{$shortcut}[/{args:.*}]", function (RequestInterface $request, ResponseInterface $response, array $args) use($target, $self, $app) {
+                $controller_id = $target[0];
+                $action = $target[1];
+                $shortcut_params = $target[2] ?? [];
+                $params = $self->extractArgs(explode('/', $args['args'] ?? ''));
+
+                $params = array_merge($shortcut_params, $params);
+                $self->route($request, $response, $controller_id, $action, $params);
+
+                return $app->response;
+            });
+        }
+
+        $slim->get('/', function(RequestInterface $request, ResponseInterface $response) use($self, $app) {
+            $controller_id = $app->config['routes']['default_controller_id'];
+            $action = $app->config['routes']['default_action_name'];
+            
+            $self->route($request, $response, $controller_id, $action);
+
+            return $app->response;;
+        });
 
         return ;
         $app->map('/(:args+)', function ($url_args = []) use ($app){

@@ -40,7 +40,7 @@ abstract class ApiOutput{
 
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).error:before", $hook_data);
 
-        $app->contentType($this->contentType);
+        $app->response = $app->response->withHeader('Content-Type', $this->contentType);
 
         ob_start();
         $this->_outputError($data);
@@ -51,9 +51,7 @@ abstract class ApiOutput{
         $app->applyHookBoundTo($this, "api.response.error:after", $hook_data);
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).error:after", $hook_data);
 
-        echo $output;
-
-        $app->stop();
+        $app->response->getBody()->write($output);
     }
 
     /**
@@ -77,7 +75,7 @@ abstract class ApiOutput{
 
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).item({$singular_object_name}):before", $hook_data);
 
-        $app->contentType($this->contentType);
+        $app->response = $app->response->withHeader('Content-Type', $this->contentType);
 
         ob_start();
         $this->_outputItem($data, $singular_object_name, $plural_object_name);
@@ -87,9 +85,7 @@ abstract class ApiOutput{
 
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).item({$singular_object_name}):after", $hook_data);
 
-        echo $output;
-
-        $app->stop();
+        $app->response->getBody()->write($output);
     }
 
     /**
@@ -113,8 +109,7 @@ abstract class ApiOutput{
 
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).array({$plural_object_name}):before", $hook_data);
 
-        $app->contentType($this->contentType);
-
+        $app->response = $app->response->withHeader('Content-Type', $this->contentType);
         ob_start();
         $this->_outputArray($data, $singular_object_name, $plural_object_name);
         $output = ob_get_clean();
@@ -122,10 +117,8 @@ abstract class ApiOutput{
         $hook_data['output'] = $output;
 
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).array({$plural_object_name}):after", $hook_data);
-
-        echo $output;
-
-        $app->stop();
+        
+        $app->response->getBody()->write($output);
     }
 
     /**

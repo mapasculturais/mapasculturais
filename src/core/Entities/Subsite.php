@@ -442,7 +442,7 @@ class Subsite extends \MapasCulturais\Entity
 
         $app = App::i();
 
-        $app->msCache->delete($this->getSassCacheId());
+        $app->mscache->delete($this->getSassCacheId());
 
         $subsite_cache = clone $app->cache;
         $subsite_cache->deleteAll();

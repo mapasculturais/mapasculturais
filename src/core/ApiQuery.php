@@ -425,9 +425,9 @@ class ApiQuery {
     
     /**
      *
-     * @var array
+     * @var string
      */
-    protected $_permissions = [];
+    protected $_permission = [];
     
     protected $_subqueryFilters = [];
     protected $_status = '> 0';
