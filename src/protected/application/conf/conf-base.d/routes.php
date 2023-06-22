@@ -73,6 +73,8 @@ return [
             'inscricao' => ['registration', 'single'],
             'inscricao' => ['registration', 'view'],
 
+            'visualizacao-de-formulario' => ['opportunity', 'formPreview'],
+
             'gestao-de-usuarios' => ['panel', 'user-management'],
 
             'certificado' => ['relatedSeal','single'],

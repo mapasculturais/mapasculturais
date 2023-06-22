@@ -5,8 +5,8 @@
  */
 use MapasCulturais\i;
 ?>
-<div :class="['opportunity-form-export', classes]">
+<div :class="['opportunity-form-view', classes]">
     <a v-bind:href="url" type="button" class="button button--primary-outline button--large">
-      <?php i::_e("Exportar") ?>
+      <?php i::_e("Visualizar") ?>
     </a>
 </div>
