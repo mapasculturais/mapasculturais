@@ -19,6 +19,7 @@ app.component('opportunity-phases-timeline', {
             const api = new OpportunitiesAPI();
             this.phases = await api.getPhases(this.entity.id);
         }
+		console.log(this.phases)
     },
 
 	data() {
