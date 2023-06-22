@@ -851,12 +851,9 @@ abstract class Theme extends \Slim\View {
 
             if(property_exists ($entity_class_name, 'opportunity')) {
                 $query = $app->em->createQuery("
-                        SELECT 
-                            o
-                        FROM 
-                            MapasCulturais\\Entities\\Opportunity o
-                        WHERE 
-                            o.id = (SELECT IDENTITY(e.opportunity) FROM MapasCulturais\\Entities\\Registration e WHERE e.id = :id)");
+                    SELECT o FROM                             
+                        MapasCulturais\\Entities\\Opportunity o
+                        WHERE o.id = (SELECT IDENTITY(e.opportunity) FROM $entity_class_name e WHERE e.id = :id)");
 
                 $query->setParameter('id', $e['id']);
                 $opportunity = $query->getSingleResult();
