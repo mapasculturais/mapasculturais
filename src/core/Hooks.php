@@ -184,14 +184,9 @@ class Hooks {
             'bound' => false,
         ];
         $callables = $this->getCallables($name);
-        try{
-            foreach ($callables as $callable) {
-                $callable = \Closure::bind($callable, $target_object);
-                call_user_func_array($callable, $args);
-            }
-
-        } catch (Throwable $e) {
-            eval(\psy\sh());
+        foreach ($callables as $callable) {
+            $callable = \Closure::bind($callable, $target_object);
+            call_user_func_array($callable, $args);
         }
 
         array_pop($this->hookStack);

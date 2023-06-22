@@ -11,7 +11,7 @@ class Fake extends \MapasCulturais\AuthProvider {
 
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app) {
-
+            
             $searchQuery = trim($app->request->get('q', ''));
             if ($searchQuery !== '') {
                 $searchQuery = '%' . $searchQuery . '%';
