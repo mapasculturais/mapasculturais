@@ -225,7 +225,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
 
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').insert:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').insert:before');
         
         if(!$this->getFieldTypeDefinition()->requireValuesConfiguration){
             $this->fieldOptions = [];
@@ -233,21 +233,21 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
     /** @ORM\PostPersist */
     public function _postPersist($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').insert:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').insert:after');
     }
 
     /** @ORM\PreRemove */
     public function _preRemove($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').remove:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').remove:before');
     }
     /** @ORM\PostRemove */
     public function _postRemove($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').remove:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').remove:after');
     }
 
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').update:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').update:before');
         
         if(!$this->getFieldTypeDefinition()->requireValuesConfiguration){
             $this->fieldOptions = [];
@@ -255,7 +255,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
     /** @ORM\PostUpdate */
     public function _postUpdate($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').update:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').update:after');
     }
 
     //============================================================= //
