@@ -17,8 +17,6 @@ $opMetaSpace = $app->repo('OpportunityMeta')->findBy(['owner' =>  $entity->oppor
     <article ng-controller="RegistrationFieldsController">
         <?php $this->applyTemplateHook('form', 'begin'); ?>
 
-        <?php $this->part('singles/registration-edit--header', $_params) ?>
-
         <?php $this->part('singles/registration-edit--categories', $_params) ?>
 
         <div ng-controller="OpportunityController">

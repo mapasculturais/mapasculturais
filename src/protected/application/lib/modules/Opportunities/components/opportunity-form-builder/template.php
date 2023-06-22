@@ -9,6 +9,7 @@ $this->layout = 'entity';
 $this->addOpportunityPhasesToJs();
 $this->import('
     entity-field
+    opportunity-form-view
     opportunity-form-export
     opportunity-form-import
     opportunity-phase-header
@@ -90,8 +91,10 @@ $this->import('
         </div>
     </div>
 
-    <div class="col-12 form-export">
-        <opportunity-form-export :entity="entity"></opportunity-form-export>
+    <div class="col-12 grid-12 form-export">
+        <div class="col-6"><!-- placeholder --></div>
+        <opportunity-form-view :entity="entity" classes="col-3"></opportunity-form-view>
+        <opportunity-form-export :entity="entity" classes="col-3"></opportunity-form-export>
     </div>
 
     <div class="col-12">
