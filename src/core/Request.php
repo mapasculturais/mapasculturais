@@ -6,9 +6,11 @@ use Psr\Http\Message\ServerRequestInterface as RequestInterface;
 
 class Request {
     public \Slim\Psr7\Request $psr7request;
+    public array $headers;
 
     public function __construct(RequestInterface $psr7request) {
         $this->psr7request = $psr7request;
+        $this->headers = $psr7request->getHeaders();
     }
 
     public function params() {
