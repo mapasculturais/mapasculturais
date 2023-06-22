@@ -227,7 +227,12 @@ module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http',
                     function(response){
                         deferred.resolve(response);
                     }
-                    );
+                )
+                .error(
+                    function(response){
+                        deferred.resolve(response);
+                    }
+                );
                 return deferred.promise;
             },
             edit: function(data){
@@ -502,16 +507,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 $scope.data.newFieldConfiguration.required = false;
             }
 
-            if($scope.data.newFieldConfiguration.fieldType == "section"){
-                $scope.data.newFieldConfiguration.required = false;
-            }
-
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
 
                 if (response.error) {
                     validationErrors(response);
-
                 } else {
                     $scope.data.fields.push(response);
                     sortFields();
