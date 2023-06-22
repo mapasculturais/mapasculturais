@@ -1182,8 +1182,8 @@ abstract class Entity implements \JsonSerializable{
         
         $hook_prefix = $this->getHookPrefix();
 
-        $app->applyHookBoundTo($this, "{$hook_prefix}.insert:before", $args);
-        $app->applyHookBoundTo($this, "{$hook_prefix}.save:before", $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.insert:before");
+        $app->applyHookBoundTo($this, "{$hook_prefix}.save:before");
 
 
         if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
@@ -1216,8 +1216,8 @@ abstract class Entity implements \JsonSerializable{
         
         $hook_prefix = $this->getHookPrefix();
 
-        $app->applyHookBoundTo($this, "{$hook_prefix}.insert:after", $args);
-        $app->applyHookBoundTo($this, "{$hook_prefix}.save:after", $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.insert:after");
+        $app->applyHookBoundTo($this, "{$hook_prefix}.save:after");
 
         if ($this->usesPermissionCache()) {
             $this->createPermissionsCacheForUsers([$app->user]);
@@ -1238,7 +1238,7 @@ abstract class Entity implements \JsonSerializable{
         
         $hook_prefix = $this->getHookPrefix();
 
-        $app->applyHookBoundTo($this, "{$hook_prefix}.remove:before", $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.remove:before");
 
 
         if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
@@ -1263,7 +1263,7 @@ abstract class Entity implements \JsonSerializable{
         
         $hook_prefix = $this->getHookPrefix();
 
-        $app->applyHookBoundTo($this, "{$hook_prefix}.remove:after", $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.remove:after");
 
         if($this->usesRevision()) {
             //$this->_newDeletedRevision();
@@ -1293,8 +1293,8 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
         
         $hook_prefix = $this->getHookPrefix();
-        $app->applyHookBoundTo($this, "{$hook_prefix}.update:before", $args);
-        $app->applyHookBoundTo($this, "{$hook_prefix}.save:before", $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.update:before");
+        $app->applyHookBoundTo($this, "{$hook_prefix}.save:before");
 
         if (property_exists($this, 'updateTimestamp')) {
             $this->updateTimestamp = new \DateTime;
@@ -1351,7 +1351,7 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
         $hook_prefix = $this->getHookPrefix();
 
-        $app->applyHookBoundTo($this, "{$hook_prefix}.update:after", $args);
-        $app->applyHookBoundTo($this, "{$hook_prefix}.save:after", $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.update:after");
+        $app->applyHookBoundTo($this, "{$hook_prefix}.save:after");
     }
 }

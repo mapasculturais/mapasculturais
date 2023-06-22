@@ -485,14 +485,14 @@ abstract class File extends \MapasCulturais\Entity
         
 
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
-        $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:before', $args);
+        $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:before');
 
         $app->storage->add($this);
     }
     /** @ORM\PostPersist */
     public function _postPersist($args = null){
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:after');
 
         if(!$this->_path){
             $this->getRelativePath();
@@ -507,7 +507,7 @@ abstract class File extends \MapasCulturais\Entity
             $f->delete(true);
 
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:before');
     }
     /** @ORM\PostRemove */
     public function _postRemove($args = null){
@@ -515,18 +515,18 @@ abstract class File extends \MapasCulturais\Entity
         $app->storage->remove($this);
 
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
-        $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:after', $args);
+        $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:after');
     }
 
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:before');
     }
     /** @ORM\PostUpdate */
     public function _postUpdate($args = null){
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:after');
     }
 
 

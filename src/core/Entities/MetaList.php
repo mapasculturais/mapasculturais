@@ -148,34 +148,34 @@ class MetaList extends \MapasCulturais\Entity
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').insert:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').insert:before');
     }
     /** @ORM\PostPersist */
     public function _postPersist($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').insert:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').insert:after');
     }
 
     /** @ORM\PreRemove */
     public function _preRemove($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').remove:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').remove:before');
     }
     /** @ORM\PostRemove */
     public function _postRemove($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').remove:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').remove:after');
     }
 
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').update:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').update:before');
     }
     /** @ORM\PostUpdate */
     public function _postUpdate($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').update:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').update:after');
     }
 
 
