@@ -348,8 +348,9 @@ class App {
 
         // inicializa os validadores customizados
         $instance = RespectorValidationFactory::getDefaultInstance();
-        $instance->withRuleNamespace('MapasCulturais\\Validators\\Rules');
-        $instance->withExceptionNamespace('MapasCulturais\\Validators\\Exceptions');
+        $instance = $instance->withRuleNamespace('MapasCulturais\\Validators\\Rules');
+        $instance = $instance->withExceptionNamespace('MapasCulturais\\Validators\\Exceptions');
+        RespectorValidationFactory::setDefaultInstance($instance);
 
         $this->_initAutoloader();
         $this->_initCache();
