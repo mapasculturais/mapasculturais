@@ -1,0 +1,16 @@
+@use '../settings/mixins'as *;
+
+.form-preview {
+    background-color: var(--mc-gray-100);
+
+    .opportunity-header__content {
+        padding: size(47) size(16) size(67) size(16);
+    }
+
+    &__content {
+        margin: 0 auto;
+        max-width: size(1170);
+        padding: size(24) size(16) size(40);
+        width: 100%;
+    }
+}
