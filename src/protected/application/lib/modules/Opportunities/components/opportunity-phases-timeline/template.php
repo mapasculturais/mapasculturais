@@ -6,9 +6,7 @@
 
 use MapasCulturais\i;
 $this->import('
-    claim-support
     mc-link
-
 ');
 ?>
 <section :class="['timeline', {'center': center}, {'big': big}]">
