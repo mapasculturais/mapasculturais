@@ -5,27 +5,29 @@
  */
 
 use MapasCulturais\i;
-
 $this->import('
+    claim-support
     mc-link
+
 ');
 ?>
 <section :class="['timeline', {'center': center}, {'big': big}]">
     <div v-for="item in phases" :class="['item', {'active': isActive(item)}, {'happened': itHappened(item)}]" :set="registration = getRegistration(item)">
         <div class="item__dot"> <span class="dot"></span> </div>
-
         <div class="item__content">
             <?php $this->applyComponentHook('item', 'begin'); ?>
-
+            
             <div v-if="item.isFirstPhase" class="item__content--title"> <?= i::__('Fase de inscrições') ?> </div>
             <div v-if="!item.isFirstPhase" class="item__content--title"> {{item.name}} </div>
-
+            
             <div v-if="!item.isLastPhase" class="item__content--description">
                 <?= i::__('de') ?> <span v-if="dateFrom(item)">{{dateFrom(item)}}</span>
                 <?= i::__('a') ?> <span v-if="dateTo(item)">{{dateTo(item)}}</span>
                 <?= i::__('às') ?> <span v-if="hour(item)">{{hour(item)}}</span>
             </div>
-
+            <div v-if="item.__objectType=='evaluationmethodconfiguration'">
+                <claim-support :entity="entity"></claim-support>
+            </div>
             <div v-if="item.isLastPhase" class="item__content--description">
                 <span v-if="item.publishTimestamp">
                     {{item.publishTimestamp.date('2-digit year')}}
