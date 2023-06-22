@@ -826,10 +826,6 @@ abstract class Theme extends \Slim\View {
                 $query_params['status'] = 'GTE(-10)'; 
             }
 
-            if(property_exists ($entity_class_name, 'opportunity')) {
-                $query_params['@select'] .= ',opportunity.{name,type,files.avatar,terms,seals}';
-            }
-
             if(property_exists ($entity_class_name, 'project')) {
                 $query_params['@select'] .= ',project.{name,type,files.avatar,terms,seals}';
             }
@@ -852,6 +848,24 @@ abstract class Theme extends \Slim\View {
             $query->__useDQLCache = false;
 
             $e = $query->findOne();
+
+            if(property_exists ($entity_class_name, 'opportunity')) {
+                $query = $app->em->createQuery("
+                        SELECT 
+                            o
+                        FROM 
+                            MapasCulturais\\Entities\\Opportunity o
+                        WHERE 
+                            o.id = (SELECT IDENTITY(e.opportunity) FROM MapasCulturais\\Entities\\Registration e WHERE e.id = :id)");
+
+                $query->setParameter('id', $e['id']);
+                $opportunity = $query->getSingleResult();
+                $e['opportunity'] = $opportunity->simplify('id,name,type,files,terms,seals');
+                if($opportunity->parent){
+                    $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
+                }
+            }
+            
 
             if ($entity_class_name == Entities\Agent::class) {
                 $owner_prop = 'parent';
