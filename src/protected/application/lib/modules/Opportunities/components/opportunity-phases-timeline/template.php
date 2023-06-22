@@ -5,7 +5,6 @@
  */
 
 use MapasCulturais\i;
-
 $this->import('
     claim-support
     mc-link
