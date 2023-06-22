@@ -1082,6 +1082,19 @@ class Opportunity extends EntityController {
 
     }
 
+    function GET_formPreview() {
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            $app->pass();
+        }
+
+        $this->render('preview-form', ['entity' => $entity]);
+    }
+
     function GET_formBuilder() {
         $this->requireAuthentication();
         $app = App::i();
