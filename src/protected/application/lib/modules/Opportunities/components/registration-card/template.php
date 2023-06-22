@@ -60,6 +60,7 @@ use MapasCulturais\i;
         </div>
         <div class="right">
             <slot name="button" :entity="entity">
+                <button v-if="verifyStatus()" class="button button--md  delete-registration" > <?= i::__("Excluir") ?>  </button>
                 <a class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Acompanhar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
             </slot>
         </div>
