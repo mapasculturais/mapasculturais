@@ -151,7 +151,16 @@
             flex-grow: .5;
             gap: size(25);
             justify-content: flex-end;
-
+            .delete-registration {
+                background-color: var(--mc-high-500);
+                color: var(--mc-danger-500);
+            }
+            .delete-registration:hover {
+                filter: brightness(1.2);
+                border-color: var(--mc-danger-500);
+                color: var(--mc-high-500);
+                background-color: var(--mc-danger-500);
+            }
             .button {
                 max-width: size(272);
                 width: 100%;
