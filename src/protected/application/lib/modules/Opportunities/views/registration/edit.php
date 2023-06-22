@@ -24,6 +24,8 @@ $this->import('
     v1-embed-tool
 ');
 
+$this->useOpportunityAPI();
+
 $opportunity = $entity->opportunity;
 
 $breadcrumb = [
