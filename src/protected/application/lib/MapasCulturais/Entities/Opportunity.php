@@ -1099,6 +1099,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return false;
         }
 
+        if($this->canUser('@control')) {
+            return false;
+        }
+
         $can_evaluate = $this->canUserEvaluateRegistrations($user);
         
         $today = new \DateTime('now');
