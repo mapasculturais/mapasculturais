@@ -284,7 +284,7 @@ abstract class Controller{
             $app->applyHookBoundTo($this, $hook . ':after', $arguments);
         // else pass to 404?
         }else{
-            eval(\psy\sh());
+
             $app->pass();
         }
 

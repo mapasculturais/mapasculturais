@@ -18,10 +18,24 @@ class Request {
         );
     }
 
+    function getMethod() {
+        return $this->psr7request->getMethod();
+    }
+
     public function isAjax() {
         $request = $this->psr7request;
         if($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' || $request->getHeaderLine('Content-Type') === 'application/json') {
             return true;
+        }
+    }
+
+    public function get($key = null, $default = null) {
+        $params = $this->psr7request->getQueryParams();
+        
+        if ($key) {
+            return $params[$key] ?? $default;
+        } else {
+            return $params;
         }
     }
 }

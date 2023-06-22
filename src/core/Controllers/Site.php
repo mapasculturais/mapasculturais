@@ -66,7 +66,7 @@ class Site extends \MapasCulturais\Controller {
         if($app->request->isAjax()){
             $this->errorJson($this->data['e']->getMessage(), $status);
         } else{
-            $app->response->setStatus($status);
+            $app->response = $app->response->withStatus($status);
             $this->render('error-' . $status, $this->data);
         }
     }

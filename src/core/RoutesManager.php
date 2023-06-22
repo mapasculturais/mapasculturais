@@ -47,60 +47,102 @@ class RoutesManager{
         $app->request = new Request($request);
         $app->response = $response;
         
-        $controller = $app->controller($controller_id);
-        $app->view->controller = $controller;
-        $controller->setRequestData($params);
+        if ($controller = $app->controller($controller_id)) {
+            $app->view->controller = $controller;
+            $controller->setRequestData($params);
+            
+            try{
+                $controller->callAction($api ? 'API' : $request->getMethod(), $action, $params);
+            } catch (Exceptions\Halt $e){
+                // não precisa fazer nada.
+            } catch (Exceptions\TemplateNotFound $e){
+                eval(\psy\sh());
+                $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => $e], false);
 
-        $controller->callAction($api ? 'API' : $request->getMethod(), $action, $params);
+            } catch (Exceptions\PermissionDenied $e){
+                $this->callAction($app->controller('site'), 'error', ['code' => 403, 'e' => $e], false);
+
+            }  catch (Exceptions\WorkflowRequest $e){
+                $requests = array_map(function($e){ return $e->getRequestType(); }, $e->requests);
+
+                $app->response = $app->response->withStatus(202);
+                $app->response->getBody()->write(json_encode($requests));
+            } 
+        } else {
+            $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => new Exceptions\TemplateNotFound], false);
+        }
     }
 
     protected function addRoutes(){
         $app = App::i();
         $slim = $app->slim;
-        $self = $this;
 
-        $controllers = $app->getRegisteredControllers();
+        $slim->any("[/{args:.*}]", function (RequestInterface $request, ResponseInterface $response, array $path) use($app) {
+            $parts = array_filter(explode('/', $path['args']));
 
-        $slim->get('/api/{controller}/{action}[/{args:.*}]', function(RequestInterface $request, ResponseInterface $response, array $args) use($self, $app) {
-            $params = $self->extractArgs(explode('/', $args['args'] ?? ''));
-            $self->route($request, $response, $args['controller'], $args['action'], $params, api: true);
+            if (($parts[0] ?? null) == 'api') {
+                $api_call = true;
+                array_shift($parts);
+            } else {
+                $api_call = false;
+            }
+
+            $parts = $this->replaceShortcuts($parts);
+            $args = $this->extractArgs($parts);
+
+            $controller_id = $parts[0] ?? $this->config['default_controller_id'];
+            $action_name = $parts[1] ?? $this->config['default_action_name'];
+            
+            $this->route($request, $response, $controller_id, $action_name, $args, $api_call);
 
             return $app->response;
         });
 
-        foreach($controllers as $controller_id => $controller_class) {
-            $slim->any("/{$controller_id}/{action}[/{args:.*}]", function(RequestInterface $request, ResponseInterface $response, array $args) use($app, $controller_id, $self) {
-                $params = $self->extractArgs(explode('/', $args['args'] ?? ''));
-                $self->route($request, $response, $controller_id, $args['action'], $params);
+        // $slim->get('/api/{controller}/{action}[/{args:.*}]', function(RequestInterface $request, ResponseInterface $response, array $args) use($self, $app) {
+        //     $params = $self->extractArgs(explode('/', $args['args'] ?? ''));
+        //     $self->route($request, $response, $args['controller'], $args['action'], $params, api: true);
 
-                return $app->response;
-            });
-        }
+        //     return $app->response;
+        // });
 
-        $shortcuts = $app->config['routes']['shortcuts'] ?? [];
+        // foreach($controllers as $controller_id => $controller_class) {
+        //     $slim->any("/{$controller_id}/{action}[/{args:.*}]", function(RequestInterface $request, ResponseInterface $response, array $args) use($app, $controller_id, $self) {
+        //         $params = $self->extractArgs(explode('/', $args['args'] ?? ''));
+        //         $self->route($request, $response, $controller_id, $args['action'], $params);
 
-        foreach($shortcuts as $shortcut => $target) {
-            $slim->any("/{$shortcut}[/{args:.*}]", function (RequestInterface $request, ResponseInterface $response, array $args) use($target, $self, $app) {
-                $controller_id = $target[0];
-                $action = $target[1];
-                $shortcut_params = $target[2] ?? [];
-                $params = $self->extractArgs(explode('/', $args['args'] ?? ''));
+        //         return $app->response;
+        //     });
 
-                $params = array_merge($shortcut_params, $params);
-                $self->route($request, $response, $controller_id, $action, $params);
+        //     // rota padrão do controlador
+        //     $slim->any("/{$controller_id}[/]", function(RequestInterface $request, ResponseInterface $response, array $args) use($app, $controller_id, $self) {
 
-                return $app->response;
-            });
-        }
+        //     });
+        // }
 
-        $slim->get('/', function(RequestInterface $request, ResponseInterface $response) use($self, $app) {
-            $controller_id = $app->config['routes']['default_controller_id'];
-            $action = $app->config['routes']['default_action_name'];
+        // $shortcuts = $app->config['routes']['shortcuts'] ?? [];
+
+        // foreach($shortcuts as $shortcut => $target) {
+        //     $slim->any("/{$shortcut}[/{args:.*}]", function (RequestInterface $request, ResponseInterface $response, array $args) use($target, $self, $app) {
+        //         $controller_id = $target[0];
+        //         $action = $target[1];
+        //         $shortcut_params = $target[2] ?? [];
+        //         $params = $self->extractArgs(explode('/', $args['args'] ?? ''));
+
+        //         $params = array_merge($shortcut_params, $params);
+        //         $self->route($request, $response, $controller_id, $action, $params);
+
+        //         return $app->response;
+        //     });
+        // }
+
+        // $slim->get('/', function(RequestInterface $request, ResponseInterface $response) use($self, $app) {
+        //     $controller_id = $app->config['routes']['default_controller_id'];
+        //     $action = $app->config['routes']['default_action_name'];
             
-            $self->route($request, $response, $controller_id, $action);
+        //     $self->route($request, $response, $controller_id, $action);
 
-            return $app->response;;
-        });
+        //     return $app->response;;
+        // });
 
         return ;
         $app->map('/(:args+)', function ($url_args = []) use ($app){
@@ -193,36 +235,81 @@ class RoutesManager{
         });
     }
 
+
     /**
-     * Extract data from URL
-     *
-     * for the URL:<br/>
-     * <b>http://mapasculturais/controller/action/some%20value/name:Fulano/lastName:de%20Tal/age:31/</b><br/>
-     * this method will return the array:<br/>
-     * <b>[0 => 'a value', 'name' => 'Fulano', 'lastName' => 'de Tal', 'age' => '31']</b>
-     *
-     * @param array $args
-     *
-     * @return array Extracted data
+     * Substitui os shortcuts e alias pelos slugs utilizados no código
+     * 
+     * @param array $parts partes da path
+     * @return array 
      */
-    protected function extractArgs(array $url_args){
-        $data = [];
-        $i = 0;
+    protected function replaceShortcuts(array $parts): array {
+        $app = App::i();
+        
+        $shortcuts = $app->config['routes']['shortcuts'] ?? [];
 
-        foreach($url_args as $arg){
-            if(!$arg) continue;
+        // substitui os shortcuts
+        foreach ($shortcuts as $shortcut => $target) {
+            $shortcut_parts = explode('/', $shortcut);
+            $match = true;
+            foreach ($shortcut_parts as $i => $part) {
+                if ($part !== ($parts[$i] ?? null)) {
+                    $match = false;
+                }
+            }
 
-            if(strpos($arg, ':') !== false){
-                list($key, $val) = explode(':', $arg, 2);
-                $data[$key] = $val;
-            }else{
-                if($i === 0 && is_numeric($arg) && !key_exists('id', $data))
-                    $data['id'] = $arg;
-                else
-                    $data[$i++] = $arg;
+            if ($match) {
+                $args = array_slice($parts, count($shortcut_parts));
+                $parts = [$target[0], $target[1], ...($target[2] ?? []), ...$args];
             }
         }
-        return $data;
+
+        // substitui os alias dos controladores
+        if ($parts[0] ?? false) {
+            $parts[0] = $app->config['routes']['controllers'][$parts[0]] ?? $parts[0];
+        }
+
+        // substitui os alias das ações
+        if ($parts[1] ?? false) {
+            $parts[1] = $app->config['routes']['actions'][$parts[1]] ?? $parts[1];
+        }
+
+        return $parts;
+    }
+
+
+    /**
+     * Extrai os argumentos do caminho da uri, deixando no $path somente o controller e a action 
+     * e retornando um array com os url args, como nos exemplos abaixo
+     * 
+     * ['agent', 11] => retorna ['id' => 11] e o path fica ['agent']
+     * ['agent', 'edit', '11'] => retorna um array ['id' => 11] e o $path fica ['agent', 'edit']
+     * ['agent', 'test', 'name:Fulano', [idade:33] => retorna ['name' => 'Fulano', 'idade' => 33]
+     * ['agent', 'test', 11, 'name:Fulano', [idade:33] => retorna ['id' => 11, 'name' => 'Fulano', 'idade' => 33]
+     * 
+     * @param array $path 
+     * @return array 
+     */
+    protected function extractArgs(array &$path){
+        $args = [];
+        for ($i = count($path) -1; $i >= 0; $i--) {
+            if ($i > 2 || is_numeric($path[$i]) || strpos($path[$i], ':')){
+                $arg = array_pop($path);
+                if (is_numeric($arg)) {
+                    if ((int) $arg == $arg) {
+                        $args['id'] = (int) $arg;
+                    } else {
+                        $args[] = (float) $arg;
+                    }
+                } else if (strpos($arg, ':')) {
+                    list($key, $val) = explode(':', $arg, 2);
+                    $args[$key] = $val;
+                } else {
+                    $args[] = $arg;
+                }
+            }
+        }
+
+        return $args;
     }
 
     protected final function callAction(Controller $controller, $action_name, array $args, $api_call){

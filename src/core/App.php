@@ -31,6 +31,7 @@ use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Definitions\RegistrationAgentRelation;
 use MapasCulturais\Definitions\RegistrationFieldType;
 use MapasCulturais\Exceptions\MailTemplateNotFound;
+use MapasCulturais\Exceptions\TemplateNotFound;
 use MapasCulturais\Exceptions\WorkflowRequest;
 use ReflectionException;
 use RuntimeException;
@@ -633,6 +634,7 @@ class App {
         $auth = new $auth_class_name($this->config['auth.config']);
         
         $auth->setCookies();
+        
         $this->auth = $auth;
     }
 
@@ -855,14 +857,6 @@ class App {
     }
 
     /**
-     * Returns the Auth Manager Component
-     * @return \MapasCulturais\Auth
-     */
-    public function getAuth(){
-        return $this->_auth;
-    }
-
-    /**
      * Returns the base url of the project
      * @return string the base url
      */
@@ -1075,9 +1069,9 @@ class App {
      * @todo remover essa função e refatorar onde for usada
      * 
      * @param mixed $slug 
-     * @return string 
+     * @return string|null
      */
-    function getReadableName(string $slug): string {
+    function getReadableName(string $slug): string|null {
         if (array_key_exists($slug, $this->config['routes']['readableNames'])) {
             return $this->config['routes']['readableNames'][$slug];
         }
@@ -1297,6 +1291,32 @@ class App {
         return $content;
     }
 
+    /**
+     * Dispara um 404
+     * 
+     * @return never 
+     * @throws TemplateNotFound 
+     */
+    function pass() {
+        throw new Exceptions\TemplateNotFound;
+    }
+
+    /**
+     * Interrompo a execução da aplicação com o status e mensagem informados
+     * 
+     * @param int $status_code 
+     * @param string $message 
+     * 
+     * @return never 
+     * @throws RuntimeException 
+     * @throws InvalidArgumentException 
+     */
+    function halt(int $status_code, string $message) {
+        $this->response->getBody()->write($message);
+        $this->response = $this->response->withStatus($status_code);
+        
+        throw new Exceptions\Halt;
+    }
 
     /**********************************************
      * Handle Uploads
@@ -3151,7 +3171,7 @@ class App {
      *
      * @return Definitions\Metadata[]
      */
-    function getRegisteredMetadata(Entity|string $entity, int $type = null){
+    function getRegisteredMetadata(Entity|string $entity, int|Definitions\EntityType $type = null){
         if (is_object($entity)) {
             $entity = $entity->getClassName();
         }
