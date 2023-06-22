@@ -1301,6 +1301,11 @@ class App {
         throw new Exceptions\TemplateNotFound;
     }
 
+    function redirect(string $destination, int $status_code = 302) {
+        $this->response = $this->response->withHeader('Location', $destination);
+        $this->halt($status_code);
+    }
+
     /**
      * Interrompo a execução da aplicação com o status e mensagem informados
      * 
@@ -1311,10 +1316,13 @@ class App {
      * @throws RuntimeException 
      * @throws InvalidArgumentException 
      */
-    function halt(int $status_code, string $message) {
-        $this->response->getBody()->write($message);
+    function halt(int $status_code, string $message = '') {
         $this->response = $this->response->withStatus($status_code);
-        
+
+        if ($message) {
+            $this->response->getBody()->write($message);
+        }
+
         throw new Exceptions\Halt;
     }
 

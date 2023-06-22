@@ -176,8 +176,18 @@ abstract class Controller{
     public function setRequestData(array $args){
         $this->_urlData = $args;
         $request = App::i()->request;
+
         $this->data = $args + $request->params();
         $this->getData = $request->params();
+
+        if ($request->psr7request->getMethod() != 'GET') {
+            $this->postData = $_POST;
+            $this->putData = $_POST;
+            $this->patchData = $_POST;
+            $this->deleteData = $_POST;
+
+            $this->data += $_POST;
+        }        
     }
 
 
