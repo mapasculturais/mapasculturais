@@ -1919,6 +1919,8 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function includeCommonAssets() {
+        $app = App::i();
+        
         $this->getAssetManager()->publishFolder('fonts/');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');
@@ -1953,7 +1955,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'mapasculturais-customizable', 'js/customizable.js', array('mapasculturais'));
 
         // This replaces the default geocoder with the google geocoder
-        if (App::i()->config['app.useGoogleGeocode']){
+        if ($app->config['app.useGoogleGeocode']){
             $this->includeGeocodingAssets();
             $this->enqueueScript('app', 'google-geocoder', 'js/google-geocoder.js', array('mapasculturais-customizable'));
         }
@@ -1969,7 +1971,7 @@ class Theme extends MapasCulturais\Theme {
         if ($this->isEditable())
             $this->includeEditableEntityAssets();
 
-        if (App::i()->config('mode') == 'staging')
+        if ($app->config['app.mode'] == 'staging')
             $this->enqueueStyle('app', 'staging', 'css/staging.css', array('main'));
     }
 
@@ -3118,9 +3120,8 @@ class Theme extends MapasCulturais\Theme {
 
     private function isHome() {
         $app = \MapasCulturais\App::i();
-        $view = $app->getView();
-
-        return ( $view->template === "site/index" && $view->controller->action === "index" );
+        
+        return ( $this->template === "site/index" && $this->controller->action === "index" );
     }
 
     public function getLoginLinkAttributes() {
@@ -3200,7 +3201,7 @@ class Theme extends MapasCulturais\Theme {
             if($show_taxonomy){
                 $_attr = "terms[{$taxonomy->slug}][]";
                 $options = array_values($taxonomy->restrictedTerms);
-                $title = $app->getView()->dict("taxonomies:{$taxonomy->slug}: name", false);
+                $title = $this->dict("taxonomies:{$taxonomy->slug}: name", false);
 
                 $this->part("modal/title", ['title' => $title]);
                 $this->part("modal/entity-dropdown", ['attr' => $_attr, 'options' => $options]);
