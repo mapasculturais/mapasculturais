@@ -42,6 +42,7 @@ use Swift_SwiftException;
 
 
 use Psr\Http\Message\ResponseInterface as ResponseInterface;
+use Respect\Validation\Factory as RespectorValidationFactory;
 
 /**
  * @property-read string $id id da aplicação
@@ -344,6 +345,11 @@ class App {
                 die;
             }
         }
+
+        // inicializa os validadores customizados
+        $instance = RespectorValidationFactory::getDefaultInstance();
+        $instance->withRuleNamespace('MapasCulturais\\Validators\\Rules');
+        $instance->withExceptionNamespace('MapasCulturais\\Validators\\Exceptions');
 
         $this->_initAutoloader();
         $this->_initCache();

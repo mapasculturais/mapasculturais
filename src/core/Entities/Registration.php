@@ -1010,7 +1010,7 @@ class Registration extends \MapasCulturais\Entity
                 foreach($validations as $validation => $error_message){
                     if(strpos($validation,'v::') === 0){
 
-                        $validator = str_replace('v::', '\MapasCulturais\Validator::', $validation);
+                        $validator = str_replace('v::', 'Respect\Validation\Validator::', $validation);
                         $validator .= "->validate(\$val)";
                         
                         eval("\$ok = $validator;");

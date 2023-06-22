@@ -254,7 +254,7 @@ class Metadata extends \MapasCulturais\Definition{
                 $ok = true;
 
                 if(strpos($validation,'v::') === 0){
-                    $validation = str_replace('v::', 'MapasCulturais\Validator::', $validation);
+                    $validation = str_replace('v::', 'Respect\Validation\Validator::', $validation);
                     eval('$ok = ' . $validation . '->validate($value);');
                 }else{
                     eval('$ok = ' . $validation . ';');
