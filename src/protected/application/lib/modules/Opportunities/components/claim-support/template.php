@@ -10,8 +10,7 @@ $this->import('
     mc-modal
 ');
 ?>
-<!-- <div >Discorda do resultado? Abra o formulário de recurso</div> -->
-<mc-modal :title="modalTitle" classes="claim-support" button-label="<?php i::_e('Discorda do resultado? Abra o formulário de recurso') ?>" @open="createEntity()" @close="destroyEntity()">
+<mc-modal :title="modalTitle" classes="claim-support" button-label="<?php i::_e('Discorda do resultado? Abra o formulário de recurso') ?>"  @close="modal.close()">
     <template #default>
         <div class="claim-support__content">
             <h5 class="semibold claim-support__label"><?php i::_e('Descreva abaixo os motivos do recurso')?></h5>
