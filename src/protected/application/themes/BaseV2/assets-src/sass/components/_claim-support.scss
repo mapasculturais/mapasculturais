@@ -1,6 +1,16 @@
 @use '../settings/mixins' as *;
 
-.claim-support {
+.opportunity-claim-form {
+  &__buttonlabel {
+    max-width: size(259);
+    width: 100%;
+    color: var(--mc-primary-500);
+    background-color: var(--mc-high-500);
+    border: none;
+    text-align: left;
+    padding-left: 0;
+  }
+
   .modal {
     max-width: 570px;
     width: 100%;
@@ -16,8 +26,8 @@
     }
 
     &__content {
-
-      .claim-support {
+      margin-left: 0;
+      .opportunity-claim-form {
         &__textarea {
           width: size(570);
           height: size(140);
