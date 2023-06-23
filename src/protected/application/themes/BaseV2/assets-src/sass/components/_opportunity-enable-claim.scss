@@ -14,10 +14,8 @@
     input[type="checkbox"] {
       width: size(16);
     }
-    input[type="checkbox" i] {
-      background-color: yellow;
     }
-  }
+
   &__save {
     display: flex;
     flex-direction: row;
@@ -31,11 +29,13 @@
       border: var(1) solid var(--mc-gray-300);
 
     }
+
     button {
       width: size(115);
-      padding:size(12);
+      padding: size(12);
     }
   }
+
   &__label {
     font-size: size(16);
     font-family: Open Sans;
