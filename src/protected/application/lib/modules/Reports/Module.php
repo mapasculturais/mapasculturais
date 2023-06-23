@@ -179,7 +179,7 @@ class Module extends \MapasCulturais\Module
      * Verifica se existem dados suficientes para gerar o gráfico
      */
     public function checkIfChartHasData(array $values) {
-
+        return true;
         if (count($values) > 1) {
 
             $count = 0;
