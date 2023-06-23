@@ -1,0 +1,18 @@
+@use '../settings/mixins' as *;
+
+.opportunity-enable-claim {
+  &__title {
+    
+    padding-bottom: size(8);
+  }
+  &__input {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  &__subtitle {
+    padding-bottom: size(8);
+  }
+
+}
