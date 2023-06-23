@@ -10,6 +10,7 @@ $this->import('
     entity-field
     mc-confirm-button
     opportunity-phase-publish-date-config
+    opportunity-enable-claim
     opportunity-category
 ');
 ?>
@@ -28,10 +29,13 @@ $this->import('
             </div>
         </div>
 
-        <div class="col-6 sm:col-12">
-            <mc-link :entity="phase" route='formBuilder' class="config-phase__info-button button--primary button" icon="external" right-icon>
+        <div class="col-12 grid-12">
+            <mc-link :entity="phase" route='formBuilder' class="config-phase__info-button button--primary button col-6" icon="external" right-icon>
               <?= i::__("Configurar formulário") ?>
             </mc-link>
+        </div>
+        <div class="col-12 sm:col-12">
+            <opportunity-enable-claim></opportunity-enable-claim>
         </div>
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>
