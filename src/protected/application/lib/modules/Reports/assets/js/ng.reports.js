@@ -75,7 +75,7 @@
 
             var route = MapasCulturais.createUrl('opportunity', 'single', {id: MapasCulturais.entity.id, status: $scope.reportFilter});
 
-            window.location = route+"#/tab=reports";
+            window.location = route+"#/tab=reports&#pointFilter";
            
         }
 
