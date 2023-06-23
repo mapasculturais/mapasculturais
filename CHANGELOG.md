@@ -13,6 +13,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
 - Ajusta estrutura de condicionalidade de campo criando colunas específicas na tabela registration_field_configuration
 - Não obriga mais um campos ser obrigatorio para ser condicionado a outro campo
+## [5.6.20] - 2023-06-06
+### Melhorias
+- define o tempo de duração das sessões para 2 horas, por padrão
+- possibilidade de configurar o tempo de duração das sessões pela variável de ambiente `SESSION_TIMEOUT`
+
 ## [5.6.19] - 2023-05-25
 ### Correções
 - Cria pasta DoctrineProxies durante o build, corrindo redeploy da aplicação que estava quebrado por falta da pasta
