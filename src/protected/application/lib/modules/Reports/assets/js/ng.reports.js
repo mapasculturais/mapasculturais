@@ -37,7 +37,11 @@
         $scope.statuses = [
             {value : 'all', title : 'Mostrar todas'},
             {value : 'draft', title : 'Somente em rascunho'},
-            {value : 'approved', title : 'Somente Aprovados'}
+            {value : 'send', title : 'Somente enviadas'},
+            {value : 'invalid', title : 'Somente inválidas'},
+            {value : 'notapproved', title : 'Somente não selecionadas'},
+            {value : 'waitlist', title : 'Somente suplente'},
+            {value : 'approved', title : 'Somente Aprovados'},
         ];
 
         $scope.reportFilter = MapasCulturais.reportStatus;
