@@ -314,9 +314,11 @@ class App {
      * @throws Exception 
      */
     function init(array $config) {
-
         $this->_config = &$config;
         $this->config = &$config;
+        
+        // necessário para obter o endereço ip da origem do request
+        $this->slim->add(new \RKA\Middleware\IpAddress);
 
         if(empty($config['base.url'])){
             $config['base.url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://') . 
