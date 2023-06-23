@@ -521,6 +521,14 @@
             }
         }
 
+        $scope.disabledFilter = function(){
+            if($scope.data.graphics.length <= 0){
+                return true;
+            }
+
+            return false;
+        }
+
         $scope.clearModal = function() {
             $scope.data.reportModal = false;
             $scope.data.graphicData = false;
