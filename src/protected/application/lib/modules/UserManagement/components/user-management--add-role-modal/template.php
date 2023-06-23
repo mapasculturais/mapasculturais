@@ -12,19 +12,19 @@ $this->import('
     mc-modal 
 ');
 ?>
-<mc-modal title="<?php i::esc_attr_e('Adicionar função ao usuário') ?> " @open="createInstance()"> 
+<mc-modal title="<?php i::esc_attr_e('Adicionar função ao usuário') ?>" @open="createInstance()"> 
     <template #default>
         <div class="field">
-            <mc-entities #default="{entities}" type="system-role" select="id,status,name,slug,permissions" v-if="instance">
-                <label><?= i::__('Função') ?></label>
-                    <select v-model="instance.name">
-                    <option value="saasSuperAdmin" ><?= i::__('Super Administrador da Rede') ?></option>
-                    <option value="saasAdmin" ><?= i::__('Administrador da Rede') ?></option>
-                    <option value="superAdmin" ><?= i::__('Super Administrador') ?></option>
-                    <option value="admin" ><?= i::__('Administrador') ?></option>
+            <label><?= i::__('Função') ?></label>
+            <select v-model="instance.name">
+                <option value="saasSuperAdmin" ><?= i::__('Super Administrador da Rede') ?></option>
+                <option value="saasAdmin" ><?= i::__('Administrador da Rede') ?></option>
+                <option value="superAdmin" ><?= i::__('Super Administrador') ?></option>
+                <option value="admin" ><?= i::__('Administrador') ?></option>
+                <mc-entities #default="{entities}" type="system-role" select="id,status,name,slug,permissions" v-if="instance">
                     <option v-for="role in entities" v-bind:value="role.slug">{{role.name}}</option>
-                </select>
-            </mc-entities>
+                </mc-entities>
+            </select>            
             <label><?= i::__('Subsite') ?></label>
             <select v-model="instance.subsiteId">
                 <option v-for="subsite in subsites" :value="subsite.id" >{{subsite.name}}</option>
