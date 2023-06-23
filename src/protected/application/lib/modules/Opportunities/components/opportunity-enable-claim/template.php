@@ -20,8 +20,8 @@ mc-link
         <label for="resource"><?= i::__("Habilitar Recurso") ?></label>
     </div>
     <div class="opportunity-enable-claim__email">
-        <label for="input">
-            <h5 clas="semibold opportunity-enable-claim__subtitle"><?= i::__("Insira o email que receberá as solicitações") ?></h5>
+        <label class="opportunity-enable-claim__label" for="input">
+            <h5 class="semibold opportunity-enable-claim__subtitle"><?= i::__("Insira o email que receberá as solicitações") ?></h5>
         </label>
         <div class="opportunity-enable-claim__save">
             <input type="text" #id="input" /> <button class="button-popover button button--primary button--primary-outline"><?= i::__("Salvar") ?></button>
