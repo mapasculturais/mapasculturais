@@ -1,9 +1,23 @@
 @use '../settings/mixins' as *;
 
 .claim-support {
+  &__buttonlabel {
+    max-width: size(259);
+    width: 100%;
+    color: var(--mc-primary-500);
+    background-color: var(--mc-high-500);
+    border: none;
+    text-align: left; 
+    padding-left: 0;   
+  }
+
+  &__button {
+  }
+
   .modal {
     max-width: 570px;
     width: 100%;
+
 
     &__title {
       font-family: 'Open Sans';

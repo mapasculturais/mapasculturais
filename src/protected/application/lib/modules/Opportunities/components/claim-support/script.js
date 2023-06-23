@@ -24,5 +24,4 @@ app.component('claim-support', {
 
         },
     },
-    methods: {},
 });

@@ -4,16 +4,18 @@
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
+
 use MapasCulturais\i;
+
 $this->import('
     mc-container
     mc-modal
 ');
 ?>
-<mc-modal :title="modalTitle" classes="claim-support" button-label="<?php i::_e('Discorda do resultado? Abra o formulário de recurso') ?>"  @close="modal.close()">
+<mc-modal :title="modalTitle" classes="claim-support" button-label="<?php i::_e('Discorda do resultado? Abra o formulário de recurso') ?>" button-classes="claim-support__buttonlabel" @close="modal.close()" @open="modal.open()">
     <template #default>
         <div class="claim-support__content">
-            <h5 class="semibold claim-support__label"><?php i::_e('Descreva abaixo os motivos do recurso')?></h5>
+            <h5 class="semibold claim-support__label"><?php i::_e('Descreva abaixo os motivos do recurso') ?></h5>
             <textarea v-model="claim.message" id="message" class="claim-support__textarea"></textarea>
         </div>
     </template>
