@@ -7,7 +7,7 @@
 use MapasCulturais\i;
 $this->import('
     mc-link
-    claim-support
+    opportunity-claim-form
 ');
 ?>
 <section :class="['timeline', {'center': center}, {'big': big}]">
@@ -22,8 +22,8 @@ $this->import('
                 <?= i::__('a') ?> <span v-if="dateTo(item)">{{dateTo(item)}}</span>
                 <?= i::__('às') ?> <span v-if="hour(item)">{{hour(item)}}</span>
             </div>
-            <div v-if="item.__objectType=='evaluationmethodconfiguration'" class="opportunity-phases-timeline__claim-support">
-                <claim-support :entity="entity"></claim-support>
+            <div v-if="item.__objectType=='evaluationmethodconfiguration'">
+                <opportunity-claim-form :entity="item"></opportunity-claim-form>
             </div>
             <div v-if="item.isLastPhase" class="item__content--description">
                 <span v-if="item.publishTimestamp">
