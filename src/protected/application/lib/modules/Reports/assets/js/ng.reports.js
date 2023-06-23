@@ -37,7 +37,11 @@
         $scope.statuses = [
             {value : 'all', title : 'Mostrar todas'},
             {value : 'draft', title : 'Somente em rascunho'},
-            {value : 'approved', title : 'Somente Aprovados'}
+            {value : 'send', title : 'Somente enviadas'},
+            {value : 'invalid', title : 'Somente inválidas'},
+            {value : 'notapproved', title : 'Somente não selecionadas'},
+            {value : 'waitlist', title : 'Somente suplente'},
+            {value : 'approved', title : 'Somente Aprovados'},
         ];
 
         $scope.reportFilter = MapasCulturais.reportStatus;
@@ -71,7 +75,7 @@
 
             var route = MapasCulturais.createUrl('opportunity', 'single', {id: MapasCulturais.entity.id, status: $scope.reportFilter});
 
-            window.location = route+"#/tab=reports";
+            window.location = route+"#/tab=reports&#pointFilter";
            
         }
 
@@ -515,6 +519,14 @@
             }else{
                 return graphic.data.backgroundColor[index];
             }
+        }
+
+        $scope.disabledFilter = function(){
+            if($scope.data.graphics.length <= 0){
+                return true;
+            }
+
+            return false;
         }
 
         $scope.clearModal = function() {
