@@ -2,13 +2,40 @@
 
 .opportunity-enable-claim {
   &__title {
-    
+
     padding-bottom: size(8);
   }
+
   &__input {
     display: flex;
     flex-direction: row;
-    gap: 6px;
+    gap: size(6);
+    padding-bottom: size(17);
+
+    input[type="checkbox"] {
+      width: size(16);
+    }
+    input[type="checkbox" i] {
+      background-color: yellow;
+    }
+  }
+  &__save {
+    display: flex;
+    flex-direction: row;
+    gap: size(24);
+    input[type="text"] {
+      max-width: size(499);
+      height: size(48);
+      width: 100%;
+      border-radius: size(4);
+      border: 1px solid var(--mc-gray-300);
+
+    }
+  }
+  &__label {
+    font-size: size(16);
+    font-family: Open Sans;
+    font-weight: 600;
   }
 
   &__subtitle {
