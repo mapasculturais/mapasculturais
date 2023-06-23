@@ -5,6 +5,12 @@ use MapasCulturais\i;
 ?>
 <?php $this->applyTemplateHook('dynamic-reports', 'before'); ?>
 <div class="charts-dynamic">
+    <label for="reportFilter" id="pointFilter"><?php i::_e("Filtrar dados por")?><br>
+        <small ng-if="disabledFilter()"><i><?php i::_e("Não existem gráficos a serem filtrados no momento")?></i></small> <br>
+        <select ng-model='reportFilter' ng-options="status.value as status.title for status in statuses" ng-click='setReportFilter()' ng-disabled="disabledFilter()">
+            <option value="" ng-hide="reportFilter"><?php i::_e('Selecione uma opção ...');?></option>
+        </select>
+    </label>
     <?php $this->applyTemplateHook('dynamic-reports', 'begin'); ?>
     <div class="chart-wrap type-{{graphic.typeGraphic}}" ng-repeat="(key, graphic) in data.graphics">  
         <header>
