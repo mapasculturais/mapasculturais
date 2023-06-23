@@ -35,7 +35,7 @@ $this->import('
             </mc-link>
         </div>
         <div class="col-12 sm:col-12">
-            <opportunity-enable-claim></opportunity-enable-claim>
+            <opportunity-enable-claim :entity="phase"></opportunity-enable-claim>
         </div>
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>
