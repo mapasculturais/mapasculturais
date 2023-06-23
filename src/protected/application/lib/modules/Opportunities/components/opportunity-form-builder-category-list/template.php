@@ -9,20 +9,20 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
-    mc-icon 
-    mc-popover 
+        mc-icon 
+        mc-popover 
     mc-tag-list
 ');
 ?>
 <div class="build-list">
-    <h6 class="build-list__title"><?= i::__("Categorias") ?></h6>
+    <h5 class="semibold build-list__title"><?= i::__("Categorias") ?></h5>
 
     <mc-tag-list class="build-list__content" :tags="entity.registrationCategories" editable></mc-tag-list>
 
     <mc-popover class="popover-tag" openside="down-right" title="<?php i::esc_attr_e('Adicionar categoria') ?>">
         <template #button="popover">
-            <button @click="popover.toggle()" class="button-popover button button--primary button--icon button--primary-outline">
-                <mc-icon name="add"></mc-icon><label><?php i::_e("Adicionar categoria") ?></label>
+            <button @click="popover.toggle()" class="build-list__categorybtn button-popover button button--primary button--icon button--primary-outline">
+                <mc-icon name="add"></mc-icon><label><?php i::_e("Adicionar") ?></label>
             </button>
         </template>
 
