@@ -2268,6 +2268,7 @@ class Theme extends MapasCulturais\Theme {
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
             'confirmRemoveValuer' => i::__('Você tem certeza que deseja excluir o avaliador?'),
             'confirmReopenValuerEvaluations' => i::__('Você tem certeza que deseja reabrir as avaliações para este avaliador?'),
+            'reopenEvaluationsSuccess' => i::__('As avaliações foram reabertas'),
             'evaluated' => i::__('Avaliada'),
             'notEvaluated' => i::__('Não Avaliada'),
             'all' => i::__('Todas'),
