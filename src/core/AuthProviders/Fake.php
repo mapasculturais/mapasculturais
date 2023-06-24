@@ -68,7 +68,7 @@ class Fake extends \MapasCulturais\AuthProvider {
 
     public function _getAuthenticatedUser() {
         $user = null;
-        if (key_exists('auth.fakeAuthenticationUserId', $_SESSION)) {
+        if (key_exists('auth.fakeAuthenticationUserId', $_SESSION ?? [])) {
             $user_id = $_SESSION['auth.fakeAuthenticationUserId'];
             $user = App::i()->repo("User")->find($user_id);
             return $user;

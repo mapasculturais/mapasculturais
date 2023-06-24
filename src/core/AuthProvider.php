@@ -69,17 +69,16 @@ abstract class AuthProvider {
     final function requireAuthentication($redirect_url = null){
         $app = App::i();
         $app->applyHookBoundTo($this, 'auth.requireAuthentication');
-        $this->_setRedirectPath($redirect_url ? $redirect_url : $app->request->getPathInfo());
+        $this->_setRedirectPath($redirect_url ? $redirect_url : $app->request->psr7request->getUri()->getPath());
         $this->_requireAuthentication();
     }
 
     protected function _requireAuthentication() {
         $app = App::i();
-
-        if($app->request->isAjax() || $app->request->headers()->get('Content-Type') === 'application/json'){
-            $app->halt(401, \MapasCulturais\i::__('This action requires authentication'));
+        if($app->request->isAjax() || $app->request->getHeaderLine('Content-Type') === 'application/json'){
+            $app->halt(401, \MapasCulturais\i::__('Esta ação requer autenticação'));
         }else{
-            $app->redirect($app->controller('auth')->createUrl(''), 401);
+            $app->redirect($app->controller('auth')->createUrl(''), 302);
         }
     }
 
