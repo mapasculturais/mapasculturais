@@ -8,7 +8,7 @@ $save_log = isset($argv[1]) && $argv[1];
 if($save_log)
     ob_start();
 
-require __DIR__ . '/../application/bootstrap.php';
+require __DIR__ . '/../../public/bootstrap.php';
 
 if($save_log)
     $log = ob_get_clean();

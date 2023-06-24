@@ -8,7 +8,7 @@ define('PROCESS_NUM', $argv[2]);
 define('UPDATE_NAME', $argv[3]);
 
 
-require __DIR__ . '/../application/bootstrap.php';
+require __DIR__ . '/../../public/bootstrap.php';
 use MapasCulturais\App;
 use MapasCulturais\Entities;
 
