@@ -22,14 +22,15 @@ RUN npm install -g \
         terser \
         uglifycss \
         autoprefixer \
-        postcss
+        postcss \
+        sass
 
 # Install extensions
 RUN docker-php-ext-install -j$(nproc) opcache pdo_pgsql  zip  xml  curl
 
 # Install GD
 RUN docker-php-ext-install -j$(nproc) iconv && \
-    docker-php-ext-configure gd && \
+    docker-php-ext-configure gd --with-jpeg && \
     docker-php-ext-install -j$(nproc) gd
 
 # Install APCu
