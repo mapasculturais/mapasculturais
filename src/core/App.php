@@ -606,7 +606,7 @@ class App {
      * @return void 
      */
     protected function _initSubsite() {
-        $domain = @$_SERVER['HTTP_HOST'];
+        $domain = $_SERVER['HTTP_HOST'] ?? 'localhost';
 
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
@@ -2890,7 +2890,7 @@ class App {
         if(is_object($controller))
             $controller = get_class($controller);
 
-        return array_search($controller, $this->_register['controllers']);
+        return array_search($controller, $this->_register['controllers']) ?: null;
     }
 
     /**

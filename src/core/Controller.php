@@ -181,12 +181,14 @@ abstract class Controller{
         $this->getData = $request->params();
 
         if ($request->psr7request->getMethod() != 'GET') {
-            $this->postData = $_POST;
-            $this->putData = $_POST;
-            $this->patchData = $_POST;
-            $this->deleteData = $_POST;
+            $parsed_body = $request->psr7request->getParsedBody() ?: $_POST;
+            
+            $this->postData = $parsed_body;
+            $this->putData = $parsed_body;
+            $this->patchData = $parsed_body;
+            $this->deleteData = $parsed_body;
 
-            $this->data += $_POST;
+            $this->data += $parsed_body;
         }        
     }
 

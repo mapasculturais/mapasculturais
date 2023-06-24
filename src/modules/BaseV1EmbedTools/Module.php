@@ -20,7 +20,7 @@ class Module extends \MapasCulturais\Module
     public function _init()
     {
         $app = App::i();
-        if (strpos($_SERVER['REQUEST_URI'], '/embedtools') === 0) {
+        if (strpos($_SERVER['REQUEST_URI'] ?? '/', '/embedtools') === 0) {
             
 
             $app->view->enqueueScript('app', 'evaluations', 'js/embedTools-evaluations.js');

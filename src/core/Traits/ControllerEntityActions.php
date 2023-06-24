@@ -336,7 +336,7 @@ trait ControllerEntityActions {
 
         if(isset($this->getData['redirectTo'])){
             $app->redirect($this->getData['redirectTo'], $status);
-        }elseif($this->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
+        }elseif($this->isAjax() || $isAjax || $app->request->getHeaderLine('MapasSDK-REQUEST')){
             $this->json($data, $status);
         }else{
             $app->redirect($app->request->getReferer(), $status);

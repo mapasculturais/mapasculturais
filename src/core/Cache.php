@@ -65,6 +65,10 @@ class Cache {
         $this->adapter->clear($this->namespace);
     }
 
+    function deleteAll() {
+        $this->flushAll();
+    }
+
     function setNamespace(string $namespace = null) {
         // caracteres reservados: {}()/\@:
         $namespace = str_replace(self::$parseFrom, self::$parseTo, $namespace);
