@@ -1,5 +1,5 @@
 #!/bin/bash
-THEMES_PATH="/var/www/html/protected/application/themes"
+THEMES_PATH="/var/www/src/themes"
 THEME=${ACTIVE_THEME:-BaseV1}
 ASSETS_PATH="$THEMES_PATH/$THEME/assets/css"
 
