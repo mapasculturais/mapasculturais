@@ -286,6 +286,22 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
             );
             return deferred.promise;
         },
+        
+        reopenEvaluationsV2: function(data){
+            let url = MapasCulturais.createUrl('opportunity', 'reopenEvaluations');
+            var deferred = $q.defer();
+            $http.post(url, data).success(
+                function(response){
+                    deferred.resolve(response);
+                }
+            )
+            .error(
+                function(response){
+                    deferred.resolve(response);
+                }
+            );
+            return deferred.promise;
+        },
         disableValuer: function(relation){
             return $http.post(this.getUrl('disableValuer'), {relationId: relation.id});
         },
@@ -1975,6 +1991,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                     });
             }
         };
+
+        $scope.reopenEvaluationsV2 = function(relation){
+            if(confirm(labels.confirmReopenValuerEvaluations)){
+            var data = {
+                    uid:relation.agentUserId,
+                    opportunityId: MapasCulturais.entity.id
+                }
+
+                EvaluationMethodConfigurationService.reopenEvaluationsV2(data).then(function(response){
+                    MapasCulturais.Messages.success(labels['reopenEvaluationsSuccess']);
+                });
+            }
+        }
 
         $scope.deleteAdminRelation = function(relation){
             if(confirm(labels.confirmRemoveValuer)){
