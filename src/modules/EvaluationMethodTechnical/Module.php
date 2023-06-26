@@ -84,7 +84,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 return json_encode($val);
             },
             'unserialize' => function($val){
-                return json_decode($val);
+                return json_decode((string) $val);
             }
         ]);
 
@@ -95,7 +95,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 return json_encode($val);
             },
             'unserialize' => function($val){
-                return json_decode($val);
+                return json_decode((string) $val);
             }
         ]);
 
@@ -106,7 +106,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 return (!empty($val)) ? json_encode($val) : "[]";
             },
             'unserialize' => function($val){
-                return json_decode($val);
+                return json_decode((string) $val);
             }
         ]);
 
@@ -119,7 +119,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 return json_encode($val);
             },
             'unserialize' => function($val){
-                return json_decode($val);
+                return json_decode((string) $val);
             }
         ]);
 
@@ -143,7 +143,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 return json_encode($val);
             },
             'unserialize' => function($val){
-                return json_decode($val);
+                return json_decode((string) $val);
             }
         ]);
 

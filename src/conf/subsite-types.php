@@ -12,7 +12,7 @@ $metadata_config_estado = [
         return json_encode($v);
     },
     'unserialize' => function($v) {
-        return json_decode($v);
+        return json_decode((string) $v);
     },
     'options' => [
         'AC' => 'Acre',
@@ -60,7 +60,7 @@ $metadata_config_area = [
         return json_encode($v);
     },
     'unserialize' => function($v) {
-        return json_decode($v);
+        return json_decode((string) $v);
     },
     'options' => [
         /* @TODO: incluir arquivo taxonomies.php e pegar os termos de lá */
@@ -158,7 +158,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return json_decode($v);
+                return json_decode((string) $v);
             },
         ],
         'filtro_space_meta_En_Bairro' => [
@@ -168,7 +168,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return json_decode($v);
+                return json_decode((string) $v);
             },
         ],
 
@@ -181,7 +181,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return json_decode($v);
+                return json_decode((string) $v);
             },
         ],
         'filtro_agent_meta_En_Bairro' => [
@@ -191,7 +191,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return json_decode($v);
+                return json_decode((string) $v);
             },
         ],
 
@@ -202,7 +202,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return json_decode($v);
+                return json_decode((string) $v);
             },
             'options' => (object) array(
                 105 => 'Antiquário',
@@ -279,7 +279,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return json_decode($v);
+                return json_decode((string) $v);
             },
             'options' => array(
                 'Artes Circenses',
@@ -343,7 +343,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return (array) json_decode($v);
+                return (array) json_decode((string) $v);
             },
         ],
         'user_filters__event' => [
@@ -353,7 +353,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return (array) json_decode($v);
+                return (array) json_decode((string) $v);
             },
         ],
         'user_filters__space' => [
@@ -363,7 +363,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return (array) json_decode($v);
+                return (array) json_decode((string) $v);
             },
         ],
         'user_filters__agent' => [
@@ -373,7 +373,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return (array) json_decode($v);
+                return (array) json_decode((string) $v);
             },
         ],
         'user_filters__project' => [
@@ -383,7 +383,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return (array) json_decode($v);
+                return (array) json_decode((string) $v);
             },
         ],
         'user_filters__opportunity' => [
@@ -393,7 +393,7 @@ return array(
                 return json_encode($v);
             },
             'unserialize' => function($v) {
-                return (array) json_decode($v);
+                return (array) json_decode((string) $v);
             },
         ]
     )
