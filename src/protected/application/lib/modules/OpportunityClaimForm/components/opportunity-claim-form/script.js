@@ -1,8 +1,9 @@
 app.component('opportunity-claim-form', {
     template: $TEMPLATES['opportunity-claim-form'],
     setup() { 
+        const messages = useMessages();
         const text = Utils.getTexts('opportunity-claim-form')
-        return { text }
+        return { text, messages }
     },
 
     props: {
@@ -21,18 +22,22 @@ app.component('opportunity-claim-form', {
         }
     },
     methods: {
+        close(modal){
+            this.claim.message = '';
+            modal.close();
+        },
         isActive(){
             if(this.entity.opportunity.status > 0 && this.entity.opportunity.publishedRegistrations && this.entity.opportunity.claimDisabled === "0"){
                 return true;
             }
             return false;
         },
-        sendClain(){
+        async sendClain(modal){
             let api = new API();
             let url = Utils.createUrl('opportunity', 'sendOpportunityClaimMessage');
-
-            api.POST(url, this.claim).then(res => res.json()).then(data => {
-                messages.success(this.text('Solicitação de recurso enviada'));
+            await api.POST(url, this.claim).then(data => {
+                this.messages.success(this.text('Solicitação de recurso enviada'));
+                this.close(modal);
             });
           
         }
