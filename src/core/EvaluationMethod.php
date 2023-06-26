@@ -329,7 +329,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     return json_encode($val);
                 },
                 'unserialize' => function($val) {
-                    return json_decode($val);
+                    return json_decode((string) $val);
                 }
             ]);
             $this->registerEvaluationMethodConfigurationMetadata('fetchCategories', [
@@ -338,7 +338,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     return json_encode($val);
                 },
                 'unserialize' => function($val) {
-                    return json_decode($val);
+                    return json_decode((string) $val);
                 }
             ]);
             $this->registerEvaluationMethodConfigurationMetadata('infos', [

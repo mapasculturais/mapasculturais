@@ -97,7 +97,7 @@ return array(
         'registrationSeals' => array(
                 'label' => \MapasCulturais\i::__('Selos'),
                 'serialize' => function($value) { return json_encode($value); },
-                'unserialize' => function($value) { return json_decode($value); }
+                'unserialize' => function($value) { return json_decode((string) $value); }
         ),
 
         /** @TODO: colocar isso na entidade Opportunity (issue: #1273) **/
