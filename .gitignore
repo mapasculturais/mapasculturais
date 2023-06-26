@@ -2,3 +2,10 @@ vendor
 var
 public/router.php
 vendor
+src/modules/Components/assets/js/media-query.js
+src/modules/Components/assets/js/media-query/
+node_modules
+mix-manifest.json
+.pnpm-store
+dev/docker-data/
+
