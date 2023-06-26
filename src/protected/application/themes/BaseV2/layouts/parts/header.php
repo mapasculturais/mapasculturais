@@ -15,6 +15,9 @@
         <link rel="profile" href="//gmpg.org/xfn/11" />
         <link rel='icon' type='image/*' href="<?= $this->asset($app->config['favicon.image16x16'],false)?>"/>
         <link rel='icon' type='image/*' href="<?= $this->asset($app->config['favicon.image32x32'],false)?>"/>
+        <link rel='icon' type='image/*' href="<?= $this->asset($app->config['favicon.imagesvg'],false)?>"/>
+        <link rel='icon' type='image/*' href="<?= $this->asset($app->config['favicon.imageico'],false)?>"/>
+        <link rel='icon' type='image/*' href="<?= $this->asset($app->config['favicon.imagexml'],false)?>"/>
         <link rel="manifest" href="<?=$app->createUrl('site', 'webmanifest')?>">
 
         <?php $this->printStyles('vendor-v2'); ?>
