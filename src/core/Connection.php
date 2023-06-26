@@ -9,4 +9,8 @@ class Connection extends \Doctrine\DBAL\Connection {
     function fetchColumn (string $query, array $params = [], $types = []) {
         return $this->fetchFirstColumn($query, $params, $types);
     }
+
+    function fetchAssoc (string $query, array $params = [], $types = []): array {
+        return $this->fetchAssociative($query, $params, $types);
+    }
 }
