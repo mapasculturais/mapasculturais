@@ -32,7 +32,10 @@ class Theme extends \MapasCulturais\Theme
             $this->json([
                 'icons' => [
                     [ 'src' => $app->view->asset('img/favicon-16x16.png', false), 'type' => 'image/png', 'sizes' => '16x16' ],
-                    [ 'src' => $app->view->asset('img/favicon-32x32.png', false), 'type' => 'image/png', 'sizes' => '32x32' ]
+                    [ 'src' => $app->view->asset('img/favicon-32x32.png', false), 'type' => 'image/png', 'sizes' => '32x32' ],
+                    [ 'src' => $app->view->asset('img/favicon_32px_geraL-SVG.svg', false), 'type' => 'image/svg'],
+                    [ 'src' => $app->view->asset('img/favicon-mapas-generico.ico', false), 'type' => 'image/ico'],
+                    [ 'src' => $app->view->asset('img/browserconfig.xml', false), 'type' => 'image/xml']
                 ],
             ]);
         });
