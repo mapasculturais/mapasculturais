@@ -19,8 +19,8 @@ $this->import('
             </div>
         </template>
         <template #actions="modal">
-            <button class="button button--text delete-registration " @click="modal.close()"><?php i::_e('Cancelar') ?></button>
-            <button class="button button--primary" @click="sendClain()"><?php i::_e('Solicitar') ?></button>
+            <button class="button button--text delete-registration " @click="close(modal)"><?php i::_e('Cancelar') ?></button>
+            <button class="button button--primary" @click="sendClain(modal)"><?php i::_e('Solicitar') ?></button>
         </template>
     </mc-modal>
 </div>
