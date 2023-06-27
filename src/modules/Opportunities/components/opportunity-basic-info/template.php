@@ -56,7 +56,6 @@ $this->import('
                         <entity-field :entity="entity" label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type" classes="header-opp__field--name col-12"></entity-field>
                     </div>
                     <entity-field :entity="entity" classes="header-opp__field--name col-12" prop="shortDescription"></entity-field>
-                    <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar regulamento'); ?>" editable></opportunity-rules>
                     <entity-files-list :entity="entity" classes="content-fileList col-12" group="downloads" title="<?php i::esc_attr_e('Adicionar arquivos'); ?>" editable></entity-files-list>
                     <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar links'); ?>" editable></entity-links>
                     <entity-gallery-video :entity="entity" classes="col-12" editable></entity-gallery-video>
@@ -68,10 +67,12 @@ $this->import('
     <aside>
         <mc-card>
             <div class="grid-12">
+                <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar regulamento'); ?>" editable></opportunity-rules>
+                <!-- <entity-terms :entity="entity" classes="col-12" taxonomy="area" title="<?php i::esc_attr_e('Areas de interesse') ?>" editable></entity-terms> -->
+                <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>" editable></entity-related-agents>
                 <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
                 <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
                 <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags') ?>" editable></entity-terms>
-                <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>" editable></entity-related-agents>
                 <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
             </div>
         </mc-card>

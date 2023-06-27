@@ -12,6 +12,7 @@
 @import 'components/avatar';
 @import 'components/app-card-content';
 @import 'components/button';
+@import 'components/claim-support';
 @import 'components/container';
 @import 'components/create-app';
 @import 'components/create-entity-modal';
@@ -82,12 +83,14 @@
 @import 'components/opportunity-form-export';
 @import 'components/opportunity-evaluations';
 @import 'components/opportunity-phase-header';
+@import 'components/opportunity-build-list';
 @import 'components/opportunity-phase-evaluations';
 @import 'components/opportunity-phase-list-data-collection';
 @import 'components/opportunity-phase-list-evaluation';
 @import 'components/opportunity-phase-publish-date-config';
 @import 'components/opportunity-registrations';
 @import 'components/opportunity-rules';
+@import 'components/opportunity-enable-claim';
 @import 'components/opportunity-subscription-list';
 @import 'components/opportunity-subscription';
 @import 'components/panel--entities-summary';
@@ -104,6 +107,8 @@
 @import 'components/registration-actions';
 @import 'components/registration-card';
 @import 'components/registration-evaluation-actions';
+@import 'components/registration-info';
+@import 'components/registration-related-entity';
 @import 'components/opportunity-header';
 @import 'components/opportunity-registration-table';
 @import 'components/seal-content-share';
@@ -121,6 +126,8 @@
 @import 'components/user-accepted-terms';
 @import 'components/user-mail';
 @import 'components/user-management';
+@import 'pages/system-roles-modal';
+
 
 
 // LAYOUTS
@@ -143,3 +150,5 @@
 @import 'pages/terms';
 @import 'pages/user-detail';
 @import 'pages/form-builder';
+@import 'pages/form-preview';
+@import 'pages/system-roles';

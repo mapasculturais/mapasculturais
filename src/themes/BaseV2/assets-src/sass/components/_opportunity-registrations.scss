@@ -7,8 +7,8 @@
     max-width: size(1200);
     display: flex;
     flex-direction: column;
-    margin: size(40) auto;
-    padding: 0 1rem;
+    margin: 0 auto;
+    padding: size(40) size(16);
     min-height: size(500);
 
     .button {

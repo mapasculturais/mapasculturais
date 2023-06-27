@@ -10,19 +10,13 @@ use MapasCulturais\i;
 $this->layout = 'registrations';
 
 $this->import('
-    mc-breadcrumb
-    mc-card
-    mc-container
-    mc-icon
-    opportunity-header
-    registration-actions
-    registration-related-agents
-    registration-related-space
-    registration-related-project
-    registration-steps
-    select-entity
-    v1-embed-tool
     mc-alert
+    mc-breadcrumb
+    mc-container
+    opportunity-header
+    registration-info 
+    support-actions
+    v1-embed-tool
 ');
 
 /* $breadcrumb = [
@@ -59,35 +53,19 @@ $this->import('
                     </div>
                 </div>
 
-                <div class="col-12 support-info">
-                    <p class="support-info__title"> <?= i::__('Informações da inscrição') ?> </p>
-                    <div class="support-info__content">
-                        <div class="data">
-                            <p class="data__title"> <?= i::__('Inscrição') ?> </p>
-                            <p class="data__info">{{entity.number}}</p>
-                        </div>
-                        <div class="data">
-                            <p class="data__title"> <?= i::__('Data') ?> </p>
-                            <p class="data__info">{{entity.createTimestamp.date('2-digit year')}}</p>
-                        </div>
-                        <div class="data">
-                            <p class="data__title"> <?= i::__('Categoria') ?> </p>
-                            <p v-if="entity.category" class="data__info">{{entity.category}}</p>
-                            <p v-if="!entity.category" class="data__info"><?php i::_e('Sem categoria') ?></p>
-                        </div>
-                    </div>
-                </div>
+                <registration-info :registration="entity" classes="col-12"></registration-info>
 
                 <div class="col-12">
-                    <v1-embed-tool route="supporteditview" :id="entity.id"></v1-embed-tool>
+                    <v1-embed-tool iframe-id="support-form" route="supporteditview" :id="entity.id"></v1-embed-tool>
                 </div>
             </main>
 
             <aside>
-                <div class="actions">
+                <support-actions :registration="entity"></support-actions>
+                <!-- <div class="actions">
                     <button class="button button--primary button--md"> <?= i::__('Salvar alterações') ?> </button>
                     <button class="button button--primary-outline button--md"> <?= i::__('Sair') ?> </button>
-                </div>
+                </div> -->
             </aside>
         </mc-container>
     </div>

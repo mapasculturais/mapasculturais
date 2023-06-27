@@ -26,21 +26,41 @@ $action = 'single';
 
 ?>
 <?php if ($action === 'single' && $entity->canUser('viewUserEvaluation')) : ?>
-    <div id="registration-evaluation-form" >
-        <?php if ($evaluationAgent && $entity->canUser('evaluate')) : ?>
+    <div id="registration-evaluation-form">
+        <?php if ($evaluationAgent && $entity->canUser('evaluate') && (!$evaluation || $evaluation->status <= 0)) : ?>
+            <?php if ($infos) : ?>
+                <div id="documentary-evaluation-info" class="alert info">
+                    <div class="close" style="cursor: pointer;"></div>
+                    <?php if ($part_name = $evaluationMethod->getEvaluationFormInfoPartName()) : ?>
+                        <?php $this->part($part_name, $params); ?>
+                    <?php endif; ?>
+
+                    <?php if ($infos && $entity->category && isset($infos[$entity->category])) : ?>
+                        <hr>
+                        <strong><?php echo $entity->category ?></strong>
+                        <p><?php echo $infos[$entity->category] ?></p>
+                    <?php endif; ?>
+
+                    <?php if ($infos && isset($infos['general'])) : ?>
+                        <hr>
+                        <strong><?php i::_e('Informações gerais') ?></strong>
+                        <p><?php echo $infos['general'] ?></p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
             <form>
-                <?php if ($opportunity->canUser('@control') && $evaluation) : ?>
+                <?php if ($evaluation) : ?>
                     <div>
                         <strong><?php i::_e('Avaliador') ?>:</strong> <?php echo $evaluation->user->profile->name ?>
                         <input type="hidden" name="uid" value="<?php echo $evaluation->user->id; ?>" />
                     </div>
-                <?php endif; ?>
+                <?php endif ?>
                 <?php $this->part($evaluation_form_part_name, $params); ?>
-                <hr>
-                <div style="text-align: right;">
-                    <button class="btn btn-primary js-evaluation-submit js-next"><?php i::_e('Finalizar Avaliação e Avançar'); ?> &gt;&gt;</button>
-                </div>
             </form>
+            <hr>
+            <div style="text-align: right;">
+                <button class="btn btn-primary js-evaluation-submit js-next"><?php i::_e('Finalizar Avaliação e Avançar'); ?> &gt;&gt;</button>
+            </div>
         <?php elseif ($entity->canUser('viewUserEvaluation')) : ?>
             <?php $this->part($evaluation_view_part_name, $params); ?>
         <?php endif; ?>

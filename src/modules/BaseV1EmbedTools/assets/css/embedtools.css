@@ -1321,13 +1321,17 @@ table {
 }
 
 /* Technical evaluation */
+.action-evaluationforms .technical-evaluation-form {
+    padding: 0 14px;
+}
+
 .action-evaluationforms .technical-evaluation-form table {
     border-collapse: separate;
     border-spacing: 0 16px;
     border: 0;
     margin: unset;
     border-bottom: 1px solid #BBBBBB;
-    padding: 0 16px;
+    padding: 0;
 }
 
 
@@ -1384,7 +1388,7 @@ table {
     font-weight: 700;
     gap: 8px;
     line-height: 25px;
-    padding: 32px 14px;
+    padding: 25px 0;
 }
 
 .action-evaluationforms .technical-evaluation-form .total {
@@ -1395,7 +1399,7 @@ table {
     box-shadow: 0px 4px 4px -3px rgba(0, 0, 0, 0.16);
     border-radius: 4px;
     padding: 16px;
-    margin: 14px;
+    margin: 14px 0;
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 400;
@@ -1465,4 +1469,148 @@ table {
 .action-evaluationforms .evaluation-valid {
     padding: 14px;
     margin: 0;
+}
+
+
+
+/* Form Preview */
+
+.action-registrationformpreview h4, p {
+    font-family: 'Open Sans';
+    font-style: normal;
+}
+
+.action-registrationformpreview h4 {
+    font-weight: 700;
+    margin-bottom: 2px !important;
+}
+
+.action-registrationformpreview p {
+    font-size: 12px;
+    font-family: 'Open Sans';
+    font-weight: 700;
+}
+
+.action-registrationformpreview br {
+    display: none;
+}
+
+.action-registrationformpreview .btn {
+    width: min-content;
+    padding: 11px 12px;
+    border: 2px solid #0074C1;
+    color: #0074C1;
+    background-color: #FFFFFF;
+}
+
+.action-registrationformpreview .btn:before {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+}
+
+.action-registrationformpreview .space-add-button {
+    float: none;
+    margin: 0;
+}
+
+.action-registrationformpreview .registration .registration-header {
+    display: none;
+}
+
+.action-registrationformpreview .registration .sidebar {
+    display: none;
+}
+
+.action-registrationformpreview .registration .registration-fieldset {
+    border: none;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.action-registrationformpreview .registration .registration-fieldset.registration-edit-mode {
+    background-color: transparent;
+    padding: 0;
+}
+
+.action-registrationformpreview .registration ul.registration-list li.registration-list-item {
+    padding: 0;
+    padding: 0;
+    border-top: 16px solid #FFFFFF;
+    border-bottom: 16px solid #FFFFFF;
+}
+.action-registrationformpreview .registration ul.registration-list li.registration-list-item:hover {
+    background-color: #FFFFFF;
+}
+
+.action-registrationformpreview .registration ul.registration-list li.registration-list-item .btn-group {
+    bottom: 0;
+    right: 0;
+    text-align: center;
+}
+
+#agent_owner,
+#agent_instituicao,
+#agent_coletivo,
+#registration-space .registration-agent {
+    margin: 0 0 16px;
+}
+
+#agent_owner .clearfix,
+#agent_instituicao .clearfix,
+#agent_coletivo .clearfix,
+#registration-space .registration-agent .clearfix {
+    grid-template-columns: 40px 1fr;
+    display: grid;
+    gap: 9px;
+    align-items: center;
+}
+
+#agent_owner .clearfix::after,
+#agent_instituicao .clearfix::after,
+#agent_coletivo .clearfix::after,
+#registration-space .registration-agent .clearfix::after {
+    content: unset;
+}
+
+#agent_owner .clearfix img,
+#agent_instituicao .clearfix img,
+#agent_coletivo .clearfix img,
+#registration-space .registration-agent .clearfix img {
+    float: unset;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    margin: 0;
+}
+
+#registration-space .registration-agent .space-relation-message {
+    margin: 0;
+    padding: 0;
+}
+
+.registration-help {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 11px;
+    font-style: normal;
+}
+
+/*.attachment-list .attachment-list-item:first-child*/
+
+.action-registrationformpreview #registration-attachments ul.attachment-list li.attachment-list-item {
+    padding: 0;
+}
+
+.action-registrationformpreview #registration-attachments ul.attachment-list li.attachment-list-item.attachment-list-item-type-section {
+    font-size: 18px;
+    font-weight: 700;
+    padding: 16px 0 24px;
+    background-color: transparent;
+}
+
+.action-registrationformpreview #registration-attachments ul.attachment-list li.attachment-list-item {
+    background-color: #FFFFFF;
+    padding: 16px;
 }

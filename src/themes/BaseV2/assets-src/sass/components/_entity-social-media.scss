@@ -12,20 +12,24 @@
         gap: size(13);
         list-style: none;
         padding: 0;
-        
+
         &--link {
             align-items: center;
-            color: var(--mc-gray-700);
             display: grid;
-            font-family: var(--mc-font-body);
-            font-size: size(14);
-            font-style: normal;
-            font-weight: 600;
             gap: size(15);
             grid-template-columns: size(24) calc(100% - size(39));
             line-height: size(19);
             padding: 0;
-            text-decoration: none;
+            color: var(--mc-gray-700);
+
+            a {
+                color: var(--mc-gray-700);
+                font-family: var(--mc-font-body);
+                font-style: normal;
+                font-weight: 600;
+                font-size: size(14);
+                text-decoration: none;
+            }
 
             .iconify {
                 font-size: size(24);
@@ -54,7 +58,7 @@
 
             .field {
                 margin: 0;
-                
+
                 label {
                     display: none;
                 }

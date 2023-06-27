@@ -186,6 +186,9 @@ class Metadata extends \MapasCulturais\Definition{
                 } else {
                     throw new InvalidArgumentException('value must be a DateTime or a date time string');
                 }
+            },
+            'multiselect' => function($value){
+                return json_encode($value);
             }
         ];
 
@@ -224,6 +227,9 @@ class Metadata extends \MapasCulturais\Definition{
                 } else {
                     return $value;
                 }
+            },
+            'multiselect' => function($value){
+                return is_null($value) ? null : json_decode($value, true);
             }
         ];
 

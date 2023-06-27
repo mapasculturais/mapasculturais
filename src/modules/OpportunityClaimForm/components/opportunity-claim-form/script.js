@@ -1,33 +1,54 @@
-/**
- * Vue Lifecycle
- * 1. setup
- * 2. beforeCreate
- * 3. created
- * 4. beforeMount
- * 5. mounted
- * 
- * // sempre que há modificação nos dados
- *  - beforeUpdate
- *  - updated
- * 
- * 6. beforeUnmount
- * 7. unmounted                  
- */
-
 app.component('opportunity-claim-form', {
     template: $TEMPLATES['opportunity-claim-form'],
-
-    // define os eventos que este componente emite
-    emits: ['sent'],
+    setup() { 
+        const messages = useMessages();
+        const text = Utils.getTexts('opportunity-claim-form')
+        return { text, messages }
+    },
 
     props: {
+        entity: {
+            type: Entity,
+            required: true
+        },
 
     },
 
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name];
-        // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('opportunity-claim-form')
-        return { text, hasSlot }
+    data() {
+        return {
+            claim: {
+                registration_id:$MAPAS.config.opportunityClaimForm.registrationId
+            },
+        }
+    },
+    methods: {
+        close(modal){
+            this.claim.message = '';
+            modal.close();
+        },
+        isActive(){
+            if(this.entity.opportunity.status > 0 && this.entity.opportunity.publishedRegistrations && this.entity.opportunity.claimDisabled === "0"){
+                return true;
+            }
+            return false;
+        },
+        async sendClain(modal){
+            let api = new API();
+            let url = Utils.createUrl('opportunity', 'sendOpportunityClaimMessage');
+            await api.POST(url, this.claim).then(data => {
+                this.messages.success(this.text('Solicitação de recurso enviada'));
+                this.close(modal);
+            });
+          
+        }
+    },
+
+    computed: {
+
+        modalTitle() {
+            return 'Solicitar Recurso';
+
+        },
     },
 });
+

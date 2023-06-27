@@ -24,6 +24,8 @@ $this->import('
     v1-embed-tool
 ');
 
+$this->useOpportunityAPI();
+
 $opportunity = $entity->opportunity;
 
 $breadcrumb = [
@@ -42,6 +44,12 @@ $this->breadcrumb = $breadcrumb;
 /**
  * @todo registration-form
  */
+
+ $this->import('
+    opportunity-header
+    registration-info
+    registration-steps
+');
 ?>
 
 <div class="main-app registration edit">
@@ -59,24 +67,7 @@ $this->breadcrumb = $breadcrumb;
 
         <mc-container>
             <main class="grid-12">
-                <div class="col-12 registration-info">
-                    <p class="registration-info__title"> <?= i::__('Informações da inscrição') ?> </p>
-                    <div class="registration-info__content">
-                        <div class="data">
-                            <p class="data__title"> <?= i::__('Inscrição') ?> </p>
-                            <p class="data__info">{{entity.number}}</p>
-                        </div>
-                        <div class="data">
-                            <p class="data__title"> <?= i::__('Data') ?> </p>
-                            <p class="data__info">{{entity.createTimestamp.date('2-digit year')}}</p>
-                        </div>
-                        <div class="data">
-                            <p class="data__title"> <?= i::__('Categoria') ?> </p>
-                            <p v-if="entity.category" class="data__info">{{entity.category}}</p>
-                            <p v-if="!entity.category" class="data__info"><?php i::_e('Sem categoria') ?></p>
-                        </div>
-                    </div>
-                </div>
+                <registration-info :registration="entity" classes="col-12"></registration-info>                
                 <section class="section">
                     <div class="section__title" id="main-info">
                         <?= i::__('Informações básicas') ?>

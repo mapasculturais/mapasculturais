@@ -11,7 +11,7 @@ $this->layout = 'entity';
 
 <div class="event-info" :class="classes">
     <div v-if="(entity.descricaoSonora || entity.traducaoLibras) && !editable" class="event-info__accessibility">
-        <h4 class="event-info__title"><?= i::__("Acessibilidade"); ?></h4>
+        <h4 class="event-info__title bold"><?= i::__("Acessibilidade"); ?></h4>
         <p v-if="entity.descricaoSonora" class="event-info__item">
             <span class="semibold uppercase"><?= i::__("Libras:"); ?></span> 
             <span class="event-info__value">{{entity.descricaoSonora}}</span>
