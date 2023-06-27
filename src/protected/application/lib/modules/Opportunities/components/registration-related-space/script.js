@@ -29,7 +29,7 @@ app.component('registration-related-space', {
         },
 
         relatedSpace() {
-            return this.registration.relatedSpaces[0];
+            return this.registration.spaceRelations[0];
         }
     },
     

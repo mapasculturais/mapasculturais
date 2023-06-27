@@ -26,11 +26,11 @@ $this->import('
         <div v-if="relatedSpace" class="registration-related-entity">
             <div class="registration-related-entity__entity">
                 <div class="image">
-                    <img v-if="relatedSpace.files.avatar" :src="relatedSpace.files?.avatar?.transformations?.avatarMedium.url" />
-                    <mc-icon v-if="!relatedSpace.files.avatar" name="image"></mc-icon>
+                    <img v-if="relatedSpace.space.files.avatar" :src="relatedSpace.space.files?.avatar?.transformations?.avatarMedium.url" />
+                    <mc-icon v-if="!relatedSpace.space.files.avatar" name="image"></mc-icon>
                 </div>
                 <div class="name">
-                    {{relatedSpace.name}}
+                    {{relatedSpace.space.name}}
                 </div>
             </div>
             <div class="registration-related-entity__actions">
@@ -45,6 +45,7 @@ $this->import('
                     <mc-icon name="trash"></mc-icon> <?= i::__('Excluir') ?> 
                 </button>
             </div>
+            
             <div v-if="relatedSpace.status == -5" class="registration-related-entity__status">
                 <mc-icon name="exclamation"></mc-icon>
                 <?= i::__('A solicitação está pendente') ?>
