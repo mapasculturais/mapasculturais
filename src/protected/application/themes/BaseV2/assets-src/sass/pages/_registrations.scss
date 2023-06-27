@@ -17,7 +17,7 @@
                 grid-template-columns: 1fr;
             }
 
-            main {
+            & > main {
                 gap: size(40) size(24);
             }
         }
