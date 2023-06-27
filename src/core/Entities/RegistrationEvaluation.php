@@ -234,6 +234,15 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         return false;
     }
 
+    protected function canUserRemove($user)
+    {
+        if ($this->registration->opportunity->canUser('remove', $user)) {
+            return true;
+        } else {
+            return parent::canUserRemove($user);
+        }
+    }
+
     public function jsonSerialize(): array {
         $result = parent::jsonSerialize();
 

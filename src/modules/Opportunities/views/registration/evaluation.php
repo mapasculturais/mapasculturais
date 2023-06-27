@@ -7,8 +7,8 @@ $this->layout = 'registrations';
 $this->import('
     mc-breadcrumb
     mc-card
-    mc-icon
     mc-container
+    mc-icon
     mc-side-menu
     mc-summary-agents
     mc-summary-evaluate
@@ -19,6 +19,7 @@ $this->import('
     registration-related-agents
     registration-related-project
     registration-related-space
+    registration-steps
     registration-steps
     select-entity
     v1-embed-tool 
@@ -61,25 +62,7 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
         
         <mc-container>
             <main class="grid-12">
-                <div class="col-12 registration-info">
-                    <p class="registration-info__title"> <?= i::__('Informações da inscrição') ?> </p>
-                    <div class="registration-info__content">
-                        <div class="data">
-                            <p class="data__title"> <?= i::__('Inscrição') ?> </p>
-                            <p class="data__info">{{entity.number}}</p>
-                        </div>
-                        <div class="data">
-                            <p class="data__title"> <?= i::__('Data') ?> </p>
-                            <p class="data__info">{{entity.createTimestamp.date('2-digit year')}}</p>
-                        </div>
-                        <div class="data">
-                            <p class="data__title"> <?= i::__('Categoria') ?> </p>
-                            <p v-if="entity.category" class="data__info">{{entity.category}}</p>
-                            <p v-if="!entity.category" class="data__info"><?php i::_e('Sem categoria') ?></p>
-                        </div>
-                    </div>
-                </div>
-                
+                <registration-info :registration="entity" classes="col-12"></registration-info>                
                 <mc-summary-project :entity="entity"></mc-summary-project>
                 <mc-summary-agents :entity="entity"></mc-summary-agents>
                 <mc-summary-spaces :entity="entity"></mc-summary-spaces>

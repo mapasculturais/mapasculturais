@@ -2,12 +2,13 @@
 namespace MapasCulturais\Controllers;
 
 use Exception;
-use MapasCulturais\API;
 use MapasCulturais\i;
+use MapasCulturais\API;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 
 /**
@@ -448,28 +449,31 @@ class Opportunity extends EntityController {
             $em = $opportunity->previousPhase->evaluationMethod;
         }
 
-        foreach($registrations as &$reg) {
-            if(in_array('consolidatedResult', $query->selecting)){
-                $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
-            }
-
-            if(isset($reg['previousPhaseRegistrationId']) && $reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
-                $values = $select_values[$reg['previousPhaseRegistrationId']];
-                foreach($reg as $key => $val){
-                    if(is_null($val) && isset($values[$key])){
-                        $reg[$key] = $values[$key];
+        if($em){
+            foreach($registrations as &$reg) {
+                if(in_array('consolidatedResult', $query->selecting)){
+                    $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
+                }
+    
+                if(isset($reg['previousPhaseRegistrationId']) && $reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
+                    $values = $select_values[$reg['previousPhaseRegistrationId']];
+                    foreach($reg as $key => $val){
+                        if(is_null($val) && isset($values[$key])){
+                            $reg[$key] = $values[$key];
+                        }
                     }
                 }
             }
+    
+            if(in_array('consolidatedResult', $query->selecting)){
+                /* @TODO: considerar parâmetro @order da api */
+    
+                usort($registrations, function($e1, $e2) use($em){
+                    return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
+                });
+            }
         }
-
-        if(in_array('consolidatedResult', $query->selecting)){
-            /* @TODO: considerar parâmetro @order da api */
-
-            usort($registrations, function($e1, $e2) use($em){
-                return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
-            });
-        }
+        
 
         $this->apiAddHeaderMetadata($this->data, $registrations, $query->count());
         $this->apiResponse($registrations);
@@ -1079,6 +1083,19 @@ class Opportunity extends EntityController {
 
     }
 
+    function GET_formPreview() {
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            $app->pass();
+        }
+
+        $this->render('preview-form', ['entity' => $entity]);
+    }
+
     function GET_formBuilder() {
         $this->requireAuthentication();
         $app = App::i();
@@ -1127,5 +1144,46 @@ class Opportunity extends EntityController {
         $this->entityClassName = EvaluationMethodConfiguration::class;
 
         $this->render('evaluations-list', ['entity' => $entity]);
+    }
+
+    public function POST_reopenEvaluations() {
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        if (!$this->data['opportunityId']) {
+            $app->pass();
+        }
+
+        $opportunity = $this->repository->find($this->data['opportunityId']);
+
+        $opportunity->checkPermission('reopenValuerEvaluations');
+        
+        $user = $app->repo("User")->find($this->data['uid']);
+
+        $query = $app->em->createQuery(
+            '
+            SELECT e.id 
+            FROM MapasCulturais\\Entities\\RegistrationEvaluation e 
+            JOIN e.registration r
+            WHERE e.user =:user AND r.opportunity =:opportunity AND e.status = 2'
+        );
+
+        $query->setParameters([
+            'user' => $user,
+            'opportunity' => $opportunity
+        ]);
+
+        if ($evaluation_ids = $query->getScalarResult()) {
+            foreach ($evaluation_ids as $id) {
+                $id = $id['id'];
+                $evaluation = $app->repo('RegistrationEvaluation')->find($id);
+                $evaluation->status = RegistrationEvaluation::STATUS_EVALUATED;
+                $evaluation->save(true, true);
+                $app->em->clear();
+                $app->log->info("Rebrindo avaliação - " . $evaluation);
+            }
+        }
+        $this->json($opportunity);
     }
 }

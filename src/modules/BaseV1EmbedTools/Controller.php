@@ -184,6 +184,21 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         if (!$entity = $this->requestedEntity) {
             $app->pass();
         }
+
+        if($permission == "support"){
+            if($entity instanceof \MapasCulturais\Entities\Opportunity){
+                $entity->isSupportUser($app->user);
+            }else{
+                $entity->opportunity->isSupportUser($app->user);
+            }
+
+            return $entity;
+        }
+
+        if($permission == "evaluateRegistrations" && $entity->publishedRegistrations){
+            $entity->checkPermission('viewEvaluations');
+            return $entity;
+        }
         
         $entity->checkPermission($permission);
         return $entity;

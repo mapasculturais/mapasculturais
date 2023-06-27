@@ -44,7 +44,7 @@ $this->breadcrumb = [
   ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
 ];
 ?>
-<div class="main-app single">
+<div class="main-app single single-opportunity">
   <mc-breadcrumb></mc-breadcrumb>
   <entity-header :entity="entity">
     <template #metadata>
@@ -52,7 +52,7 @@ $this->breadcrumb = [
             <dt><?= i::__('Tipo') ?></dt>
             <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
         </dl>
-        <dl>
+        <dl class="single-opportunity__owner">
             <dt><?= i::__('Opportunidade de') ?></dt>
             <mc-link :entity="entity.ownerEntity"></mc-link>
         </dl>
@@ -92,11 +92,11 @@ $this->breadcrumb = [
                 </main>
                 <aside>
                     <div class="grid-12">
-                        <entity-terms :entity="entity" taxonomy="area" classes="col-12" title="<?php i::esc_attr_e('Áreas de interesse'); ?>"></entity-terms>
                         <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
                         <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
-                        <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags')?>"></entity-terms>
+                        <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags');?>"></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
+                        <!-- <entity-terms :entity="entity" classes="col-12" taxonomy="area" title="<?php i::esc_attr_e('Areas de interesse')?>"></entity-terms> -->
                         <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
                         <mc-share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></mc-share-links>
                     </div>  

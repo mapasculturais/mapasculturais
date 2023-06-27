@@ -77,7 +77,7 @@ $this->import('
 				<?= i::__("Você precisa acessar sua conta ou  criar uma cadastro na plataforma para poder se inscrever em editais ou oportunidades") ?>
 			</p>
 
-			<button class="col-12 button button--xbg button--primary button--large">
+			<button class="col-12 button button--xbg button--primary button--large" @click="redirectLogin">
 				<?= i::__("Fazer inscrição") ?>
 			</button>
 		</div>

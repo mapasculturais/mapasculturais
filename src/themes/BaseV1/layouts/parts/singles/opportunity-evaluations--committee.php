@@ -77,6 +77,11 @@ $method = $entity->getEvaluationMethod();
                     <?php if($entity->canUser('reopenValuerEvaluations')): ?>
                         <span ng-if="admin.status === 10" class="btn btn-success alignright mr10" ng-click="reopenEvaluations(admin)"><?php i::_e("Reabrir avaliações");?></span>
                     <?php endif; ?>
+
+                    <?php if(($this->controller) instanceof BaseV1EmbedTools\Controller && $entity->canUser('reopenValuerEvaluations')):?>
+                        <span   ng-click="reopenEvaluationsV2(admin)" class="btn btn-success alignright mr10"><?php i::_e("Reabrir avaliações");?></span>
+                    <?php endif; ?>
+
                     <div class="committee--header">
                         <img class="committee--avatar" ng-src="{{avatarUrl(admin.agent)}}" />
                         <div class="committee--content">

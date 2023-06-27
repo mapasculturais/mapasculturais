@@ -26,7 +26,7 @@ $this->import('
     </template>
 
     <template #content>
-        <div class="registration-select-entity">
+        <div class="registration-related-entity">
             <entity-field :entity="registration" prop="projectName" :autosave="60000"></entity-field>
         </div>
     </template>

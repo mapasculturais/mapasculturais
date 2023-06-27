@@ -7,7 +7,11 @@ app.component('system-roles--card', {
         const text = Utils.getTexts('system-roles--card')
         return { text }
     },
-
+    data() {
+        return {
+            showItem: false
+        }
+    },
     props: {
         entity: {
             type: Entity,
@@ -38,5 +42,9 @@ app.component('system-roles--card', {
     },
     
     methods: {
+
+        toggle() {
+            this.showItem = !this.showItem;
+        },
     },
 });

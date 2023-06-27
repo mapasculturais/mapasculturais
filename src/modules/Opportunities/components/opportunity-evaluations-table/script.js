@@ -4,7 +4,11 @@ app.component('opportunity-evaluations-table' , {
         phase: {
             type: Entity,
             required: true
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
@@ -16,8 +20,11 @@ app.component('opportunity-evaluations-table' , {
       }
     },
     methods: {
-        isAdmi(){
-            return $MAPAS.config.opportunityEvaluationsTable.isAdmin;
+        canSee(action){
+            if(this.phase.opportunity.currentUserPermissions[action]){
+                return true;
+            }
+            return false
         },
         isFuture() {
             return this.phase.evaluationFrom?.isFuture();

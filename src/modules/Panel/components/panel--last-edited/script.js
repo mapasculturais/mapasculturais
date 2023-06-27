@@ -109,7 +109,7 @@ app.component('panel--last-edited', {
                     return 0;
                 }
             });
-            return entities.slice(0, this.limit);;
+            return entities.slice(0, this.limit);
             
         }
     },

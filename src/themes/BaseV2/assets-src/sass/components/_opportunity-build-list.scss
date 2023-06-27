@@ -1,0 +1,10 @@
+@use '../settings/mixins' as *;
+
+.build-list {
+  &__title {
+    padding-bottom: size(15);
+  }
+  &__categorybtn {
+    width: size(140);
+  }
+}

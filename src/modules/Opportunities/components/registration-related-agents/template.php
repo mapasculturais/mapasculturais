@@ -22,8 +22,8 @@ $this->import('
         </div>
     </template>
     <template #content>
-        <div v-if="hasRelations(registration.agentRelations[relation.agentRelationGroupName])" class="registration-select-entity">
-            <div class="registration-select-entity__entity">
+        <div v-if="hasRelations(registration.agentRelations[relation.agentRelationGroupName])" class="registration-related-entity">
+            <div class="registration-related-entity__entity">
                 <div class="image">
                     <img v-if="registration.relatedAgents[relation.agentRelationGroupName][0].files.avatar" :src="registration.relatedAgents[relation.agentRelationGroupName][0].files?.avatar?.transformations?.avatarMedium.url" />
                     <mc-icon v-if="!registration.relatedAgents[relation.agentRelationGroupName][0].files.avatar" name="image"></mc-icon>
@@ -32,8 +32,8 @@ $this->import('
                     {{registration.relatedAgents[relation.agentRelationGroupName][0].name}}
                 </div>
             </div>
-            <div class="registration-select-entity__actions">
-                <select-entity type="agent" :query="{'type': `EQ(${relation.type})`}" @select="selectAgent($event, relation)">
+            <div class="registration-related-entity__actions">
+                <select-entity type="agent" :query="{'type': `EQ(${relation.type})`}" @select="selectAgent($event, relation)" permissions="">
                     <template #button="{toggle}">
                         <button class="button button--text button--icon button--sm change" @click="toggle()"> 
                             <mc-icon name="exchange"></mc-icon> <?= i::__('Trocar') ?> 
@@ -44,8 +44,12 @@ $this->import('
                     <mc-icon name="trash"></mc-icon> <?= i::__('Excluir') ?> 
                 </button>
             </div>
+            <div v-if="registration.agentRelations[relation.agentRelationGroupName][0].status == -5" class="registration-related-entity__status">
+                <mc-icon name="exclamation"></mc-icon>
+                <?= i::__('A solicitação está pendente') ?>
+            </div>
         </div>
-        <select-entity v-if="!hasRelations(registration.agentRelations[relation.agentRelationGroupName])" type="agent" :query="{'type': `EQ(${relation.type})`}" @select="selectAgent($event, relation)">
+        <select-entity v-if="!hasRelations(registration.agentRelations[relation.agentRelationGroupName])" type="agent" :query="{'type': `EQ(${relation.type})`}" @select="selectAgent($event, relation)" permissions="">
             <template #button="{toggle}">
                 <button class="button button--primary-outline button--icon button--md" @click="toggle()"> 
                     <mc-icon name="add"></mc-icon> <?= i::__('Adicionar') ?> 

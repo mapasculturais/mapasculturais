@@ -227,7 +227,12 @@ module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http',
                     function(response){
                         deferred.resolve(response);
                     }
-                    );
+                )
+                .error(
+                    function(response){
+                        deferred.resolve(response);
+                    }
+                );
                 return deferred.promise;
             },
             edit: function(data){
@@ -275,6 +280,22 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
 
             $http.post(this.getUrl('reopenValuerEvaluations'), {relationId: relation.id})
             .success(
+                function(response){
+                    deferred.resolve(response);
+                }
+            );
+            return deferred.promise;
+        },
+        
+        reopenEvaluationsV2: function(data){
+            let url = MapasCulturais.createUrl('opportunity', 'reopenEvaluations');
+            var deferred = $q.defer();
+            $http.post(url, data).success(
+                function(response){
+                    deferred.resolve(response);
+                }
+            )
+            .error(
                 function(response){
                     deferred.resolve(response);
                 }
@@ -502,16 +523,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 $scope.data.newFieldConfiguration.required = false;
             }
 
-            if($scope.data.newFieldConfiguration.fieldType == "section"){
-                $scope.data.newFieldConfiguration.required = false;
-            }
-
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
 
                 if (response.error) {
                     validationErrors(response);
-
                 } else {
                     $scope.data.fields.push(response);
                     sortFields();
@@ -1977,6 +1993,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                     });
             }
         };
+
+        $scope.reopenEvaluationsV2 = function(relation){
+            if(confirm(labels.confirmReopenValuerEvaluations)){
+            var data = {
+                    uid:relation.agentUserId,
+                    opportunityId: MapasCulturais.entity.id
+                }
+
+                EvaluationMethodConfigurationService.reopenEvaluationsV2(data).then(function(response){
+                    MapasCulturais.Messages.success(labels['reopenEvaluationsSuccess']);
+                });
+            }
+        }
 
         $scope.deleteAdminRelation = function(relation){
             if(confirm(labels.confirmRemoveValuer)){

@@ -10,7 +10,7 @@ $this->import('
     mc-side-menu
 ');
 ?>
-<div class="mc-summary-evaluate" v-if="summary.isActive">
+<div :class="['mc-summary-evaluate', classes]" v-if="summary.isActive">
 
     <div class="mc-summary-evaluate__box pending">
         <div class="mc-summary-evaluate__box--icon">

@@ -6,7 +6,7 @@
 ?>
 <div :class="classes" class="mc-share-links">
 
-    <h4 class="mc-share-links--title"> {{title}} </h4>
+    <h4 class="mc-share-links--title bold"> {{title}} </h4>
 
     <div class="mc-share-links--links">
         <a  class="fa fa-twitter" 

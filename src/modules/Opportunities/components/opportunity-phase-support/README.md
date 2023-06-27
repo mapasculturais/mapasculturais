@@ -1,12 +1,6 @@
 # Componente `<opportunity-phase-support>`
 Componente para listagem das fases disponíveis para suporte
 
-### Eventos
-  
-## Propriedades
-
-## Slots
-
 ### Importando componente
 ```PHP
 <?php 

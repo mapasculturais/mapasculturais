@@ -44,5 +44,11 @@ app.component('registration-card', {
         registerHour(date) {
             return date.hour('2-digit')+'h';
         },
+        verifyStatus() {
+            if(this.entity.status==0){
+                return true;
+            }
+            return false;
+        }
     },
 });
