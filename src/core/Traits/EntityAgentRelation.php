@@ -98,7 +98,7 @@ trait EntityAgentRelation {
 
         $strNativeQuery = "SELECT object_type FROM public.agent_relation GROUP BY object_type;";
 
-        $query = App::i()->getEm()->createNativeQuery($strNativeQuery, $rsm);
+        $query = App::i()->em->createNativeQuery($strNativeQuery, $rsm);
         $entitiesTypes = $query->getArrayResult();
         
         $groups = [];

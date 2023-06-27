@@ -609,7 +609,7 @@ class Opportunity extends EntityController {
         $opportunity = $this->_getOpportunity();
         $data = $this->data;
 
-        $conn = $app->getEm()->getConnection();
+        $conn = $app->em->getConnection();
 
         $resultLength = "
         SELECT
