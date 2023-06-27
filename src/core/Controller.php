@@ -230,7 +230,7 @@ abstract class Controller{
      */
     public function callAction($method, $action_name, $arguments) {
         $app = App::i();
-        if(@$app->config['app.log.requestData'] && $app->config['slim.log.level'] === \Slim\Log::DEBUG){
+        if($app->config['app.log.requestData']){
             $app->log->debug('===== POST DATA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
             $app->log->debug(print_r($this->postData,true));
 

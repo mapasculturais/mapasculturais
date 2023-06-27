@@ -1,41 +1,39 @@
 <?php
-use Monolog\Level;
-
-switch(strtoupper(env('LOG_LEVEL', 'NOTICE'))){
-    case 'ALERT':
-        $loglevel = Level::Alert;
-        break;
-    case 'CRITICAL':
-        $loglevel = Level::Critical;
-        break;
-    case 'DEBUG':
-        $loglevel = Level::Debug;
-        break;
-    case 'EMERGENCY':
-        $loglevel = Level::Emergency;
-        break;
-    case 'ERROR':
-        $loglevel = Level::Error;
-        break;
-    case 'INFO':
-        $loglevel = Level::Info;
-        break;
-    case 'NOTICE':
-        $loglevel = Level::Notice;
-        break;
-    case 'WARN':
-        $loglevel = Level::Warning;
-        break;
-    default:
-        $loglevel = Level::Notice;
-        break;
-}
-
 return [
-    //'slim.log.writer' => new \Custom\Log\Writer(),
-    'slim.log.level'    => $loglevel,
-    'slim.log.enabled'      => env('LOG_ENABLED', false),
-    'app.log.path'          => env('LOG_PATH', realpath(BASE_PATH . '..') . '/logs/'),
+    /*
+    Nível do log do monolog
+
+    DEBUG (100): Detailed debug information.
+    INFO (200): Interesting events. Examples: User logs in, SQL logs.
+    NOTICE (250): Normal but significant events.
+    WARNING (300): Exceptional occurrences that are not errors. Examples: Use of deprecated APIs, poor use of an API, undesirable things that are not necessarily wrong.
+    ERROR (400): Runtime errors that do not require immediate action but should typically be logged and monitored.
+    CRITICAL (500): Critical conditions. Example: Application component unavailable, unexpected exception.
+    ALERT (550): Action must be taken immediately. Example: Entire website down, database unavailable, etc. This should trigger the SMS alerts and wake you up.
+    EMERGENCY (600): Emergency: system is unusable.
+    */
+    'monolog.defaultLevel' => env('LOG_LEVEL', 'WARNING'),
+
+    /*
+    Configuração dos handlers do monolog.
+
+    se for uma string os handlers serão instanciados pela aplicação,
+    se for um array, a aplicação esperará que seja uma lista de handlers
+
+    ex: 'file:WARNING,error_log:DEBUG,browser:DEBUG'
+    ex: [new \Monolog\Handler\ErrorLogHandler(level: Level::Debug)]
+    */
+    'monolog.handlers' => env('LOG_HANDLERS', 'file:WARNING,error_log:DEBUG'),
+
+    'monolog.processors' => [],
+
+    /*
+     Pasta onde serão salvos os arquivos de log
+     
+     o padrão é ~/var/logs, onde ~ é a raíz do projeto, no docker é /var/www
+     */
+    'monolog.logsDir'          => env('LOG_DIR', VAR_PATH . 'logs/'),
+
     'app.log.query'         => env('LOG_QUERY', false),
     'app.log.hook'          => env('LOG_HOOK', false),
     'app.log.requestData'   => env('LOG_REQUESTDATA', false),
