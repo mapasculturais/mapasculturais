@@ -988,7 +988,7 @@ class Theme extends MapasCulturais\Theme {
 
             $strNativeQuery = "SELECT type, name, cod FROM geo_division WHERE ST_Contains(geom, ST_Transform(ST_GeomFromText('POINT($x $y)',4326),4326))";
 
-            $query = $app->getEm()->createNativeQuery($strNativeQuery, $rsm);
+            $query = $app->em->createNativeQuery($strNativeQuery, $rsm);
 
             $divisions = $query->getScalarResult();
 

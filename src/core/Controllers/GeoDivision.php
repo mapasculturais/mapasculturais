@@ -17,7 +17,7 @@ class GeoDivision extends \MapasCulturais\Controller{
 
             $strNativeQuery = "SELECT type, name FROM geo_division";
 
-            $query = $app->getEm()->createNativeQuery($strNativeQuery, $rsm);
+            $query = $app->em->createNativeQuery($strNativeQuery, $rsm);
 
             $divisions = $query->getScalarResult();
         }
