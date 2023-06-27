@@ -97,7 +97,7 @@ class App {
      * O Entity Manager do Doctrine
      * @var EntityManager
      */
-    protected EntityManager $_em;
+    public EntityManager $em;
 
     /**
      * Hooks
@@ -632,7 +632,7 @@ class App {
         
         
         // obtaining the entity manager
-        $this->_em = new EntityManager($connection, $doctrine_config);
+        $this->em = new EntityManager($connection, $doctrine_config);
 
         DoctrineMappings\Types\Frequency::register();
         DoctrineMappings\Types\Point::register();
@@ -644,7 +644,7 @@ class App {
             DoctrineEnumTypes\PermissionAction::getTypeName() => DoctrineEnumTypes\PermissionAction::class
         ]);
 
-        $platform = $this->_em->getConnection()->getDatabasePlatform();
+        $platform = $this->em->getConnection()->getDatabasePlatform();
 
         $platform->registerDoctrineTypeMapping('_text', 'text');
         $platform->registerDoctrineTypeMapping('point', 'point');
@@ -909,14 +909,6 @@ class App {
      */
     public function getRoutesManager(): RoutesManager{
         return $this->_routesManager;
-    }
-
-    /**
-     * Returns the Doctrine Entity Manager
-     * @return \Doctrine\ORM\EntityManager the Doctrine Entity Manager
-     */
-    public function getEm(): \Doctrine\ORM\EntityManager {
-        return $this->_em;
     }
 
     /**
@@ -3582,7 +3574,7 @@ class App {
         }
 
         if($new_updates){
-            $this->_em->flush();
+            $this->em->flush();
             $this->cache->deleteAll();
         }
 
