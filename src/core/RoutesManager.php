@@ -72,7 +72,6 @@ class RoutesManager{
             } catch (Exceptions\Halt $e){
                 // não precisa fazer nada.
             } catch (Exceptions\TemplateNotFound $e){
-                eval(\psy\sh());
                 $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => $e], false);
 
             } catch (Exceptions\PermissionDenied $e){
