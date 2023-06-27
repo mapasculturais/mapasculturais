@@ -13,11 +13,9 @@
         <?php $this->printDocumentMeta(); ?>
         <title><?= $this->getTitle($entity ?? null) ?></title>
         <link rel="profile" href="//gmpg.org/xfn/11" />
-        <link rel='icon' type='image/*' href="<?= $this->asset($app->config['favicon.image16x16'],false)?>"/>
-        <link rel='icon' type='image/*' href="<?= $this->asset($app->config['favicon.image32x32'],false)?>"/>
-        <link rel='icon' type='image/*' href="<?= $this->asset($app->config['favicon.imagesvg'],false)?>"/>
-        <link rel='icon' type='image/*' href="<?= $this->asset($app->config['favicon.imageico'],false)?>"/>
-        <link rel='icon' type='image/*' href="<?= $this->asset($app->config['favicon.imagexml'],false)?>"/>
+        <link rel="icon" href="<?= $this->asset($app->config['favicon.svg'],false)?>" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="<?= $this->asset($app->config['favicon.180'],false)?>"><!-- 180×180 -->
+        <link rel="icon" href="<?= $this->asset($app->config['favicon.svg'],false)?>" type="image/svg+xml">
         <link rel="manifest" href="<?=$app->createUrl('site', 'webmanifest')?>">
 
         <?php $this->printStyles('vendor-v2'); ?>
