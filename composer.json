@@ -6,7 +6,7 @@
         "doctrine/orm": "^2.14",
         "firebase/php-jwt": "^6.4",
         "michelf/php-markdown": "1.*",
-        "monolog/monolog": "^3.3",
+        "monolog/monolog": "^3.4",
         "mustache/mustache": "^2.11",
         "opauth/openid": "*",
         "pomo/pomo": "^1.5",

@@ -40,6 +40,10 @@ use Swift_IoException;
 use Swift_Message;
 use Swift_SwiftException;
 
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler;
+use Monolog\Level;
+use Monolog\Logger;
 
 use Psr\Http\Message\ResponseInterface as ResponseInterface;
 use Respect\Validation\Factory as RespectorValidationFactory;
@@ -136,6 +140,12 @@ class App {
      * @var AuthProvider
      */
     protected AuthProvider $auth;
+
+    /**
+     * Serviço de log
+     * @var Logger
+     */
+    public Logger $log;
     
     /**
      * Persistent Cache
@@ -354,6 +364,8 @@ class App {
         $instance = $instance->withExceptionNamespace('MapasCulturais\\Validators\\Exceptions');
         RespectorValidationFactory::setDefaultInstance($instance);
 
+        $this->_initLogger();
+
         $this->_initAutoloader();
         $this->_initCache();
         $this->_initDoctrine();
@@ -407,6 +419,48 @@ class App {
         $this->slim->run();
         $this->persistPCachePendingQueue();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
+    }
+
+    /**
+     * Inicializa o monolog
+     * 
+     * @return void 
+     */
+    protected function _initLogger() {
+        $processors = $this->config['monolog.processors'];
+        
+        $handlers = [];
+        if (is_string($this->config['monolog.handlers'])) {
+            $handlers_config = explode(',', $this->config['monolog.handlers']);
+    
+            foreach($handlers_config as $handler_config) {
+                $handler_config = explode(':', $handler_config);
+    
+                $type = $handler_config[0];
+                $level = $handler_config[1] ?? $this->config['monolog.defaultLevel'];
+    
+                if ($type == 'file') {
+                    $handlers[] = new Handler\StreamHandler($this->config['monolog.logsDir'] . 'app.log', 'DEBUG');
+
+                } else if ($type == 'error_log') {
+                    $formatter = new LineFormatter("%message%");
+                    $handler = new Handler\ErrorLogHandler(level: $level);
+                    $handler->setFormatter($formatter);
+                    $handlers[] = $handler;
+
+                } else if ($type == 'browser') {
+                    $formatter = new LineFormatter("%message%");
+                    $handler = new Handler\BrowserConsoleHandler(level: $level);
+                    $handler->setFormatter($formatter);
+                    $handlers[] = $handler;
+                }
+            }
+        } else if (is_array($this->config['monolog.handlers'])) {
+            $handlers = $this->config['monolog.handlers'];
+        }
+
+        // eval(\psy\sh());
+        $this->log = new Logger('', $handlers, $processors);
     }
 
     /**
