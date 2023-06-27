@@ -33,7 +33,6 @@ class Theme extends \MapasCulturais\Theme
                 'icons' => [
                     [ 'src' => $app->view->asset('img/favicon-192x192.png', false), 'type' => 'image/png', 'sizes' => '192x192' ],
                     [ 'src' => $app->view->asset('img/favicon-512x512.png', false), 'type' => 'image/png', 'sizes' => '512x512' ],
-                 
                 ],
             ]);
         });
