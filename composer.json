@@ -18,7 +18,7 @@
         "swiftmailer/swiftmailer": "5.*",
         "symfony/cache": "^6.2",
         "akrabat/ip-address-middleware": "^2.1",
-        "smottt/wideimage": "1.1.1"
+        "smottt/wideimage": "*"
     },
     "autoload": {
         "psr-4": {
