@@ -204,10 +204,10 @@ foreach($registrations as $i => $r) {
         
     }
         
-    $outRow[] = (key_exists('zipArchive', $r->files)) ? $r->files['zipArchive']->url : '-';
+    $outRow[] = ($r->files['zipArchive'] ?? false) ? $r->files['zipArchive']->url : '-';
     $outRow = array_merge($outRow, array_map(function($field) {
         return (is_array($field)) ? '"' . implode(' - ', $field) . '"' : $field;
-    }, $r->getSpaceData()));
+    }, $r->getSpaceData() ?: []));
     
     $body[] = $outRow;
 }
