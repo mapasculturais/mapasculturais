@@ -114,11 +114,9 @@ class Project extends EntityController {
 
         $app->controller('Registration')->registerRegistrationMetadata($entity);
 
-        $response = $app->response();
-        //$response['Content-Encoding'] = 'UTF-8';
-        $response['Content-Type'] = 'application/force-download';
-        $response['Content-Disposition'] ='attachment; filename=mapas-culturais-dados-exportados.xls';
-        $response['Pragma'] ='no-cache';
+        $app->response = $app->response->withHeader('Content-Type',  'application/force-download');
+        $app->response = $app->response->withHeader('Content-Disposition', 'attachment; filename=mapas-culturais-dados-exportados.xls');
+        $app->response = $app->response->withHeader('Pragma', 'no-cache');
 
         $app->response = $app->response->withHeader('Content-Type', 'application/vnd.ms-excel; charset=UTF-8');
         

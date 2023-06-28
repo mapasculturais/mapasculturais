@@ -205,12 +205,11 @@ class Opportunity extends EntityController {
 
         if ($view == 'report-drafts-csv' || $view == 'report-csv') {
 
-            $response = $app->response();
-            $response['Content-Encoding'] = 'UTF-8';
-            $response['Content-Type'] = 'application/force-download';
-            $response['Content-Disposition'] = 'attachment; filename=' . $filename . '.csv';
-            $response['Pragma'] = 'no-cache';
-
+            
+            $app->response = $app->response->withHeader('Content-Encoding', 'UTF-8');
+            $app->response = $app->response->withHeader('Content-Type', 'application/force-download');
+            $app->response = $app->response->withHeader('Content-Disposition', 'attachment; filename=' . $filename . '.csv');
+            $app->response = $app->response->withHeader('Pragma', 'no-cache');
             $app->response = $app->response->withHeader('Content-Type', 'text/csv; charset=UTF-8');
 
             ob_start();
@@ -237,11 +236,11 @@ class Opportunity extends EntityController {
         } else {
 
             if (!isset($this->urlData['output']) || $this->urlData['output'] == 'xls') {
-                $response = $app->response();
-                $response['Content-Encoding'] = 'UTF-8';
-                $response['Content-Type'] = 'application/force-download';
-                $response['Content-Disposition'] = 'attachment; filename=' . $filename . '.xls';
-                $response['Pragma'] = 'no-cache';
+                
+                $app->response = $app->response->withHeader('Content-Encoding', 'UTF-8');
+                $app->response = $app->response->withHeader('Content-Type', 'application/force-download');
+                $app->response = $app->response->withHeader('Content-Disposition', 'attachment; filename=' . $filename . '.xls');
+                $app->response = $app->response->withHeader('Pragma', 'no-cache');
 
                 $app->response = $app->response->withHeader('Content-Type', 'application/vnd.ms-excel; charset=UTF-8');
             }
