@@ -1,7 +1,8 @@
 <?php
 $this->addRequestedEntityToJs($entity ? $entity->className : null, $entity ? $entity->id : null);
 if ($entity->usesTypes()) {
-    $this->bodyClasses[] = "{$entity->entityType}-{$entity->type->id}";
+    $type = $entity->type->id ?? $entity->type;
+    $this->bodyClasses[] = "{$entity->entityType}-{$type}";
 } else {
     $this->bodyClasses[] = "{$entity->entityType}";
 }

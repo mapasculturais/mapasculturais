@@ -111,9 +111,9 @@ trait ControllerAPI{
     protected function apiAddHeaderMetadata($qdata, $data, $count){
         if (headers_sent())
             return;
-
+        $count = (int) $count;
         $response_meta = [
-            'count' => intval($count),
+            'count' => $count,
             'page' => isset($qdata['@page']) ? intval($qdata['@page']) : 1,
             'limit' => isset($qdata['@limit']) ? intval($qdata['@limit']) : null,
             'numPages' => isset($qdata['@limit']) ? ceil($count / $qdata['@limit']) : 1,

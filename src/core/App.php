@@ -3058,13 +3058,13 @@ class App {
      * Retorna a definição do tipo de entidade
      * 
      * @param Entity|string $entity a entidade ou a classe
-     * @param int $type_id 
+     * @param int|string $type_id 
      * @return mixed 
      * 
      * @throws ReflectionException 
      * @throws MappingException 
      */
-    function getRegisteredEntityTypeById(Entity|string $entity, int $type_id): Definitions\EntityType|null {
+    function getRegisteredEntityTypeById(Entity|string $entity, int|string $type_id): Definitions\EntityType|null {
         if (is_object($entity)) {
             $entity = $entity->getClassName();
         }
@@ -3076,11 +3076,11 @@ class App {
      * Verifica se o tipo de entidade existe
      *
      * @param Entity|string $entity a entidade ou a classe
-     * @param int $type_id 
+     * @param int|string $type_id 
      *
      * @return boolean
      */
-    function entityTypeExists(Entity|string $entity, int $type_id): bool {
+    function entityTypeExists(Entity|string $entity, int|string $type_id): bool {
         return !!$this->getRegisteredEntityTypeById($entity, $type_id);
     }
 

@@ -238,7 +238,6 @@ class Module extends \MapasCulturais\Module{
                     throw new Exception();
                 }
             }
-
             $this->jsObject['opportunityPhases'] = $opportunity->firstPhase->phases;
         });
 
