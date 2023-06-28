@@ -318,10 +318,10 @@ return [
 
 
     'verified seal migration' => function () use($conn){
-        if($id = $conn->fetchColumn("SELECT id FROM seal WHERE id = 1")){
+        if($id = $conn->fetchScalar("SELECT id FROM seal WHERE id = 1")){
             return true;
         }
-        $agent_id = $conn->fetchColumn("select profile_id
+        $agent_id = $conn->fetchScalar("select profile_id
                     from usr
                     where id = (
                         select min(usr_id)
@@ -475,7 +475,7 @@ return [
         }
 
         $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN owner_id INTEGER;");
-        $agent_id = $conn->fetchColumn("select profile_id
+        $agent_id = $conn->fetchScalar("select profile_id
                     from usr
                     where id = (
                         select min(usr_id)

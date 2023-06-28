@@ -111,7 +111,7 @@ class DB_UPDATE {
             $__where = $__query['where'];
             $__callback = $__query['cb'];
             
-            $__num_entities = $conn->fetchColumn("SELECT COUNT(id) FROM {$__table} WHERE {$__where}");
+            $__num_entities = $conn->fetchScalar("SELECT COUNT(id) FROM {$__table} WHERE {$__where}");
             
             $__limit = ceil($__num_entities / NUMBER_OF_PROCESSES);
             $__offset = $__limit * (PROCESS_NUM - 1);

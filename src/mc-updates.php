@@ -103,7 +103,7 @@ return [
             DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entity $entity) use ($app, $conn, $class) {
                 $table = strtolower($class);
 
-                $_timestamp = $conn->fetchColumn("
+                $_timestamp = $conn->fetchScalar("
                     SELECT
                         create_timestamp
                     FROM
@@ -244,7 +244,7 @@ return [
 
                 if ($validate) {
                     $_type = strtolower($type);
-                    $id = $conn->fetchColumn("SELECT nextval('agent_meta_id_seq'::regclass)");
+                    $id = $conn->fetchScalar("SELECT nextval('agent_meta_id_seq'::regclass)");
                     $conn->insert('agent_meta', ['id' => $id, 'object_id' => $agent->id, 'key' => $_type, 'value' => $agent->documento]);
                     
                     $op = "Definido {$type} para o agente";

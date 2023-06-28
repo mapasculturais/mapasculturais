@@ -793,7 +793,7 @@ class Opportunity extends EntityController {
             $users = implode(",", $users);
         }
         
-        $queryNumberOfResults = $conn->fetchColumn("
+        $queryNumberOfResults = $conn->fetchScalar("
             SELECT count(*) 
             FROM evaluations 
             WHERE 

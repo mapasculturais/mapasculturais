@@ -1345,7 +1345,7 @@ class Controller extends \MapasCulturais\Controller
 
         $conn = $app->em->getConnection();
 
-        $result = $conn->fetchColumn("SELECT MIN(create_timestamp::DATE) FROM {$entity} WHERE id > 1 AND status > 0");
+        $result = $conn->fetchScalar("SELECT MIN(create_timestamp::DATE) FROM {$entity} WHERE id > 1 AND status > 0");
 
         $app->cache->save($cache_id, $result);
 
