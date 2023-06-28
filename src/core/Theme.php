@@ -397,7 +397,7 @@ abstract class Theme {
         $__templatePath = $this->resolveFilename('views', $__template_filename);
 
         if(!$__templatePath){
-            throw new Exceptions\TemplateNotFound("Template $__template_filename not found");
+            throw new \Exception("Template $__template_filename not found");
         }
 
         $__template_name = preg_replace('#(.*\/)([^\/]+\/[^\/\.]+)(\.php)?$#', '$2', $__templatePath);
@@ -483,7 +483,7 @@ abstract class Theme {
         }
         
         if(!$__templatePath){
-            throw new Exceptions\TemplateNotFound("Template $__template_filename not found");
+            throw new \Exception("Template $__template_filename not found");
 
         }
 

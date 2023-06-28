@@ -259,7 +259,7 @@ class Module extends \MapasCulturais\Module {
             $__template_path = $this->resolveFilename("components/{$component}", 'template.php');
 
             if (!$__template_path) {
-                throw new Exceptions\TemplateNotFound("Component {$component} not found");
+                throw new \Exception("Component {$component} not found");
             }
 
             
