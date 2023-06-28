@@ -652,7 +652,7 @@ abstract class Theme {
         foreach($this->documentMeta as $metacfg){
             $meta = "\n <meta";
             foreach($metacfg as $prop => $val){
-                $val = htmlentities($val);
+                $val = htmlentities((string) $val);
                 $meta .= " {$prop}=\"{$val}\"";
             }
             $meta .= ' />';
