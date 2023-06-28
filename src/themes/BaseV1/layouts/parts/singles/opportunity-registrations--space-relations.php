@@ -14,7 +14,7 @@ $option_label = $entity->$metadata_name ? $entity->$metadata_name : 'dontUse';
 $projectMeta = \MapasCulturais\Entities\Project::getPropertiesMetadata();
 
 $optionSelect = \MapasCulturais\Entities\RegistrationSpaceRelation::getOptionSelected($entity->id);
-$message = $projectMeta['useSpaceRelation']['options'];
+/* $message = $projectMeta['useSpaceRelation']['options']; */
 //PARA PŔEENCHIMENTO DO SELECT
 if(isset($optionSelect[0]['value'])){
     $selectOption = \MapasCulturais\Entities\RegistrationSpaceRelation::getOptionLabel($optionSelect[0]['value']);
@@ -34,11 +34,11 @@ if(isset($optionSelect[0]['value'])){
                 <option value="<?php echo $selectOption['optionValue']; ?>"><?php echo $selectOption['optionLabel']; ?></option>
             <?php
                 //array vindo da configuração do arquivo registrations.php em conf/conf-base.d
-                foreach ($message as $key => $value) {
+                /* foreach ($message as $key => $value) {
                     if($selectOption['optionLabel'] !== $value){
                         echo '<option value="'.$key.'">'.$value.'</option>';
                     };
-                }
+                } */
             ?>
             </select>
            <script>

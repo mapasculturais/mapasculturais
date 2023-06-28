@@ -48,5 +48,23 @@
                 }
             }
         }
+        &--view {
+            align-items: center;
+            border-radius: var(--mc-border-radius-pill);
+            display: grid;
+            font-size: size(13);
+            grid-template-columns: 1fr;
+            font-weight: 600;
+            gap: size(10);
+            justify-content: space-between;
+            line-height: size(13);
+            list-style: none;
+            min-height: size(33);
+            padding: size(7) size(14);
+            position: relative;
+            text-align: center;
+            word-break: break-word;
+
+        }
     }
 }
