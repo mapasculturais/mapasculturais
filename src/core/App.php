@@ -31,7 +31,7 @@ use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Definitions\RegistrationAgentRelation;
 use MapasCulturais\Definitions\RegistrationFieldType;
 use MapasCulturais\Exceptions\MailTemplateNotFound;
-use MapasCulturais\Exceptions\TemplateNotFound;
+use MapasCulturais\Exceptions\NotFound;
 use MapasCulturais\Exceptions\WorkflowRequest;
 use ReflectionException;
 use RuntimeException;
@@ -1350,10 +1350,10 @@ class App {
      * Dispara um 404
      * 
      * @return never 
-     * @throws TemplateNotFound 
+     * @throws NotFound 
      */
     function pass() {
-        throw new Exceptions\TemplateNotFound;
+        throw new Exceptions\NotFound;
     }
 
     function redirect(string $destination, int $status_code = 302) {

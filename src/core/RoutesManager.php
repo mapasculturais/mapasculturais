@@ -2,7 +2,7 @@
 namespace MapasCulturais;
 
 use Error;
-use MapasCulturais\Exceptions\TemplateNotFound;
+use MapasCulturais\Exceptions\NotFound;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface as ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as RequestInterface;
@@ -54,7 +54,7 @@ class RoutesManager{
      * @param array $params 
      * @param bool $api 
      * @return void 
-     * @throws TemplateNotFound 
+     * @throws NotFound 
      * @throws InvalidArgumentException 
      * @throws RuntimeException 
      */
@@ -71,7 +71,7 @@ class RoutesManager{
                 $controller->callAction($api ? 'API' : $request->getMethod(), $action, $params);
             } catch (Exceptions\Halt $e){
                 // não precisa fazer nada.
-            } catch (Exceptions\TemplateNotFound $e){
+            } catch (Exceptions\NotFound $e){
                 $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => $e], false);
 
             } catch (Exceptions\PermissionDenied $e){
@@ -84,7 +84,7 @@ class RoutesManager{
                 $app->response->getBody()->write(json_encode($requests));
             } 
         } else {
-            $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => new Exceptions\TemplateNotFound], false);
+            $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => new Exceptions\NotFound], false);
         }
     }
 
