@@ -115,7 +115,7 @@ class Module extends \MapasCulturais\Module {
         
         if ($app->config['app.mode'] == 'development') {
             $app->hook('template(<<*>>):<<*>>', function () use($app) {
-                $hook = $app->hookStack[count($app->hookStack) - 1]->name;
+                $hook = $app->hooks->hookStack[count($app->hooks->hookStack) - 1]->name;
                 if($this->version >= 2) {
                     $this->import('mc-debug');
                     echo "<mc-debug type='template-hook' name='$hook'></mc-debug>\n";

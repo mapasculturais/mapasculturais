@@ -18,7 +18,7 @@ class Hooks {
     protected array $_hookCache = [];
     
     protected int $hookCount = 0;
-    protected array $hookStack = [];
+    public array $hookStack = [];
 
     function __construct(App $app) {
         $this->app = $app;
