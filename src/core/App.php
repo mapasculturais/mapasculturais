@@ -2181,16 +2181,6 @@ class App {
             $this->registerImageTransformation($name, $transformation);
 
 
-        // registration agent relations
-
-        foreach($this->config['registration.agentRelations'] as $config){
-            $def = new Definitions\RegistrationAgentRelation($config);
-            $opportunities_meta[$def->metadataName] = $def->getMetadataConfiguration();
-
-            $this->registerRegistrationAgentRelation($def);
-        }
-
-
         // all metalist groups
         $metalist_groups = [
             'links' => new Definitions\MetaListGroup('links',
@@ -2305,6 +2295,16 @@ class App {
             $notification_types = include APPLICATION_PATH.'/conf/notification-types.php';
         }
         $notification_meta = key_exists('metadata', $notification_types) && is_array($notification_types['metadata']) ? $notification_types['metadata'] : [];
+
+
+
+        // registration agent relations
+        foreach($this->config['registration.agentRelations'] as $config){
+            $def = new Definitions\RegistrationAgentRelation($config);
+            $opportunities_meta[$def->metadataName] = $def->getMetadataConfiguration();
+
+            $this->registerRegistrationAgentRelation($def);
+        }
 
 
         // register space types and spaces metadata
@@ -2597,11 +2597,11 @@ class App {
      * @throws GlobalException 
      */
     function registerRegistrationAgentRelation(Definitions\RegistrationAgentRelation $def) {
-        if(key_exists($def->agentRelationGroupName, $this->_register['registration_agent_relations'])){
+        $group_name = $def->agentRelationGroupName;
+        if($this->_register['registration_agent_relations'][$group_name] ?? false){
             throw new \Exception('There is already a RegistrationAgentRelation with agent relation group name "' . $def->agentRelationGroupName . '"');
         }
-
-        $this->_register['registration_agent_relations'][$def->agentRelationGroupName] = $def;
+        $this->_register['registration_agent_relations'][$group_name] = $def;
     }
 
     /**
