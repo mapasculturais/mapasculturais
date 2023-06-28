@@ -1,5 +1,5 @@
 <?php
 namespace MapasCulturais\Exceptions;
 
-class TemplateNotFound extends \Exception{
+class NotFound extends \Exception{
 }
