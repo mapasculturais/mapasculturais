@@ -324,7 +324,6 @@ class Registration extends \MapasCulturais\Entity
         if($this->canUser('view') || $this->status === self::STATUS_APPROVED || $this->status === self::STATUS_WAITLIST){
             $related_agents = $this->getRelatedAgents();
 
-
             foreach(App::i()->getRegisteredRegistrationAgentRelations() as $def){
                 $json['agentRelations'][] = [
                     'label' => $def->label,

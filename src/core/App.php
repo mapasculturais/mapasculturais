@@ -459,7 +459,6 @@ class App {
             $handlers = $this->config['monolog.handlers'];
         }
 
-        // eval(\psy\sh());
         $this->log = new Logger('', $handlers, $processors);
     }
 
@@ -1647,7 +1646,7 @@ class App {
     public function executeJob(): int|false {
         $conn = $this->em->getConnection();
         $now = date('Y-m-d H:i:s');
-        $job_id = $conn->fetchColumn("
+        $job_id = $conn->fetchScalar("
             SELECT id
             FROM job
             WHERE

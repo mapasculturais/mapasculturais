@@ -10,6 +10,11 @@ class Connection extends \Doctrine\DBAL\Connection {
         return $this->fetchFirstColumn($query, $params, $types);
     }
 
+    function fetchScalar (string $query, array $params = [], $types = []) {
+        $column = $this->fetchFirstColumn($query, $params, $types);
+        return $column[0] ?? null;
+    }
+
     function fetchAssoc (string $query, array $params = [], $types = []): array {
         return $this->fetchAssociative($query, $params, $types);
     }
