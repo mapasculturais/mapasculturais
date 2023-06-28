@@ -549,7 +549,7 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getSpaceData(){
-        if(array_key_exists('acessibilidade_fisica', $this->_spaceData)){
+        if($this->_spaceData['acessibilidade_fisica'] ?? false){
             $this->_spaceData['acessibilidade_fisica'] = str_replace(';', ', ', $this->_spaceData['acessibilidade_fisica']);
         } 
         
