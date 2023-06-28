@@ -927,7 +927,7 @@ class Registration extends \MapasCulturais\Entity
             if($isSpaceRelationRequired === 'required' || $isSpaceRelationRequired === 'optional'){
                 //Espaço não autorizado
                 if( $spaceDefined && $spaceDefined->status < 0){
-                    $errorsResult['space'] = \MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável');
+                    $errorsResult['space'] = [\MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável')];
                 }
             }
         }       
