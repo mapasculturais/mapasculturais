@@ -130,6 +130,7 @@ app.component('registration-evaluation-actions', {
         save() {
             const iframe = document.getElementById('evaluation-form');
             iframe.contentWindow.postMessage({type: "evaluationForm.save"});
+            this.reloadPage();
         },
         reloadPage(timeout = 1500){
             setTimeout(() => {
