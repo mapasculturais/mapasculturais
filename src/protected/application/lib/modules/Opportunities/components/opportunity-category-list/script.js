@@ -1,5 +1,5 @@
-app.component('opportunity-form-builder-category-list' , {
-    template: $TEMPLATES['opportunity-form-builder-category-list'],
+app.component('opportunity-category-list' , {
+    template: $TEMPLATES['opportunity-category-list'],
 
     props: {
         entity: {
@@ -10,7 +10,7 @@ app.component('opportunity-form-builder-category-list' , {
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
-        const text = Utils.getTexts('opportunity-form-builder-category-list');
+        const text = Utils.getTexts('opportunity-category-list');
         return { text }
     },
 
@@ -26,6 +26,7 @@ app.component('opportunity-form-builder-category-list' , {
     methods: {
       addCategory () {
           this.entity.registrationCategories.push(this.category);
+          this.clear();
       },
 
       clear () {
