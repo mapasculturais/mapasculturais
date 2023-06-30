@@ -1,15 +1,17 @@
-FROM php:7.2-fpm
+FROM php:8.2-cli
+
+RUN apt-get update
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        curl libcurl4-gnutls-dev locales imagemagick libmagickcore-dev libmagickwand-dev zip \
-        ruby ruby-dev libpq-dev gnupg nano iputils-ping git \
-        libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim \
-        sudo
+        locales less vim nano micro sudo git zip \
+        imagemagick libmagickcore-dev libmagickwand-dev \
+        curl iputils-ping gnupg \
+        libcurl4-gnutls-dev libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev libzip-dev libzstd-dev
 
-RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
+RUN npm install -g pnpm
 RUN rm -rf /var/lib/apt/lists
 
 ENV PNPM_HOME=/root/.local/share/pnpm
@@ -20,75 +22,69 @@ RUN npm install -g \
         terser \
         uglifycss \
         autoprefixer \
-        postcss
-
-# Install sass
-RUN gem install sass -v 3.4.22
+        postcss \
+        sass
 
 # Install extensions
-RUN docker-php-ext-install opcache pdo_pgsql zip xml curl json 
+RUN docker-php-ext-install -j$(nproc) opcache pdo_pgsql  zip  xml  curl
 
 # Install GD
-RUN docker-php-ext-install -j$(nproc) iconv \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd
+RUN docker-php-ext-install -j$(nproc) iconv && \
+    docker-php-ext-configure gd --with-jpeg && \
+    docker-php-ext-install -j$(nproc) gd
 
 # Install APCu
-RUN pecl install apcu \
+RUN no | pecl install apcu \
     && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apcu.ini
 
 # Install imagick
-RUN pecl install imagick-beta \
+RUN autodetect | pecl install imagick \
     && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini
+
+# Install xdebug
+RUN yes | pecl install xdebug \
+    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.mode=develop" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
+
+# Install igbinary
+RUN pecl install igbinary \
+    && docker-php-ext-enable igbinary
+
+# Install redis
+RUN yes | pecl install -o -f redis \
+    && docker-php-ext-enable redis
 
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    php composer-setup.php --version=1.10.16 --install-dir=/usr/local/bin && \
+    php composer-setup.php --install-dir=/usr/local/bin && \
     rm composer-setup.php
 
-# Install redis
-RUN pecl install -o -f redis \
-    &&  rm -rf /tmp/pear \
-    &&  docker-php-ext-enable redis
-
 # Copy source
-COPY src/index.php /var/www/html/index.php
-COPY src/protected/composer.json /var/www/html/protected/composer.json
-COPY src/protected/composer.lock /var/www/html/protected/composer.lock
+COPY composer.json /var/www/composer.json
+COPY composer.lock /var/www/composer.lock
 
-WORKDIR /var/www/html/protected
+WORKDIR /var/www/
 RUN composer.phar install
 
-RUN mkdir -p /var/www/html/protected/vendor /var/www/.composer && \
-    chown -R www-data:www-data /var/www/html/protected/vendor /var/www/.composer
-
-
-COPY src/protected/application/themes /var/www/html/protected/application/themes
-
-WORKDIR /var/www/html/protected/application/themes/
-
-RUN find . -maxdepth 1 -mindepth 1 -exec echo "compilando sass do tema " {} \; -exec sass {}/assets/css/sass/main.scss {}/assets/css/main.css -E "UTF-8" \;
-
-COPY src/protected /var/www/html/protected
-
-RUN pnpm install --recursive && pnpm run build 
-RUN mkdir -p /var/www/html/protected/DoctrineProxies
-RUN chown -R www-data: /var/www/html/protected/DoctrineProxies
-
-RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
-
+COPY config /var/www/config
+COPY public /var/www/html
 COPY scripts /var/www/scripts
-COPY compose/production/php.ini /usr/local/etc/php/php.ini
-COPY compose/config.php /var/www/html/protected/application/conf/config.php
-COPY compose/config.d /var/www/html/protected/application/conf/config.d
+COPY src /var/www/src
+COPY var /var/www/var
 
-RUN ln -s /var/www/html /var/www/src
+RUN chown www-data:www-data -R /var/www
+
+COPY docker/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
+COPY docker/jobs-cron.sh /jobs-cron.sh
+COPY docker/entrypoint.sh /entrypoint.sh
 
 COPY version.txt /var/www/version.txt
 
-COPY compose/jobs-cron.sh /jobs-cron.sh
-COPY compose/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
-COPY compose/entrypoint.sh /entrypoint.sh
+COPY docker/production/php.ini /usr/local/etc/php/php.ini
+
+RUN ln -s /var/www/html /var/www/public
+
 ENTRYPOINT ["/entrypoint.sh"]
 
 WORKDIR /var/www/html/
