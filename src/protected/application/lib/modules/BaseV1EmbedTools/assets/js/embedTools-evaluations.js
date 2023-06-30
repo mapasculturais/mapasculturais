@@ -15,6 +15,14 @@ $(function(){
         $list.css('margin-top', top);
     });
 
+    function saveEvaluation(){
+        var data = $form.serialize();
+        var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id});
+        $.post(url, data, function(r){
+            MapasCulturais.Messages.success("A avaliação foi salva");
+        });
+    }
+
     function finishEvaluation(checkButton = null) {
         var $button = checkButton ? $(checkButton) : null;
         var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': 'evaluated'});
@@ -56,6 +64,10 @@ $(function(){
     window.addEventListener("message", function(event) {          
         if (event.data?.type == "evaluationForm.send") {
             finishEvaluation()
+        }
+
+        if (event.data?.type == "evaluationForm.save") {
+            saveEvaluation()
         }
     });
 
