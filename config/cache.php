@@ -3,21 +3,21 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-$_cache_namespace = env('CACHE_NAMESPACE', md5(@$_SERVER['HTTP_HOST']));
-
 if (env('REDIS_CACHE')) {
     $redis = new \Redis();
     $redis->connect(env('REDIS_CACHE'));
-    
-    $_cache = new RedisAdapter($redis, $_cache_namespace);
-    $_mscache = new RedisAdapter($redis, "ms.$_cache_namespace");
+    $_cache = new RedisAdapter($redis);
+
+    $redis = new \Redis();
+    $redis->connect(env('REDIS_CACHE'));
+    $_mscache = new RedisAdapter($redis, "ms");
 } else {
     try {
-        $_cache = new ApcuAdapter($_cache_namespace);
-        $_mscache = new ApcuAdapter("ms.$_cache_namespace");
+        $_cache = new ApcuAdapter();
+        $_mscache = new ApcuAdapter("ms");
     } catch (\Exception $e) {
-        $_cache = new FilesystemAdapter($_cache_namespace);
-        $_mscache = new FilesystemAdapter("ms.$_cache_namespace");
+        $_cache = new FilesystemAdapter();
+        $_mscache = new FilesystemAdapter("ms");
     }
 }
 
@@ -38,12 +38,12 @@ return [
     'app.useOpportunitySummaryCache' => __env_not_false('CACHE_OPPORTUNITY_SUMARY'),
 
 
-    'app.registeredAutoloadCache.lifetime'  => env('CACHE_AUTOLOAD', 0),
-    'app.assetsUrlCache.lifetime'           => env('CACHE_ASSETS_URL', 0),
+    'app.registeredAutoloadCache.lifetime'  => env('CACHE_AUTOLOAD', YEAR_IN_SECONDS),
+    'app.assetsUrlCache.lifetime'           => env('CACHE_ASSETS_URL', YEAR_IN_SECONDS),
     'app.fileUrlCache.lifetime'             => env('CACHE_FILE_URL', 604800),
     'app.eventsCache.lifetime'              => env('CACHE_EVENTS', 600),
     'app.subsiteIdsCache.lifetime'          => env('CACHE_SUBSITE_ID', 120),
-    'app.permissionsCache.lifetime'         => env('CACHE_PERMISSIONS', 0),
+    'app.permissionsCache.lifetime'         => env('CACHE_PERMISSIONS', YEAR_IN_SECONDS),
     'app.registerCache.lifeTime'            => env('CACHE_REGISTER', 600),
     'app.apiCache.lifetime'                 => env('CACHE_API', 30),
     'app.opportunitySummaryCache.lifetime'  => env('CACHE_OPPORTUNITY_SUMARY', 30 * MINUTE_IN_SECONDS),
