@@ -38,20 +38,18 @@ class Theme extends \MapasCulturais\Theme
         });
 
         $app->hook('template(<<*>>.head):end', function () {
-            echo "
-        <script>
-        document.addEventListener('DOMContentLoaded', (e) => {
-            let opacity = 0.01;
-            globalThis.opacityInterval = setInterval(() => {
-                if(opacity >= 1) {
-                    clearInterval(globalThis.opacityInterval);
-                }
-                document.body.style.opacity = opacity;
-                opacity += 0.02;
-            },5);
-        });
-        </script>
-";
+            echo "<script>
+                    document.addEventListener('DOMContentLoaded', (e) => {
+                        let opacity = 0.01;
+                        globalThis.opacityInterval = setInterval(() => {
+                            if(opacity >= 1) {
+                                clearInterval(globalThis.opacityInterval);
+                            }
+                            document.body.style.opacity = opacity;
+                            opacity += 0.02;
+                        },5);
+                    });
+                </script>";
         });
     }
 
