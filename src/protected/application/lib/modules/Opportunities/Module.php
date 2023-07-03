@@ -74,7 +74,10 @@ class Module extends \MapasCulturais\Module{
             $now = new \DateTime;
 
             // Executa Job no momento da publicação automática dos resultados da fase
-            if($active && $this->autoPublish && $this->publishTimestamp && $this->publishTimestamp >= $now){
+            $registration_from_changed = $this->_changes['registrationFrom'] ?? false;
+            $registration_to_changed = $this->_changes['registrationTo'] ?? false;
+
+            if($active && ($this->autoPublish && $this->publishTimestamp && $this->publishTimestamp >= $now || $registration_from_changed)){
                 $app->enqueueOrReplaceJob(Jobs\PublishResult::SLUG, $data, $this->publishTimestamp->format("Y-m-d H:i:s"));
             } else {
                 $app->unqueueJob(Jobs\PublishResult::SLUG, $data);
@@ -88,7 +91,7 @@ class Module extends \MapasCulturais\Module{
             }
 
             // Executa Job no final da fase de coleta de dados
-            if ($active && $this->registrationTo && $this->registrationTo >= $now) {
+            if ($active && ($this->registrationTo && $this->registrationTo >= $now || $registration_to_changed)) {
                 $app->enqueueOrReplaceJob(Jobs\FinishDataCollectionPhase::SLUG, $data, $this->registrationTo->format("Y-m-d H:i:s"));
             } else {
                 $app->unqueueJob(Jobs\FinishDataCollectionPhase::SLUG, $data);
@@ -113,14 +116,17 @@ class Module extends \MapasCulturais\Module{
             $now = new \DateTime;
 
             // Executa Job no início de fase de avaliação
-            if ($active && $this->evaluationFrom && $this->evaluationFrom >= $now) {
+            $avaluation_from_changed = $this->_changes['registrationFrom'] ?? false;
+            $evaluation_to_changed = $this->_changes['registrationTo'] ?? false;
+
+            if ($active && ($this->evaluationFrom && $this->evaluationFrom >= $now || $avaluation_from_changed)) {
                 $app->enqueueOrReplaceJob(Jobs\StartEvaluationPhase::SLUG, $data, $this->evaluationFrom->format("Y-m-d H:i:s"));
             }else {
                 $app->unqueueJob(Jobs\StartEvaluationPhase::SLUG, $data);
             }
 
             // Executa Job no início de fase de avaliação
-            if ($active && $this->evaluationTo && $this->evaluationTo >= $now) {
+            if ($active && ($this->evaluationTo && $this->evaluationTo >= $now || $evaluation_to_changed)) {
                 $app->enqueueOrReplaceJob(Jobs\FinishEvaluationPhase::SLUG, $data, $this->evaluationTo->format("Y-m-d H:i:s"));
             }else {
                 $app->unqueueJob(Jobs\FinishEvaluationPhase::SLUG, $data);
