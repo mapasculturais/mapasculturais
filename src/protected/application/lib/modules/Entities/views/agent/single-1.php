@@ -63,7 +63,7 @@ $this->breadcrumb = [
                 </main>
                 <aside>
                     <div class="grid-12">
-                        <entity-terms :entity="entity" classes="col-12" taxonomy="area" title="<?php i::esc_attr_e('Areas de atuação');?>"></entity-terms>
+                        <entity-terms :entity="entity" classes="col-12" taxonomy="area" title="<?php i::esc_attr_e('Áreas de atuação');?>"></entity-terms>
                         <entity-terms :entity="entity" taxonomy="funcao" classes="col-12" title="<?php i::_e('Funções'); ?>"></entity-terms>
                         <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
                         <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
