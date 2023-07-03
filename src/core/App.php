@@ -341,7 +341,7 @@ class App {
 
         $this->permissionCacheEnabled = $config['app.usePermissionsCache'] ?? true;
 
-        if($config['app.mode'] == APPMODE_DEVELOPMENT || $config['slim.debug']){
+        if($config['app.mode'] == APPMODE_DEVELOPMENT){
             error_reporting(E_ALL ^ E_STRICT);
         }
 

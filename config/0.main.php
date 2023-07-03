@@ -1,5 +1,6 @@
 <?php 
 use \MapasCulturais\i;
+// $_ENV['APP_MODE'] = 'development';
 
 return [
     /*
@@ -54,13 +55,6 @@ return [
     Por padrão o valor é verdadeiro quando o app.mode for `APPMODE_DEVELOPMENT`.
     */
     'doctrine.isDev' => env('DOCTRINE_ISDEV', env('APP_MODE', APPMODE_PRODUCTION) == APPMODE_DEVELOPMENT),
-
-    /* 
-    Define se o Slim Framework está rodando em modo debug, o que faz o slim exibir os erros na tela. 
-    
-    Por padrão o valor é verdadeiro quando a aplicação não estiver rodando no modo `APPMODE_PRODUCTION`. 
-    */
-    'slim.debug' => env('SLIM_DEBUG', env('APP_MODE', APPMODE_PRODUCTION) != APPMODE_PRODUCTION),
     
     /* Valor do header Access-Control-Allow-Origin da api de leitura. */
     'api.accessControlAllowOrigin' => env('API_ACCESS_CONTROL_ALLOW_ORIGIN', '*'),
