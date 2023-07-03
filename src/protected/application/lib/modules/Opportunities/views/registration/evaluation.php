@@ -6,23 +6,17 @@ $this->layout = 'registrations';
 
 $this->import('
     mc-breadcrumb
-    mc-card
     mc-container
-    mc-icon
     mc-side-menu
-    mc-summary-agents
+    mc-summary-agent
+    mc-summary-agent-info
     mc-summary-evaluate
     mc-summary-project
     mc-summary-spaces
     opportunity-header
     registration-evaluation-actions
-    registration-related-agents
-    registration-related-project
-    registration-related-space
-    registration-steps
-    registration-steps
-    select-entity
-    v1-embed-tool 
+    registration-info
+    v1-embed-tool
 ');
 
 $opportunity = $entity->opportunity;
@@ -62,13 +56,14 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
         
         <mc-container>
             <main class="grid-12">
+                <mc-summary-agent :entity="entity"></mc-summary-agent>
                 <registration-info :registration="entity" classes="col-12"></registration-info>                
                 <mc-summary-project :entity="entity"></mc-summary-project>
-                <mc-summary-agents :entity="entity"></mc-summary-agents>
+                <mc-summary-agent-info :entity="entity"></mc-summary-agent-info>
                 <mc-summary-spaces :entity="entity"></mc-summary-spaces>
                 
                 <section class="section">
-                    <p class="registration-info__title"><?= i::__('Dados informados no formulário') ?></p>
+                    <h3 class="section__title"><?= i::__('Dados informados no formulário') ?></h3>
                     <div class="section__content">
                         <div class="card owner">
                             <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
