@@ -1,5 +1,5 @@
-app.component('mc-summary-agents', {
-    template: $TEMPLATES['mc-summary-agents'],
+app.component('mc-summary-agent-info', {
+    template: $TEMPLATES['mc-summary-agent-info'],
 
     props: {
         entity:{
