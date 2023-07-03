@@ -70,7 +70,7 @@ app.component('entity-field-datepicker', {
         },
         value() {
             return this.entity[this.prop]?.id ?? this.entity[this.prop];
-        }
+        },
     },
 
     methods: {
