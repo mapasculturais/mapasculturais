@@ -18,6 +18,11 @@ app.component('mc-icon', {
             required: false
         },
 
+        isLink: {
+            type: Boolean,
+            default: false
+        },
+
         /**
          * @todo implementar outras propriedades do componente iconify 
          * https://docs.iconify.design/icon-components/vue/#properties

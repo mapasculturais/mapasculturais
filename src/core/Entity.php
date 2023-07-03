@@ -69,6 +69,8 @@ abstract class Entity implements \JsonSerializable{
     protected $_validationErrors = [];
 
     private static $_jsonSerializeNestedObjects = [];
+
+    public $_changes = [];
     
     /**
      * enable or disable the usage of magic getter hook to filter properties values
@@ -1167,6 +1169,21 @@ abstract class Entity implements \JsonSerializable{
     }
 
     /**
+     * computed changes in entity
+     *
+     * @return void
+     */
+    public function computeChangeSets()
+    {
+        $app = App::i();
+
+        $uow = $app->em->getUnitOfWork();
+        $metadata = $app->em->getClassMetadata($this->getClassName());
+        $uow->computeChangeSets();
+        $this->_changes = $uow->getEntityChangeSet($this);
+    }
+
+    /**
      * Executed before the entity is inserted.
      *
      * @see http://docs.doctrine-project.org/en/latest/reference/events.html#lifecycle-events
@@ -1180,11 +1197,14 @@ abstract class Entity implements \JsonSerializable{
     public function prePersist($args = null){
         $app = App::i();
         
+        $this->computeChangeSets();
+
         $hook_prefix = $this->getHookPrefix();
 
         $app->applyHookBoundTo($this, "{$hook_prefix}.insert:before");
         $app->applyHookBoundTo($this, "{$hook_prefix}.save:before");
 
+        $this->computeChangeSets();
 
         if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
             if($this->usesAgentRelation()){
@@ -1291,11 +1311,13 @@ abstract class Entity implements \JsonSerializable{
      */
     public function preUpdate($args = null){
         $app = App::i();
-        
+        $this->computeChangeSets();
         $hook_prefix = $this->getHookPrefix();
         $app->applyHookBoundTo($this, "{$hook_prefix}.update:before");
         $app->applyHookBoundTo($this, "{$hook_prefix}.save:before");
 
+        $this->computeChangeSets();
+        
         if (property_exists($this, 'updateTimestamp')) {
             $this->updateTimestamp = new \DateTime;
             /* @TODO: verificar o pq do código abaixo:

@@ -20,8 +20,8 @@
         :weekStart="0" 
         :enable-time-picker=false
         text-input autoApply>
-        <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
-            <input type="text" data-maska="##/##/####" :value="value" maxlength="10" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
+        <template #dp-input="{ value, onBlur, onInput, onEnter, onTab, onClear }">
+            <input type="text" data-maska="##/##/####" :value="value" maxlength="10" @input="onChange($event, onInput)" @blur="onBlur" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
         </template>
     </datepicker>
 
@@ -39,8 +39,8 @@
         :text-input-options="datetimeTextInputOptions" 
         :weekStart="0" 
         text-input autoApply>
-        <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
-            <input type="text" data-maska="##/##/#### ##:##" :value="value" maxlength="16" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
+        <template #dp-input="{ value, onBlur, onInput, onEnter, onTab, onClear }">
+            <input type="text" data-maska="##/##/#### ##:##" :value="value" maxlength="16" @input="onChange($event, onInput)" @blur="onBlur" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
         </template>
     </datepicker>
 
