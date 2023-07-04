@@ -152,12 +152,4 @@ use MapasCulturais\i;
         </tfoot>
     </table>
 
-    <?php
-    $em = $entity->evaluationMethodConfiguration;
-    if ($em && is_object($em->type) && property_exists($em->type, "id") && $em->type->id === "simple") : ?>
-        <div ng-if="hasEvaluations()">
-            <button class="btn btn-primary" ng-click="applyEvaluations()"> {{ data.confirmEvaluationLabel }} </button>
-        </div>
-    <?php endif; ?>
-
 </div>

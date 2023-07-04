@@ -16,8 +16,8 @@ $this->import('
 ?>
 <div class="opportunity-category">
     <div class="opportunity-category__header">
-        <h4 class="opportunity-category__title bold"><?= i::__("Categorias de inscrição") ?></h4>
-        <h6 class="opportunity-category__subtitle"><?= i::__("Crie opções para as pessoas escolherem na hora de se inscrever, como, por exemplo, \"categorias\" ou \"modalidades\".") ?></h6>
+        <h4 class="bold"><?= i::__("Categorias de inscrição") ?></h4>
+        <h6><?= i::__("Crie opções para as pessoas escolherem na hora de se inscrever, como, por exemplo, \"categorias\" ou \"modalidades\".") ?></h6>
     </div>
 
     <div class="opportunity-category__content grid-12">
