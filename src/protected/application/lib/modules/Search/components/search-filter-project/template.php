@@ -24,8 +24,8 @@ $this->import('
         <div class="field">
             <label> <?php i::_e('Tipos de projetos') ?></label>
 
-            <mc-multiselect :model="pseudoQuery['type']" :items="types" hide-filter hide-button>
-                <template #default="{popover, setFilter}">
+            <mc-multiselect :model="pseudoQuery['type']" :items="types" title="<?= i::esc_attr__('Selecione os tipos: ') ?>" hide-filter hide-button>
+                <template #default="{popover, setFilter, filter}">
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>">
                 </template>
             </mc-multiselect>
