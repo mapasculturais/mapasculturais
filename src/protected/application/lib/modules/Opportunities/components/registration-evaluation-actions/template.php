@@ -16,7 +16,13 @@ $this->import('
         <div class="col-12" v-if="showActions(registration, 'save')">
             <button class="button button--primary" @click="save()"> <?= i::__('Salvar e continuar depois') ?> </button>
         </div>
-        <div class="col-12" v-if="showActions(registration, 'finishEvaluation')"><button class="button button--primary" @click="finishEvaluation()"> <?= i::__('Finalizar avaliação') ?></button></div>       
+        <div class="col-12" v-if="showActions(registration, 'finishEvaluation')"><button class="button button--primary" @click="finishEvaluation()"> <?= i::__('Finalizar avaliação') ?></button></div> 
+        <div class="col-12" v-if="showActions(registration, 'finishEvaluation')">
+            <button class="button button--primary button--icon" @click="finishEvaluation()"> 
+                <?= i::__('Finalizar e avançar') ?> 
+                <mc-icon name="arrow-right-ios"></mc-icon>
+            </button>
+        </div>      
         <div class="col-12" v-if="showActions(registration, 'send')">
             <button class="button button--primary button--icon" @click="send(registration)"> 
                 <?= i::__('Enviar avaliação') ?> 
