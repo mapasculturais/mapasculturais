@@ -18,7 +18,7 @@ $this->import('
         <input type="checkbox" id="resource" v-model="isActiveClaim"/>
         <label for="resource"><?= i::__("Habilitar Recurso") ?></label>
     </div>
-    <div class="opportunity-enable-claim__email">
+    <div v-if="isActiveClaim" class="opportunity-enable-claim__email">
         <label class="opportunity-enable-claim__label" for="input">
             <h5 class="semibold opportunity-enable-claim__subtitle"><?= i::__("Insira o email que receberá as solicitações") ?></h5>
         </label>
