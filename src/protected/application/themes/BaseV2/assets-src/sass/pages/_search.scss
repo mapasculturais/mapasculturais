@@ -264,6 +264,15 @@
                             }
                         }
                     }
+
+                    @media (max-width: size(610)) {
+                        align-items: center;
+                        flex-direction: column;
+
+                        .field, .foundResults {
+                            width: 100%;
+                        }
+                    }
                 }
                 
                 &__filter {
