@@ -51,6 +51,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
     {
         $app = App::i();
 
+        $self = $this;
+
+        $app->hook('template(opportunity.registrations.registration-list-actions):begin', function($entity){
+            if($em = $entity->evaluationMethodConfiguration){
+                $this->part('simple--evaluation-result-apply');
+            }
+        });
+
         $app->hook('repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword) {
             $key = trim(strtolower(str_replace('%','',$keyword)));
             
@@ -211,27 +219,36 @@ class Module extends \MapasCulturais\EvaluationMethod {
     
         });
 
-        $app->hook('template(opportunity.single.header-inscritos):actions', function() use($app) {
+        $app->hook('template(opportunity.single.header-inscritos):actions', function() use($app, $self) {
             $opportunity = $this->controller->requestedEntity;
     
             if ($opportunity->evaluationMethodConfiguration->getDefinition()->slug != 'simple') {
                 return;
             }
             
-            $consolidated_results = $app->em->getConnection()->fetchAll("
-                SELECT 
-                    consolidated_result evaluation,
-                    COUNT(*) as num
-                FROM 
-                    registration
-                WHERE 
-                    opportunity_id = :opportunity AND
-                    status > 0 
-                GROUP BY consolidated_result
-                ORDER BY num DESC", ['opportunity' => $opportunity->id]);
+            $consolidated_results = $self->findConsolidatedResult($opportunity);
             
             $this->part('simple--apply-results', ['entity' => $opportunity, 'consolidated_results' => $consolidated_results]);
         });
+    }
+
+    public function findConsolidatedResult($opportunity)
+    {
+        $app = App::i();
+        
+        $consolidated_results = $app->em->getConnection()->fetchAll("
+        SELECT 
+            consolidated_result evaluation,
+            COUNT(*) as num
+        FROM 
+            registration
+        WHERE 
+            opportunity_id = :opportunity AND
+            status > 0 
+        GROUP BY consolidated_result
+        ORDER BY num DESC", ['opportunity' => $opportunity->id]);
+
+        return $consolidated_results;
     }
 
     public function getEvaluationStatues()
