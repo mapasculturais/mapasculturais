@@ -33,12 +33,7 @@ $this->import('
                 <entity-field :entity="phase" prop="registrationLimitPerOwner" :autosave="300" classes="col-3"></entity-field>
             </div>
         </div>
-
-        <div class="col-12 grid-12">
-            <mc-link :entity="phase" route='formBuilder' class="config-phase__info-button button--primary button col-6" icon="external" right-icon>
-              <?= i::__("Configurar formulário") ?>
-            </mc-link>
-        </div>
+        
         <div class="col-12 sm:col-12">
             <opportunity-enable-claim :entity="phase"></opportunity-enable-claim>
         </div>
