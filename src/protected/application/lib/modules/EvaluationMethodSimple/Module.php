@@ -51,6 +51,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
     {
         $app = App::i();
 
+        $self = $this;
+
+        $app->hook('template(opportunity.registrations.registration-list-actions):begin', function($entity){
+            if($em = $entity->evaluationMethodConfiguration){
+                $this->part('simple--evaluation-result-apply');
+            }
+        });
+
         $app->hook('repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword) {
             $key = trim(strtolower(str_replace('%','',$keyword)));
             
