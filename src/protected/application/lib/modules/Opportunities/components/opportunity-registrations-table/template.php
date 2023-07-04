@@ -11,7 +11,9 @@ $this->layout = 'entity';
 $this->import('
     mc-card
     v1-embed-tool
-')
+');
+
+$entity = $this->controller->requestedEntity;
 ?>
 <div class="opportunity-registration-table grid-12">
     <div class="col-6">
@@ -21,15 +23,21 @@ $this->import('
         <h2 v-if="isFuture()"><?= i::__("As inscrições ainda não iniciaram") ?></h2>
     </div>
     <template v-if="!isFuture()">
-            <div class="col-3 text-right">
-                <mc-link :entity="phase" route="reportDrafts" class="button button--secondarylight"><label class="down-draft"><?= i::__("Baixar rascunho") ?></label></mc-link>
-            </div>
-            <div class="col-3">
-                <mc-link :entity="phase" route="report" class="button button--secondarylight"><label class="down-list"><?= i::__("Baixar lista de inscrições") ?></label></mc-link>
-            </div>
+        <?php $this->applyTemplateHook('registration-list-actions', 'before', ['entity' => $entity]); ?>
             <div class="col-12">
-            <h5><?= i::__("Visualize a lista de pessoas inscritas neste edital. E acompanhe os projetos criados para os Agentes Culturais aceitos.") ?></h5>
-        </div>
+                <?php $this->applyTemplateHook('registration-list-actions', 'begin', ['entity' => $entity]); ?>
+                <div class="col-4 text-right">
+                    <mc-link :entity="phase" route="reportDrafts" class="button button--secondarylight"><label class="down-draft"><?= i::__("Baixar rascunho") ?></label></mc-link>
+                </div>
+                <div class="col-4">
+                    <mc-link :entity="phase" route="report" class="button button--secondarylight"><label class="down-list"><?= i::__("Baixar lista de inscrições") ?></label></mc-link>
+                </div>
+                <?php $this->applyTemplateHook('registration-list-actions', 'end', ['entity' => $entity]); ?>
+            </div>
+            <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
+            <div class="col-12">
+                <h5><?= i::__("Visualize a lista de pessoas inscritas neste edital. E acompanhe os projetos criados para os Agentes Culturais aceitos.") ?></h5>
+            </div>
         <div class="col-12">
             <v1-embed-tool route="registrationmanager" :id="phase.id"></v1-embed-tool>
         </div>

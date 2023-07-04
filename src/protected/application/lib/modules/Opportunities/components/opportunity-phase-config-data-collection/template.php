@@ -35,7 +35,6 @@ $this->import('
                 </div>
             </div>
         </div>
-
         <div class="col-12 sm:col-12">
             <opportunity-enable-claim :entity="phase"></opportunity-enable-claim>
         </div>
