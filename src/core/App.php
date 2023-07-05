@@ -560,7 +560,7 @@ class App {
         $this->mscache = new Cache($this->config['app.mscache']);
         $this->mscache->setNamespace('MS');
         
-        $rcache_adapter = new \Symfony\Component\Cache\Adapter\ArrayAdapter(0, false);
+        $rcache_adapter = new \Symfony\Component\Cache\Adapter\ArrayAdapter(10000, false, 100000, 10000);
         $this->rcache = new Cache($rcache_adapter);
     }
 
