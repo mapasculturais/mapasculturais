@@ -90,16 +90,16 @@ class Subsite extends EntityController {
             $app->view->jsObject['entity']['definition']['namespace']['options'] = $themes;
             $app->view->jsObject['entity']['definition']['namespace']['optionsOrder'] = $themes_order;
             $app->view->jsObject['entity']['definition']['namespace']['isMetadata'] = true;
-
-            foreach($app->view->_dict() as $key => $def){
-                $key = str_replace(' ', '+', $key);
-                $app->view->jsObject['entity']['definition']["dict:" . $key] = [
-                    'type' => 'text',
-                    'isMetadata' => 'true'
-                ];
+            
+            if($app->view->version < 2){
+                foreach($app->view->_dict() as $key => $def){
+                    $key = str_replace(' ', '+', $key);
+                    $app->view->jsObject['entity']['definition']["dict:" . $key] = [
+                        'type' => 'text',
+                        'isMetadata' => 'true'
+                    ];
+                }
             }
-
-
         },1000);
     }
 

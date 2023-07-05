@@ -107,9 +107,10 @@ app.component('registration-evaluation-actions', {
 
             var args = {};
             api.POST(url, args).then(res => res.json()).then(data => {
+                const messages = useMessages();
                 messages.success(this.text('Avaliação enviada'));
+                this.reloadPage();
             });
-            this.reloadPage();
         },
         reopen(registration){
             api = new API('registration');
@@ -117,9 +118,10 @@ app.component('registration-evaluation-actions', {
 
             var args = {};
             api.POST(url, args).then(res => res.json()).then(data => {
+                const messages = useMessages();
                 messages.success(this.text('Avaliação reaberta'));
+                this.reloadPage();
             });
-            this.reloadPage();
         },
         previous() {
             window.dispatchEvent(new CustomEvent('previousEvaluation', {detail:{registrationId:this.registration.id}}));

@@ -14,7 +14,7 @@ use MapasCulturais\i;
         <div class="leftSide">
             <div class="avatar">
                 <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarBig?.url">
-                <mc-icon :entity="entity"></mc-icon>
+                <mc-icon  v-if="!entity.files.avatar" :entity="entity"></mc-icon>
             </div>
             <nav class="share" aria-label="<?= i::__('Compartilhar') ?>">
                 <a v-if="entity.twitter" :href="entity.twitter" class="button button--text button--icon" aria-label="Twitter" target="_blank">
