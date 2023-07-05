@@ -31,7 +31,7 @@ abstract class Module {
 
         $priority = $class::isPlugin() ? 50 : 200;
         
-        $app->hook('app.modules.init:after', function() use($class, $active_theme){
+        $app->hook('mapasculturais.init', function() use($class, $active_theme){
             $reflaction = new \ReflectionClass($class);
         
             while($reflaction->getName() != __CLASS__){

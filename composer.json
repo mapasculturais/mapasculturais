@@ -1,6 +1,7 @@
 {
     "require": {
         "acelaya/doctrine-enum-type": "^2.3",
+        "akrabat/ip-address-middleware": "^2.1",
         "doctrine/annotations": "^2.0",
         "doctrine/dbal": "^3.6",
         "doctrine/orm": "^2.14",
@@ -15,10 +16,14 @@
         "sinergi/browser-detector": "^6.1",
         "slim/psr7": "^1.6",
         "slim/slim": "4.*",
-        "swiftmailer/swiftmailer": "5.*",
+        "smottt/wideimage": "*",
+        "symfony/amazon-mailer": "^6.3",
         "symfony/cache": "^6.2",
-        "akrabat/ip-address-middleware": "^2.1",
-        "smottt/wideimage": "*"
+        "symfony/mailchimp-mailer": "^6.3",
+        "symfony/mailer": "^6.3",
+        "symfony/mailgun-mailer": "^6.3",
+        "symfony/mime": "^6.3",
+        "symfony/sendgrid-mailer": "^6.3"
     },
     "autoload": {
         "psr-4": {

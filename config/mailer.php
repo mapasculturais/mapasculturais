@@ -2,74 +2,31 @@
 use \MapasCulturais\i;
 
 return [
-    'mailer.user'       => env('MAILER_USER', "admin@mapasculturais.org"),
-    'mailer.psw'        => env('MAILER_PASS', "password"),
-    'mailer.protocol'   => env('MAILER_PROTOCOL', 'ssl'),
-    'mailer.server'     => env('MAILER_SERVER', 'localhost'),
-    'mailer.port'       => env('MAILER_PORT', '465'),
+    /*
+    Define o [transport](https://symfony.com/doc/current/mailer.html#using-built-in-transports) do Symfony\mailer
+
+    Além dos _transports_ Built-in, estão instalados por padrão os abaixo listados:
+    
+    - [Amazon SES](https://github.com/symfony/symfony/blob/6.3/src/Symfony/Component/Mailer/Bridge/Amazon/README.md)
+    - [Mailchimp Mandrill](https://github.com/symfony/symfony/blob/6.3/src/Symfony/Component/Mailer/Bridge/Mailchimp/README.md)
+    - [Mailgun](https://github.com/symfony/symfony/blob/6.3/src/Symfony/Component/Mailer/Bridge/Mailgun/README.md)
+    - [SendGrid](https://github.com/symfony/symfony/blob/6.3/src/Symfony/Component/Mailer/Bridge/Sendgrid/README.md)
+
+    exemplos :
+    ```
+    'mailer.transport' => 'smtp://user:pass@smtp.example.com:25'
+    'mailer.transport' => 'sendgrid+smtp://KEY@default'
+    'mailer.transport' => 'sendgrid+api://KEY@default'
+    ```
+
+    Se suas credenciais possuem caracteres especiais, você deve _URL-encode_ elas. 
+    Por exemplo, `ses+smtp://ABC1234:abc+12/345@default` deve ser configurada como `ses+smtp://ABC1234:abc%2B12%2F345@default`
+
+
+    */
+    'mailer.transport'  => env('MAILER_TRANSPORT'),
     'mailer.from'       => env('MAILER_FROM', 'suporte@mapasculturais.org'),
     'mailer.alwaysTo'   => env('MAILER_ALWAYSTO', false),
-    'mailer.bcc'   => env('MAILER_BCC', ''),
-    'mailer.replyTo'   => env('MAILER_REPLYTO', ''),
-
-    'mailer.templates' => [
-        'welcome' => [
-            'title' => i::__("Bem-vindo(a) ao Mapas Culturais"),
-            'template' => 'welcome.html'
-        ],
-        'last_login' => [
-            'title' => i::__("Acesse a Mapas Culturais"),
-            'template' => 'last_login.html'
-        ],
-        'new' => [
-            'title' => i::__("Novo registro"),
-            'template' => 'new.html'
-        ],
-        'update_required' => [
-            'title' => i::__("Acesse a Mapas Culturais"),
-            'template' => 'update_required.html'
-        ],
-        'compliant' => [
-            'title' => i::__("Denúncia - Mapas Culturais"),
-            'template' => 'compliant.html'
-        ],
-        'suggestion' => [
-            'title' => i::__("Mensagem - Mapas Culturais"),
-            'template' => 'suggestion.html'
-        ],
-        'seal_toexpire' => [
-            'title' => i::__("Selo Certificador Expirando"),
-            'template' => 'seal_toexpire.html'
-        ],
-        'seal_expired' => [
-            'title' => i::__("Selo Certificador Expirado"),
-            'template' => 'seal_expired.html'
-        ],
-        'opportunity_claim' => [
-            'title' => i::__("Solicitação de Recurso de Oportunidade"),
-            'template' => 'opportunity_claim.html'
-        ],
-        'request_relation' => [
-            'title' => i::__("Solicitação de requisição"),
-            'template' => 'request_relation.html'
-        ],
-        'start_registration' => [
-            'title' => i::__("Inscrição iniciada"),
-            'template' => 'start_registration.html'
-        ],
-        'send_registration' => [
-            'title' => i::__("Inscrição enviada"),
-            'template' => 'send_registration.html'
-        ],
-        'claim_form' => [
-            'title' => i::__("Solicitação de recurso"),
-            'template' => 'claim_form.html'
-        ],
-        'claim_certificate' => [
-            'title' => i::__("Certificado de solicitação de recurso"),
-            'template' => 'claim_certificate.html'
-        ],
-
-    ]
-
+    'mailer.bcc'        => env('MAILER_BCC', ''),
+    'mailer.replyTo'    => env('MAILER_REPLYTO', '')
 ];
