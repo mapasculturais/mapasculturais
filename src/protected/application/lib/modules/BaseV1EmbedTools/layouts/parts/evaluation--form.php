@@ -34,18 +34,7 @@ $action = 'single';
                     <?php if ($part_name = $evaluationMethod->getEvaluationFormInfoPartName()) : ?>
                         <?php $this->part($part_name, $params); ?>
                     <?php endif; ?>
-
-                    <?php if ($infos && $entity->category && isset($infos[$entity->category])) : ?>
-                        <hr>
-                        <strong><?php echo $entity->category ?></strong>
-                        <p><?php echo $infos[$entity->category] ?></p>
-                    <?php endif; ?>
-
-                    <?php if ($infos && isset($infos['general'])) : ?>
-                        <hr>
-                        <strong><?php i::_e('Informações gerais') ?></strong>
-                        <p><?php echo $infos['general'] ?></p>
-                    <?php endif; ?>
+                    <br>
                 </div>
             <?php endif; ?>
             <form>
