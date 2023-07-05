@@ -1,0 +1,30 @@
+app.component('mc-summary-agent', {
+    template: $TEMPLATES['mc-summary-agent'],
+
+    props: {
+        entity:{
+            type: Entity,
+            required: true
+        }
+    },
+    data() {
+        let avaliableEvaluationFields = $MAPAS.avaliableEvaluationFields
+        let opportunity = this.entity.opportunity;
+        let owner = this.entity.agentsData.owner;
+
+        return { avaliableEvaluationFields, owner, opportunity }
+    },
+    methods: {
+        canSee(item) {
+            if(this.entity.currentUserPermissions['@control']){
+                return true
+            }
+
+            if (this.avaliableEvaluationFields[item]) {
+                return true;
+            }
+            
+            return false;
+        },
+    },
+});

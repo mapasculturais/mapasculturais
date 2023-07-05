@@ -1,6 +1,13 @@
 @use '../settings/mixins' as *;
 
 .opportunity-data-collection {
+    &__section {
+        border-top: size(2) solid var(--mc-gray-100);
+        border-bottom: size(2) solid var(--mc-gray-100);
+        padding: size(16) 0 size(40);
+        gap: size(40) size(20);
+    }
+
     &__horizontal-line {
         max-width: size(1038);
         border-bottom: 1px solid var(--mc-gray-100);
@@ -27,19 +34,12 @@
     }
 
     &__category {
+        align-items: start;      
         display: grid;
         grid-template-columns: 1fr 1fr;
-      
     }
 
     &__registration {
-        padding-left: size(16);
-        .field {
-            padding-bottom: size(24);
-
-            &__title {
-                margin: 0;
-            }
-        }
+        padding-left: size(35);
     }
 }
