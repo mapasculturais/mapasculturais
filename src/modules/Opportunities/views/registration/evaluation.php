@@ -17,6 +17,7 @@ $this->import('
     registration-evaluation-actions
     registration-info
     v1-embed-tool
+    registration-evaluation-info
 ');
 
 $opportunity = $entity->opportunity;
@@ -73,21 +74,19 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
             </main>
 
             <aside>
-                <div class="registration-evaluation-actions">
-                    <div class="registration-evaluation-actions__form">
-
-                        <div class="registration-evaluation-actions__form--title">
-                            <p><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></p>
-                        </div>
-                        <?php if ($valuer_user) : ?>
-                            <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                        <?php else : ?>
-                            <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                        <?php endif ?>
-
-                    </div>
-                    <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
+                <div class="registration__actions">
+                    <h3 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></h3>
+                    
+                    <registration-evaluation-info :entity="entity"></registration-evaluation-info>
+                    
+                    <?php if ($valuer_user) : ?>
+                        <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                    <?php else : ?>
+                        <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                    <?php endif ?>
                 </div>
+                
+                <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
             </aside>
         </mc-container>
     </div>
