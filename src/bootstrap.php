@@ -56,4 +56,7 @@ if (REDIS_SESSION) {
 ini_set( "session.gc_maxlifetime", SESSION_TIMEOUT );
 ini_set( "session.cookie_lifetime", SESSION_TIMEOUT );
 
+if(!isset($_SERVER['HTTP_HOST'])) {
+    $_SERVER['HTTP_HOST'] = 'localhost';
+}
 require_once PROTECTED_PATH . 'vendor/autoload.php';
