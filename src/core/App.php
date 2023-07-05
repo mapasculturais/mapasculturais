@@ -373,13 +373,13 @@ class App {
         RespectorValidationFactory::setDefaultInstance($instance);
 
         $this->_initLogger();
-
         $this->_initAutoloader();
         $this->_initCache();
         $this->_initDoctrine();
 
+        $this->_initRouteManager();
+
         $this->_initSubsite();
-        $this->_initAuthProvider();
         $this->_initTheme();
 
         $this->applyHookBoundTo($this, 'app.init:before');
@@ -396,8 +396,7 @@ class App {
         $this->view->init();
 
         $this->_initStorage();
-
-        $this->_initRouteManager();
+        $this->_initAuthProvider();
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
@@ -790,7 +789,6 @@ class App {
         // para que na primeira rodada do db-update não sejam incluídos os plugins
         if(!env('DISABLE_PLUGINS')) {
             $this->applyHookBoundTo($this, 'app.plugins.init:before');
-
             foreach($this->config['plugins'] as $slug => $plugin){
                 $_namespace = $plugin['namespace'];
                 $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
