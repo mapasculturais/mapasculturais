@@ -65,6 +65,8 @@ COPY composer.json /var/www/composer.json
 COPY composer.lock /var/www/composer.lock
 
 WORKDIR /var/www/
+
+ENV COMPOSER_ALLOW_SUPERUSER=1 
 RUN composer.phar install
 
 COPY config /var/www/config
