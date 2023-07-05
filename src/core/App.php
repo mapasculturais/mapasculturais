@@ -36,9 +36,6 @@ use MapasCulturais\Exceptions\WorkflowRequest;
 use ReflectionException;
 use RuntimeException;
 use Slim\App as SlimApp;
-use Swift_IoException;
-use Swift_Message;
-use Swift_SwiftException;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler;
@@ -46,7 +43,18 @@ use Monolog\Level;
 use Monolog\Logger;
 
 use Psr\Http\Message\ResponseInterface as ResponseInterface;
+use Psr\Log\InvalidArgumentException as LogInvalidArgumentException;
 use Respect\Validation\Factory as RespectorValidationFactory;
+use Symfony\Component\Mailer\Exception\InvalidArgumentException as ExceptionInvalidArgumentException;
+use Symfony\Component\Mailer\Exception\LogicException as ExceptionLogicException;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\Exception\UnsupportedSchemeException;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Component\Mime\Email;
+use TypeError;
+use Throwable;
 
 /**
  * @property-read string $id id da aplicação
@@ -1805,93 +1813,71 @@ class App {
     /*********************************************************
      *                       MAILER
      *********************************************************/
-    
+
     /**
-     * Retorna uma instância configurada do Swift_Mailer
+     * Cria e retorna uma instância do Mailer Transport
      * 
-     * @return false|\Swift_Mailer 
+     * @return TransportInterface 
+     *
+     * @throws ExceptionInvalidArgumentException 
+     * @throws UnsupportedSchemeException 
      */
-     function getMailer() {
-        $transport = [];
+    function getMailerTransport(): TransportInterface {
+        $transport = Transport::fromDsn($this->config['mailer.transport']);
 
-        // server
-        $server = isset($this->config['mailer.server']) &&  !empty($this->config['mailer.server']) ? $this->config['mailer.server'] : false;
+        $this->applyHook('mailer.transport', [&$transport]);
 
-        // default transport SMTP
-        $transport_type = isset($this->config['mailer.transport']) &&  !empty($this->config['mailer.transport']) ? $this->config['mailer.transport'] : 'smtp';
+        return $transport;
+    }
 
-        // default port to 25
-        $port = isset($this->config['mailer.port']) &&  !empty($this->config['mailer.port']) ? $this->config['mailer.port'] : 25;
+    /**
+     * Retorna uma instância configurada do Mailer
+     * 
+     * @return Mailer 
+     * 
+     * @throws ExceptionInvalidArgumentException 
+     * @throws UnsupportedSchemeException 
+     */
+    function getMailer(): Mailer {
+        $mailer = new Mailer($this->getMailerTransport());
 
-        // default encryption protocol to ssl
-        $protocol = isset($this->config['mailer.protocol']) ? $this->config['mailer.protocol'] : null;
-
-        if ($transport_type == 'smtp' && false !== $server) {
-
-            $transport = \Swift_SmtpTransport::newInstance($server, $port, $protocol);
-
-            // Maybe add username and password
-            if (isset($this->config['mailer.user']) && !empty($this->config['mailer.user']) &&
-                isset($this->config['mailer.psw']) && !empty($this->config['mailer.psw']) ) {
-
-                $transport->setUsername($this->config['mailer.user'])->setPassword($this->config['mailer.psw']);
-            }
-
-        } elseif ($transport_type == 'sendmail' && false !== $server) {
-            $transport = \Swift_SendmailTransport::newInstance($server);
-        } elseif ($transport_type == 'mail') {
-            $transport = \Swift_MailTransport::newInstance();
-        } else {
-            return false;
-        }
-
-        $instance = \Swift_Mailer::newInstance($transport);
-
-        return $instance;
+        return $mailer;
     }
 
 
     /**
      * Cria uma mensagem de email
      * 
-     * @param array $args 
-     * @return Swift_Message 
-     * 
-     * @throws Swift_IoException 
-     * @throws Swift_SwiftException 
      */
-    function createMailMessage(array $args = []){
-        $message = \Swift_Message::newInstance();
+    function createMailMessage(array $args = []): Email {
+        $message = new Email();
 
         if($this->config['mailer.from']){
-            $message->setFrom($this->config['mailer.from']);
+            $message->from($this->config['mailer.from']);
         }
 
         if($this->config['mailer.alwaysTo']){
-            $message->setTo($this->config['mailer.alwaysTo']);
+            $message->to($this->config['mailer.alwaysTo']);
         }
 
         if($this->config['mailer.bcc']){
-            $message->setBcc($this->config['mailer.bcc']);
+            $message->bcc($this->config['mailer.bcc']);
         }
 
         if($this->config['mailer.replyTo']){
-            $message->setReplyTo($this->config['mailer.replyTo']);
+            $message->replyTo($this->config['mailer.replyTo']);
         }
 
-        $type = $message->getHeaders()->get('Content-Type');
-        $type->setValue('text/html');
-        $type->setParameter('charset', 'utf-8');
-
         $original = [];
-        foreach($args as $key => $value){
-            if(in_array(strtolower($key), ['to', 'cc', 'bcc']) && $this->config['mailer.alwaysTo']){
-                $original[$key] = $value;
+        foreach($args as $method_name => $value){
+            if(in_array($method_name, ['to', 'cc', 'bcc']) && $this->config['mailer.alwaysTo']){
+                $original[$method_name] = $value;
                 continue;
             }
 
-            $key = ucfirst($key);
-            $method_name = 'set' . $key;
+            if($method_name == 'body') {
+                $method_name = 'html';
+            }
 
             if(method_exists($message, $method_name)){
                 $message->$method_name($value);
@@ -1903,7 +1889,8 @@ class App {
                 if(is_array($val)){
                     $val = implode(', ', $val);
                 }
-                $message->setBody("<strong>ORIGINALMENTE $key:</strong> $val <br>\n" . $message->getBody());
+                $current_body = $message->getHtmlBody();
+                $message->html("<strong>ORIGINALMENTE $key:</strong> $val <br>\n $current_body");
             }
         }
 
@@ -1913,21 +1900,20 @@ class App {
     /**
      * Envia uma mensagem de email
      * 
-     * @param Swift_Message $message 
+     * @param Email $message 
      * @return bool 
      */
-    function sendMailMessage(\Swift_Message $message){
-        $failures = [];
+    function sendMailMessage(Email $message): bool {
         $mailer = $this->getMailer();
 
         if (!is_object($mailer))
             return false;
 
         try {
-            $mailer->send($message,$failures);
+            $mailer->send($message);
             return true;
-        } catch(\Swift_TransportException $exception) {
-            App::i()->log->info('Swift Mailer error: ' . $exception->getMessage());
+        } catch(TransportExceptionInterface $exception) {
+            $this->log->error('Mailer error: ' . $exception->getMessage());
             return false;
         }
     }
@@ -1937,9 +1923,12 @@ class App {
      * 
      * @param array $args 
      * @return bool 
-     * 
-     * @throws Swift_IoException 
-     * @throws Swift_SwiftException 
+     * @throws TypeError 
+     * @throws ExceptionInvalidArgumentException 
+     * @throws UnsupportedSchemeException 
+     * @throws LogInvalidArgumentException 
+     * @throws Throwable 
+     * @throws ExceptionLogicException 
      */
     function createAndSendMailMessage(array $args = []){
         $message = $this->createMailMessage($args);

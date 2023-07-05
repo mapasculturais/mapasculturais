@@ -38,11 +38,8 @@ services:
       - PENDING_PCACHE_RECREATION_INTERVAL=15
       - JOBS_INTERVAL=15
       - REDIS_CACHE=redis
-
-      - MAILER_SERVER=mailhog
-      - MAILER_PORT=1025
+      - MAILER_TRANSPORT=smtp://mailhog:1025
       - MAILER_FROM=sysadmin@localhost
-      - MAILER_PROTOCOL= #precisa ficar vazio para o mailhog funcionar
       
       # chaves de teste do google recaptcha
       - GOOGLE_RECAPTCHA_SITEKEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
