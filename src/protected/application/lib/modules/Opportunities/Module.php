@@ -207,6 +207,16 @@ class Module extends \MapasCulturais\Module{
             $app->view->jsObject['avaliableEvaluationFields'] = $entity->opportunity->avaliableEvaluationFields;
         });
 
+        $app->hook('Theme::addEvaluationInfosToJs', function () use ($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
+            $opportunity = $this->controller->requestedEntity;
+            $configuration = $opportunity->evaluationMethodConfiguration;
+            $infos = (array) $configuration->infos;
+
+            $this->jsObject['evaluationInfos'] = $infos;
+        });
+
         $app->hook('Theme::addRegistrationPhasesToJs', function ($unused = null, $registration = null) use ($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
             $this->useOpportunityAPI();
