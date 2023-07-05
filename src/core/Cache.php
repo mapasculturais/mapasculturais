@@ -36,11 +36,14 @@ class Cache {
 
     protected function getCacheItem(string $key): CacheItem {
         $key = $this->parseKey($key);
-        
-        if (!isset($this->items[$key])) {
-            $this->items[$key] = $this->adapter->getItem($key);
+        $item = $this->items[$key] ?? null;
+        if (!$item) {
+            $item = $this->adapter->getItem($key);
+            if($item->isHit()) {
+                $this->items[$key] = $item;
+            }
         } 
-        return $this->items[$key];
+        return $item;
     }
 
     function save(string $key, $value, int $cache_ttl = DAY_IN_SECONDS) {
