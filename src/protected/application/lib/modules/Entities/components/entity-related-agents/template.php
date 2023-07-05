@@ -13,7 +13,7 @@ $this->import('
 ');
 ?>
 <div :class="classes" class="entity-related-agents" v-if="editable || hasGroups()">
-    <h3><?php i::_e("Agentes relacionados") ?></h3>
+    <h4 class="bold"><?php i::_e("Agentes relacionados") ?></h4>
     <div v-for="(relations, groupName) in groups" class="entity-related-agents__group">
         <div class="entity-related-agents__group--name">
             <label> {{groupName}} </label>
