@@ -89,20 +89,4 @@
             &__action {}
           }
     }
-
-    &__form {
-        background-color: var(--mc-white);
-        box-shadow: var(--mc-shadow-lv1);
-        border-radius: var(--mc-border-radius-xs);
-
-        &--title {
-            font-size: size(18);
-            color: var(--mc-primary-500);
-
-            p {
-                margin: 0;
-                padding: size(20) size(16);
-            }
-        }
-    }
 }

@@ -211,7 +211,8 @@
                 &__order {
                     align-items: flex-end;
                     display: flex;
-                    gap: size(16);
+                    gap: size(20) size(24);
+                    margin-bottom: size(10);
             
                     .field {
                         width: auto;
@@ -262,6 +263,15 @@
                                     color: var(--mc-white);
                                 }
                             }
+                        }
+                    }
+
+                    @media (max-width: size(610)) {
+                        align-items: center;
+                        flex-direction: column;
+
+                        .field, .foundResults {
+                            width: 100%;
                         }
                     }
                 }
