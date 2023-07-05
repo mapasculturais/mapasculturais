@@ -80,17 +80,16 @@ return array(
         'documento' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF ou CNPJ'),
-            'serialize' => function($value, $entity = null){
+            'serialize' => function($value, $entity = null) {
                 /**@var MapasCulturais\App $this */
-                $key = "hook:documento:{$entity}";
-                if(!$this->rcache->contains($key)){
-                    if($entity->type && $entity->type->id == 1){
+                if(!$this->rcache->contains("$entity:SET_documento")){
+                    $this->rcache->save("$entity:SET_documento", true);
+                    if($entity->type && $entity->type->id == 1 && !$this->rcache->contains("$entity:SET_cpf")){
                         $entity->cpf = $value;
-                    }else if($entity->type && $entity->type->id == 2){
+                    }else if($entity->type && $entity->type->id == 2 && !$this->rcache->contains("$entity:SET_cnpj")){
                         $entity->cnpj = $value;
 
                     }
-                   $this->rcache->save($key, 1);
                 }
 
                 return Utils::formatCnpjCpf($value);
@@ -102,14 +101,13 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CNPJ'),
             'type' => 'cnpj',
-            'serialize' => function($value, $entity = null){
+            'serialize' => function($value, $entity = null) {
                 /**@var MapasCulturais\App $this */
-                $key = "hook:cnpj:{$entity}";
-                if(!$this->rcache->contains($key)){
-                    if($entity->type && $entity->type->id == 2){
+                if(!$this->rcache->contains("$entity:SET_cnpj")){
+                    $this->rcache->save("$entity:SET_cnpj", true);
+                    if($entity->type && $entity->type->id == 2 && !$this->rcache->contains("$entity:SET_documento")){
                         $entity->documento = $value;
                     }
-                    $this->rcache->save($key, 1);
                 }
                 return Utils::formatCnpjCpf($value);
             },
@@ -129,14 +127,14 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF'),
             'type' => 'cpf',
-            'serialize' => function($value, $entity = null){
-                $key = "hook:cpf:{$entity}";
-                if(!$this->rcache->contains($key)){
-                    /**@var MapasCulturais\App $this */
-                    if($entity->type && $entity->type->id == 1){
+            'serialize' => function($value, $entity = null) {
+                /**@var MapasCulturais\App $this */
+                if(!$this->rcache->contains("$entity:SET_cpf")){
+                    $this->rcache->save("$entity:SET_cpf", true);
+                    
+                    if($entity->type && $entity->type->id == 1 && !$this->rcache->contains("$entity:SET_documento")){
                         $entity->documento = $value;
                     }
-                    $this->rcache->save($key, 1);
                 }
                 return Utils::formatCnpjCpf($value);
             },
