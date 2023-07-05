@@ -378,6 +378,7 @@ class App {
         $this->_initDoctrine();
 
         $this->_initRouteManager();
+        $this->_initAuthProvider();
 
         $this->_initSubsite();
         $this->_initTheme();
@@ -396,7 +397,6 @@ class App {
         $this->view->init();
 
         $this->_initStorage();
-        $this->_initAuthProvider();
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
