@@ -75,6 +75,9 @@ COPY scripts /var/www/scripts
 COPY src /var/www/src
 COPY var /var/www/var
 
+WORKDIR /var/www/src/
+RUN pnpm install && pnpm run build
+
 RUN chown www-data:www-data -R /var/www
 
 COPY docker/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
