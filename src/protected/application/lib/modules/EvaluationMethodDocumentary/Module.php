@@ -275,20 +275,29 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 return;
             }
 
-            $consolidated_results = $app->em->getConnection()->fetchAll("
-                SELECT 
-                    consolidated_result evaluation,
-                    COUNT(*) as num
-                FROM 
-                    registration
-                WHERE 
-                    opportunity_id = :opportunity AND
-                    status > 0 
-                GROUP BY consolidated_result
-                ORDER BY num DESC", ['opportunity' => $opportunity->id]);
+            $consolidated_results = $self->findConsolidatedResult($opportunity);
             
             $this->part('documentary--apply-results', ['entity' => $opportunity, 'consolidated_results' => $consolidated_results]);
         });
+    }
+
+    public function findConsolidatedResult($opportunity)
+    {
+        $app = App::i();
+        
+        $consolidated_results = $app->em->getConnection()->fetchAll("
+        SELECT 
+            consolidated_result evaluation,
+            COUNT(*) as num
+        FROM 
+            registration
+        WHERE 
+            opportunity_id = :opportunity AND
+            status > 0 
+        GROUP BY consolidated_result
+        ORDER BY num DESC", ['opportunity' => $opportunity->id]);
+
+        return $consolidated_results;
     }
 
     public function _getConsolidatedResult(Entities\Registration $registration) {
