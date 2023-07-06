@@ -40,7 +40,7 @@ $this->import('
                 </template>
             </mc-modal>   
 
-            <a class="expand-stepper" v-if="step.active" @click="step.close()"><label><?= i::__('Fechar') ?></label><mc-icon name="arrowPoint-up"></mc-icon></a>
+            <a class="expand-stepper" v-if="step.active" @click="step.close()"><label><?= i::__('Diminuir') ?></label><mc-icon name="arrowPoint-up"></mc-icon></a>
             <a class="expand-stepper" v-if="!step.active" @click="step.open()"><label><?= i::__('Expandir') ?></label> <mc-icon name="arrowPoint-down"></mc-icon></a>
         </div>
     </template>
