@@ -177,6 +177,28 @@ abstract class Theme extends \Slim\View {
             }
         }, 100);
 
+
+        $app->hook('app.init:after', function () use($app) {
+            if(!$app->user->is('guest') && $app->user->profile->status < 1){
+                if($app->view->version < 2) {
+                    $app->hook('view.partial(nav-main-user).params', function($params, &$name){
+                        $name = 'header-profile-link';
+                    });
+                }
+                
+                // redireciona o usuário para a edição do perfil se este não estiver publicado
+                $app->hook('GET(panel.<<*>>):before, GET(<<*>>.<<edit|create>>):before', function() use($app){
+                    if($entity = $this->requestedEntity) {
+                        /** @var \MapasCulturais\Entity $entity */
+                        if(!$entity->equals($app->user->profile)){
+                            $app->redirect($app->user->profile->editUrl);
+                        }
+                    } else {
+                        $app->redirect($app->user->profile->editUrl);
+                    }
+                });
+            }
+        });
     }
 
     function init(){
