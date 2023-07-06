@@ -86,7 +86,7 @@ class Theme extends \MapasCulturais\Theme
 
         // for twitter
         $image_url_twitter = $app->view->asset($app->config['share.image_twitter'], false);
-        $this->documentMeta[] = array("name" => 'twitter:card', 'content' => $site_name);
+        $this->documentMeta[] = array("name" => 'twitter:card', 'content' => 'photo');
         $this->documentMeta[] = array("name" => 'twitter:title', 'content' => $title);
         $this->documentMeta[] = array("name" => 'twitter:description', 'content' => $description);
         $this->documentMeta[] = array("name" => 'twitter:image', 'content' => $image_url_twitter);
