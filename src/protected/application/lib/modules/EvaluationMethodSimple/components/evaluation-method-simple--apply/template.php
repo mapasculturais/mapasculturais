@@ -31,11 +31,13 @@ $this->import('
                 </select>
             </div>
         </div>
+        <br>
         <div class="col-12">
             <label>
                 <?php i::_e('Status') ?>
                 <input type="checkbox" v-model="applyAll">
             </label>
+            <small><?php i::_e('Deixando desmarcado, o status será aplicado somente às inscrições com status pendente')?></small>
         </div>
     </template>
 
