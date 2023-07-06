@@ -87,6 +87,10 @@ app.component('select-entity', {
             type: String,
             default: ''
         },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
     
     methods: {
