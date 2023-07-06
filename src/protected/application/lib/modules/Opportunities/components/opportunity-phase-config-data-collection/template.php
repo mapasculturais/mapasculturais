@@ -49,12 +49,12 @@ $this->import('
         <div class="opportunity-data-collection__delete col-12" v-if="!phase.isLastPhase && !phase.isFirstPhase">
             <mc-confirm-button message="Confirma a execução da ação?" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
-                    <a class="opportunity-data-collection__trash" @click="modal.open">
+                    <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
                         <div class="icon">
-                            <mc-icon name="trash"></mc-icon>
+                            <mc-icon name="trash" class="secondary__color"></mc-icon> 
                         </div>
-                        <label class="label">{{ text('excluir_fase_coleta_dados') }}</label>
-                    </a>
+                        <h5>{{ text('excluir_fase_coleta_dados') }}</h5>
+                    </button>
                 </template>
             </mc-confirm-button>
         </div>
