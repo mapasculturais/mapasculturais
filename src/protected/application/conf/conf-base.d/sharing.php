@@ -1,7 +1,6 @@
 <?php
 
 return[
-    'share.facebook' => env('SHARE_IMAGE_FACEBOOK',  'img/share_alterado.png'),
-    'share.twitter' =>  env('SHARE_IMAGE_TWITTER',  'img/share.png'),
-    'share.linkedin' =>   env('SHARE_IMAGE_LINKEDIN',  'img/share.png'),
+    'share.image' => env('SHARE_IMAGE', 'img/share-square.png'),
+    'share.image_twitter' =>  env('SHARE_IMAGE_TWITTER', 'img/share-square.png'),
 ];
