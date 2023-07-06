@@ -11,7 +11,7 @@ $this->import('
     mc-popover
 ');
 ?>
-    <mc-popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" classes="select-entity__popover"> 
+    <mc-popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" :classes="[classes, 'select-entity__popover']"> 
         <template #button="{ toggle }">
             <slot name="button" :toggle="toggle"></slot>
         </template>

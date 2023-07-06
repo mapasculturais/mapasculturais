@@ -18,7 +18,8 @@ $this->import('
     <template #header-title="{index, item}">        
         <div class="stepper-header__content">
             <div class="info">
-                <h2 v-if="index" class="info__title">{{item.name}}</h2>
+                <h2 v-if="index && !item.__objectType == 'evaluationmethodconfiguration'" class="info__title">{{item.name}}</h2>
+                <h2 v-if="!item.isLastPhase && item.__objectType == 'evaluationmethodconfiguration'" class="info__title">Inscritos em {{evaluationMethods[item.type].name}}</h2>
                 <h2 v-if="!index" class="info__title"><?= i::__('Período de inscrição') ?></h2>
                 <div v-if="!item.isLastPhase" class="info__type">
                     <span class="title"> <?= i::__('Tipo') ?>: </span>
@@ -47,11 +48,12 @@ $this->import('
 
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
             <opportunity-phase-list-evaluation :entity="item" :phases="phases"></opportunity-phase-list-evaluation>
+            <div class="evaluation-line col-12"></div>
+
         </template>
 
         <template v-if="item.__objectType == 'opportunity'">
             <opportunity-phase-list-data-collection :entity="item" :phases="phases"></opportunity-phase-list-data-collection>
         </template>
-
     </template>
 </mc-stepper-vertical>

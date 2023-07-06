@@ -27,6 +27,7 @@ $this->import('
             <h3><?php i::_e("Status das avaliações") ?></h3>
             <p v-for="(value, label) in entity.summary.evaluations"><?= i::__("Quantidade de inscrições") ?> <strong>{{label.toLowerCase()}}</strong>: <strong>{{value}}</strong> <?php i::_e('inscrições') ?></p>
         </div>
+        <div class="opportunity-phase-list-evaluation__line col-12"></div>
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
             <mc-link :entity="entity.opportunity" class="opportunity-phase-list-data-collection_action--button" icon="external" route="registrations" right-icon>
               <?= i::__("Lista de inscrições da fase") ?>
@@ -37,7 +38,7 @@ $this->import('
               <?= i::__("Lista de avaliações") ?>
             </mc-link>
         </div>
-        <div class="config-phase__line-bottom col-12"></div>
+        <div class="opportunity-phase-list-evaluation__line col-12"></div>
         <opportunity-phase-publish-date-config :phase="entity.opportunity" :phases="phases" hide-datepicker></opportunity-phase-publish-date-config>
     </div>
 </mc-card>
