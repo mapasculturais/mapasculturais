@@ -34,7 +34,7 @@ $this->import('
 			<!-- Logado -->
 			<form class="logged__form grid-12" @submit.prevent>
 				<div class="col-6 sm:col-12">
-					<select-entity type="agent" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)">
+					<select-entity type="agent" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
 						<template #button="{ toggle }">
 							<span v-if="!agent" class="fakeInput" @click="toggle()">
 								<div class="fakeInput__img">
