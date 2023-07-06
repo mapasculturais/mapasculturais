@@ -369,12 +369,38 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return false;
     }
 
+    public function getCommittee($return_relation = true) {
+        $app = App::i();
+
+        $committee = $this->getAgentRelations(null, true);
+        
+        if(!$return_relation) {
+            $committee = array_map(function($r){ return $r->agent; }, $committee);
+        }
+        
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}.committee", [&$committee, $return_relation]);
+        
+        return $committee;
+    }
+
     protected function canUserCreate($user){
         return $this->opportunity->canUser('modify', $user);
     }
 
     protected function canUserModify($user){
         return $this->opportunity->canUser('modify', $user);
+    }
+
+    protected function canUserRemove($user){
+        if ($this->opportunity->publishedRegistrations) {
+            return false;
+        }
+
+        if ($this->getCommittee()) {
+            return false;
+        }
+
+        return parent::canUserRemove($user);
     }
     
     function getExtraEntitiesToRecreatePermissionCache(){

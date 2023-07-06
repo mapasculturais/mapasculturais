@@ -151,27 +151,6 @@ ol.mc-stepper-vertical>li {
             }
         }
 
-        .phase-delete {
-            margin: 0 auto;
-
-            &__trash {
-                display: flex;
-                gap: size(11);
-                text-decoration: none;
-
-                .iconify {
-                    svg {
-                        font-size: 20px;
-                        color: red;
-                    }
-                }
-            }
-
-            &__label {
-                text-decoration: none;
-            }
-        }
-
     }
 }
 
@@ -320,36 +299,15 @@ ol.mc-stepper-vertical>li.active::before {
     }
 
     &-delete {
-
+        justify-self: center;
+        
         &__trash {
-            display: flex;
-            flex-direction: row;
-            max-width: 100%;
-            gap: size(4);
-            justify-content: center;
-
             .icon {
-
-                // justify-content: center;
-                // align-items: baseline;
-                // margin: 0 auto;
-
                 svg {
-                    color: var(--mc-secondary-500);
-                    font-size: 18px;
+                    font-size: size(18);
                 }
             }
-
-            .label {
-                font-weight: 700;
-                font-size: 14px;
-                line-height: 19px;
-                color: var(--mc-black);
-                text-decoration: none;
-            }
         }
-
-
     }
 }
 
