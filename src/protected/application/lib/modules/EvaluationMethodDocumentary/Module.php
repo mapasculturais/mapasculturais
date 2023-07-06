@@ -268,7 +268,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
     
         });
 
-        $app->hook('template(opportunity.single.header-inscritos):actions', function() use($app) {
+        $app->hook('template(opportunity.single.header-inscritos):actions', function() use($app, $self) {
             $opportunity = $this->controller->requestedEntity;
             
             if ($opportunity->evaluationMethodConfiguration->getDefinition()->slug != 'documentary') {
