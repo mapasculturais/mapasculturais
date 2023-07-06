@@ -320,6 +320,33 @@ class App {
     }
 
     /**
+     * Analisa e se necessário corrige o array de configuração da aplicação
+     * 
+     * @param array $config 
+     * @return array 
+     */
+    function parseConfig(array $config): array {
+        if(empty($config['base.url'])){
+            $config['base.url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://') . 
+                                  (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost') . '/';
+        }
+
+        if(empty($config['base.assetUrl'])){
+            $config['base.assetUrl'] = $config['base.url'] . 'assets/';
+        }
+
+        if(!is_array($config['app.verifiedSealsIds'])) {
+            if (is_numeric($config['app.verifiedSealsIds'])) { 
+                $config['app.verifiedSealsIds'] = [(int) $config['app.verifiedSealsIds']];
+            } else {
+                $config['app.verifiedSealsIds'] = [];
+            }
+        }
+
+        return $config;
+    }
+
+    /**
      * Inicializa a aplicação
      * 
      * @param array $config array de configuração da aplicação
@@ -332,20 +359,13 @@ class App {
      * @throws Exception 
      */
     function init(array $config) {
+        $config = $this->parseConfig($config);
+        
         $this->_config = &$config;
         $this->config = &$config;
         
         // necessário para obter o endereço ip da origem do request
         $this->slim->add(new \RKA\Middleware\IpAddress);
-
-        if(empty($config['base.url'])){
-            $config['base.url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://') . 
-                                  (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost') . '/';
-        }
-
-        if(empty($config['base.assetUrl'])){
-            $config['base.assetUrl'] = $config['base.url'] . 'assets/';
-        }
 
         $this->permissionCacheEnabled = $config['app.usePermissionsCache'] ?? true;
 
