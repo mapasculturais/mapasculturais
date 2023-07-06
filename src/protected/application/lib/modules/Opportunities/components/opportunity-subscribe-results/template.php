@@ -48,7 +48,6 @@ $this->import('
 
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
             <opportunity-phase-list-evaluation :entity="item" :phases="phases"></opportunity-phase-list-evaluation>
-            <div class="evaluation-line col-12"></div>
 
         </template>
 
