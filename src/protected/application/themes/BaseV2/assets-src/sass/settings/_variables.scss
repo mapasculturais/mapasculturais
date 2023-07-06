@@ -16,11 +16,11 @@ $lightness-300: 25% !default;
 $lightness-700: 25% !default;
 
 // Brand colors
-$primary-500: #0074C1 !default;
+$primary-500: #117C83 !default;
 $primary-300: lighten($primary-500, $lightness-300) !default;
 $primary-700: darken($primary-500, $lightness-700) !default;
 
-$secondary-500: #D50200 !default;
+$secondary-500: #D14526 !default;
 $secondary-300: lighten($secondary-500, $lightness-300) !default;
 $secondary-700: darken($secondary-500, $lightness-700) !default;
 
@@ -37,20 +37,20 @@ $events-500: #9C4EC7 !default;
 $events-300: lighten($events-500, $lightness-300) !default;
 $events-700: darken($events-500, $lightness-700) !default;
 
-$opportunities-500: #D50200 !default;
+$opportunities-500: #D14526 !default;
 $opportunities-300: lighten($opportunities-500, $lightness-300) !default;
 $opportunities-700: darken($opportunities-500, $lightness-700) !default;
 
-$projects-500: #0074C1 !default;
+$projects-500:  #117C83!default;
 $projects-300: lighten($projects-500, $lightness-300) !default;
 $projects-700: darken($projects-500, $lightness-700) !default;
 
-$spaces-500: #498200 !default;
+$spaces-500: #538D0A !default;
 $spaces-300: lighten($spaces-500, $lightness-300) !default;
 $spaces-700: darken($spaces-500, $lightness-700) !default;
 
 // Feedback colors
-$danger-500: #ED0000 !default;
+$danger-500: #EF1010 !default;
 $danger-300: lighten($danger-500, $lightness-300) !default;
 $danger-700: darken($danger-500, $lightness-700) !default;
 
@@ -67,10 +67,10 @@ $helper-300: lighten($helper-500, $lightness-300) !default;
 $helper-700: darken($helper-500, $lightness-700) !default;
 
 // Home 
-$home-opportunities: $secondary-300 !default;
+$home-opportunities: $secondary-500 !default;
 $home-entities: $gray-100 !default;
-$home-feature: $primary-300 !default;
-$home-register: $secondary-700 !default;
+$home-feature: $secondary-300 !default;
+$home-register: $primary-500 !default;
 $home-map: $white !default;
 $home-developers: $gray-100 !default;
 $home-header-gradient: linear-gradient(180deg, rgba(0, 116, 193, 0.45) 0%, rgba(255, 164, 163, 0.45) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
