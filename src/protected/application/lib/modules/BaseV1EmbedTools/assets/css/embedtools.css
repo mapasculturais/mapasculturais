@@ -601,6 +601,10 @@ textarea {
     flex-wrap: wrap;
 }
 
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--info .btn{
+    margin-left: 8px !important;
+}
+
 .action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--fetch {
     padding: 18px 24px 29px;
     margin: 0;
