@@ -49,6 +49,9 @@ RUN pecl install igbinary \
 RUN yes | pecl install -o -f redis \
     && docker-php-ext-enable redis
 
+# Install opcache
+RUN docker-php-ext-install opcache
+
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --install-dir=/usr/local/bin && \
