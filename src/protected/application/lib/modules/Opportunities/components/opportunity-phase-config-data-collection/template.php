@@ -30,8 +30,10 @@ $this->import('
                 
                 <div class="opportunity-data-collection__registration grid-12">
                     <h4 class="bold col-12"><?= i::__("Limites na inscrição") ?></h4>
-                    <entity-field :entity="phase" prop="registrationLimit" :autosave="300" classes="col-12"></entity-field>
-                    <entity-field :entity="phase" prop="registrationLimitPerOwner" :autosave="300" classes="col-12"></entity-field>
+                    <h5 class="bold col-12 "><?= i::__("Total de vagas")?></h5>
+                    <entity-field :entity="phase" prop="registrationLimit" label="Defina o número limite de vagas  para o edital ou oportunidade"  :autosave="300" classes="opportunity-data-collection__field col-12"></entity-field>
+                    <h5 class="bold col-12 "><?= i::__("Inscrições por agente")?></h5>
+                    <entity-field :entity="phase" prop="registrationLimitPerOwner" label="Defina o número de inscrições máximas para um agente (pessoa ou coletivo)" :autosave="300" classes="opportunity-data-collection__field col-12"></entity-field>
                 </div>
             </div>
         </div>

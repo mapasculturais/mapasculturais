@@ -97,8 +97,7 @@ app.component('registration-evaluation-actions', {
             return result;
         },
         finishEvaluation() {
-            const iframe = document.getElementById('evaluation-form');
-            iframe.contentWindow.postMessage({type: "evaluationForm.send", status: 'evaluated'});
+            this.evaluate();
             this.reloadPage();
         },
         send(registration) {
@@ -129,15 +128,34 @@ app.component('registration-evaluation-actions', {
         next() {
             window.dispatchEvent(new CustomEvent('nextEvaluation', {detail:{registrationId:this.registration.id}}));
         },
-        save() {
-            const iframe = document.getElementById('evaluation-form');
-            iframe.contentWindow.postMessage({type: "evaluationForm.save"});
+        saveReload() {
+            this.save();
             this.reloadPage();
         },
         reloadPage(timeout = 1500){
             setTimeout(() => {
                 document.location.reload(true)
             }, timeout);
-        }
+        },
+        finishEvaluationNext() {
+           this.evaluate();
+            setTimeout(() => {
+                this.next();
+            }, 1500);
+        },
+        saveNext() {
+           this.save();
+            setTimeout(() => {
+                this.next();
+            }, 1500);
+        },
+        save() {
+            const iframe = document.getElementById('evaluation-form');
+            iframe.contentWindow.postMessage({type: "evaluationForm.save"});
+        },
+        evaluate() {
+            const iframe = document.getElementById('evaluation-form');
+            iframe.contentWindow.postMessage({type: "evaluationForm.send", status: 'evaluated'});
+        },
     },
 });
