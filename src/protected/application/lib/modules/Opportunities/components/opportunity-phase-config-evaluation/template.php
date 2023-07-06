@@ -69,12 +69,12 @@ $this->import('
         <div class="phase-delete col-12">
             <mc-confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
-                    <a class="phase-delete__trash" @click="modal.open()">
+                    <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
                         <div class="icon">
-                            <mc-icon name="trash"></mc-icon> 
+                            <mc-icon name="trash" class="secondary__color"></mc-icon> 
                         </div>
-                        <label class="label"><?= i::__("Excluir fase de avaliação") ?></label>
-                    </a>
+                        <h5><?= i::__("Excluir fase de avaliação") ?></h5>
+                    </button>
                 </template>
             </mc-confirm-button>
         </div>
