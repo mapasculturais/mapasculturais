@@ -81,6 +81,17 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
     public function _init() {
         $app = App::i();
+
+        $self = $this;
+        
+        $app->hook('template(opportunity.registrations.registration-list-actions):begin', function($entity){
+            if($em = $entity->evaluationMethodConfiguration){
+                if($em->getEvaluationMethod()->slug == "documentary"){
+                    $this->part('documentary--evaluation-result-apply');
+                }
+            }
+        });
+
         $app->hook('evaluationsReport(documentary).sections', function(Entities\Opportunity $opportunity, &$sections) use($app) {
             $columns = [];
             $evaluations = $opportunity->getEvaluations();
