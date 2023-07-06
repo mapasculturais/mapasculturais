@@ -55,7 +55,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $app->hook('template(opportunity.registrations.registration-list-actions):begin', function($entity){
             if($em = $entity->evaluationMethodConfiguration){
-                $this->part('simple--evaluation-result-apply');
+                if($em->getEvaluationMethod()->slug == "simple"){
+                    $this->part('simple--evaluation-result-apply');
+                }
             }
         });
 

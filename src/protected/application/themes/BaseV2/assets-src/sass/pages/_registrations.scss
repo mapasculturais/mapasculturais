@@ -32,6 +32,17 @@
             }
         }
 
+        &__actions {
+            background-color: var(--mc-white);
+            border-radius: var(--mc-border-radius-xs);
+            box-shadow: var(--mc-shadow-lv1);
+            display: flex;
+            flex-direction: column;
+            gap: size(24);
+            padding: size(16);
+            margin-bottom: size(32);
+        }
+
         &.single {
             .tabs-component {
                 margin-top: size(-40);

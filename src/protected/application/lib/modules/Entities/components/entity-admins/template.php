@@ -15,7 +15,7 @@ $this->import('
 <?php $this->applyTemplateHook('entity-related-agents', 'before'); ?>
 <div :class="classes" class="entity-related-agents" v-if="editable || group.length > 0">
     <?php $this->applyTemplateHook('entity-related-agents', 'begin'); ?>
-    <h3 v-if="group"><?php i::_e("Administrado por") ?></h3>
+    <h4 class="bold" v-if="group"><?php i::_e("Administrado por") ?></h4>
     <div class="entity-related-agents__group">
         <div class="entity-related-agents__group--agents">
             <div v-for="relation in group" class="agent">
