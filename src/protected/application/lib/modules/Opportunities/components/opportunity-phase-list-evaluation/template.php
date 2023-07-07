@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->import('
     mc-notification
     opportunity-phase-publish-date-config
+    mc-alert
 ');
 ?>
 <mc-card>
@@ -27,6 +28,9 @@ $this->import('
             <h4 class="bold"><?php i::_e("Status das avaliações") ?></h4>
             <p v-for="(value, label) in entity.summary.evaluations"><?= i::__("Quantidade de inscrições") ?> <strong>{{label.toLowerCase()}}</strong>: <strong>{{value}}</strong> <?php i::_e('inscrições') ?></p>
         </div>
+        <mc-alert v-if="!publishedRegistrations" class="col-12" type="success">
+                <?= i::__('A aplicação dos resultados nas inscrições já foi iniciado. Acesse a <strong>lista de inscrições da fase</strong> para continuar ou concluir o processo.') ?>
+        </mc-alert>
         <div class="opportunity-phase-list-evaluation__line col-12"></div>
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
             <mc-link :entity="entity.opportunity" class="opportunity-phase-list-data-collection_action--button" icon="external" route="registrations" right-icon>
