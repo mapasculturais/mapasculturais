@@ -49,7 +49,7 @@ $this->breadcrumb = [
                         <div class="col-3 sm:col-12">
                             <entity-profile :entity="entity"></entity-profile>
                         </div>
-                        <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name" label="Mini bio"></entity-field>
+                        <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name" label="<?php i::_e('Nome do Agente')?>"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="site"></entity-field>
                     </div>
@@ -73,11 +73,12 @@ $this->breadcrumb = [
                     <div class="grid-12">
                         <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name" label="<?php i::_e('Nome fantasia ou razão social') ?>"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="cnpj" label="CNPJ"></entity-field>
-                        <entity-field :entity="entity" classes="col-12" prop="emailPrivado" label="<?= i::__('E-mail pessoal') ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" prop="dataDeNascimento" label="<?= i::__('Data de fundação') ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" prop="emailPrivado" label="<?= i::__('E-mail privado ') ?>"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="telefonePublico" label="<?= i::__('Telefone público com DDD') ?>"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="emailPublico" label="<?= i::__('E-mail público') ?>"></entity-field>
-                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefone1" label="<?= i::__('Telefone público 1 com DDD') ?>"></entity-field>
-                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefone2" label="<?= i::__('Telefone público 2 com DDD') ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefone1" label="<?= i::__('Telefone privado 1 com DDD') ?>"></entity-field>
+                        <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefone2" label="<?= i::__('Telefone privado 2 com DDD') ?>"></entity-field>
                         <div class="col-12 divider"></div>
                         <entity-location :entity="entity" classes="col-12" editable></entity-location>
                     </div>
