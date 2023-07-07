@@ -1825,6 +1825,25 @@ $$
             __exec("ALTER TABLE project RENAME registration_to TO ends_on;");
         }
     },
+
+    "Adiciona novas coluna na tabela registration_field_configuration" => function() use ($conn){
+        __exec("ALTER TABLE registration_field_configuration ADD conditional  BOOLEAN;");
+        __exec("ALTER TABLE registration_field_configuration ADD conditional_field  VARCHAR(255);");
+        __exec("ALTER TABLE registration_field_configuration ADD conditional_value  VARCHAR(255);");
+    },
+    "Adiciona novas coluna na tabela registration_file_configuration" => function() use ($conn){
+        __exec("ALTER TABLE registration_file_configuration ADD conditional  BOOLEAN;");
+        __exec("ALTER TABLE registration_file_configuration ADD conditional_field  VARCHAR(255);");
+        __exec("ALTER TABLE registration_file_configuration ADD conditional_value  VARCHAR(255);");
+    },
+
+
+    'alter seal add column locked_fields' => function () {
+        if(!__column_exists('seal', 'locked_fields')) {
+            __exec("ALTER TABLE seal ADD locked_fields JSON DEFAULT '[]'");
+        }
+    },
+
     "Consede permissão em todos os campo para todos os avaliadores da oportunidade" => function() use ($conn, $app){
         $opportunity_ids = $conn->fetchAll("SELECT id FROM opportunity WHERE status <> 0 AND status >= -1");
 
@@ -1890,12 +1909,6 @@ $$
                         FROM registration 
                         WHERE opportunity_id = {$opportunity_id}
                     );");
-        }
-    },
-
-    'alter seal add column locked_fields' => function () {
-        if(!__column_exists('seal', 'locked_fields')) {
-            __exec("ALTER TABLE seal ADD locked_fields JSON DEFAULT '[]'");
         }
     },
 
@@ -2040,15 +2053,5 @@ $$
         __exec("UPDATE project SET update_timestamp = create_timestamp WHERE update_timestamp IS null");
         __exec("UPDATE opportunity SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
         __exec("UPDATE EVENT SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
-    },
-    "Adiciona novas coluna na tabela registration_field_configuration" => function() use ($conn){
-        __exec("ALTER TABLE registration_field_configuration ADD conditional  BOOLEAN;");
-        __exec("ALTER TABLE registration_field_configuration ADD conditional_field  VARCHAR(255);");
-        __exec("ALTER TABLE registration_field_configuration ADD conditional_value  VARCHAR(255);");
-    },
-    "Adiciona novas coluna na tabela registration_file_configuration" => function() use ($conn){
-        __exec("ALTER TABLE registration_file_configuration ADD conditional  BOOLEAN;");
-        __exec("ALTER TABLE registration_file_configuration ADD conditional_field  VARCHAR(255);");
-        __exec("ALTER TABLE registration_file_configuration ADD conditional_value  VARCHAR(255);");
     },
 ] + $updates ;
