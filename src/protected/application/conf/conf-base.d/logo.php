@@ -12,8 +12,8 @@ return [
     'logo.colors' => [
         "var(--mc-primary-300)",
         "var(--mc-primary-500)",
-        "var(--mc-primary-300)",
-        "var(--mc-primary-500)",
+        "var(--mc-secondary-300)",
+        "var(--mc-secondary-500)",
     ],
 
     /* 
