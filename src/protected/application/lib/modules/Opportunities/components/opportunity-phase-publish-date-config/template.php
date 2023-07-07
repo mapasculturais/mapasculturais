@@ -29,6 +29,8 @@ $this->import('
         </div>
 
         <div v-if="!phase.publishedRegistrations" class="grid-12 col-12 notPublished">
+            <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="300" :min="minDate" :max="maxDate" classes="col-4"></entity-field>
+            
             <div v-if="hideDatepicker && phase.publishTimestamp" class="col-4 msgpub-date">
                 <h5 v-if="phase.autoPublish && hideCheckbox">
                     <?= sprintf(
@@ -52,7 +54,6 @@ $this->import('
                 <h5><?= i::__("A publicação do resultado é opcional.") ?></h5>
             </div>
             
-            <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="300" :min="minDate" :max="maxDate" classes="col-4"></entity-field>
             
             <div v-if="!hideButton && firstPhase.status > 0" class="col-4">
                 <mc-confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
