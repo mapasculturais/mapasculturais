@@ -67,7 +67,7 @@ class MetaListGroup{
         }else{
             foreach($this->_validations as $validation => $message){
                 $ok = true;
-                $validation = str_replace('v::', 'MapasCulturais\Validator::', $validation);
+                $validation = str_replace('v::', 'Respect\Validation\Validator::', $validation);
 
                 eval('$ok = ' . $validation . '->validate($value);');
 
