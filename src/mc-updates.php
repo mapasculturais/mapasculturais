@@ -237,9 +237,9 @@ return [
                 $type = (strlen($doc) > 11) ? "CNPJ" : "CPF";
 
                 if ($type == "CPF") {
-                    $validate = \MapasCulturais\Validator::cpf()->validate($agent->documento);
+                    $validate = \Respect\Validation\Validator::cpf()->validate($agent->documento);
                 } else {
-                    $validate = \MapasCulturais\Validator::cnpj()->validate($agent->documento);
+                    $validate = \Respect\Validation\Validator::cnpj()->validate($agent->documento);
                 }
 
                 if ($validate) {
