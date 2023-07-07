@@ -455,7 +455,12 @@ return array(
             'validations' => array(
                 "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'unserialize' => function($value){
+                if($value){
+                    return \MapasCulturais\i::__('htps://instagram.com/').str_replace('@','',$value);
+                }
+            }
         ),
         'linkedin' => array(
             'label' => \MapasCulturais\i::__('Linkedin'),
