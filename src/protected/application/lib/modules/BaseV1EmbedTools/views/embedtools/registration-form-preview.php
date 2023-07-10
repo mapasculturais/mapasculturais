@@ -31,5 +31,7 @@ $opMetaSpace = $app->repo('OpportunityMeta')->findBy(['owner' =>  $entity->oppor
     </article>
 
 </article>
-<?php $this->part('singles/registration--sidebar--left', $_params) ?>
-<?php $this->part('singles/registration--sidebar--right', $_params) ?>
+<?php if ($entity->evaluationMethodConfiguration): ?>
+    <?php $this->part('singles/registration--sidebar--left', $_params) ?>
+    <?php $this->part('singles/registration--sidebar--right', $_params) ?>
+<?php endif; ?>
