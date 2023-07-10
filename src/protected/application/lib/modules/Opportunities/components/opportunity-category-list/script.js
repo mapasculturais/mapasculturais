@@ -1,4 +1,4 @@
-app.component('opportunity-category-list' , {
+app.component('opportunity-category-list', {
     template: $TEMPLATES['opportunity-category-list'],
 
     props: {
@@ -14,36 +14,36 @@ app.component('opportunity-category-list' , {
         return { text }
     },
 
-    created () {
+    created() {
         this.entity.registrationCategories = this.entity.registrationCategories || [];
     },
 
-    data () {
-      return {
-          category: null,
-          timeout: null,
-      };
+    data() {
+        return {
+            category: null,
+            timeout: null,
+        };
     },
     methods: {
-      addCategory () {
-          this.entity.registrationCategories.push(this.category);
-          this.clear();
-      },
+        addCategory() {
+            this.entity.registrationCategories.push(this.category);
+            this.clear();
+        },
 
-      clear () {
-          this.category = null;
-      },
+        clear() {
+            this.category = null;
+        },
 
-      deleteItem (item) {
-          const index = this.entity.registrationCategories.indexOf(item);
-          this.entity.registrationCategories.splice(index, 1);
-      },
-      
-      autoSave(){
-          clearTimeout(this.timeout);
-          this.timeout = setTimeout(()=>{
-                    this.entity.save();
-            },1500);
+        deleteItem(item) {
+            const index = this.entity.registrationCategories.indexOf(item);
+            this.entity.registrationCategories.splice(index, 1);
+        },
+
+        autoSave() {
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+                this.entity.save();
+            }, 1500);
         }
     }
 });

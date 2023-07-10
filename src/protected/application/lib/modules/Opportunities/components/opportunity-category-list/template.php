@@ -9,8 +9,8 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
-        mc-icon 
-        mc-popover 
+    mc-icon 
+    mc-popover 
     mc-tag-list
 ');
 ?>
