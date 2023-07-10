@@ -383,6 +383,29 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $committee;
     }
 
+    protected function canUserEvaluateOnTime($user){
+        if($user->is('guest')){
+            return false;
+        }
+
+        $valuers = $this->getRelatedAgents('group-admin', true);
+        
+        $is_valuer = false;
+        
+        foreach ($valuers as $agent_relation) {
+            if ($agent_relation->status != 1) {
+                continue;
+            }
+
+            $agent = $agent_relation->agent;
+            if($agent->user->id == $user->id ){
+                $is_valuer = true;
+            }
+        }
+        
+        return $is_valuer;
+    }
+
     protected function canUserCreate($user){
         return $this->opportunity->canUser('modify', $user);
     }

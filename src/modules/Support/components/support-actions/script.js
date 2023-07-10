@@ -21,19 +21,17 @@ app.component('support-actions', {
     methods: {
         async save() {
             const iframe = document.getElementById('support-form');
-            const registration = this.registration;
             if (iframe) {
                 const promise = new Promise((resolve, reject) => {
                     Promise.all([
-                        registration.save(false),
+                        this.registration.save(false),
                     ]).then((values) => {
                         resolve(values[0]);
                     });
                 });
                 return promise;
-
             } else {
-                return registration.save(false);
+                return this.registration.save(false);
             }
         },
 
