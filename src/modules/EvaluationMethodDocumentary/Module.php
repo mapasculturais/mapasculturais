@@ -81,6 +81,17 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
     public function _init() {
         $app = App::i();
+
+        $self = $this;
+        
+        $app->hook('template(opportunity.registrations.registration-list-actions):begin', function($entity){
+            if($em = $entity->evaluationMethodConfiguration){
+                if($em->getEvaluationMethod()->slug == "documentary"){
+                    $this->part('documentary--evaluation-result-apply');
+                }
+            }
+        });
+
         $app->hook('evaluationsReport(documentary).sections', function(Entities\Opportunity $opportunity, &$sections) use($app) {
             $columns = [];
             $evaluations = $opportunity->getEvaluations();
@@ -257,27 +268,36 @@ class Module extends \MapasCulturais\EvaluationMethod {
     
         });
 
-        $app->hook('template(opportunity.single.header-inscritos):actions', function() use($app) {
+        $app->hook('template(opportunity.single.header-inscritos):actions', function() use($app, $self) {
             $opportunity = $this->controller->requestedEntity;
             
             if ($opportunity->evaluationMethodConfiguration->getDefinition()->slug != 'documentary') {
                 return;
             }
 
-            $consolidated_results = $app->em->getConnection()->fetchAll("
-                SELECT 
-                    consolidated_result evaluation,
-                    COUNT(*) as num
-                FROM 
-                    registration
-                WHERE 
-                    opportunity_id = :opportunity AND
-                    status > 0 
-                GROUP BY consolidated_result
-                ORDER BY num DESC", ['opportunity' => $opportunity->id]);
+            $consolidated_results = $self->findConsolidatedResult($opportunity);
             
             $this->part('documentary--apply-results', ['entity' => $opportunity, 'consolidated_results' => $consolidated_results]);
         });
+    }
+
+    public function findConsolidatedResult($opportunity)
+    {
+        $app = App::i();
+        
+        $consolidated_results = $app->em->getConnection()->fetchAll("
+        SELECT 
+            consolidated_result evaluation,
+            COUNT(*) as num
+        FROM 
+            registration
+        WHERE 
+            opportunity_id = :opportunity AND
+            status > 0 
+        GROUP BY consolidated_result
+        ORDER BY num DESC", ['opportunity' => $opportunity->id]);
+
+        return $consolidated_results;
     }
 
     public function _getConsolidatedResult(Entities\Registration $registration) {

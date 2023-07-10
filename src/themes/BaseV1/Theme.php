@@ -824,16 +824,6 @@ class Theme extends MapasCulturais\Theme {
             $this->part('singles/seal-locked-fields', ['entity'=>$entity]);
         });
 
-        if(!$app->user->is('guest') && $app->user->profile->status < 1){
-            $app->hook('view.partial(nav-main-user).params', function($params, &$name){
-                $name = 'header-profile-link';
-            });
-
-            $app->hook('GET(panel.<<*>>):before, GET(<<*>>.create):before', function() use($app){
-                $app->redirect($app->user->profile->editUrl);
-            });
-        }
-
         $app->hook('entity(Opportunity).set(evaluation<<From|To>>)', function($value, $property_name) use($app){
             /** @var Entities\Opportunity $this */
             $this->evaluationMethodConfiguration->$property_name = $value;

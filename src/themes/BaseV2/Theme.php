@@ -85,21 +85,22 @@ class Theme extends \MapasCulturais\Theme
         $this->documentMeta[] = array("name" => 'application-name', 'content' => $site_name);
 
         // for twitter
-        $image_url_twitter = $app->view->asset($app->config['share.twitter'], false);
-        $this->documentMeta[] = array("name" => 'twitter:card', 'content' => $site_name);
+        $image_url_twitter = $app->view->asset($app->config['share.image_twitter'], false);
+        $this->documentMeta[] = array("name" => 'twitter:card', 'content' => 'photo');
         $this->documentMeta[] = array("name" => 'twitter:title', 'content' => $title);
         $this->documentMeta[] = array("name" => 'twitter:description', 'content' => $description);
         $this->documentMeta[] = array("name" => 'twitter:image', 'content' => $image_url_twitter);
 
         // for facebook/Linkedin
-        $image_url = $app->view->asset($app->config['share.facebook'], false);
+        $image_url = $app->view->asset($app->config['share.image'], false);
         $this->documentMeta[] = array("property" => 'og:title', 'content' => $title);
         $this->documentMeta[] = array("property" => 'og:type', 'content' => 'article');
         $this->documentMeta[] = array("property" => 'og:image', 'content' => $image_url);
         $this->documentMeta[] = array("property" => 'og:image:url', 'content' => $image_url);
         $this->documentMeta[] = array("property" => 'og:description', 'content' => $description);
         $this->documentMeta[] = array("property" => 'og:site_name', 'content' => $site_name);
-
+        $this->documentMeta[] = array("property" => 'og:image:width', 'content' => "1200");
+        $this->documentMeta[] = array("property" => 'og:image:height', 'content' => "630");
         
         if ($entity) {
             $this->documentMeta[] = array("property" => 'og:url', 'content' => $entity->singleUrl);

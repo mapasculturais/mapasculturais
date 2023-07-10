@@ -268,7 +268,7 @@
 
                     @media (max-width: size(610)) {
                         align-items: center;
-                        flex-direction: column;
+                        flex-direction: column-reverse;
 
                         .field, .foundResults {
                             width: 100%;

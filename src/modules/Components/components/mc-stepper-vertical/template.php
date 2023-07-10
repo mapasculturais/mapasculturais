@@ -19,7 +19,7 @@ $this->import('
                         <slot class="stepper-header-title" name="header" :index="index" :step="step" :item="step.item">
                             <slot name="header-title" :index="index" :step="step" :item="step.item">{{step.item.name || step.item.title || step.item.label}}</slot>
                             <slot name="header-actions" :index="index" :step="step" :item="step.item">
-                                <a class="expand-stepper" v-if="step.active" @click="step.close()"><label><?= i::__('Fechar') ?></label><mc-icon name="arrowPoint-up"></mc-icon></a>
+                                <a class="expand-stepper" v-if="step.active" @click="step.close()"><label><?= i::__('Diminuir') ?></label><mc-icon name="arrowPoint-up"></mc-icon></a>
                                 <a class="expand-stepper" v-if="!step.active" @click="step.open()"><label><?= i::__('Expandir') ?></label> <mc-icon name="arrowPoint-down"></mc-icon></a>
                             </slot>
                         </slot>
