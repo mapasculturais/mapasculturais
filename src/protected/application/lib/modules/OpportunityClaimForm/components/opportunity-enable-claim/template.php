@@ -15,7 +15,7 @@ $this->import('
 <div class="opportunity-enable-claim">
     <h4 class="bold opportunity-enable-claim__title">Recurso</h4>
     <div class="opportunity-enable-claim__input ">
-        <input type="checkbox" id="resource" v-model="isActiveClaim"/>
+        <input type="checkbox" id="resource" v-model="isActiveClaim" @click="autoSave()"/>
         <label for="resource"><?= i::__("Habilitar Recurso") ?></label>
     </div>
     <div v-if="isActiveClaim" class="opportunity-enable-claim__email">
@@ -23,7 +23,7 @@ $this->import('
             <h5 class="semibold opportunity-enable-claim__subtitle"><?= i::__("Insira o email que receberá as solicitações") ?></h5>
         </label>
         <div class="opportunity-enable-claim__save">
-            <input type="text" v-model="entity.claimEmail" /> <button @click="entity.save()" class="button-popover button button--primary button--primary-outline"><?= i::__("Salvar") ?></button>
+            <input type="text" v-model="entity.claimEmail" @change="autoSave()"/>
         </div>
     </div>
 </div>
