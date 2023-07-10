@@ -12,9 +12,6 @@ $this->import('
 ?>
 <div class="col-12 agent-data">
     <template v-if="entity.currentUserPermissions.viewPrivateData && verifyEntity()">
-        <div class="agent-data__title">
-            <h4 class="title bold"><?php i::_e("Dados Pessoais")?></h4>
-        </div>
         <div v-if="entity.name" class="agent-data__fields">
             <div class="agent-data__fields--field">
                 <label class="title"><?php i::_e("Nome Fantasia ou razão social") ?></label>
@@ -30,7 +27,7 @@ $this->import('
                 </div>
             </div>
             <div v-if="entity.cnpj" class="agent-data__fields--field">
-                <label class="title"><?php i::_e("MEI") ?></label>
+                <label class="title"><?php i::_e("CNPJ") ?></label>
                 <div class="box">
                     <label class="box__content">{{entity.cnpj}}</label>
                 </div>

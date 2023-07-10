@@ -12,7 +12,26 @@
         max-width: size(1038);
         border-bottom: 1px solid var(--mc-gray-100);
     }
+    &__fields {
+        padding-top: size(16);
+    }
 
+    &__field {
+        .field {
+            &__title {
+                font-size: size(14);
+                font-family: Open Sans;
+                font-style: normal;
+                font-weight: semibold;
+                line-height: normal;
+                margin: 0;
+                color: var(--mc-gray-500)
+            }
+            & label {
+                margin: 0;
+            }
+        }
+    }
 
     &__delete {
         margin: 0 auto;
@@ -34,7 +53,7 @@
     }
 
     &__category {
-        align-items: start;      
+        align-items: start;
         display: grid;
         grid-template-columns: 1fr 1fr;
     }

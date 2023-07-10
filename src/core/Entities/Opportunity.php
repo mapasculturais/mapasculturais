@@ -332,14 +332,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return [];
         }
 
-        $committee = $this->evaluationMethodConfiguration->getAgentRelations(null, true);
-        
-        if(!$return_relation) {
-            $committee = array_map(function($r){ return $r->agent; }, $committee);
-        }
+        $committee = $this->evaluationMethodConfiguration->getCommittee($return_relation);
 
         $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}.evaluationCommittee", [&$committee, $return_relation]);
-        
+
         return $committee;
     }
 
@@ -1088,6 +1084,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return false;
 
         return $this->isRegistrationOpen();
+    }
+
+    protected function canUserRemove($user){
+        if ($this->publishedRegistrations) {
+            return false;
+        }
+        return parent::canUserRemove($user);
     }
 
     protected function canUserSendUserEvaluations($user){
