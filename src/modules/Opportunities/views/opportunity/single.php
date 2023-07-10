@@ -30,6 +30,7 @@ $this->import('
     mc-share-links
     mc-tab
     mc-tabs
+    opportunity-evaluations-tab
     opportunity-phase-evaluation
     opportunity-phases-timeline
     opportunity-rules
@@ -109,11 +110,7 @@ $this->breadcrumb = [
             </mc-container>
         </mc-tab>
 
-        <mc-tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="entity.currentUserPermissions.evaluateRegistrations">
-            <div class="opportunity-container">
-                <opportunity-phase-evaluation></opportunity-phase-evaluation>
-            </div>
-        </mc-tab>
+       <opportunity-evaluations-tab :entity="entity"></opportunity-evaluations-tab>
 
         <?php $this->part('opportunity-tab-results.php', ['entity' => $entity]); ?>
         
