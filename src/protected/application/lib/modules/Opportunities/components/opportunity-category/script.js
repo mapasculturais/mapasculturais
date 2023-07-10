@@ -17,7 +17,17 @@ app.component('opportunity-category' , {
 
     data () {
       return {
-          phase: null
+          phase: null,
+          timeout: null
       }
+    },
+
+    methods: {
+        autoSave(){
+            clearTimeout(this.timeout);
+                this.timeout = setTimeout(()=>{
+                    this.entity.save();
+            },1500);
+        }
     }
 });

@@ -14,7 +14,8 @@ app.component('opportunity-enable-claim', {
     data() {
         let isActiveClaim = this.entity.claimDisabled === "0" ? true : false;
         return {
-            isActiveClaim
+            isActiveClaim,
+            timeOut: null,
         }
     },
     watch: {
@@ -27,6 +28,13 @@ app.component('opportunity-enable-claim', {
     methods: {
         isActive(active) {
             this.entity.claimDisabled = active ? 0 : 1;
+        },
+
+        autoSave(){
+            clearTimeout(this.timeout);
+                this.timeout = setTimeout(()=>{
+                    this.entity.save();
+            },1500);
         }
     },
     computed: {
