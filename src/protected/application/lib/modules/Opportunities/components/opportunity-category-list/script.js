@@ -20,7 +20,8 @@ app.component('opportunity-category-list' , {
 
     data () {
       return {
-          category: null
+          category: null,
+          timeout: null,
       };
     },
     methods: {
@@ -36,6 +37,13 @@ app.component('opportunity-category-list' , {
       deleteItem (item) {
           const index = this.entity.registrationCategories.indexOf(item);
           this.entity.registrationCategories.splice(index, 1);
-      }
+      },
+      
+      autoSave(){
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout(()=>{
+                    this.entity.save();
+            },1500);
+        }
     }
 });

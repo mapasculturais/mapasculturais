@@ -17,14 +17,14 @@ $this->import('
 <div class="opportunity-category-list">
     <h5 class="semibold"><?= i::__("Categorias") ?></h5>
 
-    <mc-tag-list v-if="entity.registrationCategories.length" classes="primary__background" :tags="entity.registrationCategories" editable></mc-tag-list>
+    <mc-tag-list v-if="entity.registrationCategories.length" classes="primary__background" @click="autoSave()" :tags="entity.registrationCategories" editable></mc-tag-list>
 
     <div class="opportunity-category-list__add-category">
         <div class="field">
             <input v-model="category" type="text" name="AddNewCategory" />
         </div>
 
-        <button @click="addCategory()" class="button button--primary button--icon button--primary-outline">
+        <button @click="addCategory();autoSave()" class="button button--primary button--icon button--primary-outline">
             <mc-icon name="add"></mc-icon><label><?php i::_e("Adicionar") ?></label>
         </button>
     </div>
