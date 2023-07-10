@@ -28,12 +28,14 @@ $this->import('
             <div class="opportunity-data-collection__category col-12">
                 <opportunity-category v-if="phase.isFirstPhase" :entity="phase"></opportunity-category>
                 
-                <div class="opportunity-data-collection__registration grid-12">
+                <div class="opportunity-data-collection__registration ">
                     <h4 class="bold col-12"><?= i::__("Limites na inscrição") ?></h4>
-                    <h5 class="bold col-12 "><?= i::__("Total de vagas")?></h5>
-                    <entity-field :entity="phase" prop="registrationLimit" label="Defina o número limite de vagas  para o edital ou oportunidade"  :autosave="300" classes="opportunity-data-collection__field col-12"></entity-field>
-                    <h5 class="bold col-12 "><?= i::__("Inscrições por agente")?></h5>
-                    <entity-field :entity="phase" prop="registrationLimitPerOwner" label="Defina o número de inscrições máximas para um agente (pessoa ou coletivo)" :autosave="300" classes="opportunity-data-collection__field col-12"></entity-field>
+                    <div class="opportunity-data-collection__fields grid-12">
+                        <h5 class="bold col-12 "><?= i::__("Total de vagas")?></h5>
+                        <entity-field :entity="phase" prop="registrationLimit" label="Defina o número limite de vagas  para o edital ou oportunidade"  :autosave="300" classes="opportunity-data-collection__field col-12"></entity-field>
+                        <h5 class="bold col-12 "><?= i::__("Inscrições por agente")?></h5>
+                        <entity-field :entity="phase" prop="registrationLimitPerOwner" label="Defina o número de inscrições máximas para um agente (pessoa ou coletivo)" :autosave="300" classes="opportunity-data-collection__field col-12"></entity-field>
+                    </div>
                 </div>
             </div>
         </div>
