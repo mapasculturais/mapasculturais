@@ -224,7 +224,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
                         foreach($categories as $cat){
                             $cat = trim($cat);
-                            if(strtolower($registration->category) === strtolower($cat)){
+                            if(strtolower((string)$registration->category) === strtolower($cat)){
                                 $found = true;
                             }
                         }
