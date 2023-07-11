@@ -143,7 +143,11 @@ class Module extends \MapasCulturais\Module {
                 $hook_name = "component($component_name).$sufix:$param1";
                 $params = $param2;
             } else {
-                $hook_name = "component($component_name):$sufix";
+                if(preg_match('#^\w#', $sufix)) {
+                    $hook_name = "component($component_name):$sufix";
+                } else {
+                    $hook_name = "component($component_name)$sufix";
+                }
                 $params = $param1;
             }
 
