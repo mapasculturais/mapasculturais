@@ -24,11 +24,25 @@ $this->import('
                 {{file.createTimestamp.date('numeric year')}} {{file.createTimestamp.time('2-digit')}}
             </div>
             <div>
-                <?php i::_e('Não processado') ?>
+                <h5 v-if="isProcessed(entity, file)"><?php i::_e('Processado') ?></h5>
+                <h5 v-if="!isProcessed(entity, file)"><?php i::_e('Não processado') ?></h5>
             </div>
             <div>
-                <mc-confirm-button message="<?= i::esc_attr__("Você está certo que deseja processar este arquivo?") ?>" @confirm="processFile(file)"><?= i::__("Processar") ?></mc-confirm-button>
-                <mc-confirm-button message="<?= i::esc_attr__("Você está certo que deseja excluir este arquivo?") ?>" @confirm="file.delete()"><?= i::__("Excluir") ?></mc-confirm-button>
+                <div>
+                    <mc-confirm-button message="<?= i::esc_attr__("Você está certo que deseja processar este arquivo?") ?>" @confirm="processFile(file, entity)">
+                        <template #button="modal">
+                            <button @click="modal.open()" :class="['button','button--primary',{'disabled':isProcessed(entity, file)}]"><?= i::__("Processar") ?></button>
+                        </template>
+                    </mc-confirm-button>
+                    <div>
+                        <a class="button button--primary-outline" :href="file.url"><?= i::__("Baixar") ?></a>
+                    </div>
+                    <mc-confirm-button message="<?= i::esc_attr__("Você está certo que deseja excluir este arquivo?") ?>" @confirm="file.delete()">
+                        <template #button="modal">
+                            <button @click="modal.open()" :class="['button','button--primary-outline',{'disabled':isProcessed(entity, file)}]"><?= i::__("Excluir") ?></button>
+                        </template>
+                    </mc-confirm-button>
+                </div>
             </div>
             <div v-if="file.errors">
                 <hr>

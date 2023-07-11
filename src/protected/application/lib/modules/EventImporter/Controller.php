@@ -603,7 +603,7 @@ class Controller extends \MapasCulturais\Controller
 
          if ($countNewEvent >= 1) {
             $_agent = $app->user->profile;
-            $files = $_agent->event_importer_processed_file ?? new stdClass();
+            $files = $_agent->event_importer_processed_file ?: new stdClass();
             $files->{basename($file_dir)} = [
                'date' => date('d/m/Y \à\s H:i'),
                'countProsess' => $countNewEvent,
@@ -622,7 +622,7 @@ class Controller extends \MapasCulturais\Controller
          }
       }
 
-      return ['sucesso'];
+      $this->json($_agent->event_importer_processed_file);
       
    }
 
