@@ -1499,7 +1499,8 @@ class ApiQuery {
                     f.private,
                     fp.group as parent_group,
                     IDENTITY(f.owner) AS owner_id,
-                    f.private
+                    f.private,
+                    f.createTimestamp
                 FROM
                     {$this->fileClassName} f
                         LEFT JOIN f.parent fp
@@ -1595,6 +1596,7 @@ class ApiQuery {
                         'name' => $f['name'],
                         'mimeType' => $f['mimeType'],
                         'url' => $f['url'],
+                        'createTimestamp' => $f['createTimestamp']
                     ];
 
                     list($group, $transformation) = explode('.', "{$f['group']}.");
