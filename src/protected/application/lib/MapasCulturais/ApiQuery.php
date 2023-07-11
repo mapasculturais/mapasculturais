@@ -2843,7 +2843,11 @@ class ApiQuery {
                 }
                 
                 if($this->usesStatus && $this->_permission == 'view' && !$class::isPrivateEntity()) {
-                    $view_where = 'OR e.status > 0';
+                    if($this->entityClassName === Opportunity::class && (isset($this->apiParams['id']) || isset($this->apiParams['parent']))) {
+                        $view_where = 'OR e.status > 0 OR e.status = -1';    
+                    } else {
+                        $view_where = 'OR e.status > 0';
+                    }
                 }
                 
                 $this->where .= " $and ( e.{$this->pk} IN (SELECT IDENTITY($alias.owner) FROM {$this->permissionCacheClassName} $alias WHERE $alias.owner = e AND $alias.action = $pkey AND $alias.userId = $_uid) $admin_where $view_where) ";

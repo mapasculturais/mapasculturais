@@ -21,8 +21,8 @@ $this->import('
     </div>
 
     <div class="opportunity-category__content grid-12">
-        <entity-field :entity="entity" prop="registrationCategTitle" classes="col-12"></entity-field>
-        <entity-field :entity="entity" prop="registrationCategDescription" classes="col-12"></entity-field>
-        <opportunity-category-list :entity="entity" class="col-12"></opportunity-category-list>
+        <entity-field :entity="entity" @change="autoSave" prop="registrationCategTitle" classes="col-12"></entity-field>
+        <entity-field :entity="entity" @change="autoSave"  prop="registrationCategDescription" classes="col-12"></entity-field>
+        <opportunity-category-list :entity="entity"  class="col-12"></opportunity-category-list>
     </div>
 </div>

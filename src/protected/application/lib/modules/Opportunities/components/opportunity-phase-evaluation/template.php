@@ -10,7 +10,7 @@ use MapasCulturais\i;
     <div class="stepper-evaluations__title"><label><?= i::__('Avaliações abertas e disponíveis') ?></label></div>
     <div class="line"></div>
     <div v-for="item in phases">
-        <div class="card-evaluation">
+        <div class="card-evaluation" v-if="item.currentUserPermissions.evaluateOnTime || item.currentUserPermissions['@control']">
             <div class="card_evaluation__content">
                 <h3 class="card-evaluation__content--title">{{item.name}}</h3>
                 <div class="card-evaluation__content--items">

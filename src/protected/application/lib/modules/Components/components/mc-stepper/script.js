@@ -58,6 +58,18 @@ app.component('mc-stepper', {
         step() {
             const globalState = useGlobalState();
 
+            let step = document.getElementById( "step" + ((globalState[this.id] ?? 0) + 1) );
+            const stepper = document.getElementById( "stepper" );
+
+            if (stepper && stepper.scrollWidth > stepper.clientWidth) {
+                if (step.offsetLeft + step.offsetWidth >= stepper.clientWidth) {
+                    stepper.parentNode.scrollLeft += step.offsetWidth;
+                }
+                if (step.offsetLeft + step.offsetWidth <= stepper.clientWidth) {
+                    stepper.parentNode.scrollLeft -= step.offsetWidth;
+                }
+            }
+
             return globalState[this.id] ?? 0;
         },
     },
