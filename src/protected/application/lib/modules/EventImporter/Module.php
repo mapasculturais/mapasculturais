@@ -5,6 +5,7 @@ namespace EventImporter;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Definitions;
+use MapasCulturais\Themes;
 
 class Module extends \MapasCulturais\Module
 {
@@ -340,24 +341,35 @@ class Module extends \MapasCulturais\Module
 
         $self = $this;
 
-        $app->view->enqueueStyle('app','assets-file','css/eventimporter.css');
-        
-        $app->hook('template(panel.events.tabs-contents):end', function() use($app, $self) {
-            $enabled = $self->config['enabled'];
-            if($enabled()){
-                /** @var Theme $this */
-                $this->controller = $app->controller('agent');
-                $this->part('upload-csv-event',['entity' => $app->user->profile]);
-                $this->controller = $app->controller('panel');
-            }
-        });
+        if ($app->view->version < 2) {
+            // BaseV1
+            $app->view->enqueueStyle('app','assets-file','css/eventimporter.css');
+            $app->hook('template(panel.events.tabs-contents):end', function() use($app, $self) {
+                $enabled = $self->config['enabled'];
+                if($enabled()){
+                    /** @var Theme $this */
+                    $this->controller = $app->controller('agent');
+                    $this->part('upload-csv-event',['entity' => $app->user->profile]);
+                    $this->controller = $app->controller('panel');
+                }
+            });
+    
+            $app->hook('template(panel.events.tab-arquivo):after', function() use($app, $self) {
+                $enabled = $self->config['enabled'];
+                if($enabled()){
+                    $this->part('tab',['id' => "event-importer", "label" => "Importação de eventos"]);
+                }
+            });
+        } else {
+            // BaseV2
 
-        $app->hook('template(panel.events.tab-arquivo):after', function() use($app, $self) {
-            $enabled = $self->config['enabled'];
-            if($enabled()){
-                $this->part('tab',['id' => "event-importer", "label" => "Importação de eventos"]);
-            }
-        });
+            $app->hook('component(panel--entity-tabs):end', function () {
+                /** @var Themes\BaseV2\Theme $this */
+                if($this->controller->action == 'events') {
+                    $this->part('event-importer/tab');
+                }
+            });
+        }
     }
 
     function register()
