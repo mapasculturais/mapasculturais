@@ -312,6 +312,7 @@ abstract class File extends \MapasCulturais\Entity
             'files' => $this->getFiles(),
             'url' => $this->url,
             'deleteUrl' => $this->deleteUrl,
+            'createTimestamp' => $this->createTimestamp
         ];
     }
 
