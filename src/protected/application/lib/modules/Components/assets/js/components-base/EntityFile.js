@@ -7,7 +7,7 @@ class EntityFile {
         this.url = data.url;
         this.mimeType = data.mimeType;
         this.transformations = data.transformations || data.files || {};
-        this.createTimestamp = data.createTimestamp ? new McDate (data.createTimestamp) : null;
+        this.createTimestamp = data.createTimestamp ? new McDate (data.createTimestamp.date) : null;
 
         this._owner = owner;
         this._group = group;
