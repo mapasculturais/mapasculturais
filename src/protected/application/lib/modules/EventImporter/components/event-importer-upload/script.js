@@ -20,7 +20,7 @@ app.component('event-importer-upload', {
             return Utils.createUrl('eventimporter', 'downloadExample', {type:"csv"});
         },
         xlsUrl(){
-            return Utils.createUrl('eventimporter', 'downloadExample', {type:"csv"});
+            return Utils.createUrl('eventimporter', 'downloadExample', {type:"xls"});
         }
     },
     methods: {
