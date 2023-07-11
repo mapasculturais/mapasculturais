@@ -151,6 +151,9 @@
             flex-grow: .5;
             gap: size(25);
             justify-content: flex-end;
+            @media (max-width: size(440)){
+                flex-direction: column-reverse;
+            }
             .delete-registration {
                 background-color: var(--mc-high-500);
                 color: var(--mc-danger-500);
@@ -184,8 +187,11 @@
     &.picture {
         .registration-card__content .right {
             gap: size(13);
+            
 
             @media (max-width: size(500)) {
+                display: flex;
+                flex-direction: column-reverse;
                 gap: size(8);
             }
 
