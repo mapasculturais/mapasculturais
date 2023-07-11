@@ -122,31 +122,26 @@ app.component('registration-evaluation-actions', {
                 this.reloadPage();
             });
         },
-        previous() {
-            window.dispatchEvent(new CustomEvent('previousEvaluation', {detail:{registrationId:this.registration.id}}));
-        },
-        next() {
-            window.dispatchEvent(new CustomEvent('nextEvaluation', {detail:{registrationId:this.registration.id}}));
-        },
         saveReload() {
             this.save();
             this.reloadPage();
         },
-        reloadPage(timeout = 1500){
-            setTimeout(() => {
-                document.location.reload(true)
-            }, timeout);
-        },
-        finishEvaluationNext() {
+        finishEvaluationNext(registration) {
            this.evaluate();
             setTimeout(() => {
                 this.next();
+                if(this.lastRegistration?.registrationid == registration.id){
+                    this.reloadPage();
+                }
             }, 1500);
         },
-        saveNext() {
+        saveNext(registration) {
            this.save();
             setTimeout(() => {
                 this.next();
+                if(this.lastRegistration?.registrationid == registration.id){
+                    this.reloadPage();
+                }
             }, 1500);
         },
         save() {
@@ -156,6 +151,17 @@ app.component('registration-evaluation-actions', {
         evaluate() {
             const iframe = document.getElementById('evaluation-form');
             iframe.contentWindow.postMessage({type: "evaluationForm.send", status: 'evaluated'});
+        },
+        previous() {
+            window.dispatchEvent(new CustomEvent('previousEvaluation', {detail:{registrationId:this.registration.id}}));
+        },
+        next() {
+            window.dispatchEvent(new CustomEvent('nextEvaluation', {detail:{registrationId:this.registration.id}}));
+        },
+        reloadPage(timeout = 1500){
+            setTimeout(() => {
+                document.location.reload(true)
+            }, timeout);
         },
     },
 });

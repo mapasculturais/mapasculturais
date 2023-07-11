@@ -33,12 +33,13 @@ $this->import('
                 </template>
 
                 <template #actions="modal">
-                    <button class="button button--text button--text-del" @click="saveNext()"><?= i::__('Enviar Depois') ?></button>
-                    <button class="button button--primary" @click="finishEvaluationNext()"><?= i::__('Enviar agora') ?></button>
+                    <button class="button button--text button--text-del" @click="saveNext(registration); modal.close()"><?= i::__('Enviar Depois') ?></button>
+                    <button class="button button--primary" @click="finishEvaluationNext(registration); modal.close()"><?= i::__('Enviar agora') ?></button>
                 </template>
                 <template #button="modal">
                     <button class="button button--primary button--icon button--large" @click="modal.open()">
-                        <?= i::__('Finalizar e avançar') ?>
+                        <span v-if="lastRegistration?.registrationid != registration.id"><?= i::__('Finalizar e avançar') ?></span>
+                        <span v-if="lastRegistration?.registrationid == registration.id"><?= i::__('Finalizar e enviar') ?></span>
                         <mc-icon name="arrow-right-ios"></mc-icon>
                     </button>
                 </template>
