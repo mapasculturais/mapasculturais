@@ -24,8 +24,9 @@ $this->import('
                 {{file.createTimestamp.date('numeric year')}} {{file.createTimestamp.time('2-digit')}}
             </div>
             <div>
-                <h5 v-if="isProcessed(entity, file)"><?php i::_e('Processado') ?></h5>
+                <h5 v-if="isProcessed(entity, file)"><?php i::_e('Processado') ?> {{processedDate(entity, file)}}</h5>
                 <h5 v-if="!isProcessed(entity, file)"><?php i::_e('Não processado') ?></h5>
+
             </div>
             <div>
                 <div>

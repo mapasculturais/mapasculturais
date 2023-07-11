@@ -14,7 +14,9 @@ app.component('event-importer-files', {
         }
     },
 
-    computed: { },
+    computed: { 
+        
+    },
 
     methods: {
         getFiles(entity) {
@@ -34,6 +36,9 @@ app.component('event-importer-files', {
         },
         isProcessed(entity, file){
             return entity.event_importer_processed_file[file.name] ? true : false;
+        },
+        processedDate(entity, file){
+           return entity.event_importer_processed_file[file.name].date;
         }
     }
 });
