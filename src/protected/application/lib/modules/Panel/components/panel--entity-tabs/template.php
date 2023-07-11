@@ -20,17 +20,33 @@ $tabs = $tabs ?? [
     'archived' => i::esc_attr__('Arquivados'),
     'trash' => i::esc_attr__('Lixeira'),
 ];
+
+$this->applyComponentHook('.tabs', [&$tabs]);
+
+$sort_options = [
+    'name ASC' => i::__('Ordem alfabética'),
+    'createTimestamp DESC' => i::__('Mais recentes primeiro'),
+    'createTimestamp ASC' => i::__('Mais antigas primeiro'),
+    'updateTimestamp DESC' => i::__('Modificadas recentemente'),
+    'updateTimestamp ASC' => i::__('Modificadas há mais tempo'),
+];
+
+$this->applyComponentHook('.sortOptions', [&$tabs]);
+
 ?>
-<?php $this->applyTemplateHook('entity-tabs', 'before') ?>
 <mc-tabs class="entity-tabs">
-    <?php $this->applyTemplateHook('entity-tabs', 'begin') ?>
+    <?php $this->applyComponentHook('begin') ?>
     <template #header="{ tab }">
+        <?php $this->applyComponentHook('tab', 'begin') ?>
         <mc-icon v-if="tab.slug === 'archived'" name="archive"></mc-icon>
         <mc-icon v-else-if="tab.slug === 'trash'" name="trash"></mc-icon>
         {{ tab.label }}
+        <?php $this->applyComponentHook('tab', 'end') ?>
     </template>
     <?php foreach($tabs as $status => $label): ?>
+    <?php $this->applyComponentHook($status, 'before') ?>
     <mc-tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
+        <?php $this->applyComponentHook($status, 'begin') ?>
         <mc-entities :name="type + ':<?=$status?>'" :type="type" 
             :select="select"
             :query="queries['<?=$status?>']" 
@@ -48,11 +64,9 @@ $tabs = $tabs ?? [
                         <slot name="filters-additional" :entities="entities" :query="queries['<?=$status?>']"></slot>
                         <label> <?= i::__ ("Ordernar por:") ?>
                             <select class="entity-tabs__search-select primary__border-solid" v-model="queries['<?=$status?>']['@order']">
-                                <option value="name ASC"><?= i::__('Ordem alfabética') ?></option>
-                                <option value="createTimestamp DESC"><?= i::__('Mais recentes primeiro') ?></option>
-                                <option value="createTimestamp ASC"><?= i::__('Mais antigas primeiro') ?></option>
-                                <option value="updateTimestamp DESC" selected><?= i::__('Modificadas recentemente') ?></option>
-                                <option value="updateTimestamp ASC"><?= i::__('Modificadas há mais tempo') ?></option>
+                                <?php foreach($sort_options as $value => $label): ?>
+                                    <option value="<?= htmlentities($value) ?>"><?= htmlentities($label) ?></option>    
+                                <?php endforeach ?>
                             </select>
                         </label>
 
@@ -72,16 +86,6 @@ $tabs = $tabs ?? [
                         >
                         <template #title="{ entity }">
                             <slot name="card-title" :entity="entity"></slot>
-                        </template>
-                        <template #header-actions="{ entity }">
-                            <slot name="card-actions">
-                                <!-- <button class="entity-card__header-action">
-                                    <mc-icon name="favorite"></mc-icon>
-                                    <span>< ?=i::__('Favoritar')?></span>
-                                </button> -->
-                                <?php $this->applyTemplateHook('entity-tabs-card-action', 'begin'); ?>
-                                <?php $this->applyTemplateHook('entity-tabs-card-action', 'end'); ?>
-                            </slot>
                         </template>
                         <template #subtitle="{ entity }">
                             <slot name="card-content"  :entity="entity">
@@ -104,8 +108,9 @@ $tabs = $tabs ?? [
                 <slot name='after-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
            </template>
         </mc-entities>
+        <?php $this->applyComponentHook($status, 'end') ?>
     </mc-tab>
+    <?php $this->applyComponentHook($status, 'after') ?>
     <?php endforeach ?>
-    <?php $this->applyTemplateHook('entity-tabs', 'end') ?>
+    <?php $this->applyComponentHook('end') ?>
 </mc-tabs>
-<?php $this->applyTemplateHook('entity-tabs', 'after') ?>
