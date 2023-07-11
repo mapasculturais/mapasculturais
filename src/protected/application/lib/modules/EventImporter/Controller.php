@@ -902,7 +902,7 @@ class Controller extends \MapasCulturais\Controller
          
          $from = array_keys($moduleConfig['dic_months']);
          $to = array_values($moduleConfig['dic_months']);
-         $rule['description'] = str_replace($from, $to, $rule['description']);
+         $ocurrence->description = str_replace($from, $to, $rule['description']);
          
          $ocurrence->startsAt = $this->formatDate($value['STARTS_AT'], false);
          $ocurrence->endsAt = $this->formatDate($value['ENDS_AT'], false);
@@ -914,6 +914,8 @@ class Controller extends \MapasCulturais\Controller
          $ocurrence->separation = 1;
          $ocurrence->timezoneName = 'Etc/UTC';
          $ocurrence->rule = $rule;
+         $ocurrence->price = $value['PRICE'];
+         $ocurrence->priceInfo = $value['PRICE_INFO'];
    
          $app->disableAccessControl();
          $ocurrence->save(true);
