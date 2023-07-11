@@ -23,14 +23,14 @@ $this->import('
             <?php i::_e('Recuperar') ?>
     </mc-confirm-button>
     
-    <mc-confirm-button v-if="publishButton && entity.status != <?= Entity::STATUS_TRASH ?> && entity.status != <?= Entity::STATUS_ENABLED ?>"
+    <mc-confirm-button v-if="publishButton && entity.status != <?= Entity::STATUS_TRASH ?> && entity.status != <?= Entity::STATUS_ENABLED ?> && entity.currentUserPermissions.publish"
         @confirm="publishEntity($event)"
         button-class="button publish button--primary button--icon button-action publish-archived"
         message="<?php i::esc_attr_e("Você está certo que deseja publicar esta entidade?") ?>">
             <?php i::_e('Publicar') ?>
     </mc-confirm-button>
     
-    <mc-confirm-button v-if="archiveButton && entity.status != <?= Entity::STATUS_ARCHIVED ?> && hasStatus('archived')"
+    <mc-confirm-button v-if="archiveButton && entity.status != <?= Entity::STATUS_ARCHIVED ?> && hasStatus('archived') && entity.currentUserPermissions.archive"
         @confirm="archiveEntity($event)"
         button-class="button--text archive button--icon button--sm panel__entity-actions--archive"
         message="<?php i::esc_attr_e("Você está certo que deseja arquivar esta entidade?") ?>">
@@ -38,7 +38,7 @@ $this->import('
             <span><?php i::_e('Arquivar') ?></span>
     </mc-confirm-button>
     
-    <mc-confirm-button v-if="deleteButton && entity.status != <?= Entity::STATUS_TRASH ?> && hasStatus('trash')"
+    <mc-confirm-button v-if="deleteButton && entity.status != <?= Entity::STATUS_TRASH ?> && hasStatus('trash') && entity.currentUserPermissions.remove"
         @confirm="deleteEntity($event)"
         button-class="button--text delete button--icon button--sm panel__entity-actions--trash"
         message="<?php i::esc_attr_e("Você está certo que deseja excluir esta entidade?") ?>">
@@ -46,7 +46,7 @@ $this->import('
             <span><?php i::_e('Excluir') ?></span>
     </mc-confirm-button>
     
-    <mc-confirm-button v-if="destroyButton && entity.status == <?= Entity::STATUS_TRASH ?>"
+    <mc-confirm-button v-if="destroyButton && entity.status == <?= Entity::STATUS_TRASH ?> && entity.currentUserPermissions.destroy"
         @confirm="destroyEntity($event)"
         button-class="button--text delete button--icon button--sm panel__entity-actions--trash"
         message="<?php i::esc_attr_e("Você está certo que deseja excluir definitivamente esta entidade?") ?>">
