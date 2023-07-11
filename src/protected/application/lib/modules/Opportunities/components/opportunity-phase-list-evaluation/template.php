@@ -8,7 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-notification
-    opportunity-phase-publish-date-config
+    opportunity-phase-publish-config-registration
     mc-alert
 ');
 ?>
@@ -43,6 +43,6 @@ $this->import('
             </mc-link>
         </div>
         <div class="opportunity-phase-list-evaluation__line col-12"></div>
-        <opportunity-phase-publish-date-config :phase="entity.opportunity" :phases="phases" hide-datepicker></opportunity-phase-publish-date-config>
+        <opportunity-phase-publish-config-registration :phase="entity.opportunity" :phases="phases" hide-datepicker></opportunity-phase-publish-date-config-registration>
     </div>
 </mc-card>

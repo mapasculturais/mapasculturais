@@ -7,7 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
-    opportunity-phase-publish-date-config
+    opportunity-phase-publish-config-registration
 ')
 ?>
 <mc-card>
@@ -28,7 +28,7 @@ $this->import('
 
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div class="config-phase__line col-12"></div>
-            <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-datepicker hide-checkbox></opportunity-phase-publish-date-config>
+            <opportunity-phase-publish-config-registration :phase="entity" :phases="phases" hide-datepicker hide-checkbox></opportunity-phase-publish-config-registration>
         </template>
     </div>
 </mc-card>
