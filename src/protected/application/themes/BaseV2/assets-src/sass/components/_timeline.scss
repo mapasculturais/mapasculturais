@@ -120,14 +120,27 @@
     
                     &__content {
                         &--title {
-                            font-size: size(24);
-                            line-height: size(33);
+                            font-size: size(18);
+                            line-height: size(24);
                         }
     
                         &--description {
-                            font-size: size(24);
-                            line-height: size(33);
+                            font-size: size(16);
+                            line-height: size(21);
                         }
+                    }
+                    @media (max-width: size(400)) {
+                        &__title {
+
+                            font-size: size(16);
+                            line-height: size(21);
+                        }
+                        &__title {
+
+                            font-size: size(14);
+                            line-height: size(19);
+                        }
+
                     }
                 }    
             }
