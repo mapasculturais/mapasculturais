@@ -258,16 +258,19 @@ return [
                 }
             }
 
-            $fileName = "mcupdate1_documento.txt";
-            $dir = PRIVATE_FILES_PATH . "mcupdate_files";
-            if (!file_exists($dir)) {
-                mkdir($dir, 775);
+            if(env('SAVE_MCUPDATE_LOG')) {
+                $fileName = "mcupdate1_documento.txt";
+                $dir = PRIVATE_FILES_PATH . "mcupdate_files";
+                if (!file_exists($dir)) {
+                    mkdir($dir, 775);
+                }
+    
+                $path = $dir . "/" . $fileName;
+                $fp = fopen($path, "a+");
+                fwrite($fp, $txt);
+                fclose($fp);
             }
 
-            $path = $dir . "/" . $fileName;
-            $fp = fopen($path, "a+");
-            fwrite($fp, $txt);
-            fclose($fp);
         });
 
         
