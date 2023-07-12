@@ -1,6 +1,6 @@
 @use '../settings/mixins' as *;
 
-._opportunity-phase-publish-config-registration {
+.opportunity-phase-publish-config-registration {
     &__button {
         width: 100%;
 
@@ -12,7 +12,12 @@
     }
 
     &__left {
-       background-color: red;
+    }
+
+    &__lastphase {
+        display: flex;
+        gap: size(56);
+        align-items: center;
     }
 
     &__checkbox {
