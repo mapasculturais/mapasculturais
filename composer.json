@@ -4,7 +4,7 @@
         "akrabat/ip-address-middleware": "^2.1",
         "doctrine/annotations": "^2.0",
         "doctrine/dbal": "^3.6",
-        "doctrine/orm": "^2.14",
+        "doctrine/orm": "^2.15",
         "firebase/php-jwt": "^6.4",
         "michelf/php-markdown": "1.*",
         "monolog/monolog": "^3.4",
