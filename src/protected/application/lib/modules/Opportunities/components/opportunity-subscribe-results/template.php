@@ -9,7 +9,7 @@ use MapasCulturais\i;
 $this->import('
     mc-modal
     mc-stepper-vertical
-    opportunity-phase-list-data-collection
+    opportunity-phase-status
     opportunity-phase-list-evaluation
     v1-embed-tool
 ');
@@ -52,7 +52,7 @@ $this->import('
         </template>
 
         <template v-if="item.__objectType == 'opportunity'">
-            <opportunity-phase-list-data-collection :entity="item" :phases="phases"></opportunity-phase-list-data-collection>
+            <opportunity-phase-status :entity="item" :phases="phases"></opportunity-phase-status>
         </template>
     </template>
 </mc-stepper-vertical>
