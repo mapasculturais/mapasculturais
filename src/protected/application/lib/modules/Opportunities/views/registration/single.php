@@ -152,7 +152,75 @@ $this->breadcrumb = [
                     </template>
                 </mc-card>
 
-                <mc-card v-if="entity.opportunity.useSpaceRelationInstituicao !== 'dontUse'"> 
+                <mc-card v-if="entity.opportunity.projectName !== 0">
+                    <template #content>
+                        <div class="registered-info">
+                            <span class="info"> 
+                                <strong> <?= i::__('Nome do Projeto') ?> </strong> 
+                            </span>
+                            <span class="info" vf-if="entity.projectName"> 
+                                <span> {{entity.projectName}}</span>
+                            </span>
+                            <span class="info" v-if="!entity.projectName">
+                                <?= i::__('Nome do projeto não informado') ?>
+                            </div>
+                        </div>
+                    </template>
+                </mc-card>
+
+                <mc-card v-if="entity.opportunity.useAgentRelationColetivo !== 'dontUse'"> 
+                    <template #title>
+                        <label> <?= i::__('Coletivo') ?> </label>
+                    </template>
+                    <template #content>
+                        <div v-if="entity.agentRelations.hasOwnProperty('coletivo') && entity.agentRelations.coletivo[0]" class="space">
+                            <div class="image">
+                                <mc-icon v-if="!entity.agentRelations.coletivo[0]?.files?.avatar" name="image"></mc-icon>
+                                <img v-if="entity.agentRelations.coletivo[0]?.files?.avatar" :src="entity.agentRelations.coletivo[0].files.avatar.transformations.avatarMedium.url" />
+                            </div>
+                            <div class="name">
+                                <a href="entity?.agentRelations.coletivo[0].agent.singleUrl" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
+                            </div>
+                        </div>
+                        <div v-if="!entity.agentRelations.hasOwnProperty('coletivo')" class="space">
+                        <div class="image">
+                                <mc-icon name="agent-2"></mc-icon>
+                            </div>
+                            <div class="name">
+                                <?= i::__('Coletivo não informado') ?>
+                            </div>
+                        </div>
+                    </template>
+                </mc-card>
+                
+
+                <mc-card v-if="entity.opportunity.useAgentRelationInstituicao !== 'dontUse'"> 
+                    <template #title>
+                        <label> <?= i::__('Instituição responsável') ?> </label>
+                    </template>
+                    <template #content>
+                        <div v-if="entity.agentRelations.hasOwnProperty('instituicao') && entity.agentRelations.instituicao[0]" class="space">
+                            <div class="image">
+                                <mc-icon v-if="!entity.agentRelations.instituicao[0]?.files?.avatar" name="image"></mc-icon>
+                                <img v-if="entity.agentRelations.instituicao[0]?.files?.avatar" :src="entity.agentRelations.instituicao[0].files.avatar.transformations.avatarMedium.url" />
+                            </div>
+                            <div class="name">
+                                <a :href="entity?.agentRelations.instituicao[0].agent.singleUrl" :class="[entity.agentRelations.instituicao[0]['@entityType'] + '__color']"> {{entity?.agentRelations.instituicao[0].agent.name}} </a>
+                            </div>
+                        </div>
+
+                        <div v-if="!entity.agentRelations.hasOwnProperty('instituicao')" class="space">
+                            <div class="image">
+                                <mc-icon name="agent"></mc-icon>
+                            </div>
+                            <div class="name">
+                                <?= i::__('Instituição responsável não informada') ?>
+                            </div>
+                        </div>
+                    </template>
+                </mc-card>
+
+                <mc-card v-if="entity.opportunity.useSpaceRelationIntituicao !== 'dontUse'"> 
                     <template #title>
                         <label> <?= i::__('Espaço Vinculado') ?> </label>
                     </template>
@@ -169,7 +237,7 @@ $this->breadcrumb = [
 
                         <div v-if="!entity.relatedSpaces[0]" class="space">
                         <div class="image">
-                                <mc-icon name="image"></mc-icon>
+                                <mc-icon name="space"></mc-icon>
                             </div>
                             <div class="name">
                                 <?= i::__('Sem espaço vinculado') ?>
