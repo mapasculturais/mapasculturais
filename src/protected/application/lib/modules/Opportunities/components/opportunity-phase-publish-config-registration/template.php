@@ -24,9 +24,6 @@ $this->import('
                     </template>
                 </mc-confirm-button>
             </div>
-            <div v-if="!!phase.publishTimestamp" class="col-4">
-                <h5>{{ msgPublishDate }}</h5>
-            </div>
         </div>
 
         <div v-if="!phase.publishedRegistrations" :class="[{'opportunity-phase-publish-config-registration__lastphase': phase.isLastPhase}, {'grid-12': !phase.isLastPhase}, 'notPublished', 'col-12']">
