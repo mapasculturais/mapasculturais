@@ -15,11 +15,9 @@
     }
 
     &__lastphase {
-        display: flex;
-        gap: size(56);
-        align-items: center;
-    }
+        // display: grid;
 
+    }
     &__checkbox {
         flex-direction: row;
         display: flex;
