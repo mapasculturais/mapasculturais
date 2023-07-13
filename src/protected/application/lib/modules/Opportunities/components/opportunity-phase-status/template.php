@@ -20,8 +20,8 @@ $this->import('
             <p v-if="entity.summary?.Draft"><?= i::__("Quantidade de inscrições <strong>rascunho</strong>:") ?> <strong>{{entity.summary.Draft}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
         </div>
         <div class="col-12 opportunity-phase-status_action--center">
-        <opportunity-phase-publish-config-registration v-if="entity.isLastPhase" :phase="entity" :phases="phases" hide-datepicker hide-checkbox></opportunity-phase-publish-config-registration>
-            
+             <opportunity-phase-publish-config-registration v-if="entity.isLastPhase" :phase="entity" :phases="phases" hide-datepicker hide-checkbox></opportunity-phase-publish-config-registration>
+      
             <mc-link :entity="entity" class="opportunity-phase-status_action--button" route="registrations" right-icon>
               <?= i::__("Acessar lista de pessoas inscritas") ?>
             </mc-link>
