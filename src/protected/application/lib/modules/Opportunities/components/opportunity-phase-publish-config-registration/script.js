@@ -30,7 +30,10 @@ app.component('opportunity-phase-publish-config-registration' , {
         hideDescription: {
             type: Boolean,
             default: false
-        }
+        },
+        tab: {
+            type: String,
+        },
     },
 
     computed: {
