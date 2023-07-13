@@ -22,7 +22,7 @@ $this->import('
                     <div class="event-importer-upload__field">
                         <p id="fileName">{{fileName}}</p>
                         <label for="fileUpload">
-                            <small class="input-label">
+                            <small class="input-label semibold">
                                 <?= i::__("Selecionar arquivo") ?> 
                                 <mc-icon name="add"></mc-icon>
                             </small>
