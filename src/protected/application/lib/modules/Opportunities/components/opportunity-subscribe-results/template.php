@@ -15,7 +15,7 @@ $this->import('
 ');
 ?>
 <mc-stepper-vertical :items="phases" allow-multiple>
-    <template #header-title="{index, item}">        
+    <template #header-title="{index, item, }">        
         <div class="stepper-header__content">
             <div class="info">
                 <h2 v-if="index && !item.__objectType == 'evaluationmethodconfiguration'" class="info__title">{{item.name}}</h2>
@@ -26,7 +26,7 @@ $this->import('
                     <span v-if="item.__objectType == 'opportunity'" class="type"><?= i::__('Coleta de dados') ?></span>
                     <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{evaluationMethods[item.type].name}}</span>
                 </div>
-                <h2 v-if="item.isLastPhase" class="info__title"><?= i::__('Publicação final dos Resultados') ?></h2>
+                <h2 v-if="item.isLastPhase && tab=='registrations'" class="info__title"><?= i::__('Publicação final dos Resultados') ?></h2>
 
             </div>
         </div>
@@ -54,7 +54,7 @@ $this->import('
         </template>
 
         <template v-if="item.__objectType == 'opportunity'">
-            <opportunity-phase-status :entity="item" :phases="phases"></opportunity-phase-status>
+            <opportunity-phase-status :entity="item"  :phases="phases" :tab="tab"></opportunity-phase-status>
         </template>
     </template>
 </mc-stepper-vertical>
