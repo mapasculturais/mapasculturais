@@ -38,10 +38,10 @@ $this->breadcrumb = [
             <opportunity-basic-info :entity="entity"></opportunity-basic-info>
         </mc-tab>
         <mc-tab label="<?= i::__('Configuração de fases') ?>" slug="config">
-            <opportunity-phases-config :entity="entity"></opportunity-phases-config>
+            <opportunity-phases-config :entity="entity" tabs='config'></opportunity-phases-config>
         </mc-tab>
         <mc-tab label="<?= i::__('Inscrições e Resultados') ?>" slug="registrations">
-            <opportunity-subscribe-results :entity="entity"></opportunity-subscribe-results>
+            <opportunity-subscribe-results :entity="entity" tab="registrations"></opportunity-subscribe-results>
         </mc-tab>
         <mc-tab label="<?= i::__('Relatórios') ?>" slug="report">
             <opportunity-phase-reports :entity="entity"></opportunity-phase-reports>
