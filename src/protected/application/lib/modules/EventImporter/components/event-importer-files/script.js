@@ -35,7 +35,7 @@ app.component('event-importer-files', {
             });
         },
         isProcessed(entity, file){
-            return entity.event_importer_processed_file[file.name] ? true : false;
+            return entity.event_importer_processed_file && entity.event_importer_processed_file[file.name] ? true : false;
         },
         processedDate(entity, file){
            return entity.event_importer_processed_file[file.name].date;
