@@ -26,8 +26,8 @@ $this->import('
         <div v-if="relatedSpace" class="registration-related-entity">
             <div class="registration-related-entity__entity">
                 <div class="image">
-                    <img v-if="relatedSpace.space.files.avatar" :src="relatedSpace.space.files?.avatar?.transformations?.avatarMedium.url" />
-                    <mc-icon v-if="!relatedSpace.space.files.avatar" name="image"></mc-icon>
+                    <img v-if="relatedSpace.space?.files?.avatar" :src="relatedSpace.space.files?.avatar?.transformations?.avatarMedium.url" />
+                    <mc-icon v-if="!relatedSpace.space?.files?.avatar" name="image"></mc-icon>
                 </div>
                 <div class="name">
                     {{relatedSpace.space.name}}
