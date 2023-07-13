@@ -152,7 +152,7 @@ $this->breadcrumb = [
                     </template>
                 </mc-card>
 
-                <mc-card v-if="entity.opportunity.useSpaceRelationInstituicao !== 'dontUse'"> 
+                <mc-card v-if="entity.opportunity.useSpaceRelationIntituicao !== 'dontUse'"> 
                     <template #title>
                         <label> <?= i::__('Espaço Vinculado') ?> </label>
                     </template>
