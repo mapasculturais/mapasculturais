@@ -26,6 +26,8 @@ $this->import('
                     <span v-if="item.__objectType == 'opportunity'" class="type"><?= i::__('Coleta de dados') ?></span>
                     <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{evaluationMethods[item.type].name}}</span>
                 </div>
+                <h2 v-if="item.isLastPhase" class="info__title"><?= i::__('Publicação final dos Resultados') ?></h2>
+
             </div>
         </div>
     </template>
