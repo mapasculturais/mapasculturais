@@ -9,13 +9,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa novo método de avaliação EvaluationMethodQualification
 - Implementa opção para condicionar campos do tipo a nexos
 ## Melhorias
-- Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
 - Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
 - Ajusta estrutura de condicionalidade de campo criando colunas específicas na tabela registration_field_configuration
 - Não obriga mais um campos ser obrigatorio para ser condicionado a outro campo
+## [5.6.21] - 2023-07-13
+### Melhorias
+- Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
 - Aplica novos filtros no módulo de relatórios
 - Remove dados mínimos exigidos para geração de grafico no módulo de relatórios
 - Ajusta posicionamento do filtro na tela do módulo de relatorios, deixando facil interpretar quais gráficos serão afetados com o filtro
+
 ## [5.6.20] - 2023-06-06
 ### Melhorias
 - define o tempo de duração das sessões para 2 horas, por padrão
