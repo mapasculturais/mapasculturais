@@ -1,5 +1,16 @@
 /* =Barra lateral
 -------------------------------------------------------------- */
+#sidebars {
+    position: sticky;
+    top: 78px;
+    display: flex;
+    justify-content: space-between;
+
+    @media (max-width: $screen-md-max) {
+        flex-direction: column;
+    }
+}
+
 .sidebar {
     position: relative;
          box-sizing: border-box;
@@ -24,14 +35,22 @@
 
 .sidebar-left {
     overflow: visible;
+    position: relative;
+    height: calc(100vh - 78px);
+
     //tablet
     @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
         float: right;
-        width: 25%;
         padding-bottom: 0;
         margin-bottom: 0;
         overflow: visible;
     }
+
+    @media screen and (max-width: $screen-md-max) {
+        height: 100%;
+        /* width: 25%; */
+    }
+    
     //note
     @media screen and (min-width: $screen-lg-desktop) and (max-width: 1366px) {
         float: left;
@@ -46,6 +65,7 @@
         width: 15%;
         overflow: visible;
     }
+
     .widget {
         float: none;
         padding-bottom: 1.5rem;
@@ -57,19 +77,10 @@
         }
     }
 
-    @media screen and (max-width: 1366px) and (min-width: 1200px){
-        #registrations-list-container{
-            width:20%;
-        }
-    }
-
     #registrations-list-container {
-        position: fixed;
-        margin-right: -1.5em;
-        margin-left: -1.5em;
-        width:14.5%;
-        display:block;
+        display: block;
         font-size: .75em;
+        width: 100%;
 
         h4 { margin-bottom: 10px; }
 
@@ -96,7 +107,7 @@
                 &.valid { background-color: $alert-success-bg !important;}
                 &.invalid { background-color: $alert-danger-bg !important; }
                 &.current { background: white !important; }
-
+                &.finish { background: #fcfcfc !important; }
 
                 .registration-evaluated {
                     font-style: italic;
@@ -118,13 +129,20 @@
         float: right;
     }
     @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
-        width: 25%;
+        width: 100%;
     }
     @media screen and (min-width: $screen-lg-desktop) and (max-width: 1366px) {
         width: 20%;
     }
     @media screen and (min-width: 1367px) {
         width: 25%;
+    }
+
+    .evaluation-form {
+        position: unset;
+        width: 100%;
+        padding: 0;
+        overflow: hidden;
     }
 }
 body.action-single {
@@ -166,9 +184,9 @@ body.action-single {
     .widget-list-item > a {
         color: $brand-agent;
     }
-    @media only screen and (max-width: 982px) {
+    /* @media only screen and (max-width: 982px) {
         margin-top: 20%;
-    }
+    } */
 }
 .sidebar.space {
     border-top-color: $brand-space;

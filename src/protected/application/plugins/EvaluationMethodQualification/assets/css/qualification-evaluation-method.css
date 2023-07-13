@@ -1,0 +1,160 @@
+.qualification-evaluation-configuration header {
+    display: flex;
+}
+
+.qualification-evaluation-configuration .btn {
+    margin-left: 10px;
+}
+
+.qualification-evaluation-configuration input {
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.qualification-evaluation-configuration .select-option{
+    width:300px;
+    display:block;
+    position: fixed;
+}
+
+.qualification-evaluation-configuration .criteria-fields {
+    width: 100%;
+}
+
+.qualification-evaluation-configuration input:focus {
+    border: 1px solid #888;
+    cursor: text;
+}
+
+.qualification-evaluation-configuration input.section-name {
+    font-size: 1.3em;
+    font-weight: bold;
+    width: 80%;
+}
+
+.qualification-evaluation-configuration table {
+    width: 100%;
+}
+
+.qualification-evaluation-configuration table th .btn {
+    text-align: right
+}
+
+.qualification-evaluation-configuration table input {}
+
+.qualification-evaluation-configuration table td {
+    vertical-align: middle;
+    text-align: center;
+
+}
+
+.qualification-evaluation-configuration table td input{
+    text-align: center;
+
+}
+
+.qualification-evaluation-configuration table tr th {
+    text-align: center
+}
+
+.qualification-evaluation-configuration .criterion-num {
+    width: 10%;
+}
+
+.qualification-evaluation-configuration .criterion-num input {
+    font-weight: bold;
+    text-align: center;
+    font-size: 13px;
+}
+
+.qualification-evaluation-configuration .btn-add-section {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+/* evaluation form */
+
+.qualification-evaluation-form table {
+    width: 100%;
+    border: 1px solid #bbb;
+    padding: 5px;
+}
+
+.qualification-evaluation-form table th {
+    background-color: #ddd;
+}
+
+.qualification-evaluation-form table td {
+    padding: 0 10px;
+    text-align: left;
+}
+
+.qualification-evaluation-form table tr td:last-of-type {
+    vertical-align: bottom;
+    text-align: right;
+    padding: 0;
+}
+
+.qualification-evaluation-form table td input {
+    width: 50px;
+}
+
+
+.qualification-evaluation-form table tr.subtotal {
+    background-color: #ddd;
+}
+
+.qualification-evaluation-form table tr.subtotal td {
+    padding: 5px 10px;
+    font-weight: bold;
+}
+
+.qualification-evaluation-form textarea {
+    width: 100%;
+    height: 150px;
+}
+
+.qualification-evaluation-form .approved {
+    color: blue;
+}
+
+.qualification-evaluation-form .repproved {
+    color: red;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    word-break: break-all;
+    max-width: 300px;
+    width: 290px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px 10px;
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+  .descriptio-criteria{
+    font-style: italic;
+    font-size: 12px;
+  }
+
+  .comments{
+    display: flex;
+  }
+
+  .comments div{
+    text-align: left
+  }
