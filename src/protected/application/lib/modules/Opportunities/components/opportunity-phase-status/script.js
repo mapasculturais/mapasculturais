@@ -14,6 +14,9 @@ app.component('opportunity-phase-status' , {
         phases: {
             type: Array,
             required: true
+        },
+        tab: {
+            type: String,
         }
     },
 
