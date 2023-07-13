@@ -1931,7 +1931,22 @@ class Theme extends MapasCulturais\Theme {
             'Anexos' => i::__('Anexos'),
             'Avaliação' => i::__('Avaliação'),
             'Status' => i::__('Status'),
-            'spaceRelationRequestSent' =>  i::__('Sua requisição para relacionar o espaço {{space}} foi enviada.')
+            'spaceRelationRequestSent' =>  i::__('Sua requisição para relacionar o espaço {{space}} foi enviada.'),
+
+            'conditionMandatory' => i::__('Informe a qual campo quer condicionar a obrigatoriedade'),
+            'fieldCondition' => i::__('Informe o valor condicionante do campo'),
+            'category' => i::__('Categoria'),
+            'removeField' => i::__('Deseja remover este campo?'),
+            'projectName' => i::__('Nome do projeto'),
+            'agentSummaries' => i::__('Resumo dos agentes'),
+            'spaceSummaries' => i::__('Resumo dos espaços'),
+            'disableCategories' => i::__('Você desativou a categoria, todos os campos vinculado a alguma categoria serão também desativados'),
+            'successFullySaved' => i::__('Salvo com sucesso'),
+            'activateField' => i::__('Para ativar este campo, ative também o campo Categoria'),
+            'fieldsDisabled' => i::__('Atenção, você tentou marcar campos que estão debilitados por algum tipo de condicional ou vinculado a alguma categoria, verifique se todos foram que deseja marcar foram marcados corretamente'),
+            'providingAccount' => i::__('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?'),
+            'disableColumns' => i::__('Não é permitido desabilitar todas as colunas da tabela'),
+            'columnDisabling' => i::__('Não é permitido desabilitar a coluna')
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));

@@ -74,6 +74,27 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     protected $displayOrder = 255;
     
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="conditional", type="boolean", nullable=false)
+     */
+    protected $conditional ;
+
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="conditional_field", type="string",length=255 ,nullable=false)
+     */
+    protected $conditionalField;
+
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="conditional_value", type="string",length=255 ,nullable=false)
+     */
+    protected $conditionalValue;
+
+    /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationFileConfigurationFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
@@ -119,7 +140,10 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'template' => $this->getFile('registrationFileTemplate'),
             'groupName' => $this->fileGroupName,
             'categories' => $this->categories,
-            'displayOrder' => $this->displayOrder
+            'displayOrder' => $this->displayOrder,
+            'conditional' => $this->conditional ? true : false,
+            'conditionalField' => $this->conditionalField,
+            'conditionalValue' => $this->conditionalValue
         ];
     }
 

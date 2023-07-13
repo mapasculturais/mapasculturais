@@ -113,6 +113,16 @@
 .edit-box select {
     width: 100%;
 }
+
+.edit-input{
+    display: flex;
+    gap: 5px;
+        label{
+            float: left;
+            width: 50%;
+        }
+}
+
 .edit-box input {
     &[type="checkbox"], &[type="radio"], &[type="submit"] {
     width: auto;

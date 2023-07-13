@@ -286,14 +286,14 @@ $(function () {
         });
     }
 
-    function setEvaluationFormHeight() {
+    /* function setEvaluationFormHeight() {
         var h = $(window).height() - $('#main-header').height();
         $('#registration-evaluation-form').height(h - 50);
     }
 
     setEvaluationFormHeight();
 
-    $(window).resize(setEvaluationFormHeight);
+    $(window).resize(setEvaluationFormHeight); */
 });
 
 //Restart entity form
