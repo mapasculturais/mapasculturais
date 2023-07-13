@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->import('
     entity-field
     mc-confirm-button
+    mc-link
 ');
 ?>
 <div class="col-12">
@@ -54,8 +55,6 @@ $this->import('
                     <h5 class="semibold"><?= i::__("A publicação do resultado é opcional.") ?></h5>
                 </div>
             </div>
-            
-            
             <div v-if="!hideButton && firstPhase.status > 0" class="col-4">
                 <mc-confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
                     <template #button="modal">
