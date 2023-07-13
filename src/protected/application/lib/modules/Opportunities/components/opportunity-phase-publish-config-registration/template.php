@@ -10,6 +10,7 @@ use MapasCulturais\i;
 $this->import('
     entity-field
     mc-confirm-button
+    mc-link
 ');
 ?>
 <div class="col-12">
@@ -25,7 +26,7 @@ $this->import('
                 </mc-confirm-button>
             </div>
         </div>
-
+      
         <div v-if="!phase.publishedRegistrations" :class="[{'opportunity-phase-publish-config-registration__lastphase': phase.isLastPhase}, {'grid-12': !phase.isLastPhase}, 'notPublished', 'col-12']">
             <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="300" :min="minDate" :max="maxDate" classes="col-4"></entity-field>
             <div :class="[{'col-12 opportunity-phase-publish-config-registration__left': !phase.isLastPhase}]">
@@ -53,6 +54,9 @@ $this->import('
                     <h5 class="semibold"><?= i::__("A publicação do resultado é opcional.") ?></h5>
                 </div>
             </div>
+            <mc-link v-if="tab=='registrations'" :entity="phase" class="opportunity-phase-status_action--button" route="registrations" right-icon>
+                <?= i::__("Acessar lista de pessoas inscritas") ?>
+            </mc-link>
             <div :class="[{'col-12 grid-12': !phase.isLastPhase}]">
                             
                 <entity-field v-if="!hideCheckbox && firstPhase.status > 0" :entity="phase" prop="autoPublish" type="checkbox" :autosave="300" :disabled="!phase.publishTimestamp" hideRequired classes="col-4"></entity-field>
