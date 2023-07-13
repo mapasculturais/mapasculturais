@@ -622,7 +622,7 @@ class Controller extends \MapasCulturais\Controller
          }
       }
 
-      $this->json($_agent->event_importer_processed_file);
+      $this->json($app->user->profile->event_importer_processed_file);
       
    }
 
