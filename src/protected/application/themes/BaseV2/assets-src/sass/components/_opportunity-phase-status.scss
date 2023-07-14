@@ -1,12 +1,9 @@
 @use '../settings/mixins' as *;
 
 .opportunity-phase-status {
+    width: 100%;
 
-    p {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 19px;
-    }
+   
 
     .subscribe_prev_phase {
         display: flex;
