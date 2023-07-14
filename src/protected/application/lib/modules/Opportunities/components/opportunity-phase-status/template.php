@@ -11,7 +11,7 @@ $this->import('
 ')
 ?>
 <mc-card>
-    <div class="grid-12 opportunity-phase-status">
+    <div :class="[{'grid-12': tab!='registrations' && phase.isLastPhase}, 'opportunity-phase-status']">
         <div v-if="entity.summary?.registrations" class="col-12">
             <h3><?php i::_e("Status das inscrições") ?></h3>
             <p v-if="entity.summary.registrations"><?= i::__("Quantidade de inscrições:") ?> <strong>{{entity.summary.registrations}}</strong><strong> <?= i::__('inscrições') ?></strong></p>

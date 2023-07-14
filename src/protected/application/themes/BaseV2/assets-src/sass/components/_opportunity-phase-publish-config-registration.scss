@@ -13,7 +13,10 @@
 
     &__left {
     }
-
+    &__unpublishedlast {
+        display: flex;
+        gap: size(56);
+    }
     &__lastphase {
         // display: grid;
 
