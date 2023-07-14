@@ -1,6 +1,15 @@
 @use '../settings/mixins' as *;
 
 .opportunity-phase-publish-config-registration {
+    width: 100%;
+
+    &--published {
+        width: 100%;
+        border-top: 1px solid var(--mc-gray-100);
+        padding-top: 16px;
+    }
+
+
     &__button {
         width: 100%;
 
@@ -11,16 +20,23 @@
         }
     }
 
-    &__left {
+    &__line {
+        max-width: size(1038);
+        border-bottom: 1px solid var(--mc-gray-100);
     }
+
+    .msgpub-date {
+        border-bottom: 1px solid var(--mc-gray-100);
+        margin-bottom: 32px;
+        padding-bottom: size(32);
+    }
+
     &__unpublishedlast {
         display: flex;
         gap: size(56);
+        align-items: center;
     }
-    &__lastphase {
-        // display: grid;
 
-    }
     &__checkbox {
         flex-direction: row;
         display: flex;
