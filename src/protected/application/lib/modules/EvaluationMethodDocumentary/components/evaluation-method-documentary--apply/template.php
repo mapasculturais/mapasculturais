@@ -12,33 +12,39 @@ $this->import('
 ');
 ?>
 
-<mc-modal :title="modalTitle" classes="create-modal create-app" button-label="<?php i::_e('Aplicar avaliações') ?>">
+<mc-modal :title="modalTitle" classes="apply-evaluations">
+    <template #button="modal">
+        <button class="button button--primary button--md button--large" @click="modal.open()">
+            <?php i::_e('Aplicar resultado das avaliações') ?>
+        </button>
+    </template> 
 
     <template #default>
-        <div class="col-12">
-            <div class="col-6">
-                <label><?php i::_e('Avaliação') ?></label> <br>
+        <div class="grid-12">
+            <div class="field col-12">
+                <label><?php i::_e('Avaliação') ?></label>
                 <select v-model="applyData.from">
                     <option value="all"><?php i::_e('Todos') ?></option>
                     <option v-for="item in consolidatedResults" :value="item.evaluation">{{valueToString(item.evaluation)}} ({{item.num}} <?php i::_e('Inscrições') ?>)</option>
                 </select>
             </div>
 
-            <div class="col-6">
-                <label><?php i::_e('Status') ?></label> <br>
+            <div class="field col-12">
+                <label><?php i::_e('Status') ?></label>
                 <select v-model="applyData.to">
                     <option v-for="item in statusList" :value="item.status">{{item.label}}</option>
                 </select>
             </div>
-        </div>
-        <br>
-        <div class="col-12">
-            <label>
-                <?php i::_e('Status') ?>
-                <input type="checkbox" v-model="applyAll">
-            </label>
-            <small><?php i::_e('Deixando desmarcado, o status será aplicado somente às inscrições com status pendente')?></small>
-        </div>
+
+            <h5 class="semibold col-12"> <?= i::__("Se você preferir não marcar a caixa abaixo, as avaliações serão aplicadas somente nas inscrições que com o status 'Pendente'.") ?> </h5>
+
+            <div class="field col-12">
+                <label>
+                    <input type="checkbox" v-model="applyAll">
+                    <?php i::_e('Aplicar para todas as inscrições enviadas') ?>
+                </label>
+            </div>
+        </div>        
     </template>
 
     <template #actions="modal">
