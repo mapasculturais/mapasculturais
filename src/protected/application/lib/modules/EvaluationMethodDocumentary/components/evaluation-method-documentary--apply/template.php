@@ -48,7 +48,7 @@ $this->import('
     </template>
 
     <template #actions="modal">
-        <div class="col-12">
+        <div class="grid-12">
             <div class="col-6">
                 <button class="button button--primary" @click="apply(modal)"><?php i::_e('Aplicar') ?></button>
             </div>
