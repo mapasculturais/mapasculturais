@@ -1,17 +1,18 @@
 @use '../settings/mixins' as *;
 
 .event-importer-files {
-
     &__card {
+        padding: size(24);
+
         .mc-card__content {
             flex-direction: column;
-            gap: size(16);
+            gap: size(24);
         }
     }
 
     &__card-content {
         display: flex;
-        gap: size(25) size(48);
+        gap: size(25) size(40);
         flex-wrap: wrap;
     }
 

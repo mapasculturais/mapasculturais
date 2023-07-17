@@ -25,11 +25,11 @@ $this->import('
                 <div class="event-importer-files__card-content">
                     <div class="event-importer-files__name">
                         <p class="semibold uppercase"><?= i::__("Nome do arquivo") ?></p>
-                        <p>{{file.name}}</p>
+                        <p class="bold">{{file.name}}</p>
                     </div>
                     <div class="event-importer-files__date">
                         <p class="semibold uppercase"><?= i::__("Data de importação") ?></p>
-                        <p>{{file.createTimestamp.date('numeric year')}} <?= i::__("às") ?> {{file.createTimestamp.time('2-digit')}}</p>
+                        <p class="bold">{{file.createTimestamp.date('numeric year')}} <?= i::__("às") ?> {{file.createTimestamp.time('2-digit')}}</p>
                     </div>
                 </div>
 
