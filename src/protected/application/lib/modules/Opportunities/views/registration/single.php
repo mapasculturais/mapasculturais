@@ -152,7 +152,7 @@ $this->breadcrumb = [
                     </template>
                 </mc-card>
 
-                <mc-card v-if="entity.opportunity.projectName !== 0">
+                <mc-card v-if="entity.opportunity.projectName && entity.opportunity.projectName !== 0">
                     <template #content>
                         <div class="registered-info">
                             <span class="info"> 
@@ -168,7 +168,7 @@ $this->breadcrumb = [
                     </template>
                 </mc-card>
 
-                <mc-card v-if="entity.opportunity.useAgentRelationColetivo !== 'dontUse'"> 
+                <mc-card v-if="entity.opportunity.useAgentRelationColetivo && entity.opportunity.useAgentRelationColetivo !== 'dontUse'"> 
                     <template #title>
                         <label> <?= i::__('Coletivo') ?> </label>
                     </template>
@@ -194,7 +194,7 @@ $this->breadcrumb = [
                 </mc-card>
                 
 
-                <mc-card v-if="entity.opportunity.useAgentRelationInstituicao !== 'dontUse'"> 
+                <mc-card v-if="entity.opportunity.useAgentRelationInstituicao && entity.opportunity.useAgentRelationInstituicao !== 'dontUse'"> 
                     <template #title>
                         <label> <?= i::__('Instituição responsável') ?> </label>
                     </template>
@@ -220,7 +220,7 @@ $this->breadcrumb = [
                     </template>
                 </mc-card>
 
-                <mc-card v-if="entity.opportunity.useSpaceRelationIntituicao !== 'dontUse'"> 
+                <mc-card v-if="entity.opportunity.useSpaceRelationIntituicao && entity.opportunity.useSpaceRelationIntituicao !== 'dontUse'"> 
                     <template #title>
                         <label> <?= i::__('Espaço Vinculado') ?> </label>
                     </template>
