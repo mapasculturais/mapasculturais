@@ -34,12 +34,6 @@
         border-bottom: 1px solid var(--mc-gray-100);
     }
 
-    .msgpub-date {
-        border-bottom: 1px solid var(--mc-gray-100);
-        margin-bottom: 32px;
-        padding-bottom: size(32);
-    }
-
     &__unpublishedlast {
         display: flex;
         gap: size(56);
