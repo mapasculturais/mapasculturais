@@ -29,7 +29,7 @@ $this->import('
 
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div class="config-phase__line col-12"></div>
-            <opportunity-phase-publish-config-registration v-if="!entity.isLastPhase && !phase.firstPhase" :phase="entity" :phases="phases" :tab="tab" hide-datepicker hide-checkbox></opportunity-phase-publish-config-registration>
+            <opportunity-phase-publish-config-registration v-if="!entity.isLastPhase && !entity.isFirstPhase" :phase="entity" :phases="phases" :tab="tab" hide-datepicker hide-checkbox></opportunity-phase-publish-config-registration>
         </template>
     </div>
 </mc-card>
