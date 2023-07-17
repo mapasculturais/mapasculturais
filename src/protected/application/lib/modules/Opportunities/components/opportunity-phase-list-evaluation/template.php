@@ -28,13 +28,13 @@ $this->import('
             <h4 class="bold"><?php i::_e("Status das avaliações") ?></h4>
             <p v-for="(value, label) in entity.summary.evaluations"><?= i::__("Quantidade de inscrições") ?> <strong>{{label.toLowerCase()}}</strong>: <strong>{{value}}</strong> <?php i::_e('inscrições') ?></p>
         </div>
+        <div class="opportunity-phase-list-evaluation__line col-12"></div>
         <mc-alert v-if="!entity.opportunity.publishedRegistrations" class="col-12" type="success">
                 <?= i::__('A aplicação dos resultados nas inscrições já foi iniciado. Acesse a <strong>lista de inscrições da fase</strong> para continuar ou concluir o processo.') ?>
         </mc-alert>
         <mc-alert v-if="entity.opportunity.publishedRegistrations"  class="col-12" type="helper">
             <?= i::__('Para aplicar os resultados das avaliações, acesse a lista de inscrições. Depois de fazer as avaliações, é só oficializar os status das inscrições.') ?>
         </mc-alert>
-        <div class="opportunity-phase-list-evaluation__line col-12"></div>
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
             <mc-link :entity="entity.opportunity" class="opportunity-phase-status_action--button" icon="external" route="registrations" right-icon>
               <?= i::__("Lista de inscrições da fase") ?>
