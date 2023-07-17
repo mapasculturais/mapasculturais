@@ -16,7 +16,7 @@ $this->import('
 $entity = $this->controller->requestedEntity;
 ?>
 <div class="opportunity-registration-table grid-12">
-    <div class="col-6">
+    <div class="col-12">
         <h2 v-if="phase.publishedRegistrations"><?= i::__("Os resultados já foram publicados") ?></h2>
         <h2 v-if="!phase.publishedRegistrations && isPast()"><?= i::__("As inscrições já estão encerradas") ?></h2>
         <h2 v-if="isHappening()"><?= i::__("As inscrições estão em andamento") ?></h2>
