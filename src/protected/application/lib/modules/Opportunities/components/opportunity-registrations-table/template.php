@@ -24,13 +24,13 @@ $entity = $this->controller->requestedEntity;
     </div>
     <template v-if="!isFuture()">
         <?php $this->applyTemplateHook('registration-list-actions', 'before', ['entity' => $entity]); ?>
-            <div class="col-12">
+            <div class="col-12 opportunity-registration-table__buttons">
                 <?php $this->applyTemplateHook('registration-list-actions', 'begin', ['entity' => $entity]); ?>
                 <div class="col-4 text-right">
-                    <mc-link :entity="phase" route="reportDrafts" class="button button--secondarylight"><label class="down-draft"><?= i::__("Baixar rascunho") ?></label></mc-link>
+                    <mc-link :entity="phase" route="reportDrafts" class="button button--secondarylight button--md"><label class="down-draft"><?= i::__("Baixar rascunho") ?></label></mc-link>
                 </div>
                 <div class="col-4">
-                    <mc-link :entity="phase" route="report" class="button button--secondarylight"><label class="down-list"><?= i::__("Baixar lista de inscrições") ?></label></mc-link>
+                    <mc-link :entity="phase" route="report" class="button button--secondarylight button--md"><label class="down-list"><?= i::__("Baixar lista de inscrições") ?></label></mc-link>
                 </div>
                 <?php $this->applyTemplateHook('registration-list-actions', 'end', ['entity' => $entity]); ?>
             </div>
