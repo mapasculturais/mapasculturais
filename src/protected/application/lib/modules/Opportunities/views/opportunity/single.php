@@ -104,7 +104,7 @@ $this->breadcrumb = [
                 </aside>
                 <aside>
                     <div class="grid-12">
-                        <complaint-suggestion :entity="entity"></complaint-suggestion>
+                        <complaint-suggestion :entity="entity" classes="col-12"></complaint-suggestion>
                     </div>
                 </aside>
             </mc-container>
