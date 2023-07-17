@@ -1,7 +1,9 @@
 @use '../settings/mixins' as *;
 
 .opportunity-phase-list-evaluation {
-
+    .alert {
+        margin-top: 0;
+    }
     .subscribe_prev_phase {
         display: flex;
         align-items: center;
@@ -26,6 +28,6 @@
     &__line {
         height: size(1);
         border-bottom: size(1) solid var(--mc-gray-100);
-        margin: 0 0 size(20);
+        margin: 0 0 size(10) 0;
     }
 }
