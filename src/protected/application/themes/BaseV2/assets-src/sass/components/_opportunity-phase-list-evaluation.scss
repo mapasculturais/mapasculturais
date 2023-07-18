@@ -23,8 +23,20 @@
         &--center {
             display: flex;
             justify-content: center;
+            a {
+                text-decoration: none;
+                color: var(--mc-primary-500);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: size(4);
+            }
+            .iconify {
+                font-size: size(22.5);
+            }
         }
     }
+   
     &__line {
         height: size(1);
         border-bottom: size(1) solid var(--mc-gray-100);
