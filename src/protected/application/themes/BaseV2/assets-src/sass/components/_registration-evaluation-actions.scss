@@ -73,6 +73,50 @@
         display: flex;
         flex-direction: column;
         gap: size(24);
+        &__saveafter {
+            background-color:var(--mc-high-500);
+            color: var(--mc-primary-500);
+            border-color: var(--mc-primary-500);
+            &:hover {
+                background-color:var(--mc-primary-500);
+                color: var(--mc-high-500);
+                border-color: var(--mc-primary-500);
+            }
+        }
+        &__send {
+            display: block;
+            text-align: center;
+            background-color:var(--mc-gray-300);
+            color: var(--mc-high-500);
+            border-color:  var(--mc-gray-300);
+            &:hover {
+                background-color:var(--mc-primary-500);
+                color:var(--mc-high-500);
+                border-color:  var(--mc-primary-500);
+
+            }
+            svg {
+                float: right;
+                font-size: size(21);
+            }
+        }
+        &__reopen {
+            background-color:var(--mc-primary-500);
+            color: var(--mc-high-500);
+            border-color: var(--mc-primary-500);
+            &:hover {
+                background-color:var(--mc-high-500);
+                color: var(--mc-primary-500);
+                border-color: var(--mc-high-500);
+            }
+        }
+        &__final, &__finalcontinue, &__direction {
+            &:hover {
+                background-color:var(--mc-primary-500);
+                color: var(--mc-high-500);
+                border-color: var(--mc-primary-500);
+            }
+        }
         .modal {
             &__content {
               margin: 0;
