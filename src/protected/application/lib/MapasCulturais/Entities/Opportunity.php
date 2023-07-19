@@ -1049,12 +1049,16 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return parent::genericPermissionVerification($user);
     }
 
-    protected function canUserModifyRegistrationFields($user){
+    protected function canUserModifyRegistrationFields($user){        
         if($user->is('guest')){
             return false;
         }
 
         if ($this->isUserAdmin($user)) {
+            return true;
+        }
+
+        if ($this->canUser("@control") && !$this->isRegistrationOpen()) {
             return true;
         }
 
