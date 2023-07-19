@@ -76,8 +76,6 @@
                     affirmativePoliciesRoof: $scope.data.affirmativePolicieRoof || 0.00
                 };
 
-                console.log(data);
-
                 $scope.data.criteria.forEach(function (crit) {
                     for (var i in data.sections) {
                         var section = data.sections[i];
@@ -220,27 +218,17 @@
                             _ismultiple = 'bool';
                             break;
                         case "select":
-                            _ismultiple = "checkbox";
-                             break;
+                        case "select":
                         case "checkboxes":
-                            _ismultiple = "checkbox";
-                            break;
-                        case "checkboxes":
-                            _ismultiple = "checkbox";
-                            break;
                         case "orientacaoSexual":
-                            _ismultiple = "checkbox";
-                            break;
                         case "raca":
-                            _ismultiple = "checkbox";
-                            break;
                         case "@terms:area":
-                            _ismultiple = "checkbox";
-                            break;
                         case "genero":
-                            _ismultiple = "checkbox";
-                            break;
                         case "@type":
+                        case "escolaridade":
+                        case "pessoaDeficiente":
+                        case "comunidadesTradicional":
+                        case "agenteItinerante":
                             _ismultiple = "checkbox";
                             break;
                         default:

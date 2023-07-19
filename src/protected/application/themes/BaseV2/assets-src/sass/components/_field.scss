@@ -44,7 +44,7 @@
         line-height: size(19);
         margin: 0 size(5);
         gap: size(8);
-        align-items: baseline;
+        align-items: center;
     }
 
     input, textarea, select {
@@ -74,7 +74,7 @@
     input[type="radio"] {
         float: left;
         height: size(18);
-        margin-right:size(8);
+        margin: 0;
         width: size(18);
     }
 
