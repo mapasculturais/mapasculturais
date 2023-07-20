@@ -12,6 +12,7 @@ app.component('entity-field', {
     },
 
     data() {
+         
         let uid = Math.random().toString(36).slice(2);
         let description, 
             value = this.entity[this.prop];
@@ -66,7 +67,9 @@ app.component('entity-field', {
             __timeout: null,
             description: description,
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
-            fieldType
+            fieldType,
+            maxLength: 400,
+
         }
     },
 
@@ -125,6 +128,10 @@ app.component('entity-field', {
     },
 
     computed: {
+      
+        charRemaining() {
+            return this.maxLength - this.value.length;
+        },
         hasErrors() {
             let errors = this.entity.__validationErrors[this.prop] || [];
             if(errors.length > 0){
@@ -142,6 +149,7 @@ app.component('entity-field', {
     },
     
     methods: {
+     
         change(event) {
             
             clearTimeout(this.__timeout);
@@ -154,9 +162,10 @@ app.component('entity-field', {
             
                 if (inputValue.length > maxLength) {
                     this.entity[this.prop] = inputValue.slice(0, maxLength);
-                } else {
-                    this.entity[this.prop] = inputValue;
                 }
+                else {
+                        this.entity[this.prop] = inputValue;
+                    }
             }
 
             this.__timeout = setTimeout(() => {
