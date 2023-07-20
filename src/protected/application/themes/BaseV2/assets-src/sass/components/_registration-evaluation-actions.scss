@@ -117,6 +117,14 @@
                 border-color: var(--mc-primary-500);
             }
         }
+        &__finalcontinue {
+            display: block;
+            text-align: center;
+            svg {
+                float: right;
+                font-size: size(21);
+            }
+        }
         .modal {
             &__content {
               margin: 0;
