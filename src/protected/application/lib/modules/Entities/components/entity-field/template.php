@@ -26,7 +26,8 @@ $this->import('
 
         <input v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" autocomplete="off">
     
-        <textarea v-if="is('textarea')" :value="value" :id="propId" :name="prop" @input="change($event)"></textarea>
+        <textarea v-if="is('textarea') && prop=='shortDescription'" style="color: red;" :value="value" :id="propId" :maxlength="400" :name="prop" @input="change($event)"></textarea>
+        <textarea v-if="is('textarea') && !prop=='shortDescription'" :value="value" :id="propId" :name="prop" @input="change($event)"></textarea>
 
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @input="change($event)" autocomplete="off">
 
