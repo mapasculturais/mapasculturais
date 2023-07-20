@@ -143,10 +143,21 @@ app.component('entity-field', {
     
     methods: {
         change(event) {
-
+            
             clearTimeout(this.__timeout);
-
+            
             let oldValue = this.entity[this.prop];
+            
+            if (this.is('textarea') && this.prop === 'shortDescription') {
+                const maxLength = 400;
+                const inputValue = event.target.value;
+            
+                if (inputValue.length > maxLength) {
+                    this.entity[this.prop] = inputValue.slice(0, maxLength);
+                } else {
+                    this.entity[this.prop] = inputValue;
+                }
+            }
 
             this.__timeout = setTimeout(() => {
                 if(this.is('date') || this.is('datetime') || this.is('time')) {
