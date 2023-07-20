@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field-datepicker
+    mc-alert
 ')
 ?>
 <div class="field" :class="[{error: hasErrors}, classes]" :style="is('checkbox') ? { flexDirection: 'row' } : {}">
@@ -25,8 +26,13 @@ $this->import('
         <input v-if="is('cep')" v-maska data-maska="#####-###" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" autocomplete="off">
 
         <input v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" autocomplete="off">
-    
-        <textarea v-if="is('textarea') && prop=='shortDescription'" style="color: red;" :value="value" :id="propId" :maxlength="400" :name="prop" @input="change($event)"></textarea>
+        <div v-if="is('textarea') && prop=='shortDescription'"  class="field__shortdescription">
+            <textarea  v-model="value" :value="value" :id="propId"  :name="prop" @input="change($event)"></textarea>
+                <p>
+                    {{ value.length }}/ {{ charRemaining}} <?= i::_e('caracteres restantes')?>
+                </p>
+        </div>
+        <mc-alert v-if="showAlert" :class="helper"><?= i::_e('Limite máximo de 400 caracteres atingido!')?></mc-alert>
         <textarea v-if="is('textarea') && !prop=='shortDescription'" :value="value" :id="propId" :name="prop" @input="change($event)"></textarea>
 
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @input="change($event)" autocomplete="off">
