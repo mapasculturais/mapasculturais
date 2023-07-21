@@ -68,7 +68,6 @@ app.component('entity-field', {
             description: description,
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
             fieldType,
-            maxLength: 400,
 
         }
     },
@@ -130,7 +129,7 @@ app.component('entity-field', {
     computed: {
       
         charRemaining() {
-            return this.maxLength - this.value.length;
+            return 400 - this.value.length;
         },
         hasErrors() {
             let errors = this.entity.__validationErrors[this.prop] || [];
@@ -149,27 +148,30 @@ app.component('entity-field', {
     },
     
     methods: {
-     
+        
         change(event) {
-            
+
+           
             clearTimeout(this.__timeout);
-            
             let oldValue = this.entity[this.prop];
             
-            if (this.is('textarea') && this.prop === 'shortDescription') {
-                const maxLength = 400;
-                const inputValue = event.target.value;
-            
-                if (inputValue.length > maxLength) {
-                    this.entity[this.prop] = inputValue.slice(0, maxLength);
-                }
-                else {
-                        this.entity[this.prop] = inputValue;
-                    }
-            }
-
             this.__timeout = setTimeout(() => {
-                if(this.is('date') || this.is('datetime') || this.is('time')) {
+                if (this.is('textarea') && this.prop === 'shortDescription') {
+                    const maxLength = 400;
+                    const inputValue = event.target.value;
+                
+                    if (inputValue.length > maxLength) {
+                        this.entity[this.prop] = inputValue.slice(0, maxLength);
+                    }
+                    else {
+                            this.entity[this.prop] = inputValue;
+                        }
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
+                    
+                }
+                
+
+                else if(this.is('date') || this.is('datetime') || this.is('time')) {
                     if(event) {
                         this.entity[this.prop] = new McDate(event);
                     } else {
