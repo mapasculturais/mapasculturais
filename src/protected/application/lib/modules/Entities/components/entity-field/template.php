@@ -29,7 +29,7 @@ $this->import('
         <div  v-if="is('textarea') && prop=='shortDescription'" class="field__shortdescription">
             <textarea :id="propId" :value="value" :name="prop" @input="change($event)" :maxlength="400"></textarea>
                 <p>
-                {{ value?.length }}/400
+                {{ value ? value?.length : '0' }}/400
                 </p>
         </div>
         <textarea v-if="is('textarea') && !prop=='shortDescription'" :value="value" :id="propId" :name="prop" @input="change($event)"></textarea>
