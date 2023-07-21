@@ -26,13 +26,12 @@ $this->import('
         <input v-if="is('cep')" v-maska data-maska="#####-###" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" autocomplete="off">
 
         <input v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" autocomplete="off">
-        <div v-if="is('textarea') && prop=='shortDescription'"  class="field__shortdescription">
-            <textarea  v-model="value" :value="value" :id="propId"  :name="prop" @input="change($event)"></textarea>
+        <div  v-if="is('textarea') && prop=='shortDescription'" class="field__shortdescription">
+            <textarea :id="propId" :value="value" :name="prop" @input="change($event)" :maxlength="400"></textarea>
                 <p>
-                    {{ value.length }}/ {{ charRemaining}} <?= i::_e('caracteres restantes')?>
+                {{ value.length }}/400
                 </p>
         </div>
-        <mc-alert v-if="showAlert" :class="helper"><?= i::_e('Limite máximo de 400 caracteres atingido!')?></mc-alert>
         <textarea v-if="is('textarea') && !prop=='shortDescription'" :value="value" :id="propId" :name="prop" @input="change($event)"></textarea>
 
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @input="change($event)" autocomplete="off">
