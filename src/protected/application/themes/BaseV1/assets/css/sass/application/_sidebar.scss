@@ -3,7 +3,7 @@
 #sidebars {
     position: sticky;
     top: 78px;
-    display: flex;
+    display: contents;
     justify-content: space-between;
 
     @media (max-width: $screen-md-max) {
@@ -37,6 +37,7 @@
     overflow: visible;
     position: relative;
     height: calc(100vh - 78px);
+    float: left;
 
     //tablet
     @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
@@ -125,6 +126,7 @@
 } // .sidebar-left
 
 .sidebar-right {
+    float: right;
     @media screen and (min-width: $screen-tablet) {
         float: right;
     }
