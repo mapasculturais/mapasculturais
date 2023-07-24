@@ -36,7 +36,7 @@ $this->import('
             </template>
             <template #default="{entities}">
                 <div class="registrations__list">
-                    <registration-card v-for="registration in entities" :entity="registration" pictureCard></registration-card>
+                    <registration-card v-for="registration in entities" :entity="registration" :list="entities" pictureCard></registration-card>
                 </div>
             </template>
         </mc-entities>
@@ -65,7 +65,7 @@ $this->import('
             </template>
             <template #default="{entities}">
                 <div class="registrations__list">
-                    <registration-card v-for="registration in entities" :entity="registration" picture-card></registration-card>
+                    <registration-card v-for="registration in entities" :entity="registration" :list="entities" picture-card></registration-card>
                 </div>
             </template>
         </mc-entities>
