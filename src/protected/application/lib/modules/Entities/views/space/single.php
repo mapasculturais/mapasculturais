@@ -78,6 +78,7 @@ $this->breadcrumb = [
                             <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                             <entity-related-agents :entity="entity" classes="col-12" title="<?= i::_e('Agentes Relacionados'); ?>"></entity-related-agents>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
+                            <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="Tags"></entity-terms>
                             <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?= i::_e('Veja este link:'); ?>"></mc-share-links>                            
                         </div>
                     </aside>
