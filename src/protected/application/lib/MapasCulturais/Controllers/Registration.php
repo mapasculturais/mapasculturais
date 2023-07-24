@@ -197,6 +197,25 @@ class Registration extends EntityController {
         $this->json($result);
     }
 
+    public function POST_deleteRegistration()
+    {
+        $this->requireAuthentication();
+
+        $entity = $this->requestedEntity;
+        $result = false;
+        try {
+            $entity->checkPermission('remove');
+            if ($entity->status == 0) {
+                $entity->delete();
+            }
+            $result = $entity;
+        } catch (\Throwable $th) {
+            $result = $th;
+        }
+
+        $this->json($result);
+    }
+
     public function POST_reopenEvaluation()
     {
         $this->requireAuthentication();
