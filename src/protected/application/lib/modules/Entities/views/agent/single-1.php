@@ -68,7 +68,7 @@ $this->breadcrumb = [
                         <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
                         <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                         <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>                            
-                        <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="Tags"></entity-terms>
+                        <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
                         <mc-share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></mc-share-links>
                         <entity-admins :entity="entity" classes="col-12"></entity-admins>
                         <entity-owner classes="col-12"  title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>                        
