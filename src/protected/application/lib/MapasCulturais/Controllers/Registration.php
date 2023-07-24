@@ -210,7 +210,7 @@ class Registration extends EntityController {
             }
             $result = $entity;
         } catch (\Throwable $th) {
-            $result = $th;
+            $result = false;
         }
 
         $this->json($result);
