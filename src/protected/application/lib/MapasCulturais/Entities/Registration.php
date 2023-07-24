@@ -1171,6 +1171,26 @@ class Registration extends \MapasCulturais\Entity
         return false;
     }
 
+    protected function canUserRemove($user){
+        if($user->is('guest')) {
+            return false;
+        }
+
+        if($this->status <= 0){
+            false;
+        }
+
+        if(new DateTime('now') >= $this->opportunity->registrationFrom){
+            return false;
+        }
+
+        if($this->isUserAdmin($user) || $this->getOwnerUser()->id == $user->id) {
+            return true;
+        }
+
+        return false;
+    }
+    
     protected function canUserChangeStatus($user){
         if($user->is('guest')){
             return false;
