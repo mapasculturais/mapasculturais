@@ -72,8 +72,8 @@ $this->import('
                         <?php i::_e('Você realmente deseja excluir a inscrição') ?> {{entity.number}}<?php i::_e('?') ?>
                     </template>
                 </mc-confirm-button>
-                
-                <a class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Acompanhar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
+                <a v-if="!verifyStatus()" class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Acompanhar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
+                <a v-if="verifyStatus()" class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Continuar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
             </slot>
         </div>
     </div>
