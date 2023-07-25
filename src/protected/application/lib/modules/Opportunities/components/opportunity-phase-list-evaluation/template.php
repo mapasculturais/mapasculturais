@@ -32,9 +32,7 @@ $this->import('
         <mc-alert v-if="!entity.opportunity.publishedRegistrations" class="col-12" type="helper">
             <?= i::__('Após a finalização das avaliações, você precisa acessar a <strong>lista de inscrições para aplicar os resultados dessas avaliações</strong>.') ?>
         </mc-alert>
-        <mc-alert v-if="entity.opportunity.publishedRegistrations"  class="col-12" type="helper">
-            <?= i::__('Para aplicar os resultados das avaliações, acesse a lista de inscrições. Depois de fazer as avaliações, é só oficializar os status das inscrições.') ?>
-        </mc-alert>
+        
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
             <mc-link :entity="entity.opportunity" class="opportunity-phase-status_action--center__button" icon="external" route="registrations" right-icon>
             <h3 class="bold"><?= i::__("Lista de inscrições da fase") ?></h3>
