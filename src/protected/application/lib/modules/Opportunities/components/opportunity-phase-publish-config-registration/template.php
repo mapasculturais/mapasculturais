@@ -10,6 +10,7 @@ use MapasCulturais\i;
 $this->import('
     entity-field
     mc-confirm-button
+    mc-alert
     mc-link
 ');
 ?>
@@ -30,7 +31,10 @@ $this->import('
       
         <div v-if="!phase.publishedRegistrations" :class="[{'opportunity-phase-publish-config-registration__lastphase': phase.isLastPhase}, {'col-12 grid-12': !phase.isLastPhase && tab!='registrations'}]">
             <!-- <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="300" :min="minDate" :max="maxDate" classes="col-4"></entity-field> -->
-            <div :class="[{'col-12 opportunity-phase-publish-config-registration__left': !phase.isLastPhase}, {'notPublished': phase.isLastPhase}]">
+            <mc-alert v-if="!phase.publishedRegistrations && !phase.isLastPhase"  class="col-12" type="warning">
+                <?= i::__('Fique atento! A publicação do resultado é opcional e só pode ser feita após o término da fase. <strong>Esta ação deixará público o nome e o número de inscrição das pessoas inscritas.</strong>') ?>
+            </mc-alert>
+            <div :class="[{'col-4 opportunity-phase-publish-config-registration__left': !phase.isLastPhase}, {'notPublished': phase.isLastPhase}]">
                     <div v-if="hideDatepicker && phase.publishTimestamp" class="msgpub-date" :class="[{'col-4': !phase.isLastPhase},]">
                         <p class="bold" v-if="phase.autoPublish && hideCheckbox">
                             <?= sprintf(
@@ -55,17 +59,17 @@ $this->import('
                     </div>
             </div>
          
-            <div class="opportunity-phase-publish-config-registration__unpublishedlast" :class="[{'col-12':!phase.isLastPhase}]">
+            <div class="opportunity-phase-publish-config-registration__unpublishedlast" :class="[{'col-6':!phase.isLastPhase}]">
 
                 <mc-link v-if="tab=='registrations'" :entity="phase" class="opportunity-phase-status_action--button" route="registrations" right-icon>
                     <?= i::__("Acessar lista de pessoas inscritas") ?>
                 </mc-link>
                 <div :class="[{'col-12 grid-12': !phase.isLastPhase}, {'opportunity-phase-publish-config-registration__unpublishlist': phase.isLastPhase}]">
                     <!-- <entity-field v-if="!hideCheckbox && firstPhase.status > 0" :entity="phase" prop="autoPublish" type="checkbox" :autosave="300" :disabled="!phase.publishTimestamp" hideRequired classes="col-4"></entity-field> -->
-                    <div v-if="!hideButton" class="opportunity-phase-publish-config-registration__button" :class="{'col-4': !phase.isLastPhase}">
+                    <div v-if="!hideButton" class="opportunity-phase-publish-config-registration__button" :class="{'col-6': !phase.isLastPhase}">
                         <mc-confirm-button :message="text('confirmar_publicacao')" @confirm="publishRegistration()">
                             <template #button="modal">
-                                <button :class="['button', 'button--primary', {'button-large': !phase.isLastPhase}, {'disabled': !firstPhase.status >0}, {'button--bg': phase.isLastPhase}]" @click="modal.open()">
+                                <button :class="['button', 'button--primary', {'button--large col-6': !phase.isLastPhase}, {'disabled': !firstPhase.status >0}, {'button--bg': phase.isLastPhase}]" @click="modal.open()">
                                     <?= i::__("Publicar Resultados") ?>
                                 </button>
                             </template>
