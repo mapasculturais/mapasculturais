@@ -2,10 +2,11 @@
 
 .opportunity-phase-publish-config-registration {
     width: 100%;
-
+    &__left {
+    }
     &--published {
         width: 100%;
-        border-top: 1px solid var(--mc-gray-100);
+        // border-top: 1px solid var(--mc-gray-100);
         padding-top: 16px;
     }
     &__lastphase {
