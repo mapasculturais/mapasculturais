@@ -5,6 +5,10 @@
  */
 
 use MapasCulturais\i;
+
+$this->import('
+    mc-confirm-button
+');
 ?>
 <div :class="['registration-card', {'border': hasBorder}, {'picture': pictureCard}]">
     <div class="registration-card__content">    
@@ -60,7 +64,15 @@ use MapasCulturais\i;
         </div>
         <div class="right">
             <slot name="button" :entity="entity">
-                <!-- <button v-if="verifyStatus()" class="button button--md  delete-registration" > <?= i::__("Excluir") ?>  </button> -->
+                <mc-confirm-button v-if="verifyStatus()" @confirm="deleteRegistration(modal)">
+                    <template #button="modal">
+                        <button  class="button button--md  delete-registration" @click="modal.open();"> <?php i::_e('Excluir') ?>  </button>
+                    </template>
+                    <template #message="message">
+                        <?php i::_e('Você realmente deseja excluir a inscrição') ?> {{entity.number}}<?php i::_e('?') ?>
+                    </template>
+                </mc-confirm-button>
+                
                 <a class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Acompanhar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
             </slot>
         </div>
