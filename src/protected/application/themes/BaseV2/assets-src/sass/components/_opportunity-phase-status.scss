@@ -3,7 +3,13 @@
 .opportunity-phase-status {
     width: 100%;
 
-   
+    &__line {
+        width: 100%;
+        border-top: 1px solid var(--mc-gray-100);
+        margin: size(32) 0;
+        height: 1px;
+    }
+
 
     .subscribe_prev_phase {
         display: flex;
@@ -14,8 +20,8 @@
             font-family: 'Open Sans';
             font-style: normal;
             font-weight: 600;
-            font-size: 14px;
-            line-height: 19px;
+            font-size: size(14);
+            line-height: size(19);
         }
     }
 
@@ -26,13 +32,20 @@
             font-family: 'Open Sans';
             font-style: normal;
             font-weight: 700;
-            font-size: 24px;
-            line-height: 28px;
+            font-size: size(24);
+            line-height: size(28);
             display: flex;
-            align-items: flex-end;
-            gap: 8px;
+            align-items: center;
+            gap: size(8);
             text-decoration: none;
+            padding-bottom: size(8);
+            .iconify {
+                font-size: size(22.5);
+            }
+        }
 
+        .iconify {
+            svg {}
         }
 
         &--center {
