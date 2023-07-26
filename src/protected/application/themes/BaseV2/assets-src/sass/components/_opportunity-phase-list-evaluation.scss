@@ -19,10 +19,14 @@
             line-height: 28px;
             text-align: center;
         }
-
+        &__box{
+            border: 1px solid var(--mc-gray-100);
+            padding: size(16);
+        }
         &--center {
             display: flex;
             justify-content: center;
+           
             a {
                 text-decoration: none;
                 color: var(--mc-primary-500);
