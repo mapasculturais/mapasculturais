@@ -2,24 +2,37 @@
 
 .opportunity-phase-publish-config-registration {
     width: 100%;
-    &__left {
+
+    &__left {}
+
+    .modal-confirm {
+        .modal__content {
+            .message {
+                padding-top: size(16);
+            }
+
+        }
     }
+
     &--published {
         width: 100%;
         // border-top: 1px solid var(--mc-gray-100);
         padding-top: 16px;
     }
+
     &__lastphase {
         display: flex;
         flex-direction: column;
         gap: size(24);
 
     }
+
     .notPublished {
         border-bottom: 1px solid var(--mc-gray-100);
         padding-bottom: size(32);
-        
+
     }
+
     &__button {
         width: 100%;
 
