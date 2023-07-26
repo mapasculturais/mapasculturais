@@ -34,14 +34,19 @@ $this->import('
         </mc-alert>
         
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
-            <mc-link :entity="entity.opportunity" class="opportunity-phase-status_action--center__button" icon="external" route="registrations" right-icon>
-            <h3 class="bold"><?= i::__("Lista de inscrições da fase") ?></h3>
-            </mc-link>
+           <div class="col-6 opportunity-phase-list-evaluation_action__box">
+               <mc-link :entity="entity.opportunity" class="opportunity-phase-status_action--center__button" icon="external" route="registrations" right-icon>
+                   <?= i::__("Lista de inscrições da fase") ?>
+                </mc-link>
+            </div>
         </div>
         <div class="col-6 opportunity-phase-list-evaluation_action--center">
-            <mc-link route="opportunity/opportunityEvaluations" :params="[entity.opportunity.id]" class="opportunity-phase-status_action--center__button" icon="external" right-icon>
-              <h3 class="bold"><?= i::__("Lista de avaliações") ?></h3>
-            </mc-link>
+         <!-- inseri a listagem de inscrições aqui -->
+           <div class="col-6 opportunity-phase-list-evaluation_action__box">
+               <mc-link route="opportunity/opportunityEvaluations" :params="[entity.opportunity.id]" class="opportunity-phase-list-evaluation_buttonbox button button--primary button--icon button--large" icon="external" right-icon>
+                    <?= i::__("Lista de avaliações") ?>
+                </mc-link>
+            </div>
         </div>
         <div class="opportunity-phase-list-evaluation__line col-12"></div>
         <opportunity-phase-publish-config-registration :phase="entity.opportunity" :phases="phases" hide-datepicker></opportunity-phase-publish-config-registration>
