@@ -34,6 +34,14 @@ app.component('registration-evaluation-info', {
             delete this.activeItems[index];
         },
 
+        showInfo(index){
+            if(this.infos[index].length >0 && (index == this.entity.category || index == 'general')){
+
+                return true;
+            }
+            return false;
+        },
+
         toggle(index) {
             if (this.activeItems[index]) {
                 this.close(index);
