@@ -65,9 +65,8 @@ $this->import('
                     <?= i::__("Acessar lista de pessoas inscritas") ?>
                 </mc-link>
                 <div :class="[{'col-12 grid-12': !phase.isLastPhase}, {'opportunity-phase-publish-config-registration__unpublishlist': phase.isLastPhase}]">
-                    <!-- <entity-field v-if="!hideCheckbox && firstPhase.status > 0" :entity="phase" prop="autoPublish" type="checkbox" :autosave="300" :disabled="!phase.publishTimestamp" hideRequired classes="col-4"></entity-field> -->
                     <div v-if="!hideButton" class="opportunity-phase-publish-config-registration__button" :class="{'col-6': !phase.isLastPhase}">
-                        <mc-confirm-button  @confirm="publishRegistration()">
+                        <mc-confirm-button  yes="Publicar Resultado" @confirm="publishRegistration()">
                             <template #button="modal">
                                 <button :class="['button', 'button--primary', {'button--large col-6': !phase.isLastPhase}, {'disabled': !firstPhase.status >0}, {'button--bg': phase.isLastPhase}]" @click="modal.open()">
                                     <?= i::__("Publicar Resultados") ?>
