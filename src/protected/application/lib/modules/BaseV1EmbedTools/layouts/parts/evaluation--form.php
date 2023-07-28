@@ -28,15 +28,6 @@ $action = 'single';
 <?php if ($action === 'single' && $entity->canUser('viewUserEvaluation')) : ?>
     <div id="registration-evaluation-form">
         <?php if ($evaluationAgent && $entity->canUser('evaluate') && (!$evaluation || $evaluation->status <= 0)) : ?>
-            <?php if ($infos) : ?>
-                <div id="documentary-evaluation-info" class="alert info">
-                    <div class="close" style="cursor: pointer;"></div>
-                    <?php if ($part_name = $evaluationMethod->getEvaluationFormInfoPartName()) : ?>
-                        <?php $this->part($part_name, $params); ?>
-                    <?php endif; ?>
-                    <br>
-                </div>
-            <?php endif; ?>
             <form>
                 <?php if ($evaluation) : ?>
                     <div>
