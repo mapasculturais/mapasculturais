@@ -418,6 +418,10 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
+                    if(!$registration instanceof \MapasCulturais\Entities\Registration){
+                        $registration =  $app->repo('Registration')->find($registration->id);
+                    }
+
                     if(is_null($registration) || $registration->status > 0){
                         $result = json_decode($value);
                     } else {
@@ -461,6 +465,10 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value, $registration = null, Metadata $metadata_definition = null) use ($module, $app) {
+                    if(!$registration instanceof \MapasCulturais\Entities\Registration){
+                        $registration =  $app->repo('Registration')->find($registration->id);
+                    }
+                    
                     if(is_null($registration) || $registration->status > 0){
                         $result = json_decode($value);
                     } else {
