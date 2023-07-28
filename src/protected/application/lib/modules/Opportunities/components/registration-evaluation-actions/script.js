@@ -101,15 +101,8 @@ app.component('registration-evaluation-actions', {
             this.reloadPage();
         },
         send(registration) {
-            api = new API('registration');
-            let url = api.createUrl('sendEvaluation', {id: registration.id});
-
-            var args = {};
-            api.POST(url, args).then(res => res.json()).then(data => {
-                const messages = useMessages();
-                messages.success(this.text('Avaliação enviada'));
-                this.reloadPage();
-            });
+           this.sendEvaluation(registration);
+           this.reloadPage();
         },
         reopen(registration){
             api = new API('registration');
@@ -147,6 +140,16 @@ app.component('registration-evaluation-actions', {
         save() {
             const iframe = document.getElementById('evaluation-form');
             iframe.contentWindow.postMessage({type: "evaluationForm.save"});
+        },
+        sendEvaluation(registration){
+            api = new API('registration');
+            let url = api.createUrl('sendEvaluation', {id: registration.id});
+
+            var args = {};
+            api.POST(url, args).then(res => res.json()).then(data => {
+                const messages = useMessages();
+                messages.success(this.text('Avaliação enviada'));
+            });
         },
         evaluate() {
             const iframe = document.getElementById('evaluation-form');
