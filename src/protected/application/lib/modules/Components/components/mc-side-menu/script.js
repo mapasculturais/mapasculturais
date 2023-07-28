@@ -127,7 +127,7 @@ app.component('mc-side-menu', {
             }
         },
         toggleMenu() {
-            this.isOpen = this.isOpen ? false : true;
+            this.isOpen =  true;
         },
         showList(){
             result = true;
