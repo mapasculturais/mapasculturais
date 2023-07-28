@@ -123,6 +123,7 @@ app.component('registration-evaluation-actions', {
            this.evaluate();
             setTimeout(() => {
                 this.next();
+                this.sendEvaluation(registration);
                 if(this.lastRegistration?.registrationid == registration.id){
                     this.reloadPage();
                 }
