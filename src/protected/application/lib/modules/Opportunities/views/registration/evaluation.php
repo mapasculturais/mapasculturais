@@ -50,44 +50,54 @@ if(isset($this->controller->data['user']) && $app->user->is('admin')){
         </template>
     </opportunity-header>
 
-    <div class="registration__content">
-        <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
-            <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
-        </mc-side-menu>
+    <div class="registration__content registration__content--evaluation">
         
-        <mc-container>
-            <main class="grid-12">
-                <mc-summary-agent :entity="entity"></mc-summary-agent>
-                <registration-info :registration="entity" classes="col-12"></registration-info>                
-                <mc-summary-project :entity="entity"></mc-summary-project>
-                <mc-summary-agent-info :entity="entity"></mc-summary-agent-info>
-                <mc-summary-spaces :entity="entity"></mc-summary-spaces>
-                
-                <section class="section">
-                    <h3 class="section__title"><?= i::__('Dados informados no formulário') ?></h3>
-                    <div class="section__content">
-                        <div class="card owner">
-                            <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
-                        </div>
+        
+        <!-- <mc-container> -->
+            <div class="grid-12 registration__grid">
+                <aside class="col-3">
+                    <div>
+                        <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
+                            <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
+                        </mc-side-menu>
                     </div>
-                </section>
-            </main>
+                </aside>
+            
+                <main class="col-6">
+                    
+                    <mc-summary-agent :entity="entity"></mc-summary-agent>
+                    <registration-info :registration="entity" classes="col-12"></registration-info>                
+                    <mc-summary-project :entity="entity"></mc-summary-project>
+                    <mc-summary-agent-info :entity="entity"></mc-summary-agent-info>
+                    <mc-summary-spaces :entity="entity"></mc-summary-spaces>
+                    
+                    <section class="section">
+                        <h3 class="section__title"><?= i::__('Dados informados no formulário') ?></h3>
+                        <div class="section__content">
+                            <div class="card owner">
+                                <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
+                            </div>
+                        </div>
+                    </section>
+                </main>
 
-            <aside>
-                <div class="registration__actions">
-                    <h3 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></h3>
+                <aside class="col-3">
+                    <div class="registration__actions">
+                        <h3 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></h3>
+                        
+                        <registration-evaluation-info :entity="entity"></registration-evaluation-info>
+                        
+                        <?php if ($valuer_user) : ?>
+                            <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                        <?php else : ?>
+                            <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                        <?php endif ?>
+                    </div>
                     
-                    <registration-evaluation-info :entity="entity"></registration-evaluation-info>
-                    
-                    <?php if ($valuer_user) : ?>
-                        <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                    <?php else : ?>
-                        <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                    <?php endif ?>
-                </div>
-                
-                <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
-            </aside>
-        </mc-container>
+                    <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
+                </aside>
+            </div>
+
+        <!-- </mc-container> -->
     </div>
 </div>
