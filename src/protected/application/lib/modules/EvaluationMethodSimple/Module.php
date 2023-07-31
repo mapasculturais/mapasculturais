@@ -62,6 +62,13 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.simple';
 
         $app->view->jsObject['evaluationStatus']['simple'] = $this->evaluationStatues;
+
+        $app->view->localizeScript('simpleEvaluationMethod', [
+            'saved' => i::__('Avaliação salva'),
+            'applyEvaluationsError' => i::__('É necessário selecionar os campos Avaliação e Status'),
+            'applyEvaluationsSuccess' => i::__('Avaliações aplicadas com sucesso'),
+            'applyEvaluationsNotApplied' => i::__('As avaliações não foram aplicadas.'),
+        ]);
     }
 
     public function _init()
