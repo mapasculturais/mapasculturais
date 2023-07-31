@@ -43,7 +43,7 @@ if (isset($this->controller->data['user']) && $app->user->is('admin')) {
             <mc-summary-evaluate></mc-summary-evaluate>
         </template>
         <template v-if="entity.opportunity.currentUserPermissions['@control']" #opportunity-header-info-end>
-            <h4><?= i::__('Avaliador: ') ?><?= $userEvaluator->profile->name ?? "" ?></h4>
+            <h4><?= i::__('Avaliador: ') ?><?= $userEvaluator->profile->name ?: "" ?></h4>
         </template>
     </opportunity-header>
 
