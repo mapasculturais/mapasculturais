@@ -46,8 +46,7 @@ use MapasCulturais\i;
             </tr>
         </thead>
         <tr>
-            <td colspan="3">
-                
+            <td colspan="4">
                 <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição.");?></span>
                 <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
                 <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição.");?></span>
@@ -97,24 +96,20 @@ use MapasCulturais\i;
                 </td>
             </tr>
         </tbody>
-        <tfoot>
+        <tfoot ng-if="data.registrationsAPIMetadata.count > data.registrations.length">
             <tr>
                 <td colspan='3' align="center">
                     <div ng-if="data.findingRegistrations">
                         <img src="<?php $this->asset('img/spinner_192.gif')?>" width="48">
                     </div>
                 </td>
+                <tr>
+                    <td colspan='{{numberOfEnabledColumns()}}' align="center" ng-if="!data.findingRegistrations">
+                        <button ng-click="findRegistrations();data.findingRegistrations = true"><?php MapasCulturais\i::_e("Carregar mais");?></button>
+                    </td>
+                </tr>
             </tr>
         </tfoot>
     </table>
-
-        <?php
-        $_evaluation_type = $entity->evaluationMethodConfiguration->getType();
-        if( is_object($_evaluation_type) && property_exists($_evaluation_type, "id") && $_evaluation_type->id === "simple" ): ?>
-            <div ng-if="hasEvaluations()">
-                <button class="btn btn-primary" ng-click="applyEvaluations()"> {{ data.confirmEvaluationLabel }} </button>
-            </div>
-        <?php endif; ?>
-
     </div>
 </div>

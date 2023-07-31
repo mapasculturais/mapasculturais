@@ -2,9 +2,9 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
-
 trait ControllerDraft{
-    function GET_publish(){
+    function ALL_publish(){
+        /** @var \MapasCulturais\Controller $this */
         $this->requireAuthentication();
 
         $app = App::i();
@@ -16,6 +16,10 @@ trait ControllerDraft{
         if(!$entity)
             $app->pass();
 
+        if($errors = $entity->validationErrors){
+            $this->errorJson($errors);
+        }
+
         $entity->publish(true);
 
         if($this->isAjax()){
@@ -26,7 +30,7 @@ trait ControllerDraft{
         }
     }
 
-    function GET_unpublish(){
+    function ALL_unpublish(){
         $this->requireAuthentication();
 
         $app = App::i();

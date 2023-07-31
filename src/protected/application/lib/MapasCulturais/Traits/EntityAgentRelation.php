@@ -3,7 +3,7 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App,
     MapasCulturais\Entities\Agent;
-
+use MapasCulturais\Exceptions\PermissionDenied;
 
 /**
  * Defines that this entity has agents related to it.
@@ -126,19 +126,24 @@ trait EntityAgentRelation {
     function getIdsOfUsersWithControl(){
         $app = \MapasCulturais\App::i();
 
-        $cache_id = "$this::usersWithControl";
-
-        if($app->config['app.usePermissionsCache'] && $app->msCache->contains($cache_id)){
-            return $app->msCache->fetch($cache_id);
-        }else{
-            $users = $this->getUsersWithControl();
-            $ids = array_map(function($u){
-                return $u->id;
-
-            }, $users);
-
-            return $ids;
+        
+        
+        if($app->permissionCacheEnabled && $this->usesPermissionCache()){
+            $prefix = $this->getPermissionCachePrefix();
+            $cache_id = "$prefix::$this::usersWithControl";
+            if($app->msCache->contains($cache_id)){
+                return $app->msCache->fetch($cache_id);
+            }
         }
+
+        $users = $this->getUsersWithControl();
+        $ids = array_map(function($u){
+            return $u->id;
+
+        }, $users);
+
+        return $ids;
+    
     }
     
     function deleteUsersWithControlCache(){
@@ -153,16 +158,17 @@ trait EntityAgentRelation {
     function getUsersWithControl(array &$object_stack = []){
         $app = \MapasCulturais\App::i();
 
-        // cache ids
-        $cache_id = "$this::usersWithControl";
-
-        if($app->config['app.usePermissionsCache'] && $app->msCache->contains($cache_id)){
-            $ids = $app->msCache->fetch($cache_id);
-            $q = $app->em->createQuery("SELECT u FROM MapasCulturais\Entities\User u WHERE u.id IN (:ids)");
-            $q->useQueryCache(true);
-            $q->setQueryCacheLifetime($app->config['app.permissionsCache.lifetime']);
-            $q->setParameter('ids', $ids);
-            return $q->getResult();
+        if($app->permissionCacheEnabled && $this->usesPermissionCache()){
+            $prefix = $this->getPermissionCachePrefix();
+            $cache_id = "$prefix::$this::usersWithControl";
+            if($app->msCache->contains($cache_id)){
+                $ids = $app->msCache->fetch($cache_id);
+                $q = $app->em->createQuery("SELECT u FROM MapasCulturais\Entities\User u WHERE u.id IN (:ids)");
+                $q->useQueryCache(true);
+                $q->setQueryCacheLifetime($app->config['app.permissionsCache.lifetime']);
+                $q->setParameter('ids', $ids);
+                return $q->getResult();
+            }
         }
 
         $result = [$this->getOwnerUser()];
@@ -209,7 +215,7 @@ trait EntityAgentRelation {
             }
         }
 
-        if($app->config['app.usePermissionsCache']){
+        if($app->permissionCacheEnabled && $this->usesPermissionCache()){
             $app->msCache->save($cache_id, $ids, $app->config['app.permissionsCache.lifetime']);
         }
 
@@ -270,6 +276,48 @@ trait EntityAgentRelation {
         if($this->usesPermissionCache()){
             $this->enqueueToPCacheRecreation();
         }
+    }
+
+    function renameAgentRelationGroup($old_name, $new_name) {
+        $this->checkPermission('modify');
+
+        $app = App::i();
+
+        if($old_name === 'group-admin') {
+            return false;
+        }
+
+        $relations = $this->getRelatedAgents($old_name, true, true) ?: []; 
+
+        foreach($relations as $relation) {
+            $relation->group = $new_name;
+            $errors = $relation->getValidationErrors();
+            if (isset($errors['group'])) {
+                throw new PermissionDenied($app->user, $this, 'renameAgentRelationGroup');
+            }
+
+            $relation->save(true);
+        }
+
+        return true;
+    }
+
+    function removeAgentRelationGroup(string $name) {
+        $this->checkPermission('removeAgentRelation');
+
+        $app = App::i();
+
+        if($name === 'group-admin') {
+            return false;
+        }
+
+        $relations = $this->getRelatedAgents($name, true, true) ?: []; 
+
+        foreach($relations as $relation) {
+            $relation->delete(true);
+        }
+
+        return true;
     }
 
     function setRelatedAgentControl($agent, $control){

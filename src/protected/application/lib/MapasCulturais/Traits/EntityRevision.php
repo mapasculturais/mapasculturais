@@ -161,6 +161,7 @@ trait EntityRevision{
         
         $revision = new Revision($revisionData,$this,Revision::ACTION_CREATED,$message);
         $revision->save(true);
+        return $revision;
     }
 
     public function _newModifiedRevision() {
@@ -169,6 +170,10 @@ trait EntityRevision{
         $message = i::__("Registro atualizado.");
         
         $last_revision = $this->getLastRevision();
+        if(!$last_revision) {
+            $last_revision = $this->_newCreatedRevision();
+        }
+
         $last_revision_data = $last_revision->getRevisionData();
         
         $old_status = $last_revision_data['status']->value;

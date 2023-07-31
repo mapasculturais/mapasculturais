@@ -27,7 +27,8 @@ use \MapasCulturais\App;
  *
  * The template files for this controller is located in the folder themes/active/views/{$controller_id}/
  *
- *
+ * @property string $layout
+ * 
  * @property-read string $action
  *
  * @property-read array $data URL + GET + POST + PUT + DELETE data
@@ -86,9 +87,11 @@ abstract class Controller{
     protected $data = [];
 
 
-    protected $action = null;
+    public $action = null;
     
-    protected $method = null;
+    public $method = null;
+
+    protected $_layout = 'default';
 
     
     /**
@@ -101,7 +104,7 @@ abstract class Controller{
      * 
      * @var string controller id
      */
-    protected $_id = null;
+    public $id = null;
 
     /**
      * Returns the singleton instance. This method creates the instance when called for the first time.
@@ -114,7 +117,7 @@ abstract class Controller{
 
         if (!key_exists($id, self::$_singletonInstances)) {
             self::$_singletonInstances[$id] = new $class;
-            self::$_singletonInstances[$id]->_id = $controller_id;
+            self::$_singletonInstances[$id]->id = $controller_id;
         }
 
         return self::$_singletonInstances[$id];
@@ -127,18 +130,26 @@ abstract class Controller{
     public static function usesSingleton(){
         return true;
     }
+
+    /**
+     * Is this an AJAX request?
+     *
+     * @return bool
+     */
+    public function isAjax(){
+        $app = App::i();
+        return $app->request->isAjax() || $app->request()->headers()->get('Content-Type') === 'application/json';
+    }
     
     // =================== GETTERS ================== //
 
     /**
-     * Returns the controller id.
-     *
-     * @see \MapasCulturais\App::getControllerId()
-     *
-     * @return string The controller id.
+     * Returns the controller layout
+     * 
+     * @return string 
      */
-    public function getId(){
-        return $this->_id;
+    public function getLayout() {
+        return $this->_layout;
     }
 
     /**
@@ -202,14 +213,10 @@ abstract class Controller{
     /**
      * Set the layout to use to render the template.
      *
-     * This method sets the layout in the view object.
-     *
-     * @see \MapasCulturais\View::setLayout()
-     *
      * @param string $layout
      */
     public function setLayout($layout){
-        App::i()->view()->layout = $layout;
+        $this->_layout = $layout;
     }
 
     /**
@@ -221,8 +228,6 @@ abstract class Controller{
         $this->_urlData = $args;
         $this->data = $args + App::i()->request()->params();
     }
-
-
 
 
     /**
@@ -305,8 +310,9 @@ abstract class Controller{
         }elseif($method !== 'API' && method_exists($this, 'ALL_' . $action_name)){
             $call_method = [$this, 'ALL_' . $action_name];
 
-        // then try to call an action defined outside the controller
-        }elseif($app->getHooks($hook)){
+        }
+        
+        if($app->getHooks($hook)){
             $call_hook = $hook;
 
         }elseif($method !== 'API' && $app->getHooks($ALL_hook)){
@@ -317,10 +323,11 @@ abstract class Controller{
         if($call_method || $call_hook){
             $app->applyHookBoundTo($this, $hook . ':before', $arguments);
 
-            if($call_method)
+            $app->applyHookBoundTo($this, $call_hook, $arguments);
+
+            if($call_method) {
                 $call_method();
-            else
-                $app->applyHookBoundTo($this, $call_hook, $arguments);
+            }
 
             $app->applyHookBoundTo($this, $hook . ':after', $arguments);
         // else pass to 404?
@@ -388,11 +395,9 @@ abstract class Controller{
      *
      * @TODO Alterar o status padrão para 400. será necessário alterar os js para esperar este retorno.
      */
-    public function errorJson($data, $status = 200){
+    public function errorJson($data, $status = 400){
         $app = App::i();
-
         $app->contentType('application/json');
-
         $app->halt($status, json_encode(['error' => true, 'data' => $data]));
     }
 

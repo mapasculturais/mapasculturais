@@ -1,0 +1,518 @@
+@use '../settings/mixins'as *;
+
+.controller-registration {
+    .opportunity-header {
+        &__content {
+            padding: size(47) size(16) size(67)  size(16);
+        }
+    }
+    .registration {
+        background-color: var(--mc-gray-100);
+        .container {
+            @include mobile {
+                grid-template-columns: 1fr;
+            }
+
+            & > main {
+                gap: size(40) size(24);
+            }
+        }
+
+        &__content {
+            margin: 0 auto;
+            position: relative;
+            width: 100%;
+            padding: size(40) 0;
+
+            &>* {
+                margin: 0 auto;
+                max-width: size(1170);
+                width: 100%;
+            }
+           
+        }
+        &__grid {
+            max-width: size(1440);
+        }
+
+
+        &__actions {
+            background-color: var(--mc-white);
+            border-radius: var(--mc-border-radius-xs);
+            box-shadow: var(--mc-shadow-lv1);
+            display: flex;
+            flex-direction: column;
+            gap: size(24);
+            padding: size(16);
+            margin-bottom: size(32);
+        }
+
+        &.single {
+            .tabs-component {
+                margin-top: size(-40);
+            }
+
+            .registration {
+                &__content {
+                    display: flex;
+                    flex-direction: column;
+                    gap: size(35);
+                    margin: size(32) auto;
+                    padding: 0 size(16);
+                    .mc-card {
+                        border-radius: var(--mc-border-radius-xs);
+                        padding: size(17) size(24);
+                    }
+
+                    .registration-info {
+                        display: flex;
+                        flex-direction: column;
+                        gap: size(16);
+                        width: 100%;
+
+                        &__header {
+                            display: flex;
+                            justify-content: space-between;
+                            width: 100%;
+
+                            .left {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: size(16) size(64);
+
+                                .agent {
+                                    align-items: center;
+                                    display: grid;
+                                    gap: size(16);
+                                    grid-template-columns: size(48) 1fr;
+
+                                    &__image {
+                                        align-items: center;
+                                        background-color: var(--mc-gray-500);
+                                        border-radius: var(--mc-border-radius-pill);
+                                        display: flex;
+                                        height: size(48);
+                                        justify-content: center;
+                                        overflow: hidden;
+                                        width: size(48);
+
+                                        .iconify {
+                                            color: var(--mc-high-500);
+                                            font-size: size(25);
+                                        }
+
+                                        img {
+                                            width: 100%;
+                                        }
+                                    }
+
+                                    &__name {
+                                        color: var(--mc-gray-700);
+                                        font-size: size(18);
+                                        font-weight: 700;
+                                        line-height: size(25);
+                                    }
+                                }
+
+                                .metadata {
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                    gap: size(64);
+
+                                    .reg,
+                                    .category {
+                                        display: flex;
+                                        flex-direction: column;
+                                        font-size: size(14);
+                                        gap: size(4);
+                                        justify-content: center;
+                                        line-height: size(19);
+
+                                        &__label {
+                                            font-weight: 400;
+                                        }
+
+                                        &__info {
+                                            font-size: size(18);
+                                            font-weight: 700;
+                                        }
+                                    }
+
+                                    .reg {
+                                        &__label {
+                                            text-transform: uppercase;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &__footer {
+                            align-items: flex-end;
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: size(24);
+                            justify-content: space-between;
+                            width: 100%;
+
+                            .left {
+                                .project {
+                                    &__label {
+                                        font-size: size(14);
+                                        font-weight: 400;
+                                        line-height: size(19);
+                                    }
+
+                                    &__name {
+                                        font-size: size(18);
+                                        font-weight: 700;
+                                        line-height: size(24);
+                                    }
+                                }
+                            }
+
+                            .right {
+                                align-items: flex-start;
+                                display: flex;
+                                flex-direction: column;
+
+                                .status {
+                                    display: none;
+                                }
+
+                                .sentDate {
+                                    color: var(--mc-low-700);
+                                    font-size: size(18);
+                                    font-weight: 600;
+                                    line-height: size(25);
+                                }
+                            }
+                        }
+
+                        .status {
+                            background-color: var(--mc-low-700);
+                            border-radius: var(--mc-border-radius-pill);
+                            color: var(--mc-high-500);
+                            font-size: size(12);
+                            font-weight: 700;
+                            line-height: size(16);
+                            padding: size(8) size(30);
+                        }
+                    }
+
+                    .registered-info {
+                        display: flex;
+                        flex-direction: column;
+                        gap: size(16);
+
+                        .info {
+                            font-size: size(18);
+                            line-height: size(25);
+                            word-break: break-all;
+                        }
+                    }
+
+                    .space {
+                        align-items: center;
+                        background: var(--mc-low-300);
+                        border-radius: var(--mc-border-radius-xs);
+                        display: flex;
+                        gap: size(16);
+                        padding: size(11) size(24);
+                        width: 100%;
+
+                        .image {
+                            align-items: center;
+                            background: var(--mc-gray-500);
+                            border-radius: var(--mc-border-radius-pill);
+                            display: flex;
+                            height: size(40);
+                            justify-content: center;
+                            width: size(40);
+                            overflow: hidden;
+
+                            img {
+                                width: 100%;
+                            }
+
+                            .iconify {
+                                color: var(--mc-high-500);
+                                font-size: size(18);
+                            }
+                        }
+
+                        .name {
+                            color: var(--mc-low-500);
+                            font-size: size(16);
+                            font-weight: 700;
+                            line-height: size(22);
+                        }
+                    }
+                }
+            }
+
+            @include mobile {
+                .registration {
+                    &__content {
+                        .mc-card {
+                            padding: size(16);
+                        }
+
+                        .registration-info {
+                            &__header {
+                                .left {
+                                    .metadata {
+                                        gap: size(24);
+
+                                        .reg,
+                                        .category {
+                                            font-size: size(10);
+                                            gap: 0;
+
+                                            &__label {
+                                                font-weight: 600;
+                                            }
+
+                                            &__info {
+                                                font-size: size(14);
+                                                font-weight: 700;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .right {
+                                    .status {
+                                        display: none;
+                                    }
+                                }
+                            }
+
+                            &__footer {
+                                align-items: flex-start;
+                                flex-direction: column;
+
+                                .left {
+                                    .project {
+                                        &__label {
+                                            font-size: size(10);
+                                            line-height: size(15);
+                                        }
+
+                                        &__name {
+                                            font-size: size(14);
+                                            line-height: size(20);
+                                        }
+                                    }
+                                }
+
+                                .right {
+                                    gap: size(5);
+
+                                    .status {
+                                        display: block;
+                                    }
+
+                                    .sentDate {
+                                        font-size: size(14);
+                                        line-height: size(19);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.edit {
+            .registration {
+                &__title {
+                    font-size: size(48);
+                    font-weight: 700;
+                    line-height: size(65);
+                    margin: size(26) auto;
+                    max-width: size(1170);
+                    padding: 0 size(16);
+                    width: 100%;
+                }
+
+                &__steps {
+                    background: white;
+                    margin-bottom: size(60);
+                    max-width: unset;
+                    overflow-x: auto;
+                    padding: size(24) 0;
+                    position: sticky;
+                    top: 0;
+                    width: 100%;
+                    z-index: 1;
+                    box-shadow: 3px 3px 3px rgba(0,0,0,.5);
+
+                    .stepper {
+                        margin: 0 auto;
+
+                        @include mobile {
+                            .step .label {
+                                font-size: size(12);
+                            }
+                        }
+
+                        @media (max-width: size(500)) {
+                            .step .label {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+
+                &__content {
+                    .section {
+                        &__title {
+                            font-size: size(32);
+                            font-weight: 700;
+                            line-height: size(44);
+                            margin-bottom: size(24);
+                        }
+
+                        &__content {
+                            display: flex;
+                            flex-direction: column;
+                            gap: size(32);
+
+                            .mc-card {
+                                padding: size(16);
+                            }
+
+                            .card {
+                                background-color: var(--mc-high-500);
+                                border-radius: var(--mc-border-radius-sm);
+                                padding: size(16);
+
+                                &.owner {
+                                    padding: size(16) size(24);
+
+                                    .card__content {
+                                        margin-top: size(10);
+                                    }
+                                }
+
+                                &__title {
+                                    align-items: center;
+                                    display: flex;
+                                    font-size: size(18);
+                                    font-weight: 700;
+                                    gap: size(10);
+                                    line-height: size(25);
+                                    margin-bottom: size(4);
+
+                                    .obrigatory {
+                                        color: var(--mc-error);
+                                        font-size: size(12);
+                                        font-weight: 700;
+                                        line-height: size(16);
+                                    }
+                                }
+
+                                &__subtitle {
+                                    font-size: size(12);
+                                    font-weight: 400;
+                                    line-height: size(16);
+                                }
+
+                                &__content {
+                                    display: flex;
+                                    margin-top: size(16);
+
+                                    .owner {
+                                        align-items: center;
+                                        display: flex;
+                                        gap: size(9);
+
+                                        &__image {
+                                            align-items: center;
+                                            background-color: var(--mc-gray-500);
+                                            border-radius: var(--mc-border-radius-pill);
+                                            display: flex;
+                                            height: size(40);
+                                            justify-content: center;
+                                            overflow: hidden;
+                                            width: size(40);
+
+                                            .iconify {
+                                                color: var(--mc-high-500);
+                                                font-size: size(19);
+                                            }
+
+                                            img {
+                                                width: 100%;
+                                            }
+                                        }
+
+                                        &__name {
+                                            font-size: size(14);
+                                            font-weight: 700;
+                                            line-height: size(19);
+                                        }
+                                    }
+                                }
+
+                                .evaluation-form-card {
+                                    background-color: var(--mc-gray-100);
+                                    padding: size(8) size(16);
+                                    h4 {
+                                        color: var(--mc-gray-500);
+                                        font-size: size(14);
+                                    }
+                                    h5 {
+                                        font-size: size(18);
+                                    }
+                                }
+
+                            }
+
+                            .errors {
+                                color: var(--mc-error);
+                                font-size: size(14);
+                                font-weight: 600;
+                                margin-top: size(10);
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+
+            @include mobile {
+                .registration {
+                    &__title {
+                        font-size: size(24);
+                        line-height: size(33);
+                    }
+
+                    &__content {
+                        .section {
+                            &__title {
+                                font-size: size(24);
+                                line-height: size(28);
+                            }
+    
+                            &__content {
+                                gap: size(24);
+
+                                .card {
+                                    &.owner {
+                                        .card__title {
+                                            font-size: size(12);
+                                            line-height: size(16);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

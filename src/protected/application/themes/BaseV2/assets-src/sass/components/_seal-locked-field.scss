@@ -1,0 +1,54 @@
+.controller-seal {
+  .tabs-component {
+    background-color: var(--mc-white);
+
+    &__panels {
+      margin-bottom: 0;
+      background-color: var(--mc-gray-100);
+    }
+
+    &__buttons {
+      gap: size(49);
+    }
+  }
+}
+
+
+.seal-locked-field {
+  &__header {
+    background-color: var(--mc-white);
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: size(16);
+    line-height: size(22);
+    margin: size(8) 0;
+  }
+
+  &__card {
+    margin: size(20) 0;
+  }
+
+  &__container {
+    padding: size(8);
+
+    h3 {
+      font-weight: 700;
+      font-size: size(18);
+      line-height: size(25);
+    }
+
+    h4 {
+      font-weight: 700;
+      font-size: size(16);
+      line-height: size(22);
+    }
+
+    h5 {
+      font-weight: 700;
+      font-size: size(14);
+      line-height: size(19);
+    }
+  }
+}

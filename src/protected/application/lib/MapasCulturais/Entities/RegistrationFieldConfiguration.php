@@ -24,7 +24,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="registration_field_configuration_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var \MapasCulturais\Entities\Opportunity
@@ -121,7 +121,8 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     protected $conditionalValue;
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'owner' => [ 
                 'required' => \MapasCulturais\i::__("O projeto é obrigatório.")
             ],
@@ -132,6 +133,11 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
                 'required' => \MapasCulturais\i::__("O tipo de campo é obrigatório")
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}::validations", [&$validations]);
+
+        return $validations;
     }
 
     public function setConditional($value){

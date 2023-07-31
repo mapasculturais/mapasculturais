@@ -3,7 +3,7 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App,
     MapasCulturais\Entities\Seal;
-
+use MapasCulturais\Exceptions\PermissionDenied;
 
 /**
  * Defines that this entity has seals related to it.
@@ -98,34 +98,6 @@ trait EntitySealRelation {
        
         foreach ($this->getSealRelations($include_pending_relations) as $sealRelation) {
             $result[$sealRelation->id] = $return_relations ? $sealRelation : $sealRelation->seal;
-            $app->em->detach($result[$sealRelation->id]);
-            $result[$sealRelation->id]->{'requestSealRelationUrl'} = $this->getRequestSealrelationUrl($sealRelation->id);
-            $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealRelationUrl($sealRelation->id);
-            $result[$sealRelation->id]->ownerSealUserId = $sealRelation->seal->owner->userId; 
-
-
-            if($sealRelation->seal->validPeriod > 0){
-                $expirationDate = $result[$sealRelation->id]->validateDate;
-                $now = new \DateTime();
-
-                // Expired
-                if($expirationDate < $now) { 
-                    $result[$sealRelation->id]->{'toExpire'} = 0;
-                // To Expire
-                }elseif($expirationDate > $now) {
-                    $result[$sealRelation->id]->{'toExpire'} = 1;
-                }
-            
-            // Don't Expire
-            } else {
-                $result[$sealRelation->id]->{'toExpire'} = 2;
-            }
-
-            if(is_null($result[$sealRelation->id]->renovation_request)) {
-                $result[$sealRelation->id]->renovation_request = false;    
-            }
-
-            $result[$sealRelation->id]->validateDate = $result[$sealRelation->id]->validateDate->format('d/m/Y');
         }
         
         rsort($result);
@@ -164,11 +136,37 @@ trait EntitySealRelation {
 
     protected function canUserCreateSealRelation($user){
         $result = $this->canUser('@control', $user);
-        return $result;
+        try {
+            $user_seals = $user->hasControlSeals;
+        } catch (PermissionDenied $th) {
+            $user_seals = [];
+        }
+
+        return $user->is('admin') || $result && $user_seals;
     }
 
     function canUserRemoveSealRelation($user){
-        $result = $this->canUser('@control', $user);
+        if ($user->is('admin')) {
+            return true;
+        }
+        
+        $result = false;
+        if($this->canUser('@control', $user)){
+            if($entity_seals = $this->relatedSeals){
+
+                try {
+                    $user_seals = $user->hasControlSeals;
+                } catch (PermissionDenied $th) {
+                    $user_seals = [];
+                }
+
+                foreach($user_seals as $seal) {
+                    if(array_search($seal, $entity_seals) !== false) {
+                        $result = true;
+                    }
+                }
+            }
+        }
         return $result;
     }
 

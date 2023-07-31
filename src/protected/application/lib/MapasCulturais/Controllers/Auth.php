@@ -45,7 +45,7 @@ class Auth extends \MapasCulturais\Controller{
         if(is_numeric($this->data['attorney'])){
             $user = $app->repo('User')->find($this->data['attorney']);
         } else {
-            $user_app = $app->repo('UserApp')->find($this->data['attorney']);
+            $user_app = $app->repo(\Apps\Entities\UserApp::class)->find($this->data['attorney']);
             if($user_app){
                 $user = $user_app->user;
             }

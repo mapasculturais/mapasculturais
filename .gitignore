@@ -25,10 +25,14 @@ _apigen.phar
 .DS_Store
 .composer/
 .bash_history
+.pnpm-store
 SaaS/*
 documentation/site
 private-files
 docker-data
 scripts/nohup.out
-*node_modules*
+src/geojson
+node_modules/
+mix-manifest.json
 compose/local/config.d
+compose/local/config.d/0.zz.php

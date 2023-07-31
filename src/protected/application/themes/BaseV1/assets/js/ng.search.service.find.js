@@ -264,7 +264,7 @@
                         apiExportURL += 'event/findByLocation/?';
                     }
                 }else if (entity === 'project'){
-                    selectData += ',registrationFrom,registrationTo';
+                    selectData += ',startsOn,endsOn';
                 }else if(entity === 'event'){
                     selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences.{*,space.{*}}';
                 }

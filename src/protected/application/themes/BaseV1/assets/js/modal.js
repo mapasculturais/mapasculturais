@@ -48,6 +48,6 @@ function saveEvent(formId, complete = false){
         }
     })
     .fail(function(jqXHR, textStatus, msg) {
-        alert('Erro inesperado, fale com administrador.');
+        $(".message").html("<p class='alert danger'>Não foi possível inserir o evento.</p>");
     });
 }

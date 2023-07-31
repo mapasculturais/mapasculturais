@@ -43,7 +43,7 @@ class Project extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="project_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var integer
@@ -83,16 +83,16 @@ class Project extends \MapasCulturais\Entity
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registration_from", type="datetime", nullable=true)
+     * @ORM\Column(name="starts_on", type="datetime", nullable=true)
      */
-    protected $registrationFrom;
+    protected $startsOn;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registration_to", type="datetime", nullable=true)
+     * @ORM\Column(name="ends_on", type="datetime", nullable=true)
      */
-    protected $registrationTo;
+    protected $endsOn;
 
     /**
      * @var \DateTime
@@ -219,7 +219,8 @@ class Project extends \MapasCulturais\Entity
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome do projeto é obrigatório')
             ],
@@ -230,39 +231,44 @@ class Project extends \MapasCulturais\Entity
             'type' => [
                 'required' => \MapasCulturais\i::__('O tipo do projeto é obrigatório'),
             ],
-            'registrationFrom' => [
+            'startsOn' => [
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
-                '!empty($this->registrationTo)' => \MapasCulturais\i::__('Data final obrigatória caso data inicial preenchida')
+                '!empty($this->endsOn)' => \MapasCulturais\i::__('Data final obrigatória caso data inicial preenchida')
             ],
-            'registrationTo' => [
+            'endsOn' => [
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
                 '$this->validateRegistrationDates()' => \MapasCulturais\i::__('A data final das inscrições deve ser maior ou igual a data inicial')
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}::validations", [&$validations]);
+
+        return $validations;
     }
 
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
     }
 
-    function setRegistrationFrom($date){
+    function setStartsOn($date){
         if($date instanceof \DateTime){
-            $this->registrationFrom = $date;
+            $this->startsOn = $date;
         }elseif($date){
-            $this->registrationFrom = new \DateTime($date);
-            $this->registrationFrom->setTime(0,0,0);
+            $this->startsOn = new \DateTime($date);
+            $this->startsOn->setTime(0,0,0);
         }else{
-            $this->registrationFrom = null;
+            $this->startsOn = null;
         }
     }
 
-    function setRegistrationTo($date){
+    function setEndsOn($date){
         if($date instanceof \DateTime){
-            $this->registrationTo = $date;
+            $this->endsOn = $date;
         }elseif($date){
-            $this->registrationTo =  new \DateTime($date);
+            $this->endsOn =  new \DateTime($date);
         }else{
-            $this->registrationTo = null;
+            $this->endsOn = null;
         }
     }
 
@@ -271,10 +277,10 @@ class Project extends \MapasCulturais\Entity
     }
 
     function validateRegistrationDates() {
-        if($this->registrationFrom && $this->registrationTo){
-            return $this->registrationFrom <= $this->registrationTo;
+        if($this->startsOn && $this->endsOn){
+            return $this->startsOn <= $this->endsOn;
 
-        }elseif($this->registrationFrom || $this->registrationTo){
+        }elseif($this->startsOn || $this->endsOn){
             return false;
 
         }else{
@@ -284,7 +290,7 @@ class Project extends \MapasCulturais\Entity
 
     function isRegistrationOpen(){
         $cdate = new \DateTime;
-        return $cdate >= $this->registrationFrom && $cdate <= $this->registrationTo;
+        return $cdate >= $this->startsOn && $cdate <= $this->endsOn;
     }
 
     protected function canUserCreateEvents($user) {

@@ -23,72 +23,72 @@ class Metadata extends \MapasCulturais\Definition{
      * Metadata Key.
      * @var string
      */
-    protected $key;
+    public $key;
 
     /**
      * The metadata default value.
      * @var mixed
      */
-    protected $default_value;
+    public $default_value;
 
     /**
      * The metadata label.
      * @var string
      */
-    protected $label;
+    public $label;
 
     /**
      * The metadata input type.
      * @var string
      */
-    protected $type;
+    public $type;
 
     /**
      * The value of metadata must be unique for the same entity?
      * @var boolean
      */
-    protected $is_unique = false;
+    public $is_unique = false;
 
     /**
      * The is_unique error message.
      * @var string
      */
-    protected $is_unique_error_message = '';
+    public $is_unique_error_message = '';
 
     /**
      * Is this metadata required?
      * @var boolean
      */
-    protected $is_required = false;
+    public $is_required = false;
 
     /**
      * The is_required error message
      * @var string
      */
-    protected $is_required_error_message = '';
+    public $is_required_error_message = '';
 
     /**
      * Array of validations where the key is a Respect/Validation call and the value is a error message.
      * @example to validate a positive integet the key must be 'v::intVal()->positive()'
      * @var array
      */
-    protected $_validations= [];
+    public $_validations= [];
 
 
-    protected $private = false;
+    public $private = false;
     /**
      * The metadata configuration
      * @var array
      */
-    protected $config = [];
+    public $config = [];
 
-    protected $serialize = null;
+    public $serialize = null;
 
-    protected $unserialize = null;
+    public $unserialize = null;
 
-    protected $available_for_opportunities = false;
+    public $available_for_opportunities = false;
 
-    protected $field_type;
+    public $field_type;
 
     /**
      * Creates a new Metadata Definition.
@@ -186,6 +186,9 @@ class Metadata extends \MapasCulturais\Definition{
                 } else {
                     throw new InvalidArgumentException('value must be a DateTime or a date time string');
                 }
+            },
+            'multiselect' => function($value){
+                return json_encode($value);
             }
         ];
 
@@ -224,6 +227,9 @@ class Metadata extends \MapasCulturais\Definition{
                 } else {
                     return $value;
                 }
+            },
+            'multiselect' => function($value){
+                return is_null($value) ? null : json_decode($value, true);
             }
         ];
 
@@ -342,7 +348,7 @@ class Metadata extends \MapasCulturais\Definition{
             'length' => key_exists('length', $this->config) ? $this->config['length'] : null,
             'private' => $this->private,
             'available_for_opportunities' => $this->available_for_opportunities,
-            'field_type' => $this->field_type
+            'field_type' => $this->field_type,
         ];
 
         if(key_exists('options', $this->config)){
@@ -350,16 +356,10 @@ class Metadata extends \MapasCulturais\Definition{
             $result['optionsOrder'] = array_keys((array)$this->config['options']);
         }
 
-        if(key_exists('label', $this->config)){
-            $result['label'] = $this->config['label'];
-        }
-
-        if(key_exists('allowOther', $this->config)){
-            $result['allowOther'] = $this->config['allowOther'];
-        }
-
-        if(key_exists('allowOtherText', $this->config)){
-            $result['allowOtherText'] = $this->config['allowOtherText'];
+        foreach($this->config as $key => $val) {
+            if (!isset($result[$key])) {
+                $result[$key] = $val;
+            }
         }
 
         return $result;

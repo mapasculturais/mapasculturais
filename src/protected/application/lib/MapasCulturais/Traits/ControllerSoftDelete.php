@@ -4,7 +4,7 @@ namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 
 trait ControllerSoftDelete{
-    function GET_undelete(){
+    function ALL_undelete(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -24,7 +24,7 @@ trait ControllerSoftDelete{
         }
     }
 
-    function GET_destroy(){
+    function ALL_destroy(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -39,7 +39,7 @@ trait ControllerSoftDelete{
         $entity->destroy(true);
 
         if($this->isAjax()){
-            $this->json($entity);
+            $this->json($entity->simplify('id,name'));
         }else{
             //e redireciona de volta para o referer
             if(in_array($app->request()->getReferer(), $urls))

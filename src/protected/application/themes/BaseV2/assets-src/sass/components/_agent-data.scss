@@ -1,0 +1,119 @@
+@use '../settings/mixins' as *;
+
+.controller-agent.action-edit.Agent-2.Agent-1 {
+    .data-subtitle {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 600;
+        font-size: size(14);
+        line-height: size(19);
+    }
+}
+
+.controller-agent.action-edit {
+    .mc-card__title {
+        p {
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 600;
+            font-size: size(14);
+            line-height: size(19);
+        }
+
+    }
+
+    .content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: size(21) 0;
+    }
+
+    .input__label {
+        display: flex;
+        align-items: flex-end;
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 600;
+        font-size: size(14);
+        line-height: size(19);
+
+        input[type="checkbox"] {
+            box-sizing: border-box;
+            height: size(16);
+            width: size(16);
+            border: size(3) solid var(--mc-black);
+            border-radius: size(2);
+        }
+    }
+
+    .pcd {
+        gap: size(11);
+
+        &.field {
+            gap: size(8);
+        }
+    }
+
+
+    .field {
+
+        label {
+            margin: 0;
+        }
+    }
+}
+
+.agent-data {
+    display: flex;
+    flex-direction: column;
+
+    &__title,
+    &__secondTitle {
+        margin: size(16) 0 size(16) 0;
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 700;
+        font-size: size(18);
+        line-height: size(25);
+    }
+
+    &__fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        @media (max-width:size(1043)) {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        &--field {
+            margin-bottom: size(16);
+
+            label {
+                font-family: 'Open Sans';
+                font-style: normal;
+                font-weight: 600;
+                font-size: size(14);
+                line-height: size(19);
+                margin-bottom: size(8);
+            }
+
+            @media (max-width:size(600)) {
+                .box {
+                    margin: size(8) 0 size(27) 0;
+                }
+            }
+
+            .box {
+                margin-top: size(8);
+                max-width: size(300);
+                width: 100%;
+                min-height: size(49);
+                background: var(--mc-gray-100);
+                border-radius: size(4);
+                padding: size(16);
+                word-break: break-all;
+            }
+        }
+    }
+}

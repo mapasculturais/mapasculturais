@@ -5,6 +5,7 @@ namespace EventImporter;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Definitions;
+use MapasCulturais\Themes;
 
 class Module extends \MapasCulturais\Module
 {
@@ -114,6 +115,7 @@ class Module extends \MapasCulturais\Module
                 'SATURDAY' => [i::__('sábado'),'saturday',i::__('sab')],
                 'SUNDAY' => [i::__('domingo'),'sunday',i::__('dom')],
                 'PRICE' => [i::__('preço'), 'price'],
+                'PRICE_INFO' => [i::__('mais_informacoes_sobre_a_entrada'),i::__('mais_informações_sobre_a_entrada'), 'priceinfo'],
                 'AVATAR' => ['avatar'],
                 'HEADER' => ['banner', 'header'],
                 'GALLERY' => [i::__('galeria'), 'gallery'],
@@ -232,7 +234,7 @@ class Module extends \MapasCulturais\Module
                 ],
                 i::__('LINGUAGEM') => [
                     i::__('PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as com ponto e virgula, ;'),
-                    i::__("Teatro;Música Popular;Livro e Poesia"),
+                    i::__("Teatro;Música Popular;Livro e Literatura"),
                 ],
                 i::__('TAGS') => [
                     i::__('Informar as tags do evento separando-as com ponto e virgula, ;'),
@@ -301,6 +303,10 @@ class Module extends \MapasCulturais\Module
                 i::__('PRECO') => [
                     i::__('Informar os valores cobrados para entrada no evento com texto livre'),
                     i::__('1 KG de alimento não perecível')
+                ]
+                ,i::__('MAIS_INFORMACOES_SOBRE_A_ENTRADA') => [
+                    i::__('Mais informações sobre a entrada'),
+                    i::__('Complemento das informações de')
                 ],
                 i::__('AVATAR') => [
                     i::__('Informar o link da imagem que deseja colocar no avatar do evento'),
@@ -340,24 +346,35 @@ class Module extends \MapasCulturais\Module
 
         $self = $this;
 
-        $app->view->enqueueStyle('app','assets-file','css/eventimporter.css');
-        
-        $app->hook('template(panel.events.tabs-contents):end', function() use($app, $self) {
-            $enabled = $self->config['enabled'];
-            if($enabled()){
-                /** @var Theme $this */
-                $this->controller = $app->controller('agent');
-                $this->part('upload-csv-event',['entity' => $app->user->profile]);
-                $this->controller = $app->controller('panel');
-            }
-        });
+        if ($app->view->version < 2) {
+            // BaseV1
+            $app->view->enqueueStyle('app','assets-file','css/eventimporter.css');
+            $app->hook('template(panel.events.tabs-contents):end', function() use($app, $self) {
+                $enabled = $self->config['enabled'];
+                if($enabled()){
+                    /** @var Theme $this */
+                    $this->controller = $app->controller('agent');
+                    $this->part('upload-csv-event',['entity' => $app->user->profile]);
+                    $this->controller = $app->controller('panel');
+                }
+            });
+    
+            $app->hook('template(panel.events.tab-arquivo):after', function() use($app, $self) {
+                $enabled = $self->config['enabled'];
+                if($enabled()){
+                    $this->part('tab',['id' => "event-importer", "label" => "Importação de eventos"]);
+                }
+            });
+        } else {
+            // BaseV2
 
-        $app->hook('template(panel.events.tab-arquivo):after', function() use($app, $self) {
-            $enabled = $self->config['enabled'];
-            if($enabled()){
-                $this->part('tab',['id' => "event-importer", "label" => "Importação de eventos"]);
-            }
-        });
+            $app->hook('component(panel--entity-tabs):end', function () {
+                /** @var Themes\BaseV2\Theme $this */
+                if($this->controller->action == 'events') {
+                    $this->part('event-importer/tab');
+                }
+            });
+        }
     }
 
     function register()

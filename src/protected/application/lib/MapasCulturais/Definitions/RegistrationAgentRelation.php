@@ -12,15 +12,15 @@ namespace MapasCulturais\Definitions;
  */
 class RegistrationAgentRelation extends \MapasCulturais\Definition{
 
-    protected $required = false;
+    public $required = false;
 
-    protected $agentRelationGroupName = '';
+    public $agentRelationGroupName = '';
 
-    protected $label = '';
+    public $label = '';
 
-    protected $description = '';
+    public $description = '';
 
-    protected $type = null;
+    public $type = null;
 
     function __construct($config) {
         $this->required               = $config['required'];

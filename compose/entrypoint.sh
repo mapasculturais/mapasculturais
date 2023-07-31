@@ -35,9 +35,14 @@ else
     /var/www/scripts/mc-db-updates.sh
 fi
 
+if [ $BUILD_ASSETS = "1" ]; then
+    ( cd protected && pnpm install --recursive && pnpm run dev )
+fi
+
 cd /
 
 touch /nohup.out
+chown www-data: /nohup.out
 sudo -E -u www-data nohup /jobs-cron.sh >> /dev/stdout &
 sudo -E -u www-data nohup /recreate-pending-pcache-cron.sh >> /dev/stdout &
 

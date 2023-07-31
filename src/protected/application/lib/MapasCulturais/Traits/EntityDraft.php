@@ -57,7 +57,14 @@ trait EntityDraft{
             $this->makeFilesPrivate();
         }
         
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unpublish:after');
-                
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unpublish:after');       
+    }
+
+    protected function canUserPublish($user) {
+        if ($this->status == self::STATUS_ENABLED) {
+            return false;
+        } else {
+            return $this->genericPermissionVerification($user);
+        }
     }
 }

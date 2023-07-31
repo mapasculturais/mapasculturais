@@ -1,7 +1,14 @@
 <?php
 
 if (file_exists($_SERVER['SCRIPT_FILENAME']) && strtolower(substr($_SERVER['SCRIPT_NAME'],-4)) !== '.php') {
-    $filename = $_SERVER['SCRIPT_FILENAME'];
+    $filename = __DIR__ . '/' . $_SERVER['SCRIPT_NAME'];
+    if(!file_exists($filename)) {
+        if ($target = getenv('REDIRECT_404_ASSETS_TO')) {
+            header('Location: ' . $target . $_SERVER['SCRIPT_NAME']);
+            die;
+        } 
+        return false;
+    }
 
     $expires = 60 * 5;
     header("Pragma: public");
@@ -15,12 +22,11 @@ if (file_exists($_SERVER['SCRIPT_FILENAME']) && strtolower(substr($_SERVER['SCRI
         $mime = 'text/css';
     }else{
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime = finfo_file($finfo, $_SERVER['SCRIPT_FILENAME']);
+        $mime = finfo_file($finfo, $filename);
         finfo_close($finfo);
     }
     header('Content-type: ' . $mime);
-
-    echo file_get_contents($_SERVER['SCRIPT_FILENAME']);
+    echo file_get_contents($filename);
     die;  // serve the requested resource as-is.
 } else if($_SERVER['SCRIPT_NAME'] === '/index.php') {
     chdir($_SERVER['DOCUMENT_ROOT']);

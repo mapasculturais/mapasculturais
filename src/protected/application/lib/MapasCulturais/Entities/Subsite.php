@@ -40,7 +40,7 @@ class Subsite extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="subsite_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
@@ -61,7 +61,7 @@ class Subsite extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
-    protected $status = self::STATUS_ENABLED;
+    public $status = self::STATUS_ENABLED;
 
     /**
      * @var \MapasCulturais\Entities\Agent
@@ -149,8 +149,9 @@ class Subsite extends \MapasCulturais\Entity
 
     protected $filters = [];
 
-    static function getValidations(){
-        return [
+    static function getValidations() {
+        $app = App::i();
+        $validations = [
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome da instalação é obrigatório')
             ],
@@ -162,6 +163,11 @@ class Subsite extends \MapasCulturais\Entity
                 'unique' => \MapasCulturais\i::__('Esta URL já está sendo utilizada')
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}::validations", [&$validations]);
+
+        return $validations;
     }
 
 
@@ -322,6 +328,7 @@ class Subsite extends \MapasCulturais\Entity
     function jsonSerialize() {
         $result = [
             'id' => $this->id,
+            'name' => $this->name,
             'createTimestamp' => $this->createTimestamp,
             'status' => $this->status,
             'url' => $this->url,
@@ -472,10 +479,6 @@ class Subsite extends \MapasCulturais\Entity
         $q->execute();
 
         $query = "UPDATE \MapasCulturais\Entities\Registration r SET r.subsite = NULL WHERE r._subsiteId = {$subsite_id}";
-        $q = $app->em->createQuery($query);
-        $q->execute();
-
-        $query = "UPDATE \MapasCulturais\Entities\UserApp u SET u.subsite = NULL WHERE u._subsiteId = {$subsite_id}";
         $q = $app->em->createQuery($query);
         $q->execute();
 

@@ -43,17 +43,26 @@ class EventOccurrence extends EntityController {
 
     function POST_create($data = null){
         $this->requireAuthentication();
-        
         $app = App::i();
         $app->applyHookBoundTo($this, "POST({$this->id}.create):data", ['data' => &$data]);
         
         $event = $app->repo('Event')->find($this->postData['eventId']);
         $occurrence = new \MapasCulturais\Entities\EventOccurrence;
         $occurrence->event = $event;
+        $occurrence->description = $this->postData['description'];
+        
+        if (isset($this->postData['price'])) {
+            $occurrence->price = $this->postData['price'];
+        }
 
+        if (isset($this->postData['priceInfo'])) {
+            $occurrence->priceInfo = $this->postData['priceInfo'];
+        }
+        
         if (@$this->postData['spaceId']) {
             $occurrence->space = $app->repo('Space')->find($this->postData['spaceId']);
         }
+        
         $postData = $this->postData;
         unset($postData['eventId']);
         $occurrence->rule = $postData;
@@ -61,7 +70,7 @@ class EventOccurrence extends EntityController {
         if ($errors = $occurrence->validationErrors) {
             $this->errorJson($errors);
         } else {
-            $this->_finishRequest($occurrence);
+            $this->_finishRequest($occurrence, true);
         }
     }
 

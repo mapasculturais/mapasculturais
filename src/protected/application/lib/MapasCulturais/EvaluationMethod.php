@@ -1,9 +1,10 @@
 <?php
 namespace MapasCulturais;
 
+use DateTime;
 use \MapasCulturais\i;
 
-abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
+abstract class EvaluationMethod extends Module implements \JsonSerializable{
     abstract protected function _register();
 
     abstract function enqueueScriptsAndStyles();
@@ -26,6 +27,16 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Filtra o resultado do sumário da fase de avaliação
+     * 
+     * @param array $data 
+     * @return array 
+     */
+    public function filterEvaluationsSummary(array $data) {
+        return $data;
     }
 
     /**
@@ -248,6 +259,32 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         return "$slug--evaluation-form";
     }
 
+    public function getEvaluationSummary($registration) {
+        $app = App::i();
+
+        $result = [];
+        if($evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration])){
+            $consolidated_result =  $this->_getConsolidatedResult($registration);
+            $result['consolidated_result'] = $consolidated_result;
+            $result['type'] = $this->getName();
+            $result['value_to_string'] = $this->valueToString($consolidated_result);
+
+            foreach($evaluations as $evaluation){
+                $data = [
+                    'id' => $evaluation->id,
+                    'evaluation_data' => $evaluation->evaluationData,
+                    'avaluator_id' => $evaluation->user->profile->id,
+                    'avaluator_name' => $evaluation->user->profile->name,
+                    'status' => $evaluation->getResultString(),
+                ];
+
+                $result[] = (object)$data;
+            }
+        }
+
+        return $result;
+    }
+
     function getEvaluationViewPartName(){
         $slug = $this->getSlug();
 
@@ -303,6 +340,11 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
                 'unserialize' => function($val) {
                     return json_decode($val);
                 }
+            ]);
+            $this->registerEvaluationMethodConfigurationMetadata('infos', [
+                'label' => i::__('Textos informativos para os avaliadores'),
+                'type' => 'json',
+                'default' => '{}'
             ]);
         }
 

@@ -1,0 +1,21 @@
+@use '../settings/mixins' as *;
+
+.opportunity-registration-table {
+    &__buttons {
+        display: flex;
+        gap: size(24);
+        flex-wrap: wrap;
+    } 
+
+    .apply-evaluations {
+        .modal-content {
+            max-width: size(570);
+            padding: size(24);
+
+            .modal__content {
+                margin: size(24) 0 0;
+                padding: 0;
+            }
+        }
+    }
+}

@@ -26,7 +26,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="registration_file_configuration_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var \MapasCulturais\Entities\Opportunity
@@ -103,7 +103,8 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     protected $__files;
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'owner' => [ 
                 'required' => \MapasCulturais\i::__("A oportunidade é obrigatória.")
             ],
@@ -111,6 +112,11 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
                 'required' => \MapasCulturais\i::__("O título do anexo é obrigatório.")
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}::validations", [&$validations]);
+
+        return $validations;
     }
 
     public function getFileGroupName(){

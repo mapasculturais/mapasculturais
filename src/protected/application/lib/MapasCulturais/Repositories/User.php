@@ -1,10 +1,13 @@
 <?php
 namespace MapasCulturais\Repositories;
 
-use MapasCulturais\Entities;
 use MapasCulturais\App;
+use MapasCulturais\Entities;
+use MapasCulturais\Traits\RepositoryKeyword;
 
 class User extends \MapasCulturais\Repository{
+    
+    use RepositoryKeyword;
 
     /**
      * Retorna um usuário pelo auth_uid e auth_provider

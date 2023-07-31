@@ -10,6 +10,7 @@ namespace MapasCulturais\Definitions;
  *
  * @property-read int $id Taxonomy Id
  * @property-read string $slug Taxonomy Slug
+ * @property-read string $name Taxonomy Name
  * @property-read bool $allowInsert Can user insert terms in this taxonomy?
  * @property-read bool $required Is this taxonomy required?
  * @property-read array $restrictedTerms List of terms allowed to this taxonomy. If this list is empty any term is allowed.
@@ -21,34 +22,40 @@ class Taxonomy extends \MapasCulturais\Definition{
      * The taxonomy Id saved in Term Entity.
      * @var int
      */
-    protected $id;
+    public $id;
 
     /**
      * The toxonomy slug (like "tag")
      * @var string
      */
-    protected $slug;
+    public $slug;
+
+    /**
+     * The toxonomy name (like "Área de Atuação")
+     * @var string
+     */
+    public $name;
 
     /**
      * If allowInsert is setted to true, the users will be allowed to creates new terms for this taxonomy.
      * @var bool
      */
-    protected $allowInsert;
+    public $allowInsert;
 
     /**
      * The description of this taxonomy.
      * @var string
      */
-    protected $description;
+    public $description;
 
     /**
      * List of terms allowed to this taxonomy. If this list is empty any term is allowed.
      * @var array
      */
-    protected $restrictedTerms = [];
+    public $restrictedTerms = [];
 
 
-    protected $required = false;
+    public $required = false;
 
     /**
      * Creates the new Taxonomy Definition.

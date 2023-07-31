@@ -1,0 +1,154 @@
+@use '../settings/mixins' as *;
+
+.entity-related-agents {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem 0;
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        gap: size(10);
+
+        &--name {
+            align-items: center;
+            color: var(--mc-black);
+            display: flex;
+            font-family: var(--mc-font-heading);
+            font-size: size(16);
+            font-style: normal;
+            font-weight: 700;
+            gap: size(14);
+            line-height: size(22);
+
+            .act {
+                align-items: center;
+                display: flex;
+                height: size(22);
+                justify-content: space-between;
+                width: size(48);
+
+                a {
+                    align-items: center;
+                    cursor: pointer;
+                    display: flex;
+                    font-size: size(15);
+                    justify-content: center;
+                    padding: size(3.5);
+
+                    &:hover {
+                        color: var(--mc-gray-700);
+                    }
+                }
+            }
+        }
+
+        &--agents {
+            display: flex;
+            flex-wrap: wrap;
+            gap: size(16);
+
+            .agent {
+                cursor: pointer;
+                display: flex;
+                height: size(40);
+                position: relative;
+                width: size(40);
+
+                &__img {
+                    align-items: center;
+                    background: var(--mc-gray-500);
+                    border-radius: 50%;
+                    display: flex;
+                    height: size(40);
+                    justify-content: center;
+                    overflow: hidden;
+                    width: 100%;
+                    width: size(40);
+
+                    &--img {
+                        max-width: 100%;
+                    }
+
+                    .iconify {
+                        color: var(--mc-high-500);
+                    }
+                }
+
+                &__delete {
+                    align-items: center;
+                    background-color: var(--mc-error);
+                    border-radius: 50%;
+                    color: white;
+                    display: flex;
+                    height: size(18);
+                    position: absolute;
+                    justify-content: center;
+                    right: size(-5);
+                    top: size(-5);
+                    width: size(18);
+
+                    .iconify {
+                        font-size: size(14);
+                    }
+                }
+
+                &__pending {
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                    width: size(10);
+                    height: size(10);
+                    background-color: var(--mc-warning-500);
+                    border-radius: var(--mc-border-radius-pill);
+                }
+            }
+        }
+
+        &--actions {
+            align-items: center;
+            display: flex;
+            gap: size(13);
+        }
+    }
+
+    &__addNew {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+
+        .add-agent {
+            margin-bottom: size(8);
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 600;
+            font-size: size(14);
+            line-height: size(19);
+        }
+
+        &--newGroup {
+            input[type="text"] {
+                height: size(46);
+                width: size(290);
+            }
+
+            input::placeholder {
+                font-size: size(16);
+                padding-left: size(3);
+            }
+        }
+
+
+        &--title {
+            color: var(--mc-black);
+            font-family: var(--mc-font-heading);
+            font-size: size(14);
+            font-style: normal;
+            font-weight: 600;
+            line-height: size(19);
+            margin-bottom: size(8);
+        }
+    }
+}

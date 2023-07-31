@@ -36,6 +36,12 @@ return array(
                 "v::url('linkedin.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
+        'vimeo' => array(
+            'label' => \MapasCulturais\i::__('Vimeo'),
+            'validations' => array(
+                "v::url('vimeo.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            )
+        ),
         'spotify' => array(
             'label' => \MapasCulturais\i::__('Spotify'),
             'validations' => array(
@@ -55,19 +61,55 @@ return array(
             )
         ),
 
-        'registrationSeals' => array(
-                'label' => \MapasCulturais\i::__('Selos'),
-                'serialize' => function($value) { return json_encode($value); },
-                'unserialize' => function($value) { return json_decode($value); }
+        'emailPublico' => array(
+            'label' => \MapasCulturais\i::__('Email Público'),
+            'validations' => array(
+                'v::email()' => \MapasCulturais\i::__('O endereço informado não é email válido.')
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'email'
         ),
-        'useSpaceRelation' => array(
-            'label' => \MapasCulturais\i::__('Espaço Relacionado'),
-            'type' => 'select',
-            'options' => array(
-                'dontUse' => \MapasCulturais\i::__('Não utilizar'),
-                'required' => \MapasCulturais\i::__('Obrigatório'),
-                'optional' => \MapasCulturais\i::__('Opcional')
-            )
+
+        'emailPrivado' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Email Privado'),
+            'validations' => array(
+                //'required' => \MapasCulturais\i::__('O email privado é obrigatório.'),
+                'v::email()' => \MapasCulturais\i::__('O endereço informado não é um email válido.')
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'email'
+        ),
+
+        'telefonePublico' => array(
+            'label' => \MapasCulturais\i::__('Telefone Público'),
+            'type' => 'string',
+            'validations' => array(
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
+        ),
+
+        'telefone1' => array(
+            'label' => \MapasCulturais\i::__('Telefone 1'),
+            'type' => 'string',
+            'validations' => array(
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
+        ),
+
+
+        'telefone2' => array(
+            'label' => \MapasCulturais\i::__('Telefone 2'),
+            'type' => 'string',
+            'validations' => array(
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
         ),
 
     ),

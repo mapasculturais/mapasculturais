@@ -24,28 +24,28 @@ class PermissionCachePending extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="permission_cache_pending_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="object_id", type="integer", nullable=false)
      */
-    protected $objectId;
+    public $objectId;
 
     /**
      * @var string
      *
      * @ORM\Column(name="object_type", type="string", length=255, nullable=false)
      */
-    protected $objectType;
+    public $objectType;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
-    protected $status = self::STATUS_WAITING;
+    public $status = self::STATUS_WAITING;
 
     /**
      * @var \MapasCulturais\Entities\User

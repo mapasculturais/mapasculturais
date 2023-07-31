@@ -10,7 +10,6 @@ use POMO\MO;
  *
  */
 class i {
-
     static function get_locale() {
         $app = App::i();
         $locale = $app->config['app.lcode'];
@@ -63,7 +62,8 @@ class i {
     static function translate( $text, $domain = 'default' ) {
     	$translations = self::get_translations_for_domain( $domain );
     	$translations = $translations->translate( $text );
-        return $translations;
+
+        return self::replaces($translations, $domain);
     }
 
     /**
@@ -384,4 +384,69 @@ class i {
         return isset( $i18n[$domain] );
     }
 
+    static $replacements = null;
+
+    /**
+     * Substitui termos das strings traduzidas pelo 
+     * o que estiver definido no arquivo translations/replacements
+     * 
+     * o arquivo translations/replacements deve seguir a seguinte estrutura:
+     * 
+     *  espaço >>> museu
+     *  minhas oportunidades >>> meus editais
+     *  suas oportunidades >>> seus editais
+     *  as oportunidades >>> os editais
+     *  uma oportunidade >>> um edital
+     *  a oportunidade >>> o edital
+     *  oportunidades >>> editais
+     *  oportunidade >>> edital
+     *  espaços culturais >>> espaços de saúde
+     * 
+     * os termos serão processados da seguinte maneira:
+     * para a linha abaixo:
+     * 
+     * meus espaços >>> meus museus
+     * 
+     * serão aplicadas as seguintes funções para substituição:
+     * 
+     * ucwords          => "Meus Espaços >>> Meus Museus" 
+     * ucfirst          => "Meus espaços >>> Meus museus"
+     * mb_strtolower    => "MEUS ESPAÇOS >>> MEUS MUSEUS"
+     * mb_strtolower    => "meus espaços >>> meus museus"
+    */
+    static function replaces($translation, $domain) {
+        if (is_null(self::$replacements) && file_exists(LANGUAGES_PATH . 'replacements')) {
+            self::$replacements = [];
+
+            $replacements_raw = file_get_contents(LANGUAGES_PATH . 'replacements');
+
+            $replacements = explode("\n", $replacements_raw);
+
+            foreach($replacements as $replacement) {
+                $replacement = trim($replacement);
+                if (!$replacement) {
+                    continue;
+                }
+
+                $from_to = explode(">>>", $replacement);
+
+                if (count($from_to) === 2) {
+                    self::$replacements[] = [trim($from_to[0]), trim($from_to[1])];
+                }
+            }
+        } else {
+            self::$replacements = [];
+        }
+
+        foreach (self::$replacements as $replacement) {
+            list($from, $to) = $replacement;
+            
+            $translation = str_replace(ucwords($from), ucwords($to), $translation);
+            $translation = str_replace(ucfirst($from), ucfirst($to), $translation);
+            $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
+            $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
+        }
+
+        return $translation;
+    }
 }

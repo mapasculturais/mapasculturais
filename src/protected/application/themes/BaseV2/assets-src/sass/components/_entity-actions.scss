@@ -1,0 +1,109 @@
+@use '../settings/mixins' as *;
+
+.entity-actions {
+    background-color: var(--mc-primary-500);
+    border: unset;
+    bottom: 0;
+    padding: size(24) size(16);
+    position: -webkit-sticky;
+    position: sticky;
+    width: 100%;
+    z-index: 1;
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        max-width: size(1170);
+        margin: 0 auto;
+
+        &--groupBtn {
+            align-items: center;
+            display: flex;
+            gap: size(25);
+            
+            &.rowBtn {
+                flex-direction: row;
+            }
+
+            .button {
+                cursor: pointer;
+                font-family: "Open Sans";
+                
+                &.publish {
+                    background: var(--mc-high-500);
+                    color: var(--mc-primary-500);
+                    padding-left: size(100);
+                    padding-right: size(100);
+                    
+                    &-exit {
+                        padding-left: size(40);
+                        padding-right: size(40);
+                    }
+                }
+            }
+            .arquivar {
+                .iconify {
+                    color:#FF7A00;
+                    font-size: size(16);
+                }
+            }
+            .excluir {
+                .iconify {
+                    color: #ED0000;
+                    font-size: size(16);
+                }
+            }
+        }
+    }
+}
+
+@media(max-width: 950px){
+    .entity-actions {
+        position: relative;
+        &__content {
+            flex-direction: column-reverse;
+            align-items: center;    
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .entity-actions {
+        &__content {
+            display: flex;
+            gap: size(24);
+
+            &--groupBtn {
+                display: inline-flex;
+                gap: size(24);
+
+                .btn {
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 870px) {
+
+    .entity-actions {
+        padding: size(24) size(10);    
+            
+        &__content {
+            gap: size(48);
+            &--groupBtn {
+                flex-direction: column-reverse;
+                gap: size(15);
+            }   
+        }
+    }
+}
+
+@media (max-width: size(600)) {
+
+    .entity-actions {
+        padding: size(24) size(10);
+        position: relative;
+    }
+}

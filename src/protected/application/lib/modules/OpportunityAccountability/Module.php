@@ -31,10 +31,17 @@ class Module extends \MapasCulturais\Module
 
     protected $inTransaction = false;
 
+    protected $disabled = false;
+
     function _init()
     {
+        return;
         $app = App::i();
-
+        if ($app->view->version >= 2) {
+            $this->disabled = true;
+            return;
+        }
+        
         $self = $this;
 
         $this->evaluationMethod = new EvaluationMethod($this->_config);
@@ -314,7 +321,7 @@ class Module extends \MapasCulturais\Module
 
             $this->registerRegistrationMetadata();
 
-            $module->importLastPhaseRegistrations($this, $this->firstPhase->accountabilityPhase, true);
+            $module->importPreviousPhaseRegistrations($this, $this->firstPhase->accountabilityPhase, true);
         });
 
         // fecha os campos abertos pelo parecerista após o reenvio da prestação de contas
@@ -353,6 +360,7 @@ class Module extends \MapasCulturais\Module
         //Cria painel de prestação de contas
         $app->hook('GET(panel.accountability)', function() use($app) {
             $this->requireAuthentication();
+            $user = $app->user;
 
             $this->render('accountabilitys', []);
         });
@@ -781,7 +789,11 @@ class Module extends \MapasCulturais\Module
 
     function register()
     {
+        return;
         $app = App::i();
+        if ($app->view->version >= 2 || $this->disabled) {
+            return;
+        }
         $opportunity_repository = $app->repo('Opportunity');
         $registration_repository = $app->repo('Registration');
         $project_repository = $app->repo('Project');

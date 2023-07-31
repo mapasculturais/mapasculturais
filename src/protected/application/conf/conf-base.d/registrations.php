@@ -74,8 +74,8 @@ return [
     'registration.spaceRelations' => array(
         array(
             'required' => false,
-            'label' => \MapasCulturais\i::__('Espaço Relacionado'),
-            'description' => \MapasCulturais\i::__('Espaço Relacionado'),
+            'label' => \MapasCulturais\i::__('Espaço'),
+            'description' => \MapasCulturais\i::__('Vincule um espaço a sua inscrição'),
             'type' => 2
         )
     ),

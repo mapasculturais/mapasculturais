@@ -1,0 +1,27 @@
+{
+    "scripts": {
+        "dev": "mix --mix-config=node_modules/@mapas/scripts/webpack.mix.js",
+        "build": "mix --mix-config=node_modules/@mapas/scripts/webpack.mix.js --production",
+        "watch": "mix watch --mix-config=node_modules/@mapas/scripts/webpack.mix.js"
+    },
+    "devDependencies": {
+        "@mapas/scripts": "workspace:0.0.0"
+    },
+    "dependencies": {
+        "@iconify/vue": "^3.2.1",
+        "@types/leaflet": "^1.9.3",
+        "@vue-leaflet/vue-leaflet": "^0.6.1",
+        "@vuepic/vue-datepicker": "^4.5.1",
+        "date-fns": "^2.30.0",
+        "floating-vue": "2.0.0-beta.20",
+        "leaflet": "1.7.1",
+        "leaflet.markercluster": "^1.5.3",
+        "maska": "^2.1.9",
+        "pinia": "^2.1.3",
+        "vue": "^3.3.4",
+        "vue-advanced-cropper": "^2.8.8",
+        "vue-final-modal": "^3.4.11",
+        "vue-recaptcha": "^2.0.3",
+        "vue3-carousel": "^0.1.48"
+    }
+}

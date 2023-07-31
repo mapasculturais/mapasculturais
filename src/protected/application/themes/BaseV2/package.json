@@ -1,0 +1,17 @@
+{
+    "scripts": {
+        "dev": "mix --mix-config=node_modules/@mapas/scripts/webpack.mix.js",
+        "build": "mix --mix-config=node_modules/@mapas/scripts/webpack.mix.js --production",
+        "watch": "mix watch --mix-config=node_modules/@mapas/scripts/webpack.mix.js"
+    },
+    "devDependencies": {
+        "@mapas/scripts": "workspace:*"
+    },
+    "mapas": {
+        "assets": {
+            "css": {
+                "main": "main"
+            }
+        }
+    }
+}
