@@ -97,8 +97,17 @@ app.component('registration-evaluation-actions', {
             return result;
         },
         finishEvaluation() {
-            this.evaluate();
-            this.reloadPage();
+            const promise = this.evaluate();
+            const messages = useMessages();
+
+            promise.then(() => {
+                this.reloadPage();
+            }).catch((res) => {
+                for (let error of res){
+                    console.log(error)
+                    messages.error(error);
+                }
+            })
         },
         send(registration) {
            this.sendEvaluation(registration);
@@ -155,6 +164,18 @@ app.component('registration-evaluation-actions', {
         evaluate() {
             const iframe = document.getElementById('evaluation-form');
             iframe.contentWindow.postMessage({type: "evaluationForm.send", status: 'evaluated'});
+
+            return new Promise((resolve, reject) => {
+                window.addEventListener("message", function(event) { 
+                    if (event.data?.type == "evaluation.send.success") {
+                        resolve();
+                    }
+
+                    if (event.data?.type == "evaluation.send.error") {
+                        reject(event.data.error);
+                    }
+                });
+            });
         },
         previous() {
             window.dispatchEvent(new CustomEvent('previousEvaluation', {detail:{registrationId:this.registration.id}}));
