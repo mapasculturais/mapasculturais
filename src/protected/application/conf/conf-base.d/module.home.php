@@ -7,7 +7,7 @@ return [
         'home-opportunities' => env('MODULE_HOME_IMAGE_OPPORTUNITIES','img/home/home-entities/opportunities.jpg'),
         'home-projects' => env('MODULE_HOME_IMAGE_PROJECTS','img/home/home-entities/projects.jpg'),
         'home-spaces' => env('MODULE_HOME_IMAGE_SPACES','img/home/home-entities/spaces.jpg'),
-        'home-registers' => env('MODULE_HOME_IMAGE_REGISTERs','img/home/home-register/background.jpg'),
+        'home-registers' => env('MODULE_HOME_IMAGE_REGISTERS','img/home/home-register/background.jpg'),
         
     ]    
 ];
