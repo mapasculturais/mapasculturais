@@ -18,7 +18,7 @@ app.component('mc-summary-spaces', {
 
     methods: {
         canSee(item) {
-            if (this.entity.currentUserPermissions['@control']) {
+            if (this.entity.currentUserPermissions['@control'] || this.entity.currentUserPermissions['view']) {
                 return true
             }
 
