@@ -19,7 +19,7 @@ $this->import('
             <button class="button button--primary button--large registration-evaluation-actions__buttons__saveafter" @click="saveReload()"> <?= i::__('Salvar e continuar depois') ?> </button>
         </div>
         <div class="col-12" v-if="showActions(registration, 'finishEvaluation')">
-            <button class="button button--primary button--large registration-evaluation-actions__buttons__final" @click="finishEvaluation()">
+            <button class="button button--primary button--large registration-evaluation-actions__buttons__final" @click="finishEvaluation(registration)">
                 <?= i::__('Finalizar avaliação') ?>
             </button>
         </div>
