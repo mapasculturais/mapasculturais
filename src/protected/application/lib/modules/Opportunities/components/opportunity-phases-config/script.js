@@ -9,6 +9,9 @@ app.component('opportunity-phases-config', {
             type: Entity,
             required: true
         },
+        tab: {
+            type: String,
+        },
     },
 
     setup() { 

@@ -12,10 +12,12 @@
         flex-direction: column;
         box-shadow: 2px 3px 4px -1px rgb(0 0 0 / 16%);
         border-radius: 0px 4px 4px 0px;
-        position: absolute;
         max-height: size(800);
         transition: width .5s;
 
+        @media (max-width: size(500)){
+            display: none;
+        }
         .act-button {
             border: 1px solid var(--mc-gray-100);
             padding: size(13) size(18);
@@ -26,7 +28,7 @@
             gap: size(15);
             background-color: var(--mc-white);
             justify-content: space-between;
-
+           
             .label {
                 font-family: 'Open Sans';
                 font-style: normal;

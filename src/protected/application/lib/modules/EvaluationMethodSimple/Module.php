@@ -36,6 +36,23 @@ class Module extends \MapasCulturais\EvaluationMethod {
         ;
     }
 
+    function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
+    {   
+        $errors = [];
+
+        foreach($data as $key => $val){
+            if($key === i::__('status') && !trim($val)) {
+                $errors[] = i::__('O campo Status é obrigatório');
+            }
+            
+            if($key === i::__('obs') && !trim($val)) {
+                $errors[] = i::__('O campo Observações é obrigatório');
+            }
+        }
+
+        return $errors;
+    }
+
     function enqueueScriptsAndStyles() {
         $app = App::i();
 

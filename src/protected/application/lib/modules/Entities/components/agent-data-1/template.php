@@ -116,7 +116,8 @@ $this->import('
             <div v-if="entity.pessoaDeficiente" class="agent-data__fields--field">
                 <label class="title"><?php i::_e("Pessoa portadora de deficiência") ?></label>
                 <div class="box">
-                    <label class="box__content">{{entity.pessoaDeficiente?.join(",")}}</label>
+                    <label v-if="entity.pessoaDeficiente" class="box__content">{{entity.pessoaDeficiente?.join(", ")}}</label>
+                    <label v-if="entity.pessoaDeficiente.length==1 && entity.pessoaDeficiente[0]==''" class="box__content"><?= i::__("Não sou") ?></label>
                 </div>
             </div>
             <div v-if="entity.comunidadesTradicional" class="agent-data__fields--field">

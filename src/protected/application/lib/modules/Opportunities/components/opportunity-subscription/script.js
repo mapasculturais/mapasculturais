@@ -89,6 +89,10 @@ app.component('opportunity-subscription' , {
         },
 
         isOpen() {
+            if (this.entity.currentUserPermissions["@control"]){
+                return true;
+            }
+            
             if (this.registrationStatus(this.dateStart, this.dateEnd) == 'open') {
                 return true;
             } else {

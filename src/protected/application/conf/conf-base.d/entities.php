@@ -50,7 +50,7 @@ return [
         ),
 
         'MapasCulturais\Entities\Opportunity' => array(
-            'publishTimestamp' => i::__('Data de publicação dos resultados'),
+            'publishTimestamp' => i::__('Data e hora de publicação dos resultados'),
             'autoPublish' => i::__('Publicar resultado automaticamente')
         ),
     ),
