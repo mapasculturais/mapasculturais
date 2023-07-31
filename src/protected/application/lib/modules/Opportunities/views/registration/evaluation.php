@@ -58,16 +58,15 @@ if (isset($this->controller->data['user']) && $app->user->is('admin')) {
             </aside>
 
             <main class="col-6">
-
-                <h3 class="section__title"><?= i::__('Dados informados no formulário') ?></h3>
                 <mc-summary-agent :entity="entity"></mc-summary-agent>
                 <mc-summary-project :entity="entity"></mc-summary-project>
                 <mc-summary-agent-info :entity="entity"></mc-summary-agent-info>
+                <h3 class="section__title"><?= i::__('Dados informados no formulário') ?></h3>
                 <mc-summary-spaces :entity="entity"></mc-summary-spaces>
-
+                
                 <registration-info :registration="entity"></registration-info>
 
-                <section class="section">
+                <section class="col-12 section">
                     <div class="section__content">
                         <div class="card owner">
                             <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
