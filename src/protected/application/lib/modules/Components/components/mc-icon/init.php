@@ -43,6 +43,7 @@ $iconset = [
     'arrowPoint-right' => 'fe:arrow-right',
     'arrowPoint-up' => 'fe:arrow-up',
     'check' => 'material-symbols:check-circle',
+    'circle' => 'material-symbols:circle',
     'circle-checked' => 'material-symbols:check-circle-rounded',
     'clock' => 'fluent:clipboard-clock-20-filled',
     'close' => 'gg:close',
