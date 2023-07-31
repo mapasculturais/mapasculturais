@@ -1,7 +1,12 @@
 app.component('event-importer-upload', {
     template: $TEMPLATES['event-importer-upload'],
 
-    props: { },
+    props: { 
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
+    },
 
     setup() {
         const text = Utils.getTexts('event-importer-upload')
@@ -10,6 +15,7 @@ app.component('event-importer-upload', {
     data() {
         return {
             newFile: {},
+            loading: false,
          }
     },
     computed: {
@@ -20,7 +26,10 @@ app.component('event-importer-upload', {
             return Utils.createUrl('eventimporter', 'downloadExample', {type:"csv"});
         },
         xlsUrl(){
-            return Utils.createUrl('eventimporter', 'downloadExample', {type:"csv"});
+            return Utils.createUrl('eventimporter', 'downloadExample', {type:"xls"});
+        },
+        fileName(){
+            return this.newFile.name ?? 'Selecione um arquivo';
         }
     },
     methods: {
@@ -28,6 +37,7 @@ app.component('event-importer-upload', {
             this.newFile = this.$refs.file.files[0];
         },
         upload(modal){
+            this.loading = true;
             const _global = useGlobalState();
             const agent = _global.auth.user.profile;
             
@@ -37,10 +47,16 @@ app.component('event-importer-upload', {
             };
 
             agent.upload(this.newFile, data).then((response) => {
+                this.newFile = {};
+                this.loading = false;
                 modal.close();
             });
 
             return true;
+        },
+        cancel(modal){
+            this.newFile = {};
+            modal.close();
         },
     },
 });

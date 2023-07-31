@@ -603,7 +603,7 @@ class Controller extends \MapasCulturais\Controller
 
          if ($countNewEvent >= 1) {
             $_agent = $app->user->profile;
-            $files = $_agent->event_importer_processed_file ?? new stdClass();
+            $files = $_agent->event_importer_processed_file ?: new stdClass();
             $files->{basename($file_dir)} = [
                'date' => date('d/m/Y \à\s H:i'),
                'countProsess' => $countNewEvent,
@@ -622,7 +622,7 @@ class Controller extends \MapasCulturais\Controller
          }
       }
 
-      return ['sucesso'];
+      $this->json($app->user->profile->event_importer_processed_file);
       
    }
 
@@ -902,7 +902,7 @@ class Controller extends \MapasCulturais\Controller
          
          $from = array_keys($moduleConfig['dic_months']);
          $to = array_values($moduleConfig['dic_months']);
-         $rule['description'] = str_replace($from, $to, $rule['description']);
+         $ocurrence->description = str_replace($from, $to, $rule['description']);
          
          $ocurrence->startsAt = $this->formatDate($value['STARTS_AT'], false);
          $ocurrence->endsAt = $this->formatDate($value['ENDS_AT'], false);
@@ -914,6 +914,8 @@ class Controller extends \MapasCulturais\Controller
          $ocurrence->separation = 1;
          $ocurrence->timezoneName = 'Etc/UTC';
          $ocurrence->rule = $rule;
+         $ocurrence->price = $value['PRICE'];
+         $ocurrence->priceInfo = $value['PRICE_INFO'];
    
          $app->disableAccessControl();
          $ocurrence->save(true);

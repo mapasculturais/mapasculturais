@@ -39,6 +39,8 @@
 @import 'components/entity-seals';
 @import 'components/entity-social-media';
 @import 'components/event-age-rating';
+@import 'components/event-importer-files';
+@import 'components/event-importer-upload';
 @import 'components/error-display';
 @import 'components/complaint-suggestion';
 @import 'components/entity-terms';
@@ -88,9 +90,10 @@
 @import 'components/opportunity-phase-header';
 @import 'components/opportunity-category-list';
 @import 'components/opportunity-phase-evaluations';
-@import 'components/opportunity-phase-list-data-collection';
+@import 'components/opportunity-phase-status';
 @import 'components/opportunity-phase-list-evaluation';
 @import 'components/opportunity-phase-publish-date-config';
+@import 'components/opportunity-phase-publish-config-registration';
 @import 'components/opportunity-registrations';
 @import 'components/opportunity-rules';
 @import 'components/opportunity-enable-claim';

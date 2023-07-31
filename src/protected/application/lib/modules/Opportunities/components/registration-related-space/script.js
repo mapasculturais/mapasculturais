@@ -44,17 +44,17 @@ app.component('registration-related-space', {
         },
         removeSpace() {
             if (this.relatedSpace) {
-                this.registration.POST('removeSpaceRelation', {data: {id: this.relatedSpace.id}, callback: () => {
+                this.registration.POST('removeSpaceRelation', {data: {id: this.relatedSpace.space.id}, callback: () => {
                     let spaceRelations = this.registration.spaceRelations;
                     let relatedSpaces = this.registration.relatedSpaces;
                     if (spaceRelations) {
                         if (Object.keys(spaceRelations).length > 0) {
-                            spaceRelations.pop();
+                            this.registration.spaceRelations =  {};
                         }
                     }        
                     if (relatedSpaces) {
                         if (Object.keys(relatedSpaces).length > 0) {
-                            relatedSpaces.pop();
+                            this.registration.relatedSpaces.length = 0;
                         }
                     }
 

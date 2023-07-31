@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field-datepicker
+    mc-alert
 ')
 ?>
 <div class="field" :class="[{error: hasErrors}, classes]" :style="is('checkbox') ? { flexDirection: 'row' } : {}">
@@ -25,8 +26,13 @@ $this->import('
         <input v-if="is('cep')" v-maska data-maska="#####-###" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" autocomplete="off">
 
         <input v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" autocomplete="off">
-    
-        <textarea v-if="is('textarea')" :value="value" :id="propId" :name="prop" @input="change($event)"></textarea>
+        <div  v-if="is('textarea') && prop=='shortDescription'" class="field__shortdescription">
+            <textarea :id="propId" :value="value" :name="prop" @input="change($event)" :maxlength="400"></textarea>
+                <p>
+                {{ value ? value?.length : '0' }}/400
+                </p>
+        </div>
+        <textarea v-if="is('textarea') && !prop=='shortDescription'" :value="value" :id="propId" :name="prop" @input="change($event)"></textarea>
 
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @input="change($event)" autocomplete="off">
 

@@ -182,18 +182,38 @@ class Registration extends EntityController {
         $registrationEntity = $this->repository->find($this->data['id']);
         $space = $app->repo('Space')->find($this->postData['id']);
         
+        $result = false;
         if(is_object($registrationEntity) && !is_null($space)){
             if ($spaceRelation = $app->repo('SpaceRelation')->findOneBy([
                 'objectId' => $registrationEntity->id, 
                 'space' => $space->id 
             ])) {
                 $spaceRelation->delete(true);
-                $this->json(true);
-            } else {
-                $this->json(false);
+                $result = true;
             }
 
-        }        
+        }       
+        
+        $this->json($result);
+    }
+
+    public function POST_deleteRegistration()
+    {
+        $this->requireAuthentication();
+
+        $entity = $this->requestedEntity;
+        $result = false;
+        try {
+            $entity->checkPermission('remove');
+            if ($entity->status == 0) {
+                $entity->delete();
+            }
+            $result = $entity;
+        } catch (\Throwable $th) {
+            $result = false;
+        }
+
+        $this->json($result);
     }
 
     public function POST_reopenEvaluation()

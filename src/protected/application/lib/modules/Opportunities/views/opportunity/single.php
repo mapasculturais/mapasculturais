@@ -36,6 +36,7 @@ $this->import('
     opportunity-rules
     opportunity-subscription
     opportunity-subscription-list
+    opportunity-owner-type
     v1-embed-tool
 ');
 
@@ -54,7 +55,8 @@ $this->breadcrumb = [
             <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
         </dl>
         <dl class="single-opportunity__owner">
-            <dt><?= i::__('Opportunidade de') ?></dt>
+            <dt><?= i::__('Vinculado com ') ?><opportunity-owner-type :entity="entity"></opportunity-owner-type></dt>
+            
             <mc-link :entity="entity.ownerEntity"></mc-link>
         </dl>
     </template>
@@ -104,7 +106,7 @@ $this->breadcrumb = [
                 </aside>
                 <aside>
                     <div class="grid-12">
-                        <complaint-suggestion :entity="entity"></complaint-suggestion>
+                        <complaint-suggestion :entity="entity" classes="col-12"></complaint-suggestion>
                     </div>
                 </aside>
             </mc-container>
