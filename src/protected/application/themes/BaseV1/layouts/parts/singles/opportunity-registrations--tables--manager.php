@@ -160,12 +160,17 @@ use MapasCulturais\i;
             <?php $this->applyTemplateHook('registration-list-item','end'); ?>
         </tr>
     </tbody>
-    <tfoot>
+    <tfoot ng-if="data.registrationsAPIMetadata.count > data.registrations.length">
         <tr>
             <td colspan='{{numberOfEnabledColumns()}}' align="center">
                 <div ng-if="data.findingRegistrations">
                     <img src="<?php $this->asset('img/spinner_192.gif')?>" width="48">
                 </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='{{numberOfEnabledColumns()}}' align="center" ng-if="!data.findingRegistrations">
+                <button ng-click="findRegistrations();data.findingRegistrations = true"><?php MapasCulturais\i::_e("Carregar mais");?></button>
             </td>
         </tr>
     </tfoot>

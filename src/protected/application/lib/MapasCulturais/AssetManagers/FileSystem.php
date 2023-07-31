@@ -51,8 +51,16 @@ class FileSystem extends \MapasCulturais\AssetManager{
         
         if($command_pattern === 'cp -Rf {IN} {PUBLISH_PATH}')
             die(var_dump($command));
-            
-        exec($command);
+        
+        $result = '';
+        $result_code = '';
+        exec($command, $result, $result_code);
+
+        $app = App::i();
+        if($app->config['app.log.assetManager']) {
+            $log = print_r($result, true);
+            $app->log->debug(" ASSETMANAGER EXEC:$result_code > $log");
+        }
     }
     
     protected function _publishAsset($asset_filename, $output_file) {

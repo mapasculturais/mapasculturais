@@ -221,7 +221,7 @@
         $scope.userAllowedFields = MapasCulturais.userAllowedFields
         
         $scope.canUserEdit = function(field){
-            if(MapasCulturais.entity.hasControl == true){
+            if(MapasCulturais.entity.userHasControl){
                 return true;
             }
 

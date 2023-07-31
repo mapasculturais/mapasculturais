@@ -58,7 +58,7 @@ abstract class File extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="file_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
@@ -155,11 +155,17 @@ abstract class File extends \MapasCulturais\Entity
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'mimeType' => [
                 'v::not(v::regex("#.php$#"))' => i::__('Tipo de arquivo não permitido')
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}::validations", [&$validations]);
+
+        return $validations;
     }
 
     /**
@@ -176,7 +182,7 @@ abstract class File extends \MapasCulturais\Entity
      *
      * @return \MapasCulturais\Controller The controller
      */
-    public function getControllerId(){
+    public static function getControllerId(){
         return App::i()->getControllerIdByEntity(__CLASS__);
     }
 
@@ -306,6 +312,7 @@ abstract class File extends \MapasCulturais\Entity
             'files' => $this->getFiles(),
             'url' => $this->url,
             'deleteUrl' => $this->deleteUrl,
+            'createTimestamp' => $this->createTimestamp
         ];
     }
 

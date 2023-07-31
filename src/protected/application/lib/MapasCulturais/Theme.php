@@ -3,6 +3,9 @@ namespace MapasCulturais;
 
 use ArrayObject;
 use MapasCulturais\App;
+use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\Opportunity;
 
 /**
  * This is the default MapasCulturais View class. It extends the \Slim\View class adding a layout layer and the option to render the template partially.
@@ -18,6 +21,8 @@ use MapasCulturais\App;
  * @property \ArrayObject $jsObject
  *
  * @property-read \MapasCulturais\AssetManager $assetManager The asset manager
+ * 
+ * @property-read int $version Theme version 
  * 
  *
  * @hook **view.render:before ($template_name)** - executed before the render of the template and the layout
@@ -40,13 +45,7 @@ abstract class Theme extends \Slim\View {
      * The controller that is using this view object.
      * @var \MapasCulturais\Controller
      */
-    protected $_controller;
-
-    /**
-     * The layout to use when rendering the template.
-     * @var string
-     */
-    protected $_layout = 'default';
+    public $controller;
 
     /**
      * The template that this view is rendering.
@@ -84,7 +83,7 @@ abstract class Theme extends \Slim\View {
      * MapasCulturais JS Object
      * @var \ArrayObject
      */
-    protected $jsObject = null;
+    public $jsObject = null;
 
     /**
      *
@@ -92,12 +91,11 @@ abstract class Theme extends \Slim\View {
      */
     protected $path = null;
 
-    protected $_dict = [];
-
     abstract protected function _init();
 
     abstract function register();
 
+    abstract function getVersion();
 
     public function __construct(AssetManager $asset_manager) {
         parent::__construct();
@@ -105,14 +103,6 @@ abstract class Theme extends \Slim\View {
         $this->_assetManager = $asset_manager;
 
         $app = App::i();
-        
-        $app->hook('app.register', function() use($app){
-            $def = new Definitions\Metadata('sentNotification', ['label' => 'Notificação enviada', 'type' => 'boolean']);
-
-            $app->registerMetadata($def, 'MapasCulturais\Entities\Agent');
-            $app->registerMetadata($def, 'MapasCulturais\Entities\Space');
-        });
-        
         
         $this->documentMeta = new \ArrayObject;
         $this->bodyClasses = new \ArrayObject;
@@ -123,20 +113,92 @@ abstract class Theme extends \Slim\View {
         $this->jsObject['assetURL'] = $app->assetUrl;
         $this->jsObject['maxUploadSize'] = $app->getMaxUploadSize($useSuffix=false);
         $this->jsObject['maxUploadSizeFormatted'] = $app->getMaxUploadSize();
+        $this->jsObject['EntitiesDescription'] = [];
+        $this->jsObject['config'] = [
+            'locale' => str_replace('_', '-', $app->config['app.lcode']),
+            'timezone' => date_default_timezone_get()
+        ];
+        $this->jsObject['routes'] = $app->config['routes'];
+        
+        $app->hook('app.init:after', function(){
+            $this->view->jsObject['userId'] = $this->user->is('guest') ? null : $this->user->id;
+            $this->view->jsObject['user'] = $this->user;
+        });
 
-        $folders = [];
+        $app->hook('app.register', function() use($app){
+            $def = new Definitions\Metadata('sentNotification', ['label' => 'Notificação enviada', 'type' => 'boolean']);
 
+            $app->registerMetadata($def, 'MapasCulturais\Entities\Agent');
+            $app->registerMetadata($def, 'MapasCulturais\Entities\Space');
+        });
+        
+        $app->hook('mapas.printJsObject:before', function () use($app) {
+            $this->jsObject['EntitiesDescription'] = [
+                "user"          => Entities\User::getPropertiesMetadata(),
+                "agent"         => Entities\Agent::getPropertiesMetadata(),
+                "event"         => Entities\Event::getPropertiesMetadata(),
+                "eventoccurrence" => Entities\EventOccurrence::getPropertiesMetadata(),
+                "space"         => Entities\Space::getPropertiesMetadata(),
+                "project"       => Entities\Project::getPropertiesMetadata(),
+                "opportunity"   => Entities\Opportunity::getPropertiesMetadata(),
+                "registration"   => Entities\Registration::getPropertiesMetadata(),
+                "subsite"       => Entities\Subsite::getPropertiesMetadata(),
+                "seal"          => Entities\Seal::getPropertiesMetadata(),
+                'evaluationmethodconfiguration' => Entities\EvaluationMethodConfiguration::getPropertiesMetadata(),
+            ];
+
+            $taxonomies = [];
+            foreach($app->getRegisteredTaxonomies() as $slug => $definition) {
+                $taxonomy = $definition->jsonSerialize();
+                $taxonomy['terms'] = array_values($taxonomy['restrictedTerms']);
+
+                unset($taxonomy['id'], $taxonomy['slug'], $taxonomy['restrictedTerms']);
+                
+                $taxonomies[$slug] = $taxonomy;
+            }
+            $this->jsObject['Taxonomies'] = $taxonomies;
+        });
+
+
+        $this->path = new \ArrayObject();
+
+        $self = $this;
         $class = get_called_class();
-        while($class !== __CLASS__){
-            if(!method_exists($class, 'getThemeFolder'))
-                throw new \Exception ("getThemeFolder method is required for theme classes and is not present in {$class} class");
 
-            $folders[] = $class::getThemeFolder() . '/';
+        $app->hook('app.modules.init:after', function() use($class, $self){
+            $reflaction = new \ReflectionClass($class);
+        
+            while($reflaction->getName() != __CLASS__){
+                $dir = dirname($reflaction->getFileName());
+                if($dir != __DIR__) {
+                    $self->addPath($dir);
+                }
+                $reflaction = $reflaction->getParentClass();
+            }
+        }, 100);
 
-            $class = get_parent_class($class);
-        }
 
-        $this->path = new \ArrayObject(array_reverse($folders));
+        $app->hook('app.init:after', function () use($app) {
+            if(!$app->user->is('guest') && $app->user->profile->status < 1){
+                if($app->view->version < 2) {
+                    $app->hook('view.partial(nav-main-user).params', function($params, &$name){
+                        $name = 'header-profile-link';
+                    });
+                }
+                
+                // redireciona o usuário para a edição do perfil se este não estiver publicado
+                $app->hook('GET(panel.<<*>>):before, GET(<<*>>.<<edit|create>>):before', function() use($app){
+                    if($entity = $this->requestedEntity) {
+                        /** @var \MapasCulturais\Entity $entity */
+                        if(!$entity->equals($app->user->profile)){
+                            $app->redirect($app->user->profile->editUrl);
+                        }
+                    } else {
+                        $app->redirect($app->user->profile->editUrl);
+                    }
+                });
+            }
+        });
     }
 
     function init(){
@@ -146,31 +208,123 @@ abstract class Theme extends \Slim\View {
         $app->applyHookBoundTo($this, 'theme.init:after');
     }
 
-    protected function _addTexts(array $dict = []){
-        $this->_dict = array_merge($dict, $this->_dict);
-    }
+    
+    /**
+     * Nome do último arquivo que teve o log de texto impresso.     * 
+     * @var string
+     */
+    private $__previousLoggedFilename = '';
 
-    function dict($key, $print = true){
-        if(!$this->_dict){
-            $class = get_called_class();
-            while($class !== __CLASS__){
-                if(!method_exists($class, '_getTexts'))
-                    throw new \Exception ("_getTexts method is required for theme classes and is not present in {$class} class");
+    /**
+     * Retorna um texto configurável
+     * 
+     * Quando chamada passando um $name = 'title', a função procurará o texto
+     * nas seguintes chaves de configuração respeitando a ordem:
+     * 
+     * Se for chamada no template.php de um componente chamado `component-name`
+     * - **text:controllerId.action.component-name.title**
+     * - **text:*.action.component-name.title**
+     * - **text:controllerId.*.component-name.title**
+     * - **text:component-name.title**
+     * 
+     * Se for chamada dentro do template part `layouts/parts/singles/avatar.php`
+     * - **text:controllerId.action.part(singles/avatar).title**
+     * - **text:*.action.part(singles/avatar).title**
+     * - **text:controllerId.*.part(singles/avatar).title**
+     * - **text:part(singles/avatar).title**
+     * 
+     * Se for chamada dentro do arquivo de layout `layouts/entity.php`
+     * - **text:controllerId.action.layout(entity).title**
+     * - **text:*.action.layout(entity).title**
+     * - **text:controllerId.*.layout(entity).title**
+     * - **text:layout(entity).title**
+     * 
+     * Se for chamada dentro de um arquivo de visão `views/agent/single-1.php`
+     * - **text:controllerId.action.view(agent/single-1).title**
+     * - **text:*.action.view(agent/single-1).title**
+     * - **text:controllerId.*.view(agent/single-1).title**
+     * - **text:view(agent/single-1).title**
+     * 
+     * **Não encontrando nenhuma configuração, a função retornará o texto padrão**
+     * 
+     * @param string $name 
+     * @param string $default_localized_text 
+     * 
+     * @return string 
+     */
+    function text(string $name, string $default_localized_text) {
+        $app = App::i();
 
-                $this->_addTexts($class::_getTexts());
-                $class = get_parent_class($class);
+        $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,1);
+        $caller_filename = $bt[0]['file'];
+
+        if ($conf = $app->_config['app.log.texts']) {
+            $filename = str_replace(APPLICATION_PATH, '', $caller_filename);
+            if($filename != $this->__previousLoggedFilename) {
+                $this->__previousLoggedFilename = $filename;
+                $app->log->debug("text > \033[37m{$filename}\033[0m");
             }
         }
-        $text = '';
-        if(key_exists($key, $this->_dict)){
-            $text = $this->_dict[$key];
+
+        $keys = [];
+
+        $controller_id = $this->controller->id;
+        $action = $this->controller->action;
+
+        // TEMPLATE PART
+        if(preg_match("#layouts/parts/(.*?)\.php$#", $caller_filename, $matches)){
+            $match = $matches[1];
+            $keys = [
+                "text:{$controller_id}.{$action}.part($match).title",
+                "text:*.{$action}.part($match).title",
+                "text:{$controller_id}.*.part($match).title",
+                "text:part($match).title",
+            ];
+
+        // LAYOUT
+        }elseif(preg_match("#layouts/([^/]*?)\.php$#", $caller_filename, $matches)) {
+            $match = $matches[1];
+            $keys = [
+                "text:{$controller_id}.{$action}.layout({$match}).{$name}",
+                "text:*.{$action}.layout({$match}).{$name}",
+                "text:{$controller_id}.*.layout({$match}).{$name}",
+                "text:layout({$match}).{$name}",
+            ];
+
+        // VIEWS
+        }elseif(preg_match("#views/([^/]*?)\.php$#", $caller_filename, $matches)) {
+            $match = $matches[1];
+            $keys = [
+                "text:{$controller_id}.{$action}.view({$match}).{$name}",
+                "text:*.{$action}.view({$match}).{$name}",
+                "text:{$controller_id}.*.view({$match}).{$name}",
+                "text:view({$match}).{$name}",
+            ];
+
+        // COMPONENTS
+        } else if (preg_match("#components/([^/]+)/[^/]+.php#", $caller_filename, $matches)) {
+            $match = $matches[1];
+            $keys = [
+                "text:{$controller_id}.{$action}.{$match}.{$name}",
+                "text:*.{$action}.{$match}.{$name}",
+                "text:{$controller_id}.*.{$match}.{$name}",
+                "text:{$match}.{$name}",
+            ];
         }
 
-        if($print){
-            echo $text;
-        }else{
-            return $text;
+        foreach($keys as $key) {
+            if ($conf = $app->_config['app.log.texts']) {
+                if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#i', $key)){
+                    $app->log->debug("text >> \033[33m{$key}\033[0m");
+                }
+            }
+
+            if($text = $app->_config[$key] ?? false) {
+                return $text;
+            }
         }
+
+        return $default_localized_text;
     }
 
     /**
@@ -189,7 +343,7 @@ abstract class Theme extends \Slim\View {
      * @param string $name
      */
     public function setLayout($name){
-        $this->_layout = $name;
+        $this->controller->layout = $name;
     }
 
     /**
@@ -198,15 +352,7 @@ abstract class Theme extends \Slim\View {
      * @param \MapasCulturais\Controller $controller the controller.
      */
     public function setController(\MapasCulturais\Controller $controller){
-        $this->_controller = $controller;
-    }
-
-    /**
-     * Returns the controller that is using this view object (call render method).
-     * @return \MapasCulturais\Controller the controller that call render method.
-     */
-    public function getController(){
-        return $this->_controller;
+        $this->controller = $controller;
     }
 
     /**
@@ -256,13 +402,15 @@ abstract class Theme extends \Slim\View {
             $$k = $this->data->get($k);
         }
 
-        if ($this->controller){
-            $this->bodyClasses[] = "controller-{$this->controller->id}";
-            $this->bodyClasses[] = "action-{$this->controller->action}";
-        }
-
-	if (isset($entity))
+        $controller = $this->controller;
+        
+        $this->bodyClasses[] = "controller-{$controller->id}";
+        $this->bodyClasses[] = "action-{$controller->action}";
+        $this->bodyClasses[] = "layout-{$controller->layout}";
+        
+	    if(isset($entity)){
             $this->bodyClasses[] = 'entity';
+        }
 
         // render the template
         $__templatePath = $this->resolveFilename('views', $__template_filename);
@@ -277,7 +425,7 @@ abstract class Theme extends \Slim\View {
 
         $TEMPLATE_CONTENT = $this->partialRender($__template_name, $this->data);
 
-        $__layout_filename = strtolower(substr($this->_layout, -4)) === '.php' ? $this->_layout : $this->_layout . '.php';
+        $__layout_filename = strtolower(substr($controller->layout, -4)) === '.php' ? $controller->layout : $controller->layout . '.php';
 
         // render the layout with template
         $__layoutPath = $this->resolveFilename('layouts', $__layout_filename);
@@ -289,7 +437,11 @@ abstract class Theme extends \Slim\View {
             return $output;
         });
 
+        $app->applyHookBoundTo($this, 'view.renderLayout(' . $controller->layout . '):before', ['template' => $__template_name]);
+        
         include $__layoutPath;
+
+        $app->applyHookBoundTo($this, 'view.renderLayout(' . $controller->layout . '):after', ['template' => $__template_name]);
 
         $__html = ob_get_clean();
 
@@ -365,6 +517,8 @@ abstract class Theme extends \Slim\View {
         
         if ($app->mode == APPMODE_DEVELOPMENT) {
             $template_debug = str_replace(THEMES_PATH, '', $__template_name);
+            $template_debug = str_replace(MODULES_PATH, 'modules/', $template_debug);
+            $template_debug = str_replace(PLUGINS_PATH, 'plugins/', $template_debug);
             echo '<!-- ' . $template_debug . ".php # BEGIN -->";
         }
 
@@ -483,6 +637,27 @@ abstract class Theme extends \Slim\View {
         
     }
 
+    function printJsObject (string $var_name = 'Mapas', bool $print_script_tag = true) {
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'mapas.printJsObject:before');
+
+        $this->jsObject['route'] = [
+            'route' => "{$this->controller->id}/{$this->controller->action}",
+            'controllerId' => $this->controller->id,
+            'action' => $this->controller->action,
+            'data' => $this->controller->urlData
+        ];
+
+        $json = json_encode($this->jsObject);
+        $var = "var {$var_name} = {$json};";
+        if ($print_script_tag) {
+            echo "\n<script type=\"text/javascript\">\n{$var}\n</script>\n";
+        } else {
+            echo $var;
+        }
+        $app->applyHookBoundTo($this, 'mapas.printJsObject:after');
+    }
+
     function printScripts($group){
         $this->_assetManager->printScripts($group);
     }
@@ -507,7 +682,8 @@ abstract class Theme extends \Slim\View {
     function resolveFilename($folder, $file){
         if(!substr($folder, -1) !== '/') $folder .= '/';
 
-        $path = array_reverse($this->path->getArrayCopy());
+        $path = $this->path->getArrayCopy();
+
         foreach($path as $dir){
             if(file_exists($dir . $folder . $file)){
                 return $dir . $folder . $file;
@@ -547,7 +723,7 @@ abstract class Theme extends \Slim\View {
             }
         }
 
-        if(preg_match_all('#\{\{dict:([^\}]+)\}\}#', $markdown, $matches)){
+        if(method_exists($this, 'dict') && preg_match_all('#\{\{dict:([^\}]+)\}\}#', $markdown, $matches)){
             foreach($matches[0] as $i => $tag){
                 $markdown = str_replace($tag, $this->dict(trim($matches[1][$i]), false), $markdown);
             }
@@ -584,12 +760,18 @@ abstract class Theme extends \Slim\View {
         return (bool) $this->controller->id === 'site' && $this->action === 'search';
     }
 
+    public $insideBody = false;
+
     function bodyBegin(){
+        $this->insideBody = true;
         App::i()->applyHook('mapasculturais.body:before');
+        $this->applyTemplateHook('body','begin');
     }
 
     function bodyEnd(){
+        $this->applyTemplateHook('body','end');
         App::i()->applyHook('mapasculturais.body:after');
+        $this->insideBody = false;
     }
 
     function bodyProperties(){
@@ -621,7 +803,7 @@ abstract class Theme extends \Slim\View {
         }
 
         if ($app->mode == APPMODE_DEVELOPMENT) {
-            echo "<!-- TEMPLATE HOOK: $hook -->";
+            echo "\n<!-- TEMPLATE HOOK: $hook -->\n";
         }
         $app->applyHookBoundTo($this, $hook, $args);
     }
@@ -642,5 +824,143 @@ abstract class Theme extends \Slim\View {
         
         return preg_replace('@(http)?(s)?(://)?(([-\w]+\.)+([^\s]+)+[^,.\s])@', '<a href="http$2://$4" rel="noopener noreferrer">$1$2$3$4</a>', $text);
         
+    }    
+
+    function addRequestedEntityToJs(string $entity_class_name = null, int $entity_id = null) {
+        $entity_class_name = $entity_class_name ?: $this->controller->entityClassName ?? null;
+        $entity_id = $entity_id ?: $this->controller->data['id'] ?? null;
+        
+        $_entity = $entity_class_name::getHookClassPath();
+
+        if ($entity_class_name && $entity_id) {
+            $app = App::i();
+            $query_params = [
+                '@select' => '*', 
+                'id' => "EQ({$entity_id})", 
+                '@permissions'=>'view', 
+            ];
+
+            if($entity_class_name == EvaluationMethodConfiguration::class) {
+                unset($query_params['@permissions']);
+            }
+
+            if(property_exists ($entity_class_name, 'status')) {
+                $query_params['status'] = 'GTE(-10)'; 
+            }
+
+            if(property_exists ($entity_class_name, 'project')) {
+                $query_params['@select'] .= ',project.{name,type,files.avatar,terms,seals}';
+            }
+            
+            if ($entity_class_name::usesAgentRelation()) {
+                $query_params['@select'] .= ',agentRelations';
+            }
+
+            if ($entity_class_name::usesSpaceRelation()) {
+                $query_params['@select'] .= ',spaceRelations';
+            }
+
+            if ($entity_class_name == Entities\User::class) {
+                $query_params['@select'] .= ',profile.{name,files.avatar,terms,seals}';
+            }
+
+            $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
+
+            $query = new ApiQuery($entity_class_name, $query_params);
+            $query->__useDQLCache = false;
+
+            $e = $query->findOne();
+
+            if(property_exists ($entity_class_name, 'opportunity')) {
+                $query = $app->em->createQuery("
+                    SELECT o FROM                             
+                        MapasCulturais\\Entities\\Opportunity o
+                        WHERE o.id = (SELECT IDENTITY(e.opportunity) FROM $entity_class_name e WHERE e.id = :id)");
+
+                $query->setParameter('id', $e['id']);
+                $opportunity = $query->getSingleResult();
+                $e['opportunity'] = $opportunity->simplify('id,name,type,files,terms,seals');
+                if($opportunity->parent){
+                    $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
+                }
+            }
+            
+
+            if ($entity_class_name == Entities\Agent::class) {
+                $owner_prop = 'parent';
+                if (!$e['parent']) {
+                    $query = $app->em->createQuery("
+                        SELECT 
+                            IDENTITY(e.profile) AS profile
+                        FROM 
+                            MapasCulturais\\Entities\\User e
+                        WHERE 
+                            e.id = :id");
+                    $query->setParameter('id', $e['user']);
+                    $result = $query->getSingleResult();
+                    $e['parent'] = $result['profile'];
+                }
+            } else {
+                $owner_prop = 'owner';
+            }
+            
+            if ($owner_id = $e[$owner_prop] ?? false) {
+                $owner_query_params = [
+                    '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
+                    'id' => "EQ({$owner_id})", 
+                    'status' => 'GTE(-10)',
+                    '@permissions'=>'view', 
+                ];
+                $app->applyHookBoundTo($this,"view.requestedEntity($_entity).owner.params", [&$owner_query_params, $entity_class_name, $entity_id]);
+                $query = new ApiQuery(Entities\Agent::class, $owner_query_params);
+                $query->__useDQLCache = false;
+                $owner = $query->findOne();
+                $e[$owner_prop] = $owner;
+            }
+
+            if($owner_prop != 'parent' && $entity_class_name::usesNested() && !empty($e['parent'])) {
+                $parent_query_params = [
+                    '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
+                    'id' => "EQ({$e['parent']})", 
+                    'status' => 'GTE(-10)',
+                    '@permissions'=>'view', 
+                ];
+                $app->applyHookBoundTo($this,"view.requestedEntity($_entity).parent.params", [&$parent_query_params, $entity_class_name, $entity_id]);
+                $query = new ApiQuery($entity_class_name, $parent_query_params);
+                $query->__useDQLCache = false;
+                $parent = $query->findOne();
+                $e['parent'] = $parent;
+            }
+            
+            $e['controllerId'] = $app->getControllerIdByEntity($entity_class_name);
+
+            // adiciona as permissões do usuário sobre a entidade:
+            if ($entity_class_name::usesPermissionCache()) {
+                $entity = $app->repo($entity_class_name)->find($entity_id);
+                $permissions_list = $entity_class_name::getPermissionsList();
+                $permissions = [];
+                foreach($permissions_list as $action) {
+                    $permissions[$action] = $entity->canUser($action);
+                }
+
+                $e['currentUserPermissions'] = $permissions;
+            }
+
+            if ($profile_id = $e['profile']['id'] ?? false) {
+                $entity = $app->repo(Agent::class)->find($profile_id);
+                $permissions_list = Agent::getPermissionsList();
+                $permissions = [];
+                foreach($permissions_list as $action) {
+                    $permissions[$action] = $entity->canUser($action);
+                }
+
+                $e['profile']['currentUserPermissions'] = $permissions;
+            }
+
+            $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);
+            
+            $this->jsObject['requestedEntity'] = $e;
+        }
     }
+    
 }

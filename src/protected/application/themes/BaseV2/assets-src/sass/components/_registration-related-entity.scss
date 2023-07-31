@@ -1,0 +1,86 @@
+.registration-related-entity {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: size(15) size(10);
+    width: 100%;
+
+    &__entity {
+        align-items: center;
+        border-color: var(--mc-primary-500);
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline);
+        display: grid;
+        gap: size(15);
+        max-width: size(520);
+        padding: size(8);
+        width: 100%;
+        grid-template-columns: size(40) 1fr;
+
+        .image {
+            align-items: center;
+            background-color: var(--mc-gray-500);
+            border-radius: var(--mc-border-radius-pill);
+            display: flex;
+            height: size(40);
+            justify-content: center;
+            overflow: hidden;
+            width: size(40);
+
+            img {
+                width: 100%;
+            }
+
+            .iconify {
+                color: var(--mc-high-500);
+                font-size: size(20);
+            }
+        }
+
+        .name {
+            color: var(--mc-primary-500);
+            font-size: size(14);
+            font-weight: 600;
+            line-height: size(19);
+        }
+    }
+
+    &__actions {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        gap: size(5);
+
+        .button {
+            &.change {
+                color: var(--mc-primary-500);
+
+                .iconify {
+                    font-size: size(20);
+                }
+            }
+
+            &.delete {
+                .iconify {
+                    color: var(--mc-danger-500);
+                    font-size: size(18);
+                }
+            }
+        }
+    }
+
+    &__status {
+        display: flex;
+        align-items: center;
+        gap: size(6);
+        font-weight: 600;
+        font-size: size(12);
+        line-height: size(16);
+
+        .iconify {
+            font-size: size(20);
+            color: var(--mc-warning-500);
+        }
+    }
+}

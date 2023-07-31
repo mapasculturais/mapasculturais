@@ -3,6 +3,7 @@ namespace MapasCulturais;
 
 class GuestUser implements UserInterface{
     use Traits\Singleton;
+    use Traits\MagicGetter;
 
     public $id = 0;
 
@@ -26,5 +27,9 @@ class GuestUser implements UserInterface{
 
     function getOwnerUser() {
         return $this;
+    }
+
+    function getHasControlSeals () {
+        return [];
     }
 }

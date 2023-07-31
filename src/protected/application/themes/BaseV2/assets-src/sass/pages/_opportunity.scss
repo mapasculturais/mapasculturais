@@ -1,0 +1,68 @@
+@use '../settings/mixins'as *;
+
+.controller-opportunity {
+    &.action-single {
+       .entity-header__single--content {
+            .rightSide {
+                .metadata {
+                    .single-opportunity__owner {
+                        a {
+                            text-decoration: none;
+                            margin-left: size(5);
+                            font-size: size(14);
+                            font-weight: 400;
+                        }
+                    }
+                }
+            }
+       }
+    }
+    .tabs-component__panels {
+        .tab-component.support {
+            position: relative;
+
+            &::before {
+                content: '';
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                background-color: var(--mc-gray-100);
+            }
+
+            .button-support {
+                min-width: size(270);
+            }
+        }
+    }
+
+    &.action-edit {
+        .tabs-component {
+            &__header {
+                margin: size(-40) auto size(40);
+
+                @media (max-width: size(800)) {
+                    margin-top: 0;
+                    background-color: var(--mc-high-500);
+                }
+            }
+        }
+
+        .modalEmbedTools {
+            .modal-content {
+                width: 80%;
+                max-width: size(1170);
+            }
+        }
+    }
+
+    &.action-single {
+        .tabs-component {
+            .opportunity-container {
+                max-width: size(1170);
+                margin: 0 auto;
+                padding: size(32) 0;
+            }
+        }
+    }
+}

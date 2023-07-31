@@ -28,6 +28,8 @@ use MapasCulturais\Entities\User;
  * @property-read \MapasCulturais\Storage\FileSystem $storage File Storage Component.
  * @property-read \MapasCulturais\Entities\User $user The Logged in user.
  * @property-read String $opportunityRegistrationAgentRelationGroupName Opportunity Registration Agent Relation Group Name
+ * 
+ * @property Boolean $permissionCacheEnabled
  *
  * From Slim Class Definition
  * @property-read array[\Slim] $apps = []
@@ -53,9 +55,10 @@ use MapasCulturais\Entities\User;
  * @method \MapasCulturais\App i() Returns the application object
  */
 class App extends \Slim\Slim{
-    use \MapasCulturais\Traits\MagicGetter,
-        \MapasCulturais\Traits\MagicSetter,
-        \MapasCulturais\Traits\Singleton;
+    use Traits\MagicGetter,
+        Traits\MagicSetter,
+        Traits\MagicCallers,
+        Traits\Singleton;
 
     /**
      * Is the App initiated?
@@ -107,6 +110,11 @@ class App extends \Slim\Slim{
 
 
     protected $_debugbar = null;
+
+    /**
+     * Hibilita os magic getter hooks
+     */
+    protected $__enableMagicGetterHook = true;
 
     /**
      * App Configuration.
@@ -162,6 +170,7 @@ class App extends \Slim\Slim{
 
     protected $_subsite = null;
 
+    protected $permissionCacheEnabled = true;
     /**
      * Initializes the application instance.
      *
@@ -187,6 +196,8 @@ class App extends \Slim\Slim{
             return $this;
 
         $this->_initiated = true;
+
+        $this->permissionCacheEnabled = $config['app.usePermissionsCache'] ?? true;
 
         if(empty($config['base.url'])){
             $config['base.url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://') . 
@@ -243,6 +254,8 @@ class App extends \Slim\Slim{
             closedir($handle);
         }
 
+        sort($available_modules);
+        
         // list of themes
         foreach (scandir(THEMES_PATH) as $ff) {
             if ($ff != '.' && $ff != '..' ) {
@@ -366,7 +379,6 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomNumericFunction('st_crosses', 'CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STCrosses');
         $doctrine_config->addCustomNumericFunction('st_disjoint', 'CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STDisjoint');
         $doctrine_config->addCustomNumericFunction('st_distance', 'CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STDistance');
-        $doctrine_config->addCustomStringFunction('st_envelope', 'CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STEnvelope');
         $doctrine_config->addCustomStringFunction('st_geomfromtext', 'CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STGeomFromText');
         $doctrine_config->addCustomNumericFunction('st_length', 'CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STLength');
         $doctrine_config->addCustomNumericFunction('st_linecrossingdirection', 'CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STLineCrossingDirection');
@@ -377,8 +389,10 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomStringFunction('string_agg', 'MapasCulturais\DoctrineMappings\Functions\StringAgg');
         $doctrine_config->addCustomStringFunction('unaccent', 'MapasCulturais\DoctrineMappings\Functions\Unaccent');
         $doctrine_config->addCustomStringFunction('recurring_event_occurrence_for', 'MapasCulturais\DoctrineMappings\Functions\RecurringEventOcurrenceFor');
-
+        
         $doctrine_config->addCustomNumericFunction('st_dwithin', 'MapasCulturais\DoctrineMappings\Functions\STDWithin');
+        $doctrine_config->addCustomStringFunction('st_envelope', 'MapasCulturais\DoctrineMappings\Functions\STEnvelope');
+        $doctrine_config->addCustomNumericFunction('st_within', 'MapasCulturais\DoctrineMappings\Functions\STWithin');
         $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
 
         $doctrine_config->setMetadataCacheImpl($this->_mscache);
@@ -471,17 +485,19 @@ class App extends \Slim\Slim{
             'mode' => $this->_config['app.mode']
         ]);
 
-        foreach($config['plugins'] as $slug => $plugin){
-            $_namespace = $plugin['namespace'];
-            $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
-            $plugin_class_name = "$_namespace\\$_class";
+        if(!env('DISABLE_PLUGINS')) {
+            foreach($config['plugins'] as $slug => $plugin){
+                $_namespace = $plugin['namespace'];
+                $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
+                $plugin_class_name = "$_namespace\\$_class";
 
-            if(class_exists($plugin_class_name)){
-                $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
+                if(class_exists($plugin_class_name)){
+                    $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
 
-                $slug = is_numeric($slug) ? $_namespace : $slug;
+                    $slug = is_numeric($slug) ? $_namespace : $slug;
 
-                $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+                    $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+                }
             }
         }
 
@@ -545,9 +561,7 @@ class App extends \Slim\Slim{
 
         // =============== AUTH ============== //
 
-        if($token = $this->request()->headers->get('authorization')){
-            $this->_auth = new AuthProviders\JWT(['token' => $token]);
-        }else{
+        if (!$this->_auth) {
             $auth_class_name = strpos($config['auth.provider'], '\\') !== false ? $config['auth.provider'] : 'MapasCulturais\AuthProviders\\' . $config['auth.provider'];
             $this->_auth = new $auth_class_name($config['auth.config']);
             $this->_auth->setCookies();
@@ -588,6 +602,10 @@ class App extends \Slim\Slim{
         parent::run();
         $this->persistPCachePendingQueue();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
+    }
+
+    public static function getHookPrefix() {
+        return 'App';
     }
 
     public function getVersion(){
@@ -786,12 +804,14 @@ class App extends \Slim\Slim{
         $this->registerAuthProvider('OpenID');
         $this->registerAuthProvider('logincidadao');
 
-
         // register controllers
 
         $this->registerController('site',    'MapasCulturais\Controllers\Site');
         $this->registerController('auth',    'MapasCulturais\Controllers\Auth');
-        $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
+
+        if(($this->view) instanceof Themes\BaseV1\Theme ) {
+            $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
+        }
         $this->registerController('geoDivision',    'MapasCulturais\Controllers\GeoDivision');
 
         $this->registerController('user',   'MapasCulturais\Controllers\User');
@@ -805,9 +825,6 @@ class App extends \Slim\Slim{
         $this->registerController('evaluationMethodConfiguration', 'MapasCulturais\Controllers\EvaluationMethodConfiguration');
 
         $this->registerController('subsite',        'MapasCulturais\Controllers\Subsite');
-
-
-        $this->registerController('app',   'MapasCulturais\Controllers\UserApp');
 
         $this->registerController('registration',                   'MapasCulturais\Controllers\Registration');
         $this->registerController('registrationFileConfiguration',  'MapasCulturais\Controllers\RegistrationFileConfiguration');
@@ -976,8 +993,7 @@ class App extends \Slim\Slim{
                     'value' => [
                         'label' => 'Link',
                         'validations' => [
-                            'required' => 'O link do vídeo é obrigatório',
-                            "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
+                            'required' => \MapasCulturais\i::__('O link é obrigatório')
                         ]
                     ],
                 ],
@@ -990,10 +1006,9 @@ class App extends \Slim\Slim{
                         'label' => 'Nome'
                     ],
                     'value' => [
-                        'label' => 'Link',
+                        'label' => 'Vídeo',
                         'validations' => [
-                            'required' => \MapasCulturais\i::__('O link do vídeo é obrigatório'),
-                            "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
+                            'required' => \MapasCulturais\i::__('O link do vídeo é obrigatório')
                         ]
                     ],
                 ],
@@ -1198,7 +1213,7 @@ class App extends \Slim\Slim{
             $restricted_terms = key_exists('restricted_terms', $taxonomy_definition) ? $taxonomy_definition['restricted_terms'] : false;
 
             $definition = new Definitions\Taxonomy($taxonomy_id, $taxonomy_slug, $taxonomy_description, $restricted_terms, $taxonomy_required);
-
+            $definition->name = $taxonomy_definition['name'] ?? '';
             $entity_classes = $taxonomy_definition['entities'];
 
             foreach($entity_classes as $entity_class){
@@ -1498,7 +1513,7 @@ class App extends \Slim\Slim{
 
         if ($this->_config['app.log.hook']){
             $conf = $this->_config['app.log.hook'];
-            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#', $name)){
+            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#i', $name)){
                 $this->_logHook($name);
 
             }
@@ -1537,7 +1552,7 @@ class App extends \Slim\Slim{
 
         if ($this->_config['app.log.hook']){
             $conf = $this->_config['app.log.hook'];
-            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#', $name)){
+            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#i', $name)){
                 $this->_logHook($name);
             }
         }
@@ -1632,16 +1647,33 @@ class App extends \Slim\Slim{
      **********************************************/
 
     /**
+     * Enfileira um job, substituindo um já existente
      * 
      * @param string $type_slug 
      * @param array $data 
      * @param string $start_string 
      * @param string $interval_string 
      * @param int $iterations 
+     * @return void 
+     * @throws Exception 
+     */
+    public function enqueueOrReplaceJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
+        $this->enqueueJob($type_slug, $data, $start_string, $interval_string, $iterations, true);
+    }
+
+    
+    /**
+     * Enfileira um job
+     * @param string $type_slug 
+     * @param array $data 
+     * @param string $start_string 
+     * @param string $interval_string 
+     * @param int $iterations 
+     * @param bool $replace
      * @return Job 
      * @throws Exception 
      */
-    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
+    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false) {
         if($this->config['app.log.jobs']) {
             $this->log->debug("ENQUEUED JOB: $type_slug");
         }
@@ -1656,7 +1688,11 @@ class App extends \Slim\Slim{
 
         if ($job = $this->repo('Job')->find($id)) {
             $this->log->debug('JOB ID JÁ EXISTE: ' . $id);
-            return $job;
+            if ($replace) {
+                $job->delete(true);
+            } else {
+                return $job;
+            }
         }
 
         $job = new Job($type);
@@ -1677,29 +1713,48 @@ class App extends \Slim\Slim{
         return $job;
     }
 
+    public function unqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
+        if($this->config['app.log.jobs']) {
+            $this->log->debug("UNQUEUED JOB: $type_slug");
+        }
+
+        $type = $this->getRegisteredJobType($type_slug);
+        
+        if (!$type) {
+            throw new \Exception("invalid job type: {$type_slug}");
+        }
+
+        $id = $type->generateId($data, $start_string, $interval_string, $iterations);
+
+        if ($job = $this->repo('Job')->find($id)) {
+            $job->delete(true);
+        }
+    }
+
     public function executeJob() {
         $conn = $this->em->getConnection();
-
+        $now = date('Y-m-d H:i:s');
         $job_id = $conn->fetchColumn("
             SELECT id
             FROM job
             WHERE
-                next_execution_timestamp <= now() AND
+                next_execution_timestamp <= '$now' AND
                 iterations_count < iterations AND
                 status = 0
             ORDER BY next_execution_timestamp ASC
             LIMIT 1");
 
         if ($job_id) {
+            /** @var Job $job */
             $conn->executeQuery("UPDATE job SET status = 1 WHERE id = '{$job_id}'");
             $job = $this->repo('Job')->find($job_id);
-
+            
             $this->disableAccessControl();
             $this->applyHookBoundTo($this, "app.executeJob:before");
             $job->execute();
             $this->applyHookBoundTo($this, "app.executeJob:after");
             $this->enableAccessControl();
-
+            $this->persistPCachePendingQueue();
             return $job_id;
         } else {
             return false;
@@ -2524,7 +2579,7 @@ class App extends \Slim\Slim{
         if(is_object($entity))
             $entity = $entity->getClassName();
 
-        return @$this->_register['entity_types'][$entity];
+        return $this->_register['entity_types'][$entity] ?? [];
     }
 
     function registerRegistrationFieldType(Definitions\RegistrationFieldType $registration_field){
@@ -2776,7 +2831,7 @@ class App extends \Slim\Slim{
             $entity = $entity->getClassName();
 
         if(is_null($entity)){
-            return $this->_register['taxonomies']['by-entity'];
+            return $this->_register['taxonomies']['by-slug'];
         }else{
             return key_exists($entity, $this->_register['taxonomies']['by-entity']) ? $this->_register['taxonomies']['by-entity'][$entity] : [];
         }
@@ -3005,9 +3060,16 @@ class App extends \Slim\Slim{
 
         $templateData = (object) $templateData;
 
-        $templateData->siteName = $this->view->dict('site: name', false);
-        $templateData->siteDescription = $this->view->dict('site: description', false);
-        $templateData->siteOwner = $this->view->dict('site: owner', false);
+        if ($this->view->version >= 2) {
+            $templateData->siteName = $this->siteName;
+            $templateData->siteDescription = $this->siteDescription;
+
+        } else {
+            $templateData->siteName = $this->view->dict('site: name', false);
+            $templateData->siteDescription = $this->view->dict('site: description', false);
+            $templateData->siteOwner = $this->view->dict('site: owner', false);
+        }
+        
         $templateData->baseUrl = $this->getBaseUrl();
 
         if(!($footer_name = $this->view->resolveFileName('templates/' . i::get_locale(), '_footer.html'))) {

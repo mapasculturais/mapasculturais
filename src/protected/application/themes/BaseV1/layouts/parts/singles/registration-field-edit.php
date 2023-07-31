@@ -27,7 +27,7 @@ foreach ($definitions as $def) {
     <div>
         <!-- se já subiu o arquivo-->
         <!-- se não subiu ainda -->
-        <a class="btn btn-default" ng-class="{'send':!field.file,'edit':field.file}" ng-click="openFileEditBox(field.id, $index, $event)" title="{{!field.file ? 'enviar' : 'editar'}} <?php \MapasCulturais\i::_e("anexo"); ?>">{{!field.file ? 'Enviar' : 'Editar'}}</a>
+        <a ng-class="{'btn btn-default send':!field.file,'btn btn-default edit':field.file}" ng-click="openFileEditBox(field.id, $index, $event)" title="{{!field.file ? 'enviar' : 'editar'}} <?php \MapasCulturais\i::_e("anexo"); ?>">{{!field.file ? 'Enviar' : 'Editar'}}</a>
         <a class="btn btn-default delete" ng-if="!field.required && field.file" ng-click="removeFile(field.id, $index)" title="<?php \MapasCulturais\i::esc_attr_e("excluir anexo"); ?>"><?php \MapasCulturais\i::_e("Excluir"); ?></a>
     </div>
     <div ng-repeat="error in field.error" class="alert danger">{{error}}</div>

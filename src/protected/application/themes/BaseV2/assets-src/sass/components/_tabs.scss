@@ -1,0 +1,97 @@
+@use '../settings/mixins' as *;
+
+.tabs-component {
+    
+    @include mobile {
+        max-width: 100vw;
+    }
+
+    &__header {
+        align-items: baseline;
+        display: flex;
+        gap: size(16);
+        justify-content: space-between;
+        max-width: size(1170);
+        margin: 0 auto;
+        overflow-x: auto;
+        padding: 0 size(16);
+
+        &--left {
+            align-items: baseline;
+            display: flex;
+            gap: size(16);
+        }
+
+        &--right {
+
+        }
+
+    }
+
+    &__buttons {
+        display: flex;
+        margin: 0;
+        overflow: auto;
+        padding: 0;
+        transform: rotateX(180deg); // Hack to put scrollbar above content
+        white-space: nowrap;
+        width: auto;
+        gap: size(22);
+
+    }
+
+    &__button {
+        display: inline-block;
+        list-style: none;
+        transform: rotateX(180deg);
+
+        &--active {
+
+            &::after {
+                border-radius: var(--mc-border-radius-sm);
+                background-color: black;
+                display: block;
+                height: size(6);
+                content: '';
+                width: 100%;
+            }
+        }        
+
+        a {
+            align-items: center;
+            color: inherit;
+            display: flex;
+            line-height: size(20);
+            padding: size(7) 0;
+            text-decoration: none;
+        }
+
+        .iconify {
+            color: var(--mc-gray-700);
+            font-size: size(20);
+            margin: 0 size(6);
+        }
+
+        &.is-active {
+            color: var(--mc-primary-500);
+            font-weight: bold;
+
+            &::after {
+                background-color: var(--mc-primary-500);
+            }
+
+            .iconify {
+                color: var(--mc-primary-500);
+            }
+        }
+
+        &.is-disabled {
+            color: var(--mc-gray-500);
+        }
+    }
+
+    &__panels {
+        padding: 0.1px; // Hack to avoid margins collapse
+        margin: 0 0 size(40);
+    }
+}

@@ -71,6 +71,8 @@ trait EntityGeoLocation{
                 $location_values = [$location['x'], $location['y']];                    
             } else if (isset($location['longitude']) && isset($location['latitude'])) {
                 $location_values = [$location['longitude'], $location['latitude']];                    
+            } else if (isset($location['lng']) && isset($location['lat'])) {
+                $location_values = [$location['lng'], $location['lat']];                    
             } else if (isset($location[0]) && isset($location[1])) {
                 $location_values = $location;
             } 

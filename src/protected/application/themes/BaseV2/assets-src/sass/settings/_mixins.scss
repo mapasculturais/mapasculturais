@@ -1,0 +1,38 @@
+@use 'sass:math';
+
+@mixin desktop {
+    @media screen and (min-width: 50rem) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media screen and (max-width: 50rem) {
+        @content;
+    }
+}
+
+@function size($value, $unit: 'px') {
+    @if $unit == 'rem' {
+        @return #{$value}rem;
+    }
+    @else if $unit == 'px' {
+        @return #{math.div($value, 16)}rem;
+    }
+    @else {
+        @return #{$value}#{$unit};
+    }
+}
+
+// For screen-readers
+@mixin sr-only {
+    border-width: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}

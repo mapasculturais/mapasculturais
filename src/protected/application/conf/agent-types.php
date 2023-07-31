@@ -44,6 +44,7 @@ return array(
             'label' => 'Pessoa com deficiência',
             'type' => 'multiselect',
             'options' => [
+                '' => MapasCulturais\i::__('Não sou'),
                 MapasCulturais\i::__('Visual'),
                 MapasCulturais\i::__('Mental'),
                 MapasCulturais\i::__('Física'),
@@ -100,6 +101,7 @@ return array(
         'cnpj' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CNPJ'),
+            'type' => 'cnpj',
             'serialize' => function($value, $entity = null){
                 /**@var MapasCulturais\App $this */
                 $key = "hook:cnpj:{$entity}";
@@ -126,6 +128,7 @@ return array(
         'cpf' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF'),
+            'type' => 'cpf',
             'serialize' => function($value, $entity = null){
                 $key = "hook:cpf:{$entity}";
                 if(!$this->rcache->contains($key)){
@@ -321,6 +324,7 @@ return array(
                     
         'En_CEP' => [
             'label' => \MapasCulturais\i::__('CEP'),
+            'type' => 'cep',
             'private' => function(){
                 return !$this->publicLocation;
             },
@@ -451,7 +455,12 @@ return array(
             'validations' => array(
                 "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'unserialize' => function($value){
+                if($value){
+                    return \MapasCulturais\i::__('htps://instagram.com/').str_replace('@','',$value);
+                }
+            }
         ),
         'linkedin' => array(
             'label' => \MapasCulturais\i::__('Linkedin'),
@@ -459,6 +468,12 @@ return array(
                 "v::url('linkedin.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             ),
             'available_for_opportunities' => true
+        ),
+        'vimeo' => array(
+            'label' => \MapasCulturais\i::__('Vimeo'),
+            'validations' => array(
+                "v::url('vimeo.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            )
         ),
         'spotify' => array(
             'label' => \MapasCulturais\i::__('Spotify'),

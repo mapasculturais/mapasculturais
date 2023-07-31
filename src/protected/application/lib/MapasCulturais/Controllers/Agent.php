@@ -150,6 +150,9 @@ class Agent extends EntityController {
      * @apiParam {String} role nome da "role" a ser atribuida ao usuário. 
      * @apiParam {Number} [subsiteId] identificador do subsite.
      * @apiPermission user
+     * 
+     * @deprecated 6.0.0
+     * 
      */
     function ALL_addRole(){
         $this->requireAuthentication();
@@ -183,41 +186,35 @@ class Agent extends EntityController {
             $app->redirect($app->request()->getReferer());
         }
     }
+
     function GET_edit() {
         $this->requireAuthentication();
+
         $app = App::i();
 
         $entity = $this->requestedEntity;
-
         if (!$entity) {
             $app->pass();
         }
 
-        $entity->checkPermission('modify');
-
-        if($entity->usesNested()){
-
-            $child_entity_request = $app->repo('RequestChildEntity')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
-
-            $this->render("edit-{$entity->type}", ['entity' => $entity, 'child_entity_request' => $child_entity_request]);
-
-        }else{
-            $this->render("edit-{$entity->type}", ['entity' => $entity]);
-        }
+        $app->hook("controller({$this->id}).render(edit)", function(&$template) use($entity) {
+            $template = "edit-{$entity->type}" ;
+        });
+        parent::GET_edit();
     }
+
     function GET_single() {
         $app = App::i();
 
-        $entity = $this->requestedEntity;;
-
+        $entity = $this->requestedEntity;
         if (!$entity) {
             $app->pass();
         }
-        if ($entity->canUser('view')) {
-            $this->render("single-{$entity->type}", ['entity' => $entity]);
-        } else {
-            $app->pass();
-        }
+
+        $app->hook("controller({$this->id}).render(single)", function(&$template) use($entity) {
+            $template = "single-{$entity->type}" ;
+        });
+        parent::GET_single();
     }
     /**
      * @api {all} /agent/removeRole Remove um papel
@@ -228,6 +225,8 @@ class Agent extends EntityController {
      * @apiParam {Number} [subsiteId] identificador do subsite.
      * @apiPermission user
      * @apiVersion 4.0.0
+     * 
+     * @deprecated 6.0.0
     */
     function ALL_removeRole(){
         $this->requireAuthentication();

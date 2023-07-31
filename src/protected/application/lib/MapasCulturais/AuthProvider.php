@@ -76,7 +76,7 @@ abstract class AuthProvider {
     protected function _requireAuthentication() {
         $app = App::i();
 
-        if($app->request->isAjax()){
+        if($app->request->isAjax() || $app->request()->headers()->get('Content-Type') === 'application/json'){
             $app->halt(401, \MapasCulturais\i::__('This action requires authentication'));
         }else{
             $app->redirect($app->controller('auth')->createUrl(''), 401);
@@ -110,10 +110,17 @@ abstract class AuthProvider {
     abstract function _getAuthenticatedUser();
 
     final function getAuthenticatedUser(){
-        if(is_null($this->_authenticatedUser))
+        $user = $this->_authenticatedUser;
+        if (is_null($user)) {
             return $this->_guestUser;
-        else
-            return $this->_authenticatedUser;
+        } else {
+            if ($user->status < 1) {
+                $this->logout();
+                die(i::__('Usuário não está ativo'));
+            } else {
+                return $user;
+            }
+        }
 
     }
 

@@ -1,0 +1,331 @@
+@use './mixins' as *;
+
+.hide-desktop {
+
+    @include desktop {
+        display: none;
+    }
+}
+
+.hide-mobile {
+
+    @include mobile {
+        display: none;
+    }
+}
+
+.justify-between {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    @include mobile {
+        & > * + * {
+            margin-top: size(16)
+        }
+    }
+}
+
+
+// For screen-readers
+.sr-only {
+    @include sr-only;
+}
+
+
+// entities colors
+.home {
+    &__color {
+        color: var(--mc-primary-500);
+    }
+    &__background {
+        background-color: var(--mc-primary-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-primary-500);
+        }
+    }
+}
+
+.seal {
+    &__color {
+        color: var(--mc-seals-500);
+    }
+    &__background {
+        background-color: var(--mc-seals-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-seals-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-seals-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-seals-500);
+    }
+}
+
+.agent {
+    &__color {
+        color: var(--mc-agents-500);
+    }
+    &__background {
+        background-color: var(--mc-agents-500);
+        color: var(--mc-low-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-agents-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-agents-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-agents-500);
+    }
+}
+
+.space {
+    &__color {
+        color: var(--mc-spaces-500);
+    }
+    &__background {
+        background-color: var(--mc-spaces-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-spaces-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-spaces-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-spaces-500);
+    }
+}
+
+.event {
+    &__color {
+        color: var(--mc-events-500);
+    }
+    &__background {
+        background-color: var(--mc-events-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-events-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-events-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-events-500);
+    }
+}
+
+.project {
+    &__color {
+        color: var(--mc-projects-500);
+    }
+    &__background {
+        background-color: var(--mc-projects-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-projects-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-projects-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-projects-500);
+    }
+}
+
+.opportunity {
+    &__color {
+        color: var(--mc-opportunities-500);
+    }
+    &__background {
+        background-color: var(--mc-opportunities-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-opportunities-500);
+        }
+    }
+    &__bg-hover {
+        &:hover {
+            background-color: var(--mc-opportunities-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-opportunities-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-opportunities-500);
+    }
+}
+
+.primary {
+    &__color {
+        color: var(--mc-primary-500);
+    }
+    &__background {
+        background-color: var(--mc-primary-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-primary-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-primary-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-primary-500);
+    }
+}
+
+.secondary {
+    &__color {
+        color: var(--mc-secondary-500);
+    }
+    &__background {
+        background-color: var(--mc-secondary-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-secondary-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-secondary-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-secondary-500);
+    }
+}
+
+.danger  {
+    &__color {
+        color: var(--mc-danger-500);
+    }
+    &__background {
+        background-color: var(--mc-danger-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-danger-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-danger-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-danger-500);
+    }
+}
+
+.helper  {
+    &__color {
+        color: var(--mc-helper-500);
+    }
+    &__background {
+        background-color: var(--mc-helper-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-helper-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-helper-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-helper-500);
+    }
+}
+
+.success  {
+    &__color {
+        color: var(--mc-success-500);
+    }
+    &__background {
+        background-color: var(--mc-success-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-success-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-success-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-success-500);
+    }
+}
+
+.warning  {
+    &__color {
+        color: var(--mc-warning-500);
+    }
+    &__background {
+        background-color: var(--mc-warning-500);
+        color: var(--mc-high-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-warning-500);
+        }
+    }
+    &__border {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-warning-500);
+    }
+    &__border-solid {
+        border: var(--mc-border-solid);
+        border-color: var(--mc-warning-500);
+    }
+}

@@ -64,8 +64,9 @@ $(function () {
     });
 
     $("form.create-entity").submit(function (e) {
+        var $self = $(this);
         $('.modal-loading').show();
-        $(this).hide();
+        $self.hide();
 
         e.preventDefault();
         var _url = $(this).data('entity');
@@ -118,6 +119,18 @@ $(function () {
                     }
 
                     return false;
+                }
+            },
+            error(xhr) {
+                $('.modal-loading').hide();
+                $self.show();
+                var r = xhr.responseJSON;
+                if (r.error && r.data) {
+                    for (var erro in r.data) {
+                        var _msg = r.data[erro];
+                        MapasCulturais.Messages.error(_msg);
+                        alert(_msg);
+                    }
                 }
             }
         });
@@ -285,15 +298,6 @@ $(function () {
             descAgent.show().css('top', -((descAgentHeight) + 10));
         });
     }
-
-    /* function setEvaluationFormHeight() {
-        var h = $(window).height() - $('#main-header').height();
-        $('#registration-evaluation-form').height(h - 50);
-    }
-
-    setEvaluationFormHeight();
-
-    $(window).resize(setEvaluationFormHeight); */
 });
 
 //Restart entity form

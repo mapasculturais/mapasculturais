@@ -1,9 +1,26 @@
+<?php
+$em = $entity->evaluationMethodConfiguration;
+?>
+
 <?php $this->applyTemplateHook('opportunity-evaluations--committee--table','before'); ?>
+
+<div class="highlighted-message clearfix">
+    <div class="registration-dates clear">
+        <?php \MapasCulturais\i::_e("Avaliações abertas de");?>
+        <strong><?= $em->evaluationFrom ? $em->evaluationFrom->format('d/m/Y') : '' ?></strong>
+        <?php \MapasCulturais\i::_e("a");?>
+        <strong><?= $em->evaluationTo ? $em->evaluationTo->format('d/m/Y') : '' ?></strong>
+        <?php \MapasCulturais\i::_e("às");?>
+        <strong><?=$em->evaluationTo ? $em->evaluationTo->format('H:i') : ''?></strong>
+    </div>
+</div>
+    
 <header id="header-inscritos" class="clearfix">
     <?php $this->applyTemplateHook('opportunity-evaluations--committee--table','begin'); ?>
 
     <h3><?php \MapasCulturais\i::_e("Avaliações");?></h3>
 </header>
+
 <?php if($entity->isUserEvaluationsSent()): ?>
     <div id='status-info' class="alert success">
         <span><?php \MapasCulturais\i::_e("Suas avaliações já foram enviadas:");?></span>

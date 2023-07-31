@@ -227,7 +227,12 @@ module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http',
                     function(response){
                         deferred.resolve(response);
                     }
-                    );
+                )
+                .error(
+                    function(response){
+                        deferred.resolve(response);
+                    }
+                );
                 return deferred.promise;
             },
             edit: function(data){
@@ -275,6 +280,22 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
 
             $http.post(this.getUrl('reopenValuerEvaluations'), {relationId: relation.id})
             .success(
+                function(response){
+                    deferred.resolve(response);
+                }
+            );
+            return deferred.promise;
+        },
+        
+        reopenEvaluationsV2: function(data){
+            let url = MapasCulturais.createUrl('opportunity', 'reopenEvaluations');
+            var deferred = $q.defer();
+            $http.post(url, data).success(
+                function(response){
+                    deferred.resolve(response);
+                }
+            )
+            .error(
                 function(response){
                     deferred.resolve(response);
                 }
@@ -497,7 +518,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     return;
                 }
             }
-
+            
             if($scope.data.newFieldConfiguration.fieldType == "section"){
                 $scope.data.newFieldConfiguration.required = false;
             }
@@ -507,7 +528,6 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
                 if (response.error) {
                     validationErrors(response);
-
                 } else {
                     $scope.data.fields.push(response);
                     sortFields();
@@ -519,8 +539,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.removeFieldConfiguration = function (id, $index) {
-            var labels = MapasCulturais.gettext.moduleOpportunity;
-            if(confirm(labels['removeField'])){
+            if(confirm(labels['fieldRemoved'])){
                 fieldService.delete(id).then(function(response){
                     if(!response.error){
                         $scope.data.fields.splice($index, 1);
@@ -1136,6 +1155,8 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 }]);
 
 module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RelatedAgentsService', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RelatedAgentsService, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
+    window.$registrationScope = $scope;
+    
     var registrationsUrl = new UrlService('registration');
 
     var labels = MapasCulturais.gettext.moduleOpportunity;
@@ -1524,7 +1545,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.data.fields.forEach(function(field) {
         $scope.$watch('entity.' + field.fieldName, function(current, old){
 
-            $scope.saveField(field, current, 10000);
+            if (current != old) {
+                $scope.saveField(field, current, 10000);
+            }
             
         }, true);
     });
@@ -1969,6 +1992,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             }
         };
 
+        $scope.reopenEvaluationsV2 = function(relation){
+            if(confirm(labels.confirmReopenValuerEvaluations)){
+            var data = {
+                    uid:relation.agentUserId,
+                    opportunityId: MapasCulturais.entity.id
+                }
+
+                EvaluationMethodConfigurationService.reopenEvaluationsV2(data).then(function(response){
+                    MapasCulturais.Messages.success(labels['reopenEvaluationsSuccess']);
+                });
+            }
+        }
+
         $scope.deleteAdminRelation = function(relation){
             if(confirm(labels.confirmRemoveValuer)){
                 RelatedAgentsService.remove('group-admin', relation.agent.id).
@@ -2210,30 +2246,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             });
         });
     }
-
-    angular.element($window).bind("scroll", function(){
-        // @TODO: refatorar este if
-        if(document.location.hash.indexOf("tab=inscritos") >= 0){
-            if(!$scope.data.findingRegistrations){
-                if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
-                    $scope.findRegistrations();
-                }
-            }
-        } else if (document.location.hash.indexOf("tab=evaluations") >= 0){
-            if(!$scope.data.findingEvaluations){
-                if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
-                    $scope.findEvaluations();
-                }
-            }
-        } else  if(document.location.hash.indexOf("tab=support") >= 0){
-            if(!$scope.data.findingRegistrations){
-                if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
-                    $scope.findRegistrations();
-                }
-            }
-        }
-    });
-
+   
     var adjustingBoxPosition = false,
     categories = MapasCulturais.entity.registrationCategories.length ? MapasCulturais.entity.registrationCategories.map(function(e){
         return { value: e, label: e };

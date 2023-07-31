@@ -322,6 +322,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - corrige definição de valor default para os metadados
 
+## [feature/BaseV2]
+
+### Novas funcionalidades
+- Cria coluna que registra data e horário de publicação automática dos resultados de uma oportunidade
+- Possibilidade de selecionar files pelo parâmetro @select da api (#1994)
+- Possibilidade de selecionar metalists pelo parâmetro @select da api (#2000)
+- Possibilidade de selecionar agentes relacionados (relatedAgents) e relações de agentes (agentRelations) pelo parâmetro @select da api (#1999)
+- Possibilidade de selecionar as permissões do usuário autenticado (currentUserPermissions) pelo parâmetro @select da api (#2001)
+- Possibilidade de selecionar tudo e mais um pouco (@select=*,agentRelations)
+- Possibilidade de filtrar agentes e espaço utilizando um delimitador de latitude e longitude (_geoLocation=GEOBOUNDING([lng1,lat1],[lng2,lat2]))
+
+### Quebra de compatibilidade
+- Não é mais possível selecionar entidades reacionadas utilizando várias vezes o nome da entidade (ex: `@select=owner.id,owner.name`). Deve-se substituir por `@select=owner.{id,name}`
 ## [5.3.36] - 2022-11-16
 ### Correções
 - typo no módulo Notifications 
@@ -580,6 +593,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Novo formato de changelog
 - Refatoração no trait MagicCaller para disparar exceção quando não existe o método, além de hook para criação de novos métodos (hook `Class::newMethod`)
+- API agora executa o unserialize dos metadados
 
 ### Correções
 - altera identidade do usuário que executa os scripts de jobs e recriação de pcache pendente
@@ -636,6 +650,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correção
 - Impede que campos obrigatórios sejam enviados com essas sujeiras e interpretados como valores verdadeiros
 
+>>>>>>> develop
 ## [5.1.44] - 2022-01-24
 ### Correção
 - Corrige erro no endpoint findEvaluation quando não existe avaliadores cadastrados na oportunidade #1874

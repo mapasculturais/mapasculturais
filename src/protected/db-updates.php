@@ -168,7 +168,6 @@ return [
     'remove orphan events again' => function() use($conn){
         $conn->executeQuery("DELETE FROM event_meta WHERE object_id IN (SELECT id FROM event WHERE agent_id IS NULL)");
         $conn->executeQuery("DELETE FROM event WHERE agent_id IS NULL");
-        return false;
     },
 
     'remove circular references again... ;)' => function() use ($conn) {
@@ -1030,8 +1029,6 @@ return [
             $subsite->setVerifiedSeals($subsite->verifiedSeals);
             $subsite->save(true);
         }
-
-        return false;
     },
     
     'move private files' => function () use ($conn) {
@@ -1754,7 +1751,79 @@ $$
         }
     },
     "Adiciona coluna avaliableEvaluationFields na tabela opportunity" => function() use ($conn){
-        __exec("ALTER TABLE opportunity ADD avaliable_evaluation_fields JSON DEFAULT NULL;");
+        if(!__column_exists('opportunity', 'avaliable_evaluation_fields')) {
+            __exec("ALTER TABLE opportunity ADD avaliable_evaluation_fields JSON DEFAULT NULL;");
+        }
+    },
+    "Adiciona coluna publish_timestamp na tabela opportunity" => function() use ($conn){
+        if(!__column_exists('opportunity', 'publish_timestamp')) {
+            __exec("ALTER TABLE opportunity ADD publish_timestamp timestamp DEFAULT NULL;");
+        }
+    },
+    "Adiciona coluna auto_publish na tabela opportunity" => function () {
+        if(!__column_exists('opportunity', 'auto_publish')) {
+            __exec("ALTER TABLE opportunity ADD auto_publish BOOLEAN DEFAULT 'false' NOT NULL;");
+        }
+    },
+    "Adiciona coluna evaluation_from e evaluation_to na tabela evaluation_method_configuration" => function() use ($conn){
+        if(!__column_exists('evaluation_method_configuration', 'evaluation_from')) {
+            __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_from timestamp DEFAULT NULL;");
+        }
+        if(!__column_exists('evaluation_method_configuration', 'evaluation_to')) {
+            __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_to timestamp DEFAULT NULL;");
+        }
+    },
+    
+    "adiciona coluna name na tabela evaluation_method_configuration" => function () use($conn) {
+        if (!__column_exists('evaluation_method_configuration', 'name')) {
+            __exec("ALTER TABLE evaluation_method_configuration ADD name VARCHAR(255) DEFAULT NULL;");
+        }
+    },
+
+    "popula as colunas name, evaluation_from e evaluation_to da tabela evaluation_method_configuration" => function () use ($conn, $app){
+        if (empty($app->getRegisteredEvaluationMethods())) {
+            return false;
+        }
+
+        $rs = $conn->fetchAll("
+            SELECT e.id, e.type, op.name, op.registration_from, op.registration_to 
+            FROM evaluation_method_configuration e LEFT JOIN opportunity op ON op.id = e.opportunity_id
+        ");
+        
+        $num = count($rs);
+        foreach ($rs as $i => $r) {
+            $data = ['name' => $r['name']];
+            if ($method = $app->getRegisteredEvaluationMethodBySlug($r['type'])) {
+                $data['name'] = $r['type'] == 'simple' ? i::__('Avaliação') : $method->name;
+            }
+
+            if ($r['registration_from']) {
+                $data['evaluation_from'] = $r['registration_from'];
+            }
+
+            if ($r['registration_to']) {
+                $data['evaluation_to'] = $r['registration_to'];
+            }
+            echo "\n({$i}/{$num}) populando tabela evaluation_method_configuration ({$r['id']}): ";
+            print_r($data);
+            echo "\n----------------------";
+            $conn->update('evaluation_method_configuration', $data, ['id' => $r['id']]);
+        }
+    },
+
+    'cria funções para o cast automático de ponto para varchar' => function () { 
+        __exec("CREATE OR REPLACE FUNCTION pg_catalog.text(point) RETURNS text STRICT IMMUTABLE LANGUAGE SQL AS 'SELECT $1::VARCHAR;';");
+        __try("CREATE CAST (point AS text) WITH FUNCTION pg_catalog.text(point) AS IMPLICIT;");
+        __exec("COMMENT ON FUNCTION pg_catalog.text(point) IS 'convert point to text';");
+    },
+
+    "Renomeia colunas registrationFrom e registrationTo da tabela de projetod" => function() use ($conn){
+        if (__column_exists('project', 'registration_from') && !__column_exists('project', 'starts_on')){
+            __exec("ALTER TABLE project RENAME registration_from TO starts_on;");
+        }
+        if (__column_exists('project', 'registration_to') && !__column_exists('project', 'ends_on')){
+            __exec("ALTER TABLE project RENAME registration_to TO ends_on;");
+        }
     },
     "Consede permissão em todos os campo para todos os avaliadores da oportunidade" => function() use ($conn, $app){
         $opportunity_ids = $conn->fetchAll("SELECT id FROM opportunity WHERE status <> 0 AND status >= -1");
@@ -1822,8 +1891,6 @@ $$
                         WHERE opportunity_id = {$opportunity_id}
                     );");
         }
-
-        return false;
     },
 
     'alter seal add column locked_fields' => function () {
@@ -1831,6 +1898,17 @@ $$
             __exec("ALTER TABLE seal ADD locked_fields JSON DEFAULT '[]'");
         }
     },
+
+    'Adiciona a coluna description para a descrição da ocorrência' => function() {
+        __exec("ALTER TABLE event_occurrence ADD description TEXT DEFAULT NULL;");
+    },
+    'Adiciona a coluna price para a o valor de entrada da ocorrência' => function() {
+        __exec("ALTER TABLE event_occurrence ADD price TEXT DEFAULT NULL;");
+    },
+    'Adiciona a coluna priceInfo para a informações sobre o valor de entrada da ocorrência' => function() {
+        __exec("ALTER TABLE event_occurrence ADD priceInfo TEXT DEFAULT NULL;");
+    },
+    
     'Corrige config dos campos na entidade registration_fields_configurarion' => function() use ($conn, $app){
 
         $registration_fields_Types = $app->getRegisteredRegistrationFieldTypes();
@@ -1885,6 +1963,13 @@ $$
     },
     'altera tipo da coluna description na tabela file' => function() use ($conn, $app){
         $conn->executeQuery("ALTER TABLE file ALTER COLUMN description TYPE text;");
+    },
+    "faz com que o updateTimestamp seja igual ao createTimestamp na criacão da entidade" => function() use ($conn){
+        __exec("UPDATE agent SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
+        __exec("UPDATE space SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
+        __exec("UPDATE project SET update_timestamp = create_timestamp WHERE update_timestamp IS null");
+        __exec("UPDATE opportunity SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
+        __exec("UPDATE EVENT SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
     },
     "Adiciona novas coluna na tabela registration_field_configuration" => function() use ($conn){
         __exec("ALTER TABLE registration_field_configuration ADD conditional  BOOLEAN;");

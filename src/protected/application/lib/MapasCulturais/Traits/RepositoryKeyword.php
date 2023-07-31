@@ -52,11 +52,19 @@ trait RepositoryKeyword{
     protected function _getKeywordDQLWhere($keyword){
         $class = $this->getClassName();
 
-        $where = '';
+        $app = App::i();
+
+        $fields = $app->em->getClassMetadata($class)->fieldMappings;
+
+        if(isset($fields['name'])) {
+            $where = ' unaccent(lower(e.name)) LIKE unaccent(lower(:keyword))';
+        } else {
+            $where = '';
+        }
 
         App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.where', [&$where, $keyword]);
 
-        return "unaccent(lower(e.name)) LIKE unaccent(lower(:keyword)) $where";
+        return  $where;
     }
     
     function getIdsByKeywordDQL($keyword){

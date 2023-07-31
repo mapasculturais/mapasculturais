@@ -73,7 +73,11 @@ trait EntityNested{
      * 
      * @param \MapasCulturais\Entity $parent
      */
-    function setParent(\MapasCulturais\Entity $parent = null) {
+    function setParent($parent = null) {
+        if(!is_object($parent)) {
+            $this->setParentId($parent);
+            return;
+        }
         if (is_object($this->parent) && is_object($parent) && $this->parent->equals($parent))
             return;
 

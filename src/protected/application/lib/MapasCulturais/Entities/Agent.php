@@ -74,7 +74,7 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="agent_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var integer
@@ -95,7 +95,7 @@ class Agent extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="public_location", type="boolean", nullable=true)
      */
-    protected $publicLocation = false;
+    public $publicLocation = false;
 
     /**
      * @var \MapasCulturais\Types\GeoPoint
@@ -295,7 +295,8 @@ class Agent extends \MapasCulturais\Entity
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome do agente é obrigatório')
             ],
@@ -307,6 +308,12 @@ class Agent extends \MapasCulturais\Entity
                 'required' => \MapasCulturais\i::__('O tipo do agente é obrigatório'),
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        // entity(Agent).validations
+        $app->applyHook("{$prefix}::validations", [&$validations]);
+
+        return $validations;
     }
 
     public function setType($type)
@@ -381,14 +388,13 @@ class Agent extends \MapasCulturais\Entity
         }
     }
 
-    function setOwner(Agent $parent = null){
+    function setOwner($parent = null){
         $this->setParent($parent);
     }
 
 
     function setOwnerId($owner_id){
-        $owner = App::i()->repo('Agent')->find($owner_id);
-        $this->setParent($owner);
+        $this->setParent($owner_id);
     }
 
     private $_newUser = false;
@@ -399,7 +405,13 @@ class Agent extends \MapasCulturais\Entity
             $this->_newParent = $user->profile;
     }
 
-    function setParent(Agent $parent = null){
+    function setParent($parent = null){
+        $app = App::i();
+
+        if (is_integer($parent)) {
+            $parent = $app->repo('Agent')->find($parent);
+        }
+
         if($parent->equals($this->parent)) {
             return true;
         }
@@ -508,7 +520,8 @@ class Agent extends \MapasCulturais\Entity
             return true;
         }
 
-        return $this->getOwner()->canUser('modify') && $this->canUser('modify');
+        $owner = $this->getOwner();
+        return $owner && $owner->canUser('modify') && $this->canUser('modify');
     }
 
     protected function canUserArchive($user){

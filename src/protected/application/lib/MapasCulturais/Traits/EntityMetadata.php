@@ -220,6 +220,13 @@ trait EntityMetadata{
                 $metadata_object = $this->__createdMetadata[$meta_key];
             }else{
                 $metadata_object = null;
+                if(!is_iterable($this->__metadata)) {
+                    if($meta_key) {
+                        return null;
+                    } else {
+                        return [];
+                    }
+                }
                 foreach($this->__metadata as $_metadata_object){
                     if($_metadata_object->key == $meta_key){
                         $metadata_object = $_metadata_object;

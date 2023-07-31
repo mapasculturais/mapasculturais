@@ -29,6 +29,7 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Request"       = "\MapasCulturais\Entities\RequestPermissionCache",
         "MapasCulturais\Entities\EvaluationMethodConfiguration" = "\MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache",
         "MapasCulturais\Entities\ChatMessage"   = "\MapasCulturais\Entities\ChatMessagePermissionCache",
+        "MapasCulturais\Entities\User"   = "\MapasCulturais\Entities\UserPermissionCache",
    })
  */
 abstract class PermissionCache extends \MapasCulturais\Entity {
@@ -42,7 +43,7 @@ abstract class PermissionCache extends \MapasCulturais\Entity {
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="pcache_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
 
     /**

@@ -6,16 +6,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim \
         sudo
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get install -y nodejs
 
 RUN rm -rf /var/lib/apt/lists
+
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH=$PATH:/root/.local/share/pnpm
 
 # Install uglify and terser
 RUN npm install -g \
         terser \
         uglifycss \
-        autoprefixer
+        autoprefixer \
+        postcss
 
 # Install sass
 RUN gem install sass -v 3.4.22
@@ -66,6 +71,7 @@ RUN find . -maxdepth 1 -mindepth 1 -exec echo "compilando sass do tema " {} \; -
 
 COPY src/protected /var/www/html/protected
 
+RUN pnpm install --recursive && pnpm run build 
 RUN mkdir -p /var/www/html/protected/DoctrineProxies
 RUN chown -R www-data: /var/www/html/protected/DoctrineProxies
 

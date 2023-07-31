@@ -47,7 +47,7 @@ abstract class Request extends \MapasCulturais\Entity{
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="request_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
@@ -144,6 +144,11 @@ abstract class Request extends \MapasCulturais\Entity{
     public function __construct() {
         $this->requesterUser = App::i()->user;
         parent::__construct();
+    }
+
+    public static function getControllerId()
+    {
+        return 'request';
     }
     
     function getExtraPermissionCacheUsers(){
