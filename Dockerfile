@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         sudo
 
 RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
-RUN apt-get update \
+RUN sed -i 's/buster/oldstable/g' /etc/apt/sources.list \
+    && apt-get update \
     && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
