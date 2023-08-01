@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         sudo
 
 RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 RUN rm -rf /var/lib/apt/lists
