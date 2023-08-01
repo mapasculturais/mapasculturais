@@ -29,7 +29,7 @@ $this->import('
         <div class="mc-tag-list">
             <h4><?=i::__('Funções do usuário:')?></h4>
             <ul class="mc-tag-list__tagList">
-                <li v-for="role in entity.roles" class="primary__border-solid primary__color mc-tag-list__tag mc-tag-list__tag--editable">
+                <li v-for="role in entity.roles" class="primary__border--solid primary__color mc-tag-list__tag mc-tag-list__tag--editable">
                     <strong v-if="role.subsite">{{`<?= i::esc_attr__('${role.name} em ${role.subsite.name}') ?>`}}</strong>
                     <strong v-else>{{role.name}}</strong>
                     <mc-confirm-button 

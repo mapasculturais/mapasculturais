@@ -26,7 +26,7 @@ $this->import('
                                 <mc-icon name="search"></mc-icon>
                             </button>
                         </div>
-                        <select class="order primary__border-solid" v-model="query['@order']" @change="entities.refresh();">
+                        <select class="order primary__border--solid" v-model="query['@order']" @change="entities.refresh();">
                             <option value="owner.name ASC"><?= i::__('ordem alfabética') ?></option>
                             <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
                             <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
@@ -52,7 +52,7 @@ $this->import('
                                 <mc-icon name="search"></mc-icon>
                             </button>
                         </div>
-                        <select class="order primary__border-solid" v-model="query['@order']" @change="entities.refresh();">
+                        <select class="order primary__border--solid" v-model="query['@order']" @change="entities.refresh();">
                             <option value="owner.name ASC"><?= i::__('ordem alfabética') ?></option>
                             <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
                             <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
