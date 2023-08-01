@@ -30,9 +30,11 @@ $breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
 
 
 $this->breadcrumb = $breadcrumb;
-$userEvaluator = null;
-if (isset($this->controller->data['user']) && $app->user->is('admin')) {
+
+if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@control")) {
     $userEvaluator = $app->repo("User")->find($this->controller->data['user']);
+}else{
+    $userEvaluator = $app->user;
 }
 ?>
 
