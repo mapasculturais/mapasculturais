@@ -6,10 +6,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim \
         sudo
 
-RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
-RUN sed -i 's/buster/oldstable/g' /etc/apt/sources.list \
-    && apt-get update \
-    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 RUN rm -rf /var/lib/apt/lists
