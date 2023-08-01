@@ -397,71 +397,73 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <!--.main-content-->
-<div class="sidebar-left sidebar event">
-    <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
-    
-    <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
+<article id="sidebars">
+    <div class="sidebar-left sidebar event">
+        <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
+        
+        <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
 
-    <?php if($this->isEditable()): ?>
-        <div class="widget">
-            <h3><?php \MapasCulturais\i::_e("Projeto");?></h3>
-            <?php if($request_project): $proj = $request_project->destination; ?>
-                <a href="<?php echo $proj->singleUrl ?>"><?php echo $proj->name ?></a>
-            <?php else: ?>
-                <a class="js-search js-include-editable"
-                    data-field-name='projectId'
-                    data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Selecione um projeto'); ?>"
-                    data-search-box-width="400px"
-                    data-search-box-placeholder="<?php \MapasCulturais\i::esc_attr_e('Selecione um projeto'); ?>"
-                    data-entity-controller="project"
-                    data-search-result-template="#agent-search-result-template"
-                    data-selection-template="#agent-response-template"
-                    data-no-result-template="#agent-response-no-results-template"
-                    data-selection-format="chooseProject"
-                    data-multiple="true"
-                    data-allow-clear="1"
-                    data-auto-open="true"
-                    data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
-                    data-value-name="<?php echo $entity->project ? $entity->project->name : ''; ?>"
-                    title="<?php \MapasCulturais\i::esc_attr_e('Selecionar um Projeto'); ?>">
-                    <?php echo $entity->project ? $entity->project->name : ''; ?>
-                </a>
-            <?php endif; ?>
-            <span class="warning pending js-pending-project hltip" data-hltip-classes="hltip-warning" hltitle="<?php \MapasCulturais\i::esc_attr_e("Aguardando confirmação");?>" <?php if(!$request_project) echo 'style="display:none"'; ?>></span>
-        </div>
-    <?php elseif($entity->project): ?>
-        <div class="widget">
-            <h3><?php \MapasCulturais\i::_e("Projeto");?></h3>
-            <a class="event-project-link" href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
-        </div>
-    <?php endif; ?>
-  
+        <?php if($this->isEditable()): ?>
+            <div class="widget">
+                <h3><?php \MapasCulturais\i::_e("Projeto");?></h3>
+                <?php if($request_project): $proj = $request_project->destination; ?>
+                    <a href="<?php echo $proj->singleUrl ?>"><?php echo $proj->name ?></a>
+                <?php else: ?>
+                    <a class="js-search js-include-editable"
+                        data-field-name='projectId'
+                        data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Selecione um projeto'); ?>"
+                        data-search-box-width="400px"
+                        data-search-box-placeholder="<?php \MapasCulturais\i::esc_attr_e('Selecione um projeto'); ?>"
+                        data-entity-controller="project"
+                        data-search-result-template="#agent-search-result-template"
+                        data-selection-template="#agent-response-template"
+                        data-no-result-template="#agent-response-no-results-template"
+                        data-selection-format="chooseProject"
+                        data-multiple="true"
+                        data-allow-clear="1"
+                        data-auto-open="true"
+                        data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
+                        data-value-name="<?php echo $entity->project ? $entity->project->name : ''; ?>"
+                        title="<?php \MapasCulturais\i::esc_attr_e('Selecionar um Projeto'); ?>">
+                        <?php echo $entity->project ? $entity->project->name : ''; ?>
+                    </a>
+                <?php endif; ?>
+                <span class="warning pending js-pending-project hltip" data-hltip-classes="hltip-warning" hltitle="<?php \MapasCulturais\i::esc_attr_e("Aguardando confirmação");?>" <?php if(!$request_project) echo 'style="display:none"'; ?>></span>
+            </div>
+        <?php elseif($entity->project): ?>
+            <div class="widget">
+                <h3><?php \MapasCulturais\i::_e("Projeto");?></h3>
+                <a class="event-project-link" href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
+            </div>
+        <?php endif; ?>
     
-    
+        
+        
 
-    <?php $this->applyTemplateHook('sidebar-left','end'); ?>
-</div>
-<div class="sidebar event sidebar-right">
-    <?php $this->applyTemplateHook('sidebar-right','begin'); ?>
+        <?php $this->applyTemplateHook('sidebar-left','end'); ?>
+    </div>
+    <div class="sidebar event sidebar-right">
+        <?php $this->applyTemplateHook('sidebar-right','begin'); ?>
 
-    <?php if($this->controller->action == 'create'): ?>
-        <div class="widget">
-            <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento");?>.<span class="close"></span></p>
-        </div>
-    <?php endif; ?>
+        <?php if($this->controller->action == 'create'): ?>
+            <div class="widget">
+                <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento");?>.<span class="close"></span></p>
+            </div>
+        <?php endif; ?>
 
-    <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
-    
-    <?php $this->part('related-agents.php', array('entity' => $entity)); ?>
-    
-    <?php $this->part('downloads.php', array('entity' => $entity)); ?>
-    
-    <?php $this->part('link-list.php', array('entity' => $entity)); ?>
-    
-    <?php $this->part('history.php', array('entity' => $entity)); ?>
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+        
+        <?php $this->part('related-agents.php', array('entity' => $entity)); ?>
+        
+        <?php $this->part('downloads.php', array('entity' => $entity)); ?>
+        
+        <?php $this->part('link-list.php', array('entity' => $entity)); ?>
+        
+        <?php $this->part('history.php', array('entity' => $entity)); ?>
 
-    <?php $this->applyTemplateHook('sidebar-right','end'); ?>
-</div>
+        <?php $this->applyTemplateHook('sidebar-right','end'); ?>
+    </div>
+</article>
 <?php if ($this->isEditable()): ?>
 
     <?php $this->part('modal/event-occurrence-form', array('entity' => $entity)); ?>
