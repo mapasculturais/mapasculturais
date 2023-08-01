@@ -174,10 +174,10 @@ app.component('mc-map', {
             this.updateTimeout = setTimeout(() => {
                 const $map = this;
                 const icons = {
-                    agent1: $map.$refs.agent1.outerHTML,
-                    agent2: $map.$refs.agent2.outerHTML,
-                    space: $map.$refs.space.outerHTML,
-                    event: $map.$refs.event.outerHTML
+                    agent1: $map?.$refs?.agent1?.outerHTML,
+                    agent2: $map?.$refs?.agent2?.outerHTML,
+                    space: $map?.$refs?.space?.outerHTML,
+                    event: $map?.$refs?.event?.outerHTML
                 };
                 const markersToAdd = [];
                 const markersToRemove = [];
