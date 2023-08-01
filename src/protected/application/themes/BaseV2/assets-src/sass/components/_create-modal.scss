@@ -138,6 +138,9 @@
                 }
 
                 &__info {
+                    display: flex;
+                    gap: size(30);
+
                     &--btn {
                         align-items: center;
                         cursor: pointer;
