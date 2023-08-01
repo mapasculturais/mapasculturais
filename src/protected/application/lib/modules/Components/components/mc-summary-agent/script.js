@@ -16,7 +16,7 @@ app.component('mc-summary-agent', {
     },
     methods: {
         canSee(item) {
-            if(this.entity.currentUserPermissions['@control']){
+            if(this.entity.currentUserPermissions['@control'] || this.entity.currentUserPermissions['view']){
                 return true
             }
 
