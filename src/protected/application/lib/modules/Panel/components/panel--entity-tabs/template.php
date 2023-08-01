@@ -63,7 +63,7 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                         
                         <slot name="filters-additional" :entities="entities" :query="queries['<?=$status?>']"></slot>
                         <label> <?= i::__ ("Ordernar por:") ?>
-                            <select class="entity-tabs__search-select primary__border-solid" v-model="queries['<?=$status?>']['@order']">
+                            <select class="entity-tabs__search-select primary__border--solid" v-model="queries['<?=$status?>']['@order']">
                                 <?php foreach($sort_options as $value => $label): ?>
                                     <option value="<?= htmlentities($value) ?>"><?= htmlentities($label) ?></option>    
                                 <?php endforeach ?>
