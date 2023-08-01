@@ -55,10 +55,11 @@ $this->import('
                     </div>
                     <div class="card-state">
                         <label class="state"><?= i::__('Status de avaliação') ?></label>
-                        <button class="button button-state">
-                            <label v-if="evaluation.resultString">{{evaluation.resultString}}</label>
-                            <label v-if="!evaluation.resultString"> <?= i::__('Pendente') ?></label>
-                        </button>
+                        <span :class="verifyState(evaluation)" class="card-state__info">
+                            <mc-icon  name="circle"></mc-icon>
+                            <h5 class="bold" v-if="evaluation.resultString">{{evaluation.resultString}}</h5>
+                            <h5 class="bold" v-if="!evaluation.resultString"> <?= i::__('Pendente') ?></h5>
+                        </span>
                     </div>
                 </a>
             </li>

@@ -34,7 +34,9 @@
         &__grid {
             max-width: size(1440);
         }
-
+        .section {
+            width: 100%;
+        }
 
         &__actions {
             background-color: var(--mc-white);
@@ -154,7 +156,6 @@
                             gap: size(24);
                             justify-content: space-between;
                             width: 100%;
-
                             .left {
                                 .project {
                                     &__label {
@@ -368,6 +369,7 @@
 
                 &__content {
                     .section {
+                        width: 100%;
                         &__title {
                             font-size: size(32);
                             font-weight: 700;
