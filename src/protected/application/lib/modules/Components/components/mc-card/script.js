@@ -10,6 +10,10 @@ app.component('mc-card', {
         tag: {
             type: String,
             default: 'article'
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     }
 });
