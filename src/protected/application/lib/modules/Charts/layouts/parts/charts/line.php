@@ -58,6 +58,13 @@ $height = $height ?? '50vw';
 
 $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id' => $opportunity->id, 'action' => $action]);
 
+//Veriicação se existe o indice data por depender da quantidade de dados
+$isSeriesData = isset($series[0]['data']);
+//Padronizando o valor da variável $width
+$widthData = $width;
+//se não existir dados então atribui o valor padrao da largura da variavel $width
+($isSeriesData) ?? $widthData =  $series[0]['data'];
+
 ?>
 
 <div class="chart-wrap type-line">
@@ -70,7 +77,7 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
     </header>
 
     <div class="chart-scroll">
-        <div class="chart-container chart-line" style="position: relative; height:<?= $height ?>; width:<?= $count_data($series[0]['data']) ?>%;">
+        <div class="chart-container chart-line" style="position: relative; height:<?= $height ?>; width:<?= $widthData; ?>%;">
             <canvas id="<?= $chart_id ?>"></canvas>
         </div>
     </div>
