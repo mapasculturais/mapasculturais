@@ -19,7 +19,6 @@ $(function(){
         var data = $form.serialize();
         var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id});
         $.post(url, data, function(r){
-            MapasCulturais.Messages.success("A avaliação foi salva");
         });
     }
 
@@ -33,30 +32,10 @@ $(function(){
         }
 
         $.post(url, data, function(r){
-            MapasCulturais.Messages.success("A avaliação foi salva");
-            if($button && $button.hasClass('js-next')){
-                // var $current = $("#registrations-list .registration-item.current");
-                var $current = $(".current");
-                var $next = $current.nextAll('.visible:first');
-                var $link = $next.find('a');
-                //se o proximo registration da lista for igual o registration atual, pule 2 filhos 
-                if($current.find('a').attr('href') == $current.nextAll('.visible:first').find('a').attr('href')) {
-                    $link = $(".registration-item:eq(2)").find('a'); // pegue o segundo filho da lista nos <li>
-                }
-                if($link.attr('href')) {
-                    document.location = $link.attr('href');
-                }
-            }
+           window.parent.postMessage({type:'evaluation.send.success'});
         }).fail(function(rs) {
             if(rs.responseJSON && rs.responseJSON.error){
-                if(rs.responseJSON.data instanceof Array){
-                    rs.responseJSON.data.forEach(function(msg){
-                        console.log(msg);
-                        MapasCulturais.Messages.error(msg);
-                    });
-                } else {
-                    MapasCulturais.Messages.error(rs.responseJSON.data);
-                }
+                window.parent.postMessage({type:'evaluation.send.error', error: rs.responseJSON.data});
             }
         });
     }
@@ -82,7 +61,6 @@ $(function(){
             var data = $form.serialize();
             var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id});
             $.post(url, data, function(r){
-                MapasCulturais.Messages.success("A avaliação foi salva");
             });
         },15000);
 

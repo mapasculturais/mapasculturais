@@ -4,32 +4,29 @@
 
     .button-config {
         width: 100%;
-        // border: 1px solid #666666;
-        // border-radius: size(8);
     }
 
+    &__left {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: size(16);
 
+        .field {
+            &__title {
+                margin: 0;
+            }
+        }
+    }
 
-
-
-
-
-
-
-    // display: flex;
-    // gap: 67px;
-    // .config-footer {
-    //     display: flex;
-    //     flex-direction: row;
-    //     gap: 24px;
-
-    //     .button-config {
-    //         max-width: 100%;
-    //         border: 1px solid #666666;
-    //         // border-radius: size(8);
-    //     }
-    // }
-    // .publish-phase{
-    //     max-width: size(151);
-    // }
+    &__checkbox {
+        flex-direction: row;
+        display: flex;
+        align-items: flex-end;
+        padding-bottom: 13px;
+        label {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+        }
+    }
 }

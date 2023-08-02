@@ -32,7 +32,7 @@ $profile = $app->user->profile;
                 <select 
                     v-model="query['@roles']" 
                     @change="query['@roles'] || delete query['@roles'];"
-                    class="entity-tabs__search-select primary__border-solid">
+                    class="entity-tabs__search-select primary__border--solid">
                     <option :value="undefined"><?= i::__('Exibir todas') ?></option>
                     <option value="saasSuperAdmin" ><?= i::__('Super Administrador da Rede') ?></option>
                     <option value="saasAdmin" ><?= i::__('Administrador da Rede') ?></option>

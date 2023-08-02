@@ -86,22 +86,27 @@ $this->import('
             <div v-if="entity.ownerEntity" class="create-modal__fields--selected">
                 <label class="create-modal__fields--selected-label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></label>
                 <div class="entity-selected">
-                    <div class="entity-selected__entity" :class="[entityTypeSelected + '__border']">
+                    <div class="entity-selected__entity" :class="entityColorBorder">
                         <img v-if="entity.ownerEntity.files?.avatar" :src="entity.ownerEntity.files?.avatar?.transformations.avatarSmall.url" class="img" />
                         <div v-if="!entity.ownerEntity.files?.avatar" class="img-fake">
                             <mc-icon :entity="entity.ownerEntity"></mc-icon>
                         </div>
-                        <span class="name" :class="[entityTypeSelected + '__color']"><?php i::_e('{{entity.ownerEntity.name}}') ?></span>
+                        <span class="name" :class="entityColorClass"><?php i::_e('{{entity.ownerEntity.name}}') ?></span>
                     </div>
                     <div class="entity-selected__info">
                         <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
                             <template #button="{ toggle }">
-                                <a class="entity-selected__info--btn" :class="entityTypeSelected + '__color'">
-                                    <mc-icon :class="[entityTypeSelected + '__color']" name="exchange"></mc-icon>
-                                    <h4 :class="[entityTypeSelected + '__color']"><?php i::_e('Alterar') ?></h4>
+                                <a class="entity-selected__info--btn" :class="entityColorClass" @click="toggle()">
+                                    <mc-icon :class="entityColorClass" name="exchange"></mc-icon>
+                                    <h4 :class="entityColorClass"><?php i::_e('Alterar') ?> {{entityType}}</h4>
                                 </a>
                             </template>
                         </select-entity>
+
+                        <a class="entity-selected__info--btn helper__color" @click="resetEntity()">
+                            <mc-icon class="helper__color" name="exchange"></mc-icon>
+                            <h4 class="helper__color"><?php i::_e('Alterar entidade') ?></h4>
+                        </a>
                     </div>
                 </div>
             </div>

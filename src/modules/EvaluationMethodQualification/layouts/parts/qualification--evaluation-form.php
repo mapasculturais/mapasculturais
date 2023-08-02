@@ -40,6 +40,7 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
 
             <tr class="subtotal">
                 <td><?php i::_e('Resultado da seção') ?></td>
+                <td ng-if="subtotalSection(section) == '<?php i::_e('Não avaliada')?>'" class="repproved">{{subtotalSection(section)}}</td>
                 <td ng-if="subtotalSection(section) == '<?php i::_e('Habilitado')?>'" class="approved">{{subtotalSection(section)}}</td>
                 <td ng-if="subtotalSection(section) == '<?php i::_e('Inabilitado')?>'" class="repproved">{{subtotalSection(section)}}</td>
             </tr>
@@ -54,6 +55,8 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
 
     <div class='total'>
         <?php i::_e('Status'); ?>:
+        
+        <strong ng-if="total() == '<?php i::_e('Não avaliada')?>'" class="repproved">{{total()}}</strong>
         <strong ng-if="total() == '<?php i::_e('Habilitado')?>'" class="approved">{{total()}}</strong>
         <strong ng-if="total() == '<?php i::_e('Inabilitado')?>'" class="repproved">{{total()}}</strong><br>
     </div>

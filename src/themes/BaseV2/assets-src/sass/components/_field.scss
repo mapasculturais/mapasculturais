@@ -6,6 +6,10 @@
     gap: size(8);
     margin: 0;
     width: 100%;
+    
+    &__shortdescription {
+        text-align: right;
+    }
 
     &__error {
         font-family: Open Sans;
@@ -44,7 +48,7 @@
         line-height: size(19);
         margin: 0 size(5);
         gap: size(8);
-        align-items: baseline;
+        align-items: center;
     }
 
     input, textarea, select {
@@ -60,7 +64,7 @@
             padding-right: size(28);
         } 
     }
-
+    
     .dp__input_wrap {
         input {
             background: url(https://api.iconify.design/material-symbols/date-range.svg) no-repeat size(10) center/size(20);
@@ -74,7 +78,7 @@
     input[type="radio"] {
         float: left;
         height: size(18);
-        margin-right:size(8);
+        margin: 0;
         width: size(18);
     }
 

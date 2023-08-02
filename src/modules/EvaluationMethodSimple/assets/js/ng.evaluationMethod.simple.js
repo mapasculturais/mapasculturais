@@ -37,6 +37,8 @@
     }]);
 
     module.controller('SimpleEvaluationForm',['$scope', 'RegistrationService','ApplySimpleEvaluationService',function($scope, RegistrationService, ApplySimpleEvaluationService){
+        var labels = MapasCulturais.gettext.simpleEvaluationMethod;
+
         var evaluation = MapasCulturais.evaluation;
         var statuses = RegistrationService.registrationStatusesNames.filter(function(status) {
             if(status.value > 1) return status;
@@ -61,7 +63,7 @@
             }
 
             ApplySimpleEvaluationService.autoSave(MapasCulturais.entity.id, _data, MapasCulturais.user.id).success(function () {
-                MapasCulturais.Messages.success('Salvo');
+                MapasCulturais.Messages.success(labels.saved);
             }).error(function (data) {
                 MapasCulturais.Messages.error(data.data[0]);
             });
@@ -88,7 +90,8 @@
     }]);
 
     module.controller('ApplySimpleEvaluationResults',['$scope', 'RegistrationService', 'ApplySimpleEvaluationService', 'EditBox', function($scope, RegistrationService, ApplySimpleEvaluationService, EditBox){
-        
+        var labels = MapasCulturais.gettext.simpleEvaluationMethod;
+
         var evaluation = MapasCulturais.evaluation;
         var statuses = RegistrationService.registrationStatusesNames.filter((status) => {
             if(status.value > 1) return status;
@@ -113,14 +116,14 @@
         $scope.applyEvaluations = () => {
             if(!$scope.data.applyFrom || !$scope.data.applyTo) {
                 // @todo: utilizar texto localizado
-                MapasCulturais.Messages.error("É necessário selecionar os campos Avaliação e Status");
+                MapasCulturais.Messages.error(labels.applyEvaluationsError);
                 return;
             }
             $scope.data.applying = true;
             ApplySimpleEvaluationService.apply($scope.data.applyFrom, $scope.data.applyTo, $scope.data.status).
                 success(() => {
                     $scope.data.applying = false;
-                    MapasCulturais.Messages.success('Avaliações aplicadas com sucesso');
+                    MapasCulturais.Messages.success(labels.applyEvaluationsSuccess);
                     EditBox.close('apply-consolidated-results-editbox');
                     $scope.data.applyFrom = null;
                     $scope.data.applyTo = null;
@@ -128,7 +131,7 @@
                 error((data, status) => {
                     $scope.data.applying = false;
                     $scope.data.errorMessage = data.data;
-                    MapasCulturais.Messages.success('As avaliações não foram aplicadas.');
+                    MapasCulturais.Messages.success(labels.applyEvaluationsNotApplied);
                 })
         }
     }]);

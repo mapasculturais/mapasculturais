@@ -689,10 +689,22 @@ class Controller extends \MapasCulturais\Controller
 
         switch ($statusValue) {
             case 'all':
-                $status = '> 0';
+                $status = '>= 0';
                 break;
             case 'draft':
                 $status = '= 0';
+                break;
+            case 'send':
+                $status = ' >= 1';
+                break;
+            case 'invalid':
+                $status = '= 2';
+                break;
+            case 'notapproved':
+                $status = '= 3';
+                break;
+            case 'waitlist':
+                $status = '= 8';
                 break;
             case 'approved':
                 $status = '= 10';

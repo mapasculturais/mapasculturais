@@ -6,6 +6,9 @@ app.component('opportunity-subscribe-results', {
             type: Entity,
             required: true
         },
+        tab: {
+            type: String,
+        },
     },
 
     setup() { 

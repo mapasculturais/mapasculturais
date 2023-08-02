@@ -1,8 +1,8 @@
-app.component('opportunity-phase-list-data-collection' , {
-    template: $TEMPLATES['opportunity-phase-list-data-collection'],
+app.component('opportunity-phase-status' , {
+    template: $TEMPLATES['opportunity-phase-status'],
 
     setup() {
-        const text = Utils.getTexts('opportunity-phase-list-data-collection');
+        const text = Utils.getTexts('opportunity-phase-status');
         return { text };
     },
 
@@ -14,6 +14,9 @@ app.component('opportunity-phase-list-data-collection' , {
         phases: {
             type: Array,
             required: true
+        },
+        tab: {
+            type: String,
         }
     },
 

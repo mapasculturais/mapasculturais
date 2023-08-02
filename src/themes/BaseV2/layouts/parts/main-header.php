@@ -38,7 +38,7 @@ $this->import('
                 </li>
                 <li>
                     <a href="<?= $app->createUrl('search', 'opportunities') ?>" class="mc-header-menu--item opportunity">
-                        <span class="icon opportunity__bg-hover"> <mc-icon name="opportunity"></mc-icon> </span>
+                        <span class="icon opportunity__hover--bg"> <mc-icon name="opportunity"></mc-icon> </span>
                         <p class="label"> <?php i::_e('Oportunidades') ?> </p>
                     </a>
                 </li>

@@ -127,7 +127,7 @@ app.component('mc-side-menu', {
             }
         },
         toggleMenu() {
-            this.isOpen = this.isOpen ? false : true;
+            this.isOpen =  true;
         },
         showList(){
             result = true;
@@ -138,6 +138,26 @@ app.component('mc-side-menu', {
                 }
             }));
             return result;
+        },
+        verifyState(evaluation) {
+            console.log(evaluation);
+            console.log(this.entity);
+            switch (evaluation.resultString) {
+                case 'Selecionado' :
+                case 'Válida' :
+                    return 'success__color';
+                    
+                case 'Inválida' : 
+                case 'Não selecionado' : 
+
+                    return 'danger__color';
+                case 'Suplente' :
+                    return 'warning__color';
+
+                case null:
+                default:
+                    return '';
+            }
         }
     },
 });

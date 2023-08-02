@@ -1,11 +1,8 @@
 @use '../settings/mixins' as *;
 
 .opportunity-phase-list-evaluation {
-
-    p {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 19px;
+    .alert {
+        margin-top: 0;
     }
 
     .subscribe_prev_phase {
@@ -13,25 +10,43 @@
         align-items: center;
         justify-content: center;
     }
-
+    &__cardfooter {
+        padding-top: size(24);
+    }
     &_action {
 
         &--button {
-            color: var(--mc-primary-500);
+            color: var(--mc-white);
             font-size: 24px;
             font-weight: 700;
             line-height: 28px;
             text-align: center;
         }
+        
+        &__box {
+            border: 1px solid var(--mc-gray-300);
+            border-radius: size(8);
+            padding: size(16);
+
+            a {
+                margin-top: size(8);
+                color: var(--mc-white);
+                text-decoration: none;
+            }
+
+            .iconify {
+                font-size: size(22.5);
+            }
+
+        }
 
         &--center {
-            display: flex;
-            justify-content: center;
         }
     }
+
     &__line {
         height: size(1);
         border-bottom: size(1) solid var(--mc-gray-100);
-        margin: 0 0 size(20);
+        margin: 0 0 size(10) 0;
     }
 }
