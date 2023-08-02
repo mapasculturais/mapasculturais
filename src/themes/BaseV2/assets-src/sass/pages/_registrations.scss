@@ -8,7 +8,6 @@
     }
     .registration {
         background-color: var(--mc-gray-100);
-        
         .container {
             @include mobile {
                 grid-template-columns: 1fr;
@@ -30,6 +29,13 @@
                 max-width: size(1170);
                 width: 100%;
             }
+           
+        }
+        &__grid {
+            max-width: size(1440);
+        }
+        .section {
+            width: 100%;
         }
 
         &__actions {
@@ -55,7 +61,6 @@
                     gap: size(35);
                     margin: size(32) auto;
                     padding: 0 size(16);
-
                     .mc-card {
                         border-radius: var(--mc-border-radius-xs);
                         padding: size(17) size(24);
@@ -151,7 +156,6 @@
                             gap: size(24);
                             justify-content: space-between;
                             width: 100%;
-
                             .left {
                                 .project {
                                     &__label {
@@ -365,6 +369,7 @@
 
                 &__content {
                     .section {
+                        width: 100%;
                         &__title {
                             font-size: size(32);
                             font-weight: 700;

@@ -16,7 +16,7 @@ $this->import('
 ?>
 <mc-tabs :class="{'hasDrafts': this.totalDrafts>0}" @changed="changed($event)">
     <mc-tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem">
-        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -26,7 +26,7 @@ $this->import('
                                 <mc-icon name="search"></mc-icon>
                             </button>
                         </div>
-                        <select class="order primary__border-solid" v-model="query['@order']" @change="entities.refresh();">
+                        <select class="order primary__border--solid" v-model="query['@order']" @change="entities.refresh();">
                             <option value="owner.name ASC"><?= i::__('ordem alfabética') ?></option>
                             <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
                             <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
@@ -36,17 +36,13 @@ $this->import('
             </template>
             <template #default="{entities}">
                 <div class="registrations__list">
-                    <registration-card v-for="registration in entities" :entity="registration" pictureCard>
-                        <template #button="{entity}">
-                            <a class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Continuar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
-                        </template>
-                    </registration-card>
+                    <registration-card v-for="registration in entities" :entity="registration" :list="entities" pictureCard></registration-card>
                 </div>
             </template>
         </mc-entities>
     </mc-tab>
     <mc-tab label="<?= i::_e('Enviadas') ?>" class="tabs_sent" slug="sent">
-        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">            
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">            
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -56,7 +52,7 @@ $this->import('
                                 <mc-icon name="search"></mc-icon>
                             </button>
                         </div>
-                        <select class="order primary__border-solid" v-model="query['@order']" @change="entities.refresh();">
+                        <select class="order primary__border--solid" v-model="query['@order']" @change="entities.refresh();">
                             <option value="owner.name ASC"><?= i::__('ordem alfabética') ?></option>
                             <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
                             <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
@@ -69,7 +65,7 @@ $this->import('
             </template>
             <template #default="{entities}">
                 <div class="registrations__list">
-                    <registration-card v-for="registration in entities" :entity="registration" picture-card></registration-card>
+                    <registration-card v-for="registration in entities" :entity="registration" :list="entities" picture-card></registration-card>
                 </div>
             </template>
         </mc-entities>

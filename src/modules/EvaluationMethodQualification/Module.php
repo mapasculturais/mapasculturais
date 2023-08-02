@@ -136,9 +136,9 @@ class Module extends \MapasCulturais\EvaluationMethod
 
         if(!$errors){
             foreach($data as $key => $val){
-                if($key === i::__('obs') && !trim($val)) {
-                    $errors[] = i::__('O campo Observações é obrigatório');
-                }
+                // if($key === i::__('obs') && !trim($val)) {
+                //     $errors[] = i::__('O campo Observações é obrigatório');
+                // }
             }
         }
 
@@ -162,6 +162,7 @@ class Module extends \MapasCulturais\EvaluationMethod
             'disabled' => i::__('Inabilitado'),
             'enabled' => i::__('Habilitado'),
             'notApplicable' => i::__('Não se aplica'),
+            'notAvaliable' => i::__('Não avaliada'),
         ]);
 
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.qualification';

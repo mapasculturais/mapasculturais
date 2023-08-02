@@ -34,6 +34,21 @@ app.component('entity-location', {
     },
 
     methods: {
+        verifiedAdress() {
+            if(this.entity.currentUserPermissions['@control']){
+                return true;
+            };
+            const fields = ['En_Nome_Logradouro', 'En_Num', 'En_Bairro', 'En_Municipio', 'En_Estado', 'En_CEP'];
+            let result = this.entity.publicLocation;
+            fields.forEach((element)=> {
+                if(this.entity[element]==null) {
+                    result = false;
+                    return;
+                }
+            });
+               
+            return result;
+        },
         address() {
             let rua         = this.entity.En_Nome_Logradouro == null ? '' : this.entity.En_Nome_Logradouro;
             let numero      = this.entity.En_Num             == null ? '' : this.entity.En_Num;

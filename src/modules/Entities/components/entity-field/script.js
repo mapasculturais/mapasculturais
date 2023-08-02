@@ -12,6 +12,7 @@ app.component('entity-field', {
     },
 
     data() {
+         
         let uid = Math.random().toString(36).slice(2);
         let description, 
             value = this.entity[this.prop];
@@ -66,7 +67,8 @@ app.component('entity-field', {
             __timeout: null,
             description: description,
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
-            fieldType
+            fieldType,
+
         }
     },
 
@@ -125,6 +127,10 @@ app.component('entity-field', {
     },
 
     computed: {
+      
+        charRemaining() {
+            return 400 - this.value.length;
+        },
         hasErrors() {
             let errors = this.entity.__validationErrors[this.prop] || [];
             if(errors.length > 0){
@@ -142,14 +148,15 @@ app.component('entity-field', {
     },
     
     methods: {
+        
         change(event) {
 
+           
             clearTimeout(this.__timeout);
-
             let oldValue = this.entity[this.prop];
-
+            
             this.__timeout = setTimeout(() => {
-                if(this.is('date') || this.is('datetime') || this.is('time')) {
+               if(this.is('date') || this.is('datetime') || this.is('time')) {
                     if(event) {
                         this.entity[this.prop] = new McDate(event);
                     } else {

@@ -62,6 +62,7 @@
 
 				&.without-labels {
 					max-width: size(700);
+					word-break: break-all;
 				}
 
 				width: 100%;

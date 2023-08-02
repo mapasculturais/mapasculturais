@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim \
         sudo 
 
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 RUN npm install -g pnpm
 RUN rm -rf /var/lib/apt/lists
@@ -19,7 +20,8 @@ RUN npm install -g \
         terser \
         uglifycss \
         autoprefixer \
-        postcss
+        postcss \ 
+        pnpm
 
 # Install sass
 RUN gem install sass -v 3.4.22

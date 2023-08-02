@@ -12,10 +12,12 @@
         flex-direction: column;
         box-shadow: 2px 3px 4px -1px rgb(0 0 0 / 16%);
         border-radius: 0px 4px 4px 0px;
-        position: absolute;
         max-height: size(800);
         transition: width .5s;
 
+        @media (max-width: size(500)){
+            display: none;
+        }
         .act-button {
             border: 1px solid var(--mc-gray-100);
             padding: size(13) size(18);
@@ -26,7 +28,7 @@
             gap: size(15);
             background-color: var(--mc-white);
             justify-content: space-between;
-
+           
             .label {
                 font-family: 'Open Sans';
                 font-style: normal;
@@ -204,6 +206,11 @@
                             display: flex;
                             flex-direction: column;
                             gap: size(4);
+                            &__info {
+                                display: flex;
+                                align-items: center;
+                                gap: size(8);
+                            }
                             .state,
                             &label {
                                 font-family: 'Open Sans';
@@ -216,11 +223,15 @@
                             }
 
                             button {
-                                background-color: var(--mc-gray-500);
-                                border-radius: size(64);
+                                background-color: var(--mc-white);
+                                border: none;
+                                display: flex;
+                                gap: size(8);
                                 max-width: size(100);
+                                padding-left: 0;
+                                
                                 label {
-                                    color: var(--mc-white);
+                                    color: var(--mc-low-700);
                                     font-family: 'Open Sans';
                                     font-style: normal;
                                     font-weight: 700;
@@ -228,6 +239,9 @@
                                     line-height: size(16);
                                     text-align: center;
                                     text-transform: capitalize;
+                                }
+                                &-state {
+                                   
                                 }
                             }
                         }

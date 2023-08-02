@@ -16,7 +16,7 @@ $this->import('
 <div :class="classes" class="entity-location grid-12">
     <?php $this->applyTemplateHook('entity-location','begin'); ?>
     <div v-if="!hideLabel" class="entity-location__title col-12">
-        <label ><?= i::__('Endereço')?></label>
+        <label v-if="verifiedAdress()"><?= i::__('Endereço')?></label>
     </div>
     <div class="col-12" v-if="editable">
         <div class="grid-12">
@@ -33,12 +33,12 @@ $this->import('
             </div>
         </div>
     </div>
-    <div class="col-12">
+    <div v-if="verifiedAdress()" class="col-12">
         <p class="entity-location__address">
             <span v-if="entity.endereco">{{entity.endereco}}</span>
             <span v-if="!entity.endereco"><?= i::_e("Sem Endereço"); ?></span>
         </p>
-        <entity-map :entity="entity" :editable="editable"></entity-map>
+        <entity-map  :entity="entity" :editable="editable"></entity-map>
     </div>
     <?php $this->applyTemplateHook('entity-location','end'); ?>
 </div>

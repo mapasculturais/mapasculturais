@@ -69,7 +69,7 @@ use MapasCulturais\i;
                     <div class="column">
 
                         <label ng-if="data.dataForm.type != 'table' && data.dataForm.type != 'horizontalBar'"><?php i::_e("Dados a serem exibidos"); ?></label>
-                        <label ng-if="data.dataForm.type == 'table'"><?php i::_e("Dados a serem exibidos na coluna"); ?></label>
+                        <label ng-if="data.dataForm.type == 'table'"><?php i::_e("Dados a serem exibidos na linha"); ?></label>
                         <label ng-if="data.dataForm.type == 'horizontalBar'"><?php i::_e("Dados a serem exibidos na linha"); ?></label>
                         <select ng-model="data.dataForm.dataDisplayA">
                             <option ng-repeat="(key, dataSelectA) in  data.dataDisplayA" value="{{key}}" label="{{dataSelectA.label}}"></option>
@@ -78,7 +78,7 @@ use MapasCulturais\i;
 
                     <div class="column" ng-if="data.dataForm.type == 'bar' || data.dataForm.type == 'table' || data.dataForm.type == 'horizontalBar'">
                         <label ng-if="data.dataForm.type != 'table' && data.dataForm.type != 'horizontalBar'"><?php i::_e("Dados a serem exibidos"); ?></label>
-                        <label ng-if="data.dataForm.type == 'table'"><?php i::_e("Dados a serem exibidos na linha"); ?></label>
+                        <label ng-if="data.dataForm.type == 'table'"><?php i::_e("Dados a serem exibidos na coluna"); ?></label>
                         <label ng-if="data.dataForm.type == 'horizontalBar'"><?php i::_e("Dados a serem exibidos na coluna"); ?></label>
                         <select ng-model="data.dataForm.dataDisplayB">
                             <option ng-repeat="(key, dataSelectB) in  data.dataDisplayB" value="{{key}}" label="{{dataSelectB.label}}"></option>

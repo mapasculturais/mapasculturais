@@ -26,7 +26,7 @@ $this->tex
 
         <div class="home-header__content--right">
             <div class="img">
-                <img src="<?php $this->asset('img/home/home-header/home-header2.jpg') ?>" />
+                <img src="<?php $this->asset($app->config['module.home']['home-header']) ?>" />
             </div>
         </div>
     </div>

@@ -7,8 +7,8 @@ $(function(){
     var $header = $('#main-header');
     $(window).scroll(function(){
         var top = parseInt($header.css('top'));
-        $formContainer.css('margin-top', top);
-        $list.css('margin-top', top);
+        /* $formContainer.css('margin-top', top);
+        $list.css('margin-top', top); */
     });
 
     $formContainer.find('.js-evaluation-submit').on('click', function(){

@@ -145,3 +145,16 @@
   .tooltip:hover .tooltiptext {
     visibility: visible;
   }
+
+  .descriptio-criteria{
+    font-style: italic;
+    font-size: 12px;
+  }
+
+  .comments{
+    display: flex;
+  }
+
+  .comments div{
+    text-align: left
+  }

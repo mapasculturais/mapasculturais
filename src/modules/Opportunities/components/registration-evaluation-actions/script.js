@@ -97,19 +97,21 @@ app.component('registration-evaluation-actions', {
             return result;
         },
         finishEvaluation() {
-            this.evaluate();
-            this.reloadPage();
+            const promise = this.evaluate();
+            const messages = useMessages();
+
+            promise.then(() => {
+                this.reloadPage();
+            }).catch((res) => {
+                for (let error of res){
+                    console.log(error)
+                    messages.error(error);
+                }
+            })
         },
         send(registration) {
-            api = new API('registration');
-            let url = api.createUrl('sendEvaluation', {id: registration.id});
-
-            var args = {};
-            api.POST(url, args).then(res => res.json()).then(data => {
-                const messages = useMessages();
-                messages.success(this.text('Avaliação enviada'));
-                this.reloadPage();
-            });
+           this.sendEvaluation(registration);
+           this.reloadPage();
         },
         reopen(registration){
             api = new API('registration');
@@ -130,6 +132,7 @@ app.component('registration-evaluation-actions', {
            this.evaluate();
             setTimeout(() => {
                 this.next();
+                this.sendEvaluation(registration);
                 if(this.lastRegistration?.registrationid == registration.id){
                     this.reloadPage();
                 }
@@ -148,9 +151,31 @@ app.component('registration-evaluation-actions', {
             const iframe = document.getElementById('evaluation-form');
             iframe.contentWindow.postMessage({type: "evaluationForm.save"});
         },
+        sendEvaluation(registration){
+            api = new API('registration');
+            let url = api.createUrl('sendEvaluation', {id: registration.id});
+
+            var args = {};
+            api.POST(url, args).then(res => res.json()).then(data => {
+                const messages = useMessages();
+                messages.success(this.text('Avaliação enviada'));
+            });
+        },
         evaluate() {
             const iframe = document.getElementById('evaluation-form');
             iframe.contentWindow.postMessage({type: "evaluationForm.send", status: 'evaluated'});
+
+            return new Promise((resolve, reject) => {
+                window.addEventListener("message", function(event) { 
+                    if (event.data?.type == "evaluation.send.success") {
+                        resolve();
+                    }
+
+                    if (event.data?.type == "evaluation.send.error") {
+                        reject(event.data.error);
+                    }
+                });
+            });
         },
         previous() {
             window.dispatchEvent(new CustomEvent('previousEvaluation', {detail:{registrationId:this.registration.id}}));

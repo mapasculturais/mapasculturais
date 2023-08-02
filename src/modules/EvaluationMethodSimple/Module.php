@@ -36,6 +36,23 @@ class Module extends \MapasCulturais\EvaluationMethod {
         ;
     }
 
+    function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
+    {   
+        $errors = [];
+
+        foreach($data as $key => $val){
+            if($key === i::__('status') && !trim($val)) {
+                $errors[] = i::__('O campo Status é obrigatório');
+            }
+            
+            if($key === i::__('obs') && !trim($val)) {
+                $errors[] = i::__('O campo Observações é obrigatório');
+            }
+        }
+
+        return $errors;
+    }
+
     function enqueueScriptsAndStyles() {
         $app = App::i();
 
@@ -45,6 +62,13 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.simple';
 
         $app->view->jsObject['evaluationStatus']['simple'] = $this->evaluationStatues;
+
+        $app->view->localizeScript('simpleEvaluationMethod', [
+            'saved' => i::__('Avaliação salva'),
+            'applyEvaluationsError' => i::__('É necessário selecionar os campos Avaliação e Status'),
+            'applyEvaluationsSuccess' => i::__('Avaliações aplicadas com sucesso'),
+            'applyEvaluationsNotApplied' => i::__('As avaliações não foram aplicadas.'),
+        ]);
     }
 
     public function _init()

@@ -127,6 +127,7 @@ $this->breadcrumb = [
                     <div class="grid-12">
                         <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
                         <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
+                        <entity-terms :entity="entity" taxonomy="tag" classes="col-12" title="Tags" editable></entity-terms>
                         <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
                     </div>
                 </template>
