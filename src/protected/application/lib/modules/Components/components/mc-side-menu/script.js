@@ -140,8 +140,6 @@ app.component('mc-side-menu', {
             return result;
         },
         verifyState(evaluation) {
-            console.log(evaluation);
-            console.log(this.entity);
             switch (evaluation.resultString) {
                 case 'Selecionado' :
                 case 'Válida' :
