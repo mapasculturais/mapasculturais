@@ -20,7 +20,8 @@ RUN npm install -g \
         terser \
         uglifycss \
         autoprefixer \
-        postcss
+        postcss \ 
+        pnpm
 
 # Install sass
 RUN gem install sass -v 3.4.22
