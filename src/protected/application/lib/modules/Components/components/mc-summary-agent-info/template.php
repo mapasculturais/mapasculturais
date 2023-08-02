@@ -11,7 +11,7 @@ $this->import('
 ');
 ?>
 
-<div class="mc-summary-agent-info">
+<div class="mc-summary-agent-info" :class="classes">
     <div v-if="opportunity && canSee('agentsSummary')" class="mc-summary-agent-info__section">
         <h3><?= i::__("Dados do proponente") ?></h3>
 
