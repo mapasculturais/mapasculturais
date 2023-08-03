@@ -29,7 +29,7 @@ $this->import('
                 <mc-tab label="<?= i::esc_attr__('Todos') ?>" slug="all">
                     <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in entities" :key="entity.__objectId">
-                            <entity-card :entity="entity" portrait>
+                            <entity-card :entity="entity" portrait slice-description>
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
@@ -49,7 +49,7 @@ $this->import('
                 <mc-tab v-if="agents.length > 0" label="<?= i::esc_attr__('Agentes') ?>" slug="agents">
                     <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in agents" :key="entity.__objectId">
-                            <entity-card :entity="entity">
+                            <entity-card :entity="entity" slice-description>
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
@@ -69,7 +69,7 @@ $this->import('
                 <mc-tab v-if="spaces.length > 0" label="<?= i::esc_attr__('Espaços') ?>" slug="spaces">
                     <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in spaces" :key="entity.__objectId">
-                            <entity-card :entity="entity">
+                            <entity-card :entity="entity" slice-description>
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
@@ -89,7 +89,7 @@ $this->import('
                 <mc-tab v-if="projects.length > 0" label="<?= i::esc_attr__('Projetos') ?>" slug="projects">
                     <carousel :settings="settings" :breakpoints="breakpoints">
                         <slide v-for="entity in projects" :key="entity.__objectId">
-                            <entity-card :entity="entity">
+                            <entity-card :entity="entity" slice-description>
                                 <template #labels>
                                     <div :class="['entityType',  entity.__objectType+'__background']">
                                         <mc-icon :entity="entity"></mc-icon>
