@@ -26,7 +26,7 @@ $this->import('
 				<template #default="{entities}">                    
 					<carousel v-if="entities.length > 0" :settings="settings" :breakpoints="breakpoints">
 						<slide v-for="entity in entities" :key="entity.id">
-							<entity-card :entity="entity" portrait></entity-card> 
+							<entity-card :entity="entity" portrait slice-description></entity-card> 
 						</slide> 
 						<template v-if="entities.length > 1" #addons>
 							<div class="actions">
