@@ -34,7 +34,7 @@ $this->import('
             <mc-alert v-if="!phase.publishedRegistrations && !phase.isLastPhase"  class="col-12" type="warning">
                 <?= i::__('Fique atento! A publicação do resultado é opcional e só pode ser feita após o término da fase. <strong>Esta ação deixará público o nome e o número de inscrição das pessoas inscritas.</strong>') ?>
             </mc-alert>
-            <div v-if="!phase.isLastPhase" :class="[{'col-4 opportunity-phase-publish-config-registration__left': !phase.isLastPhase}]">
+            <div v-if="!phase.isLastPhase" :class="[{'col-5 opportunity-phase-publish-config-registration__left': !phase.isLastPhase}]">
                     <div v-if="hideDatepicker && phase.publishTimestamp" class="msgpub-date" :class="[{'col-4': !phase.isLastPhase},]">
                         <p class="bold" v-if="phase.autoPublish && hideCheckbox">
                             <?= sprintf(
@@ -55,13 +55,13 @@ $this->import('
                         <p class="bold"><?= i::__('O resultado será publicado automaticamente') ?></p>
                     </div>
                     <div v-else class="col-4">
-                        <p class="bold"><?= i::__("A publicação do resultado é opcional.") ?></p>
+                        <p class="bold"><?= i::__("Você pode publicar o resultado manualmente a qualquer momento utilizando o botão ao lado.") ?></p>
                     </div>
             </div>
             <div class="opportunity-phase-publish-config-registration__unpublishedlast" :class="[{'col-6':!phase.isLastPhase}, {'col-12 grid-12' : phase.isLastPhase}]">
                 <div v-if="tab=='registrations'" class="opportunity-phase-publish-config-registration__registrationList col-12">
                     <h5 class="bold col-12"><?= i::__("A lista de inscrições pode ser acessada utilizando o botão abaixo")?></h5>
-                    <mc-link  :entity="phase" class="button button--primary button--icon" route="registrations" right-icon>
+                    <mc-link  :entity="phase" class="button button--primary button--icon opportunity-phase-publish-config-registration__unpublishedbtn" route="registrations" right-icon>
                         <h4 class="semibold"><?= i::__("Conferir lista de inscrições") ?></h4><mc-icon name="external"></mc-icon>
                     </mc-link>
 
