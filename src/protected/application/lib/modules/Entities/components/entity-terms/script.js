@@ -51,9 +51,25 @@ app.component('entity-terms', {
             type: String,
             default: ''
         },
+        hideRequired: {
+            type: Boolean,
+            default: false
+        },
     },
 
     computed: {
+        hasErrors(){
+            return !!this.entity.__validationErrors['term-' + this.taxonomy];
+        },
+        errors(){
+            return this.entity.__validationErrors['term-' + this.taxonomy];
+        },
+        required(){
+            return !!$TAXONOMIES[this.taxonomy].required;
+        },
+        error(){
+            return this.entity.__validationErrors['term-' + this.taxonomy] ? 'error' : ''
+        },
         filteredTerms() {
             if (this.allowInsert && this.filter.trim().length == 0) {
                 return [];
