@@ -40,8 +40,8 @@ $this->import('
                     </template>
                 </mc-card>
                 <div v-if="showButton(term.md5)"  class="btn">
-                    <button class="button button--text back" @click="cancel()">Voltar</button>
-                    <button class="button button--primary button--md accept" @click="acceptTerm(slug,term.md5)">{{term.buttonText}}</button>
+                    <button class="button button--text back" @click="cancel()"><?= i::__('Voltar') ?></button>
+                    <button class="button button--primary button--md accept" @click="acceptTerm(slug,term.md5)">{{term.buttonText || "<?= i::esc_html__('Aceito os termos acima')?>"}}</button>
                 </div>
 
                 <mc-card v-if="user && !showButton(term.md5)">
