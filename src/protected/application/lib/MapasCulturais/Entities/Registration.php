@@ -806,7 +806,7 @@ class Registration extends \MapasCulturais\Entity
         $this->checkPermission('send');
         $app = App::i();
 
-        $app->applyHookBoundTo($this, "entity($this->getHookClassPath()).send:before");
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).send:before");
 
         $app->disableAccessControl();
 
@@ -827,7 +827,7 @@ class Registration extends \MapasCulturais\Entity
         
         $app->enqueueEntityToPCacheRecreation($this);
 
-        $app->applyHookBoundTo($this, "entity($this->getHookClassPath()).send:after");
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).send:after");
 
     }
 
