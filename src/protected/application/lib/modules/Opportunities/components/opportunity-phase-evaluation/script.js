@@ -38,6 +38,9 @@ app.component('opportunity-phase-evaluation', {
 
     },
     methods: {
+        canEvaluate(item) {
+            return !item.evaluationTo.isPast();
+        },
         dateFormat(value) {
             const dateObj = new Date(value._date);
             return dateObj.toLocaleDateString("pt-BR");
