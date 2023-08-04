@@ -86,11 +86,14 @@ app.component('registration-actions', {
         },
         async validate() {
             const messages = useMessages();
-            await this.registration.POST('validateEntity', {}).then( success => {
+            try {
+                const success = await this.registration.POST('validateEntity', {});
                 if (success) {
                     messages.success(this.text('Validado'));
                 }
-            });
+            } catch (error) {
+                console.error(error);
+            }
         },
         async save() {
             const iframe = document.getElementById('registration-form');
