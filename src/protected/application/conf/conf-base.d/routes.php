@@ -53,9 +53,9 @@ return [
             'como-usar'         => ['site', 'page', ['como-usar']],
             
             // LGPD
-            'termos-de-uso'             => ['lgpd', 'accept', ['termsOfUsage']], 
-            'uso-de-imagem'             =>['lgpd', 'accept', ['images-use']],
-            'politica-de-privacidade'   => ['lgpd','accept', ['privacyPolicy']],
+            'termos-de-uso'             => ['lgpd', 'view', ['termsOfUsage']], 
+            'politica-de-privacidade'   => ['lgpd','view', ['privacyPolicy']],
+            'uso-de-imagem'             =>['lgpd', 'view', ['termsUse']],
             'termos-e-condicoes'        => ['lgpd','accept'],
 
             // painel
