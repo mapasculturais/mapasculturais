@@ -34,7 +34,7 @@ $this->import('
         </div>
         <div class="field">
             <label> <?php i::_e('Área de atuação') ?> </label>
-            <mc-multiselect :model="pseudoQuery['term:area']" :items="terms" title="<?= i::esc_attr__('Selecione as áreas de atuação') ?>"hide-filter hide-button>
+            <mc-multiselect :model="pseudoQuery['term:area']" :items="terms" title="<?= i::esc_attr__('Selecione as áreas de atuação') ?>" hide-filter hide-button>
                 <template #default="{popover, setFilter}">
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)"  @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
                 </template>
