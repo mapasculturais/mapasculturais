@@ -58,7 +58,7 @@ class Module extends \MapasCulturais\Module
                     if ($app->view instanceof \MapasCulturais\Themes\BaseV1\Theme) {
                         $url =  $app->createUrl('lgpd', 'accept', [$key]);
                     } else {
-                        $url =  $app->createUrl("termos-e-condicoes#{$key}");
+                        $url =  $app->createUrl('lgpd', 'accept') . "#{$key}";
                     }
                     $app->redirect($url);
                 }
