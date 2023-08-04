@@ -22,6 +22,21 @@ app.component('opportunity-phase-evaluation', {
             phases: listPhases
         }
     },
+    computed: {
+        openEvaluations() {
+            return  this.phases.filter(item=> {
+                
+                return (item.currentUserPermissions.evaluateOnTime || item.currentUserPermissions['@control']) && this.canEvaluate(item);
+            })
+        },
+        closedEvaluations() {
+            return  this.phases.filter(item=> {
+                
+                return (item.currentUserPermissions.evaluateOnTime || item.currentUserPermissions['@control']) && !this.canEvaluate(item);
+            })
+        },
+
+    },
     methods: {
         dateFormat(value) {
             const dateObj = new Date(value._date);
