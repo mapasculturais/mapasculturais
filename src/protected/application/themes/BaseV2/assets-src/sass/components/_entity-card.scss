@@ -4,14 +4,8 @@
 	background-color: var(--mc-white);
 	border-radius: var(--mc-border-radius-sm);
 	padding: size(16);
-	width: 100%;
-
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
 	user-select: none;
+	width: 100%;
 
 	&__header {
 		align-items: stretch;
@@ -55,6 +49,7 @@
 				flex-direction: column;
 				gap: size(8);
 				margin: size(4) 0;
+				text-align: left;
 
 				&.with-labels {
 					max-width: size(430);
@@ -62,7 +57,6 @@
 
 				&.without-labels {
 					max-width: size(700);
-					word-break: break-all;
 				}
 
 				width: 100%;
@@ -93,7 +87,6 @@
 
 		&.user-slot {
 			align-items: flex-start;
-			height: 100%;
 			position: absolute;
 			right: 0;
 			max-width: size(280);

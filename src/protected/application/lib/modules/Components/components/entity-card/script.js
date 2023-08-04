@@ -25,7 +25,11 @@ app.component('entity-card', {
         portrait: {
             type: Boolean,
             default: false
-        }
+        },
+        sliceDescription: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     computed: {
@@ -66,5 +70,35 @@ app.component('entity-card', {
         useLabels() {
             return this.openSubscriptions || this.hasSlot('labels')
         }
+    },
+    methods: {
+        slice(text, qtdChars) {
+            if (text && text.length > qtdChars) {
+                let slicedText = text.slice(0, qtdChars);
+
+                let _text = text.split(' '); 
+                let _slicedText = slicedText.split(' ');
+
+                let _textLastWord = _text[_slicedText.length - 1];
+                let _slicedTextLastWord = _slicedText[_slicedText.length - 1];
+
+                /* se palavra for cortada, remove */
+                if (_slicedTextLastWord  !== _textLastWord ) {
+                    _slicedText.pop();
+                    _textLastWord = _slicedText.at(-1);
+                };
+
+                /* verifica pontuações ao final da ultima palavra */
+                let especialChars = ['.', ',', '!', '?'];
+                especialChars.forEach(function(symbol) {
+                    if (_textLastWord.indexOf(symbol) !== -1) {
+                        _slicedText[_slicedText.indexOf(_textLastWord)] = _textLastWord.slice(0, -1);
+                    };
+                });
+
+                return _slicedText.join(' ') + '...';
+            }
+            return text;
+        },
     },
 });
