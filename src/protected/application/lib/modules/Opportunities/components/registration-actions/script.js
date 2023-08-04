@@ -55,6 +55,16 @@ app.component('registration-actions', {
                 }
             }
 
+            if (field.slice(0, 5) == 'file_') {
+                const id = field.slice(5);
+
+                for (let regField of this.fields) {
+                    if (regField.groupName == 'rfc_'+id) {
+                        return regField.title;
+                    }
+                }
+            }
+
             return this.text('Campo não identificado');
 
         },
