@@ -55,6 +55,16 @@ app.component('registration-actions', {
                 }
             }
 
+            if (field.slice(0, 5) == 'file_') {
+                const id = field.slice(5);
+
+                for (let regField of this.fields) {
+                    if (regField.groupName == 'rfc_'+id) {
+                        return regField.title;
+                    }
+                }
+            }
+
             return this.text('Campo não identificado');
 
         },
@@ -76,11 +86,14 @@ app.component('registration-actions', {
         },
         async validate() {
             const messages = useMessages();
-            await this.registration.POST('validateEntity', {}).then( success => {
+            try {
+                const success = await this.registration.POST('validateEntity', {});
                 if (success) {
                     messages.success(this.text('Validado'));
                 }
-            });
+            } catch (error) {
+                console.error(error);
+            }
         },
         async save() {
             const iframe = document.getElementById('registration-form');
