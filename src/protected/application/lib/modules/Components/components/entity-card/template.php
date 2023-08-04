@@ -15,18 +15,18 @@ $this->import('
 	<div class="entity-card__header" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
 		<div class="entity-card__header user-details">
 			<mc-avatar class="user-image" :entity="entity"></mc-avatar>
-			<div class="user-info" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
-				<label class="user-info__name">
-					{{entity.name}}
-				</label>
-				<div class="user-info__attr">
-					<slot name="type">
-						<span v-if="entity.type"> <?php i::_e('Tipo:') ?> {{entity.type.name}} </span>
-					</slot>
 
-				</div>
+			<div class="user-info" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
+				<h4 class="bold"> {{entity.name}} </h4>
+
+				<slot name="type">
+					<div v-if="entity.type" class="user-info__attr">
+						<?php i::_e('Tipo:') ?> {{entity.type.name}}
+					</div>
+				</slot>
 			</div>
 		</div>
+
 		<div class="entity-card__header user-slot">
 			<slot name="labels">
 				<span class="openSubscriptions" v-if="openSubscriptions"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
@@ -35,39 +35,36 @@ $this->import('
 	</div>
 
 	<div class="entity-card__content">
+		<div v-if="entity.__objectType=='space' && entity.endereco" class="entity-card__content--description">
+			<label class="entity-card__content--description-local"><?= i::_e('ONDE: ') ?></label> <strong class="entity-card__content--description-adress">{{entity.endereco}}</strong>
+		</div>
+
+		<div v-if="entity.shortDescription" class="entity-card__content-shortDescription">
+			<small v-if="sliceDescription">{{slice(entity.shortDescription, 300)}}</small>
+			<small v-if="!sliceDescription">{{showShortDescription}}</small>
+		</div>
 
 		<div v-if="entity.__objectType=='space'" class="entity-card__content--description">
-
-			<label v-if="entity.endereco" class="entity-card__content--description-local"><?= i::_e('ONDE: ') ?></label> <strong class="entity-card__content--description-adress">{{entity.endereco}}</strong>
-		</div>
-		<div class="entity-card__content-shortDescription">
-			<span class="short-span">{{showShortDescription}}</span>
-		</div>
-		<div v-if="entity.__objectType=='space'" class="entity-card__content--description">
-
 			<label><?= i::_e('ACESSIBILIDADE:') ?>
-				<strong v-if="entity.acessibilidade">
-					<strong><?= i::_e('Oferece') ?></strong>
-				</strong>
-				<strong v-else> <?= i::_e('Não') ?>
-				</strong>
+				<strong v-if="entity.acessibilidade"> <?= i::_e('Oferece') ?> </strong>
+				<strong v-if="!entity.acessibilidade"> <?= i::_e('Não') ?> </strong>
 			</label>
 		</div>
-		<div class="entity-card__content--terms">
 
+		<div class="entity-card__content--terms">
 			<div v-if="areas" class="entity-card__content--terms-area">
 				<label class="area__title">
 					<?php i::_e('Áreas de atuação:') ?> ({{entity.terms.area.length}}):
 				</label>
 				<p :class="['terms', entity.__objectType+'__color']"> {{areas}} </p>
 			</div>
+
 			<div v-if="tags" class="entity-card__content--terms-tag">
 				<label class="tag__title">
 					<?php i::_e('Tags:') ?> ({{entity.terms.tag.length}}):
 				</label>
 				<p :class="['terms', entity.__objectType+'__color']"> {{tags}} </p>
 			</div>
-
 
 			<div v-if="linguagens" class="entity-card__content--terms-linguagem">
 				<label class="linguagem__title">
@@ -84,12 +81,15 @@ $this->import('
 				<label class="seals__title">
 					<?php i::_e('Selos') ?> ({{entity.seals.length}}):
 				</label>
+
 				<div v-for="seal in seals" class="seals__seal" :title="seal.name">
 					<img class="sealImage" :src="seal.files.avatar?.transformations?.avatarSmall?.url">
 				</div>
-				<div v-if="seals.length == 2" class="seals__seal more">+1</div>
+
+				<div v-if="seals.length > 2" class="seals__seal more">+1</div>
 			</div>
 		</div>
+		
 		<div class="entity-card__footer--action">
 			<a :href="entity.singleUrl" class="button button--primary button--large button--icon">
 				<?php i::_e('Acessar') ?>
