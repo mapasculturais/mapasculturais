@@ -9,8 +9,8 @@ use MapasCulturais\i;
 <div class="stepper-evaluations">
     <div class="stepper-evaluations__title"><label><?= i::__('Avaliações abertas e disponíveis') ?></label></div>
     <div class="line"></div>
-    <div v-for="item in phases">
-        <div class="card-evaluation" v-if="item.currentUserPermissions.evaluateOnTime || item.currentUserPermissions['@control']">
+    <div v-for="item in openEvaluations">
+        <div class="card-evaluation">
             <div class="card_evaluation__content">
                 <h3 class="card-evaluation__content--title">{{item.name}}</h3>
                 <div class="card-evaluation__content--items">
@@ -25,6 +25,8 @@ use MapasCulturais\i;
             </div>
         </div>
     </div>
+    <div v-if="openEvaluations.length === 0" class="out-evalution"><?= i::__('No momento você não possui nenhuma avaliação aberta.') ?></div>
+
     <h3 class="stepper-evaluations__title secondTitle"><?= i::__('Avaliações Encerradas') ?></h3>
     <div class="line"></div>
     <div class="out-evalution"><?= i::__('Você ainda não tem avaliações encerradas.') ?></div>
