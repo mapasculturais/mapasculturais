@@ -11,8 +11,11 @@
         border-radius: size(8);
         margin-bottom: size(32);
         align-items: flex-start;
+            .iconify{
+    
+                font-size: size(22.5);
+            }
     }
-    &__left {}
 
     .modal-confirm {
         .modal__content {
@@ -26,11 +29,6 @@
     &--published {
         width: 100%;
         padding-top: size(16);
-    }
-
-    &__lastphase {
-        
-
     }
 
     .notPublished {
@@ -48,7 +46,7 @@
             }
         }
     }
-  
+ 
     &__line {
         border-top: 1px solid var(--mc-gray-100);
         padding-bottom: size(16);
