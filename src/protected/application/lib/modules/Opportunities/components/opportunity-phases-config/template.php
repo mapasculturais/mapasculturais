@@ -74,7 +74,7 @@ $this->import('
                     <opportunity-create-data-collect-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-data-collect-phase>
                 </div>
             </div>
-
+                
             <div v-if="!showButtons()" class="info-message helper">
                 <mc-icon name="exclamation"></mc-icon>
                 <?= i::__('Não se pode criar novas fases após a publicação do resultado final') ?>
