@@ -35,7 +35,11 @@ section.tab-component.evaluations {
         border-top: 0.5px solid var(--mc-gray-300);
     }
 
-    .card-evaluation {
+    .card {
+    &-list {
+        padding-bottom: size(24);
+    }
+    &-evaluation {
         border-radius: size(4);
         background-color: var(--mc-high-300);
         padding: 16px;
@@ -130,7 +134,10 @@ section.tab-component.evaluations {
 
         }
     }
-
+    &-list:last-child {
+        padding-bottom: unset;
+    }
+    }
     .out-evalution {
         font-family: 'Open Sans';
         font-style: normal;

@@ -36,6 +36,9 @@
         a {
             margin-top: size(8);
             color: var(--mc-white);
+            .iconify{
+                font-size: size(17.5) ;
+            }
         }
     }
 
@@ -43,36 +46,7 @@
         padding-bottom: size(24);
     }
 
-    &--button {
-        // font-family: 'Open Sans';
-        // font-style: normal;
-        // font-weight: 700;
-        // font-size: size(24);
-        // line-height: size(28);
-        // display: flex;
-        // align-items: center;
-        // gap: size(8);
-        // text-decoration: none;
-        // padding-bottom: size(8);
-        // .iconify {
-        //     font-size: size(22.5);
-        // }
-    }
-
     &_action {
-
-        // &--button {
-        //     color: var(--mc-primary-500);
-        //     font-family: 'Open Sans';
-        //     font-style: normal;
-        //     font-weight: 700;
-        //     font-size: size(24);
-        //     line-height: size(28);
-        //     display: flex;
-        //     align-items: center;
-        //     gap: size(8);
-        //     text-decoration: none;
-        //     padding-bottom: size(8);
         .iconify {
             font-size: size(22.5);
         }
