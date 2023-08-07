@@ -11,7 +11,12 @@ app.component('complaint-suggestion', {
         entity: {
             type: Entity,
             required: true,
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
+
     },
 
     data() {
