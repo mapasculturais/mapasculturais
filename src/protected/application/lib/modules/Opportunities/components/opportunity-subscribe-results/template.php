@@ -29,6 +29,22 @@ $this->import('
                 <h2 v-if="item.isLastPhase && tab=='registrations'" class="info__title"><?= i::__('Publicação final dos Resultados') ?></h2>
 
             </div>
+            <div class="dates">
+                <div v-if="!item.isLastPhase" class="date">
+                    <div class="date__title"> <?= i::__('Data de início') ?> </div>
+                    <div v-if="item.registrationFrom" class="date__content">{{item.registrationFrom.date('2-digit year')}}</div>
+                    <div v-if="item.evaluationFrom" class="date__content">{{item.evaluationFrom.date('2-digit year')}}</div>
+                </div>
+                <div v-if="!item.isLastPhase" class="date">
+                    <div class="date__title"> <?= i::__('Data final') ?> </div>
+                    <div v-if="item.registrationTo" class="date__content">{{item.registrationTo.date('2-digit year')}}</div>
+                    <div v-if="item.evaluationTo" class="date__content">{{item.evaluationTo.date('2-digit year')}}</div>
+                </div>
+                <div v-if="showPublishTimestamp(item)" class="date">
+                    <div class="date__title"> <?= i::__('Data de publicação') ?> </div>
+                    <div class="date__content">{{publishTimestamp(item)?.date('2-digit year')}}</div>
+                </div>
+            </div>
         </div>
     </template>
     <template #header-actions="{step, item}">     
@@ -41,13 +57,12 @@ $this->import('
                     <a class="support" @click="modal.open"><?= i::__('Suporte') ?> <mc-icon name="external"></mc-icon></a>
                 </template>
             </mc-modal>   
-
             <a class="expand-stepper" v-if="step.active" @click="step.close()"><label><?= i::__('Diminuir') ?></label><mc-icon name="arrowPoint-up"></mc-icon></a>
             <a class="expand-stepper" v-if="!step.active" @click="step.open()"><label><?= i::__('Expandir') ?></label> <mc-icon name="arrowPoint-down"></mc-icon></a>
         </div>
     </template>
     <template #default="{index, item}">
-
+        
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
             <opportunity-phase-list-evaluation :entity="item" :phases="phases"></opportunity-phase-list-evaluation>
 
