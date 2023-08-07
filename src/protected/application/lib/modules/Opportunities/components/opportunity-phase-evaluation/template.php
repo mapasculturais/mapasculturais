@@ -9,7 +9,7 @@ use MapasCulturais\i;
 <div class="stepper-evaluations">
     <div class="stepper-evaluations__title"><label><?= i::__('Avaliações abertas e disponíveis') ?></label></div>
     <div class="line"></div>
-    <div v-for="item in openEvaluations">
+    <div v-for="item in openEvaluations" class="card-list">
         <div class="card-evaluation">
             <div class="card_evaluation__content">
                 <h3 class="card-evaluation__content--title">{{item.name}}</h3>
