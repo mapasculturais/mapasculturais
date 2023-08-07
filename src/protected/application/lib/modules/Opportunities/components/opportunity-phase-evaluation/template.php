@@ -25,7 +25,7 @@ use MapasCulturais\i;
             </div>
         </div>
     </div>
-    <div v-if="openEvaluations.length === 0" class="out-evalution"><?= i::__('No momento você não possui nenhuma avaliação aberta.') ?></div>
+    <div v-if="openEvaluations.length === 0" class="out-evalution"><?= i::__('Você não tem avaliações abertas ou disponíveis.') ?></div>
 
     <h3 class="stepper-evaluations__title secondTitle"><?= i::__('Avaliações Encerradas') ?></h3>
     <div class="line"></div>
