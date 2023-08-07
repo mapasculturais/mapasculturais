@@ -5,7 +5,11 @@ app.component('mc-summary-agent', {
         entity:{
             type: Entity,
             required: true
-        }
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
     },
     data() {
         let avaliableEvaluationFields = $MAPAS.avaliableEvaluationFields

@@ -51,8 +51,9 @@
 
             .find {
                 border-top: 1px solid var(--mc-gray-100);
-                padding: size(29) size(16) size(50) size(16);
+                padding: size(21) size(16);
                 background-color: var(--mc-white);
+                border-bottom: 1px solid var(--mc-gray-100);
 
                 .content {
                     display: flex;
@@ -129,20 +130,29 @@
             }
 
             ul.evaluation-list {
-                background-color: var(--mc-gray-300);
+                background-color: var(--mc-white);
                 list-style: none;
-                padding: size(16);
+                padding:0;
                 margin: 0;
                 overflow-y: auto;
                 overflow-x: hidden;
                 max-height: size(880);
-
+                
+                li.evaluation-list__card:last-child {
+                    margin-bottom: size(16);
+                }
+                
                 li.evaluation-list__card {
                     background-color: var(--mc-white);
-                    border: 1px solid var(--mc-gray-300);
-                    border-radius: 4px;
                     padding: size(16);
-                    margin-bottom: size(16);
+                   
+                    .evaluation-list__content {
+                        border: 1px solid var(--mc-gray-100);
+                        border-radius: var(--mc-border-radius-xs);
+                        padding: size(16);
+                        background-color: var(--mc-white);
+    
+                    }
                 
                     a {
                         text-decoration: none;
@@ -247,6 +257,10 @@
                         }
                     }
                 }
+                li.evaluation-list__card--modify {
+                    background-color: var(--mc-primary-300);
+                }
+                
             }
 
             .mc-side-menu__button {

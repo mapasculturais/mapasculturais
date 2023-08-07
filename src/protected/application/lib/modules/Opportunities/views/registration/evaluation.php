@@ -59,14 +59,14 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                 </div>
             </aside>
 
-            <main class="col-6">
-                <mc-summary-agent :entity="entity"></mc-summary-agent>
-                <mc-summary-project :entity="entity"></mc-summary-project>
-                <mc-summary-agent-info :entity="entity"></mc-summary-agent-info>
-                <h3 class="section__title"><?= i::__('Dados informados no formulário') ?></h3>
-                <mc-summary-spaces :entity="entity"></mc-summary-spaces>
+            <main class="col-6 grid-12">
+                <mc-summary-agent :entity="entity" classes="col-12"></mc-summary-agent>
+                <registration-info :registration="entity" classes="col-12"></registration-info>
+                <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
+                <h3 class="col-12"><?= i::__('Dados informados no formulário') ?></h3>
+                <mc-summary-spaces :entity="entity" classes="col-12"></mc-summary-spaces>
+                <mc-summary-project :entity="entity" classes="col-12"></mc-summary-project>
                 
-                <registration-info :registration="entity"></registration-info>
 
                 <section class="col-12 section">
                     <div class="section__content">

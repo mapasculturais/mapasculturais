@@ -1,21 +1,15 @@
 @use '../settings/mixins' as *;
 
-.mc-summary-agent {
+.mc-linked-entity {
     display: flex;
-    flex-direction: column;
-    gap: size(13);
+    padding: size(11) size(14);
+    gap: size(8);
+    width: 100%;
+    border-radius: var(--mc-border-radius-xs);
+    align-items: center;
+    background: var(--mc-gray-100);
 
-    &__agent {
-        display: grid;
-        grid-template-columns: size(40) 1fr;
-        gap: size(13);
-        align-items: center;
-        padding: size(12) size(16);
-        background-color: var(--mc-white);
-        border-radius: var(--mc-border-radius-xs);
-    }
-
-    &__img{
+    &__img {
         width: size(40);
         height: size(40);
         border-radius: var(--mc-border-radius-pill);
