@@ -51,7 +51,7 @@ use MapasCulturais\i;
         </div>
         <div class="rightSide">
             <div class="data">
-                <h1 class="title"> {{entity.name}} </h1>
+                <h1 class="bold"> {{entity.name}} </h1>
                 <div class="metadata">
                     <slot name="metadata">
                         <dl class="metadata__id" v-if="entity.__objectType =='agent' && entity.id">
