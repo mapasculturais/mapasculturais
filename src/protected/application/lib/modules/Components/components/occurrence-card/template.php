@@ -19,9 +19,9 @@ $this->import('
                 <mc-icon v-else name="event"></mc-icon>
             </div>
             <div class="user-info">
-                <label class="user-info__name">
+                <h4 class="bold">
                     {{event.name}}
-                </label>
+                </h4>
                 <div class="user-info__attr">
                     <span> {{event.subTitle}} </span>
                 </div>
