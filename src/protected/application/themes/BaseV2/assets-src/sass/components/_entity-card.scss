@@ -50,7 +50,7 @@
 				gap: size(8);
 				margin: size(4) 0;
 				text-align: left;
-
+				word-break: normal;
 				&.with-labels {
 					max-width: size(430);
 				}
