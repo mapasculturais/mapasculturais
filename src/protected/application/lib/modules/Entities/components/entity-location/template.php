@@ -25,9 +25,11 @@ $this->import('
             <entity-field @change="address()" classes="col-2 sm:col-4" :entity="entity" prop="En_Num"></entity-field>
             <entity-field @change="address()" classes="col-10 sm:col-8" :entity="entity" prop="En_Bairro"></entity-field>
             <entity-field @change="address()" classes="col-12" :entity="entity" prop="En_Complemento" label="<?php i::_e('Complemento ou ponto de referência')?>"></entity-field>
+            <entity-field v-if="!ibgeEnable" @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Estado" label="<?php i::_e('Estado')?>"></entity-field>
+            <entity-field v-if="!ibgeEnable" @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Municipio" label="<?php i::_e('Município')?>"></entity-field>
         </div>
     </div>
-    <div class="col-12" v-if="editable">
+    <div class="col-12" v-if="editable && ibgeEnable">
         <div class="grid-12">
             <div class="field col-6">
                 <label class="field__title"><?php i::_e('Estado')?></label>

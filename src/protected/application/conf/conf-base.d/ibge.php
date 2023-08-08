@@ -22476,5 +22476,6 @@ $data = json_decode(
 );
 
 return [
-    'ibge.list' => $data
+    'ibge.enable' => true,
+    'ibge.statesCounties' => $data,
 ];

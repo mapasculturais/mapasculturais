@@ -16,7 +16,8 @@ class Module extends \MapasCulturais\Module{
 
     function _init(){
         $app = App::i();
-        $app->view->jsObject['config']['ibge'] = $app->config['ibge.list'];
+        $app->view->jsObject['config']['ibge'] = $app->config['ibge.statesCounties'];
+        $app->view->jsObject['config']['ibgeEnable'] = $app->config['ibge.enable'];
     }
 
     function register(){
