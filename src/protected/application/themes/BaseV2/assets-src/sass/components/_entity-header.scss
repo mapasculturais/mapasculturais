@@ -103,7 +103,7 @@
                     font-size: size(48);
                     line-height: size(65);
                     margin-top: size(10);
-                    word-break: break-all;
+                    word-break: break-word;
                     @include mobile {
                         font-size: size(24);
                         line-height: size(33);
