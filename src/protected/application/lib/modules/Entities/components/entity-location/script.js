@@ -18,7 +18,9 @@ app.component('entity-location', {
         },
         ibge(){
             return $MAPAS.config.ibge;
-
+        },
+        ibgeEnable(){
+            return $MAPAS.config.ibgeEnable;
         },
         states(){
             let states = [];
