@@ -7,11 +7,31 @@ app.component('entity-location', {
         const hasSlot = name => !!slots[name]
         return { hasSlot }
     },
+    data(){
+        let counties = {};
+        return {counties};
+    },
 
     computed: {
         hasPublicLocation() {
             return !!this.entity.$PROPERTIES.publicLocation;
-        }
+        },
+        ibge(){
+            return $MAPAS.config.ibge;
+
+        },
+        states(){
+            let states = [];
+            Object.keys(this.ibge).forEach((item) => {
+                states.push(item);
+            });
+
+            if(this.entity.En_Estado){
+                this.countiesList();
+            }
+
+            return states;
+        },
     },
 
     props: {
@@ -216,6 +236,9 @@ app.component('entity-location', {
                         }
                     } );
             }            
-        }
+        },
+        countiesList(){
+            this.counties = this.ibge[this.entity.En_Estado].municipios;
+        },
     }
 });
