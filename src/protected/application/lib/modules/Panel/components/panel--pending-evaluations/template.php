@@ -31,7 +31,7 @@ $this->import('
                 
                 
                     <template #title>
-                        <label class="evaluation-name">{{entity.parent?.name || entity.name}}</label>
+                        <h2 class="bold">{{entity.parent?.name || entity.name}}</h2>
                     </template>
 
                     <template #header-actions>
