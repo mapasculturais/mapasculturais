@@ -41,7 +41,7 @@ $this->import('
                     <div v-if="item.evaluationTo" class="date__content">{{item.evaluationTo.date('2-digit year')}}</div>
                 </div>
                 <div v-if="showPublishTimestamp(item)" class="date">
-                    <div class="date__title"> <?= i::__('Data publicação') ?> </div>
+                    <div class="date__title"> <?= i::__('Data de publicação') ?> </div>
                     <div class="date__content">{{publishTimestamp(item)?.date('2-digit year')}}</div>
                 </div>
             </div>
