@@ -21,12 +21,12 @@ $this->import('
                 </slot>
             </div>
             <div class="panel-entity-card__header--info">
-                <h2 class="panel-entity-card__header--info-title">
+                <h2 class="bold">
                     <slot name="title" :entity="entity">
                         {{ entity?.name || entity?.email || entity?.number || entity?.id }}
                     </slot>
                 </h2>
-                <p class="panel-entity-card__header--info-subtitle">
+                <p class="small">
                     <slot name="subtitle" :entity="entity"></slot>
                 </p>
             </div>            
