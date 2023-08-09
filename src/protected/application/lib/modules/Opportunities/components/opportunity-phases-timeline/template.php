@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 $this->import('
     mc-link
+    mc-icon
 ');
 ?>
 <section :class="['timeline', {'center': center}, {'big': big}]">
@@ -31,7 +32,8 @@ $this->import('
 
             <template v-if="registration">
                 <?php $this->applyComponentHook('registration', 'begin'); ?>
-                <div v-if="shouldShowResults(item)">
+                <div v-if="shouldShowResults(item)" class="opportunity-phases-timeline__status">
+                    <mc-icon name="circle"></mc-icon>
                     <p v-if="registration.status == 10"><?= i::__('Inscrição selecionada') ?></p>
                     <p v-if="registration.status == 8"><?= i::__('Inscrição suplente') ?></p>
                     <p v-if="registration.status == 3"><?= i::__('Inscrição não selecionada') ?></p>

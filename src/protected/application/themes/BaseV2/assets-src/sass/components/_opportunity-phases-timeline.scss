@@ -1,0 +1,7 @@
+@use '../settings/mixins' as *;
+
+.opportunity-phases-timeline {
+    &__status {
+        background-color: red;
+    }
+}
