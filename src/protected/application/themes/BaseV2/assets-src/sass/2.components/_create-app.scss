@@ -1,0 +1,9 @@
+@use '../0.settings/mixins' as *;
+
+.create-app{
+    .cardKey{
+    flex-direction: column; 
+    gap: size(10);   
+    }
+
+}

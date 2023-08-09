@@ -1,0 +1,80 @@
+@use '../0.settings/mixins' as *;
+
+
+.home-register {
+    padding: size(60) size(16);
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    &__background {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        height: 100%;
+        overflow: hidden;
+
+        &--img {
+            width: 100%;
+            object-fit: cover;
+            -o-object-fit: cover;
+        }
+
+        &--mask {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-color: var(--mc-home-register);
+            mix-blend-mode: multiply;
+        }
+    }
+
+    &__content {
+        align-items: flex-start;
+        color: var(--mc-white);
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        max-width: size(1170);
+        z-index: 2;
+
+        &--title {
+            font-weight: 700;
+            font-size: size(32);
+            line-height: size(44);
+            @media (max-width:size(800)) {
+                font-size: size(24);
+                line-height: size(28);
+            }
+        }
+
+        &--description{
+            margin: size(16) 0 size(25);
+            font-weight: 400;
+            font-size: size(18);
+            line-height: size(25);
+            @media (max-width:size(800)) {
+                font-size: size(14);
+                line-height: size(19);
+            }
+        }
+
+        &--button {
+            background-color: var(--mc-high-500);
+            border-radius: var(--mc-border-radius-sm);
+            font-size: size(24);
+            line-height: size(28);
+            color: var(--mc-secondary-500);
+            display: flex;
+            justify-content: space-between;
+            max-width: size(544);
+            width: 100%;
+            .iconify {
+                font-size: size(29);
+            }
+        }  
+    } 
+}

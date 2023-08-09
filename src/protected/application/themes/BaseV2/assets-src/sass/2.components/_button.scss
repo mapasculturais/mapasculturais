@@ -1,0 +1,269 @@
+@use '../0.settings/mixins' as *;
+
+.button {
+    align-items: center;
+    appearance: none;
+    border: 2px solid transparent;
+    border-radius: var(--mc-border-radius-sm);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: size(16);
+    font-weight: 600;
+    font-family: 'Open Sans';
+    justify-content: center;
+    line-height: size(18);
+    padding: size(9) size(19);
+    position: relative;
+    text-decoration: none;
+
+    &:hover {
+        filter: contrast(90%);
+    }
+
+    &:active {
+        filter: contrast(100%);
+    }
+
+    &.disabled {
+        cursor: default;
+        opacity: .3;
+        pointer-events: none;
+        background-color: var(--mc-gray-500);
+        border-color: var(--mc-gray-500);
+        color: var(--mc-white);
+    }
+
+    &--icon {
+        gap: size(12);
+        .iconify {
+            font-size: size(16);
+        }
+
+        &-left {
+            flex-direction: row-reverse;
+        }
+    }
+
+    // larguras
+    
+    &--large {
+        width: 100%;
+    }
+
+    // tamanhos
+
+    &--xbg {
+        font-size: size(24);
+        font-weight: 700;
+        line-height: size(28);
+        padding: size(20) size(32);
+
+        .iconify {
+            font-size: size(18);
+        }
+    }
+
+    &--bg {
+        font-size: size(18);
+        font-weight: 700;
+        line-height: size(25);
+        padding: size(17.5) size(32);
+
+        .iconify {
+            font-size: size(18);
+        }
+    }
+
+    &--md {
+        font-size: size(18);
+        font-weight: 600;
+        padding: size(12) size(24);
+
+        .iconify {
+            font-size: size(18);
+        }
+    }
+
+    &--sm {
+        font-size: size(14);
+        padding: size(5) size(15);
+        gap: size(9);
+
+        .iconify {
+            font-size: size(14);
+        }
+    }
+
+    // estilos
+
+    &--rounded {
+        border-radius: var(--mc-border-radius-pill);
+    }
+
+    &--outline {
+        background-color: transparent;
+        border: size(2) solid var(--mc-gray-300);
+        color: var(--mc-gray-500);
+
+        &:hover {
+            border-color: var(--mc-gray-300);
+            background-color: var(--mc-gray-300);
+        }
+    }
+
+    &--primary {
+        background-color: var(--mc-primary-500);
+        border: size(2) solid var(--mc-primary-500);
+        color: var(--mc-white);
+
+        &:hover {
+            border-color: var(--mc-primary-700);
+            background-color: var(--mc-primary-700);
+        }
+
+        &-outline {
+            background-color: var(--mc-white);
+            border: size(2) solid var(--mc-primary-500);
+            color: var(--mc-primary-500);
+
+            &:hover {
+                border-color: var(--mc-primary-700);
+                background-color: var(--mc-primary-700);   
+                color: var(--mc-white);       
+            }
+        }
+    }
+
+    &--secondary {
+        background-color: var(--mc-secondary-500);
+        border: size(2) solid var(--mc-secondary-500);
+        color: var(--mc-high-500);
+        
+        &:hover {
+            border-color: var(--mc-secondary-700);
+            background-color: var(--mc-secondary-700);
+        }
+
+        &-outline {
+            background-color: var(--mc-white);
+            border: size(2) solid var(--mc-secondary-500);
+            color: var(--mc-secondary-500);
+
+            &:hover {
+                border-color: var(--mc-secondary-700);
+                background-color: var(--mc-secondary-700);
+                color: var(--mc-high-500);
+            }
+        }
+    }
+
+    &--secondarylight {
+        background-color: var(--mc-secondary-300);
+        border: size(2) solid var(--mc-secondary-300);
+        color: var(--mc-low-500);
+
+        &:hover {
+            border-color: var(--mc-secondary-700);
+            background-color: var(--mc-secondary-700);
+            color: var(--mc-high-500);
+        }
+
+        &-outline {
+            background-color: var(--mc-white);
+            border: size(2) solid var(--mc-secondary-300);
+            color: var(--mc-secondary-300);
+
+            &:hover {
+                border-color: var(--mc-highlight-700);
+                background-color: var(--mc-highlight-700);
+                color: var(--mc-high-500);
+            }
+        }
+    }
+
+    &--highlight {
+        background-color: var(--mc-highlight-500);
+        border: size(2) solid var(--mc-highlight-500);
+        color: var(--mc-high-500);
+
+        &:hover {
+            border-color: var(--mc-highlight-700);
+            background-color: var(--mc-highlight-700);
+        }
+
+        &-outline {
+            background-color: var(--mc-white);
+            border: size(2) solid var(--mc-highlight-500);
+            color: var(--mc-highlight-500);
+
+            &:hover {
+                border-color: var(--mc-highlight-700);
+                background-color: var(--mc-highlight-700);
+                color: var(--mc-high-500);
+            }
+        }
+    }
+
+    &--solid {
+        background-color: var(--mc-gray-300);
+        border: size(2) solid var(--mc-gray-300);
+        color: var(--mc-black);
+
+        &:hover {
+            border-color: var(--mc-gray-500);
+            background-color: var(--mc-gray-500);
+        }
+
+        &-outline {
+            background-color: var(--mc-white);
+            border: size(2) solid var(--mc-gray-300);
+            color: var(--mc-black);
+
+            &:hover {
+                border-color: var(--mc-gray-500);
+                background-color: var(--mc-gray-500);
+                color: var(--mc-high-500);
+            }
+        }
+
+        &-dark {
+            background-color: #575757;
+            color: var(--mc-white);
+        }
+    }
+
+    &--text {
+        background-color: var(--mc-white);
+        border: size(2) solid transparent;
+        color: var(--mc-black);
+
+        &:hover {
+            border-color: var(--mc-primary-700);
+            color: var(--mc-primary-700);
+        }
+
+        &-outline {
+            background-color: var(--mc-white);
+            border: size(2) solid var(--mc-low-500);
+            color: var(--mc-low-500);
+
+            &:hover {
+                border-color: var(--mc-primary-700);
+                background-color: var(--mc-primary-700);
+                color: var(--mc-high-500);
+            }
+        }
+
+        &-danger {
+            background-color: var(--mc-white);
+            color: var(--mc-black);
+            .iconify {
+                color: var(--mc-error);
+            }
+
+            &:hover {
+                color: var(--mc-error);
+            }
+        }
+    }
+}

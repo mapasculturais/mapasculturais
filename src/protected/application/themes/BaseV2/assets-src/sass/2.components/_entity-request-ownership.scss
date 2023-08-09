@@ -1,0 +1,11 @@
+@use '../0.settings/mixins' as *;
+
+.entity-request-ownership {
+    &__button,
+    &__button:active,
+    &__button:hover {
+        background-color: var(--mc-danger-300);
+        color: var(--mc-low-500);
+        border-color: var(--mc-danger-300);
+    }
+}

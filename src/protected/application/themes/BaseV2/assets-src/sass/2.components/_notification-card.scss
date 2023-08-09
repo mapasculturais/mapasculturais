@@ -1,0 +1,111 @@
+@use '../0.settings/mixins' as *;
+
+.notifications {
+    .notification-card {
+        border-bottom: size(0.5) solid #BBBBBB;
+        border-radius: 0;
+        margin: 0;
+        padding: size(16);
+        margin-bottom: size(16);
+
+        .mc-card__title {
+            display: none;
+        }
+
+        .mc-card__content {
+            display: grid;
+            gap: size(0) size(16);
+            grid-template-columns: size(32) 1fr;
+        }
+
+        .avatar {
+            align-items: center;
+            background-color: var(--mc-gray-100);
+            border-radius: 50%;
+            display: flex;
+            height: size(32);
+            justify-content: center;
+            margin: 0;
+            overflow: hidden;
+            width: size(32);
+
+            svg {
+                font-size: size(16);
+            }
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: size(16);
+
+            &__header {
+                display: flex;
+                flex-direction: column;
+                gap: size(4);
+
+                .title {
+                    font-size: 16px;
+                    line-height: 22px;
+                    margin: 0;
+                    word-break: break-word;
+
+                    a {
+                        color: var(--mc-low-500);
+                        display: contents;
+                        font-weight: bold;
+                        margin: 0;
+                        padding: 0;
+                        text-decoration: none;
+                    }
+                }
+
+                .subtitle {
+                    font-size: 14px;
+                    line-height: 19px;
+                    margin: 0;
+                }
+            }
+
+            &__groupButtons {
+                display: flex;
+                gap: size(16);
+            }
+        }
+
+        &.divider {
+            border-top: 1px solid var(--mc-low-300);
+            padding: 16px 0;
+            margin: 8px 0;
+            border-radius: 0;
+
+            &__divider:last-child {
+                border-bottom: 1px solid #000;
+                margin-bottom: 0;
+            }
+
+            .mc-card__content {
+                gap: size(0) size(12);
+            }
+        }
+    }
+
+    &.tab-component {
+        .notification-card {
+            border-radius: var(--mc-border-radius-xs);
+            border: none;
+
+            .content {
+                gap: size(24);
+
+                &__header {
+                    gap: size(8);
+                }
+            }
+        }        
+    }
+}

@@ -1,4 +1,4 @@
-@use '../settings/mixins' as *;
+@use '../0.settings/mixins' as *;
 $iconColor: var(--mc-primary-500);
 $iconUrl: 'https://api.iconify.design/ic/baseline-arrow-drop-down.svg' +#{$iconColor};
 

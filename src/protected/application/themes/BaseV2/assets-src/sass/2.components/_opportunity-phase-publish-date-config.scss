@@ -1,0 +1,32 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-phase-publish-date-config {
+
+    .button-config {
+        width: 100%;
+    }
+
+    &__left {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: size(16);
+
+        .field {
+            &__title {
+                margin: 0;
+            }
+        }
+    }
+
+    &__checkbox {
+        flex-direction: row;
+        display: flex;
+        align-items: flex-end;
+        padding-bottom: 13px;
+        label {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+        }
+    }
+}

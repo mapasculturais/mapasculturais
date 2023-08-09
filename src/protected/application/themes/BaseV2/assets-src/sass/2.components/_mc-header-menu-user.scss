@@ -1,0 +1,187 @@
+@use '../0.settings/mixins' as *;
+
+.no-scroll {
+    overflow: hidden;
+}
+
+.mc-header-menu-user {
+
+    .popover {
+        &__content {
+            padding: 0;
+        }
+    }
+    &__desktop, 
+    &__mobile {
+        .user {
+            align-items: center;
+            cursor: pointer;
+            display: grid;
+            flex-direction: row;
+            gap: size(4);
+            grid-template-columns: 1fr size(40);
+            justify-content: center;
+            padding: size(5) size(20) size(5) size(16);
+            position: relative;
+    
+            @media (max-width: size(1150)) {
+                grid-template-columns: 1fr;
+            }
+    
+            &__name {
+                font-weight: 600;
+                font-size: size(14);
+                line-height: size(14);
+                white-space: nowrap;
+
+                @media (max-width: size(1150)) {
+                    display: none;
+                }
+            }
+
+            &__avatar {
+                align-items: center;
+                border: var(--mc-border-hairline) var(--mc-gray-100);
+                border-radius: 50%;
+                color: var(--mc-low-500);
+                display: flex;
+                height: size(40);
+                justify-content: center;
+                overflow: hidden;
+                width: size(40);
+    
+                img {
+                    max-width: 100%;
+                }
+            }
+
+            &::before {
+                align-items: center;
+                background: url('https://api.iconify.design/ic/baseline-arrow-drop-down.svg') no-repeat center center / contain;
+                background-size: size(20);
+                content: "";
+                display: flex;
+                height: size(15);
+                justify-content: center;
+                position: absolute;
+                right: 0;
+                width: size(15);
+            }
+        }
+    }
+
+    &__desktop {
+        @media (max-width: size(860)) {
+            display: none !important;
+        }
+    }            
+
+    &__mobile {
+        display: none;
+        
+        @media (max-width: size(860)) {
+            display: block;
+        }
+
+        &--button {
+            position: relative;
+        }
+
+        &--name {
+            display: none;
+        }
+
+        &--list {
+            height: 100vh;
+            left: 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+
+            .panel-nav {
+                background-color: white;
+                overflow-y: scroll;
+                display: block;
+                height: calc(100% - 90px);
+                padding: size(16) size(16) size(70);
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        .close {
+            align-items: center;
+            background-color: white;
+            border-top: none;
+            box-shadow: var(--mc-shadow-lv1);
+            display: flex;
+            gap: size(30);
+            height: size(90);
+            justify-content: space-between;
+            margin: 0 auto;
+            max-width: size(1440);
+            padding: 0 size(16);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+
+            &__btn {
+                background: none;
+                border: none;
+                color: var(--mc-low-500);
+                cursor: pointer;
+                display: flex;
+                margin-right: size(21);
+                padding: size(6);
+                text-decoration: none;
+
+                .iconify {
+                    font-size: size(25);
+                    right: 0;
+                }
+            }
+
+            &:hover {
+                background-color: white;
+                color: var(--mc-low-500);
+            }
+
+            .theme-logo {
+                max-width: size(379);
+                margin-left: size(43);
+                margin-right: size(18);
+                width: 100%;
+
+                @media (max-width: size(430)) {
+                    .theme-logo__text {
+                        font-size: size(11);
+                        letter-spacing: size(3);
+                        line-height: size(15);
+                    }
+                }
+            }
+        }
+        @media (max-width:size(400)) {
+            .close {
+               height: size(53); 
+            }
+        }
+
+        .mc-header-menu-user__itens {
+            list-style: none;
+            width: 100%;
+        }
+    }
+
+    &.mobile {
+        display: none;
+
+        @media (max-width: size(860)) {
+            display: flex;
+            position: relative;
+            z-index: 99;
+        }
+    }
+}

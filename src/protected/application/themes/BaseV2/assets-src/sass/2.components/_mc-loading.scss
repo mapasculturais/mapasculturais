@@ -1,0 +1,17 @@
+@use '../0.settings/mixins' as *;
+
+.mc-loading {
+    align-items: center;
+    display: flex;
+    gap: size(12);
+    font-weight: 700;
+    font-size: size(18);
+    line-height: size(25);
+    margin: 0 auto;
+    justify-content: center;
+    
+    .iconify {
+        font-size: size(40);
+    }
+
+}

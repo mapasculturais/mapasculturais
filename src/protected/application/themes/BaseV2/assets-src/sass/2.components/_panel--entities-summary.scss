@@ -1,0 +1,80 @@
+@use '../0.settings/mixins' as *;
+
+.panel--entities-summary {
+    display: grid;
+    gap: size(24);
+    grid-template-columns: repeat(5, 1fr);
+    overflow-x: auto;
+    padding-bottom: size(5);
+
+    &__card {
+        width: 100%;
+        border-radius: var(--mc-border-radius-xs);
+        flex-shrink: 0;
+        padding: 0.8rem;
+        background-color: var(--mc-high-500);
+        min-width: size(168);
+
+        @media (max-width:size(800)) {}
+
+        .card-summary#summary {
+
+            text-decoration: none;
+            color: var(--mc-low-700);
+        }
+
+        &--header {
+            display: flex;
+            gap: size(8);
+            align-items: center;
+
+            &-icon {
+                width: size(28);
+                height: size(28);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: var(--mc-border-radius-pill);
+
+                .iconify {
+                    width: size(14);
+                    height: size(14);
+                }
+            }
+
+            &-label {
+                font-weight: 600;
+                font-size: size(14);
+                line-height: size(22);
+            }
+        }
+
+        &--counter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: size(16) 0 size(19);
+
+            &-num {
+                font-weight: 700;
+                font-size: size(32);
+                line-height: size(35);
+            }
+
+            &-label {
+                font-weight: 600;
+                font-size: size(14);
+                line-height: size(19);
+            }
+        }
+
+        .agent-summary {
+            max-width: size(120);
+
+            button {
+                margin-left: size(11);
+            }
+        }
+    }
+}

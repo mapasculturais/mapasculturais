@@ -1,0 +1,167 @@
+@use '../0.settings/mixins' as *;
+
+.entity-seals {
+    margin: 0;
+
+    &__title {
+        margin: 0 0 size(10) 0;
+    }
+
+    &__seals {
+        display: flex;
+        gap: size(20);
+        flex-wrap: wrap;
+
+        &--seal {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .seal-label {
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 19px;
+            }
+
+            .seal-icon {
+                align-items: center;
+                background: #C4C4C4;
+                border-radius: var(--mc-border-radius-xs);
+                cursor: pointer;
+                display: flex;
+                height: size(48);
+                justify-content: center;
+                position: relative;
+                width: size(48);
+
+                .link {
+                    text-decoration: none;
+                    color: inherit;
+
+                    .iconify {
+                        font-size: size(28);
+                    }
+                }
+
+                .image {
+                    align-items: center;
+                    border-radius: var(--mc-border-radius-xs);
+                    display: flex;
+                    height: 100%;
+                    justify-content: center;
+                    overflow: hidden;
+                    width: 100%;
+
+                    img {
+                        max-height: 100%;
+                        height: size(47);
+                        width: size(47);
+                    }
+                }
+
+                .icon {
+                    align-items: center;
+                    background-color: red;
+                    border-radius: 50%;
+                    color: white;
+                    cursor: pointer;
+                    display: flex;
+                    font-size: size(13);
+                    height: size(16);
+                    justify-content: center;
+                    position: absolute;
+                    top: size(-8);
+                    right: size(-8);
+                    width: size(16);
+                }
+            }
+
+
+
+        }
+
+        &--addSeal {
+            align-items: center;
+            border: size(1) solid;
+            border-radius: var(--mc-border-radius-xs);
+            display: flex;
+            height: size(47);
+            justify-content: center;
+            position: relative;
+            width: size(47);
+            cursor: pointer;
+
+            &-list {
+                margin: 0;
+                list-style: none;
+                padding: 0;
+                display: flex;
+                gap: size(8);
+                width: size(272);
+                flex-wrap: wrap;
+            }
+        }
+    }
+
+    &__card {
+
+        margin-top: 16px;
+        padding-right: 16px;
+        margin-right: 18px;
+        height: 100%;
+
+        &--header {
+            margin-bottom: 16px;
+
+            &-title {
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 25px;
+            }
+        }
+
+        &--content {
+            height: size(158);
+            width: size(700);
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--mc-gray-500);
+            border-radius: var(--mc-border-radius-xs);
+            padding: 8px 16px 8px 16px;
+
+        }
+    }
+
+    &__history {
+        &--title {
+            font-weight: 700;
+            font-size: 12px;
+            line-height: 16px;
+            color: #000000;
+        }
+
+        &--link {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 20px;
+            color: #0074C1;
+            text-decoration: none;
+        }
+    }
+
+    &__valid {
+        &--label {
+            color: #1E1E1E;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 28px
+        }
+
+        &--content {
+            background: #E8E8E8;
+            border-radius: 4px;
+            padding: 10px;
+        }
+    }
+}
