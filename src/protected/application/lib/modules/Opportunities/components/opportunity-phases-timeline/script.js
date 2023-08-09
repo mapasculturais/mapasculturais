@@ -116,6 +116,7 @@ app.component('opportunity-phases-timeline', {
 			
 			return $MAPAS.registrationPhases ? $MAPAS.registrationPhases[phaseOpportunity.id] : null;
 		},
+	
 		verifyState(registration) {
             switch (registration.status) {
                 case 10:
@@ -133,6 +134,6 @@ app.component('opportunity-phases-timeline', {
                 default:
                     return '';
             }
-		}
+        }
 	}
 });
