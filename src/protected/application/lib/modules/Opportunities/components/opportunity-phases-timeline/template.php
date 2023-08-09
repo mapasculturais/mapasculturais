@@ -32,13 +32,17 @@ $this->import('
 
             <template v-if="registration">
                 <?php $this->applyComponentHook('registration', 'begin'); ?>
-                <div v-if="shouldShowResults(item)" class="opportunity-phases-timeline__status">
-                    <mc-icon name="circle"></mc-icon>
-                    <p v-if="registration.status == 10"><?= i::__('Inscrição selecionada') ?></p>
-                    <p v-if="registration.status == 8"><?= i::__('Inscrição suplente') ?></p>
-                    <p v-if="registration.status == 3"><?= i::__('Inscrição não selecionada') ?></p>
-                    <p v-if="registration.status == 2"><?= i::__('Inscrição inválida') ?></p>
-                    <p v-if="registration.status == 0"><?= i::__('Inscrição não enviada') ?></p>
+                <div v-if="shouldShowResults(item)" class="opportunity-phases-timeline__box">
+                    <label class="semibold opportunity-phases-timeline__label"><?= i::__('RESULTADO DA FASE')?></label>
+                    <div class="opportunity-phases-timeline__status">
+                        <mc-icon name="circle" :class="verifyState(registration)"></mc-icon>
+                        <p v-if="registration.status == 10"><?= i::__('Inscrição selecionada') ?></p>
+                        <p v-if="registration.status == 8"><?= i::__('Inscrição suplente') ?></p>
+                        <p v-if="registration.status == 3"><?= i::__('Inscrição não selecionada') ?></p>
+                        <p v-if="registration.status == 2"><?= i::__('Inscrição inválida') ?></p>
+                        <p v-if="registration.status == 0"><?= i::__('Inscrição não enviada') ?></p>
+                    </div>
+                    <button class="button button--primary"><?= i::__('Exibir parecer')?></button>
                 </div>
 
                 <div v-if="isDataCollectionPhase(item) && isActive(item) && item.status == 0">
