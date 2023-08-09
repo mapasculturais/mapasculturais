@@ -1,0 +1,153 @@
+@use '../0.settings/mixins' as *;
+
+.stepper {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    max-width: size(1170);
+    position: relative;
+    width: 100%;
+
+    .step {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        min-width: size(87);
+        position: relative;
+        width: 100%;
+
+        &:first-child {
+            &::before {
+                content: unset;
+            }
+
+            .count {
+                background-color: var(--mc-secondary-500);
+            }
+        }
+
+        &::before {
+            background: var(--mc-gray-300);
+            content: '';
+            height: size(2);
+            position: absolute;
+            right: 50%;
+            transition: 
+                background-color 300ms linear,
+                color 300ms;
+            top: size(20);
+            width: 100%;
+        }
+
+        .count {
+            align-items: center;
+            background-color: var(--mc-gray-300);
+            border-radius: 50%;
+            color: var(--mc-gray-300);
+            display: flex;
+            font-size: size(24);
+            font-weight: 700;
+            height: size(40);
+            justify-content: center;
+            line-height: size(28);
+            transition: 
+                background-color 300ms linear,
+                color 300ms;
+            width: size(40);
+            z-index: 1;
+        }
+
+        .label {
+            font-weight: 400;
+            font-size: size(14);
+            line-height: size(19);
+            text-align: center;
+            transition: opacity 300ms;
+            opacity: 0;
+
+            &.active {
+                color: var(--mc-secondary-500);
+                font-weight: 700;
+            }
+
+            &.show {
+                opacity: 1;
+            }
+        }
+
+        &:hover {
+            .label {
+                opacity: 1;
+            }
+        }
+
+        &.active {
+            cursor: default;
+        }
+        
+        &.passedby {
+            .label {
+                color: var(--mc-secondary-500);
+                font-weight: 700;
+            }
+
+            .count {
+                background-color: var(--mc-secondary-500);
+                color: var(--mc-high-500);
+            }
+
+            &::before {
+                background-color: var(--mc-secondary-500);
+            }
+        }
+    }
+    
+
+    &.small {
+        .step {
+            min-width: size(71);
+
+            &::before {
+                @include mobile {
+                    top: size(16);
+                }
+            }
+
+            .count {
+                height: size(24);
+                margin: size(8) 0;
+                width: size(24);
+
+                @include mobile {
+                    font-size: size(18);
+                    height: size(16);
+                    line-height: size(25);
+                    width: size(16);
+                }
+            }
+
+            &.passedby {
+                &.active {
+                    .count {
+                        height: size(40);
+                        margin: 0;
+                        width: size(40);
+                        
+                        @include mobile {
+                            height: size(32);
+                            width: size(32);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.noNavigation {
+        .step {
+            cursor: default;
+        }
+    }
+}

@@ -1,0 +1,27 @@
+@use '../0.settings/mixins' as *;
+
+.info-message {
+    padding: size(16);
+    border-radius: size(4);
+    margin-bottom: size(13);
+
+    &.helper {
+        background-color: var(--mc-helper-500);
+        color: var(--mc-high-500);
+    }
+
+    &.warning {
+        background-color: var(--mc-warning-500);
+        color: var(--mc-high-500);
+    }
+
+    &.success {
+        background-color: var(--mc-success-500);
+        color: var(--mc-high-500);
+    }
+
+    &.error {
+        background-color: var(--mc-danger-500);
+        color: var(--mc-high-500);
+    }
+}

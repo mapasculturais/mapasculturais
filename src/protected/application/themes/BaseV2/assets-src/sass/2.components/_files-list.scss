@@ -1,0 +1,69 @@
+@use '../0.settings/mixins' as *;
+
+.files-list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .button-up {
+        svg {
+            font-size: size(18.5);
+        }
+    }
+
+    &__title {
+        font-weight: 700;
+        font-size: size(18);
+        line-height: size(25);
+        margin-bottom: size(8);
+    }
+
+    &__list {
+        list-style: none;
+        padding: 0;
+        margin: size(2) 0 size(10);
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+
+        &--item {
+            display: flex;
+            align-items: center;
+            gap: size(10);
+            justify-content: space-between;
+
+            &-link {
+                align-items: center;
+                color: var(--mc-black);
+                display: grid;
+                font-family: var(--mc-font-body);
+                font-size: size(18);
+                font-style: normal;
+                font-weight: 700;
+                gap: size(10);
+                grid-template-columns: size(18) 1fr;
+                justify-items: center;
+                line-height: size(25);
+                margin: size(7) 0;
+                text-decoration: none;
+                word-break: break-word;
+
+                .iconify {
+                    font-size: size(18);
+                }
+            }
+
+            .edit {
+                display: flex;
+                gap: size(14);
+                line-height: size(25);
+
+                .iconify {
+                    cursor: pointer;
+                    font-size: size(14);
+                }
+            }
+        }
+    }
+}

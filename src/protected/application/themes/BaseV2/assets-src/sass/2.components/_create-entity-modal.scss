@@ -1,0 +1,26 @@
+@use '../0.settings/mixins' as *;
+
+.create-agent-modal,
+.create-space-modal,
+.create-project-modal,
+.create-opportunity-modal,
+.create-event-modal {
+    @media (max-width:size(800)) {
+        .modal-content {
+
+            .modal__header {
+                padding-bottom: size(4);
+            }
+
+            .modal__content {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                flex-grow: 1;
+            }
+
+            .modal__action {
+            }
+        }
+    }
+}

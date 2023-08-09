@@ -1,0 +1,191 @@
+@use '../0.settings/mixins'as *;
+
+.entity-occurrence-list {
+    display: flex;
+    flex-direction: column;
+    gap: size(21);
+
+    &__editable {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+
+        &--title {
+            font-size: size(24);
+            font-weight: 700;
+            line-height: size(28);
+        }
+
+        &--description {
+            font-weight: 400;
+            font-size: size(18);
+            line-height: size(25);
+            margin: size(18) 0 size(26);
+        }
+    }
+
+    &__occurrences {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+
+        .occurrence {
+            margin-bottom: size(13);
+            position: relative;
+            width: 100%;
+
+            &__card {
+                border: size(1) solid var(--mc-gray-300);
+                border-radius: var(--mc-border-radius-xs);
+                padding: size(24) size(20);
+
+                @media (max-width: size(500)) {
+                    position: relative;
+                    padding-bottom: size(60);
+                }
+
+                .header {
+                    display: flex;
+                    justify-content: space-between;
+
+                    &__title {
+                        align-items: center;
+                        display: flex;
+                        font-weight: 800;
+                        gap: size(10);
+
+                        .iconify {
+                            height: size(16);
+                            width: size(16);
+                        }
+
+                        .title {
+                            font-size: size(18);
+                            line-height: size(25);
+
+                            @media (max-width: size(500)) {
+                                font-size: size(14);
+                                line-height: size(19);
+                            }
+                        }
+                    }
+
+                    &__link {
+                        align-items: center;
+                        color: var(--mc-primary-500);
+                        cursor: pointer;
+                        display: flex;
+                        gap: size(12);
+
+                        .iconify {
+                            height: size(16);
+                            width: size(16);
+                        }
+
+                        @media (max-width: size(500)) {
+                            position: absolute;
+                            bottom: size(24);
+                        }
+                    }
+                }
+
+                .address {
+                    p {
+                        margin: 0;
+                        font-weight: 500;
+                        font-size: size(14);
+                        line-height: size(19);
+                        color: var(--mc-low-700);
+
+                        @media (max-width: size(500)) {
+                            font-size: size(12);
+                            line-height: size(16);
+                        }
+                    }
+                }
+
+                .content {
+                    align-items: flex-start;
+                    display: flex;
+                    flex-direction: column;
+                    gap: size(10);
+                    margin-top: size(20);
+
+                    &__ticket,
+                    &__price{
+                        align-items: center;
+                        display: flex;
+                        gap: size(10);
+
+                        &--value,
+                        &--info {
+                            align-items: center;
+                            display: flex;
+                            gap: size(10);
+                        }
+
+                        .ticket,
+                        .value,
+                        .info {
+                            font-weight: 600;
+                            font-size: size(14);
+                            line-height: size(20);
+
+                            @media (max-width: size(500)) {
+                                font-size: size(12);
+                                line-height: size(18);
+                            }
+                        }
+
+                        .iconify {
+                            width: size(18);
+                            height: size(18);
+                        }
+                    }
+                }
+            }
+
+            &__map {
+                height: 0;
+                overflow: hidden;
+                transition: height .3s ease-in;
+
+                .mc-map {
+                    height: size(250);
+
+                    @media (max-width: size(500)) {
+                        height: size(160);
+                    }
+                }
+
+                &.showMap {
+                    height: size(250);
+
+                    @media (max-width: size(500)) {
+                        height: size(160);
+                    }
+                }
+            }
+
+            &__actions {
+                padding: size(16);
+                display: flex;
+                gap: size(24);
+
+                &--edit,
+                &--delete {
+                    align-items: center;
+                    cursor: pointer;
+                    display: flex;
+                    gap: size(8);
+                }
+
+                &--delete {
+                    .iconify {
+                        color: var(--mc-danger-500);
+                    }
+                }
+            }
+        }
+    }
+}

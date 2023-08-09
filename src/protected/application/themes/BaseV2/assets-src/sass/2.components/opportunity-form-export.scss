@@ -1,0 +1,26 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-form-export {
+  
+&__button {
+    padding: size(16) 0 size(16) 0;
+    display: flex;
+    gap: size(29);
+    justify-content: flex-end;
+    .view, .export {
+        max-width: size(270);
+        width: 100%;
+        &.button {
+            border-radius: 8px;
+            background-color: var(--mc-white);
+            color: var(--mc-primary-500);
+            border: size(2) solid var(--mc-primary-500);
+        }
+        &:hover {
+           background-color: var(--mc-primary-500);
+            color: var(--mc-white);
+        }
+    }
+   
+}
+}

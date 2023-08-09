@@ -1,0 +1,82 @@
+@use '../0.settings/mixins' as *;
+
+.user-mail {
+    &__account-config {
+        margin: 24px 0;
+        padding: size(12) 0 size(24) size(16);
+        background-color: var(--mc-high-500);
+
+
+        &-label {
+
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 25px;
+            margin-bottom: 16px;
+        }
+
+        &-email {
+            font-style: normal;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 19px;
+            gap: 9px;
+            padding-right: 18px;
+        }
+
+        &-edit {
+            gap: size(18);
+
+            svg {
+                color: var(--mc-helper-500);
+                margin-right: 8px;
+            }
+
+            &-label {
+                margin-left: size(8px);
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 19px;
+                color: var(--mc-helper-500);
+            }
+        }
+
+        &-form {
+            margin: 16px 0;
+            align-items: center;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .field {
+                gap: 0;
+
+            }
+        }
+
+
+    }
+
+    @media (max-width: size(800)) {
+        &__account-config {
+
+            // margin-inline: size(32);
+            &-form {
+                display: flex;
+                flex-direction: column;
+
+                .mail-buttons {
+                    flex-direction: column;
+                    display: flex;
+                    gap: 10px;
+                }
+            }
+
+            p {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+}

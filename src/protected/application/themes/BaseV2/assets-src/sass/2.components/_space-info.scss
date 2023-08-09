@@ -1,0 +1,55 @@
+@use '../0.settings/mixins' as *;
+
+.space-info {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    
+    &--label {
+        font-weight: 700;
+        font-size: size(18);
+        line-height: size(25);
+    }
+
+    &__hour,
+    &__location,
+    &__accessibility,
+    &__infos {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__infos {
+        &--capacidade,
+        &--telefone,
+        &--email {
+            span {
+                font-weight: 600;
+            }
+        }
+    }
+
+    &__location {
+        .entity-location__title {
+            display: none;
+        }
+    }
+
+    &__hour{
+        &--content {
+            align-items: center;
+            background-color: var(--mc-gray-100);
+            display: flex;
+            font-weight: 700;
+            font-size: 24px;
+            height: size(64);
+            line-height: 28px;
+            padding: size(13) size(23);
+            width: 100%;
+            color: var(--mc-gray-700);
+        }
+    }
+
+
+}

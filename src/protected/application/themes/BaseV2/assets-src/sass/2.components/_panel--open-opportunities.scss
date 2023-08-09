@@ -1,0 +1,105 @@
+@use '../0.settings/mixins' as *;
+
+.panel--open-opportunities {
+    &__content {
+        width: 100%;
+
+        &--title {
+            font-size: size(24);
+            font-weight: 700;
+            line-height: size(28);
+            margin-bottom: size(16);
+        }
+
+        &--cards {
+
+            .carousel {
+                .actions {
+                    display: flex;
+                    gap: size(18);
+                    position: absolute;
+                    right: 0;
+                    top: size(-50);
+
+                    button.carousel__prev {
+                        background: url(https://api.iconify.design/akar-icons/arrow-left.svg?color=%230074C1) no-repeat center center / size(15);
+                    }
+
+                    button.carousel__next {
+                        background: url(https://api.iconify.design/akar-icons/arrow-right.svg?color=%230074C1) no-repeat center center / size(15);
+                    }
+
+                    button.carousel__prev,
+                    button.carousel__next {
+                        background-color: var(--mc-high-500);
+                        border: none;
+                        border-radius: var(--mc-border-radius-pill);
+                        height: size(40);
+                        width: size(40);
+                    }
+
+                    .carousel__icon {
+                        display: none;
+                    }
+                }
+            }
+
+            .card {
+                align-items: flex-start;
+                background-color: var(--mc-high-500);
+                border-radius: var(--mc-border-radius-xs);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                margin: 0 size(12);
+                min-height: size(224);
+                padding: size(16);
+                width: 100%;
+
+                &__content {
+                    align-items: flex-start;
+                    display: flex;
+                    flex-direction: column;
+                    gap: size(16);
+                    margin-bottom: size(16);
+
+                    &--title {
+                        align-items: center;
+                        display: flex;
+                        font-size: size(16);
+                        font-weight: 700;
+                        gap: size(8);
+                        line-height: size(22);
+                        text-align: left;
+
+                        img {
+                            border-radius: var(--mc-border-radius-pill);
+                            height: size(48);
+                            width: size(48);
+                        }
+                    }
+
+                    &--description {
+                        font-size: size(12);
+                        font-weight: 400;
+                        line-height: size(16);
+                        text-align: left;
+                    }
+
+                    &--inscricao {
+                        align-items: flex-start;
+                        display: flex;
+                        flex-direction: column;
+                        padding: size(8) size(4);
+                    }
+                }
+
+                &__action {
+                    display: flex;
+                    justify-content: flex-end;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

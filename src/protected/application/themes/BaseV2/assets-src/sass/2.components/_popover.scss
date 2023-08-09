@@ -1,0 +1,31 @@
+@use '../0.settings/mixins'as *;
+
+.popover {
+    &__content {
+        position: relative;
+        padding: size(16) size(16);
+
+        .field,
+        form {
+            &:first-child {
+                margin-top: 0;
+            }
+
+            .input {
+                border: 1px solid var(--mc-gray-100);
+                border-radius: var(--mc-border-radius-xs);
+                color: var(--mc-low);
+                font-size: size(16);
+                outline: 0;
+                padding: size(14);
+                width: 100%;
+                min-width: size(213);
+            }
+        }
+
+        .actions {
+            display: flex;
+            gap: size(10);
+        }
+    }
+}
