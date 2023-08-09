@@ -115,6 +115,24 @@ app.component('opportunity-phases-timeline', {
 			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
 			
 			return $MAPAS.registrationPhases ? $MAPAS.registrationPhases[phaseOpportunity.id] : null;
+		},
+		verifyState(registration) {
+            switch (registration.status) {
+                case 10:
+                    return 'success__color';
+                    
+                case 2 : 
+                case 0 : 
+
+                    return 'danger__color';
+				case 3 : 
+				case 8 : 
+                    return 'warning__color';
+
+                case null:
+                default:
+                    return '';
+            }
 		}
 	}
 });
