@@ -8,28 +8,32 @@ app.component('entity-location', {
         return { hasSlot }
     },
     data(){
-        let counties = {};
-        return {counties};
+        let cities = {};
+        return {cities};
     },
 
     computed: {
         hasPublicLocation() {
             return !!this.entity.$PROPERTIES.publicLocation;
         },
-        ibge(){
-            return $MAPAS.config.ibge;
+        statesAndCities(){
+            return $MAPAS.config.statesAndCities;
         },
-        ibgeEnable(){
-            return $MAPAS.config.ibgeEnable;
+        statesAndCitiesEnable(){
+            return $MAPAS.config.statesAndCitiesEnable;
         },
         states(){
             let states = [];
-            Object.keys(this.ibge).forEach((item) => {
-                states.push(item);
+            Object.keys(this.statesAndCities).forEach((item) => {
+                let data = {
+                    value: this.statesAndCities[item].sigla,
+                    name: this.statesAndCities[item].nome
+                }
+                states.push(data);
             });
 
             if(this.entity.En_Estado){
-                this.countiesList();
+                this.citiesList();
             }
 
             return states;
@@ -239,8 +243,8 @@ app.component('entity-location', {
                     } );
             }            
         },
-        countiesList(){
-            this.counties = this.ibge[this.entity.En_Estado].municipios;
+        citiesList(){
+            this.cities = this.statesAndCities[this.entity.En_Estado].municipios;
         },
     }
 });
