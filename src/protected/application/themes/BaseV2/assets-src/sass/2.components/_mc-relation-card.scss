@@ -1,0 +1,129 @@
+@use '../0.settings/mixins' as *;
+
+/* popover do agente */
+.relation-popover {
+    .popover__content {
+        padding: 0;
+    }
+    
+    .modal__header {
+        display: none;
+    }
+    .modal__content {
+        margin: 0;
+        padding: 0;
+    }
+    .modal-content {
+        max-height: unset;
+        height: unset;
+        padding: 0;
+    }
+    .modal__action {
+        display: none;
+    }
+
+    .relation-card {
+        padding: size(15) size(16) size(19);
+        
+        .mc-card__content {
+            flex-direction: column;
+            gap: size(18);
+        }
+
+        &__close {
+            cursor: pointer;
+            position: absolute;
+            right: size(12);
+            top: size(12);
+
+            .iconify {
+                font-size: size(23);
+            }
+        }
+
+        &__header {
+            align-items: center;
+            display: grid;
+            gap: size(12);
+            grid-template-columns: size(48) 1fr;
+
+            .image {
+                align-items: center;
+                background-color: var(--mc-gray-300);
+                border-radius: var(--mc-border-radius-pill);
+                display: flex;
+                height: size(48);
+                justify-content: center;
+                overflow: hidden;
+                width: size(48);
+
+                img {
+                    width: 100%;
+                }
+
+                .iconify {
+                    font-size: size(22);
+                }
+            }
+
+            .name {
+                color: var(--mc-black);
+                font-size: size(18);
+                font-weight: 700;
+                line-height: size(25);
+                text-decoration: none;
+                width: max-content;
+            }
+        }
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            gap: size(8);
+
+            .type {
+                font-weight: 600;
+                font-size: size(14);
+                line-height: size(19);
+
+                .actualType {
+                    text-transform: uppercase;
+                }
+            }
+
+            .tags {
+                display: flex;
+                flex-direction: column;
+                gap: size(4);
+
+                &__label {
+                    color: var(--mc-gray-700);
+                    font-weight: 600;
+                    font-size: size(12);
+                    line-height: size(16);
+                    text-transform: uppercase;
+                }
+
+                &__tagsList {
+                    font-weight: 700;
+                    font-size: size(12);
+                    line-height: size(16);
+                }
+            }
+        }
+
+        &__status {
+            display: flex;
+            align-items: center;
+            gap: size(6);
+            font-weight: 600;
+            font-size: size(12);
+            line-height: size(16);
+
+            .iconify {
+                font-size: size(20);
+                color: var(--mc-warning-500);
+            }
+        }
+    }
+}

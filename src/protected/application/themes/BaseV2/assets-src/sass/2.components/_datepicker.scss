@@ -1,0 +1,212 @@
+@use '../0.settings/mixins' as *;
+
+.dp {
+    // Corpo principal do datepicker
+    &__menu {
+        border-radius: var(--mc-border-radius-xs);
+        padding: size(24);
+
+        &_content_wrapper {
+            flex-direction: row-reverse;
+            gap: size(40);
+        }
+    }
+
+    // Lista lateral de ranges
+    &__preset_ranges {
+        border: none;
+        display: flex;
+        flex-direction: column;
+        gap: size(6);
+        padding: 0;
+    }
+
+    // Item da lista lateral de ranges
+    &__preset_range {
+        border-radius: var(--mc-border-radius-xs);
+        font-size: size(18);
+        font-weight: 600;
+        line-height: size(25);
+        padding: size(8);
+        white-space: nowrap;
+
+        &:hover {
+            background-color: var(--mc-secondary-300);
+        }
+    }
+
+    // Parte dos calendários
+    &__flex_display {
+        gap: size(40);
+    }
+
+    // Seletor de mês / ano
+    &__month_year{
+        &_row {
+            gap: size(25);
+            margin-bottom: size(15);
+        }
+
+        &_select {
+            background: #FFFFFF;
+            border-radius: size(4);
+            box-shadow: 0 size(2) size(4) rgb(0 0 0 / 16%);
+            font-size: size(18);
+            font-weight: 700;
+            line-height: size(25);
+
+            &:hover {
+                background-color: var(--mc-secondary-300);
+            }
+        }
+    }
+
+    // Parte interna do seletor de mês / ano
+    &__overlay{
+        &_cell,
+        &_action {
+            &:hover {
+                background-color: var(--mc-secondary-300);
+
+                svg {
+                    color: var(--mc-low-700);
+                }
+            }
+        }
+    }
+
+    // botões de navegação do seletor de mês / ano
+    &__inner_nav {
+        border: 1px solid;
+        height: size(40);
+        padding: size(7);
+        width: size(40);
+
+        svg {
+            color: var(--mc-primary-500);
+            height: size(23);
+            width: size(23);
+        }
+    }
+
+    // Calendários
+    &__calendar {
+        margin: 0;
+
+        &_header {
+            gap: size(5);
+
+            &_item {
+                height: size(43);
+                width: size(43);
+            }
+
+            &_separator {
+                display: none;
+            }
+        }
+
+        &_row {
+            gap: size(5);
+        }
+        
+        &_item {
+            .dp__cell_inner {
+                border: var(--mc-border-hairline) var(--mc-gray-300);
+                border-radius: var(--mc-border-radius-sm);
+                font-size: size(18);
+                font-weight: 600;
+                height: size(43);
+                line-height: size(25);
+                width: size(43);
+                
+                &:hover {
+                    background-color: var(--mc-secondary-300);
+                }
+
+                &.dp__cell_offset {
+                    border: none;
+
+                    &:hover {
+                        background-color: var(--mc-gray-100);
+                    }
+                }
+
+                &.dp__range_end, 
+                &.dp__range_start, 
+                &.dp__active_date {
+                    &:hover {
+                        background-color: var(--mc-primary-700  );
+                    }
+                }
+            }
+        }
+    }
+
+    @media (max-width: size(900)) {
+        // Corpo principal do datepicker
+        &__menu {    
+            &_content_wrapper {
+                gap: size(20);
+            }
+        }
+
+        // Lista lateral de ranges
+        &__preset_ranges {
+            display: none;
+        }
+
+        // Parte dos calendários
+        &__flex_display {
+            flex-direction: column;
+            gap: size(20);
+
+            // Esconde o segundo calendário no mobile
+            .dp__instance_calendar {
+                &:nth-child(2) {
+                    display: none;
+                }
+            }
+        }
+
+        // Seletor de mês / ano
+        &__month_year{
+            &_row {
+                gap: size(15);
+                margin-bottom: size(10);
+            }
+    
+            &_select {
+                line-height: size(20);
+    
+                &:hover {
+                    background-color: var(--mc-secondary-300);
+                }
+            }
+        }
+        
+        // botões de navegação do seletor de mês / ano
+        &__inner_nav {
+            height: size(35);
+            width: size(35);
+        }
+
+        // Calendários
+        &__calendar {
+
+            &_header {
+                &_item {
+                    height: size(35);
+                    width: size(35);
+                }
+            }
+
+            &_item {
+                .dp__cell_inner {
+                    height: size(35);
+                    width: size(35);
+                }
+            }
+        }
+    }
+}

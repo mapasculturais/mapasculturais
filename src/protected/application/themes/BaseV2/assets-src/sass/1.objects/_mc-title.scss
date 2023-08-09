@@ -1,0 +1,11 @@
+.mc-title {
+    font-size: $font-size-md;
+
+    &--long {
+        font-size: $font-size-sm;
+    }
+
+    &--short {
+        font-size: $font-size-xl;
+    }
+}

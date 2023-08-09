@@ -1,0 +1,220 @@
+@use '../0.settings/mixins' as *;
+
+.create-modal {
+    margin: 0;
+    color: black;
+
+    @include desktop {
+        .modal-content {
+            min-width: size(580);
+
+            select {
+                max-width: size(514);
+            }
+        }
+    }
+
+    .field {
+        margin: size(16) 0;
+
+        label {
+            margin: 0;
+        }
+    }
+
+    &__fields {
+        .select-list {
+            &__label {
+                font-weight: 600;
+                font-size: size(14);
+                line-height: size(19);
+            }
+
+            &__item {
+                margin-top: size(8);
+                
+                .inner {
+                    display: flex;
+                    align-items: center;
+                    height: size(48);
+                    background: #FFFFFF;
+                    border: size(1) solid #313131;
+                    border-radius: size(4);
+                    justify-content: space-between;
+                    padding: 0 size(10);
+
+                    .itemLabel {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: size(10);
+
+                        input {
+                            margin: 0;
+                        }
+                        
+                        span {
+                            font-weight: 400;
+                            font-size: size(14);
+                            line-height: size(19);
+                        }
+                    }
+
+                    .selectButton {
+                        cursor: pointer;
+                        color: var(--mc-primary-500);
+                        font-weight: 700;
+                        font-size: size(12);
+                        line-height: size(16);
+                        text-align: center;
+
+                        &.disabled {
+                            color: var(--mc-black);
+                            cursor: default;
+                            opacity: .3;
+                            pointer-events: none;
+                        }
+                    }
+
+                    &--error {
+                        border: 1px solid var(--mc-error);
+                    }
+                }
+            }
+        }
+
+        &--selected {
+
+            &-label {
+                font-weight: 600;
+                font-size: size(14);
+                line-height: size(19);
+            }
+
+            .entity-selected {
+                margin: size(8) 0;
+                display: flex;
+                gap: size(8);
+                flex-direction: column;
+                flex-wrap: nowrap;
+
+                &__entity {
+                    width: 100%;
+                    align-items: center;
+                    border-radius: var(--mc-border-radius-xs);
+                    gap: size(15);
+                    padding: size(8);
+                    display: grid;
+                    grid-template-columns: size(40) 1fr;
+
+                    .img {
+                        width: size(40);
+                        height: size(40);
+                        border-radius: var(--mc-border-radius-pill);
+
+                        &-fake {
+                            background-color: var(--mc-low-300);
+                            border-radius: var(--mc-border-radius-pill);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: size(40);
+                            height: size(40);
+
+                        }
+                    }
+
+                    .name {
+                        font-weight: 600;
+                        font-size: size(14);
+                        line-height: size(19);
+                        word-break: break-word;
+                    }
+
+                }
+
+                h4 {
+                    margin: 0;
+                }
+
+                &__info {
+                    display: flex;
+                    gap: size(30);
+
+                    &--btn {
+                        align-items: center;
+                        cursor: pointer;
+                        display: flex;
+                        gap: size(8);
+
+                        svg {
+                            font-size: size(20);
+                        }
+                    }
+                }
+
+                .related {
+                    &-title {
+                        font-family: var(--mc-font-body);
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: size(16);
+                        line-height: size(22);
+                        color: var(--mc-black);
+                        margin: size(11) 0 size(16);
+                    }
+                }
+            }
+        }
+    }
+
+    &__buttons {
+        border-radius: var(--mc-border-radius-sm);
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: size(24);
+
+        .button {
+            place-content: center;
+        }
+    }
+
+    .entity-terms.field {
+        &.error {
+            margin-bottom: 0;
+            padding-bottom: 0;
+
+            button {
+                border: size(2) solid #FF0000;
+            }
+        }
+
+        h4 {
+            font-family: var(--mc-font-headings);
+            font-style: normal;
+            font-weight: 600;
+            font-size: size(14) !important;
+            line-height: size(19);
+            margin: 0 size(5);
+        }
+
+    }
+
+    .entity-occurrence-list {
+        &__editable--title{
+            font-weight: 700;
+            font-size: size(18);
+            line-height: size(25);
+        }
+        &__editable--description {
+            font-weight: 400;
+            font-size: size(16);
+            line-height: size(22);
+            margin: size(8) 0 size(15);
+        }
+        .noEntity {
+            margin: 0 size(32);
+        }
+    }
+}

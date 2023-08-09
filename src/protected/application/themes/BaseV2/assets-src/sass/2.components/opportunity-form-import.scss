@@ -1,0 +1,66 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-form-import {
+    padding-bottom: size(19);
+
+    &--popover {
+        .popover__content {
+            .header-import {
+                &__title {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: 19px;
+                }
+
+                &__label {
+                    margin: 0;
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: 16px;
+                }
+            }
+
+            .btn {
+                &__cancel {}
+
+                &__confirm {
+                    max-width: size(140);
+                }
+            }
+        }
+    }
+
+    .import-buttons {
+        display: flex;
+        flex-direction: row;
+        align-items: inherit;
+        gap: size(32);
+        max-height: size(48);
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 600;
+        font-size: size(18);
+        line-height: size(25);
+
+        &__import {
+            &.button {
+                border-radius: 8px;
+                background-color: var(--mc-white);
+                color: var(--mc-primary-500);
+                border: size(2) solid var(--mc-primary-500);
+            }
+            &:hover {
+               background-color: var(--mc-primary-500);
+                color: var(--mc-white);
+            }
+        }
+
+        &__save {
+            max-width: 100%
+        }
+    }
+}

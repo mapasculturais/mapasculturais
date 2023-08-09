@@ -1,0 +1,87 @@
+@use '../0.settings/mixins' as *;
+
+.mc-summary-evaluate {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-width: size(1170);
+    gap: size(29);
+    margin: 0 auto;
+    padding-bottom: size(24);
+ 
+    @media (max-width:size(1195)) {
+        gap: size(16);
+        padding-left: size(16);
+
+        &__box {
+            width: size(260);
+            padding: size(8);
+        }
+    }
+
+    @media (max-width:size(1170)) {
+        display: flex;
+        flex-wrap: wrap;
+        // flex-direction: column;
+    }
+
+
+    &__box,
+    .sent,
+    .started .completed,
+    .pending {
+
+        &.sent {
+            background-color: #BFE88B;
+        }
+
+        &.pending {
+            background-color: #FFB5B5
+        }
+
+        &.started {
+            background-color: #FFCF8F;
+        }
+
+        &.completed {
+            background-color: #99D6FF;
+        }
+
+        padding: size(12);
+
+        width: 270px;
+        border-radius: 4px;
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 48px 1fr;
+
+   
+
+        // padding: size(12) size(16);
+        &--icon {
+            display: flex;
+            align-items: center;
+            svg {
+                font-size: size(32);
+            }
+
+        }
+
+        &--content {
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+            h4 {
+                font-family: "Open Sans";
+                font-size: size(16);
+                font-weight: 700;
+
+            }
+            span {
+            font-family: "Open Sans";
+            font-size: size(16);
+            font-weight: 400;
+            }
+        }
+    }
+}

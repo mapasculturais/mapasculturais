@@ -1,0 +1,90 @@
+@use '../0.settings/mixins' as *;
+
+.seal-relation-view {
+
+	&__main {
+		width: size(1170);
+		margin: size(80) auto;
+	}
+
+	@media (max-width: 50rem) {
+		&__main {
+			width: auto;
+		}
+	}
+
+	&__backlink {
+		display: flex;
+		align-items: center;
+		a {
+			text-decoration: none;
+			font-weight: bold;
+			color: #0A66C2;
+			text-transform: none;
+		}
+		&--icon {
+			color: #0074C1;
+		}
+	}
+
+	&__content {
+		background: #FFFFFF;
+		border-radius: 8px;
+		width: 100%;
+
+		&--top {
+			background: #0074C1;
+			width: 100%;
+			height: 145px;
+			position: relative;
+		}
+
+		&--image {
+			position: absolute;
+			left: 50%;
+			transform: translate(-50%);
+			bottom: -50px;
+			border-radius: 50%;
+			overflow: hidden;
+		}
+
+		&--bottom {
+			width: 80%;
+			margin: 80px auto 60px auto;
+			h3 {
+				font-weight: 700;
+				font-size: 24px;
+				line-height: 28px;
+				text-align: center;
+				color: #000000;
+			}
+			p {
+				font-weight: 400;
+				font-size: 16px;
+				line-height: 22px;
+				text-align: center;
+			}
+		}
+
+	}
+
+	&__footer {
+		width: 350px;
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	&__actions {
+		width: 100%;
+		margin: 50px auto;
+		text-align: center;
+
+		button {
+			margin: 0 15px;
+		}
+	}
+
+}
+
+
+

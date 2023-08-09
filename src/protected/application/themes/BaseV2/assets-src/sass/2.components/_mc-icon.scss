@@ -1,0 +1,9 @@
+@use '../0.settings/mixins' as *;
+
+.iconify {
+    font-size: size(16);
+
+    &--link {
+        cursor: pointer;
+    }
+}

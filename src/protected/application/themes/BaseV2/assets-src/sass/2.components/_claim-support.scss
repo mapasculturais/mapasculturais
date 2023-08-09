@@ -1,0 +1,50 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-claim-form {
+  &__buttonlabel {
+    max-width: size(259);
+    width: 100%;
+    color: var(--mc-primary-500);
+    background-color: var(--mc-high-500);
+    border: none;
+    text-align: left;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .modal {
+    max-width: 570px;
+    width: 100%;
+
+    &__title {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 700;
+      font-size: size(24);
+      line-height: size(28);
+      margin-left: size(16);
+      display: contents;
+    }
+
+    &__content {
+      margin-left: 0;
+      .opportunity-claim-form {
+        &__textarea {
+          width: size(570);
+          height: size(140);
+          border-radius: size(4);
+
+          @media (max-width: size(800)) {
+            max-width: size(570);
+            width: 100%;
+          }
+        }
+
+        &__label {
+          padding-bottom: size(16);
+        }
+      }
+
+    }
+  }
+}

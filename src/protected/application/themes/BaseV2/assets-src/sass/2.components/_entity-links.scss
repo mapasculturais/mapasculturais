@@ -1,0 +1,75 @@
+@use '../0.settings/mixins' as *;
+
+.entity-links {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    &__title {
+        margin: 0;
+        font-weight: 700;
+        font-size: size(18);
+        line-height: size(25);
+        margin-bottom: size(8);
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: column; 
+        list-style: none;
+        margin: size(2) 0 size(10);
+        padding: 0;
+
+        &--item{
+            align-items: center;
+            display: flex;
+            gap: size(10);
+            justify-content: space-between;
+            padding: size(7) size(5);
+
+            &:hover {
+                background-color: var(--mc-gray-100);
+            }
+
+            .link {
+                font-family: var(--mc-font-body);
+                font-style: normal;
+                font-weight: 700;
+                font-size: size(18);
+                line-height: size(25);
+                margin: 0;
+                color: var(--mc-black);
+                text-decoration: none;
+                display: grid;
+                grid-template-columns: size(20) 1fr;
+                align-items: center;
+                gap: size(10);
+                word-break: break-word;
+
+                .iconify {
+                    font-size: size(20);
+                }
+
+                &.editable {
+                    color: #CC0033;
+
+                    svg {
+                        color: #CC0033;
+                    }
+                }
+            }          
+
+            .edit {
+                display: flex;
+                gap: size(14);
+                line-height: size(25);
+                
+                svg {
+                    cursor: pointer;
+                    font-size: size(14);
+                }
+            }              
+        }
+    }
+}
