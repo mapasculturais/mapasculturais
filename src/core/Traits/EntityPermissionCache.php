@@ -72,7 +72,7 @@ trait EntityPermissionCache {
         return "$prefix::{$this->getHookClassPath()}:{$this->id}::User:{$user->id}::$action";
     }
     
-    function createPermissionsCacheForUsers($users = null, $flush = false, $delete_old = true) {
+    function createPermissionsCacheForUsers(array $users = null, $flush = false, $delete_old = true) {
         $this->permissionCacheEnabled = false;
         $this->renewPermissionCachePrefix();
 
