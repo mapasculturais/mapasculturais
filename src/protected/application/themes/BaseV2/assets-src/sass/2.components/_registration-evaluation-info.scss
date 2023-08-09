@@ -1,0 +1,28 @@
+@use '../0.settings/mixins'as *;
+
+.registration-evaluation-info {
+    display: flex;
+    flex-direction: column;
+    gap: size(32);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__section {
+        display: flex;
+        flex-direction: column;
+        gap: size(13);
+    }
+
+    &__toggle {
+        cursor: pointer;
+        align-items: center;
+        color: var(--mc-primary-500);
+        display: flex;
+        gap: size(4);
+        justify-content: flex-end;
+    }
+}
