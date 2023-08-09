@@ -1,0 +1,30 @@
+@use '../0.settings/mixins'as *;
+
+.opportunity-subscription-list {
+    padding-top: size(48);
+
+    p {
+        margin: 0;
+    }
+
+    &__header {
+        .title {
+            color: var(--mc-black);
+            font-size: size(24);
+            font-weight: 700;
+            line-height: size(33);
+            margin: 0 0 size(8);
+        }
+
+        .description {
+            color: var(--mc-black);
+            font-size: size(16);
+            font-weight: 400;
+            line-height: size(22);
+        }
+    }
+
+    &__content {
+        
+    }
+}

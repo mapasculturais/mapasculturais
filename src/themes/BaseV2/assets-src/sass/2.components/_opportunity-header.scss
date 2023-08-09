@@ -1,0 +1,198 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-header {
+    background-color: var(--mc-white);
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+
+    &__content {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto;
+        max-width: size(1170);
+        padding: size(83) size(16) size(76);
+        position: relative;
+
+        @media (max-width: size(500)) {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+
+            .right {
+                display: none;
+            }
+        }
+
+        .left {
+            align-items: start;
+            display: grid;
+            gap: size(18);
+            grid-template-columns: size(72) 1fr;
+
+            .image {
+                align-items: center;
+                background-color: var(--mc-gray-500);
+                border-radius: 50%;
+                display: flex;
+                height: size(72);
+                justify-content: center;
+                overflow: hidden;
+                width: size(72);
+
+                .iconify {
+                    color: var(--mc-white);
+                    font-size: size(40);
+                }
+
+                img {
+                    width: 100%;
+                }
+            }
+
+            @media (max-width: size(500)) {
+                grid-template-columns: size(40) 1fr;
+
+                .image {
+                    height: size(40);
+                    width: size(40);
+
+                    .iconify {
+                        color: var(--mc-white);
+                        font-size: size(20);
+                    }
+
+                    img {
+                        width: 100%;
+                    }
+                }
+            }
+
+            .title {
+                display: flex;
+                flex-direction: column;
+                gap: size(6);
+
+                &__title {
+                    font-size: size(32);
+                    font-weight: 700;
+                    line-height: size(44);
+
+                    a {
+                        text-decoration: none;
+                        color: var(--mc-low-500);
+                    }
+
+                    @media (max-width:size(500)) {
+                        font-weight: 700;
+                        font-size: size(18);
+                        line-height: size(25);
+                    }
+                }
+
+                &__info {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: size(8) size(50);
+
+                    @media (max-width: size(500)) {
+                        display: none;
+                    }
+
+                    .data {
+                        display: flex;
+                        font-size: size(14);
+                        gap: size(5);
+                        line-height: size(19);
+                        font-family: 'Open Sans';
+                        font-size: 14px;
+                        align-items: baseline;
+
+                        &__title {
+
+                            font-style: normal;
+                            font-weight: 600;
+                            color: #3E3E3E;
+                            font-size: size(14);
+                            line-height: size(19);
+                            text-transform: uppercase;
+
+                        }
+
+                        &__info {
+
+                            text-transform: uppercase;
+                            font-weight: 700;
+                            align-items: center;
+                            font-size: size(14);
+
+                            a {
+                                font-size: size(14);
+                                text-decoration: none;
+                            }
+                        }
+                    }
+                }
+
+                @media (max-width: size(400)) {
+                    &__info {
+                        flex-direction: column;
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: 14px;
+                        line-height: 19px;
+                        text-transform: uppercase;
+
+                        a {
+                            font-size: size(14);
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    @include mobile {
+        &__content {
+            grid-template-columns: size(40) 1fr;
+            padding: size(47) size(16) size(16);
+
+            .image {
+                height: size(40);
+                width: size(40);
+
+                .iconify {
+                    font-size: size(19);
+                }
+            }
+
+            .title {
+                &__title {
+                    font-size: size(18);
+                    line-height: size(25);
+
+                    @media (max-width: size(500)) {}
+                }
+
+                &__info {
+                    flex-direction: column;
+                    gap: size(8) size(20);
+                    text-transform: uppercase;
+
+                    .data {
+                        font-size: size(10);
+                        line-height: size(14);
+
+                        &__info {
+                            font-size: size(12);
+                            line-height: size(14);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

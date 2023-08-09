@@ -1,0 +1,193 @@
+@use '../0.settings/mixins' as *;
+
+body.base-v2.controller-site.action-error {
+    background-color: var(--mc-gray-100);
+}
+
+.error-page {
+    margin: 0 auto;
+    max-width: 1170px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--mc-gray-100);
+    border-radius: size(4);
+    margin: 0 auto;
+
+    @media (max-width: size(900)) {
+        padding: size(16);
+    }
+
+    .error-card {
+        // padding: size(55) size(135);
+        padding: size(75) size(55);
+        background: var(--mc-high-300);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin: 30px 0 45px 0;
+
+        .message-error {
+            padding: size(24) 0 size(16) 0;
+        }
+
+        @media (max-width:size(800)) {
+            padding-inline: size(16);
+
+            .message-error {
+                .text {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 12px;
+                    line-height: 16px;
+                    text-align: center;
+                }
+            }
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+
+            @media (max-width:size(800)) {
+                display: flex;
+                flex-direction: column-reverse;
+            }
+
+            .left {
+                display: flex;
+                flex-direction: column;
+                gap: size(23);
+                max-width: size(560);
+
+                .error-footer {
+
+
+                    .btn {
+                        button {
+                            padding: size(19) size(33);
+                            font-family: 'Open Sans';
+                            font-style: normal;
+                            font-weight: 700;
+                            font-size: size(24);
+                            line-height: size(28);
+
+                        }
+
+                        @media (max-width:size(600)) {
+                            margin: 0 auto;
+                            max-width: size(300);
+
+                            button {
+                                padding: size(18) size(18);
+
+                            }
+
+                            label {
+                                font-family: 'Open Sans';
+                                font-style: normal;
+                                font-weight: 700;
+                                font-size: 16px;
+                                line-height: 25px;
+                                /* identical to box height */
+
+                                // text-align: center;
+                            }
+                        }
+
+
+
+                    }
+
+                    .message-error {
+                        display: flex;
+                        flex-direction: column;
+
+                        @media (max-width:size(600)) {
+                            text-align: center;
+                        }
+                    }
+                }
+
+                @media (max-width: size(600)) {
+                    text-align: center;
+                }
+
+                &__content {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: size(18);
+
+                    @media (max-width: size(600)) {
+
+                        padding-bottom: 16px;
+                    }
+                }
+
+                .left__warning {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 72px;
+                    line-height: 98px;
+                    align-items: center;
+
+                    @media (max-width: size(600)) {
+                        padding-top: size(24);
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: size(32);
+                        line-height: size(54);
+                        text-align: center;
+                    }
+                }
+
+                &__title {
+                    padding-top: size(24);
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: size(40);
+                    line-height: size(54);
+
+                    @media (max-width: size(600)) {
+                        text-align: center;
+                    }
+                }
+
+                &__message {
+                    font-size: size(64);
+                    line-height: size(50);
+                    font-weight: 700;
+                    font-family: "Open Sans";
+                    font-style: normal;
+
+                    @media (max-width: size(600)) {
+                        font-family: "Open Sans";
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: 32px;
+                        line-height: 3.375rem;
+                    }
+                }
+            }
+
+            .right {
+                img {
+
+                    width: 100%;
+                }
+
+                @media (max-width:size(600)) {
+                    display: block;
+                    margin: auto;
+                    padding-bottom: size(32);
+                }
+            }
+        }
+    }
+}

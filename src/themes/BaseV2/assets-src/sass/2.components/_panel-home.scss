@@ -1,0 +1,125 @@
+@use '../0.settings/mixins' as *;
+
+.controller-panel.action-index {
+    @media (max-width:size(400)) {
+        .panel-home__tabs {
+            .tab-component {
+                padding: size(32) 0 size(40) size(16);
+            }
+        }
+    }
+
+    @media (max-width:(size(700))) {
+        .panel-home__tabs {
+            .tab-component {
+                padding: size(32) size(16) size(40) size(16);
+            }
+        }
+    }
+
+}
+
+.panel-home {
+    min-height: 100%;
+    background-color: var(--mc-gray-100);
+
+    &__header {
+        background-color: var(--mc-high-500);
+        display: flex;
+        flex-direction: column;
+        gap: size(24);
+        padding: size(29) size(48) size(9) size(32);
+
+        &--title {
+            label.title {
+                font-size: size(32);
+                font-weight: 700;
+                line-height: size(44);
+            }
+        }
+
+        &--user {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+
+            &-profile {
+                align-items: center;
+                display: flex;
+                gap: size(8);
+
+                .avatar {
+                    align-items: center;
+                    border-radius: var(--mc-border-radius-pill);
+                    contain: content;
+                    display: flex;
+                    justify-content: center;
+                    height: size(56);
+                    width: size(56);
+                }
+
+                .name {
+                    font-size: size(24);
+                    font-weight: 600;
+                    line-height: size(33);
+                }
+            }
+
+            @media (max-width: size(700)) {
+
+                &-profile {
+                    .avatar {
+                        display: none;
+                    }
+
+                    .name {
+                        font-size: size(16);
+                        line-height: size(22);
+                    }
+                }
+
+                &-button {
+                    .button {
+                        font-size: size(14);
+                        line-height: size(19);
+
+                        .iconify {
+                            display: none;
+                        }
+                    }
+                }
+            }
+
+            @media (max-width: size(500)) {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: size(15);
+            }
+        }
+    }
+
+    &__tabs {
+        .tab-component {
+            padding: size(32) size(40);
+            background-color: var(--mc-gray-100);
+        }
+
+        .tabs-component {
+            &__header {
+                padding: 0 size(31);
+                background-color: var(--mc-high-500);
+
+            }
+
+            &__buttons {
+                margin: 0;
+            }
+        }
+
+        &--main {
+            display: flex;
+            flex-direction: column;
+            gap: size(60);
+        }
+    }
+}

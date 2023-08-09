@@ -7,11 +7,37 @@ app.component('entity-location', {
         const hasSlot = name => !!slots[name]
         return { hasSlot }
     },
+    data(){
+        let cities = {};
+        return {cities};
+    },
 
     computed: {
         hasPublicLocation() {
             return !!this.entity.$PROPERTIES.publicLocation;
-        }
+        },
+        statesAndCities(){
+            return $MAPAS.config.statesAndCities;
+        },
+        statesAndCitiesEnable(){
+            return $MAPAS.config.statesAndCitiesEnable;
+        },
+        states(){
+            let states = [];
+            Object.keys(this.statesAndCities).forEach((item) => {
+                let data = {
+                    value: this.statesAndCities[item].sigla,
+                    name: this.statesAndCities[item].nome
+                }
+                states.push(data);
+            });
+
+            if(this.entity.En_Estado){
+                this.citiesList();
+            }
+
+            return states;
+        },
     },
 
     props: {
@@ -216,6 +242,9 @@ app.component('entity-location', {
                         }
                     } );
             }            
-        }
+        },
+        citiesList(){
+            this.cities = this.statesAndCities[this.entity.En_Estado].municipios;
+        },
     }
 });

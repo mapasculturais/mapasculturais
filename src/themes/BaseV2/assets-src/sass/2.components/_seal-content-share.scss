@@ -1,0 +1,69 @@
+@use '../0.settings/mixins' as *;
+
+.seal-content-share {
+
+	&__socialnetwork {
+		&--title {
+			font-weight: 600;
+			font-size: size(14);
+			line-height: size(19);
+			color: #1E1E1E;
+		}
+		&--icons {
+			display: flex;
+			flex-direction: row;
+			.icon {
+				border: 0.5px solid #666666;
+				border-radius: size(4);
+				padding: size(8);
+				margin-right: size(24);
+				display: flex;
+				align-self: center;
+				height: size(42);
+				a {
+					text-decoration: none;
+					color: inherit;
+					margin: 0;
+					padding: 0;
+				}
+			}
+		}
+	}
+
+	&__share {
+		&--label {
+			font-weight: 600;
+			font-size: size(14);
+			line-height: size(19);
+			color: #000000;
+		}
+		&--icon {
+			color: #0074C1;
+		}
+		&--field {
+			background: #E8E8E8;
+			border-radius: size(4);
+			padding: size(8);
+			span {
+				font-weight: 600;
+				font-size: size(12);
+				line-height: size(16);
+				color: #1E1E1E;
+			}
+		}
+		&--button {
+			font-weight: 600;
+			font-size: size(16);
+			color: #0074C1;
+			float: right;
+			display: inline-block;
+			a {
+				color: #0074C1;
+			}
+		}
+	}
+
+}
+
+
+

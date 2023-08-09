@@ -1,0 +1,41 @@
+@use '../0.settings/mixins' as *;
+
+.event-importer-files {
+    &__card {
+        padding: size(24);
+
+        .mc-card__content {
+            flex-direction: column;
+            gap: size(24);
+        }
+    }
+
+    &__card-content {
+        display: flex;
+        gap: size(25) size(40);
+        flex-wrap: wrap;
+    }
+
+    &__card-footer {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: size(8);
+    }
+
+    &__buttons {
+        display: flex;
+        gap: size(8);
+
+        @media (max-width: 700px) {
+            width: 100%;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 500px) {
+            flex-direction: column;
+        }
+    }
+}

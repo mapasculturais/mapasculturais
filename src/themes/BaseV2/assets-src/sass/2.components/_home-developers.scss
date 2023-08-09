@@ -1,0 +1,60 @@
+@use '../0.settings/mixins' as *;
+
+
+.home-developers {
+    padding: size(60) size(16);
+    background-color: var(--mc-home-developers);
+    &__content {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        max-width: size(1170);
+
+        .dev-icon {
+            font-size: size(32);
+        }
+
+        &--title {
+            font-weight: 700;
+            font-size: size(32);
+            line-height: size(44);
+            margin-top: size(4);
+
+            @media (max-width: size(800)) {
+                font-size: size(24);
+                line-height: size(28);
+                margin-top: size(11);
+            }
+        }
+        &--description {
+            margin: size(24) 0;
+            font-weight: 400;
+            font-size: size(18);
+            line-height: size(25);
+            text-align: center;
+
+            @media (max-width: size(800)) {
+                font-size: size(16);
+                line-height: size(22);
+            }
+        }
+
+        &--link {
+            .iconify {
+                font-size: size(18);
+            }
+
+            .link {
+                align-items: center;
+                color: var(--mc-low-500);
+                display: flex;
+                font-size: size(18);
+                font-weight: 600;
+                gap: size(8);
+                line-height: size(25);
+                text-decoration: none;
+            }
+        }
+    }
+}

@@ -1,0 +1,99 @@
+@use '../0.settings/mixins' as *;
+
+.home-header {    
+    background: linear-gradient(180deg, var(--mc-primary-500) 0%, var(--mc-secondary-300) 98%);
+    position: relative;
+    
+    &__content {
+        display: flex;
+        height: size(510);
+        margin: 0 auto;
+        max-width: size(1440);
+        padding-top: size(26);
+
+        &--left {
+            display: flex;
+            flex-basis: 50%;
+            justify-content: flex-end;
+            padding: size(108) size(18);
+            position: relative;
+            
+            .content {
+                max-width: size(560);
+                color: var(--mc-high-500);
+    
+                &__title {
+                    display: flex;
+                    font-weight: 700;
+                    font-size: size(32);
+                    line-height: size(44);
+                    max-width: size(400);
+                }
+        
+                &__description {
+                    font-weight: 400;
+                    font-size: size(18);
+                    line-height: size(25);
+                    margin: size(24) 0;
+                }
+            }
+        }
+    
+        &--right {
+            height: 100%;
+            overflow: hidden;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            flex-basis: 50%;
+    
+            .img {
+                align-items: stretch;
+                aspect-ratio: 24/17;
+                display: flex;
+                justify-content: center;
+                height: 100%;
+    
+                img {
+                    width: 100%;
+                    object-fit: cover;
+                    -o-object-fit: cover;
+                }
+            }
+        }
+    
+        @media (max-width: size(600)) {
+            flex-direction: column;
+            min-height: size(510);
+            height: auto;
+    
+            &--left {
+                padding: size(24);
+                justify-content: center;
+    
+                &::before {
+                    display: none;
+                }
+
+                .content {
+                    max-width: 100%;
+                    &__description {
+                        font-size: size(16);
+                        line-height: size(22);
+                        margin: size(8) 0 size(19);
+                    }
+                }
+            }
+    
+            &--right {
+                .img {
+                    height: unset;
+                    width: 100%;
+                    margin: 0 size(16);
+                }
+            }
+        }
+    }
+
+    
+}

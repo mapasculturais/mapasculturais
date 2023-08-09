@@ -1,0 +1,54 @@
+@use '../0.settings/mixins'as *;
+
+.registration-info {
+    &__title {
+        margin: 0 0 size(13);
+    }
+
+    &__content {
+        background: var(--mc-high-500);
+        border-radius: var(--mc-border-radius-xs);
+        display: flex;
+        gap: size(60);
+        padding: size(9) size(24);
+    }
+
+    &__data {
+        display: flex;
+        flex-direction: column;
+        
+        &__title {
+            color: var(--mc-gray-700);
+        }
+
+        &__info {
+            color: var(--mc-opportunities-500);
+        }
+    }
+}
+
+@include mobile {
+    .registration-info {
+        &__title {
+            font-size: size(18);
+            line-height: size(28);
+        }
+
+        &__content {
+            gap: size(28);
+            flex-wrap: wrap;
+        }
+
+        &__data {
+            &__title {
+                font-size: size(12);
+                line-height: size(16);
+            }
+
+            &__info {
+                font-size: size(14);
+                line-height: size(22);
+            }
+        }
+    }
+}

@@ -1,0 +1,140 @@
+@use '../0.settings/mixins' as *;
+
+.home-feature {
+	background-color: var(--mc-home-feature);
+	display: flex;
+	flex-direction: column;
+	gap: size(40);
+	margin: 0 auto;
+	padding: size(80) size(16);
+	position: relative;
+	width: 100%;
+	
+
+	&__header,
+	&__content {
+		margin: 0 auto;
+		max-width: size(1170);
+		width: 100%;
+	}
+
+	&__header {
+		&.title {
+			display: flex;
+			justify-content: space-between;
+			margin: 0;
+			max-width: calc(100% - 130px);
+
+			label {
+				font-size: size(32);
+				font-weight: 700;
+				line-height: size(44);
+			 
+				@media (max-width: size(500)) {
+					font-size: size(24);
+					line-height: size(28);
+				}
+			}
+		}
+
+		&.description {
+			font-size: size(16);
+			font-weight: 400;
+			line-height: size(22);
+			max-width: calc(100% - 130px);
+			margin: 0;
+		}
+	}
+
+	&__content {
+		&.cards {   
+			.tabs-component__buttons{
+				gap: size(48);
+			}  
+			.actions {
+				display: flex;
+				gap: size(24);
+				position: absolute;
+				right: 0;
+				top: size(-165);
+			}
+
+			.tabs-component {
+				&__header {
+					padding: 0;
+				}
+			}
+
+			.carousel {
+				margin-top: size(20);
+				
+				&__prev {
+					background: url('https://api.iconify.design/akar-icons/arrow-left.svg?color=%23d50200') no-repeat center center / size(27);
+					background-color: var(--mc-white);
+					cursor: pointer;
+
+					.carousel__icon {
+						display: none;
+					}
+				}
+
+				&__next {
+					background: url('https://api.iconify.design/akar-icons/arrow-right.svg?color=%23d50200') no-repeat center center / size(27);
+					background-color: var(--mc-white);
+					cursor: pointer;
+
+					.carousel__icon {
+						display: none;
+					}
+				}
+
+				&__prev,
+				&__next {
+					align-items: center;
+					border: none;
+					border-radius: 50%;
+					display: flex;
+					height: size(48);
+					justify-content: center;
+					width: size(48);
+
+					&--in-active {
+						background-color: var(--mc-gray-100);
+						cursor: default;
+					}
+				}
+
+				&__viewport {
+					ol {
+						li{
+							
+							justify-content: flex-start;
+							padding: 0 size(40) 0 0;
+
+							@media (max-width: size(600)) {
+								padding: 0 size(20);
+							}
+							.entity-card.portrait {
+								.user-info.with-labels{
+									text-align: left;
+									.user-info__name{
+										font-size: size(18);
+									}
+								}
+							}
+						}
+					}
+					.entity-card__footer {
+						flex-direction: column;
+					}
+				}
+
+				&__track {
+					align-items: flex-start;
+				}
+			}
+
+		}
+
+	}
+}

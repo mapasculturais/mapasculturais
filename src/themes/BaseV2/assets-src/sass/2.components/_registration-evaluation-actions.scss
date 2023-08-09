@@ -1,0 +1,145 @@
+@use '../0.settings/mixins'as *;
+
+.registration-evaluation-actions {
+    display: flex;
+    flex-direction: column;
+    gap: size(56);
+    position: sticky;
+    top: size(40);
+
+    &__primary {
+        .errors {
+            background: var(--mc-high-500);
+            border-radius: var(--mc-border-radius-xs);
+            display: flex;
+            flex-direction: column;
+            gap: size(8);
+            margin-bottom: size(24);
+            padding: size(16);
+
+            &__title {
+                color: var(--mc-error);
+                font-size: size(16);
+                font-weight: 700;
+                line-height: size(22);
+                text-align: center;
+            }
+
+            &__subtitle {
+                font-size: size(16);
+                font-weight: 600;
+                line-height: size(22);
+                margin-bottom: size(8);
+            }
+
+            
+            &__error {
+                align-items: baseline;
+                display: grid;
+                gap: size(8);
+                grid-template-columns: size(16) 1fr;
+                margin-bottom: size(8);
+                
+                &:nth-child(0) {
+                    background-color: gray;
+                }
+                &:nth-child(1) {
+                    margin-top: size(8);
+                    background: green;
+                }
+
+                &::before {
+                    background-color: var(--mc-secondary-500);
+                    border-radius: var(--mc-border-radius-pill);
+                    content: '';
+                    height: size(16);
+                    width: size(16);
+                }
+
+                &--text {
+                    font-size: size(14);
+                    line-height: size(19);
+                    text-decoration-line: underline;
+
+                    p {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        gap: size(24);
+        &__saveafter {
+            background-color:var(--mc-high-500);
+            color: var(--mc-primary-500);
+            border-color: var(--mc-primary-500);
+            &:hover {
+                background-color:var(--mc-primary-500);
+                color: var(--mc-high-500);
+                border-color: var(--mc-primary-500);
+            }
+        }
+        &__send {
+            display: block;
+            text-align: center;
+            background-color:var(--mc-gray-300);
+            color: var(--mc-high-500);
+            border-color:  var(--mc-gray-300);
+            &:hover {
+                background-color:var(--mc-primary-500);
+                color:var(--mc-high-500);
+                border-color:  var(--mc-primary-500);
+
+            }
+            svg {
+                float: right;
+                font-size: size(21);
+            }
+        }
+        &__reopen {
+            background-color:var(--mc-primary-500);
+            color: var(--mc-high-500);
+            border-color: var(--mc-primary-500);
+            &:hover {
+                background-color:var(--mc-high-500);
+                color: var(--mc-primary-500);
+                border-color: var(--mc-high-500);
+            }
+        }
+        &__final, &__finalcontinue, &__direction {
+            &:hover {
+                background-color:var(--mc-primary-500);
+                color: var(--mc-high-500);
+                border-color: var(--mc-primary-500);
+            }
+        }
+        &__finalcontinue {
+            display: block;
+            text-align: center;
+            padding-left: size(24);
+            svg {
+                float: right;
+                font-size: size(21);
+            }
+        }
+        .modal {
+            &__content {
+              margin: 0;
+              padding: size(16) 0 size(24) 0;
+              max-width: size(732);
+        
+              .finish-send-evaluation__text {
+                display: flex;
+                flex-direction: column;
+        
+              }
+            }
+        
+            &__action {}
+          }
+    }
+}

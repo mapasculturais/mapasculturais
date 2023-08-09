@@ -25,12 +25,30 @@ $this->import('
             <entity-field @change="address()" classes="col-2 sm:col-4" :entity="entity" prop="En_Num"></entity-field>
             <entity-field @change="address()" classes="col-10 sm:col-8" :entity="entity" prop="En_Bairro"></entity-field>
             <entity-field @change="address()" classes="col-12" :entity="entity" prop="En_Complemento" label="<?php i::_e('Complemento ou ponto de referência')?>"></entity-field>
-            <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Municipio"></entity-field>
-            <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Estado"></entity-field>
-            <div class="col-6 sm:col-12 public-location">
-                <entity-field v-if="hasPublicLocation" @change="address()" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::_e('Localização pública')?>"></entity-field>
-                <label class="public-location__label col-12"><?php i::_e('Escolha se o endereço ficará público ou privado')?></label>
+            <entity-field v-if="!statesAndCitiesEnable" @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Estado" label="<?php i::_e('Estado')?>"></entity-field>
+            <entity-field v-if="!statesAndCitiesEnable" @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Municipio" label="<?php i::_e('Município')?>"></entity-field>
+        </div>
+    </div>
+    <div class="col-12" v-if="editable && statesAndCitiesEnable">
+        <div class="grid-12">
+            <div class="field col-6">
+                <label class="field__title"><?php i::_e('Estado')?></label>
+                <select @change="citiesList(); address()" v-model="entity.En_Estado">
+                    <option v-for="state in states" :value="state.value">{{state.name}}</option>
+                </select>
             </div>
+            <div class="field col-6">
+                <label class="field__title"><?php i::_e('Município')?></label>
+                <select @change="address()" v-model="entity.En_Municipio">
+                    <option v-for="city in cities" :value="city.nome">{{city.nome}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" v-if="editable">
+        <div class="col-6 sm:col-12 public-location">
+            <entity-field v-if="hasPublicLocation" @change="address()" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::_e('Localização pública')?>"></entity-field>
+            <label class="public-location__label col-12"><?php i::_e('Escolha se o endereço ficará público ou privado')?></label>
         </div>
     </div>
     <div v-if="verifiedAdress()" class="col-12">

@@ -1,0 +1,19 @@
+@use '../0.settings/mixins' as *;
+
+.mc-debug {
+    font-size: 11px;
+    font-family: monospace;
+    color:white;
+    padding:3px;
+    display: inline-block;
+
+    &.template-hook {
+        background-color: black;
+    }
+    &.component-hook {
+        background-color:saddlebrown;
+    }
+    &.component {
+        background-color:darkgreen;
+    }
+}

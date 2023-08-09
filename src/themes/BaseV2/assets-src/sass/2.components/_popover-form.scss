@@ -1,0 +1,34 @@
+@use '../0.settings/mixins' as *;
+
+
+.popover-form {
+    height: 100%;
+
+    .mc-multiselect__content {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        height: 100%;
+        gap: 8px;
+        max-height: 100%;
+
+        &-button {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        &-list {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            overflow-y: scroll;
+            padding: 0;
+            width: 100%;
+            margin: 0;
+            flex: 1;
+            height: 100%;
+            max-height: initial;
+        }
+    }
+
+   
+}

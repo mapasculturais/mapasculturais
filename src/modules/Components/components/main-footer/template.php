@@ -87,15 +87,14 @@ $config = $app->config['social-media'];
             <?php if (count($app->config['module.LGPD']) > 0): ?>
                 <ul class="main-footer__content--links-group">
                     <li>
-                        <a><?php i::_e('Ajuda e Privacidade'); ?></a>
+                        <a><?php i::_e('Termos e Condições'); ?></a>
                     </li>
                     
                     <?php foreach ($app->config['module.LGPD'] as $slug => $cfg) : ?>
                         <li>
-                            <a href="<?= $app->createUrl('lgpd', $slug) ?>"><?= $cfg['title'] ?></a>
+                            <a href="<?= $app->createUrl('lgpd', 'view', [$slug]) ?>"><?= $cfg['title'] ?></a>
                         </li>
                     <?php endforeach ?>
-                    
                 </ul>
             <?php endif; ?>
     

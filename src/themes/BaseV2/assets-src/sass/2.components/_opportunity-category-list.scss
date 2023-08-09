@@ -1,0 +1,16 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-category-list {
+    display: flex;
+    flex-direction: column;
+    gap: size(8);
+
+    &__add-category {
+        display: flex;
+        gap: size(12);
+        
+        .field {
+            min-width: size(140);
+        }
+    }
+}

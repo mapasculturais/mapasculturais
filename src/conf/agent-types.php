@@ -450,13 +450,10 @@ return array(
         ),
         'instagram' => array(
             'label' => \MapasCulturais\i::__('Instagram'),
-            'validations' => array(
-                "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
-            ),
             'available_for_opportunities' => true,
             'unserialize' => function($value){
                 if($value){
-                    return \MapasCulturais\i::__('htps://instagram.com/').str_replace('@','',$value);
+                    return \MapasCulturais\i::__('https://instagram.com/').str_replace('@','',$value);
                 }
             }
         ),

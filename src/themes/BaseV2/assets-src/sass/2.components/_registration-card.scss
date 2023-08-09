@@ -1,0 +1,213 @@
+@use '../0.settings/mixins' as *;
+
+.registration-card {
+    background-color: var(--mc-high-500);
+    border-radius: var(--mc-border-radius-xs);
+    display: flex;
+    flex-direction: column;
+    gap: size(30);
+    padding: size(24);
+
+    @media (max-width: size(500)) {
+        padding: size(16);
+    }
+
+    &__content {
+        display: flex;
+        gap: 30px;
+
+        @media (max-width: size(500)) {
+            gap: 8px;
+            flex-direction: column;
+        }
+
+        .left {
+            .registerImage {
+                align-items: center;
+                background-color: var(--mc-gray-300);
+                border-radius: var(--mc-border-radius-pill);
+                display: flex;
+                height: size(64);
+                justify-content: center;
+                overflow: hidden;
+                width: size(64);
+
+                @media (max-width: size(500)) {
+                    height: size(48);
+                    width: size(48);
+                }
+                
+                img {
+                    width: 100%;
+                }
+
+                .iconify {
+                    font-size: size(30);
+                    color: var(--mc-gray-700);
+                }
+            }
+        }
+
+        .right {
+            display: flex;
+            flex-direction: column;
+            gap: size(36);
+
+            .header {
+                align-items: center;
+                display: flex;
+                justify-content: space-between;
+        
+                .title {
+                    font-size: size(18);
+                    font-weight: 600;
+                    line-height: size(25);
+                    text-transform: uppercase;
+                    display: flex;
+                    gap: size(4);
+                    align-items: center;
+                    flex-wrap: wrap;
+        
+                    strong {
+                        text-transform: none;
+                        font-size: size(24);
+                        line-height: size(28);
+                    }
+                }
+        
+                .actions {
+        
+                }
+            }
+    
+            .content {
+                display: flex;
+                gap: size(25) size(48);
+                flex-wrap: wrap;
+                
+                .registerData {
+                    gap: 4px;
+                    display: flex;
+                    flex-direction: column;
+
+                    .title {
+                        color: var(--mc-low-500);                
+                        font-size: size(16);
+                        font-weight: 600;
+                        line-height: size(22);
+                        margin: 0;
+                        text-transform: uppercase;
+                    }
+        
+                    .data {
+                        color: var(--mc-low-500);  
+                        font-size: size(16);
+                        font-weight: 700;
+                        line-height: size(22);
+                        margin: 0;
+                    }
+                }
+
+                @media (max-width: size(500)) {
+                    gap: size(16) size(40);
+
+                    .registerData {
+                        .title {               
+                            font-size: size(14);
+                            line-height: size(19);
+                        }
+            
+                        .data {
+                            font-size: size(14);
+                            line-height: size(19);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &__footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: size(24);
+
+        .left {
+            .status {
+                font-weight: 800;
+                font-size: size(12);
+                line-height: size(16);
+                background-color: var(--mc-low-700);
+                padding: size(8) size(32);
+                border-radius: var(--mc-border-radius-pill);
+                color: var(--mc-high-500);
+            }
+        }
+
+        .right {
+            display: flex;
+            flex-grow: .5;
+            gap: size(25);
+            justify-content: flex-end;
+            @media (max-width: size(440)){
+                flex-direction: column-reverse;
+            }
+            .delete-registration {
+                background-color: var(--mc-high-500);
+                color: var(--mc-danger-500);
+            }
+            .delete-registration:hover {
+                filter: brightness(1.2);
+                border-color: var(--mc-danger-500);
+                color: var(--mc-high-500);
+                background-color: var(--mc-danger-500);
+            }
+            .button {
+                max-width: size(272);
+                width: 100%;
+            }
+
+            @media (max-width: size(440)) {
+                width: 100%;
+
+                .button {
+                    margin: 0 auto;
+                }
+            }
+        }
+    }
+
+    
+    &.border {
+        border: var(--mc-border-hairline) var(--mc-low-700);
+    }
+
+    &.picture {
+        .registration-card__content .right {
+            gap: size(13);
+            
+
+            @media (max-width: size(500)) {
+                display: flex;
+                flex-direction: column-reverse;
+                gap: size(8);
+            }
+
+            .header .title strong {
+                font-size: size(24);
+                line-height: size(28);  
+
+                @media (max-width: size(500)) {
+                    font-size: size(18);
+                    line-height: size(25);
+                }                    
+            }
+
+            .content .registerData {
+                gap: 0;
+            }
+        }
+    }
+}
