@@ -1,17 +1,21 @@
 <?php
-function env(string $name, string $default = null) {
+function env(string $name, $default = null) {
     if(defined('GENERATING_CONFIG_DOCUMENTATION')){
         __log_env($name, $default);
     }
 
-    $result = isset($_ENV[$name]) ? $_ENV[$name] : $default;
+    $result = isset($_ENV[$name]) ? trim($_ENV[$name]) : $default;
 
-    $result = trim($result ?: '');
-
-    if (strtolower($result) == 'true') {
-        $result = true;
-    } else if (strtolower($result) == 'false') {
-        $result = false;
+    if(is_string($result)) {
+        if (strtolower($result) == 'true') {
+            $result = true;
+        } else if (strtolower($result) == 'false') {
+            $result = false;
+        } else if (filter_var($result, FILTER_VALIDATE_FLOAT)) {
+            $result = (float) $result;
+        } else if (filter_var($result, FILTER_VALIDATE_INT)) {
+            $result = (int) $result;
+        }
     }
 
     return $result;
