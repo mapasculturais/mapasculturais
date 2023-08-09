@@ -9,14 +9,17 @@
     
     &__owner {
         align-items: center;
-        display: flex;
+        display: grid;
         text-decoration: none;
+        grid-template-columns: size(56) 1fr;
+        gap: size(8);
+        padding: size(16) 0;
         &--img {
             border-radius: 50%;
             overflow: hidden;
             width: size(56);
             height: size(56);
-            margin: size(13) size(14) size(13) 0; 
+            // margin: size(13) size(14) size(13) 0; 
 
             .profile {
                 width: 100%;
