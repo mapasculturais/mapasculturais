@@ -12,6 +12,20 @@ class Controller  extends \MapasCulturais\Controller
     {
     }
 
+    public function GET_view() {
+        $app = App::i();
+        $this->layout = 'lgpdV2';
+        $config_lgpd = $app->config['module.LGPD'];
+
+        $slug = $this->data[0] ?? false;
+        
+        if(!isset($config_lgpd[$slug])) {
+            $app->pass();
+        }
+
+        $this->render('view', ['config' => $config_lgpd[$slug]]);
+    }
+
     public function GET_accept()
     {
         $app = App::i();

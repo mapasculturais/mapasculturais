@@ -1,0 +1,26 @@
+@use '../0.settings/mixins' as *;
+
+.mc-linked-entity {
+    display: flex;
+    padding: size(11) size(14);
+    gap: size(8);
+    width: 100%;
+    border-radius: var(--mc-border-radius-xs);
+    align-items: center;
+    background: var(--mc-gray-100);
+
+    &__img {
+        width: size(40);
+        height: size(40);
+        border-radius: var(--mc-border-radius-pill);
+        background-color: var(--mc-gray-500);
+        display: flex;
+        overflow: hidden;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 100%;
+        }
+    }
+}

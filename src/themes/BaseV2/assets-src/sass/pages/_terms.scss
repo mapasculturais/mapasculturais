@@ -1,8 +1,13 @@
 @use 'sass:math';
-@use '../settings/mixins' as *;
+@use '../0.settings/mixins' as *;
 
 
 .mapas-terms {
+    .term__content p {
+        width: 100%;
+        margin-bottom: 1em;
+    }
+
     .tabs-component {
         &__header {
             background-color: var(--mc-high-500);

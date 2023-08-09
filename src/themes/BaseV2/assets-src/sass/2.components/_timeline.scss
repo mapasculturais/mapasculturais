@@ -1,0 +1,163 @@
+@use '../0.settings/mixins'as *;
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    margin: size(16) 0;
+    position: relative;
+    text-align: left;
+
+    &.center {
+        margin: size(16) auto;
+    }
+
+    .item {
+        display: grid;
+        gap: size(5);
+        grid-template-columns: size(24) 1fr;
+        padding-bottom: size(28);
+        position: relative;
+
+        &__dot {
+            align-items: flex-start;
+            display: flex;
+            justify-content: center;
+
+            &::before {
+                background-color: var(--mc-gray-700);
+                content: "";
+                height: 100%;
+                position: absolute;
+                width: size(2);
+            }
+
+            .dot {
+                background-color: var(--mc-gray-700);
+                border-radius: var(--mc-border-radius-pill);
+                border: size(4) solid var(--mc-high-500);
+                height: size(24);
+                position: relative;
+                width: size(24);
+            }
+        }
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            gap: size(4);
+            margin-top: size(4);
+
+            &--title {
+                font-size: size(12);
+                font-weight: 700;
+                line-height: size(16);
+            }
+
+            &--description {
+                font-size: size(12);
+                font-weight: 600;
+                line-height: size(16);
+            }
+        }
+
+        &:last-child {
+            padding: 0;
+
+            .item__dot::before {
+                content: unset;
+            }
+        }
+    }
+
+    &.big {
+        .item {
+            gap: 0;
+            grid-template-columns: size(70) 1fr;
+            padding-bottom: size(41);
+    
+            &__dot {        
+                .dot {
+                    border: size(7) solid var(--mc-high-500);
+                    height: size(42);
+                    width: size(42);
+                }
+            }
+    
+            &__content {
+                gap: size(8);
+                margin-top: size(10);
+    
+                &--title {
+                    font-size: size(18);
+                    line-height: size(24);
+                }
+    
+                &--description {
+                    font-size: size(16);
+                    line-height: size(22);
+                }
+            }
+
+            &:first-child {
+                .item__content {
+                    margin-top: size(5);
+                }
+            }
+
+            &:last-child {
+                padding: 0;
+            }
+    
+            &.active {    
+                .item {
+                    &__dot {    
+                        .dot {
+                            background-color: var(--mc-opportunities-500);
+                            height: size(70);
+                            width: size(70);
+                        }
+                    }
+    
+                    &__content {
+                        &--title {
+                            font-size: size(18);
+                            line-height: size(24);
+                        }
+    
+                        &--description {
+                            font-size: size(16);
+                            line-height: size(21);
+                        }
+                    }
+                    @media (max-width: size(400)) {
+                        &__title {
+
+                            font-size: size(16);
+                            line-height: size(21);
+                        }
+                        &__title {
+
+                            font-size: size(14);
+                            line-height: size(19);
+                        }
+
+                    }
+                }    
+            }
+
+            &.happened {    
+                .item {
+                    &__dot {   
+                        &::before {
+                            background-color: var(--mc-opportunities-500);
+                        } 
+                        
+                        .dot {
+                            background-color: var(--mc-opportunities-500);
+                        }
+                    }
+                }    
+            }
+        }
+    }
+}

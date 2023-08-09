@@ -1,0 +1,70 @@
+@use '../0.settings/mixins' as *;
+
+.user-accepted-terms {
+
+    &__privacy {
+
+        &--accept {
+            max-width: 970px;
+            max-height: 100%;
+            background-color: var(--mc-high-500);
+            border-radius: var(--mc-border-radius-xs);
+            padding: 16px 16px 24px 16px;
+
+            &-title {
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 25px;
+                margin-bottom: 24px;
+
+                &-box {
+                    margin-top: 24px;
+                    @media (max-width: size(500)){
+                        .boxterm__list-subterm{
+                           label{
+                               font-weight: 600;
+                               font-size: 14px;
+                               line-height: 19px;
+                           }
+                        }
+                    }
+                    .boxterm {
+                        padding-bottom: 24px;
+
+                        &__list {
+                            margin-top: 12px;
+
+                            &-subterm {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 4px;
+
+                                &-title {
+                                    font-weight: 700;
+                                    font-size: 16px;
+                                    line-height: 22px;
+                                    font-style: normal;
+                                }
+
+                                &-content {
+                                    font-family: 'Open Sans';
+                                    font-style: normal;
+                                    font-weight: 600;
+                                    font-size: 14px;
+                                    line-height: 19px;
+                                }
+                            }
+                        }
+
+                        @media (max-width: size(500)) {
+                            .boxterm {
+                                max-width: fit-content;
+                                background-color: red;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

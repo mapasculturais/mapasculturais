@@ -1,0 +1,35 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-evaluations {
+  background-color: var(--mc-gray-100);
+
+  .subtitle {
+    font-size: size(12);
+    font-weight: normal;
+    color: var(--mc-gray-500);
+  }
+
+  &__title {
+    font-size: size(22);
+    margin: auto 0 auto size(16);
+  }
+
+  &__type {
+    margin: auto 0;
+    padding-left: 5px;
+  }
+
+  &__content {
+    max-width: size(1200);
+    margin: 0 auto;
+    padding: size(20) 0;
+    p {
+      font-weight: bold;
+    }
+  }
+
+  &__bg-content {
+    background-color: var(--mc-white);
+    margin: size(20) 0;
+  }
+}

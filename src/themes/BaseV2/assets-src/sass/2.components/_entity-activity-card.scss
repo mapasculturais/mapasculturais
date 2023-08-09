@@ -1,0 +1,62 @@
+@use '../0.settings/mixins' as *;
+
+.entity-activity-card {
+
+    margin-top: 16px;
+    padding-right: 16px;
+    margin-right: 18px;
+    height: 100%;
+
+    &__header {
+        margin-bottom: 16px;
+
+        &--title {
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 25px;
+        }
+    }
+
+    &__content {
+        height: size(158);
+        width: size(700);
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--mc-gray-500);
+        border-radius: var(--mc-border-radius-xs);
+        padding: 24px 16px 24px 16px;
+
+    }
+
+    &__aside {
+        margin-top: size(10);
+        display: flex;
+        gap: 26px;
+        margin-bottom: 10px;
+        &--left{
+            svg{
+                color: var(--mc-spaces-500);
+            }
+        }
+        &--right{
+            svg{
+                color: var(--mc-danger-500);
+                
+            }
+        }
+        svg {
+            margin-right: 8px;
+
+            icon {
+                font-size: 16px;
+                width: 15px;
+                height: 16px;
+            }
+        }
+
+        &-label {
+            margin-left: 8px;
+        }
+    }
+}

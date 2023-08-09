@@ -118,7 +118,7 @@ class i {
      * @return string Translated text
      */
     static function esc_html__( $text, $domain = 'default' ) {
-    	return esc_html( self::translate( $text, $domain ) );
+    	return htmlentities( self::translate( $text, $domain ) );
     }
 
     /**
@@ -148,7 +148,7 @@ class i {
      * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
      */
     static function esc_html_e( $text, $domain = 'default' ) {
-    	echo esc_html( self::translate( $text, $domain ) );
+    	echo htmlentities( self::translate( $text, $domain ) );
     }
 
     /**

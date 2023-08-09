@@ -1,0 +1,87 @@
+@use '../0.settings/mixins' as *;
+
+.entity-parent-edit {
+    margin: 0;
+
+    &__title {
+
+        margin: 0;
+    }
+
+    &__parent {
+        align-items: center;
+        display: grid;
+        grid-template-columns: size(70) 1fr;
+        text-decoration: none;
+
+        &--img {
+            border-radius: 50%;
+            overflow: hidden;
+            width: size(56);
+            height: size(56);
+            margin: size(13) size(14) size(13) 0;
+
+            .profile {
+                width: 100%;
+                height: 100%;
+            }
+
+            .placeholder {
+                align-items: center;
+                background-color: #797979;
+                color: white;
+                display: flex;
+                font-size: size(25);
+                justify-content: center;
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        &--name {
+            color: var(--mc-black);
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 700;
+            font-size: size(12);
+            line-height: size(16);
+        }
+    }
+
+    &__edit {
+        .title {
+            margin-bottom: size(8);
+        }
+
+        &--btn {
+            align-items: center;
+            cursor: pointer;
+            display: flex;
+            gap: size(8);
+            padding-top: size(16);
+            padding-bottom: size(16);
+            .add-button {
+                font-family: "Open Sans";
+                font-weight: 600;
+
+                svg {
+                    font-size: size(14);
+                }
+            }
+
+
+        }
+    }
+
+    .related {
+        &-title {
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 400;
+            font-size: size(16);
+            line-height: size(22);
+            color: var(--mc-black);
+            margin: size(11) 0 size(16);
+        }
+    }
+}
