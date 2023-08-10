@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->import('
     mc-icon 
     mc-link
+    mc-title
 ');
 ?>
 <div class="entity-card">
@@ -19,9 +20,9 @@ $this->import('
                 <mc-icon v-else name="event"></mc-icon>
             </div>
             <div class="user-info">
-                <label class="user-info__name">
+                <mc-title mobile tag="h2" bold>
                     {{event.name}}
-                </label>
+                </mc-title>
                 <div class="user-info__attr">
                     <span> {{event.subTitle}} </span>
                 </div>
