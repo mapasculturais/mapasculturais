@@ -15,9 +15,6 @@ class Module extends \MapasCulturais\Module{
     }
 
     function _init(){
-        $app = App::i();
-        $app->view->jsObject['config']['statesAndCities'] = $app->config['statesAndCities.statesCounties'];
-        $app->view->jsObject['config']['statesAndCitiesEnable'] = $app->config['statesAndCities.enable'];
     }
 
     function register(){
