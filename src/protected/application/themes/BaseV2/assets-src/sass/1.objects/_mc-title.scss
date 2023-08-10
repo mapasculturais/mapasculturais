@@ -1,5 +1,4 @@
 .mc-title {
-    font-size: $font-size-md;
 
     &--long {
         font-size: $font-size-sm;
@@ -7,5 +6,22 @@
 
     &--short {
         font-size: $font-size-xl;
+    }
+
+    @media (max-width: size(500)) {
+        &--mobile-h2 {
+            font-size: $font-size-sm;
+            line-height: size(25);
+        }
+
+        &--mobile-h1 {
+            font-size: $font-size-md;
+            line-height: size(28);
+            
+        }
+        
+        &--mobile-h1--aligncenter {
+            text-align: center;
+        }
     }
 }
