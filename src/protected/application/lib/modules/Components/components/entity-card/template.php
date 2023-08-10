@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->import('
 	mc-avatar
 	mc-icon 
+	mc-title
 ');
 ?>
 <div class="entity-card" :class="classes">
@@ -17,8 +18,7 @@ $this->import('
 			<mc-avatar class="user-image" :entity="entity"></mc-avatar>
 
 			<div class="user-info" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
-				<h4 class="bold"> {{entity.name}} </h4>
-
+				<mc-title tag='h2' mobile bold>{{entity.name}}</mc-title>
 				<slot name="type">
 					<div v-if="entity.type" class="user-info__attr">
 						<?php i::_e('Tipo:') ?> {{entity.type.name}}
