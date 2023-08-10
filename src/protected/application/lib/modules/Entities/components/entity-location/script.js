@@ -26,8 +26,8 @@ app.component('entity-location', {
             let states = [];
             Object.keys(this.statesAndCities).forEach((item) => {
                 let data = {
-                    value: this.statesAndCities[item].sigla,
-                    name: this.statesAndCities[item].nome
+                    value: item,
+                    label: this.statesAndCities[item].label
                 }
                 states.push(data);
             });
@@ -244,7 +244,7 @@ app.component('entity-location', {
             }            
         },
         citiesList(){
-            this.cities = this.statesAndCities[this.entity.En_Estado].municipios;
+            this.cities = this.statesAndCities[this.entity.En_Estado].cities;
         },
     }
 });
