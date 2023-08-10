@@ -5,6 +5,9 @@
  */
 
 use MapasCulturais\i;
+$this->import('
+    mc-title
+');
 ?>
 <?php $this->applyTemplateHook('entity-header', 'before'); ?>
 <header v-if="!editable" class="entity-header" :class="{ 'entity-header--no-image': !entity.files.header }">
@@ -51,7 +54,7 @@ use MapasCulturais\i;
         </div>
         <div class="rightSide">
             <div class="data">
-                <h1 class="title"> {{entity.name}} </h1>
+                <mc-title tag="h1" mobile aligncenter> {{entity.name}} </mc-title>
                 <div class="metadata">
                     <slot name="metadata">
                         <dl class="metadata__id" v-if="entity.__objectType =='agent' && entity.id">
