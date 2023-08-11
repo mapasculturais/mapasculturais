@@ -75,6 +75,8 @@ COPY var /var/www/var
 WORKDIR /var/www/src/
 RUN pnpm install && pnpm run build
 
+RUN sass themes/BaseV1/assets/css/sass/main.scss:themes/BaseV1/assets/css/main.css
+
 RUN chown www-data:www-data -R /var/www
 
 COPY docker/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
