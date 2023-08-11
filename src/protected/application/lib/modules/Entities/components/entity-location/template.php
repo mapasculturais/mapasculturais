@@ -34,13 +34,13 @@ $this->import('
             <div class="field col-6">
                 <label class="field__title"><?php i::_e('Estado')?></label>
                 <select @change="citiesList(); address()" v-model="entity.En_Estado">
-                    <option v-for="state in states" :value="state.value">{{state.name}}</option>
+                    <option v-for="state in states" :value="state.value">{{state.label}}</option>
                 </select>
             </div>
             <div class="field col-6">
                 <label class="field__title"><?php i::_e('Município')?></label>
                 <select @change="address()" v-model="entity.En_Municipio">
-                    <option v-for="city in cities" :value="city.nome">{{city.nome}}</option>
+                    <option v-for="city in cities" :value="city">{{city}}</option>
                 </select>
             </div>
         </div>

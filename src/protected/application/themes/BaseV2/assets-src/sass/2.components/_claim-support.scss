@@ -11,6 +11,9 @@
     padding-left: 0;
     padding-right: 0;
   }
+  &__resource {
+    color: var(--mc-primary-500);
+  }
 
   .modal {
     max-width: 570px;
