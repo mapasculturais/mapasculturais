@@ -1229,6 +1229,36 @@ class App {
      *            Utils
      *******************************/
 
+
+     function lock(string $name, float $wait_for_unlock = 0)
+     {
+        $name = $this->slugify($name);
+        
+        $filename = sys_get_temp_dir()."/lock-{$name}.lock"; 
+        
+        if($wait_for_unlock){
+            $count = 0;
+            while(file_exists($filename) && $count < $wait_for_unlock){
+                $count += 0.1;
+                usleep(100000);
+            }
+        }
+
+        if(file_exists($filename)){
+            throw new \Exception("{$name} is locked");
+        }
+
+        file_put_contents($filename, "1");
+     }
+
+     function unlock($name){
+        $name = $this->slugify($name);
+        
+        $filename = sys_get_temp_dir()."/lock-{$name}.lock"; 
+
+        unlink($filename);
+     }
+     
      /**
       * Transforma o texto num slug
       * @param string $text 
