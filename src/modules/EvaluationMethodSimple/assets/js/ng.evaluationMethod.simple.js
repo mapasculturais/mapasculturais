@@ -62,11 +62,14 @@
                 obs: $scope.data.obs
             }
 
-            ApplySimpleEvaluationService.autoSave(MapasCulturais.entity.id, _data, MapasCulturais.user.id).success(function () {
-                MapasCulturais.Messages.success(labels.saved);
-            }).error(function (data) {
-                MapasCulturais.Messages.error(data.data[0]);
-            });
+            clearTimeout(window.saveEvaluationTimeout);
+            window.saveEvaluationTimeout = setInterval(() => {
+                ApplySimpleEvaluationService.autoSave(MapasCulturais.entity.id, _data, MapasCulturais.user.id).success(function () {
+                    MapasCulturais.Messages.success(labels.saved);
+                }).error(function (data) {
+                    MapasCulturais.Messages.error(data.data[0]);
+                });
+            }, 100);
         }
 
         $scope.getStatusLabel = function(status){

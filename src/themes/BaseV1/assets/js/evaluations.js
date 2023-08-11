@@ -20,33 +20,36 @@ $(function(){
             MapasCulturais.Messages.success(labels.emptyForm);
         }
 
-        $.post(url, data, function(r){
-            MapasCulturais.Messages.success(labels.saveMessage);
-            if($button.hasClass('js-next')){
-                // var $current = $("#registrations-list .registration-item.current");
-                var $current = $(".current");
-                var $next = $current.nextAll('.visible:first');
-                var $link = $next.find('a');
-                //se o proximo registration da lista for igual o registration atual, pule 2 filhos 
-                if($current.find('a').attr('href') == $current.nextAll('.visible:first').find('a').attr('href')) {
-                    $link = $(".registration-item:eq(2)").find('a'); // pegue o segundo filho da lista nos <li>
+        clearTimeout(window.saveEvaluationTimeout);
+            window.saveEvaluationTimeout = setInterval(() => {
+            $.post(url, data, function(r){
+                MapasCulturais.Messages.success(labels.saveMessage);
+                if($button.hasClass('js-next')){
+                    // var $current = $("#registrations-list .registration-item.current");
+                    var $current = $(".current");
+                    var $next = $current.nextAll('.visible:first');
+                    var $link = $next.find('a');
+                    //se o proximo registration da lista for igual o registration atual, pule 2 filhos 
+                    if($current.find('a').attr('href') == $current.nextAll('.visible:first').find('a').attr('href')) {
+                        $link = $(".registration-item:eq(2)").find('a'); // pegue o segundo filho da lista nos <li>
+                    }
+                    if($link.attr('href')) {
+                        document.location = $link.attr('href');
+                    }
                 }
-                if($link.attr('href')) {
-                    document.location = $link.attr('href');
+            }).fail(function(rs) {
+                if(rs.responseJSON && rs.responseJSON.error){
+                    if(rs.responseJSON.data instanceof Array){
+                        rs.responseJSON.data.forEach(function(msg){
+                            console.log(msg);
+                            MapasCulturais.Messages.error(msg);
+                        });
+                    } else {
+                        MapasCulturais.Messages.error(rs.responseJSON.data);
+                    }
                 }
-            }
-        }).fail(function(rs) {
-            if(rs.responseJSON && rs.responseJSON.error){
-                if(rs.responseJSON.data instanceof Array){
-                    rs.responseJSON.data.forEach(function(msg){
-                        console.log(msg);
-                        MapasCulturais.Messages.error(msg);
-                    });
-                } else {
-                    MapasCulturais.Messages.error(rs.responseJSON.data);
-                }
-            }
-        });
+            });
+        },100)
     });
 
     var __onChangeTimeout;
