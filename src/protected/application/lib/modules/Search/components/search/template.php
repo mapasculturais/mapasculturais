@@ -6,6 +6,7 @@
 
 $this->import('
     mc-breadcrumb
+    mc-title
 ');
 ?>
 <div class="search">
@@ -18,7 +19,7 @@ $this->import('
                     <mc-icon :name="entityType"></mc-icon>
                 </div>
                 
-                <label class="search__header--content-left-label"> {{pageTitle}} </label>
+                <mc-title tag="h1" bold mobile> {{pageTitle}} </mc-title>
             </div>
 
             <div class="search__header--content--right">

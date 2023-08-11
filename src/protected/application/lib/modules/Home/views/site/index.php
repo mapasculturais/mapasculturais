@@ -1,8 +1,19 @@
 <?php 
-use MapasCulturais\i;
-$this->import('home-header home-entities home-map home-opportunities home-developers home-register home-feature');
-?>
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
+$this->import('
+    home-developers 
+    home-entities 
+    home-feature
+    home-header 
+    home-map 
+    home-opportunities 
+    home-register
+');
+?>
 <home-header></home-header>
 <home-opportunities></home-opportunities>
 <home-entities></home-entities>

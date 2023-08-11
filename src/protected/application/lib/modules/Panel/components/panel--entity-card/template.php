@@ -8,7 +8,9 @@ use MapasCulturais\i;
 
 $this->import('
     mc-icon
+    mc-title
     panel--entity-actions 
+
 ');
 ?>
 <article class="panel__row panel-entity-card" :class="classes">
@@ -21,11 +23,11 @@ $this->import('
                 </slot>
             </div>
             <div class="panel-entity-card__header--info">
-                <h2 class="panel-entity-card__header--info-title">
-                    <slot name="title" :entity="entity">
+                <slot name="title" :entity="entity">
+                    <mc-title tag="h2" mobile >
                         {{ entity?.name || entity?.email || entity?.number || entity?.id }}
-                    </slot>
-                </h2>
+                    </mc-title>
+                </slot>
                 <p class="panel-entity-card__header--info-subtitle">
                     <slot name="subtitle" :entity="entity"></slot>
                 </p>
