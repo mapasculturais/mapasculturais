@@ -1,0 +1,20 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-phases-timeline {
+    &__box {
+       max-width: size(256); 
+       border-radius: size(4);
+       border: 1px solid var(--mc-gray-300);
+       padding: size(8) 0 size(8) size(8);
+    }
+    &__status {
+        display: grid;
+        grid-template-columns: size(12) 1fr;
+        gap: size(8);
+        align-items: center;
+        padding-bottom: size(16);
+    }
+    &__label {
+        font-size: size(12);
+    }
+}
