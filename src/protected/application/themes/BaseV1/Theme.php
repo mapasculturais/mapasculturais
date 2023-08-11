@@ -872,8 +872,6 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
-            $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
-
             $this->jsObject['userProfile'] = $app->user->profile;
 
             $this->jsObject['assets'] = array();
