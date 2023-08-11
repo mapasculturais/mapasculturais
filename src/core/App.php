@@ -1960,18 +1960,18 @@ class App {
      * 
      * @param string $template_name 
      * @param array|object $template_data 
-     * @return string 
+     * @return array 
      * @throws GlobalException 
      * @throws MailTemplateNotFound 
      */
-    function renderMailerTemplate(string $template_name, array|object $template_data = []): string {
-        if(array_key_exists($template_name, $this->config['mailer.templates'])) {
-            $message = $this->config['mailer.templates'][$template_name];
+    function renderMailerTemplate(string $template_name, array|object $template_data = []): array {
+        if($message = $this->config['mailer.templates'][$template_name] ?? null) {
             $message['body'] = $this->renderMustacheTemplate($message['template'], $template_data);
-            return $message;
         } else {
             throw new Exceptions\MailTemplateNotFound($template_name);
         }
+
+        return $message;
     }
 
 
