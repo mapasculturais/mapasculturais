@@ -14,6 +14,7 @@ app.component('panel--card-user', {
     data() {
         let username = `${this.entity.profile?.name} <${this.entity.email}>`;
         return {
+            roles: this.entity.roles,
             username
         };
     },
@@ -26,6 +27,14 @@ app.component('panel--card-user', {
     },
     
     methods: {
-        
+        async deleteRole(role) {
+            try {
+                await role.delete(true);
+                const index = this.roles.indexOf(role);
+                this.roles.splice(index,1);
+            } catch(e) {
+                console.error(e);
+            }
+        }
     },
 });
