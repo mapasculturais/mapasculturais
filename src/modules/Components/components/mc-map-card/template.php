@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-link
+    mc-title
 ');
 ?>
 <div class="mc-map-card">
@@ -16,9 +17,9 @@ $this->import('
             <img v-if="entity.files?.avatar" :src="entity.files?.avatar?.transformations?.avatarMedium.url" />
             <mc-icon v-else :entity="entity"></mc-icon>
         </div>
-        <div class="mc-map-card__header--title">
+        <mc-title tag="h5" bold>
             <?php i::_e("{{entity.name}}") ?>
-        </div>
+        </mc-title>
     </div>
 
     <div class="mc-map-card__content">
