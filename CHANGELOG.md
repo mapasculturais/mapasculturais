@@ -3,22 +3,46 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [6.0.0] - 2023-08-11
+### Modernização da interface
+- Construção de nova base de código para o desenvolvimento dos componentes do frontend, construido em cima do Vue 3
+- Redesenho e implementação de:
+    - Nova home do sistema, destacando as oportunidades abertas no momento e as entidades com selos certificadores
+    - Novas páginas de busca de agentes, espaços, projetos, eventos e oportunidades
+    - Novo painel do usuário
+    - Novas páginas de agentes, espaços, projetos, eventos e oportunidades
+    - Novas páginas de edição de agentes, espaços, projetos e eventos
+    - Novo fluxo para a gestão de oportunidades
+    - Novo fluxo para avaliação de inscrições
+    - Novo fluxo inscrição e acompanhamento da inscrição em oportunidades
+    - Novo fluxo para suporte a inscritos nas oportunidades
+
+### Gestão de usuários
+- Nova seção de gestão de usuários no painel
+- Gestão de papeis de usuário possibilitando a criação de novos perfis com níveis de acesso customizados, além dos 4 pré-definidos.
+
+### Modificações na API
+- API de busca de inscrições
+- Nas APIs de busca, adiciona a possibilidade de seleção de arquivos, mata lists, agentes relacionados, relações de agentes, selos e permissões do usuário autenticado
+
 ## [5.7.1] - 2023-07-21
-## Correções
+### Correções
 - Ajusta CSS do sidebar direito para evitar que o header sobrescreva os conteúdos dos editbox
 
 ## [5.7.1] - 2023-07-21
-## Correções
+### Correções
 - Ajusta CSS do sidebar direito para evitar que o header sobrescreva os conteúdos dos editbox
 
 ## [5.7.0] - 2023-07-13
-## Novas Funcionalidades
+### Novas Funcionalidades
 - Implementa novo método de avaliação EvaluationMethodQualification
 - Implementa opção para condicionar campos do tipo a nexos
-## Melhorias
+### Melhorias
 - Ajusta definição de cores na listagem de avaliações na tela do avaliador nos métodos simples e documental
 - Ajusta estrutura de condicionalidade de campo criando colunas específicas na tabela registration_field_configuration
 - Não obriga mais um campos ser obrigatorio para ser condicionado a outro campo
+
 ## [5.6.21] - 2023-07-13
 ### Melhorias
 - Faz refatorações para que o módulo de relatório busque campo da fase em questão e tambem fases anteriores
