@@ -29,7 +29,7 @@ app.component('mc-title', {
         },
         aligncenter: {
             type: Boolean,
-            default: 'false'
+            default: false
         },
     },
     setup(props, { slots }) {
