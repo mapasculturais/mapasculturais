@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.1] - 2023-08-11
+- Correção no posicionamento do logo quando este é apenas uma imagem sem label
+- Melhoria na busca por palavra-chave na gestão de usuário, retornando por documento, nome social e nome completo
+
 ## [6.0.0] - 2023-08-11
 ### Modernização da interface
 - Construção de nova base de código para o desenvolvimento dos componentes do frontend, construido em cima do Vue 3
