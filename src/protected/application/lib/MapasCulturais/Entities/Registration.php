@@ -1457,6 +1457,10 @@ class Registration extends \MapasCulturais\Entity
             $user = $app->user;
         }
 
+        $lockname = "save-user-evauation-{$user->id}";
+
+        $app->lock($lockname, 2);
+
         $evaluation = $this->getUserEvaluation($user);
         if(!$evaluation){
             $evaluation = new RegistrationEvaluation;
@@ -1465,6 +1469,8 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $this->saveEvaluation($evaluation, $data, $evaluation_status);
+
+        $app->unlock($lockname);
 
         return $evaluation;
     }

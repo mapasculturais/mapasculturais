@@ -16,10 +16,13 @@ $(function(){
     });
 
     function saveEvaluation(){
-        var data = $form.serialize();
-        var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id});
-        $.post(url, data, function(r){
-        });
+        clearTimeout(window.saveEvaluationTimeout);
+        window.saveEvaluationTimeout = setTimeout(() => {
+            var data = $form.serialize();
+            var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id});
+            $.post(url, data, function(r){
+            });
+        }, 100);
     }
 
     function finishEvaluation(checkButton = null) {
