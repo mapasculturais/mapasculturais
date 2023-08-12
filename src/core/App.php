@@ -1230,8 +1230,19 @@ class App {
      *******************************/
 
 
-     function lock(string $name, float $wait_for_unlock = 0)
-     {
+     /**
+      * Bloqueia a execução do código posterior ao chamamento da função,
+      * para o mesmo $name, enquanto não for chamado o unlock para o $name.
+      * 
+      * Caso o segundo parâmetro tenha sido informado, espera o tempo informado
+      * pelo unlock.
+      *
+      * @param string $name 
+      * @param float|int $wait_for_unlock 
+      * @return void 
+      * @throws GlobalException 
+      */
+     function lock(string $name, float $wait_for_unlock = 0) {
         $name = $this->slugify($name);
         
         $filename = sys_get_temp_dir()."/lock-{$name}.lock"; 
@@ -1251,7 +1262,13 @@ class App {
         file_put_contents($filename, "1");
      }
 
-     function unlock($name){
+     /**
+      * Desbloqueia a execução do código posterior ao chamamento do lock($name)
+
+      * @param string $name 
+      * @return void 
+      */
+     function unlock(string $name) {
         $name = $this->slugify($name);
         
         $filename = sys_get_temp_dir()."/lock-{$name}.lock"; 
