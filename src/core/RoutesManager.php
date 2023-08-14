@@ -97,8 +97,8 @@ class RoutesManager{
         $slim = $app->slim;
 
         $slim->any("[/{args:.*}]", function (RequestInterface $request, ResponseInterface $response, array $path) use($app) {
-            $parts = array_filter(explode('/', $path['args']));
-
+            $parts = array_values(array_filter(explode('/', $path['args'])));
+            
             if (($parts[0] ?? null) == 'api') {
                 $api_call = true;
                 array_shift($parts);
