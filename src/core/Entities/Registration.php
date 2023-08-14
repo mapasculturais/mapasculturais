@@ -845,7 +845,7 @@ class Registration extends \MapasCulturais\Entity
                     switch ($fieldConf->getFieldTypeDefinition()->slug){
                         case 'cpf':
                         case 'cnpj':
-                            $value = preg_replace( '/[^0-9]/', '', $value );
+                            $value = preg_replace( '/[^0-9]/', '', (string) $value );
                             $this->setMetadata($fieldName, $value);
                             break;
                     }

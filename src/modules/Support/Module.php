@@ -61,7 +61,7 @@ class Module extends \MapasCulturais\Module
             }
             return;
         });
-        $app->hook("entity(RegistrationMeta).update:before", function ($params) use ($app, $self) {
+        $app->hook("entity(RegistrationMeta).update:before", function () use ($app, $self) {
             if ($this->owner->canUser("@control")) {
                 return;
             }
