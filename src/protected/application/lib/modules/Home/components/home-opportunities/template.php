@@ -11,6 +11,7 @@ $this->import('
 	mc-entities
 ');
 ?>
+{{opportunities.length}}
 <div class="home-opportunities">
 	<div class="home-opportunities__header">
 		<div class="home-opportunities__header title">
@@ -22,20 +23,16 @@ $this->import('
 	</div>    
 	<div class="home-opportunities__content">
 		<div class="home-opportunities__content cards">
-			<mc-entities type="opportunity" :query="getQuery">
-				<template #default="{entities}">                    
-					<carousel v-if="entities.length > 0" :settings="settings" :breakpoints="breakpoints">
-						<slide v-for="entity in entities" :key="entity.id">
-							<entity-card :entity="entity" portrait slice-description></entity-card> 
-						</slide> 
-						<template v-if="entities.length > 1" #addons>
-							<div class="actions">
-								<navigation :slideWidth="368" />
-							</div>
-						</template>
-					</carousel>
+			<carousel v-if="opportunities.length > 0" :settings="settings" :breakpoints="breakpoints">
+				<slide v-for="opportunity in opportunities" :key="opportunity.id">
+					<entity-card :entity="opportunity" portrait slice-description></entity-card> 
+				</slide> 
+				<template v-if="opportunities.length > 1" #addons>
+					<div class="actions">
+						<navigation :slideWidth="368" />
+					</div>
 				</template>
-			</mc-entities>
+			</carousel>
 		</div>
 	</div>
 </div>
