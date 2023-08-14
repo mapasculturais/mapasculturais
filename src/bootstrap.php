@@ -32,6 +32,9 @@ define('APPMODE_DEVELOPMENT', 'development');
 define('APPMODE_PRODUCTION', 'production');
 define('APPMODE_STAGING', 'staging');
 
+if($timezone = env('TIMEZONE')) {
+    date_default_timezone_set($timezone);
+}
 
 if (env('MAPAS_HTTPS', false) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
     $_SERVER['HTTPS'] = 'on';
