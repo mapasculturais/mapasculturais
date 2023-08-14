@@ -49,7 +49,7 @@ $this->import('
 		</div>
 		<div v-if="entity.__objectType=='opportunity' && !openSubscriptions" class="entity-card__registration">
 			<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]">
-			<?= i::__('As inscrições estão encerradas') ?>
+			<?= i::__('As inscrições encerraram no dia')?> {{entity.registrationTo.date('2-digit year')}}
 			</p>
 		</div>
 		
