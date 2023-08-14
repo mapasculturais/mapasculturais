@@ -232,7 +232,7 @@ class Seal extends \MapasCulturais\Entity
         }
     }
     
-    public static function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false): string {
         if ($plural)
             return \MapasCulturais\i::__('Selos');
         else

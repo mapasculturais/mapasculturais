@@ -211,7 +211,7 @@ class Project extends \MapasCulturais\Entity
      */
     protected $subsite;
 
-    public static function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false): string {
         if ($plural)
             return \MapasCulturais\i::__('Projetos');
         else
