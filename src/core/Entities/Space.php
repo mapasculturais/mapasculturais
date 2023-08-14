@@ -244,7 +244,7 @@ class Space extends \MapasCulturais\Entity
         parent::__construct();
     }
 
-    public static function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false): string {
         if ($plural)
             return \MapasCulturais\i::__('Espaços');
         else
