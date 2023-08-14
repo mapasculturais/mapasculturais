@@ -82,7 +82,7 @@ class SystemRole extends \MapasCulturais\Entity {
      */
     protected $status = self::STATUS_ENABLED;
 
-    public static function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false): string {
         if ($plural)
             return i::__('Funções de usuário');
         else
