@@ -249,7 +249,7 @@ class Module extends \MapasCulturais\Module
                 'viewTemplate' => 'registration-field-types/number',
                 'configTemplate' => 'registration-field-types/number-config',
                 'validations' => [
-                    'v::numeric()' => \MapasCulturais\i::__('O valor inserido não é válido')
+                    'v::numericVal()' => \MapasCulturais\i::__('O valor inserido não é válido')
                 ]
             ],
             [
