@@ -9,6 +9,8 @@ use MapasCulturais\Definitions\Role;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\i;
+use MapasCulturais\Utils;
+
 class Module extends \MapasCulturais\Module {
     function _init() {
         $app = App::i();
@@ -137,14 +139,43 @@ class Module extends \MapasCulturais\Module {
                 LEFT JOIN 
                     MapasCulturais\\Entities\\Agent a 
                 WITH 
-                    e.profile = a.id";
+                    e.profile = a.id
+
+                LEFT JOIN 
+                    a.__metadata nomeCompleto 
+                WITH nomeCompleto.key = 'nomeCompleto'
+                
+                LEFT JOIN 
+                    a.__metadata nomeSocial 
+                WITH nomeSocial.key = 'nomeSocial'
+                
+                ";
+
+            if (strlen(preg_replace("/\D/", '', $keyword)) >= 11) {
+                $joins .= "
+                    LEFT JOIN 
+                        a.__metadata doc 
+                    WITH doc.key = 'documento'";
+            }
         });
 
         /**
          * Filtra usuários por palavras chaves na view user-management
          */
         $app->hook('repo(User).getIdsByKeywordDQL.where', function (&$where, $keyword) {
-            $where .= " (unaccent(lower(e.email)) LIKE unaccent(lower(:keyword)) OR unaccent(lower(a.name)) LIKE unaccent(lower(:keyword)))";
+            $where .= " 
+            (
+                unaccent(lower(e.email)) LIKE unaccent(lower(:keyword)) OR 
+                unaccent(lower(a.name)) LIKE unaccent(lower(:keyword)) OR
+                unaccent(lower(nomeCompleto.value)) LIKE unaccent(lower(:keyword)) OR
+                unaccent(lower(nomeSocial.value)) LIKE unaccent(lower(:keyword))
+            )";
+
+            $doc = preg_replace("/\D/", '', $keyword);
+            if (strlen($doc) >= 11) {
+                $formated_doc = Utils::formatCnpjCpf($doc);
+                $where .= " OR doc.value = '{$doc}' OR doc.value = '{$formated_doc}'";
+            }
         });
 
         $app->hook('panel.nav', function (&$group) use ($app) {

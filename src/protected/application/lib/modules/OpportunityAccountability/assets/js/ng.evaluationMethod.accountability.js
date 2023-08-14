@@ -181,11 +181,14 @@
 
         $scope.$watchGroup(['evaluationData.result'], function(new_val, old_val) {
             if(new_val != old_val){
-                AccountabilityEvaluationService.autoSave(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
-                    MapasCulturais.Messages.success('Salvo');
-                }).error(function (data) {
-                    MapasCulturais.Messages.error(data.data[0]);
-                });
+                clearTimeout(window.saveEvaluationTimeout);
+                    window.saveEvaluationTimeout = setInterval(() => {
+                    AccountabilityEvaluationService.autoSave(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
+                        MapasCulturais.Messages.success('Salvo');
+                    }).error(function (data) {
+                        MapasCulturais.Messages.error(data.data[0]);
+                    });
+                },100);
             }
         });
 
