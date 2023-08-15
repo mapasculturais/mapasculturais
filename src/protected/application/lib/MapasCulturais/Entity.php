@@ -1022,6 +1022,8 @@ abstract class Entity implements \JsonSerializable{
             $result['currentUserPermissions'] = $permissions;
         }
 
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
+
         return $result;
     }
 

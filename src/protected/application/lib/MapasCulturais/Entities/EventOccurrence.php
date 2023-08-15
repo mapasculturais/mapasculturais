@@ -421,7 +421,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function jsonSerialize() {
-        return [
+        $result = [
             '@entityType' => $this->getControllerId(),
             'id' => $this->id,
             'rule'=> $this->getRule(),
@@ -442,6 +442,10 @@ class EventOccurrence extends \MapasCulturais\Entity
             'deleteUrl' => $this->deleteUrl,
             'status' => $this->status
         ];
+
+        $app = App::i();
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
+        return $result;
     }
 
     protected function canUserCreate($user){

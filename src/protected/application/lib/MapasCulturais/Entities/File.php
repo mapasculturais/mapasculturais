@@ -302,7 +302,7 @@ abstract class File extends \MapasCulturais\Entity
     }
 
     public function jsonSerialize() {
-        return [
+        $result = [
             'id' => $this->id,
             'md5' => $this->md5,
             'mimeType' => $this->mimeType,
@@ -314,6 +314,11 @@ abstract class File extends \MapasCulturais\Entity
             'deleteUrl' => $this->deleteUrl,
             'createTimestamp' => $this->createTimestamp
         ];
+        $app = App::i();
+        
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
+
+        return $result;
     }
 
 
