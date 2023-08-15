@@ -90,6 +90,47 @@ class Module extends \MapasCulturais\Module
             }
             return;
         });
+
+        $app->hook('entity(Opportunity).registrationFieldConfigurations', function(&$result) use ($self, $app){
+            $user = $app->user;
+            if($self->isSupportUser($this, $user)){
+                foreach ($this->agentRelations as $relation) {
+                    if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
+                        $userAllowedFields = $relation->metadata['registrationPermissions'];
+                        foreach($result as $key => $field){
+                            $field = "field_".$field->id;
+                            if(!isset($userAllowedFields[$field])){
+                                unset($result[$key]);
+                            }
+                        }
+                    }
+                }
+
+                $result = array_values($result);
+            }
+        });
+
+        $app->hook('entity(Opportunity).registrationFileConfigurations', function(&$result) use ($self, $app){
+
+            $user = $app->user;
+            if($self->isSupportUser($this, $user)){
+                foreach ($this->agentRelations as $relation) {
+                    if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
+                        $userAllowedFields = $relation->metadata['registrationPermissions'];
+                        foreach($result as $key => $field){
+                            $field = $field->getFileGroupName();
+                            if(!isset($userAllowedFields[$field])){
+                                unset($result[$key]);
+                            }
+                        }
+                    }
+                }
+
+                $result = array_values($result);
+            }
+        });
+
+
         // permissões gerais
         $app->hook("can(Registration.support)", function ($user, &$result) use ($self) {
             $result = $self->isSupportUser($this->opportunity, $user);

@@ -162,6 +162,8 @@ class Controller extends \MapasCulturais\Controller
             $app->pass();
         }   
 
+        $entity->registerFieldsMetadata();
+        
         $entity->opportunity->isSupportUser($app->user);
 
         $this->render('support-edit', ['entity' => $entity]);
