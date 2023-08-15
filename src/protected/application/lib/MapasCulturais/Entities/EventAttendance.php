@@ -118,7 +118,7 @@ class EventAttendance extends \MapasCulturais\Entity {
     }
 
     public function jsonSerialize() {
-        return [
+        $result = [
             'id' => $this->id,
             'type' => $this->type,
             'reccurrenceString' => $this->reccurrenceString,
@@ -128,6 +128,11 @@ class EventAttendance extends \MapasCulturais\Entity {
             '_event' => $this->event->id,
             '_space' => $this->space->id
         ];
+        $app = App::i();
+        
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
+        
+        return $result;
     }
 
     function setUser($user){

@@ -273,7 +273,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @return RegistrationFileConfiguration[]
      */
     public function getRegistrationFileConfigurations() {
-        return App::i()->repo('RegistrationFileConfiguration')->findBy(['owner' => $this]);
+        $app = App::i();
+
+        $result = App::i()->repo('RegistrationFileConfiguration')->findBy(['owner' => $this]);
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.registrationFileConfigurations", [&$result]);
+        
+        return $result;
     }
 
     /**
@@ -281,7 +287,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @return RegistrationFieldConfiguration[]
      */
     public function getRegistrationFieldConfigurations() {
-        return App::i()->repo('RegistrationFieldConfiguration')->findBy(['owner' => $this]);
+        $app = App::i();
+
+        $result = App::i()->repo('RegistrationFieldConfiguration')->findBy(['owner' => $this]);
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.registrationFieldConfigurations", [&$result]);
+
+        return $result;
     }
 
     /**

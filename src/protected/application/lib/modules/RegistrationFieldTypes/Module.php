@@ -29,7 +29,9 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueScript('app', 'rfc-cep', 'js/rfc/location.js');
         $app->view->enqueueScript('app', 'rfc-datepicker', 'js/rfc/datepicker.js', ['flatpickr']);
         // @todo refatorar
-        // $app->view->includeIbgeJS();
+        if($app->view->version < 2){
+            $app->view->includeIbgeJS();
+        }
         $app->view->enqueueScript('app', 'customizable', 'js/customizable.js');
         $app->view->enqueueScript('app', 'flatpickr', 'vendor/flatpickr.js');
         $app->view->enqueueScript('app', 'flatpickr-pt', 'vendor/flatpickr-pt.js', ['flatpickr']);

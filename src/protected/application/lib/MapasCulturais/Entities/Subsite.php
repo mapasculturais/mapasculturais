@@ -341,6 +341,10 @@ class Subsite extends \MapasCulturais\Entity
 
         ];
 
+        $app = App::i();
+        
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
+        
         return $result;
     }
 

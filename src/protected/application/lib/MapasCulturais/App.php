@@ -2904,6 +2904,44 @@ class App extends \Slim\Slim{
      * Utils
      ************/
 
+    function lock(string $name, float $wait_for_unlock = 0, $expire_in = 10)
+    {
+        $name = $this->slugify($name);
+
+        $filename = sys_get_temp_dir() . "/lock-{$name}.lock";
+
+        if ($expire_in && file_exists($filename) && (microtime (true) - filectime($filename) > $expire_in)) {
+            unlink($filename);
+        }
+
+        if ($wait_for_unlock) {
+            $count = 0;
+            while (file_exists($filename) && $count < $wait_for_unlock) {
+                if ($expire_in && (microtime (true) - filectime($filename) > $expire_in)) {
+                    unlink($filename);
+                } else {
+                    $count += 0.1;
+                    usleep(100000);
+                }
+            }
+        }
+
+        if (file_exists($filename)) {
+            throw new \Exception("{$name} is locked");
+        }
+
+        file_put_contents($filename, "1");
+    }
+
+    function unlock($name)
+    {
+        $name = $this->slugify($name);
+
+        $filename = sys_get_temp_dir() . "/lock-{$name}.lock";
+
+        unlink($filename);
+    }
+
     function slugify($text) {        
         return Utils::slugify($text);
     }
