@@ -1460,7 +1460,7 @@ class Registration extends \MapasCulturais\Entity
             $user = $app->user;
         }
 
-        $lockname = "save-user-evauation-{$user->id}";
+        $lockname = "save-user-evauation--{$this->id}--{$user->id}";
 
         $app->lock($lockname, 2);
 
