@@ -54,16 +54,5 @@ $(function(){
         finishEvaluation(this)
     });
 
-    var __onChangeTimeout;
-    $(".autosave").on('keyup change', function() {
-        clearTimeout(__onChangeTimeout);
-        __onChangeTimeout = setTimeout(function(){
-            var data = $form.serialize();
-            var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id});
-            $.post(url, data, function(r){
-            });
-        },15000);
-
-    });
 
 });
