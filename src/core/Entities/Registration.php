@@ -296,6 +296,9 @@ class Registration extends \MapasCulturais\Entity
         $json = [
             'id' => $this->id,
             'opportunity' => $this->opportunity->simplify('id,name,singleUrl'),
+            'createTimestamp' => $this->createTimestamp,
+            'updateTimestamp' => $this->updateTimestamp,
+            'sentTimestamp' => $this->sentTimestamp,
             'projectName' => $this->projectName,
             'number' => $this->number,
             'category' => $this->category,
