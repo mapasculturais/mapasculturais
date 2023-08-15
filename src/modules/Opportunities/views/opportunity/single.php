@@ -114,9 +114,9 @@ $this->breadcrumb = [
 
        <opportunity-evaluations-tab :entity="entity"></opportunity-evaluations-tab>
 
-        <?php $this->part('opportunity-tab-results.php', ['entity' => $entity]); ?>
+        <?php $this->part('opportunity-tab-results', ['entity' => $entity]); ?>
         
-        <?php $this->part('opportunity-tab-support.php', ['entity' => $entity]); ?>
+        <?php $this->part('opportunity-tab-support', ['entity' => $entity]); ?>
 
     </mc-tabs>
     <entity-actions :entity="entity"></entity-actions>
