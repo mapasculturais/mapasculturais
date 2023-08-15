@@ -24,11 +24,13 @@ $this->breadcrumb = [
             </button>
         </create-opportunity>
     </template>
-    <template #default="{pseudoQuery}">
+    <template #default="{pseudoQuery, entity}">
         <div class="tabs-component__panels">
             <div class="search__tabs--list">
                 <search-list :pseudo-query="pseudoQuery" type="opportunity" select="name,type,shortDescription,files.avatar,seals,terms,registrationFrom,registrationTo">
                     <template #filter>
+                        
+
                         <search-filter-opportunity :pseudo-query="pseudoQuery"></search-filter-opportunity>
                     </template>
                 </search-list>
