@@ -1,0 +1,110 @@
+@use '../0.settings/mixins'as *;
+
+.registration-results {
+
+    &__modal {
+        .modal-content {
+            max-width: size(770);
+            padding: 0;
+        }
+
+        .modal {
+            &__header {
+                padding: size(16);
+                background-color: var(--mc-gray-100);
+            }
+
+            &__content {
+                margin: size(16) size(12) size(16) 0;
+                padding: 0 size(12) 0 size(24);
+
+                &::-webkit-scrollbar-track {
+                    background-color: var(--mc-gray-100);
+                }
+                &::-webkit-scrollbar {
+                    width: size(4);
+                    background-color: var(--mc-low-300);
+                }
+                &::-webkit-scrollbar-thumb {
+                    background-color: var(--mc-low-300);
+                    border-radius: var(--mc-border-radius-xs);
+                }
+            }
+
+            &__action {
+                display: none;
+            }
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+    }
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+        padding: size(13) size(16);
+        border: var(--mc-border-hairline) var(--mc-low-300);
+        border-radius: var(--mc-border-radius-xs);
+    }
+
+    &__card-header {
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+    }
+
+    &__card-title {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__card-action {
+        display: flex;
+        align-items: center;
+        gap: size(8);
+        background-color: transparent;
+        color: var(--mc-primary-500);
+        border: none;
+        cursor: pointer;
+    }
+
+    &__card-content {
+        display: flex;
+        flex-direction: column;
+        padding: size(10) size(16);
+        border: var(--mc-border-hairline) var(--mc-high-700); 
+        border-radius: var(--mc-border-radius-xs);
+    }
+
+    &__card-status {
+        display: flex;
+        gap: size(10);
+    }
+
+    &__opinion {
+        &--title {
+            font-size: $font-size-xs;
+        }
+
+        &--document {
+            display: flex;
+            flex-direction: column;
+            gap: size(8);
+        }
+
+        &--simplified {
+
+        }
+
+        &--technical {
+            display: flex;
+            flex-direction: column;
+            gap: size(16);
+        }
+    }
+}
