@@ -446,6 +446,7 @@ class App {
         $this->slim->run();
         $this->persistPCachePendingQueue();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
+        $this->applyHookBoundTo($this, 'slim.after');
     }
 
     /**
