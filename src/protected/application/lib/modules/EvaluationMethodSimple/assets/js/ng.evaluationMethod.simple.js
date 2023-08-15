@@ -50,25 +50,6 @@
 
         };
 
-        window.addEventListener("message", function(event) {            
-            if (event.data?.type == "evaluationForm.save") {
-                $scope.save();
-            }
-        });
-
-        $scope.save = function(){
-            var _data = {
-                status:$scope.data.registration,
-                obs: $scope.data.obs
-            }
-
-            ApplySimpleEvaluationService.autoSave(MapasCulturais.entity.id, _data, MapasCulturais.user.id).success(function () {
-                MapasCulturais.Messages.success(labels.saved);
-            }).error(function (data) {
-                MapasCulturais.Messages.error(data.data[0]);
-            });
-        }
-
         $scope.getStatusLabel = function(status){
             for(var i in statuses){
                 if(statuses[i].value == status){
@@ -78,15 +59,6 @@
             return '';
         };
 
-        $scope.timeOut = null;
-        $scope.$watchGroup(['data.obs', 'data.registration'], function(new_val, old_val) {
-            if(new_val != old_val){
-                clearTimeout($scope.timeOut)               
-                $scope.timeOut = setTimeout(() => {
-                    $scope.save();
-                }, 15000);
-            }
-        });
     }]);
 
     module.controller('ApplySimpleEvaluationResults',['$scope', 'RegistrationService', 'ApplySimpleEvaluationService', 'EditBox', function($scope, RegistrationService, ApplySimpleEvaluationService, EditBox){
