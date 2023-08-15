@@ -8,10 +8,8 @@ use MapasCulturais\i;
 
 $this->import('
 	entity-card
-	mc-entities
 ');
 ?>
-{{opportunities.length}}
 <div class="home-opportunities">
 	<div class="home-opportunities__header">
 		<div class="home-opportunities__header title">
@@ -22,8 +20,11 @@ $this->import('
 		</div>
 	</div>    
 	<div class="home-opportunities__content">
-		<div class="home-opportunities__content cards">
-			<carousel v-if="opportunities.length > 0" :settings="settings" :breakpoints="breakpoints">
+		<div v-if="opportunities.length <= 2" :class="['home-opportunities__cards', {'home-opportunities__cards--column': opportunities.length==2}]" >
+			<entity-card  v-for="opportunity in opportunities" :entity="opportunity" portrait slice-description ></entity-card> 
+		</div>
+		<div v-if="opportunities.length > 2" class="home-opportunities__content cards">
+			<carousel :settings="settings" :breakpoints="breakpoints">
 				<slide v-for="opportunity in opportunities" :key="opportunity.id">
 					<entity-card :entity="opportunity" portrait slice-description></entity-card> 
 				</slide> 
