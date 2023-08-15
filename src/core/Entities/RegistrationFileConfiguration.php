@@ -137,7 +137,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     }
 
     public function jsonSerialize(): array {
-        return [
+        $result = [
             'id' => $this->id,
             'ownerId' => $this->owner->id,
             'title' => $this->title,
@@ -151,6 +151,12 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'conditionalField' => $this->conditionalField,
             'conditionalValue' => $this->conditionalValue
         ];
+
+        $app = App::i();
+        
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
+
+        return $result;
     }
 
     protected function _canUser($user){
