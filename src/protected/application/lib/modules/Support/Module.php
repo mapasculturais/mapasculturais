@@ -54,13 +54,18 @@ class Module extends \MapasCulturais\Module
         $app->hook("PATCH(registration.single):before", function () use ($app, $self) {
             if ($self->isSupportUser($this->requestedEntity->opportunity, $app->user) ){
                 $self->inTransaction = true;
-                $app->hook("can(<<Agent|Space>>.<<@control|modify>>)", function($user,&$result) {
-                    $result = true;
-                });
                 $app->em->beginTransaction();
             }
             return;
         });
+
+
+        $app->hook("can(<<Agent|Space>>.<<modify|@control>>)", function($user,&$result) use($self) {
+            if ($self->inTransaction) {
+                $result = true;
+            }
+        });
+
         $app->hook("entity(RegistrationMeta).update:before", function ($params) use ($app, $self) {
             if ($this->owner->canUser("@control")) {
                 return;
