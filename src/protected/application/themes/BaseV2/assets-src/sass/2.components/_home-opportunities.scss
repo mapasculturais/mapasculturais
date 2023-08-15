@@ -51,6 +51,15 @@
 			}
 		}
 	}
+	&__cards {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: size(32);
+		&--column {
+			grid-template-columns: 1fr 1fr;
+			align-items: start;
+		}
+	}
 
 	&__content {
 		&.cards {
