@@ -13,7 +13,7 @@ $queryParams =  [
 ];
 $queryParams = array_merge($queryParams, (array) $app->config['home.opportunities.filter']);
 $queryOpportunities = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Opportunity::class, $queryParams);
+
 $this->jsObject['home']['opportunities'] =[
     'opportunities' => $queryOpportunities->getFindResult(),
-    // 'filter' => $app->config['home.opportunities.filter']
 ];
