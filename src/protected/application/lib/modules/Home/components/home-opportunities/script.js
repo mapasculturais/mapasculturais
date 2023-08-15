@@ -15,6 +15,7 @@ app.component('home-opportunities', {
     },
 
     props: {
+      
     },
 
     data() {
@@ -25,7 +26,7 @@ app.component('home-opportunities', {
             //     '@select' : 'id,name,shortDescription,terms,seals,singleUrl,registrationFrom,registrationTo',
             //     ...$MAPAS.home.opportunities.filter,
             // },
-            opportunities: $MAPAS.home.opportunities.opportunities,
+           
             // carousel settings
             settings: {
                 itemsToShow: 1,
@@ -71,34 +72,19 @@ app.component('home-opportunities', {
     },
 
     computed: {
-        // getQuery() {
-        //     this.query['registrationFrom'] = 'LTE('+this.futureDate()+')';
-        //     this.query['registrationTo'] = 'GTE('+this.actualDate()+')';
-
-        //     return this.query;
-        // }
+        opportunities () {
+            const result = [];
+            const api = new API("opportunity");
+            for(let opp of $MAPAS.home.opportunities.opportunities) {
+                let opportunity = api.getEntityInstance(opp.id);
+                opportunity.populate(opp);
+                result.push(opportunity);
+            }
+            return result;
+        }
     },
     
     methods: {
-        // actualDate() {
-        //     var data = new Date();
-        //     var dia = String(data.getDate()).padStart(2, '0');
-        //     var mes = String(data.getMonth() + 1).padStart(2, '0');
-        //     var ano = data.getFullYear();
-
-        //     return (ano + '-' + mes + '-' + dia);
-        // },
-
-        // futureDate() {
-        //     var date = this.actualDate();
-        //     var futureDate = new Date(date.replace(/\-/gi, ', '));
-        //     futureDate.setMonth(futureDate.getMonth() + (1));
-
-        //     var dia = String(futureDate.getDate()).padStart(2, '0');
-        //     var mes = String(futureDate.getMonth() + 1).padStart(2, '0');
-        //     var ano = futureDate.getFullYear();
-
-        //     return (ano + '-' + mes + '-' + dia);
-        // }
+        
     },
 });
