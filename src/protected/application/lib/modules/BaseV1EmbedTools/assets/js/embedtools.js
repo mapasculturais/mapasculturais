@@ -25,6 +25,12 @@
         }
     });
 
+    if(MapasCulturais.registration) {
+        window.lastSentRegistrationFields = JSON.parse(JSON.stringify(MapasCulturais.registration));
+    } else {
+        window.lastSentRegistrationFields = {};
+    }
+    
     function postToParent() {
         window.parent.postMessage({
             type: 'resize',
@@ -33,21 +39,31 @@
             }
         }, '*');
 
+        
         const registrationFields = {};
+
         for (let key in MapasCulturais.registration) {
+            let val = undefined;
             if (key.indexOf('field_') === 0) {
                 if(MapasCulturais.registration[key] instanceof Date){
-                    registrationFields[key] = moment(MapasCulturais.registration[key]).format("YYYY-MM-DD");
+                    val = moment(MapasCulturais.registration[key]).format("YYYY-MM-DD");
                 }else{
-                    registrationFields[key] = MapasCulturais.registration[key];
+                    val = MapasCulturais.registration[key];
                 }
-            } 
+            }
+
+            if(val !== undefined && JSON.stringify(val) !== JSON.stringify(window.lastSentRegistrationFields[key])) {
+                window.lastSentRegistrationFields[key] = val;
+                registrationFields[key] = val;
+            }
         }
 
-        window.parent.postMessage({
-            type: 'registration.update',
-            data: registrationFields,
-        }, '*');
+        if(JSON.stringify(registrationFields) != '{}') {
+            window.parent.postMessage({
+                type: 'registration.update',
+                data: registrationFields,
+            }, '*');
+        }
     }
 
     setInterval(postToParent, 50);

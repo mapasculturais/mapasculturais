@@ -8,7 +8,6 @@ use MapasCulturais\i;
 
 $this->import('
 	entity-card
-	mc-entities
 ');
 ?>
 <div class="home-opportunities">
@@ -21,21 +20,20 @@ $this->import('
 		</div>
 	</div>    
 	<div class="home-opportunities__content">
-		<div class="home-opportunities__content cards">
-			<mc-entities type="opportunity" :query="getQuery">
-				<template #default="{entities}">                    
-					<carousel v-if="entities.length > 0" :settings="settings" :breakpoints="breakpoints">
-						<slide v-for="entity in entities" :key="entity.id">
-							<entity-card :entity="entity" portrait slice-description></entity-card> 
-						</slide> 
-						<template v-if="entities.length > 1" #addons>
-							<div class="actions">
-								<navigation :slideWidth="368" />
-							</div>
-						</template>
-					</carousel>
+		<div v-if="opportunities.length <= 2" :class="['home-opportunities__cards', {'home-opportunities__cards--column': opportunities.length==2}]" >
+			<entity-card  v-for="opportunity in opportunities" :entity="opportunity" portrait slice-description ></entity-card> 
+		</div>
+		<div v-if="opportunities.length > 2" class="home-opportunities__content cards">
+			<carousel :settings="settings" :breakpoints="breakpoints">
+				<slide v-for="opportunity in opportunities" :key="opportunity.id">
+					<entity-card :entity="opportunity" portrait slice-description></entity-card> 
+				</slide> 
+				<template v-if="opportunities.length > 1" #addons>
+					<div class="actions">
+						<navigation :slideWidth="368" />
+					</div>
 				</template>
-			</mc-entities>
+			</carousel>
 		</div>
 	</div>
 </div>

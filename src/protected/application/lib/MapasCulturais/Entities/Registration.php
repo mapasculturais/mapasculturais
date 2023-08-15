@@ -296,6 +296,9 @@ class Registration extends \MapasCulturais\Entity
         $json = [
             'id' => $this->id,
             'opportunity' => $this->opportunity->simplify('id,name,singleUrl'),
+            'createTimestamp' => $this->createTimestamp,
+            'updateTimestamp' => $this->updateTimestamp,
+            'sentTimestamp' => $this->sentTimestamp,
             'projectName' => $this->projectName,
             'number' => $this->number,
             'category' => $this->category,
@@ -344,7 +347,7 @@ class Registration extends \MapasCulturais\Entity
         
         if($this->canUser("viewUserEvaluation") && !$this->canUser("@control")){
             $checkList = 'projectName,category,files,field,owner';
-            $values = ['files' => []];
+            $result = ['files' => []];
 
             foreach($json as $k => $v){
                 $_k = preg_replace('/field_\d+/', 'field', $k);
@@ -354,30 +357,33 @@ class Registration extends \MapasCulturais\Entity
                     if($k == "files"){
                         foreach(array_keys($v) as $f){
                             if($this->canSee($f)){
-                                $values[$k][$f] = $v[$f];
+                                $result[$k][$f] = $v[$f];
                             }  
                         }
                        
                     }else if($k == "owner" || $k == "agentRelations"){
                         if($this->canSee("agentsSummary")){
-                            $values[$k] = $v;
+                            $result[$k] = $v;
                         }
                     }else{
                         if($this->canSee($k) || $this->opportunity->canUser("@control")){
-                            $values[$k] = $v;
+                            $result[$k] = $v;
                         }
                     }
                 }else{
-                    $values[$k] = $v;
+                    $result[$k] = $v;
                 }
             }
         }else{
-            $values = $json;
+            $result = $json;
         }
 
-        $values['spaceRelation'] = $this->getSpaceRelation();
+        $result['spaceRelation'] = $this->getSpaceRelation();
 
-        return $values;
+        $app = App::i();
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
+
+        return $result;
     }
 
     public function canSee($key)
@@ -1457,6 +1463,10 @@ class Registration extends \MapasCulturais\Entity
             $user = $app->user;
         }
 
+        $lockname = "save-user-evauation--{$this->id}--{$user->id}";
+
+        $app->lock($lockname, 2);
+
         $evaluation = $this->getUserEvaluation($user);
         if(!$evaluation){
             $evaluation = new RegistrationEvaluation;
@@ -1465,6 +1475,8 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $this->saveEvaluation($evaluation, $data, $evaluation_status);
+
+        $app->unlock($lockname);
 
         return $evaluation;
     }
