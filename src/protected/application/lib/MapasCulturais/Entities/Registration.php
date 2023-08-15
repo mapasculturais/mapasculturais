@@ -344,7 +344,7 @@ class Registration extends \MapasCulturais\Entity
         
         if($this->canUser("viewUserEvaluation") && !$this->canUser("@control")){
             $checkList = 'projectName,category,files,field,owner';
-            $values = ['files' => []];
+            $result = ['files' => []];
 
             foreach($json as $k => $v){
                 $_k = preg_replace('/field_\d+/', 'field', $k);
@@ -354,30 +354,33 @@ class Registration extends \MapasCulturais\Entity
                     if($k == "files"){
                         foreach(array_keys($v) as $f){
                             if($this->canSee($f)){
-                                $values[$k][$f] = $v[$f];
+                                $result[$k][$f] = $v[$f];
                             }  
                         }
                        
                     }else if($k == "owner" || $k == "agentRelations"){
                         if($this->canSee("agentsSummary")){
-                            $values[$k] = $v;
+                            $result[$k] = $v;
                         }
                     }else{
                         if($this->canSee($k) || $this->opportunity->canUser("@control")){
-                            $values[$k] = $v;
+                            $result[$k] = $v;
                         }
                     }
                 }else{
-                    $values[$k] = $v;
+                    $result[$k] = $v;
                 }
             }
         }else{
-            $values = $json;
+            $result = $json;
         }
 
-        $values['spaceRelation'] = $this->getSpaceRelation();
+        $result['spaceRelation'] = $this->getSpaceRelation();
 
-        return $values;
+        $app = App::i();
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
+
+        return $result;
     }
 
     public function canSee($key)
