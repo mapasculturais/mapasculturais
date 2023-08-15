@@ -40,7 +40,7 @@ app.component('entity-related-agents', {
         groups() {
             let groups = {};
             for (var [groupName, group] of Object.entries(this.entity.agentRelations)) {
-                if (groupName == "group-admin") {
+                if (groupName == "group-admin" || groupName == '@support') {
                     continue;
                 } else {
                     group.newGroupName = groupName;
