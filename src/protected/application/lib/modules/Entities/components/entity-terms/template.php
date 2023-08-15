@@ -12,10 +12,11 @@ $this->import('
     mc-tag-list 
 ');
 ?>
-<div v-if="editable || entity.terms?.[taxonomy].length > 0" :class="['entity-terms', classes]">
-    <h4 class="entity-terms__title bold" v-if="title == ''"> {{taxonomy}} </h4>
+<div v-if="editable || entity.terms?.[taxonomy].length > 0" :class="['entity-terms', classes, error]">
+    <h4 class="entity-terms__title bold" v-if="title == ''"> {{taxonomy}} </h4> 
     <h4 class="entity-terms__title bold" v-else> {{title}} </h4>
-
+    <span v-if="required && !hideRequired" class="required">*<?=i::__('obrigatório');?></span>
+ 
     <mc-popover v-if="allowInsert && editable" openside="down-right"  @open="loadTerms()" :title="popoverTitle">
         <template #button="popover">
             <button @click="popover.toggle()" class="button button--rounded button--sm button--icon button--primary" v-if="editable">
@@ -49,4 +50,7 @@ $this->import('
         </button>
     </mc-multiselect>
     <mc-tag-list :editable="editable" :classes="entity.__objectType+'__background'" :tags="entity.terms[this.taxonomy]"></mc-tag-list>
+    <small class="field__error" v-if="hasErrors">        
+        {{errors.join('; ')}}
+    </small>
 </div>
