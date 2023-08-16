@@ -141,6 +141,24 @@ $(function(){
             $('li.js-field, li.registration-list-item').css('cursor', 'pointer');
         }, 50);
 
+        setTimeout(function() {
+            let $lastField;
+            let c;
+            $('li.js-field, li.registration-list-item').each(function () {                
+                c += 100;
+                $lastField = $(this);
+                let $self = $(this);
+                setTimeout(function() {
+                    $self.click();
+                }, c);
+            })
+            
+            setTimeout(function() {
+                console.log($lastField);
+                $lastField.click();
+            }, c+5000);
+        }, 200);
+
         $('body').on('click', 'li.js-field, li.registration-list-item', function(){
             var $field = $(this);
             
