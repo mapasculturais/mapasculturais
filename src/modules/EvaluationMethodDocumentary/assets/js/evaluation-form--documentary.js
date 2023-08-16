@@ -83,21 +83,6 @@ $(function(){
                 });
             }
 
-            var __onChangeTimeout;
-
-            $(".autosave").on('keyup change', function() {
-                var $formContainer = $('#registration-evaluation-form');
-                var $_form = $formContainer.find('form');
-                clearTimeout(__onChangeTimeout);
-                __onChangeTimeout = setTimeout(function(){
-                    var data = $_form.serialize();
-                    var status = (MapasCulturais.evaluation && MapasCulturais.evaluation.status == 1) ? 'evaluated' : 'draft';
-                    var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': status});
-                    $.post(url, data, function(r){
-                        MapasCulturais.Messages.success('Avaliação Salva com sucesso');
-                    });
-                },15000);
-            });
 
             return $form;
         }
@@ -155,6 +140,24 @@ $(function(){
 
             $('li.js-field, li.registration-list-item').css('cursor', 'pointer');
         }, 50);
+
+        setTimeout(function() {
+            let $lastField;
+            let c;
+            $('li.js-field, li.registration-list-item').each(function () {                
+                c += 100;
+                $lastField = $(this);
+                let $self = $(this);
+                setTimeout(function() {
+                    $self.click();
+                }, c);
+            })
+            
+            setTimeout(function() {
+                console.log($lastField);
+                $lastField.click();
+            }, c+5000);
+        }, 200);
 
         $('body').on('click', 'li.js-field, li.registration-list-item', function(){
             var $field = $(this);
