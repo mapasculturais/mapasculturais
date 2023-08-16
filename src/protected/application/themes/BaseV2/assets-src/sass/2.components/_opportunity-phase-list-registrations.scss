@@ -1,0 +1,28 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-phase-list-registrations {
+
+
+
+    &__box {
+        border: 1px solid var(--mc-gray-300);
+        padding: size(16);
+        border-radius: size(8);
+        margin-bottom: size(16);
+    }
+
+    &__endbox {
+        a {
+            margin-top: size(8);
+            color: var(--mc-white);
+
+            .iconify {
+                font-size: size(17.5);
+            }
+        }
+    }
+
+    &__status {
+        padding-bottom: size(24);
+    }
+}

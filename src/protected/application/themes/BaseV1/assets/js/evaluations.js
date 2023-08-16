@@ -52,18 +52,4 @@ $(function(){
         },100)
     });
 
-    var __onChangeTimeout;
-    $(".autosave").on('keyup change', function() {
-        clearTimeout(__onChangeTimeout);
-        __onChangeTimeout = setTimeout(function(){
-            var data = $form.serialize();
-            var status = (MapasCulturais.evaluation && MapasCulturais.evaluation.status == 1) ? 'evaluated' : 'draft';
-            var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': status});
-            $.post(url, data, function(r){
-                MapasCulturais.Messages.success(labels.saveMessage);
-            });
-        },15000);
-
-    });
-
 });

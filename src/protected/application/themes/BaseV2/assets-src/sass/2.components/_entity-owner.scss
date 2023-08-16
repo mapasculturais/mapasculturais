@@ -8,9 +8,11 @@
     }
     
     &__owner {
-        align-items: center;
-        display: flex;
+        display: grid;
+        grid-template-columns: size(56) 1fr;
         text-decoration: none;
+        align-items: center;
+        gap: size(8);
         &--img {
             border-radius: 50%;
             overflow: hidden;

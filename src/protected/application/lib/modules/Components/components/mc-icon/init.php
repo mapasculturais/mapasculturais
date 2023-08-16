@@ -52,6 +52,7 @@ $iconset = [
     'dashboard' => 'ic:round-dashboard',
     'date'=> 'material-symbols:date-range-rounded',
     'delete' => 'gg:close',
+    'dot' => 'prime:circle-fill',
     'down' => 'mdi:chevron-down',
     'download' => 'el:download-alt',
     'edit' => 'zondicons:edit-pencil',
