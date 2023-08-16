@@ -64,3 +64,12 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      -
+        name: Build and push develop-cli
+        uses: docker/build-push-action@v4
+        with:
+          file: ./compose/local/Dockerfile
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: develop-cli
+          labels: ${{ steps.meta.outputs.labels }}
