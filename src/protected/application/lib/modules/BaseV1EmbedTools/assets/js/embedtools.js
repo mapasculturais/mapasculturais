@@ -47,8 +47,8 @@
             if (key.indexOf('field_') === 0) {
                 if(MapasCulturais.registration[key] instanceof Date){
                     val = moment(MapasCulturais.registration[key]).format("YYYY-MM-DD");
-                }else{
-                    val = MapasCulturais.registration[key];
+                }else if(MapasCulturais.registration[key] !== undefined) {
+                    val = JSON.parse(JSON.stringify(MapasCulturais.registration[key]));
                 }
             }
 
