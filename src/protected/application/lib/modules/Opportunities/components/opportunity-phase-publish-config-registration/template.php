@@ -59,7 +59,7 @@ $this->import('
                     </div>
             </div>
             <div class="opportunity-phase-publish-config-registration__unpublishedlast" :class="[{'col-6':!phase.isLastPhase}, {'col-12 grid-12' : phase.isLastPhase}]">
-                <div v-if="tab=='registrations'" class="opportunity-phase-publish-config-registration__registrationList col-12">
+                <div v-if="tab=='registrations' && !phase.isFirstPhase" class="opportunity-phase-publish-config-registration__registrationList col-12">
                     <h5 class="bold col-12"><?= i::__("A lista de inscrições pode ser acessada utilizando o botão abaixo")?></h5>
                     <mc-link  :entity="phase" class="button button--primary button--icon opportunity-phase-publish-config-registration__unpublishedbtn" route="registrations" right-icon>
                         <h4 class="semibold"><?= i::__("Conferir lista de inscrições") ?></h4><mc-icon name="external"></mc-icon>
