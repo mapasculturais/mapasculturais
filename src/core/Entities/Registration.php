@@ -1177,19 +1177,21 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserRemove($user){
-        if($user->is('guest')) {
+        if ($user->is('guest')) {
             return false;
         }
 
-        if($this->status <= 0){
-            false;
+        if ($user->is('admin')) {
+            return true;
         }
 
-        if(new DateTime('now') >= $this->opportunity->registrationFrom){
-            return false;
+        $now = new \DateTime();
+
+        if ($this->opportunity->canUser('@control', $user) && $this->opportunity->registrationFrom < $now ) {
+            return true;
         }
 
-        if($this->isUserAdmin($user) || $this->getOwnerUser()->id == $user->id) {
+        if ($this->getOwnerUser()->equals($user) && $this->status < 1) {
             return true;
         }
 
