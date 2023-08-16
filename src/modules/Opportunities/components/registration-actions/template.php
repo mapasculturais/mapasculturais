@@ -38,32 +38,12 @@ $this->import('
     </div>
     <div class="registration-actions__secondary">
         <button class="button button--large button--primary-outline" @click="validate()"> <?= i::__('Validar inscrição') ?> </button>
-
-        <mc-confirm-button @confirm="cancelExit" yes="<?= i::esc_attr__('Continuar depois') ?>" no="<?= i::esc_attr__('Voltar') ?>" title="<?= i::esc_attr__('Quer continuar sua inscrição depois?') ?>">
-            <template #button="modal">
-                <button @click="modal.open(); save();" class="button button--large button--primary-outline">
-                    <?= i::__("Salvar para depois") ?>
-                </button>
-            </template> 
-            <template #message="message">
-                <?php i::_e('Sua inscrição foi salva em rascunho. Para retomar, vá até o') ?> 
-                <strong> <?php i::_e('Painel de Controle') ?> </strong> 
-                <?php i::_e('e acesse') ?> 
-                <strong> <?php i::_e('Minhas Inscrições') ?> </strong> 
-                <?php i::_e('na aba') ?> 
-                <strong> <?php i::_e('Não enviadas') ?>  </strong>
-            </template>
-        </mc-confirm-button> 
-
-        <mc-confirm-button @confirm="cancelExit()" @cancel="exit()" yes="<?= i::esc_attr__('Sair') ?>" no="<?= i::esc_attr__('Voltar') ?>" title="<?= i::esc_attr__('Falta tão pouco! Quer mesmo sair?') ?>">
-            <template #button="modal">
-                <button @click="modal.open()" class="button button--large button--primary-outline">
-                    <?= i::__("Sair") ?>
-                </button>
-            </template> 
-            <template #message="message">
-                <?php i::_e('As informações preenchidas não serão salvas. Se você sair agora, vai precisar fazer a inscrição do começo de novo quando voltar.') ?>
-            </template>
-        </mc-confirm-button> 
+        <button @click="save();" class="button button--large button--primary-outline">
+            <?= i::__("Salvar") ?>
+        </button>
+ 
+        <button @click="exit()" class="button button--large button--primary-outline">
+            <?= i::__("Salvar e sair") ?>
+        </button>
     </div>
 </div>
