@@ -2,8 +2,8 @@
 use MapasCulturais\i;
 
 return [
-    'Não enviada' => i::__('Não enviada'),
-    'Enviada' => i::__('Enviada'),
-    'Inscrição deletada com sucesso' => i::__('Inscrição deletada com sucesso'),
-    'Erro ao deletada a inscrição' => i::__('Erro ao deletada a inscrição'),
+    'não enviada' => i::__('Não enviada'),
+    'enviada' => i::__('Enviada'),
+    'inscrição removida' => i::__('Inscrição removida'),
+    'erro ao remover' => i::__('Erro ao remover a inscrição'),
 ];
