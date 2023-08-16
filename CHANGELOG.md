@@ -8,7 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige bug no entity-card na listagem de oportunidades
 - Corrige fluxo de salvar e enviar a inscrição criando botões de salvar e sair e salvar
-  
+
 ## [6.0.2] - 2023-08-15
 ### Correções
 - Corrige problema no módulo de suporte que não salva a inscrição mesmo com permissão para alterar o campo

@@ -71,5 +71,5 @@ jobs:
           file: ./compose/local/Dockerfile
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: develop-cli
+          tags: docker.io/hacklab/mapasculturais:develop-cli
           labels: ${{ steps.meta.outputs.labels }}
