@@ -1,0 +1,16 @@
+@use '../0.settings/mixins'as *;
+
+.registration-status {
+    display: flex;
+    gap: size(6);
+    align-items: center;
+
+    &--selected,
+    &--valid {
+        color: var(--mc-success-500);
+    }
+
+    &--invalid {
+        color: var(--mc-danger-500);
+    }
+}
