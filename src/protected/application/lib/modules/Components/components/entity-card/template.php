@@ -40,16 +40,16 @@ $this->import('
 		<div v-if="entity.__objectType=='space' && entity.endereco" class="entity-card__content--description">
 			<label class="entity-card__content--description-local"><?= i::_e('ONDE: ') ?></label> <strong class="entity-card__content--description-adress">{{entity.endereco}}</strong>
 		</div>
-		<div v-if="entity.__objectType=='opportunity' && openSubscriptions" class="entity-card__registration">
+		<div v-if="entity.__objectType=='opportunity' && entity.registrationFrom.isFuture()" class="entity-card__registration">
 			<div class="entity-card__period">
 				<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]" v-if="entity.registrationFrom && entity.registrationTo" >
-					<?= i::__('Inscrições de') ?> {{entity.registrationFrom.date('2-digit year')}} <?= i::__('até')?> {{entity.registrationTo.date('2-digit year')}}
+					<?= i::__('Inscrições de') ?> {{entity.registrationFrom.date('2-digit year')}} <?= i::__('até')?> {{entity.registrationTo.date('2-digit year')}} <?= i::__('às')?> {{entity.registrationTo.time('numeric')}}
 				</p>
 			</div>
 		</div>
-		<div v-if="entity.__objectType=='opportunity' && !openSubscriptions" class="entity-card__registration">
+		<div v-if="entity.__objectType=='opportunity' && !entity.registrationFrom.isFuture()" class="entity-card__registration">
 			<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]">
-			<?= i::__('As inscrições encerraram no dia')?> {{entity.registrationTo.date('2-digit year')}}
+			<?= i::__('As inscrições encerraram no dia')?> {{entity.registrationTo.date('2-digit year')}} <?= i::__('às')?> {{entity.registrationFrom.time('numeric')}}
 			</p>
 		</div>
 		
