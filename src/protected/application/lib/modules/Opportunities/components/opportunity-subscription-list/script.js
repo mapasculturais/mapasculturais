@@ -2,19 +2,20 @@ app.component('opportunity-subscription-list' , {
     template: $TEMPLATES['opportunity-subscription-list'],
 
     setup() {
-        $MAPAS.config.opportunitySubscriptionList.registrations = $MAPAS.config.opportunitySubscriptionList.registrations.map((registration) => {
-            if (registration instanceof Entity) {
-                return registration;
-            } else {
-                const entity = new Entity('registration', registration.id);
-                entity.populate(registration);
-                return entity;
-            }             
-        });
+        const api = new API('registration');
+        const list = [];
+        for (let raw of $MAPAS.config.opportunitySubscriptionList.registrations) {
+            const registration = api.getEntityInstance(raw.id);
+            registration.populate(raw);
+            registration.$LISTS.push(list);
+            list.push(registration);
+        }
+        $MAPAS.userRegistrations = list;
     },
 
     data() {
-        const registrations = $MAPAS.config.opportunitySubscriptionList.registrations;
+        const registrations = $MAPAS.userRegistrations;
+        
         return {
             registrations,
             opportunity: $MAPAS.requestedEntity,

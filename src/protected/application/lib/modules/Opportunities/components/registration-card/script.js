@@ -34,9 +34,9 @@ app.component('registration-card', {
         status() {
             let status = '';
             if (this.entity.status == 0) {
-                status = this.text('Não enviada');
+                status = this.text('não enviada');
             } else {
-                status = this.text('Enviada');
+                status = this.text('enviada');
             }
             return status;
         },
@@ -55,20 +55,17 @@ app.component('registration-card', {
             }
             return false;
         },
-        deleteRegistration() {
+        
+        async deleteRegistration() {
             const messages = useMessages();
-            let pos = this.list.indexOf(this.entity);
-            api = new API('registration');
-            let url = api.createUrl('deleteRegistration', {id: this.entity.id});
-            var args = {};
-            api.POST(url, args).then(res => res.json()).then(data => {
-                if(data){
-                    this.list.splice(pos,1);
-                    messages.success(this.text('Inscrição deletada com sucesso'));
-                }else{
-                    messages.error(this.text('Erro ao deletada a inscrição'));
-                }
-            });
+
+            try {
+                this.entity.disableMessages();
+                await this.entity.delete(true);
+                messages.success(this.text('inscrição removida'));
+            } catch (e) {
+                messages.success(this.text('erro ao remover'));
+            }
         }
     },
 });
