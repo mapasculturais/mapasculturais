@@ -87,6 +87,7 @@ app.component('registration-actions', {
         async validate() {
             const messages = useMessages();
             try {
+                await this.save();
                 const success = await this.registration.POST('validateEntity', {});
                 if (success) {
                     messages.success(this.text('Validado'));
@@ -115,14 +116,11 @@ app.component('registration-actions', {
         exit() {
             this.registration.save().then(() => {
                 if (window.history.length > 2) {
-                  
+                    window.history.back();
                 } else {
-                    window.location.href = $MAPAS.baseURL+'panel';
+                    window.location.href = Utils.createUrl('panel', 'index');
                 }
             });
         },
-        cancelExit() {
-            window.history.back();
-        }
     },
 });
