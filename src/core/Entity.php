@@ -442,20 +442,6 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent->getOwnerUser();
         }
 
-        $uses_cache = $this->usesPermissionCache();
-
-        if ($uses_cache) {
-            $cache_key = $this->getPermissionCacheKey($user, $action);
-    
-            if ($this->permissionCacheEnabled && $app->permissionCacheEnabled && $app->mscache->contains($cache_key)) {
-                $result = $app->mscache->fetch($cache_key);
-
-                $app->applyHookBoundTo($this, 'can(' . $this->getHookClassPath() . '.' . $action . ')', ['user' => $user, 'result' => &$result]);
-                $app->applyHookBoundTo($this, $this->getHookPrefix() . '.canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
-                return $result;
-            }
-        }
-
         $result = false;
 
         if (!empty($user)) {
@@ -485,10 +471,6 @@ abstract class Entity implements \JsonSerializable{
             $app->applyHookBoundTo($this, 'can(' . $this->getHookClassPath() . '.' . $action . ')', ['user' => $user, 'result' => &$result]);
             $app->applyHookBoundTo($this, $this->getHookPrefix() . '.canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
 
-        }
-
-        if($uses_cache && $this->permissionCacheEnabled && $app->permissionCacheEnabled) {
-            $app->mscache->save($cache_key, $result, $app->config['app.permissionsCache.lifetime']);
         }
 
         return $result;

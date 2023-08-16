@@ -41,11 +41,12 @@ $this->import('
         </div>
         <div class="col-12 sm:col-12">
             <opportunity-enable-claim :entity="phase"></opportunity-enable-claim>
-        </div>
+            <!-- <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config> -->
 
+        </div>
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>
-            <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
+            <opportunity-phase-publish-date-config  :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
         </template>
 
         <div class="opportunity-data-collection__delete col-12" v-if="!phase.isLastPhase && !phase.isFirstPhase">
