@@ -115,14 +115,11 @@ app.component('registration-actions', {
         exit() {
             this.registration.save().then(() => {
                 if (window.history.length > 2) {
-                  
+                    window.history.back();
                 } else {
-                    window.location.href = $MAPAS.baseURL+'panel';
+                    window.location.href = Utils.createUrl('panel', 'index');
                 }
             });
         },
-        cancelExit() {
-            window.history.back();
-        }
     },
 });
