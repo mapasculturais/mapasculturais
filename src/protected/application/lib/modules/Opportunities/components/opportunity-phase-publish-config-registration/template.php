@@ -29,7 +29,7 @@ $this->import('
             </div>
         </div>
       
-        <div v-if="!phase.publishedRegistrations" :class="[{'col-12 grid-12 opportunity-phase-publish-config-registration__lastphase': phase.isLastPhase}, {'col-12 grid-12': !phase.isLastPhase && tab!='registrations'}]">
+        <div v-if="!phase.publishedRegistrations" :class="[{'col-12 grid-12 opportunity-phase-publish-config-registration__lastphase': phase.isLastPhase}, {'col-12 grid-12': !phase.isLastPhase}]">
             <mc-alert v-if="!phase.publishedRegistrations && !phase.isLastPhase"  class="col-12" type="warning">
                 <?= i::__('Fique atento! A publicação do resultado é opcional e só pode ser feita após o término da fase. <strong>Esta ação deixará público o nome e o número de inscrição das pessoas inscritas.</strong>') ?>
             </mc-alert>
