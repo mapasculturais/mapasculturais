@@ -66,7 +66,9 @@ class Entity {
                     name: __properties['type']?.options?.[val]
                 };
             }
-            this[prop] = val;
+            if(JSON.stringify(this[prop]) != JSON.stringify(val)) {
+                this[prop] = val;
+            }
         }
 
         for (let key in __relations) {
