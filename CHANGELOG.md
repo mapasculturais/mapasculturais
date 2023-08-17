@@ -4,8 +4,9 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [6.0.5] - 2023-08-17
 ### Correções
+- Remove build da imagem develop-cli
 - Remove propriedade break-all do v-2 nos componentes de texto
 - Corrige a exibição do entity-card no carrosel na versão desktop
 - Corrige a exibição dos titulos nos componentes da home que utilizam o carrosel
@@ -13,6 +14,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Aumenta o tempo para o autosave dos campos de configuração das fases das oportunidades para 3 segundos, antes estava em 300 milisegundos
 - Faz o autosave dos campos ocorrerem imediatamente após o campo perder o foco
 - Corrige comportamento estranho dos seletores de data e hora que aparecia os segundos e depois removia, parecendo piscar o campo
+
 
 ## [6.0.4] - 2023-08-16
 ### Correções
@@ -28,9 +30,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige problema no módulo de suporte que não salva a inscrição mesmo com permissão para alterar o campo
 - Corrige bug no carregamento dos campos que devem ser exibidos para o agente de support
+
 ### Melhorias
 - Melhora nome do arquivo do sistema de lock de requisições
 - Implementa hooks para manipular o resultado do Opportunity::registrationFieldConfiguration e  Opportunity::registrationFileConfiguration
+
 ## [6.0.1] - 2023-08-11
 - Correção no posicionamento do logo quando este é apenas uma imagem sem label
 - Melhoria na busca por palavra-chave na gestão de usuário, retornando por documento, nome social e nome completo
