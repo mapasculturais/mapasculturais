@@ -9,7 +9,15 @@
     &__title {
         margin: 0;
     }
-
+    .required {
+        font-family: Open Sans;
+        font-size: size(12);
+        font-weight: 700;
+        line-height: size(16);
+        letter-spacing: 0em;
+        text-align: left;
+        color: var(--mc-error);
+    }
     &__terms {
         margin: size(10) 0 0;
         display: flex;
