@@ -113,11 +113,12 @@
                         padding: size(16);
                         width: 100%;
                         display: flex;
-                        gap: size(16);
+                        gap: size(8);
                         flex-direction: column;
                         justify-content: space-between;
                         margin: 0 size(12);
-
+                       
+                        
                         .panel__row,
                         &.panel-entity-card,
                         &.card {
@@ -145,7 +146,10 @@
                         }
 
                         &__header {
-
+                            &-actions {
+                                right: size(16);
+                                position: absolute;
+                            }
                             &--picture {
                                 width: size(48);
                                 height: size(48);
@@ -158,10 +162,9 @@
                             }
 
                             &--info {
-                                &-title {
-                                    font-size: size(16);
-                                    line-height: size(22);
-                                }
+                                display: block;
+                                line-height: size(21);
+
 
                                 &-subtitle {
                                     display: none;
@@ -169,13 +172,14 @@
                             }
 
                             .left {
-                                flex-wrap: wrap;
                                 display: grid;
                                 grid-template-columns: 1fr;
+                                flex-wrap: wrap;
 
                                 @media (max-width:size(956)) {
                                     display: flex;
-                                    gap: size(12);
+                                    // gap: size(12);
+                                    text-align: left;
                                 }
                             }
                         }
@@ -188,14 +192,14 @@
                             padding: 0;
 
                             span {
-                                word-break: break-all;
+                                word-break: break-word;
                                 white-space: pre-line;
 
                             }
 
                             @media (max-width:size(400)) {
                                 span {
-                                    word-break: break-all;
+                                    word-break: break-word;
                                 }
                             }
                         }
