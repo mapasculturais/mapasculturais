@@ -26,9 +26,12 @@
             &__logo {
                 &--img {
                     padding: 0;
-
                     img {
                         max-height: size(55);
+                        
+                        @media (max-width:size(400)){
+                            max-height: size(45);
+                        }
                     }
                 }
             }
@@ -76,12 +79,20 @@
             align-items: center;
             display: flex;
             justify-content: center;
-            margin: 0 auto;
             max-height: size(55);
 
             img {
                 width: auto;
                 max-height: size(55);
+            }
+
+            @media (max-width:size(400)){
+                height: size(45);
+
+                img {
+                    width: auto;
+                    max-height: size(45);
+                }
             }
         }
     }

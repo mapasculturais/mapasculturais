@@ -15,18 +15,17 @@ $this->import('
 ');
 ?>
 <mc-stepper-vertical :items="phases" allow-multiple>
-    <template #header-title="{index, item, }">        
+    <template #header-title="{index, item}">        
         <div class="stepper-header__content">
             <div class="info">
-                <h3 v-if="index && !item.__objectType == 'evaluationmethodconfiguration'" class="info__title">{{item.name}}</h3>
-                <h3 v-if="!item.isLastPhase && item.__objectType == 'evaluationmethodconfiguration'" class="info__title">Inscritos em {{evaluationMethods[item.type].name}}</h3>
-                <h3 v-if="!index" class="info__title"><?= i::__('Período de inscrição') ?></h3>
+                <h3 v-if="item.isFirstPhase" class="info__title"><?= i::__('Período de inscrição') ?></h3>
+                <h3 v-if="!item.isFirstPhase && !item.isLastPhase" class="info__title"><?= sprintf(i::__('Inscritos em %s'), '{{item.name}}') ?></h3>
+                <h3 v-if="item.isLastPhase" class="info__title">{{item.name}}</h3>
                 <div v-if="!item.isLastPhase" class="info__type">
                     <span class="title"> <?= i::__('Tipo') ?>: </span>
                     <span v-if="item.__objectType == 'opportunity'" class="type"><?= i::__('Coleta de dados') ?></span>
                     <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{evaluationMethods[item.type]?.name}}</span>
                 </div>
-                <h2 v-if="item.isLastPhase && tab=='registrations'" class="info__title"><?= i::__('Publicação final dos Resultados') ?></h2>
 
             </div>
             <div class="dates">

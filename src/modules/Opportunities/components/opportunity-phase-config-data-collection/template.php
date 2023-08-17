@@ -16,8 +16,8 @@ $this->import('
 ?>
     <div class="opportunity-data-collection grid-12">
         <div class="grid-12 col-12 opportunity-data-collection__section">        
-            <entity-field :entity="phase" prop="registrationFrom" :autosave="300" :min="minDate?._date" :max="phase.registrationTo?._date" classes="col-6 sm:col-12"></entity-field>
-            <entity-field :entity="phase" prop="registrationTo" :autosave="300" :min="phase.registrationFrom?._date" :max="maxDate?._date" classes="col-6 sm:col-12"></entity-field>
+            <entity-field :entity="phase" prop="registrationFrom" :autosave="3000" :min="minDate?._date" :max="phase.registrationTo?._date" classes="col-6 sm:col-12"></entity-field>
+            <entity-field :entity="phase" prop="registrationTo" :autosave="3000" :min="phase.registrationFrom?._date" :max="maxDate?._date" classes="col-6 sm:col-12"></entity-field>
 
             <div class="col-12 grid-12">
                 <mc-link :entity="phase" route='formBuilder' class="config-phase__info-button button--primary button col-6" icon="external" right-icon>
@@ -32,9 +32,9 @@ $this->import('
                     <h4 class="bold col-12"><?= i::__("Limites na inscrição") ?></h4>
                     <div class="opportunity-data-collection__fields grid-12">
                         <h5 class="bold col-12 "><?= i::__("Total de vagas")?></h5>
-                        <entity-field :entity="phase" prop="registrationLimit" label="Defina o número limite de vagas  para o edital ou oportunidade"  :autosave="300" classes="opportunity-data-collection__field col-12"></entity-field>
+                        <entity-field :entity="phase" prop="registrationLimit" label="Defina o número limite de vagas  para o edital ou oportunidade"  :autosave="3000" classes="opportunity-data-collection__field col-12"></entity-field>
                         <h5 class="bold col-12 "><?= i::__("Inscrições por agente")?></h5>
-                        <entity-field :entity="phase" prop="registrationLimitPerOwner" label="Defina o número de inscrições máximas para um agente (pessoa ou coletivo)" :autosave="300" classes="opportunity-data-collection__field col-12"></entity-field>
+                        <entity-field :entity="phase" prop="registrationLimitPerOwner" label="Defina o número de inscrições máximas para um agente (pessoa ou coletivo)" :autosave="3000" classes="opportunity-data-collection__field col-12"></entity-field>
                     </div>
                 </div>
             </div>

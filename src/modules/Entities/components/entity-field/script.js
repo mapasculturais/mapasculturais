@@ -149,9 +149,7 @@ app.component('entity-field', {
     
     methods: {
         
-        change(event) {
-
-           
+        change(event, now) {
             clearTimeout(this.__timeout);
             let oldValue = this.entity[this.prop];
             
@@ -192,14 +190,14 @@ app.component('entity-field', {
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
                 }
 
-                if (this.autosave && this.entity[this.prop] != oldValue) {
+                if (this.autosave && (now || this.entity[this.prop] != oldValue)) {
                     clearTimeout(this.entity.__autosaveTimeout);
                     this.entity.__autosaveTimeout = setTimeout(() => {
                         this.entity.save();
                         this.$emit('save', this.entity);
-                    }, this.autosave);
+                    }, now ? 0 : this.autosave);
                 }
-            }, this.debounce);
+            }, now ? 0 : this.debounce);
         },
 
         is(type) {
