@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.5] - 2023-08-17
+### Correções
+- Remove build da imagem develop-cli
+
 ## [6.0.4] - 2023-08-16
 ### Correções
 - Corrige bug no entity-card na listagem de oportunidades
