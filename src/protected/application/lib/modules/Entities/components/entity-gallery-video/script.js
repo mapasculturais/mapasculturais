@@ -71,11 +71,11 @@ app.component('entity-gallery-video', {
             if (host.indexOf('youtube') != -1) {
                 provider = 'youtube';
                 videoID =  parsedURL.search.replace('?v=', '');
-                videoThumbnail = 'https://img.youtube.com/vi/'+videoID+'/maxresdefault.jpg';
+                videoThumbnail = 'https://img.youtube.com/vi/'+videoID+'/0.jpg';
             } else if (host.indexOf('vimeo') != -1) {
                 provider = 'vimeo';
                 videoID = parsedURL.pathname.split('/')[1];
-                videoThumbnail = 'https://vumbnail.com/'+videoID+'_large.jpg';
+                videoThumbnail = 'https://vumbnail.com/'+videoID+'.jpg';
             }
             return {
                 'parsedURL': parsedURL,
