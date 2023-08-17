@@ -40,6 +40,16 @@
             &-img {
                 flex-basis: 100%;
                 width: 100%;
+                display: flex;
+                justify-content: center;
+
+                .theme-logo {
+                    width: 30%;
+                }
+
+                .theme-logo.onlyImg {
+                    width: unset;
+                }
 
                 @media (max-width: size(800)) {
                     width: 70%;
@@ -50,6 +60,7 @@
                         justify-content: center;
                         justify-items: center;
                         margin: 0 auto;
+                        width: 50%;
 
                         &__logo {
                             width: 50%;
