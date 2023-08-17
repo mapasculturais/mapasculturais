@@ -30,7 +30,7 @@
         v-model="model" 
         @update:model-value="change" 
         :dayNames="dayNames" 
-        :format="dateFormat" 
+        :format="datetimeFormat" 
         :id="propId" 
         :locale="locale" 
         :max-date="maxDate" 

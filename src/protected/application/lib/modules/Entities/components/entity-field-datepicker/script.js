@@ -83,8 +83,15 @@ app.component('entity-field-datepicker', {
             }
         },
         dateFormat(date) {
-            return new Date(date).toLocaleString(this.locale);
+            let mcdate = new McDate (date);
+            return mcdate.date('2-digit year');
         },
+
+        datetimeFormat(date) {
+            let mcdate = new McDate (date);
+            return mcdate.date('2-digit year') + ' ' + mcdate.time('2-digit');
+        },
+
         change(val) {
             this.entity.__validationErrors[this.prop] = [];
             if (this.maxDate && val > this.maxDate) {
