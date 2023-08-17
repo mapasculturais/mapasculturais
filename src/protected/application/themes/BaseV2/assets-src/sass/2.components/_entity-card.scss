@@ -155,7 +155,7 @@
 		text-align: left;
 
 		&-shortDescription {
-			word-break: break-all;
+			word-break:break-word;
 			font-size: size(14);
 		}
 
@@ -199,7 +199,7 @@
 						margin-left: size(10);
 
 						@media (max-width:size(600)) {
-							word-break: break-all;
+							word-break: break-word;
 						}
 					}
 				}
@@ -245,7 +245,7 @@
 			font-size: size(12);
 			line-height: size(16);
 			color: var(--mc-low-700);
-			word-break: break-all;
+			word-break: break-word;
 
 			&-local,
 			&-adress {
