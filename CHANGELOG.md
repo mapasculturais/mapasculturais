@@ -4,6 +4,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [6.0.6] - 2023-08-17
+### Correções
+- Aumenta o tempo para o autosave dos campos de configuração das fases das oportunidades para 3 segundos, antes estava em 300 milisegundos
+- Faz o autosave dos campos ocorrerem imediatamente após o campo perder o foco
+- Corrige comportamento estranho dos seletores de data e hora que aparecia os segundos e depois removia, parecendo piscar o campo
+
 ## [6.0.5] - 2023-08-17
 ### Correções
 - Remove build da imagem develop-cli
@@ -11,10 +18,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exibição do entity-card no carrosel na versão desktop
 - Corrige a exibição dos titulos nos componentes da home que utilizam o carrosel
 - Corrige a versão mobile dos componentes que utilizam carrosel e entity-card
-- Aumenta o tempo para o autosave dos campos de configuração das fases das oportunidades para 3 segundos, antes estava em 300 milisegundos
-- Faz o autosave dos campos ocorrerem imediatamente após o campo perder o foco
-- Corrige comportamento estranho dos seletores de data e hora que aparecia os segundos e depois removia, parecendo piscar o campo
-
 
 ## [6.0.4] - 2023-08-16
 ### Correções
