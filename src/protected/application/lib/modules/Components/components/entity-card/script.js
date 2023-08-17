@@ -30,6 +30,10 @@ app.component('entity-card', {
             type: Boolean,
             default: false,
         },
+        tag: {
+            type: String,
+            default: 'h2',
+        },
     },
 
     computed: {
