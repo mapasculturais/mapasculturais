@@ -18,7 +18,8 @@ $this->import('
 			<mc-avatar class="user-image" :entity="entity"></mc-avatar>
 
 			<div class="user-info" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
-				<mc-title tag='h2' mobile bold>{{entity.name}}</mc-title>
+				<mc-title :tag="tag" mobile bold>{{entity.name}}</mc-title>
+
 				<slot name="type">
 					<div v-if="entity.type" class="user-info__attr">
 						<?php i::_e('Tipo:') ?> {{entity.type.name}}
