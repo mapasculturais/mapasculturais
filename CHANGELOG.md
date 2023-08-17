@@ -6,6 +6,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 ### Correções
+- Remove propriedade break-all do v-2 nos componentes de texto
 - Corrige a exibição do entity-card no carrosel na versão desktop
 - Corrige a exibição dos titulos nos componentes da home que utilizam o carrosel
 - Corrige a versão mobile dos componentes que utilizam carrosel e entity-card
