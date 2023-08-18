@@ -1,4 +1,4 @@
-@use '../0.settings/mixins'as *;
+@use '../0.settings/mixins' as *;
 
 .registration-actions {
     display: flex;
@@ -33,17 +33,17 @@
                 margin-bottom: size(8);
             }
 
-            
             &__error {
                 align-items: baseline;
                 display: grid;
                 gap: size(8);
                 grid-template-columns: size(16) 1fr;
                 margin-bottom: size(8);
-                
+
                 &:nth-child(0) {
                     background-color: gray;
                 }
+
                 &:nth-child(1) {
                     margin-top: size(8);
                     background: green;
@@ -60,7 +60,6 @@
                 &--text {
                     font-size: size(14);
                     line-height: size(19);
-                    text-decoration-line: underline;
 
                     p {
                         margin: 0;
