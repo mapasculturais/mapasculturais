@@ -49,12 +49,12 @@ $this->import('
         </div>
         <div class="entity-card__content--occurrence-info">
             <div class="ageRating">
-                <span class="ageRating__class"><?= i::__('Classificação') ?><strong>:</strong></span>
+                <span class="ageRating__class uppercase"><?= i::__('Classificação') ?><strong>: </strong></span>
 
-                <span class="ageRating__value">{{event.classificacaoEtaria}}</span>
+                <span class="ageRating__value uppercase">{{event.classificacaoEtaria}}</span>
             </div>
             <div v-if="occurrence.price" class="price ageRating">
-                <span class="ageRating__class"><?= i::__('Entrada') ?><strong>:</strong></span>
+                <span class="ageRating__class"><?= i::__('Entrada') ?><strong>: </strong></span>
 
                 <span class="ageRating__value">{{occurrence.price}}</span>
             </div>
