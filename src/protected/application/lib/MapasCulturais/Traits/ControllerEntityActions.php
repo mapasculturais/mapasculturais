@@ -180,6 +180,7 @@ trait ControllerEntityActions {
                     }
                 }
             }
+        }
 
         $this->_finishRequest($entity, true, $function);
     }
