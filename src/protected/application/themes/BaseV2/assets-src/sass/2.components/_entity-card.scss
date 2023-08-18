@@ -219,16 +219,16 @@
 					&__class {
 
 						font-weight: 500;
-						font-size: 0.75rem;
-						line-height: 1rem;
+						font-size: size(14);
+						line-height: size(16);
 						text-transform: uppercase;
 						color: var(--mc-low-700);
 					}
 
 					&__value {
 						font-weight: 700;
-						font-size: 13.5px;
-						line-height: 16px;
+						font-size: size(14);
+						line-height: size(16);
 					}
 
 					@media (max-width:size(700)) {
