@@ -164,19 +164,22 @@ trait ControllerEntityActions {
 
         if($_errors = $entity->validationErrors){
             $errors = [];
-            foreach($this->postData as $field=>$value){
-                if(key_exists($field, $_errors)){
-                    $errors[$field] = $_errors[$field];
+            $has_terms_in_request = [];
+            foreach($this->postData as $field => $value){
+                if ($error = $_errors[$field] ?? false){
+                    $errors[$field] = $error;
+                } else if ($field == 'terms') {
+                    $has_terms_in_request = true;
                 }
             }
 
-            if($errors){
-                if($app->request->headers->get("forceSave")){
-                    $entity->save(true);
+            if ($has_terms_in_request) {
+                foreach ($entity->validationErrors as $key => $list_of_errors) {
+                    if (str_starts_with($key, 'term-')) {
+                        $errors[$key] = $list_of_errors;
+                    }
                 }
-                $this->errorJson($errors, 400);
             }
-        }
 
         $this->_finishRequest($entity, true, $function);
     }
