@@ -313,6 +313,7 @@ class App {
         $this->id = $id;
 
         $this->slim = AppFactory::create();
+        $this->slim->addBodyParsingMiddleware();
         $this->slim->addRoutingMiddleware();
         $this->slim->addErrorMiddleware(true, true, true);
 
