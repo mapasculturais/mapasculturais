@@ -141,7 +141,9 @@ class Module extends \MapasCulturais\Module
 
     function getAgentFields()
     {
-        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links'];
+        $app = App::i();
+
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links', '@terms:segmento'];
         
         $definitions = Agent::getPropertiesMetadata();
         foreach ($definitions as $key => $def) {
@@ -151,6 +153,8 @@ class Module extends \MapasCulturais\Module
             }
         }
         
+        $app->applyHookBoundTo($this, "registrationFieldTypes.getAgentFields", [&$agent_fields]);
+
         return $agent_fields;
     }
 
