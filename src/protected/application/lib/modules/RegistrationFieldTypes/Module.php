@@ -578,6 +578,8 @@ class Module extends \MapasCulturais\Module
             } else {
                 $entity->$entity_field = $value;
             }
+         
+            $app->applyHookBoundTo($entity, "registrationFieldTypes.saveToEntity", ["entity_field" => $entity_field, "value" => $value]);
             
             // só salva na entidade se salvou na inscrição
             $entity->changedByRegistration = true;
