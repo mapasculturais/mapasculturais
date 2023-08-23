@@ -160,6 +160,8 @@ class Module extends \MapasCulturais\Module
 
     function getSpaceFields()
     {
+        $app = App::i();
+        
         $space_fields = ['name', 'shortDescription', 'longDescription', '@type', '@location', '@terms:area', '@links'];
         
         $definitions = Space::getPropertiesMetadata();
