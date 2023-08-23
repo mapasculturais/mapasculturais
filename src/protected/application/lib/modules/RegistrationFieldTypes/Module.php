@@ -171,6 +171,8 @@ class Module extends \MapasCulturais\Module
             }
         }
         
+        $app->applyHookBoundTo($this, "registrationFieldTypes.getSpaceFields", [&$space_fields]);
+
         return $space_fields;
     }
 
