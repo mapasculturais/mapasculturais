@@ -55,6 +55,8 @@ class ApiQuery {
      */
     protected $entityClassMetadata;
 
+    protected $rootEntityClassName;
+
     protected $pk = 'id';
 
     /**
@@ -511,6 +513,7 @@ class ApiQuery {
 
         $this->entityClassName = $class;
         $this->entityClassMetadata = $this->em->getClassMetadata($this->entityClassName);
+        $this->rootEntityClassName = $this->entityClassMetadata->rootEntityName;
         
         $this->pk = $this->entityClassMetadata->identifier[0];
 
@@ -1677,7 +1680,7 @@ class ApiQuery {
                 FROM
                     MapasCulturais\Entities\MetaList ml
                 WHERE
-                    ml.objectType = '{$this->entityClassName}' AND 
+                    ml.objectType = '{$this->rootEntityClassName}' AND 
                     ml.objectId IN ({$sub}) AND ({$where})
                 ORDER BY ml.id ASC";
                     

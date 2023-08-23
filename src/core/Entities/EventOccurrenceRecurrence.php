@@ -67,7 +67,7 @@ class EventOccurrenceRecurrence extends \MapasCulturais\Entity
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
 
-        return $result
+        return $result;
     }
 
     //============================================================= //
