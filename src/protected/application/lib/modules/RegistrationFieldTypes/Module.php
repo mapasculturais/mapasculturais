@@ -591,9 +591,13 @@ class Module extends \MapasCulturais\Module
 
     function fetchFromEntity (Entity $entity, $value, Registration $registration = null, Metadata $metadata_definition = null)
     {
+        $app = App::i();
+
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             
+            $app->applyHookBoundTo($entity, "registrationFieldTypes.fetchFromEntity", ["entity_field" => $entity_field, "value" => $value]);
+
             if($entity_field == '@location'){
 
                 if($entity->En_Nome_Logradouro && $entity->En_Num && $entity->En_Municipio && $entity->En_Estado) {
