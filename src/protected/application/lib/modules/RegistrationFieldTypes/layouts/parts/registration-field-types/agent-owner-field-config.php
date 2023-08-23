@@ -12,6 +12,8 @@ $fields_labels = [
     '@links' => " " . i::__(' Links'),
 ];
 
+$app->applyHookBoundTo($this, "registrationFieldTypes--agent-owner-field-config-fields_labels", [&$fields_labels]);
+
 $select_fields = [];
 $area_oprions = [];
 $area = $app->getRegisteredTaxonomyBySlug('area');
@@ -63,6 +65,7 @@ foreach ($agent_fields as $field) {
     <?php endforeach; ?>
     </select>
     
+    <?php $this->applyTemplateHook('registrationFieldTypes--agent-owner-field-config','before', ['agent_fields' => $agent_fields]); ?>
     <div ng-if="field.config.entityField == '@location'">
         <label><input type="checkbox" ng-model="field.config.setLatLon" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Definir a latitude e longitude baseado no CEP?') ?></label><br>
         <label><input type="checkbox" ng-model="field.config.setPrivacy" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Fornecer opção para mudar a privacidade da localização?') ?></label>
@@ -84,5 +87,5 @@ foreach ($agent_fields as $field) {
     <div ng-if="field.config.entityField == '@links'">
         <label><input type="checkbox" ng-model="field.config.title" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Pedir de título') ?></label><br>
     </div>
-    
+    <?php $this->applyTemplateHook('registrationFieldTypes--agent-owner-field-config','after', ['agent_fields' => $agent_fields]); ?>
 </div>
