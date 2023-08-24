@@ -4,7 +4,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [5.7.3] - 2023-08-23
 ## Correções
 - Corrige a altura dos gráficos de linha do módulo de relatorios das oportunidades
 
