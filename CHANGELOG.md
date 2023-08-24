@@ -67,6 +67,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - API de busca de inscrições
 - Nas APIs de busca, adiciona a possibilidade de seleção de arquivos, mata lists, agentes relacionados, relações de agentes, selos e permissões do usuário autenticado
 
+## [unreleased]
+## Correções
+- Corrige a altura dos gráficos de linha do módulo de relatorios das oportunidades
+
 ## [5.7.1] - 2023-07-21
 ### Correções
 - Ajusta CSS do sidebar direito para evitar que o header sobrescreva os conteúdos dos editbox
