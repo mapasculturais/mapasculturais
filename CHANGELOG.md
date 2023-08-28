@@ -4,6 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.9] - 2023-08-28
+### Correções
+- Cria mc-update para atualizar dados legados para a nova estrutura de condicionalidade de campos
+- Corrige importação de formularios para interpretar a nova estrutura de condicionalidade de campos
+
 ## [5.7.5] - 2023-08-28
 ### Correções
 - Cria mc-update para atualizar dados legados para a nova estrutura de condicionalidade de campos
