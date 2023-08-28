@@ -656,6 +656,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newField->config = $field->config;
                 $newField->fieldOptions = $field->fieldOptions;
                 $newField->displayOrder = $field->displayOrder;
+                $newField->conditional = $field->conditional;
+                $newField->conditionalValue = $field->conditionalValue;
 
                 $field->newField = $newField;
 
@@ -669,13 +671,12 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
             foreach($importSource->fields as &$field) {
                 $newField = $field->newField;
-                if(!empty($field->config['require']['field'])){
-                    $field_name = $field->config['require']['field'];
+                if(!empty($field->conditionalField)){
+                    $field_name = $field->conditionalField;
 
                     if(isset($new_fields_by_old_field_name[$field_name])) {
-                        $field->config['require']['field'] = $new_fields_by_old_field_name[$field_name]->fieldName;
-                        
-                        $newField->config = $field->config;
+
+                        $newField->conditionalField = $new_fields_by_old_field_name[$field_name]->fieldName;
 
                         // salva a segunda vez para a tualizar o config
                         $newField->save();
@@ -696,8 +697,12 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->required = $file->required;
                 $newFile->categories = $file->categories;
                 $newFile->displayOrder = $file->displayOrder;
+                $newFile->conditional = $file->conditional;
+                $newFile->conditionalValue = $file->conditionalValue;
 
                 $app->em->persist($newFile);
+
+                $file->newFile = $newFile;
 
                 $newFile->save();
 
@@ -737,6 +742,23 @@ abstract class Opportunity extends \MapasCulturais\Entity
                     }
 
                 }
+            }
+
+            foreach($importSource->files as &$file) {
+                $newFile = $file->newFile;
+                if(!empty($file->conditionalField)){
+                    $field_name = $file->conditionalField;
+
+                    if(isset($new_fields_by_old_field_name[$field_name])) {
+
+                        $newFile->conditionalField = $new_fields_by_old_field_name[$field_name]->fieldName;
+
+                        // salva a segunda vez para a tualizar a condicional
+                        $newFile->save();
+                    }
+                    
+                }
+
             }
 
             // Metadata
