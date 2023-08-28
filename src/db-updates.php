@@ -1989,4 +1989,5 @@ $$
         __exec("UPDATE opportunity SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
         __exec("UPDATE EVENT SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
     },
+
 ] + $updates ;
