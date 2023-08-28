@@ -267,6 +267,31 @@ return [
         });
 
         
+    },
+    "Atualiza campos condicionados para funcionar na nova estrutura" => function() {
+        DB_UPDATE::enqueue('RegistrationFieldConfiguration', "id > 0", function (MapasCulturais\Entities\RegistrationFieldConfiguration $_field){
+            $config = $_field->config;
+            if($config && isset($config['require']) && isset($config['require']['condition'])){
+                $required = $config['require'];
+
+                if(in_array("field", array_keys($required)) && in_array("value", array_keys($required))){
+                    if($required['field'] && $required['value'] && $required['condition']){
+                        $_field->conditionalField = $required['field'];
+                        $_field->conditionalValue = $required['value'];
+                        $_field->conditional = (!$_field->conditionalValue || !$_field->conditionalField) ? false : true;
+
+                        unset($config['require']['condition']);
+                        unset($config['require']['field']);
+                        unset($config['require']['value']);
+                        $_field->config =  $config;
+
+                        $_field->save(true);
+                    }
+
+                }
+            }
+        });
+      
     }
 
 ];

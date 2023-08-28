@@ -1895,34 +1895,5 @@ $$
         __exec("ALTER TABLE registration_file_configuration ADD conditional  BOOLEAN;");
         __exec("ALTER TABLE registration_file_configuration ADD conditional_field  VARCHAR(255);");
         __exec("ALTER TABLE registration_file_configuration ADD conditional_value  VARCHAR(255);");
-    },
-    "Atualiza campos condicionados para funcionar na nova estrutura" => function() use($conn, $app){
-        if($fields = $conn->fetchAll("SELECT * FROM registration_field_configuration")){
-            foreach($fields as $key => $field){
-                $config = unserialize($field['config']);
-                if($config && isset($config['require']) && isset($config['require']['condition'])){
-                    $required = $config['require'];
-
-                    if(in_array("field", array_keys($required)) && in_array("value", array_keys($required))){
-                        if($required['field'] && $required['value'] && $required['condition']){
-                            $_field = $app->repo('RegistrationFieldConfiguration')->find($field['id']);
-                            $_field->conditionalField = $required['field'];
-                            $_field->conditionalValue = $required['value'];
-                            $_field->conditional = (!$_field->conditionalValue || !$_field->conditionalField) ? false : true;
-
-                            unset($config['require']['condition']);
-                            unset($config['require']['field']);
-                            unset($config['require']['value']);
-                            $_field->config =  $config;
-
-                            $_field->save(true);
-                            $app->log->debug("{$key}  -- Valores da config do campo com ID {$_field->id} definidos na nova estrutura na opportunidade {$_field->owner->id}");
-                            $app->em->clear();
-                        }
-
-                    }
-                }
-            }
-        }
     }
 ] + $updates ;
