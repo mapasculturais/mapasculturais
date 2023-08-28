@@ -10,6 +10,7 @@ $this->import('
     entity-gallery
     entity-gallery-video
     entity-header
+    entity-links
     entity-list
     entity-occurrence-list
     entity-owner
