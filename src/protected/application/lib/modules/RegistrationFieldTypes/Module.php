@@ -637,6 +637,8 @@ class Module extends \MapasCulturais\Module
              else {
                 return $entity->$entity_field;
             }
+            
+            $app->applyHookBoundTo($entity, "registrationFieldTypes.fetchFromEntity", ["entity_field" => $entity_field, "value" => &$value]);
         } else {
             return json_decode($value);
         }
