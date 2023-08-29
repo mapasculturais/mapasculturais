@@ -620,27 +620,30 @@ class Module extends \MapasCulturais\Module
                     $result = null;
                 }
 
-                return $result;
+                $value = $result;
 
             } else if($entity_field == '@terms:area') {
-                return $entity->terms['area'];
+                $value = $entity->terms['area'];
 
             } else if($entity_field == '@type') {
-                return $entity->type->name;
+                $value = $entity->type->name;
 
             } else if($entity_field == '@links') {
                 $metaLists = $entity->getMetaLists();
                 $links = isset($metaLists['links'])? $metaLists['links']:[];
                 $videos = isset($metaLists['videos'])? $metaLists['videos']:[];
-                return array_merge($links,$videos);
+                $value = array_merge($links,$videos);
             }
              else {
-                return $entity->$entity_field;
+                $value = $entity->$entity_field;
             }
             
             $app->applyHookBoundTo($entity, "registrationFieldTypes.fetchFromEntity", ["entity_field" => $entity_field, "value" => &$value]);
         } else {
-            return json_decode($value);
+            $value = json_decode($value);
         }
+
+        return $value;
+
     }
 }
