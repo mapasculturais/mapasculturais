@@ -431,7 +431,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldTypesBySlug: fieldTypesBySlug,
             fieldsRequiredLabel: labels['requiredLabel'],
             fieldsOptionalLabel: labels['optionalLabel'],
-            categories: MapasCulturais.entity.registrationCategories
+            categories: MapasCulturais.entity.registrationCategories,
+            taxonomies: MapasCulturais.Taxonomies
         };
         
         $scope.allowedFieldCondition = function(type){
