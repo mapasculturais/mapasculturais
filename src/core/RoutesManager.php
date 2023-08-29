@@ -60,7 +60,7 @@ class RoutesManager{
      */
     protected function route(RequestInterface $request, ResponseInterface $response, $controller_id, $action, $params = [], $api = false) {
         $app = App::i();
-        $app->request = new Request($request);
+        $app->request = new Request($request, $controller_id, $action, $params);
         $app->response = $response;
         
         if ($controller = $app->controller($controller_id)) {
@@ -195,7 +195,7 @@ class RoutesManager{
         return $args;
     }
 
-    protected final function callAction(Controller $controller, $action_name, array $args, $api_call){
+    final function callAction(Controller $controller, $action_name, array $args, $api_call){
         $controller->setRequestData( $args );
         if($api_call && !$controller->usesAPI()){
             App::i()->pass();
