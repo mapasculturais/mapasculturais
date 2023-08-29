@@ -41,7 +41,7 @@ class Module extends \MapasCulturais\Module
             
             foreach($module->entities as $entity) {
                 if ($entity->changedByRegistration) {
-                    $entity->save();
+                    $entity->save(true);
                 }
             }
         });
