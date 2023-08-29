@@ -10,6 +10,7 @@ $this->import('
     entity-gallery
     entity-gallery-video
     entity-header
+    entity-links
     entity-list
     entity-occurrence-list
     entity-owner
@@ -50,13 +51,12 @@ $this->breadcrumb = [
                             <event-age-rating :event="entity" classes="col-12"></event-age-rating>
                             <entity-occurrence-list classes="col-12" :entity="entity"></entity-occurrence-list>    
                             <event-info classes="col-12" :entity="entity"></event-info>
-
                             <div v-if="entity.longDescription" class="col-12 long-description">
                                 <h3><?php i::_e('Descrição Detalhada');?></h3>
                                 <p>{{entity.longDescription}}</p>
                             </div> 
-
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity"  classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download') ?>"></entity-files-list>
+                            <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
                         </div>

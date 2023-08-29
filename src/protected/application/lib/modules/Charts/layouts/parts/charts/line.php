@@ -90,7 +90,7 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
                 labels: <?= json_encode($labels) ?>,
             },
             options: {
-                responsive: true,
+                responsive: false,
                 legend: false,
                 plugins: {
                     datalabels: {
@@ -192,7 +192,7 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
 
         var ctx = document.getElementById("<?= $chart_id ?>").getContext('2d');
         ctx.canvas.width = 1000;
-        ctx.canvas.height = 300;
+        ctx.canvas.height = 400;
         MapasCulturais.Charts.charts["<?= $chart_id ?>"] = new Chart(ctx, config);
     });
 </script>
