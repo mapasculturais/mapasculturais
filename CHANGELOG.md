@@ -4,6 +4,39 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.9] - 2023-08-28
+### Correções
+- Cria mc-update para atualizar dados legados para a nova estrutura de condicionalidade de campos
+- Corrige importação de formularios para interpretar a nova estrutura de condicionalidade de campos
+
+## [5.7.5] - 2023-08-28
+### Correções
+- Cria mc-update para atualizar dados legados para a nova estrutura de condicionalidade de campos
+- Corrige importação de formularios para interpretar a nova estrutura de condicionalidade de campos
+
+## [6.0.8] - 2023-08-25
+- Corrige a altura dos gráficos de linha do módulo de relatorios das oportunidades
+- Atualização das bibliotecas PHP para as últimas versões compatíveis com o PHP 7.2
+
+## [5.7.4] - 2023-08-24
+## Melhorias
+- atualização das bibliotecas PHP para as últimas versões compatíveis com o PHP 7.2
+
+## [5.7.3] - 2023-08-23
+## Correções
+- Corrige a altura dos gráficos de linha do módulo de relatorios das oportunidades
+
+## [6.0.7] - 2023-08-18
+### Correções
+- Corrige validação das taxonomias (área de atuação e linguagem) nas págians de edição das entidades
+- Corrige erro de carregamento na listagem de oportunidades
+
+## [6.0.6] - 2023-08-17
+### Correções
+- Aumenta o tempo para o autosave dos campos de configuração das fases das oportunidades para 3 segundos, antes estava em 300 milisegundos
+- Faz o autosave dos campos ocorrerem imediatamente após o campo perder o foco
+- Corrige comportamento estranho dos seletores de data e hora que aparecia os segundos e depois removia, parecendo piscar o campo
+
 ## [6.0.5] - 2023-08-17
 ### Correções
 - Remove build da imagem develop-cli
@@ -11,10 +44,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exibição do entity-card no carrosel na versão desktop
 - Corrige a exibição dos titulos nos componentes da home que utilizam o carrosel
 - Corrige a versão mobile dos componentes que utilizam carrosel e entity-card
-- Aumenta o tempo para o autosave dos campos de configuração das fases das oportunidades para 3 segundos, antes estava em 300 milisegundos
-- Faz o autosave dos campos ocorrerem imediatamente após o campo perder o foco
-- Corrige comportamento estranho dos seletores de data e hora que aparecia os segundos e depois removia, parecendo piscar o campo
-
 
 ## [6.0.4] - 2023-08-16
 ### Correções

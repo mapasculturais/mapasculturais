@@ -1980,5 +1980,5 @@ $$
         __exec("ALTER TABLE registration_file_configuration ADD conditional  BOOLEAN;");
         __exec("ALTER TABLE registration_file_configuration ADD conditional_field  VARCHAR(255);");
         __exec("ALTER TABLE registration_file_configuration ADD conditional_value  VARCHAR(255);");
-    },
+    }
 ] + $updates ;
