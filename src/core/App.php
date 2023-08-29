@@ -315,7 +315,21 @@ class App {
         $this->slim = AppFactory::create();
         $this->slim->addBodyParsingMiddleware();
         $this->slim->addRoutingMiddleware();
-        $this->slim->addErrorMiddleware(true, true, true);
+
+        $display_error_detail = \env('DISPLAY_ERROR_DETAIL', false);
+        $log_errors = \env('LOG_ERRORS', true);
+        $log_error_details = \env('LOG_ERROR_DETAIL', true);
+
+        $error_middleware = $this->slim->addErrorMiddleware($display_error_detail, $log_errors, $log_error_details);
+        $error_handler = $error_middleware->getDefaultErrorHandler();
+
+        ErrorHandler::$defaultErrorHandler = $error_handler;
+
+        $error_middleware->setDefaultErrorHandler(ErrorHandler::class);
+
+        $error_handler->registerErrorRenderer('text/html', ErrorRender::class);
+        $error_handler->registerErrorRenderer('application/json', ErrorRender::class);
+        $error_handler->registerErrorRenderer('*/*', ErrorRender::class);
 
         $this->hooks = new Hooks($this);
     }
@@ -482,6 +496,20 @@ class App {
                     $handler = new Handler\BrowserConsoleHandler(level: $level);
                     $handler->setFormatter($formatter);
                     $handlers[] = $handler;
+
+                } else if ($type == 'telegram') {
+                    $api_key = (string) $this->config['monolog.telegram.apiKey'] ?? false;
+                    $channel_id = (string) $this->config['monolog.telegram.channelId'] ?? false;
+                    
+                    if($api_key && $channel_id) {
+                        $handler = new Handler\TelegramBotHandler($api_key, $channel_id, $level, splitLongMessages:true, parseMode:'Markdown');
+                        
+                        $formatter = new LineFormatter("%message%", includeStacktraces: true);
+                        
+                        $handler->setFormatter($formatter);
+                        
+                        $handlers[] = $handler;
+                    }
                 }
             }
         } else if (is_array($this->config['monolog.handlers'])) {

@@ -23,10 +23,7 @@ Tente novamente após alguns minutos..') ?></label>
                         </label>
                     </div>
                     <div class="btn">
-
                         <mc-link route="panel/index" class="button button--primary btn-error"><label class="btn__label"><?= i::__('Voltar para a página inicial') ?></label></mc-link>
-
-
                     </div>
                 </div>
             </div>
@@ -35,7 +32,10 @@ Tente novamente após alguns minutos..') ?></label>
             </div>
 
         </div>
-
+        <?php if($display_details): ?>
+            <pre style="font-size: 12px;"><code><?= $exception ?? '' ?></code>
+        <?php endif ?>
+        </pre>
     </div>
 
 </div>

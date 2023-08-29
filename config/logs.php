@@ -23,9 +23,19 @@ return [
     ex: 'file:WARNING,error_log:DEBUG,browser:DEBUG'
     ex: [new \Monolog\Handler\ErrorLogHandler(level: Level::Debug)]
     */
-    'monolog.handlers' => env('LOG_HANDLERS', 'file:WARNING,error_log:DEBUG'),
+    'monolog.handlers' => env('LOG_HANDLERS', 'file:WARNING,error_log:DEBUG,telegram:CRITICAL'),
 
     'monolog.processors' => [],
+
+    /*
+    Chave de api do bot do telegram para o monolog
+    */
+    'monolog.telegram.apiKey' => env('LOG_TELEGRAM_API_KEY'),
+
+    /*
+    Id do canal do telegram onde o bot deve enviar as mensagens
+    */
+    'monolog.telegram.channelId' => env('LOG_TELEGRAM_CHANNELID'),
 
     /*
      Pasta onde serão salvos os arquivos de log
