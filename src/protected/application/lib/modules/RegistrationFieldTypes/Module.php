@@ -596,7 +596,6 @@ class Module extends \MapasCulturais\Module
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             
-            $app->applyHookBoundTo($entity, "registrationFieldTypes.fetchFromEntity", ["entity_field" => $entity_field, "value" => $value]);
 
             if($entity_field == '@location'){
 
