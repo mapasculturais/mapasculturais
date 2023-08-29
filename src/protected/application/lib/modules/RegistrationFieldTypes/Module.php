@@ -41,7 +41,7 @@ class Module extends \MapasCulturais\Module
             
             foreach($module->entities as $entity) {
                 if ($entity->changedByRegistration) {
-                    $entity->save();
+                    $entity->save(true);
                 }
             }
         });
@@ -141,7 +141,9 @@ class Module extends \MapasCulturais\Module
 
     function getAgentFields()
     {
-        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links'];
+        $app = App::i();
+
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links', '@terms:segmento'];
         
         $definitions = Agent::getPropertiesMetadata();
         foreach ($definitions as $key => $def) {
@@ -151,11 +153,15 @@ class Module extends \MapasCulturais\Module
             }
         }
         
+        $app->applyHookBoundTo($this, "registrationFieldTypes.getAgentFields", [&$agent_fields]);
+
         return $agent_fields;
     }
 
     function getSpaceFields()
     {
+        $app = App::i();
+        
         $space_fields = ['name', 'shortDescription', 'longDescription', '@type', '@location', '@terms:area', '@links'];
         
         $definitions = Space::getPropertiesMetadata();
@@ -167,6 +173,8 @@ class Module extends \MapasCulturais\Module
             }
         }
         
+        $app->applyHookBoundTo($this, "registrationFieldTypes.getSpaceFields", [&$space_fields]);
+
         return $space_fields;
     }
 
@@ -570,6 +578,8 @@ class Module extends \MapasCulturais\Module
             } else {
                 $entity->$entity_field = $value;
             }
+         
+            $app->applyHookBoundTo($entity, "registrationFieldTypes.saveToEntity", ["entity_field" => $entity_field, "value" => $value]);
             
             // só salva na entidade se salvou na inscrição
             $entity->changedByRegistration = true;
@@ -581,9 +591,12 @@ class Module extends \MapasCulturais\Module
 
     function fetchFromEntity (Entity $entity, $value, Registration $registration = null, Metadata $metadata_definition = null)
     {
+        $app = App::i();
+
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             
+
             if($entity_field == '@location'){
 
                 if($entity->En_Nome_Logradouro && $entity->En_Num && $entity->En_Municipio && $entity->En_Estado) {
@@ -606,25 +619,30 @@ class Module extends \MapasCulturais\Module
                     $result = null;
                 }
 
-                return $result;
+                $value = $result;
 
             } else if($entity_field == '@terms:area') {
-                return $entity->terms['area'];
+                $value = $entity->terms['area'];
 
             } else if($entity_field == '@type') {
-                return $entity->type->name;
+                $value = $entity->type->name;
 
             } else if($entity_field == '@links') {
                 $metaLists = $entity->getMetaLists();
                 $links = isset($metaLists['links'])? $metaLists['links']:[];
                 $videos = isset($metaLists['videos'])? $metaLists['videos']:[];
-                return array_merge($links,$videos);
+                $value = array_merge($links,$videos);
             }
              else {
-                return $entity->$entity_field;
+                $value = $entity->$entity_field;
             }
+            
+            $app->applyHookBoundTo($entity, "registrationFieldTypes.fetchFromEntity", ["entity_field" => $entity_field, "value" => &$value]);
         } else {
-            return json_decode($value);
+            $value = json_decode($value);
         }
+
+        return $value;
+
     }
 }
