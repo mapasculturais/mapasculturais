@@ -7,7 +7,10 @@ $_params = [
 ];
 
 ?>
+<?php $this->applyTemplateHook('form','begin');?>
 <?php $this->part('singles/registration-edit--fields', $_params); ?>
+<?php $this->applyTemplateHook('form','end');?>
+
 <script>
 
 function sendSectionTops() {
