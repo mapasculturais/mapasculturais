@@ -132,6 +132,17 @@
                 color: var(--mc-white);       
             }
         }
+        &-noborder {
+            background-color: var(--mc-white);
+            border: size(2) solid var(--mc-white);
+            color: var(--mc-primary-500);
+
+            &:hover {
+                border-color: var(--mc-primary-700);
+                background-color: var(--mc-primary-700);   
+                color: var(--mc-white);       
+            }
+        }
     }
 
     &--secondary {

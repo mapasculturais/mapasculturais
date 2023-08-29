@@ -68,15 +68,19 @@ app.component('entity-gallery-video', {
             var videoID = '';
             var videoThumbnail = '';
 
-            if (host.indexOf('youtube') != -1) {
+            var ytRegex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/;
+            var vmRegex = /(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:[a-zA-Z0-9_\-]+)?/i;
+
+            if (host.indexOf('youtube') != -1 || host.indexOf('youtu.be') != -1) {
                 provider = 'youtube';
-                videoID =  parsedURL.search.replace('?v=', '');
+                videoID = parsedURL.href.match(ytRegex)[1];
                 videoThumbnail = 'https://img.youtube.com/vi/'+videoID+'/0.jpg';
             } else if (host.indexOf('vimeo') != -1) {
                 provider = 'vimeo';
-                videoID = parsedURL.pathname.split('/')[1];
+                videoID = parsedURL.href.match(vmRegex)[1];
                 videoThumbnail = 'https://vumbnail.com/'+videoID+'.jpg';
             }
+
             return {
                 'parsedURL': parsedURL,
                 'provider': provider,
@@ -114,11 +118,11 @@ app.component('entity-gallery-video', {
             this.actualVideoIndex = (this.actualVideoIndex < this.entity.metalists.videos.length-1) ? ++this.actualVideoIndex : 0 ;
             this.openVideo(this.actualVideoIndex);
         },
-
+        // Adiciona video na entidade
         create() {
             return this.entity.createMetalist('videos', this.metalist);      
         },
-
+        // Salva modificações nos vídeos adicionados
         save(metalist) {
             metalist.title = metalist.newData.title;
             metalist.value = metalist.newData.value;
