@@ -175,7 +175,7 @@ class RoutesManager{
     protected function extractArgs(array &$path){
         $args = [];
         for ($i = count($path) -1; $i >= 0; $i--) {
-            if ($i > 2 || is_numeric($path[$i]) || strpos($path[$i], ':')){
+            if ($i >= 2 || is_numeric($path[$i]) || strpos($path[$i], ':')){
                 $arg = array_pop($path);
                 if (is_numeric($arg)) {
                     if ((int) $arg == $arg) {
@@ -191,7 +191,6 @@ class RoutesManager{
                 }
             }
         }
-
         return $args;
     }
 
