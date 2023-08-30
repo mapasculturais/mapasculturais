@@ -5,8 +5,15 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+### Correções
+- Correção da exibição dos recursos de acessibilidade na single de espaço
+- Corrige a exibição do mapa na single de espaço
+- Remove botão 'Ajuda' na página de conta e privacidade
+- Resolve erro nos campos de seleção múltipla
+
 ### Melhorias
 - Cria novos templatehooks dentro do componente main-footer
+- Melhora campo de definição de privacidade da localização dos agentes
 
 ## [6.0.10] - 2023-08-29
 ### Melhorias
