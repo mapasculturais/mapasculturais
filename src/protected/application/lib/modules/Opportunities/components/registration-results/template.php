@@ -29,7 +29,7 @@ use MapasCulturais\i;
                                 <?= i::__('Resultado da avaliação documental: ') ?> 
                             </p>
 
-                            <div class="mc-status mc-status--selected">
+                            <div class="registration-status registration-status--selected">
                                 <mc-icon name="dot"></mc-icon>
                                 <h5 class="bold">Selecionado</h5>
                             </div>
@@ -43,7 +43,7 @@ use MapasCulturais\i;
                             </p>
 
                             <div class="registration-results__opinion-status">
-                                <div class="mc-status mc-status--valid">
+                                <div class="registration-status registration-status--valid">
                                     <mc-icon name="dot"></mc-icon>
                                     <h5 class="bold">Válido</h5>
                                 </div>
@@ -62,7 +62,7 @@ use MapasCulturais\i;
                             </p>
 
                             <div class="registration-results__opinion-status">
-                                <div class="mc-status mc-status--invalid">
+                                <div class="registration-status registration-status--invalid">
                                     <mc-icon name="dot"></mc-icon>
                                     <h5 class="bold">Inválido</h5>
                                 </div>
@@ -92,7 +92,7 @@ use MapasCulturais\i;
                                 <?= i::__('Resultado da avaliação simplificada: ') ?> 
                             </p>
 
-                            <div class="mc-status mc-status--selected">
+                            <div class="registration-status registration-status--selected">
                                 <mc-icon name="dot"></mc-icon>
                                 <h5 class="bold">Selecionado</h5>
                             </div>
