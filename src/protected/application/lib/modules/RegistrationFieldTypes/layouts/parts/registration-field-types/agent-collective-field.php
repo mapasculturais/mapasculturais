@@ -30,6 +30,7 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     
     <div ng-if="::field.description" class="attachment-description">{{::field.description}}</div>
 
+    <?php $this->applyTemplateHook('registrationFieldTypes--agent-collective-field','before'); ?>
     <div ng-if="::field.config.entityField == '@location'">
         <?php $this->part('registration-field-types/fields/_location') ?>
     </div>
@@ -47,5 +48,5 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
             <?php $this->part('registration-field-types/fields/' . $type) ?>
         </div>
     <?php endforeach; ?>
-
+    <?php $this->applyTemplateHook('registrationFieldTypes--agent-collective-field','after'); ?>
 </div>
