@@ -91,6 +91,8 @@ abstract class Theme {
      */
     protected $path = null;
 
+    public array $data = [];
+
     abstract protected function _init();
 
     abstract function register();
@@ -363,10 +365,12 @@ abstract class Theme {
      * @param string $template the template name.
      * @return string The rendered template
      */
-    public function render($template, $data = null){
+    public function render($template, array $data = []){
         $app = App::i();
 
         $this->template = $template;
+
+        $this->data = $data;
 
         if ($this->_partial) {
             $output = $this->partialRender ($template, $data);
