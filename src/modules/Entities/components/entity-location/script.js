@@ -65,7 +65,7 @@ app.component('entity-location', {
                 return true;
             };
             const fields = ['En_Nome_Logradouro', 'En_Num', 'En_Bairro', 'En_Municipio', 'En_Estado', 'En_CEP'];
-            let result = this.entity.publicLocation;
+            let result = !this.hasPublicLocation || this.entity.publicLocation;
             fields.forEach((element)=> {
                 if(this.entity[element]==null) {
                     result = false;
