@@ -29,7 +29,6 @@ $this->import('
                     </div>
                     <label class="left-title"><?= i::__('Conta e privacidade') ?></label>
                 </div>
-                <a class="right-help" href="#"><?= i::__('Ajuda?') ?></a>
             </div>
 
             <div class="p-user-detail__header-content">
