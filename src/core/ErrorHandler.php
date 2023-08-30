@@ -53,7 +53,7 @@ class ErrorHandler implements ErrorHandlerInterface {
 
                 if ($logErrorDetails) {
                     $trace = $sanitize($exception->getTraceAsString());
-                    $log .= "\n*TRACE*\n\n```\n{$trace}\n```";
+                    $log .= "\n*TRACE:*\n{$trace}\n";
                 }
 
                 $app->log->critical($log);
