@@ -10,8 +10,9 @@ $this->import('
 ');
 $config = $app->config['social-media'];
 ?>
+<?php $this->applyTemplateHook("main-footer", "before")?>
 <div v-if="globalState.visibleFooter" class="main-footer">
-
+    <?php $this->applyTemplateHook("main-footer", "begin")?>
     <div class="main-footer__content">
         <div class="main-footer__content--logo">
     
@@ -28,7 +29,9 @@ $config = $app->config['social-media'];
             </div>
         </div>
     
+        <?php $this->applyTemplateHook("main-footer-links", "before")?>
         <div class="main-footer__content--links">
+            <?php $this->applyTemplateHook("main-footer-links", "begin")?>
     
             <ul class="main-footer__content--links-group">
                 <li>
@@ -97,10 +100,13 @@ $config = $app->config['social-media'];
                     <?php endforeach ?>
                 </ul>
             <?php endif; ?>
-    
+            <?php $this->applyTemplateHook("main-footer-links", "end")?>
         </div>
-    
+        <?php $this->applyTemplateHook("main-footer-links", "after")?>
+
+        <?php $this->applyTemplateHook("main-footer-reg", "before")?>
         <div class="main-footer__content--reg">
+            <?php $this->applyTemplateHook("main-footer-reg", "begin")?>
             <div class="main-footer__content--reg-content">
                 <p>
                     <?php i::_e("plataforma criada pela comunidade") ?> 
@@ -113,6 +119,10 @@ $config = $app->config['social-media'];
                     <mc-icon name="github"></mc-icon>
                 </a>
             </div>
-        </div>        
+            <?php $this->applyTemplateHook("main-footer-reg", "end")?>
+        </div>
+        <?php $this->applyTemplateHook("main-footer-reg", "after")?>        
     </div>
+    <?php $this->applyTemplateHook("main-footer", "end")?>
 </div>
+<?php $this->applyTemplateHook("main-footer", "after")?>
