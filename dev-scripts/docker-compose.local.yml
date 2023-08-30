@@ -23,8 +23,8 @@ services:
       - redis
     environment:
       - BUILD_ASSETS=1
-      - PENDING_PCACHE_RECREATION_INTERVAL=2
-      - JOBS_INTERVAL=2
+      - PENDING_PCACHE_RECREATION_INTERVAL=15
+      - JOBS_INTERVAL=15
       - REDIS_CACHE=redis
 
       - MAILER_SERVER=mailhog
@@ -62,5 +62,5 @@ services:
     ports:
       - "5470:5432"
     volumes:
-      - ../docker-data/postgres-ibercultura-2023-04-16--1040:/var/lib/postgresql/data
+      - ../docker-data/postgres:/var/lib/postgresql/data
       - ../db/dump.sql:/docker-entrypoint-initdb.d/dump.sql

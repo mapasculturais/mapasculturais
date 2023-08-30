@@ -8,5 +8,5 @@ return [
     // 'app.useSubsiteIdsCache'         => false,
     // 'app.usePermissionsCache'        => false,
     // 'app.useRegisterCache'           => false,
-    'app.useApiCache'                => false,
+    // 'app.useApiCache'                => false,
 ];

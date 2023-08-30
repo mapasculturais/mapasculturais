@@ -8,7 +8,6 @@ use MapasCulturais\i;
 $this->import('
     mc-link
     mc-icon
-    registration-results
 ');
 ?>
 <section :class="['timeline', {'center': center}, {'big': big}]">
@@ -49,9 +48,6 @@ $this->import('
                 <div v-if="isDataCollectionPhase(item) && isActive(item) && item.status == 0">
                     <mc-link :entity="registration" route="edit" class="button button--primary"><?= i::__('Preencher formulário') ?></mc-link>
                 </div>
-
-                <registration-results></registration-results>
-
                 <?php $this->applyComponentHook('registration', 'end'); ?>
             </template>
             <?php $this->applyComponentHook('item', 'end'); ?>
