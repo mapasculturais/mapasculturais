@@ -19,13 +19,13 @@
             font-size: size(14);
             line-height: size(19);
         }
-
     }
 
     .content {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: size(21) 0;
+        justify-items: start;
     }
 
     .input__label {
@@ -46,21 +46,11 @@
         }
     }
 
-    .pcd {
-        gap: size(11);
-
-        &.field {
-            gap: size(8);
-        }
-    }
-
-
-    .field {
-
+    /* .field {
         label {
             margin: 0;
         }
-    }
+    } */
 }
 
 .agent-data {
