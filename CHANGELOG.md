@@ -8,6 +8,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Correção da exibição dos recursos de acessibilidade na single de espaço
 - Corrige a exibição do mapa na single de espaço
+- Remove botão 'Ajuda' na página de conta e privacidade
+- Resolve erro nos campos de seleção múltipla
 
 ### Melhorias
 - Cria novos templatehooks dentro do componente main-footer
