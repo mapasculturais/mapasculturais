@@ -160,30 +160,33 @@ app.component('entity-field', {
                     } else {
                         this.entity[this.prop] = '';
                     }
+
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event});
                 } else if(this.is('checkbox')) {
                     this.entity[this.prop] = event.target.checked;
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.checked});
                 } else if (this.is('multiselect')) {
+
                     if (this.entity[this.prop] === '' || !this.entity[this.prop]) {
                         this.entity[this.prop] = []
                     } else if (typeof this.entity[this.prop] !== 'object') {
-                        this.entity[this.prop] = this.entity[this.prop].split(";")
+                        this.entity[this.prop] = this.entity[this.prop].split(";");
                     }
+
                     if (!this.entity[this.prop].includes(event.target.value)){
                         if (event.target.value === '') {
                             this.entity[this.prop] = [];
-                        } else if (event.target.value !== '') {
+                        } else {
                             let index = this.entity[this.prop].indexOf('');
+
                             if (index >= 0) {
                                 this.entity[this.prop].splice(index, 1);
                             }
                         }
+
                         this.entity[this.prop].push(event.target.value);
-                    } else {
-                        let index = this.entity[this.prop].indexOf(event.target.value);
-                        this.entity[this.prop].splice(index, 1);
-                    }       
+                    }  
+
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
                 } else {
                     this.entity[this.prop] = event.target.value;
@@ -197,6 +200,7 @@ app.component('entity-field', {
                         this.$emit('save', this.entity);
                     }, now ? 0 : this.autosave);
                 }
+
             }, now ? 0 : this.debounce);
         },
 
