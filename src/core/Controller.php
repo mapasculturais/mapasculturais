@@ -321,7 +321,8 @@ abstract class Controller{
             "data" => &$data
         ]);
         $template = "{$this->templatePrefix}/$template";
-        $app->view->render($template, $data);
+
+        $app->view->render($template, (array) $data);
     }
 
     /**
