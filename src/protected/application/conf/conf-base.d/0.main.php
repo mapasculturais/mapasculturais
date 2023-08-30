@@ -24,7 +24,7 @@ return [
     'app.siteDescription' => env('SITE_DESCRIPTION', i::__('O Mapas Culturais é uma plataforma livre para mapeamento cultural.')),
     
     /* Ids dos selos verificadores. Para utilizar múltiplos selos informe os ids separados por vírgula. */
-    'app.verifiedSealsIds' => explode(',', env('VERIFIED_SEALS', '1')),
+    'app.verifiedSealsIds' => explode(',', env('VERIFIED_SEALS', '1, 2, 3, 4')),
     
     /* 
     Define a linguagem a ser utilizada. 
