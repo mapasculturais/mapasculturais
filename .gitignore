@@ -36,3 +36,4 @@ node_modules/
 mix-manifest.json
 compose/local/config.d
 compose/local/config.d/0.zz.php
+src/protected/application/lib/modules/Components/assets/js/media-query

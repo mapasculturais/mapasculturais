@@ -777,6 +777,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
                 $new_fields_by_old_field_name[$field->fieldName] = $newField;
 
+                if (!empty($field->config['require'])) {
+                    $newField->conditional = $field->config['require']['condition'];
+                    $newField->conditionalField = $field->config['require']['field'];
+                    $newField->conditionalValue = $field->config['require']['value'];
+                    eval(\psy\sh());
+                }
+
                 // salva a primeira vez para obter um id
                 $newField->save();
 
