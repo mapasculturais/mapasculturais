@@ -13,10 +13,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Cria novos templatehooks dentro do componente main-footer
 - Melhora campo de definição de privacidade da localização dos agentes
 
-### Correções
- - Remove botão 'Ajuda' na página de conta e privacidade
- - Resolve erro nos campos de seleção múltipla
-
 ## [6.0.10] - 2023-08-29
 ### Melhorias
 - Cria hooks no registrationFieldTypes para cnseguir manipular o retorno método getAgentFields

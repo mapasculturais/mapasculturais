@@ -27,9 +27,9 @@ return [
     'app.useFileUrlCache'            => __env_not_false('CACHE_FILE_URL'),
     'app.useEventsCache'             => __env_not_false('CACHE_EVENTS'),
     'app.useSubsiteIdsCache'         => __env_not_false('CACHE_SUBSITE_ID'),
-    'app.usePermissionsCache'        => false /* (bool) env('CACHE_PERMISSIONS', env('REDIS_CACHE', false)) */,
+    'app.usePermissionsCache'        => (bool) env('CACHE_PERMISSIONS', env('REDIS_CACHE', false)),
     'app.useRegisterCache'           => __env_not_false('CACHE_REGISTER'),
-    'app.useApiCache'                => false /* env('CACHE_API', false) */,
+    'app.useApiCache'                => env('CACHE_API', false),
     'app.useOpportunitySummaryCache' => __env_not_false('CACHE_OPPORTUNITY_SUMARY'),
 
 
