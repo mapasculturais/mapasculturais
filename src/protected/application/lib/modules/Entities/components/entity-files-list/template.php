@@ -66,7 +66,7 @@ $this->import('
             </slot>
         </template>
 
-        <template #default="{popover, close}">
+        <template #default="popover">
             <form @submit="upload(popover); $event.preventDefault();" class="entity-files__newFile">
                 <div class="grid-12">
                     <div class="col-12">
@@ -83,8 +83,8 @@ $this->import('
                         </div>
                     </div> 
 
-                    <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
-                    <button class="col-6 button button--primary" type="submit" @click="close"> <?php i::_e("Confirmar") ?> </button>
+                    <button class="col-6 button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
+                    <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                 </div>
             </form>
         </template>
