@@ -287,6 +287,13 @@ class App {
      * @var ResponseInterface
      */
     public ResponseInterface $response;
+
+    /**
+     * Microtime do momento do instanciamento da aplicação
+     * 
+     * @var float
+     */
+    public float $startTime;
     
     /**
      * Retorna uma instância da aplicação
@@ -310,6 +317,7 @@ class App {
      * @throws RuntimeException 
      */
     protected function __construct(string $id) {
+        $this->startTime = microtime(true);
         $this->id = $id;
 
         $this->slim = AppFactory::create();
