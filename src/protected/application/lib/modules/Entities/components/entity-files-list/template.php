@@ -11,11 +11,11 @@ $this->import('
     mc-popover 
 ');
 ?>
-<div :class="classes" v-if="files || editable" class="files-list">
+<div :class="classes" v-if="getFiles() || editable" class="files-list">
     <label class="files-list__title"> {{title}} </label>
 
-    <ul v-if="files" class="files-list__list">
-        <li class="files-list__list--item" v-for="file in files">
+    <ul v-if="getFiles()" class="files-list__list">
+        <li class="files-list__list--item" v-for="file in getFiles()">
             <a class="files-list__list--item-link" :download="file.name" :href="file.url">
                 <mc-icon name="download" :class="entity.__objectType+'__color'"></mc-icon>
                 <span v-if="file.description">{{file.description}}</span>
