@@ -11,11 +11,11 @@ $this->import('
     mc-popover 
 ');
 ?>
-<div :class="classes" v-if="files || editable" class="files-list">
+<div :class="classes" v-if="getFiles() || editable" class="files-list">
     <label class="files-list__title"> {{title}} </label>
 
-    <ul v-if="files" class="files-list__list">
-        <li class="files-list__list--item" v-for="file in files">
+    <ul v-if="getFiles()" class="files-list__list">
+        <li class="files-list__list--item" v-for="file in getFiles()">
             <a class="files-list__list--item-link" :download="file.name" :href="file.url">
                 <mc-icon name="download" :class="entity.__objectType+'__color'"></mc-icon>
                 <span v-if="file.description">{{file.description}}</span>
@@ -66,7 +66,7 @@ $this->import('
             </slot>
         </template>
 
-        <template #default="{popover, close}">
+        <template #default="popover">
             <form @submit="upload(popover); $event.preventDefault();" class="entity-files__newFile">
                 <div class="grid-12">
                     <div class="col-12">
@@ -83,8 +83,8 @@ $this->import('
                         </div>
                     </div> 
 
-                    <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
-                    <button class="col-6 button button--primary" type="submit" @click="close"> <?php i::_e("Confirmar") ?> </button>
+                    <button class="col-6 button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
+                    <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                 </div>
             </form>
         </template>
