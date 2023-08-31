@@ -14,6 +14,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Cria novos templatehooks dentro do componente main-footer
 - Melhora campo de definição de privacidade da localização dos agentes
+- Diminui o tamanho das imagens da home para melhorar o tempo de carregamento
 
 ## [6.0.10] - 2023-08-29
 ### Melhorias
