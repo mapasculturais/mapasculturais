@@ -12,6 +12,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Resolve erro nos campos de seleção múltipla
 - Implementa exibição de campo obrigatório no componente entity-location nos campos Estado e Município
 - Cria estilo para definir sequêcias em ordem alfabética nas listas ordenadas no termos de uso e condições
+- Faz com que o componente entity-files-list aceite tambem aquivos registrados como unique
+- Corrige erro de listagem de arquivos no componente enitity-fiels-list
 
 ### Melhorias
 - Cria novos templatehooks dentro do componente main-footer
