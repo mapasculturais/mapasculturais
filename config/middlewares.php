@@ -1,5 +1,5 @@
 <?php 
 
 return [
-    'slim.middlewares' => []
+    'middlewares' => []
 ];
