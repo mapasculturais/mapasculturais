@@ -1,6 +1,6 @@
 app.component('entity-files-list', {
     template: $TEMPLATES['entity-files-list'],
-    emits: [],
+    emits: ['uploaded'],
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 

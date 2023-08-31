@@ -246,5 +246,8 @@ app.component('entity-location', {
         citiesList(){
             this.cities = this.statesAndCities[this.entity.En_Estado].cities;
         },
+        isRequired(field){
+            return $DESCRIPTIONS[this.entity.__objectType][field].required;
+        }
     }
 });

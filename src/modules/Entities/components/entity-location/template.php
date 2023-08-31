@@ -32,13 +32,19 @@ $this->import('
     <div class="col-12" v-if="editable && statesAndCitiesEnable">
         <div class="grid-12">
             <div class="field col-6">
-                <label class="field__title"><?php i::_e('Estado')?></label>
+                <label class="field__title">
+                    <?php i::_e('Estado')?>
+                    <span v-if="isRequired('En_Estado')" class="required">*<?php i::_e('obrigatório') ?></span>
+                </label>
                 <select @change="citiesList(); address()" v-model="entity.En_Estado">
                     <option v-for="state in states" :value="state.value">{{state.label}}</option>
                 </select>
             </div>
             <div class="field col-6">
-                <label class="field__title"><?php i::_e('Município')?></label>
+                <label class="field__title">
+                    <?php i::_e('Município')?>
+                    <span v-if="isRequired('En_Municipio')" class="required">*<?php i::_e('obrigatório') ?></span>
+                </label>
                 <select @change="address()" v-model="entity.En_Municipio">
                     <option v-for="city in cities" :value="city">{{city}}</option>
                 </select>

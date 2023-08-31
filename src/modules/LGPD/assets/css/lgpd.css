@@ -34,6 +34,18 @@ ol[type="1"]>li:before {
     counter-increment: item;
 }
 
+ol[type="a"]>li:before {
+    content: counter(item, lower-alpha) ") ";
+    counter-increment: item;
+    margin-right: 0.5em;
+}
+
+ol[type="A"]>li:before {
+    content: counter(item, upper-alpha) ") ";
+    counter-increment: item;
+    margin-right: 0.5em;
+}
+
 ol.nivel1>li {
     font-weight: bold;
 }
