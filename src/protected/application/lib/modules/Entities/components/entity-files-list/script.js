@@ -49,6 +49,17 @@ app.component('entity-files-list', {
     },
 
     methods: {
+        getFiles(){
+            if(!this.entity.files?.[this.group]){
+                return null;
+            }
+            
+            if(this.entity.files?.[this.group] instanceof Array){
+                return this.entity.files?.[this.group];
+            } else {
+                return [this.entity.files?.[this.group]]
+            }
+        },
         setFile() {
             let description = this.newFile.description;
             this.newFile = this.$refs.file.files[0];
