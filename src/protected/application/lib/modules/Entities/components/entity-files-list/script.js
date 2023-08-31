@@ -13,9 +13,7 @@ app.component('entity-files-list', {
     },
 
     computed: {
-        files() {
-            return this.entity.files?.[this.group] || null
-        }
+        
     },
 
     props: {
