@@ -386,7 +386,11 @@ class App {
         
         $this->_config = &$config;
         $this->config = &$config;
-        
+
+        foreach($this->config['middlewares'] as $middleware) {
+            $this->slim->add($middleware);
+        }
+
         // necessário para obter o endereço ip da origem do request
         $this->slim->add(new \RKA\Middleware\IpAddress);
 
