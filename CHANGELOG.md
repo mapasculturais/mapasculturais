@@ -10,6 +10,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exibição do mapa na single de espaço
 - Remove botão 'Ajuda' na página de conta e privacidade
 - Resolve erro nos campos de seleção múltipla
+- Implementa exibição de campo obrigatório no componente entity-location nos campos Estado e Município
+- Cria estilo para definir sequêcias em ordem alfabética nas listas ordenadas no termos de uso e condições
 
 ### Melhorias
 - Cria novos templatehooks dentro do componente main-footer
