@@ -16,6 +16,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro de listagem de arquivos no componente enitity-fiels-list
 - Corrige carregamento do Thema padrão para o BaseV2 no Ambiente de desenvolvimento
 - Ajusta internacionalização de textos do componente entity-files-list
+- Faz com que o componente entity-fields exiba a descrição longa
+- Corrige exibição do campo longDescription na edit dos agentes para que sempre seja exibido em modo de edição
+
 ### Melhorias
 - Cria novos templatehooks dentro do componente main-footer
 - Melhora campo de definição de privacidade da localização dos agentes
