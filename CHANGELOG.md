@@ -5,6 +5,8 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+
+## [6.0.13] - 2023-09-04
 ### Correções
 - Corrige rota que é carregada no final do processo de importação de formulário
 - Corrige shortcuts de rotas que continham id como parâmetro
