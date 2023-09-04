@@ -6,6 +6,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+## [6.0.12] - 2023-09-04
+### Correções
+- Corrige erro ao executar importação de formulario
+
 ## [6.0.11] - 2023-09-01
 ### Correções
 - Correção da exibição dos recursos de acessibilidade na single de espaço
