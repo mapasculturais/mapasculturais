@@ -778,7 +778,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $new_fields_by_old_field_name[$field->fieldName] = $newField;
 
                 // salva a primeira vez para obter um id
-                $newField->save();
+                 $newField->save(true);
 
                 $created_fields[] = $newField;
             }
@@ -793,7 +793,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                         $newField->conditionalField = $new_fields_by_old_field_name[$field_name]->fieldName;
 
                         // salva a segunda vez para a tualizar o config
-                        $newField->save();
+                        $newField->save(true);
                     }
                     
                 }
@@ -818,7 +818,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
                 $file->newFile = $newFile;
 
-                $newFile->save();
+                $newFile->save(true);
 
                 $created_files[] = $newFile;
 
@@ -850,7 +850,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
                             $app->em->persist($newTemplate);
 
-                            $newTemplate->save();
+                            $newTemplate->save(true);
                         }
 
                     }
@@ -868,7 +868,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                         $newFile->conditionalField = $new_fields_by_old_field_name[$field_name]->fieldName;
 
                         // salva a segunda vez para a tualizar a condicional
-                        $newFile->save();
+                        $newFile->save(true);
                     }
                     
                 }
