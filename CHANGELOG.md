@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Correções
 - Corrige rota que é carregada no final do processo de importação de formulário
+- Corrige shortcuts de rotas que continham id como parâmetro
 
 ## [6.0.12] - 2023-09-04
 ### Correções
