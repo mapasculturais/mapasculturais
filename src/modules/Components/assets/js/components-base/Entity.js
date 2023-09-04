@@ -324,7 +324,11 @@ class Entity {
     }
 
     getUrl(action, params) {
-        params = {0: this.id, ...params};
+        if (params) {
+            params = {0: this.id, ...params};
+        } else {
+            params = [this.id];
+        }
         return this.API.createUrl(action, params);
     }
 
