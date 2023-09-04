@@ -21,6 +21,8 @@ app.component('panel--last-registrations', {
         const query = this.query;
         query['@select'] = 'id,number,opportunity.{name,files.avatar,registrationFrom,registrationTo}';
         query['@order'] = 'updateTimestamp DESC';
+        query['@permissions'] = 'view';
+        query['status'] = 'GTE(0)';
         query['user'] = `EQ(@me)`;
 
         if(this.limit) {
