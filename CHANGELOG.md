@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.12] - 2023-09-04
+### Correções
+- Corrige erro ao executar importação de formulario
+
 ## [6.0.11] - 2023-09-01
 ### Correções
 - Correção da exibição dos recursos de acessibilidade na single de espaço
