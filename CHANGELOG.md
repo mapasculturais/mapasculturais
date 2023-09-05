@@ -5,6 +5,17 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+
+## [6.0.13] - 2023-09-04
+### Correções
+- Corrige rota que é carregada no final do processo de importação de formulário
+- Corrige shortcuts de rotas que continham id como parâmetro
+
+## [6.0.12] - 2023-09-04
+### Correções
+- Corrige erro ao executar importação de formulario
+
+## [6.0.11] - 2023-09-01
 ### Correções
 - Correção da exibição dos recursos de acessibilidade na single de espaço
 - Corrige a exibição do mapa na single de espaço
@@ -15,6 +26,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Faz com que o componente entity-files-list aceite tambem aquivos registrados como unique
 - Corrige erro de listagem de arquivos no componente enitity-fiels-list
 - Corrige carregamento do Thema padrão para o BaseV2 no Ambiente de desenvolvimento
+- Ajusta internacionalização de textos do componente entity-files-list
+- Faz com que o componente entity-fields exiba a descrição longa
+- Corrige exibição do campo longDescription na edit dos agentes para que sempre seja exibido em modo de edição
 
 ### Melhorias
 - Cria novos templatehooks dentro do componente main-footer
