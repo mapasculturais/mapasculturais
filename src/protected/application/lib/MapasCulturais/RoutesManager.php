@@ -68,6 +68,12 @@ class RoutesManager{
 
                 // shortcut arguments
                 $args = key_exists(2, $shortcut) ? $shortcut[2] : [];
+                $arg0 = $args[0] ?? null;
+
+                if(is_numeric($arg0) && !key_exists('id', $args)) {
+                    $args['id'] = $arg0;
+                    unset($args[0]);
+                }
 
                 $url_args = explode('/', preg_replace('#^/' . $matches[1] . '/?#', '', $app->request->getPathInfo()));
 
