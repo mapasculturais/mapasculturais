@@ -42,6 +42,8 @@ abstract class AuthProvider {
         $app = App::i();
         $app->applyHookBoundTo($this, 'auth.createUser:before', [$data]);
         $user = $this->_createUser($data);
+        $user->createPermissionsCacheForUsers([$user]);
+        $user->profile->createPermissionsCacheForUsers([$user]);
         $app->applyHookBoundTo($this, 'auth.createUser:after', [$user, $data]);
 
         $dataValue = ['name' => $user->profile->name];
