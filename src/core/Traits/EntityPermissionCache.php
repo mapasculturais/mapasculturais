@@ -90,13 +90,7 @@ trait EntityPermissionCache {
             $app->log->debug("RECREATING pcache FOR $this");
         }
         
-        $deleted = false;
         if(is_null($users)){
-            if($delete_old){
-                $deleted = true;
-                $this->deletePermissionsCache();
-            }
-            
             if($this->usesAgentRelation()){
                 $users = $this->getUsersWithControl();
             } else if($this->owner) {
@@ -108,9 +102,13 @@ trait EntityPermissionCache {
             if(method_exists($this, 'getExtraPermissionCacheUsers')){
                 $users = array_merge($users, $this->getExtraPermissionCacheUsers());
             }
-        }
-        $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
+            $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
 
+            if($delete_old && $users){
+                $this->deletePermissionsCache();
+            }
+        }
+        
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
         $permissions = $this->getPermissionsList();
@@ -123,10 +121,11 @@ trait EntityPermissionCache {
         $users = array_unique($users);
 
         foreach ($users as $user) {
-            if($user->is('guest')){
+            if (is_null($user)) {
                 continue;
             }
-            if (is_null($user)) {
+
+            if($user->is('guest')){
                 continue;
             }
 
@@ -140,9 +139,6 @@ trait EntityPermissionCache {
                 continue;
             }
 
-            if($delete_old && !$deleted){
-                $this->deletePermissionsCache();
-            }
             $allowed_permissions = [];
 
             foreach ($permissions as $permission) {
