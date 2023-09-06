@@ -42,7 +42,7 @@ $this->import('
 
     <mc-popover v-if="editable" title="<?php i::_e('Adicionar arquivo') ?>" openside="down-right">
         <template #button="popover">
-            <slot name="button">
+            <slot name="button" :open="popover.open" :close="popover.close" :toggle="popover.toggle" :active="popover.isOpen" :file="file">
                 <a v-if="!file" @click="popover.toggle()" class="button button--primary button--icon button--primary-outline button-up">
                     <mc-icon name="upload"></mc-icon>
                     <?php i::_e("Enviar") ?>
@@ -59,7 +59,7 @@ $this->import('
             <form @submit="upload(popover); $event.preventDefault();" class="entity-files__newFile">
 
                 <div class="grid-12">
-                    <slot name="form">
+                    <slot name="form" :enableDescription="enableDescription" :disableName="disableName" :formData="formData" :setFile="setFile">
                         <div v-if="!disableName" class="col-12">
                             <label><?php i::_e('Título do arquivo') ?></label>
                             <input v-model="formData.name" type="text" />
@@ -68,15 +68,14 @@ $this->import('
                             <label><?php i::_e('Descrição do arquivo') ?></label>
                             <textarea v-model="formData.description"></textarea>
                         </div>
-                    </slot>
-                    <div class="col-12">
-                        <slot name="edit">
+                        <div class="col-12">
                             <div class="field">
                                 <label><?php i::_e('Arquivo') ?></label>
-                                <input type="file" @change="setFile" ref="file">
+                                <input type="file" @change="setFile($event)" ref="file">
                             </div>
-                        </slot>
-                    </div>
+                        </div>
+                    </slot>
+
                     <button class="col-6 button button--text" type="reset" @click="popover.close"> <?php i::_e("Cancelar") ?> </button>
                     <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                 </div>
