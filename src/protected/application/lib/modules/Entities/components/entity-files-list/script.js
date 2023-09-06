@@ -1,6 +1,6 @@
 app.component('entity-files-list', {
     template: $TEMPLATES['entity-files-list'],
-    emits: [],
+    emits: ['uploaded'],
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -13,9 +13,7 @@ app.component('entity-files-list', {
     },
 
     computed: {
-        files() {
-            return this.entity.files?.[this.group] || null
-        }
+        
     },
 
     props: {
@@ -49,6 +47,17 @@ app.component('entity-files-list', {
     },
 
     methods: {
+        getFiles(){
+            if(!this.entity.files?.[this.group]){
+                return null;
+            }
+            
+            if(this.entity.files?.[this.group] instanceof Array){
+                return this.entity.files?.[this.group];
+            } else {
+                return [this.entity.files?.[this.group]]
+            }
+        },
         setFile() {
             let description = this.newFile.description;
             this.newFile = this.$refs.file.files[0];
