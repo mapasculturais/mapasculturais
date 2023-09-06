@@ -15,6 +15,14 @@ $this->import("
         <mc-modal title="<?= i::__('Denúncia') ?>" classes="complaint-sugestion__modal">
 
             <div class="complaint-suggestion__modal-content">
+                <div class="complaint-suggestion__input-group">
+                    <div class="field">
+                        <label>
+                            <input type="checkbox" v-model="formData.anonimous" @click="formData.copy = false;"><?= i::__('Enviar a denúncia de forma anônima') ?>
+                        </label>
+                    </div>
+                </div>
+
                 <div v-if="!formData.anonimous" class="field">
                     <label><?= i::__('Nome') ?></label>
                     <input type="text" v-model="formData.name">
@@ -39,12 +47,6 @@ $this->import("
                 </div>
 
                 <div class="complaint-suggestion__input-group">
-                    <div class="field">
-                        <label>
-                            <input type="checkbox" v-model="formData.anonimous" @click="formData.copy = false;"><?= i::__('Denúncia anônima') ?>
-                        </label>
-                    </div>
-
                     <div :class="['field', {'disabled':formData.anonimous}]">
                         <label>
                             <input type="checkbox" :disabled="formData.anonimous" v-model="formData.copy"><?= i::__('Receber copia da mensagem') ?>
@@ -69,6 +71,15 @@ $this->import("
         <mc-modal title="<?= i::__('Contato') ?>" classes="complaint-sugestion__modal">
 
             <div class="complaint-suggestion__modal-content">
+
+                <div class="complaint-suggestion__input-group">
+                    <div class="field">
+                        <label>
+                            <input type="checkbox" v-model="formData.anonimous" @click="formData.copy = false;"><?= i::__('Enviar a mensagem de forma anônima') ?>
+                        </label>
+                    </div>
+                </div>
+
                 <div v-if="!formData.anonimous" class="field">
                     <label><?= i::__('Nome') ?></label>
                     <input type="text" v-model="formData.name">
@@ -93,12 +104,6 @@ $this->import("
                 </div>
 
                 <div class="complaint-suggestion__input-group">
-                    <div class="field">
-                        <label>
-                            <input type="checkbox" v-model="formData.anonimous" @click="formData.copy = false;"><?= i::__('Mensagem anônima') ?>
-                        </label>
-                    </div>
-
                     <div class="field">
                         <label>
                             <input type="checkbox" v-model="formData.only_owner"><?= i::__('Enviar somente para o responsável') ?>
