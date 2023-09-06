@@ -78,28 +78,29 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
         $user = $user ?: $app->user;
 
-        foreach ($slugs as $slug) {
-            $config = $app->config['module.LGPD'][$slug];
-            $text = $config['text'];    
-            $accepted_terms["lgpd_{$slug}"] = [
-                'timestamp' => (new DateTime())->getTimestamp(),
-                'md5' => Module::createHash($text),
-                'text' => $text,
-                'ip' => $app->request()->getIp(),
-                'userAgent' => $app->request()->getUserAgent(),
-            ];
-        }
-
-        foreach ($accepted_terms as $meta => $values) {
-            $_accepted_terms = $user->$meta ?: (object)[];
-            $index = $values['md5'];
-            if (!isset($_accepted_terms->$index)) {
-                $_accepted_terms->$index = $values;
-                $user->$meta = $_accepted_terms;
+        if($slugs){
+            foreach ($slugs as $slug) {
+                $config = $app->config['module.LGPD'][$slug];
+                $text = $config['text'];    
+                $accepted_terms["lgpd_{$slug}"] = [
+                    'timestamp' => (new DateTime())->getTimestamp(),
+                    'md5' => Module::createHash($text),
+                    'text' => $text,
+                    'ip' => $app->request()->getIp(),
+                    'userAgent' => $app->request()->getUserAgent(),
+                ];
             }
+    
+            foreach ($accepted_terms as $meta => $values) {
+                $_accepted_terms = $user->$meta ?: (object)[];
+                $index = $values['md5'];
+                if (!isset($_accepted_terms->$index)) {
+                    $_accepted_terms->$index = $values;
+                    $user->$meta = $_accepted_terms;
+                }
+            }
+            $user->save();
         }
-
-        $user->save();
     }
 
     /**

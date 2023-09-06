@@ -4,8 +4,9 @@ app.component('complaint-suggestion', {
         VueRecaptcha
     },
     setup() {
+        const messages = useMessages();
         const text = Utils.getTexts('complaint-suggestion')
-        return { text }
+        return { text, messages }
     },
     props: {
         entity: {
@@ -50,6 +51,7 @@ app.component('complaint-suggestion', {
 
             let objt = this.formData;
             objt.entityId = this.entity.id;
+            
             if(this.sitekey){
                 objt['g-recaptcha-response'] = this.recaptchaResponse;
             }
@@ -66,12 +68,12 @@ app.component('complaint-suggestion', {
                 } else {
                     mess = this.text('Todos os campos são obrigatorio');
                 }
-                messages.error(mess);
+                this.messages.error(mess);
                 return;
             }
 
             await api.POST(url, objt).then(res => res.json()).then(data => {
-                messages.success(this.text('Dados enviados com suscesso'));
+                this.messages.success(this.text('Dados enviados com suscesso'));
             });
         },
         async verifyCaptcha(response) {
@@ -103,7 +105,8 @@ app.component('complaint-suggestion', {
             });
             return result;
         },
-        initFormData() {
+        initFormData(type) {
+            this.typeMessage = type;
             this.formData = {
                 name: $MAPAS.complaintSuggestionConfig.senderName,
                 email: $MAPAS.complaintSuggestionConfig.senderEmail,
