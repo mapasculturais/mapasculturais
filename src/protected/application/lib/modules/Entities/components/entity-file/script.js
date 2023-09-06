@@ -61,8 +61,8 @@ app.component('entity-file', {
     },
 
     methods: {
-        setFile() {
-            this.newFile = this.$refs.file.files[0];
+        setFile(event) {
+            this.newFile = event.target.files[0];
         },
 
         upload(popover) {
