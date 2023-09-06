@@ -111,8 +111,6 @@ $this->import("
                         </label>
                     </div>
                 </div>
-
-                <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="complaint-suggestion__recaptcha"></VueRecaptcha>
             </div>
 
             <template #actions="modal">
