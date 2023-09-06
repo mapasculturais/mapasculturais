@@ -12,81 +12,117 @@ $this->import("
 ?>
 <div class="complaint-suggestion">
     <div class="complaint-sugestion__complaint">
-        <mc-modal title="<?= i::__('Denúncia') ?>">
-            <div class="content">
-                <div v-if="!formData.anonimous" class="content__name field">
+        <mc-modal title="<?= i::__('Denúncia') ?>" classes="complaint-sugestion__modal">
+
+            <div class="complaint-suggestion__modal-content">
+                <div v-if="!formData.anonimous" class="field">
                     <label><?= i::__('Nome') ?></label>
                     <input type="text" v-model="formData.name">
                 </div>
-                <div v-if="!formData.anonimous || formData.copy" class="content__email field">
+
+                <div v-if="!formData.anonimous || formData.copy" class="field">
                     <label><?= i::__('E-mail') ?></label>
                     <input type="text" v-model="formData.email">
                 </div>
-                <div class="content__type field">
+
+                <div class="field">
                     <label><?= i::__('Tipo') ?></label>
                     <select v-model="formData.type">
                         <option value=""><?= i::__('Selecione') ?></option>
                         <option v-for="(item,index) in options.complaint" v-bind:value="item">{{item}}</option>
                     </select>
                 </div>
-                <div class="content__message field">
+
+                <div class="field">
                     <label><?= i::__('Mensagem') ?></label>
                     <textarea v-model="formData.message"></textarea>
                 </div>
-                <div class="content__inputs field">
-                    <label> <input type="checkbox" v-model="formData.anonimous"><?= i::__('Denúncia anônima') ?></label>
-                    <label><input type="checkbox" v-model="formData.copy"><?= i::__('Receber copia da denúncia') ?></label>
-                </div>
 
+                <div class="complaint-suggestion__input-group">
+                    <div class="field">
+                        <label>
+                            <input type="checkbox" v-model="formData.anonimous" @click="formData.copy = false;"><?= i::__('Denúncia anônima') ?>
+                        </label>
+                    </div>
+
+                    <div :class="['field', {'disabled':formData.anonimous}]">
+                        <label>
+                            <input type="checkbox" :disabled="formData.anonimous" v-model="formData.copy"><?= i::__('Receber copia da mensagem') ?>
+                        </label>
+                    </div>
+                </div>
             </div>
+            
             <template #actions="modal">
-                <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="g-recaptcha col-12"></VueRecaptcha>
+                <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="complaint-suggestion__recaptcha"></VueRecaptcha>
                 <button class="button button--primary" @click="send(modal)"><?= i::__('Enviar Denúncia') ?></button>
                 <button class="button button--text button--text-del" @click="modal.close()"><?= i::__('cancelar') ?></button>
             </template>
 
             <template #button="modal">
-                <button type="button" @click="modal.open();typeMessage='sendComplaintMessage'; initFormData()" class="button button--primary-outline"><?= i::__('Denúncia') ?></button>
+                <button type="button" @click="modal.open(); initFormData('sendComplaintMessage')" class="button button--primary-outline"><?= i::__('Denúncia') ?></button>
             </template>
         </mc-modal>
     </div>
-    <div class="complaint-sugestion__suggestion">
-        <mc-modal title="<?= i::__('Contato') ?>">
-            <div class="content">
-                <div v-if="!formData.anonimous" class="content__name field">
+
+    <div class="complaint-suggestion__suggestion">
+        <mc-modal title="<?= i::__('Contato') ?>" classes="complaint-sugestion__modal">
+
+            <div class="complaint-suggestion__modal-content">
+                <div v-if="!formData.anonimous" class="field">
                     <label><?= i::__('Nome') ?></label>
                     <input type="text" v-model="formData.name">
                 </div>
-                <div v-if="!formData.anonimous || formData.copy" class="content__email field">
+
+                <div v-if="!formData.anonimous || formData.copy" class="field">
                     <label><?= i::__('E-mail') ?></label>
                     <input type="text" v-model="formData.email">
                 </div>
-                <div class="content__type field">
+
+                <div class="field">
                     <label><?= i::__('Tipo') ?></label>
                     <select v-model="formData.type">
                         <option value=""><?= i::__('Selecione') ?></option>
                         <option v-for="(item,index) in options.suggestion" v-bind:value="item">{{item}}</option>
                     </select>
                 </div>
-                <div class="content__message field">
+
+                <div class="field">
                     <label><?= i::__('Mensagem:') ?></label>
                     <textarea v-model="formData.message"></textarea>
                 </div>
-                <div class="content__inputs field">
-                    <label> <input type="checkbox" v-model="formData.anonimous"><?= i::__('Mensagem anônima') ?></label>
-                    <label><input type="checkbox" v-model="formData.only_owner"><?= i::__('Enviar somente para o responsável') ?></label>
-                    <label><input type="checkbox" v-model="formData.copy"><?= i::__('Receber copia da mensagem') ?></label>
+
+                <div class="complaint-suggestion__input-group">
+                    <div class="field">
+                        <label>
+                            <input type="checkbox" v-model="formData.anonimous" @click="formData.copy = false;"><?= i::__('Mensagem anônima') ?>
+                        </label>
+                    </div>
+
+                    <div class="field">
+                        <label>
+                            <input type="checkbox" v-model="formData.only_owner"><?= i::__('Enviar somente para o responsável') ?>
+                        </label>
+                    </div>
+
+                    <div :class="['field', {'disabled':formData.anonimous}]">
+                        <label>
+                            <input type="checkbox" :disabled="formData.anonimous" v-model="formData.copy"><?= i::__('Receber copia da mensagem') ?>
+                        </label>
+                    </div>
                 </div>
+
+                <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="complaint-suggestion__recaptcha"></VueRecaptcha>
             </div>
 
             <template #actions="modal">
-                <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="g-recaptcha col-12"></VueRecaptcha>
+                <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="complaint-suggestion__recaptcha"></VueRecaptcha>
                 <button class="button button--primary" @click="send(modal)"><?= i::__('Enviar Mensagem') ?></button>
                 <button class="button button--text button--text-del" @click="modal.close()"><?= i::__('Cancelar') ?></button>
             </template>
 
             <template #button="modal">
-                <button type="button" @click="modal.open();typeMessage='sendSuggestionMessage';initFormData()" class="button button--primary"><?= i::__('Contato') ?></button>
+                <button type="button" @click="modal.open(); initFormData('sendSuggestionMessage')" class="button button--primary"><?= i::__('Contato') ?></button>
             </template>
         </mc-modal>
     </div>
