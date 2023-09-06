@@ -32,6 +32,10 @@
     }
 
     &.disabled {
+        label {
+            color: var(--mc-gray-500);
+        }
+        
         input, textarea, select{
             cursor: default;
             opacity: .5;
