@@ -40,9 +40,7 @@ $this->import('
             </div>
         </div>
         <div class="col-12 sm:col-12">
-            <opportunity-enable-claim :entity="phase"></opportunity-enable-claim>
-            <!-- <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config> -->
-
+            <?php $this->applyComponentHook('bottom') ?>
         </div>
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>
