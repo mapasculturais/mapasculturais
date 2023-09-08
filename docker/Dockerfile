@@ -1,4 +1,4 @@
-FROM php:8.2-cli
+FROM php:8.2-fpm
 
 RUN apt-get update
 
@@ -41,12 +41,6 @@ RUN no | pecl install apcu \
 RUN autodetect | pecl install imagick \
     && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini
 
-# Install xdebug
-RUN yes | pecl install xdebug \
-    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
-
 # Install igbinary
 RUN pecl install igbinary \
     && docker-php-ext-enable igbinary
@@ -54,6 +48,14 @@ RUN pecl install igbinary \
 # Install redis
 RUN yes | pecl install -o -f redis \
     && docker-php-ext-enable redis
+
+# Install opcache
+RUN docker-php-ext-install opcache
+
+# Install xdebug
+# não habilita o xdebug por padrão
+RUN yes | pecl install xdebug \
+    && ln -s $(find /usr/local/lib/php/extensions/ -name xdebug.so) /usr/local/lib/php/extensions/xdebug.so
 
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
@@ -75,6 +77,11 @@ COPY scripts /var/www/scripts
 COPY src /var/www/src
 COPY var /var/www/var
 
+WORKDIR /var/www/src/
+RUN pnpm install && pnpm run build
+
+RUN sass themes/BaseV1/assets/css/sass/main.scss:themes/BaseV1/assets/css/main.css
+
 RUN chown www-data:www-data -R /var/www
 
 COPY docker/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
@@ -83,14 +90,17 @@ COPY docker/entrypoint.sh /entrypoint.sh
 
 COPY version.txt /var/www/version.txt
 
-# arquivos exclusivos dos ambientes de desenvolvimento
-COPY docker/development/router.php /var/www/html/router.php
-COPY docker/development/php.ini /usr/local/etc/php/php.ini
-COPY docker/development/mapas.sh /mapas.sh
+COPY docker/production/php.ini /usr/local/etc/php/php.ini
 
 RUN ln -s /var/www/html /var/www/public
 
-EXPOSE 80
+# arquivos exclusivos dos ambientes de desenvolvimento
+COPY docker/development/router.php /var/www/dev/router.php
+COPY docker/development/start.sh /var/www/dev/start.sh
+
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD /mapas.sh
+WORKDIR /var/www/html/
+EXPOSE 9000
+
+CMD ["php-fpm"]
