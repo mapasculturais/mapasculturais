@@ -5,11 +5,14 @@ RUN apt-get update
 RUN apt-get update && apt-get install -y --no-install-recommends \
         locales less vim nano micro sudo git zip \
         imagemagick libmagickcore-dev libmagickwand-dev \
-        curl iputils-ping gnupg \
+        curl iputils-ping ca-certificates  gnupg \
         libcurl4-gnutls-dev libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev libzip-dev libzstd-dev
 
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
+
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+RUN apt-get update && apt-get install -y nodejs
 
 RUN npm install -g pnpm
 RUN rm -rf /var/lib/apt/lists
