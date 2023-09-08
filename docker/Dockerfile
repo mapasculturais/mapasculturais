@@ -92,6 +92,8 @@ COPY version.txt /var/www/version.txt
 
 COPY docker/production/php.ini /usr/local/etc/php/php.ini
 
+COPY docker/timezone.ini /usr/local/etc/php/timezone.ini
+
 RUN ln -s /var/www/html /var/www/public
 
 # arquivos exclusivos dos ambientes de desenvolvimento
