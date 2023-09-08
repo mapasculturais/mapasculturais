@@ -40,6 +40,8 @@ if [ $BUILD_ASSETS = "1" ]; then
 fi
 
 cd /
+touch /var/www/var/logs/app.log
+chown www-data: /var/www/var/logs/app.log
 
 touch /nohup.out
 chown www-data: /nohup.out
