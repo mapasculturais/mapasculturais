@@ -16,5 +16,9 @@ return [
                     status SMALLINT NOT NULL, 
                     PRIMARY KEY(id));");
         __exec("COMMENT ON COLUMN system_role.permissions IS '(DC2Type:json_array)';");
-    }
+    },
+
+    'alter system_role.permissions comment' => function () {
+        __exec("COMMENT ON COLUMN system_role.permissions IS '(DC2Type:json)';");
+    },
 ];

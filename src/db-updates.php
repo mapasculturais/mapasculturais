@@ -1585,6 +1585,10 @@ $$
         __exec("CREATE INDEX job_search_idx ON job (next_execution_timestamp, iterations_count, status);");
     },
 
+    'alter job.metadata comment' => function () {
+        __exec("COMMENT ON COLUMN job.metadata IS '(DC2Type:json)';");
+    },
+
     'clean existing orphans' => function () {
         __exec("CREATE OR REPLACE FUNCTION pg_temp.tempfn_clean_orphans(tbl name, ctype name, cid name)
                     RETURNS VOID
