@@ -176,10 +176,10 @@ abstract class Entity implements \JsonSerializable{
                                 }
 
                                 foreach($files as $f){
-                                    $e->files[$group][] = $f->simplify('id,url,files');
+                                    $e->files[$group][] = $f->simplify('id,name,description,url,files');
                                 }
                             }else if(is_object($files)){
-                                $e->files[$group] = $files->simplify('id,url,files');
+                                $e->files[$group] = $files->simplify('id,name,description,url,files');
                             }else{
                                 $e->files[$group] = null;
                             }
