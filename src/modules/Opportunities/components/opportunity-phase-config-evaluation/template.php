@@ -50,16 +50,15 @@ $this->import('
                 <span class="title"><?= i::__("Adicionar textos explicativos das avaliações") ?></span>
             </div>
 
-            <div class="field">
-                <label><?= i::__("Texto configuração geral") ?></label>
-                <textarea v-model="phase.infos['general']" @change="savePhase()" class="evaluation-config__area" rows="10"></textarea>
+            <div class="field evaluation-section__field">
+                <label for="field-info-general" class="evaluation-section__label semibold"><?= i::__("Texto configuração geral") ?></label>
+                <textarea id="field-info-general" v-model="phase.infos['general']" @change="savePhase()" class="evaluation-config__area" rows="10"></textarea>
             </div>
         </section>
 
-        <div class="col-6 sm:col-12 field" v-for="(category, index) in categories">
-            <label :key="index"> {{ category }}
-                <textarea v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10"></textarea>
-            </label>
+        <div class="col-6 sm:col-12 field evaluation-section__field" v-for="(category, index) in categories">
+            <label :for="`field-info-${category}`" class="evaluation-section__label semibold" :key="index"> {{ category }}</label>
+            <textarea :id="`field-info-${category}`" v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10" class="evaluation-config__input"></textarea>
         </div>
 
         <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>

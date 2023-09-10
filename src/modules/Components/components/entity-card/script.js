@@ -95,7 +95,7 @@ app.component('entity-card', {
                 /* verifica pontuações ao final da ultima palavra */
                 let especialChars = ['.', ',', '!', '?'];
                 especialChars.forEach(function(symbol) {
-                    if (_textLastWord.indexOf(symbol) !== -1) {
+                    if (typeof _textLastWord == 'string' && _textLastWord.indexOf(symbol) !== -1) {
                         _slicedText[_slicedText.indexOf(_textLastWord)] = _textLastWord.slice(0, -1);
                     };
                 });
