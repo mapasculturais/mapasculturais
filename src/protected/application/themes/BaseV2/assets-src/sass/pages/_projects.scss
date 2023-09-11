@@ -2,6 +2,12 @@
 
 .controller-project {
     &.action-single {
+        .single-project {
+            &__longdescription {
+                white-space: pre-line;
+            }
+        }
+
         .additional-info {
             display: flex;
             flex-direction: column;
@@ -17,7 +23,7 @@
                 display: flex;
                 color: var(--mc-low-700);
                 gap: size(8);
-                
+
                 &__title {
                     font-weight: var(--mc-font-semibold);
                 }
@@ -25,7 +31,7 @@
                 &__content {
                     text-transform: uppercase;
                 }
-            }            
+            }
         }
     }
 }
