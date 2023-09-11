@@ -10,6 +10,9 @@
     &__shortdescription {
         text-align: right;
     }
+    &__longdescription {
+        white-space: pre-line;
+    }
 
     &__error {
         font-family: Open Sans;
