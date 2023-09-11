@@ -40,34 +40,19 @@ $this->import('
         </li>
     </ul>
 
-    <mc-popover v-if="editable" title="<?php i::_e('Adicionar arquivo') ?>" openside="down-right">
-        <template #button="popover">
-            <slot name="button" :open="popover.open" :close="popover.close" :toggle="popover.toggle" :active="popover.isOpen" :file="file">
-                <a v-if="!file" @click="popover.toggle()" class="button button--primary button--icon button--primary-outline button-up">
-                    <mc-icon name="upload"></mc-icon>
-                    <?php i::_e("Enviar") ?>
-                </a>
-
-                <a v-if="file" @click="popover.toggle()" class="button button--primary button--icon button--primary-outline button-up">
-                    <mc-icon name="upload"></mc-icon>
-                    <?php i::_e("Atualizar") ?>
-                </a>
-            </slot>
-        </template>
-
-        <template #default="popover">
-            <form @submit="upload(popover); $event.preventDefault();" class="entity-files__newFile">
-
+    <mc-modal v-if="editable" title="<?php i::_e('Adicionar arquivo') ?>" classes="opportunity-rules__modal">
+        <template #default>
+            <form @submit="upload(modal); $event.preventDefault();" class="entity-files__newFile">
                 <div class="grid-12">
-                    <slot name="form" :enableDescription="enableDescription" :disableName="disableName" :formData="formData" :setFile="setFile">
-                        <div v-if="!disableName" class="col-12">
+                    <slot name="form" :enableDescription="enableDescription" :disableName="disableName" :formData="formData" :setFile="setFile" :file="newFile">
+                        <div v-if="!disableName" class="col-12 field">
                             <label><?php i::_e('Título do arquivo') ?></label>
-                            <input v-model="formData.name" type="text" />
+                            <input v-model="newFile.name" type="text" />
                         </div>
-                        <div v-if="enableDescription" class="col-12">
+                        <div v-if="enableDescription" class="col-12 field">
                             <label><?php i::_e('Descrição do arquivo') ?></label>
                             <textarea v-model="formData.description"></textarea>
-                        </div>
+                        </div>                        
                         <div class="col-12">
                             <div class="field">
                                 <label><?php i::_e('Arquivo') ?></label>
@@ -75,11 +60,24 @@ $this->import('
                             </div>
                         </div>
                     </slot>
-
-                    <button class="col-6 button button--text" type="reset" @click="popover.close"> <?php i::_e("Cancelar") ?> </button>
-                    <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                 </div>
             </form>
         </template>
-    </mc-popover>
+
+        <template #button="modal">
+            <slot name="button" :open="modal.open" :close="modal.close" :toggle="modal.toggle" :file="file">
+                <a v-if="!file" @click="modal.open()" class="button button--primary button--icon button--primary-outline button-up">
+                    <mc-icon name="upload"></mc-icon> <?php i::_e("Enviar") ?>
+                </a>
+                <a v-if="file" @click="modal.open()" class="button button--primary button--icon button--primary-outline button-up">
+                    <mc-icon name="upload"></mc-icon> <?php i::_e("Atualizar") ?>
+                </a>
+            </slot>
+        </template>
+
+        <template #actions="modal">
+            <button class="col-6 button button--text" type="reset" @click="modal.close()"> <?php i::_e("Cancelar") ?> </button>
+            <button class="col-6 button button--primary" type="submit" @click="upload(modal); $event.preventDefault();"> <?php i::_e("Solicitar") ?> </button>
+        </template>
+    </mc-modal>
 </div>
