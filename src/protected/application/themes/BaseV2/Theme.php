@@ -55,6 +55,12 @@ class Theme extends \MapasCulturais\Theme
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->addDocumentMetas();
         });
+
+        $app->hook('mapasculturais.body:after', function() use ($app){
+            if($app->config['zammad.enabled']){
+                $this->part("app-zammad");
+            }
+        });
     }
 
     function register()
