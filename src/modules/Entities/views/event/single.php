@@ -53,7 +53,7 @@ $this->breadcrumb = [
                             <event-info classes="col-12" :entity="entity"></event-info>
                             <div v-if="entity.longDescription" class="col-12 long-description">
                                 <h3><?php i::_e('Descrição Detalhada');?></h3>
-                                <p>{{entity.longDescription}}</p>
+                                <p v-html="entity.longDescription" class="single-event__longdescription"></p>
                             </div> 
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity"  classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download') ?>"></entity-files-list>
                             <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
