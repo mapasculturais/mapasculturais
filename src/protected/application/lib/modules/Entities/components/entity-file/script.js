@@ -8,12 +8,6 @@ app.component('entity-file', {
         return { text }
     },
 
-    computed: {
-        file() {
-            return this.entity.files?.[this.groupName] || null
-        },
-    },
-
     props: {
         entity: {
             type: Entity,
@@ -57,6 +51,7 @@ app.component('entity-file', {
         return {
             formData: {},
             newFile: {},
+            file: this.entity.files?.[this.groupName] || null,
         }
     },
 
@@ -73,6 +68,7 @@ app.component('entity-file', {
 
             this.entity.upload(this.newFile, data).then((response) => {
                 this.$emit('uploaded', this);
+                this.file = response;
                 popover.close()
             });
 
