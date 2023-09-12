@@ -44,12 +44,8 @@ RUN no | pecl install apcu \
 RUN autodetect | pecl install imagick \
     && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini
 
-# Install igbinary
-RUN pecl install igbinary \
-    && docker-php-ext-enable igbinary
-
 # Install redis
-RUN yes | pecl install -o -f redis \
+RUN no | pecl install -o -f redis \
     && docker-php-ext-enable redis
 
 # Install opcache
