@@ -23,34 +23,17 @@ $this->import('
     <div v-if="file" class="entity-file__file">
 
         <slot name="view">
-            <a class="entity-file__link primary__color bold" :download="file.name" :href="file.url">
+            <a v-if="!downloadOnly" class="entity-file__link primary__color bold" :download="file.name" :href="file.url">
                 <span v-if="file.name">{{file.name}}</span>
                 <span v-else> <? i::_e('Sem descrição') ?> </span>
             </a>
+
+            <a v-if="downloadOnly" class="entity-file__link entity-file__link--download bold" :download="file.name" :href="file.url">
+                <span v-if="file.name">{{file.name}}</span>
+                <span v-else> <? i::_e('Sem descrição') ?> </span>
+                <mc-icon name="download"></mc-icon>
+            </a>
         </slot>
-        
-        <!-- Edição -->
-        <!-- <mc-popover classes="entity-file__edit">
-            <template #button="{toggle}">
-                <mc-icon @click="toggle" name="edit"></mc-icon>
-            </template>
-
-            <template #default="{popover, close}">
-                <form @submit="rename(file, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
-                    <div class="grid-12">
-                        <div class="col-12">
-                            <div class="field">
-                                <label><?php i::_e('Título do arquivo') ?></label>
-                                <input class="input" v-model="file.newDescription" type="text" placeholder="<?php i::esc_attr_e("Informe o título do arquivo") ?>" />
-                            </div>
-                        </div>
-
-                        <button class="col-6 button button--text button-files" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
-                        <button class="col-6 button button--primary" type="submit" @click="close"> <?php i::_e("Confirmar") ?> </button>
-                    </div>
-                </form>
-            </template>
-        </mc-popover> -->
 
         <mc-confirm-button v-if="editable && !required" @confirm="deleteFile(file)">
             <template #button="modal">

@@ -45,6 +45,10 @@ app.component('entity-file', {
             type: [String, Array, Object],
             required: false
         },
+        downloadOnly: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
