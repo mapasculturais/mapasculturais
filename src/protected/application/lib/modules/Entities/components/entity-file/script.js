@@ -2,16 +2,11 @@ app.component('entity-file', {
     template: $TEMPLATES['entity-file'],
     emits: ['uploaded'],
 
-    setup() {
+    setup(props, {slots}) {
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('entity-file')
-        return { text }
-    },
-
-    computed: {
-        file() {
-            return this.entity.files?.[this.groupName] || null
-        },
+        const text = Utils.getTexts('entity-file');
+        const hasSlot = name => !!slots[name];
+        return { text, hasSlot}
     },
 
     props: {
@@ -51,12 +46,17 @@ app.component('entity-file', {
             type: [String, Array, Object],
             required: false
         },
+        downloadOnly: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
         return {
             formData: {},
             newFile: {},
+            file: this.entity.files?.[this.groupName] || null,
         }
     },
 
@@ -65,7 +65,7 @@ app.component('entity-file', {
             this.newFile = event.target.files[0];
         },
 
-        upload(popover) {
+        upload(modal) {
             let data = {
                 description: this.formData.description,
                 group: this.groupName,
@@ -73,10 +73,17 @@ app.component('entity-file', {
 
             this.entity.upload(this.newFile, data).then((response) => {
                 this.$emit('uploaded', this);
-                popover.close()
+                this.file = response;
+                modal.close()
             });
 
             return true;
         },
+
+        deleteFile(file) {
+            file.delete().then(() => {
+                this.file = null;
+            });
+        }
     },
 });
