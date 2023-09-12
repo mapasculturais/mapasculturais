@@ -19,7 +19,10 @@ $this->import('
         {{title}}
         <span v-if="required" class="required">*<?php i::_e('obrigatório') ?></span>
     </label>
-
+    
+    <div v-if="file && hasSlot('label') && !downloadOnly" class="entity-file__label semibold">
+        <slot name="label"></slot>
+    </div>
     <div v-if="file" class="entity-file__file">
 
         <slot name="view">
