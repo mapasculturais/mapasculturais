@@ -24,6 +24,20 @@
         color: var(--mc-error);
     }
 
+    &__upload {
+        align-items: center;
+        display: flex;
+        gap: size(16);
+    }
+
+    &__buttonUpload {
+        width: max-content;
+
+        input {
+            display: none;
+        }
+    }
+
     .required {
         font-family: Open Sans;
         font-size: size(12);
