@@ -2,10 +2,11 @@ app.component('entity-file', {
     template: $TEMPLATES['entity-file'],
     emits: ['uploaded'],
 
-    setup() {
+    setup(props, {slots}) {
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('entity-file')
-        return { text }
+        const text = Utils.getTexts('entity-file');
+        const hasSlot = name => !!slots[name];
+        return { text, hasSlot}
     },
 
     props: {
