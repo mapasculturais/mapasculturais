@@ -4,11 +4,9 @@ namespace MapasCulturais\Themes\BaseV1;
 
 use MapasCulturais;
 use MapasCulturais\App;
-use MapasCulturais\Controllers\Agent;
 use MapasCulturais\Entities;
-use MapasCulturais\Entities\Notification;
-use Respect\Validation\length;
 use MapasCulturais\i;
+use MapasCulturais\Utils;
 
 
 class Theme extends MapasCulturais\Theme {
@@ -1036,6 +1034,13 @@ class Theme extends MapasCulturais\Theme {
             return $formatted;
         };
 
+        $app->hook("API.find(agent).params", function(&$api_params) use ($app){
+            if($app->request->headers->get('Referer')){
+                $api_params['status'] = 'GTE(-10)';
+                $api_params['@permissions'] = 'view';
+            }
+        });
+
         // faz a keyword buscar pelo documento do owner nas inscrições
         $app->hook('repo(Registration).getIdsByKeywordDQL.join', function(&$joins, $keyword) use($format_doc) {
 
@@ -1091,6 +1096,47 @@ class Theme extends MapasCulturais\Theme {
             }
             $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
             $where .= " OR unaccent(lower(sp.name)) LIKE unaccent(lower(:keyword))";
+        });
+
+         /**
+         * Faz JOIN com a tabela Agent para poder fitrar por nome nas keyowrds
+         */
+        $app->hook('repo(Agent).getIdsByKeywordDQL.join', function (&$joins, $keyword) {
+            $joins .= "
+                LEFT JOIN 
+                    e.__metadata nomeCompleto 
+                WITH nomeCompleto.key = 'nomeCompleto'
+                
+                LEFT JOIN 
+                    e.__metadata nomeSocial 
+                WITH nomeSocial.key = 'nomeSocial'
+                
+                ";
+
+            if (strlen(preg_replace("/\D/", '', $keyword)) >= 11) {
+                $joins .= "
+                    LEFT JOIN 
+                        e.__metadata doc 
+                    WITH doc.key = 'documento'";
+            }
+        });
+
+        /**
+         * Filtra usuários por palavras chaves na view user-management
+         */
+        $app->hook('repo(Agent).getIdsByKeywordDQL.where', function (&$where, $keyword) {
+            $or = $where ? "OR" : "";
+            $where .= " {$or}
+            (
+                unaccent(lower(nomeCompleto.value)) LIKE unaccent(lower(:keyword)) OR
+                unaccent(lower(nomeSocial.value)) LIKE unaccent(lower(:keyword))
+            )";
+
+            $doc = preg_replace("/\D/", '', $keyword);
+            if (strlen($doc) >= 11) {
+                $formated_doc = Utils::formatCnpjCpf($doc);
+                $where .= " OR doc.value = '{$doc}' OR doc.value = '{$formated_doc}'";
+            }
         });
 
         $theme = $this;
