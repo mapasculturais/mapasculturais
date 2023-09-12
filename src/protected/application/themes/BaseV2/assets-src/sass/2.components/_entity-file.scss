@@ -12,6 +12,9 @@
         align-items: center;
         gap: size(18);
     }
+    &__label {
+        font-size: var(--mc-font-size-xxs);        
+    }
 
     &__link {
         text-decoration: none;
