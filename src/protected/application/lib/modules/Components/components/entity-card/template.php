@@ -50,7 +50,7 @@ $this->import('
 		</div>
 		<div v-if="entity.__objectType=='opportunity' && !entity.registrationFrom?.isFuture()" class="entity-card__registration">
 			<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]">
-			<?= i::__('As inscrições encerraram no dia')?> {{entity.registrationTo?.date('2-digit year')}} <?= i::__('às')?> {{entity.registrationFrom?.time('numeric')}}
+			{{entityTime(entity)}} {{entity.registrationTo?.date('2-digit year')}} <?= i::__('às')?> {{entity.registrationFrom?.time('numeric')}}
 			</p>
 		</div>
 		
