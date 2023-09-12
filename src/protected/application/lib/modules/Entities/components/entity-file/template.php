@@ -9,55 +9,86 @@ use MapasCulturais\i;
 
 $this->import('
     mc-confirm-button
-    mc-popover
+    mc-modal
+    mc-icon
 ');
 ?>
-<div :class="classes" v-if="file || editable" class="opportunity-rules">
-    <label class="opportunity-rules__title">
+<div :class="classes" v-if="file || editable" class="entity-file">
+
+    <label v-if="title" class="entity-file__title">
         {{title}}
         <span v-if="required" class="required">*<?php i::_e('obrigatório') ?></span>
     </label>
 
-    <ul v-if="file" class="opportunity-rules__list">
-        <li class="opportunity-rules__list--item">
-            <slot name="view">
-                <a class="opportunity-rules__list--item-link" :download="file.name" :href="file.url">
-                    <mc-icon name="download" :class="entity.__objectType+'__color'"></mc-icon>
-                    <span v-if="file.name">{{file.name}}</span>
-                    <span v-else> <? i::_e('Sem descrição') ?> </span>
-                </a>
-            </slot>
-            <div v-if="editable && !required" class="edit">
-                <mc-confirm-button @confirm="file.delete()">
-                    <template #button="modal">
-                        <a @click="modal.open()"> <mc-icon name="trash"></mc-icon> </a>
-                    </template>
-                    <template #message="message">
-                        <?php i::_e('Deseja remover este arquivo?') ?>
-                    </template>
-                </mc-confirm-button>
-            </div>
-        </li>
-    </ul>
+    <div v-if="file" class="entity-file__file">
 
-    <mc-modal v-if="editable" title="<?php i::_e('Adicionar arquivo') ?>" classes="opportunity-rules__modal">
+        <slot name="view">
+            <a class="entity-file__link primary__color bold" :download="file.name" :href="file.url">
+                <span v-if="file.name">{{file.name}}</span>
+                <span v-else> <? i::_e('Sem descrição') ?> </span>
+            </a>
+        </slot>
+        
+        <!-- Edição -->
+        <!-- <mc-popover classes="entity-file__edit">
+            <template #button="{toggle}">
+                <mc-icon @click="toggle" name="edit"></mc-icon>
+            </template>
+
+            <template #default="{popover, close}">
+                <form @submit="rename(file, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                    <div class="grid-12">
+                        <div class="col-12">
+                            <div class="field">
+                                <label><?php i::_e('Título do arquivo') ?></label>
+                                <input class="input" v-model="file.newDescription" type="text" placeholder="<?php i::esc_attr_e("Informe o título do arquivo") ?>" />
+                            </div>
+                        </div>
+
+                        <button class="col-6 button button--text button-files" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
+                        <button class="col-6 button button--primary" type="submit" @click="close"> <?php i::_e("Confirmar") ?> </button>
+                    </div>
+                </form>
+            </template>
+        </mc-popover> -->
+
+        <mc-confirm-button v-if="editable && !required" @confirm="deleteFile(file)">
+            <template #button="modal">
+                <mc-icon @click="modal.open()" name="trash"></mc-icon>
+            </template>
+
+            <template #message="message">
+                <?php i::_e('Deseja remover este arquivo?') ?>
+            </template>
+        </mc-confirm-button>
+    </div>
+
+    <mc-modal v-if="editable" title="<?php i::_e('Solicitar recurso') ?>" classes="entity-file__modal">
         <template #default>
-            <form @submit="upload(modal); $event.preventDefault();" class="entity-files__newFile">
+            <form @submit="upload(modal); $event.preventDefault();" class="entity-file__newFile">
                 <div class="grid-12">
                     <slot name="form" :enableDescription="enableDescription" :disableName="disableName" :formData="formData" :setFile="setFile" :file="newFile">
+                        <div class="col-12 field">
+                            <label><?php i::_e('Anexe um arquivo') ?></label>
+                            
+                            <div class="field__upload">
+                                <div v-if="newFile.name" class="entity-file__fileName primary__color bold"> {{newFile.name}} </div>
+
+                                <label for="newFile" class="field__buttonUpload button button--icon button--primary-outline">
+                                    <mc-icon name="upload"></mc-icon> <?= i::__('Anexar') ?>
+                                    <input id="newFile" type="file" @change="setFile($event)" ref="file">
+                                </label>
+                            </div>
+                        </div>
+
                         <div v-if="!disableName" class="col-12 field">
                             <label><?php i::_e('Título do arquivo') ?></label>
                             <input v-model="newFile.name" type="text" />
                         </div>
+
                         <div v-if="enableDescription" class="col-12 field">
-                            <label><?php i::_e('Descrição do arquivo') ?></label>
+                            <label><?php i::_e('Descreva abaixo os motivos do recurso') ?></label>
                             <textarea v-model="formData.description"></textarea>
-                        </div>                        
-                        <div class="col-12">
-                            <div class="field">
-                                <label><?php i::_e('Arquivo') ?></label>
-                                <input type="file" @change="setFile($event)" ref="file">
-                            </div>
                         </div>
                     </slot>
                 </div>
