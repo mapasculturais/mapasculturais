@@ -15,6 +15,17 @@
 
     &__link {
         text-decoration: none;
+
+        &--download {
+            align-items: center;
+            color: var(--mc-low-500);
+            display: flex;
+            gap: size(8);
+
+            .iconify {
+                color: var(--mc-primary-500);
+            }
+        }
     }
 
     &__fileName {
