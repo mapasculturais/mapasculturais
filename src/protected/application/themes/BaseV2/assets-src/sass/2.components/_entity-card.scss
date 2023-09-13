@@ -94,7 +94,22 @@
 		&.with-labels & {
 			
 			&.user-slot {
-				top: size(-10);
+				.entity-card__slot {
+					position: absolute;
+					top: size(-10);
+					right: 0;
+					display: grid;
+					grid-template-columns: size(48) size(160);
+					@media (max-width: size(500)) {
+						gap: size(9);
+					}
+				}
+				.entity-card__id {
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+				}
+
 			}
 		}
 
