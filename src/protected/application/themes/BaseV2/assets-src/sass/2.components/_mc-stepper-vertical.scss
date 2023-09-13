@@ -62,7 +62,13 @@ ol.mc-stepper-vertical>li {
 .evaluation {
     &-section {
         margin-bottom: size(20);
-
+        
+        &__field &__label {
+            font-size: size(18);
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+        
         &__header {
             margin-bottom: size(24);
             display: flex;
@@ -202,12 +208,15 @@ ol.mc-stepper-vertical>li.active::before {
     .evaluation-config {
         label {
             font-weight: 600;
-            font-size: 18px;
-            line-height: 25px;
+            font-size: size(18);
+            line-height: size(25);
             margin-bottom: size(4);
         }
-
+        &__input {
+            height: size(80);
+        }
         &__area {
+            height: size(80);
             max-width: 100%;
         }
     }

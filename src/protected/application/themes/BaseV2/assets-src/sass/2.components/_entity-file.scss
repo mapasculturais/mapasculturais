@@ -1,10 +1,39 @@
 @use '../0.settings/mixins' as *;
 
-.opportunity-rules {
-    margin: 0;
+.entity-file {
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    gap: size(8);
+    margin: size(8) 0;
+
+    &__file {
+        display: flex;
+        align-items: center;
+        gap: size(18);
+    }
+    &__label {
+        font-size: var(--mc-font-size-xxs);        
+    }
+
+    &__link {
+        text-decoration: none;
+
+        &--download {
+            align-items: center;
+            color: var(--mc-low-500);
+            display: flex;
+            gap: size(8);
+
+            .iconify {
+                color: var(--mc-primary-500);
+            }
+        }
+    }
+
+    &__fileName {
+        font-size: var(--mc-font-size-xs);
+    }
 
     .button-up {
         svg {
@@ -13,23 +42,23 @@
     }
 
     &__title {
-        font-weight: 700;
         font-size: size(18);
+        font-weight: 700;
         line-height: size(25);
         margin-bottom: size(8);
     }
 
     &__list {
-        list-style: none;
-        padding: 0;
-        margin: size(2) 0 size(10);
         display: flex;
         flex-direction: column;
         list-style: none;
+        list-style: none;
+        margin: size(2) 0 size(10);
+        padding: 0;
 
         &--item {
-            display: flex;
             align-items: center;
+            display: flex;
             gap: size(10);
             justify-content: space-between;
 
@@ -68,8 +97,21 @@
     }
 
     &__modal {
+        .modal-content {
+            gap: size(16);
+            max-width: size(570);
+            padding: size(24);
+            width: 100%;
+        }
+
+        .modal__content {
+            margin: 0;
+            padding: 0;
+        }
+
         .modal__action {
             justify-content: flex-end;
+            padding: 0;
         }
     }
 }

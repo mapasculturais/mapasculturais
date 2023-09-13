@@ -135,7 +135,7 @@ class Module extends \MapasCulturais\Module {
         });
 
 
-        $app->hook('POST(<<agent|space|event|project>>.sendComplaintMessage)', function() use ($plugin) {
+        $app->hook('POST(<<agent|space|event|project|opportunity>>.sendComplaintMessage)', function() use ($plugin) {
             $app = App::i();
             
              //Verificando recaptcha v2
@@ -208,7 +208,7 @@ class Module extends \MapasCulturais\Module {
             $this->json(true);
         });
 
-        $app->hook('POST(<<agent|space|event|project>>.sendSuggestionMessage)', function() use ($plugin) {
+        $app->hook('POST(<<agent|space|event|project|opportunity>>.sendSuggestionMessage)', function() use ($plugin) {
             $app = App::i();
 
             //Verificando recaptcha v2
