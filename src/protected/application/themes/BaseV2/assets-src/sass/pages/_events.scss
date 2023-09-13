@@ -10,4 +10,15 @@
             }
         }
     }
+
+    &.action-single {
+        .long-description {
+            .single-event {
+                &__longdescription {
+                    white-space: pre-line;
+
+                }
+            }
+        }
+    }
 }

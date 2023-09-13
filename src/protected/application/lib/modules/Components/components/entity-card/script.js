@@ -95,7 +95,7 @@ app.component('entity-card', {
                 /* verifica pontuações ao final da ultima palavra */
                 let especialChars = ['.', ',', '!', '?'];
                 especialChars.forEach(function(symbol) {
-                    if (_textLastWord.indexOf(symbol) !== -1) {
+                    if (typeof _textLastWord == 'string' && _textLastWord.indexOf(symbol) !== -1) {
                         _slicedText[_slicedText.indexOf(_textLastWord)] = _textLastWord.slice(0, -1);
                     };
                 });
@@ -104,5 +104,14 @@ app.component('entity-card', {
             }
             return text;
         },
+        entityTime(entity){
+            if(entity.registrationTo.isPast()){
+                return this.text('As inscrições encerraram-se no dia');
+            }
+
+            if(entity.registrationFrom.isToday() || entity.registrationFrom.isPast() && entity.registrationTo.isFuture()){
+                return this.text('As inscrições encerrarão no dia');
+            }
+        }
     },
 });

@@ -15,12 +15,16 @@ use MapasCulturais\Entities;
 class EntityRevision extends EntityController {
 
     function GET_history(){
-    	$app = App::i();
+        $app = App::i();
 
-    	$id = $this->data['id'];
+        if($app->view->version >= 2) { 
+            $app->pass(); 
+        }
 
-    	$entityRevision = $app->repo('EntityRevision')->findCreateRevisionObject($id);
+        $id = $this->data['id'];
 
-    	$this->render('history', ['entityRevision' => $entityRevision]);
+        $entityRevision = $app->repo('EntityRevision')->findCreateRevisionObject($id);
+
+        $this->render('history', ['entityRevision' => $entityRevision]);
     }
 }
