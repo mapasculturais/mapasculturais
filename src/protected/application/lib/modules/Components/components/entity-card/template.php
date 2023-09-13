@@ -30,7 +30,10 @@ $this->import('
 
 		<div class="entity-card__header user-slot">
 			<slot name="labels">
-				<span class="openSubscriptions" v-if="openSubscriptions"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
+				<div class="entity-card__slot">
+					<span class="uppercase semibold">Id: <span class="bold">{{entity.id}}</span> </span>
+					<span class="openSubscriptions" v-if="openSubscriptions"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
+				</div>
 				
 
 			</slot>
