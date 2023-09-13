@@ -19,7 +19,6 @@ $this->import('
 
 			<div class="user-info" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
 				<mc-title :tag="tag" mobile bold>{{entity.name}}</mc-title>
-
 				<slot name="type">
 					<div v-if="entity.type" class="user-info__attr">
 						<?php i::_e('Tipo:') ?> {{entity.type.name}}
@@ -31,7 +30,7 @@ $this->import('
 		<div class="entity-card__header user-slot">
 			<slot name="labels">
 				<div class="entity-card__slot">
-					<span class="uppercase semibold">Id: <span class="bold">{{entity.id}}</span> </span>
+					<span class="uppercase semibold entity-card__id">Id: <span class="bold">{{entity.id}}</span> </span>
 					<span class="openSubscriptions" v-if="openSubscriptions"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
 				</div>
 				
