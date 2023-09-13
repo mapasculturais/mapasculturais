@@ -51,13 +51,16 @@
 			}
 		}
 	}
+
 	&__cards {
 		display: grid;
-		grid-template-columns: 1fr;
 		gap: size(32);
+		grid-template-columns: 1fr;
+
 		&--column {
-			grid-template-columns: 1fr 1fr;
 			align-items: start;
+			grid-template-columns: 1fr 1fr;
+			overflow-x: auto;
 		}
 	}
 
