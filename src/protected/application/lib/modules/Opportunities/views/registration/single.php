@@ -179,7 +179,7 @@ $this->breadcrumb = [
                                 <img v-if="entity.agentRelations.coletivo[0]?.files?.avatar" :src="entity.agentRelations.coletivo[0].files.avatar.transformations.avatarMedium.url" />
                             </div>
                             <div class="name">
-                                <a href="entity?.agentRelations.coletivo[0].agent.singleUrl" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
+                                <a href="entity?.agentRelations.coletivo[0].agent.singleUrl" class="registration__collective-link bold"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
                             </div>
                         </div>
                         <div v-if="!entity.agentRelations.hasOwnProperty('coletivo')" class="space">
