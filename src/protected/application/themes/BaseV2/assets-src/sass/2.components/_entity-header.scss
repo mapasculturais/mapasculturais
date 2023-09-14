@@ -5,7 +5,12 @@
     margin: 0 auto;
     position: relative;
     width: 100%;
-
+    
+    @media (max-width: size(500)){
+        &__title {
+            text-align: center;
+        }
+    }
     &__single {
         margin: 0 auto;
         max-width: 1170px;
