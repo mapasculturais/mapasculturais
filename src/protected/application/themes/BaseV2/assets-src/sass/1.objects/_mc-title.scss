@@ -1,27 +1,167 @@
 .mc-title {
 
-    &--long {
-        font-size: $font-size-sm;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    small {
+
+        font-family: var(--mc-font-headings);
+        font-style: var(--mc-font-regular);
+        line-height: normal;
+        margin: 0;
+
+        @media (max-width: size(500)) {}
     }
 
-    &--short {
-        font-size: $font-size-xl;
-    }
+    &__h1 {
+        font-size: var(--mc-font-size-xl);
 
-    @media (max-width: size(500)) {
-        &--mobile-h2 {
-            font-size: $font-size-sm;
-            line-height: size(21);
-        }
 
-        &--mobile-h1 {
-            font-size: $font-size-md;
+        @media (max-width: size(500)) {}
+
+        &--long {
+            font-size: var(--mc-font-size-md);
             line-height: size(28);
-            
         }
-        
-        &--mobile-h1--aligncenter {
-            text-align: center;
+
+        &--medium {}
+
+        &--short {
+            line-height: size(65.37);
         }
     }
+
+
+    h2 {
+        font-size: var(--mc-font-size-lg);
+
+        &--long {}
+
+        &--medium {}
+
+        &--short {}
+
+        @media (max-width: size(500)) {
+            font-size: var(--mc-font-size-sm);
+
+            &--long {}
+
+            &--medium {}
+
+            &--short {}
+        }
+
+    }
+
+    h3 {
+        font-size: var(--mc-font-size-md);
+
+        &--long {}
+
+        &--medium {}
+
+        &--short {}
+
+        @media (max-width: size(500)) {
+            font-family: Open Sans;
+            font-size: 16px;
+            font-style: normal;
+
+            &--long {}
+
+            &--medium {}
+
+            &--short {}
+        }
+    }
+
+    h4 {
+        font-size: var(--mc-font-size-sm);
+
+        &--long {}
+
+        &--medium {}
+
+        &--short {}
+
+        @media (max-width: size(500)) {
+            font-family: Open Sans;
+            font-size: 16px;
+            font-style: normal;
+            line-height: normal;
+
+            &--long {}
+
+            &--medium {}
+
+            &--short {}
+        }
+    }
+
+    h5 {
+        font-size: var(--mc-font-size-xxs);
+
+        &--long {}
+
+        &--medium {}
+
+        &--short {}
+
+        @media (max-width: size(500)) {
+            &--long {}
+
+            &--medium {}
+
+            &--short {}
+        }
+    }
+
+    h6 {
+        font-size: var(--mc-font-size-xxs);
+
+        &--long {}
+
+        &--medium {}
+
+        &--short {}
+
+        @media (max-width: size(500)) {
+            &--long {}
+
+            &--medium {}
+
+            &--short {}
+        }
+    }
+
+    // &--long {
+
+    //     font-size: var(--mc-font-size-sm);
+    //     line-height: size(24.5);
+    // }
+
+    // &--short {
+    //     font-size: var(--mc-font-size-xl);
+    // }
+
+    // @media (max-width: size(500)) {
+    //     &--mobile-h2 {
+    //         font-size: var(--mc-font-size-sm);
+    //         line-height: size(21);
+    //     }
+
+    //     &--mobile-h1 {
+    //         font-size: var(--mc-font-size-md);
+    //         line-height: size(28);
+
+    //     }
+
+    //     &--mobile-h1--aligncenter {
+    //         text-align: center;
+    //     }
+    // }
 }
