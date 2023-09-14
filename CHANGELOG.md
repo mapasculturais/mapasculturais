@@ -5,9 +5,11 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 ### Correções
-
 - Adiciona quebra de linha nas descrições longas das entidades
 - Implementa lógica no componente entity-card que mostra textos diferentes em função da data de abertura e fechamento da entidade
+- Resolve sobreposição do slot na listagem do painel nas entidades.
+- Faz com que os usuarios que tenham alguma Role definida entre no processamento de cache
+- Evita que o método entityTime se quebre quando nao existir data de abertura ou fechamento de inscrição
 
 ## [6.0.14] - 2023-09-05
 ### Correções
