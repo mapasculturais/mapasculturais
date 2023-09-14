@@ -4,11 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [6.0.18] - 2023-09-14
 ### Correções
 - Corrige componente que lista as inscrições em aberto do usuário no painel que não estava funcionando no Safari
 - Insere componente entity-admins na edit da oportunidade para inserir agentes que possam administrar a entidade
-- Insere componente entity-admins na single da oportunidade para vizualizar o agentes que pdem controlar a entidade
+- Insere componente entity-admins na single da oportunidade para vizualizar o agentes que podem controlar a entidade
 
 ## [6.0.17] - 2023-09-14
 ### Correções
