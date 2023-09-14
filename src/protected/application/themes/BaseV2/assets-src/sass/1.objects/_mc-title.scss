@@ -20,47 +20,63 @@
     &__h1 {
         font-size: var(--mc-font-size-xl);
 
-
-        @media (max-width: size(500)) {}
-
         &--long {
             font-size: var(--mc-font-size-md);
             line-height: size(28);
         }
 
-        &--medium {}
-
         &--short {
             line-height: size(65.37);
         }
+
+        @media (max-width: size(500)) {
+            &--long {
+                font-size: var(--mc-font-size-xs);
+            }
+            &--short {
+                font-size: var(--mc-font-size-md);
+            }
+        }
     }
 
 
-    h2 {
+    &__h2 {
         font-size: var(--mc-font-size-lg);
 
-        &--long {}
+        &--long {
+            font-size: var(--mc-font-size-sm);
+            line-height: size(24);
+        }
 
-        &--medium {}
-
-        &--short {}
+        &--short {
+            font-size: var(--mc-font-size-sm);
+        }
 
         @media (max-width: size(500)) {
-            font-size: var(--mc-font-size-sm);
-
-            &--long {}
-
-            &--medium {}
-
-            &--short {}
+            &--long {
+                font-size: var(--mc-font-size-xs);
+                line-height: size(24);
+            }
+            &--short {
+                font-size: var(--mc-font-size-sm);
+            }
         }
 
     }
 
+    // --mc-font-size-xl: 48px;     /* $font-size-xl: 3rem */
+    // --mc-font-size-lg: 32px;     /* $font-size-lg: 2rem */
+    // --mc-font-size-md: 24px;     /* $font-size-md: 1.5rem */
+    // --mc-font-size-sm: 18px;     /* $font-size-sm: 1.125rem */
+    // --mc-font-size-xs: 16px;     /* $font-size-xs: 1rem */
+    // --mc-font-size-xxs: 14px;    /* $font-size-xxs: 0.875rem */
+    // --mc-font-size-xxxs: 12px;   /* $font-size-xxxs: 0.75rem */
     h3 {
         font-size: var(--mc-font-size-md);
 
-        &--long {}
+        &--long {
+            // font-size: ;
+        }
 
         &--medium {}
 
@@ -71,11 +87,16 @@
             font-size: 16px;
             font-style: normal;
 
-            &--long {}
+            &--long {
 
-            &--medium {}
+                font-size: var(--mc-font-size-xs);
+            }
 
-            &--short {}
+
+
+            &--short {
+                font-size: var(--mc-font-size-sm)
+            }
         }
     }
 
