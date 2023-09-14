@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Resolve sobreposição do slot na listagem do painel nas entidades.
 - Faz com que os usuarios que tenham alguma Role definida entre no processamento de cache
 - Evita que o método entityTime se quebre quando nao existir data de abertura ou fechamento de inscrição
+- Corrige a verificação de permissão no embedtools no endpoint GET_registrationview para verificar quem pode ver ao invéz de quem tem controle
 
 ## [6.0.14] - 2023-09-05
 ### Correções
