@@ -20,7 +20,7 @@ $this->import('
                 <mc-icon v-else name="event"></mc-icon>
             </div>
             <div class="user-info">
-                <mc-title mobile tag="h2" bold>
+                <mc-title mobile tag="h2" class="bold">
                     {{event.name}}
                 </mc-title>
                 <div class="user-info__attr">
