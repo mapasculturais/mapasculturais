@@ -3,6 +3,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [6.0.16] - 2023-09-14
+### Correções
+- Corrige salvamento de campos de formulário qunado não havia opções definidas
+
 ## [6.0.15]
 ### Correções
 - Adiciona quebra de linha nas descrições longas das entidades
