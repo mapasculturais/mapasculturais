@@ -17,7 +17,7 @@
                 gap: size(40) size(24);
             }
         }
-        .registration__collective-link {
+        .registration__collective-link, .registration__institution-link ,  .registration__space-link {
             text-decoration: none;
             color: var(--mc-low-700);
             font-size: size(16);
