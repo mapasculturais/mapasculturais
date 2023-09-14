@@ -23,7 +23,7 @@ $this->import('
                 <slide v-for="entity in entities" :key="entity.id">
                     <panel--entity-card :key="entity.id" :entity="entity" class="card">
                         <template #title="{entity}">
-                            <mc-title tag="p" bold mobile>{{entity.name}}</mc-title>
+                            <mc-title tag="p" class="bold">{{entity.name}}</mc-title>
                         </template>
                         <template #header-actions="{entity}">
                             <div :class="[entity.__objectType+'__background', 'card-actions--tag']">
