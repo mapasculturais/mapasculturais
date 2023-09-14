@@ -65,7 +65,7 @@
         }
 
     }
-  
+
     &__h3 {
         font-size: var(--mc-font-size-md);
 
@@ -121,6 +121,7 @@
                 font-size: var(--mc-font-size-xs);
 
             }
+
             &--short {
                 font-size: var(--mc-font-size-sm);
 
@@ -180,6 +181,33 @@
             &--short {
                 font-size: var(--mc-font-size-xxs);
 
+            }
+        }
+    }
+
+    &__p {
+        font-size: var(font-size-xs);
+        line-height: size(22);
+
+        &--long {
+            font-size: var(font-size-xxs);
+
+        }
+
+        &--short {
+            font-size: var(font-size-xs);
+
+        }
+
+        @media (max-width:size(500)) {
+            &--long {
+                font-size: var(font-size-xxs);
+    
+            }
+    
+            &--short {
+                font-size: var(font-size-xs);
+    
             }
         }
     }
