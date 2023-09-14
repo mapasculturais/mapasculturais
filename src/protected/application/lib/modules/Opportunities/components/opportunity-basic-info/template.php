@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     confirm-before-exit
+    entity-admins
     entity-cover
     entity-field
     entity-files-list
@@ -68,7 +69,7 @@ $this->import('
         <mc-card>
             <div class="grid-12">
                 <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar regulamento'); ?>" editable></opportunity-rules>
-                <!-- <entity-terms :entity="entity" classes="col-12" taxonomy="area" title="<?php i::esc_attr_e('Areas de interesse') ?>" editable></entity-terms> -->
+                <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
                 <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>" editable></entity-related-agents>
                 <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
                 <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
