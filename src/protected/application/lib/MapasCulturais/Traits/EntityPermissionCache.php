@@ -108,6 +108,12 @@ trait EntityPermissionCache {
             if(method_exists($this, 'getExtraPermissionCacheUsers')){
                 $users = array_merge($users, $this->getExtraPermissionCacheUsers());
             }
+
+            if($roles = $app->repo("Role")->findAll()){
+                foreach($roles as $role){
+                    $users[] = $role->user;
+                }
+            }
         }
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
 
