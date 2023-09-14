@@ -60,7 +60,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="categories", type="array", nullable=true)
+     * @ORM\Column(name="categories", type="json", nullable=true)
      */
     protected $categories = [];
 
@@ -88,14 +88,14 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     /**
      * @var string
      *
-     * @ORM\Column(name="field_options", type="array", length=255, nullable=false)
+     * @ORM\Column(name="field_options", type="json", nullable=false)
      */
     protected $fieldOptions = [];
 
     /**
      * @var string
      *
-     * @ORM\Column(name="config", type="array", length=255)
+     * @ORM\Column(name="config", type="json")
      */
     protected $config = [];
 
@@ -154,8 +154,12 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
     
     public function setFieldOptions($value){
-        if (is_string($value)){ 
-            $value = explode("\n", $value);
+        if (is_string($value)){
+            if(trim($value)){
+                $value = explode("\n", $value);
+            } else {
+                $value = [];
+            }
         } else {
             $value = (array) $value;
         }

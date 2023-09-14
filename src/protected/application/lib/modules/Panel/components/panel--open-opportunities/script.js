@@ -138,9 +138,8 @@ app.component('panel--open-opportunities', {
         },
 
         futureDate() {
-            var date = this.actualDate();
-            var futureDate = new Date(date.replace(/\-/gi, ', '));
-            futureDate.setMonth(futureDate.getMonth() + (1));
+            const futureDate = new Date();
+            futureDate.setMonth(futureDate.getMonth() + 1);
             return this.formatDate(futureDate, 'yyyy-mm-dd');
         }
     },
