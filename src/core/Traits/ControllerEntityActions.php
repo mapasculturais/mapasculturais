@@ -15,6 +15,33 @@ trait ControllerEntityActions {
         return true;
     }
 
+
+    function setEntityProperties(Entity $entity, array $data) {
+        unset($data['id']);
+
+        $metadata = $entity->propertiesMetadata;
+        
+        foreach($data as $property => $value) {
+            if($type = $metadata[$property]['type'] ?? false) {
+                if(in_array($type, ['bool', 'boolean'])) {
+                    if($value == 'false') {
+                        $value = false;
+                    } else {
+                        $value = (bool) $value;
+                    }
+                } else if(in_array($type, ['int', 'integer', 'smallint'])) {
+                    $value = (int) $value;
+                } else if(in_array($type, ['numeric', 'float', 'number'])) {
+                    $value = (float) $value;
+                }
+            }
+            $current_value = $entity->$property;
+            if($current_value != $value) {
+                $entity->$property = $value;
+            }
+        }
+    }
+
     /**
      * 
      * @apiDefine APICreate
@@ -105,14 +132,12 @@ trait ControllerEntityActions {
 
         $function = null;
 
-        //Atribui a propriedade editada
-        foreach($data as $field => $value){
-            if($field == 'status'){
-                $function = isset(self::$changeStatusMap[$entity->status][(int)$value]) ? self::$changeStatusMap[$entity->status][(int)$value] : null;
-                continue;
-            }
-            $entity->$field = $value;
+        if(isset($data['status']) && isset(self::$changeStatusMap[$entity->status][(int)$data['status']])) {
+            $function = self::$changeStatusMap[$entity->status][(int)$data['status']];
+            unset($data['status']);
         }
+
+        $this->setEntityProperties($entity, $data);
 
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
@@ -153,14 +178,7 @@ trait ControllerEntityActions {
         
         $function = null;
 
-        //Atribui a propriedade editada
-        foreach($data as $field => $value){
-            if($field == 'status'){
-                $function = isset(self::$changeStatusMap[$entity->status][(int)$value]) ? self::$changeStatusMap[$entity->status][(int)$value] : null;
-                continue;
-            }
-            $entity->$field = $value;
-        }
+        $this->setEntityProperties($entity, $data);
 
         if($_errors = $entity->validationErrors){
             $errors = [];

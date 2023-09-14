@@ -1993,5 +1993,47 @@ $$
         __exec("UPDATE opportunity SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
         __exec("UPDATE EVENT SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
     },
+    "migra valores das colunas do tipo array para do tipo json" => function() use ($conn) {
+        $fields = $conn->fetchAll("SELECT id, config, field_options, categories from registration_field_configuration");
+        $count = count($fields);
+        foreach($fields as $i => $field) {
+            echo "migrando registration_field_configuration ({$i} / $count)\n";
+            $field['config'] = json_encode(unserialize($field['config']));
+            $field['field_options'] = json_encode(unserialize($field['field_options']));
+            $field['categories'] = json_encode(unserialize($field['categories']));
 
+            $conn->executeQuery("
+                UPDATE registration_field_configuration 
+                SET 
+                    config = :config, 
+                    field_options = :field_options, 
+                    categories = :categories
+                WHERE id = :id", $field);
+        }
+
+        $files = $conn->fetchAll("SELECT id, categories from registration_file_configuration");
+        $count = count($files);
+        foreach($files as $i => $file) {
+            echo "migrando registration_file_configuration ({$i} / $count)\n";
+            $file['categories'] = json_encode(unserialize($file['categories']));
+
+            $conn->executeQuery("
+                UPDATE registration_file_configuration 
+                SET categories = :categories
+                WHERE id = :id", $file);
+        }
+
+        $requests = $conn->fetchAll("SELECT id, metadata from request");
+        $count = count($requests);
+        foreach($requests as $i => $request) {
+            echo "migrando request ({$i} / $count)\n";
+            $id = $request['id'];
+            $metadata = json_encode(unserialize($request['metadata']));
+
+            $conn->executeQuery("
+                UPDATE request 
+                SET metadata = '{$metadata}'
+                WHERE id = $id");
+        }
+    }
 ] + $updates ;
