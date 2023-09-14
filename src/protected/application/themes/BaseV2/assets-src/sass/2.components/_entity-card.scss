@@ -6,7 +6,13 @@
 	padding: size(16);
 	user-select: none;
 	width: 100%;
-
+	.entity-card__slot {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: size(24);
+	}
+	
 	&__header {
 		align-items: stretch;
 		display: flex;
@@ -85,6 +91,28 @@
 			}
 		}
 
+		&.with-labels & {
+			
+			&.user-slot {
+				.entity-card__slot {
+					position: absolute;
+					top: size(-10);
+					right: 0;
+					display: grid;
+					grid-template-columns: size(48) size(160);
+					@media (max-width: size(500)) {
+						gap: size(9);
+					}
+				}
+				.entity-card__id {
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+				}
+
+			}
+		}
+
 		&.user-slot {
 			align-items: flex-start;
 			position: absolute;
@@ -110,7 +138,7 @@
 					line-height: size(16);
 				}
 			}
-
+			
 			.openSubscriptions {
 				color: var(--mc-low-700);
 				display: flex;
