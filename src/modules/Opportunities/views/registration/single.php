@@ -179,7 +179,7 @@ $this->breadcrumb = [
                                 <img v-if="entity.agentRelations.coletivo[0]?.files?.avatar" :src="entity.agentRelations.coletivo[0].files.avatar.transformations.avatarMedium.url" />
                             </div>
                             <div class="name">
-                                <a href="entity?.agentRelations.coletivo[0].agent.singleUrl" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
+                                <a href="entity?.agentRelations.coletivo[0].agent.singleUrl" class="registration__collective-link bold" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
                             </div>
                         </div>
                         <div v-if="!entity.agentRelations.hasOwnProperty('coletivo')" class="space">
@@ -205,7 +205,7 @@ $this->breadcrumb = [
                                 <img v-if="entity.agentRelations.instituicao[0]?.files?.avatar" :src="entity.agentRelations.instituicao[0].files.avatar.transformations.avatarMedium.url" />
                             </div>
                             <div class="name">
-                                <a :href="entity?.agentRelations.instituicao[0].agent.singleUrl" :class="[entity.agentRelations.instituicao[0]['@entityType'] + '__color']"> {{entity?.agentRelations.instituicao[0].agent.name}} </a>
+                                <a :href="entity?.agentRelations.instituicao[0].agent.singleUrl" class="registration__collective-link" :class="[entity.agentRelations.instituicao[0]['@entityType'] + '__color']"> {{entity?.agentRelations.instituicao[0].agent.name}} </a>
                             </div>
                         </div>
 
@@ -231,7 +231,7 @@ $this->breadcrumb = [
                                 <img v-if="entity.relatedSpaces[0]?.files?.avatar" :src="entity.relatedSpaces[0].files.avatar.transformations.avatarMedium.url" />
                             </div>
                             <div class="name">
-                                <a href="entity?.relatedSpaces[0]?.singleUrl" :class="[entity.relatedSpaces[0]['@entityType'] + '__color']"> {{entity?.relatedSpaces[0]?.name}} </a>
+                                <a href="entity?.relatedSpaces[0]?.singleUrl" class="registration__space-link" :class="[entity.relatedSpaces[0]['@entityType'] + '__color']"> {{entity?.relatedSpaces[0]?.name}} </a>
                             </div>
                         </div>
 
