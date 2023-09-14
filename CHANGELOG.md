@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Adiciona quebra de linha nas descrições longas das entidades
 - Implementa lógica no componente entity-card que mostra textos diferentes em função da data de abertura e fechamento da entidade
+- Resolve sobreposição do slot na listagem do painel nas entidades.
 
 ## [6.0.14] - 2023-09-05
 ### Correções
