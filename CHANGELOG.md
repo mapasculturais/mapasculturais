@@ -8,6 +8,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige componente que lista as inscrições em aberto do usuário no painel que não estava funcionando no Safari
 
+## [6.0.17] - 2023-09-14
+### Correções
+- Faz com que os usuarios que tenham alguma Role definida entre no processamento de cache
+- Evita que o método entityTime se quebre quando nao existir data de abertura ou fechamento de inscrição
+- Corrige a verificação de permissão no embedtools no endpoint GET_registrationview para verificar quem pode ver ao invéz de quem tem controle
+- Ajusta estilo conforme o figma para a visão do parecerista na inscrição do proponente no campo coletivo
+
 ## [6.0.16] - 2023-09-14
 ### Correções
 - Corrige salvamento de campos de formulário qunado não havia opções definidas
@@ -17,10 +24,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona quebra de linha nas descrições longas das entidades
 - Implementa lógica no componente entity-card que mostra textos diferentes em função da data de abertura e fechamento da entidade
 - Resolve sobreposição do slot na listagem do painel nas entidades.
-- Faz com que os usuarios que tenham alguma Role definida entre no processamento de cache
-- Evita que o método entityTime se quebre quando nao existir data de abertura ou fechamento de inscrição
-- Corrige a verificação de permissão no embedtools no endpoint GET_registrationview para verificar quem pode ver ao invéz de quem tem controle
-- Ajusta estilo conforme o figma para a visão do parecerista na inscrição do proponente no campo coletivo
 
 ## [6.0.14] - 2023-09-05
 ### Correções

@@ -205,7 +205,7 @@ $this->breadcrumb = [
                                 <img v-if="entity.agentRelations.instituicao[0]?.files?.avatar" :src="entity.agentRelations.instituicao[0].files.avatar.transformations.avatarMedium.url" />
                             </div>
                             <div class="name">
-                                <a :href="entity?.agentRelations.instituicao[0].agent.singleUrl" class="registration__collective-link" :class="[entity.agentRelations.instituicao[0]['@entityType'] + '__color']"> {{entity?.agentRelations.instituicao[0].agent.name}} </a>
+                                <a :href="entity?.agentRelations.instituicao[0].agent.singleUrl" class="registration__institution-link" :class="[entity.agentRelations.instituicao[0]['@entityType'] + '__color']"> {{entity?.agentRelations.instituicao[0].agent.name}} </a>
                             </div>
                         </div>
 
