@@ -108,8 +108,13 @@ trait EntityPermissionCache {
                     $users[] = $role->user;
                 }
             }
+            
+            $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
+
+            if($delete_old && $users){
+                $this->deletePermissionsCache();
+            }
         }
-        $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
 
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
