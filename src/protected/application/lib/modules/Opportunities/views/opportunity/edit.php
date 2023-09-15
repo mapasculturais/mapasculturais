@@ -23,9 +23,10 @@ $this->import('
 
 $this->addOpportunityPhasesToJs();
 
+$label = $this->isRequestedEntityMine() ? i::__('Minhas oportunidades') : i::__('Oportunidades');
 $this->breadcrumb = [
   ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-  ['label'=> i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
+  ['label'=> $label, 'url' => $app->createUrl('panel', 'opportunities')],
   ['label'=> $entity->name, 'url' => $app->createUrl('opportunity', 'edit', [$entity->id])],
 ];
 ?>
