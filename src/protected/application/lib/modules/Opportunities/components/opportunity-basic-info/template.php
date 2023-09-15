@@ -20,6 +20,7 @@ $this->import('
     entity-related-agents
     entity-seals
     entity-social-media
+    entity-status
     entity-terms
     entity-terms
     mc-container
@@ -27,6 +28,8 @@ $this->import('
 ');
 ?>
 <div class="opportunity-basic-info__container">
+<entity-status :entity="entity"></entity-status>
+
     <mc-card>
         <template #title>
             <h3><?= i::__("Informações obrigatórias") ?></h3>
@@ -45,6 +48,7 @@ $this->import('
 </div>
 <mc-container>
     <main>
+
         <mc-card>
             <template #content>
                 <div class="header-opp grid-12 v-bottom">
