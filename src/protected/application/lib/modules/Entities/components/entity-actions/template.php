@@ -22,7 +22,7 @@ $this->import('
             <div class="entity-actions__content--groupBtn rowBtn" ref="buttons1">
                 <?php $this->applyTemplateHook('entity-actions--primary', 'begin') ?>
 
-                <mc-confirm-button v-if="entity.currentUserPermissions?.archive" @confirm="entity.archive()">
+                <mc-confirm-button v-if="entity.currentUserPermissions?.archive && entity.status != -2" @confirm="entity.archive()">
                     <template #button="modal">
                         <button @click="modal.open()" class="button button--icon button--sm arquivar">
                             <mc-icon name="archive"></mc-icon>
