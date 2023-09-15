@@ -10,7 +10,9 @@ $prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => 
     <div class="aba-content" id="reports">
         <header>
             <p><?php i::_e("Veja abaixo os gráficos referentes a essa oportunidade");?></p>
-            <a href="<?=$prinUrl?>" class="btn btn-default hltip print-reports" title="" hltitle="Baixar em CSV" target="_blank"><i class="fas fa-print"></i> <?php i::_e("Imprimir");?></a>
+            <?php if (!isset($hidePrintButton)): ?>
+                <a href="<?=$prinUrl?>" class="btn btn-default hltip print-reports" title="" hltitle="Baixar em CSV" target="_blank"><i class="fas fa-print"></i> <?php i::_e("Imprimir");?></a>
+            <?php endif;?>
         </header>
 
         <div class="charts-static">

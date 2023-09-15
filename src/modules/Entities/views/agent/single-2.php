@@ -28,9 +28,10 @@ $this->import('
     mc-tabs
 ');
 
+$label = $this->isRequestedEntityMine() ? i::__('Meus agentes') : i::__('Agentes');
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Agentes'), 'url' => $app->createUrl('search', 'agents')],
+    ['label' => $label, 'url' => $app->createUrl('search', 'agents')],
     ['label' => $entity->name, 'url' => $app->createUrl('agent', 'single', [$entity->id])],
 ];
 ?>

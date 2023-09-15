@@ -19,7 +19,7 @@ $this->import('
             <div class="col-4">
                 <mc-confirm-button :message="text('despublicar')" @confirm="unpublishRegistration()">
                     <template #button="modal">
-                        <button class="button button--text button--text-danger" @click="modal.open()">
+                        <button class="button button--primary-outline" @click="modal.open()">
                             <?= i::__("Despublicar") ?>
                         </button>
                     </template>

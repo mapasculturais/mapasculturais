@@ -2,6 +2,7 @@
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
+ * @var MapasCulturais\Entities\Opportunity $entity
  */
 
 use MapasCulturais\i;
@@ -13,6 +14,7 @@ $this->useOpportunityAPI();
 
 $this->import('
     complaint-suggestion
+    entity-admins
     entity-actions
     entity-files-list
     entity-gallery
@@ -40,9 +42,11 @@ $this->import('
     v1-embed-tool
 ');
 
+$label = $this->isRequestedEntityMine() ? i::__('Minhas oportunidades') : i::__('Oportunidades');
+
 $this->breadcrumb = [
   ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-  ['label' => i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
+  ['label' => $label, 'url' => $app->createUrl('panel', 'opportunity')],
   ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
 ];
 ?>
@@ -99,7 +103,7 @@ $this->breadcrumb = [
                         <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                         <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags');?>"></entity-terms>
                         <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>
-                        <!-- <entity-terms :entity="entity" classes="col-12" taxonomy="area" title="<?php i::esc_attr_e('Areas de interesse')?>"></entity-terms> -->
+                        <entity-admins :entity="entity" classes="col-12"></entity-admins>
                         <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
                         <mc-share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></mc-share-links>
                     </div>  
