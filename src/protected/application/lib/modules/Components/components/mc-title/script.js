@@ -1,36 +1,16 @@
 
 app.component('mc-title', {
     template: $TEMPLATES['mc-title'],
-
+// 
     props: {
         tag: {
             type: String,
             default: 'h2'
         },
-        bold: {
-            type: Boolean,
-            default: false
-        },
-        semibold: {
-            type: Boolean,
-            default: false
-        },
-        uppercase: {
-            type: Boolean,
-            default: false
-        },
-        small: {
-            type: Boolean,
-            default: false
-        },
-        mobile: {
-            type: Boolean,
-            default: false
-        },
-        aligncenter: {
-            type: Boolean,
-            default: false
-        },
+        local: {
+            type: String,
+            default: 'single'
+        },  
     },
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name];
@@ -45,30 +25,16 @@ app.component('mc-title', {
 
     mounted() {
         const length = this.$refs.title.textContent.length;
-        // if(length > 30) {
-        //     this.classes.push('mc-title--long');
-        // } else if (length < 20) {
-        //     this.classes.push('mc-title--short');
-        // }
+        // this.classes.push(this.tag);
+        if(length > 30) {
+            const tag = this.tag;
+            // this.classes.push('mc-title__'+this.tag+'--short');
+            this.classes.push('mc-title__'+this.tag+'--long');
+            
 
-        if(this.bold) {
-            this.classes.push('bold');
+        } else if (length < 20) {
+            this.classes.push('mc-title__'+this.tag+'--short');
+
         }
-        if(this.semibold) {
-            this.classes.push('semibold');
-        }
-        if(this.uppercase) {
-            this.classes.push('uppercase');
-        }
-        if(this.small) {
-            this.classes.push('small');
-        }
-        if(this.mobile) {
-            this.classes.push('mc-title--mobile-'+this.tag);
-        }
-        if(this.aligncenter) {
-            this.classes.push('mc-title--mobile-'+this.tag+'--aligncenter');
-        }
-           
     }
 });

@@ -26,9 +26,10 @@ $this->import('
     mc-container
 ');
 
+$label = $this->isRequestedEntityMine() ? i::__('Meus agentes') : i::__('Agentes');
 $this->breadcrumb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Meus Agentes'), 'url' => $app->createUrl('panel', 'agents')],
+    ['label' => $label, 'url' => $app->createUrl('panel', 'agents')],
     ['label' => $entity->name, 'url' => $app->createUrl('agent', 'edit', [$entity->id])],
 ];
 ?>
