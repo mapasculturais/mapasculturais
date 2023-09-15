@@ -66,7 +66,7 @@ $this->import('
                 <mc-confirm-button v-if="entity.status == 0 && entity.currentUserPermissions?.publish" @confirm="entity.publish()">
                     <template #button="modal">
                         <button @click="modal.open()" class="button button--md publish publish-exit">
-                            <?php i::_e("Publicar") ?>
+                            <?php i::_e("Salvar e publicar") ?>
                         </button>
                     </template>
                     <template #message="message">
