@@ -10,7 +10,7 @@ $this->import("
     mc-modal
 ");
 ?>
-<div class="complaint-suggestion">
+<div class="complaint-suggestion col-12">
     <div class="complaint-sugestion__complaint">
         <mc-modal title="<?= i::__('Denúncia') ?>" classes="complaint-sugestion__modal">
 

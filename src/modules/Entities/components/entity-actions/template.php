@@ -22,7 +22,7 @@ $this->import('
             <div class="entity-actions__content--groupBtn rowBtn" ref="buttons1">
                 <?php $this->applyTemplateHook('entity-actions--primary', 'begin') ?>
 
-                <mc-confirm-button v-if="entity.currentUserPermissions?.archive" @confirm="entity.archive()">
+                <mc-confirm-button v-if="entity.currentUserPermissions?.archive && entity.status != -2" @confirm="entity.archive()">
                     <template #button="modal">
                         <button @click="modal.open()" class="button button--icon button--sm arquivar">
                             <mc-icon name="archive"></mc-icon>
@@ -63,10 +63,10 @@ $this->import('
                 <button v-if="entity.currentUserPermissions?.modify" @click="entity.save()" class="button button--md publish publish-exit">
                     <?php i::_e("Salvar") ?>
                 </button>
-                <mc-confirm-button v-if="entity.status == 0 && entity.currentUserPermissions?.publish" @confirm="entity.publish()">
+                <mc-confirm-button v-if="entity.status == 0 || entity.status == -2 && entity.currentUserPermissions?.publish" @confirm="entity.publish()">
                     <template #button="modal">
                         <button @click="modal.open()" class="button button--md publish publish-exit">
-                            <?php i::_e("Publicar") ?>
+                            <?php i::_e("Salvar e publicar") ?>
                         </button>
                     </template>
                     <template #message="message">
