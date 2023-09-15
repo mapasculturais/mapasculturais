@@ -2,6 +2,7 @@
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
+ * @var MapasCulturais\Entities\Opportunity $entity
  */
 
 use MapasCulturais\i;
@@ -41,9 +42,11 @@ $this->import('
     v1-embed-tool
 ');
 
+$label = $this->isRequestedEntityMine() ? i::__('Minhas oportunidades') : i::__('Oportunidades');
+
 $this->breadcrumb = [
   ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-  ['label' => i::__('Minhas oportunidades'), 'url' => $app->createUrl('panel', 'opportunity')],
+  ['label' => $label, 'url' => $app->createUrl('panel', 'opportunity')],
   ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
 ];
 ?>

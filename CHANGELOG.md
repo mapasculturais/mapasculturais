@@ -3,9 +3,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-### Unreleased
+### [6.0.19] - 2023-09-14
 - Atualiza componente de  mc-title para utilizar tags html nos titulos e ajustar conforme o tamanho
 - Ajusta o painel de entidades recentemente editadas
+- Faz com que o botão Arquivar fique oculto após a entidade ser arquivada
+- Altera o nome do botão publicar  das entidade para Salvar e publicar no componente entity-action
+- Faz com que o botão Salvar e publicar seja exibido quando a entidade esteja arquvada
+- Implementa método isRequestedEntityMine que devolve se o agente é dono ou não da entidade no módulo Entities
+
 ## [6.0.18] - 2023-09-14
 ### Correções
 - Corrige componente que lista as inscrições em aberto do usuário no painel que não estava funcionando no Safari
