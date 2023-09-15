@@ -5,6 +5,7 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Unreleased
 - Atualiza componente de  mc-title para utilizar tags html nos titulos e ajustar conforme o tamanho
+- Ajusta o painel de entidades recentemente editadas
 ## [6.0.18] - 2023-09-14
 ### Correções
 - Corrige componente que lista as inscrições em aberto do usuário no painel que não estava funcionando no Safari
