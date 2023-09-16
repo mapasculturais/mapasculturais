@@ -968,17 +968,18 @@ class Module extends \MapasCulturais\Module{
                 $prev_em = $previous->evaluationMethodConfiguration;
 
                 if($prev_em) {
-                    $previous_date = max($prev_em->evaluationTo, $previous->registrationTo);
+                    $previous_date_from = max($prev_em->evaluationFrom, $previous->registrationFrom);
+                    $previous_date_from = max($prev_em->evaluationTo, $previous->registrationTo);
                 } else {
-                    $previous_date = $previous->registrationTo;
+                    $previous_date_from = $previous->registrationFrom;
                 }
 
-                if($previous_date) {
-                    $previous_date = $previous_date->format('Y-m-d H:i:s');
-                    $validations['registrationFrom']["\$value >= new DateTime('$previous_date')"] = i::__('A data inicial deve ser maior que a data final da fase anterior');
+                if($previous_date_from) {
+                    $previous_date_from = $previous_date_from->format('Y-m-d H:i:s');
+                    $validations['registrationFrom']["\$value >= new DateTime('$previous_date_from')"] = i::__('A data inicial não pode ser menor que a data inicial da fase anterior');
                     
                     if ($this->isLastPhase && $this->publishTimestamp < $previous->registrationTo) {
-                        $validations['publishTimestamp']["\$value >= new DateTime('$previous_date')"] = i::__('A data de publicação do resultado deve ser maior que a data final da fase anterior');
+                        $validations['publishTimestamp']["\$value >= new DateTime('$previous_date_from')"] = i::__('A data de publicação do resultado deve ser maior que a data final da fase anterior');
                     }
                 }
             }
