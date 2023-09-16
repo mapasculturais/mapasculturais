@@ -7,17 +7,16 @@ app.component('opportunity-claim-form', {
     },
 
     props: {
-        entity: {
+        registration: {
             type: Entity,
             required: true
         },
-
     },
-
+    
     data() {
         return {
             claim: {
-                registration_id:$MAPAS.config.opportunityClaimForm.registrationId
+                message: ''
             },
         }
     },
@@ -27,24 +26,24 @@ app.component('opportunity-claim-form', {
             modal.close();
         },
         isActive(){
-            if(this.entity.opportunity.status > 0 && this.entity.opportunity.publishedRegistrations && this.entity.opportunity.claimDisabled === "0"){
+            const opportunity = this.registration.opportunity;
+            if(this.registration.status > 0 && opportunity.publishedRegistrations && !opportunity.claimDisabled){
                 return true;
             }
             return false;
         },
         async sendClain(modal){
             let api = new API();
-            let url = Utils.createUrl('opportunity', 'sendOpportunityClaimMessage');
+            let url = Utils.createUrl('opportunity', 'sendOpportunityClaimMessage', {registration_id: this.registration.id});
+
             await api.POST(url, this.claim).then(data => {
                 this.messages.success(this.text('Solicitação de recurso enviada'));
                 this.close(modal);
             });
-          
         }
     },
 
     computed: {
-
         modalTitle() {
             return 'Solicitar Recurso';
 

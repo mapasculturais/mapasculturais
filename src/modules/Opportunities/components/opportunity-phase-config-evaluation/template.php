@@ -65,6 +65,10 @@ $this->import('
     
         <div class="config-phase__line col-12"></div>
 
+        <div class="col-12 sm:col-12">
+            <?php $this->applyComponentHook('bottom') ?>
+        </div>
+
         <div class="phase-delete col-12">
             <mc-confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
