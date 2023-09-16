@@ -8,22 +8,23 @@
 use MapasCulturais\i;
 
 $this->import('
+    entity-field
     mc-link
 ');
 ?>
 
 <div class="opportunity-enable-claim">
-    <h4 class="bold opportunity-enable-claim__title">Recurso</h4>
+    <h4 class="bold opportunity-enable-claim__title"><?= i::__('Recurso') ?></h4>
     <div class="opportunity-enable-claim__input ">
-        <input type="checkbox" id="resource" v-model="isActiveClaim" @click="autoSave()"/>
-        <label for="resource"><?= i::__("Habilitar Recurso") ?></label>
+        <label>
+            <input type="checkbox" v-model="isActiveClaim" @click="autoSave()"/>
+            <?= i::__("Habilitar Recurso") ?>
+        </label>
     </div>
     <div v-if="isActiveClaim" class="opportunity-enable-claim__email">
-        <label class="opportunity-enable-claim__label" for="input">
-            <h5 class="semibold opportunity-enable-claim__subtitle"><?= i::__("Insira o email que receberá as solicitações") ?></h5>
-        </label>
         <div class="opportunity-enable-claim__save">
-            <input type="text" v-model="entity.claimEmail" @change="autoSave()"/>
+            <entity-field :entity="entity" prop="claimEmail" :autosave="1500"></entity-field>
         </div>
     </div>
 </div>
+<div class="config-phase__line col-12"></div>

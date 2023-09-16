@@ -5,7 +5,11 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Unreleased
+### Melhorias
 - Adiciona status na edição das entidades
+
+### Correções
+- Corrige funcionamento do módulo de recursos
 
 ### [6.0.19] - 2023-09-14
 - Atualiza componente de  mc-title para utilizar tags html nos titulos e ajustar conforme o tamanho
