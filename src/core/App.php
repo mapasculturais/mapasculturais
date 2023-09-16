@@ -573,8 +573,11 @@ class App {
             $subfolders = ['Controllers','Entities','Repositories','Jobs'];
 
             foreach($config['plugins'] as $plugin){
+                if(is_string($plugin)) {
+                    $plugin = ['namespace' => $plugin];
+                }
                 $namespace = $plugin['namespace'];
-                $dir = isset($plugin['path']) ? $plugin['path'] : PLUGINS_PATH . $namespace;
+                $dir = $plugin['path'] ?? PLUGINS_PATH . $namespace;
                 if(!isset($namespaces[$namespace])){
                     $namespaces[$namespace] = $dir;
                 }
@@ -852,9 +855,15 @@ class App {
         if(!env('DISABLE_PLUGINS')) {
             $this->applyHookBoundTo($this, 'app.plugins.init:before');
             foreach($this->config['plugins'] as $slug => $plugin){
-                $_namespace = $plugin['namespace'];
-                $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
-                $plugin_class_name = "$_namespace\\$_class";
+                if (is_numeric($slug) && is_string($plugin)) {
+                    $_namespace = $plugin;
+                    $slug = $plugin;
+                    $plugin_class_name = "$_namespace\\Plugin";
+                } else {
+                    $_namespace = $plugin['namespace'];
+                    $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
+                    $plugin_class_name = "$_namespace\\$_class";
+                }
 
                 if(class_exists($plugin_class_name)){
                     $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
