@@ -47,17 +47,35 @@ class Module extends \MapasCulturais\Module{
 
             $registration->checkPermission('sendClaimMessage');
 
-            $opportunity = $registration->opportunity;
+            $claim_phase = $registration->opportunity;
+            $opportunity = $registration->opportunity->firstPhase;
+
+            $phase_name = '';
+            $num = 0;
+            foreach($opportunity->phases as $phase) {
+                $num++;
+                if ($phase->{'@entityType'} == 'opportunity' && $phase->id == $claim_phase->id) {
+                    $phase_name = $num == 1 ? i::__('Período de inscrição') : $claim_phase->name;
+                    if ($claim_phase->evaluationMethodConfiguration) {
+                        $n2 = $num + 1;
+                        $phase_name = "{$num}. {$phase_name} / {$n2}. {$claim_phase->evaluationMethodConfiguration->name}";
+                    } else {
+                        $phase_name = "{$num}. {$phase_name}";
+                    }
+                    break;
+                }
+            }
 
             $dataValue = [
                 'opportunityName' => $opportunity->name,
+                'phaseName' => $phase_name,
                 'opportunityUrl' => $opportunity->singleUrl,
                 'registrationNumber' => $registration->number,
                 'registrationUrl' => $registration->singleUrl,
                 'date' => date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME']),
                 'message' => $this->data['message'],
                 'userName' => $app->user->profile->name,
-                'userUrl' => $app->user->profile->url,
+                'userUrl' => $app->user->profile->singleUrl,
             ];
 
             $message = $app->renderMailerTemplate('opportunity_claim', $dataValue);
@@ -75,15 +93,20 @@ class Module extends \MapasCulturais\Module{
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $email_to,
-                    'subject' => $message['title'],
+                    'subject' => sprintf(i::__('Solicitação de Recurso na Oportunidade %s'), $opportunity->name),
                     'body' => $message['body']
                 ]);
             }
         });
 
+        
         $app->hook('app.init:after', function () use($app) {
             if ($app->view->version >= 2) {
-                $app->hook("component(opportunity-phase-config-data-collection):bottom", function(){
+                $app->hook("module(OpportunityPhases).dataCollectionPhaseData", function(&$data) {
+                    $data .= ',claimEmail,claimDisabled';
+                });
+                
+                $app->hook("component(opportunity-phase-config-<<data-collection|evaluation|results>>):bottom", function(){
                     $this->part('opportunity-claim-config');
                 });
 
@@ -123,11 +146,7 @@ class Module extends \MapasCulturais\Module{
 
         $this->registerOpportunityMetadata('claimDisabled', [
             'label' => i::__('Desabilitar formulário de recursos'),
-            'type' => 'select',
-            'options' => (object)[
-                '0' => i::__('formulário de recurso habilitado'),
-                '1' => i::__('formulário de recurso desabilitado'),
-            ]
+            'type' => 'boolean'
         ]);
 
         $this->registerOpportunityMetadata('claimEmail', [
