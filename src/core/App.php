@@ -1986,7 +1986,12 @@ class App {
         }
 
         if($this->config['mailer.bcc']){
-            $message->bcc($this->config['mailer.bcc']);
+            $bcc = is_array($this->config['mailer.bcc']) ? 
+                $this->config['mailer.bcc']:
+                explode(',', $this->config['mailer.bcc']);
+
+            
+            $message->bcc(...$bcc);
         }
 
         if($this->config['mailer.replyTo']){
@@ -1995,17 +2000,24 @@ class App {
 
         $original = [];
         foreach($args as $method_name => $value){
-            if(in_array($method_name, ['to', 'cc', 'bcc']) && $this->config['mailer.alwaysTo']){
-                $original[$method_name] = $value;
-                continue;
-            }
-
-            if($method_name == 'body') {
-                $method_name = 'html';
-            }
-
-            if(method_exists($message, $method_name)){
-                $message->$method_name($value);
+            if(in_array($method_name, ['to', 'cc', 'bcc'])) {
+                if($method_name == 'bcc' && isset($bcc)) {
+                    $value = [...$bcc, ...(is_array($value) ? $value : explode(',', $value))];
+                }
+                if ($this->config['mailer.alwaysTo']) {
+                    $original[$method_name] = $value;
+                } else {
+                    $value = is_array($value) ? $value : explode(',', $value);
+                    $message->$method_name(...$value);
+                }
+            } else {
+                if($method_name == 'body') {
+                    $method_name = 'html';
+                }
+    
+                if(method_exists($message, $method_name)){
+                    $message->$method_name($value);
+                }
             }
         }
 
