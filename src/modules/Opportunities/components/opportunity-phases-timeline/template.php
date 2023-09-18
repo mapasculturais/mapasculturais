@@ -45,7 +45,7 @@ $this->import('
                     <button class="button button--primary"><?= i::__('Exibir parecer')?></button>
                 </div>
 
-                <div v-if="isDataCollectionPhase(item) && isActive(item) && item.status == 0">
+                <div v-if="isDataCollectionPhase(item) && isActive(item, registration) && registration.status == 0">
                     <mc-link :entity="registration" route="edit" class="button button--primary"><?= i::__('Preencher formulário') ?></mc-link>
                 </div>
                 <?php $this->applyComponentHook('registration', 'end'); ?>
