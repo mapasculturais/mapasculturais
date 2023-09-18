@@ -301,7 +301,7 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function ($value) {
-                    return json_decode($value);
+                    return json_decode($value ?: "");
                 }
             ],
             [
@@ -323,7 +323,7 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value) {
-                    $persons = json_decode($value);
+                    $persons = json_decode($value ?: "");
 
                     if(!is_array($persons)){
                         $persons = [];
@@ -359,7 +359,7 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value) {
-                    $links = json_decode($value);
+                    $links = json_decode($value ?: "");
 
                     if(!is_array($links)){
                         $links = [];
@@ -394,7 +394,7 @@ class Module extends \MapasCulturais\Module
                     }
                     
                     if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value);
+                        $result = json_decode($value ?: "");
                     }else{
                         $disable_access_control = false;
 
@@ -433,7 +433,7 @@ class Module extends \MapasCulturais\Module
                     }
 
                     if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value);
+                        $result = json_decode($value ?: "");
                     } else {
                         $disable_access_control = false;
 
@@ -447,7 +447,7 @@ class Module extends \MapasCulturais\Module
                         if($agent){
                             $result = $module->fetchFromEntity($agent[0], $value, $registration, $metadata_definition);
                         } else {
-                            $result = json_decode($value);
+                            $result = json_decode($value ?: "");
                         }
     
                         if($disable_access_control) {
@@ -480,7 +480,7 @@ class Module extends \MapasCulturais\Module
                     }
                     
                     if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value);
+                        $result = json_decode($value ?: "");
                     } else {
                         $disable_access_control = false;
                     
@@ -493,7 +493,7 @@ class Module extends \MapasCulturais\Module
                         if($space_relation){
                             $result = $module->fetchFromEntity($space_relation->space, $value, $registration, $metadata_definition);
                         } else {
-                            $result = json_decode($value);
+                            $result = json_decode($value ?: "");
                         }
     
                         if($disable_access_control) {
@@ -639,7 +639,7 @@ class Module extends \MapasCulturais\Module
             
             $app->applyHookBoundTo($entity, "registrationFieldTypes.fetchFromEntity", ["entity_field" => $entity_field, "value" => &$value]);
         } else {
-            $value = json_decode($value);
+            $value = json_decode($value ?: "");
         }
 
         return $value;
