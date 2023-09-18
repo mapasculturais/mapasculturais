@@ -1,7 +1,6 @@
 <?php
 
 namespace FAQ;
-
 use MapasCulturais\App;
 
 class Module extends \MapasCulturais\Module
