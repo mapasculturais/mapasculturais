@@ -4,7 +4,47 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+### Unreleased
+### Melhorias
+- Adiciona status na edição das entidades
+
+### Correções
+- Corrige funcionamento do módulo de recursos
+
+### [6.0.19] - 2023-09-14
+- Atualiza componente de  mc-title para utilizar tags html nos titulos e ajustar conforme o tamanho
+- Ajusta o painel de entidades recentemente editadas
+- Faz com que o botão Arquivar fique oculto após a entidade ser arquivada
+- Altera o nome do botão publicar  das entidade para Salvar e publicar no componente entity-action
+- Faz com que o botão Salvar e publicar seja exibido quando a entidade esteja arquvada
+- Implementa método isRequestedEntityMine que devolve se o agente é dono ou não da entidade no módulo Entities
+
+## [6.0.18] - 2023-09-14
+### Correções
+- Corrige componente que lista as inscrições em aberto do usuário no painel que não estava funcionando no Safari
+- Insere componente entity-admins na edit da oportunidade para inserir agentes que possam administrar a entidade
+- Insere componente entity-admins na single da oportunidade para vizualizar o agentes que podem controlar a entidade
+
+## [6.0.17] - 2023-09-14
+### Correções
+- Faz com que os usuarios que tenham alguma Role definida entre no processamento de cache
+- Evita que o método entityTime se quebre quando nao existir data de abertura ou fechamento de inscrição
+- Corrige a verificação de permissão no embedtools no endpoint GET_registrationview para verificar quem pode ver ao invéz de quem tem controle
+- Ajusta estilo conforme o figma para a visão do parecerista na inscrição do proponente no campo coletivo
+
+## [6.0.16] - 2023-09-14
+### Correções
+- Corrige salvamento de campos de formulário qunado não havia opções definidas
+
+## [6.0.15]
+### Correções
+- Adiciona quebra de linha nas descrições longas das entidades
+- Implementa lógica no componente entity-card que mostra textos diferentes em função da data de abertura e fechamento da entidade
+- Resolve sobreposição do slot na listagem do painel nas entidades.
+
+## [6.0.14] - 2023-09-05
+### Correções
+- Verifica se existem termos de uso e privacidade a serem aceitos antes de tentar gerar o hash e salvar no usuário
 
 ## [6.0.13] - 2023-09-04
 ### Correções

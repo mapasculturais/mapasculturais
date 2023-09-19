@@ -102,12 +102,17 @@ trait EntityPermissionCache {
             if(method_exists($this, 'getExtraPermissionCacheUsers')){
                 $users = array_merge($users, $this->getExtraPermissionCacheUsers());
             }
-            $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
 
+            if($roles = $app->repo("Role")->findAll()){
+                foreach($roles as $role){
+                    $users[] = $role->user;
+                }
+            }
             if($delete_old && $users){
                 $this->deletePermissionsCache();
             }
         }
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
         
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();

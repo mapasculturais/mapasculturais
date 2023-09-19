@@ -28,8 +28,8 @@ $this->import('
                 <template #default>
                     <div class="input-group grid-12">
                         <div v-if="entity.isFirstPhase" class="col-12">
-                            <h4 class="input-group__title"><?= i::__("Solicitar Agente Coletivo?") ?></h4>
-                            <h6 class="input-group__subtitle"><?= i::__("Permitir inscrição de Agente Coletivo") ?></h6>
+                            <h4 class="input-group__title"><?= i::__("Utilizar campo para vínculo de agente coletivo") ?></h4>
+                            <h6 class="input-group__subtitle"><?= i::__("Permite que o inscrito vincule um Agente Coletivo com a sua inscrição.") ?></h6>
                             <div class="input-group__inputs">
                                 <label class="input-group__input"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
                                 <label class="input-group__input"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="required" /> <?= i::_e('Obrigatório') ?> </label>
@@ -46,8 +46,8 @@ $this->import('
             <mc-card class="col-12">
                 <template #default>
                     <div v-if="entity.isFirstPhase" class="col-12">
-                        <h4 class="input-group__title"><?= i::__("Solicitar instituição responsável?") ?></h4>
-                        <h6 class="input-group__subtitle"><?= i::__("Solicite a inscrição de instituções (agentes coletivos com CNPJ).") ?></h6>
+                        <h4 class="input-group__title"><?= i::__("Utilizar campo de instituição responsável") ?></h4>
+                        <h6 class="input-group__subtitle"><?= i::__("Permite a vinculação de instituições (agentes coletivos com CNPJ).") ?></h6>
                         <div class="input-group__inputs">
                             <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
                             <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="required" /> <?= i::_e('Obrigatório') ?> </label>
@@ -62,8 +62,8 @@ $this->import('
             <mc-card class="col-12">
                 <template #default>
                     <div class="input-group">
-                        <h4 class="input-group__title"><?= i::__("Permitir vínculo de Espaço?") ?></h4>
-                        <h6 class="input-group__subtitle"><?= i::__("Permitir um espaço para associar à inscrição.") ?></h6>
+                        <h4 class="input-group__title"><?= i::__("Utilizar campo para vínculo de espaço") ?></h4>
+                        <h6 class="input-group__subtitle"><?= i::__("Permite que o proponente selecione um espaço para associar à inscrição.") ?></h6>
                         <div class="input-group__inputs no-padding-bottom">
                             <label class="input-group__input"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
                             <label class="input-group__input"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="required" /> <?= i::_e('Obrigatório') ?> </label>
@@ -78,8 +78,8 @@ $this->import('
             <mc-card class="col-12">
                 <template #default>
                     <div class="input-group">
-                        <h4 class="input-group__title"><?= i::__("Habilitar informações de Projeto?") ?></h4>
-                        <h6 class="input-group__subtitle"><?= i::__("Permitir que proponente vizualise informações básicas sobre um projeto.") ?></h6>
+                        <h4 class="input-group__title"><?= i::__("Utilizar campo de nome de projeto") ?></h4>
+                        <h6 class="input-group__subtitle"><?= i::__("Permite que o inscrito dê nome a um projeto no momento da inscrição.") ?></h6>
                         <div class="input-group__inputs no-padding-bottom">
                             <label class="input-group__input"> <input v-model="entity.projectName" type="radio" name="projectName" value="0" /> <?= i::_e('Não Utilizar') ?> </label>
                             <label class="input-group__input"> <input v-model="entity.projectName" type="radio" name="projectName" value="2" /> <?= i::_e('Obrigatório') ?> </label>

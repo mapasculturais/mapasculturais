@@ -28,9 +28,10 @@ $this->import('
     mc-tabs
 ');
 
+$label = $this->isRequestedEntityMine() ? i::__('Meus agentes') : i::__('Agentes');
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Agentes'), 'url' => $app->createUrl('search', 'agents')],
+    ['label' => $label, 'url' => $app->createUrl('search', 'agents')],
     ['label' => $entity->name, 'url' => $app->createUrl('agent', 'single', [$entity->id])],
 ];
 ?>
@@ -48,7 +49,7 @@ $this->breadcrumb = [
                             <entity-location :entity="entity" classes="col-12"></entity-location>
                             <div v-if="entity.longDescription" class="col-12">
                                 <h2><?php i::_e('Descrição Detalhada'); ?></h2>
-                                <p>{{entity.longDescription}}</p>
+                                <p v-html="entity.longDescription" class="single-2__longdescription"  ></p>
                             </div>
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download'); ?>"></entity-files-list>
                             <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>

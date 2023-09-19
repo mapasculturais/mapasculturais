@@ -21,6 +21,7 @@ $this->import('
     entity-profile
     entity-related-agents
     entity-social-media
+    entity-status
     entity-terms
     mc-breadcrumb
     mc-card
@@ -39,6 +40,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
     <mc-container>
+        <entity-status :entity="entity"></entity-status>
         <mc-card class="feature">
             <template #title>
                 <label class="card__title--title"><?php i::_e("Informações de Apresentação") ?></label>
