@@ -62,30 +62,35 @@ app.component('entity-gallery-video', {
     methods: {
         // separa os dados do vídeo pela URL
         getVideoBasicData(url) {
-            var parsedURL = new URL(url);
-            var host = parsedURL.host;
-            var provider = '';
-            var videoID = '';
-            var videoThumbnail = '';
+            try {
+                var parsedURL = new URL(url);
+                var host = parsedURL.host;
+                var provider = '';
+                var videoID = '';
+                var videoThumbnail = '';
 
-            var ytRegex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/;
-            var vmRegex = /(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:[a-zA-Z0-9_\-]+)?/i;
+                var ytRegex = /(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))/;
+                var vmRegex = /(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:[a-zA-Z0-9_\-]+)?/i;
 
-            if (host.indexOf('youtube') != -1 || host.indexOf('youtu.be') != -1) {
-                provider = 'youtube';
-                videoID = parsedURL.href.match(ytRegex)[1];
-                videoThumbnail = 'https://img.youtube.com/vi/'+videoID+'/0.jpg';
-            } else if (host.indexOf('vimeo') != -1) {
-                provider = 'vimeo';
-                videoID = parsedURL.href.match(vmRegex)[1];
-                videoThumbnail = 'https://vumbnail.com/'+videoID+'.jpg';
-            }
+                if (host.indexOf('youtube') != -1 || host.indexOf('youtu.be') != -1) {
+                    provider = 'youtube';
+                    videoID = parsedURL.href.match(ytRegex)[3];
+                    videoThumbnail = 'https://img.youtube.com/vi/'+videoID+'/0.jpg';
+                } else if (host.indexOf('vimeo') != -1) {
+                    provider = 'vimeo';
+                    videoID = parsedURL.href.match(vmRegex)[1];
+                    videoThumbnail = 'https://vumbnail.com/'+videoID+'.jpg';
+                }
 
-            return {
-                'parsedURL': parsedURL,
-                'provider': provider,
-                'videoID': videoID,
-                'thumbnail': videoThumbnail
+                return {
+                    'parsedURL': parsedURL,
+                    'provider': provider,
+                    'videoID': videoID,
+                    'thumbnail': videoThumbnail
+                }
+            } catch (e) {
+                console.error(`erro na galeria - ${e}`);
+                return {};
             }
         },
         // Abertura da modal
