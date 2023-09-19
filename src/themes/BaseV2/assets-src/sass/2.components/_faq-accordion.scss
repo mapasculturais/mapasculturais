@@ -1,0 +1,27 @@
+@use '../0.settings/mixins' as *;
+
+.faq-accordion {
+    background-color: var(--mc-gray-100);
+  
+    &__item {
+        
+    }
+
+    &__header {
+        padding: 18px 16px;
+        background: var(--mc-white);
+        justify-content: center;
+        align-items: center;
+        // gap: 601px;
+        display: grid;
+        grid-template-columns: 1fr size(12);
+        max-width: size(870);
+    }
+    &__content {
+        padding: size(16);
+        background: var(--mc-white);
+        border-top: 1px solid var(--mc-gray-100);
+        max-width: size(870);
+
+    }
+}
