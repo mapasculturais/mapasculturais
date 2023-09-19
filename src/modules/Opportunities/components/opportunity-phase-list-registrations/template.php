@@ -21,7 +21,7 @@ $this->import('
     </div>
     <div class=" col-6 opportunity-phase-list-registrations__endbox">
         <h5 class="bold"><?= i::__("A lista de inscrições pode ser acessada utilizando o botão abaixo") ?></h5>
-        <mc-link v-if="entity.isFirstPhase" :entity="entity" class="button button--primary button--icon" icon="external" route="registrations" right-icon>
+        <mc-link  :entity="entity" class="button button--primary button--icon" icon="external" route="registrations" right-icon>
             <h4 class="semibold"><?= i::__("Conferir lista de inscrições") ?></h4>
         </mc-link>
     </div>
