@@ -25,10 +25,10 @@ $this->import('
         <entity-location :entity="entity"></entity-location>
     </div>
 
-    <div v-if="entity.acessibilidade || this.entity.acessibilidade_fisica.length > 0" class="space-info__accessibility col-12">
+    <div v-if="entity.acessibilidade || entity.acessibilidade_fisica?.length > 0" class="space-info__accessibility col-12">
         <span class="space-info--label"><?= i::_e("Recursos de acessibilidade"); ?></span>
 
-        <mc-tag-list entity-type="space" classes="space__background" :tags="this.entity.acessibilidade_fisica"></mc-tag-list>
+        <mc-tag-list entity-type="space" classes="space__background" :tags="entity.acessibilidade_fisica"></mc-tag-list>
     </div>
 
     <div v-if="entity.capacidade || entity.telefonePublico" class="space-info__infos col-12">

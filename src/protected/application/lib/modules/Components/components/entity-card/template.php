@@ -18,8 +18,7 @@ $this->import('
 			<mc-avatar class="user-image" :entity="entity"></mc-avatar>
 
 			<div class="user-info" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
-				<mc-title :tag="tag" mobile bold>{{entity.name}}</mc-title>
-
+				<mc-title :tag="tag" class="bold">{{entity.name}}</mc-title>
 				<slot name="type">
 					<div v-if="entity.type" class="user-info__attr">
 						<?php i::_e('Tipo:') ?> {{entity.type.name}}
@@ -30,7 +29,10 @@ $this->import('
 
 		<div class="entity-card__header user-slot">
 			<slot name="labels">
-				<span class="openSubscriptions" v-if="openSubscriptions"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
+				<div class="entity-card__slot">
+					<span class="uppercase semibold entity-card__id">Id: <span class="bold">{{entity.id}}</span> </span>
+					<span class="openSubscriptions" v-if="openSubscriptions"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
+				</div>
 				
 
 			</slot>
@@ -50,7 +52,7 @@ $this->import('
 		</div>
 		<div v-if="entity.__objectType=='opportunity' && !entity.registrationFrom?.isFuture()" class="entity-card__registration">
 			<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]">
-			<?= i::__('As inscrições encerraram no dia')?> {{entity.registrationTo?.date('2-digit year')}} <?= i::__('às')?> {{entity.registrationFrom?.time('numeric')}}
+			{{entityTime(entity)}} {{entity.registrationTo?.date('2-digit year')}} <?= i::__('às')?> {{entity.registrationFrom?.time('numeric')}}
 			</p>
 		</div>
 		

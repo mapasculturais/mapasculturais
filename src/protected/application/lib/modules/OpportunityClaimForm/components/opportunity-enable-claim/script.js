@@ -12,7 +12,7 @@ app.component('opportunity-enable-claim', {
         }
     },
     data() {
-        let isActiveClaim = this.entity.claimDisabled === "0" ? true : false;
+        let isActiveClaim = !this.entity.claimDisabled;
         return {
             isActiveClaim,
             timeOut: null,

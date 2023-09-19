@@ -22,9 +22,9 @@ $this->import('
             <button class="button button--text delete-registration " @click="close(modal)"><?php i::_e('Cancelar') ?></button>
             <button class="button button--primary" @click="sendClain(modal)"><?php i::_e('Solicitar') ?></button>
         </template>
-        <template #button>
-        <h5 class="opportunity-claim-form__resource bold"><?php i::_e('Discorda do resultado?') ?></h5>
-            <button class="button button--primary-outline"><?php i::_e('Solicitar Recurso')?></button>
+        <template #button="modal">
+            <h5 class="opportunity-claim-form__resource bold"><?php i::_e('Discorda do resultado?') ?></h5>
+            <button class="button button--primary-outline" @click="modal.open()"><?php i::_e('Solicitar Recurso')?></button>
         </template>
     </mc-modal>
 </div>
