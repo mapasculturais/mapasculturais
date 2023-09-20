@@ -53,7 +53,6 @@ class Module extends \MapasCulturais\Module
                 /** @var Registration $this */
 
                 $registration_field = $field->fieldName;
-                $entity_field = $field->config['entityField'];
 
                 if(empty($this->metadata[$registration_field])) {
                     $metadata_definition = (object) [
@@ -63,7 +62,6 @@ class Module extends \MapasCulturais\Module
                     ];
 
                     $value = $module->fetchFromEntity($entity, null, null, $metadata_definition);
-                    echo "definindo $registration_field ($entity_field) = " . print_r($value,true) . "\n\n";
                     $this->$registration_field = $value;
                 }
             };
