@@ -113,10 +113,6 @@ abstract class Entity implements \JsonSerializable{
             $this->setOwner($app->user->profile);
         }
 
-        $hook_prefix = $this->getHookPrefix();
-
-        $app->applyHookBoundTo($this, "{$hook_prefix}.new");
-
     }
 
 
