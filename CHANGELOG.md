@@ -10,6 +10,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções
 - Corrige funcionamento do módulo de recursos
+- Faz com que o status seja devolvido no jsonSerialize quando a inscrição estiver em ainda em Rascunho
+- Faz com que funcione a exibição do botão preencher formulário na timeline de acompanhamento
+- Evita que os userialize façam json_decode sobre valor null no modulo RegistrationFieldTypes
+- Possibilita que edite o nome das fases de coleta de dados que nao sejam a primeira fase
+- Faz com que o botçao de visualizar lista de inscrições seja exibito em todas as fases de coleta de dados
+- Corrige galeria de vídeos, aceitando links do youtube shorts
 
 ### [6.0.19] - 2023-09-14
 - Atualiza componente de  mc-title para utilizar tags html nos titulos e ajustar conforme o tamanho
