@@ -63,7 +63,6 @@ class Module extends \MapasCulturais\Module
                     ];
 
                     $value = $module->fetchFromEntity($entity, null, null, $metadata_definition);
-                    echo "definindo $registration_field ($entity_field) = " . print_r($value,true) . "\n\n";
                     $this->$registration_field = $value;
                 }
             };
