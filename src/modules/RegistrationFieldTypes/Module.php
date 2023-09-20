@@ -566,7 +566,7 @@ class Module extends \MapasCulturais\Module
             $app = App::i();
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $metadata_definition->config['registrationFieldConfiguration']->id;
-            if ($entity_field == "@location") {
+            if ($entity_field == "@location" && is_array($value)) {
                 if($value['location'] instanceof GeoPoint) {
                     $value["location"] = [
                         'latitude' => $value['location']->latidude,
@@ -632,7 +632,7 @@ class Module extends \MapasCulturais\Module
                         $metaList->save(true);
                     }
                 }
-            } else if($entity_field == '@type' && $type) {
+            } else if($entity_field == '@type' && $value) {
                 $type = $app->getRegisteredEntityTypeByTypeName($entity, $value);
                 $entity->type = $type;
             } else {
