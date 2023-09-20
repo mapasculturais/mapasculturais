@@ -12,6 +12,7 @@ use MapasCulturais\Entities\Registration;
 use MapasCulturais\Definitions\Metadata;
 use MapasCulturais\Definitions\RegistrationFieldType;
 use MapasCulturais\Entities\RegistrationFieldConfiguration;
+use MapasCulturais\Types\GeoPoint;
 
 class Module extends \MapasCulturais\Module
 {
@@ -567,6 +568,12 @@ class Module extends \MapasCulturais\Module
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $metadata_definition->config['registrationFieldConfiguration']->id;
             if ($entity_field == "@location") {
+                if($value['location'] instanceof GeoPoint) {
+                    $value["location"] = [
+                        'latitude' => $value['location']->latidude,
+                        'longitude' => $value['location']->longitude,
+                    ];
+                }
                 if (!empty($value["location"]["latitude"]) && !empty($value["location"]["longitude"])) {
                     // this order of coordinates is required by the EntityGeoLocation trait's setter
                     $entity->location = [$value["location"]["longitude"], $value["location"]["latitude"]];
