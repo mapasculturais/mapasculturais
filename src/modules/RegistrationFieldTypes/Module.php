@@ -46,6 +46,57 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        $app->hook("entity(Registration).save:before", function() use($module, $app) {
+            /** @var Registration $this */
+            $fix_field = function($entity, $field) use($module){
+                /** @var Registration $this */
+
+                $registration_field = $field->fieldName;
+                $entity_field = $field->config['entityField'];
+
+                if(empty($this->metadata[$registration_field])) {
+                    $metadata_definition = (object) [
+                        'config' => [
+                            'registrationFieldConfiguration' => $field
+                        ]
+                    ];
+
+                    $value = $module->fetchFromEntity($entity, null, null, $metadata_definition);
+                    echo "definindo $registration_field ($entity_field) = " . print_r($value,true) . "\n\n";
+                    $this->$registration_field = $value;
+                }
+            };
+
+            $opportunity = $this->opportunity;
+            $opportunity->registerRegistrationMetadata();
+            
+            $fields = $opportunity->getRegistrationFieldConfigurations();
+
+            foreach($fields as $field) {
+                if($field->fieldType == 'agent-owner-field') {
+                    $entity = $this->owner;
+
+                    $fix_field($entity, $field);
+                }
+
+                if($field->fieldType == 'agent-collective-field') {
+                    $entity = $this->owner;
+                    if($agents = $this->getRelatedAgents('coletivo')) {
+                        $entity = $agents[0];
+                        $fix_field($entity, $field);
+                    }
+
+                }
+
+                if($field->fieldType == 'space-field') {
+                    if($space_relation = $this->getSpaceRelation()) {
+                        $entity = $space_relation->space;
+                        $fix_field($entity, $field);
+                    }
+                }
+            }
+        });
+
         $app->view->jsObject['flatpickr'] = [
             'altFormat' => env('DATEPICKER_VIEW_FORMAT', i::__("d/m/Y"))
         ];
@@ -560,6 +611,9 @@ class Module extends \MapasCulturais\Module
                         }                    
                     }
                 }
+                if(!is_array($value)) {
+                    $value = (array) $value;
+                }
                 foreach ($value as $itemArray) {
                     if (isset($itemArray['value']) && $url=$itemArray['value']){
                         $metaList = new metaList;
@@ -572,7 +626,7 @@ class Module extends \MapasCulturais\Module
                         $metaList->save(true);
                     }
                 }
-            } else if($entity_field == '@type') {
+            } else if($entity_field == '@type' && $type) {
                 $type = $app->getRegisteredEntityTypeByTypeName($entity, $value);
                 $entity->type = $type;
             } else {
@@ -589,7 +643,7 @@ class Module extends \MapasCulturais\Module
         return json_encode($value);
     }
 
-    function fetchFromEntity (Entity $entity, $value, Registration $registration = null, Metadata $metadata_definition = null)
+    function fetchFromEntity (Entity $entity, $value, Registration $registration = null, $metadata_definition = null)
     {
         $app = App::i();
 
