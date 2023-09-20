@@ -27,6 +27,9 @@ $this->breadcrumb = [
     ['label' => $entity->opportunity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->opportunity->id])],
     ['label' => i::__('Inscrição')]
 ];
+
+$entity = $entity->firstPhase;
+
 ?>
 
 <div class="main-app registration single">
@@ -246,7 +249,19 @@ $this->breadcrumb = [
                     </template>
                 </mc-card>
 
-                <v1-embed-tool route="registrationview" :id="entity.id"></v1-embed-tool>
+                <?php while($entity): $opportunity = $entity->opportunity;?>
+                    <?php if($opportunity->isDataCollection):?>
+                        <?php if($opportunity->isFirstPhase):?>
+                            <h2><?= i::__('Inscrição') ?></h2>
+                        <?php else: ?>
+                            <h2><?= $opportunity->name ?></h2>
+                        <?php endif ?>
+
+                        <v1-embed-tool route="registrationview" :id="<?=$entity->id?>"></v1-embed-tool>
+                    <?php endif ?>
+                    <?php $entity = $entity->nextPhase; ?>
+                <?php endwhile ?>
+
             </div>
         </mc-tab>
     </mc-tabs>
