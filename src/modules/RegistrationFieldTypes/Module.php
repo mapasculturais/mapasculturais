@@ -45,6 +45,7 @@ class Module extends \MapasCulturais\Module
                     $entity->save(true);
                 }
             }
+            $module->entities = [];
         });
 
         $app->hook("entity(Registration).save:before", function() use($module, $app) {
