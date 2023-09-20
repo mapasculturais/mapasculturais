@@ -320,7 +320,7 @@ class Registration extends \MapasCulturais\Entity
             }
         }
 
-        if($this->opportunity->publishedRegistrations || $this->opportunity->canUser('@control')) {
+        if($this->opportunity->publishedRegistrations || $this->opportunity->canUser('@control') || $this->status == self::STATUS_DRAFT) {
             $json['status'] = $this->status;
         }
 

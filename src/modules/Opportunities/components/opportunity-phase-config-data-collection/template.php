@@ -15,7 +15,8 @@ $this->import('
 ');
 ?>
     <div class="opportunity-data-collection grid-12">
-        <div class="grid-12 col-12 opportunity-data-collection__section">        
+        <div class="grid-12 col-12 opportunity-data-collection__section">
+            <entity-field v-if="!phase.isFirstPhase" :entity="phase" prop="name" :autosave="3000" classes="col-12 sm:col-12"></entity-field>
             <entity-field :entity="phase" prop="registrationFrom" :autosave="3000" :min="minDate?._date" :max="phase.registrationTo?._date" classes="col-6 sm:col-12"></entity-field>
             <entity-field :entity="phase" prop="registrationTo" :autosave="3000" :min="phase.registrationFrom?._date" :max="maxDate?._date" classes="col-6 sm:col-12"></entity-field>
 
