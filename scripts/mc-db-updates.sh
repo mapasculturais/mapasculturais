@@ -6,10 +6,14 @@ CDIR=$( pwd )
 cd $DIR/..
 
 NUM_CORES=$(grep -c ^processor /proc/cpuinfo)
-if [ $NUM_CORES -gt 1 ]; then
-	NUM_PROCESSES=$(($NUM_CORES * 2))
+if [ -z ${MC_UPDATES_PROCESSES} ]; then 
+    if [ $NUM_CORES -gt 1 ]; then
+        NUM_PROCESSES=$(($NUM_CORES))
+    else
+        NUM_PROCESSES=1
+    fi
 else
-	NUM_PROCESSES=1
+    NUM_PROCESSES=$MC_UPDATES_PROCESSES
 fi
 
 CONFIG='config.php';
@@ -40,9 +44,9 @@ case $i in
 
     -h|--help)
     	    echo "
-	mc-db-updates.sh [-p=8] [-n=recreate-] [-n='recreate pcache'] [-o=mapasculturais]  [-d=dominio.da.app.saas.gov.br]
+	mc-db-updates.sh [-p=8] [-n='recreate pcache'] [-d=dominio.da.app.saas.gov.br]
 
-	-p=  | --processes=  numero de processos (padrão é o número de cores + 3)
+	-p=  | --processes=  numero de processos (padrão é o número de cores)
 	-n=  | --name=       o nome do db-update que deve rodar
 "
     	    exit
