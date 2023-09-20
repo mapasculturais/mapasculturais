@@ -1,6 +1,7 @@
 <?php
 
 use MapasCulturais\App;
+use MapasCulturais\Entities\Registration;
 use MapasCulturais\i;
 
 return [
@@ -332,6 +333,31 @@ return [
                 }
             }
         });
-      
+    },
+
+    'corrige campos arroba' => function () {
+        DB_UPDATE::enqueue('Registration', "status > 0 AND opportunity_id IN (SELECT id FROM opportunity WHERE id IN (SELECT opportunity_id FROM registration_field_configuration WHERE field_type IN ('agent-owner-field','agent-collective-field','space-field')))", function (Registration $registration) {
+            $opportunity = $registration->opportunity;
+            $opportunity->registerRegistrationMetadata();
+            
+            $fields = $opportunity->getRegistrationFieldConfigurations();
+            $empty = false;
+            foreach($fields as $field) {
+                $field_name = $field->fieldName;
+                $field_type = $field->fieldType;
+                
+                if(in_array($field_type, ['agent-owner-field', 'agent-collective-field', 'space-field'])) {
+                    if(empty($registration->metadata[$field_name])) {
+                        $empty = true;
+                    }
+                }
+            }
+
+            if($empty) {
+                echo "fix $registration @\n";
+                $registration->save(true);
+            }
+
+        });
     }
 ];
