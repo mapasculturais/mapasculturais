@@ -21,7 +21,7 @@ foreach($committee as $valuer){
 ?>
 <div class="registration-fieldset" id="registration-valuers--admin">
     <?php $this->applyTemplateHook('valuers-list','begin'); ?>
-    <h4><?php i::_e('Avaliadores desta inscrição') ?></h4>
+    <h4><?php i::_e('Avaliadores') ?></h4>
     <form class="js--registration-valuers-include-exclude-form">
         <small>
             <em>
