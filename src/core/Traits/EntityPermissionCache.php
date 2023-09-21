@@ -115,7 +115,6 @@ trait EntityPermissionCache {
                 $this->deletePermissionsCache();
             }
         }
-
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
         $permissions = $this->getPermissionsList();
