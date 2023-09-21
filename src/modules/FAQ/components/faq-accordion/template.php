@@ -6,29 +6,32 @@
  */
 
 use MapasCulturais\i;
+
+$this->import('
+    mc-tag-list
+    mc-title
+');
 ?>
-<div class="faq__accordion" id="accordionRegister">
+<div class="faq-accordion" id="accordionRegister">
     <div v-for="section in data" class="faq-accordion__item">
         <template v-if="section.contexts.length>0" v-for="context in section.contexts">
-            {{context.title}}
-            {{context.description}}
+            <mc-title tag="h2" v-html="context.title" class="bold primary__color"></mc-title>
+            <div v-html="context.description" class=""></div>
+
             <div v-for="question in context.questions" class="faq-accordion__items">
 
                 <header @click="toggle()" class="faq-accordion__header">
-                    <h5 class="bold">
-                        {{question.question}}
-                    </h5>
+                    <mc-title tag="h3" class="bold faq-accordion__subtitle">{{question.question}}</mc-title>
                     <mc-icon :name="status ? 'arrowPoint-up':'arrowPoint-down'" class="primary__color"></mc-icon>
                 </header>
                 <div v-if="status" class="faq-accordion__content">
-                    <div class="accordion-body">
-                        {{question.answer}}
-                        <br>
-                        {{question.tags.join(', ')}}
+                    <div class="far-accordion__list">
+                        <div v-html="question.answer" class="faq-accordion__response"></div>
+                        <mc-tag-list :tags="question.tags" classes="faq-accordion__tags"></mc-tag-list>
                     </div>
                 </div>
             </div>
-        </template>
-
     </div>
+    </template>
+
 </div>
