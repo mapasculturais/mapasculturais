@@ -2,9 +2,26 @@
 
 .faq-accordion {
     background-color: var(--mc-gray-100);
-  
-    &__item {
-        
+
+    &__intro {
+        padding: size(18) size(16);
+        border-bottom: 1px solid var(--mc-gray-300);
+        background: var(--mc-white);
+    }
+
+    &__description {
+        margin-bottom: size(16);
+        background: var(--mc-white);
+        padding: size(16);
+    }
+
+    &__subtitle {
+        font-size: size(14);
+    }
+
+    &__tags {
+        background-color: #FFCF8F;
+        margin: 16px 0;
     }
 
     &__header {
@@ -17,6 +34,7 @@
         grid-template-columns: 1fr size(12);
         max-width: size(870);
     }
+
     &__content {
         padding: size(16);
         background: var(--mc-white);
