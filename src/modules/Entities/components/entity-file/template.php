@@ -94,7 +94,7 @@ $this->import('
 
         <template #actions="modal">
             <button class="col-6 button button--text" type="reset" @click="modal.close()"> <?php i::_e("Cancelar") ?> </button>
-            <button class="col-6 button button--primary" type="submit" @click="upload(modal); $event.preventDefault();"> <?php i::_e("Solicitar") ?> </button>
+            <button class="col-6 button button--primary" type="submit" @click="upload(modal); $event.preventDefault();"> <?php i::_e("Enviar") ?> </button>
         </template>
     </mc-modal>
 </div>
