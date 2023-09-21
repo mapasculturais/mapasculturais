@@ -18,6 +18,10 @@ app.component('entity-file', {
             type: String,
             required: true
         },
+        titleModal: {
+            type: String,
+            default: ""
+        },
         title: {
             type: String,
             default: ""
