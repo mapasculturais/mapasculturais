@@ -432,8 +432,8 @@ class App {
 
         $this->applyHookBoundTo($this, 'app.init:before');
 
-        $this->_initModules();
         $this->_initPlugins();
+        $this->_initModules();
 
         $this->applyHookBoundTo($this, 'mapasculturais.init');
 
@@ -853,7 +853,9 @@ class App {
         // esta constante é usada no script que executa os db-updates, 
         // para que na primeira rodada do db-update não sejam incluídos os plugins
         if(!env('DISABLE_PLUGINS')) {
-            $this->applyHookBoundTo($this, 'app.plugins.init:before');
+            $this->applyHookBoundTo($this, 'app.plugins.preInit:before');
+            $plugins = [];
+
             foreach($this->config['plugins'] as $slug => $plugin){
                 if (is_numeric($slug) && is_string($plugin)) {
                     $_namespace = $plugin;
@@ -870,11 +872,29 @@ class App {
 
                     $slug = is_numeric($slug) ? $_namespace : $slug;
 
-                    $this->plugins[$slug] = new $plugin_class_name($plugin_config);
+                    $plugins[] = [
+                        'slug' => $slug,
+                        'class' => $plugin_class_name,
+                        'config' => $plugin_config
+                    ];
+
+                    $plugin_class_name::preInit();
                 }
             }
 
-            $this->applyHookBoundTo($this, 'app.plugins.init:after');
+            $this->applyHookBoundTo($this, 'app.plugins.preInit:after', ['plugins' => &$plugins]);
+
+            $this->hook('app.modules.init:after', function() use ($plugins) {
+                $this->applyHookBoundTo($this, 'app.plugins.init:before');
+                foreach ($plugins as $plugin) {
+                    $slug = $plugin['slug'];
+                    $plugin_class_name = $plugin['class'];
+                    $plugin_config = $plugin['config'];
+
+                    $this->plugins[$slug] = new $plugin_class_name($plugin_config);
+                }
+                $this->applyHookBoundTo($this, 'app.plugins.init:after');
+            });
         }
     }    
 
