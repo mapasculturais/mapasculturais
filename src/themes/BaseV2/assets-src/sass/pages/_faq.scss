@@ -1,11 +1,14 @@
 @use '../0.settings/mixins' as *;
 
 .faq {
-
+    background-color: var(--mc-gray-100);
     max-width: size(1440);
     width: 100%;
     margin: 0 auto;
-
+    &__main {
+        max-width: size(1170);
+        margin: 0 auto;
+    }
     &__header {
         background-color: #FFCF8F;
         padding: size(24);
@@ -30,6 +33,7 @@
         align-items: center;
         justify-items: start;
         text-align: left;
+        text-decoration: none;
 
         &--selected {
             background-color: var(--mc-primary-500);
@@ -137,6 +141,17 @@
         align-items: center;
         max-width: size(770);
         width: 100%;
+        padding-top: 32px;
+    }
+    &__back {
+        text-decoration: none;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        bottom: 106px;
+        left: 16px;
     }
 
     &__content {
@@ -152,5 +167,32 @@
         @media (max-width: size(750)) {
             grid-template-columns: 1fr;
         }
+    }
+
+    &__frequent {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 30px;
+        padding: 24px 16px;
+    }
+
+    &__card {
+        background: var(--mc-white);
+        padding: 16px 18px;
+        display: flex;
+        text-decoration: none;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: var(--mc-border-radius-sm);
+        &--frequent {
+            height: 130px;
+        }
+    }
+    
+    &__links {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px 30px;
+        padding: 16px 16px 146px;
     }
 }
