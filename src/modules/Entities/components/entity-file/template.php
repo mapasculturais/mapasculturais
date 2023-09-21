@@ -49,7 +49,7 @@ $this->import('
         </mc-confirm-button>
     </div>
 
-    <mc-modal v-if="editable" title="<?php i::_e('Solicitar recurso') ?>" classes="entity-file__modal">
+    <mc-modal v-if="editable" :title="titleModal" classes="entity-file__modal">
         <template #default>
             <form @submit="upload(modal); $event.preventDefault();" class="entity-file__newFile">
                 <div class="grid-12">
