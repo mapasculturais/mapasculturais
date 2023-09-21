@@ -35,8 +35,10 @@ trait ControllerEntityActions {
                     $value = (float) $value;
                 }
             }
+            
             $current_value = $entity->$property;
-            if($current_value != $value) {
+
+            if($current_value !== $value) {
                 $entity->$property = $value;
             }
         }
