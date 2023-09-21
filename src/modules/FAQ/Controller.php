@@ -23,9 +23,9 @@ class Controller  extends \MapasCulturais\Controller
         $app->view->jsObject['faq'] = $faq;
 
         if($section) {
-            $this->render('section', ['faq' => $faq, 'active_section' => $section]);
+            $this->render('section', ['faq' => $faq, 'active_section' => $section, 'active_header' => false]);
         } else {
-            $this->render('index');
+            $this->render('index', ['faq' => $faq, 'active_header' => true]);
         }
     }
 }
