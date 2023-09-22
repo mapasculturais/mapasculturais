@@ -1200,7 +1200,6 @@ class Module extends \MapasCulturais\Module{
         $this->registerOpportunityMetadata("isDataCollection", [
             'label'=> "Define se é uma oportunidade de coleta de dados",
             'type'=>'bool',
-            'private'=> true,
             'default'=> true,
         ]);
 
