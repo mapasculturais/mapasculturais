@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -13,7 +14,7 @@ $this->part('main-header', $render_data);
 <div class="faq">
     <header class="faq__header">
         <div class="faq__find">
-            <?php if (isset($active_header) && $active_header): ?>
+            <?php if (isset($active_header) && $active_header) : ?>
                 <div class="faq__img">
                     <img src="<?php $this->asset('/img/faq.png', true, true) ?>">
                     <div class="faq__title">
@@ -33,6 +34,14 @@ $this->part('main-header', $render_data);
 
     </header>
     <?= $TEMPLATE_CONTENT ?>
+    <div class="faq__footer">
+        <p class="bold"><?= i::__('Não encontrou o que procurava?') ?></p>
+        <div class="faq__footer-btns">
+            <button class="button button--primary "><?= i::__('Contate o nosso suporte') ?></button>
+            <p class="bold"><?= i::__('ou') ?></p>
+            <button class="button button--primary button--primary-noborder"><?= i::__('Contate o nosso suporte') ?></button>
+        </div>
+    </div>
 
 </div>
 <?php
