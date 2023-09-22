@@ -3,10 +3,32 @@
 .faq-accordion {
     background-color: var(--mc-gray-100);
 
+    &__items {
+        margin-bottom: size(8);
+        background-color: var(--mc-white);
+        max-width: size(870);
+    }
+
     &__intro {
         padding: size(18) size(16);
         border-bottom: 1px solid var(--mc-gray-300);
         background: var(--mc-white);
+    }
+
+    &__context {
+        font-size: size(14);
+        border-radius: 0 0 8px 8px;
+        // padding-bottom: size(8);
+    }
+
+    &__contexts:first-child {
+        padding: 0 size(16) size(8) 0;
+    }
+
+    &__contexts {
+        max-width: size(870);
+        padding: size(24) size(16) size(8) 0;
+
     }
 
     &__description {
@@ -29,10 +51,10 @@
         background: var(--mc-white);
         justify-content: center;
         align-items: center;
-        // gap: 601px;
         display: grid;
         grid-template-columns: 1fr size(12);
         max-width: size(870);
+        border-radius: size(4);
     }
 
     &__content {
