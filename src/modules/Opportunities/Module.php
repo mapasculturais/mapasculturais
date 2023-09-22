@@ -145,6 +145,20 @@ class Module extends \MapasCulturais\Module{
             $this->render('registrations', []);
         });
 
+        $app->hook('GET(registration.registrationPrint)', function() use($app) {
+            $this->requireAuthentication();
+
+            $this->entityClassName = "MapasCulturais\\Entities\\Registration";
+            
+            $this->layout = "registration";
+
+            $entity = $this->requestedEntity;
+            
+            $this->layout = 'print-layout';
+
+            $this->render("registration-print", ['entity' => $entity]);
+        });
+
         $app->hook('panel.nav', function(&$nav_items){
             $nav_items['opportunities']['items'] = [
                 ['route' => 'panel/opportunities', 'icon' => 'opportunity', 'label' => i::__('Minhas oportunidades')],
