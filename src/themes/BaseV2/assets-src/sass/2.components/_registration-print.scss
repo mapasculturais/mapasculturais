@@ -1,0 +1,36 @@
+@use '../0.settings/mixins' as *;
+
+.registration-print {
+    max-width: 1170px;
+    margin: 0 auto;
+    position: relative;
+
+    &__button {
+        align-items: center;
+        background-color: transparent;
+        border: none;
+        bottom: size(4);
+        color: var(--mc-low-500);
+        cursor: pointer;
+        display: flex;
+        font-size: var(--mc-font-size-xxs);
+        gap: size(8);
+        position: absolute;
+        right: 0;
+
+        .iconify {
+            font-size: size(24);
+        }
+    }
+
+    &__printOnly {
+        display: none;
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        
+        @media print {
+            display: block;
+        }
+    }
+}
