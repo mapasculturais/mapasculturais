@@ -18,6 +18,7 @@ $this->import('
     mc-tabs
     opportunity-header
     opportunity-phases-timeline
+    registration-print
     v1-embed-tool
 ');
 
@@ -35,7 +36,7 @@ $entity = $entity->firstPhase;
 <div class="main-app registration single">
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
-
+    <registration-print :registration="entity"></registration-print>
     <mc-tabs>
         <mc-tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
             <div class="registration__content">
