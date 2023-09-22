@@ -24,13 +24,10 @@
     }
 
     &__printOnly {
-        display: none;
-        width: 100%;
-        height: auto;
-        overflow: hidden;
-        
+        visibility: hidden;
+        position: absolute;        
         @media print {
-            display: block;
+            visibility: visible;
         }
     }
 }
