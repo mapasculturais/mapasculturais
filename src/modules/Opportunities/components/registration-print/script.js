@@ -27,16 +27,10 @@ app.component('registration-print', {
         },
     },
     
-    data() {
-        return {
-            printUrl: Utils.createUrl('registration', 'registrationPrint', [this.registration.id]),
-        }
-    },
-    
     methods: {
         print() {
             var iframe = this.$refs.printIframe;
-            iframe.contentWindow.print();
+            iframe.src = Utils.createUrl('registration', 'registrationPrint', [this.registration.id]);
         }        
     },
 });
