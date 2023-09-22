@@ -12,5 +12,5 @@ use MapasCulturais\i;
         <mc-icon name="print"></mc-icon> <?= i::__('Imprimir') ?>
     </button>
 
-    <iframe ref="printIframe" class="registration-print__printOnly" :src="printUrl"></iframe>
+    <iframe ref="printIframe" class="registration-print__printOnly"></iframe>
 </div>
