@@ -5,20 +5,27 @@
     max-width: size(1440);
     width: 100%;
     margin: 0 auto;
+
     &__main {
         max-width: size(1170);
         margin: 0 auto;
     }
+
     &__header {
         background-color: #FFCF8F;
         padding: size(24);
 
     }
-
+    &__principal, &__msgtitle {
+        padding: 24px 0 0  16px;
+    }
     &__h1 {
         font-size: var(--mc-font-size-lg);
     }
-
+    &__listed {
+        display: flex;
+        flex-direction: column;
+    }
     &__btn {
         padding: size(18) size(16);
         display: grid;
@@ -45,7 +52,7 @@
     &__aside {
         display: flex;
         flex-direction: column;
-        gap: size(24);
+        gap: size(16);
     }
 
     &__footer {
@@ -54,13 +61,16 @@
         flex-direction: column;
         gap: size(14);
         margin-top: size(80);
+        align-items: center;
 
     }
 
     &__footer-btns {
         display: flex;
         gap: size(24);
+        flex-direction: column;
         align-items: center;
+        padding-bottom: size(80);
 
         @media (max-width: size(750)) {
             flex-direction: column;
@@ -80,6 +90,10 @@
 
         @media (max-width: size(500)) {
             flex-direction: column;
+            gap: 0;
+            img {
+                width: 80%;
+            }
         }
     }
 
@@ -133,6 +147,9 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        @media (max-width:size(800)) {
+            gap: size(10);
+        }
     }
 
     &__filter {
@@ -142,6 +159,14 @@
         max-width: size(770);
         width: 100%;
         padding-top: 32px;
+        @media (max-width:size(800)) {
+            padding-top: 16px;
+
+        }
+    }
+    &__suggestions {
+        display: flex;
+        flex-direction: column;
     }
     &__back {
         text-decoration: none;
@@ -152,6 +177,11 @@
         position: relative;
         bottom: 106px;
         left: 16px;
+        max-width: size(70);
+        @media (max-width:size(800)) {
+          bottom: size(90);
+
+        }
     }
 
     &__content {
@@ -172,27 +202,49 @@
     &__frequent {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        gap: 30px;
-        padding: 24px 16px;
+        gap: size(30);
+        padding: size(24) size(16);
+        font-size: size(16);
+
+        @media (max-width: size(750)) {
+            grid-template-columns: 1fr;
+            gap: size(8) 0;
+            padding: size(8) size(16);
+        }
+    }
+
+    &__helper {
+        font-size: size(36)
     }
 
     &__card {
         background: var(--mc-white);
-        padding: 16px 18px;
+        padding: size(16) size(18);
         display: flex;
         text-decoration: none;
         justify-content: space-between;
         align-items: center;
         border-radius: var(--mc-border-radius-sm);
+
         &--frequent {
-            height: 130px;
+            justify-content: flex-start;
+            gap: size(16);
+            height: size(130);
+            @media (max-width: size(750)) {
+                height: 100%;
+            }
         }
     }
-    
+
     &__links {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px 30px;
         padding: 16px 16px 146px;
+
+        @media (max-width: size(750)) {
+            grid-template-columns: 1fr;
+            padding: 16px 16px 0;
+        }
     }
 }
