@@ -74,7 +74,8 @@ body {
         overflow: hidden !important;
     }
 
-    a, button, .btn, input, select, textarea, .charts-dynamic {
+    .action-reportmanager a, 
+    button, .btn, input, select, textarea, .charts-dynamic {
         display: none !important;
     }
 }
