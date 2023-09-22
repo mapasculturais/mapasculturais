@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
 use MapasCulturais\i;
 
 $this->import('
@@ -10,6 +15,10 @@ $this->import('
     v1-embed-tool
     opportunity-phases-timeline
 ');
+
+$entity = $entity->firstPhase;
+
+$this->enqueueScript('app-v2', 'registration-print', 'js/registration-print.js');
 ?>
 
 <main class="print-registration grid-12">
@@ -24,7 +33,20 @@ $this->import('
     <section class="col-12 section">
         <div class="section__content">
             <div class="card owner">
-                <v1-embed-tool route="registrationview" :id="entity.id"></v1-embed-tool>
+
+                <?php while($entity): $opportunity = $entity->opportunity;?>
+                    <?php if($opportunity->isDataCollection):?>
+                        <?php if($opportunity->isFirstPhase):?>
+                            <h2><?= i::__('Inscrição') ?></h2>
+                        <?php else: ?>
+                            <h2><?= $opportunity->name ?></h2>
+                        <?php endif; ?>
+
+                        <v1-embed-tool route="registrationview" :id="<?=$entity->id?>"></v1-embed-tool>
+                    <?php endif ?>
+                    <?php $entity = $entity->nextPhase; ?>
+                <?php endwhile ?>
+                
             </div>
         </div>
     </section>
