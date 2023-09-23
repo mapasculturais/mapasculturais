@@ -14,8 +14,8 @@ $config = $app->config['social-media'];
 <div v-if="globalState.visibleFooter" class="main-footer">
     <?php $this->applyTemplateHook("main-footer", "begin")?>
     <div class="main-footer__content">
+        <?php $this->applyTemplateHook("main-footer-logo", "before")?>
         <div class="main-footer__content--logo">
-    
             <div class="main-footer__content--logo-img">
                 <theme-logo href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
             </div>
@@ -28,6 +28,7 @@ $config = $app->config['social-media'];
                 <?php endforeach; ?>
             </div>
         </div>
+        <?php $this->applyTemplateHook("main-footer-logo", "after")?>
     
         <?php $this->applyTemplateHook("main-footer-links", "before")?>
         <div class="main-footer__content--links">
