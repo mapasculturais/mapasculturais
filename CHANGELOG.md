@@ -8,7 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Adiciona status na edição das entidades
 - Definine forma de alterar o título do modal do componente entity-file
-- Adiciona o status 'loading' ao gerar a impressão da ficha de inscrição
+- Adiciona o status 'carregando' enquanto é gerada a impressão da ficha de inscrição
 
 ### Correções
 - Corrige funcionamento do módulo de recursos
