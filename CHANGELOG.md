@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Adiciona status na edição das entidades
 - Definine forma de alterar o título do modal do componente entity-file
+- Adiciona o status 'loading' ao gerar a impressão da ficha de inscrição
 
 ### Correções
 - Corrige funcionamento do módulo de recursos
@@ -20,6 +21,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Evita que quebre a tela de avaliação quando nao existir avaliação iniciada
 - Faz com que seja exibida as as fichas de todas as fases de coleta de dados na single das inscrições
 - Corrige nome do botão de enviar o arquivo entity-file
+- Remoção do botão do zammad na impressão do formulário de inscrição
 
 ### [6.0.19] - 2023-09-14
 - Atualiza componente de  mc-title para utilizar tags html nos titulos e ajustar conforme o tamanho
