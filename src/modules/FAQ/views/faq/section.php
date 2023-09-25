@@ -20,12 +20,10 @@ $this->import('
             <?php endforeach; ?>
         </div>
         <div class="field faq__sections">
-            <select name="faq-sections">
-                <option data-default disabled selected hidden>
-                    <p class="semibold"><?= i::__("NAVEGUE ENTRE AS CATEGORIAS"); ?></p>
-                </option>
+            <p for="faq-sections" class="semibold"><?= i::__("Navegue entra as categorias:"); ?></p>
+            <select id="faq-sections" name="faq-sections" onchange="location=this.value;" class="primary__color bold">
                 <?php foreach ($faq as $section) : ?>
-                    <option value="<?= $this->controller->createUrl('index', [$section->slug]) ?>" class="faq__btn <?= $section->slug == $active_section ? 'faq__btn--selected' : '' ?>">
+                    <option value="<?= $this->controller->createUrl('index', [$section->slug]) ?>" <?= $section->slug == $active_section ? 'selected' : '' ?> class="semibold">
                         <?= $section->title ?> <mc-icon name="arrow-right-ios"></mc-icon>
                     </option>
                 <?php endforeach; ?>
