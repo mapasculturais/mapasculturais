@@ -17,7 +17,7 @@
 
     }
     &__principal, &__msgtitle {
-        padding: 24px 0 0  16px;
+        padding: size(24) 0 0  size(16);
     }
     &__h1 {
         font-size: var(--mc-font-size-lg);
@@ -158,9 +158,9 @@
         align-items: center;
         max-width: size(770);
         width: 100%;
-        padding-top: 32px;
+        padding-top: size(32);
         @media (max-width:size(800)) {
-            padding-top: 16px;
+            padding-top: size(16);
 
         }
     }
@@ -173,10 +173,10 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 8px;
+        gap: size(8);
         position: relative;
-        bottom: 106px;
-        left: 16px;
+        bottom: size(106);
+        left: size(16);
         max-width: size(70);
         @media (max-width:size(800)) {
           bottom: size(90);
@@ -243,12 +243,12 @@
     &__links {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 16px 30px;
-        padding: 16px 16px 146px;
+        gap: size(16) size(30);
+        padding: size(16) size(16) size(146);
 
         @media (max-width: size(750)) {
             grid-template-columns: 1fr;
-            padding: 16px 16px 0;
+            padding: size(16) size(16) 0;
         }
     }
 }
