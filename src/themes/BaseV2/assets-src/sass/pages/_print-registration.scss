@@ -1,5 +1,15 @@
 @use '../0.settings/mixins' as *;
 
+@media print {
+    .zammad-chat {
+        display: none;
+    }
+    
+    .zammad-chat.zammad-chat-is-shown {
+        display: none;
+    }
+}
+
 .print-registration {
     
     table, tr, td, th, tbody, thead, tfoot {
