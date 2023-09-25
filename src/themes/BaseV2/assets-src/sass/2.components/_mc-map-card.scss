@@ -39,10 +39,12 @@
         border-radius: var(--mc-border-radius-xs);
 
         &__header {
+            
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: size(48) 1fr;
             align-items: center;
             gap: size(12);
+            justify-items: start;
 
             &--image {
                 display: flex;
