@@ -16,16 +16,21 @@
         padding: size(24);
 
     }
-    &__principal, &__msgtitle {
-        padding: size(24) 0 0  size(16);
+
+    &__principal,
+    &__msgtitle {
+        padding: size(24) 0 0 size(16);
     }
+
     &__h1 {
         font-size: var(--mc-font-size-lg);
     }
+
     &__listed {
         display: flex;
         flex-direction: column;
     }
+
     &__btn {
         padding: size(18) size(16);
         display: grid;
@@ -91,10 +96,12 @@
         @media (max-width: size(500)) {
             flex-direction: column;
             gap: 0;
+
             img {
                 width: 80%;
             }
         }
+    
     }
 
     &__title {
@@ -147,6 +154,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
         @media (max-width:size(800)) {
             gap: size(10);
         }
@@ -159,15 +167,16 @@
         max-width: size(770);
         width: 100%;
         padding-top: size(32);
-        @media (max-width:size(800)) {
+        &--img {
             padding-top: size(16);
-
         }
     }
+
     &__suggestions {
         display: flex;
         flex-direction: column;
     }
+
     &__back {
         text-decoration: none;
         display: flex;
@@ -178,10 +187,7 @@
         bottom: size(106);
         left: size(16);
         max-width: size(70);
-        @media (max-width:size(800)) {
-          bottom: size(90);
 
-        }
     }
 
     &__content {
@@ -198,24 +204,44 @@
             grid-template-columns: 1fr;
         }
     }
+
     &__sections {
         select {
             font-size: var(--mc-font-size-xxs);
+            &:active,
+            &:checked {
+                background-color: transparent;
+                color: var(--mc-low-300);
+            }
         }
+
+        select option {
+            color: var(--mc-low-300);
+
+            &:active,
+            &:checked {
+                background-color: transparent;
+                color: var(--mc-low-300);
+            }
+        }
+
         @media (min-width: size(500)) {
             display: none;
         }
 
     }
+
     &__btn-aside {
         display: flex;
         flex-direction: column;
         gap: size(16);
+
         @media (max-width: size(500)) {
             display: none;
         }
 
     }
+
     &__frequent {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
@@ -247,6 +273,7 @@
             justify-content: flex-start;
             gap: size(16);
             height: size(130);
+
             @media (max-width: size(750)) {
                 height: 100%;
             }
