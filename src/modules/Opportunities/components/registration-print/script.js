@@ -27,9 +27,24 @@ app.component('registration-print', {
         },
     },
     
+    data() {
+        return {
+            loading: false,
+        }
+    },
+    
     methods: {
         print() {
+            const self = this;
+            self.loading = true;
             var iframe = this.$refs.printIframe;
+
+            iframe.addEventListener("load", function(e) {      
+                setTimeout(() => {
+                    self.loading = false;
+                }, 1000);
+            });
+
             iframe.src = Utils.createUrl('registration', 'registrationPrint', [this.registration.id]);
         }        
     },

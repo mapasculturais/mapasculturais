@@ -13,4 +13,5 @@ use MapasCulturais\i;
     </button>
 
     <iframe ref="printIframe" class="registration-print__printOnly"></iframe>
+    <mc-loading class="registration-print__loading" :condition="loading"></mc-loading>
 </div>

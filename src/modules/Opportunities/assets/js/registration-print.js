@@ -11,7 +11,7 @@ window.addEventListener('load', () => {
         if (completed) {
             setTimeout(() => {
                 window.print();
-            }, 100);
+            }, 1000);
 
             clearInterval(interval);
         };
