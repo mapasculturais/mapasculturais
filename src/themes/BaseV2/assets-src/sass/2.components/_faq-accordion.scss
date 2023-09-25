@@ -5,19 +5,19 @@
 
     &__items {
         display: grid;
-        gap: 8px;
+        gap: size(8);
         max-width: size(870);
     }
 
     &__intro {
         padding: size(18) size(16);
-        border-bottom: 1px solid var(--mc-gray-300);
+        border-bottom: size(1) solid var(--mc-gray-300);
         background: var(--mc-white);
     }
 
     &__context {
         font-size: size(14);
-        border-radius: 0 0 8px 8px;
+        border-radius: 0 0 size(8) size(8);
     }
 
     &__contexts:first-child {
@@ -42,11 +42,11 @@
 
     &__tags {
         background-color: #FFCF8F;
-        margin: 16px 0;
+        margin: size(16) 0;
     }
 
     &__header {
-        padding: 18px 16px;
+        padding: size(18) size(16);
         background: var(--mc-white);
         justify-content: center;
         align-items: center;
@@ -59,7 +59,7 @@
     &__content {
         padding: size(16);
         background: var(--mc-white);
-        border-top: 1px solid var(--mc-gray-100);
+        border-top: size(1) solid var(--mc-gray-100);
         max-width: size(870);
 
     }
