@@ -198,7 +198,11 @@
             grid-template-columns: 1fr;
         }
     }
-
+    &__sections {
+        select {
+            font-size: var(--mc-font-size-xxs);
+        }
+    }
     &__frequent {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
