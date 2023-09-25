@@ -23,8 +23,7 @@ $this->part('main-header', $render_data);
                     </div>
                 </div>
             <?php endif; ?>
-
-            <form class="faq__filter" @submit.prevent>
+            <form class="faq__filter <?= isset($active_header) && $active_header ? 'faq__filter--img' : '' ?>" @submit.prevent>
                 <input type="text" placeholder="<?= i::__('Pesquise por palavra-chave') ?>" class="faq__search" />
                 <button class="faq__search-btn">
                     <mc-icon name="search"></mc-icon>
