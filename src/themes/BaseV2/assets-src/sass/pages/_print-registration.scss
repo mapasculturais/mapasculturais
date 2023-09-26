@@ -2,11 +2,11 @@
 
 @media print {
     .zammad-chat {
-        display: none;
+        display: none !important;
     }
     
     .zammad-chat.zammad-chat-is-shown {
-        display: none;
+        display: none !important;
     }
 }
 
