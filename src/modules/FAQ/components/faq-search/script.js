@@ -1,63 +1,53 @@
-/**
- * Vue Lifecycle
- * 1. setup
- * 2. beforeCreate
- * 3. created
- * 4. beforeMount
- * 5. mounted
- * 
- * // sempre que há modificação nos dados
- *  - beforeUpdate
- *  - updated
- * 
- * 6. beforeUnmount
- * 7. unmounted                  
- */
-
 app.component('faq-search', {
     template: $TEMPLATES['faq-search'],
-    
-    // define os eventos que este componente emite
-    emits: ['namesDefined'],
-
-    props: {
-
-    },
-    
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name];
-        // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('faq-search')
-        return { text, hasSlot }
-    },
-
-    beforeCreate() { },
-    created() { },
-
-    beforeMount() { },
-    mounted() { },
-
-    beforeUpdate() { },
-    updated() { },
-
-    beforeUnmount() {},
-    unmounted() {},
 
     data() {
+        const global = useGlobalState();
         return {
             data: $MAPAS.faq,
-            terms: '',
         }
     },
 
-    computed: {
-    },
-    
     methods: {
         search() {
-            let terms = this.terms.split(" ");            
-            console.log(terms);
-            console.log(this.data);
+            try {
+                const global = useGlobalState();
+                let terms = global.faqSearch.toLowerCase().split(" ");
+                const updatedData = [];
+
+                for (const section of this.data) {
+                    const updatedContexts = [];
+
+                    for (const context of section.contexts) {
+                        const updatedQuestions = [];
+
+                        for (const question of context.questions) {
+                            const questionText = question.question.toLowerCase();
+                            const answerText = question.answer.toLowerCase();
+                            const tags = question.tags;
+
+                            if (terms.some(term => (questionText.includes(term) || tags.includes(term) || answerText.includes(term)))) {
+                                updatedQuestions.push(question);
+                            }
+                        }
+
+                        if (updatedQuestions.length > 0) {
+                            const updatedContext = { ...context, questions: updatedQuestions };
+                            updatedContexts.push(updatedContext);
+                        }
+                    }
+
+                    if (updatedContexts.length > 0) {
+                        const updatedSection = { ...section, contexts: updatedContexts };
+                        updatedData.push(updatedSection);
+                    }
+                }
+
+                global.faqResults = updatedData;
+
+            } catch (error) {
+                console.error(error);
+            }
         }
     },
 });
