@@ -9,6 +9,10 @@
     &__main {
         max-width: size(1170);
         margin: 0 auto;
+        &--results {
+            padding: size(16);
+            max-width: size(870);
+        }
     }
 
     &__header {
