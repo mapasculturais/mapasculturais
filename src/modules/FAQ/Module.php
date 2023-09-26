@@ -47,7 +47,7 @@ class Module extends \MapasCulturais\Module
                 $raw_context = file_get_contents("{$context_path}README.md");
                 $context = $this->parseContext($raw_context, $context_path);
 
-                if(!$section_slug || $section->slug != $section_slug) {
+                if($section_slug && $section->slug != $section_slug) {
                     continue;
                 }
 

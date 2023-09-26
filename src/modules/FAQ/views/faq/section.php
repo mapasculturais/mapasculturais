@@ -31,6 +31,8 @@ $this->import('
         </div>
     </aside>
     <main>
-        <faq-accordion></faq-accordion>
+        <faq-accordion v-if="!global.faqSearch"></faq-accordion>
+        <div v-if="global.faqSearch">{{global.faqSearch}}</div>
+        <!-- componente para listagem dos resultados da busca -->
     </main>
 </div>
