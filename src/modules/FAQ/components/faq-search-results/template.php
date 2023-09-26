@@ -12,9 +12,12 @@ $this->import('
     mc-title
 ');
 ?>
-
-<!-- <template v-for="section in data" class="faq-accordion">
-    <template v-if="section.contexts.length > 0" v-for="context in section.contexts">
+<template v-for="section in results" class="faq-accordion">
+    <div v-if="index" class="faq-accordion__contexts">
+        <mc-title tag="h2" v-html="section.title" class="bold primary__color"></mc-title>
+        <div v-html="section.description" class="faq-accordion__context semibold"></div>
+    </div> 
+   <template v-if="section.contexts.length > 0" v-for="context in section.contexts">
         <div class="faq-accordion__contexts">
             <mc-title tag="h2" v-html="context.title" class="bold primary__color"></mc-title>
             <div v-html="context.description" class="faq-accordion__context semibold"></div>
@@ -35,4 +38,4 @@ $this->import('
             </template>
         </div>
     </template>
-</template> -->
+</template>
