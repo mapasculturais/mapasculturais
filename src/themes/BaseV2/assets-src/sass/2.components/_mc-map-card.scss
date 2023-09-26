@@ -35,7 +35,7 @@
 
         max-width: size(359);
         width: 100%;
-        background: #FFFFFF;
+        background: var(--mc-white);
         border-radius: var(--mc-border-radius-xs);
 
         &__header {
