@@ -9,6 +9,10 @@ use MapasCulturais\i;
 
 $this->part('header', $render_data);
 $this->part('main-header', $render_data);
+
+$this->import('
+    faq-search
+');
 ?>
 
 <div class="faq">
@@ -23,12 +27,9 @@ $this->part('main-header', $render_data);
                     </div>
                 </div>
             <?php endif; ?>
-            <form class="faq__filter <?= isset($active_header) && $active_header ? 'faq__filter--img' : '' ?>" @submit.prevent>
-                <input type="text" placeholder="<?= i::__('Pesquise por palavra-chave') ?>" class="faq__search" />
-                <button class="faq__search-btn">
-                    <mc-icon name="search"></mc-icon>
-                </button>
-            </form>
+            <div class="faq__filter <?= isset($active_header) && $active_header ? 'faq__filter--img' : '' ?>">
+                <faq-search></faq-search>
+            </div>
         </div>
 
     </header>
