@@ -1,12 +1,6 @@
 # Componente `<faq-search>`
 Componente de busca do FAQ
 
-### Eventos
-  
-## Propriedades
-
-## Slots
-
 ### Importando componente
 ```PHP
 <?php 
