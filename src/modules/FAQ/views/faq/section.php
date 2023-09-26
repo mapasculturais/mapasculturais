@@ -5,6 +5,7 @@ use MapasCulturais\i;
 
 $this->import('
     faq-accordion
+    faq-search-results
     mc-title
 ');
 
@@ -32,7 +33,6 @@ $this->import('
     </aside>
     <main>
         <faq-accordion v-if="!global.faqSearch"></faq-accordion>
-        <div v-if="global.faqSearch">{{global.faqSearch}}</div>
-        <!-- componente para listagem dos resultados da busca -->
+        <faq-search-results v-if="global.faqSearch"></faq-search-results>
     </main>
 </div>
