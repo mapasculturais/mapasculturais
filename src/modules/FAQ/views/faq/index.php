@@ -4,13 +4,13 @@ use MapasCulturais\App;
 use MapasCulturais\i;
 
 $this->import('
+    faq-search-results
     mc-title
     mc-icon
 ');
-// var_dump($faq);
 ?>
 
-<main class="faq__main">
+<main v-if="!global.faqSearch" class="faq__main">
     <div class="faq__suggestions">
         <h4 class="bold faq__principal"><?php i::_e('Principais sugestões') ?></h4>
         <div class="faq__frequent bold">
@@ -25,7 +25,7 @@ $this->import('
         </div>
 
     </div>
-    <div class="faq__listed">
+    <div  class="faq__listed">
         <p class="semibold faq__msgtitle"><?php i::_e('Confira todas as dúvidas mais frequentes agrupadas em categorias disponíveis para que você possa consultar.') ?></p>
         <div class="faq__links">
             <?php foreach ($faq as $section) : ?>
@@ -35,4 +35,7 @@ $this->import('
             <?php endforeach; ?>
         </div>
     </div>
+</main>
+<main v-if="global.faqSearch" class="faq__main--results">
+    <faq-search-results index ></faq-search-results>
 </main>
