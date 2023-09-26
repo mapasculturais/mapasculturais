@@ -9,7 +9,9 @@ $this->import('
     mc-tab
 ');
 ?>
+<?php $this->applyTemplateHook('tabs', 'before'); ?>
 <div class="tabs-component" :class="classes">
+    <?php $this->applyTemplateHook('tabs', 'begin'); ?>
     <div class="tabs-component__header">
         <div class="tabs-component__header--left">
             <slot name="before-tablist"></slot>
@@ -42,4 +44,6 @@ $this->import('
     <div class="tabs-component__panels">
         <slot></slot>
     </div>
+    <?php $this->applyTemplateHook('tabs', 'end') ?>
 </div>
+<?php $this->applyTemplateHook('tabs', 'after') ?>
