@@ -15,6 +15,40 @@
         background: var(--mc-white);
     }
 
+    &__results {
+        @media (max-width:size(500)) {
+            font-size: size(16);
+        }
+    }
+
+    &__image {
+        max-width: size(272);
+        height: auto;
+        width: 100%;
+        margin: 0 auto;
+
+        @media (max-width:size(500)) {
+            max-width: size(132);
+        }
+    }
+
+    &__msg {
+        font-size: var(--mc-font-size-sm);
+        color: var(--mc-gray-700);
+
+        @media (max-width:size(500)) {
+            font-size: size(14);
+        }
+    }
+
+    &__noresults {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: size(16);
+    }
+
     &__context {
         font-size: size(14);
         border-radius: 0 0 size(8) size(8);
