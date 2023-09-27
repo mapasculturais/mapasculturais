@@ -100,7 +100,9 @@ class Registration extends EntityController {
             $finfo = pathinfo($this->name);
             $hash = uniqid();
 
-            $this->name = $this->owner->number . ' - ' . $hash . ' - ' . substr( preg_replace ('/[^\. \-\_\p{L}\p{N}]/u', '', $rfc->title),0,64) . '.' . $finfo['extension'];
+            $fname_title_part = substr($app->slugify($rfc->title),0,64);
+            
+            $this->name = "{$this->owner->number} - {$hash} - {$fname_title_part}.{$finfo['extension']}";
             $tmpFile = $this->tmpFile;
             $tmpFile['name'] = $this->name;
             $this->tmpFile = $tmpFile;
