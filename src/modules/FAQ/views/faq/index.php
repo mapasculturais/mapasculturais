@@ -35,6 +35,6 @@ $this->import('
     </div>
 </main>
 <main v-if="global.faqSearch" class="faq__main faq__main--results">
-    <h3 class="bold"><?= i::__('Resultados da pesquisa')?> '{{global.faqSearch}}'</h3>
     <faq-search-results index ></faq-search-results>
+    
 </main>

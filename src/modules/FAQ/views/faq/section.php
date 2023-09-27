@@ -1,5 +1,4 @@
 <?php
-
 use MapasCulturais\App;
 use MapasCulturais\i;
 
@@ -33,7 +32,14 @@ $this->import('
     </aside>
     <main>
         <faq-accordion v-if="!global.faqSearch"></faq-accordion>
-        <h3 v-if="global.faqSearch" class="bold"><?= i::__('Resultados da pesquisa')?> '{{global.faqSearch}}'</h3>
         <faq-search-results v-if="global.faqSearch"></faq-search-results>
+        <div class="faq__footer">
+            <p class="bold"><?= i::__('Não encontrou o que procurava?') ?></p>
+            <div class="faq__footer-btns">
+                <button class="button button--primary "><?= i::__('Contate o nosso suporte') ?></button>
+                <p class="bold"><?= i::__('ou') ?></p>
+                <button class="button button--primary button--primary-noborder"><?= i::__('Envie a sua dúvida para nós') ?></button>
+            </div>
+        </div>
     </main>
 </div>
