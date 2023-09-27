@@ -33,15 +33,6 @@ $this->import('
         </div>
     </header>
     <?= $TEMPLATE_CONTENT ?>
-    <div class="faq__footer">
-        <p class="bold"><?= i::__('Não encontrou o que procurava?') ?></p>
-        <div class="faq__footer-btns">
-            <button class="button button--primary "><?= i::__('Contate o nosso suporte') ?></button>
-            <p class="bold"><?= i::__('ou') ?></p>
-            <button class="button button--primary button--primary-noborder"><?= i::__('Contate o nosso suporte') ?></button>
-        </div>
-    </div>
-
 </div>
 <?php
 $this->part('main-footer', $render_data);
