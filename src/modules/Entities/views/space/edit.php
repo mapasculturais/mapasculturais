@@ -166,43 +166,7 @@ $this->breadcrumb = [
 
             <entity-actions :entity="entity" editable></entity-actions>
         </mc-tab>
-
-        <mc-tab label="<?= i::_e('Visitação') ?>" slug="visit">
-            <mc-container>
-                <main>
-
-                </main>
-                <aside>
-
-                </aside>
-            </mc-container>
-            <entity-actions :entity="entity" editable></entity-actions>
-        </mc-tab>
-
-        <mc-tab label="<?= i::_e('Gestão') ?>" slug="maneger">
-            <mc-container>
-                <main>
-
-                </main>
-                <aside>
-
-                </aside>
-            </mc-container>
-            <entity-actions :entity="entity" editable></entity-actions>
-        </mc-tab>
-
-        <mc-tab label="<?= i::_e('Acervo') ?>" slug="collection">
-            <mc-container>
-                <main>
-
-                </main>
-                <aside>
-
-                </aside>
-            </mc-container>
-            <entity-actions :entity="entity" editable></entity-actions>
-        </mc-tab>
     </mc-tabs>
-    
+
 </div>
 <confirm-before-exit :entity="entity"></confirm-before-exit>
