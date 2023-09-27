@@ -9,7 +9,7 @@
         max-width: size(1170);
         margin: 0 auto;
         width: 100%;
-        
+
         &--results {
             padding: size(16);
         }
@@ -69,15 +69,20 @@
         flex-direction: column;
         gap: size(14);
         margin-top: size(80);
-        align-items: center;
+        align-items: flex-start;
+
+        @media (max-width: size(750)) {
+            align-items: center;
+        }
 
     }
 
     &__footer-btns {
         display: flex;
         gap: size(24);
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
+        justify-content: center;
         padding-bottom: size(80);
 
         @media (max-width: size(750)) {
@@ -104,7 +109,7 @@
                 width: 80%;
             }
         }
-    
+
     }
 
     &__title {
@@ -174,6 +179,7 @@
     &__sections {
         select {
             font-size: var(--mc-font-size-xxs);
+
             &:active,
             &:checked {
                 background-color: transparent;

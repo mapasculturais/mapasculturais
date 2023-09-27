@@ -43,7 +43,7 @@ app.component('faq-search', {
                     }
                 }
 
-                global.faqResults = updatedData;
+                    global.faqResults = updatedData;
 
             } catch (error) {
                 console.error(error);
