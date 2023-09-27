@@ -113,10 +113,6 @@ abstract class Entity implements \JsonSerializable{
             $this->setOwner($app->user->profile);
         }
 
-        $hook_prefix = $this->getHookPrefix();
-
-        $app->applyHookBoundTo($this, "{$hook_prefix}.new");
-
     }
 
 
@@ -176,10 +172,10 @@ abstract class Entity implements \JsonSerializable{
                                 }
 
                                 foreach($files as $f){
-                                    $e->files[$group][] = $f->simplify('id,url,files');
+                                    $e->files[$group][] = $f->simplify('id,name,description,url,files');
                                 }
                             }else if(is_object($files)){
-                                $e->files[$group] = $files->simplify('id,url,files');
+                                $e->files[$group] = $files->simplify('id,name,description,url,files');
                             }else{
                                 $e->files[$group] = null;
                             }
@@ -809,9 +805,10 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
 
         $requests = [];
-        
+
+        $hook_prefix = $this->getHookPrefix();
+
         try {
-            $hook_prefix = $this->getHookPrefix();
             $app->applyHookBoundTo($this, "{$hook_prefix}.save:requests", [&$requests]);
             $app->applyHookBoundTo($this, "entity({$this}).save:requests", [&$requests]);
         } catch (Exceptions\WorkflowRequestTransport $e) {
@@ -848,7 +845,10 @@ abstract class Entity implements \JsonSerializable{
                 $is_new = false;
 
             }
+
+            $app->applyHookBoundTo($this, "{$hook_prefix}.save:before");
             $app->em->persist($this);
+            $app->applyHookBoundTo($this, "{$hook_prefix}.save:after");
 
             if($flush){
                 $app->em->flush();
@@ -1194,7 +1194,6 @@ abstract class Entity implements \JsonSerializable{
         $hook_prefix = $this->getHookPrefix();
 
         $app->applyHookBoundTo($this, "{$hook_prefix}.insert:before");
-        $app->applyHookBoundTo($this, "{$hook_prefix}.save:before");
 
         $this->computeChangeSets();
 
@@ -1229,7 +1228,6 @@ abstract class Entity implements \JsonSerializable{
         $hook_prefix = $this->getHookPrefix();
 
         $app->applyHookBoundTo($this, "{$hook_prefix}.insert:after");
-        $app->applyHookBoundTo($this, "{$hook_prefix}.save:after");
 
         if ($this->usesPermissionCache()) {
             $this->createPermissionsCacheForUsers([$app->user]);
@@ -1306,7 +1304,6 @@ abstract class Entity implements \JsonSerializable{
         $this->computeChangeSets();
         $hook_prefix = $this->getHookPrefix();
         $app->applyHookBoundTo($this, "{$hook_prefix}.update:before");
-        $app->applyHookBoundTo($this, "{$hook_prefix}.save:before");
 
         $this->computeChangeSets();
         
@@ -1366,6 +1363,5 @@ abstract class Entity implements \JsonSerializable{
         $hook_prefix = $this->getHookPrefix();
 
         $app->applyHookBoundTo($this, "{$hook_prefix}.update:after");
-        $app->applyHookBoundTo($this, "{$hook_prefix}.save:after");
     }
 }

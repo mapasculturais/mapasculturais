@@ -105,10 +105,10 @@ class Hooks {
 
 
     protected function _log(string $name) {
-        $n = 1;
+        $n = 2;
 
         if(strpos($name, 'template(') === 0){
-            $n = 2;
+            $n = 3;
         }
 
         $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);

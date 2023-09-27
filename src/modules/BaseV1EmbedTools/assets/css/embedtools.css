@@ -52,6 +52,34 @@ body {
     display: none;
 }
 
+.print-only {
+    display: none;
+}
+
+@media print {
+    .print-only {
+        display: block;
+    }
+
+    .print-header {
+        margin: 0 0 15px;
+    }
+
+    .print-header__title {
+        margin: 0;
+        padding: 0;
+    }
+
+    .chart-scroll {
+        overflow: hidden !important;
+    }
+
+    .action-reportmanager a, 
+    button, .btn, input, select, textarea, .charts-dynamic {
+        display: none !important;
+    }
+}
+
 
 /* Tables */
 .registrations-table {

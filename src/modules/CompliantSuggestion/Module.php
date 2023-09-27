@@ -135,7 +135,7 @@ class Module extends \MapasCulturais\Module {
         });
 
 
-        $app->hook('POST(<<agent|space|event|project>>.sendComplaintMessage)', function() use ($plugin) {
+        $app->hook('POST(<<agent|space|event|project|opportunity>>.sendComplaintMessage)', function() use ($plugin) {
             $app = App::i();
             
              //Verificando recaptcha v2
@@ -153,7 +153,6 @@ class Module extends \MapasCulturais\Module {
             }
 
             $dataValue = [
-                'name'          => $app->user->is('guest') ? \MapasCulturais\i::__("Usuário Guest") : $entity->owner->name,
                 'entityType'    => $entity->getEntityTypeLabel(),
                 'entityName'    => $entity->name,
                 'person'        => $person,
@@ -178,6 +177,7 @@ class Module extends \MapasCulturais\Module {
                 * Envia e-mail para o administrador para instalação Mapas
                 */
                 $app->applyHook('mapasculturais.complaintMessage.destination', [&$tos]);
+                
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $tos,
@@ -208,7 +208,7 @@ class Module extends \MapasCulturais\Module {
             $this->json(true);
         });
 
-        $app->hook('POST(<<agent|space|event|project>>.sendSuggestionMessage)', function() use ($plugin) {
+        $app->hook('POST(<<agent|space|event|project|opportunity>>.sendSuggestionMessage)', function() use ($plugin) {
             $app = App::i();
 
             //Verificando recaptcha v2
@@ -227,7 +227,6 @@ class Module extends \MapasCulturais\Module {
             }
 
             $dataValue = [
-                'name'          => $app->user->is('guest') ? \MapasCulturais\i::__("Usuário Guest") : $entity->owner->name,
                 'entityType'    => $entity->getEntityTypeLabel(),
                 'entityName'    => $entity->name,
                 'person'        => $person,
@@ -240,30 +239,31 @@ class Module extends \MapasCulturais\Module {
 
             $message = $app->renderMailerTemplate('suggestion',$dataValue);
             if (array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
+                
+                $only_to_owner = $this->data['only_owner'] ?? false;
 
-                if (array_key_exists('only_owner',$this->data)) {
-                    $suggestion_mail = ['from' => $app->config['mailer.from'], 'subject' => $message['title'], 'body' => $message['body']];
+                $suggestion_mail = ['from' => $app->config['mailer.from'], 'subject' => $message['title'], 'body' => $message['body']];
+                $destinatarios = $plugin->setRecipients($app, $entity);
+                
+                if ($only_to_owner) {
+                    $tos = array_values($plugin->getEntityAndResponsibleEmails($app,$entity,true));
+                    $app->applyHook('mapasculturais.suggestionMessage.destination_to', [&$tos]);
 
-                    if ($this->data['only_owner'] === "true") {
-                        $tos = array_values($plugin->getEntityAndResponsibleEmails($app,$entity,true));
-                        $app->applyHook('mapasculturais.suggestionMessage.destination_to', [&$tos]);
+                    $suggestion_mail['to'] = $tos;
+                } else {
+                    $destinatarios = $plugin->setRecipients($app, $entity);
+                    $tos = $destinatarios['to'];
+                    $app->applyHook('mapasculturais.suggestionMessage.destination_to', [&$tos]);
 
-                        $suggestion_mail['to'] = $tos;
-                    } else {
-                        $destinatarios = $plugin->setRecipients($app, $entity);
-                        $tos = $destinatarios['to'];
-                        $app->applyHook('mapasculturais.suggestionMessage.destination_to', [&$tos]);
+                    $bccs = $destinatarios['bcc'];
+                    $app->applyHook('mapasculturais.suggestionMessage.destination_bcc', [&$bccs]);
 
-                        $bccs = $destinatarios['bcc'];
-                        $app->applyHook('mapasculturais.suggestionMessage.destination_bcc', [&$bccs]);
-
-                        $suggestion_mail['to'] = $tos;
-                        $suggestion_mail['bcc'] = $bccs;
-                    }
-
-                    $app->createAndSendMailMessage($suggestion_mail);
+                    $suggestion_mail['to'] = $tos;
+                    $suggestion_mail['bcc'] = $bccs;
                 }
 
+                $app->createAndSendMailMessage($suggestion_mail);
+                
                 if(isset($agent->user->email) && !empty($agent->user->email)) {
                     if(in_array('anonimous',$this->data) && !$this->data['anonimous']) {
                         $email = "<Anonimous>";

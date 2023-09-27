@@ -4,7 +4,8 @@
   &__container {
     max-width: size(1200);
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: size(24);
     margin: 0 auto;
     padding: 0 1rem;
   }

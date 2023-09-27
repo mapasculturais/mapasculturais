@@ -32,6 +32,10 @@ globalThis.Utils = {
     },
 
     sortOjectProperties (obj) {
+        if(obj instanceof Array) {
+            return obj;
+        }
+
         var newObj = {};
 
         this.getObjectProperties(obj).sort().forEach(function (e) {

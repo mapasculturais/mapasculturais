@@ -4,7 +4,70 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+### Unreleased
+### Melhorias
+- Adiciona status na edição das entidades
+- Definine forma de alterar o título do modal do componente entity-file
+- Adiciona o status 'carregando' enquanto é gerada a impressão da ficha de inscrição
+
+### Correções
+- Corrige funcionamento do módulo de recursos
+- Faz com que o status seja devolvido no jsonSerialize quando a inscrição estiver em ainda em Rascunho
+- Faz com que funcione a exibição do botão preencher formulário na timeline de acompanhamento
+- Evita que os userialize façam json_decode sobre valor null no modulo RegistrationFieldTypes
+- Possibilita que edite o nome das fases de coleta de dados que nao sejam a primeira fase
+- Faz com que o botçao de visualizar lista de inscrições seja exibito em todas as fases de coleta de dados
+- Corrige galeria de vídeos, aceitando links do youtube shorts
+- Evita que quebre a tela de avaliação quando nao existir avaliação iniciada
+- Faz com que seja exibida as as fichas de todas as fases de coleta de dados na single das inscrições
+- Corrige nome do botão de enviar o arquivo entity-file
+- Remoção do botão do zammad na impressão do formulário de inscrição
+
+### [6.0.19] - 2023-09-14
+- Atualiza componente de  mc-title para utilizar tags html nos titulos e ajustar conforme o tamanho
+- Ajusta o painel de entidades recentemente editadas
+- Faz com que o botão Arquivar fique oculto após a entidade ser arquivada
+- Altera o nome do botão publicar  das entidade para Salvar e publicar no componente entity-action
+- Faz com que o botão Salvar e publicar seja exibido quando a entidade esteja arquvada
+- Implementa método isRequestedEntityMine que devolve se o agente é dono ou não da entidade no módulo Entities
+
+## [6.0.18] - 2023-09-14
+### Correções
+- Corrige componente que lista as inscrições em aberto do usuário no painel que não estava funcionando no Safari
+- Insere componente entity-admins na edit da oportunidade para inserir agentes que possam administrar a entidade
+- Insere componente entity-admins na single da oportunidade para vizualizar o agentes que podem controlar a entidade
+
+## [6.0.17] - 2023-09-14
+### Correções
+- Faz com que os usuarios que tenham alguma Role definida entre no processamento de cache
+- Evita que o método entityTime se quebre quando nao existir data de abertura ou fechamento de inscrição
+- Corrige a verificação de permissão no embedtools no endpoint GET_registrationview para verificar quem pode ver ao invéz de quem tem controle
+- Ajusta estilo conforme o figma para a visão do parecerista na inscrição do proponente no campo coletivo
+
+## [6.0.16] - 2023-09-14
+### Correções
+- Corrige salvamento de campos de formulário qunado não havia opções definidas
+
+## [6.0.15]
+### Correções
+- Adiciona quebra de linha nas descrições longas das entidades
+- Implementa lógica no componente entity-card que mostra textos diferentes em função da data de abertura e fechamento da entidade
+- Resolve sobreposição do slot na listagem do painel nas entidades.
+
+## [6.0.14] - 2023-09-05
+### Correções
+- Verifica se existem termos de uso e privacidade a serem aceitos antes de tentar gerar o hash e salvar no usuário
+
+## [6.0.13] - 2023-09-04
+### Correções
+- Corrige rota que é carregada no final do processo de importação de formulário
+- Corrige shortcuts de rotas que continham id como parâmetro
+
+## [6.0.12] - 2023-09-04
+### Correções
+- Corrige erro ao executar importação de formulario
+
+## [6.0.11] - 2023-09-01
 ### Correções
 - Correção da exibição dos recursos de acessibilidade na single de espaço
 - Corrige a exibição do mapa na single de espaço
@@ -15,6 +78,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Faz com que o componente entity-files-list aceite tambem aquivos registrados como unique
 - Corrige erro de listagem de arquivos no componente enitity-fiels-list
 - Corrige carregamento do Thema padrão para o BaseV2 no Ambiente de desenvolvimento
+- Ajusta internacionalização de textos do componente entity-files-list
+- Faz com que o componente entity-fields exiba a descrição longa
+- Corrige exibição do campo longDescription na edit dos agentes para que sempre seja exibido em modo de edição
 
 ### Melhorias
 - Cria novos templatehooks dentro do componente main-footer

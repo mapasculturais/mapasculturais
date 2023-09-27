@@ -132,7 +132,7 @@ abstract class Request extends \MapasCulturais\Entity{
     /**
      * @var string
      *
-     * @ORM\Column(name="metadata", type="array", nullable=true)
+     * @ORM\Column(name="metadata", type="json", nullable=true)
      */
     protected $metadata = [];
 

@@ -1,0 +1,117 @@
+@use '../0.settings/mixins' as *;
+
+.entity-file {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: size(8);
+    margin: size(8) 0;
+
+    &__file {
+        display: flex;
+        align-items: center;
+        gap: size(18);
+    }
+    &__label {
+        font-size: var(--mc-font-size-xxs);        
+    }
+
+    &__link {
+        text-decoration: none;
+
+        &--download {
+            align-items: center;
+            color: var(--mc-low-500);
+            display: flex;
+            gap: size(8);
+
+            .iconify {
+                color: var(--mc-primary-500);
+            }
+        }
+    }
+
+    &__fileName {
+        font-size: var(--mc-font-size-xs);
+    }
+
+    .button-up {
+        svg {
+            font-size: size(18.5);
+        }
+    }
+
+    &__title {
+        font-size: size(18);
+        font-weight: 700;
+        line-height: size(25);
+        margin-bottom: size(8);
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        list-style: none;
+        margin: size(2) 0 size(10);
+        padding: 0;
+
+        &--item {
+            align-items: center;
+            display: flex;
+            gap: size(10);
+            justify-content: space-between;
+
+            &-link {
+                align-items: center;
+                color: var(--mc-black);
+                display: grid;
+                font-family: var(--mc-font-body);
+                font-size: size(18);
+                font-style: normal;
+                font-weight: 700;
+                gap: size(10);
+                grid-template-columns: size(18) 1fr;
+                justify-items: center;
+                line-height: size(25);
+                margin: size(7) 0;
+                text-decoration: none;
+                word-break: break-word;
+
+                .iconify {
+                    font-size: size(18);
+                }
+            }
+
+            .edit {
+                display: flex;
+                gap: size(14);
+                line-height: size(25);
+
+                .iconify {
+                    cursor: pointer;
+                    font-size: size(14);
+                }
+            }
+        }
+    }
+
+    &__modal {
+        .modal-content {
+            gap: size(16);
+            max-width: size(570);
+            padding: size(24);
+            width: 100%;
+        }
+
+        .modal__content {
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal__action {
+            justify-content: flex-end;
+            padding: 0;
+        }
+    }
+}

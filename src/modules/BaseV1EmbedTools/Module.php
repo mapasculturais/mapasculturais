@@ -24,6 +24,7 @@ class Module extends \MapasCulturais\Module
             
 
             $app->view->enqueueScript('app', 'evaluations', 'js/embedTools-evaluations.js');
+            $app->view->enqueueScript('app', 'editable', 'js/editable.js');
 
             $theme_instance = new BaseV1\Theme($app->config['themes.assetManager']);
             $theme_instance->path = $app->view->path;

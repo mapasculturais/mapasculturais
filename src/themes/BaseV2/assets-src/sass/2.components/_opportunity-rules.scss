@@ -66,4 +66,10 @@
             }
         }
     }
+
+    &__modal {
+        .modal__action {
+            justify-content: flex-end;
+        }
+    }
 }

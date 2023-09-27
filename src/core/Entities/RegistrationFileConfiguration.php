@@ -62,7 +62,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="categories", type="array", nullable=true)
+     * @ORM\Column(name="categories", type="json", nullable=true)
      */
     protected $categories = [];
     

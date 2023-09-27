@@ -21,6 +21,7 @@ $this->import('
         entity-profile
         entity-related-agents
         entity-social-media
+        entity-status
         entity-terms
         event-info
         mc-container
@@ -29,9 +30,10 @@ $this->import('
         mc-tag-list
 ');
 
+$label = $this->isRequestedEntityMine() ? i::__('Meus eventos') : i::__('Evantos');
 $this->breadcrumb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Meus Eventos'), 'url' => $app->createUrl('panel', 'events')],
+    ['label' => $label, 'url' => $app->createUrl('panel', 'events')],
     ['label' => $entity->name, 'url' => $app->createUrl('event', 'edit', [$entity->id])],
 ];
 ?>
@@ -40,6 +42,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
     <mc-container>
+        <entity-status :entity="entity"></entity-status>
         <mc-card class="feature">
             <template #title>
                 <label><?php i::_e("Informações de Apresentação") ?></label>

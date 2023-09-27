@@ -26,6 +26,7 @@
 @import '2.components/entity-activity-card';
 @import '2.components/entity-card';
 @import '2.components/entity-cover';
+@import '2.components/entity-file';
 @import '2.components/entity-header';
 @import '2.components/entity-links';
 @import '2.components/entity-list';
@@ -101,7 +102,6 @@
 @import '2.components/opportunity-phases-timeline';
 @import '2.components/opportunity-registrations';
 @import '2.components/opportunity-rules';
-@import '2.components/opportunity-enable-claim';
 @import '2.components/opportunity-subscription-list';
 @import '2.components/opportunity-subscription';
 @import '2.components/panel--entities-summary';
@@ -120,6 +120,7 @@
 @import '2.components/registration-evaluation-actions';
 @import '2.components/registration-evaluation-info';
 @import '2.components/registration-info';
+@import '2.components/registration-print';
 @import '2.components/registration-related-entity';
 @import '2.components/registration-results';
 @import '2.components/registration-status';
@@ -154,6 +155,7 @@
 @import 'pages/events';
 @import 'pages/opportunity';
 @import 'pages/panel-registrations';
+@import 'pages/print-registration';
 @import 'pages/projects';
 @import 'pages/registrations';
 @import 'pages/search';
