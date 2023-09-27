@@ -33,6 +33,7 @@ $this->import('
     </aside>
     <main>
         <faq-accordion v-if="!global.faqSearch"></faq-accordion>
+        <h3 v-if="global.faqSearch" class="bold"><?= i::__('Resultados da pesquisa')?> '{{global.faqSearch}}'</h3>
         <faq-search-results v-if="global.faqSearch"></faq-search-results>
     </main>
 </div>
