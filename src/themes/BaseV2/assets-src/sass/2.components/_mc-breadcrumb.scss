@@ -75,8 +75,11 @@
         color: inherit;
         text-decoration: none;
         text-transform: uppercase;
-        font-size: 14px;
+        font-size: size(14);
         white-space: nowrap;
+        max-width: size(400);
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     &__hasCover {

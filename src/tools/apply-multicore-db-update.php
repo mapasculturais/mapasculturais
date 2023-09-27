@@ -13,7 +13,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entities;
 
 MapasCulturais\App::i()->disableAccessControl();
-
+ini_set('memory_limit', -1);
 class DB_UPDATE {
     const STEP = 50;
     

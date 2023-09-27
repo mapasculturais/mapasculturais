@@ -19,7 +19,7 @@ $this->import('
                     <mc-icon :name="entityType"></mc-icon>
                 </div>
                 
-                <mc-title tag="h1" bold mobile> {{pageTitle}} </mc-title>
+                <mc-title tag="h1" class="bold"> {{pageTitle}} </mc-title>
             </div>
 
             <div class="search__header--content--right">

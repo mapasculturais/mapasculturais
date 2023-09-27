@@ -18,6 +18,7 @@ $this->import('
     mc-tabs
     opportunity-header
     opportunity-phases-timeline
+    registration-print
     v1-embed-tool
 ');
 
@@ -27,12 +28,15 @@ $this->breadcrumb = [
     ['label' => $entity->opportunity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->opportunity->id])],
     ['label' => i::__('Inscrição')]
 ];
+
+$entity = $entity->firstPhase;
+
 ?>
 
 <div class="main-app registration single">
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
-
+    <registration-print :registration="entity"></registration-print>
     <mc-tabs>
         <mc-tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
             <div class="registration__content">
@@ -179,7 +183,7 @@ $this->breadcrumb = [
                                 <img v-if="entity.agentRelations.coletivo[0]?.files?.avatar" :src="entity.agentRelations.coletivo[0].files.avatar.transformations.avatarMedium.url" />
                             </div>
                             <div class="name">
-                                <a href="entity?.agentRelations.coletivo[0].agent.singleUrl" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
+                                <a href="entity?.agentRelations.coletivo[0].agent.singleUrl" class="registration__collective-link bold" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
                             </div>
                         </div>
                         <div v-if="!entity.agentRelations.hasOwnProperty('coletivo')" class="space">
@@ -205,7 +209,7 @@ $this->breadcrumb = [
                                 <img v-if="entity.agentRelations.instituicao[0]?.files?.avatar" :src="entity.agentRelations.instituicao[0].files.avatar.transformations.avatarMedium.url" />
                             </div>
                             <div class="name">
-                                <a :href="entity?.agentRelations.instituicao[0].agent.singleUrl" :class="[entity.agentRelations.instituicao[0]['@entityType'] + '__color']"> {{entity?.agentRelations.instituicao[0].agent.name}} </a>
+                                <a :href="entity?.agentRelations.instituicao[0].agent.singleUrl" class="registration__institution-link" :class="[entity.agentRelations.instituicao[0]['@entityType'] + '__color']"> {{entity?.agentRelations.instituicao[0].agent.name}} </a>
                             </div>
                         </div>
 
@@ -231,7 +235,7 @@ $this->breadcrumb = [
                                 <img v-if="entity.relatedSpaces[0]?.files?.avatar" :src="entity.relatedSpaces[0].files.avatar.transformations.avatarMedium.url" />
                             </div>
                             <div class="name">
-                                <a href="entity?.relatedSpaces[0]?.singleUrl" :class="[entity.relatedSpaces[0]['@entityType'] + '__color']"> {{entity?.relatedSpaces[0]?.name}} </a>
+                                <a href="entity?.relatedSpaces[0]?.singleUrl" class="registration__space-link" :class="[entity.relatedSpaces[0]['@entityType'] + '__color']"> {{entity?.relatedSpaces[0]?.name}} </a>
                             </div>
                         </div>
 
@@ -246,7 +250,19 @@ $this->breadcrumb = [
                     </template>
                 </mc-card>
 
-                <v1-embed-tool route="registrationview" :id="entity.id"></v1-embed-tool>
+                <?php while($entity): $opportunity = $entity->opportunity;?>
+                    <?php if($opportunity->isDataCollection):?>
+                        <?php if($opportunity->isFirstPhase):?>
+                            <h2><?= i::__('Inscrição') ?></h2>
+                        <?php else: ?>
+                            <h2><?= $opportunity->name ?></h2>
+                        <?php endif ?>
+
+                        <v1-embed-tool route="registrationview" :id="<?=$entity->id?>"></v1-embed-tool>
+                    <?php endif ?>
+                    <?php $entity = $entity->nextPhase; ?>
+                <?php endwhile ?>
+
             </div>
         </mc-tab>
     </mc-tabs>

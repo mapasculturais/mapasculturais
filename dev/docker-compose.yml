@@ -3,10 +3,13 @@ services:
   mapas:
     build:
       context: ../
-      dockerfile: docker/development/Dockerfile
+      dockerfile: docker/Dockerfile
+    command: /var/www/dev/start.sh
     ports:
       - "80:80"
     volumes:
+      - ./docker/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       # scripts principais
       - ../docker/entrypoint.sh:/entrypoint.sh
       - ../docker/jobs-cron.sh:/jobs-cron.sh
@@ -21,7 +24,7 @@ services:
       - ../src:/var/www/src
       - ../var:/var/www/var
 
-      - ../docker/development/router.php:/var/www/html/router.php
+      - ../docker/development/router.php:/var/www/router.php
 
       - ./config.d:/var/www/config/config.d
 
@@ -35,8 +38,8 @@ services:
       - redis
     environment:
       - BUILD_ASSETS=1
-      - PENDING_PCACHE_RECREATION_INTERVAL=15
-      - JOBS_INTERVAL=15
+      - PENDING_PCACHE_RECREATION_INTERVAL=5
+      - JOBS_INTERVAL=5
       - REDIS_CACHE=redis
       - MAILER_TRANSPORT=smtp://mailhog:1025
       - MAILER_FROM=sysadmin@localhost
@@ -69,7 +72,7 @@ services:
       
 
     ports:
-      - "5470:5432"
+      - "5432:5432"
     volumes:
       - ./docker-data/postgres:/var/lib/postgresql/data
-      - ./db/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./db:/docker-entrypoint-initdb.d

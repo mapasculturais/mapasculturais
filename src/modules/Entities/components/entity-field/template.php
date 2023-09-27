@@ -34,6 +34,8 @@ $this->import('
         </div>
         <textarea v-if="is('textarea') && !prop=='shortDescription'" :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)"></textarea>
 
+        <textarea v-if="is('textarea') && prop=='longDescription'" :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" class="field__longdescription"></textarea>
+
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @input="change($event)" @blur="change($event,true)" autocomplete="off">
 
         <entity-field-datepicker v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change"></entity-field-datepicker>

@@ -12,4 +12,12 @@ $_params = [
     'opportunity' => $entity->opportunity
 ];
 ?>
+<?php 
+if($entity->opportunity->evaluationMethodConfiguration){
+    if($entity->opportunity->evaluationMethodConfiguration->committee){
+        $this->part('singles/registration--valuers-list', $_params); 
+    }
+}
+?>
+
 <?php $this->part('singles/registration-single--fields', $_params) ?>

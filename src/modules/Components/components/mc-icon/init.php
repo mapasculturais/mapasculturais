@@ -87,6 +87,7 @@ $iconset = [
     'order-up' => 'heroicons-outline:sort-ascending',
     'pin' => 'ph:map-pin-fill',
     'previous' => 'ooui:previous-ltr',
+    'print' => 'material-symbols:print-outline',
     'projects' => 'ri:file-list-2-line',
     'question' => 'fe:question',
     'role'  => 'ri:profile-line',

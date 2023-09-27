@@ -26,27 +26,6 @@ $_SERVER['SERVER_NAME'] = 'localhost';
 
 include_once __DIR__ . '/../../vendor/autoload.php';
 
-$configFile = getcwd() . DIRECTORY_SEPARATOR . 'cli-config.php';
+$helper_set =  require __DIR__ . '/cli-config.php';
 
-$helperSet = null;
-if (file_exists($configFile)) {
-    if ( ! is_readable($configFile)) {
-        trigger_error(
-            'Configuration file [' . $configFile . '] does not have read permission.', E_ERROR
-        );
-    }
-
-    require $configFile;
-
-    foreach ($GLOBALS as $helperSetCandidate) {
-        if ($helperSetCandidate instanceof \Symfony\Component\Console\Helper\HelperSet) {
-            $helperSet = $helperSetCandidate;
-            break;
-        }
-    }
-}
-
-$helperSet = new \Symfony\Component\Console\Helper\HelperSet();
-
-
-\Doctrine\ORM\Tools\Console\ConsoleRunner::run($helperSet);
+\Doctrine\ORM\Tools\Console\ConsoleRunner::run($helper_set);

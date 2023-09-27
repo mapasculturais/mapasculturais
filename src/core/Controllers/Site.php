@@ -33,7 +33,12 @@ class Site extends \MapasCulturais\Controller {
     }
 
     function GET_search() {
-        $this->render('search');
+        $app = App::i();
+        if ($app->view->version >= 2) {
+            $app->pass();
+        } else {
+            $this->render('search');
+        }
     }
 
     function ALL_clearCache() {

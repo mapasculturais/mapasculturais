@@ -21,14 +21,16 @@ $this->import('
     entity-related-agents
     entity-social-media
     entity-terms
+    entity-status
     mc-breadcrumb
     mc-card
     mc-container
 ');
 
+$label = $this->isRequestedEntityMine() ? i::__('Meus agentes') : i::__('Agentes');
 $this->breadcrumb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Meus Agentes'), 'url' => $app->createUrl('panel', 'agents')],
+    ['label' => $label, 'url' => $app->createUrl('panel', 'agents')],
     ['label' => $entity->name, 'url' => $app->createUrl('agent', 'edit', [$entity->id])],
 ];
 ?>
@@ -37,6 +39,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
     <mc-container>
+        <entity-status :entity="entity"></entity-status>
         <mc-card class="feature">
             <template #title>
                 <label><?php i::_e("Informações de Apresentação") ?></label>
@@ -112,7 +115,7 @@ $this->breadcrumb = [
                 </template>
                 <template #content>
                     <div class="grid-12">
-                        <entity-field :entity="entity" classes="col-12" prop="longDescription"></entity-field>
+                        <entity-field :entity="entity" classes="col-12" prop="longDescription" editable></entity-field>
                         <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?php i::_e('Adicionar arquivos para download'); ?>" editable></entity-files-list>
                         <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
                         <entity-gallery-video :entity="entity" classes="col-12" title="<?php i::_e('Adicionar vídeos') ?>" editable></entity-gallery-video>

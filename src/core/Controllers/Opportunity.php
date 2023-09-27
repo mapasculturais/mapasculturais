@@ -1034,7 +1034,8 @@ class Opportunity extends EntityController {
 
         }
 
-        $app->redirect($opportunity->editUrl.'#tab=inscricoes');
+        $url = $app->createUrl('opportunity', 'formBuilder', [$opportunity->id]);
+        $app->redirect($url);
 
     }
 

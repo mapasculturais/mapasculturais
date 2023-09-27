@@ -421,13 +421,17 @@ class Module extends \MapasCulturais\Module{
             $app->disableAccessControl();
 
             $firstPhase = $this->firstPhase;
-            
-            $mout_symplyfy = "id,name,summary";
+    
+
             if($opportunity_phases = $firstPhase->allPhases){
                 foreach($opportunity_phases as $key => $opportunity){
+                    $mout_simplify = "id,name,summary";
+
                     $emc = $opportunity->evaluationMethodConfiguration;
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase || $opportunity->isLastPhase){
-                        $item = $opportunity->simplify("{$mout_symplyfy},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase");
+                        $app->applyHook('module(OpportunityPhases).dataCollectionPhaseData', [&$mout_simplify]);
+
+                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase");
                         
                         if($emc){
                             $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo");
@@ -439,10 +443,12 @@ class Module extends \MapasCulturais\Module{
                     if($emc){
 
                         if($opportunity->isDataCollection){
-                            $mout_symplyfy.=",ownerId";
+                            $mout_simplify.=",ownerId";
                         }
 
-                        $result[] = $emc->simplify("{$mout_symplyfy},opportunity,infos,evaluationFrom,evaluationTo");
+                        $app->applyHook('module(OpportunityPhases).evaluationPhaseData', [&$mout_simplify]);
+
+                        $result[] = $emc->simplify("{$mout_simplify},opportunity,infos,evaluationFrom,evaluationTo");
                     }
                 }
             }
@@ -1195,7 +1201,6 @@ class Module extends \MapasCulturais\Module{
         $this->registerOpportunityMetadata("isDataCollection", [
             'label'=> "Define se é uma oportunidade de coleta de dados",
             'type'=>'bool',
-            'private'=> true,
             'default'=> true,
         ]);
 

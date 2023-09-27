@@ -25,9 +25,11 @@ $this->import('
     mc-tab
     mc-tabs
 ');
+
+$label = $this->isRequestedEntityMine() ? i::__('Meus agentes') : i::__('Agentes');
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Agentes'), 'url' => $app->createUrl('search', 'agents')],
+    ['label' => $label, 'url' => $app->createUrl('search', 'agents')],
     ['label' => $entity->name, 'url' => $app->createUrl('agent', 'single', [$entity->id])],
 ];
 ?>
@@ -46,7 +48,7 @@ $this->breadcrumb = [
                             <span>   
                                 <h3 class="single-1__description bold"><?php i::_e('Descrição Detalhada');?></h3>
                             </span>
-                            <p v-html="entity.longDescription"></p>
+                            <p class="single-1__longdescription" v-html="entity.longDescription"></p>
                         </div>
                         <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                         <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
@@ -59,8 +61,8 @@ $this->breadcrumb = [
                             <entity-list v-if="entity.children?.length>0" title="<?php i::esc_attr_e('Agentes');?>" type="agent" :ids="entity.children"></entity-list>
                             <entity-list v-if="entity.projects?.length>0" title="<?php i::esc_attr_e('Projetos');?>" type="project" :ids="entity.projects"></entity-list>                                
                             <entity-list title="<?php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
-                            <complaint-suggestion :entity="entity" classes="col-12"></complaint-suggestion>
                         </div>
+                        <complaint-suggestion :entity="entity" classes="col-12"></complaint-suggestion>
                     </div>
                 </main>
                 <aside>

@@ -15,7 +15,7 @@
         }
     }
    .leaflet-popup-content-wrapper{
-        border-radius: size(4);
+        border-radius: size(8);
    }
 }
 
@@ -35,13 +35,16 @@
 
         max-width: size(359);
         width: 100%;
-        background: #FFFFFF;
+        background: var(--mc-white);
         border-radius: var(--mc-border-radius-xs);
 
         &__header {
+            
             display: grid;
-            grid-template-columns: 48px 1fr;
+            grid-template-columns: size(48) 1fr;
+            align-items: center;
             gap: size(12);
+            justify-items: start;
 
             &--image {
                 display: flex;

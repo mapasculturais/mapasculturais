@@ -41,6 +41,7 @@ if [ $DOWN = "1" ]; then
    docker-compose down
 fi
 
+docker rm $MAPAS_NAME
 docker-compose run --name=$MAPAS_NAME --service-ports mapas 
 
 docker-compose down --remove-orphans

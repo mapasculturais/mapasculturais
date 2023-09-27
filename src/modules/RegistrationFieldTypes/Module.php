@@ -12,6 +12,7 @@ use MapasCulturais\Entities\Registration;
 use MapasCulturais\Definitions\Metadata;
 use MapasCulturais\Definitions\RegistrationFieldType;
 use MapasCulturais\Entities\RegistrationFieldConfiguration;
+use MapasCulturais\Types\GeoPoint;
 
 class Module extends \MapasCulturais\Module
 {
@@ -42,6 +43,56 @@ class Module extends \MapasCulturais\Module
             foreach($module->entities as $entity) {
                 if ($entity->changedByRegistration) {
                     $entity->save(true);
+                }
+            }
+            $module->entities = [];
+        });
+
+        $app->hook("entity(Registration).save:before", function() use($module, $app) {
+            /** @var Registration $this */
+            $fix_field = function($entity, $field) use($module){
+                /** @var Registration $this */
+
+                $registration_field = $field->fieldName;
+
+                if(empty($this->metadata[$registration_field])) {
+                    $metadata_definition = (object) [
+                        'config' => [
+                            'registrationFieldConfiguration' => $field
+                        ]
+                    ];
+
+                    $value = $module->fetchFromEntity($entity, null, null, $metadata_definition);
+                    $this->$registration_field = $value;
+                }
+            };
+
+            $opportunity = $this->opportunity;
+            $opportunity->registerRegistrationMetadata();
+            
+            $fields = $opportunity->getRegistrationFieldConfigurations();
+
+            foreach($fields as $field) {
+                if($field->fieldType == 'agent-owner-field') {
+                    $entity = $this->owner;
+
+                    $fix_field($entity, $field);
+                }
+
+                if($field->fieldType == 'agent-collective-field') {
+                    $entity = $this->owner;
+                    if($agents = $this->getRelatedAgents('coletivo')) {
+                        $entity = $agents[0];
+                        $fix_field($entity, $field);
+                    }
+
+                }
+
+                if($field->fieldType == 'space-field') {
+                    if($space_relation = $this->getSpaceRelation()) {
+                        $entity = $space_relation->space;
+                        $fix_field($entity, $field);
+                    }
                 }
             }
         });
@@ -301,7 +352,7 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function ($value) {
-                    return json_decode($value);
+                    return json_decode($value ?: "");
                 }
             ],
             [
@@ -323,7 +374,7 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value) {
-                    $persons = json_decode($value);
+                    $persons = json_decode($value ?: "");
 
                     if(!is_array($persons)){
                         $persons = [];
@@ -359,7 +410,7 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value) {
-                    $links = json_decode($value);
+                    $links = json_decode($value ?: "");
 
                     if(!is_array($links)){
                         $links = [];
@@ -394,7 +445,7 @@ class Module extends \MapasCulturais\Module
                     }
                     
                     if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value);
+                        $result = json_decode($value ?: "");
                     }else{
                         $disable_access_control = false;
 
@@ -433,7 +484,7 @@ class Module extends \MapasCulturais\Module
                     }
 
                     if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value);
+                        $result = json_decode($value ?: "");
                     } else {
                         $disable_access_control = false;
 
@@ -447,7 +498,7 @@ class Module extends \MapasCulturais\Module
                         if($agent){
                             $result = $module->fetchFromEntity($agent[0], $value, $registration, $metadata_definition);
                         } else {
-                            $result = json_decode($value);
+                            $result = json_decode($value ?: "");
                         }
     
                         if($disable_access_control) {
@@ -480,7 +531,7 @@ class Module extends \MapasCulturais\Module
                     }
                     
                     if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value);
+                        $result = json_decode($value ?: "");
                     } else {
                         $disable_access_control = false;
                     
@@ -493,7 +544,7 @@ class Module extends \MapasCulturais\Module
                         if($space_relation){
                             $result = $module->fetchFromEntity($space_relation->space, $value, $registration, $metadata_definition);
                         } else {
-                            $result = json_decode($value);
+                            $result = json_decode($value ?: "");
                         }
     
                         if($disable_access_control) {
@@ -515,7 +566,13 @@ class Module extends \MapasCulturais\Module
             $app = App::i();
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $metadata_definition->config['registrationFieldConfiguration']->id;
-            if ($entity_field == "@location") {
+            if ($entity_field == "@location" && is_array($value)) {
+                if($value['location'] instanceof GeoPoint) {
+                    $value["location"] = [
+                        'latitude' => $value['location']->latidude,
+                        'longitude' => $value['location']->longitude,
+                    ];
+                }
                 if (!empty($value["location"]["latitude"]) && !empty($value["location"]["longitude"])) {
                     // this order of coordinates is required by the EntityGeoLocation trait's setter
                     $entity->location = [$value["location"]["longitude"], $value["location"]["latitude"]];
@@ -560,6 +617,9 @@ class Module extends \MapasCulturais\Module
                         }                    
                     }
                 }
+                if(!is_array($value)) {
+                    $value = (array) $value;
+                }
                 foreach ($value as $itemArray) {
                     if (isset($itemArray['value']) && $url=$itemArray['value']){
                         $metaList = new metaList;
@@ -572,7 +632,7 @@ class Module extends \MapasCulturais\Module
                         $metaList->save(true);
                     }
                 }
-            } else if($entity_field == '@type') {
+            } else if($entity_field == '@type' && $value) {
                 $type = $app->getRegisteredEntityTypeByTypeName($entity, $value);
                 $entity->type = $type;
             } else {
@@ -589,7 +649,7 @@ class Module extends \MapasCulturais\Module
         return json_encode($value);
     }
 
-    function fetchFromEntity (Entity $entity, $value, Registration $registration = null, Metadata $metadata_definition = null)
+    function fetchFromEntity (Entity $entity, $value, Registration $registration = null, $metadata_definition = null)
     {
         $app = App::i();
 
@@ -639,7 +699,7 @@ class Module extends \MapasCulturais\Module
             
             $app->applyHookBoundTo($entity, "registrationFieldTypes.fetchFromEntity", ["entity_field" => $entity_field, "value" => &$value]);
         } else {
-            $value = json_decode($value);
+            $value = json_decode($value ?: "");
         }
 
         return $value;

@@ -432,8 +432,8 @@ class App {
 
         $this->applyHookBoundTo($this, 'app.init:before');
 
-        $this->_initModules();
         $this->_initPlugins();
+        $this->_initModules();
 
         $this->applyHookBoundTo($this, 'mapasculturais.init');
 
@@ -573,8 +573,11 @@ class App {
             $subfolders = ['Controllers','Entities','Repositories','Jobs'];
 
             foreach($config['plugins'] as $plugin){
+                if(is_string($plugin)) {
+                    $plugin = ['namespace' => $plugin];
+                }
                 $namespace = $plugin['namespace'];
-                $dir = isset($plugin['path']) ? $plugin['path'] : PLUGINS_PATH . $namespace;
+                $dir = $plugin['path'] ?? PLUGINS_PATH . $namespace;
                 if(!isset($namespaces[$namespace])){
                     $namespaces[$namespace] = $dir;
                 }
@@ -850,22 +853,48 @@ class App {
         // esta constante é usada no script que executa os db-updates, 
         // para que na primeira rodada do db-update não sejam incluídos os plugins
         if(!env('DISABLE_PLUGINS')) {
-            $this->applyHookBoundTo($this, 'app.plugins.init:before');
+            $this->applyHookBoundTo($this, 'app.plugins.preInit:before');
+            $plugins = [];
+
             foreach($this->config['plugins'] as $slug => $plugin){
-                $_namespace = $plugin['namespace'];
-                $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
-                $plugin_class_name = "$_namespace\\$_class";
+                if (is_numeric($slug) && is_string($plugin)) {
+                    $_namespace = $plugin;
+                    $slug = $plugin;
+                    $plugin_class_name = "$_namespace\\Plugin";
+                } else {
+                    $_namespace = $plugin['namespace'];
+                    $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
+                    $plugin_class_name = "$_namespace\\$_class";
+                }
 
                 if(class_exists($plugin_class_name)){
                     $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
 
                     $slug = is_numeric($slug) ? $_namespace : $slug;
 
-                    $this->plugins[$slug] = new $plugin_class_name($plugin_config);
+                    $plugins[] = [
+                        'slug' => $slug,
+                        'class' => $plugin_class_name,
+                        'config' => $plugin_config
+                    ];
+
+                    $plugin_class_name::preInit();
                 }
             }
 
-            $this->applyHookBoundTo($this, 'app.plugins.init:after');
+            $this->applyHookBoundTo($this, 'app.plugins.preInit:after', ['plugins' => &$plugins]);
+
+            $this->hook('app.modules.init:after', function() use ($plugins) {
+                $this->applyHookBoundTo($this, 'app.plugins.init:before');
+                foreach ($plugins as $plugin) {
+                    $slug = $plugin['slug'];
+                    $plugin_class_name = $plugin['class'];
+                    $plugin_config = $plugin['config'];
+
+                    $this->plugins[$slug] = new $plugin_class_name($plugin_config);
+                }
+                $this->applyHookBoundTo($this, 'app.plugins.init:after');
+            });
         }
     }    
 
@@ -1977,7 +2006,12 @@ class App {
         }
 
         if($this->config['mailer.bcc']){
-            $message->bcc($this->config['mailer.bcc']);
+            $bcc = is_array($this->config['mailer.bcc']) ? 
+                $this->config['mailer.bcc']:
+                explode(',', $this->config['mailer.bcc']);
+
+            
+            $message->bcc(...$bcc);
         }
 
         if($this->config['mailer.replyTo']){
@@ -1986,17 +2020,24 @@ class App {
 
         $original = [];
         foreach($args as $method_name => $value){
-            if(in_array($method_name, ['to', 'cc', 'bcc']) && $this->config['mailer.alwaysTo']){
-                $original[$method_name] = $value;
-                continue;
-            }
-
-            if($method_name == 'body') {
-                $method_name = 'html';
-            }
-
-            if(method_exists($message, $method_name)){
-                $message->$method_name($value);
+            if(in_array($method_name, ['to', 'cc', 'bcc'])) {
+                if($method_name == 'bcc' && isset($bcc)) {
+                    $value = [...$bcc, ...(is_array($value) ? $value : explode(',', $value))];
+                }
+                if ($this->config['mailer.alwaysTo']) {
+                    $original[$method_name] = $value;
+                } else {
+                    $value = is_array($value) ? $value : explode(',', $value);
+                    $message->$method_name(...$value);
+                }
+            } else {
+                if($method_name == 'body') {
+                    $method_name = 'html';
+                }
+    
+                if(method_exists($message, $method_name)){
+                    $message->$method_name($value);
+                }
             }
         }
 

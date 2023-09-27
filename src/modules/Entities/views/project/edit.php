@@ -22,15 +22,17 @@ $this->import('
     entity-profile
     entity-related-agents
     entity-social-media
+    entity-status
     entity-terms
     mc-breadcrumb
     mc-card
     mc-container
 ');
 
+$label = $this->isRequestedEntityMine() ? i::__('Meus projetos') : i::__('Projetos');
 $this->breadcrumb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
-    ['label' => i::__('Meus Projetos'), 'url' => $app->createUrl('panel', 'projects')],
+    ['label' => $label, 'url' => $app->createUrl('panel', 'projects')],
     ['label' => $entity->name, 'url' => $app->createUrl('project', 'edit', [$entity->id])],
 ];
 ?>
@@ -39,6 +41,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
     <mc-container>
+        <entity-status :entity="entity"></entity-status>
         <mc-card class="feature">
             <template #title>
                 <label><?php i::_e("Informações de Apresentação") ?></label>
