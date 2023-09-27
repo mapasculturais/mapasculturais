@@ -21,11 +21,9 @@ $this->import('
                     <?= $section->title ?>
                 </a>
             <?php endforeach; ?>
-
         </div>
-
     </div>
-    <div  class="faq__listed">
+    <div class="faq__listed">
         <p class="semibold faq__msgtitle"><?php i::_e('Confira todas as dúvidas mais frequentes agrupadas em categorias disponíveis para que você possa consultar.') ?></p>
         <div class="faq__links">
             <?php foreach ($faq as $section) : ?>
@@ -36,6 +34,7 @@ $this->import('
         </div>
     </div>
 </main>
-<main v-if="global.faqSearch" class="faq__main--results">
+<main v-if="global.faqSearch" class="faq__main faq__main--results">
+    <h3 class="bold"><?= i::__('Resultados da pesquisa')?> '{{global.faqSearch}}'</h3>
     <faq-search-results index ></faq-search-results>
 </main>

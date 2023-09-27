@@ -2,23 +2,22 @@
 
 .faq {
     background-color: var(--mc-gray-100);
-    max-width: size(1440);
     width: 100%;
     margin: 0 auto;
 
     &__main {
         max-width: size(1170);
         margin: 0 auto;
+        width: 100%;
+        
         &--results {
             padding: size(16);
-            max-width: size(870);
         }
     }
 
     &__header {
         background-color: #FFCF8F;
         padding: size(24);
-
     }
 
     &__principal,
@@ -149,8 +148,8 @@
         flex-direction: row;
         align-items: center;
         gap: size(8);
-        position: relative;
-        bottom: size(106);
+        position: absolute;
+        top: size(106);
         left: size(16);
         max-width: size(70);
 
@@ -165,6 +164,7 @@
         grid-template-columns: size(270) 1fr;
         gap: size(30);
         padding: size(32) size(16);
+        margin: 0 auto;
 
         @media (max-width: size(750)) {
             grid-template-columns: 1fr;
