@@ -31,7 +31,6 @@ $this->import('
                 <faq-search></faq-search>
             </div>
         </div>
-
     </header>
     <?= $TEMPLATE_CONTENT ?>
     <div class="faq__footer">
