@@ -12,13 +12,16 @@ $this->part('main-header', $render_data);
 
 $this->import('
     faq-search
+    mc-breadcrumb
 ');
 ?>
 
 <div class="faq">
     <header class="faq__header">
-        <div class="faq__find">
-            <?php if (isset($active_header) && $active_header) : ?>
+
+
+        <?php if (isset($active_header) && $active_header) : ?>
+            <div class="faq__find">
                 <div class="faq__img">
                     <img src="<?php $this->asset('/img/faq.png', true, true) ?>">
                     <div class="faq__title">
@@ -26,13 +29,17 @@ $this->import('
                         <p><?= i::__('Confira nossas perguntas frequentes') ?></p>
                     </div>
                 </div>
-            <?php endif; ?>
-            <div class="faq__filter <?= isset($active_header) && $active_header ? 'faq__filter--img' : '' ?>">
-                <faq-search></faq-search>
+                <div class="faq__filter <?= isset($active_header) && $active_header ? 'faq__filter--img' : '' ?>">
+                    <faq-search></faq-search>
+                </div>
             </div>
-        </div>
+        <?php else : ?>
+            <mc-breadcrumb></mc-breadcrumb>
+        <?php endif; ?>
+
     </header>
     <?= $TEMPLATE_CONTENT ?>
+
 </div>
 <?php
 $this->part('main-footer', $render_data);
