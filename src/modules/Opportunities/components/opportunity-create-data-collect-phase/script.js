@@ -30,10 +30,7 @@ app.component('opportunity-create-data-collect-phase' , {
             return this.lastPhase.publishTimestamp?._date || null;
         },
         minDate () {
-            return this.previousPhase.registrationTo?._date || this.previousPhase.evaluationTo?._date;
-        },
-        minDateRegistrationTo () {
-            return this.phase.registrationTo?._date || '';
+            return this.previousPhase.registrationFrom?._date || this.previousPhase.evaluationFrom?._date;
         }
     },
 

@@ -34,12 +34,42 @@ app.component('opportunity-phase-publish-date-config' , {
     },
 
     computed: {
-        minDate () {
-            return this.phase.evaluationTo?._date || this.phase.registrationTo?._date;
+
+        index() {
+            let index = this.phases.indexOf(this.phase);
+
+            if(index == -1) {
+                index = this.phases.indexOf(this.phase.evaluationMethodConfiguration);
+            }
+
+            return index;
+        },
+
+        previousPhase() {
+            return this.phases[this.index - 1];
+        },
+
+        nextPhase() {
+            return this.phases[this.index + 1];
+        },
+
+        minDate () { 
+            let phase;
+            if(this.phase.isLastPhase) {
+                phase = this.previousPhase;
+            } else {
+                phase = this.phase;
+            }
+            const result = phase.evaluationTo?._date || phase.registrationTo?._date;      
+            return result;
         },
         maxDate () {
-            if(!this.phase.isLastPhase) {
-                return this.lastPhase?.publishTimestamp?._date;
+            if(this.phase.isLastPhase) {
+                return null;
+            } else if(this.nextPhase.isLastPhase) {
+                return this.nextPhase.publishTimestamp?._date;
+            } else {
+                return this.nextPhase.evaluationTo?._date || this.nextPhase.registrationTo?._date;
             }
         },
         firstPhase() {

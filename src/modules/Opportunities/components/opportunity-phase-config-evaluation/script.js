@@ -34,36 +34,54 @@ app.component('opportunity-phase-config-evaluation' , {
             return this.phases[this.index + 1];
         },
 
-        minDate() {
-            if (this.previousPhase.__objectType == 'evaluationmethodconfiguration') {
-                // fase anterior é uma fase de avaliação
-                return this.previousPhase.evaluationTo;
-            } else {
-                // fase anterior é uma fase de coleta de dados
-                return this.previousPhase.registrationFrom;
-            }
+        fromDateMin() {
+            return this.previousPhase.evaluationFrom || this.previousPhase.registrationFrom;
         },
 
-        maxDate() {
-            if(!this.nextPhase) {
-                return this.phase.publishTimestamp;
-            }
-            if (this.nextPhase.isLastPhase) {
-                // próxima fase é de publicação de resultado
-                return this.nextPhase.publishTimestamp;
-            } else if(this.nextPhase.__objectType == 'opportunity') {
-                // próxima fase é de coleta de dados
-                return this.nextPhase.registrationFrom;
+        fromDateMax() {
+            let date;
+
+            // se a data final da fase está definida, a data inicial não pode ser maior que a data final
+            if (this.phase.evaluationTo) {
+                date = this.phase.evaluationTo;
+
+            // senão, se a próxima fase é a última fase, a data inicial não pode ser maior que a data de publicação final dos resultados
+            } else if(this.nextPhase.isLastPhase) {
+                date = this.nextPhase.publishTimestamp;
+            
+            // senão, a data inicial não pode ser maior que a data final da próxima fase
             } else {
-                // próxima fase avaliação
-                if(this.phase.__objectType == 'opportunity') {
-                    // fase atual é de coleta de dados
-                    return this.nextPhase.evaluationTo;
-                } else {
-                    // fase atual é de avaliacao
-                    return this.nextPhase.evaluationFrom;
-                }
+                date = this.nextPhase.registrationTo || this.nextPhase.evaluationTo;
             }
+
+            return date;
+        },
+
+        toDateMin(){
+            let date;
+
+            // se a data inicial da fase está definida, a data final não pode ser menor que a data inicial
+            if (this.phase.evaluationFrom) {
+                date = this.phase.evaluationFrom;
+
+            // senão, a data inicial não pode ser enor que a data inicial da fase anterior
+            } else {
+                date = this.previousPhase.registrationfrom || this.previousPhase.evaluationfrom;
+            }
+
+            return date;
+        },
+
+        toDateMax() {
+            let date;
+            
+            if (this.nextPhase.isLastPhase) {
+                date = this.nextPhase.publishTimestamp;
+            } else {
+                date = this.nextPhase.registrationTo || this.nextPhase.evaluationTo;
+            }
+
+            return date;
         },
 
         categories(){
