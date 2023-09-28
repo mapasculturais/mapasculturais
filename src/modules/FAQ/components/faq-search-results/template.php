@@ -44,5 +44,5 @@ $this->import('
 <div v-if="results==0" class="faq-accordion__noresults">
     <img class="faq-accordion__image" src="<?php $this->asset('/img/unknown.png', true, true) ?>">
     <label class="faq-accordion__msg bold"><?= i::__('Ops! nenhum resultado foi encontrado para sua busca') ?></label>
-    <a class="nounderline" href="<?= $this->controller->createUrl('index'); ?>"><label class="bold primary__color"><?= i::__('VOLTAR À AJUDA') ?></label></a>
+    <a class="nounderline" href="<?= $this->controller->createUrl('index'); ?>"><label class="bold primary__color faq-accordion__backhelp"><?= i::__('VOLTAR À AJUDA') ?></label></a>
 </div>
