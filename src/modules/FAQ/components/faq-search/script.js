@@ -1,6 +1,11 @@
 app.component('faq-search', {
     template: $TEMPLATES['faq-search'],
-
+    props: {
+        section: {
+            type: Boolean,
+            default: false
+        }
+    },
     data() {
         const global = useGlobalState();
         return {
@@ -43,7 +48,7 @@ app.component('faq-search', {
                     }
                 }
 
-                    global.faqResults = updatedData;
+                global.faqResults = updatedData;
 
             } catch (error) {
                 console.error(error);
