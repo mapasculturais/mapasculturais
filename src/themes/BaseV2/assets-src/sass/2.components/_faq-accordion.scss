@@ -41,6 +41,11 @@
         }
     }
 
+    &__backhelp {
+        @media (max-width:size(500)) {
+            font-size: size(19);
+        }
+    }
     &__noresults {
         display: flex;
         align-items: center;
@@ -52,6 +57,7 @@
     &__context {
         font-size: size(14);
         border-radius: 0 0 size(8) size(8);
+        font-weight: 600;
     }
 
     &__contexts:first-child {

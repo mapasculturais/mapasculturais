@@ -18,6 +18,20 @@
     &__header {
         background-color: #FFCF8F;
         padding: size(24);
+
+        .mc-breadcrumb {
+            position: relative;
+            top: size(20);
+            margin: unset;
+
+            ul {
+                position: relative;
+
+                li {
+                    text-transform: capitalize;
+                }
+            }
+        }
     }
 
     &__principal,
@@ -77,22 +91,24 @@
 
     }
 
-    &__footer-btns {
+    &__message,
+    &__supportmsg {
         display: flex;
         gap: size(24);
-        flex-direction: row;
-        align-items: center;
+        flex-direction: column;
+        align-items: left;
         justify-content: center;
-        padding-bottom: size(80);
+        padding: size(72) 0 size(80) 0;
 
         @media (max-width: size(750)) {
-            flex-direction: column;
+
             justify-content: center;
 
-            .button {
-                width: 100%;
-            }
         }
+    }
+
+    &__supportmsg {
+        padding-inline: size(16);
     }
 
     &__img {
@@ -158,6 +174,9 @@
         left: size(16);
         max-width: size(70);
 
+        @media (max-width: size(500)) {
+            top: size(74);
+        }
     }
 
     &__content {
@@ -171,7 +190,7 @@
         padding: size(32) size(16);
         margin: 0 auto;
 
-        @media (max-width: size(750)) {
+        @media (max-width: size(800)) {
             grid-template-columns: 1fr;
         }
     }

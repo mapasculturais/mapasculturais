@@ -4,7 +4,9 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-
+    &--section{
+        max-width: size(870);
+    }
     &__input {
         border: var(--mc-border-hairline) var(--mc-gray-500);
         border-radius: var(--mc-border-radius-pill) 0 0 var(--mc-border-radius-pill);
