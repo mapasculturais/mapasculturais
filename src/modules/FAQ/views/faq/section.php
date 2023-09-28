@@ -1,4 +1,5 @@
 <?php
+
 use MapasCulturais\App;
 use MapasCulturais\i;
 
@@ -7,6 +8,11 @@ $this->import('
     faq-search-results
     mc-title
 ');
+$this->breadcrumb = [
+    ['label' => i::__('Dúvidas frequentes'), 'url' => $this->controller->createUrl('index')],
+    ['label' => $active_section ],
+];
+$message = $app->config['module.FAQ']['support-message'] ?? '';
 
 ?>
 <a href="<?= $this->controller->createUrl('index'); ?>" class="primary__color faq__back"><mc-icon name="arrow-left-ios"></mc-icon><mc-title tag="p" class="bold"><?= i::__('Voltar') ?></mc-title></a>
@@ -31,15 +37,11 @@ $this->import('
         </div>
     </aside>
     <main>
+        <faq-search section></faq-search>
         <faq-accordion v-if="!global.faqSearch"></faq-accordion>
         <faq-search-results v-if="global.faqSearch"></faq-search-results>
-        <div class="faq__footer">
-            <p class="bold"><?= i::__('Não encontrou o que procurava?') ?></p>
-            <div class="faq__footer-btns">
-                <button class="button button--primary "><?= i::__('Contate o nosso suporte') ?></button>
-                <p class="bold"><?= i::__('ou') ?></p>
-                <button class="button button--primary button--primary-noborder"><?= i::__('Envie a sua dúvida para nós') ?></button>
-            </div>
+        <div class="faq__message">
+            <?= $message ?>
         </div>
     </main>
 </div>

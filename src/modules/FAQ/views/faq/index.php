@@ -8,6 +8,8 @@ $this->import('
     mc-title
     mc-icon
 ');
+$message = $app->config['module.FAQ']['support-message'] ?? '';
+
 ?>
 
 <main v-if="!global.faqSearch" class="faq__main">
@@ -34,7 +36,12 @@ $this->import('
         </div>
     </div>
 </main>
-<main v-if="global.faqSearch" class="faq__main faq__main--results">
-    <faq-search-results index ></faq-search-results>
-    
+<main>
+    <div v-if="global.faqSearch" class="faq__main faq__main--results">
+
+        <faq-search-results index ></faq-search-results>
+    </div>
+    <div class="faq__supportmsg">
+            <?= $message ?>
+    </div>
 </main>
