@@ -104,14 +104,5 @@ app.component('entity-card', {
             }
             return text;
         },
-        entityTime(entity){
-            if(entity.registrationTo?.isPast()){
-                return this.text('As inscrições encerraram-se no dia');
-            }
-
-            if(entity.registrationFrom?.isToday() || entity.registrationFrom?.isPast() && entity.registrationTo?.isFuture()){
-                return this.text('As inscrições encerrarão no dia');
-            }
-        }
     },
 });
