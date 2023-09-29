@@ -1,10 +1,6 @@
 # Componente `<home-header>`
 Componente header da página inicial
-A imagem pode ser substituida 
-
-## Propriedades
-- *title **string*** - titulo da home
-- *description **string*** - descrição da home
+Background, Banner e Link do banner podem ser configurados no arquivo home-header.php
 
 ### Importando componente
 ```PHP
@@ -15,6 +11,6 @@ $this->import('home-header');
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<home-header title="Bem Vindo" description="texto de boas vindas."></home-header>
+<home-header></home-header>
 
 ```
