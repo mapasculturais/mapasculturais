@@ -15,7 +15,7 @@ return [
     'homeHeader.background' => env('HOME_HEADER_BACKGROUND', ''),
 
     /* 
-    Define o banner do header na homepage 
+    Define o nome do asset do banner do header da homepage 
     ex: `img/meu-banner.jpg` (pasta assets/img/meu-banner.jpg do tema)
     */
     'homeHeader.banner' => env('HOME_HEADER_BANNER', ''),
