@@ -4,8 +4,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CDIR=$( pwd )
 cd $DIR
 
-MAPAS_NAME=mapas-run
-
 BUILD="0"
 DOWN="0"
 
@@ -41,8 +39,7 @@ if [ $DOWN = "1" ]; then
    docker-compose down
 fi
 
-docker rm $MAPAS_NAME
-docker-compose run --name=$MAPAS_NAME --service-ports mapas 
+docker-compose run --service-ports mapas 
 
 docker-compose down --remove-orphans
 cd $CDIR
