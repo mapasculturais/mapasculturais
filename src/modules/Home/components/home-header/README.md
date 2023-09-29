@@ -1,6 +1,6 @@
 # Componente `<home-header>`
 Componente header da página inicial
-Background, Título, Descrição, Banner e Link do banner podem ser configurados no arquivo home-header.php
+Background, Banner e Link do banner podem ser configurados no arquivo home-header.php
 
 ### Importando componente
 ```PHP

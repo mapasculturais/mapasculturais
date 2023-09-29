@@ -5,8 +5,6 @@
  */
 
 $this->jsObject['config']['homeHeader'] = [
-    'title' => $app->config['homeHeader.title'],
-    'description' => $app->config['homeHeader.description'],
     'background' => $app->config['homeHeader.background'] ? $this->asset($app->config['homeHeader.background'], false) : $this->asset($app->config['module.home']['home-header']),
     'banner' => $app->config['homeHeader.banner'] ? $this->asset($app->config['homeHeader.banner'], false) : '',
     'bannerLink' => $app->config['homeHeader.bannerLink'],
