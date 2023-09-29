@@ -24,7 +24,7 @@ $this->import('
         </div>
 
         <div v-if="banner" class="home-header__banner">
-            <a v-if="bannerLink" :href="bannerLink" :download="downloadableLink ? 'download' : null" :target="!downloadableLink ? '_blank' : null">
+            <a v-if="bannerLink" :href="bannerLink" :download="downloadableLink ? '' : undefined"  :target="!downloadableLink ? '_blank' : null">
                 <img :src="banner" />
             </a>
             <img v-if="!bannerLink" :src="banner" />
