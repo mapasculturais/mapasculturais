@@ -23,12 +23,19 @@
             position: relative;
             top: size(20);
             margin: unset;
+            right: size(21);
 
             ul {
                 position: relative;
 
                 li {
                     text-transform: capitalize;
+                    @media (max-width: size(800)) {
+                        display: flex;
+                        &::before {
+                            content: url('https://api.iconify.design/fe/arrow-right.svg?width=16&height=16');
+                        }
+                    }
                 }
             }
         }
@@ -174,8 +181,11 @@
         left: size(16);
         max-width: size(70);
 
-        @media (max-width: size(500)) {
-            top: size(74);
+        @media (max-width: size(800)) {
+            top: size(95);
+        }
+        @media (max-width: size(400)) {
+            top: size(64);
         }
     }
 
