@@ -4,6 +4,8 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
+use MapasCulturais\i;
+
 $this->import('
     home-search
 ');
@@ -12,12 +14,12 @@ $this->import('
 <div :class="['home-header', {'home-header--withBanner' : banner}] ">
     <div class="home-header__content">
 
-        <div v-if="title || description" class="home-header__main">
-            <label v-if="title" class="home-header__title">
-                {{title}}
+        <div class="home-header__main">
+            <label class="home-header__title">
+                <?= $this->text('title', i::__('Bem-vinde ao Mapas Culturais')) ?>
             </label>
-            <p v-if="description" class="home-header__description">
-                {{description}}
+            <p class="home-header__description">
+                <?= $this->text('description', i::__('O Mapas Culturais é uma ferramenta de gestão cultural, que garante a estruturação de Sistemas de Informações e Indicadores. A plataforma oferece soluções para o mapeamento colaborativo de agentes culturais, realização de todas as etapas de editais e fomentos, organização de uma agenda cultural e divulgação espaços culturais dos territórios.')) ?>
             </p>
         </div>
 

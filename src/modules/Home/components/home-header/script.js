@@ -9,8 +9,6 @@ app.component('home-header', {
 
     data() {
         return {
-            title: $MAPAS.config.homeHeader.title,
-            description: $MAPAS.config.homeHeader.description,
             background: $MAPAS.config.homeHeader.background,
             banner: $MAPAS.config.homeHeader.banner,
             bannerLink: $MAPAS.config.homeHeader.bannerLink,
