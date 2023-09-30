@@ -349,28 +349,28 @@ class Subsite extends \MapasCulturais\Entity
     }
 
 
-    public function applyConfigurations(&$config){
+    public function applyConfigurations(){
         $app = App::i();
 
-        $app->applyHookBoundTo($this, 'subsite.applyConfigurations:before', ['config' => &$config]);
+        $app->applyHookBoundTo($this, 'subsite.applyConfigurations:before', ['config' => &$app->config]);
 
-        $config['app.verifiedSealsIds'] = $this->verifiedSeals;
+        $app->config['app.verifiedSealsIds'] = $this->verifiedSeals;
 
 
         if($this->longitude && $this->longitude) {
-            $config['maps.center'] = array($this->latitude, $this->longitude);
+            $app->config['maps.center'] = array($this->latitude, $this->longitude);
         }
 
         if($this->zoom_default) {
-            $config['maps.zoom.default'] = $this->zoom_default;
+            $app->config['maps.zoom.default'] = $this->zoom_default;
         }
 
         if($this->zoom_max){
-            $config['maps.zoom.max'] = $this->zoom_max;
+            $app->config['maps.zoom.max'] = $this->zoom_max;
         }
 
         if($this->zoom_min){
-            $config['maps.zoom.min'] = $this->zoom_min;
+            $app->config['maps.zoom.min'] = $this->zoom_min;
         }
 
         $domain = $this->url;
@@ -389,36 +389,30 @@ class Subsite extends \MapasCulturais\Entity
 
         $assets_folder = "assets/{$domain}/";
 
-        $config['base.assetUrl'] = $app->baseUrl . $assets_folder;
-        $config['themes.assetManager']->config['publishPath'] = BASE_PATH . $assets_folder;
+        $app->config['base.assetUrl'] = $app->baseUrl . $assets_folder;
+        $app->config['themes.assetManager']->config['publishPath'] = BASE_PATH . $assets_folder;
 
         // @TODO: passar esta parte abaixo para o tema
-
-        $entidades = explode(';', $this->entidades_habilitadas);
-
+        $entidades = $this->entidades_habilitadas;
         if(!in_array('Agents', $entidades)){
-            $config['app.enabled.agents'] = false;
+            $app->config['app.enabled.agents'] = false;
         }
 
         if (!in_array('Projects', $entidades)) {
-            $config['app.enabled.projects'] = false;
+            $app->config['app.enabled.projects'] = false;
         }
 
         if (!in_array('Spaces', $entidades)) {
-            $config['app.enabled.spaces'] = false;
+            $app->config['app.enabled.spaces'] = false;
         }
 
         if (!in_array('Events', $entidades)) {
-            $config['app.enabled.events'] = false;
+            $app->config['app.enabled.events'] = false;
         }
 
         if (!in_array('Opportunities', $entidades)) {
-            $config['app.enabled.opportunities'] = false;
+            $app->config['app.enabled.opportunities'] = false;
         }
-
-
-
-
 
         $app->applyHookBoundTo($this, 'subsite.applyConfigurations:after', ['config' => &$config]);
 
