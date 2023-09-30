@@ -200,7 +200,11 @@ class RoutesManager{
             App::i()->pass();
         }else{
             App::i()->view->setController($controller);
-            $controller->callAction( $api_call ? 'API' : App::i()->request->getMethod(), $action_name, $args );
+            try{
+                $controller->callAction( $api_call ? 'API' : App::i()->request->getMethod(), $action_name, $args );
+            } catch (Exceptions\Halt $e){
+                // não precisa fazer nada
+            }
         }
     }
 
