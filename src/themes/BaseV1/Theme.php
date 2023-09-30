@@ -7,6 +7,7 @@ use MapasCulturais\App;
 use MapasCulturais\Controllers\Agent;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
+use MapasCulturais\Entities\Registration;
 use Respect\Validation\length;
 use MapasCulturais\i;
 use OpportunityPhases\Module as Phases;
@@ -1310,112 +1311,6 @@ class Theme extends MapasCulturais\Theme {
             }
         });
     
-        // unifica as fichas de inscricão
-        $app->hook('template(registration.view.form):begin', function() use($app){
-            $entity = $this->controller->requestedEntity;
-    
-            $current_registration = $entity;
-    
-            if($entity->status == Entities\Registration::STATUS_DRAFT){
-                return;
-            }
-    
-            $registrations = [$entity];
-    
-            $first = $entity;
-    
-            while($entity = Phases::getPreviousPhaseRegistration($entity)){
-                $registrations[] = $entity;
-                $first = $entity;
-            }
-    
-            $registrations = array_reverse($registrations);
-    //
-            $this->addEntityToJs($first);
-            $this->addRegistrationToJs($first);
-            $this->addOpportunityToJs($first->opportunity);
-    
-            $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($current_registration);
-            $this->jsObject['evaluationConfiguration'] = $current_registration->opportunity->evaluationMethodConfiguration;
-    
-            $this->jsObject['entity']['registrationFieldConfigurations'] = [];
-            $this->jsObject['entity']['registrationFileConfigurations'] = [];
-    
-            foreach($registrations as $i => $reg){
-    
-                $this->jsObject['registration'] = $reg;
-    
-                $opportunity = $reg->opportunity;
-    
-                if (count($opportunity->registrationFieldConfigurations) || count($opportunity->registrationFileConfigurations)) {
-                    $empty = new Entities\RegistrationFieldConfiguration;
-                    $empty->owner = $opportunity;
-                    $empty->title = '';
-                    $empty->fieldType = 'section';
-                    $empty->displayOrder = $i * 1000 -2;
-    
-    
-                    $section_divisor = new Entities\RegistrationFieldConfiguration;
-                    $section_divisor->owner = $opportunity;
-                    $section_divisor->fieldType = 'section';
-                    $section_divisor->title = sprintf(i::__('%s - Inscrição %s'),$opportunity->name, $reg->id);
-                    $section_divisor->displayOrder = $i * 1000 -1;
-    
-                    $this->jsObject['entity']['registrationFieldConfigurations'][] = $section_divisor;
-                }
-    
-                foreach($opportunity->registrationFieldConfigurations as $field){
-                    // faz um shift de 1000 * $i na ordem do campo
-                    $field->displayOrder += $i * 1000;
-    
-                    $this->jsObject['entity']['registrationFieldConfigurations'][] = $field;
-    
-                    $field_name = $field->fieldName;
-                    
-                    if($reg->canUser("viewUserEvaluation") && !$reg->canUser("@control")){
-                        if(isset($opportunity->avaliableEvaluationFields[$field_name])){
-                            $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
-                        }
-                    }else{
-                        $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
-                    }
-    
-    
-                }
-    
-                foreach($opportunity->registrationFileConfigurations as $file){
-                    // faz um shift de 1000 * $i na ordem do campo
-                    $file->displayOrder += $i * 1000;
-    
-                    $this->jsObject['entity']['registrationFileConfigurations'][] = $file;
-                }
-    
-                if(!is_array($this->jsObject['entity']['registrationFiles'])){
-                    $this->jsObject['entity']['registrationFiles'] = [];
-                }
-    
-                foreach($reg->files as $key => $value){
-                    $this->jsObject['entity']['registrationFiles'][$key] = $value;
-                }
-    
-            }
-    
-            $this->jsObject['entity']['id'] = $current_registration->id;
-            $this->jsObject['entity']['status'] = $current_registration->status;            
-            $this->jsObject['entity']['object']->id = $current_registration->id;
-            $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;
-            $this->jsObject['entity']['canUserEvaluate'] = $current_registration->canUser('evaluate');
-            $this->jsObject['entity']['canUserModify'] = $current_registration->canUser('modify');
-            $this->jsObject['entity']['canUserSend'] = $current_registration->canUser('send');
-            $this->jsObject['entity']['canUserViewUserEvaluations'] = $current_registration->canUser('viewUserEvaluations');
-    
-            
-            $this->jsObject['registration']->id = $current_registration->id;
-            $this->jsObject['registration']->status = $current_registration->status;
-            $this->jsObject['registration']->opportunity = $current_registration->opportunity;            
-    
-        });
-    
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->jsObject['angularAppDependencies'][] = 'OpportunityPhases';
             $app->view->enqueueScript('app', 'ng.opportunityPhases', 'js/ng.opportunityPhases.js', ['mapasculturais']);
@@ -1599,6 +1494,111 @@ class Theme extends MapasCulturais\Theme {
         });        
     }
     
+
+    function mergeRegistrationPhases(Registration $entity) {
+        {    
+            $app = App::i();
+            
+            $current_registration = $entity;
+    
+            if($entity->status == Entities\Registration::STATUS_DRAFT){
+                return;
+            }
+    
+            $registrations = [$entity];
+    
+            $first = $entity;
+    
+            while($entity = Phases::getPreviousPhaseRegistration($entity)){
+                $registrations[] = $entity;
+                $first = $entity;
+            }
+    
+            $registrations = array_reverse($registrations);
+    //
+            $this->addEntityToJs($first);
+            $this->addRegistrationToJs($first);
+            $this->addOpportunityToJs($first->opportunity);
+    
+            $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($current_registration);
+            $this->jsObject['evaluationConfiguration'] = $current_registration->opportunity->evaluationMethodConfiguration;
+    
+            $this->jsObject['entity']['registrationFieldConfigurations'] = [];
+            $this->jsObject['entity']['registrationFileConfigurations'] = [];
+    
+            foreach($registrations as $i => $reg){
+    
+                $this->jsObject['registration'] = $reg;
+    
+                $opportunity = $reg->opportunity;
+    
+                if (count($opportunity->registrationFieldConfigurations) || count($opportunity->registrationFileConfigurations)) {
+                    $empty = new Entities\RegistrationFieldConfiguration;
+                    $empty->owner = $opportunity;
+                    $empty->title = '';
+                    $empty->fieldType = 'section';
+                    $empty->displayOrder = $i * 1000 -2;
+    
+    
+                    $section_divisor = new Entities\RegistrationFieldConfiguration;
+                    $section_divisor->owner = $opportunity;
+                    $section_divisor->fieldType = 'section';
+                    $section_divisor->title = sprintf(i::__('%s - Inscrição %s'),$opportunity->name, $reg->id);
+                    $section_divisor->displayOrder = $i * 1000 -1;
+                    $this->jsObject['entity']['registrationFieldConfigurations'][] = $section_divisor;
+                }
+    
+                foreach($opportunity->registrationFieldConfigurations as $field){
+                    // faz um shift de 1000 * $i na ordem do campo
+                    $field->displayOrder += $i * 1000;
+                    $this->jsObject['entity']['registrationFieldConfigurations'][] = $field;
+    
+                    $field_name = $field->fieldName;
+                    
+                    if($reg->canUser("viewUserEvaluation") && !$reg->canUser("@control")){
+                        if(isset($opportunity->avaliableEvaluationFields[$field_name])){
+                            $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
+                        }
+                    }else{
+                        $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
+                    }
+    
+    
+                }
+    
+                foreach($opportunity->registrationFileConfigurations as $file){
+                    // faz um shift de 1000 * $i na ordem do campo
+                    $file->displayOrder += $i * 1000;
+    
+                    $this->jsObject['entity']['registrationFileConfigurations'][] = $file;
+                }
+    
+                if(!is_array($this->jsObject['entity']['registrationFiles'])){
+                    $this->jsObject['entity']['registrationFiles'] = [];
+                }
+    
+                foreach($reg->files as $key => $value){
+                    $this->jsObject['entity']['registrationFiles'][$key] = $value;
+                }
+    
+            }
+    
+            $this->jsObject['entity']['id'] = $current_registration->id;
+            $this->jsObject['entity']['status'] = $current_registration->status;            
+            $this->jsObject['entity']['object']->id = $current_registration->id;
+            $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;
+            $this->jsObject['entity']['canUserEvaluate'] = $current_registration->canUser('evaluate');
+            $this->jsObject['entity']['canUserModify'] = $current_registration->canUser('modify');
+            $this->jsObject['entity']['canUserSend'] = $current_registration->canUser('send');
+            $this->jsObject['entity']['canUserViewUserEvaluations'] = $current_registration->canUser('viewUserEvaluations');
+    
+            
+            $this->jsObject['registration']->id = $current_registration->id;
+            $this->jsObject['registration']->status = $current_registration->status;
+            $this->jsObject['registration']->opportunity = $current_registration->opportunity;            
+    
+        }
+    }
 
     /*
      * This methods tries to fill the address fields using the postal code
@@ -2820,7 +2820,6 @@ class Theme extends MapasCulturais\Theme {
 
     function addOpportunityToJs(Entities\Opportunity $entity){
         $app = App::i();
-
 
         $registrationStatuses = [
             ['value' => 1, 'label' => i::__('Pendente')],
