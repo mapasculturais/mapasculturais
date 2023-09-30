@@ -423,11 +423,12 @@ class App {
         $this->_initAutoloader();
         $this->_initCache();
         $this->_initDoctrine();
+        
+        $this->_initSubsite();
 
         $this->_initRouteManager();
         $this->_initAuthProvider();
 
-        $this->_initSubsite();
         $this->_initTheme();
 
         $this->applyHookBoundTo($this, 'app.init:before');
@@ -751,10 +752,12 @@ class App {
         } catch ( \Exception $e) { }
 
 
-        if($this->_subsite){
-            $this->subsite->applyApiFilters();
-            $this->subsite->applyConfigurations($this->config);
-        }
+        $this->hook('app.init:after', function () {
+            if($this->subsite){
+                $this->subsite->applyApiFilters();
+                $this->subsite->applyConfigurations();
+            }
+        });
     }
 
     /**
@@ -1037,7 +1040,7 @@ class App {
      * @return Entities\Subsite|null 
      */
     public function getCurrentSubsite(): Entities\Subsite|null {
-        return $this->_subsite;
+        return $this->subsite;
     }
 
     /**
@@ -1048,8 +1051,8 @@ class App {
     public function getCurrentSubsiteId(): int|null {
         // @TODO: alterar isto quando for implementada a possibilidade de termos 
         // instalações de subsite com o tema diferente do Subsite
-        if($this->_subsite){
-            return $this->_subsite->id;
+        if($this->subsite){
+            return $this->subsite->id;
         }
 
         return null;
@@ -1241,7 +1244,11 @@ class App {
      * @return bool 
      */
     function isEnabled(string $entity){
-        return (bool) $this->config['app.enabled.' . $entity];
+        $enabled = (bool) $this->config['app.enabled.' . $entity];
+
+        $this->applyHookBoundTo($this, "app.isEnabled({$entity})", [&$enabled]);
+        
+        return $enabled;
     }
 
      /**
