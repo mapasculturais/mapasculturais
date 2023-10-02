@@ -3,7 +3,10 @@ Cria um elemento para o título, adicionando classes modificadoras para
 títulos muito longos ou curtos
 
 ## Propriedades
-- *String **tag*** = 'h2' - Tag que será usada para o elemento do título
+- *String **tag*** = 'h2' - Tag que será usada para o elemento do título (h1, h2, h3 ou h4)
+- *String **size*** = 'medium' - Tamanho do título (big, medium ou small)
+- *Number **longLength*** = 30 - Comprimento mínimo para ser considerado um título longo
+- *Number **shortLength*** = 20 - Comprimento máximo para ser considerado um título curto
 
 ## Slots
 - **default** : Texto do título
@@ -27,4 +30,7 @@ $this->import('mc-title');
 
 <!-- modifica o elemento do título -->
 <mc-title tag='h1'>Título curto</mc-title>
+
+<!-- modifica o tamanho do título -->
+<mc-title tag='h1' size="big">Título curto</mc-title>
 ```
