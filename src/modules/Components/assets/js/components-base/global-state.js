@@ -18,6 +18,7 @@ globalThis.useGlobalState = Pinia.defineStore('globalState', {
             },
         }
         return {
+            enabledEntities: $MAPAS.enabledEntities,
             visibleFooter: true,
             auth,
             showTemplateHook: false,
