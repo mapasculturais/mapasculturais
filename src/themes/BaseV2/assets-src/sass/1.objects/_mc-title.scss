@@ -1,18 +1,28 @@
 .mc-title {
     // size medium (utilizado no card)
     font-size: var(--mc-font-size-sm);
-
+    
     &--long {
         font-size: var(--mc-font-size-xxs);
     }
-
+    
     &--short {
         font-size: var(--mc-font-size-lg);
     }
 
-    // size small 
+    @media (max-width: size(600)) {
+        &--long {
+            font-size: var(--mc-font-size-xs);
+        }
+
+        &--short {
+            font-size: var(--mc-font-size-md);
+        }
+    }
+
     &--small {
         font-size: var(--mc-font-size-xs);
+       
     }
 
     &--small.mc-title--long {
@@ -26,13 +36,21 @@
     // size big (utilizada na single)
     &--big {
         font-size: var(--mc-font-size-md);
+     
     }
 
     &--big.mc-title--long {
-        font-size: var(--mc-font-size-xs);
+        font-size: var(--mc-font-size-sm);
+        @media (max-width: size(600)) {
+            font-size: var(--mc-font-size-xs);
+        }
     }
 
     &--big.mc-title--short {
         font-size: var(--mc-font-size-xl);
+        @media (max-width: size(600)) {
+            font-size: var(--mc-font-size-md);
+        }
     }
+
 }
