@@ -31,7 +31,7 @@ $this->import('
                 
                 
                     <template #title>
-                    <mc-title tag="p" class="bold">{{entity.parent?.name || entity.name}}</mc-title>
+                    <p class="bold">{{entity.parent?.name || entity.name}}</p>
 
                     </template>
 
