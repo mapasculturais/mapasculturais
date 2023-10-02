@@ -1241,7 +1241,20 @@ class App {
      * @return bool 
      */
     function isEnabled(string $entity){
-        return (bool) $this->config['app.enabled.' . $entity];
+        $entities = [
+            'agent' => 'agents',
+            'space' => 'spaces',
+            'project' => 'projects',
+            'opportunity' => 'opportunities',
+            'event' => 'events',
+            'subsite' => 'subsites',
+            'seal' => 'seals',
+            'app' => 'apps',
+        ];
+
+        $entity = $entities[$entity] ?? $entity;
+
+        return (bool) $this->config['app.enabled.' . $entity] ?? false;
     }
 
      /**
