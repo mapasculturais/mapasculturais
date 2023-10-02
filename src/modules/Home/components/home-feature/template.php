@@ -13,7 +13,7 @@ $this->import('
 	mc-tabs
 ');
 ?>
-<div class="home-feature">
+<div v-if="enabledEntities()" class="home-feature">
     <div class="home-feature__header">
         <div class="home-feature__header title">
             <label><?= $this->text('title', i::__('Em destaque')) ?></label>
@@ -24,7 +24,7 @@ $this->import('
     </div>
     <div class="home-feature__content">
         <div class="home-feature__content cards">
-            <mc-loading :condition="!entities.length"></mc-loading>
+            <mc-loading :condition="entities.length"></mc-loading>
             <mc-tabs v-if="entities.length > 0">
                 <mc-tab label="<?= i::esc_attr__('Todos') ?>" slug="all">
                     <carousel :settings="settings" :breakpoints="breakpoints">
@@ -107,6 +107,10 @@ $this->import('
                     </carousel>
                 </mc-tab>
             </mc-tabs>
+
+            <span v-if="entities.length <= 0" class="semibold">
+                <?= $this->text('destaques não encontrados', i::__('Nenhuma entidade em destaque foi encontrada.')); ?>
+            </span>
         </div>
     </div>
 </div>
