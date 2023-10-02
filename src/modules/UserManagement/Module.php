@@ -148,6 +148,19 @@ class Module extends \MapasCulturais\Module {
                 LEFT JOIN 
                     a.__metadata nomeSocial 
                 WITH nomeSocial.key = 'nomeSocial'
+
+                LEFT JOIN
+                    a._children children
+
+                LEFT JOIN 
+                    children.__metadata child_nomeCompleto 
+                WITH child_nomeCompleto.key = 'nomeCompleto'
+                
+                LEFT JOIN 
+                    children.__metadata child_nomeSocial 
+
+                WITH child_nomeSocial.key = 'nomeSocial'
+                
                 
                 ";
 
@@ -155,7 +168,13 @@ class Module extends \MapasCulturais\Module {
                 $joins .= "
                     LEFT JOIN 
                         a.__metadata doc 
-                    WITH doc.key = 'documento'";
+                    WITH doc.key = 'documento'
+
+                    LEFT JOIN 
+                    children.__metadata child_doc 
+                    WITH child_doc.key = 'documento'
+                    
+                ";
             }
         });
 
@@ -168,13 +187,18 @@ class Module extends \MapasCulturais\Module {
                 unaccent(lower(e.email)) LIKE unaccent(lower(:keyword)) OR 
                 unaccent(lower(a.name)) LIKE unaccent(lower(:keyword)) OR
                 unaccent(lower(nomeCompleto.value)) LIKE unaccent(lower(:keyword)) OR
-                unaccent(lower(nomeSocial.value)) LIKE unaccent(lower(:keyword))
+                unaccent(lower(nomeSocial.value)) LIKE unaccent(lower(:keyword)) OR
+
+                unaccent(lower(children.name)) LIKE unaccent(lower(:keyword)) OR
+                unaccent(lower(child_nomeCompleto.value)) LIKE unaccent(lower(:keyword)) OR
+                unaccent(lower(child_nomeSocial.value)) LIKE unaccent(lower(:keyword))
             )";
 
             $doc = preg_replace("/\D/", '', $keyword);
             if (strlen($doc) >= 11) {
                 $formated_doc = Utils::formatCnpjCpf($doc);
                 $where .= " OR doc.value = '{$doc}' OR doc.value = '{$formated_doc}'";
+                $where .= " OR child_doc.value = '{$doc}' OR child_doc.value = '{$formated_doc}'";
             }
         });
 
