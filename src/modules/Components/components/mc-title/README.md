@@ -22,11 +22,17 @@ $this->import('mc-title');
 <!-- título curto recebe uma classe mc-title--short -->
 <mc-title>Título curto</mc-title>
 
-<!-- título médio não recebe nenhuma classe modificadora -->
-<mc-title>Título médio, que </mc-title>
+<!-- titulo usando a propriedade tag -->
+<mc-title tag="h2"></mc-title>
 
-<!-- título longo recebe uma classe mc-title--long -->
-<mc-title>Título muito longo que receberá uma classe modificadora mc-title--long</mc-title>
+<!-- titulo usando a propriedade size -->
+<mc-title size="big"></mc-title>
+
+<!-- propriedade que adiciona estilo de acordo com o cumprimento definido -->
+<mc-title shortLength="40">Título médio, que </mc-title>
+
+<!-- propriedade que adiciona estilo de acordo com o cumprimento definido -->
+<mc-title longLength="100">Título médio, que </mc-title>
 
 <!-- modifica o elemento do título -->
 <mc-title tag='h1'>Título curto</mc-title>
