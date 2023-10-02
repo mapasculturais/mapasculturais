@@ -38,7 +38,6 @@ app.component('mc-title', {
 
     mounted() {
         const length = this.$refs.title.textContent.trim().length;
-        
         if(length > this.longLength) {
             this.classes.push('mc-title--long');
             
