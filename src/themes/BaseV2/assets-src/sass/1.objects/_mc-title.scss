@@ -1,13 +1,13 @@
 .mc-title {
     // size medium (utilizado no card)
     font-size: var(--mc-font-size-sm);
-    
+
     &--long {
-        font-size: var(--mc-font-size-xxs);
+        font-size: var(--mc-font-size-sm);
     }
-    
+
     &--short {
-        font-size: var(--mc-font-size-lg);
+        font-size: var(--mc-font-size-md);
     }
 
     @media (max-width: size(600)) {
@@ -22,7 +22,7 @@
 
     &--small {
         font-size: var(--mc-font-size-xs);
-       
+
     }
 
     &--small.mc-title--long {
@@ -36,11 +36,12 @@
     // size big (utilizada na single)
     &--big {
         font-size: var(--mc-font-size-md);
-     
+
     }
 
     &--big.mc-title--long {
         font-size: var(--mc-font-size-sm);
+
         @media (max-width: size(600)) {
             font-size: var(--mc-font-size-xs);
         }
@@ -48,6 +49,7 @@
 
     &--big.mc-title--short {
         font-size: var(--mc-font-size-xl);
+
         @media (max-width: size(600)) {
             font-size: var(--mc-font-size-md);
         }
