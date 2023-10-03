@@ -684,6 +684,50 @@ class Module extends \MapasCulturais\Module{
          * Demais hooks
          */
 
+        /** 
+         * Serialização das oportunidades para incluir o nome da fase 
+         * por exemplo:
+         * - Período de inscrição (quando não há uma fase de avaliação seguinte)
+         * - Período de inscrição / Avaliação documental
+         * - Nome da fase de coleta de dados
+         * - Nome da fase de coleta de dados / Avaliação técnica
+         * - Avaliação técnica (quando a fase de avaliação não sucede )
+         */
+
+        $app->hook('entity(Opportunity).jsonSerialize', function (&$data) {
+            $current_phase = $this->firstPhase;
+            $num = 0;
+            do{
+                /** @var Opportunity $current_phase */
+                if($current_phase->isDataCollection) {
+                    $num++;
+                }
+                if($current_phase->evaluationMethodConfiguration) {
+                    $num++;
+                }
+
+                if($current_phase->equals($this)) {
+                    break;
+                }
+            } while ($current_phase = $current_phase->nextPhase);
+
+            if($this->evaluationMethodConfiguration && $current_phase->isDataCollection) {
+                $phase_name = $current_phase->isFirstPhase ? i::__('Período de inscrição') : $current_phase->name;
+
+                $num_1 = $num - 1;
+                $name = "{$num_1}. {$phase_name} / {$num}. {$this->evaluationMethodConfiguration->name}";
+
+            } else if ($this->evaluationMethodConfiguration) {
+                $name = "{$num}. {$this->evaluationMethodConfiguration->name}";
+            } else if ($this->isLastPhase) {
+                $name = "{$num}. " . i::__('Publicação final do resultado');
+            } else {
+                $name = "{$num}. {$this->name}";
+            }
+            
+            $data['phaseName'] = $name;
+        });
+
         /** enfileira job para sincronização das inscrições em segundo plano */
         $app->hook('Entities\Opportunity::enqueueRegistrationSync', function($value, array $registrations = []) use($app) {
             $data = [
@@ -1103,6 +1147,15 @@ class Module extends \MapasCulturais\Module{
                 'isEntityRelation' => false,
                 'required' => false,
                 'type' => 'boolean',
+                'isReadonly' => true,
+            ];
+
+            $result['phaseName'] = [
+                'label' => i::__('Nome da fase para exibição do usuário, considerando a fase de avaliação conjunta'),
+                'isMetadata' => true,
+                'isEntityRelation' => false,
+                'required' => false,
+                'type' => 'string',
                 'isReadonly' => true,
             ];
         });

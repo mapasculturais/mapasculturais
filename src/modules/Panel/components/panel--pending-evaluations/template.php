@@ -31,8 +31,8 @@ $this->import('
                 
                 
                     <template #title>
-                    <mc-title tag="p" class="bold">{{entity.parent?.name || entity.name}}</mc-title>
-
+                        <mc-title tag="p" class="bold">{{entity.parent?.name || entity.name}}</mc-title>
+                        <h5 class="panel--pending-evaluations__phase-name opportunity__color">{{entity.phaseName}}</h5>
                     </template>
 
                     <template #header-actions>
