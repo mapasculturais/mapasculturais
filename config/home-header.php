@@ -17,6 +17,4 @@ return [
     'homeHeader.bannerLink' => env('HOME_HEADER_LINK', ''),
     /* Define se link é para download ou para abrir em uma nova aba */
     'homeHeader.downloadableLink' => env('HOME_HEADER_DOWNLOADABLE', false),
-
-    'text:home-header.title' => 'teste',
 ];

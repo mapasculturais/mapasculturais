@@ -10,7 +10,7 @@ $this->import('
     entity-card
 ');
 ?>
-<div v-if="entities.length > 0" class="panel--last-registrations">
+<div v-if="entities.length > 0 && global.enabledEntities.opportunities" class="panel--last-registrations">
     <div class="panel--last-registrations__content">
         <div class="panel--last-registrations__content-title">
             <label> <?php i::_e('Inscrições recentes')?> </label>

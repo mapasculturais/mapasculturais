@@ -8,7 +8,7 @@ return [
     'app.enabled.projects'      => !env('DISABLE_PROJECTS', false),
     'app.enabled.opportunities' => !env('DISABLE_OPPORTUNITIES', false),
     'app.enabled.events'        => !env('DISABLE_EVENTS', false),
-    'app.enabled.subsite'       => !env('DISABLE_SUBSITES', false),
+    'app.enabled.subsites'       => !env('DISABLE_SUBSITES', false),
     'app.enabled.seals'         => !env('DISABLE_SEALS', false),
     'app.enabled.apps'          => !env('DISABLE_APPS', false),
 

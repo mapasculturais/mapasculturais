@@ -36,31 +36,31 @@ $this->import('
                         <p class="label"> <?php i::_e('Home') ?> </p>
                     </a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.opportunities">
                     <a href="<?= $app->createUrl('search', 'opportunities') ?>" class="mc-header-menu--item opportunity">
                         <span class="icon opportunity__hover--bg"> <mc-icon name="opportunity"></mc-icon> </span>
                         <p class="label"> <?php i::_e('Oportunidades') ?> </p>
                     </a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.agents">
                     <a href="<?= $app->createUrl('search', 'agents') ?>" class="mc-header-menu--item agent">
                         <span class="icon"> <mc-icon name="agent-2"> </span>
                         <p class="label"> <?php i::_e('Agentes') ?> </p>
                     </a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.events">
                     <a href="<?= $app->createUrl('search', 'events') ?>" class="mc-header-menu--item event">
                         <span class="icon"> <mc-icon name="event"> </span>
                         <p class="label"> <?php i::_e('Eventos') ?> </p>
                     </a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.spaces">
                     <a href="<?= $app->createUrl('search', 'spaces') ?>" class="mc-header-menu--item space">
                         <span class="icon"> <mc-icon name="space"> </span>
                         <p class="label"> <?php i::_e('Espaços') ?> </p>
                     </a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.projects">
                     <a href="<?= $app->createUrl('search', 'projects') ?>" class="mc-header-menu--item project">
                         <span class="icon"> <mc-icon name="project"> </span>
                         <p class="label"> <?php i::_e('Projetos') ?> </p>
