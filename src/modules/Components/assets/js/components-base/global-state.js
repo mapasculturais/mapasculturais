@@ -33,6 +33,10 @@ globalThis.useGlobalState = Pinia.defineStore('globalState', {
         hideFooter() {
             this.visibleFooter = false
         },
+
+        reload() {
+            window.location.reload();
+        }
     }
 });
 
