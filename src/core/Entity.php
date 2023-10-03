@@ -980,7 +980,7 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if ($this->usesTypes()) {
-            $result['type'] = $this->type->id ?? null;
+            $result['type'] = $this->_type;
         }
 
         if ($this->usesTaxonomies()) {
