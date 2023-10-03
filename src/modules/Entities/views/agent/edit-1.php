@@ -53,6 +53,7 @@ $this->breadcrumb = [
                             <entity-profile :entity="entity"></entity-profile>
                         </div>
                         <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name" label="<?php i::_e('Nome do Agente') ?>"></entity-field>
+                        <entity-field v-if="global.auth.is('admin')" :entity="entity" prop="type" @change="entity.save(true).then(() => global.reload())" classes="col-12"></entity-field>
                         <entity-terms :entity="entity" taxonomy="area" editable classes="col-12" title="<?php i::_e('Áreas de atuação'); ?>"></entity-terms>
                         <entity-field :entity="entity" classes="col-12" prop="shortDescription" label="<?php i::_e('Mini bio') ?>"></entity-field>
                         <entity-field :entity="entity" classes="col-12" prop="site"></entity-field>
