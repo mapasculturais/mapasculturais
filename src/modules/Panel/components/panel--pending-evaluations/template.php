@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->import('
     entity-card
     mc-loading
+    mc-title
 ');
 ?>
 <mc-loading :condition="loading"></mc-loading>
@@ -24,15 +25,14 @@ $this->import('
 
                 <panel--entity-card :key="entity.id" :entity="entity" class="card">
                     
-                    <!-- <template #picture>
+                   <template #picture>
                         <img v-if="entity?.files.avatar || entity.files?.avatar" :src="entity.parent?.files?.avatar?.transformations?.avatarSmall?.url || entity.files?.avatar?.transformations?.avatarSmall?.url" />
                         <mc-icon v-if="!entity.parent?.files.avatar || !entity.files?.avatar" :entity="entity" ></mc-icon>
-                    </template> -->
+                    </template>
                 
                 
                     <template #title>
-                    <p class="bold">{{entity.parent?.name || entity.name}}</p>
-
+                        <mc-title small tag="h4" :shortLength="0" :longlength="1000" class="bold">{{entity.parent?.name || entity.name}}</mc-title>
                     </template>
 
                     <template #header-actions>
