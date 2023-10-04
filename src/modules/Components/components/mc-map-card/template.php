@@ -17,7 +17,7 @@ $this->import('
             <img v-if="entity.files?.avatar" :src="entity.files?.avatar?.transformations?.avatarMedium.url" />
             <mc-icon v-else :entity="entity"></mc-icon>
         </div>
-        <mc-title tag="h5" class="bold">
+        <mc-title tag="h5" :shortLength="20" class="bold">
             <?php i::_e("{{entity.name}}") ?>
         </mc-title>
     </div>
