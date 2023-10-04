@@ -18,7 +18,7 @@ $this->import('
                 <div class="title__icon app__background">
                     <mc-icon name="app"></mc-icon>
                 </div>
-                <div class="title__title"> <?= i::_e('Meus aplicativos') ?> </div>
+                <h1 class="title__title"> <?= i::_e('Meus aplicativos') ?> </h1>
             </div>
         </div>
         <p class="panel-page__header-subtitle">
