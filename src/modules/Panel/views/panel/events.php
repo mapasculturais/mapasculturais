@@ -10,7 +10,7 @@ $this->import('panel--entity-tabs panel--entity-card mc-icon create-event');
         <div class="panel-page__header-title">
             <div class="title">
                 <div class="title__icon event__background"> <mc-icon name="event"></mc-icon> </div>
-                <div class="title__title"> <?= i::_e('Meus eventos') ?> </div>
+                <h1 class="title__title"> <?= i::_e('Meus eventos') ?> </h1>
             </div>
         </div>
         <p class="panel-page__header-subtitle">
