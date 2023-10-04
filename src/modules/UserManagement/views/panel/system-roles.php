@@ -16,7 +16,7 @@ $this->import('
         <div class="panel-page__header-title">
             <div class="title">
                 <div class="title__icon default"> <mc-icon name="role"></mc-icon> </div>
-                <div class="title__title"> <?= i::_e('Funções de usuários') ?> </div>
+                <h1 class="title__title"> <?= i::_e('Funções de usuários') ?> </h1>
             </div>
         </div>
         <p class="panel-page__header-subtitle">

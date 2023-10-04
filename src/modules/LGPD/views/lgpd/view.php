@@ -25,7 +25,7 @@ $this->breadcrumb = [
     <header class="mapas-terms__header">
         <div class="mapas-terms__header-title">
             <div class="title">
-                <div class="title__title"> <?= $config['title'] ?> </div>
+                <h1 class="title__title"> <?= $config['title'] ?> </h1>
             </div>
         </div>
     </header>
