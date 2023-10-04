@@ -12,7 +12,7 @@ $this->import('user-management--delete');
         <div class="panel-page__header-title">
           <div class="title">
             <div class="title__icon default"> <mc-icon name="trash"></mc-icon> </div>
-            <div class="title__title"> <?php i::esc_attr_e('Exclua sua conta') ?> </div>
+            <h1 class="title__title"> <?php i::esc_attr_e('Exclua sua conta') ?> </h1>
           </div>
         </div>
       </header>

@@ -1,16 +1,29 @@
 
 app.component('mc-title', {
     template: $TEMPLATES['mc-title'],
-// 
+
     props: {
         tag: {
             type: String,
-            default: 'h2'
+            default: 'h2',
+            validator: (value) => ['h1', 'h2', 'h3', 'h4'].includes(value)
         },
-        local: {
+
+        size: {
             type: String,
-            default: 'single'
-        },  
+            default: 'medium',
+            validator: (value) => ['big', 'medium', 'small'].includes(value)
+        },
+
+        shortLength: {
+            type: Number,
+            default: 20
+        },
+
+        longLength: {
+            type: Number,
+            default: 30
+        }
     },
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name];
@@ -24,17 +37,17 @@ app.component('mc-title', {
     },
 
     mounted() {
-        const length = this.$refs.title.textContent.length;
-        // this.classes.push(this.tag);
-        if(length > 30) {
-            const tag = this.tag;
-            // this.classes.push('mc-title__'+this.tag+'--short');
-            this.classes.push('mc-title__'+this.tag+'--long');
+       
+        const length = this.$refs.title.textContent.trim().length;
+        if(length > this.longLength) {
+            this.classes.push('mc-title--long');
             
+        } else if (length < this.shortLength) {
+            this.classes.push('mc-title--short');
+        }
 
-        } else if (length < 20) {
-            this.classes.push('mc-title__'+this.tag+'--short');
-
+        if(this.size != 'medium') {
+            this.classes.push('mc-title--' + this.size);
         }
     }
 });

@@ -43,34 +43,6 @@
             padding: 0;
         }
 
-        h1 {
-            align-items: center;
-            color: var(--mc-primary-500);
-            display: flex;
-            font-size: size(32);
-            width: auto;
-
-            .iconify {
-                height: size(56);
-                margin-right: size(16);
-                width: size(56);
-            }
-
-            @include mobile {
-                font-size: size(20);
-
-                .iconify {
-                    height: size(20);
-                    width: size(20);
-                }
-            }
-        }
-
-        h2 {
-            font-size: size(24);
-            //font-weight: normal;
-        }
-
         .tabs-component__panels {
             background-color: var(--mc-gray-100);
         }
