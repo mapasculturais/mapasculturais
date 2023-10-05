@@ -424,6 +424,26 @@ abstract class Entity implements \JsonSerializable{
         return false;
     }
 
+    protected function canUser_control($user) {
+        if ($this->usesAgentRelation() && $this->userHasControl($user)){
+            return true;
+        }
+        
+        if ($this->isUserAdmin($user)) {
+            return true;
+        } 
+        
+        if ($this->usesNested() && $this->parent && $this->parent->canUser('@control')) {
+            return true;
+        } 
+        
+        if (isset($this->owner) && $this->owner->canUser('@control')) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function canUser($action, $userOrAgent = null){
         $app = App::i();
         if(!$app->isAccessControlEnabled()){
@@ -448,18 +468,12 @@ abstract class Entity implements \JsonSerializable{
             if($user->isAttorney("{$action}{$permission}", $entity_user) || $user->isAttorney("manage{$permission}", $entity_user)){
                 $result = true;
             } else {
-                if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
-                    if($this->userHasControl($user)){
-                        $result = true;
-                    } else if($this->isUserAdmin($user)){
-                        $result = true;
-                    }
-                }
-    
-                if(method_exists($this, 'canUser' . $action)){
+                if (strtolower($action) === '@control') {
+                    $result = $this->canUser_control($user);
+                } elseif (method_exists($this, 'canUser' . $action)) {
                     $method = 'canUser' . $action;
                     $result = $this->$method($user);
-                }elseif($action != '@control'){
+                } else {
                     $result = $this->genericPermissionVerification($user);
                 }
             }
@@ -980,7 +994,7 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if ($this->usesTypes()) {
-            $result['type'] = $this->type->id ?? null;
+            $result['type'] = $this->_type;
         }
 
         if ($this->usesTaxonomies()) {
@@ -1198,9 +1212,6 @@ abstract class Entity implements \JsonSerializable{
         $this->computeChangeSets();
 
         if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
-            if($this->usesAgentRelation()){
-                $this->deleteUsersWithControlCache();
-            }
             $this->enqueueToPCacheRecreation();
         }
     }
@@ -1252,9 +1263,6 @@ abstract class Entity implements \JsonSerializable{
 
 
         if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
-            if($this->usesAgentRelation()){
-                $this->deleteUsersWithControlCache();
-            }
             $this->enqueueToPCacheRecreation();
         }
     }
@@ -1332,9 +1340,6 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
-            if($this->usesAgentRelation()){
-                $this->deleteUsersWithControlCache();
-            }
             $this->enqueueToPCacheRecreation();
         }
     }

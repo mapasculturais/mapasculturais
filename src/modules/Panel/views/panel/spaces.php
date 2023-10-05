@@ -10,7 +10,7 @@ $this->import('panel--entity-tabs panel--entity-card mc-icon create-space');
         <div class="panel-page__header-title">
             <div class="title">
                 <div class="title__icon space__background"> <mc-icon name="space"></mc-icon> </div>
-                <div class="title__title"> <?= i::_e('Meus espaços') ?> </div>
+                <h1 class="title__title"> <?= i::_e('Meus espaços') ?> </h1>
             </div>
         </div>
         <p class="panel-page__header-subtitle">

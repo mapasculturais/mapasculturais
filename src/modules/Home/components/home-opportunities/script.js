@@ -19,14 +19,7 @@ app.component('home-opportunities', {
     },
 
     data() {
-        return {
-            // query
-            // query: {
-            //     '@order' : 'registrationFrom ASC',
-            //     '@select' : 'id,name,shortDescription,terms,seals,singleUrl,registrationFrom,registrationTo',
-            //     ...$MAPAS.home.opportunities.filter,
-            // },
-           
+        return {           
             // carousel settings
             settings: {
                 itemsToShow: 1,
