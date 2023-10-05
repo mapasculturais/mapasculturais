@@ -1869,7 +1869,9 @@ class App {
         $created = false;
         foreach($this->_permissionCachePendingQueue as $entity) {
             if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
-                    'objectId' => $entity->id, 'objectType' => $entity->getClassName()
+                    'objectId' => $entity->id, 
+                    'objectType' => $entity->getClassName(),
+                    'status' => 0
                 ])) {
                 $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
                 $pendingCache->objectId = $entity->id;
@@ -1924,7 +1926,23 @@ class App {
      * @throws GlobalException 
      */
     public function recreatePermissionsCache(){
-        $item = $this->repo('PermissionCachePending')->findOneBy(['status' => 0], ['id' => 'ASC']);
+        $conn = $this->em->getConnection();
+
+        $id = $conn->fetchOne('
+            SELECT id 
+            FROM permission_cache_pending
+            WHERE 
+                status = 0 AND 
+                CONCAT (object_type, object_id) NOT IN (
+                    SELECT CONCAT(object_type, object_id) 
+                    FROM permission_cache_pending WHERE 
+                    status > 0
+                )');
+
+        if(!$id) { 
+            return;
+        }
+        $item = $this->repo('PermissionCachePending')->find($id);
         if ($item) {
             $start_time = microtime(true);
 
