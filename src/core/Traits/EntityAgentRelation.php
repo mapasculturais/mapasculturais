@@ -126,16 +126,6 @@ trait EntityAgentRelation {
     function getIdsOfUsersWithControl(){
         $app = \MapasCulturais\App::i();
 
-        
-        
-        if($app->permissionCacheEnabled && $this->usesPermissionCache()){
-            $prefix = $this->getPermissionCachePrefix();
-            $cache_id = "$prefix::$this::usersWithControl";
-            if($app->mscache->contains($cache_id)){
-                return $app->mscache->fetch($cache_id);
-            }
-        }
-
         $users = $this->getUsersWithControl();
         $ids = array_map(function($u){
             return $u->id;
@@ -145,31 +135,9 @@ trait EntityAgentRelation {
         return $ids;
     
     }
-    
-    function deleteUsersWithControlCache(){
-        $app = \MapasCulturais\App::i();
-
-        // cache ids
-        $cache_id = "$this::usersWithControl";
-        
-        $app->mscache->delete($cache_id);
-    }
 
     function getUsersWithControl(array &$object_stack = []){
         $app = \MapasCulturais\App::i();
-
-        if($app->permissionCacheEnabled && $this->usesPermissionCache()){
-            $prefix = $this->getPermissionCachePrefix();
-            $cache_id = "$prefix::$this::usersWithControl";
-            if($app->mscache->contains($cache_id)){
-                $ids = $app->mscache->fetch($cache_id);
-                $q = $app->em->createQuery("SELECT u FROM MapasCulturais\Entities\User u WHERE u.id IN (:ids)");
-                $q->useQueryCache(true);
-                $q->setQueryCacheLifetime($app->config['app.permissionsCache.lifetime']);
-                $q->setParameter('ids', $ids);
-                return $q->getResult();
-            }
-        }
 
         $result = [$this->getOwnerUser()];
         $ids = [$result[0]->id];
@@ -215,10 +183,6 @@ trait EntityAgentRelation {
             }
         }
 
-        if($app->permissionCacheEnabled && $this->usesPermissionCache()){
-            $app->mscache->save($cache_id, $ids, $app->config['app.permissionsCache.lifetime']);
-        }
-
         return $result;
 
     }
@@ -251,8 +215,6 @@ trait EntityAgentRelation {
 
         $this->refresh();
         
-        $this->deleteUsersWithControlCache();
-        
         if($this->usesPermissionCache()){
             $this->enqueueToPCacheRecreation();
         }
@@ -270,8 +232,6 @@ trait EntityAgentRelation {
         }
         
         $this->refresh();
-        
-        $this->deleteUsersWithControlCache();
         
         if($this->usesPermissionCache()){
             $this->enqueueToPCacheRecreation();
@@ -347,8 +307,6 @@ trait EntityAgentRelation {
         $em->flush();
         
         $this->refresh();
-        
-        $this->deleteUsersWithControlCache();
         
         if($this->usesPermissionCache()){
             $this->enqueueToPCacheRecreation();

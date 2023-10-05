@@ -1198,9 +1198,6 @@ abstract class Entity implements \JsonSerializable{
         $this->computeChangeSets();
 
         if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
-            if($this->usesAgentRelation()){
-                $this->deleteUsersWithControlCache();
-            }
             $this->enqueueToPCacheRecreation();
         }
     }
@@ -1252,9 +1249,6 @@ abstract class Entity implements \JsonSerializable{
 
 
         if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
-            if($this->usesAgentRelation()){
-                $this->deleteUsersWithControlCache();
-            }
             $this->enqueueToPCacheRecreation();
         }
     }
@@ -1332,9 +1326,6 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
-            if($this->usesAgentRelation()){
-                $this->deleteUsersWithControlCache();
-            }
             $this->enqueueToPCacheRecreation();
         }
     }
