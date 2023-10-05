@@ -15,8 +15,7 @@ $this->import('
     <div class="opportunity-header__content">
         <div class="left">
             <div class="image">
-               <mc-avatar :entity="entity" :size="big"></mc-avatar>
-               
+               <mc-avatar :entity="firstPhase" size="medium"></mc-avatar>
             </div>
             <div class="title">
                 <span class="title__title">
