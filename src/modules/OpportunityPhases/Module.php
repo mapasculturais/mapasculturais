@@ -711,8 +711,8 @@ class Module extends \MapasCulturais\Module{
                 }
             } while ($current_phase = $current_phase->nextPhase);
 
-            if($this->evaluationMethodConfiguration && $current_phase->isDataCollection) {
-                $phase_name = $current_phase->isFirstPhase ? i::__('Período de inscrição') : $current_phase->name;
+            if($this->evaluationMethodConfiguration && $this->isDataCollection) {
+                $phase_name = $this->isFirstPhase ? i::__('Período de inscrição') : $this->name;
 
                 $num_1 = $num - 1;
                 $name = "{$num_1}. {$phase_name} / {$num}. {$this->evaluationMethodConfiguration->name}";
