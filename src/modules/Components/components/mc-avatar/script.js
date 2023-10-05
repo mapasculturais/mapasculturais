@@ -2,17 +2,20 @@ app.component('mc-avatar', {
     template: $TEMPLATES['mc-avatar'],
 
     props: {
-        class: {
-            type: [String, Array, Object]
-        },
         entity: {
             type: Entity,
             required: true
         },
+        size: {
+            type: String,
+            default: 'medium',
+            required: true,
+            validator: (value) => ['big', 'medium', 'small', 'xsmall'].includes(value)
+        },
     },
     computed: {
         classes() {
-            return [this.class, { '-image': !!this.image, '-icon': !this.image }]
+            return [`mc-avatar--${this.size}`, { 'mc-avatar--icon': !this.image }]
         },
         image() {
             return this.entity.files.avatar?.transformations?.avatarSmall?.url;
