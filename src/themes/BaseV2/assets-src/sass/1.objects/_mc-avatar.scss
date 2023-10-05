@@ -8,15 +8,18 @@
     justify-content: center;
     min-width: size(48);
     overflow: hidden;
-
+    
     img {
         width: 100%;
-
     }
 
     .iconify {
         font-size: size(24);
         color: var(--mc-gray-700);
+    }
+
+    &--square {
+        border-radius: var(--mc-border-radius-sm);
     }
 
     &--xsmall {
