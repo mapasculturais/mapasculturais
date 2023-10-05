@@ -3,8 +3,9 @@ app.component('mc-avatar', {
 
     props: {
         entity: {
-            type: Entity,
-            required: true
+            type: [Entity , Object],
+            required: true,
+
         },
         size: {
             type: String,
@@ -12,13 +13,20 @@ app.component('mc-avatar', {
             required: true,
             validator: (value) => ['big', 'medium', 'small', 'xsmall'].includes(value)
         },
+        square: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         classes() {
-            return [`mc-avatar--${this.size}`, { 'mc-avatar--icon': !this.image }]
+            console.log(this.entity);
+            return [`mc-avatar--${this.size}`, { 'mc-avatar--icon': !this.image }, { 'mc-avatar--square': this.square }]
         },
         image() {
             return this.entity.files.avatar?.transformations?.avatarSmall?.url;
         }
+    },
+    methods: {
     }
 });
