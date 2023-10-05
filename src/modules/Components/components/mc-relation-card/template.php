@@ -22,10 +22,7 @@ $this->import('
             </div>
 
             <div class="relation-card__header">
-                <div class="image">
-                    <img v-if="relation.agent.files.avatar" :src="relation.agent.files.avatar?.transformations?.avatarMedium?.url" class="image__img" />
-                    <mc-icon v-if="!relation.agent.files.avatar" name="image"></mc-icon>
-                </div>
+                <mc-avatar :entity="relation.agent" size="small"></mc-avatar>
                 <a :href="relation.agent.singleUrl" class="name">
                     {{relation.agent.name}}
                 </a>
