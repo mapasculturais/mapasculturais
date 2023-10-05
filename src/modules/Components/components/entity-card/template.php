@@ -113,11 +113,7 @@ $this->import('
 				<label class="seals__title">
 					<?php i::_e('Selos') ?> ({{entity.seals.length}}):
 				</label>
-
-				<div v-for="seal in seals" class="seals__seal" :title="seal.name">
-					<img class="sealImage" :src="seal.files.avatar?.transformations?.avatarSmall?.url">
-				</div>
-
+				<mc-avatar v-for="seal in seals" :title="seal.name" :entity="seal" square size="xsmall"></mc-avatar>
 				<div v-if="seals.length > 2" class="seals__seal more">+1</div>
 			</div>
 		</div>
