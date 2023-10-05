@@ -1,3 +1,5 @@
+@use '../0.settings/mixins' as *;
+
 .mc-title {
     // size medium (utilizado no card)
     font-size: var(--mc-font-size-sm);
