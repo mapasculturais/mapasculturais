@@ -529,6 +529,13 @@ class App {
         }
 
         $this->log = new Logger('', $handlers, $processors);
+
+        if ($this->config['app.log.query']) {
+            $this->hook('app.init:after', function() use($handlers) {
+                $query_logger = new QueryLogger;
+                $this->em->getConnection()->getConfiguration()->setSQLLogger($query_logger);
+            });
+        }
     }
 
     /**
