@@ -191,6 +191,10 @@ trait EntityAgentRelation {
         if($this->isUserAdmin($user))
             return true;
 
+        if($this->usesNested() && $this->parent && $this->parent->canUser('@control')) {
+            return true;
+        }
+
         $ids = $this->getIdsOfUsersWithControl() ?: [];
 
         return in_array($user->id, $ids);
