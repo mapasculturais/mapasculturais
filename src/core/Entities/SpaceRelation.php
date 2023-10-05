@@ -103,10 +103,6 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
     function save($flush = false) {
         try{
             parent::save($flush);
-            
-            if($this->owner->usesPermissionCache()){
-                $this->owner->deleteUsersWithControlCache();
-            }
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
            if(!App::i()->isWorkflowEnabled())
                throw $e;

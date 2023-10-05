@@ -244,15 +244,6 @@ class App {
     /** FLAGS */
 
     /**
-     * Indica se o cache de permissão está ativo
-     * 
-     * não tem relação com o pcache, é cache do resultado da fução canUser
-     * 
-     * @var true
-     */
-    public $permissionCacheEnabled = true;
-
-    /**
      * Contador de vezes que o disableAccessControl foi chamado
      * @var int
      */
@@ -393,8 +384,6 @@ class App {
 
         // necessário para obter o endereço ip da origem do request
         $this->slim->add(new \RKA\Middleware\IpAddress);
-
-        $this->permissionCacheEnabled = $config['app.usePermissionsCache'] ?? true;
 
         if($config['app.mode'] == APPMODE_DEVELOPMENT){
             error_reporting(E_ALL ^ E_STRICT);
