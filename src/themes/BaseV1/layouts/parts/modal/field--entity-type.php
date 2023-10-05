@@ -8,7 +8,7 @@ if (!$types) {
 }
 
 usort($types, function($a, $b ){
-    return $a->name > $b->name;
+    return $a->name <=> $b->name;
 });
 
 $isAgentTypes = ("agente" == strtolower($entity_classname::getEntityTypeLabel()));

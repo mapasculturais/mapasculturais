@@ -162,7 +162,6 @@ abstract class AgentRelation extends \MapasCulturais\Entity
             parent::save($flush);
             
             if($this->owner->usesPermissionCache()){
-                $this->owner->deleteUsersWithControlCache();
                 $this->owner->enqueueToPCacheRecreation();
             }
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
@@ -195,7 +194,6 @@ abstract class AgentRelation extends \MapasCulturais\Entity
         parent::delete($flush);        
 
         if($this->owner->usesPermissionCache()){
-            $this->owner->deleteUsersWithControlCache();
             $this->owner->enqueueToPCacheRecreation();
         }
     }

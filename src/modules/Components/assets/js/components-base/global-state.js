@@ -18,6 +18,7 @@ globalThis.useGlobalState = Pinia.defineStore('globalState', {
             },
         }
         return {
+            enabledEntities: $MAPAS.enabledEntities,
             visibleFooter: true,
             auth,
             showTemplateHook: false,
@@ -32,6 +33,10 @@ globalThis.useGlobalState = Pinia.defineStore('globalState', {
         hideFooter() {
             this.visibleFooter = false
         },
+
+        reload() {
+            window.location.reload();
+        }
     }
 });
 

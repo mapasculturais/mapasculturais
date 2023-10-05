@@ -13,7 +13,7 @@ $this->import('
         <div class="panel-page__header-title">
             <div class="title">
                 <div class="title__icon primary__background"> <mc-icon name="seal"></mc-icon></div>
-                <div class="title__title"> <?= i::_e('Meus selos') ?> </div>
+                <h1 class="title__title"> <?= i::_e('Meus selos') ?> </h1>
             </div>
         </div>
         <p class="panel-page__header-subtitle">
