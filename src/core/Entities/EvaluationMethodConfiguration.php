@@ -425,6 +425,15 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         return parent::canUserRemove($user);
     }
+
+    protected function canUser_control($user) {
+        
+        if ($this->opportunity->canUser('@control')) {
+            return true;
+        } else {
+            return parent::canUser_control($user);
+        }
+    }
     
     function getExtraEntitiesToRecreatePermissionCache(){
         return [$this->opportunity->parent ?: $this->opportunity];

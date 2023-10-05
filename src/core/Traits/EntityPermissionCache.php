@@ -144,7 +144,7 @@ trait EntityPermissionCache {
             $allowed_permissions = [];
 
             foreach ($permissions as $permission) {
-                if($permission === 'view' && $isStatusNotDraft && !$isPrivateEntity && !$hasCanUserViewMethod) {
+                if($permission === '_control' || $permission === 'view' && $isStatusNotDraft && !$isPrivateEntity && !$hasCanUserViewMethod) {
                     continue;
                 }
 
