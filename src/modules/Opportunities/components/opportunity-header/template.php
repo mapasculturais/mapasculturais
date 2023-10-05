@@ -3,8 +3,11 @@
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
-
 use MapasCulturais\i;
+
+$this->import('
+    mc-avatar
+');
 ?>
 <?php $this->applyTemplateHook('opportunity-header', 'before'); ?>
 <header class="opportunity-header">
@@ -12,8 +15,8 @@ use MapasCulturais\i;
     <div class="opportunity-header__content">
         <div class="left">
             <div class="image">
-                <img v-if="firstPhase.files?.avatar" :src="firstPhase.files?.avatar?.transformations    ?.avatarMedium?.url" />
-                <mc-icon v-if="!firstPhase.files?.avatar" name="image"></mc-icon>
+               <mc-avatar :entity="entity" :size="big"></mc-avatar>
+               
             </div>
             <div class="title">
                 <span class="title__title">
