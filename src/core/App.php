@@ -129,7 +129,7 @@ class App {
      * Instância do subsite ativo
      * @var Entities\Subsite|null
      */
-    protected Entities\Subsite $subsite;
+    protected Entities\Subsite|null $subsite = null;
 
     /**
      * Instância dos módulos ativos
