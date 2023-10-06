@@ -6,6 +6,7 @@
 
 use MapasCulturais\i;
 $this->import('
+    mc-avatar
     mc-card
     mc-icon
 ');
@@ -16,10 +17,7 @@ $this->import('
     </template>
     <template #content>
         <div class="mc-linked-entity">
-            <div class="mc-linked-entity__img">
-                <img v-if="space?.files?.avatar" :src="space?.files?.avatar?.transformations?.avatarMedium?.url" />
-                <mc-icon v-if="!space?.files?.avatar" name="space"></mc-icon>
-            </div>
+            <mc-avatar :entity="space" size="xsmall"></mc-avatar>
             <h5 v-if="space">{{space?.name}}</h5>
             <h5 v-if="!space"><?= i::__("Espaço não informado") ?></h5>
         </div>
