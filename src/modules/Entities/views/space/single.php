@@ -48,6 +48,7 @@ $this->breadcrumb = [
         </template>
     </entity-header>
     <mc-tabs class="tabs">
+        <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
                 <mc-container>
@@ -89,8 +90,9 @@ $this->breadcrumb = [
                         </div>
                     </aside>
                 </mc-container>
-                <entity-actions :entity="entity"></entity-actions>
             </div>
         </mc-tab>
+        <?php $this->applyTemplateHook('tabs','end') ?>
     </mc-tabs>
+    <entity-actions :entity="entity"></entity-actions>
 </div>
