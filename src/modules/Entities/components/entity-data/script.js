@@ -36,7 +36,7 @@ app.component('entity-data', {
         propertyData() {
             return this.entity[this.prop];
         },
-        
+
         propertyType() {
             return this.description.type;
         }
