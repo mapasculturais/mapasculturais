@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-avatar
     mc-icon 
     mc-link
     mc-title
@@ -15,10 +16,7 @@ $this->import('
 <div class="entity-card">
     <div class="entity-card__header">
         <div class="entity-card__header user-details">
-            <div class="user-image">
-                <img v-if="event.files?.avatar" :src="event.files?.avatar?.transformations?.avatarMedium.url" />
-                <mc-icon v-else name="event"></mc-icon>
-            </div>
+            <mc-avatar :entity="event" size="small"></mc-avatar>
             <div class="user-info">
                 <mc-title  tag="h2" class="bold">
                     {{event.name}}
