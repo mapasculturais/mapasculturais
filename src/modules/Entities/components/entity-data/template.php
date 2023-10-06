@@ -18,8 +18,11 @@ use MapasCulturais\i;
         {{propertyData.date('2-digit year')}} <?= i::__('às') ?> {{propertyData.time('numeric')}}
     </div>
 
-    <div v-else-if="propertyType == 'multiselect'">
-        <mc-tag-list v-if="propertyType.lenght > 0" classes="space__background" :tags="propertyData"></mc-tag-list> <!-- classes="primary__background" -->
+    <div v-else-if="propertyType == 'multiselect'" :class="{'entity-data__data' : !propertyData}">
+        <mc-tag-list v-if="propertyData && propertyData.lenght > 0" classes="space__background" :tags="propertyData"></mc-tag-list> 
+        <small v-if="!propertyData">
+            <?= i::__('Não informado') ?>
+        </small>
     </div>
 
     <div v-else-if="propertyType == 'radio'" class="entity-data__data">

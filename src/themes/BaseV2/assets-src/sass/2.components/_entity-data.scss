@@ -11,10 +11,13 @@
     }
     
     &__data {
-        padding: size(20) size(16);
-        font-size: var(--mc-font-size-sm);
-        font-weight: 700;
+        align-items: center;
         background-color: var(--mc-gray-100);
         border-radius: var(--mc-border-radius-xs);
+        display: flex;
+        font-size: var(--mc-font-size-sm);
+        font-weight: 700;
+        min-height: size(64);
+        padding: size(20) size(16);
     }
 }
