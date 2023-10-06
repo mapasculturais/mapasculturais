@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+	mc-avatar
 	mc-loading
 	select-entity
 ');
@@ -45,9 +46,7 @@ $this->import('
 
 							<span v-if="agent" class="fakeInput" @click="toggle()">
 								<mc-icon name="selected"></mc-icon>
-								<div class="fakeInput__img">
-									<img :src="agent.files?.avatar?.transformations?.avatarSmall?.url" />
-								</div>
+								<mc-avatar :entity="agent" size="xsmall"></mc-avatar>
 								{{agent.name}}
 							</span>
 
