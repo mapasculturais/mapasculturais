@@ -102,10 +102,6 @@ body {
     color: #000000;
 }
 
-.registrations-table .table-info {
-    display: none;
-}
-
 .registrations-table thead tr,
 .registrations-table tbody tr {
     border: none;
