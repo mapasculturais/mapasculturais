@@ -34,6 +34,8 @@ app.component('entity-data', {
         },
 
         propertyData() {
+            console.log(this.description);
+            console.log(this.propertyType);
             return this.entity[this.prop];
         },
         propertyType() {
