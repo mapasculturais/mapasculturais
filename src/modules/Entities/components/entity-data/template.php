@@ -19,7 +19,7 @@ use MapasCulturais\i;
     </div>
 
     <div v-else-if="propertyType == 'multiselect'">
-        <mc-tag-list classes="space__background" :tags="propertyData"></mc-tag-list> <!-- classes="primary__background" -->
+        <mc-tag-list v-if="propertyType.lenght > 0" classes="space__background" :tags="propertyData"></mc-tag-list> <!-- classes="primary__background" -->
     </div>
 
     <div v-else-if="propertyType == 'radio'" class="entity-data__data">
