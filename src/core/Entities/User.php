@@ -3,6 +3,8 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\API;
+use MapasCulturais\ApiQuery;
 use MapasCulturais\App;
 use MapasCulturais\i;
 use MapasCulturais\Exceptions\PermissionDenied;
@@ -647,37 +649,34 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     function getOpportunitiesCanBeEvaluated() {
-        $this->checkPermission('modify');
-        $opportunities = [];
         $app = App::i();
-        $user_id = $app->user->id;
 
-        $opportunitiesPermission = $app->repo('MapasCulturais\Entities\PermissionCache')->findBy([
-            'action' => 'viewUserEvaluation',
-            'userId' => $user_id
-        ]);
+        $next_week = date('Y-m-d', strtotime('+7 days'));
+        $previous_week = date('Y-m-d', strtotime('-7 days'));
 
-        if (count($opportunitiesPermission) > 0 ) {
-            $opportunityIDs = [];
-            foreach ($opportunitiesPermission as $opportunity) {
-                $op = $app->repo('Registration')->find($opportunity->objectId);
-                $opportunityIDs[] = $op->opportunity->id;
-            }
+        $relation_class = EvaluationMethodConfigurationAgentRelation::class;
+        $dql = "
+            SELECT 
+                IDENTITY(emc.opportunity) as opp_id
+            FROM 
+                $relation_class ar
+                JOIN ar.agent a WITH a.user = {$this->id} 
+                JOIN ar.owner emc 
+                    WITH 
+                        emc.evaluationFrom <= '$next_week' AND 
+                        emc.evaluationTo >= '$previous_week'
+                
+        ";
+        $q = $app->em->createQuery($dql);
+        $opportunity_ids = $q->getSingleColumnResult();
+        
+        $opportunities = $app->repo('Opportunity')->findBy(['id' => $opportunity_ids]);
 
-            $opportunities = $app->repo('Opportunity')->findBy([
-                'id' => $opportunityIDs,
-                'status' => [Opportunity::STATUS_ENABLED, Agent::STATUS_RELATED]
-            ]);
+        usort($opportunities, function(Opportunity $opp1, Opportunity $opp2) {
+            return $opp2->evaluationMethodConfiguration->evaluationFrom <=> $opp1->evaluationMethodConfiguration->evaluationFrom;
+        });
 
-            foreach ($opportunities as $key => $opportunity) {
-                $_is_opportunity_owner = $user_id === $opportunity->owner->userId;
-                if (!$opportunity->evaluationMethodConfiguration->canUser('@control') || $_is_opportunity_owner) {
-                    unset($opportunities[$key]);
-                }
-            }
-        }
-
-        return array_reverse($opportunities);
+        return $opportunities;
     }
 
     public function getSubsite($status = null) {

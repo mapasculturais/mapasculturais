@@ -18,7 +18,8 @@ app.component('panel--last-edited', {
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('panel--last-edited')
-        return { text }
+        const global = useGlobalState();
+        return { text, global }
     },
 
     async created() {
@@ -47,11 +48,11 @@ app.component('panel--last-edited', {
             projectAPI.find(query),
             opportunityAPI.find(query),
         ]).then(values => {
-            this.spaces = values[0];
-            this.agents = values[1];
-            this.events = values[2];
-            this.projects = values[3];
-            this.opportunities = values[4];
+            this.spaces = this.global.enabledEntities.spaces ? values[0] : [];
+            this.agents = this.global.enabledEntities.agents ? values[1] : [];
+            this.events = this.global.enabledEntities.events ? values[2] : [];
+            this.projects = this.global.enabledEntities.projects ? values[3] : [];
+            this.opportunities = this.global.enabledEntities.opportunities ? values[4] : [];
             this.loading = false;
         })
     },

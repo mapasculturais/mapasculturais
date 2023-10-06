@@ -36,6 +36,8 @@ services:
     links:
       - db
       - redis
+      - sessions
+      
     environment:
       - BUILD_ASSETS=1
       - PENDING_PCACHE_RECREATION_INTERVAL=5
@@ -47,9 +49,13 @@ services:
       # chaves de teste do google recaptcha
       - GOOGLE_RECAPTCHA_SITEKEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
       - GOOGLE_RECAPTCHA_SECRET=6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+
+      - SESSIONS_SAVE_PATH=tcp://sessions:6379
+
     depends_on:
       - db
       - redis
+      - sessions
       - mailhog
     stdin_open: true
     tty: true
@@ -62,6 +68,13 @@ services:
   redis:
     image: redis:6
     command: --maxmemory 256Mb --maxmemory-policy allkeys-lru  
+
+  sessions:
+    image: redis:6
+    restart: unless-stopped
+    command: --maxmemory 128Mb --maxmemory-policy allkeys-lru
+    volumes:
+      - ./docker-data/sessions:/data
 
   db:
     image: postgis/postgis:14-master

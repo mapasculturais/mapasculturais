@@ -18,7 +18,7 @@ $this->import('
 			<mc-avatar class="user-image" :entity="entity"></mc-avatar>
 
 			<div class="user-info" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
-				<mc-title :tag="tag" class="bold">{{entity.name}}</mc-title>
+				<mc-title tag="h2" :shortLength="55" :longLength="71" class="bold">{{entity.name}}</mc-title>
 				<slot name="type">
 					<div v-if="entity.type" class="user-info__attr">
 						<?php i::_e('Tipo:') ?> {{entity.type.name}}
@@ -39,22 +39,40 @@ $this->import('
 		</div>
 	</div>
 
-	<div class="entity-card__content">
+	<div class="entity-card__content"> 
 		<div v-if="entity.__objectType=='space' && entity.endereco" class="entity-card__content--description">
 			<label class="entity-card__content--description-local"><?= i::_e('ONDE: ') ?></label> <strong class="entity-card__content--description-adress">{{entity.endereco}}</strong>
 		</div>
-		<div v-if="entity.__objectType=='opportunity' && entity.registrationFrom?.isFuture()" class="entity-card__registration">
-			<div class="entity-card__period">
-				<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]" v-if="entity.registrationFrom && entity.registrationTo" >
-					<?= i::__('Inscrições de') ?> {{entity.registrationFrom.date('2-digit year')}} <?= i::__('até')?> {{entity.registrationTo.date('2-digit year')}} <?= i::__('às')?> {{entity.registrationTo.time('numeric')}}
+
+		<template v-if="entity.__objectType=='opportunity'">
+			<!-- inscrições abertas -->
+			<div v-if="openSubscriptions" class="entity-card__registration">
+				<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]">
+					<?= i::__('As inscrições encerrarão no dia') ?> {{entity.registrationTo?.date('2-digit year')}} <?= i::__('às')?> {{entity.registrationTo?.time()}}
 				</p>
 			</div>
-		</div>
-		<div v-if="entity.__objectType=='opportunity' && !entity.registrationFrom?.isFuture()" class="entity-card__registration">
-			<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]">
-			{{entityTime(entity)}} {{entity.registrationTo?.date('2-digit year')}} <?= i::__('às')?> {{entity.registrationFrom?.time('numeric')}}
-			</p>
-		</div>
+
+			<!-- inscrições futuras -->
+			<div v-if="entity.registrationFrom?.isFuture()" class="entity-card__registration">
+				<div class="entity-card__period">
+					<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]" v-if="entity.registrationFrom && entity.registrationTo" >
+						<?= i::__('Inscrições de') ?> {{entity.registrationFrom.date('2-digit year')}} <?= i::__('até')?> {{entity.registrationTo.date('2-digit year')}} <?= i::__('às')?> {{entity.registrationTo.time()}}
+					</p>
+				</div>
+			</div>
+			<!-- inscrições passadas -->
+			<div v-if="entity.registrationTo?.isPast()" class="entity-card__registration">
+				<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]">
+					<?= i::__('As inscrições encerraram no dia') ?> {{entity.registrationTo?.date('2-digit year')}} <?= i::__('às')?> {{entity.registrationTo?.time()}}
+				</p>
+			</div>
+		</template>
+
+		
+
+
+
+		
 		
 		<div v-if="entity.shortDescription" class="entity-card__content-shortDescription">
 			<small v-if="sliceDescription">{{slice(entity.shortDescription, 300)}}</small>

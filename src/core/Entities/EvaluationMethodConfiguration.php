@@ -102,7 +102,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     protected $__metadata;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
     
@@ -424,6 +424,15 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
 
         return parent::canUserRemove($user);
+    }
+
+    protected function canUser_control($user) {
+        
+        if ($this->opportunity->canUser('@control')) {
+            return true;
+        } else {
+            return parent::canUser_control($user);
+        }
     }
     
     function getExtraEntitiesToRecreatePermissionCache(){

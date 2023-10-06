@@ -38,27 +38,27 @@ $config = $app->config['social-media'];
                 <li>
                     <a><?php i::_e("Acesse"); ?></a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.opportunities">
                     <a href="<?= $app->createUrl('search', 'opportunities') ?>">
                         <mc-icon name="opportunity"></mc-icon> <?php i::_e('editais e oportunidades'); ?>
                     </a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.events">
                     <a href="<?= $app->createUrl('search', 'events') ?>">
                         <mc-icon name="event"></mc-icon> <?php i::_e('eventos'); ?>
                     </a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.agents">
                     <a href="<?= $app->createUrl('search', 'agents') ?>">
                         <mc-icon name="agent"></mc-icon> <?php i::_e('agentes'); ?>
                     </a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.spaces">
                     <a href="<?= $app->createUrl('search', 'spaces') ?>">
                         <mc-icon name="space"></mc-icon> <?php i::_e('espaços'); ?>
                     </a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.projects">
                     <a href="<?= $app->createUrl('search', 'projects') ?>">
                         <mc-icon name="project"></mc-icon> <?php i::_e('projetos'); ?>
                     </a>
@@ -69,16 +69,16 @@ $config = $app->config['social-media'];
                 <li>
                     <a href="<?= $app->createUrl('panel', 'index') ?>"><?php i::_e('Painel'); ?></a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.opportunities">
                     <a href="<?= $app->createUrl('panel', 'opportunities') ?>"><?php i::_e('Editais e oportunidades'); ?></a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.events">
                     <a href="<?= $app->createUrl('panel', 'events') ?>"><?php i::_e('Meus eventos'); ?></a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.agents">
                     <a href="<?= $app->createUrl('panel', 'agents') ?>"><?php i::_e('Meus agentes'); ?></a>
                 </li>
-                <li>
+                <li v-if="global.enabledEntities.spaces">
                     <a href="<?= $app->createUrl('panel', 'spaces') ?>"><?php i::_e('Meus espaços'); ?></a>
                 </li>
                 <?php if (!($app->user->is('guest'))) : ?>

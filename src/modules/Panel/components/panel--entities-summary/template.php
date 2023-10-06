@@ -17,7 +17,7 @@ $this->import('
 ?>
 <div class="panel--entities-summary">                    
     <!-- agentes -->
-    <div class="panel--entities-summary__card">
+    <div v-if="global.enabledEntities.agents" class="panel--entities-summary__card">
         <mc-link id="summary" route="panel/agents" class="card-summary">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon agent__background agent__color"> <mc-icon name="agent-1"></mc-icon> </div>
@@ -32,13 +32,11 @@ $this->import('
             <create-agent #default="{modal}">
                 <button @click="modal.open()" class="button button--large button--primary-outline button--icon"> <mc-icon name="add"></mc-icon> <?= i::_e('Criar') ?> </button>
             </create-agent>
-
-            
         </div>
     </div>
 
     <!-- oportunidades -->
-    <div class="panel--entities-summary__card">
+    <div v-if="global.enabledEntities.opportunities" class="panel--entities-summary__card">
         <mc-link id="summary" route="panel/opportunities" class="card-summary">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon opportunity__background opportunity__color"> <mc-icon name="opportunity"></mc-icon> </div>
@@ -57,7 +55,7 @@ $this->import('
     </div>
 
     <!-- eventos -->
-    <div class="panel--entities-summary__card">
+    <div v-if="global.enabledEntities.events" class="panel--entities-summary__card">
         <mc-link id="summary" route="panel/events" class="card-summary">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon event__background event__color"> <mc-icon name="event"></mc-icon> </div>
@@ -76,7 +74,7 @@ $this->import('
     </div>
 
     <!-- espaços -->
-    <div class="panel--entities-summary__card">
+    <div v-if="global.enabledEntities.spaces" class="panel--entities-summary__card">
         <mc-link id="summary" route="panel/spaces" class="card-summary">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon space__background space__color"> <mc-icon name="space"></mc-icon> </div>
@@ -95,7 +93,7 @@ $this->import('
     </div>
 
     <!-- projetos -->
-    <div class="panel--entities-summary__card">
+    <div v-if="global.enabledEntities.projects" class="panel--entities-summary__card">
         <mc-link id="summary" route="panel/projects" class="card-summary">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon project__background project__color"> <mc-icon name="project"></mc-icon> </div>

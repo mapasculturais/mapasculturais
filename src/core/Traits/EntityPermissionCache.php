@@ -45,9 +45,6 @@ trait EntityPermissionCache {
         return $class_name;
     }
 
-
-    protected $permissionCacheEnabled = true;
-
     public function getPermissionCachePrefix() {
         $app = App::i();
         $prefix = $app->mscache->fetch("$this::permission-cache-prefix");
@@ -73,7 +70,6 @@ trait EntityPermissionCache {
     }
     
     function createPermissionsCacheForUsers(array $users = null, $flush = false, $delete_old = true) {
-        $this->permissionCacheEnabled = false;
         $this->renewPermissionCachePrefix();
 
         $app = App::i();
@@ -148,7 +144,7 @@ trait EntityPermissionCache {
             $allowed_permissions = [];
 
             foreach ($permissions as $permission) {
-                if($permission === 'view' && $isStatusNotDraft && !$isPrivateEntity && !$hasCanUserViewMethod) {
+                if($permission === '_control' || $permission === 'view' && $isStatusNotDraft && !$isPrivateEntity && !$hasCanUserViewMethod) {
                     continue;
                 }
 

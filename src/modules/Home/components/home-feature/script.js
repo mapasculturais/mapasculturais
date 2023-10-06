@@ -11,7 +11,8 @@ app.component('home-feature', {
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('home-feature');
-        return { text }
+        const global = useGlobalState();
+        return { text, global }
     },
 
     async created(){
@@ -29,14 +30,24 @@ app.component('home-feature', {
             query['@limit'] = this.limit;
         }
 
-        Promise.all([
-            spaceAPI.find(query), 
-            agentAPI.find(query),
-            projectAPI.find(query),
-        ]).then((values) => {
-            this.spaces = values[0];
-            this.agents = values[1];
-            this.projects = values[2];
+        let promises = [];
+
+        if (this.global.enabledEntities.agents) {
+            promises.push(agentAPI.find(query));
+        }
+
+        if (this.global.enabledEntities.spaces) {
+            promises.push(spaceAPI.find(query));
+        }
+
+        if (this.global.enabledEntities.projects) {
+            promises.push(projectAPI.find(query));
+        }
+
+        Promise.all(promises).then((values) => {
+            this.spaces = values[0] ?? [];
+            this.agents = values[1] ?? [];
+            this.projects = values[2] ?? [];
         });
     },
 
@@ -117,6 +128,12 @@ app.component('home-feature', {
         query: {
             type: Object,
             default: {...$MAPAS.home.featured.filter}
+        }
+    },
+
+    methods: {
+        enabledEntities() {
+            return this.global.enabledEntities.agents || this.global.enabledEntities.spaces || this.global.enabledEntities.projects;
         }
     },
 });

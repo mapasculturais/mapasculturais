@@ -89,6 +89,16 @@ class Module extends \MapasCulturais\Module {
             }
             
             $this->jsObject['currentUserRoles'] = array_unique($roles);
+
+            /* Definindo entidades desligadas */
+            $entities = ['agents', 'events', 'projects', 'opportunities', 'spaces', 'seals', 'subsites', 'apps'];
+            $enabled_entities = [];
+
+            foreach ($entities as $entity) {
+                $enabled_entities[$entity] = $app->isEnabled($entity);
+            }
+
+            $this->jsObject['enabledEntities'] = $enabled_entities;
         }); 
 
         $app->hook('mapas.printJsObject:after', function () use($app) {

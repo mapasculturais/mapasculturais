@@ -7,26 +7,12 @@ app.component('home-header', {
         return { text }
     },
 
-    props: {
-        title: {
-            type: String,
-            default: __('title', 'home-header')
-        },
-        description: {
-            type: String,
-            default: __('description', 'home-header')
-        }
-    },
-
     data() {
         return {
-            
+            background: $MAPAS.config.homeHeader.background,
+            banner: $MAPAS.config.homeHeader.banner,
+            bannerLink: $MAPAS.config.homeHeader.bannerLink,
+            downloadableLink: $MAPAS.config.homeHeader.downloadableLink,
         }
-    },
-
-    computed: {
-    },
-    
-    methods: {
     },
 });
