@@ -16,7 +16,7 @@ $this->import('
         <div class="panel-page__header-title">
             <div class="title">
                 <div class="title__icon agent__background"> <mc-icon name="agent"></mc-icon> </div>
-                <div class="title__title"> <?= i::_e('Meus agentes') ?> </div>
+                <h1 class="title__title"> <?= i::_e('Meus agentes') ?> </h1>
             </div>
         </div>
         <p class="panel-page__header-subtitle">

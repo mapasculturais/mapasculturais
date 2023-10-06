@@ -38,7 +38,7 @@ class API{
     }
 
     static function GTE($value) {
-        return "GT($value)";
+        return "GTE($value)";
     }
 
     static function LT($value) {
@@ -46,7 +46,7 @@ class API{
     }
 
     static function LTE($value) {
-        return "LT($value)";
+        return "LTE($value)";
     }
 
 

@@ -54,7 +54,8 @@ $this->import('
         </div>
         <div class="rightSide">
             <div class="data">
-                <mc-title tag="h1" class="entity-header__title"> {{entity.name}} </mc-title>
+                <mc-title tag="h1" size="big" class="entity-header__title"> {{entity.name}} </mc-title>
+                
                 <div class="metadata">
                     <slot name="metadata">
                         <dl class="metadata__id" v-if="entity.__objectType =='agent' && entity.id">

@@ -17,7 +17,7 @@ $profile = $app->user->profile;
         <div class="panel-page__header-title">
             <div class="title">
                 <div class="title__icon default"> <mc-icon name="user-config"></mc-icon> </div>
-                <div class="title__title"> <?= i::__('Gestão de usuários') ?> </div>
+                <h1 class="title__title"> <?= i::__('Gestão de usuários') ?> </h1>
             </div>
         </div>
         <p class="panel-page__header-subtitle">

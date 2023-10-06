@@ -4,7 +4,26 @@
 
     &__content {
         &-title {
-            font-size: size(24);
+            .mc-title {
+                background-color: red;
+                &--long,
+                &--short {
+                    font-size: var($font-size-xs);
+                }
+
+                // @media (max-width: size(600)) {
+                //     &--long {
+                //         font-size: var(--mc-font-size-xs);
+                //     }
+
+                //     &--short {
+                //         font-size: var(--mc-font-size-md);
+                //     }
+                // }
+
+            }
+
+            font-size: size(16);
             font-weight: 700;
             line-height: size(28);
             margin-bottom: size(16);
@@ -62,6 +81,7 @@
 
                     @media (max-width:size(400)) {
                         margin-right: 0;
+
                         button.carousel__prev,
                         button.carousel__next {
                             background-color: var(--mc-high-500);
@@ -117,8 +137,8 @@
                         flex-direction: column;
                         justify-content: space-between;
                         margin: 0 size(12);
-                       
-                        
+
+
                         .panel__row,
                         &.panel-entity-card,
                         &.card {
@@ -150,6 +170,7 @@
                                 right: size(16);
                                 position: absolute;
                             }
+
                             &--picture {
                                 width: size(48);
                                 height: size(48);

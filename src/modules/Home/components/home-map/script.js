@@ -1,5 +1,10 @@
 app.component('home-map', {
     template: $TEMPLATES['home-map'],
+
+    setup() {
+        const global = useGlobalState();
+        return { global }
+    },
     
     async created(){
         const spaceAPI = new API('space');
@@ -32,11 +37,11 @@ app.component('home-map', {
         entities() {
             let entities = [];
 
-            if (this.spaces instanceof Array) {
+            if (this.spaces instanceof Array && this.global.enabledEntities.spaces) {
                 entities = entities.concat(this.spaces);
             } 
             
-            if (this.agents instanceof Array) {
+            if (this.agents instanceof Array && this.global.enabledEntities.agents) {
                 entities = entities.concat(this.agents);
             } 
             return Vue.shallowReactive(entities);

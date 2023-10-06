@@ -10,7 +10,7 @@ $this->import('
 	entity-card
 ');
 ?>
-<div class="home-opportunities">
+<div v-if="global.enabledEntities.opportunities" class="home-opportunities">
 	<div class="home-opportunities__header">
 		<div class="home-opportunities__header title">
 			<label> <?= $this->text('title', i::__('Oportunidades do momento'))?> </label>
@@ -35,5 +35,9 @@ $this->import('
 				</template>
 			</carousel>
 		</div>
+
+		<span v-if="opportunities.length <= 0" class="semibold">
+                <?= $this->text('oportunidades do momento não encontradas', i::__('Nenhuma oportunidade do momento foi encontrada.')); ?>
+            </span>
 	</div>
 </div>

@@ -18,6 +18,10 @@ $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
 
+if($merge_phases ?? false) {
+    $this->mergeRegistrationPhases($entity);
+}
+
 $this->jsObject['request']['controller'] = "registration";
 
 $this->jsObject['entity']['object']->opportunity = $entity->opportunity;

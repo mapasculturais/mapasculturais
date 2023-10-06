@@ -244,15 +244,6 @@ class App {
     /** FLAGS */
 
     /**
-     * Indica se o cache de permissão está ativo
-     * 
-     * não tem relação com o pcache, é cache do resultado da fução canUser
-     * 
-     * @var true
-     */
-    public $permissionCacheEnabled = true;
-
-    /**
      * Contador de vezes que o disableAccessControl foi chamado
      * @var int
      */
@@ -394,8 +385,6 @@ class App {
         // necessário para obter o endereço ip da origem do request
         $this->slim->add(new \RKA\Middleware\IpAddress);
 
-        $this->permissionCacheEnabled = $config['app.usePermissionsCache'] ?? true;
-
         if($config['app.mode'] == APPMODE_DEVELOPMENT){
             error_reporting(E_ALL ^ E_STRICT);
         }
@@ -529,6 +518,13 @@ class App {
         }
 
         $this->log = new Logger('', $handlers, $processors);
+
+        if ($this->config['app.log.query']) {
+            $this->hook('app.init:after', function() use($handlers) {
+                $query_logger = new QueryLogger;
+                $this->em->getConnection()->getConfiguration()->setSQLLogger($query_logger);
+            });
+        }
     }
 
     /**
@@ -1241,7 +1237,20 @@ class App {
      * @return bool 
      */
     function isEnabled(string $entity){
-        return (bool) $this->config['app.enabled.' . $entity];
+        $entities = [
+            'agent' => 'agents',
+            'space' => 'spaces',
+            'project' => 'projects',
+            'opportunity' => 'opportunities',
+            'event' => 'events',
+            'subsite' => 'subsites',
+            'seal' => 'seals',
+            'app' => 'apps',
+        ];
+
+        $entity = $entities[$entity] ?? $entity;
+
+        return (bool) $this->config['app.enabled.' . $entity] ?? false;
     }
 
      /**
@@ -1860,7 +1869,9 @@ class App {
         $created = false;
         foreach($this->_permissionCachePendingQueue as $entity) {
             if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
-                    'objectId' => $entity->id, 'objectType' => $entity->getClassName()
+                    'objectId' => $entity->id, 
+                    'objectType' => $entity->getClassName(),
+                    'status' => 0
                 ])) {
                 $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
                 $pendingCache->objectId = $entity->id;
@@ -1915,7 +1926,23 @@ class App {
      * @throws GlobalException 
      */
     public function recreatePermissionsCache(){
-        $item = $this->repo('PermissionCachePending')->findOneBy(['status' => 0], ['id' => 'ASC']);
+        $conn = $this->em->getConnection();
+
+        $id = $conn->fetchOne('
+            SELECT id 
+            FROM permission_cache_pending
+            WHERE 
+                status = 0 AND 
+                CONCAT (object_type, object_id) NOT IN (
+                    SELECT CONCAT(object_type, object_id) 
+                    FROM permission_cache_pending WHERE 
+                    status > 0
+                )');
+
+        if(!$id) { 
+            return;
+        }
+        $item = $this->repo('PermissionCachePending')->find($id);
         if ($item) {
             $start_time = microtime(true);
 

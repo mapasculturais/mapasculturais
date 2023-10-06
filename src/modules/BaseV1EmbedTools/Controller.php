@@ -100,7 +100,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->entityClassName = "MapasCulturais\\Entities\\Registration";
         $this->layout = "embedtools-registration";
         $entity = $this->getEntityAndCheckPermission('viewUserEvaluation');
-        $this->render("registration-view",['entity' => $entity]);
+        $this->render("registration-view",['entity' => $entity, 'merge_phases' => true]);
     }
 
     public Function GET_fieldsvisible()

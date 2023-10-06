@@ -14,7 +14,7 @@ $this->import('
                 <div class="title__icon opportunity__background">
                     <mc-icon name="opportunity"></mc-icon>
                 </div>
-                <div class="title__title"> <?= i::_e('Minhas inscrições') ?> </div>
+                <h1 class="title__title"> <?= i::_e('Minhas inscrições') ?> </h1>
             </div>
         </div>
         <p class="panel-page__header-subtitle">
