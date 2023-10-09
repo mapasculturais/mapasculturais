@@ -37,12 +37,3 @@ $this->import('
         {{propertyData}}
     </div>
 </div>
-
-<!-- 
-    boolean    
-    CNPJ
-    CPF
-    point
-    select
-    readonly
- -->
