@@ -10,6 +10,7 @@ use MapasCulturais\i;
 $this->layout = 'registrations';
 
 $this->import('
+    mc-avatar
     mc-alert
     mc-breadcrumb
     mc-container
@@ -45,7 +46,7 @@ $this->import('
                     
                     <div class="support-agent">
                         <div class="support-agent__image">
-                            <img :src="entity.owner.files?.avatar?.transformations?.avatarMedium.url" />
+                            <mc-avatar :entity="entity.owner" size="small"></mc-avatar>
                         </div>
                         <div class="support-agent__name">
                             {{entity.owner.name}}
