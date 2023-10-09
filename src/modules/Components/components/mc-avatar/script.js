@@ -20,7 +20,6 @@ app.component('mc-avatar', {
     },
     computed: {
         classes() {
-            console.log(this.entity);
             return [`mc-avatar--${this.size}`, { 'mc-avatar--icon': !this.image }, { 'mc-avatar--square': this.square }]
         },
         image() {
