@@ -5,7 +5,7 @@
     font-size: var(--mc-font-size-sm);
 
     &--long {
-        font-size: var(--mc-font-size-sm);
+        font-size: size(20);
     }
 
     &--short {
@@ -18,7 +18,7 @@
         }
 
         &--short {
-            font-size: var(--mc-font-size-md);
+            font-size: var(--mc-font-size-sm);
         }
     }
 
