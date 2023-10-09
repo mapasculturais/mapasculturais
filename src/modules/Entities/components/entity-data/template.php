@@ -6,6 +6,10 @@
  */
 
 use MapasCulturais\i;
+
+$this->import('
+    mc-tag-list
+');
 ?>
 <div class="entity-data">
     <label class="entity-data__label">{{propertyLabel}}</label>
@@ -19,7 +23,7 @@ use MapasCulturais\i;
     </div>
 
     <div v-else-if="propertyType == 'multiselect'" :class="{'entity-data__data' : !propertyData}">
-        <mc-tag-list v-if="propertyData && propertyData.lenght > 0" classes="space__background" :tags="propertyData"></mc-tag-list> 
+        <mc-tag-list v-if="propertyData && propertyData.length > 0" classes="space__background" :tags="propertyData"></mc-tag-list> 
         <small v-if="!propertyData">
             <?= i::__('Não informado') ?>
         </small>
