@@ -39,7 +39,6 @@ app.component('entity-data', {
 
         propertyType() {
             return this.description.type;
-        }
+        },
     },
-
 });
