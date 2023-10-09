@@ -79,8 +79,8 @@ $this->breadcrumb = [
                         </div>
                     </aside>
                 </mc-container>
-                <entity-actions :entity="entity"></entity-actions>
             </div>
         </mc-tab>
     </mc-tabs>
+    <entity-actions :entity="entity"></entity-actions>
 </div>

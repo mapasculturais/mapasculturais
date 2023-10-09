@@ -3,13 +3,32 @@
 .layout-entity {
     background-color: var(--mc-white);
 
+    .mc-map .leaflet-container {
+        z-index: 0;
+    }
+
+    .tabs-component {
+        &__header {
+            margin: size(-40) auto size(40);
+
+            @media (max-width: size(800)) {
+                margin-top: 0;
+                background-color: var(--mc-high-500);
+            }
+        }
+
+        &__panels {
+            margin: size(-40) auto size(40);
+        }
+    }
+
+    .divider {
+        width: 100%;
+        border-bottom: size(1) solid var(--mc-high-700);
+    }
+
     &.action-edit {
         background-color: var(--mc-gray-100);
-
-        .divider {
-            width: 100%;
-            border-bottom: size(1) solid;
-        }
 
         .container > main {
             gap: size(40);
@@ -36,8 +55,6 @@
             }
 
             &__panels {
-                margin-bottom: 0;
-
                 .property-list {
                     padding-bottom: size(16);
                 }
