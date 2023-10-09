@@ -45,8 +45,8 @@ app.component('home-feature', {
         }
 
         Promise.all(promises).then((values) => {
-            this.spaces = values[0] ?? [];
-            this.agents = values[1] ?? [];
+            this.agents = values[0] ?? [];
+            this.spaces = values[1] ?? [];
             this.projects = values[2] ?? [];
         });
     },
@@ -62,6 +62,8 @@ app.component('home-feature', {
                 itemsToShow: 1,
                 snapAlign: 'center',
             },
+            
+            loading: true,
 
             // breakpoints are mobile first
             breakpoints: {
@@ -112,6 +114,7 @@ app.component('home-feature', {
                     return -1;
                 }
             });
+            this.loading = false;
             return entities;
         }
     },
