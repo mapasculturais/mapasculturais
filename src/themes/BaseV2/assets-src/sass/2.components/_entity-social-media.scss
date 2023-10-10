@@ -1,11 +1,6 @@
 @use '../0.settings/mixins' as *;
 
 .entity-social-media {
-
-    &__title {
-        margin-bottom: size(10);
-    }
-
     &__links {
         display: flex;
         flex-direction: column;
