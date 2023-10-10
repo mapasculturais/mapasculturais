@@ -195,6 +195,7 @@
             },
             
             registrationStatuses: MapasCulturais.entity.registrationStatuses,
+            registrationStatusesToFilter: [{label: 'Todos os status', value: undefined}, ...MapasCulturais.entity.registrationStatuses],
 
             registrationStatusesNames: MapasCulturais.entity.registrationStatuses,
 
@@ -2332,6 +2333,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
         ],
 
         registrationStatuses: RegistrationService.registrationStatuses,
+        registrationStatusesToFilter: [{label: 'Todos os status', value: undefined}, ...MapasCulturais.entity.registrationStatuses],
 
         registrationStatusesNames: RegistrationService.registrationStatusesNames,
 
