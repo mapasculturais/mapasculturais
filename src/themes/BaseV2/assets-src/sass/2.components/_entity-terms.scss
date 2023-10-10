@@ -6,18 +6,19 @@
     gap: size(10);
     margin: 0;
 
-    &__title {
-        margin: 0;
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: size(8);
     }
-    .required {
-        font-family: Open Sans;
-        font-size: size(12);
+
+    &__required {
+        font-size: var(--mc-font-size-xxxs);
         font-weight: 700;
-        line-height: size(16);
-        letter-spacing: 0em;
-        text-align: left;
+        line-height: normal;
         color: var(--mc-error);
     }
+
     &__terms {
         margin: size(10) 0 0;
         display: flex;
