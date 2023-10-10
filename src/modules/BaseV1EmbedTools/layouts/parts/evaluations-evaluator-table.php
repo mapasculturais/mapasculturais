@@ -82,6 +82,21 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
             </td>
             <?php $this->applyTemplateHook('opportunity-evaluations--committee--table-tbody-tr','end'); ?>    
         </tr>
+
+        <tfoot ng-if="data.registrationsAPIMetadata.count > data.evaluations.length">
+            <tr>
+                <td colspan='{{numberOfEnabledColumns()}}' align="center">
+                    <div ng-if="data.findingEvaluations">
+                        <img src="<?php $this->asset('img/spinner_192.gif') ?>" width="48">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='{{numberOfEnabledColumns()}}' align="center" ng-if="!data.findingEvaluations">
+                    <button ng-click="findEvaluations();data.findingEvaluations = true"><?php MapasCulturais\i::_e("Carregar mais");?></button>
+                </td>
+            </tr>
+        </tfoot>
     </tbody>
 </table>
 <?php $this->applyTemplateHook('opportunity-evaluations--committee--table','end'); ?>

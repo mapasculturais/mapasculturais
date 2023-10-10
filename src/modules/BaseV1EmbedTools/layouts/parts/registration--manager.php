@@ -63,16 +63,14 @@ use MapasCulturais\i;
                     <?php i::_e("Avaliação"); ?>
                 </th>
                 <th ng-show="data.registrationTableColumns.status" class="registration-status-col">
-                    <mc-select placeholder="Status" model="registrationsFilters['status']" data="data.registrationStatuses"></mc-select>
+                    <mc-select placeholder="Status" model="registrationsFilters['status']" data="data.registrationStatusesToFilter"></mc-select>
                 </th>
 
                 <?php $this->applyTemplateHook('registration-list-header', 'end'); ?>
             </tr>
         </thead>
         <tr class="table-info">
-            <td colspan='{{numberOfEnabledColumns()}}'>
-                <label class="alignright"><input type="checkbox" class="hltip" ng-model="data.fullscreenTable"> <?php i::_e('Expandir tabela') ?></label>
-
+            <td colspan='{{numberOfEnabledColumns()}}'>                
                 <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição."); ?></span>
                 <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição encontrada com os filtros selecionados."); ?></span>
                 <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição."); ?></span>

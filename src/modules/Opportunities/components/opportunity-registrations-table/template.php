@@ -38,8 +38,8 @@ $entity = $this->controller->requestedEntity;
             <div class="col-12">
                 <h5><?= i::__("Visualize a lista de pessoas inscritas neste edital. E acompanhe os projetos criados para os Agentes Culturais aceitos.") ?></h5>
             </div>
-        <div class="col-12">
-            <v1-embed-tool route="registrationmanager" :id="phase.id"></v1-embed-tool>
+        <div class="col-12"> 
+            <v1-embed-tool route="registrationmanager" :id="phase.id" min-height="600px"></v1-embed-tool>
         </div>
     </template>
 </div>

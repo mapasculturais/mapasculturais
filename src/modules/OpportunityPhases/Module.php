@@ -697,19 +697,20 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(Opportunity).jsonSerialize', function (&$data) {
             $current_phase = $this->firstPhase;
             $num = 0;
-            do{
-                /** @var Opportunity $current_phase */
+            $phases = $this->firstPhase->allPhases;
+
+            foreach($phases as $current_phase) {
                 if($current_phase->isDataCollection) {
                     $num++;
                 }
                 if($current_phase->evaluationMethodConfiguration) {
                     $num++;
                 }
-
+    
                 if($current_phase->equals($this)) {
                     break;
                 }
-            } while ($current_phase = $current_phase->nextPhase);
+            }
 
             if($this->evaluationMethodConfiguration && $this->isDataCollection) {
                 $phase_name = $this->isFirstPhase ? i::__('Período de inscrição') : $this->name;

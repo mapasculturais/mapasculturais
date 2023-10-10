@@ -9,5 +9,5 @@ $this->import('
 ');
 ?>
 <mc-container v-if="canEvaluate">
-    <v1-embed-tool route="evaluationlist" :id="entity.id"></v1-embed-tool>
+    <v1-embed-tool route="evaluationlist" :id="entity.id" min-height="600px"></v1-embed-tool>
 </mc-container>
