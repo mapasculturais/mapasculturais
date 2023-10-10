@@ -183,7 +183,7 @@ class Job extends \MapasCulturais\Entity{
             $success = false;
         }
 
-        if ($success){
+        if ($success !== false){
             // para evitar que um eventual erro no job deixe a entidade detached
             $job = $app->repo('Job')->find($this->id);
 
