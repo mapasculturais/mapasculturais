@@ -82,11 +82,12 @@
 
             .rightSide {
                 z-index: 1;
+                padding-top: size(16);
 
                 .site {
                     display: flex;
                     flex-direction: column;
-                    margin-top: size(18);
+                    margin-top: size(--mc-font-size-xs);
 
                     .iconify {
                         margin-right: size(7);
