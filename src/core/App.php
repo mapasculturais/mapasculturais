@@ -503,7 +503,7 @@ class App {
                     $channel_id = (string) $this->config['monolog.telegram.channelId'] ?? false;
                     
                     if($api_key && $channel_id) {
-                        $handler = new Handler\TelegramBotHandler($api_key, $channel_id, $level, splitLongMessages:true, parseMode:'Markdown');
+                        $handler = new Handler\TelegramBotHandler($api_key, $channel_id, $level, parseMode:'Markdown');
                         
                         $formatter = new LineFormatter("%message%", includeStacktraces: true);
                         
