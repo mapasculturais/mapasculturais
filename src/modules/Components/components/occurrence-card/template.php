@@ -13,10 +13,10 @@ $this->import('
     mc-title
 ');
 ?>
-<div class="entity-card">
-    <div class="entity-card__header">
-        <div class="entity-card__header user-details">
-            <mc-avatar :entity="event" size="small"></mc-avatar>
+<div class="entity-card occurrence-card">
+    <div class="entity-card__header occurrence-card__card">
+        <div class="entity-card__header occurrence-card__header">
+            <mc-avatar :entity="event" size="medium"></mc-avatar>
             <div class="user-info">
                 <mc-title  tag="h2" class="bold">
                     {{event.name}}
