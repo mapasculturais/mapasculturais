@@ -32,6 +32,9 @@
     }
     
     function postToParent() {
+        if(!document.body) {
+            return;
+        }
         window.parent.postMessage({
             type: 'resize',
             data: {
