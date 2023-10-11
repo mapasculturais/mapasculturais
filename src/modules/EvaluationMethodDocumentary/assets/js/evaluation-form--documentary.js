@@ -154,8 +154,9 @@ $(function(){
             })
             
             setTimeout(function() {
-                console.log($lastField);
-                $lastField.click();
+                if($lastField){
+                    $lastField.click();
+                }
             }, c+5000);
         }, 200);
 
