@@ -88,6 +88,7 @@
 					}
 				}
 			}
+
 		}
 
 		&.with-labels & {
@@ -103,6 +104,7 @@
 					}
 				}
 				.entity-card__id {
+					font-size:var(--mc-font-size-xxs);
 					display: flex;
 					flex-direction: row;
 					align-items: center;
@@ -380,6 +382,11 @@
 	}
 
 	&.portrait {
+		.entity-card__header {
+			&.user-details {
+				flex-direction: column;
+			}
+		}
 		.entity-card__footer {
 			flex-direction: column;
 		}
