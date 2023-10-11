@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-avatar
     mc-confirm-button
 ');
 ?>
@@ -15,8 +16,7 @@ $this->import('
 
         <div v-if="pictureCard" class="left">
             <div class="registerImage">
-                <img v-if="entity.opportunity?.files?.avatar" :src="entity.opportunity?.files?.avatar?.transformations?.avatarMedium?.url" />
-                <mc-icon name="image" v-if="!entity.opportunity?.files?.avatar"></mc-icon>
+                <mc-avatar :entity="entity.opportunity "size="small"></mc-avatar>
             </div>
         </div>
 

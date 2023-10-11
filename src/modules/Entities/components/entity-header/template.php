@@ -6,6 +6,7 @@
 
 use MapasCulturais\i;
 $this->import('
+    mc-avatar
     mc-title
 ');
 ?>
@@ -16,9 +17,10 @@ $this->import('
     <div class="entity-header__single--content">
         <div class="leftSide">
             <div class="avatar">
-                <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarBig?.url">
-                <mc-icon  v-if="!entity.files.avatar" :entity="entity"></mc-icon>
+
+                <mc-avatar :entity="entity" size="big"></mc-avatar>
             </div>
+            <!-- <mc-icon  v-if="!entity.files.avatar" :entity="entity"></mc-icon> -->
             <nav class="share" aria-label="<?= i::__('Compartilhar') ?>">
                 <a v-if="entity.twitter" :href="entity.twitter" class="button button--text button--icon" aria-label="Twitter" target="_blank">
                     <mc-icon name="twitter"></mc-icon>

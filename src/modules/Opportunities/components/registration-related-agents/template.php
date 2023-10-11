@@ -24,10 +24,7 @@ $this->import('
     <template #content>
         <div v-if="hasRelations(registration.relatedAgents[relation.agentRelationGroupName])" class="registration-related-entity">
             <div class="registration-related-entity__entity">
-                <div class="image">
-                    <img v-if="registration.relatedAgents[relation.agentRelationGroupName][0].files.avatar" :src="registration.relatedAgents[relation.agentRelationGroupName][0].files?.avatar?.transformations?.avatarMedium.url" />
-                    <mc-icon v-if="!registration.relatedAgents[relation.agentRelationGroupName][0].files.avatar" name="image"></mc-icon>
-                </div>
+                <mc-avatar :entity="registration.relatedAgents[relation.agentRelationGroupName][0]" size="small"></mc-avatar>
                 <div class="name">
                     {{registration.relatedAgents[relation.agentRelationGroupName][0].name}}
                 </div>

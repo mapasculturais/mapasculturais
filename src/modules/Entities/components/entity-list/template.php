@@ -5,6 +5,7 @@
  */
 
 $this->import('
+    mc-avatar
     mc-entities
     mc-link
 ');
@@ -20,8 +21,7 @@ $this->import('
                 <li v-for="entity in entities" class="col-12 entity-list__list-item">
                     <mc-link class="entity-list__list-item-link" :entity="entity">
                         <div class="entity-list__list-item-img">
-                            <img v-if="entity.files.avatar?.transformations?.avatarSmall?.url" :src="entity.files.avatar?.transformations?.avatarSmall?.url">
-                            <mc-icon v-if="!entity.files.avatar?.transformations?.avatarSmall?.url" name="agent-1"></mc-icon>
+                           <mc-avatar :entity="entity" :size="xsmall"></mc-avatar>
                         </div>
                         <div class="entity-list__list-item"> {{showContent(entity.name)}} </div>
                     </mc-link>

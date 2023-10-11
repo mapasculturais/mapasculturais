@@ -87,10 +87,7 @@ $this->import('
                 <label class="create-modal__fields--selected-label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></label>
                 <div class="entity-selected">
                     <div class="entity-selected__entity" :class="entityColorBorder">
-                        <img v-if="entity.ownerEntity.files?.avatar" :src="entity.ownerEntity.files?.avatar?.transformations.avatarSmall.url" class="img" />
-                        <div v-if="!entity.ownerEntity.files?.avatar" class="img-fake">
-                            <mc-icon :entity="entity.ownerEntity"></mc-icon>
-                        </div>
+                        <mc-avatar :entity="entity.ownerEntity" size="xsmall"></mc-avatar>
                         <span class="name" :class="entityColorClass"><?php i::_e('{{entity.ownerEntity.name}}') ?></span>
                     </div>
                     <div class="entity-selected__info">

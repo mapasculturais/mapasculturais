@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-avatar
     mc-icon
     select-entity
 ');
@@ -15,10 +16,7 @@ $this->import('
     <h4 class="entity-parent-edit__title bold">{{entity.name}} {{title}}</h4>
     <a class="entity-parent-edit__parent" :href="parent.singleUrl" :title="parent.shortDescription">
         <div class="entity-parent-edit__parent--img">
-            <img v-if="parent.files.avatar" class="profile" :src="parent.files?.avatar?.url">
-            <div v-else class="placeholder">
-                <mc-icon name="agent-1"></mc-icon>
-            </div>
+            <mc-avatar :entity="parent" size="small"></mc-avatar>
         </div>
         <div class="entity-parent-edit__parent--name">
             <?php i::_e('{{entity.parent.name}}') ?>
