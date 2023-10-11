@@ -69,8 +69,16 @@ trait EntityPermissionCache {
         return "$prefix::{$this->getHookClassPath()}:{$this->id}::User:{$user->id}::$action";
     }
     
+    static protected array $createdPermissionCache = [];
+
     function createPermissionsCacheForUsers(array $users = null, $flush = false, $delete_old = true) {
         $this->renewPermissionCachePrefix();
+
+        if(self::$createdPermissionCache["$this"] ?? false) {
+            return;
+        } else {
+            self::$createdPermissionCache["$this"] = true;
+        }
 
         $app = App::i();
         if($this->getEntityState() !== 2){
@@ -214,8 +222,6 @@ trait EntityPermissionCache {
         $self = $this;
 
         $app->setEntityPermissionCacheAsRecreated($self);
-
-
 
         $conn = $app->em->getConnection();
         $conn->beginTransaction();
