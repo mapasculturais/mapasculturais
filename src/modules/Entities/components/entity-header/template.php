@@ -55,16 +55,15 @@ $this->import('
         <div class="rightSide">
             <div class="data">
                 <mc-title tag="h1" size="big" class="entity-header__title"> {{entity.name}} </mc-title>
-                
                 <div class="metadata">
                     <slot name="metadata">
-                        <dl class="metadata__id" v-if="entity.__objectType =='agent' && entity.id">
+                        <dl class="metadata__id" v-if="entity.__objectType == 'agent' && entity.id">
                             <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
-                                <dd><strong>{{entity.id}}</strong></dd>
+                            <dd>aa<strong>{{entity.id}}</strong></dd>
                         </dl> 
                         <dl v-if="entity.type">
-                        <dt><?= i::__('Tipo')?></dt>
-                            <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
+                            <dt><?= i::__('Tipo')?></dt>
+                            <dd :class="[entity.__objectType+'__color', 'type']">bb {{entity.type.name}} </dd>
                         </dl>
                     </slot>
                 </div>
