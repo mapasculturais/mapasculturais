@@ -16,7 +16,7 @@ $this->import('
 
         <div v-if="pictureCard" class="left">
             <div class="registerImage">
-                <mc-avatar :entity="entity.opportunity "size="small"></mc-avatar>
+                <mc-avatar :entity="entity.opportunity" size="small"></mc-avatar>
             </div>
         </div>
 
