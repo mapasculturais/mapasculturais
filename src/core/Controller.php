@@ -28,6 +28,7 @@ use \MapasCulturais\App;
  * The template files for this controller is located in the folder themes/active/views/{$controller_id}/
  *
  * @property string $layout
+ * @property-read Theme $view
  *
  * @see \MapasCulturais\App::registerController()
  *
@@ -300,6 +301,15 @@ abstract class Controller{
             $app->pass();
         }
 
+    }
+
+    /**
+     * Retorna instância do tema
+     * @return Theme 
+     */
+    function getView() {
+        $app = App::i();
+        return $app->view;
     }
 
     function getTemplatePrefix()

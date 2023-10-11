@@ -1,15 +1,18 @@
 <?php
+
+use MapasCulturais\i;
+
 $evaluation_url = $app->createUrl('registration', 'evaluation');
 ?>
 <?php $this->applyTemplateHook('opportunity-evaluations--committee--table','before'); ?>
 <header id="header-inscritos" class="clearfix">
     <?php $this->applyTemplateHook('opportunity-evaluations--committee--table','begin'); ?>
 
-    <h3><?php \MapasCulturais\i::_e("Avaliações");?></h3>
+    <h3><?php i::_e("Avaliações");?></h3>
 </header>
 <?php if($entity->isUserEvaluationsSent()): ?>
     <div id='status-info' class="alert success">
-        <span><?php \MapasCulturais\i::_e("Suas avaliações já foram enviadas:");?></span>
+        <span><?php i::_e("Suas avaliações já foram enviadas:");?></span>
 
         <div class="close"></div>
     </div>
@@ -22,22 +25,22 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
         <tr>
         <?php $this->applyTemplateHook('opportunity-evaluations--committee--table-thead-tr','begin'); ?>    
             <th class="registration-id-col">
-                <?php \MapasCulturais\i::_e("Inscrição");?>
+                <?php i::_e("Inscrição");?>
             </th>
             <th ng-if="data.entity.registrationCategories" class="registration-option-col">
                 <mc-select placeholder="status" model="evaluationsFilters['registration:category']" data="data.registrationCategoriesToFilter"></mc-select>
             </th>
             <th class="registration-agents-col">
-                <?php \MapasCulturais\i::_e("Agentes");?>
+                <?php i::_e("Agentes");?>
             </th>
             <th ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                <?php \MapasCulturais\i::_e("Anexos");?>
+                <?php i::_e("Anexos");?>
             </th>
             <th class="registration-status-col">
-                <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Status"); ?>" model="evaluationsFilters['status']" data="data.evaluationStatuses"></mc-select>
+                <mc-select placeholder="<?php i::esc_attr_e("Status"); ?>" model="evaluationsFilters['status']" data="data.evaluationStatuses"></mc-select>
             </th>
             <th class="registration-status-col">
-                <?php \MapasCulturais\i::esc_attr_e("Avaliação"); ?>
+                <?php i::esc_attr_e("Avaliação"); ?>
             </th>
             <?php $this->applyTemplateHook('opportunity-evaluations--committee--table-thead-tr','end'); ?>    
         </tr>
@@ -45,13 +48,13 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
     <tbody>
         <tr>
             <td colspan='10'>
-                <span ng-if="data.evaluations.length === 0"><?php \MapasCulturais\i::_e("Nenhuma avaliação enviada.");?></span>
-                <span ng-if="data.evaluations.length === 1"><?php \MapasCulturais\i::_e("1 avaliação encontrada.");?></span>                
+                <span ng-if="data.evaluations.length === 0"><?php i::_e("Nenhuma avaliação enviada.");?></span>
+                <span ng-if="data.evaluations.length === 1"><?php i::_e("1 avaliação encontrada.");?></span>                
                 <span ng-if="data.evaluations.length > 1">{{data.evaluations.length}}
                     <span ng-if="data.evaluationsAPIMetadata.count > 0">
                         <i> de {{ data.evaluationsAPIMetadata.count }}</i>
                     </span>
-                 <?php \MapasCulturais\i::_e("Avaliações");?>
+                 <?php i::_e("Avaliações");?>
              </span>   
             </td>
         </tr>
@@ -62,7 +65,7 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{evaluation.registration.category}}</td>
             <td class="registration-agents-col">
                 <p>
-                    <span class="label"><?php \MapasCulturais\i::_e("Responsável");?></span><br />
+                    <span class="label"><?php i::_e("Responsável");?></span><br />
                     <a href="{{evaluation.registration.owner.singleUrl}}" rel='noopener noreferrer'>{{evaluation.registration.owner.name}}</a>
                 </p>
 
@@ -72,7 +75,7 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
                 </p>
             </td>
             <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                <a ng-if="evaluation.registration.files.zipArchive.url" class="icon icon-download" href="{{evaluation.registration.files.zipArchive.url}}" rel='noopener noreferrer'><div class="screen-reader-text"><?php \MapasCulturais\i::_e("Baixar arquivos");?></div></a>
+                <a ng-if="evaluation.registration.files.zipArchive.url" class="icon icon-download" href="{{evaluation.registration.files.zipArchive.url}}" rel='noopener noreferrer'><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
             </td>
             <td class="registration-status-col">
                 {{getEvaluationStatusLabel(evaluation)}}
