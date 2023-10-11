@@ -1289,7 +1289,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
         
-        return $this->canUserViewUserEvaluation($user);
+        return $this->canUserViewUserEvaluation($user, true);
     }
 
     protected function canUserEvaluate($user){
@@ -1318,13 +1318,17 @@ class Registration extends \MapasCulturais\Entity
         return $can && !$evaluation_sent;
     }
 
-    protected function canUserViewUserEvaluation($user){
+    protected function canUserViewUserEvaluation($user, $skip_opportunity_control = false){
         if($this->status <= 0 || $user->is('guest') || !$this->evaluationMethod) {
             return false;
         }
         $app = App::i();
 
         $em = $this->evaluationMethod;
+
+        if (!$skip_opportunity_control && $this->opportunity->canUser('@control', $user)) {
+            return true;
+        }
 
         $can = $em->canUserEvaluateRegistration($this, $user);
 
@@ -1377,13 +1381,16 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getExtraPermissionCacheUsers(){
-        if($this->status > 0 && $this->opportunity->evaluationMethodConfiguration) {
-            $valuers = $this->getEvaluationMethodConfiguration()->getUsersWithControl();
+        $opportunity = $this->opportunity;
+        $evaluationMethodConfiguration = $this->evaluationMethodConfiguration;
+
+        if($this->status > 0 && $evaluationMethodConfiguration) {
+            $valuers = $evaluationMethodConfiguration->getUsersWithControl();
         } else {
             $valuers = [];
         }
 
-        $users = array_merge($valuers, $this->opportunity->getUsersWithControl());
+        $users = array_merge($valuers, $opportunity->getExtraPermissionCacheUsers());
         
         if($this->nextPhaseRegistrationId){
             $next_phase_registration = App::i()->repo('Registration')->find($this->nextPhaseRegistrationId);
@@ -1394,8 +1401,8 @@ class Registration extends \MapasCulturais\Entity
                 }
             }
         }
-
-        return $users;
+        
+        return array_unique($users);
     }
 
     /**
