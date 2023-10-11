@@ -9,7 +9,7 @@
 
     .tabs-component {
         &__header {
-            margin: size(-40) auto size(40);
+            margin: size(-40) auto 0;
 
             @media (max-width: size(800)) {
                 margin-top: 0;
@@ -18,7 +18,7 @@
         }
 
         &__panels {
-            margin: size(-40) auto size(40);
+            margin: 0 auto size(40);
         }
     }
 
