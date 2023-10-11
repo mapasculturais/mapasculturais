@@ -5,17 +5,25 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\i;
+
 
 /**
  * Registration
- * @property \MapasCulturais\Entities\Agent $owner The owner of this registration
- * @property \MapasCulturais\Entities\Opportunity $opportunity
- * 
- * @property array valuersExcludeList
- * @property array valuersIncludeList
- * 
+ * @property Agent $owner The owner of this registration
+ * @property Opportunity $opportunity
  * @property string $category
+ * 
+ * @property-read EvaluationMethodConfiguration $evaluationMethodConfiguration
+ * @property-read mixed $evaluationResultValue valor do resultado consolidado das avaliações
+ * @property-read string $evaluationResultString string do resultado consolidado das avaliações
+ * @property-read array|object $spaceData retorna o snapshot dos dados do espaço relacionado
+ * @property-read array|object $agentsData retorna o snapshot dos dados dos agentes relacionados e do agente owner
+ * @property-read array|object $valuersExceptionsList retorna a configuração de exceções da lista de avaliadores, aqueles que não entram na regra de distribuição padrão
+ * @property-read array|object $valuersIncludeList retorna a lista de avaliadores incluídos
+ * @property-read array|object $valuersExcludeList retorna a lista de avaliadores excluídos
+ * @property-read array $statuses Nomes dos status
  *
  * @ORM\Table(name="registration")
  * @ORM\Entity
@@ -542,17 +550,34 @@ class Registration extends \MapasCulturais\Entity
         return $definitions;
     }
 
+    /**
+     * Retorna o valor do resultado consolidado da avaliação
+     * 
+     * @return mixed 
+     * @throws PermissionDenied 
+     */
     function getEvaluationResultValue(){
         $method = $this->getEvaluationMethod();
         return $method->getConsolidatedResult($this);
     }
 
+    /**
+     * Retorna a string do valor consolidado da avaliação
+     * 
+     * @return string 
+     * @throws PermissionDenied 
+     */
     function getEvaluationResultString(){
         $method = $this->getEvaluationMethod();
         $value = $this->getEvaluationResultValue();
         return $method->valueToString($value);
     }
 
+    /**
+     * Retorna o snapshot dos dados do espaço relacionado
+     * 
+     * @return array 
+     */
     function getSpaceData(){
         if($this->_spaceData['acessibilidade_fisica'] ?? false){
             $this->_spaceData['acessibilidade_fisica'] = str_replace(';', ', ', $this->_spaceData['acessibilidade_fisica']);
@@ -561,6 +586,11 @@ class Registration extends \MapasCulturais\Entity
         return $this->_spaceData;
     }
 
+    /**
+     * Retorna o snapshot dos dados dos agentes relacionados e do agente owner
+     * 
+     * @return array
+     */
     function getAgentsData(){
         if($this->canUser('view')){
             return $this->agentsData;
@@ -569,10 +599,19 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
+    /**
+     * @deprecated
+     * @return int 
+     */
     function randomIdGeneratorInitialRange(){
         return 1000;
     }
 
+    /**
+     * Retorna a configuração de exceções da lista de avaliadores, aqueles que não entram na regra de distribuição padrão
+     * 
+     * @return mixed 
+     */
     function getValuersExceptionsList(){
         return json_decode($this->__valuersExceptionsList);
     }
@@ -599,11 +638,20 @@ class Registration extends \MapasCulturais\Entity
         $this->_setValuersExceptionsList($exceptions);
     }
 
+    /**
+     * Retorna a lista de avaliadores incluídos
+     * 
+     * @return mixed 
+     */
     function getValuersIncludeList(){
         $exceptions = $this->getValuersExceptionsList();
         return $exceptions->include;
     }
     
+    /**
+     * Retorna a lista de avaliadores excluídos
+     * @return mixed 
+     */
     function getValuersExcludeList(){
         $exceptions = $this->getValuersExceptionsList();
         return $exceptions->exclude;
