@@ -2,6 +2,8 @@
 
 use MapasCulturais\i;
 
+$valuer_id = $valuer_user ? $valuer_user->profile->id : '';
+
 $evaluation_url = $app->createUrl('registration', 'evaluation');
 ?>
 <?php $this->applyTemplateHook('opportunity-evaluations--committee--table','before'); ?>
@@ -19,7 +21,7 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
 <?php endif?>
 
 
-<table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}">
+<table class="js-registration-list registrations-table" data-valuer-id="<?= $valuer_id ?>" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}">
 <thead>
     
         <tr>

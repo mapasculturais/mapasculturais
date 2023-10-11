@@ -2236,6 +2236,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     qdata[prop] = 'EQ(' + $scope.evaluationsFilters[prop] + ')'
                 }
             }
+            var valuer_id = jQuery('.js-registration-list').data('valuerId');
+        
+
+            if(valuer_id) {
+                qdata['valuer:id'] = `EQ(${valuer_id})`;
+            }
             evaluationsApi = new OpportunityApiService($scope, 'evaluations', 'findEvaluations', qdata);
             
             $scope.findEvaluations();
