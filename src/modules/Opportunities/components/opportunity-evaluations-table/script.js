@@ -9,6 +9,10 @@ app.component('opportunity-evaluations-table' , {
             type: [String, Array, Object],
             required: false
         },
+        user: {
+            type: [String, Number],
+            required: true
+        }
     },
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente

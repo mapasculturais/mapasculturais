@@ -31,6 +31,9 @@ app.component('v1-embed-tool', {
         },
         iframeId: {
             type: String
+        },
+        params: {
+            type: Object,
         }
     },
 
@@ -77,15 +80,18 @@ app.component('v1-embed-tool', {
 
     computed: {
         url() {
-            let url = $MAPAS.baseURL + 'embedtools/' + this.route;
+            const params = this.params || {};
 
             if (this.id) {
-                url += '/' + this.id;
+                params['0'] = this.id;
             }
+
+            let url = Utils.createUrl('embedtools', this.route, params).toString();
 
             if (this.hash) {
                 url += '#' + this.hash;
             }
+
             return url;
         }
     },
