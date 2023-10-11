@@ -47,6 +47,9 @@ $this->import('
                             <div class="type-evaluation__content col-12">
                                 <label class="type-evaluation__content--label">{{ownerType(entity.ownerEntity)}}:</label> <strong class="type-evaluation__content--strong"><mc-link :entity="entity.ownerEntity"></mc-link></strong>
                             </div>
+                            <div class="type-evaluation__date col-12">
+                                <label class="entity-label"><?php i::_e('PERÍODO DE AVALIAÇÃO: ') ?><strong class="primary__color">{{evaluationFrom(entity).date('2-digit year')}} até {{evaluationTo(entity).date('2-digit year')}}</strong></label>
+                            </div>
                         </div>
                     </template>
 
