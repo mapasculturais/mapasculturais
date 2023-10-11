@@ -12,6 +12,7 @@ $this->addOpportunityPhasesToJs();
 $this->addRegistrationPhasesToJs();
 
 $this->import('
+    mc-avatar
     mc-breadcrumb
     mc-card
     mc-tab
@@ -46,10 +47,7 @@ $entity = $entity->firstPhase;
                             <div class="registration-info__header">
                                 <div class="left">
                                     <div class="agent">
-                                        <div class="agent__image">
-                                            <img v-if="entity.owner.files.avatar" :src="entity.owner.files?.avatar?.transformations?.avatarMedium?.url" />
-                                            <mc-icon v-if="!entity.owner.files.avatar" name="image"></mc-icon>
-                                        </div>
+                                        <mc-avatar :entity="entity.owner" size="small"></mc-avatar>
                                         <div class="agent__name"> {{entity.owner.name}} </div>
                                     </div>
                                     <div class="metadata">
@@ -178,10 +176,7 @@ $entity = $entity->firstPhase;
                     </template>
                     <template #content>
                         <div v-if="entity.agentRelations.hasOwnProperty('coletivo') && entity.agentRelations.coletivo[0]" class="space">
-                            <div class="image">
-                                <mc-icon v-if="!entity.agentRelations.coletivo[0]?.files?.avatar" name="image"></mc-icon>
-                                <img v-if="entity.agentRelations.coletivo[0]?.files?.avatar" :src="entity.agentRelations.coletivo[0].files.avatar.transformations.avatarMedium.url" />
-                            </div>
+                            <mc-avatar :entity="entity.agentRelations.coletivo[0].agent" size="xsmall"></mc-avatar>
                             <div class="name">
                                 <a href="entity?.agentRelations.coletivo[0].agent.singleUrl" class="registration__collective-link bold" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
                             </div>
@@ -204,10 +199,7 @@ $entity = $entity->firstPhase;
                     </template>
                     <template #content>
                         <div v-if="entity.agentRelations.hasOwnProperty('instituicao') && entity.agentRelations.instituicao[0]" class="space">
-                            <div class="image">
-                                <mc-icon v-if="!entity.agentRelations.instituicao[0]?.files?.avatar" name="image"></mc-icon>
-                                <img v-if="entity.agentRelations.instituicao[0]?.files?.avatar" :src="entity.agentRelations.instituicao[0].files.avatar.transformations.avatarMedium.url" />
-                            </div>
+                            <mc-avatar :entity="entity.agentRelations.instituicao[0].agent" size="xsmall"></mc-avatar>
                             <div class="name">
                                 <a :href="entity?.agentRelations.instituicao[0].agent.singleUrl" class="registration__institution-link" :class="[entity.agentRelations.instituicao[0]['@entityType'] + '__color']"> {{entity?.agentRelations.instituicao[0].agent.name}} </a>
                             </div>
@@ -230,10 +222,7 @@ $entity = $entity->firstPhase;
                     </template>
                     <template #content>
                         <div v-if="entity.relatedSpaces[0]" class="space">
-                            <div class="image">
-                                <mc-icon v-if="!entity.relatedSpaces[0]?.files?.avatar" name="image"></mc-icon>
-                                <img v-if="entity.relatedSpaces[0]?.files?.avatar" :src="entity.relatedSpaces[0].files.avatar.transformations.avatarMedium.url" />
-                            </div>
+                            <mc-avatar :entity="entity.relatedSpaces[0]" size="xsmall"></mc-avatar>
                             <div class="name">
                                 <a href="entity?.relatedSpaces[0]?.singleUrl" class="registration__space-link" :class="[entity.relatedSpaces[0]['@entityType'] + '__color']"> {{entity?.relatedSpaces[0]?.name}} </a>
                             </div>

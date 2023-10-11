@@ -1,9 +1,11 @@
+@use '../0.settings/mixins' as *;
+
 .mc-title {
     // size medium (utilizado no card)
     font-size: var(--mc-font-size-sm);
 
     &--long {
-        font-size: var(--mc-font-size-sm);
+        font-size: size(20);
     }
 
     &--short {
@@ -16,7 +18,7 @@
         }
 
         &--short {
-            font-size: var(--mc-font-size-md);
+            font-size: var(--mc-font-size-sm);
         }
     }
 

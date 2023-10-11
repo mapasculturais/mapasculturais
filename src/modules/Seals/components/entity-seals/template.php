@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-avatar
     mc-confirm-button
     mc-icon
     select-entity
@@ -23,7 +24,7 @@ $this->import('
             <div class="seal-icon">
                 <a :href="seal.singleUrl" class="link ">
                     <div v-if="seal.files?.avatar" class="image">
-                        <img :src="seal.files.avatar?.transformations?.avatarSmall?.url">
+                        <mc-avatar :entity="seal" size="small" square></mc-avatar>
                     </div>
                     <div v-if="!(seal.files?.avatar)">
                         <mc-icon name="seal"></mc-icon>
