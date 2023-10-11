@@ -37,7 +37,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity">
         <template #metadata>
-            <dl>
+            <dl v-if="entity.type">
                 <dt><?= i::__('Tipo') ?></dt>
                 <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
             </dl>

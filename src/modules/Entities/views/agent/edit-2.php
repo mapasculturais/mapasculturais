@@ -55,10 +55,18 @@ $this->breadcrumb = [
                         <div class="left">
                             <div class="grid-12 v-bottom">
                                 <entity-cover :entity="entity" classes="col-12"></entity-cover>
-                                <div class="col-3 sm:col-12">
-                                    <entity-profile :entity="entity"></entity-profile>
+                                
+                                <div class="col-12 grid-12">
+                                    <?php $this->applyTemplateHook('entity-info','begin') ?>
+                                    <div class="col-3 sm:col-12">
+                                        <entity-profile :entity="entity"></entity-profile>
+                                    </div>
+                                    <div class="col-9 sm:col-12 grid-12 v-bottom">
+                                        <entity-field :entity="entity" classes="col-12" prop="name" label="<?php i::_e('Nome do Agente') ?>"></entity-field>
+                                    </div>
+                                    <?php $this->applyTemplateHook('entity-info','end') ?>
                                 </div>
-                                <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name" label="<?php i::_e('Nome do Agente') ?>"></entity-field>
+
                                 <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="site"></entity-field>
                             </div>

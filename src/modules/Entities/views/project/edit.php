@@ -57,14 +57,18 @@ $this->breadcrumb = [
                         <div class="left">
                             <div class="grid-12 v-center">
                                 <entity-cover :entity="entity" classes="col-12"></entity-cover>
-                                <div class="col-3 sm:col-12">
-                                    <entity-profile :entity="entity"></entity-profile>
-                                </div>
-                                <div class="col-9 sm:col-12">
-                                    <div class="grid-12">
-                                        <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Nome do projeto") ?>" prop="name"></entity-field>
-                                        <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Tipo do projeto") ?>" prop="type"></entity-field>
+                                <div class="col-12 grid-12">
+                                    <?php $this->applyTemplateHook('entity-info','begin') ?>
+                                    <div class="col-3 sm:col-12">
+                                        <entity-profile :entity="entity"></entity-profile>
                                     </div>
+                                    <div class="col-9 sm:col-12">
+                                        <div class="grid-12">
+                                            <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Nome do projeto") ?>" prop="name"></entity-field>
+                                            <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Tipo do projeto") ?>" prop="type"></entity-field>
+                                        </div>
+                                    </div>
+                                    <?php $this->applyTemplateHook('entity-info','end') ?>
                                 </div>
                                 <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Link para página ou site do projeto") ?>" prop="site"></entity-field>
