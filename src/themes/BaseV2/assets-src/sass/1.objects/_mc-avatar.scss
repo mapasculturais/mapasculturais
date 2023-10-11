@@ -1,0 +1,67 @@
+@use '../0.settings/mixins' as *;
+
+.mc-avatar {
+    align-items: center;
+    background-color: var(--mc-gray-300);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    min-width: size(48);
+    overflow: hidden;
+    
+    img {
+        width: 100%;
+    }
+
+    .iconify {
+        font-size: size(24);
+        color: var(--mc-gray-700);
+    }
+
+    &--square {
+        border-radius: var(--mc-border-radius-sm);
+    }
+
+    &--xsmall {
+        width: size(40);
+        height: size(40);
+        min-width: size(40);
+        min-height: size(40);
+    }
+
+    &--small {
+        width: size(48);
+        height: size(48);
+        min-width: size(48);
+        min-height: size(48);
+    }
+
+    &--medium {
+        width: size(72);
+        height: size(72);
+        min-width: size(72);
+        min-height: size(72);
+
+        @media (max-width:size(600)) {
+            width: size(48);
+            height: size(48);
+            min-width: size(48);
+            min-height: size(48);
+        }
+    }
+
+    &--big {
+        width: size(167);
+        height: size(167);
+        min-width: size(167);
+        min-height: size(167);
+
+
+        @media (max-width:size(600)) {
+            width: size(113);
+            height: size(113);
+            min-width: size(113);
+            min-height: size(113);
+        }
+    }
+}

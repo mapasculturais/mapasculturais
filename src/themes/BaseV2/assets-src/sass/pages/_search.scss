@@ -290,6 +290,11 @@
                 }
 
                 .entity-card {
+                    &__header {
+                        @media (max-width: size(800)) {
+                            flex-direction: column;
+                        }
+                    }
                     .user-info__attr {
                         font-weight: 600;
                         font-size: size(14);

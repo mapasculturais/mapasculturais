@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-avatar
     mc-icon    
 ');
 ?>
@@ -14,10 +15,7 @@ $this->import('
     <h3><?= i::__('Agente proponente')?></h3>
     
     <div class="mc-summary-agent__agent">
-        <div class="mc-summary-agent__img">
-            <img v-if="entity.owner.files.avatar" :src="entity.owner.files.avatar?.transformations?.avatarMedium?.url" />
-            <mc-icon v-if="!entity.owner.files.avatar" name="agent-1"></mc-icon>
-        </div>
+        <mc-avatar :entity="entity.owner" size="small"></mc-avatar>
         <h5>{{owner.name}}</h5>
     </div>
 </div>

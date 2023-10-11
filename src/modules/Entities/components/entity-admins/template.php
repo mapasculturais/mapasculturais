@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-avatar
     mc-confirm-button
     mc-relation-card
     select-entity
@@ -22,8 +23,7 @@ $this->import('
                 <mc-relation-card :relation="relation">
                     <template #default="{open, close, toggle}">
                         <a class="agent__img" @click="$event.preventDefault(); toggle()">
-                            <img v-if="relation.agent.files.avatar" :src="relation.agent.files.avatar?.transformations?.avatarMedium?.url" class="agent__img--img" />
-                            <mc-icon v-if="!relation.agent.files.avatar" name="agent"></mc-icon>
+                           <mc-avatar :entity="relation.agent" size="small"></mc-avatar>
                         </a>
                     </template>
                 </mc-relation-card>

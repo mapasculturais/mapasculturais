@@ -9,6 +9,7 @@
 
 // OBJECTS
 @import '1.objects/mc-title';
+@import '1.objects/mc-avatar';
 
 // COMPONENTS
 @import '2.components/agent-data';
@@ -126,6 +127,7 @@
 @import '2.components/registration-status';
 @import '2.components/opportunity-header';
 @import '2.components/opportunity-registration-table';
+@import '2.components/occurrence-card';
 @import '2.components/seal-content-share';
 @import '2.components/seal-locked-field';
 @import '2.components/seal-relation-view';
