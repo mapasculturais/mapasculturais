@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
 	entity-card
+	mc-avatar
 ');
 ?>
 <div v-if="global.enabledEntities.opportunities" class="home-opportunities">

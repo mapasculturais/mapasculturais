@@ -20,18 +20,17 @@ app.component('panel--pending-evaluations', {
            opportunity.populate(raw);
            entities.push(opportunity);
         }
-
+        
         return { text, entities }
     },
 
     created() {
         this.loading = false;
     },
-
+ 
     data() {
         return {
             loading: true,
-
             // carousel settings
             settings: {
                 itemsToShow: 1.2,
@@ -98,6 +97,16 @@ app.component('panel--pending-evaluations', {
         }
     },
     methods: {
+        evaluationFrom(entity) {
+
+            const evalFrom = entity.evaluationMethodConfiguration.evaluationFrom;
+            return evalFrom
+         },
+         evaluationTo(entity) {
+
+            const evalTo = entity.evaluationMethodConfiguration.evaluationTo;
+            return  evalTo
+         },
         resizeSlides() {
             this.$refs.carousel.updateSlideWidth();
         },

@@ -48,7 +48,7 @@ $this->import('
                 </div>
                 <div class="col-6 opportunity-phase-list-evaluation__cardfooter">
                     <h5 class="bold"><?= i::__("Confira a lista de avaliações e acesse-as individualmente")?></h5>
-                    <mc-link route="opportunity/opportunityEvaluations" :params="[entity.opportunity.id]" class="opportunity-phase-list-evaluation_buttonbox button button--primary button--icon " icon="external" right-icon>
+                    <mc-link route="opportunity/allEvaluations" :params="[entity.opportunity.id, 'all']" class="opportunity-phase-list-evaluation_buttonbox button button--primary button--icon " icon="external" right-icon>
                     <h4 class="semibold"><?= i::__("Lista de avaliações") ?></h4>
                     </mc-link>
                 </div>    

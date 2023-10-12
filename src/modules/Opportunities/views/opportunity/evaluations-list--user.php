@@ -25,7 +25,12 @@ $this->import('
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity">
         <template #button>
-            <mc-link  v-if="entity.currentUserPermissions.modify" class="button button--primary-outline" :entity="entity.opportunity"  hash="evaluations" route="single" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
+            <mc-link v-if="entity.currentUserPermissions.modify" 
+                    :entity="entity.opportunity.parent || entity.opportunity" 
+                    route="single" 
+                    hash="evaluations" 
+                    icon="arrow-left"
+                    class="button button--primary-outline"><?= i::__("Voltar") ?></mc-link>
         </template>
         <template #opportunity-header-info-end>
         </template>
@@ -34,6 +39,6 @@ $this->import('
     <div class="opportunity-registrations__container grid-12">
         <opportunity-phase-header :phase="entity" classes="col-12"></opportunity-phase-header>
         <mc-summary-evaluate classes="col-12"></mc-summary-evaluate>
-        <opportunity-evaluations-table :phase="entity" classes="col-12"></opportunity-evaluations-table>
+        <opportunity-evaluations-table :phase="entity" user="<?php $valuer_user->id ?>" classes="col-12"></opportunity-evaluations-table>
     </div>
 </div>

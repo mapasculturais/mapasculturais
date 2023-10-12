@@ -9,7 +9,7 @@ app.component('mc-icon', {
 
     props: {
         entity: {
-            type: Entity,
+            type: [Entity, Object],
             required: false
         },
 

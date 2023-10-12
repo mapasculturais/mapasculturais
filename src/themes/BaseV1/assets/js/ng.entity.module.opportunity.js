@@ -195,6 +195,7 @@
             },
             
             registrationStatuses: MapasCulturais.entity.registrationStatuses,
+            registrationStatusesToFilter: [{label: 'Todos os status', value: undefined}, ...MapasCulturais.entity.registrationStatuses],
 
             registrationStatusesNames: MapasCulturais.entity.registrationStatuses,
 
@@ -2235,6 +2236,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     qdata[prop] = 'EQ(' + $scope.evaluationsFilters[prop] + ')'
                 }
             }
+            var valuer_id = jQuery('.js-registration-list').data('valuerId');
+        
+
+            if(valuer_id) {
+                qdata['valuer:id'] = `EQ(${valuer_id})`;
+            }
             evaluationsApi = new OpportunityApiService($scope, 'evaluations', 'findEvaluations', qdata);
             
             $scope.findEvaluations();
@@ -2332,6 +2339,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
         ],
 
         registrationStatuses: RegistrationService.registrationStatuses,
+        registrationStatusesToFilter: [{label: 'Todos os status', value: undefined}, ...MapasCulturais.entity.registrationStatuses],
 
         registrationStatusesNames: RegistrationService.registrationStatusesNames,
 

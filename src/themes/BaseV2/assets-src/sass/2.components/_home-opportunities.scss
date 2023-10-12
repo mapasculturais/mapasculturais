@@ -61,6 +61,14 @@
 			align-items: start;
 			grid-template-columns: 1fr 1fr;
 			overflow-x: auto;
+			@media (max-width: size(600)){
+				grid-template-columns: 1fr;
+			}
+		}
+		.entity-card {
+			&__header {
+				flex-direction: column;
+			}
 		}
 	}
 

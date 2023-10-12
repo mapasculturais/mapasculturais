@@ -46,6 +46,7 @@ $this->breadcrumb = $breadcrumb;
  */
 
  $this->import('
+    mc-avatar
     opportunity-header
     registration-info
     registration-steps
@@ -79,10 +80,7 @@ $this->breadcrumb = $breadcrumb;
                             </div>
                             <div class="card__content">
                                 <div class="owner">
-                                    <div class="owner__image">
-                                        <img v-if="entity.owner.files?.avatar" :src="entity.owner.files?.avatar?.transformations?.avatarSmall?.url" />
-                                        <mc-icon v-if="!entity.owner.files?.avatar" name="image"></mc-icon>
-                                    </div>
+                                    <mc-avatar :entity="entity.owner" size="small"></mc-avatar>
                                     <div class="owner__name">
                                         {{entity.owner.name}}
                                     </div>

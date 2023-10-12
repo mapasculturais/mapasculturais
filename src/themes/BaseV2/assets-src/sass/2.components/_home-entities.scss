@@ -41,7 +41,9 @@
                     line-height: size(22);
                 }
             }
-
+            &.user-details {
+                flex-direction: column;
+            }
         }
 
         &--cards {

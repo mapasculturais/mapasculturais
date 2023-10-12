@@ -174,7 +174,7 @@ class Opportunity extends EntityController {
         if(!$entity)
             $app->pass();
 
-        $entity->checkPermission('canUserViewEvaluations');
+        $entity->checkPermission('viewEvaluations');
 
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '-1');
@@ -1126,24 +1126,54 @@ class Opportunity extends EntityController {
         $this->render('registrations', ['entity' => $entity]);
     }
 
-    function GET_opportunityEvaluations() {
+    function GET_userEvaluations() {
         $this->requireAuthentication();
 
-        $opportunity = $this->requestedEntity;
-        
         $app = App::i();
 
-        $entity = $opportunity->evaluationMethodConfiguration;
+        $opportunity = $this->requestedEntity;
 
-        if (!$entity) {
+        if(!$opportunity || !$opportunity->evaluationMethodConfiguration) {
             $app->pass();
         }
 
-        $entity->checkPermission('viewUserEvaluation');
+        $opportunity->checkPermission('viewEvaluations');
 
         $this->entityClassName = EvaluationMethodConfiguration::class;
 
-        $this->render('evaluations-list', ['entity' => $entity]);
+        if($user_id = (int) ($this->data['user'] ?? false)) {
+            $valuer_user = $app->repo('User')->find($user_id);
+
+            if(!$valuer_user) {
+                $app->pass();
+            }
+
+            if(!$valuer_user->equals($app->user)) {
+                $opportunity->checkPermission('@control');
+            }
+        } else {
+            $valuer_user = $app->user;
+        }
+
+        $this->render('evaluations-list--user', ['entity' => $opportunity->evaluationMethodConfiguration, 'valuer_user' => $valuer_user]);
+    }
+
+    function GET_allEvaluations() {
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        $opportunity = $this->requestedEntity;
+
+        if(!$opportunity || !$opportunity->evaluationMethodConfiguration) {
+            $app->pass();
+        }
+
+        $opportunity->checkPermission('@control');
+
+        $this->entityClassName = EvaluationMethodConfiguration::class;
+
+        $this->render('evaluations-list--all', ['entity' => $opportunity->evaluationMethodConfiguration]);
     }
 
     public function POST_reopenEvaluations() {

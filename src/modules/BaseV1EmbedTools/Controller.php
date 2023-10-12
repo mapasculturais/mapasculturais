@@ -111,14 +111,23 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
 
     public Function GET_evaluationlist()
     {
+        $this->requireAuthentication();
         $app = App::i();
+
+        $opportunity = $this->requestedEntity;
         
-        if($app->user->is('admin')){
-            $entity = $this->getEntityAndCheckPermission('@control');
-            $this->render("evaluations-admin-list",['entity' => $entity]);
-        }else{
-            $entity = $this->getEntityAndCheckPermission('evaluateRegistrations');
-            $this->render("evaluations-evaluator-list",['entity' => $entity]);
+        $user_id = $this->data['user'] ?? null;
+
+        if ($user_id == 'all'){
+            $opportunity->checkPermission('@control');
+            $this->render("evaluations-admin-list",['entity' => $opportunity]);
+
+        } else {
+            $valuer_user = $user_id ? $app->repo('User')->find($user_id) : $app->user;
+            if(!$app->user->equals($valuer_user)) {
+                $opportunity->checkPermission('@control');
+            }
+            $this->render("evaluations-evaluator-list",['entity' => $opportunity, 'valuer_user' => $valuer_user]);
         }
     }
 
@@ -181,6 +190,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $app = App::i();
 
         $this->requireAuthentication();
+
         if (!$entity = $this->requestedEntity) {
             $app->pass();
         }
