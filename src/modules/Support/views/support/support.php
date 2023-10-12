@@ -29,6 +29,6 @@ $this->import('
     <div class="opportunity-registrations__container">
         <span class="title"> <?= i::__('Suporte') ?> </span>
         <opportunity-phase-header :phase="entity"></opportunity-phase-header>
-        <v1-embed-tool route="sopportlist" :id="entity.id"></v1-embed-tool>
+        <v1-embed-tool route="sopportlist" :id="entity.id" min-height="600px"></v1-embed-tool>
     </div>
 </div>

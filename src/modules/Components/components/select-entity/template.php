@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-avatar
     mc-entities
     mc-popover
 ');
@@ -33,8 +34,7 @@ $this->import('
                         <ul class="select-entity__results">
                             <li v-for="entity in entities" class="select-entity__results--item" :class="type" @click="selectEntity(entity, close)">
                                 <span class="icon">
-                                    <img v-if="entity.files" :src="entity.files?.avatar?.transformations?.avatarSmall?.url" />
-                                    <mc-icon v-else :entity="entity"></mc-icon>
+                                    <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                                 </span>
                                 <span class="label"> {{entity.name}} </span>
                             </li>

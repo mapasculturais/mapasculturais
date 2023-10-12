@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-card
+    mc-avatar
     mc-entities
 ');
 ?>
@@ -64,6 +65,9 @@ $this->import('
                     </div>
 
                     <entity-card :entity="entity" v-for="entity in entities" :key="entity.__objectId" class="col-12">
+                        <template #avatar>
+                            <mc-avatar :entity="entity" size="medium"></mc-avatar>
+                        </template>
                         <template #type> <span>{{typeText}} <span :class="['upper', entity.__objectType+'__color']">{{entity.type.name}}</span></span></template>
                     </entity-card>
                 </div>

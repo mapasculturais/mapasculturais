@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-card
+    mc-avatar
     mc-loading
     mc-title
 ');
@@ -26,8 +27,7 @@ $this->import('
                 <panel--entity-card :key="entity.id" :entity="entity" class="card">
                     
                    <template #picture>
-                        <img v-if="entity?.files.avatar || entity.files?.avatar" :src="entity.parent?.files?.avatar?.transformations?.avatarSmall?.url || entity.files?.avatar?.transformations?.avatarSmall?.url" />
-                        <mc-icon v-if="!entity.parent?.files.avatar || !entity.files?.avatar" :entity="entity" ></mc-icon>
+                        <mc-avatar :entity="entity" size="small"></mc-avatar>
                     </template>
                 
                 
@@ -47,6 +47,9 @@ $this->import('
                             <div class="type-evaluation__content col-12">
                                 <label class="type-evaluation__content--label">{{ownerType(entity.ownerEntity)}}:</label> <strong class="type-evaluation__content--strong"><mc-link :entity="entity.ownerEntity"></mc-link></strong>
                             </div>
+                            <div class="type-evaluation__date col-12">
+                                <label class="entity-label"><?php i::_e('PERÍODO DE AVALIAÇÃO: ') ?><strong class="primary__color">{{evaluationFrom(entity).date('2-digit year')}} até {{evaluationTo(entity).date('2-digit year')}}</strong></label>
+                            </div>
                         </div>
                     </template>
 
@@ -59,7 +62,7 @@ $this->import('
                     </template>
 
                     <template #entity-actions-right>
-                        <mc-link :entity="entity" route="opportunityEvaluations" class="button-evaluate button button--primary button--icon"> <?= i::__('Avaliar')?> <mc-icon name="arrow-right-ios"></mc-icon> </mc-link>
+                        <mc-link :entity="entity" route="userEvaluations" class="button-evaluate button button--primary button--icon"> <?= i::__('Avaliar')?> <mc-icon name="arrow-right-ios"></mc-icon> </mc-link>
                     </template>
                 </panel--entity-card>
 

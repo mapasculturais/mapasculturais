@@ -98,6 +98,6 @@ $this->import('
     </div>
 
     <div class="col-12">
-        <v1-embed-tool route="formbuilder" :id="entity.id"></v1-embed-tool>
+        <v1-embed-tool route="formbuilder" :id="entity.id" min-height="600px"></v1-embed-tool>
     </div>
 </div>

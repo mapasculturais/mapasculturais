@@ -454,6 +454,12 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $users = array_merge($users, $this->evaluationMethodConfiguration->getUsersWithControl());
         }
 
+        if($this->parent) {
+            $users = array_merge($users, $this->parent->getUsersWithControl());
+        }
+
+        $users = array_merge($users, $this->ownerEntity->getUsersWithControl());
+
         return $users;
     }
     
@@ -1077,7 +1083,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     protected function canUser_control($user) {
         
-        if ($this->ownerEntity->canUser('@control')) {
+        if ($this->ownerEntity->canUser('@control', $user)) {
             return true;
         } else {
             return parent::canUser_control($user);
@@ -1198,9 +1204,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     protected function canUserViewEvaluations($user){
         $em = $this->evaluationMethodConfiguration;
-
+        
         if($em) {
-            return $this->evaluationMethodConfiguration->canUser('@control');
+            return $this->evaluationMethodConfiguration->canUser('@control', $user);
         } else {
             return false;
         }

@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-avatar
     mc-icon
     mc-title
     panel--entity-actions 
@@ -16,12 +17,9 @@ $this->import('
 <article class="panel__row panel-entity-card" :class="classes">
     <header class="panel-entity-card__header">
         <div class="left">
-            <div class="panel-entity-card__header--picture">
-                <slot name="picture" :entity="entity">
-                    <img v-if="entity.files?.avatar" :src="entity.files?.avatar?.transformations?.avatarSmall?.url" alt="">
-                    <mc-icon v-if="!entity.files?.avatar" :entity="entity" ></mc-icon>
-                </slot>
-            </div>
+            <slot name="picture" :entity="entity">
+                <mc-avatar :entity="entity" size="medium"></mc-avatar>
+            </slot>
             <div class="panel-entity-card__header--info">
                 <slot name="title" :entity="entity">
                     <mc-title tag="h2" :shortLength="100" :longLength="110">

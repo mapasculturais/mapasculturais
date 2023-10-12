@@ -8,7 +8,7 @@ $this->import('
     mc-icon
 ');
 ?>
-<div class="avatar" :class="classes"> 
+<div :class="classes" class="mc-avatar"> 
     <img v-if="image" :src="image" alt="">
     <mc-icon v-if="!image" :entity="entity"></mc-icon>
 </div>

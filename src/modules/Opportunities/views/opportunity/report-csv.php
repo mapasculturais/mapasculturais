@@ -142,8 +142,11 @@ $body = [];
 foreach($registrations as $i => $r) {
     $dataHoraEnvio = $r->sentTimestamp;
     
-    $em = $r->getEvaluationMethod();
-    $result_string = $em->valueToString($r->consolidatedResult);
+    if($em = $r->getEvaluationMethod()) {
+        $result_string = $em->valueToString($r->consolidatedResult);
+    } else {
+        $result_string = "";
+    }
 
     $outRow = array_values(array_filter([
         $r->number,
