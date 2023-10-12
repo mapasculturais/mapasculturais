@@ -1041,10 +1041,7 @@ class Module extends \MapasCulturais\Module{
                 if($next->isLastPhase) {
                     $next_date = $next->publishTimestamp;
                     $next_error = i::__('A data final deve ser menor que a data de publicação do resultado final');
-                } else if(is_object($next)){
-                    $next_date = $next->registrationFrom;
-                    $next_error = i::__('A data final deve ser menor que a data inicial da próxima fase');
-                }
+                } 
 
                 if ($next_date) {
                     $next_date_string = $next_date->format('Y-m-d H:i:s');
