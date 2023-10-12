@@ -170,7 +170,6 @@ class Subsite extends \MapasCulturais\Entity
         return $validations;
     }
 
-
     public function __construct() {
         $this->owner = App::i()->user->profile;
         parent::__construct();
@@ -393,7 +392,7 @@ class Subsite extends \MapasCulturais\Entity
         $app->config['themes.assetManager']->config['publishPath'] = BASE_PATH . $assets_folder;
 
         // @TODO: passar esta parte abaixo para o tema
-        $entidades = $this->entidades_habilitadas;
+        $entidades = $this->entidades_habilitadas ?: ['Agents', 'Projects', 'Spaces', 'Events', 'Opportunities'];
         if(!in_array('Agents', $entidades)){
             $app->config['app.enabled.agents'] = false;
         }
