@@ -30,6 +30,7 @@ use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Definitions\RegistrationAgentRelation;
 use MapasCulturais\Definitions\RegistrationFieldType;
+use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\MailTemplateNotFound;
 use MapasCulturais\Exceptions\NotFound;
 use MapasCulturais\Exceptions\WorkflowRequest;
@@ -73,7 +74,8 @@ use Throwable;
  * @property-read Definitions\RegistrationAgentRelation[] $registeredRegistrationAgentRelations definições de agentes relacionados de inscrições registrados
  * @property-read Definitions\RegistrationAgentRelation $registrationOwnerDefinition definição do agente owner de inscrição
  * @property-read Definitions\ChatThreadType $registeredChatThreadTypes definições dos tipos de chat registrados
-
+ 
+ * @property-read User $user usuário autenticado
 
  * 
  * @package MapasCulturais
