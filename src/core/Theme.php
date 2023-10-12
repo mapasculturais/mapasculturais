@@ -199,6 +199,17 @@ abstract class Theme {
                 });
             }
         });
+
+
+        $reflaction = new \ReflectionClass(get_class($this));
+        
+        while($reflaction->getName() != __CLASS__){
+            $dir = dirname($reflaction->getFileName());
+            if($dir != __DIR__) {
+                i::addReplacements($dir . '/translations/replacements');
+            }
+            $reflaction = $reflaction->getParentClass();
+        }
     }
 
     function init(){
