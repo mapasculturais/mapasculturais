@@ -6,5 +6,5 @@
 ?>
 <template v-if="global.auth.isLoggedIn">
     <img v-if="avatarUrl" :src="avatarUrl" />
-    <mc-icon v-if="!avatarUrl" name="user"></mc-icon>
+    <mc-icon v-if="!avatarUrl" :entity="global.auth.user.profile"></mc-icon>
 </template>
