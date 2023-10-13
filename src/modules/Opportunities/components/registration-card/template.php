@@ -38,7 +38,7 @@ $this->import('
                     <p class="data"> {{entity.category}} </p>
                 </div>
 
-                <div class="registerData">
+                <div v-if="entity.createTimestamp" class="registerData">
                     <p class="title"> <?= i::__("Data de inscrição") ?> </p>
                     <p class="data"> {{registerDate(entity.createTimestamp)}} <?= i::__("às") ?> {{registerHour(entity.createTimestamp)}} </p>
                 </div>
