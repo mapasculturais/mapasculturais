@@ -1,6 +1,6 @@
 @use '../0.settings/mixins' as *;
 
-.mc-side-menu {
+.opportunity-evaluations-list {
     max-width: size(1824) !important;
     position: sticky;
     top: size(40);
@@ -263,7 +263,7 @@
                 
             }
 
-            .mc-side-menu__button {
+            .opportunity-evaluations-list__button {
                 border: none;
                 padding: size(23) size(17);
                 width: 100%;

@@ -1,5 +1,5 @@
-app.component('mc-side-menu', {
-    template: $TEMPLATES['mc-side-menu'],
+app.component('opportunity-evaluations-list', {
+    template: $TEMPLATES['opportunity-evaluations-list'],
     emits: ['toggle'],
 
     props: {
@@ -18,7 +18,7 @@ app.component('mc-side-menu', {
     },
 
     setup() {
-        const text = Utils.getTexts('mc-side-menu');
+        const text = Utils.getTexts('opportunity-evaluations-list');
         return { text }
     },
     mounted() {
