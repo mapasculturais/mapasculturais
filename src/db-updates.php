@@ -2035,5 +2035,25 @@ $$
                 SET metadata = '{$metadata}'
                 WHERE id = $id");
         }
+    },
+
+    'corrige permissão de avaliadores que tem avaliação mas não possui permissão de avaliar pela regra configurada' => function() use($conn) {
+        $regs = $conn->fetchFirstColumn("
+            SELECT 
+                r.id
+            FROM registration r
+                JOIN pcache p1 ON p1.object_id = r.id AND p1.action = 'evaluateOnTime'
+                LEFT JOIN pcache p2 ON p2.object_id = r.id AND p2.action = 'view' AND p2.user_id = p1.user_id
+            WHERE 
+                p1.action IS NOT NULL AND p2.action IS NULL");
+
+        $app = App::i();
+        
+        foreach($regs as $reg) {
+            $registration = $app->repo('Registration')->find($reg);
+            $app->enqueueEntityToPCacheRecreation($registration);
+        }
+
+        $app->persistPCachePendingQueue();
     }
 ] + $updates ;

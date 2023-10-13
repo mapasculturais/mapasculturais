@@ -7,7 +7,6 @@
 use MapasCulturais\i;
 $this->import('
     mc-icon
-    mc-side-menu
 ');
 ?>
 <div :class="['mc-summary-evaluate', classes]" v-if="summary.isActive">

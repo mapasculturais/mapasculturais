@@ -415,10 +415,26 @@ class i {
      * mb_strtolower    => "meus espaços >>> meus museus"
     */
     static function replaces($translation, $domain) {
-        if (is_null(self::$replacements) && file_exists(LANGUAGES_PATH . 'replacements')) {
+        if (is_null(self::$replacements)) {
             self::$replacements = [];
+            self::addReplacements(LANGUAGES_PATH . 'replacements');
+        }
 
-            $replacements_raw = file_get_contents(LANGUAGES_PATH . 'replacements');
+        foreach (self::$replacements as $replacement) {
+            list($from, $to) = $replacement;
+            
+            $translation = str_replace(ucwords($from), ucwords($to), $translation);
+            $translation = str_replace(ucfirst($from), ucfirst($to), $translation);
+            $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
+            $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
+        }
+
+        return $translation;
+    }
+
+    static function addReplacements($filename) {
+        if(file_exists($filename)) {
+            $replacements_raw = file_get_contents($filename);
 
             $replacements = explode("\n", $replacements_raw);
 
@@ -434,19 +450,6 @@ class i {
                     self::$replacements[] = [trim($from_to[0]), trim($from_to[1])];
                 }
             }
-        } else {
-            self::$replacements = [];
-        }
-
-        foreach (self::$replacements as $replacement) {
-            list($from, $to) = $replacement;
-            
-            $translation = str_replace(ucwords($from), ucwords($to), $translation);
-            $translation = str_replace(ucfirst($from), ucfirst($to), $translation);
-            $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
-            $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
-        }
-
-        return $translation;
+        } 
     }
 }

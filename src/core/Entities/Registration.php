@@ -1202,26 +1202,38 @@ class Registration extends \MapasCulturais\Entity
         $include_list = $this->getValuersIncludeList();
 
         if($can && in_array($user->id, $exclude_list)){
-            return false;
+            $can = false;
         }
 
         if(!$can && in_array($user->id, $include_list)){
-            return true;
+            $can = true;
         }
 
-        foreach($this->getRelatedAgents() as $agents){
-            foreach($agents as $agent){
-                if($agent->canUser('@control', $user)){
-                    return true;
+        if(!$can) {
+            foreach($this->getRelatedAgents() as $agents){
+                foreach($agents as $agent){
+                    if($agent->canUser('@control', $user)){
+                        $can = true;
+                    }
                 }
             }
         }
 
-        if($this->canUserViewUserEvaluation($user)){
-            return true;
+        if(!$can && $this->canUserViewUserEvaluation($user)){
+            $can = true;
         }
 
-        return false;
+        if(!$can) {
+            $app = App::i();
+            
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy([
+                'registration' => $this,
+                'user' => $user
+            ]);
+            $can = isset($evaluation);
+        }
+        
+        return $can;
     }
 
     protected function canUserRemove($user){
@@ -1382,7 +1394,7 @@ class Registration extends \MapasCulturais\Entity
 
         $exclude_list = $this->getValuersExcludeList();
         $include_list = $this->getValuersIncludeList();
-
+        
         if($can && in_array($user->id, $exclude_list)){
             $can = false;
         }
