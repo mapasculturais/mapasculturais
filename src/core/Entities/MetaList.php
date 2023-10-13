@@ -92,6 +92,24 @@ class MetaList extends \MapasCulturais\Entity
      */
     protected $_owner;
 
+    static function getValidations() {
+        $app = App::i();
+        $validations = [
+            'title' => [
+                'required' => \MapasCulturais\i::__('O título é obrigatório'),
+                'v::stringType()->length(0,255)' => \MapasCulturais\i::__('O título não pode ter mais que 255 caracteres')
+            ],
+            'value' => [
+                'required' => \MapasCulturais\i::__('A o valor é obrigatória')
+            ]
+        ];
+
+        $prefix = self::getHookPrefix();
+        // entity(Agent).validations
+        $app->applyHook("{$prefix}::validations", [&$validations]);
+
+        return $validations;
+    }
 
     public function getGroup(){
         return trim($this->group);
