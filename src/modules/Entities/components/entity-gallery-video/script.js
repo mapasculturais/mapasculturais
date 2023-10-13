@@ -124,15 +124,27 @@ app.component('entity-gallery-video', {
             this.openVideo(this.actualVideoIndex);
         },
         // Adiciona video na entidade
-        create() {
-            return this.entity.createMetalist('videos', this.metalist);      
+        async create(popover) {
+            if(!this.metalist.value || !this.metalist.title){
+                const messages = useMessages();
+                messages.error(this.text('preencha todos os campos'));
+                return;
+            }
+            await this.entity.createMetalist('videos', this.metalist);
+            popover.close();
         },
         // Salva modificações nos vídeos adicionados
-        save(metalist) {
+        async save(metalist, popover) {
+            if(!metalist.newData.title || !metalist.newData.value) {
+                const messages = useMessages();
+                messages.error(this.text('preencha todos os campos'));
+                return;
+            }
             metalist.title = metalist.newData.title;
             metalist.value = metalist.newData.value;
             
-            return metalist.save();
+            await metalist.save();
+            popover.close();
         }
     },
 });
