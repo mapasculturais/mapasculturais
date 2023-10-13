@@ -10,7 +10,6 @@ $this->import('
     mc-link
     panel--entity-actions
     panel--entity-tabs
-    registration-card
 ');
 ?>
 <panel--entity-tabs tabs="publish,draft,trash,archived" :type='type' :user="user.id" :select="newSelect">
