@@ -1,3 +1,3 @@
-# Acompanhamento de formulário de inscrição
+# Acompanhamento de inscrições e resultados
 
-Aqui tem uma descrição do contexto
+Aqui você encontra informações sobre o acompanhamento das inscrições 
