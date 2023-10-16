@@ -29,7 +29,10 @@ $url = $app->createUrl('opportunity', 'importFields',[$entity->id]);
                             <div class="field header-import">
                                 <h4 class="header-import__title"><?php i::_e('Importe o arquivo de formulário') ?></h4>
                                 <label class="header-import__label"><?php i::_e('O arquivo importado deve estar no formato .txt ') ?></label>
-                                <input type="file" name="fieldsFile" @change="setFile" ref="file" accept=".txt">
+                                <div class="field">
+                                    <input type="file" name="fieldsFile" @change="setFile" ref="file" accept=".txt">
+                                    <small>Tamanho máximo do arquivo: <strong>{{maxFileSize}}</strong></small>
+                                </div>
                             </div>
                         </div>
 

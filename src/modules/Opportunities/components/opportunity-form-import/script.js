@@ -34,7 +34,8 @@ app.component('opportunity-form-import', {
 
     data() {
         return {
-            newFile: {}
+            newFile: {},
+            maxFileSize: $MAPAS.maxUploadSizeFormatted,
         }
     },
 

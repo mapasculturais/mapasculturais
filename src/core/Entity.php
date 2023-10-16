@@ -162,7 +162,7 @@ abstract class Entity implements \JsonSerializable{
                     break;
 
                     case 'files':
-                        $e->files = [];
+                        $e->files = $e->files ?? [];
 
                         foreach ($this->files as $group => $files){
 
@@ -189,6 +189,8 @@ abstract class Entity implements \JsonSerializable{
                                 foreach($avatar->files as $transformation => $f){
                                     $e->avatar[$transformation] = $f->simplify('id,url');
                                 }
+                                $e->files = $e->files ?? [];
+                                $e->files['avatar'] = $this->avatar->simplify('id,name,description,url,files');
                             }
                         }
                     break;

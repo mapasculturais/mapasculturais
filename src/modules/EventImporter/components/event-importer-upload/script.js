@@ -16,7 +16,8 @@ app.component('event-importer-upload', {
         return {
             newFile: {},
             loading: false,
-         }
+            maxFileSize: $MAPAS.maxUploadSizeFormatted,
+        }
     },
     computed: {
         modalTitle() {

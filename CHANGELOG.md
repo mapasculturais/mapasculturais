@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Definine forma de alterar o título do modal do componente entity-file
 - Adiciona o status 'carregando' enquanto é gerada a impressão da ficha de inscrição
 - Atualiza componente avatar e de titulo 
+- Exibe informação sobre o tamanho máximo do arquivo para upload
 
 ### Correções
 - Corrige funcionamento do módulo de recursos
@@ -23,6 +24,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Faz com que seja exibida as as fichas de todas as fases de coleta de dados na single das inscrições
 - Corrige nome do botão de enviar o arquivo entity-file
 - Remoção do botão do zammad na impressão do formulário de inscrição
+- Corrige responsividade do componente entity-actions
 
 ### [6.0.19] - 2023-09-14
 - Atualiza componente de  mc-title para utilizar tags html nos titulos e ajustar conforme o tamanho
