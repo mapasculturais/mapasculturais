@@ -6,9 +6,6 @@ app.component('entity-status', {
         const text = Utils.getTexts('entity-status')
         return { text }
     },
-    created() {
-
-    },
 
     props: {
         entity: {
@@ -16,87 +13,31 @@ app.component('entity-status', {
             required: true
         },
     },
+
     data() {
-        let message = '';
-        let showMessage = true;
-
-        switch (this.entity.status) {
-            case 0:
-                if (this.verifyType() == 'oportunidade') {
-                    message = this.text('oportunidade em rascunho');
-                    message = message.replace('%entity%', this.verifyType());
-                } else {
-                    message = this.text('rascunho');
-                    message = message.replace('%entity%', this.verifyType());
-                }
-
-                break;
-
-            case -2:
-                if (this.verifyType() == 'oportunidade') {
-                    message = this.text('oportunidade arquivada');
-                    message = message.replace('%entity%', this.verifyType());
-                } else {
-
-                    message = this.text('arquivado');
-                    message = message.replace('%entity%', this.verifyType());
-                }
-                break;
-
-
-            case -10:
-                if (this.verifyType() == 'oportunidade') {
-                    message = this.text('oportunidade excluida');
-                    message = message.replace('%entity%', this.verifyType());
-                } else {
-
-                    message = this.text('excluido');
-                    message = message.replace('%entity%', this.verifyType());
-                }
-                break;
-
-
-            default:
-                showMessage = false;
-                break;
-        }
         return {
             classes: [],
-            type: 'warning',
-            message,
-            showMessage,
+            messageStr: '',
+            showMessage: true,
         };
-
     },
 
+    watch: {
+        entity: {
+            handler(newEntity) {
+                this.entity = newEntity;
+            },
+            deep: true,
+        }
+    },
 
-    methods: {
-        // renderMessage(entity) {
-        //     let message = '';
-        //     switch (entity.status) {
-        //         case 0:
-        //             message = this.text('rascunho');
-        //             message = message.replace('%entity%', this.verifyType(entity));
+    computed: {
+        message() {
+            this.updateMessage();
+            return this.messageStr;
+        },
 
-        //             return message;
-
-        //         case -2:
-        //             message = this.text('arquivado');
-        //             message = message.replace('%entity%', this.verifyType(entity));
-        //             return message;
-
-
-        //         case -10:
-        //             message = this.text('excluido');
-        //             message = message.replace('%entity%', this.verifyType(entity));
-        //             return message;
-
-
-        //         default:
-        //             break;
-        //     }
-        // },
-        verifyType() {
+        entityType() {
             switch (this.entity.__objectType) {
                 case 'opportunity':
                     return 'oportunidade';
@@ -118,4 +59,47 @@ app.component('entity-status', {
             }
         }
     },
+
+    methods: {
+        updateMessage() {
+            switch (this.entity.status) {
+                case 0:
+                    if (this.entityType == 'oportunidade') {
+                        this.messageStr = this.text('oportunidade em rascunho');
+                        this.messageStr = this.messageStr.replace('%entity%', this.entityType);
+                    } else {
+                        this.messageStr = this.text('rascunho');
+                        this.messageStr = this.messageStr.replace('%entity%', this.entityType);
+                    }
+
+                    break;
+
+                case -2:
+                    if (this.entityType == 'oportunidade') {
+                        this.messageStr = this.text('oportunidade arquivada');
+                        this.messageStr = this.messageStr.replace('%entity%', this.entityType);
+                    } else {
+                        this.messageStr = this.text('arquivado');
+                        this.messageStr = this.messageStr.replace('%entity%', this.entityType);
+                    }
+                    break;
+
+
+                case -10:
+                    if (this.entityType == 'oportunidade') {
+                        this.messageStr = this.text('oportunidade excluida');
+                        this.messageStr = this.messageStr.replace('%entity%', this.entityType);
+                    } else {
+
+                        this.messageStr = this.text('excluido');
+                        this.messageStr = this.messageStr.replace('%entity%', this.entityType);
+                    }
+                    break;
+
+                default:
+                    this.messageStr = '';
+            }
+            this.showMessage = this.messageStr ? true : false;
+        }
+    }
 });

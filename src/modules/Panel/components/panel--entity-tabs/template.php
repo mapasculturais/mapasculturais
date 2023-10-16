@@ -11,6 +11,7 @@ $this->import('
     mc-tab
     mc-tabs
     panel--entity-card
+    registration-card
 ');
 
 $tabs = $tabs ?? [
@@ -77,7 +78,8 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
             <template #default="{entities}">
                 <slot name='before-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
                 <slot v-for="entity in entities" :key="entity.__objectId" :entity="entity" :moveEntity="moveEntity">
-                    <panel--entity-card :key="entity.id" :entity="entity" 
+                    <registration-card v-if="entity.__objectType=='registration'" :entity="entity" pictureCard hasBorders class="panel__row"></registration-card>
+                    <panel--entity-card  v-if="entity.__objectType!='registration'" :key="entity.id" :entity="entity" 
                         @undeleted="moveEntity(entity, $event)" 
                         @deleted="moveEntity(entity, $event)" 
                         @archived="moveEntity(entity, $event)" 

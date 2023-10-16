@@ -42,7 +42,8 @@ app.component('entity-files-list', {
     
     data() {
         return {
-            newFile: {}
+            newFile: {},
+            maxFileSize: $MAPAS.maxUploadSizeFormatted,
         }
     },
 
@@ -58,6 +59,7 @@ app.component('entity-files-list', {
                 return [this.entity.files?.[this.group]]
             }
         },
+
         setFile() {
             let description = this.newFile.description;
             this.newFile = this.$refs.file.files[0];
@@ -81,6 +83,6 @@ app.component('entity-files-list', {
         rename(file, popopver) {
             file.description = file.newDescription;
             file.save().then(() => popopver.close());
-        } 
+        },
     },
 });

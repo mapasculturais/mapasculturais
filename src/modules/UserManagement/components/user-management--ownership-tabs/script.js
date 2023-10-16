@@ -39,7 +39,17 @@ app.component('user-management--ownership-tabs', {
 
         select: {
             type: String,
-            default: 'id,name,status,subsite.name'
-        }
-    }
+            default: 'id,name,status,subsite.name,files'
+        },
+    },
+    computed: {
+        newSelect() {
+            if(this.type=='registration') {
+                return this.select+',owner.name,number,createTimestamp,opportunity.{files.avatar,name}';
+            } else {
+                return this.select;
+            }
+        },
+
+    },
 });

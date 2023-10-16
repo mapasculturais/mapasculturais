@@ -10,8 +10,8 @@ $this->import('
     mc-icon
 ');
 ?>
-<div class="mc-side-menu" v-if="showList()">
-    <div :class="['mc-side-menu__container', 'isOpen']">
+<div class="opportunity-evaluations-list" v-if="showList()">
+    <div :class="['opportunity-evaluations-list__container', 'isOpen']">
         <button class="act-button" @click="toggleMenu()">
             <label class="label">{{textButton }}</label>
         </button>

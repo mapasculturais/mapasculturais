@@ -30,8 +30,8 @@ $this->import('
                     <template #button="popover">
                         <a @click="metalist.newData = {...metalist}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
-                    <template #default>
-                        <form @submit="save(metalist); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">                            
+                    <template #default="popover">
+                        <form @submit="save(metalist, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
                             <div class="grid-12">
                                 <div class="col-12">
                                     <div class="field">
@@ -39,8 +39,8 @@ $this->import('
                                         <input v-model="metalist.newData.title" type="text" />
                                     </div>
                                 </div>                                
-                                <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
-                                <button class="col-6 button button--primary" type="submit" v-close-popper> <?php i::_e("Confirmar") ?> </button>
+                                <button class="col-6 button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--primary" type="submit" > <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
@@ -67,8 +67,8 @@ $this->import('
                     </a>
                 </slot>
             </template>
-            <template #default>
-                <form @submit="create(); $event.preventDefault();">
+            <template #default="popover">
+                <form @submit="create(popover); $event.preventDefault();">
                     <div class="grid-12">
                         <div class="col-12">
                             <div class="field">
@@ -82,8 +82,8 @@ $this->import('
                                 <input v-model="metalist.title" class="newVideoDesc" type="text" name="newVideoDesc" />
                             </div>
                         </div>
-                        <button class="col-6 button button--text" type="reset" v-close-popper> <?php i::_e("Cancelar") ?> </button>
-                        <button class="col-6 button button--primary" type="submit" v-close-popper> <?php i::_e("Confirmar") ?> </button>
+                        <button class="col-6 button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
+                        <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                     </div>                    
                 </form>
             </template>        

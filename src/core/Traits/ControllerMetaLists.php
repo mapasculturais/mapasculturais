@@ -24,10 +24,10 @@ trait ControllerMetaLists{
         }
        
         if($errors = $metalist->getValidationErrors()){
-            $this->errorJson($errors, 403);
+            $this->errorJson($errors, 400);
         }
-        $metalist->save(true);
 
+        $metalist->save(true);
 
         $this->json($metalist);
     }

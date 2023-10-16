@@ -1,4 +1,4 @@
-# Componente `<mc-side-menu>`
+# Componente `<opportunity-evaluations-list>`
 Abre um side lateral com as informações do slot default
 
 ### Eventos
@@ -10,12 +10,12 @@ Abre um side lateral com as informações do slot default
 ### Importando componente
 ```PHP
 <?php 
-$this->import('mc-side-menu');
+$this->import('opportunity-evaluations-list');
 ?>
 ```
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<mc-side-menu :is-open="open" @toggle="open = !open"></mc-side-menu>
+<opportunity-evaluations-list :is-open="open" @toggle="open = !open"></opportunity-evaluations-list>
 
 ```

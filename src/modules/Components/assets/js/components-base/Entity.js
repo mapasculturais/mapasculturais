@@ -541,7 +541,11 @@ class Entity {
             this.metalists[group] = this.metalists[group] || [];
 
             this.doPromise(res, (data) => {
-                const metalist = new EntityMetalist(this, group, {title, description, value});
+                const _data = {
+                    id: data.id,
+                    title, description, value
+                };
+                const metalist = new EntityMetalist(this, group, _data);
                 this.metalists[group] = this.metalists[group] || [];
                 this.metalists[group].push(metalist);
             });

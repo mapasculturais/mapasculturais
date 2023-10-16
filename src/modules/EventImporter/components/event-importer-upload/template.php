@@ -27,7 +27,10 @@ $this->import('
                                 <mc-icon name="add"></mc-icon>
                             </small>
                         </label>
-                        <input type="file" name="file" id="fileUpload" @change="setFile" ref="file">
+                        <div class="field">
+                            <input type="file" name="file" id="fileUpload" @change="setFile" ref="file">
+                            <small>Tamanho máximo do arquivo: <strong>{{maxFileSize}}</strong></small>
+                        </div>
                     </div>
                 </template>
 

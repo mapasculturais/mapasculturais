@@ -4,7 +4,7 @@ $this->layout = 'registrations';
 $this->import('
     mc-breadcrumb
     mc-container
-    mc-side-menu
+    opportunity-evaluations-list
     mc-summary-agent
     mc-summary-agent-info
     mc-summary-evaluate
@@ -53,9 +53,9 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
         <div class="grid-12 registration__grid">
             <aside class="col-3">
                 <div>
-                    <mc-side-menu text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
+                    <opportunity-evaluations-list text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
                         <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
-                    </mc-side-menu>
+                    </opportunity-evaluations-list>
                 </div>
             </aside>
 
