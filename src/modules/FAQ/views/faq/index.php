@@ -18,9 +18,16 @@ $message = $app->config['module.FAQ']['support-message'] ?? '';
         <div class="faq__frequent bold">
             <?php foreach ($faq as $section) : ?>
 
-                <a href="<?= $this->controller->createUrl('index', [$section->slug]) ?>" class="faq__card bold faq__card--frequent primary__color">
-                    <mc-icon name="help-outline" class="faq__helper"></mc-icon>
-                    <?= $section->title ?>
+                <a href="<?= $this->controller->createUrl('index', [$section->slug]) ?>" class="faq__card bold  primary__color">
+                    <div class="faq__card--frequent">
+                        <div class="faq__headerbtn">
+                            <mc-icon name="help-outline" class="faq__helper"></mc-icon>
+                            <?= $section->title ?>
+                        </div>
+                        <div class="faq__infobtn bold">
+                            <?= $section->description ?>
+                        </div>
+                    </div>
                 </a>
             <?php endforeach; ?>
         </div>
