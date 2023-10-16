@@ -14,18 +14,24 @@ app.component('entity-status', {
         },
     },
 
+    mounted() { 
+        this.updateMessage();
+    },
+
     data() {
         return {
             classes: [],
             messageStr: '',
             showMessage: true,
+            entityStatus : this.entity.status,
         };
     },
 
     watch: {
         entity: {
             handler(newEntity) {
-                this.entity = newEntity;
+                this.entityStatus = newEntity.status;
+                this.updateMessage();
             },
             deep: true,
         }
@@ -33,7 +39,6 @@ app.component('entity-status', {
 
     computed: {
         message() {
-            this.updateMessage();
             return this.messageStr;
         },
 
@@ -62,7 +67,7 @@ app.component('entity-status', {
 
     methods: {
         updateMessage() {
-            switch (this.entity.status) {
+            switch (this.entityStatus) {
                 case 0:
                     if (this.entityType == 'oportunidade') {
                         this.messageStr = this.text('oportunidade em rascunho');
