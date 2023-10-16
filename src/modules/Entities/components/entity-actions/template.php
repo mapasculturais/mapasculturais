@@ -30,7 +30,7 @@ $this->import('
                         </button>
                     </template>
                     <template #message="message">
-                        <?php i::_e('Você está certo qeu deseja arquivar?') ?>
+                        <?php i::_e('Você está certo que deseja arquivar?') ?>
                     </template>
                 </mc-confirm-button>
                 <mc-confirm-button v-if="entity.currentUserPermissions?.remove && canDelete" @confirm="entity.delete()">
