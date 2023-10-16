@@ -12,7 +12,7 @@ $this->import('
 ');
 ?>
 <div v-if="showMessage" class="entity-status">
-    <mc-alert  :type="type">
+    <mc-alert type="warning">
         <span v-html="message"></span>
     </mc-alert>
 </div>
