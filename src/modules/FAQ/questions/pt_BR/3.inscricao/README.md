@@ -1,3 +1,3 @@
-# Inscrição
+# Inscrições em editais e oportunidades
 
-Aqui é uma pequena descrição do que você vai encontrar nesta seção
+Aqui você encontra informações sobre editais e oportunidades, informações sobre como participar, como acompanhar resultados.
