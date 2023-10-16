@@ -63,6 +63,7 @@ $this->import('
                                 <label for="newFile" class="field__buttonUpload button button--icon button--primary-outline">
                                     <mc-icon name="upload"></mc-icon> <?= i::__('Anexar') ?>
                                     <input id="newFile" type="file" @change="setFile($event)" ref="file">
+                                    <small>Tamanho máximo do arquivo: <strong>{{maxFileSize}}</strong></small>
                                 </label>
                             </div>
                         </div>

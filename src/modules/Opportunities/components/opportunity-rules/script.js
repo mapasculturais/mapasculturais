@@ -35,6 +35,7 @@ app.component('opportunity-rules', {
     data() {
         return {
             newFile: {},
+            maxFileSize: $MAPAS.maxUploadSizeFormatted,
         }
     },
 
