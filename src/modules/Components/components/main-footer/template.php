@@ -103,27 +103,26 @@ $config = $app->config['social-media'];
             <?php endif; ?>
             <?php $this->applyTemplateHook("main-footer-links", "end")?>
         </div>
-        <?php $this->applyTemplateHook("main-footer-links", "after")?>
-
-        <?php $this->applyTemplateHook("main-footer-reg", "before")?>
-        <div class="main-footer__content--reg">
-            <?php $this->applyTemplateHook("main-footer-reg", "begin")?>
-            <div class="main-footer__content--reg-content">
-                <p>
-                    <?php i::_e("plataforma criada pela comunidade") ?> 
-                    <span class="mapas"> <mc-icon name="map"></mc-icon><?php i::_e("mapas culturais"); ?> </span> 
-                    <?php i::_e("e desenvolvida por "); ?><strong>hacklab<span style="color: red">/</span></strong>
-                </p>
-    
-                <a class="link" href="https://github.com/mapasculturais">
-                    <?php i::_e("Conheça o repositório") ?>
-                    <mc-icon name="github"></mc-icon>
-                </a>
-            </div>
-            <?php $this->applyTemplateHook("main-footer-reg", "end")?>
-        </div>
-        <?php $this->applyTemplateHook("main-footer-reg", "after")?>        
+        <?php $this->applyTemplateHook("main-footer-links", "after")?>      
     </div>
+    <?php $this->applyTemplateHook("main-footer-reg", "before")?>
+    <div class="main-footer__reg">
+        <?php $this->applyTemplateHook("main-footer-reg", "begin")?>
+        <div class="main-footer__reg-content">
+            <p>
+                <?php i::_e("plataforma criada pela comunidade") ?> 
+                <span class="mapas"> <mc-icon name="map"></mc-icon><?php i::_e("mapas culturais"); ?> </span> 
+                <?php i::_e("e desenvolvida por "); ?><strong>hacklab<span style="color: red">/</span></strong>
+            </p>
+
+            <a class="link" href="https://github.com/mapasculturais">
+                <?php i::_e("Conheça o repositório") ?>
+                <mc-icon name="github"></mc-icon>
+            </a>
+        </div>
+        <?php $this->applyTemplateHook("main-footer-reg", "end")?>
+    </div>
+    <?php $this->applyTemplateHook("main-footer-reg", "after")?>  
     <?php $this->applyTemplateHook("main-footer", "end")?>
 </div>
 <?php $this->applyTemplateHook("main-footer", "after")?>

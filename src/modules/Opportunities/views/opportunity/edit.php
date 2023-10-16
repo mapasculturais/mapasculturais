@@ -35,6 +35,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
     <mc-tabs class="tabs">
+        <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab label="<?= i::__('Informações') ?>" slug="info">
             <opportunity-basic-info :entity="entity"></opportunity-basic-info>
         </mc-tab>
@@ -47,6 +48,8 @@ $this->breadcrumb = [
         <mc-tab label="<?= i::__('Relatórios') ?>" slug="report">
             <opportunity-phase-reports :entity="entity"></opportunity-phase-reports>
         </mc-tab>
+        <?php $this->applyTemplateHook('tabs','end') ?>
     </mc-tabs>
+    
     <entity-actions :entity="entity" editable></entity-actions>
 </div>
