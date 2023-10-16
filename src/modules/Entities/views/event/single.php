@@ -38,7 +38,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity">
         <template #metadata>
-            <dl>
+            <dl v-if="entity.subTitle">
                 <dd>{{entity.subTitle}}</dd>
             </dl>
         </template>
@@ -83,8 +83,8 @@ $this->breadcrumb = [
                         </div>
                     </aside>
                 </mc-container>
-                <entity-actions :entity="entity"></entity-actions>
             </div>  
         </mc-tab>
     </mc-tabs>        
+    <entity-actions :entity="entity"></entity-actions>
 </div>
