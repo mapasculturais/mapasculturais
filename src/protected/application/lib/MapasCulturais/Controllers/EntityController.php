@@ -657,4 +657,30 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $class = $this->entityClassName;
         echo json_encode($class::getPropertiesMetadata());
     }
+
+    public function ALL_enqueuePCache() {
+        $app = App::i();
+        
+        $this->requireAuthentication();
+
+        $entity = $this->requestedEntity;
+
+        if(!$entity) {
+            $app->pass();
+        }
+
+        $entity->checkPermission('@control');
+
+        $users = [];
+        if ($users_data = $this->data['users'] ?? '') {
+            if($users_data == 'each') {
+                $users = $entity->getExtraPermissionCacheUsers();
+            } else {
+                $users_data = explode(',', $users_data);
+                $users = $app->repo('User')->findBy(['id' => $users_data]);
+            }
+        }
+
+        $entity->enqueueToPCacheRecreation($users);
+    }
 }
