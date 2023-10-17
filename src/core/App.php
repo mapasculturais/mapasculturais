@@ -778,7 +778,17 @@ class App {
      * @return void 
      */
     protected function _initTheme() {
-        $theme_class = "\\" . $this->config['themes.active'] . '\Theme';
+
+        if($this->subsite){
+            $this->cache->setNamespace($this->config['app.cache.namespace'] . ':' . $this->subsite->id);
+
+            $theme_class = $this->subsite->namespace . "\Theme";
+            $theme_instance = new $theme_class($this->config['themes.assetManager'], $this->subsite);
+        } else {
+            $theme_class = $this->config['themes.active'] . '\Theme';
+            $theme_instance = new $theme_class($this->config['themes.assetManager']);
+        }
+
         $theme_path = $theme_class::getThemeFolder() . '/';
 
         if (file_exists($theme_path . 'conf-base.php')) {
@@ -789,17 +799,6 @@ class App {
         if (file_exists($theme_path . 'config.php')) {
             $theme_config = require $theme_path . 'config.php';
             $this->config = array_merge($this->config, $theme_config);
-        }
-
-
-        if($this->_subsite){
-            $this->cache->setNamespace($this->config['app.cache.namespace'] . ':' . $this->_subsite->id);
-
-            $theme_class = $this->_subsite->namespace . "\Theme";
-            $theme_instance = new $theme_class($this->config['themes.assetManager'], $this->_subsite);
-        } else {
-            $theme_class = $this->config['themes.active'] . '\Theme';
-            $theme_instance = new $theme_class($this->config['themes.assetManager']);
         }
 
         $this->view = $theme_instance;
