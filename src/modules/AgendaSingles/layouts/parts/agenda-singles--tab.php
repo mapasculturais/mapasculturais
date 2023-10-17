@@ -1,1 +1,0 @@
-<li><a href="#agenda" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Agenda");?></a></li>
