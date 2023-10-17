@@ -38,6 +38,7 @@ fi
 cd /
 
 touch /nohup.out
+chown www-data /nohup.out
 sudo -E -u www-data nohup /jobs-cron.sh >> /dev/stdout &
 sudo -E -u www-data nohup /recreate-pending-pcache-cron.sh >> /dev/stdout &
 
