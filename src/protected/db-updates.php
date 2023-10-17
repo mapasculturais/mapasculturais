@@ -1822,8 +1822,6 @@ $$
                         WHERE opportunity_id = {$opportunity_id}
                     );");
         }
-
-        return false;
     },
 
     'alter seal add column locked_fields' => function () {
@@ -1895,5 +1893,21 @@ $$
         __exec("ALTER TABLE registration_file_configuration ADD conditional  BOOLEAN;");
         __exec("ALTER TABLE registration_file_configuration ADD conditional_field  VARCHAR(255);");
         __exec("ALTER TABLE registration_file_configuration ADD conditional_value  VARCHAR(255);");
+    },
+
+    'adiciona coluna user_id à tabela pending_permission_cache' => function() use($conn) {
+        __exec('ALTER TABLE permission_cache_pending ADD usr_id INT DEFAULT NULL;');
+    },
+
+    'limpeza da tabela de pcache' => function() use($conn) {
+        __exec("
+            DELETE FROM pcache p1 
+                USING pcache p2 
+            WHERE 
+                p1.id > p2.id AND 
+                p1.user_id = p2.user_id AND 
+                p1.object_type = p2.object_type AND 
+                p1.object_id = p2.object_id AND 
+                p1.action = p2.action;");
     }
 ] + $updates ;
