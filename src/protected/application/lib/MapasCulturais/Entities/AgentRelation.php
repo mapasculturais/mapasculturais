@@ -163,7 +163,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
             
             if($this->owner->usesPermissionCache()){
                 $this->owner->deleteUsersWithControlCache();
-                $this->owner->enqueueToPCacheRecreation();
+                $this->owner->enqueueToPCacheRecreation([$this->agent->user]);
             }
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
            if(!App::i()->isWorkflowEnabled())
@@ -196,7 +196,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
 
         if($this->owner->usesPermissionCache()){
             $this->owner->deleteUsersWithControlCache();
-            $this->owner->enqueueToPCacheRecreation();
+            $this->owner->enqueueToPCacheRecreation([$this->agent->user]);
         }
     }
 

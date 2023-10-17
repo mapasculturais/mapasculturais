@@ -69,6 +69,13 @@ class EvaluationMethodConfiguration extends EntityController {
                 }
             }
         }
+
+        if($user_ids) {
+            $users = $app->repo('User')->findBy(['id' => $user_ids]);
+            $entity->enqueueToPCacheRecreation($users);
+        }
+
+        $entity->__skipQueuingPCacheRecreation = true;
     }
     
     function PATCH_single($data = null) {

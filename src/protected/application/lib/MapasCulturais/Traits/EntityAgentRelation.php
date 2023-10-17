@@ -247,11 +247,6 @@ trait EntityAgentRelation {
         
         $this->deleteUsersWithControlCache();
         
-        if($this->usesPermissionCache()){
-            $this->enqueueToPCacheRecreation();
-        }
-        
-        
         return $relation;
     }
 
@@ -266,10 +261,6 @@ trait EntityAgentRelation {
         $this->refresh();
         
         $this->deleteUsersWithControlCache();
-        
-        if($this->usesPermissionCache()){
-            $this->enqueueToPCacheRecreation();
-        }
     }
 
     function setRelatedAgentControl($agent, $control){

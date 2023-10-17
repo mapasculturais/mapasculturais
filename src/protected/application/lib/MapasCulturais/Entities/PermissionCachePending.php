@@ -52,10 +52,10 @@ class PermissionCachePending extends \MapasCulturais\Entity {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", )
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
-    //protected $user;
+    protected $user;
 
     protected function canUserCreate($user) {
         return true;
