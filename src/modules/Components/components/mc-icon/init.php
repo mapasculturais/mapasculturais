@@ -66,6 +66,7 @@ $iconset = [
     'eye-view' => 'ic:baseline-remove-red-eye',
     'favorite' => 'mdi:star-outline',
     'filter' => 'ic:baseline-filter-alt',
+    'help-outline' => 'material-symbols:help-outline',
     'home' => 'ci:home-fill',
     'image' => 'bi:image-fill',
     'info-full' => 'material-symbols:info-rounded',
