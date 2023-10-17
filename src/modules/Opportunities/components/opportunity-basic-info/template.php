@@ -23,6 +23,7 @@ $this->import('
     entity-status
     entity-terms
     entity-terms
+    link-opportunity
     mc-container
     opportunity-rules    
 ');
@@ -72,6 +73,7 @@ $this->import('
     <aside>
         <mc-card>
             <div class="grid-12">
+                <link-opportunity :entity="entity" editable class="col-12"></link-opportunity>
                 <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar regulamento'); ?>" editable></opportunity-rules>
                 <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
                 <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>" editable></entity-related-agents>
