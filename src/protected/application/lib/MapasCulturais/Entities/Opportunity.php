@@ -915,22 +915,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     protected function canUserSendUserEvaluations($user){
         $can_evaluate = $this->canUserEvaluateRegistrations($user);
-        
-        $today = new \DateTime('now');
-        $registrations = $this->getSentRegistrations();
 
-        $evaluations_ok = (($today >= $this->registrationTo) && $registrations) ? true : false;
-        foreach($registrations as $reg){
-            if($reg->canUser('evaluate')){
-                $evaluation = $reg->getUserEvaluation($user);
-                if(is_null($evaluation) || $evaluation->status != RegistrationEvaluation::STATUS_EVALUATED){
-                    $evaluations_ok = false;
-                    break;
-                }
-            }
-        }
+        $today = new \DateTime('now');
         
-        return $can_evaluate && $evaluations_ok;
+        return $can_evaluate && $today >= $this->registrationTo;
     }
 
     protected function canUserEvaluateRegistrations($user){
