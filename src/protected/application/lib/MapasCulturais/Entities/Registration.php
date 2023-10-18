@@ -543,6 +543,8 @@ class Registration extends \MapasCulturais\Entity
         } else {
             throw new \Exception('Invalid __valuersExceptionsList format');
         }
+
+        $this->enqueueToPCacheRecreation();
     }
 
     function setValuersExcludeList(array $user_ids){
