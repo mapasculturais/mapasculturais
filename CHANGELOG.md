@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.8.0] - 2023-10-18
+### Correções
+- Corrige a distribuição de inscrições entre os avaliadores
+
 ## [5.8.0] - 2023-10-17
 ### Melhorias
 - Impede que o número de processos de geração de cache e de jobs ultrapasse o número de processadores disponíveis
