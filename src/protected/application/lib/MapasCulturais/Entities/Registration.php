@@ -879,7 +879,7 @@ class Registration extends \MapasCulturais\Entity
             $field_name = $field_prefix . $field->id;
             $field_required = $field->required;
             
-            if($metadata_definition->config['registrationFieldConfiguration']->conditional){
+            if($metadata_definition && $metadata_definition->config && $metadata_definition->config['registrationFieldConfiguration'] && $metadata_definition->config['registrationFieldConfiguration']->conditional){
                 $conf =  $metadata_definition->config['registrationFieldConfiguration'];
               
                 $_fied_name = $conf->conditionalField;
