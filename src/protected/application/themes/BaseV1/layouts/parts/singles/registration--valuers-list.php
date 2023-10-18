@@ -8,16 +8,37 @@ if(!$entity->canUser('modifyValuers')){
 $committee = $opportunity->getEvaluationCommittee(false);
 $em = $opportunity->getEvaluationMethod();
 
-$include_list = [];
+$can_evaluate = [];
+$rules_list = [];
 $exclude_list = [];
+$include_list = [];
 
-foreach($committee as $valuer){
+foreach($committee as $valuer) {
     if ($em->canUserEvaluateRegistration($entity, $valuer->user)) {
+        $can_evaluate[] = $valuer;
+        if(in_array($valuer->user->id, $entity->valuersIncludeList)) {
+            $include_list[] = $valuer;
+        } else {
+            $rules_list[] = $valuer;
+        }
+    } elseif (in_array($valuer->user->id, $entity->valuersExcludeList)) {
+        $rules_list[] = $valuer;
         $exclude_list[] = $valuer;
-    } else {
-        $include_list[] = $valuer;
     }
 }
+
+usort($committee, function ($v1, $v2) use($rules_list) {
+    if(in_array($v1, $rules_list) && in_array($v2, $rules_list)) {
+        return $v1->name <=> $v2->name;
+    } else if(in_array($v1, $rules_list) && !in_array($v2, $rules_list)) {
+        return -1;
+    } else if(!in_array($v1, $rules_list) && in_array($v2, $rules_list)) {
+        return 1;
+    } else {
+        return $v1->name <=> $v2->name;
+    }
+});
+
 ?>
 <div class="registration-fieldset" id="registration-valuers--admin">
     <?php $this->applyTemplateHook('valuers-list','begin'); ?>
@@ -29,34 +50,25 @@ foreach($committee as $valuer){
             </em>
         </small>
         <ul id="registration-commitee">
-            <?php foreach($exclude_list as $valuer):
-                $checked = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersExcludeList);
-                $inverse = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersExcludeList, true);
+            <?php 
+            foreach($committee as $valuer): 
+                $checked = in_array($valuer, $can_evaluate);
+                $from_rule = in_array($valuer, $rules_list);
+                $list = $from_rule ? 'valuersExcludeList' : 'valuersIncludeList';
             ?>
                 <li>
                     <label>
-                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>" <?php echo $inverse; ?>
-                               class="user-toggable" onclick="toggleRegistrationEvaluator(this)" />
-                        <input type="checkbox" name="valuersExcludeList[]" value="<?php echo $valuer->user->id ?>"
-                               class="sendable" <?php echo $checked ?>/>
-                        <?php echo $valuer->name ?> <small><em><span>*</span></em></small>
+                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>"
+                               class="user-toggable" onclick="toggleRegistrationEvaluator(this)" <?= $checked ? 'checked' : '' ?>/>
+                        <input type="checkbox" name="<?=$list?>[]" value="<?php echo $valuer->user->id ?>"
+                               class="sendable" <?= !$from_rule && $checked ? 'checked' : '' ?>/>
+                        <?php echo $valuer->name ?> 
+                        <?php if($from_rule): ?>
+                            <small><em><span>*</span></em></small>
+                        <?php endif ?>
                     </label>
                 </li>
-            <?php
-            endforeach;
-            foreach($include_list as $valuer):
-                $checked = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersIncludeList);
-            ?>
-                <li>
-                    <label>
-                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>" <?php echo $checked; ?>
-                               class="user-toggable" onclick="toggleRegistrationEvaluator(this)" />
-                        <input type="checkbox" name="valuersIncludeList[]" value="<?php echo $valuer->user->id ?>"
-                               class="sendable" <?php echo $checked ?> />
-                        <?php echo $valuer->name ?>
-                    </label>
-                </li>
-            <?php endforeach ?>
+            <?php endforeach; ?>
         </ul>
         <p>
             <small><span>*</span><em> <?php i::_e('Avaliador desta inscrição pela regra de distribuição.') ?></em></small>
