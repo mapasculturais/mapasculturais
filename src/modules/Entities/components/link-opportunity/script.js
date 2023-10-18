@@ -12,6 +12,7 @@ app.component('link-opportunity', {
         return {
             entityTypeSelected: this.entity.ownerEntity.__objectType,
             fields: [],
+            selected: true,
         }
     },
 
@@ -26,10 +27,11 @@ app.component('link-opportunity', {
         },
     },
 
+
     computed: {
-        
-        entityType(){
-            switch(this.entity.ownerEntity.__objectType) {
+
+        entityType() {
+            switch (this.entity.ownerEntity.__objectType) {
                 case 'project':
                     return __('projeto', 'link-opportunity');
                 case 'event':
@@ -42,21 +44,24 @@ app.component('link-opportunity', {
         },
         entityColorClass() {
             let type = this.entity.ownerEntity.__objectType;
-            return type+'__color'+(type=='agent' ? '--dark':'');
+            return type + '__color' + (type == 'agent' ? '--dark' : '');
         },
         entityColorBorder() {
             let type = this.entity.ownerEntity.__objectType;
-            return type+'__border'+(type=='agent' ? '--dark':'');
+            return type + '__border' + (type == 'agent' ? '--dark' : '');
         },
     },
 
     methods: {
+        setSelected() {
+            this.selected = false;
+        },
         setEntity(Entity) {
             this.entity.ownerEntity = Entity;
         },
 
         resetEntity() {
-            console.log(this.entityTypeSelected);
+            // console.log(this.entityTypeSelected);
             // this.entity.ownerEntity = null;
             // this.entityTypeSelected = type;
         },
