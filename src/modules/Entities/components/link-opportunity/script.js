@@ -12,6 +12,7 @@ app.component('link-opportunity', {
         return {
             entityTypeSelected: this.entity.ownerEntity.__objectType,
             fields: [],
+            placeholder: this.entity.ownerEntity.__objectType, 
             selected: true,
         }
     },
@@ -25,6 +26,7 @@ app.component('link-opportunity', {
             type: Boolean,
             default: true
         },
+       
     },
 
 
@@ -42,12 +44,13 @@ app.component('link-opportunity', {
                     return __('agente', 'link-opportunity');
             }
         },
+
         entityColorClass() {
             let type = this.entity.ownerEntity.__objectType;
             return type + '__color' + (type == 'agent' ? '--dark' : '');
         },
         entityColorBorder() {
-            let type = this.entity.ownerEntity.__objectType;
+             type = this.entity.ownerEntity.__objectType;
             return type + '__border' + (type == 'agent' ? '--dark' : '');
         },
     },
@@ -56,14 +59,33 @@ app.component('link-opportunity', {
         setSelected() {
             this.selected = false;
         },
+        verifySelected(entityTypeSelected) {
+            let selected = '';
+            switch (entityTypeSelected) {
+                case 'project':
+                    selected = 'projetos';
+                    return selected;
+                case 'event':
+                    selected = 'eventos';
+                    return selected;
+                case 'space':
+                    selected = 'espaços';
+                    return selected;
+                case 'agent':
+                    selected = 'agentes';
+                    return selected;
+            }
+        },
         setEntity(Entity) {
+            console.log(Entity);
             this.entity.ownerEntity = Entity;
         },
-
+        toggleSelected() {
+            this.selected = !this.selected;
+        },
         resetEntity() {
-            // console.log(this.entityTypeSelected);
-            // this.entity.ownerEntity = null;
-            // this.entityTypeSelected = type;
+            this.entity.ownerEntity = null;
+            this.entityTypeSelected = null;
         },
 
         hasObjectTypeErrors() {

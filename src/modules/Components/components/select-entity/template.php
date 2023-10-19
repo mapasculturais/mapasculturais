@@ -30,7 +30,9 @@ $this->import('
                     </template>
 
                     <template #default="{entities}">
-                        <p v-if="entities.length > 0" class="select-entity__description"> {{itensText}} </p>
+                        <slot name="selected">
+                            <p v-if="entities.length > 0" class="select-entity__description"> {{itensText}} </p>
+                        </slot>
                         <ul class="select-entity__results">
                             <li v-for="entity in entities" class="select-entity__results--item" :class="type" @click="selectEntity(entity, close)">
                                 <span class="icon">
@@ -41,13 +43,14 @@ $this->import('
                         </ul>
                     </template>
                 </mc-entities>
-
-                <div v-if="createNew" class="select-entity__add">
-                    <p> <?php i::__('ou') ?> </p>
-                    <a href="" class="select-entity__add--button">
-                        {{buttonText}}
-                    </a>
-                </div>
+                <slot name="createNew">
+                    <div v-if="createNew" class="select-entity__add">
+                        <p> <?php i::__('ou') ?> </p>
+                        <a href="" class="select-entity__add--button">
+                            {{buttonText}}
+                        </a>
+                    </div>
+                </slot>
             </div>
         </template>
     </mc-popover>
