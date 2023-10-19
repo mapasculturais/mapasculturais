@@ -22,8 +22,28 @@
 
     }
 
+    &__message {
+        font-size: size(12);
+    }
+
     &__link {
-        font-size: 14px;
+        font-size: size(14);
+        display: flex;
+        justify-content: space-evenly;
+
+        @media (max-width:size(400)) {
+            font-size: size(12);
+        }
+    }
+
+    &__other {
+        padding: size(16);
+    }
+
+    &__footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     &__header {
@@ -43,11 +63,49 @@
         gap: size(16);
     }
 
+    &__name {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
     &__closed {
 
         bottom: 33px;
         left: 191px;
         position: relative;
+
+        @media (max-width:size(400)) {
+            left: size(170);
+        }
+
+    }
+
+    &__itemlabel {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .selectButton {
+        cursor: pointer;
+        color: var(--mc-primary-500);
+        font-weight: 700;
+        font-size: size(12);
+        line-height: size(16);
+        text-align: center;
+
+        &.disabled {
+            color: var(--mc-black);
+            cursor: default;
+            opacity: .3;
+            pointer-events: none;
+        }
+    }
+
+    &__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
     }
 
@@ -62,7 +120,7 @@
         color: black;
         border-radius: 4px;
         border: 1px solid var(--mc-gray-700);
-        max-width: size(237);
+        max-width: size(265);
         width: 100%;
         padding: size(12) size(7);
     }
@@ -72,7 +130,7 @@
         display: grid;
         grid-template-columns: 1fr;
         gap: size(8);
-        padding-top: size(16F);
+        padding-top: size(16);
     }
 
     &__exchange {
