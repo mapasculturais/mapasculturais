@@ -6,7 +6,7 @@ $definition = $configuration->definition;
 ?>
 
 <div id="evaluations-config" class="aba-content" ng-controller="EvaluationMethodConfigurationController">
-
+    <?php $this->applyTemplateHook('evaluations-config', 'begin') ?>
     <?php
     if(is_object($definition) && property_exists($definition, 'evaluationMethod') ) :
         $evaluationMethod = $definition->evaluationMethod;
@@ -19,7 +19,8 @@ $definition = $configuration->definition;
         <?php if($config_form_part_name): ?>
             <div> <?php $this->part($config_form_part_name, ['entity' => $entity]) ?> </div> <hr>
         <?php endif; ?>
-
+    
+        <?php $this->applyTemplateHook('evaluations-config--texts', 'before') ?>
         <div>
             <h4> <?php i::_e('Textos informativos para a fichas de inscrição') ?> </h4>
             <div class="evaluations-config--intro">
@@ -35,16 +36,15 @@ $definition = $configuration->definition;
                 </label>
             </div>
         </div>
-
+        <?php $this->applyTemplateHook('evaluations-config--texts', 'after') ?>
     <?php
     else:
         i::_e('As inscrições para esta oportunidade já foram encerradas. Não é mais possível configurar a avaliação.');
     endif; ?>
 
     <?php if($entity->canUser('@control')):?>
-        
-    <?php $this->part('singles/opportunity-evaluations-fields--config', ['entity' => $entity]) ?>
-
+        <?php $this->part('singles/opportunity-evaluations-fields--config', ['entity' => $entity]) ?>
     <?php endif; ?>
 
+    <?php $this->applyTemplateHook('evaluations-config', 'end') ?>
 </div>

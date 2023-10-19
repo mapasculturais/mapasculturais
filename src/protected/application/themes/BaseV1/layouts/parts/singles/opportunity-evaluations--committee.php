@@ -48,6 +48,8 @@ $method = $entity->getEvaluationMethod();
 </style>
 <div class="agentes-relacionados">
     <div class="registration-fieldset">
+        <?php $this->applyTemplateHook('committee', 'begin') ?>
+
         <h4><?php i::_e('Comissão de Avaliação'); ?></h4>
         <?php if($method->fetchRegistrations()): ?>
             <div id='status-info' class="alert info">
@@ -79,6 +81,7 @@ $method = $entity->getEvaluationMethod();
                     <?php endif; ?>
                     <img class="committee--avatar" ng-src="{{avatarUrl(admin.agent)}}" />
                     <span class="committee--name" >{{admin.agent.name}}</span> 
+                    <code style="background-color: aqua;">#{{admin.agent.id}}</code>
                     <div ng-if="admin.status === 10" class="success"> <?php i::_e('Avaliações enviadas')?></div>
                     <div ng-if="admin.status === 1" class="warning"> <?php i::_e('Avaliações pendentes')?></div>
                     <div ng-if="admin.agent.terms.area">{{admin.agent.terms.area.join(', ')}}</div>
@@ -97,5 +100,7 @@ $method = $entity->getEvaluationMethod();
         <edit-box id="add-committee-agent" ng-if="isEditable" position="right" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar agente à comissão de avaliadores");?>" spinner-condition="spinners['add-committee-agent']" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true'>
             <find-entity entity="agent" api-query="findQuery" no-results-text="<?php i::esc_attr_e('Nenhum agente encontrado'); ?>" description="" spinner-condition="spinners['add-committee-agent']" group="add-committee-agent" select="createAdminRelation"></find-entity>
         </edit-box>
+
+        <?php $this->applyTemplateHook('committee', 'end') ?>
     </div>
 </div>
