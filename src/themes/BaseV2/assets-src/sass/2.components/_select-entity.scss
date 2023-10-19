@@ -2,6 +2,8 @@
 @use '../0.settings/mixins' as *;
 
 .select-entity {
+    display: flex;
+    flex-direction: column;
     &__popover {
         max-width: size(350);
 
