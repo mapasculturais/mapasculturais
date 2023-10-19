@@ -50,6 +50,7 @@ $iconset = [
     'circle-checked' => 'material-symbols:check-circle-rounded',
     'clock' => 'fluent:clipboard-clock-20-filled',
     'close' => 'gg:close',
+    'closed' => 'mdi:close',
     'code' => 'fa-solid:code',
     'copy' => 'ic:baseline-content-copy',
     'dashboard' => 'ic:round-dashboard',

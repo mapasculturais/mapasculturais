@@ -41,3 +41,4 @@ $this->import('
         <button class="button--large button button--primary-outline" v-if="!entities.loadingMore" @click="loadMore()"><?php i::_e('Carregar Mais') ?></button>
     </div>
 </slot>
+<slot name="createNew"></slot>
