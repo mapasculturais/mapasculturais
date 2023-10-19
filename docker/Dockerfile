@@ -3,7 +3,7 @@ FROM php:8.2-fpm
 RUN apt-get update
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        locales less vim nano micro sudo git zip \
+        locales less vim nano micro sudo git zip procps \
         imagemagick libmagickcore-dev libmagickwand-dev \
         curl iputils-ping ca-certificates  gnupg \
         libcurl4-gnutls-dev libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev libzip-dev libzstd-dev
