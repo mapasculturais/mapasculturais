@@ -11,7 +11,10 @@ $this->import('
     mc-link
     mc-avatar
     mc-popover 
-    create-project 
+    create-project
+    create-event 
+    create-space
+    create-agent
     select-entity
     mc-icon
 ');
@@ -27,12 +30,27 @@ $this->import('
 
         <div class="link-opportunity__actions">
 
-            <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
+            <select-entity :type="entityTypeSelected" @select="setEntity($event)" createNew openside="right-down" >
+                <template #selected>
+                    <label class="link-opportunity__message"><?php i::_e('Selecione um dos ') ?>{{verifySelected(entityTypeSelected)}}</label>
+
+                </template>
                 <template #button="{ toggle }">
-                    <a class="link-opportunity__change" :class="entityColorClass" @click="toggle()">
+                    <a class="link-opportunity__change" @click="toggle()">
                         <mc-icon :class="entityColorClass" name="exchange"></mc-icon>
                         <h4 :class="entityColorClass"><?php i::_e('Alterar') ?> {{entityType}}</h4>
                     </a>
+                </template>
+                <template #createNew>
+                    <div class="link-opportunity__footer">
+
+                        <label class="link-opportunity__other"> <?php i::_e('Ou') ?> </label>
+                        <create-project>
+                            <template #default="{modal}">
+                                <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar projeto') ?> </button>
+                            </template>
+                        </create-project>
+                    </div>
                 </template>
             </select-entity>
 
@@ -43,37 +61,50 @@ $this->import('
         </div>
         <template v-if="!selected">
             <div class="link-opportunity__selected">
-                <label class="link-opportunity__link semibold"><?php i::_e('Vincule a oportunidade a uma entidade:') ?></label>
-                <!-- <mc-icon name="closed" class="link-opportunity__closed"></mc-icon> -->
+                <label class="link-opportunity__link semibold"><?php i::_e('Vincule a oportunidade a uma entidade:') ?><a @click="toggleSelected()"><mc-icon name="closed" class="link-opportunity__closed"></mc-icon></a></label>
                 <div class="link-opportunity__opt">
                     <div class="link-opportunity__option">
+                        <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
+                            <template #selected>
+                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos ') ?>{{verifySelected(entityTypeSelected)}}</label>
 
-                        <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down" class="link-opportunity__teste">
+                            </template>
                             <template #button="{ toggle }">
-                                <a class="" :class="entityColorClass" @click="setEntity()">
-                                    <label for="inputProject" class="inner link-opportunity__selection" :class="{'inner--error': hasObjectTypeErrors()}" @click="resetEntity()">
-                                        <a class="itemLabel">
-                                            <input v-model="entityTypeSelected" type="radio" id="inputProject" name="inputName" value="project" @click="toggle()" />
+                                <a class="" @click="setEntity()">
+                                    <label for="inputProject" class="link-opportunity__inner link-opportunity__selection" :class="{'inner--error': hasObjectTypeErrors()}">
+                                        <a class="link-opportunity__itemlabel">
+                                            <input v-model="entityTypeSelected" type="radio" id="inputProject" name="inputName" value="project" @click="toggle()"/>
                                             <span><?php i::_e('Projeto') ?> </span>
                                         </a>
 
-                                        <a :class="{'disabled': entityTypeSelected!='project'}" class="selecta"><?php i::_e('Selecionar') ?> </a>
+                                        <a :class="{'disabled': entityTypeSelected!='project'}" class="selectButton"><?php i::_e('Selecionar') ?> </a>
                                     </label>
 
-                                    </button>
+                                </a>
                             </template>
-                            <template #default>
-                                <create-project></create-project>
+                            <template #createNew>
+                                <div class="link-opportunity__footer">
+
+                                    <label class="link-opportunity__other"> <?php i::_e('Ou') ?> </label>
+                                    <create-project>
+                                        <template #default="{modal}">
+                                            <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar projeto') ?> </button>
+                                        </template>
+                                    </create-project>
+                                </div>
                             </template>
                         </select-entity>
                     </div>
                     <div class="link-opportunity__option">
 
                         <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
+                            <template #selected>
+                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos ') ?>{{verifySelected(entityTypeSelected)}}</label>
+                            </template>
                             <template #button="{ toggle }">
-                                <a class="link-opportunity__selection" :class="entityColorClass" @click="toggle()">
-                                    <label for="inputEvent" class="inner" :class="{'inner--error': hasObjectTypeErrors()}">
-                                        <span class="itemLabel">
+                                <a class="link-opportunity__selection" @click="toggle()">
+                                    <label for="inputEvent" class="link-opportunity__inner" :class="{'inner--error': hasObjectTypeErrors()}">
+                                        <span class="link-opportunity__itemlabel">
                                             <input v-model="entityTypeSelected" id="inputEvent" type="radio" name="inputName" value="event" @click="toggle()" />
                                             <span><?php i::_e('Evento') ?> </span>
                                         </span>
@@ -83,15 +114,30 @@ $this->import('
 
                                 </a>
                             </template>
+                            <template #createNew>
+                                <div class="link-opportunity__footer">
+
+                                    <label class="link-opportunity__other"> <?php i::_e('Ou') ?> </label>
+                                    <create-event>
+                                        <template #default="{modal}">
+                                            <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar Evento') ?> </button>
+                                        </template>
+                                    </create-event>
+                                </div>
+                            </template>
                         </select-entity>
                     </div>
                     <div class="link-opportunity__option">
 
                         <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
+                            <template #selected>
+                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos ') ?>{{verifySelected(entityTypeSelected)}}</label>
+
+                            </template>
                             <template #button="{ toggle }">
-                                <a class="link-opportunity__selection" :class="entityColorClass" @click="toggle()">
-                                    <label for="inputSpace" class="inner" :class="{'inner--error': hasObjectTypeErrors()}">
-                                        <span class="itemLabel">
+                                <a class="link-opportunity__selection" @click="toggle()">
+                                    <label for="inputSpace" class="link-opportunity__inner" :class="{'inner--error': hasObjectTypeErrors()}">
+                                        <span class="link-opportunity__itemlabel">
                                             <input v-model="entityTypeSelected" type="radio" id="inputSpace" name="inputName" value="space" @click="toggle()" />
                                             <span><?php i::_e('Espaço') ?> </span>
                                         </span>
@@ -101,15 +147,30 @@ $this->import('
 
                                 </a>
                             </template>
+                            <template #createNew>
+                                <div class="link-opportunity__footer">
+
+                                    <label class="link-opportunity__other"> <?php i::_e('Ou') ?> </label>
+                                    <create-space>
+                                        <template #default="{modal}">
+                                            <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar espaço') ?> </button>
+                                        </template>
+                                    </create-space>
+                                </div>
+                            </template>
                         </select-entity>
                     </div>
                     <div class="link-opportunity__option">
 
                         <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
+                            <template #selected>
+                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos ') ?>{{verifySelected(entityTypeSelected)}}</label>
+
+                            </template>
                             <template #button="{ toggle }">
-                                <a class="link-opportunity__selection" :class="entityColorClass" @click="toggle()">
-                                    <label for="inputAgent" class="inner" :class="{'inner--error': hasObjectTypeErrors()}">
-                                        <span class="itemLabel">
+                                <a class="link-opportunity__selection" @click="toggle()">
+                                    <label for="inputAgent" class="link-opportunity__inner" :class="{'inner--error': hasObjectTypeErrors()}">
+                                        <span class="link-opportunity__itemlabel">
                                             <input v-model="entityTypeSelected" type="radio" id="inputAgent" name="inputName" value="agent" @click="toggle()" />
                                             <span><?php i::_e('Agente') ?> </span>
                                         </span>
@@ -117,6 +178,17 @@ $this->import('
                                         <a :class="{'disabled': entityTypeSelected!='agent'}" class="selectButton"><?php i::_e('Selecionar') ?> </a>
                                     </label>
                                 </a>
+                            </template>
+                            <template #createNew>
+                                <div class="link-opportunity__footer">
+
+                                    <label class="link-opportunity__other"> <?php i::_e('Ou') ?> </label>
+                                    <create-agent>
+                                        <template #default="{modal}">
+                                            <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar Agente') ?> </button>
+                                        </template>
+                                    </create-agent>
+                                </div>
                             </template>
                         </select-entity>
                     </div>
