@@ -218,12 +218,7 @@ trait EntityAgentRelation {
             $relation->save($flush);
 
         $this->refresh();
-        
-        if($this->usesPermissionCache()){
-            $this->enqueueToPCacheRecreation();
-        }
-        
-        
+                
         return $relation;
     }
 
@@ -235,11 +230,7 @@ trait EntityAgentRelation {
             $relation->delete($flush);
         }
         
-        $this->refresh();
-        
-        if($this->usesPermissionCache()){
-            $this->enqueueToPCacheRecreation();
-        }
+        $this->refresh();        
     }
 
     function renameAgentRelationGroup($old_name, $new_name) {
