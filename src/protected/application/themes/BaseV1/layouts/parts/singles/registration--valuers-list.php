@@ -14,29 +14,24 @@ $exclude_list = [];
 $include_list = [];
 
 foreach($committee as $valuer) {
+    
     if ($em->canUserEvaluateRegistration($entity, $valuer->user)) {
         $can_evaluate[] = $valuer;
-        if(in_array($valuer->user->id, $entity->valuersIncludeList)) {
-            $include_list[] = $valuer;
-        } else {
-            $rules_list[] = $valuer;
-        }
-    } elseif (in_array($valuer->user->id, $entity->valuersExcludeList)) {
+    }
+
+    if ($em->canUserEvaluateRegistration($entity, $valuer->user, true)) {
         $rules_list[] = $valuer;
+    }
+
+    if(in_array($valuer->user->id, $entity->valuersIncludeList)) {
+        $include_list[] = $valuer;
+    } elseif (in_array($valuer->user->id, $entity->valuersExcludeList)) {
         $exclude_list[] = $valuer;
     }
 }
 
 usort($committee, function ($v1, $v2) use($rules_list) {
-    if(in_array($v1, $rules_list) && in_array($v2, $rules_list)) {
-        return $v1->name <=> $v2->name;
-    } else if(in_array($v1, $rules_list) && !in_array($v2, $rules_list)) {
-        return -1;
-    } else if(!in_array($v1, $rules_list) && in_array($v2, $rules_list)) {
-        return 1;
-    } else {
-        return $v1->name <=> $v2->name;
-    }
+    return strtolower($v1->name) <=> strtolower($v2->name);
 });
 
 ?>
@@ -55,13 +50,17 @@ usort($committee, function ($v1, $v2) use($rules_list) {
                 $checked = in_array($valuer, $can_evaluate);
                 $from_rule = in_array($valuer, $rules_list);
                 $list = $from_rule ? 'valuersExcludeList' : 'valuersIncludeList';
+
+                if($from_rule) {
+                    $sendable_checked = !$checked;
+                } else {
+                    $sendable_checked = $checked;
+                }
             ?>
                 <li>
                     <label>
-                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>"
-                               class="user-toggable" onclick="toggleRegistrationEvaluator(this)" <?= $checked ? 'checked' : '' ?>/>
-                        <input type="checkbox" name="<?=$list?>[]" value="<?php echo $valuer->user->id ?>"
-                               class="sendable" <?= !$from_rule && $checked ? 'checked' : '' ?>/>
+                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>" class="user-toggable" onclick="toggleRegistrationEvaluator(this)" <?= $checked ? 'checked' : '' ?>>
+                        <input type="checkbox" name="<?=$list?>[]" value="<?php echo $valuer->user->id ?>" class="sendable" <?= $sendable_checked ? 'checked' : '' ?>>
                         <?php echo $valuer->name ?> 
                         <?php if($from_rule): ?>
                             <small><em><span>*</span></em></small>
