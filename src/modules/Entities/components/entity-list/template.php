@@ -21,7 +21,7 @@ $this->import('
                 <li v-for="entity in entities" class="col-12 entity-list__list-item">
                     <mc-link class="entity-list__list-item-link" :entity="entity">
                         <div class="entity-list__list-item-img">
-                           <mc-avatar :entity="entity" :size="xsmall"></mc-avatar>
+                           <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                         </div>
                         <div class="entity-list__list-item"> {{showContent(entity.name)}} </div>
                     </mc-link>
