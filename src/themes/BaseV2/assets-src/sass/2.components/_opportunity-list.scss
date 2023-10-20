@@ -1,0 +1,54 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-list {
+    background-color: var(--mc-gray-100);
+
+    &__card {
+        max-width: size(838);
+        width: 100%;
+        background-color: var(--mc-white);
+        list-style-type: none;
+        padding: size(16);
+        border-radius: size(4);
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    &__background {
+        max-width: size(870);
+        width: 100%;
+        padding: 0 size(16) size(16);
+
+    }
+
+    &__list {
+        list-style: none;
+        display: unset;
+    }
+
+    &__cardlink {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    
+    &__cardheader {
+        display: grid;
+        grid-template-columns: size(64) 1fr;
+        align-items: center;
+    }
+
+    &__link {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: size(10);
+    }
+
+    &__icon {
+
+        font-size: size(24);
+    }
+
+}
