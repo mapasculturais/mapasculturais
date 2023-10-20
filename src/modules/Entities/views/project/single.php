@@ -19,6 +19,7 @@ $this->import('
     entity-seals
     entity-social-media
     entity-terms
+    opportunity-list
     mc-breadcrumb
     mc-link
     mc-container
@@ -54,6 +55,9 @@ $this->breadcrumb = [
             <div class="tabs__info">
                 <mc-container>
                     <main>
+                    <mc-card>
+                        <opportunity-list :ids="entity.relatedOpportunities"></opportunity-list>
+                    </mc-card>
                         <div class="grid-12">
                             <div v-if="entity.emailPublico || entity.telefonePublico" class="col-12 additional-info">
                                 <h4 class="additional-info__title"><?php i::_e("Informações adicionais"); ?></h4>
