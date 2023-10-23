@@ -25,7 +25,7 @@ $this->import('
                 <slot :entities="entities">
                     <ul v-if="entities.length>0" class="opportunity-list__list">
                         <li v-for="entity in entities">
-                            <div class="col-12 opportunity-list__background">
+                            <div class="col-12 opportunity-list__container">
 
                                 <div class="col-12 opportunity-list__card">
                                     <div class="col-12 opportunity-list__cardheader">
