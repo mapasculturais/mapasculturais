@@ -1,7 +1,15 @@
 @use '../0.settings/mixins' as *;
 
 .opportunity-list {
-    background-color: var(--mc-gray-100);
+    display: flex;
+    flex-direction: column;
+    gap: size(8);
+    padding-bottom: size(40);
+
+    &__content {
+        border-radius: var(--mc-border-radius-xs);
+        background-color: var(--mc-gray-100);
+    }
 
     &__card {
         max-width: size(838);
@@ -9,24 +17,34 @@
         background-color: var(--mc-white);
         list-style-type: none;
         padding: size(16);
-        border-radius: size(4);
+        border-radius: var(--mc-border-radius-xs);
         display: flex;
         align-items: flex-start;
         flex-direction: column;
     }
 
+    &__label {
+        font-size: var(--mc-font-size-xs);
+    }
+
     &__container {
+        background-color: var(--mc-gray-100);
         max-width: size(870);
         width: 100%;
-        padding: 0 size(16) size(16);
         display: flex;
         flex-direction: column;
         gap: size(16);
+
+        &:first-child {
+            padding: 16px;
+
+        }
+        padding: 0 16px 16px;
     }
 
     &__list {
         list-style: none;
-        display: unset;
+        display: contents;
     }
 
     &__cardlink {
@@ -35,7 +53,7 @@
         justify-content: flex-end;
     }
 
-    
+
     &__cardheader {
         display: grid;
         grid-template-columns: size(64) 1fr;
@@ -45,7 +63,7 @@
     &__link {
         text-decoration: none;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: size(10);
     }
 
