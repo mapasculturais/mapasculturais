@@ -15,6 +15,9 @@ $config = $app->config['social-media'];
     <?php $this->applyTemplateHook("main-footer", "begin")?>
     <div class="main-footer__content">
         <?php $this->applyTemplateHook("main-footer-logo", "before")?>
+        <div class="main-footer__support">
+            <?php $this->part('footer-support-message') ?>
+        </div>
         <div class="main-footer__content--logo">
             <div class="main-footer__content--logo-img">
                 <theme-logo href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
