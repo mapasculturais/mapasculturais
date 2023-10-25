@@ -41,7 +41,8 @@ $this->import('
                 </mc-title>
                                  
                 <div class="panel-evaluations__evaluations-cards">
-                    <evaluation-card></evaluation-card>
+                    <!-- <evaluation-card></evaluation-card> -->
+                    <?= i::__('Você não tem avaliações disponíveis.') ?>
                 </div>
             </div>   
 
@@ -52,6 +53,7 @@ $this->import('
                                  
                 <div class="panel-evaluations__evaluations-cards">
                     <evaluation-card></evaluation-card>
+                    <!-- <?= i::__('Você ainda não tem avaliações encerradas.') ?> -->
                 </div>
             </div>  
         </div>
@@ -83,6 +85,7 @@ $this->import('
                                  
                 <div class="panel-evaluations__evaluations-cards">
                     <evaluation-card></evaluation-card>
+                    <!-- <?= i::__('Você não tem pareceres disponíveis.') ?> -->
                 </div>
             </div>   
 
@@ -92,7 +95,8 @@ $this->import('
                 </mc-title>
                                  
                 <div class="panel-evaluations__evaluations-cards">
-                    <evaluation-card></evaluation-card>
+                    <!-- <evaluation-card></evaluation-card> -->
+                    <?= i::__('Você ainda não tem pareceres encerrados.') ?>
                 </div>
             </div>
         </div>
