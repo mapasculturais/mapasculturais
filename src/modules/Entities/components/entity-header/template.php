@@ -60,7 +60,7 @@ $this->import('
                 
                 <div class="metadata">
                     <slot name="metadata">
-                        <dl class="metadata__id" v-if="entity.__objectType =='agent' && entity.id">
+                        <dl class="metadata__id" v-if="entity.id">
                             <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
                                 <dd><strong>{{entity.id}}</strong></dd>
                         </dl> 
