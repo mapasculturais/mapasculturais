@@ -145,6 +145,11 @@ class Module extends \MapasCulturais\Module{
             $this->render('registrations', []);
         });
 
+        $app->hook('GET(panel.evaluations)', function() use($app) {
+            $this->requireAuthentication();
+            $this->render('evaluations', []);
+        });
+
         $app->hook('GET(registration.registrationPrint)', function() use($app) {
             $this->requireAuthentication();
 
@@ -163,6 +168,7 @@ class Module extends \MapasCulturais\Module{
             $nav_items['opportunities']['items'] = [
                 ['route' => 'panel/opportunities', 'icon' => 'opportunity', 'label' => i::__('Minhas oportunidades')],
                 ['route' => 'panel/registrations', 'icon' => 'opportunity', 'label' => i::__('Minhas inscrições')],
+                ['route' => 'panel/evaluations', 'icon' => 'opportunity', 'label' => i::__('Minhas avaliações')]
             ];
         });
 
