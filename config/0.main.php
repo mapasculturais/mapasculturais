@@ -87,19 +87,10 @@ return [
     */
     'ini.set' => json_decode(env('PHP_INI_SET', '[]')),
 
-     /* 
-    Define o link de suporte do footer
-        Ex:https://linkzammad.com.br'
-        */
-    'footer.supportLink' => '',
-    /*Define o link de suporte do footer
-        Ex:'substituir@email.aqui',*/
-    'footer.supportEmail' => '',
-
     /*Define mensagem padrão :
-        Ex: 'Precisa de ajuda? %supportLink% para falar com nossa equipe de suporte por chat. Ou envie um email para %supportEmail%',
-        OBS: as chaves %supportLink% e %supportEmail% serão substituidas pelos links estilizados
+        Ex: 'Precisa de ajuda? Clique para falar com nossa equipe de suporte por chat. Ou envie um email para ',
+        
     */
-    'footer.supportMessage' => 'Precisa de ajuda? %supportLink% para falar com nossa equipe de suporte por chat. Ou envie um email para %supportEmail%',
+    'footer.supportMessage' => '',
 
 ];
