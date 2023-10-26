@@ -1851,13 +1851,19 @@ class App {
 
     /**
      * Adiciona a entidade na fila de reprocessamento de cache de permissão 
+     * 
      * @param Entity $entity 
+     * @param User $user = null
+     * 
      * @return void 
      */
-    public function enqueueEntityToPCacheRecreation(Entity $entity) {
+    public function enqueueEntityToPCacheRecreation(Entity $entity, User $user = null) {
         if (!$entity->__skipQueuingPCacheRecreation) {
-            $entity_key = $entity->id ? "$entity" : "$entity".spl_object_id($entity);
-            $this->_permissionCachePendingQueue["$entity_key"] = $entity;
+            $entity_key = $entity->id ? "{$entity}" : "{$entity}:".spl_object_id($entity);
+            if($user) {
+                $entity_key = "{$entity_key}:{$user->id}";
+            }
+            $this->_permissionCachePendingQueue[$entity_key] = [$entity, $user];
         }
     }
 
@@ -1865,10 +1871,17 @@ class App {
      * Verifica se a entidade já está na fila de reprocessamento de cache de permissão
      * 
      * @param Entity $entity 
+     * @param User $user = null
+     * 
      * @return bool 
      */
-    public function isEntityEnqueuedToPCacheRecreation(Entity $entity) {
-        return isset($this->_permissionCachePendingQueue["$entity"]);
+    public function isEntityEnqueuedToPCacheRecreation(Entity $entity, User $user = null) {
+        $entity_key = $entity->id ? "{$entity}" : "{$entity}:".spl_object_id($entity);
+        if($user) {
+            $entity_key = "{$entity_key}:{$user->id}";
+        }
+
+        return isset($this->_permissionCachePendingQueue[$entity_key]);
     }
 
     /**
@@ -1876,15 +1889,19 @@ class App {
      */
     public function persistPCachePendingQueue() {
         $created = false;
-        foreach($this->_permissionCachePendingQueue as $entity) {
+        foreach($this->_permissionCachePendingQueue as $config) {
+            $entity = $config[0];
+            $user = $config[1];
             if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
                     'objectId' => $entity->id, 
                     'objectType' => $entity->getClassName(),
-                    'status' => 0
+                    'status' => 0,
+                    'user' => $user
                 ])) {
                 $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
                 $pendingCache->objectId = $entity->id;
                 $pendingCache->objectType = $entity->getClassName();
+                $pendingCache->user = $user;
                 $pendingCache->save(true);
                 $this->log->debug("pcache pending: $entity");
                 $created = true;
@@ -1942,8 +1959,8 @@ class App {
             FROM permission_cache_pending
             WHERE 
                 status = 0 AND 
-                CONCAT (object_type, object_id) NOT IN (
-                    SELECT CONCAT(object_type, object_id) 
+                CONCAT (object_type, object_id, usr_id) NOT IN (
+                    SELECT CONCAT(object_type, object_id, usr_id) 
                     FROM permission_cache_pending WHERE 
                     status > 0
                 )');
@@ -1963,7 +1980,7 @@ class App {
             try {
                 $entity = $this->repo($item->objectType)->find($item->objectId);
                 if ($entity) {
-                    $entity->recreatePermissionCache();
+                    $entity->recreatePermissionCache($item->user ? [$item->user] : null);
                 }
                 $item = $this->repo('PermissionCachePending')->find($item->id);
                 $this->em->remove($item);

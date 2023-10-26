@@ -45,35 +45,9 @@ trait EntityPermissionCache {
         return $class_name;
     }
 
-    public function getPermissionCachePrefix() {
-        $app = App::i();
-        $prefix = $app->mscache->fetch("$this::permission-cache-prefix");
-
-        if(!$prefix) {
-            $prefix = $this->renewPermissionCachePrefix();
-        }
-
-        return $prefix;
-    }
-
-    public function renewPermissionCachePrefix() {
-        $app = App::i();
-        $prefix = uniqid();
-        $app->mscache->delete("$this::permission-cache-prefix");
-        $app->mscache->save("$this::permission-cache-prefix", $prefix);
-        return $prefix;
-    }
-
-    public function getPermissionCacheKey($user, $action) {
-        $prefix = $this->getPermissionCachePrefix();
-        return "$prefix::{$this->getHookClassPath()}:{$this->id}::User:{$user->id}::$action";
-    }
-    
     static protected array $createdPermissionCache = [];
 
     function createPermissionsCacheForUsers(array $users = null, $flush = false, $delete_old = true) {
-        $this->renewPermissionCachePrefix();
-
         if(self::$createdPermissionCache["$this"] ?? false) {
             return;
         } else {
@@ -115,10 +89,11 @@ trait EntityPermissionCache {
             
             $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
 
-            if($delete_old && $users){
-                $this->deletePermissionsCache();
-            }
         }
+        if($delete_old && $users){
+            $this->deletePermissionsCache($users);
+        }
+
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
         $permissions = $this->getPermissionsList();
@@ -184,23 +159,36 @@ trait EntityPermissionCache {
         $this->__enabled = true;
     }
     
-    function deletePermissionsCache(){
+    function deletePermissionsCache($users){
         $app = App::i();
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
         if(!$this->id){
             return;
         }
-        $conn->executeQuery("DELETE FROM pcache WHERE object_type = '{$class_name}' AND object_id = {$this->id}");
+        
+        $users_ids = implode(',', array_map(function($user) { return $user->id; }, $users));
+
+        $conn->executeQuery("DELETE FROM pcache WHERE object_type = '{$class_name}' AND object_id = {$this->id} AND user_id IN ({$users_ids})");
     }
        
-    function enqueueToPCacheRecreation($skip_extra = false){
+    function enqueueToPCacheRecreation(array $users = []){
         $app = App::i();
-        if($app->isEntityEnqueuedToPCacheRecreation($this) || $this->__skipQueuingPCacheRecreation){
-            return false;
+        if($users) {
+            foreach($users as $user) {
+                if($app->isEntityEnqueuedToPCacheRecreation($this, $user) || $this->__skipQueuingPCacheRecreation){
+                    return false;
+                }
+                
+                $app->enqueueEntityToPCacheRecreation($this, $user);
+            }
+        } else {
+            if($app->isEntityEnqueuedToPCacheRecreation($this) || $this->__skipQueuingPCacheRecreation){
+                return false;
+            }
+            
+            $app->enqueueEntityToPCacheRecreation($this);
         }
-        
-        $app->enqueueEntityToPCacheRecreation($this);
 
         return true;
     }

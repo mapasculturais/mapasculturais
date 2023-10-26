@@ -4,6 +4,8 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+
 ### Unreleased
 ### Melhorias
 - Adiciona status na edição das entidades
@@ -11,6 +13,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona o status 'carregando' enquanto é gerada a impressão da ficha de inscrição
 - Atualiza componente avatar e de titulo 
 - Exibe informação sobre o tamanho máximo do arquivo para upload
+- Impede que o número de processos de geração de cache e de jobs ultrapasse o número de processadores disponíveis
+- Refatoração na criação dos pcache, processando somente para os usuários envolvidos
+- Melhoria de performance na distribuição de inscrições entre os avaliadores
 
 ### Correções
 - Corrige funcionamento do módulo de recursos
@@ -25,6 +30,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige nome do botão de enviar o arquivo entity-file
 - Remoção do botão do zammad na impressão do formulário de inscrição
 - Corrige responsividade do componente entity-actions
+- Corrige a distribuição de inscrições entre os avaliadores
+- Corrige a configuração manual dos avaliadores de uma inscrição pelos checkboxes na ficha de inscrição
 
 ### [6.0.19] - 2023-09-14
 - Atualiza componente de  mc-title para utilizar tags html nos titulos e ajustar conforme o tamanho
@@ -106,6 +113,24 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Cria mc-update para atualizar dados legados para a nova estrutura de condicionalidade de campos
 - Corrige importação de formularios para interpretar a nova estrutura de condicionalidade de campos
 
+## [5.8.3] - 2023-10-18
+### Correções
+- Corrige a configuração manual dos avaliadores de uma inscrição pelos checkboxes na ficha de inscrição
+
+## [5.8.1] - 2023-10-18
+### Correções
+- Corrige a distribuição de inscrições entre os avaliadores
+
+## [5.8.0] - 2023-10-17
+### Melhorias
+- Impede que o número de processos de geração de cache e de jobs ultrapasse o número de processadores disponíveis
+- Refatoração na criação dos pcache, processando somente para os usuários envolvidos
+- Melhoria de performance na distribuição de inscrições entre os avaliadores
+
+## [5.7.6] - 2023-09-12
+### Melhorias
+-  Permite que a busca de agentes no gerenciador de usuários faça busca pelo nomeCompleto, nomeSocial, CPF e agentes ainda em rascunho
+
 ## [5.7.5] - 2023-08-28
 ### Correções
 - Cria mc-update para atualizar dados legados para a nova estrutura de condicionalidade de campos
@@ -116,11 +141,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Atualização das bibliotecas PHP para as últimas versões compatíveis com o PHP 7.2
 
 ## [5.7.4] - 2023-08-24
-## Melhorias
+### Melhorias
 - atualização das bibliotecas PHP para as últimas versões compatíveis com o PHP 7.2
 
 ## [5.7.3] - 2023-08-23
-## Correções
+### Correções
 - Corrige a altura dos gráficos de linha do módulo de relatorios das oportunidades
 
 ## [6.0.7] - 2023-08-18
@@ -189,10 +214,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [5.7.1] - 2023-07-21
 ### Correções
+<<<<<<< HEAD
 - Ajusta CSS do sidebar direito para evitar que o header sobrescreva os conteúdos dos editbox
 
 ## [5.7.1] - 2023-07-21
 ### Correções
+=======
+>>>>>>> v5.8.3
 - Ajusta CSS do sidebar direito para evitar que o header sobrescreva os conteúdos dos editbox
 
 ## [5.7.0] - 2023-07-13
