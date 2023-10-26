@@ -35,7 +35,7 @@ $this->import('
         <ul class="evaluation-list">
             <li v-for="evaluation in evaluations" :class="[{'evaluation-list__card--modify': entity.id == evaluation.registrationid}, 'evaluation-list__card']">
                 <div class="evaluation-list__content">
-                    <a :href="evaluation.url">
+                    <a :href="evaluation.url" class="link">
                         <div class="card-header">
                             <mc-icon name='agent-1'></mc-icon>
                             <label class="card-header__name">{{evaluation.agentname}}</label>
@@ -61,6 +61,8 @@ $this->import('
                                 <h5 class="bold" v-if="evaluation.resultString">{{evaluation.resultString}}</h5>
                                 <h5 class="bold" v-if="!evaluation.resultString"> <?= i::__('Pendente') ?></h5>
                             </span>
+                            <mc-link route="registration/evaluation/" :params="[evaluation.registrationid]"  class="button button--primary-outline"><?= i::__('Acessar') ?></mc-link>
+
                         </div>
                     </a>
                 </div>

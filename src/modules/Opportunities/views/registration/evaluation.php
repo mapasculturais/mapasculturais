@@ -52,11 +52,9 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
     <div class="registration__content">
         <div class="grid-12 registration__grid">
             <aside class="col-3">
-                <div>
-                    <opportunity-evaluations-list text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
-                        <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
-                    </opportunity-evaluations-list>
-                </div>
+                <opportunity-evaluations-list text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
+                    <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
+                </opportunity-evaluations-list>
             </aside>
 
             <main class="col-6 grid-12">
@@ -78,20 +76,22 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
             </main>
 
             <aside class="col-3">
-                <div class="registration__actions">
-                    <?php if($entity->opportunity->evaluationMethodConfiguration && $entity->opportunity->evaluationMethodConfiguration->type):?>
-                        <h3 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></h3>
-                    <?php endif;?>
-                    <registration-evaluation-info :entity="entity"></registration-evaluation-info>
+                <div class="registration__right-sidebar">
+                    <div class="registration__actions">
+                        <?php if($entity->opportunity->evaluationMethodConfiguration && $entity->opportunity->evaluationMethodConfiguration->type):?>
+                            <h3 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></h3>
+                        <?php endif;?>
+                        <registration-evaluation-info :entity="entity"></registration-evaluation-info>
 
-                    <?php if ($valuer_user) : ?>
-                        <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                    <?php else : ?>
-                        <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                    <?php endif ?>
+                        <?php if ($valuer_user) : ?>
+                            <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                        <?php else : ?>
+                            <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                        <?php endif ?>
+                    </div>
+                    <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
                 </div>
 
-                <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
             </aside>
         </div>
     </div>
