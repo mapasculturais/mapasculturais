@@ -54,8 +54,12 @@ $this->breadcrumb = [
   <mc-breadcrumb></mc-breadcrumb>
   <entity-header :entity="entity">
     <template #metadata>
-        <dl v-if="entity.parent">
-            <dt><?= i::__('Tipo') ?></dt>
+        <dl class="metadata__id" v-if="entity.id">
+            <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
+            <dd><strong>{{entity.id}}</strong></dd>
+        </dl> 
+        <dl v-if="entity.type">
+            <dt><?= i::__('Tipo')?></dt>
             <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
         </dl>
         <dl v-if="entity.ownerEntity" class="single-opportunity__owner">

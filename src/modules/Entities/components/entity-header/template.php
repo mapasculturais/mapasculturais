@@ -59,7 +59,7 @@ $this->import('
                 <mc-title tag="h1" size="big" class="entity-header__title"> {{entity.name}} </mc-title>
                 <div class="metadata">
                     <slot name="metadata">
-                        <dl class="metadata__id" v-if="entity.__objectType == 'agent' && entity.id">
+                        <dl class="metadata__id" v-if="entity.id">
                             <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
                             <dd>aa<strong>{{entity.id}}</strong></dd>
                         </dl> 
@@ -90,9 +90,9 @@ $this->import('
                     <mc-icon name="whatsapp"></mc-icon>
                 </a>
             </nav>
-            <div class="description">
+            <div :class="['description', {'description--event':entity.__objectType=='event'}]">
                 <slot name="description">
-                    <p v-html="entity.shortDescription"></p>
+                    <p v-html="entity.shortDescription" ></p>
                 </slot>
             </div>
             <div v-if="entity.site" class="site">
