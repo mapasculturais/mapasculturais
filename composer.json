@@ -1,0 +1,35 @@
+{
+    "require": {
+        "acelaya/doctrine-enum-type": "^2.3",
+        "akrabat/ip-address-middleware": "^2.1",
+        "doctrine/annotations": "^2.0",
+        "doctrine/dbal": "^3.6",
+        "doctrine/orm": "^2.15",
+        "firebase/php-jwt": "^6.4",
+        "michelf/php-markdown": "1.*",
+        "monolog/monolog": "^3.4",
+        "mustache/mustache": "^2.11",
+        "opauth/openid": "*",
+        "pomo/pomo": "^1.5",
+        "psy/psysh": "^0.11.12",
+        "respect/validation": "^2.2",
+        "sinergi/browser-detector": "^6.1",
+        "slim/psr7": "^1.6",
+        "slim/slim": "4.*",
+        "smottt/wideimage": "*",
+        "symfony/amazon-mailer": "^6.3",
+        "symfony/cache": "^6.2",
+        "symfony/mailchimp-mailer": "^6.3",
+        "symfony/mailer": "^6.3",
+        "symfony/mailgun-mailer": "^6.3",
+        "symfony/mime": "^6.3",
+        "symfony/sendgrid-mailer": "^6.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "MapasCulturais\\": "src/core",
+            "MapasCulturais\\Modules\\": "src/modules",
+            "MapasCulturais\\Themes\\": "src/themes"
+        }
+    }
+}

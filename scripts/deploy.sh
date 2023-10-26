@@ -33,7 +33,7 @@ cd $DIR/..
 
 #git pull --all
 
-cd $DIR/../src/protected/
+cd $DIR/..
 
 if hash composer.phar 2>/dev/null; then
 	composer="composer.phar"
@@ -50,14 +50,14 @@ fi;
 
 $composer dump-autoload --optimize
 
-cd tools
+cd src/tools
 
 HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" ./doctrine orm:generate-proxies
 
 
 cd $DIR
+./compile-sass.sh
 ./db-update.sh $DOMAIN
 ./mc-db-updates.sh
-./compile-sass.sh $DOMAIN
 
 cd $CDIR

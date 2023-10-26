@@ -1,0 +1,112 @@
+@use '../0.settings/mixins' as *;
+
+.leaflet-container {
+    a {
+        color: inherit;
+
+        &.leaflet-popup-close-button {
+            width: size(30);
+            height: size(30);
+            font-size: size(30);
+            padding: size(16) size(16) 0 0;
+            color: var(--mc-low-500);
+            font-weight: 400;
+
+        }
+    }
+   .leaflet-popup-content-wrapper{
+        border-radius: size(8);
+   }
+}
+
+.leaflet-popup {
+    margin-bottom: size(75);
+
+    &-tip-container {
+        display: none;
+    }
+
+    &-content-wrapper {
+        border-radius: unset;
+        box-shadow: unset;
+    }
+
+    .mc-map-card {
+
+        max-width: size(359);
+        width: 100%;
+        background: var(--mc-white);
+        border-radius: var(--mc-border-radius-xs);
+
+        &__header {
+            
+            display: grid;
+            grid-template-columns:1fr;
+            align-items: center;
+            gap: size(12);
+            justify-items: start;
+
+            &--image {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                width: size(48);
+                height: size(48);
+                border-radius: var(--mc-border-radius-pill);
+                background: var(--mc-gray-300);
+               
+                img {
+                    width: 100%;
+                }
+            }
+
+            &--title {
+                font-weight: 700;
+                font-size: size(18);
+                line-height: size(25);
+                word-break: break-word;
+            }
+        }
+
+        &__content {
+
+            &--info {
+                font-family: "Open Sans";
+
+                .info {
+                    margin: size(8) 0;
+                    font-size: size(12);
+                    font-weight: 400;
+                    line-height: size(16);
+                    text-transform: uppercase;
+                    strong {
+                        text-transform: none;
+                    }
+                }
+            }
+        }
+
+        &__footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+
+            &--link {
+                font-weight: 700;
+                font-size: size(16);
+                line-height: size(22);
+                text-decoration: none;
+                outline: none;
+                display: flex;
+                flex-direction: row-reverse;
+                align-items: center;
+                gap: size(15);
+
+            }
+
+        }
+
+    }
+
+}

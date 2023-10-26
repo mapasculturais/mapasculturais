@@ -1,0 +1,1644 @@
+body {
+    background-color: transparent;
+}
+
+#main-footer {
+    display: none;
+}
+
+#main-section {
+    background-color: transparent;
+    margin: 0;
+}
+
+#main-section .main-content {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.edit-box {
+    top: 0 !important;
+    left: 0 !important;
+    position: relative !important;
+    margin: 15px auto !important;
+    width: calc(95% - 21px) !important;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+.edit-box .mc-arrow {
+    display: none;
+}
+
+.edit-box footer {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+.edit-box .mc-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.edit-box label.checkbox-label {
+    display: inline-flex;
+    margin-right: 15px;
+    align-items: center;
+}
+
+.screen-reader-text {
+    display: none;
+}
+
+.print-only {
+    display: none;
+}
+
+@media print {
+    .print-only {
+        display: block;
+    }
+
+    .print-header {
+        margin: 0 0 15px;
+    }
+
+    .print-header__title {
+        margin: 0;
+        padding: 0;
+    }
+
+    .chart-scroll {
+        overflow: hidden !important;
+    }
+
+    .action-reportmanager a, 
+    button, .btn, input, select, textarea, .charts-dynamic {
+        display: none !important;
+    }
+}
+
+
+/* Tables */
+.registrations-table {
+    margin-bottom: 0;
+}
+
+.registrations-table tr {
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 0.063rem solid #BBBBBB !important;
+    background-color: #FFFFFF !important;
+}
+
+.registrations-table thead tr th {
+    background-color: #FFFFFF;
+    border: none;
+    text-align: center !important;
+    vertical-align: middle;
+    color: #000000;
+}
+
+.registrations-table thead tr,
+.registrations-table tbody tr {
+    border: none;
+    border-bottom: 1px solid #BBBBBB;
+}
+
+.registrations-table thead th.registration-status-col .dropdown,
+.registrations-table tbody tr td.registration-status-col .dropdown {
+    padding: 0;
+    background-color: transparent;
+}
+
+.registrations-table thead th.registration-status-col .dropdown .placeholder,
+.registrations-table tbody tr td.registration-status-col .dropdown .placeholder {
+    color: #000000;
+}
+
+
+.registrations-table thead th.registration-status-col .dropdown .submenu-dropdown,
+.registrations-table tbody tr td.registration-status-col .dropdown .submenu-dropdown {
+    background-color: #FFFFFF;
+}
+.registrations-table tbody tr td.registration-agents-col p {
+    margin: 0;
+}
+
+.registrations-table tbody tr td.registration-agents-col p .label,
+.registrations-table tbody tr td.registration-agents-col p br {
+    display: none;
+}
+
+.registrations-table tbody tr {
+    background-color: #FFFFFF;
+}
+
+.registrations-table tbody tr td {
+    border: none !important;
+    vertical-align: middle;
+    padding: 16px 10px;
+}
+
+.registrations-table tbody tr td a {
+    color: #000000;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.registrations-table tbody tr.draft {
+    background-color: #FFFFFF !important;
+}
+
+.registrations-table tbody tr.notapproved {
+    background-color: #FFE1E1 !important;
+}
+
+.registrations-table tbody tr.approved {
+    background-color: #BFE88B !important;
+}
+
+.registrations-table tbody tr.invalid {
+    background-color: #BBBBBB !important;
+}
+
+.registrations-table tbody tr.waitlist {
+    background-color: #FFCF8F !important;
+}
+
+.registrations-table tfoot tr td {
+    border: none;
+}
+
+
+/* buttons */
+.btn,
+button {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    gap: 8px;
+    align-items: center;
+    background-color: #0074C1;
+    border-radius: 8px;
+    border: none;
+    color: #FFFFFF;
+    display: flex;
+    height: unset;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 9px 19px;
+}
+
+button {
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    margin: 0 !important;
+    padding: 9px 19px !important;
+}
+
+.btn::before {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 0 !important;
+}
+
+.btn:hover {
+    box-shadow: unset;
+    border: none;
+    background-color: #0074C1;
+    filter: contrast(90%);
+}
+
+.btn.btn-danger {
+    background-color: #cc3333;
+}
+
+.btn.btn-warning {
+    background-color: #cc9933;
+}
+
+/* fields */
+input,
+textarea,
+select {
+    border-radius: 0.25rem;
+    border: 0.063rem solid #898989 !important;
+    font-size: 16px;
+    height: unset;
+    margin: 0;
+    padding: 0.75rem 0.875rem;
+    width: 100% !important;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    float: left;
+    height: 1.125rem;
+    margin-right: 0.5rem;
+    width: 1.125rem  !important;
+}
+
+select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #FFFFFF;
+    background-size: 1.25rem;
+    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat calc(100% - 0.875rem) center/1.25rem;
+}
+
+textarea {
+    min-height: 5.688rem;
+}
+
+
+/* dropdown */
+.dropdown {
+    margin: 0 !important;
+}
+
+.dropdown .placeholder {
+    text-align: center;
+}
+
+.dropdown .placeholder::after {
+    content: '';
+    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat center center/contain;
+    width: 21px;
+    height: 30px;
+    /* background-color: red; */
+    position: absolute;
+}
+
+
+
+/* Registration Form */
+.action-registrationform .attachment-list .attachment-list-item {
+    padding: 0;
+    font-size: unset;
+}
+
+.action-registrationform .attachment-list .attachment-list-item.attachment-list-item-type-section {
+    margin: unset;
+    padding: unset;
+    border: unset;
+}
+
+.action-registrationform .registration-fieldset {
+    border: none;
+    padding: 0;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item {
+    padding: 0;
+    border: none;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item span label {
+    padding: 0;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field],
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] {
+    background-color: #FFFFFF;
+    overflow: auto;
+    padding: 16px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section {
+    background-color: #F5F5F5 !important;
+    padding: 40px 0 24px!important;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item:first-child .title_section {
+    padding: 0 0 24px!important;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section br {
+    display: none;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .label {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 44px;
+    margin: 0;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section .attachment-description {
+    margin: 0;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .label {
+    display: flex;
+    font-size: 0.875rem;
+    font-weight: 600;
+    gap: 0.313rem;
+    line-height: 1.188rem;
+    margin-bottom: 0.5rem;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .attachment-description {
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 16px;
+    color: #141414;
+    margin-bottom: 0.5rem;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .attachment-description {
+    margin-bottom: 2rem;
+
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn,
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .submit-attach-opportunity {  
+    background-color: #FFFFFF;
+    border: 0.125rem solid #0074C1 !important;
+    color: #0074C1 !important;
+    display: inline-flex;
+    position: relative;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .edit-box form .alert {
+    display: none !important;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn::before {
+    font-size: 16px;
+    margin: 0;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .alert {
+    margin: 0.313rem 0 0;
+}
+
+
+
+/* Form Builder */
+.action-formbuilder .project-edit-mode {
+    border: none;
+    padding: 0;
+}
+
+.action-formbuilder .project-edit-mode:hover {
+    background-color: transparent !important;
+}
+
+.action-formbuilder .project-edit-mode--header h4 {
+    color: #000000;
+    font-family: 'Open Sans';
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.75rem;
+    margin: 0;
+}
+
+.action-formbuilder .project-edit-mode--header .registration-help {
+    margin-bottom: 16px;
+}
+
+.action-formbuilder .project-edit-mode .projectName {
+    display: none;
+}
+
+.action-formbuilder .project-edit-mode .buttons {
+    background: #FFFFFF;
+    border-radius: 0.25rem;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: flex-end;
+    padding: 0.938rem 2rem;
+}
+
+.action-formbuilder .project-edit-mode .buttons .btn {
+    background-color: #FFA4A3;
+    border-radius: 0.5rem;
+    border: none;
+    color: #1E1E1E;
+    font-size: 0.875rem;
+    font-weight: 600;
+    height: unset;
+    line-height: 1.188rem;
+    padding: 0.625rem 16px;
+}
+
+.action-formbuilder .project-edit-mode .buttons .btn:hover {
+    background-color: #800100;
+    color: #FFFFFF;
+}
+
+.action-formbuilder .project-edit-mode .buttons .btn::before {
+    content: unset;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list {
+    background-color: #FFFFFF;
+    border-radius: 0.25rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item {
+    background-color: #FFFFFF;
+    border-bottom: 0.063rem solid #BBBBBB;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item>div:first-child {
+    background-color: #FFFFFF;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item:first-child,
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item:first-child>div {
+    border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item:last-child {
+    margin-bottom: 0.438rem;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    height: 100%;
+    right: 12px;
+    top: 0;
+    max-height: 6.938rem;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group .btn::before {
+    font-size: 1.25rem;
+    height: 100%;
+    height: unset;
+    margin-right: 0 !important;
+    width: unset;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group .btn {
+    background-color: transparent;
+    border: none;
+    color: #000000;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group .btn:hover {
+    box-shadow: unset;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group .btn.delete {
+    color: #ED0000;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item {
+    background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 2.25rem center / 1.875rem;
+    padding: 11px 220px 11px 85px;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item .label {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.563rem;
+    margin: 0;
+    word-break: break-word;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item {
+    display: grid;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item .type {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 16px;
+    margin-bottom: 16px;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item .description {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .section .item {
+    padding: 1.5rem 1.75rem 1.5rem 5.313rem;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .section .item .type {
+    display: none;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .section .item .field-id {
+    display: none;
+}
+
+.action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .section .item .label {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.75rem;
+    margin: 0;
+    word-break: break-word;
+}
+
+@media (max-width: 768px) {
+    .action-formbuilder .project-edit-mode .attachment-list .attachment-list-item {
+        padding: 10px 82px 10px 10px;
+    }
+
+    .action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .btn-group {
+        flex-direction: column;
+        gap: 0.125rem;
+        height: 100%;
+        justify-content: center;
+        top: 10px;
+    }
+
+    .action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .item {
+        background: url(https://api.iconify.design/material-symbols/drag-indicator.svg) no-repeat 16px center / 1.875rem;
+        padding: 0.688rem 1.75rem 0.688rem 4.063rem;
+    }
+
+    .action-formbuilder .project-edit-mode .attachment-list .attachment-list-item .section .item {
+        padding: 1.5rem 1.75rem 1.5rem 4.063rem;
+    }
+}
+
+
+/* Evaluation Maneger */
+.action-evaluationmanager #evaluations-config .registration-fieldset {
+    border: none;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee {
+    background-color: #FFFFFF;
+    border: 1px solid #666666;
+    border-radius: 4px;
+    padding: 0;
+    margin: 16px 0;
+}
+
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--info {
+    padding: 16px 24px;
+    border-bottom: 1px solid #BBBBBB;
+}
+
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--info .committee--header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--info .committee--header .committee--avatar {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    float: unset;
+    margin: 0;
+}
+
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--info .committee--header .committee--content {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--info .btn{
+    margin-left: 8px !important;
+}
+
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--fetch {
+    padding: 18px 24px 29px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--fetch br {
+    display: none;
+}
+
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--fetch label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.action-evaluationmanager #evaluations-config .registration-fieldset .committee .committee--fetch .inputs {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 8px;
+}
+
+.action-evaluationmanager #evaluations-config .registration-fieldset  .directive-find-entity {
+    width: 100%;
+}
+
+.action-evaluationmanager #evaluations-config .affirmativePolices {
+    margin-top: 40px;
+}
+
+.action-evaluationmanager #evaluations-config .technical-evaluation-configuration--feasibility {
+    margin-top: 40px;
+}
+
+.action-evaluationmanager #evaluations-config .technical-evaluation-configuration--feasibility .options {
+    display: flex;
+    gap: 30px;
+}
+
+.action-evaluationmanager #evaluations-config .technical-evaluation-configuration--feasibility .options label {
+    display: flex;
+    gap: 8px;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.action-evaluationmanager #evaluations-config .technical-evaluation-configuration--criteria {
+    margin-top: 40px;
+}
+
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration {
+    margin-top: 40px;
+}
+
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration p {
+    margin-bottom: 1rem;
+}
+
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration header {
+    align-items: center;
+    display: flex;
+    gap: 25px;
+    justify-content: space-between;
+}
+
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration header input {
+    background: #FFFFFF;
+    border-radius: 0.25rem;
+    border: 0.063rem solid #BBBBBB !important;
+    height: unset;
+    margin: 0;
+    padding: 0.531rem 1rem;
+}
+
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration table {
+    margin-top: 1rem;
+}
+
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration table tr th:first-child {
+    width: 60%;
+}
+
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration table tr td .criteria-name input {
+    background: #FFFFFF;
+    border-radius: 0.25rem;
+    border: 0.063rem solid #BBBBBB !important;
+    height: unset;
+    margin: 0;
+    padding: 0.76rem 1rem;
+    text-align: left;
+    width: 100%;
+}
+
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration table tr td .criteria-options {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.action-evaluationmanager #evaluations-config .qualification-evaluation-configuration table tr td .criteria-options .edit-box {   
+    left: 50% !important;
+    position: absolute !important;
+    transform: translateX(-50%);
+}
+
+
+
+/* Registration View */
+.action-registrationview .registration .registration-fieldset {
+    padding: 0;
+}
+.action-registrationview .registration .registration-fieldset ul.attachment-list li {
+    background-color: #FFFFFF;
+    padding: 0 27px 16px;
+    border: none;
+}
+
+.action-registrationview .registration .registration-fieldset ul.attachment-list li.section-title {
+    margin-top: 24px;
+}
+
+.action-registrationview .registration .registration-fieldset ul.attachment-list li.section-title:first-child {
+    margin-top: 0;
+}
+
+.action-registrationview .registration .registration-fieldset ul.attachment-list li.section-title > div {
+    background-color: #FFFFFF;
+    padding: 0;
+}
+
+.action-registrationview .registration .registration-fieldset ul.attachment-list li h4{
+    margin: 0;
+    padding: 16px 0 5px;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+.action-registrationview .registration .registration-fieldset ul.attachment-list li > div {
+    background-color: #E8E8E8;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 24px;
+    border-radius: 4px;
+}
+
+.action-registrationview .registration .registration-fieldset ul.attachment-list li > div label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.action-registrationview .registration .registration-fieldset ul.attachment-list li > div em {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+}
+
+
+
+/* Suport Builder */
+.action-supportbuilder #support-settings header {
+    position: relative;
+    height: 9.688rem;
+    margin-bottom: 1.5rem;
+}
+
+.action-supportbuilder #support-settings header h4 {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 2.76rem;
+    margin-bottom: 1rem !important;
+}
+
+.action-supportbuilder #support-settings header p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.375rem;
+    color: #3E3E3E;
+    margin-bottom: 2.125rem !important;
+}
+
+.action-supportbuilder #support-settings .support-content {
+    padding: 0 !important;
+    border: unset !important;
+}
+
+.action-supportbuilder #support-settings .support-content .committee {
+    padding: 2.188rem 1.5rem;
+    background-color: #FFFFFF;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid #BBBBBB;
+}
+
+.action-supportbuilder #support-settings .support-content .committee .committee--info {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+
+@media (max-width: 800px) {
+    .action-supportbuilder #support-settings .support-content .committee .committee--info {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 20px;
+    }
+}
+
+.action-supportbuilder #support-settings .support-content .committee .committee--info .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.action-supportbuilder #support-settings .support-content .committee .committee--info .user-info--img {
+    width: 2.5rem;
+    height: 2.5rem;
+    overflow: hidden;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-supportbuilder #support-settings .support-content .committee .committee--info .committee--name {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.125rem;
+    line-height: 1.563rem;
+    padding: 0;
+}
+
+.action-supportbuilder #support-settings .support-content .committee .committee--info .buttons {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 1.688rem;
+    align-items: center;
+}
+
+.action-supportbuilder #support-settings  .edit-box {
+    position: absolute !important;
+    right: 0px !important;
+}
+
+.action-supportbuilder #support-settings .support-content-modal {
+    max-width: calc(100% - 50px) !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    border-radius: 0 !important;
+}
+
+.action-supportbuilder #support-settings .support-content-modal header {
+    height: unset;
+    margin: unset;
+}
+
+.action-supportbuilder #support-settings .support-content-modal header .support-modal-title{
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.125rem;
+    line-height: 1.563rem;
+    margin: 0 0 0.375rem;
+    padding: 0;
+    border: none;
+}
+
+.action-supportbuilder #support-settings .support-content-modal header .x {
+    padding: 0;
+    top: 0;
+}
+
+.action-supportbuilder #support-settings .support-content-modal header .multiple-fields {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3rem;
+    margin-bottom: 1rem;
+}
+
+.action-supportbuilder #support-settings .support-content-modal header hr {
+    margin: 0;
+}
+
+
+.action-supportbuilder #support-settings .support-content-modal .modal-body ul {
+    margin: 0 !important;
+}
+
+.action-supportbuilder #support-settings .support-content-modal .modal-body ul li {
+    border-bottom: 0.063rem solid #BBBBBB;
+    padding: 1.5rem 0.625rem !important;
+    margin: 0 !important;
+}
+
+
+
+/* Affirmative policies manager */
+.technical-evaluation-configuration {
+    margin: 0;
+    padding: 0 1rem;
+}
+
+.technical-evaluation-configuration br,
+.technical-evaluation-configuration hr {
+    display: none;
+}
+
+.technical-evaluation-configuration h4 {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.125rem;
+    line-height: 1.563rem;
+    color: #1E1E1E;
+    margin-bottom: 0.5rem;
+}
+
+.technical-evaluation-configuration p {
+    color: #1E1E1E;
+    font-family: 'Open Sans';
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.375rem;
+    margin-bottom: 1.5rem;
+}
+
+.technical-evaluation-configuration header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+
+.technical-evaluation-configuration .policy-roof p {
+    color: #1E1E1E;
+    font-family: 'Open Sans';
+    font-size: 0.875rem !important;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.188rem;
+    margin-bottom: 0.625rem !important;
+}
+
+.technical-evaluation-configuration table tr {
+    border-bottom: 0.063rem solid #BBBBBB;
+}
+
+.technical-evaluation-configuration table tr th,
+.technical-evaluation-configuration table tr td {
+    border: none;
+}
+
+.technical-evaluation-configuration table tr:first-child {
+    color: #1E1E1E;
+    font-family: 'Open Sans';
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.188rem;
+}
+
+.technical-evaluation-configuration table tr:first-child th:last-child {
+    display: flex;
+    justify-content: center;
+}
+
+.technical-evaluation-configuration table tr td:last-child {
+    display: flex;
+    justify-content: center;
+}
+
+.technical-evaluation-configuration table tr td input[type=checkbox] {
+    border-radius: 0.125rem;
+    border: 0.125rem solid #111111;
+    height: 1rem;
+    margin: 0 !important;
+    width: 1rem;
+}
+
+.technical-evaluation-configuration table tr td.policy-value .check {
+    gap: 1rem;
+}
+
+.technical-evaluation-configuration table tr td.policy-value .check span label {
+    align-items: center;
+    display: flex;
+    font-size: 0.875rem;
+    font-weight: 400;
+    gap: 0.5rem;
+    line-height: 1.188rem;
+}
+
+
+
+/* Registration Manager */
+.action-registrationmanager #filtro-inscritos {
+    background: white;
+    border-radius: 4px 4px 0 0;
+    border: none;
+    margin: 0;
+    padding: 24px;
+}
+
+.action-registrationmanager #selected-filters {
+    display: block;
+    margin: 0;
+    padding: 8px 24px 24px;
+    background-color: #FFFFFF;
+    border-radius: 0 0 4px 4px;
+    width: unset !important;
+    margin: 0 0 8px !important;
+}
+
+.action-registrationmanager #selected-filters span {
+    height: unset;
+    display: flex;
+    gap: 16px;
+}
+
+.action-registrationmanager #selected-filters .tag-selected {
+    margin: 0;
+    padding: 8px 14px;
+    border-radius: 64px;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    background-color: #D50200;
+    color: #FFFFFF;
+    text-transform: capitalize;
+}
+
+
+
+/* Visible fields to raters */
+.fields-visible h4 {
+    display: none;
+}
+
+.fields-visible .search label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+}
+
+.fields-visible .search label small {
+    font-size: smaller;
+    font-weight: 400;
+}
+
+.fields-visible .search label input.evaluation-fields-filter {
+    margin-bottom: 34px;
+}
+
+.fields-visible .search .select-all label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.fields-visible .search .select-all label br {
+    display: none;
+}
+
+.fields-visible .search hr {
+    display: none;
+}
+
+.fields-visible .evaluationFields span {
+    margin: 0;
+    padding: 9px 20px;
+    background: #E8E8E8;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.fields-visible .evaluationFields span label {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+
+/* Evaluation List */
+.action-evaluationlist #header-inscritos {
+    display: none;
+}
+
+
+
+/* sidebarleftevaluations */
+.action-sidebarleftevaluations .sidebar-left {
+    padding: 0;
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container {
+    position: relative;
+    margin: unset;
+    width: unset;
+    display: block;
+
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container h4{
+    display: none;
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container .registration-list-filter {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 1rem 1.813rem;
+    gap: 1.063rem;
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container .registration-list-filter input[type="text"]{
+    margin: 0;
+    padding: 0.75rem 1.875rem 0.75rem 1.25rem;
+    border-radius: 4rem;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.188rem;
+    height: unset;
+    width: 100% !important;
+    background: url('https://api.iconify.design/ant-design/search-outlined.svg') no-repeat calc(100% - 11px) center  / 16px;
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container .registration-list-filter .checkbox{
+    font-size: 0.95rem;
+    line-height: 1.375rem !important;
+    display: flex;
+    gap: 0.688rem;
+    align-items: center;
+    font-family: "Open Sans";
+    font-style: normal;
+
+}
+.action-sidebarleftevaluations .sidebar-left #registrations-list-container .registration-list-filter .checkbox input[type="checkbox"]{
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.log-execution-time {
+    display: none;
+}
+
+
+/* Support Edit View */
+.action-supporteditview .registration-header,
+.action-supporteditview .registration-number {
+    display: none;
+}
+
+.action-supporteditview #registration-attachments {
+    border: none;
+    padding: 0;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .section {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 44px;
+    margin: 32px 0 27px;
+}
+.action-supporteditview #registration-attachments .attachment-list .section br {
+    display: none;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item {
+    background-color: #FFFFFF;
+    border: none;
+    padding: 13px 13px 19px 13px;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item .btn.send,
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item .btn.edit {
+    background-color: #FFFFFF;
+    color: #0074C1;
+    border: 2px solid #0074C1;
+    padding: 12px 19px;
+    width: 155px;
+    text-decoration: none;
+}
+
+.action-supporteditview #registration-attachments .attachment-list .attachment-list-item .label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.attachment-description {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+
+/* Registration Evaluation Form View */
+.action-registrationevaluationtionformview #registration-attachments {
+    padding: 0;
+    border: none;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .section-title h4 {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    margin: 40px 0 21px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .section-title:first-child h4 {
+    margin-top: 0;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item {
+    background: #E8E8E8;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    padding: 8px 16px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item.field-shadow {
+    box-shadow: unset;
+    border: 1px solid #000;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div span,
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div a,
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div p {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    word-break: break-word;
+}
+
+.action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div a{
+    display: flex;
+    gap: 5px;
+    text-decoration: none;
+}
+
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  tbody tr {
+    border-spacing: 0 10px; /* Adicione a quantidade de espaçamento desejada aqui */
+  }
+
+  tbody tr:first-child {
+    border-top: none;
+  }
+
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+
+
+/* Evaluation Form */
+.action-evaluationforms hr {
+    display: none;
+}
+
+/* Technical evaluation */
+.action-evaluationforms .technical-evaluation-form {
+    padding: 0 14px;
+}
+
+.action-evaluationforms .technical-evaluation-form table {
+    border-collapse: separate;
+    border-spacing: 0 16px;
+    border: 0;
+    margin: unset;
+    border-bottom: 1px solid #BBBBBB;
+    padding: 0;
+}
+
+
+.action-evaluationforms .technical-evaluation-form table tr th,
+.action-evaluationforms .technical-evaluation-form table tr td {
+    border: none;
+}
+
+.action-evaluationforms .technical-evaluation-form table tr.title th {
+    background-color: #FFFFFF;
+    font-family: 'Open Sans';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 25px;
+    padding: 0;
+}
+
+.action-evaluationforms .technical-evaluation-form table tr.criteria td {
+    background-color: #F5F5F5;
+    vertical-align: middle;
+}
+.action-evaluationforms .technical-evaluation-form table tr.criteria td input[type=number]{
+    padding: 5.5px 10px;
+    width: 70px !important;
+}
+.action-evaluationforms .technical-evaluation-form table tr.criteria td:first-child {
+    border-radius: 4px 0 0 4px;
+    padding: 7px 0 7px 15px;
+}
+.action-evaluationforms .technical-evaluation-form table tr.criteria td:last-child {
+    border-radius: 0 4px 4px 0;
+    padding: 7px 15px 7px 0;
+}
+
+.action-evaluationforms .technical-evaluation-form table tr.subtotal {
+    background-color: #FFFFFF;
+    font-family: 'Open Sans';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 25px;
+}
+.action-evaluationforms .technical-evaluation-form table tr.subtotal td {
+    padding: 0 8px;
+}
+
+.action-evaluationforms .technical-evaluation-form .feedback {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Open Sans';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    gap: 8px;
+    line-height: 25px;
+    padding: 25px 0;
+}
+
+.action-evaluationforms .technical-evaluation-form .total {
+    display: flex;
+    flex-wrap: wrap;
+    background: #F5F5F5;
+    gap: 16px 5px;
+    box-shadow: 0px 4px 4px -3px rgba(0, 0, 0, 0.16);
+    border-radius: 4px;
+    padding: 16px;
+    margin: 14px 0;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 25px;
+}
+
+.action-evaluationforms .technical-evaluation-form .total br {
+    display: none;
+}
+
+/* Documentary evaluation */
+
+.action-evaluationforms .documentary-evaluation-form--field {
+    margin: 0 14px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field h6 {
+    background: #FFCF8F;
+    border-radius: 4px;
+    padding: 19px 16px;
+    text-align: center;
+    margin: 0 0 21px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field br {
+    display: none;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field label.input-label {
+    display: flex;
+    margin: 0 0 18px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field label.input-label:last-child {
+    margin: 0 0 26px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field label.input-label em {
+    color: #3E3E3E;
+    font-family: 'Open Sans';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field label.textarea-label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 0 40px;
+}
+
+.action-evaluationforms .documentary-evaluation-form--field label.textarea-label:last-child {
+    margin: 0;
+}
+
+
+/* Evaluation Valid */
+
+.action-evaluationforms .evaluation-valid {
+    padding: 14px;
+    margin: 0;
+}
+
+
+
+/* Form Preview */
+
+.action-registrationformpreview h4, p {
+    font-family: 'Open Sans';
+    font-style: normal;
+}
+
+.action-registrationformpreview h4 {
+    font-weight: 700;
+    margin-bottom: 2px !important;
+}
+
+.action-registrationformpreview p {
+    font-size: 12px;
+    font-family: 'Open Sans';
+    font-weight: 700;
+}
+
+.action-registrationformpreview br {
+    display: none;
+}
+
+.action-registrationformpreview .btn {
+    width: min-content;
+    padding: 11px 12px;
+    border: 2px solid #0074C1;
+    color: #0074C1;
+    background-color: #FFFFFF;
+}
+
+.action-registrationformpreview .btn:before {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+}
+
+.action-registrationformpreview .space-add-button {
+    float: none;
+    margin: 0;
+}
+
+.action-registrationformpreview .registration .registration-header {
+    display: none;
+}
+
+.action-registrationformpreview .registration .sidebar {
+    display: none;
+}
+
+.action-registrationformpreview .registration .registration-fieldset {
+    border: none;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.action-registrationformpreview .registration .registration-fieldset.registration-edit-mode {
+    background-color: transparent;
+    padding: 0;
+}
+
+.action-registrationformpreview .registration ul.registration-list li.registration-list-item {
+    padding: 0;
+    padding: 0;
+    border-top: 16px solid #FFFFFF;
+    border-bottom: 16px solid #FFFFFF;
+}
+.action-registrationformpreview .registration ul.registration-list li.registration-list-item:hover {
+    background-color: #FFFFFF;
+}
+
+.action-registrationformpreview .registration ul.registration-list li.registration-list-item .btn-group {
+    bottom: 0;
+    right: 0;
+    text-align: center;
+}
+
+#agent_owner,
+#agent_instituicao,
+#agent_coletivo,
+#registration-space .registration-agent {
+    margin: 0 0 16px;
+}
+
+#agent_owner .clearfix,
+#agent_instituicao .clearfix,
+#agent_coletivo .clearfix,
+#registration-space .registration-agent .clearfix {
+    grid-template-columns: 40px 1fr;
+    display: grid;
+    gap: 9px;
+    align-items: center;
+}
+
+#agent_owner .clearfix::after,
+#agent_instituicao .clearfix::after,
+#agent_coletivo .clearfix::after,
+#registration-space .registration-agent .clearfix::after {
+    content: unset;
+}
+
+#agent_owner .clearfix img,
+#agent_instituicao .clearfix img,
+#agent_coletivo .clearfix img,
+#registration-space .registration-agent .clearfix img {
+    float: unset;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    margin: 0;
+}
+
+#registration-space .registration-agent .space-relation-message {
+    margin: 0;
+    padding: 0;
+}
+
+.registration-help {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 11px;
+    font-style: normal;
+}
+
+/*.attachment-list .attachment-list-item:first-child*/
+
+.action-registrationformpreview #registration-attachments ul.attachment-list li.attachment-list-item {
+    padding: 0;
+}
+
+.action-registrationformpreview #registration-attachments ul.attachment-list li.attachment-list-item.attachment-list-item-type-section {
+    font-size: 18px;
+    font-weight: 700;
+    padding: 16px 0 24px;
+    background-color: transparent;
+}
+
+.action-registrationformpreview #registration-attachments ul.attachment-list li.attachment-list-item {
+    background-color: #FFFFFF;
+    padding: 16px;
+}

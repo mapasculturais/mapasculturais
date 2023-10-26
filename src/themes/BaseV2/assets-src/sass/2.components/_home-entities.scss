@@ -1,0 +1,172 @@
+@use '../0.settings/mixins' as *;
+
+.home-entities {
+    background-color: var(--mc-home-entities);
+    padding: size(60) size(16);
+    
+    &__content {
+        min-height:size(156);
+        max-width: size(1170);
+        margin:0 auto;
+        
+        &--header {
+            display: flex;
+            flex-direction: column;
+            gap: size(8);
+
+            .title {
+                font-weight: 700;
+                font-size: size(32);
+                line-height: size(44);
+                
+                @media (max-width: size(800)) {
+                    font-weight: 700;
+                    font-size: size(24);
+                    line-height: size(28);
+                }
+            }
+
+            .description {
+                font-weight: 400;
+                font-size: size(18);
+                line-height: size(25);
+
+                p {
+                    margin: 0;
+                }
+
+                @media (max-width: size(800)) {
+                    font-weight: 400;
+                    font-size: size(16);
+                    line-height: size(22);
+                }
+            }
+            &.user-details {
+                flex-direction: column;
+            }
+        }
+
+        &--cards {
+            display: flex;
+            flex-direction: column;
+            gap: size(16);
+            margin: size(40) 0 size(20);
+
+            @media (max-width: size(800)) {
+                gap: size(24);
+            }
+
+            .card {
+                border-radius: var(--mc-border-radius-xs);
+                display: flex;
+                overflow: hidden;
+                
+                &__left {
+                    flex-basis: 55%;
+                    width: size(648);
+                    overflow: hidden;
+                    position: relative;
+                    
+                    &--content {
+                        align-items: center;
+                        background-color: rgba(0,0,0,.3);
+                        display: grid;
+                        flex-direction: row;
+                        grid-template-columns: size(64) 1fr;
+                        position: absolute;
+                        height: 100%;
+                        width: 100%;
+                        padding: size(46) size(40);
+                        gap: size(18);
+                        max-width: size(1170);
+                        margin: 0 auto;
+
+                        @media (max-width: size(800)) {
+                            padding: size(46) size(30);
+                        }
+
+                        @media (max-width: size(400)) {
+                            padding: 0 size(16);
+                            grid-template-columns: 1fr;
+                            justify-items: center;
+                            align-items: center;
+                            gap: 0;
+                        }
+
+                        &-icon {
+                            width:size(64);
+                            height: size(64);
+                            border-radius: 50%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            .iconify {
+                                font-size: size(31);
+                                color: var(--mc-high-300);
+                            }
+                        }
+
+                        &-title {
+                            color: var(--mc-high-300);
+                            font-weight: 700;
+                            font-size: size(24);
+                            line-height: size(28);
+                        }
+                    }
+
+                    &--img{
+                        height: size(156);
+
+                        img {
+                            object-fit: cover;
+                            -o-object-fit: cover;
+                            width: 100%;
+                            min-height: 100%;
+                        }
+                    }
+                }
+
+                &__right{
+                    align-items: flex-end;
+                    background-color: var(--mc-high-500);
+                    display: flex;
+                    flex-basis: 45%;
+                    flex-direction: column;
+                    gap: size(8);
+                    padding: size(24) size(32) size(13);
+                    width: size(23);
+                    justify-content: space-between;
+                
+
+                    p {
+                        font-weight: 400;
+                        font-size:size(16);
+                        line-height:size(22);
+                        margin: 0;
+                    }
+
+                    .button {
+                        padding: 0 size(7);
+                    }
+
+                    @media (max-width:size(800)) {
+                        align-items: flex-start;
+                        padding: size(24) size(14) size(13);
+                    }
+                }
+
+                @media (max-width:size(800)) {
+                    display: flex;
+                    flex-direction: column;
+
+                    &__left,
+                    &__right {
+                        flex-basis: 50%;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

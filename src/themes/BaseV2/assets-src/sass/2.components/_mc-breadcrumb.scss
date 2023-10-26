@@ -1,0 +1,137 @@
+@use '../0.settings/mixins' as *;
+
+.mc-breadcrumb {
+    margin: 0 auto;
+    max-width: 1170px;
+
+    @include mobile {
+        font-size: size(14);
+    }
+
+    ul,
+    li {
+        margin: 0;
+        padding: 0;
+    }
+
+    ul {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: size(5);
+        max-width: size(1170);
+        padding: size(8) size(10);
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+    }
+
+    li {
+        align-items: center;
+        display: flex;
+        list-style: none;
+        position: relative;
+        overflow: hidden;
+
+        @media (max-width: size(800)) {
+            display: none;
+
+            &:nth-last-child(2) {
+                display: flex;
+                font-weight: 600;
+            }
+
+            &::before {
+                content: url('https://api.iconify.design/fe/arrow-left.svg?width=16&height=16');
+                height: size(16);
+                margin-inline-end: size(5);
+                width: size(16);
+            }
+        }
+
+        @media (min-width: size(801)) {
+            &::after {
+                content: url('https://api.iconify.design/fe/arrow-right.svg?width=18&height=18');
+                height: size(18);
+                margin-inline-start: size(5);
+                width: size(18);
+            }
+
+            &:last-child::after {
+                display: none;
+            }
+        }
+    }
+
+    li:last-child {
+        font-weight: bold;
+
+        &::after {
+            content: none;
+        }
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: size(14);
+        white-space: nowrap;
+        max-width: size(400);
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__hasCover {
+        ul {
+            background: linear-gradient(180deg, rgba(2, 2, 1, 0.35) 0%, rgba(255, 255, 255, 0) 100%);
+            color: white;
+            padding: size(8) size(10) size(60);
+        }
+
+        li {
+            @media (max-width: size(800)) {
+                &::before {
+                    content: url('https://api.iconify.design/fe/arrow-left.svg?color=white&width=16&height=16');
+                    margin-inline-end: size(5);
+                }
+            }
+
+            @media (min-width: size(801)) {
+                &::after {
+                    content: url('https://api.iconify.design/fe/arrow-right.svg?color=white&width=18&height=18');
+                    margin-inline-start: size(5);
+                }
+            }
+        }
+    }
+}
+
+// Comportamento nas páginas de edição das entidades
+.action-edit {
+    .mc-breadcrumb {
+        &__hasCover {
+            ul {
+                background: transparent;
+                color: black;
+                padding: size(8) size(10);
+            }
+
+            li {
+                @media (max-width: size(800)) {
+                    &::before {
+                        content: url('https://api.iconify.design/fe/arrow-left.svg?width=16&height=16');
+                        margin-inline-end: size(5);
+                    }
+                }
+
+                @media (min-width: size(801)) {
+                    &::after {
+                        content: url('https://api.iconify.design/fe/arrow-right.svg?width=18&height=18');
+                        margin-inline-start: size(5);
+                    }
+                }
+            }
+        }
+    }
+}
