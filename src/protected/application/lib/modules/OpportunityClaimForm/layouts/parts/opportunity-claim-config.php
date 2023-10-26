@@ -1,1 +1,0 @@
-<opportunity-enable-claim :entity="phase"></opportunity-enable-claim>

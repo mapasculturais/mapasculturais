@@ -1,0 +1,53 @@
+@use '../0.settings/mixins' as *;
+
+.entity-owner {
+    margin: 0;
+
+    h4 {
+        margin: 0;
+    }
+    
+    &__owner {
+        display: grid;
+        grid-template-columns: size(56) 1fr;
+        text-decoration: none;
+        align-items: center;
+        gap: size(8);
+        &--img {
+            
+            margin: size(13) size(14) size(13) 0; 
+        }
+
+        &--name {
+            color: var(--mc-black);
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 700;
+            font-size: size(12);
+            line-height: size(16);
+        }
+    }
+    &__edit {
+        &--btn {
+            align-items: center;
+            cursor: pointer;
+            display: flex;
+            gap: size(8);
+            svg {
+                font-size: size(20);
+            }
+        }
+    }
+
+    .related {
+        &-title {
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 400;
+            font-size: size(16);
+            line-height: size(22);
+            color: var(--mc-black);
+            margin: size(11) 0 size(16);
+        }
+    }
+}

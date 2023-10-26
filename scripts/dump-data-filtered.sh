@@ -1,1 +1,0 @@
-sudo -u postgres pg_dump --data-only -T sp_distrito -T sp_regiao -T sp_subprefeitura -T spatial_ref_sys -T geometry_columns -T geography_columns -T raster_columns -T raster_overviews mapasculturais > data-filtered.sql

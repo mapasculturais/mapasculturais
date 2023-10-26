@@ -1,0 +1,22 @@
+@use '../0.settings/mixins' as *;
+
+@media print {
+    .zammad-chat {
+        display: none !important;
+    }
+    
+    .zammad-chat.zammad-chat-is-shown {
+        display: none !important;
+    }
+}
+
+.print-registration {
+    
+    table, tr, td, th, tbody, thead, tfoot {
+        page-break-inside: avoid !important;
+    }
+
+    &__side-padding {
+        padding: 0 size(16);
+    }
+}

@@ -18,9 +18,9 @@ PID_OF_PHP=$!
 cd ..
 echo 'running tests...'
 if [ $1 ]; then
-    src/protected/vendor/phpunit/phpunit/phpunit tests/$1
+    vendor/phpunit/phpunit/phpunit tests/$1
 else
-    src/protected/vendor/phpunit/phpunit/phpunit tests/
+    vendor/phpunit/phpunit/phpunit tests/
 fi
 
 echo "stopping php -S"

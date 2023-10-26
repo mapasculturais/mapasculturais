@@ -1,5 +1,0 @@
-packages:
-  - 'application/lib/modules/*'
-  - 'application/plugins/*'
-  - 'application/themes/*'
-  - 'node_scripts'
