@@ -91,9 +91,9 @@ $this->import('
                     <mc-icon name="whatsapp"></mc-icon>
                 </a>
             </nav>
-            <div class="description">
+            <div :class="['description', {'description--event':entity.__objectType=='event'}]">
                 <slot name="description">
-                    <p v-html="entity.shortDescription"></p>
+                    <p v-html="entity.shortDescription" ></p>
                 </slot>
             </div>
             <div v-if="entity.site" class="site">
