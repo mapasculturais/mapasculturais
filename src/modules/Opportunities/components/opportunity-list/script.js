@@ -1,31 +1,15 @@
 app.component('opportunity-list', {
     template: $TEMPLATES['opportunity-list'],
-
-    data() {
-        console.log(this.ids)
-        return {
-            query: {
-                'id': `IN(${this.ids})`,
-            },
-            type: 'opportunity',
-        };
-    },
-
-    async created() {
-
-    },
-
-    props: {
-        ids: {
-            type: [Array, Object],
-            required: true,
-        }
-    },
-    methods: {
-    },
-
-
+    
     computed: {
-
+        opportunities() {
+            const opportunities = [];
+            $MAPAS.opportunityList.opportunity.forEach(element => {
+                const entity = new Entity('opportunity', element.id);
+                entity.populate(element);
+                opportunities.push(entity);
+            });
+            return opportunities;
+        }
     }
 });
