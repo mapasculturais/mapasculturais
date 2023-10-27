@@ -24,6 +24,7 @@ $this->import('
     mc-share-links
     mc-tab
     mc-tabs
+    opportunity-list
 ');
 
 $label = $this->isRequestedEntityMine() ? i::__('Meus agentes') : i::__('Agentes');
@@ -41,6 +42,7 @@ $this->breadcrumb = [
         <mc-tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <mc-container>
                 <main>
+                    <opportunity-list></opportunity-list>
                     <div class="grid-12 col-12">
                         <agent-data-1 :entity="entity"></agent-data-1>
                         <entity-location :entity="entity" classes="col-12"></entity-location>

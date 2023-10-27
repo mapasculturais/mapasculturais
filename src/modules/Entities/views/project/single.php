@@ -59,7 +59,7 @@ $this->breadcrumb = [
             <div class="tabs__info">
                 <mc-container>
                     <main>
-                        <opportunity-list :ids="entity.relatedOpportunities"></opportunity-list>
+                        <opportunity-list></opportunity-list>
                         <div class="grid-12">
                             <div v-if="entity.emailPublico || entity.telefonePublico" class="col-12 additional-info">
                                 <h4 class="additional-info__title"><?php i::_e("Informações adicionais"); ?></h4>
