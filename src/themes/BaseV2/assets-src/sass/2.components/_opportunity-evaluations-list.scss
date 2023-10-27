@@ -154,7 +154,7 @@
     
                     }
                 
-                    a {
+                    .link {
                         text-decoration: none;
                         color: unset;
 
@@ -220,6 +220,7 @@
                                 display: flex;
                                 align-items: center;
                                 gap: size(8);
+                                padding-bottom: size(16) ;
                             }
                             .state,
                             &label {
