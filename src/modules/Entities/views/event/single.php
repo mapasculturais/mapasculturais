@@ -25,6 +25,7 @@ $this->import('
     mc-share-links
     mc-tab
     mc-tabs
+    opportunity-list
 ');
 
 $label = $this->isRequestedEntityMine() ? i::__('Meus eventos') : i::__('Evantos');
@@ -48,6 +49,7 @@ $this->breadcrumb = [
             <div class="tabs__info">
                 <mc-container>
                     <main>
+                        <opportunity-list></opportunity-list>
                         <div class="grid-12">
                             <event-age-rating :event="entity" classes="col-12"></event-age-rating>
                             <entity-occurrence-list classes="col-12" :entity="entity"></entity-occurrence-list>    

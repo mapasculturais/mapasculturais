@@ -24,6 +24,7 @@ $this->import('
     space-info
     mc-tab
     mc-tabs
+    opportunity-list
 ');
 
 $this->breadcrumb = [
@@ -52,6 +53,7 @@ $this->breadcrumb = [
             <div class="tabs__info">
                 <mc-container>
                     <main>
+                        <opportunity-list></opportunity-list>
                         <div class="grid-12">
                             <div class="col-12">
                                 <space-info :entity="entity"></space-info>
