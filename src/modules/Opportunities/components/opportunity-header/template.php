@@ -23,11 +23,10 @@ $this->import('
                 </span>
                 <div class="title__info">
                     <div class="data">
-                        <dl class="metadata__id">
-                            AAAAA
-                            <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
-                            <dd><strong>{{opportunity.id}}</strong></dd>
-                        </dl> 
+                        <div class="data__title"> <?= i::__('ID')?>: </div>
+                        <div class="data__info "><strong>{{opportunity.id}}</strong></div>
+                    </div>
+                    <div class="data">
                         <div class="data__title"> <?= i::__('Tipo')?>: </div>
                         <div class="data__info opportunity__color"> {{firstPhase.type?.name}} </div>
                     </div>
