@@ -79,9 +79,8 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
 
             <aside class="col-3">
                 <div class="registration__actions">
-                    <?php if($entity->opportunity->evaluationMethodConfiguration && $entity->opportunity->evaluationMethodConfiguration->type):?>
-                        <h3 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></h3>
-                    <?php endif;?>
+                    <h4 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethod->name ?></strong></h4>
+                  
                     <registration-evaluation-info :entity="entity"></registration-evaluation-info>
 
                     <?php if ($valuer_user) : ?>
