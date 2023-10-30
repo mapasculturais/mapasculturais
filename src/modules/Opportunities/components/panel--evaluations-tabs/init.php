@@ -7,7 +7,6 @@ $queryParams =  [
 ];
 
 $queryOpportunities = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Opportunity::class, $queryParams);
-eval(\psy\sh());
 
 $this->jsObject['panelEvaluationsTabs']['evaluations'] = $queryOpportunities->getFindResult();
 
