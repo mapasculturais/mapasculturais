@@ -86,7 +86,7 @@ $config = $app->config['social-media'];
                 </li>
                 <?php if (!($app->user->is('guest'))) : ?>
                     <li>
-                        <a href="<?= $app->createUrl('auth', 'logout') ?>">Sair</a>
+                        <a href="<?= $app->createUrl('auth', 'logout') ?>"><?php i::_e('Sair')?></a>
                     </li>
                 <?php endif; ?>
             </ul>

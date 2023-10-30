@@ -63,7 +63,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                    <div class="col-12">
                        <mc-alert type="warning"><?= i::__('Para iniciar a de avaliação documental, selecione um campo de dados abaixo')?></mc-alert>
                    </div>
-                <?php endif?>
+                <?php endif;?>
                 <mc-summary-agent :entity="entity" classes="col-12"></mc-summary-agent>
                 <registration-info :registration="entity" classes="col-12"></registration-info>
                 <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
@@ -85,20 +85,19 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
             </main>
 
             <aside class="col-3">
-                <div class="registration__actions">
-                    <h4 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethod->name ?></strong></h4>
-                  
-                    <registration-evaluation-info :entity="entity"></registration-evaluation-info>
-
-                        <?php if ($valuer_user) : ?>
-                            <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                        <?php else : ?>
-                            <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                        <?php endif ?>
+                <div class="registration__right-sidebar">
+                    <div class="registration__actions">
+                        <h4 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethod->name ?></strong></h4>
+                        <registration-evaluation-info :entity="entity"></registration-evaluation-info>
+                            <?php if ($valuer_user) : ?>
+                                <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                            <?php else : ?>
+                                <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                            <?php endif ?>
+                        </div>
+                        <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
                     </div>
-                    <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
                 </div>
-
             </aside>
         </div>
     </div>
