@@ -86,7 +86,7 @@ $config = $app->config['social-media'];
                 </li>
                 <?php if (!($app->user->is('guest'))) : ?>
                     <li>
-                        <a href="<?= $app->createUrl('auth', 'logout') ?>">Sair</a>
+                        <a href="<?= $app->createUrl('auth', 'logout') ?>"><?php i::_e('Sair')?></a>
                     </li>
                 <?php endif; ?>
             </ul>
@@ -106,8 +106,8 @@ $config = $app->config['social-media'];
                             <a href="<?= $app->createUrl('lgpd', 'view', [$slug]) ?>"><?= $cfg['title'] ?></a>
                         </li>
                     <?php endforeach ?>
+                <?php endif; ?>
                 </ul>
-            <?php endif; ?>
             <?php $this->applyTemplateHook("main-footer-links", "end")?>
         </div>
         <?php $this->applyTemplateHook("main-footer-links", "after")?>      
