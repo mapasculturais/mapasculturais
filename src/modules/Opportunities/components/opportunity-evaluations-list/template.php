@@ -55,7 +55,7 @@ $this->import('
                             </div>
                         </div>
                         <div class="card-state">
-                            <label class="state"><?= i::__('Status de avaliação') ?></label>
+                            <label class="state"><?= i::__('Resultado de avaliação') ?></label>
                             <span :class="verifyState(evaluation)" class="card-state__info">
                                 <mc-icon  name="circle"></mc-icon>
                                 <h5 class="bold" v-if="evaluation.resultString">{{evaluation.resultString}}</h5>
