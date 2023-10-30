@@ -1039,6 +1039,7 @@ class Module extends \MapasCulturais\Module{
 
             // validação da data final
             if ($next && !$this->isLastPhase) {
+                $next_date =  null;
                 if($next->isLastPhase) {
                     $next_date = $next->publishTimestamp;
                     $next_error = i::__('A data final deve ser menor que a data de publicação do resultado final');
