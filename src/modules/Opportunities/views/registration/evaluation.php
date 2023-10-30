@@ -85,20 +85,19 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
             </main>
 
             <aside class="col-3">
-                <div class="registration__actions">
-                    <h4 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethod->name ?></strong></h4>
-                  
-                    <registration-evaluation-info :entity="entity"></registration-evaluation-info>
-
-                        <?php if ($valuer_user) : ?>
-                            <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                        <?php else : ?>
-                            <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                        <?php endif ?>
+                <div class="registration__right-sidebar">
+                    <div class="registration__actions">
+                        <h4 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethod->name ?></strong></h4>
+                        <registration-evaluation-info :entity="entity"></registration-evaluation-info>
+                            <?php if ($valuer_user) : ?>
+                                <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                            <?php else : ?>
+                                <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                            <?php endif ?>
+                        </div>
+                        <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
                     </div>
-                    <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
                 </div>
-
             </aside>
         </div>
     </div>
