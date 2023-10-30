@@ -63,7 +63,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                    <div class="col-12">
                        <mc-alert type="warning"><?= i::__('Para iniciar a de avaliação documental, selecione um campo de dados abaixo')?></mc-alert>
                    </div>
-                <?php endif?>
+                <?php endif;?>
                 <mc-summary-agent :entity="entity" classes="col-12"></mc-summary-agent>
                 <registration-info :registration="entity" classes="col-12"></registration-info>
                 <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
