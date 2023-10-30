@@ -24,6 +24,7 @@ $this->import('
     mc-share-links
     mc-tab
     mc-tabs
+    opportunity-list
 ');
 
 $label = $this->isRequestedEntityMine() ? i::__('Meus agentes') : i::__('Agentes');
@@ -41,6 +42,7 @@ $this->breadcrumb = [
         <mc-tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <mc-container>
                 <main>
+                    <opportunity-list></opportunity-list>
                     <div class="grid-12 col-12">
                         <agent-data-1 :entity="entity"></agent-data-1>
                         <entity-location :entity="entity" classes="col-12"></entity-location>
@@ -54,13 +56,12 @@ $this->breadcrumb = [
                         <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
                         <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                         <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
-                        <div v-if="entity.spaces?.length > 0 || entity.children?.length > 0 || entity.events?.length > 0 || entity.ownedOpportunities?.length > 0 || entity.relatedOpportunities?.length > 0" class="col-12">
+                        <div v-if="entity.spaces?.length > 0 || entity.children?.length > 0 || entity.events?.length > 0" class="col-12">
                             <h4 class="property-list"> <?php i::_e('Propriedades do Agente:');?> </h4>
                             <entity-list v-if="entity.spaces?.length>0" title="<?php i::esc_attr_e('Espaços');?>" type="space" :ids="entity.spaces"></entity-list>
                             <entity-list v-if="entity.events?.length>0" title="<?php i::esc_attr_e('Eventos');?>" type="event" :ids="entity.events"></entity-list>
                             <entity-list v-if="entity.children?.length>0" title="<?php i::esc_attr_e('Agentes');?>" type="agent" :ids="entity.children"></entity-list>
                             <entity-list v-if="entity.projects?.length>0" title="<?php i::esc_attr_e('Projetos');?>" type="project" :ids="entity.projects"></entity-list>                                
-                            <entity-list title="<?php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
                         </div>
                         <complaint-suggestion :entity="entity" classes="col-12"></complaint-suggestion>
                     </div>

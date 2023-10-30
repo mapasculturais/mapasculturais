@@ -24,6 +24,7 @@ $this->import('
     space-info
     mc-tab
     mc-tabs
+    opportunity-list
 ');
 
 $this->breadcrumb = [
@@ -57,6 +58,7 @@ $this->breadcrumb = [
             <div class="tabs__info">
                 <mc-container>
                     <main>
+                        <opportunity-list></opportunity-list>
                         <div class="grid-12">
                             <div class="col-12">
                                 <space-info :entity="entity"></space-info>
@@ -69,10 +71,9 @@ $this->breadcrumb = [
                             <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>                            
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>                            
-                            <div v-if="(entity.children && entity.children.length >0) || (entity.relatedOpportunities && entity.relatedOpportunities.length>0)" class="col-12">
+                            <div v-if="entity.children && entity.children.length >0" class="col-12">
                                 <h4><?php i::_e('Propriedades do Espaço');?></h4>
                                 <entity-list v-if="entity.children?.length>0" title="<?php i::esc_attr_e('Subespaços');?>" type="space" :ids="entity.children"></entity-list>
-                                <entity-list title="<?php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>                                
                             </div>
                         </div>
                     </main>
