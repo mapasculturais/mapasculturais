@@ -1,0 +1,18 @@
+@use '../0.settings/mixins' as *;
+
+.entity-table {
+
+    .vue3-easy-data-table__header & {}
+
+    .vue3-easy-data-table__body & {
+        &__row {
+            &--selected  {
+                & > td {
+                    background-color: red;
+                }
+            }
+        }
+    }
+
+    .vue3-easy-data-table__footer & {}
+}
