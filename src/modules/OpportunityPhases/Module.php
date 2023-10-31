@@ -1025,6 +1025,7 @@ class Module extends \MapasCulturais\Module{
                     $next_date_to = $next->publishTimestamp;
                     $next_date_from_string = $next_date_from->format('Y-m-d H:i:s');
                     $next_date_to_string = $next_date_to->format('Y-m-d H:i:s');
+
                 } else {
                     $next_date_from = $next->evaluationFrom ?: $next->registrationFrom;
                     $next_date_to = $next->evaluationTo ?: $next->registrationTo;

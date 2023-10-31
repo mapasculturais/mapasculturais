@@ -61,7 +61,7 @@ $this->import('
                     <slot name="metadata">
                         <dl class="metadata__id" v-if="entity.id">
                             <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
-                            <dd>aa<strong>{{entity.id}}</strong></dd>
+                            <dd><strong>{{entity.id}}</strong></dd>
                         </dl> 
                         <dl v-if="entity.type">
                             <dt><?= i::__('Tipo')?></dt>

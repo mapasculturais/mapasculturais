@@ -1242,7 +1242,8 @@ abstract class Entity implements \JsonSerializable{
         $app->applyHookBoundTo($this, "{$hook_prefix}.insert:after");
 
         if ($this->usesPermissionCache()) {
-            $this->createPermissionsCacheForUsers([$app->user]);
+            $this->createPermissionsCacheForUsers([$this->ownerUser]);
+            $app->enqueueEntityToPCacheRecreation($this);
         }
     }
 
