@@ -121,7 +121,7 @@ $(function(){
                     if (insideEmbedTools) {
                         window.parent.postMessage({
                             type: 'evaluationForm.getForm',
-                            element: $field.get(0).outerHTML
+                            element: $field.get(0)?.outerHTML
                         })
                     } else {
                         getForm($field);
