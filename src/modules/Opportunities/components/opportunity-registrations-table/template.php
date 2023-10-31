@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    entity-table
     mc-card
     v1-embed-tool
 ');
@@ -39,6 +40,7 @@ $entity = $this->controller->requestedEntity;
                 <h5><?= i::__("Visualize a lista de pessoas inscritas neste edital. E acompanhe os projetos criados para os Agentes Culturais aceitos.") ?></h5>
             </div>
         <div class="col-12"> 
+            <entity-table :entity="phase" :headers="headers" :items="items"></entity-table>
             <v1-embed-tool route="registrationmanager" :id="phase.id" min-height="600px"></v1-embed-tool>
         </div>
     </template>
