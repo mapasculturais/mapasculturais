@@ -226,6 +226,10 @@ trait ControllerEntityActions {
                     }
                 }
             }
+
+            if($error) {
+                $this->errorJson($errors);
+            }
         }
 
         $this->_finishRequest($entity, true, $function);
