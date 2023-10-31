@@ -23,6 +23,8 @@ class EvaluationMethodConfiguration extends Controller {
         Traits\ControllerEntity,
         Traits\ControllerEntityActions {
             Traits\ControllerEntityActions::POST_index as _POST_index;
+            Traits\ControllerEntityActions::POST_single as _POST_single;
+            Traits\ControllerEntityActions::PATCH_single as _PATCH_single;
         }
         
     function __construct()
@@ -31,6 +33,10 @@ class EvaluationMethodConfiguration extends Controller {
     }
 
     function POST_index($data = null) {
+        if(isset($this->data['opportunity'])){
+            $requested_entity = $this->getRequestedEntity();
+            $requested_entity->opportunity = $this->data['opportunity'];
+        }
         $this->_POST_index();
     }
 
@@ -75,14 +81,12 @@ class EvaluationMethodConfiguration extends Controller {
     
     function PATCH_single($data = null) {
         $this->_setPermissionCacheUsers();
-        
-        parent::PATCH_single();
+        $this->_PATCH_single();
     }
     
     function POST_single($data = null) {
         $this->_setPermissionCacheUsers();
-        
-        parent::POST_single();
+        $this->_POST_single();
     }
 
     protected function _setPermissionCacheUsers(){
