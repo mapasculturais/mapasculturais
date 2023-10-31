@@ -11,6 +11,18 @@ app.component('opportunity-registrations-table' , {
         const text = Utils.getTexts('opportunity-registrations-table');
         return { text }
     },
+    data() {
+        return {
+            headers: [
+                {},
+            ],
+            items: [
+               
+                {},
+            ],
+
+        }
+    },
 
     computed: {
         previousPhase() {
