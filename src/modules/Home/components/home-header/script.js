@@ -10,9 +10,14 @@ app.component('home-header', {
     data() {
         return {
             background: $MAPAS.config.homeHeader.background,
+            
             banner: $MAPAS.config.homeHeader.banner,
             bannerLink: $MAPAS.config.homeHeader.bannerLink,
             downloadableLink: $MAPAS.config.homeHeader.downloadableLink,
+
+            secondBanner: $MAPAS.config.homeHeader.secondBanner,
+            secondBannerLink: $MAPAS.config.homeHeader.secondBannerLink,
+            secondDownloadableLink: $MAPAS.config.homeHeader.secondDownloadableLink,
         }
     },
 });
