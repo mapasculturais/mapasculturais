@@ -432,7 +432,6 @@ class ApiQuery {
     protected $_permission = [];
     
     protected $_subqueryFilters = [];
-    protected $_status = '> 0';
     protected $_op = ' AND ';
     protected $_templateJoinMetadata = "\n\tLEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}'";
     protected $_templateJoinTerm = "\n\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = '{TAXO}'";
@@ -943,7 +942,14 @@ class ApiQuery {
         }
         
         if($this->usesStatus && (!$this->_subsiteId && !isset($this->apiParams['status']) || $this->_permission != 'view')){
-            $where = $where ? "($where) AND e.status {$this->_status}" : "e.status {$this->_status}";
+            $params = $this->apiParams;
+            
+            if($this->rootEntityClassName === Opportunity::class && (isset($params['id']) || isset($params['status']) || isset($params['parent']))) {
+                $where_status = '(e.status > 0 OR e.status = -1)';    
+            } else {
+                $where_status = 'e.status > 0';
+            }
+            $where = $where ? "($where) AND $where_status" : $where_status;
         }
         
         if($keyword_where = $this->getKeywordSubDQL()){
@@ -2827,7 +2833,6 @@ class ApiQuery {
                 $this->select =  $this->select ? ", $alias.action " : $this->select;
                 
                 $admin_where = '';
-                $view_where = '';
                 
                 $and = $this->where ? 'AND' : '';
                 
@@ -2846,16 +2851,7 @@ class ApiQuery {
                     $admin_where = implode(' OR ', $admin_where);
                     $admin_where = "OR ($admin_where)";
                 }
-                
-                if($this->usesStatus && $this->_permission == 'view' && !$class::isPrivateEntity()) {
-                    if($this->entityClassName === Opportunity::class && (isset($this->apiParams['id']) || isset($this->apiParams['parent']))) {
-                        $view_where = 'OR e.status > 0 OR e.status = -1';    
-                    } else {
-                        $view_where = 'OR e.status > 0';
-                    }
-                }
-                
-                $this->where .= " $and ( e.{$this->pk} IN (SELECT IDENTITY($alias.owner) FROM {$this->permissionCacheClassName} $alias WHERE $alias.owner = e AND $alias.action = $pkey AND $alias.userId = $_uid) $admin_where $view_where) ";
+                $this->where .= " $and ( e.{$this->pk} IN (SELECT IDENTITY($alias.owner) FROM {$this->permissionCacheClassName} $alias WHERE $alias.owner = e AND $alias.action = $pkey AND $alias.userId = $_uid) $admin_where) ";
             }
         }
     }
