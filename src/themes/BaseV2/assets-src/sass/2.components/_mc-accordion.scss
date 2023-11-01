@@ -1,0 +1,44 @@
+@use '../0.settings/mixins' as *;
+
+.mc-accordion {
+    background-color: var(--mc-gray-100);
+    // &__tags {
+    //     background-color: #FFCF8F;
+    //     margin: 16px 0;
+    // }
+    &__title {
+        font-size: size(14);
+    }
+    &__header {
+        padding: 18px 16px;
+        background: var(--mc-white);
+        justify-content: center;
+        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr size(12);
+        max-width: size(870);
+        border-radius: size(4);
+    }
+    
+    &__content {
+        padding: size(16);
+        background: var(--mc-white);
+        border-top: 1px solid var(--mc-gray-100);
+        max-width: size(870);
+        
+    }
+    // &__context {
+    //     font-size: size(14);
+    //     border-radius: 0 0 8px 8px;
+    // }
+    
+    // &__contexts:first-child {
+    //     padding: 0 size(16) size(8) 0;
+    // }
+    
+    // &__contexts {
+    //     max-width: size(870);
+    //     padding: size(24) size(16) size(8) 0;
+    
+    // }
+}

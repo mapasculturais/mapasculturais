@@ -86,47 +86,50 @@ $config = $app->config['social-media'];
                 </li>
                 <?php if (!($app->user->is('guest'))) : ?>
                     <li>
-                        <a href="<?= $app->createUrl('auth', 'logout') ?>">Sair</a>
+                        <a href="<?= $app->createUrl('auth', 'logout') ?>"><?php i::_e('Sair')?></a>
                     </li>
                 <?php endif; ?>
             </ul>
     
-            <?php if (count($app->config['module.LGPD']) > 0): ?>
                 <ul class="main-footer__content--links-group">
                     <li>
-                        <a><?php i::_e('Termos e Condições'); ?></a>
+                        <a><?php i::_e('Ajuda e privacidade'); ?></a>
                     </li>
                     
+                    <li>
+                        <a href="<?= $app->createUrl('faq') ?>"><?php i::_e('Dúvidas frequentes'); ?></a>
+                    </li>
+                    
+                <?php if (count($app->config['module.LGPD']) > 0): ?>
                     <?php foreach ($app->config['module.LGPD'] as $slug => $cfg) : ?>
                         <li>
                             <a href="<?= $app->createUrl('lgpd', 'view', [$slug]) ?>"><?= $cfg['title'] ?></a>
                         </li>
                     <?php endforeach ?>
+                <?php endif; ?>
                 </ul>
-            <?php endif; ?>
             <?php $this->applyTemplateHook("main-footer-links", "end")?>
         </div>
-        <?php $this->applyTemplateHook("main-footer-links", "after")?>
-
-        <?php $this->applyTemplateHook("main-footer-reg", "before")?>
-        <div class="main-footer__content--reg">
-            <?php $this->applyTemplateHook("main-footer-reg", "begin")?>
-            <div class="main-footer__content--reg-content">
-                <p>
-                    <?php i::_e("plataforma criada pela comunidade") ?> 
-                    <span class="mapas"> <mc-icon name="map"></mc-icon><?php i::_e("mapas culturais"); ?> </span> 
-                    <?php i::_e("e desenvolvida por "); ?><strong>hacklab<span style="color: red">/</span></strong>
-                </p>
-    
-                <a class="link" href="https://github.com/mapasculturais">
-                    <?php i::_e("Conheça o repositório") ?>
-                    <mc-icon name="github"></mc-icon>
-                </a>
-            </div>
-            <?php $this->applyTemplateHook("main-footer-reg", "end")?>
-        </div>
-        <?php $this->applyTemplateHook("main-footer-reg", "after")?>        
+        <?php $this->applyTemplateHook("main-footer-links", "after")?>      
     </div>
+    <?php $this->applyTemplateHook("main-footer-reg", "before")?>
+    <div class="main-footer__reg">
+        <?php $this->applyTemplateHook("main-footer-reg", "begin")?>
+        <div class="main-footer__reg-content">
+            <p>
+                <?php i::_e("plataforma criada pela comunidade") ?> 
+                <span class="mapas"> <mc-icon name="map"></mc-icon><?php i::_e("mapas culturais"); ?> </span> 
+                <?php i::_e("e desenvolvida por "); ?><strong>hacklab<span style="color: red">/</span></strong>
+            </p>
+
+            <a class="link" href="https://github.com/mapasculturais">
+                <?php i::_e("Conheça o repositório") ?>
+                <mc-icon name="github"></mc-icon>
+            </a>
+        </div>
+        <?php $this->applyTemplateHook("main-footer-reg", "end")?>
+    </div>
+    <?php $this->applyTemplateHook("main-footer-reg", "after")?>  
     <?php $this->applyTemplateHook("main-footer", "end")?>
 </div>
 <?php $this->applyTemplateHook("main-footer", "after")?>

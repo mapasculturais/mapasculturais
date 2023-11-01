@@ -30,6 +30,7 @@ use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Definitions\RegistrationAgentRelation;
 use MapasCulturais\Definitions\RegistrationFieldType;
+use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\MailTemplateNotFound;
 use MapasCulturais\Exceptions\NotFound;
 use MapasCulturais\Exceptions\WorkflowRequest;
@@ -73,7 +74,8 @@ use Throwable;
  * @property-read Definitions\RegistrationAgentRelation[] $registeredRegistrationAgentRelations definições de agentes relacionados de inscrições registrados
  * @property-read Definitions\RegistrationAgentRelation $registrationOwnerDefinition definição do agente owner de inscrição
  * @property-read Definitions\ChatThreadType $registeredChatThreadTypes definições dos tipos de chat registrados
-
+ 
+ * @property-read User $user usuário autenticado
 
  * 
  * @package MapasCulturais
@@ -129,7 +131,7 @@ class App {
      * Instância do subsite ativo
      * @var Entities\Subsite|null
      */
-    protected Entities\Subsite $subsite;
+    protected Entities\Subsite|null $subsite = null;
 
     /**
      * Instância dos módulos ativos
@@ -412,11 +414,12 @@ class App {
         $this->_initAutoloader();
         $this->_initCache();
         $this->_initDoctrine();
+        
+        $this->_initSubsite();
 
         $this->_initRouteManager();
         $this->_initAuthProvider();
 
-        $this->_initSubsite();
         $this->_initTheme();
 
         $this->applyHookBoundTo($this, 'app.init:before');
@@ -747,10 +750,12 @@ class App {
         } catch ( \Exception $e) { }
 
 
-        if($this->_subsite){
-            $this->subsite->applyApiFilters();
-            $this->subsite->applyConfigurations($this->config);
-        }
+        $this->hook('app.init:after', function () {
+            if($this->subsite){
+                $this->subsite->applyApiFilters();
+                $this->subsite->applyConfigurations();
+            }
+        });
     }
 
     /**
@@ -773,7 +778,17 @@ class App {
      * @return void 
      */
     protected function _initTheme() {
-        $theme_class = "\\" . $this->config['themes.active'] . '\Theme';
+
+        if($this->subsite){
+            $this->cache->setNamespace($this->config['app.cache.namespace'] . ':' . $this->subsite->id);
+
+            $theme_class = $this->subsite->namespace . "\Theme";
+            $theme_instance = new $theme_class($this->config['themes.assetManager'], $this->subsite);
+        } else {
+            $theme_class = $this->config['themes.active'] . '\Theme';
+            $theme_instance = new $theme_class($this->config['themes.assetManager']);
+        }
+
         $theme_path = $theme_class::getThemeFolder() . '/';
 
         if (file_exists($theme_path . 'conf-base.php')) {
@@ -784,17 +799,6 @@ class App {
         if (file_exists($theme_path . 'config.php')) {
             $theme_config = require $theme_path . 'config.php';
             $this->config = array_merge($this->config, $theme_config);
-        }
-
-
-        if($this->_subsite){
-            $this->cache->setNamespace($this->config['app.cache.namespace'] . ':' . $this->_subsite->id);
-
-            $theme_class = $this->_subsite->namespace . "\Theme";
-            $theme_instance = new $theme_class($this->config['themes.assetManager'], $this->_subsite);
-        } else {
-            $theme_class = $this->config['themes.active'] . '\Theme';
-            $theme_instance = new $theme_class($this->config['themes.assetManager']);
         }
 
         $this->view = $theme_instance;
@@ -1033,7 +1037,7 @@ class App {
      * @return Entities\Subsite|null 
      */
     public function getCurrentSubsite(): Entities\Subsite|null {
-        return $this->_subsite;
+        return $this->subsite;
     }
 
     /**
@@ -1044,8 +1048,8 @@ class App {
     public function getCurrentSubsiteId(): int|null {
         // @TODO: alterar isto quando for implementada a possibilidade de termos 
         // instalações de subsite com o tema diferente do Subsite
-        if($this->_subsite){
-            return $this->_subsite->id;
+        if($this->subsite){
+            return $this->subsite->id;
         }
 
         return null;
@@ -1237,6 +1241,7 @@ class App {
      * @return bool 
      */
     function isEnabled(string $entity){
+
         $entities = [
             'agent' => 'agents',
             'space' => 'spaces',
@@ -1250,7 +1255,11 @@ class App {
 
         $entity = $entities[$entity] ?? $entity;
 
-        return (bool) $this->config['app.enabled.' . $entity] ?? false;
+        $enabled = (bool) $this->config['app.enabled.' . $entity] ?? false;
+        
+        $this->applyHookBoundTo($this, "app.isEnabled({$entity})", [&$enabled]);
+
+        return $enabled;
     }
 
      /**
@@ -1842,13 +1851,19 @@ class App {
 
     /**
      * Adiciona a entidade na fila de reprocessamento de cache de permissão 
+     * 
      * @param Entity $entity 
+     * @param User $user = null
+     * 
      * @return void 
      */
-    public function enqueueEntityToPCacheRecreation(Entity $entity) {
+    public function enqueueEntityToPCacheRecreation(Entity $entity, User $user = null) {
         if (!$entity->__skipQueuingPCacheRecreation) {
-            $entity_key = $entity->id ? "$entity" : "$entity".spl_object_id($entity);
-            $this->_permissionCachePendingQueue["$entity_key"] = $entity;
+            $entity_key = $entity->id ? "{$entity}" : "{$entity}:".spl_object_id($entity);
+            if($user) {
+                $entity_key = "{$entity_key}:{$user->id}";
+            }
+            $this->_permissionCachePendingQueue[$entity_key] = [$entity, $user];
         }
     }
 
@@ -1856,10 +1871,17 @@ class App {
      * Verifica se a entidade já está na fila de reprocessamento de cache de permissão
      * 
      * @param Entity $entity 
+     * @param User $user = null
+     * 
      * @return bool 
      */
-    public function isEntityEnqueuedToPCacheRecreation(Entity $entity) {
-        return isset($this->_permissionCachePendingQueue["$entity"]);
+    public function isEntityEnqueuedToPCacheRecreation(Entity $entity, User $user = null) {
+        $entity_key = $entity->id ? "{$entity}" : "{$entity}:".spl_object_id($entity);
+        if($user) {
+            $entity_key = "{$entity_key}:{$user->id}";
+        }
+
+        return isset($this->_permissionCachePendingQueue[$entity_key]);
     }
 
     /**
@@ -1867,15 +1889,19 @@ class App {
      */
     public function persistPCachePendingQueue() {
         $created = false;
-        foreach($this->_permissionCachePendingQueue as $entity) {
+        foreach($this->_permissionCachePendingQueue as $config) {
+            $entity = $config[0];
+            $user = $config[1];
             if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
                     'objectId' => $entity->id, 
                     'objectType' => $entity->getClassName(),
-                    'status' => 0
+                    'status' => 0,
+                    'user' => $user
                 ])) {
                 $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
                 $pendingCache->objectId = $entity->id;
                 $pendingCache->objectType = $entity->getClassName();
+                $pendingCache->user = $user;
                 $pendingCache->save(true);
                 $this->log->debug("pcache pending: $entity");
                 $created = true;
@@ -1933,8 +1959,8 @@ class App {
             FROM permission_cache_pending
             WHERE 
                 status = 0 AND 
-                CONCAT (object_type, object_id) NOT IN (
-                    SELECT CONCAT(object_type, object_id) 
+                CONCAT (object_type, object_id, usr_id) NOT IN (
+                    SELECT CONCAT(object_type, object_id, usr_id) 
                     FROM permission_cache_pending WHERE 
                     status > 0
                 )');
@@ -1954,7 +1980,7 @@ class App {
             try {
                 $entity = $this->repo($item->objectType)->find($item->objectId);
                 if ($entity) {
-                    $entity->recreatePermissionCache();
+                    $entity->recreatePermissionCache($item->user ? [$item->user] : null);
                 }
                 $item = $this->repo('PermissionCachePending')->find($item->id);
                 $this->em->remove($item);

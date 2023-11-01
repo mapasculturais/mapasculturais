@@ -4,13 +4,13 @@ namespace MapasCulturais\Themes\BaseV1;
 
 use MapasCulturais;
 use MapasCulturais\App;
-use MapasCulturais\Controllers\Agent;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
 use MapasCulturais\Entities\Registration;
 use Respect\Validation\length;
 use MapasCulturais\i;
 use OpportunityPhases\Module as Phases;
+use MapasCulturais\Utils;
 
 
 class Theme extends MapasCulturais\Theme {
@@ -1023,7 +1023,6 @@ class Theme extends MapasCulturais\Theme {
             $this->type = 1;
         });
 
-        //
         $app->hook('GET(subsite.single):before', function() use($app) {
 
             $entities = [

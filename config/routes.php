@@ -83,6 +83,8 @@ return [
 
             'certificado' => ['relatedSeal','single'],
 
+            'perguntas-frequentes' => ['faq', 'index'],
+
         ],
         'controllers' => [
             'painel'         => 'panel',

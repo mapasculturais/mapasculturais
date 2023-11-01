@@ -24,32 +24,33 @@ class Module extends \MapasCulturais\Module
 
         $self = $this;
 
-        // Adiciona link da página de suporte no topo da ficha de inscrição
-        $app->hook('template(registration.view.header-fieldset):end', function() use ($app){            
-            $entity = $this->controller->requestedEntity;
-            if($entity->canUser('support')){
-                $this->part('support/support-link', ['entity' => $entity]);
-            }
-        });
-
-        // Adiciona a aba do módulo de suporte na oportunidade
-        $app->hook('template(opportunity.<<single|edit>>.tabs):end', function () use ($app, $self) {
-            $entity = $this->controller->requestedEntity; 
-            if ($entity->canUser("@control") || $self->isSupportUser($entity, $app->user)) {
-                $this->part('support/opportunity-support--tab', ['entity' => $entity, 'user' => $app->user, 'module' => $self]);
-            }
-        });
-
-        // Adiciona o conteúdo na aba de suporte dentro da opportunidade
-        $app->hook('template(opportunity.<<single|edit>>.tabs-content):end', function () use ($app, $self) {
-            $entity = $this->controller->requestedEntity; 
-            if($entity->canUser('@control')){
-                $this->part('support/opportunity-support-settings', ['entity' => $entity]);
-            }
-
-            
+        if($app->view->version < 2) {
+            // Adiciona link da página de suporte no topo da ficha de inscrição
+            $app->hook('template(registration.view.header-fieldset):end', function() use ($app){            
+                $entity = $this->controller->requestedEntity;
+                if($entity->canUser('support')){
+                    $this->part('support/support-link', ['entity' => $entity]);
+                }
+            });
+    
+            // Adiciona a aba do módulo de suporte na oportunidade
+            $app->hook('template(opportunity.<<single|edit>>.tabs):end', function () use ($app, $self) {
+                $entity = $this->controller->requestedEntity; 
+                if ($entity->canUser("@control") || $self->isSupportUser($entity, $app->user)) {
+                    $this->part('support/opportunity-support--tab', ['entity' => $entity, 'user' => $app->user, 'module' => $self]);
+                }
+            });
+    
+            // Adiciona o conteúdo na aba de suporte dentro da opportunidade
+            $app->hook('template(opportunity.<<single|edit>>.tabs-content):end', function () use ($app, $self) {
+                $entity = $this->controller->requestedEntity; 
+                if($entity->canUser('@control')){
+                    $this->part('support/opportunity-support-settings', ['entity' => $entity]);
+                }
                 $this->part('support/opportunity-support', ['entity' => $entity]);
-        });
+            });
+        }
+        
         // permissões granulares com uso de transactions
         $app->hook("PATCH(registration.single):before", function () use ($app, $self) {
             if ($self->isSupportUser($this->requestedEntity->opportunity, $app->user) ){
