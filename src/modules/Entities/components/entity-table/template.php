@@ -14,9 +14,10 @@ $this->import('
         <li v-if="!header.required">
             <button type="button" @click="toggleColumn(header)">
                 {{header.text}}
+                
             </button>
         </li>
     </template>
 </ul>
-<EasyDataTable :headers="activeHeaders" :body-row-class-name="customRowClassName" :items="items" rows-per-page-message="<?= i::esc_attr__('linhas por página')?>">
+<EasyDataTable :headers="activeHeaders" table-class-name="entity-table__table" :body-row-class-name="customRowClassName"   :items="items" rows-per-page-message="<?= i::esc_attr__('linhas por página')?>">
 </EasyDataTable>
