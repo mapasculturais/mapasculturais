@@ -1023,14 +1023,14 @@ class Module extends \MapasCulturais\Module{
                 if ($next->isLastPhase) {
                     $next_date_from = $next->publishTimestamp;
                     $next_date_to = $next->publishTimestamp;
-                    $next_date_from_string = $next_date_from->format('Y-m-d H:i:s');
-                    $next_date_to_string = $next_date_to->format('Y-m-d H:i:s');
+                    $next_date_from_string = $next_date_from ? $next_date_from->format('Y-m-d H:i:s') : null;
+                    $next_date_to_string = $next_date_to ? $next_date_to->format('Y-m-d H:i:s') : null;
 
                 } else {
                     $next_date_from = $next->evaluationFrom ?: $next->registrationFrom;
                     $next_date_to = $next->evaluationTo ?: $next->registrationTo;
-                    $next_date_from_string = $next_date_from->format('Y-m-d H:i:s');
-                    $next_date_to_string = $next_date_to->format('Y-m-d H:i:s');
+                    $next_date_from_string = $next_date_from ? $next_date_from->format('Y-m-d H:i:s') : null;
+                    $next_date_to_string = $next_date_to ? $next_date_to->format('Y-m-d H:i:s') : null;
                 }
             } else {
                 $next_date_from = null;
@@ -1049,20 +1049,20 @@ class Module extends \MapasCulturais\Module{
                 $previous = $this->previousPhase->evaluationMethodConfiguration ?: $this->previousPhase;
                 $previous_date_from = $previous->evaluationFrom ?: $previous->registrationFrom;
                 $previous_date_to = $previous->evaluationTo ?: $previous->registrationTo;
-                $previous_date_from_string = $previous_date_from->format('Y-m-d H:i:s');
-                $previous_date_to_string = $previous_date_to->format('Y-m-d H:i:s');
+                $previous_date_from_string = $previous_date_from ? $previous_date_from->format('Y-m-d H:i:s') : null;
+                $previous_date_to_string = $previous_date_to ? $previous_date_to->format('Y-m-d H:i:s') : null;
 
             }
 
             /** 
              * Validação da data inicial 
              */
-            if ($next) {
+            if ($next && $next_date_from_string) {
                 $validations['registrationFrom']["\$value <= new DateTime('$next_date_from_string')"] = $next->isLastPhase ? 
                     i::__('A data inicial deve ser anterior a data de publicação da última fase') :
                     i::__('A data inicial deve ser anterior a data de início da próxima fase');
             }
-            if ($previous) {
+            if ($previous && $previous_date_from_string) {
                 $validations['registrationFrom']["\$value >= new DateTime('$previous_date_from_string')"] = $previous->isFirstFase ?
                     i::__('A data inicial deve ser posterior a data de início do período de inscrições') :
                     i::__('A data inicial deve ser posterior a data de início da fase anterior');
@@ -1071,12 +1071,12 @@ class Module extends \MapasCulturais\Module{
             /** 
              * Validação da data final 
              */
-            if ($next) {
+            if ($next && $next_date_to_string) {
                 $validations['registrationTo']["\$value <= new DateTime('$next_date_to_string')"] = $next->isLastPhase ? 
                     i::__('A data final deve ser anterior a data de publicação da última fase') :
                     i::__('A data final deve ser anterior a data de término da próxima fase');
             }
-            if ($previous) {
+            if ($previous && $previous_date_to_string) {
                 $validations['registrationTo']["\$value >= new DateTime('$previous_date_to_string')"] = $previous->isFirstFase ?
                     i::__('A data final deve ser posterior a data de término do período de inscrições') :
                     i::__('A data final deve ser posterior a data de término da fase anterior');
@@ -1087,11 +1087,11 @@ class Module extends \MapasCulturais\Module{
              */
             if ($this->publishTimestamp) {
                 
-                if ($this->isLastPhase) {
+                if ($this->isLastPhase && $previous_date_to_string) {
                     $validations['publishTimestamp']["\$value >= new DateTime('$previous_date_to_string')"] = i::__('A data de publicação final do resultado deve ser posterior a data de término da fase anterior');
                 } else if($date_to_string = $this->registrationTo ? $this->registrationTo->format('Y-m-d H:i:s') : null ) {
                     $validations['publishTimestamp']["\$value >= new DateTime('$date_to_string')"] = i::__('A data de publicação do resultado deve ser posterior a data de término da fase');
-                } else {
+                } else if($previous_date_to_string) {
                     $validations['publishTimestamp']["\$value >= new DateTime('$previous_date_to_string')"] = i::__('A data de publicação do resultado deve ser posterior a data de término da fase anterior');
 
                 }
