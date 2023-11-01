@@ -28,39 +28,41 @@ $this->import('
             <div class="label-evaluation">
                 <div class="label-evaluation__check">
                     <input type="checkbox" v-model="pending" class="label-evaluation__check--pending">
-                    <label class="label-evaluation__check--label"><?= i::__('Mostrar somente pendentes') ?></label>
+                    <span class="label-evaluation__check--label"><?= i::__('Mostrar somente pendentes') ?></span>
                 </div>
             </div>
         </div>
         <ul class="evaluation-list">
             <li v-for="evaluation in evaluations" :class="[{'evaluation-list__card--modify': entity.id == evaluation.registrationid}, 'evaluation-list__card']">
                 <div class="evaluation-list__content">
-                    <a :href="evaluation.url">
+                    <a :href="evaluation.url" class="link">
                         <div class="card-header">
                             <mc-icon name='agent-1'></mc-icon>
-                            <label class="card-header__name">{{evaluation.agentname}}</label>
+                            <span class="card-header__name">{{evaluation.agentname}}</span>
                         </div>
                         <div class="card-content">
                             <div class=" card-content__middle">
-                                <label class="subscribe"><?= i::__('Inscrição') ?></label>
+                                <span class="subscribe"><?= i::__('Inscrição') ?></span>
                                 <span class="value">
                                     <strong>{{evaluation.registrationid}}</strong>
                                 </span>
                             </div>
                             <div class="card-content__middle">
-                                <label class="subscribe"><?= i::__('Data da inscrição') ?></label>
+                                <span class="subscribe"><?= i::__('Data da inscrição') ?></span>
                                 <span class="value">
                                     <strong>{{dateFormat(entity.createTimestamp)}}</strong>
                                 </span>
                             </div>
                         </div>
                         <div class="card-state">
-                            <label class="state"><?= i::__('Status de avaliação') ?></label>
+                            <span class="state"><?= i::__('Resultado de avaliação') ?></span>
                             <span :class="verifyState(evaluation)" class="card-state__info">
                                 <mc-icon  name="circle"></mc-icon>
                                 <h5 class="bold" v-if="evaluation.resultString">{{evaluation.resultString}}</h5>
                                 <h5 class="bold" v-if="!evaluation.resultString"> <?= i::__('Pendente') ?></h5>
                             </span>
+                            <mc-link route="registration/evaluation/" :params="[evaluation.registrationid]"  class="button button--primary-outline"><?= i::__('Acessar') ?></mc-link>
+
                         </div>
                     </a>
                 </div>

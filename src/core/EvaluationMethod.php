@@ -164,13 +164,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
     private $_canUserEvaluateRegistrationCache = [];
 
-    public function canUserEvaluateRegistration(Entities\Registration $registration, $user){
+    public function canUserEvaluateRegistration(Entities\Registration $registration, $user, $skip_exceptions = false){
         if($user->is('guest')){
             return false;
         }
         $cache_id = "$registration -> $user";
 
-        if(isset($this->_canUserEvaluateRegistrationCache[$cache_id])){
+        if(!$skip_exceptions && isset($this->_canUserEvaluateRegistrationCache[$cache_id])){
             return $this->_canUserEvaluateRegistrationCache[$cache_id];
         }
 
@@ -237,9 +237,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
         }
 
-        $can = $can || in_array($user->id, $registration->getValuersIncludeList());
+        if(!$skip_exceptions) {
+            $can = $can || in_array($user->id, $registration->valuersIncludeList);
+            $can = $can && !in_array($user->id, $registration->valuersExcludeList);
+            $this->_canUserEvaluateRegistrationCache[$cache_id] = $can;
+        }
         
-        $this->_canUserEvaluateRegistrationCache[$cache_id] = $can;
         return $can;
     }
 

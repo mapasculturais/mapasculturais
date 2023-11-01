@@ -11,4 +11,7 @@ $this->jsObject['config']['homeHeader'] = [
     'banner' => $app->config['homeHeader.banner'] ? $this->asset($app->config['homeHeader.banner'], false) : '',
     'bannerLink' => $app->config['homeHeader.bannerLink'],
     'downloadableLink' => $app->config['homeHeader.downloadableLink'],
+    'secondBanner' => $app->config['homeHeader.secondBanner'] ? $this->asset($app->config['homeHeader.secondBanner'], false) : '',
+    'secondBannerLink' => $app->config['homeHeader.secondBannerLink'],
+    'secondDownloadableLink' => $app->config['homeHeader.secondDownloadableLink'],
 ];

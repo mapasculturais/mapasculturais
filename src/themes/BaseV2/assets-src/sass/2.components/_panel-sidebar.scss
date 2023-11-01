@@ -55,6 +55,13 @@
             svg {
                 color: var(--mc-primary-500);
             }
+            &:focus,
+            &:hover {
+                svg {
+                    color: var(--mc-high-500);
+                }
+
+        }
         }
     }
 

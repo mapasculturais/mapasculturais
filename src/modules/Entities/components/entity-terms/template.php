@@ -10,12 +10,14 @@ $this->import('
     mc-multiselect
     mc-popover 
     mc-tag-list 
+    mc-title
 ');
 ?>
 <div v-if="editable || entity.terms?.[taxonomy].length > 0" :class="['entity-terms', classes, error]">
-    <h4 class="entity-terms__title bold" v-if="title == ''"> {{taxonomy}} </h4> 
-    <h4 class="entity-terms__title bold" v-else> {{title}} </h4>
-    <span v-if="required && !hideRequired" class="required">*<?=i::__('obrigatório');?></span>
+    <div class="entity-terms__header">
+        <mc-title tag="h4" :short-length="0" size="medium" class="bold">{{title ?? taxonomy}}</mc-title>
+        <span v-if="required && !hideRequired" class="entity-terms__required">*<?=i::__('obrigatório');?></span>
+    </div>
  
     <mc-popover v-if="allowInsert && editable" openside="down-right"  @open="loadTerms()" :title="popoverTitle">
         <template #button="popover">

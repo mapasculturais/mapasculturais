@@ -442,13 +442,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     function getExtraPermissionCacheUsers(){
         $users = [];
-        if($this->publishedRegistrations) {
-            $registrations = App::i()->repo('Registration')->findBy(['opportunity' => $this, 'status' => Registration::STATUS_APPROVED]);
-            $r = new Registration;
-            foreach($registrations as $r){
-                $users = array_merge($users, $r->getUsersWithControl());
-            }
-        }
         
         if($this->evaluationMethodConfiguration){
             $users = array_merge($users, $this->evaluationMethodConfiguration->getUsersWithControl());
@@ -1155,11 +1148,11 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->canUser('@control')) {
-            return false;
-        }
-
         $can_evaluate = $this->canUserEvaluateRegistrations($user);
+
+        if($this->canUser('@control')) {
+            return $can_evaluate ? true : false;
+        }
         
         $today = new \DateTime('now');
 
