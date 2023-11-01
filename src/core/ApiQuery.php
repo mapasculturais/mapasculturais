@@ -2825,7 +2825,6 @@ class ApiQuery {
             
             $pkey = $this->addSingleParam($this->_permission);
             $_uid = $user->id;
-            
             if(($this->_permission != 'view' || $class::isPrivateEntity()) && (!$this->usesOriginSubsite || !$this->adminInSubsites)) {
                 $this->joins .= " JOIN e.__permissionsCache $alias WITH $alias.action = $pkey AND $alias.userId = $_uid ";
                 
@@ -2851,7 +2850,17 @@ class ApiQuery {
                     $admin_where = implode(' OR ', $admin_where);
                     $admin_where = "OR ($admin_where)";
                 }
-                $this->where .= " $and ( e.{$this->pk} IN (SELECT IDENTITY($alias.owner) FROM {$this->permissionCacheClassName} $alias WHERE $alias.owner = e AND $alias.action = $pkey AND $alias.userId = $_uid) $admin_where) ";
+
+                if($this->usesStatus && $this->_permission == 'view' && !$class::isPrivateEntity()) {
+                    $params = $this->apiParams;
+                    if($this->entityClassName === Opportunity::class && (isset($params['id']) || isset($params['parent']) || isset($params['status']))) {
+                        $view_where = 'OR e.status > 0 OR e.status = -1';    
+                    } else {
+                        $view_where = 'OR e.status > 0';
+                    }
+                }
+                
+                $this->where .= " $and ( e.{$this->pk} IN (SELECT IDENTITY($alias.owner) FROM {$this->permissionCacheClassName} $alias WHERE $alias.owner = e AND $alias.action = $pkey AND $alias.userId = $_uid) $admin_where $view_where) ";
             }
         }
     }
