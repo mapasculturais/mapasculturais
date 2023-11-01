@@ -40,13 +40,17 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity">
         <template #metadata>
-            <dl>
+            <dl class="metadata__id" v-if="entity.id">
+                <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
+                <dd><strong>{{entity.id}}</strong></dd>
+            </dl> 
+            <dl v-if="entity.type">
                 <dt><?= i::__('Tipo') ?></dt>
                 <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
             </dl>
             <dl v-if="entity.parent">
                 <dt><?= i::__('Projeto integrante de') ?></dt>
-                <mc-link :entity="entity.parent"></mc-link>
+                <dd><mc-link :entity="entity.parent"></mc-link></dd>
             </dl>
         </template>
     </entity-header>
@@ -55,7 +59,7 @@ $this->breadcrumb = [
             <div class="tabs__info">
                 <mc-container>
                     <main>
-                        <opportunity-list :ids="entity.relatedOpportunities"></opportunity-list>
+                        <opportunity-list></opportunity-list>
                         <div class="grid-12">
                             <div v-if="entity.emailPublico || entity.telefonePublico" class="col-12 additional-info">
                                 <h4 class="additional-info__title"><?php i::_e("Informações adicionais"); ?></h4>
@@ -90,10 +94,9 @@ $this->breadcrumb = [
                             <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></mc-share-links>
                             <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                            <div v-if="entity.relatedOpportunities?.length > 0 || entity.children?.length > 0" class="col-12">
+                            <div v-if="entity.children?.length > 0" class="col-12">
                                 <h4><?php i::_e('Propriedades do Projeto'); ?></h4>
                                 <entity-list v-if="entity.children?.length > 0" title="<?php i::esc_attr_e('Subprojetos'); ?>" type="project" :ids="entity.children"></entity-list>
-                                <entity-list title="<?php i::esc_attr_e('Oportunidades');?>" type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
                             </div>
                         </div>
                     </aside>
@@ -103,8 +106,8 @@ $this->breadcrumb = [
                         </div>
                     </aside>
                 </mc-container>
-                <entity-actions :entity="entity"></entity-actions>
             </div>
         </mc-tab>
     </mc-tabs>
+    <entity-actions :entity="entity"></entity-actions>
 </div>
