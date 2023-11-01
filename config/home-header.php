@@ -17,4 +17,14 @@ return [
     'homeHeader.bannerLink' => env('HOME_HEADER_LINK', ''),
     /* Define se link é para download ou para abrir em uma nova aba */
     'homeHeader.downloadableLink' => env('HOME_HEADER_DOWNLOADABLE', false),
+
+    /* 
+    Define o nome do asset do segundo banner do header da homepage 
+    ex: `img/meu-segundo-banner.jpg` (pasta assets/img/meu-segundo-banner.jpg do tema)
+    */
+    'homeHeader.secondBanner' => env('HOME_HEADER_BANNER', ''),
+    /* Link vinculado ao banner */
+    'homeHeader.secondBannerLink' => env('HOME_HEADER_LINK', ''),
+    /* Define se link é para download ou para abrir em uma nova aba */
+    'homeHeader.secondDownloadableLink' => env('HOME_HEADER_SECOND_DOWNLOADABLE', false),
 ];

@@ -229,7 +229,13 @@ class Metadata extends \MapasCulturais\Definition{
                 }
             },
             'multiselect' => function($value){
-                return is_null($value) ? null : json_decode($value, true);
+                $result = is_null($value) ? null : json_decode($value, true);
+
+                if($value && !$result && ($temp_result = explode(';', $value))) {
+                    $result = $temp_result;
+                }
+
+                return $result;
             }
         ];
 

@@ -15,6 +15,9 @@ html, body {
     width: 100%;
     line-height: normal;
 }
+a {
+    text-decoration: none;
+}
 
 h1, h2, h3, h4, h5, h6, p, small {
     font-family: var(--mc-font-headings);
@@ -56,6 +59,10 @@ p {
     font-weight: var(--mc-font-regular);
     font-size: $font-size-xs;
     line-height: size(22);
+}
+ 
+a {
+    text-decoration: none;
 }
 
 small {

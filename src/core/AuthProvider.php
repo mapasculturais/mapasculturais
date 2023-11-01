@@ -78,7 +78,7 @@ abstract class AuthProvider {
     protected function _requireAuthentication() {
         $app = App::i();
         if($app->request->isAjax() || $app->request->getHeaderLine('Content-Type') === 'application/json'){
-            $app->halt(401, \MapasCulturais\i::__('Esta ação requer autenticação'));
+            $app->view->controller->errorJson(\MapasCulturais\i::__('Esta ação requer autenticação'), 401);
         }else{
             $app->redirect($app->controller('auth')->createUrl(''), 302);
         }

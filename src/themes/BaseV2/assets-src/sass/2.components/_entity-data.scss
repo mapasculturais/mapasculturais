@@ -1,0 +1,23 @@
+@use '../0.settings/mixins' as *;
+
+.entity-data {
+    display: flex;
+    flex-direction: column;
+    gap: size(8);
+
+    &__label {
+        font-size: var(--mc-font-size-xs);
+        font-weight: 600;
+    }
+    
+    &__data {
+        align-items: center;
+        background-color: var(--mc-gray-100);
+        border-radius: var(--mc-border-radius-xs);
+        display: flex;
+        font-size: var(--mc-font-size-sm);
+        font-weight: 700;
+        min-height: size(64);
+        padding: size(20) size(16);
+    }
+}

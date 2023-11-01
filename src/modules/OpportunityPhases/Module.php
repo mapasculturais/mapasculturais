@@ -1014,83 +1014,129 @@ class Module extends \MapasCulturais\Module{
          * Validação das datas da fase de coleta de dados em relação às fases anterior e posterior
          */
         $app->hook('entity(Opportunity).validations', function(&$validations) {
-            if($this->parent) {
-                $previous = $this->previousPhase;
-                $prev_em = $previous->evaluationMethodConfiguration;
-
-                if($prev_em) {
-                    $previous_date = max($prev_em->evaluationTo, $previous->registrationTo);
-                } else {
-                    $previous_date = $previous->registrationTo;
-                }
-
-                if($previous_date) {
-                    $previous_date = $previous_date->format('Y-m-d H:i:s');
-                    $validations['registrationFrom']["\$value >= new DateTime('$previous_date')"] = i::__('A data inicial deve ser maior que a data final da fase anterior');
-                    
-                    if ($this->isLastPhase && $this->publishTimestamp < $previous->registrationTo) {
-                        $validations['publishTimestamp']["\$value >= new DateTime('$previous_date')"] = i::__('A data de publicação do resultado deve ser maior que a data final da fase anterior');
-                    }
-                }
+            /** @var Opportunity $this */
+            if ($this->firstPhase->isNew()) {
+                return;
             }
 
-            if (($next = $this->nextPhase) && !$this->isLastPhase) {
-                if($next->isLastPhase) {
-                    $next_date = $next->publishTimestamp;
-                    $next_error = i::__('A data final deve ser menor que a data de publicação do resultado final');
-                } else if(is_object($next)){
-                    $next_date = $next->registrationFrom;
-                    $next_error = i::__('A data final deve ser menor que a data inicial da próxima fase');
-                }
+            if ($next = $this->evaluationMethodConfiguration ?: $this->nextPhase ){
+                if ($next->isLastPhase) {
+                    $next_date_from = $next->publishTimestamp;
+                    $next_date_to = $next->publishTimestamp;
+                    $next_date_from_string = $next_date_from ? $next_date_from->format('Y-m-d H:i:s') : null;
+                    $next_date_to_string = $next_date_to ? $next_date_to->format('Y-m-d H:i:s') : null;
 
-                if ($next_date) {
-                    $next_date = $next_date->format('Y-m-d H:i:s');
-                    $validations['registrationTo']["\$value <= new DateTime('$next_date')"] = $next_error;
+                } else {
+                    $next_date_from = $next->evaluationFrom ?: $next->registrationFrom;
+                    $next_date_to = $next->evaluationTo ?: $next->registrationTo;
+                    $next_date_from_string = $next_date_from ? $next_date_from->format('Y-m-d H:i:s') : null;
+                    $next_date_to_string = $next_date_to ? $next_date_to->format('Y-m-d H:i:s') : null;
+                }
+            } else {
+                $next_date_from = null;
+                $next_date_to = null;
+                $next_date_from_string = null;
+                $next_date_to_string = null;
+            }
+
+            if ($this->isFirstPhase) {
+                $previous = null;
+                $previous_date_from = null;
+                $previous_date_to = null;
+                $previous_date_from_string = '';
+                $previous_date_to_string = '';
+            } else {
+                $previous = $this->previousPhase->evaluationMethodConfiguration ?: $this->previousPhase;
+                $previous_date_from = $previous->evaluationFrom ?: $previous->registrationFrom;
+                $previous_date_to = $previous->evaluationTo ?: $previous->registrationTo;
+                $previous_date_from_string = $previous_date_from ? $previous_date_from->format('Y-m-d H:i:s') : null;
+                $previous_date_to_string = $previous_date_to ? $previous_date_to->format('Y-m-d H:i:s') : null;
+
+            }
+
+            /** 
+             * Validação da data inicial 
+             */
+            if ($next && $next_date_from_string) {
+                $validations['registrationFrom']["\$value <= new DateTime('$next_date_from_string')"] = $next->isLastPhase ? 
+                    i::__('A data inicial deve ser anterior a data de publicação da última fase') :
+                    i::__('A data inicial deve ser anterior a data de início da próxima fase');
+            }
+            if ($previous && $previous_date_from_string) {
+                $validations['registrationFrom']["\$value >= new DateTime('$previous_date_from_string')"] = $previous->isFirstFase ?
+                    i::__('A data inicial deve ser posterior a data de início do período de inscrições') :
+                    i::__('A data inicial deve ser posterior a data de início da fase anterior');
+            }
+
+            /** 
+             * Validação da data final 
+             */
+            if ($next && $next_date_to_string) {
+                $validations['registrationTo']["\$value <= new DateTime('$next_date_to_string')"] = $next->isLastPhase ? 
+                    i::__('A data final deve ser anterior a data de publicação da última fase') :
+                    i::__('A data final deve ser anterior a data de término da próxima fase');
+            }
+            if ($previous && $previous_date_to_string) {
+                $validations['registrationTo']["\$value >= new DateTime('$previous_date_to_string')"] = $previous->isFirstFase ?
+                    i::__('A data final deve ser posterior a data de término do período de inscrições') :
+                    i::__('A data final deve ser posterior a data de término da fase anterior');
+            }
+
+            /** 
+             * Validação da data de publicação dos resultados 
+             */
+            if ($this->publishTimestamp) {
+                
+                if ($this->isLastPhase && $previous_date_to_string) {
+                    $validations['publishTimestamp']["\$value >= new DateTime('$previous_date_to_string')"] = i::__('A data de publicação final do resultado deve ser posterior a data de término da fase anterior');
+                } else if($date_to_string = $this->registrationTo ? $this->registrationTo->format('Y-m-d H:i:s') : null ) {
+                    $validations['publishTimestamp']["\$value >= new DateTime('$date_to_string')"] = i::__('A data de publicação do resultado deve ser posterior a data de término da fase');
+                } else if($previous_date_to_string) {
+                    $validations['publishTimestamp']["\$value >= new DateTime('$previous_date_to_string')"] = i::__('A data de publicação do resultado deve ser posterior a data de término da fase anterior');
+
                 }
             }
         });
 
         /**
-         * Validação das datas da fase de coleta de dados em relação às fases anterior e posterior
+         * Validação das datas da fase de avaliação em relação às fases anterior e posterior
          */
         $app->hook('entity(EvaluationMethodConfiguration).validations', function(&$validations) {
             $previous_phase = $this->previousPhase;
-            if ($previous_phase instanceof Opportunity) {
-                if ($date_from = $previous_phase->registrationFrom) {
-                    $date_from = $date_from->format('Y-m-d H:i:s');
-                    $validations['evaluationFrom']["\$value >= new DateTime('$date_from')"] = i::__('A data inicial deve ser maior que a data de inicio da coleta de dados da fase anterior');
-                }
-                if ($date_to = $previous_phase->registrationTo) {
-                    $date_to = $date_to->format('Y-m-d H:i:s');
-                    $validations['evaluationTo']["\$value >= new DateTime('$date_to')"] = i::__('A data final não pode ser menor que a data final da fase anterior');
-                }
-
-            } else if ($previous_phase instanceof EvaluationMethodConfiguration) {
-                if ($date_from = $previous_phase->evaluationTo) {
-                    $date_from = $date_from->format('Y-m-d H:i:s');
-                    $validations['evaluationFrom']["\$value >= new DateTime('$date_from')"] = i::__('A data inicial deve ser maior que a data de término das avaliações da fase anterior');
-                }
+            
+            $previous_date_from = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationFrom : $previous_phase->evaluationFrom;
+            $previous_date_from_string = $previous_date_from->format('Y-m-d H:i:s');
+            
+            if($this->evaluationFrom < $previous_date_from) {
+                $validations['evaluationFrom']["\$value >= new DateTime('$previous_date_from_string')"] = i::__('A data inicial deve ser maior ou igual a data de inicio da fase anterior');
             }
-
+            
+            $previous_date_to = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationTo : $previous_phase->evaluationTo;
+            $previous_date_to_string = $previous_date_to->format('Y-m-d H:i:s');
+            
+            if($this->evaluationTo < $previous_date_to) {
+                $validations['evaluationTo']["\$value >= new DateTime('$previous_date_to_string')"] = i::__('A data final deve ser maior ou igual a data de término da fase anterior');
+            }
+            
             if (!$this->id) {
                 $next_phase = $this->opportunity->lastPhase;
                 $error_message = i::__('A data final deve ser menor que a data de final de publicação dos resultados');
             } else {
                 $next_phase = $this->nextPhase;
-                $error_message = i::__('A data final deve ser menor que a data de inicio da próxima fase');
+                $error_message = i::__('A data final deve ser menor que a data de término da próxima fase');
             }
 
             $date_to = null;
 
             if($next_phase instanceof Opportunity) {
-                $date_to = $next_phase->isLastPhase ? $next_phase->publishTimestamp :  $next_phase->registrationFrom;
+                $date_to = $next_phase->isLastPhase ? $next_phase->publishTimestamp :  $next_phase->registrationTo;
             } else if(is_object($next_phase)) {
-                $date_to = $next_phase->evaluationFrom;
+                $date_to = $next_phase->evaluationTo;
             }
 
             if($date_to) {
                 $date_to = $date_to->format('Y-m-d H:i:s');
-                $validations['evaluationTo']["\$value < new DateTime('$date_to')"] = $error_message;
+                $validations['evaluationTo']["\$value <= new DateTime('$date_to')"] = $error_message;
             }
         });
 

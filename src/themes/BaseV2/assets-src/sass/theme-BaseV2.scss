@@ -16,6 +16,7 @@
 @import '2.components/app-card-content';
 @import '2.components/button';
 @import '2.components/claim-support';
+@import '2.components/complaint-suggestion';
 @import '2.components/container';
 @import '2.components/create-app';
 @import '2.components/create-entity-modal';
@@ -27,6 +28,7 @@
 @import '2.components/entity-activity-card';
 @import '2.components/entity-card';
 @import '2.components/entity-cover';
+@import '2.components/entity-data';
 @import '2.components/entity-file';
 @import '2.components/entity-header';
 @import '2.components/entity-links';
@@ -46,8 +48,10 @@
 @import '2.components/event-age-rating';
 @import '2.components/event-importer-files';
 @import '2.components/event-importer-upload';
+@import '2.components/faq-accordion';
+@import '2.components/faq-search';
+@import '2.components/faq-search-results';
 @import '2.components/error-display';
-@import '2.components/complaint-suggestion';
 @import '2.components/entity-terms';
 @import '2.components/event-info';
 @import '2.components/field';
@@ -63,6 +67,7 @@
 @import '2.components/home-search';
 @import '2.components/link-project';
 @import '2.components/link-opportunity';
+@import '2.components/mc-accordion';
 @import '2.components/mc-breadcrumb';
 @import '2.components/mc-alert';
 @import '2.components/mc-card';
@@ -94,6 +99,7 @@
 @import '2.components/opportunity-evaluations';
 @import '2.components/opportunity-form-export';
 @import '2.components/opportunity-form-import';
+@import '2.components/opportunity-list';
 @import '2.components/opportunity-phase-config-data-collection';
 @import '2.components/opportunity-phase-evaluations';
 @import '2.components/opportunity-phase-header';
@@ -157,6 +163,7 @@
 @import 'pages/agents';
 @import 'pages/seals';
 @import 'pages/events';
+@import 'pages/faq';
 @import 'pages/opportunity';
 @import 'pages/panel-registrations';
 @import 'pages/print-registration';

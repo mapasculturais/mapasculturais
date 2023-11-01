@@ -24,6 +24,7 @@ $this->import('
     space-info
     mc-tab
     mc-tabs
+    opportunity-list
 ');
 
 $this->breadcrumb = [
@@ -37,7 +38,11 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity">
         <template #metadata>
-            <dl>
+            <dl class="metadata__id" v-if="entity.id">
+                <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
+                    <dd><strong>{{entity.id}}</strong></dd>
+            </dl> 
+            <dl v-if="entity.type">
                 <dt><?= i::__('Tipo') ?></dt>
                 <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
             </dl>
@@ -48,10 +53,12 @@ $this->breadcrumb = [
         </template>
     </entity-header>
     <mc-tabs class="tabs">
+        <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
                 <mc-container>
                     <main>
+                        <opportunity-list></opportunity-list>
                         <div class="grid-12">
                             <div class="col-12">
                                 <space-info :entity="entity"></space-info>
@@ -64,10 +71,9 @@ $this->breadcrumb = [
                             <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>                            
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>                            
-                            <div v-if="(entity.children && entity.children.length >0) || (entity.relatedOpportunities && entity.relatedOpportunities.length>0)" class="col-12">
+                            <div v-if="entity.children && entity.children.length >0" class="col-12">
                                 <h4><?php i::_e('Propriedades do Espaço');?></h4>
                                 <entity-list v-if="entity.children?.length>0" title="<?php i::esc_attr_e('Subespaços');?>" type="space" :ids="entity.children"></entity-list>
-                                <entity-list title="<?php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>                                
                             </div>
                         </div>
                     </main>
@@ -89,8 +95,9 @@ $this->breadcrumb = [
                         </div>
                     </aside>
                 </mc-container>
-                <entity-actions :entity="entity"></entity-actions>
             </div>
         </mc-tab>
+        <?php $this->applyTemplateHook('tabs','end') ?>
     </mc-tabs>
+    <entity-actions :entity="entity"></entity-actions>
 </div>

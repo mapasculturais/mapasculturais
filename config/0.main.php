@@ -85,5 +85,12 @@ return [
     ]
     ```
     */
-    'ini.set' => json_decode(env('PHP_INI_SET', '[]'))
+    'ini.set' => json_decode(env('PHP_INI_SET', '[]')),
+
+    /*Define mensagem padrão :
+        Ex: 'Precisa de ajuda? Clique para falar com nossa equipe de suporte por chat. Ou envie um email para ',
+        
+    */
+    'footer.supportMessage' => '',
+
 ];

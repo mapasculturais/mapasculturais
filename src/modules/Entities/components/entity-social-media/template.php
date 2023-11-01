@@ -10,15 +10,12 @@ $this->import('
 ');
 ?>
 <div :class="classes" v-if="editable || show" class="entity-social-media">
-
-    <h4 v-if="!editable" class="entity-social-media__title bold"> <?php i::_e("Redes sociais") ?> </h4>
+    <mc-title v-if="!editable" tag="h4" :short-length="0" size="medium" class="bold"><?= i::__("Redes sociais") ?></mc-title>
 
     <div v-if="!editable" class="entity-social-media__links">
-
         <div v-if="entity.instagram" class="entity-social-media__links--link">
             <mc-icon name="instagram"></mc-icon>
             <a :href="entity.instagram">{{entity.instagram}}</a>
-
         </div>
 
         <div v-if="entity.twitter" class="entity-social-media__links--link">
@@ -39,13 +36,13 @@ $this->import('
         <div v-if="entity.linkedin" class="entity-social-media__links--link">
             <mc-icon name="linkedin"></mc-icon>
             <a :href="entity.linkedin">{{entity.linkedin}}</a>
-
         </div>
+
         <div v-if="entity.vimeo" class="entity-social-media__links--link">
             <mc-icon name="vimeo"></mc-icon>
             <a :href="entity.vimeo">{{entity.vimeo}}</a>
-
         </div>
+
         <div v-if="entity.spotify" class="entity-social-media__links--link">
             <mc-icon name="spotify"></mc-icon>
             <a :href="entity.spotify">{{entity.spotify}}</a>
@@ -54,15 +51,13 @@ $this->import('
         <div v-if="entity.pinterest" class="entity-social-media__links--link">
             <mc-icon name="pinterest"></mc-icon>
             <a :href="entity.pinterest">{{entity.pinterest}}</a>
-
         </div>
     </div>
 
 
-    <h4 v-if="editable" class="entity-social-media__title bold"> <?php i::_e("Adicionar redes sociais") ?> </h4>
+    <mc-title v-if="editable" tag="h4" :short-length="0" size="medium" class="bold"><?= i::__("Adicionar redes sociais") ?></mc-title>
 
     <div v-if="editable" class="entity-social-media__edit">
-
         <div class="entity-social-media__edit--link">
             <mc-icon name="instagram"></mc-icon>
             <entity-field :entity="entity" prop="instagram"></entity-field>
@@ -77,10 +72,12 @@ $this->import('
             <mc-icon name="facebook"></mc-icon>
             <entity-field :entity="entity" prop="facebook"></entity-field>
         </div>
+
         <div class="entity-social-media__edit--link">
             <mc-icon name="vimeo"></mc-icon>
             <entity-field :entity="entity" prop="vimeo"></entity-field>
         </div>
+
         <div class="entity-social-media__edit--link">
             <mc-icon name="youtube"></mc-icon>
             <entity-field :entity="entity" prop="youtube"></entity-field>
@@ -101,5 +98,4 @@ $this->import('
             <entity-field :entity="entity" prop="pinterest"></entity-field>
         </div>
     </div>
-
 </div>

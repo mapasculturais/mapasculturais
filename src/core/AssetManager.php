@@ -154,24 +154,46 @@ abstract class AssetManager{
 
     }
 
+    private $_filenamePrefix = null;
+
+    function getFilenamePrefix() {
+        $app = App::i();
+        if($this->_filenamePrefix) {
+            return $this->_filenamePrefix;
+        }
+
+        if($app->cache->contains(__METHOD__)) {
+            $this->_filenamePrefix = $app->cache->fetch(__METHOD__);
+        } else {
+            $this->_filenamePrefix = uniqid();
+            $app->cache->save(__METHOD__, $this->_filenamePrefix);
+        }
+
+        return $this->_filenamePrefix;
+    }
+
     function _getPublishedAssetFilename($asset_filename, $include_hash_in_filename = true){
         $pathinfo = pathinfo($asset_filename);
         $ftime = filemtime($asset_filename);
-        $hash = crc32($asset_filename);
+        $hash = base_convert(crc32($asset_filename . $ftime . $this->getFilenamePrefix()), 10, 36);
+
         $folder_name = basename($pathinfo['dirname']);
+
         if ($include_hash_in_filename) {
-            return "{$pathinfo['filename']}--{$folder_name}--{$hash}-{$ftime}.{$pathinfo['extension']}";
+            return "{$pathinfo['filename']}.{$folder_name}.{$hash}.{$pathinfo['extension']}";
         } else {
-            return "{$pathinfo['filename']}--{$folder_name}--.{$pathinfo['extension']}";
+            return "{$pathinfo['filename']}.{$folder_name}.{$pathinfo['extension']}";
         }
     }
 
     function _getPublishedScriptsGroupFilename($group, $content){
-        return $group . '-' . md5($content) . '.js';
+        $hash = base_convert(crc32($content . $this->getFilenamePrefix()),10,36);
+        return "{$group}.{$hash}.js";
     }
 
     function _getPublishedStylesGroupFilename($group, $content){
-        return $group . '-' . md5($content) . '.css';
+        $hash = base_convert(crc32($content . $this->getFilenamePrefix()),10,36);
+        return "{$group}.{$hash}.css";
     }
     
     function publishFolder($dir, $destination = null){
