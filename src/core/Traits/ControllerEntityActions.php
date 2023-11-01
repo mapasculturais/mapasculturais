@@ -387,7 +387,7 @@ trait ControllerEntityActions {
 
     function finish($data, $status = 200, $isAjax = false){
         $app = App::i();
-
+        $app->applyHookBoundTo($this, 'request.finish', [$data, $status]);
         if(isset($this->getData['redirectTo'])){
             $app->redirect($this->getData['redirectTo'], $status);
         }elseif($this->isAjax() || $isAjax || $app->request->getHeaderLine('MapasSDK-REQUEST')){
