@@ -1347,7 +1347,7 @@ class ApiQuery {
                         $_subquery_where_id_in = implode($mapping['users']);
                         $_target_property = $this->pk;
                     }else if ($mtype === 1) {
-                        $_subquery_where_id_in = $this->getSubqueryInIdentities($entities, $prop);
+                        $_subquery_where_id_in = $this->getSubqueryInIdentities($entities);
                         $_target_property = $mapping['joinColumns'][0]['referencedColumnName'] ?? $this->pk;
                     }else if ($mtype === 2) {
                         if ($selected) {
