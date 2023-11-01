@@ -64,9 +64,9 @@ $this->import('
                 <label class="link-opportunity__link semibold"><?php i::_e('Vincule a oportunidade a uma entidade:') ?><a @click="toggleSelected()"><mc-icon name="closed" class="link-opportunity__closed"></mc-icon></a></label>
                 <div class="link-opportunity__opt">
                     <div class="link-opportunity__option">
-                        <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
+                        <select-entity type="project" @select="setEntity($event)" openside="right-down">
                             <template #selected>
-                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos ') ?>{{verifySelected(entityTypeSelected)}}</label>
+                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos projetos') ?></label>
 
                             </template>
                             <template #button="{ toggle }">
@@ -97,9 +97,9 @@ $this->import('
                     </div>
                     <div class="link-opportunity__option">
 
-                        <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
+                        <select-entity type="event" @select="setEntity($event)" openside="right-down">
                             <template #selected>
-                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos ') ?>{{verifySelected(entityTypeSelected)}}</label>
+                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos eventos') ?></label>
                             </template>
                             <template #button="{ toggle }">
                                 <a class="link-opportunity__selection" @click="toggle()">
@@ -129,9 +129,9 @@ $this->import('
                     </div>
                     <div class="link-opportunity__option">
 
-                        <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
+                        <select-entity type="space" @select="setEntity($event)" openside="right-down">
                             <template #selected>
-                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos ') ?>{{verifySelected(entityTypeSelected)}}</label>
+                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos espaços') ?></label>
 
                             </template>
                             <template #button="{ toggle }">
@@ -162,9 +162,9 @@ $this->import('
                     </div>
                     <div class="link-opportunity__option">
 
-                        <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
+                        <select-entity type="agent" @select="setEntity($event)" openside="right-down">
                             <template #selected>
-                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos ') ?>{{verifySelected(entityTypeSelected)}}</label>
+                                <label class="link-opportunity__message"><?php i::_e('Selecione um dos agentes') ?></label>
 
                             </template>
                             <template #button="{ toggle }">
