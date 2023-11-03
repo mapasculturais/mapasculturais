@@ -159,7 +159,7 @@ trait EntityPermissionCache {
         $this->__enabled = true;
     }
     
-    function deletePermissionsCache($users){
+    function deletePermissionsCache($users = null){
         $app = App::i();
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
@@ -167,9 +167,13 @@ trait EntityPermissionCache {
             return;
         }
         
-        $users_ids = implode(',', array_map(function($user) { return $user->id; }, $users));
+        $complement = "";
+        if($users){
+            $users_ids = implode(',', array_map(function($user) { return $user->id; }, $users));
+            $complement.="AND user_id IN ({$users_ids})";
+        }
 
-        $conn->executeQuery("DELETE FROM pcache WHERE object_type = '{$class_name}' AND object_id = {$this->id} AND user_id IN ({$users_ids})");
+        $conn->executeQuery("DELETE FROM pcache WHERE object_type = '{$class_name}' AND object_id = {$this->id} {$complement}");
     }
        
     function enqueueToPCacheRecreation(array $users = []){
