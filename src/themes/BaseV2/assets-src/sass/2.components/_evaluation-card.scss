@@ -22,9 +22,11 @@
     }
 
     &__group {
+        align-items: flex-start;
         display: flex;
         flex-direction: column;
         gap: size(6);
+        text-align: left;
     }
 
     &__title {
@@ -43,6 +45,7 @@
         grid-row-end: 3;
         grid-row-start: 2;
         padding: size(16);
+        width: 100%;
 
         @media (max-width: size(600)) {
             margin-left: size(-63);
@@ -51,8 +54,8 @@
 
     &__info {
         display: flex;
-        gap: size(16) size(40);
         flex-wrap: wrap;
+        gap: size(16) size(40);
     }
 
     &__button {
