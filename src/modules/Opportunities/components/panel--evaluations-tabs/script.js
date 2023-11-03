@@ -7,14 +7,14 @@ app.component('panel--evaluations-tabs', {
         return { text, hasSlot }
     },
 
-    mounted() {
-        
-    },
-
     data() {
-    },
-    
-    methods: {
-        
+        let query = {
+            '@permissions': 'viewEvaluations',
+            'status': 'IN(1,-1)',
+        };
+
+        return {
+            query,
+        }
     },
 });
