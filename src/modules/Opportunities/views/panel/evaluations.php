@@ -16,7 +16,7 @@ $this->import('
                     <mc-icon name="opportunity"></mc-icon>
                 </div>
 
-                <mc-title tag="h1" short-length="0" :long-length="100" size="big"><?= i::__('Minhas avaliações') ?></mc-title>
+                <h2><?= i::__('Minhas avaliações') ?></h2>
             </div>
         </div>
 
