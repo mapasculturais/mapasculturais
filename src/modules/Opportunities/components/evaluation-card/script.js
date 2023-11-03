@@ -16,11 +16,19 @@ app.component('evaluation-card', {
 
     computed: {
         dateFrom() {
-            return new McDate(this.entity.registrationFrom.date);
+            if (this.entity.registrationFrom instanceof McDate) {
+                return this.entity.registrationFrom;
+            } else {
+                return new McDate(this.entity.registrationFrom.date);
+            }
         },
 
         dateTo() {
-            return new McDate(this.entity.registrationTo.date);
+            if (this.entity.registrationTo instanceof McDate) {
+                return this.entity.registrationTo;
+            } else {
+                return new McDate(this.entity.registrationTo.date);
+            }
         },
     },
 });
