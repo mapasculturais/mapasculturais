@@ -1,6 +1,5 @@
 app.component('link-opportunity', {
     template: $TEMPLATES['link-opportunity'],
-    // emits: ['create'],
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -26,7 +25,6 @@ app.component('link-opportunity', {
             type: Boolean,
             default: true
         },
-       
     },
 
 
@@ -44,21 +42,13 @@ app.component('link-opportunity', {
                     return __('agente', 'link-opportunity');
             }
         },
-
-        entityColorClass() {
-            let type = this.entity.ownerEntity.__objectType;
-            return type + '__color' + (type == 'agent' ? '--dark' : '');
-        },
-        entityColorBorder() {
-             type = this.entity.ownerEntity.__objectType;
-            return type + '__border' + (type == 'agent' ? '--dark' : '');
-        },
     },
 
     methods: {
         setSelected() {
             this.selected = false;
         },
+        
         verifySelected(entityTypeSelected) {
             let selected = '';
             switch (entityTypeSelected) {
@@ -77,8 +67,8 @@ app.component('link-opportunity', {
             }
         },
         setEntity(Entity) {
-            console.log(Entity);
             this.entity.ownerEntity = Entity;
+            
         },
         toggleSelected() {
             this.selected = !this.selected;
