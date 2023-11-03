@@ -13,14 +13,14 @@ app.component('opportunity-registrations-table' , {
     },
     data() {
         return {
-            headers: [
-                {},
-            ],
-            items: [
-               
-                {},
-            ],
-
+            // headers: [
+            //     { text: "Nome", value: "Nome", required: true },
+            //     { text: "ID", value: "id", required: true },
+            //     { text: "cpf", value: "cpf", required: true },
+            //   ],
+            //   items: [
+            //     { Nome: "Nometeste", id: 1 , cpf: "089478383"},
+            //   ],
         }
     },
 

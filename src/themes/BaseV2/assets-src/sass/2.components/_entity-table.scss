@@ -1,11 +1,18 @@
 @use '../0.settings/mixins' as *;
 
 .vue3-easy-data-table {
-    & table tr td {
-        background-color: red;
-    }
+    &__main {
+        & > table > theader {
 
-    &__header {}
+            background-color: red;
+        }
+    }
+    &__header {
+        & > tr > th {
+            background-color: red;
+        }
+        .vue3-easy-data-table__main {}
+    }
 
     &__body {
         & td {
@@ -20,7 +27,9 @@
     &__table {
 
 
-        .vue3-easy-data-table__header & {}
+        .vue3-easy-data-table__header & {
+          
+        }
 
         .vue3-easy-data-table__body {
 
