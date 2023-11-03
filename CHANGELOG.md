@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 
 ### Unreleased
+- Adiciona vinculação de entidade no gerenciamento da oportunidade.
 ### Melhorias
 - Adiciona status na edição das entidades
 - Definine forma de alterar o título do modal do componente entity-file
