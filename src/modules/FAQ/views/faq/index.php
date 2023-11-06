@@ -42,13 +42,13 @@ $message = $app->config['module.FAQ']['support-message'] ?? '';
             <?php endforeach; ?>
         </div>
     </div>
-</main>
-<main>
-    <div v-if="global.faqSearch" class="faq__main faq__main--results">
-
-        <faq-search-results index ></faq-search-results>
-    </div>
     <div class="faq__supportmsg">
             <?= $message ?>
     </div>
+</main>
+<main>
+    <div v-if="global.faqSearch" class="faq__main faq__main--results">
+        <faq-search-results index ></faq-search-results>
+    </div>
+    
 </main>
