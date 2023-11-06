@@ -1,1 +1,0 @@
-<li><a href="#entity-opportunities" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Oportunidades");?></a></li>

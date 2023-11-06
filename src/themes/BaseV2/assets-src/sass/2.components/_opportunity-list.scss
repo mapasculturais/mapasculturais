@@ -24,7 +24,6 @@
     }
 
     &__label {
-        font-size: var(--mc-font-size-xs);
     }
 
     &__container {
@@ -65,6 +64,8 @@
         display: flex;
         align-items: flex-start;
         gap: size(10);
+        font-size: var(--mc-font-size-xs);
+
     }
 
     &__icon {

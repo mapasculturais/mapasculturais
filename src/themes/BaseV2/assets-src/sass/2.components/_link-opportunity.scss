@@ -1,0 +1,140 @@
+@use '../0.settings/mixins' as *;
+
+.link-opportunity {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: size(16);
+
+    &__title {
+        font-size: size(--mc-font-size-md);
+    }
+
+    &__selection {
+        grid-template-columns: size(40) 1fr;
+    }
+
+    &__selected {
+        border-radius: 4px;
+        border: 0.5px solid var(--mc-gray-100);
+        max-width: size(296);
+        padding: size(16);
+
+    }
+
+    &__message {
+        font-size: size(12);
+    }
+
+    &__link {
+        font-size: size(14);
+        display: flex;
+        justify-content: space-evenly;
+
+        @media (max-width:size(400)) {
+            font-size: size(12);
+        }
+    }
+ 
+    &__header {
+        display: grid;
+        grid-template-columns: size(56) 1fr;
+        align-items: center;
+        gap: size(4);
+        border-radius: var(--mc-border-radius-xs);
+        padding: size(9) size(13) size(9) size(9);
+       
+    }
+
+    &__info {
+        padding-top: size(16);
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+    }
+
+    &__name {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    &__closed {
+
+        bottom: 33px;
+        left: 191px;
+        position: relative;
+
+        @media (max-width:size(400)) {
+            left: size(170);
+        }
+
+    }
+
+    &__itemlabel {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+    }
+
+    .selectButton {
+        cursor: pointer;
+        color: var(--mc-primary-500);
+        font-weight: 700;
+        font-size: size(12);
+        line-height: size(16);
+        text-align: center;
+
+        &.disabled {
+            color: var(--mc-black);
+            cursor: default;
+            opacity: .3;
+            pointer-events: none;
+        }
+    }
+
+    &__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+    }
+
+    &__change {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+    }
+
+    &__option {
+        color: black;
+        border-radius: 4px;
+        border: 1px solid var(--mc-gray-700);
+        max-width: size(265);
+        width: 100%;
+        padding: size(12) size(7);
+    }
+
+
+    &__opt {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: size(8);
+        padding-top: size(16);
+    }
+
+    &__exchange {
+        display: flex;
+        align-items: center;
+        color: var(--mc-primary-500);
+        gap: size(4);
+    }
+
+    &__ownerEntity {
+        display: grid;
+        text-decoration: none;
+        align-items: center;
+        gap: size(8);
+    }
+
+}

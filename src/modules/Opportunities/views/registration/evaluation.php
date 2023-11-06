@@ -5,6 +5,7 @@ $this->import('
     mc-breadcrumb
     mc-container
     opportunity-evaluations-list
+    mc-alert
     mc-summary-agent
     mc-summary-agent-info
     mc-summary-evaluate
@@ -56,8 +57,13 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                     <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
                 </opportunity-evaluations-list>
             </aside>
-
+            
             <main class="col-6 grid-12">
+                <?php if($entity->opportunity->evaluationMethod->slug === "documentary"):?>
+                   <div class="col-12">
+                       <mc-alert type="warning"><?= i::__('Para iniciar a de avaliação documental, selecione um campo de dados abaixo')?></mc-alert>
+                   </div>
+                <?php endif;?>
                 <mc-summary-agent :entity="entity" classes="col-12"></mc-summary-agent>
                 <registration-info :registration="entity" classes="col-12"></registration-info>
                 <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
@@ -67,8 +73,11 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                 
 
                 <section class="col-12 section">
-                    <div class="section__content">
-                        <div class="card owner">
+                    <div class="col-12">
+                        </div>
+                        
+                        <div class="section__content">
+                            <div class="card owner">
                             <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
                         </div>
                     </div>
@@ -78,20 +87,17 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
             <aside class="col-3">
                 <div class="registration__right-sidebar">
                     <div class="registration__actions">
-                        <?php if($entity->opportunity->evaluationMethodConfiguration && $entity->opportunity->evaluationMethodConfiguration->type):?>
-                            <h3 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethodConfiguration->type->name ?></strong></h3>
-                        <?php endif;?>
+                        <h4 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethod->name ?></strong></h4>
                         <registration-evaluation-info :entity="entity"></registration-evaluation-info>
-
-                        <?php if ($valuer_user) : ?>
-                            <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                        <?php else : ?>
-                            <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                        <?php endif ?>
+                            <?php if ($valuer_user) : ?>
+                                <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                            <?php else : ?>
+                                <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
+                            <?php endif ?>
+                        </div>
+                        <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
                     </div>
-                    <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
                 </div>
-
             </aside>
         </div>
     </div>

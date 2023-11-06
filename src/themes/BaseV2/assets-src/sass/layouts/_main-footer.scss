@@ -154,64 +154,64 @@
                 }
             }
         }
+    }
 
-        &--reg {
-            background: #042A2B;    
-            padding: size(14) size(16);    
+    &__reg {
+        background: #042A2B;    
+        padding: size(14) size(16);    
+        width: 100%;
+
+        &-content {
+            align-items: center;
+            color: var(--mc-high-500);
+            display: flex;
+            font-weight: 400;
+            font-size: size(14);
+            flex-wrap: wrap;
+            justify-content: space-between;
+            line-height: size(19);
+            margin: 0 auto;
+            max-width: size(1150);
             width: 100%;
 
-            &-content {
+            p {
+                display: flex;
+                flex-wrap: wrap;
+                gap: size(5);
+                margin: 0;
+            }
+
+            a {
                 align-items: center;
                 color: var(--mc-high-500);
                 display: flex;
-                font-weight: 400;
-                font-size: size(14);
-                flex-wrap: wrap;
-                justify-content: space-between;
-                line-height: size(19);
-                margin: 0 auto;
-                max-width: size(1150);
-                width: 100%;
-
-                p {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: size(5);
-                    margin: 0;
-                }
-
-                a {
-                    align-items: center;
-                    color: var(--mc-high-500);
-                    display: flex;
-                    gap: size(8);
-                    text-decoration: none;
-                }
-
-                .mapas {
-                    align-items: center;
-                    display: flex;
-                    gap: size(5);
-                    line-height: size(13);
-                    font-weight: 700;
-
-                    .iconify {
-                        width: size(12);
-                        height: size(12);
-                    }
-                }
+                gap: size(8);
+                text-decoration: none;
             }
 
-            @media (max-width: size(800)) {
-                &-content {
-                    align-items: center;
-                    flex-direction: column;
-                    gap: size(14);
-                    justify-content: center;
+            .mapas {
+                align-items: center;
+                display: flex;
+                gap: size(5);
+                line-height: size(13);
+                font-weight: 700;
 
-                    p {
-                        justify-content: center;
-                    }
+                .iconify {
+                    width: size(12);
+                    height: size(12);
+                }
+            }
+        }
+
+        @media (max-width: size(800)) {
+            &-content {
+                align-items: center;
+                flex-direction: column;
+                gap: size(14);
+                justify-content: center;
+
+                p {
+                    justify-content: center;
                 }
             }
         }

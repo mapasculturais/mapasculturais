@@ -1,0 +1,46 @@
+@use '../0.settings/mixins' as *;
+
+.faq-search {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    &--section{
+        max-width: size(870);
+    }
+    &__input {
+        border: var(--mc-border-hairline) var(--mc-gray-500);
+        border-radius: var(--mc-border-radius-pill) 0 0 var(--mc-border-radius-pill);
+        border-right: 0;
+        font-size: var(--mc-font-size-xs);
+        font-weight: 400;
+        line-height: size(19);
+        margin: 0;
+        padding-right: 0;
+        padding: size(13.6) size(20);
+        width: 100%;
+
+        @media (max-width:size(500)) {
+            padding-bottom: size(8);
+            padding-top: size(8);
+        }
+    }
+
+    &__button {
+        background-color: var(--mc-white);
+        border: var(--mc-border-hairline) var(--mc-gray-500);
+        border-left: 0;
+        border-radius: 0 var(--mc-border-radius-pill) var(--mc-border-radius-pill) 0;
+        cursor: pointer;
+        padding: size(15.1) size(18);
+
+        .iconify {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        @media (max-width:size(500)) {
+            padding: size(9.5) size(20);
+        }
+    }
+}

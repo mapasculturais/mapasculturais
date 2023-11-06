@@ -10,6 +10,10 @@ $this->import('
     mc-avatar
     mc-entities
     mc-popover
+    create-project
+    create-event 
+    create-space
+    create-agent
 ');
 ?>
     <mc-popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" :classes="[classes, 'select-entity__popover']"> 
@@ -30,7 +34,9 @@ $this->import('
                     </template>
 
                     <template #default="{entities}">
-                        <p v-if="entities.length > 0" class="select-entity__description"> {{itensText}} </p>
+                        <slot name="selected">
+                            <p v-if="entities.length > 0" class="select-entity__description"> {{itensText}} </p>
+                        </slot>
                         <ul class="select-entity__results">
                             <li v-for="entity in entities" class="select-entity__results--item" :class="type" @click="selectEntity(entity, close)">
                                 <span class="icon">
@@ -41,12 +47,30 @@ $this->import('
                         </ul>
                     </template>
                 </mc-entities>
-
                 <div v-if="createNew" class="select-entity__add">
-                    <p> <?php i::__('ou') ?> </p>
-                    <a href="" class="select-entity__add--button">
-                        {{buttonText}}
-                    </a>
+                    <div class="select-entity__footer">
+                        <label class="select-entity__other"> <?php i::_e('ou') ?> </label>
+                        <create-project v-if="type=='project'">
+                            <template #default="{modal}">
+                                <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar projeto') ?> </button>
+                            </template>
+                        </create-project>
+                        <create-event v-if="type=='event'">
+                            <template #default="{modal}">
+                                <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar evento') ?> </button>
+                            </template>
+                        </create-event>
+                        <create-space v-if="type=='space'">
+                            <template #default="{modal}">
+                                <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar espaço') ?> </button>
+                            </template>
+                        </create-space>
+                        <create-agent v-if="type=='agent'">
+                            <template #default="{modal}">
+                                <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar agente') ?> </button>
+                            </template>
+                        </create-agent>
+                    </div>
                 </div>
             </div>
         </template>

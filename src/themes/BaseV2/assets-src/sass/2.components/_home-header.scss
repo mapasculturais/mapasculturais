@@ -53,9 +53,16 @@
         margin: 0;
     }
 
-    &__banner {
+    &__banners {
         z-index: 2;
+        display: grid;
+        gap: size(16);
+    
+    }
+
+    &__banner {
         max-width: size(570);
+        display: flex;
 
         a {
             display: flex;

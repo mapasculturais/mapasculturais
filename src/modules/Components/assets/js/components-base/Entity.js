@@ -139,16 +139,17 @@ class Entity {
     }
 
     catchErrors(res, data) {
+        const message = data.data.message;
         
         if (res.status >= 500 && res.status <= 599) {
-            this.sendMessage(this.text('erro inesperado'), 'error');
+            this.sendMessage(message || this.text('erro inesperado'), 'error');
         } else if(res.status == 400) {
             if (data.error) {
                 this.__validationErrors = data.data;
-                this.sendMessage(this.text('erro de validacao'), 'error');
+                this.sendMessage(message || this.text('erro de validacao'), 'error');
             }
         } else if(res.status == 403) {
-            this.sendMessage(this.text('permissao negada'), 'error');
+            this.sendMessage(message || this.text('permissao negada'), 'error');
         }
     }
 

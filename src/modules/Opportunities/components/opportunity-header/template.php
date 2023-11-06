@@ -22,14 +22,14 @@ $this->import('
                     <a :href="firstPhase.getUrl('single')">{{firstPhase.name}}</a>
                 </span>
                 <div class="title__info">
-                        <div class="data">
-                            <div class="data__title"> <?= i::__('ID')?>: </div>
-                            <div class="data__info "><strong>{{opportunity.idate}}</strong></div>
-                        </div>
-                        <div class="data">
-                            <div class="data__title"> <?= i::__('Tipo')?>: </div>
-                            <div class="data__info opportunity__color"> {{firstPhase.type?.name}} </div>
-                        </div>
+                    <div class="data">
+                        <div class="data__title"> <?= i::__('ID')?>: </div>
+                        <div class="data__info "><strong>{{opportunity.id}}</strong></div>
+                    </div>
+                    <div class="data">
+                        <div class="data__title"> <?= i::__('Tipo')?>: </div>
+                        <div class="data__info opportunity__color"> {{firstPhase.type?.name}} </div>
+                    </div>
                     <div v-if="firstPhase.ownerEntity?.name" class="data">
                         <div class="data__title"> {{type}}: </div>
                         <div class="data__info"> <mc-link :entity="firstPhase.ownerEntity"></mc-link> <!-- {{firstPhase.ownerEntity?.name}} --> </div>

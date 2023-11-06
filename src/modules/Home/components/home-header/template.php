@@ -23,11 +23,20 @@ $this->import('
             </p>
         </div>
 
-        <div v-if="banner" class="home-header__banner">
-            <a v-if="bannerLink" :href="bannerLink" :download="downloadableLink ? '' : undefined"  :target="!downloadableLink ? '_blank' : null">
-                <img :src="banner" />
-            </a>
-            <img v-if="!bannerLink" :src="banner" />
+        <div class="home-header__banners">
+            <div v-if="banner" class="home-header__banner">
+                <a v-if="bannerLink" :href="bannerLink" :download="downloadableLink ? '' : undefined"  :target="!downloadableLink ? '_blank' : null">
+                    <img :src="banner" />
+                </a>
+                <img v-if="!bannerLink" :src="banner" />
+            </div>
+
+            <div v-if="secondBanner" class="home-header__banner">
+                <a v-if="secondBannerLink" :href="secondBannerLink" :download="secondDownloadableLink ? '' : undefined"  :target="!secondDownloadableLink ? '_blank' : null">
+                    <img :src="secondBanner" />
+                </a>
+                <img v-if="!secondBannerLink" :src="secondBanner" />
+            </div>
         </div>
   
     </div>

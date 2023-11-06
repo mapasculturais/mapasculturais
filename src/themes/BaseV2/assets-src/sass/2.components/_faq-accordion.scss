@@ -1,0 +1,106 @@
+@use '../0.settings/mixins' as *;
+
+.faq-accordion {
+    background-color: var(--mc-gray-100);
+
+    &__items {
+        display: grid;
+        gap: size(8);
+        max-width: size(870);
+    }
+
+    &__intro {
+        padding: size(18) size(16);
+        border-bottom: size(1) solid var(--mc-gray-300);
+        background: var(--mc-white);
+    }
+
+    &__results {
+        @media (max-width:size(500)) {
+            font-size: size(16);
+        }
+    }
+
+    &__image {
+        max-width: size(272);
+        height: auto;
+        width: 100%;
+        margin: 0 auto;
+
+        @media (max-width:size(500)) {
+            max-width: size(132);
+        }
+    }
+
+    &__msg {
+        font-size: var(--mc-font-size-sm);
+        color: var(--mc-gray-700);
+
+        @media (max-width:size(500)) {
+            font-size: size(14);
+        }
+    }
+
+    &__backhelp {
+        @media (max-width:size(500)) {
+            font-size: size(19);
+        }
+    }
+    &__noresults {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: size(16);
+    }
+
+    &__context {
+        font-size: size(14);
+        border-radius: 0 0 size(8) size(8);
+        font-weight: 600;
+    }
+
+    &__contexts:first-child {
+        padding: 0 size(16) size(8) 0;
+    }
+
+    &__contexts {
+        max-width: size(870);
+        padding: size(24) size(16) size(8) 0;
+
+    }
+
+    &__description {
+        margin-bottom: size(16);
+        background: var(--mc-white);
+        padding: size(16);
+    }
+
+    &__subtitle {
+        font-size: size(14);
+    }
+
+    &__tags {
+        background-color: #FFCF8F;
+        margin: size(16) 0;
+    }
+
+    &__header {
+        padding: size(18) size(16);
+        background: var(--mc-white);
+        justify-content: center;
+        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr size(12);
+        max-width: size(870);
+        border-radius: size(4);
+    }
+
+    &__content {
+        padding: size(16);
+        background: var(--mc-white);
+        border-top: size(1) solid var(--mc-gray-100);
+        max-width: size(870);
+
+    }
+}
