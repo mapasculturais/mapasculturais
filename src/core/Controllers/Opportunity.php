@@ -29,8 +29,34 @@ class Opportunity extends EntityController {
         Traits\ControllerDraft,
         Traits\ControllerArchive,
         Traits\ControllerAPI,
-        Traits\ControllerAPINested;
+        Traits\ControllerAPINested,
+        Traits\ControllerEntityActions {
+            Traits\ControllerEntityActions::PATCH_single as _PATCH_single;
+        }
 
+    function PATCH_single($data = null)
+    {
+        $app = App::i();
+
+        if (isset($this->data['objectType']) && isset($this->data['ownerEntity'])) {
+            $entity = $app->repo($this->data['objectType'])->find($this->data['ownerEntity']);
+            $entity->checkPermission('@control');
+
+            $app->em->beginTransaction();
+            
+            $app->em->getConnection()->update('opportunity', [
+                    'object_type' => $entity->getClassName(), 
+                    'object_id' => $entity->id
+                ], ['id' => $this->data['id']]);
+
+            $app->hook('request.finish', function () use($app) {
+                $app->em->commit();
+            });
+        }
+        
+        self::_PATCH_single();
+    }
+    
     function GET_create() {
         // @TODO: definir entitidade relacionada
 

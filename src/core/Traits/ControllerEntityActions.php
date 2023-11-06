@@ -44,6 +44,32 @@ trait ControllerEntityActions {
         }
     }
 
+    public function ALL_enqueuePCache() {
+        $app = App::i();
+        
+        $this->requireAuthentication();
+
+        $entity = $this->requestedEntity;
+
+        if(!$entity) {
+            $app->pass();
+        }
+
+        $entity->checkPermission('@control');
+
+        $users = [];
+        if ($users_data = $this->data['users'] ?? '') {
+            if($users_data == 'each') {
+                $users = $entity->getExtraPermissionCacheUsers();
+            } else {
+                $users_data = explode(',', $users_data);
+                $users = $app->repo('User')->findBy(['id' => $users_data]);
+            }
+        }
+
+        $entity->enqueueToPCacheRecreation($users);
+    }
+
     /**
      * 
      * @apiDefine APICreate
@@ -199,6 +225,10 @@ trait ControllerEntityActions {
                         $errors[$key] = $list_of_errors;
                     }
                 }
+            }
+
+            if($error) {
+                $this->errorJson($errors);
             }
         }
 
@@ -357,7 +387,7 @@ trait ControllerEntityActions {
 
     function finish($data, $status = 200, $isAjax = false){
         $app = App::i();
-
+        $app->applyHookBoundTo($this, 'request.finish', [$data, $status]);
         if(isset($this->getData['redirectTo'])){
             $app->redirect($this->getData['redirectTo'], $status);
         }elseif($this->isAjax() || $isAjax || $app->request->getHeaderLine('MapasSDK-REQUEST')){

@@ -25,6 +25,7 @@ $this->import('
     mc-share-links
     mc-tab
     mc-tabs
+    opportunity-list
 ');
 
 $label = $this->isRequestedEntityMine() ? i::__('Meus eventos') : i::__('Evantos');
@@ -40,9 +41,9 @@ $this->breadcrumb = [
         <template #metadata>
             <dl class="metadata__id" v-if="entity.id">
                 <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
-                    <dd><strong>{{entity.id}}</strong></dd>
+                <dd><strong>{{entity.id}}</strong></dd>
             </dl> 
-            <dl>
+            <dl v-if="entity.subTitle">
                 <dd>{{entity.subTitle}}</dd>
             </dl>
         </template>
@@ -52,6 +53,7 @@ $this->breadcrumb = [
             <div class="tabs__info">
                 <mc-container>
                     <main>
+                        <opportunity-list></opportunity-list>
                         <div class="grid-12">
                             <event-age-rating :event="entity" classes="col-12"></event-age-rating>
                             <entity-occurrence-list classes="col-12" :entity="entity"></entity-occurrence-list>    
@@ -76,10 +78,7 @@ $this->breadcrumb = [
                             <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
                             <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:');?>"></mc-share-links>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                            <div v-if="entity.relatedOpportunities && entity.relatedOpportunities.length > 0" class="col-12">
-                                <h4><?php i::_e('Propriedades do Evento');?></h4>
-                                <entity-list title="<?php i::esc_attr_e('Oportunidades');?>"  type="opportunity" :ids="[...(entity.ownedOpportunities ? entity.ownedOpportunities : []), ...(entity.relatedOpportunities ? entity.relatedOpportunities : [])]"></entity-list>
-                            </div>
+                        </div>  
                     </aside>
                     <aside>
                         <div class="grid-12">
@@ -87,8 +86,8 @@ $this->breadcrumb = [
                         </div>
                     </aside>
                 </mc-container>
-                <entity-actions :entity="entity"></entity-actions>
             </div>  
         </mc-tab>
     </mc-tabs>        
+    <entity-actions :entity="entity"></entity-actions>
 </div>

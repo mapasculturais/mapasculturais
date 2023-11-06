@@ -31,6 +31,8 @@ app.component('opportunity-create-evaluation-phase' , {
         },
 
         minDate() {
+            return this.previousPhase.registrationFrom?._date || this.previousPhase.evaluationFrom?._date;
+
             if (this.previousPhase.__objectType == 'evaluationmethodconfiguration') {
                 // fase anterior é uma fase de avaliação
                 return this.previousPhase.evaluationTo;

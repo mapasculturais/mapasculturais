@@ -2,6 +2,17 @@
 @use '../0.settings/mixins' as *;
 
 .select-entity {
+    display: flex;
+    flex-direction: column;
+    &__footer {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: size(16);
+        padding-top: size(16);
+    }
+    
     &__popover {
         max-width: size(350);
 

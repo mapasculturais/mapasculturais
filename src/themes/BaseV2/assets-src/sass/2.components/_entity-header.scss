@@ -81,8 +81,7 @@
             }
 
             .rightSide {
-                z-index: 1;
-                padding-top: size(16);
+                padding: 10px 0 0;
 
                 .site {
                     display: flex;
@@ -176,6 +175,7 @@
 
             .metadata {
                 display: flex;
+
                 &__id {
                     font-family: 'Open Sans';
                     font-style: normal;
@@ -190,6 +190,7 @@
                     }
                     
                 }
+                
                 dl {
                     display: inline-block;
                     margin: size(8) size(40) size(16) 0;

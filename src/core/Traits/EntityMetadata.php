@@ -207,6 +207,8 @@ trait EntityMetadata{
      * @return array|mixed The value of the given metadata key or an array of values for all metadatas for this entity.
      */
     function getMetadata($meta_key = null, $return_metadata_object = false){
+        $app = App::i();
+        
         // @TODO estudar como verificar se o objecto $this e $this->__metadata estão completos para caso contrário dar refresh
         if($meta_key){
             $def = $this->getRegisteredMetadata($meta_key, true);
@@ -229,7 +231,22 @@ trait EntityMetadata{
                 }
                 foreach($this->__metadata as $_metadata_object){
                     if($_metadata_object->key == $meta_key){
-                        $metadata_object = $_metadata_object;
+                        if($metadata_object) {
+
+                            $app->disableAccessControl();
+                            if ($metadata_object->id > $_metadata_object->id) {
+                                $metadata_object->delete(true);
+                                $metadata_object = $_metadata_object;
+                            } else {
+                                $_metadata_object->delete(true);
+                            }
+                            $app->enableAccessControl();
+                        } else {
+                            $metadata_object = $_metadata_object;
+                        }
+
+                        // $metadata_object = $_metadata_object;
+
                     }
                 }
 
