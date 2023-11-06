@@ -4,6 +4,8 @@
     position: relative;
     box-sizing: border-box;
     border-radius: var(--mc-border-radius-xs);
+    overflow: hidden;
+    margin-bottom:size(103);
 }
 
 .vue3-easy-data-table__main {
@@ -72,7 +74,7 @@
 
     &.border-cell {
         .vue3-easy-data-table__header th {
-            border-right: px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
         }
 
         .vue3-easy-data-table__header th:last-of-type {
@@ -192,7 +194,13 @@ vue3-easy-data-table__body {
 // fixed-columns feature related
 .vue3-easy-data-table__header th,
 .vue3-easy-data-table__body td {
-    
+    font-family: Open Sans;
+    font-size: size(14);
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: var(--mc-low-700);
+    border-bottom: size(1) solid var(--mc-gray-300);
     &.shadow {
         &::after {
             pointer-events: none;
