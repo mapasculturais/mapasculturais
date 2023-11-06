@@ -1,0 +1,418 @@
+@use '../0.settings/mixins' as *;
+
+.vue3-easy-data-table {
+    position: relative;
+    box-sizing: border-box;
+    border-radius: var(--mc-border-radius-xs);
+}
+
+.vue3-easy-data-table__main {
+    border: none;
+    width: 100%;
+    overflow: auto;
+    background-color: #fff;
+
+    &::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    &::-webkit-scrollbar {
+        width: 7px;
+        height: 7px;
+        background-color: #fff;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: #c1c1c1;
+    }
+
+    &::-webkit-scrollbar-corner {
+        background-color: #fff;
+    }
+
+    &.table-fixed {
+        table {
+            table-layout: fixed;
+        }
+    }
+
+    &.show-shadow {
+
+        th.shadow,
+        td.shadow {
+            &::after {
+                box-shadow: inset 6px 0 5px -3px rgb(0 0 0 / 20%);
+            }
+        }
+    }
+
+    &.fixed-header {
+        th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+    }
+
+    &.hoverable {
+        tr:hover td {
+            background-color: var(--mc-gray-100);
+            color: #212121;
+        }
+
+        .vue3-easy-data-table__body.row-alternation {
+            .even-row:hover td {
+                color: #212121;
+                background-color: #212121;
+            }
+        }
+    }
+
+    &.border-cell {
+        .vue3-easy-data-table__header th {
+            border-right: px solid #e0e0e0;
+        }
+
+        .vue3-easy-data-table__header th:last-of-type {
+            border-right: none;
+        }
+
+        .vue3-easy-data-table__body td {
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .vue3-easy-data-table__body td:last-of-type {
+            border-right: none;
+        }
+    }
+}
+
+.vue3-easy-data-table__body.row-alternation {
+    tr.even-row td {
+        color: #373737;
+        background-color: #fff;
+    }
+}
+
+table {
+    border-collapse: initial;
+    display: table;
+    width: 100%;
+    border-spacing: 0;
+    margin: 0px;
+}
+
+// fixed-columns feature related
+.vue3-easy-data-table__header,
+vue3-easy-data-table__body {
+    position: relative;
+}
+
+.vue3-easy-data-table__header tr {
+    font-size: size(12);
+    border: none;
+    height: size(36);
+}
+
+.vue3-easy-data-table__header th {
+    background-color: #fff;
+    color: #373737;
+    border: none;
+    border-bottom: px solid #e0e0e0;
+
+    padding: 0px 10px;
+
+    position: relative;
+
+    .header {
+        display: flex;
+        align-items: center;
+
+        &.direction-left {
+            justify-content: flex-start;
+        }
+
+        &.direction-center {
+            justify-content: center;
+        }
+
+        &.direction-right {
+            justify-content: flex-end;
+        }
+    }
+
+    &.sortable {
+        cursor: pointer;
+
+        .sortType-icon {
+            border: 5px solid transparent;
+            margin-top: -3px;
+            margin-left: 4px;
+            display: inline-block;
+            height: 0;
+            width: 0;
+            position: relative;
+            border-bottom-color: #373737;
+        }
+
+        .multi-sort__number {
+            border-radius: 50%;
+            height: 1.5em;
+            width: 1.5em;
+            line-height: 1.5em;
+            margin-left: 4px;
+            background-color: #373737;
+            color: #fff;
+        }
+
+        &.none {
+            &:hover {
+                .sortType-icon {
+                    opacity: 1;
+                }
+            }
+
+            .sortType-icon {
+                opacity: 0;
+                transition: 0.5s ease;
+            }
+        }
+
+        &.desc {
+            .sortType-icon {
+                margin-top: 5px;
+                transform: rotate(180deg);
+            }
+        }
+    }
+}
+
+// fixed-columns feature related
+.vue3-easy-data-table__header th,
+.vue3-easy-data-table__body td {
+    
+    &.shadow {
+        &::after {
+            pointer-events: none;
+            content: "";
+            width: 36px;
+            display: inline-block;
+            height: 100%;
+            position: absolute;
+            top: 0px;
+            right: -36px;
+            box-shadow: none;
+        }
+    }
+}
+
+.vue3-easy-data-table__body tr {
+    height: size(36);
+    color: #212121;
+    font-size: size(12);
+    &:last-child {
+        td {
+            border-bottom: none;
+        }
+    }
+
+    &:first-child {
+
+        td {
+            border-bottom: px solid #e0e0e0;
+        }
+    }
+}
+
+.vue3-easy-data-table__body td {
+    padding: 0 10px;
+    background-color: #fff;
+    border: none;
+    border-bottom: px solid #e0e0e0;
+    font-weight: 700;
+    font-size: size(14);
+    font-family: 'Open Sans';
+    color: var(--mc-low-700);
+
+    &:first-child {
+        color: var(--mc-opportunities-500);
+        font-weight: 600;
+        font-size: size(14);
+        font-family: 'Open Sans';
+    }
+    &.direction-left {
+        text-align: left;
+    }
+
+    &.direction-center {
+        text-align: center;
+    }
+
+    &.direction-right {
+        text-align: right;
+    }
+
+    position: relative;
+
+    .expand-icon {
+        border: solid;
+        border-color: #212121;
+
+        border-width: 0 2px 2px 0;
+        display: inline-block;
+        padding: 3px;
+        transform: rotate(-45deg);
+        transition: 0.2s;
+
+        &.expanding {
+            transform: rotate(45deg);
+        }
+    }
+}
+
+// expandable row feature related
+.vue3-easy-data-table__body td.expand {
+    position: relative;
+
+    .expand-loading {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+}
+
+.vue3-easy-data-table__body td.can-expand {
+    cursor: pointer;
+}
+
+.vue3-easy-data-table__footer {
+    background-color: #fff;
+    color: #212121;
+    border-top: 1px solid #e0e0e0;
+    font-size: size(12);
+    height: size(36);
+    padding: 0px 5px;
+
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .pagination__rows-per-page {
+        display: flex;
+        align-items: center;
+    }
+
+    .pagination__items-index {
+        margin: 0px 20px 0px 10px;
+    }
+}
+
+.vue3-easy-data-table__message {
+    color: #212121;
+    font-size: size(12);
+    padding: size(20);
+
+    text-align: center;
+}
+
+.vue3-easy-data-table__loading {
+    z-index: 3;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loading-entity {
+        z-index: 1;
+    }
+}
+
+.vue3-easy-data-table__loading-mask {
+    background-color: #fff;
+    opacity: 0.5;
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+
+//   .vue3-easy-data-table__footer .pagination__rows-per-page[data-v-32683533] {
+//     display: flex;
+//     align-items: center;
+// }
+.easy-data-table__rows-selector {
+    display: inline-block;
+    min-width: 45px;
+    position: relative;
+    margin: 0px 10px;
+    width: auto;
+
+    .rows-input__wrapper {
+        height: 20px;
+        border-bottom: 1px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 5px;
+        cursor: pointer;
+
+        .triangle {
+            display: inline-block;
+            vertical-align: middle;
+            width: 0px;
+            height: 0px;
+            border-top: solid 6px black;
+            border-left: solid 6px transparent;
+            border-right: solid 6px transparent;
+        }
+    }
+
+    ul.select-items {
+        &.show {
+            display: block;
+        }
+
+        &.inside {
+            bottom: 0px;
+            top: auto;
+        }
+
+        position: absolute;
+        top: 20px;
+        left: 0px;
+        width: 100%;
+        display: none;
+        margin: 0px;
+        padding: 0px;
+        text-align: left;
+        list-style-type: none;
+        box-shadow: 0 5px 5px -3px rgb(0 0 0 / 20%),
+        0 8px 10px 1px rgb(0 0 0 / 14%),
+        0 3px 14px 2px rgb(0 0 0 / 12%);
+        z-index: auto;
+
+        li {
+            cursor: pointer;
+            padding: size(5);
+            background-color: #fff;
+
+            &.selected {
+                color: #fff;
+                background-color: var(--mc-success-500);
+            }
+        }
+    }
+}
