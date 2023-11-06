@@ -1,34 +1,49 @@
 @use '../0.settings/mixins' as *;
 
+
 .vue3-easy-data-table {
+    border: none !important;
+    border-radius: var(--mc-border-radius-xs);
+
+    &>table {}
+
     &__main {
-        & > table > theader {
+        &>table>theader {
 
             background-color: red;
         }
     }
+
     &__header {
-        & > tr > th {
+        &>tr>th {
             background-color: red;
         }
+
         .vue3-easy-data-table__main {}
     }
 
     &__body {
-        & td {
+        & tr td {
             background-color: unset;
         }
     }
 
     &__footer {}
+
+    &.entity-table {
+    }
+    
 }
 
 .entity-table {
     &__table {
+        margin-bottom: size(16);
 
 
-        .vue3-easy-data-table__header & {
-          
+        .vue3-easy-data-table__header {
+            &>tr>th {
+                border-bottom: 1px solid var(--mc-gray-300);
+            }
         }
 
         .vue3-easy-data-table__body {
@@ -44,6 +59,7 @@
             &>tr>td {
                 font-weight: bold;
                 font-size: size(14);
+                padding: size(16);
             }
 
 
