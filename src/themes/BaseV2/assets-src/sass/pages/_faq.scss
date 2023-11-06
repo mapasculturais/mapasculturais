@@ -100,16 +100,10 @@
 
     &__message,
     &__supportmsg {
-        display: flex;
-        gap: size(24);
-        flex-direction: column;
-        align-items: left;
-        justify-content: center;
-        padding: size(72) 0 size(80) 0;
-
+        font-size: size(16);
+        padding: size(64) size(16) size(80) size(16);
         @media (max-width: size(750)) {
-
-            align-items: center;
+            align-items: left;
 
         }
     }
@@ -298,7 +292,9 @@
             font-size: var(--mc-font-size-xxs);
         }
     }
-
+    &__link {
+        color: var(--mc-primary-500);
+    }
     &__links {
         display: grid;
         grid-template-columns: 1fr 1fr;
