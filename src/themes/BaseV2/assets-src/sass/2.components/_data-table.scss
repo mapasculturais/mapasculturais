@@ -5,33 +5,33 @@
     box-sizing: border-box;
     border-radius: var(--mc-border-radius-xs);
     overflow: hidden;
-    margin-bottom:size(103);
+    margin-bottom: size(103);
 }
 
 .vue3-easy-data-table__main {
     border: none;
     width: 100%;
     overflow: auto;
-    background-color: #fff;
+    background-color: var(--mc-high-500);
 
     &::-webkit-scrollbar-track {
-        border-radius: 10px;
-        background-color: #fff;
+        border-radius: size(10);
+        background-color: var(--mc-high-500);
     }
 
     &::-webkit-scrollbar {
-        width: 7px;
-        height: 7px;
-        background-color: #fff;
+        width: size(7);
+        height: size(7);
+        background-color: var(--mc-high-500);
     }
 
     &::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        background-color: #c1c1c1;
+        border-radius: size(10);
+        background-color: var(--mc-high-500);
     }
 
     &::-webkit-scrollbar-corner {
-        background-color: #fff;
+        background-color: var(--mc-high-500);
     }
 
     &.table-fixed {
@@ -61,20 +61,20 @@
     &.hoverable {
         tr:hover td {
             background-color: var(--mc-gray-100);
-            color: #212121;
+            color: var(--mc-black);
         }
 
         .vue3-easy-data-table__body.row-alternation {
             .even-row:hover td {
-                color: #212121;
-                background-color: #212121;
+                color: var(--mc-black);
+                background-color: var(--mc-black);
             }
         }
     }
 
     &.border-cell {
         .vue3-easy-data-table__header th {
-            border-right: 1px solid #e0e0e0;
+            border-right: size(1) solid var(--mc-high-500);
         }
 
         .vue3-easy-data-table__header th:last-of-type {
@@ -82,7 +82,7 @@
         }
 
         .vue3-easy-data-table__body td {
-            border-right: 1px solid #e0e0e0;
+            border-right: size(1) solid var(--mc-high-500);
         }
 
         .vue3-easy-data-table__body td:last-of-type {
@@ -93,8 +93,8 @@
 
 .vue3-easy-data-table__body.row-alternation {
     tr.even-row td {
-        color: #373737;
-        background-color: #fff;
+        color: var(--mc-low-300);
+        background-color: var(--mc-high-500);
     }
 }
 
@@ -103,7 +103,7 @@ table {
     display: table;
     width: 100%;
     border-spacing: 0;
-    margin: 0px;
+    margin: 0;
 }
 
 // fixed-columns feature related
@@ -119,12 +119,12 @@ vue3-easy-data-table__body {
 }
 
 .vue3-easy-data-table__header th {
-    background-color: #fff;
-    color: #373737;
+    background-color: var(--mc-high-500);
+    color: var(--mc-low-300);
     border: none;
-    border-bottom: px solid #e0e0e0;
+    border-bottom: size(1) solid var(--mc-high-500);
 
-    padding: 0px 10px;
+    padding: 0 size(10);
 
     position: relative;
 
@@ -150,13 +150,13 @@ vue3-easy-data-table__body {
 
         .sortType-icon {
             border: 5px solid transparent;
-            margin-top: -3px;
-            margin-left: 4px;
+            margin-top: size(-3);
+            margin-left: size(4);
             display: inline-block;
             height: 0;
             width: 0;
             position: relative;
-            border-bottom-color: #373737;
+            border-bottom-color: var(--mc-low-300);
         }
 
         .multi-sort__number {
@@ -164,9 +164,9 @@ vue3-easy-data-table__body {
             height: 1.5em;
             width: 1.5em;
             line-height: 1.5em;
-            margin-left: 4px;
-            background-color: #373737;
-            color: #fff;
+            margin-left: size(4);
+            background-color: var(--mc-low-300);
+            color: var(--mc-high-500);
         }
 
         &.none {
@@ -184,7 +184,7 @@ vue3-easy-data-table__body {
 
         &.desc {
             .sortType-icon {
-                margin-top: 5px;
+                margin-top: size(5);
                 transform: rotate(180deg);
             }
         }
@@ -201,16 +201,17 @@ vue3-easy-data-table__body {
     line-height: normal;
     color: var(--mc-low-700);
     border-bottom: size(1) solid var(--mc-gray-300);
+
     &.shadow {
         &::after {
             pointer-events: none;
             content: "";
-            width: 36px;
+            width: size(36);
             display: inline-block;
             height: 100%;
             position: absolute;
-            top: 0px;
-            right: -36px;
+            top: 0;
+            right: size(-36);
             box-shadow: none;
         }
     }
@@ -218,8 +219,9 @@ vue3-easy-data-table__body {
 
 .vue3-easy-data-table__body tr {
     height: size(36);
-    color: #212121;
+    color: var(--mc-low-700);
     font-size: size(12);
+
     &:last-child {
         td {
             border-bottom: none;
@@ -229,16 +231,16 @@ vue3-easy-data-table__body {
     &:first-child {
 
         td {
-            border-bottom: px solid #e0e0e0;
+            border-bottom: px solid var(--mc-high-500);
         }
     }
 }
 
 .vue3-easy-data-table__body td {
-    padding: 0 10px;
-    background-color: #fff;
+    padding: 0 size(10);
+    background-color: var(--mc-high-500);
     border: none;
-    border-bottom: px solid #e0e0e0;
+    border-bottom: px solid var(--mc-high-500);
     font-weight: 700;
     font-size: size(14);
     font-family: 'Open Sans';
@@ -250,6 +252,7 @@ vue3-easy-data-table__body {
         font-size: size(14);
         font-family: 'Open Sans';
     }
+
     &.direction-left {
         text-align: left;
     }
@@ -266,11 +269,11 @@ vue3-easy-data-table__body {
 
     .expand-icon {
         border: solid;
-        border-color: #212121;
+        border-color: var(--mc-low-700);
 
         border-width: 0 2px 2px 0;
         display: inline-block;
-        padding: 3px;
+        padding: size(3);
         transform: rotate(-45deg);
         transition: 0.2s;
 
@@ -286,8 +289,8 @@ vue3-easy-data-table__body {
 
     .expand-loading {
         position: absolute;
-        top: 0px;
-        left: 0px;
+        top: 0;
+        left: 0;
     }
 }
 
@@ -296,12 +299,12 @@ vue3-easy-data-table__body {
 }
 
 .vue3-easy-data-table__footer {
-    background-color: #fff;
-    color: #212121;
-    border-top: 1px solid #e0e0e0;
+    background-color: var(--mc-high-500);
+    color: var(--mc-low-700);
+    border-top: size(1) solid var(--mc-high-500);
     font-size: size(12);
     height: size(36);
-    padding: 0px 5px;
+    padding: 0 size(5);
 
     box-sizing: border-box;
     width: 100%;
@@ -315,12 +318,12 @@ vue3-easy-data-table__body {
     }
 
     .pagination__items-index {
-        margin: 0px 20px 0px 10px;
+        margin: 0 size(20) 0 size(10);
     }
 }
 
 .vue3-easy-data-table__message {
-    color: #212121;
+    color: var(--mc-low-700);
     font-size: size(12);
     padding: size(20);
 
@@ -333,8 +336,8 @@ vue3-easy-data-table__body {
     position: absolute;
     width: 100%;
     height: 100%;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -345,14 +348,14 @@ vue3-easy-data-table__body {
 }
 
 .vue3-easy-data-table__loading-mask {
-    background-color: #fff;
+    background-color: var(--mc-high-500);
     opacity: 0.5;
 
     position: absolute;
     width: 100%;
     height: 100%;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 1;
 }
 
@@ -363,28 +366,28 @@ vue3-easy-data-table__body {
 // }
 .easy-data-table__rows-selector {
     display: inline-block;
-    min-width: 45px;
+    min-width: size(45);
     position: relative;
-    margin: 0px 10px;
+    margin: 0 size(10);
     width: auto;
 
     .rows-input__wrapper {
-        height: 20px;
-        border-bottom: 1px solid black;
+        height: size(20);
+        border-bottom: size(1) solid black;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0px 5px;
+        padding: 0 size(5);
         cursor: pointer;
 
         .triangle {
             display: inline-block;
             vertical-align: middle;
-            width: 0px;
-            height: 0px;
-            border-top: solid 6px black;
-            border-left: solid 6px transparent;
-            border-right: solid 6px transparent;
+            width: 0;
+            height: 0;
+            border-top: solid size(6) black;
+            border-left: solid size(6) transparent;
+            border-right: solid size(6) transparent;
         }
     }
 
@@ -394,31 +397,31 @@ vue3-easy-data-table__body {
         }
 
         &.inside {
-            bottom: 0px;
+            bottom: 0;
             top: auto;
         }
 
         position: absolute;
-        top: 20px;
-        left: 0px;
+        top: size(20);
+        left: 0;
         width: 100%;
         display: none;
-        margin: 0px;
-        padding: 0px;
+        margin: 0;
+        padding: 0;
         text-align: left;
         list-style-type: none;
         box-shadow: 0 5px 5px -3px rgb(0 0 0 / 20%),
-        0 8px 10px 1px rgb(0 0 0 / 14%),
+        0 8px 10pxsize(1) rgb(0 0 0 / 14%),
         0 3px 14px 2px rgb(0 0 0 / 12%);
         z-index: auto;
 
         li {
             cursor: pointer;
             padding: size(5);
-            background-color: #fff;
+            background-color: var(--mc-high-500);
 
             &.selected {
-                color: #fff;
+                color: var(--mc-high-500);
                 background-color: var(--mc-success-500);
             }
         }
