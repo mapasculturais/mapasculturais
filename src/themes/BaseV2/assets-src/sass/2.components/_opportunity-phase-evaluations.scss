@@ -1,6 +1,6 @@
 @use '../0.settings/mixins' as *;
 
-section.tab-component.evaluations {
+.action-single.tab-component.evaluations {
     background-color: var(--mc-gray-100);
     padding-inline: size(16);
 }
@@ -36,108 +36,110 @@ section.tab-component.evaluations {
     }
 
     .card {
-    &-list {
-        padding-bottom: size(24);
-    }
-    &-evaluation {
-        border-radius: size(4);
-        background-color: var(--mc-high-300);
-        padding: 16px;
-
-        display: flex;
-        flex-direction: column;
-        // justify-items: end;
-
-        img {
-            display: none;
+        &-list {
+            padding-bottom: size(24);
         }
+        &-evaluation {
+            border-radius: size(4);
+            background-color: var(--mc-high-300);
+            padding: 16px;
 
-        &__content {
-            &--title {
-                font-family: 'Open Sans';
-                font-style: normal;
-                font-weight: 700;
-                font-size: size(24);
-                line-height: size(28);
-                padding: size(16) 0 size(8) size(24);
+            display: flex;
+            flex-direction: column;
+            // justify-items: end;
 
+            img {
+                display: none;
             }
 
-            &--items {
-                border: 1px solid var(--mc-gray-100);
-                border-radius: 4px;
-                display: flex;
-                flex-direction: column;
-                max-width: size(1122);
-                margin: 0 size(24) size(16) size(24);
+            &__content {
+                &--title {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: size(24);
+                    line-height: size(28);
+                    padding: size(16) 0 size(8) size(24);
 
-                .phase {
+                }
+
+                &--items {
+                    border: 1px solid var(--mc-gray-100);
+                    border-radius: 4px;
                     display: flex;
-                    flex-direction: row;
-                    gap: size(40);
-                    padding: size(16) 0 size(16) size(11);
+                    flex-direction: column;
+                    max-width: size(1122);
+                    margin: 0 size(24) size(16) size(24);
 
-                    &__title {
-                        &--title {
+                    .phase {
+                        display: flex;
+                        flex-direction: row;
+                        gap: size(40);
+                        padding: size(16) 0 size(16) size(11);
+
+                        &__title {
+                            &--title {
+                                text-transform: uppercase;
+                                font-family: 'Open Sans';
+                                font-style: normal;
+                                font-weight: 400;
+                                font-size: 14px;
+                                line-height: 19px;
+                            }
+
+                            .item {
+                                font-weight: 600;
+                                font-size: size(14);
+                            }
+                        }
+                    }
+
+                    .period {
+                        padding: 0 0 size(16) size(11);
+
+                        &__label {
                             text-transform: uppercase;
-                            font-family: 'Open Sans';
+                            font-family: "Open Sans";
                             font-style: normal;
                             font-weight: 400;
                             font-size: 14px;
                             line-height: 19px;
                         }
 
-                        .item {
+                        &__content {
                             font-weight: 600;
-                            font-size: size(14);
+                            font-size: 14px;
+
                         }
                     }
                 }
+            }
 
-                .period {
-                    padding: 0 0 size(16) size(11);
+            .btn {
+                display: flex;
+                justify-content: flex-end;
+            }
 
-                    &__label {
-                        text-transform: uppercase;
-                        font-family: "Open Sans";
-                        font-style: normal;
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 19px;
-                    }
+            .evaluation-button {
+                width: size(272);
+                border-radius: size(8);
+                display: flex;
+                flex-direction: row;
+                height: size(48);
+                align-items: center;
+                justify-content: flex-end;
+                gap: size(75);
+                background-color: var(--mc-primary-500);
+                color: var(--mc-white);
 
-                    &__content {
-                        font-weight: 600;
-                        font-size: 14px;
-
-                    }
-                }
             }
         }
 
-        .btn {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .evaluation-button {
-            width: size(272);
-            border-radius: size(8);
-            display: flex;
-            flex-direction: row;
-            height: size(48);
-            align-items: center;
-            justify-content: flex-end;
-            gap: size(75);
-            background-color: var(--mc-primary-500);
-            color: var(--mc-white);
-
+        &-list:last-child {
+            padding-bottom: unset;
         }
     }
-    &-list:last-child {
-        padding-bottom: unset;
-    }
-    }
+    
     .out-evalution {
         font-family: 'Open Sans';
         font-style: normal;
