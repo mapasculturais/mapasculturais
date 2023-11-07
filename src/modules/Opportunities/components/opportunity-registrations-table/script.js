@@ -12,16 +12,22 @@ app.component('opportunity-registrations-table' , {
         return { text }
     },
     data() {
-        // return {
-        //     headers: [
-        //         { text: "Nome", value: "Nome", required: true },
-        //         { text: "ID", value: "id", required: true },
-        //         { text: "cpf", value: "cpf", required: true },
-        //       ],
-        //       items: [
-        //         { Nome: "Nometeste", id: 1 , cpf: "089478383"},
-        //       ],
-        // }
+        return {
+            headers: [
+                { text: "Nome", value: "Nome", required: true},
+                { text: "ID", value: "id", required: true },
+                { text: "cpf", value: "cpf", required: true },
+                {text: "status", value: "status"},
+                {text:"", value:"open", required: true},
+                {text:"Situação", value:"option", required: true},
+               
+              ],
+              items: [
+                { Nome: "Nometeste", id: 1 , cpf: "089478383", status: -1},
+                { Nome: "Nomedois", id: 2 , cpf: "089455583", status: 10},
+                { Nome: "Nomedois", id: 2 , cpf: "089455583", status: 10, option: [2,3,4] },
+              ],
+        }
     },
 
     computed: {
