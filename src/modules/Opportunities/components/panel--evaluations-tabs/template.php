@@ -40,7 +40,7 @@ $this->import('
                 <div class="panel-evaluations__cards">                   
                     <?php $this->applyComponentHook('tabs-openEvaluations-cards', 'begin'); ?>      
 
-                    <evaluation-card v-for="evaluation in entities" :entity="evaluation"></evaluation-card>
+                    <evaluation-card v-for="evaluation in entities" :entity="evaluation" buttonLabel="<?= i::esc_attr__('Avaliar') ?>"></evaluation-card>
 
                     <?php $this->applyComponentHook('tabs-openEvaluations-cards', 'end'); ?>
                 </div>

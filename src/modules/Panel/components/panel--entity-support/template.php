@@ -19,7 +19,7 @@ $this->import('
         <div class="panel--entity-support__content-cards">
             <carousel :settings="settings" class="carousel--panel">
                 <slide v-for="opportunity in opportunities" :key="opportunity.id">
-                    <evaluation-card :entity="opportunity"></evaluation-card>
+                    <evaluation-card :entity="opportunity" buttonLabel="<?= i::esc_attr__('Realizar suporte') ?>"></evaluation-card>
                 </slide>
 
                 <template #addons>
