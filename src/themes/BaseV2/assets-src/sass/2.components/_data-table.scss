@@ -191,6 +191,34 @@ vue3-easy-data-table__body {
     }
 }
 
+.vue3-easy-data-table__body  {
+        
+        .row {
+            
+            &--pending {
+                & > td {
+                    background-color: var(--mc-white);
+                }
+            }
+            &--notavaliable {
+                & > td {
+                    background-color:#FFE1E1;
+                }
+            }
+            &--substitute {
+                & > td {
+                    background-color:var(--mc-agents-500)
+                }
+            }
+            
+            &--selected {
+                & > td {
+                    background-color: var(--mc-success-300);
+                }
+            }
+        }
+}
+
 // fixed-columns feature related
 .vue3-easy-data-table__header th,
 .vue3-easy-data-table__body td {
@@ -221,7 +249,7 @@ vue3-easy-data-table__body {
     height: size(36);
     color: var(--mc-low-700);
     font-size: size(12);
-
+    
     &:last-child {
         td {
             border-bottom: none;
@@ -245,7 +273,7 @@ vue3-easy-data-table__body {
     font-size: size(14);
     font-family: 'Open Sans';
     color: var(--mc-low-700);
-
+    padding: size(16);
     &:first-child {
         color: var(--mc-opportunities-500);
         font-weight: 600;
