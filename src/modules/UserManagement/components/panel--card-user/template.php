@@ -15,17 +15,24 @@ $this->import('
 ?>
 <panel--entity-card :entity="entity">
     <template #title>
+        <?php $this->applyComponentHook('title', 'begin') ?>
         <slot name="card-title" :entity="entity" v-if="entity.profile">{{username}}</slot>
+        <?php $this->applyComponentHook('title', 'end') ?>
     </template>
     <template #header-actions>
+        <?php $this->applyComponentHook('actions', 'begin') ?>
         <slot name="card-actions"></slot>
+        <?php $this->applyComponentHook('actions', 'end') ?>
     </template>
 
     <template #subtitle>
+        <?php $this->applyComponentHook('subtitle', 'begin') ?>
         <code>ID: {{entity.id}}</code>
+        <?php $this->applyComponentHook('subtitle', 'end') ?>
     </template>
 
     <template #default>
+        <?php $this->applyComponentHook('content', 'begin') ?>
         <div class="mc-tag-list">
             <h4><?=i::__('Funções do usuário:')?></h4>
             <ul class="mc-tag-list__tagList">
@@ -44,11 +51,14 @@ $this->import('
                 <user-management--add-role-modal :user="entity"></user-management--add-role-modal>
             </ul>
         </div>
+        <?php $this->applyComponentHook('content', 'end') ?>
     </template>
 
     <template #entity-actions-right>
+        <?php $this->applyComponentHook('actions-right', 'begin') ?>
         <mc-link route="panel/user-detail" :params="[entity.id]" class="button button--primary-outline button--icon" icon="arrow-right" right-icon>
             <?= i::__('Acessar') ?>
         </mc-link>
+        <?php $this->applyComponentHook('actions-right', 'end') ?>
     </template>
 </panel--entity-card>
