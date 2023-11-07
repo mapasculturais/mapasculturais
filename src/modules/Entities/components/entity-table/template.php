@@ -7,6 +7,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-card
+    mc-link
 ');
 ?>
 <ul>
@@ -29,5 +30,7 @@ $this->import('
             <option v-for="options in option" :value="options">{{options}}</option> 
         </select>
     </template>
+<slot name="buton">
 
+</slot>
 </EasyDataTable>

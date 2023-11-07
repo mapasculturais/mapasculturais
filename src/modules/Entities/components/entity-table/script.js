@@ -38,15 +38,25 @@ app.component('entity-table', {
     methods: {
         customRowClassName(row) {
             switch (row.status) {
-                case 0:
-                    return 'draft'
-                case 1:
-                    return 'sent'
+
                 case 10:
-                    return 'entity-table__row--selected'
+                    return 'row--selected';
+
+                case 2:
+                case 0:
+                    return 'rew--invalid';
+
+                // return 'pending';
+                case 3:
+                    return 'row--notapproved';
+                case 8:
+                    return 'row--waitlist';
+
+                case null:
                 default:
-                    break;
+                    return '';
             }
+
         },
         isActive(column) {
             return this.activeColumns.includes(column.value);
