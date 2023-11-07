@@ -79,7 +79,7 @@ $entity = $this->controller->requestedEntity;
                     </select>
                 </div>
             </div>
-            <entity-table :entity="phase" :headers="headers" :items="items"></entity-table>
+            <entity-table :entity="phase" :headers="headers" :body-row-class-name="customRowClassName" :items="items"></entity-table>
             <v1-embed-tool route="registrationmanager" :id="phase.id" min-height="600px"></v1-embed-tool>
         </div>
     </template>
