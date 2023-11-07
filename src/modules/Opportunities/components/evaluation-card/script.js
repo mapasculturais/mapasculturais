@@ -5,7 +5,10 @@ app.component('evaluation-card', {
         entity: {
             type: [Entity, Object],
             required: true,
-        }
+        },
+        buttonLabel: {
+            type: String,
+        },
     },
     
     setup(props, { slots }) {
