@@ -138,6 +138,9 @@ class Module extends \MapasCulturais\Module
         $app->hook("can(Opportunity.support)", function ($user, &$result) use ($self) {
             $result = $self->isSupportUser($this, $user);
         });
+        $app->hook("entity(<<Registration|Opportunity>>).permissionsList", function (&$permissions) {
+            $permissions[] = 'support';
+        }); 
         $app->hook("can(Registration.<<view|modify|viewPrivateData>>)", function ($user, &$result) use ($self) {
             if (!$result) {
                 $result = $this->canUser("support", $user);
