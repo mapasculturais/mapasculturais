@@ -45,41 +45,12 @@ $entity = $this->controller->requestedEntity;
                 </h5>
             </div>
         <div class="col-12"> 
-            <div class="opportunity-registration-table__filter">
-                <div class="opportunity-registration-table__search-key">
-                    <input type="text" placeholder="<?= i::__('Busque pelo número de inscrição, status, parecer técnico?') ?>" class="opportunity-registration-table__search-input" />
-                    <button @click="search()" class="opportunity-registration-table__search-button">
-                        <mc-icon name="search"></mc-icon>
-                    </button>
-                </div>
-                <div class="opportunity-registration-table__search-fields">
-                    <h4 class="bold"><?= i::__('Filtrar:')?></h4>
-                    <div class="field"><input type="number"/></div>
-                    <div class="field">
-                        <select>
-                            <option value=""><span><?= i::__('Operador:')?></span></option>
-                        </select>
-                    </div>
-                    <div class="field"><input type="number"></div>
-                    <div class="field">
-                        <select>
-                            <option value=""><span><?= i::__('Status de inscrição:')?></span></option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <select>
-                            <option value=""><span><?= i::__('Exequibilidade (R$)')?></span></option>
-                        </select>
-                    </div>
-                </div>
-                <!-- <mc-tag-list class="opportunity-registration-table__taglists"></mc-tag-list> -->
-                <div class="field opportunity-registration-table__select-tag">
-                    <select>
-                        <option value=""><span><?= i::__('Colunas habilitadas na tabela:')?></span></option>
-                    </select>
-                </div>
-            </div>
-            <entity-table :entity="phase" :headers="headers" :body-row-class-name="customRowClassName" :items="items"></entity-table>
+        <!-- :body-row-class-name="customRowClassName" -->
+            <entity-table :headers="headers"  :items="items">
+                <template #item-cpf="{cpf}">
+                    cpf: {{cpf}}
+                </template>
+            </entity-table>
             <v1-embed-tool route="registrationmanager" :id="phase.id" min-height="600px"></v1-embed-tool>
         </div>
     </template>

@@ -1,4 +1,4 @@
-app.component('opportunity-registrations-table' , {
+app.component('opportunity-registrations-table', {
     template: $TEMPLATES['opportunity-registrations-table'],
     props: {
         phase: {
@@ -14,28 +14,29 @@ app.component('opportunity-registrations-table' , {
     data() {
         return {
             headers: [
-                { text: "Nome", value: "Nome", required: true},
-                { text: "ID", value: "id", required: true },
+                { text: "Nome", value: "Nome", required: true, fixed: true },
+                { text: "ID", value: "id", required: true, fixed: true },
                 { text: "cpf", value: "cpf", required: true },
-                {text: "status", value: "status"},
-                {text:"", value:"open", required: true},
-                {text:"Situação", value:"option", required: true},
-               
-              ],
-              items: [
-                { Nome: "Nometeste", id: 1 , cpf: "089478383", status: -1},
-                { Nome: "Nomedois", id: 2 , cpf: "089455583", status: 10},
-                { Nome: "Nomedois", id: 2 , cpf: "089455583", status: 10, option: [2,3,4] },
-              ],
+                { text: "status", value: "status" },
+                { text: "", value: "open", required: true },
+                { text: "Situação", value: "option", required: true },
+
+            ],
+            items: [
+                { Nome: "Nometeste", id: 1, cpf: "089478383", status: -1 },
+                { Nome: "Nomedois", id: 2, cpf: "089455583", status: 10 },
+                { Nome: "Nomedois", id: 3, cpf: "089455583", status: 10, option: [2, 3, 4] },
+            ],
         }
     },
 
     computed: {
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
-            const index = phases.findIndex(item => item.__objectType == this.phase.__objectType && item.id == this.phase.id) -1;
+            const index = phases.findIndex(item => item.__objectType == this.phase.__objectType && item.id == this.phase.id) - 1;
             return phases[index];
-        }
+        },
+
     },
 
     methods: {
