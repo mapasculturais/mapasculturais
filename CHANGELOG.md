@@ -6,6 +6,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unrelease]
 ### Novas funcionalidades
 - Autenticação fake para desenvolvimento no BaseV2, para não necessitar do switch theme
+- Adiciona nova tela "Minhas avaliações" no painel de controle
+- Adiciona listagem de suportes disponíveis na tela principal do painel de controle
+
 
 ## [7.0.1] - 2023-11-06
 - correção na estilização do footer do FAQ
