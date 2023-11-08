@@ -14,10 +14,11 @@ $this->import('
 ');
 ?>
 <search-filter :position="position" :pseudo-query="pseudoQuery">
+    <label class="form__label">
+        <?= i::_e('Filtros de eventos') ?>
+    </label>
     <form class="form" @submit="$event.preventDefault()">
-        <label class="form__label">
-            <?= i::_e('Filtros de eventos') ?>
-        </label>
+        <?php $this->applyTemplateHook('search-filter-event', 'begin') ?>
         <div class="field">
             <label> <?php i::_e('Eventos acontecendo') ?></label>
             <div class="datepicker">
@@ -30,13 +31,12 @@ $this->import('
                     :presetRanges="presetRanges" 
                     :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
                     range multiCalendars multiCalendarsSolo autoApply utc></datepicker>
-                    <div class="filter-btn">
-                        <button @click="prevInterval()" class="button button--rounded button--outline"> <mc-icon name="arrow-left"></mc-icon> </button>
-                        <button @click="nextInterval()" class="button button--rounded button--outline"> <mc-icon name="arrow-right"></mc-icon> </button>
-                    </div>
+                <div class="filter-btn">
+                    <button @click="prevInterval()" class="button button--rounded button--outline"> <mc-icon name="arrow-left"></mc-icon> </button>
+                    <button @click="nextInterval()" class="button button--rounded button--outline"> <mc-icon name="arrow-right"></mc-icon> </button>
+                </div>
             </div>
         </div>
-
         <div class="field">
             <label> <?php i::_e('Status do evento') ?></label>
             <label class="verified"><input v-model="pseudoQuery['event:@verified']" type="checkbox"> <?php i::_e('Eventos oficiais') ?> </label>
@@ -59,7 +59,7 @@ $this->import('
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['event:term:linguagem']" classes="event__background event__color"></mc-tag-list>
         </div>
-        <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
-
+        <?php $this->applyTemplateHook('search-filter-event', 'end') ?>
     </form>
+    <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
 </search-filter>

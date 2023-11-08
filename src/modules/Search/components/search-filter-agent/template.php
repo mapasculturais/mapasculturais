@@ -13,10 +13,11 @@ $this->import('
 ');
 ?>
 <search-filter :position="position" :pseudo-query="pseudoQuery">
+    <label class="form__label">
+        <?= i::_e('Filtros de agente') ?>
+    </label>
     <form class="form" @submit="$event.preventDefault()">
-        <label class="form__label">
-            <?= i::_e('Filtros de agente') ?>
-        </label>
+        <?php $this->applyTemplateHook('search-filter-agent', 'begin') ?>
         <div class="field">
             <label> <?php i::_e('Status do agente') ?> </label>
             <label class="verified"><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Agentes oficiais') ?> </label>
@@ -38,6 +39,7 @@ $this->import('
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['term:area']" classes="agent__background agent__color"></mc-tag-list>
         </div>
-        <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
+        <?php $this->applyTemplateHook('search-filter-agent', 'end') ?>
     </form>
+    <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
 </search-filter>
