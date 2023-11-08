@@ -52,6 +52,7 @@
 @import '2.components/faq-search';
 @import '2.components/faq-search-results';
 @import '2.components/error-display';
+@import '2.components/evaluation-card';
 @import '2.components/entity-terms';
 @import '2.components/event-info';
 @import '2.components/field';
@@ -114,6 +115,8 @@
 @import '2.components/opportunity-subscription-list';
 @import '2.components/opportunity-subscription';
 @import '2.components/panel--entities-summary';
+@import '2.components/panel--carousel';
+@import '2.components/panel--entity-support';
 @import '2.components/panel--last-edited';
 @import '2.components/panel--last-registrations';
 @import '2.components/panel--open-opportunities';
@@ -165,6 +168,7 @@
 @import 'pages/events';
 @import 'pages/faq';
 @import 'pages/opportunity';
+@import 'pages/panel-evaluations';
 @import 'pages/panel-registrations';
 @import 'pages/print-registration';
 @import 'pages/projects';
