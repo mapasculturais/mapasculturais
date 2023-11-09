@@ -9,6 +9,8 @@ use MapasCulturais\i;
 $this->import('
     mc-card
     mc-link
+    mc-multiselect
+    mc-tag-list
 ');
 ?>
 <div class="entity-table">
@@ -40,11 +42,20 @@ $this->import('
                 </select>
             </div>
         </div>
-        <!-- <mc-tag-list class="opportunity-registration-table__taglists"></mc-tag-list> -->
         <div class="field opportunity-registration-table__select-tag">
-            <select>
-                <option value=""><span><?= i::__('Colunas habilitadas na tabela:') ?></span></option>
+            
+            <select @change="addInColumns($event.target.value)">
+                <option value="" disabled selected><span><?= i::__('Colunas habilitadas na tabela:') ?></span></option>
+                <option v-for="header in optionalHeaders" :key="header.value" :value="header.value"> {{header.value}}</option>
             </select>
+
+            <mc-multiselect :model="selectedColumns" title="<?php i::_e('Selecione as colunas habilitadas na tabela') ?>" :items="optionalHeaders" hide-filter hide-button>
+                <template #default="{setFilter, popover}">
+                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as Colunas') ?>">
+                </template>
+            </mc-multiselect>
+
+            <mc-tag-list editable class="opportunity-registration-table__taglists" classes="opportunity__background" :tags="selectedColumns" @remove="removeFromColumns"></mc-tag-list>
         </div>
     </div>
     <ul>
@@ -52,18 +63,21 @@ $this->import('
             <li v-if="!header.required">
                 <button type="button" @click="toggleColumn(header)">
                     {{header.text}}
-
+                    
                 </button>
             </li>
         </template>
     </ul>
-    <!-- :body-row-class-name="customRowClassName" -->
-    {{itemsSelected}}
-    <EasyDataTable :headers="activeHeaders" table-class-name="entity-table__table" v-model:items-selected="itemsSelected" :items="items" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
+        {{itemsSelected}}
+        {{visibleColumns}}
+    <!-- v-model:items-selected="itemsSelected" -->
+    <EasyDataTable :headers="activeHeaders" table-class-name="entity-table__table"  :body-row-class-name="customRowClassName" :items="items" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
         <template v-for="slot in activeSlots" #[slot]="item">
             <slot :name="slot" v-bind="item" ></slot>
         </template>
-
+        <!-- <template #item-checkbox="{id}">
+                <input type="checkbox" :checked="itemsSelected.includes(item)" @change="toggleSelection(item)">
+        </template> -->
         <template #item-open="{id}">
             <mc-link class="button button--primary" :params="[id]" route="registration/single"><?= i::esc_attr__('Conferir inscrição') ?></mc-link>
         </template>
