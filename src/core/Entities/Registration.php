@@ -1274,6 +1274,10 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
+        if($this->opportunity->canUser('@control', $user)){
+            return true;
+        }
+
         if(!in_array($this->opportunity->status, [-1,1]) && !$this->opportunity->canUser('@control', $user)){
             return false;
         }
