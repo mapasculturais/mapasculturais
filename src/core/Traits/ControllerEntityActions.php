@@ -227,7 +227,7 @@ trait ControllerEntityActions {
                 }
             }
 
-            if($error) {
+            if($errors) {
                 $this->errorJson($errors);
             }
         }
