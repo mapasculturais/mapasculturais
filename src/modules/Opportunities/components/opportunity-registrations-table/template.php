@@ -45,7 +45,7 @@ $entity = $this->controller->requestedEntity;
                 </h5>
             </div>
         <div class="col-12"> 
-            <entity-table :headers="headers" :items="items" required-columns="nome,id,cpf">
+            <entity-table :headers="headers" :items="items" required="nome,id" visible="status,cpf">
                 <template #item-cpf="{cpf}">
                     cpf: {{cpf}}
                 </template>
