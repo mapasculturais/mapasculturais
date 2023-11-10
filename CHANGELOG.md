@@ -4,6 +4,9 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## ['5.8.6'] - 2023-11-04
+- Ajusta formato da data na população do front end da inscrição
+
 ## [5.8.5] - 2023-11-03
 - Ajusta o deletePermissionsCache para evitar que o mesmo quebre caso não tenha uma lista de users passada
 
