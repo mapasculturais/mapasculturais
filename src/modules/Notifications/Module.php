@@ -81,7 +81,7 @@ class Module extends \MapasCulturais\Module{
                 $app->enableAccessControl();
             }
 
-            $requester = $app->user;
+            $requester = $this->requesterUser ?: $app->user;
             $profile = $requester->profile;
 
             $origin = $this->origin;//registration
@@ -121,6 +121,11 @@ class Module extends \MapasCulturais\Module{
             $message_to_requester = '';
 
             switch ($this->getClassName()) {
+                case "MapasCulturais\Entities\RequestEntityOwner":
+                    $subject = i::__("Requisição para relacionar selo");
+                    $message = sprintf(i::__("%s Esta solicitando permissão para controlar o seu perfil %s %s."), $origin_link, $origin_type, $destination_link);
+                    $message_to_requester = sprintf(i::__("Sua solicitação para controlar o perfil do %s %s foi enviada."), $origin_type, $destination_link);
+                    break;
                 case "MapasCulturais\Entities\RequestAgentRelation":
                     if($origin->getClassName() === 'MapasCulturais\Entities\EvaluationMethodConfiguration'){
                         $opportunity = $origin->opportunity;

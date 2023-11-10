@@ -28,7 +28,8 @@ use MapasCulturais\Traits;
         "ChildEntity"       = "\MapasCulturais\Entities\RequestChildEntity",
         "AgentRelation"     = "\MapasCulturais\Entities\RequestAgentRelation",
         "SealRelation"      = "\MapasCulturais\Entities\RequestSealRelation",
-        "SpaceRelation"      = "\MapasCulturais\Entities\RequestSpaceRelation"
+        "SpaceRelation"     = "\MapasCulturais\Entities\RequestSpaceRelation",
+        "EntityOwner"       = "\MapasCulturais\Entities\RequestEntityOwner"
    })
  * @ORM\HasLifecycleCallbacks
  */
@@ -141,8 +142,8 @@ abstract class Request extends \MapasCulturais\Entity{
 
     private $_destination = null;
 
-    public function __construct() {
-        $this->requesterUser = App::i()->user;
+    public function __construct($user = null) {
+        $this->requesterUser = $user ?: App::i()->user;
         parent::__construct();
     }
 
