@@ -14,18 +14,18 @@ app.component('opportunity-registrations-table', {
     data() {
         return {
             headers: [
-                { text: "Nome", value: "Nome", required: true, fixed: true },
-                { text: "ID", value: "id", required: true, fixed: true },
-                { text: "cpf", value: "cpf" },
+                { text: "Nome", value: "nome"},
+                { text: "ID", value: "id"},
+                { text: "cpf", value: "cpf"},
                 { text: "status", value: "status"},
-                { text: "", value: "open", required: true },
-                { text: "Situação", value: "option", required: true },
+                { text: "Conferir Inscrição", value: "open"},
+                { text: "Situação", value: "option"},
 
             ],
             items: [
-                { Nome: "Nometeste", id: 1, cpf: "089478383", status: 1 },
-                { Nome: "Nomedois", id: 2, cpf: "089455583", status: 10 },
-                { Nome: "Nomedois", id: 3, cpf: "089455583", status: 10, option: [2, 3, 4] },
+                { nome: "Nometeste", id: 1, cpf: "089478383", status: 1 },
+                { nome: "Nomedois", id: 2, cpf: "089455583", status: 10 },
+                { nome: "Nomedois", id: 3, cpf: "089455583", status: 10, option: [2, 3, 4] },
             ],
         }
     },
