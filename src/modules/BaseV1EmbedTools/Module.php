@@ -23,7 +23,7 @@ class Module extends \MapasCulturais\Module
         if (strpos($_SERVER['REQUEST_URI'] ?? '/', '/embedtools') === 0) {
             
 
-            $app->view->enqueueScript('app', 'evaluations', 'js/embedTools-evaluations.js');
+            $app->view->enqueueScript('app', 'evaluations', 'js/v1-embedtools-evaluations.js');
             $app->view->enqueueScript('app', 'editable', 'js/editable.js');
 
             $theme_instance = new BaseV1\Theme($app->config['themes.assetManager']);
