@@ -48,9 +48,8 @@ $this->import('
                 <option value="" disabled selected><span><?= i::__('Colunas habilitadas na tabela:') ?></span></option>
                 <option v-for="header in optionalHeaders" :key="header.value" :value="header.value"> {{header.value}}</option>
             </select>
-
-            <mc-multiselect :model="selectedColumns" title="<?php i::_e('Selecione as colunas habilitadas na tabela') ?>" :items="optionalHeaders" hide-filter hide-button>
-                <template #default="{setFilter, popover}">
+            <mc-multiselect :model="selectedColumns"  title="<?php i::_e('Selecione as colunas habilitadas na tabela') ?>" :items="optionalHeaders.map(header => header.text)" hide-filter hide-button>
+                <template #default="{ filter, setFilter, popover}">
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as Colunas') ?>">
                 </template>
             </mc-multiselect>
@@ -58,7 +57,7 @@ $this->import('
             <mc-tag-list editable class="opportunity-registration-table__taglists" classes="opportunity__background" :tags="selectedColumns" @remove="removeFromColumns"></mc-tag-list>
         </div>
     </div>
-    <ul>
+    <!-- <ul>
         <template v-for="header in headers" :key="header.value">
             <li v-if="!header.required">
                 <button type="button" @click="toggleColumn(header)">
@@ -67,9 +66,9 @@ $this->import('
                 </button>
             </li>
         </template>
-    </ul>
-        {{itemsSelected}}
-        {{visibleColumns}}
+    </ul> -->
+        <!-- {{itemsSelected}}
+        {{visibleColumns}} -->
     <!-- v-model:items-selected="itemsSelected" -->
     <EasyDataTable :headers="activeHeaders" table-class-name="entity-table__table"  :body-row-class-name="customRowClassName" :items="items" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
         <template v-for="slot in activeSlots" #[slot]="item">
