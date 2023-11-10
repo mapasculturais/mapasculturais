@@ -1179,11 +1179,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         field.unchangedFieldJSON = JSON.stringify(val);        
 
         if (field.fieldType == 'date' && typeof val == 'string' ) {
-            val = moment(val).toDate();
+            val = moment(val).format("YYYY-MM-DD");
         } else if(field.fieldType == 'number' && typeof val == 'string' ) {
             val = parseFloat(val);
         } else if (/\d{4}-\d{2}-\d{2}/.test(val)) {
-            val = moment(val).toDate();
+            val = moment(val).format("YYYY-MM-DD");
         }
 
         $scope.entity[field.fieldName] = val;
