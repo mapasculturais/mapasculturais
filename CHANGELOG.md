@@ -3,12 +3,15 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [Unrelease]
 ### Novas funcionalidades
 - Autenticação fake para desenvolvimento no BaseV2, para não necessitar do switch theme
 - Adiciona nova tela "Minhas avaliações" no painel de controle
 - Adiciona listagem de suportes disponíveis na tela principal do painel de controle
 
+## [7.0.2] - 2023-11-10
+- correção para possibilitar a utilização do sistema em sistema de arquivo case insensitive
 
 ## [7.0.1] - 2023-11-06
 - correção na estilização do footer do FAQ
