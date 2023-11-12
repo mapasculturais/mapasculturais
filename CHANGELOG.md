@@ -3,6 +3,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [7.0.3] - 2023-11-10
+- exibe a nota da avaliação técnica para o proponente quando o resultado estiver publicado.
+
 ## [7.0.2] - 2023-11-10
 - correção para possibilitar a utilização do sistema em sistema de arquivo case insensitive
 
