@@ -42,6 +42,9 @@ $this->import('
                         <p v-if="registration.status == 2"><?= i::__('Inscrição inválida') ?></p>
                         <p v-if="registration.status == 0"><?= i::__('Inscrição não enviada') ?></p>
                     </div>
+                    <div v-if="item.type == 'technical'" class="">
+                        <?= i::__('Nota da avaliação:') ?> <strong>{{formatNote(registration.consolidatedResult)}}</strong>
+                    </div>
                 </div>
 
                 <div v-if="isDataCollectionPhase(item) && isActive(item, registration) && registration.status == 0">
