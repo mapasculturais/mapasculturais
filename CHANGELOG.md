@@ -10,6 +10,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona nova tela "Minhas avaliações" no painel de controle
 - Adiciona listagem de suportes disponíveis na tela principal do painel de controle
 - Possibilita que um gestor de uma oportunidade envie uma inscrição
+- No Thema do subsite, evita que quebre o codigo ao tentar criar a pasta do sass do subsite caso a mesma já exista
+
+## Correção
+- Corrige erro ao tentar acessar a propriedade CNPJ do agente e o mesmo fro agente individual
 
 ## [7.0.2] - 2023-11-10
 - correção para possibilitar a utilização do sistema em sistema de arquivo case insensitive
