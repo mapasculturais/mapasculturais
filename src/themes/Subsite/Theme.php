@@ -80,7 +80,7 @@ class Theme extends BaseV1\Theme{
         if($app->isEnabled('subsite') && !$app->mscache->contains($cache_id)){
 
             $app->cache->deleteAll();
-            if(!is_dir($this->subsitePath . '/assets/css/sass/')) {
+            if(!file_exists($this->subsitePath . '/assets/css/sass/')) {
                 mkdir($this->subsitePath . '/assets/css/sass/',0755,true);
             }
             putenv('LC_ALL=en_US.UTF-8');
