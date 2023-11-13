@@ -11,6 +11,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona listagem de suportes disponíveis na tela principal do painel de controle
 - Possibilita que um gestor de uma oportunidade envie uma inscrição
 
+## [7.0.3] - 2023-11-10
+- exibe a nota da avaliação técnica para o proponente quando o resultado estiver publicado.
+
 ## [7.0.2] - 2023-11-10
 - correção para possibilitar a utilização do sistema em sistema de arquivo case insensitive
 

@@ -28,6 +28,11 @@ app.component('opportunity-phases-timeline', {
     },
 
 	methods: {
+		formatNote(note) {
+			note = parseFloat(note);
+			return note.toLocaleString($MAPAS.config.locale);
+		},
+		
 		dateFrom(item) {
 			if (item.registrationFrom) {
 				return item.registrationFrom.date('2-digit year');
