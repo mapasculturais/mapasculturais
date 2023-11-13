@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -43,15 +44,13 @@ $this->import('
             </div>
         </div>
         <div class="field opportunity-registration-table__select-tag">
-            
-            <select @change="addInColumns($event.target.value)">
+
+           <!-- <select @change="addInColumns($event.target.value)">
                 <option value="" disabled selected><span><?= i::__('Colunas habilitadas na tabela:') ?></span></option>
                 <option v-for="header in optionalHeaders" :key="header.value" :value="header.value"> {{header.value}}</option>
-            </select>
-            <mc-multiselect :model="selectedColumns"  title="<?php i::_e('Selecione as colunas habilitadas na tabela') ?>" :items="optionalHeaders.map(header => header.text)" hide-filter hide-button>
-                <template #default="{ filter, setFilter, popover}">
-                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as Colunas') ?>">
-                </template>
+            </select> -->
+            <mc-multiselect #default="{setFilter, popover}" :model="selectedColumns" :items="optionalHeaders" hide-filter hide-button>
+                <input @input="addInColumns($event.target.value)"  class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as Colunas') ?>">
             </mc-multiselect>
 
             <mc-tag-list editable class="opportunity-registration-table__taglists" classes="opportunity__background" :tags="selectedColumns" @remove="removeFromColumns"></mc-tag-list>
@@ -65,14 +64,14 @@ $this->import('
                     
                 </button>
             </li>
-        </template>
-    </ul> -->
-        <!-- {{itemsSelected}}
+        </template> 
+    </ul>  -->
+    <!-- {{itemsSelected}}
         {{visibleColumns}} -->
     <!-- v-model:items-selected="itemsSelected" -->
-    <EasyDataTable :headers="activeHeaders" table-class-name="entity-table__table"  :body-row-class-name="customRowClassName" :items="items" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
+    <EasyDataTable :headers="activeHeaders" table-class-name="entity-table__table" :body-row-class-name="customRowClassName" :items="items" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
         <template v-for="slot in activeSlots" #[slot]="item">
-            <slot :name="slot" v-bind="item" ></slot>
+            <slot :name="slot" v-bind="item"></slot>
         </template>
         <!-- <template #item-checkbox="{id}">
                 <input type="checkbox" :checked="itemsSelected.includes(item)" @change="toggleSelection(item)">

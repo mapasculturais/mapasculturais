@@ -38,6 +38,7 @@ app.component('entity-table', {
             itemsSelected: Vue.ref([]),
             modifiedHeaders,
             activeHeaders,
+            
         }
 
     },
@@ -102,6 +103,7 @@ app.component('entity-table', {
         },
 
         activeColumns() {
+            console.log(this.activeHeaders);
             return this.activeHeaders.map(header => (header.value));
         },
 
@@ -117,17 +119,22 @@ app.component('entity-table', {
             return this.activeHeaders.reduce((columns, header) => {
                 // if (!header.required) {
                     columns.push(header.text);
+                    this.addInColumns(header.value)
                 // }
+                // console.log(columns)
                 return columns;
             }, []);
         },
 
         optionalHeaders() {
+            // console.log(this.modifiedHeaders);
             return this.modifiedHeaders.reduce((columns, header) => {
                 if (!header.required) {
-                    columns.push(header);
+                    columns.push(header.text);
                 }
+                // console.log(columns);
                 return columns;
+                
             }, []);
             // return this.modifiedHeaders.filter(header => !header.required);
         },
@@ -143,8 +150,12 @@ app.component('entity-table', {
         addInColumns(tag) {
             // console.log(this.optionalHeaders.includes(tag));
             // console.log(this.optionalHeaders.find(header =>header.value == tag));
+            console.log(tag);
             if (!this.activeColumns.includes(tag)) {
-                this.activeHeaders.push(this.optionalHeaders.find(header => header.value == tag));
+                console.log(this.modifiedHeaders.find(header => header.value == tag));
+                // console.log(this.modifiedHeaders);
+
+                this.activeHeaders.push(this.modifiedHeaders.find(header => header.value == tag));
             }
         },
         customRowClassName(item) {
@@ -160,6 +171,8 @@ app.component('entity-table', {
             if (this.isActive(column)) {
                 this.activeHeaders = this.activeHeaders.filter(header => header.value != column.value)
             } else {
+                console.log('togglecolumn');
+
                 this.activeHeaders.push(column)
             }
         },
