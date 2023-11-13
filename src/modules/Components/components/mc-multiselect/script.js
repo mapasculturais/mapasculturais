@@ -24,10 +24,6 @@ app.component('mc-multiselect', {
             required: true,
         },
 
-        classes: {
-            type: String,
-            required: false,
-        },
         title: {
             type: String,
         },
@@ -45,11 +41,6 @@ app.component('mc-multiselect', {
         hideButton: {
             type: Boolean,
             default: false
-        },
-
-        openside: {
-            type: String,
-            default: 'down-right'
         },
     },
 
