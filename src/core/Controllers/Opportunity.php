@@ -465,11 +465,17 @@ class Opportunity extends EntityController {
                 $data['status'] = 'IN(10,8)';
             }
         }
+
+        $em = $opportunity->evaluationMethod;
+
+        if($em->slug == "technical"){
+            $data['@order'] = "consolidatedResult DESC";
+        }
+            
         $query = new ApiQuery('MapasCulturais\Entities\Registration', $data, false, false, $opportunity->publishedRegistrations);
 
         $registrations = $query->find();
 
-        $em = $opportunity->evaluationMethod;
         if (!$em && $opportunity->isLastPhase && $opportunity->previousPhase && $opportunity->previousPhase->evaluationMethod){
             $em = $opportunity->previousPhase->evaluationMethod;
         }
@@ -488,14 +494,6 @@ class Opportunity extends EntityController {
                         }
                     }
                 }
-            }
-    
-            if(in_array('consolidatedResult', $query->selecting)){
-                /* @TODO: considerar parâmetro @order da api */
-    
-                usort($registrations, function($e1, $e2) use($em){
-                    return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
-                });
             }
         }
         

@@ -2178,7 +2178,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     'status': 'GT(-1)',
                     '@files': '(zipArchive):url',
                     '@opportunity': getOpportunityId(),
-                    '@select': 'id,singleUrl,category,status,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,' + select_fields.join(',')
+                    '@select': 'id,singleUrl,category,status,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,' + select_fields.join(','),
+                    '@order': 'consolidatedResult DESC'
                 };
                 
                 for(var prop in $scope.registrationsFilters){
