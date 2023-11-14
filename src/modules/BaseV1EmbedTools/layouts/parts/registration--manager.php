@@ -6,6 +6,10 @@ use MapasCulturais\i;
 <div id="filtro-inscritos">
     <span class="label"> <?php i::_e("Filtrar inscrição:"); ?> </span>
     <input ng-model="data.registrationsFilter" placeholder="<?php i::_e('Busque pelo número de inscrição, status da avaliação, nome ou cpf do responsável') ?>" />
+    <label>
+        <input type="checkbox" ng-model="data.removeDraft">
+        <?php i::_e("Remover rascunhos"); ?>
+    </label>
 </div>
 
 <div class="dropdown" style="width:100%; margin:10px 0px;">
