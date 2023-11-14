@@ -33,10 +33,20 @@ $this->import('
             </div>
             <div class="field"><input type="number"></div>
             <div class="field">
-                <select>
-                    <option value=""><span><?= i::__('Status de inscrição:') ?></span></option>
+                <select >
+                    <option value=""><?= i::__('Status da inscrição') ?></option>
+                    <option value="-10"><?= i::__('Lixeira') ?></option>
+                    <option value="-2"><?= i::__('Arquivado') ?></option>
+                    <option value="-9"><?= i::__('Não habilitada') ?></option>
+                    <option value="0"><?= i::__('Em rascunho') ?></option>
+                    <option value="1"><?= i::__('Enviada') ?></option>
+                    <option value="2"><?= i::__('Inválida') ?></option>
+                    <option value="3"><?= i::__('Não aprovada') ?></option>
+                    <option value="8"><?= i::__('Suplente') ?></option>
+                    <option value="10"><?= i::__('Aprovada:') ?></option>
                 </select>
             </div>
+
             <div class="field">
                 <select>
                     <option value=""><span><?= i::__('Exequibilidade (R$)') ?></span></option>
@@ -45,31 +55,15 @@ $this->import('
         </div>
         <div class="field opportunity-registration-table__select-tag">
 
-           <!-- <select @change="addInColumns($event.target.value)">
-                <option value="" disabled selected><span><?= i::__('Colunas habilitadas na tabela:') ?></span></option>
-                <option v-for="header in optionalHeaders" :key="header.value" :value="header.value"> {{header.value}}</option>
-            </select> -->
-            <mc-multiselect #default="{setFilter, popover}" :model="selectedColumns" :items="optionalHeaders" hide-filter hide-button>
-                <input @input="addInColumns($event.target.value)"  class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as Colunas') ?>">
+            <mc-multiselect #default="{setFilter, popover}" @selected="addInColumns" @removed="removeFromColumns" :model="selectedColumns" :items="optionalHeaders" hide-filter hide-button>
+                <input @input="addInColumns($event.target.value)" class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Colunas habilitadas na tabela') ?>">
             </mc-multiselect>
 
             <mc-tag-list editable class="opportunity-registration-table__taglists" classes="opportunity__background" :tags="selectedColumns" @remove="removeFromColumns"></mc-tag-list>
         </div>
     </div>
-    <!-- <ul>
-        <template v-for="header in headers" :key="header.value">
-            <li v-if="!header.required">
-                <button type="button" @click="toggleColumn(header)">
-                    {{header.text}}
-                    
-                </button>
-            </li>
-        </template> 
-    </ul>  -->
-    <!-- {{itemsSelected}}
-        {{visibleColumns}} -->
-    <!-- v-model:items-selected="itemsSelected" -->
-    <EasyDataTable :headers="activeHeaders" table-class-name="entity-table__table" :body-row-class-name="customRowClassName" :items="items" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
+
+    <EasyDataTable :headers="activeHeaders" :filter-options="filterOptions" table-class-name="entity-table__table" :body-row-class-name="customRowClassName" :items="items" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
         <template v-for="slot in activeSlots" #[slot]="item">
             <slot :name="slot" v-bind="item"></slot>
         </template>

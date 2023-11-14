@@ -2,20 +2,17 @@ app.component('entity-table', {
     template: $TEMPLATES['entity-table'],
 
     setup({ headers }, { slots }) {
-        const activeSlots = Object.keys(slots)
+        const activeSlots = Object.keys(slots);
+        const messages = useMessages();
         const hasSlot = name => !!slots[name];
-
-        return { optionalHeadersSelected: [], hasSlot, activeSlots };
+        const text = Utils.getTexts('entity-table')
+        return { optionalHeadersSelected: [], hasSlot, activeSlots, messages, text};
     },
 
-    created() {
-        
-
-    },
     mounted() {
-        this.modifiedHeaders.forEach( header =>{
-            if(header.visible || header.required) {
-                this.addInColumns(header.value);
+        this.modifiedHeaders.forEach(header => {
+            if (header.visible || header.required) {
+                this.addInColumns(header.text);
             }
         });
     },
@@ -38,18 +35,10 @@ app.component('entity-table', {
             itemsSelected: Vue.ref([]),
             modifiedHeaders,
             activeHeaders,
-            
+            value: '',
         }
 
     },
-    
-
-    // O componente deve receber uma listagem de colunas existentes
-
-    // Listagem de colunas opcionais.
-
-    // Listagem de colunas selecionadas por padrão.
-
     props: {
         headers: {
             type: Array,
@@ -59,10 +48,6 @@ app.component('entity-table', {
             type: String,
             default: ''
         },
-        // optionalColumns: {
-        //     type: String,
-        //     default: ''
-        // },
         labelColumn: {
             type: String,
             default: 'nome'
@@ -91,7 +76,15 @@ app.component('entity-table', {
             })
         },
     },
-
+    watch: {
+        statusFilter(newStatus) {
+            this.filterOptions = {
+                field: 'status',
+                comparison: '=',
+                criteria: newStatus
+            };
+        }
+     },
     computed: {
         selectRows() {
             return this.optionalHeaders.map(header => {
@@ -103,8 +96,7 @@ app.component('entity-table', {
         },
 
         activeColumns() {
-            console.log(this.activeHeaders);
-            return this.activeHeaders.map(header => (header.value));
+            return this.activeHeaders.map(header => (header.text));
         },
 
         visibleColumns() {
@@ -117,45 +109,42 @@ app.component('entity-table', {
         },
         selectedColumns() {
             return this.activeHeaders.reduce((columns, header) => {
-                // if (!header.required) {
-                    columns.push(header.text);
-                    this.addInColumns(header.value)
-                // }
-                // console.log(columns)
+                columns.push(header.text);
+                this.addInColumns(header.text)
                 return columns;
             }, []);
         },
 
         optionalHeaders() {
-            // console.log(this.modifiedHeaders);
             return this.modifiedHeaders.reduce((columns, header) => {
                 if (!header.required) {
                     columns.push(header.text);
                 }
-                // console.log(columns);
                 return columns;
-                
+
             }, []);
-            // return this.modifiedHeaders.filter(header => !header.required);
         },
     },
 
     methods: {
         removeFromColumns(tag) {
+            // if (this.activeColumns.includes(tag)) {
+            //     this.activeHeaders = this.activeHeaders.filter(header => (header.text != tag || header.required));
+            // }
+
             if (this.activeColumns.includes(tag)) {
-                this.activeHeaders = this.activeHeaders.filter(header => (header.value != tag || header.required));
-                console.log(this.activeHeaders);
+                const headerToRemove = this.activeHeaders.find(header => header.text === tag);
+                
+                if (headerToRemove && headerToRemove.required) {
+                    this.messages.error(this.text('item obrigatório') + ' ' + headerToRemove.text);
+                } else {
+                    this.activeHeaders = this.activeHeaders.filter(header => header.text !== tag);
+                }
             }
         },
         addInColumns(tag) {
-            // console.log(this.optionalHeaders.includes(tag));
-            // console.log(this.optionalHeaders.find(header =>header.value == tag));
-            console.log(tag);
             if (!this.activeColumns.includes(tag)) {
-                console.log(this.modifiedHeaders.find(header => header.value == tag));
-                // console.log(this.modifiedHeaders);
-
-                this.activeHeaders.push(this.modifiedHeaders.find(header => header.value == tag));
+                this.activeHeaders.push(this.modifiedHeaders.find(header => header.text == tag));
             }
         },
         customRowClassName(item) {
@@ -164,15 +153,13 @@ app.component('entity-table', {
         },
 
         isActive(column) {
-            return this.activeColumns.includes(column.value);
+            return this.activeColumns.includes(column.text);
         },
 
         toggleColumn(column) {
             if (this.isActive(column)) {
-                this.activeHeaders = this.activeHeaders.filter(header => header.value != column.value)
+                this.activeHeaders = this.activeHeaders.filter(header => header.text != column.text)
             } else {
-                console.log('togglecolumn');
-
                 this.activeHeaders.push(column)
             }
         },
