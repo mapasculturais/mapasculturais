@@ -4,6 +4,15 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.4] - 2023-11-14
+### Melhorias
+- Na lista de inscritos, faz a ordenação da tabela pela nota da avaliação quando for uma avaliação técnic
+- Possibilita que um gestor de uma oportunidade envie uma inscrição
+
+### Correções
+- Corrige condicionais que exibiam os botões de açoes das avaliações na tela de avaliação
+- Corrige erro que impedia uma entidade de ser salva parcialmente
+
 ## [7.0.3] - 2023-11-10
 - exibe a nota da avaliação técnica para o proponente quando o resultado estiver publicado.
 
