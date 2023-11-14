@@ -9,8 +9,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Autenticação fake para desenvolvimento no BaseV2, para não necessitar do switch theme
 - Adiciona nova tela "Minhas avaliações" no painel de controle
 - Adiciona listagem de suportes disponíveis na tela principal do painel de controle
-- Possibilita que um gestor de uma oportunidade envie uma inscrição
 - No Thema do subsite, evita que quebre o codigo ao tentar criar a pasta do sass do subsite caso a mesma já exista
+
+## [7.0.4] - 2023-11-14
+### Melhorias
+- Na lista de inscritos, faz a ordenação da tabela pela nota da avaliação quando for uma avaliação técnic
+- Possibilita que um gestor de uma oportunidade envie uma inscrição
+
+### Correções
+- Corrige condicionais que exibiam os botões de açoes das avaliações na tela de avaliação
+- Corrige erro que impedia uma entidade de ser salva parcialmente
 
 ## Correção
 - Corrige erro ao tentar acessar a propriedade CNPJ do agente e o mesmo fro agente individual
