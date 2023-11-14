@@ -13,6 +13,7 @@
     width: 100%;
     overflow: auto;
     background-color: var(--mc-high-500);
+    margin-top: size(8);
 
     &::-webkit-scrollbar-track {
         border-radius: size(10);
@@ -192,17 +193,22 @@ vue3-easy-data-table__body {
 }
 
 .vue3-easy-data-table__body  {
-        
         .row {
             
-            &--pending {
+            &--waitlist {
                 & > td {
-                    background-color: var(--mc-white);
+                    background-color: var(--mc-warning-500);
                 }
             }
-            &--notavaliable {
+            &--sent, &--enabled {
                 & > td {
-                    background-color:#FFE1E1;
+                    background-color: var(--mc-success-300);
+                }
+            }
+            
+            &--invalid {
+                & > td {
+                    background-color:var(--mc-danger-300)
                 }
             }
             &--substitute {
@@ -211,11 +217,12 @@ vue3-easy-data-table__body {
                 }
             }
             
-            &--selected {
+            &--notapproved {
                 & > td {
-                    background-color: var(--mc-success-300);
+                    background-color: var(--mc-white);
                 }
             }
+            
         }
 }
 
