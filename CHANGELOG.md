@@ -4,6 +4,17 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.0] - 2023-11-15
+### Novas funcionalidades
+- Autenticação fake para desenvolvimento no BaseV2, para não necessitar do switch theme
+- Adiciona nova tela "Minhas avaliações" no painel de controle
+- Adiciona listagem de suportes disponíveis na tela principal do painel de controle
+- No Thema do subsite, evita que quebre o codigo ao tentar criar a pasta do sass do subsite caso a mesma já exista
+- Possibilita a publicação do parecer de fases de avaliação técnica para os proponentes
+
+## Correções
+- Corrige erro ao tentar acessar a propriedade CNPJ do agente e o mesmo fro agente individual
+
 ## [7.0.4] - 2023-11-14
 ### Melhorias
 - Na lista de inscritos, faz a ordenação da tabela pela nota da avaliação quando for uma avaliação técnic
@@ -233,13 +244,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [5.7.1] - 2023-07-21
 ### Correções
-<<<<<<< HEAD
 - Ajusta CSS do sidebar direito para evitar que o header sobrescreva os conteúdos dos editbox
 
 ## [5.7.1] - 2023-07-21
 ### Correções
-=======
->>>>>>> v5.8.3
 - Ajusta CSS do sidebar direito para evitar que o header sobrescreva os conteúdos dos editbox
 
 ## [5.7.0] - 2023-07-13

@@ -14,10 +14,11 @@ $this->import('
 ');
 ?>
 <search-filter :position="position" :pseudo-query="pseudoQuery">
+    <label class="form__label">
+        <?= i::_e('Filtros de oportunidades') ?>
+    </label>
     <form ref="form" class="form" @submit="$event.preventDefault()">
-        <label class="form__label">
-            <?= i::_e('Filtros de oportunidades') ?>
-        </label>
+        <?php $this->applyTemplateHook('search-filter-opportunity', 'begin') ?>
         <div class="field">
             <label> <?php i::_e('Status das oportunidades') ?> </label>
             <label><input @click="openForRegistrations()" ref="open" type="radio" name="registrationType"> <?php i::_e('Inscrições abertas') ?> </label>
@@ -35,7 +36,7 @@ $this->import('
             <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" classes="opportunity__background opportunity__color"></mc-tag-list>
 
         </div>
-        <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
-
+        <?php $this->applyTemplateHook('search-filter-opportunity', 'end') ?>
     </form>
+    <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
 </search-filter>

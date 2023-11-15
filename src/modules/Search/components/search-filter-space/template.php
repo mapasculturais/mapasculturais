@@ -13,10 +13,11 @@ $this->import('
 ');
 ?>
 <search-filter :position="position" :pseudo-query="pseudoQuery">
+    <label class="form__label">
+        <?= i::_e('Filtros de espaço') ?>
+    </label>
     <form class="form" @submit="$event.preventDefault()">
-        <label class="form__label">
-            <?= i::_e('Filtros de espaço') ?>
-        </label>
+        <?php $this->applyTemplateHook('search-filter-space', 'begin') ?>
         <div class="field">
             <label> <?php i::_e('Status do espaço') ?> </label>
             <label> <input v-model="pseudoQuery['acessibilidade']" true-value="Sim" :false-value="undefined" type="checkbox"> <?php i::_e('Possui acessibilidade') ?> </label>
@@ -41,6 +42,7 @@ $this->import('
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['term:area']" classes="space__background space__color"></mc-tag-list>
         </div>
-        <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
+        <?php $this->applyTemplateHook('search-filter-space', 'end') ?>
     </form>
+    <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
 </search-filter>

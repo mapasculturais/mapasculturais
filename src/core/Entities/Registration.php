@@ -2,12 +2,13 @@
 namespace MapasCulturais\Entities;
 
 use DateTime;
+use Doctrine\ORM\Exception\NotSupported;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\i;
-
+use RuntimeException;
 
 /**
  * Registration
@@ -18,6 +19,7 @@ use MapasCulturais\i;
  * @property-read EvaluationMethodConfiguration $evaluationMethodConfiguration
  * @property-read mixed $evaluationResultValue valor do resultado consolidado das avaliações
  * @property-read string $evaluationResultString string do resultado consolidado das avaliações
+ * @property-read RegistrationEvaluation[] $sentEvaluations lista de avaliações enviadas
  * @property-read array|object $spaceData retorna o snapshot dos dados do espaço relacionado
  * @property-read array|object $agentsData retorna o snapshot dos dados dos agentes relacionados e do agente owner
  * @property-read array|object $valuersExceptionsList retorna a configuração de exceções da lista de avaliadores, aqueles que não entram na regra de distribuição padrão
@@ -571,6 +573,21 @@ class Registration extends \MapasCulturais\Entity
         $method = $this->getEvaluationMethod();
         $value = $this->getEvaluationResultValue();
         return $method->valueToString($value);
+    }
+
+    /**
+     * Retorna uma lista com as avaliações enviadas
+     * @return RegistrationEvaluation[] 
+     */
+    function getSentEvaluations() {
+        $app = App::i();
+        
+        $evaluations = $app->repo('RegistrationEvaluation')->findBy([
+            'registration' => $this, 
+            'status' => RegistrationEvaluation::STATUS_SENT
+        ]);
+
+        return $evaluations;
     }
 
     /**

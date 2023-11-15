@@ -1,0 +1,68 @@
+@use '../0.settings/mixins' as *;
+
+.evaluation-card {
+    align-items: flex-end;
+    background-color: var(--mc-white);
+    border-radius: var(--mc-border-radius-xs);
+    display: flex;
+    flex-direction: column;
+    gap: size(16);
+    padding: size(16) size(24) size(24);
+
+    &__content {
+        display: grid;
+        gap: size(16);
+        grid-template-columns: size(72) 1fr;
+        width: 100%;
+
+        @media (max-width: size(600)) {
+            gap: size(13);
+            grid-template-columns: size(48) 1fr;
+        }
+    }
+
+    &__group {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        gap: size(6);
+        text-align: left;
+    }
+
+    &__title {
+        @media (max-width: size(600)) {
+            min-height: size(50);
+        }
+    }
+
+    &__infos {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        display: grid;
+        gap: size(16);
+        grid-column-end: 3;
+        grid-column-start: 2;
+        grid-row-end: 3;
+        grid-row-start: 2;
+        padding: size(16);
+        width: 100%;
+
+        @media (max-width: size(600)) {
+            margin-left: size(-63);
+        }
+    }
+
+    &__info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: size(16) size(40);
+    }
+
+    &__button {
+        min-width: size(272);
+
+        @media (max-width: size(600)) {
+            min-width: 100%;
+        }
+    }
+}

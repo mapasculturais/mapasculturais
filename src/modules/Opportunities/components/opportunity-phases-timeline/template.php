@@ -8,6 +8,7 @@ use MapasCulturais\i;
 $this->import('
     mc-link
     mc-icon
+    registration-status
 ');
 ?>
 <section :class="['timeline', {'center': center}, {'big': big}]">
@@ -32,20 +33,8 @@ $this->import('
 
             <template v-if="registration">
                 <?php $this->applyComponentHook('registration', 'begin'); ?>
-                <div v-if="shouldShowResults(item)" class="opportunity-phases-timeline__box">
-                    <label class="semibold opportunity-phases-timeline__label"><?= i::__('RESULTADO DA FASE')?></label>
-                    <div class="opportunity-phases-timeline__status">
-                        <mc-icon name="circle" :class="verifyState(registration)"></mc-icon>
-                        <p v-if="registration.status == 10"><?= i::__('Inscrição selecionada') ?></p>
-                        <p v-if="registration.status == 8"><?= i::__('Inscrição suplente') ?></p>
-                        <p v-if="registration.status == 3"><?= i::__('Inscrição não selecionada') ?></p>
-                        <p v-if="registration.status == 2"><?= i::__('Inscrição inválida') ?></p>
-                        <p v-if="registration.status == 0"><?= i::__('Inscrição não enviada') ?></p>
-                    </div>
-                    <div v-if="item.type == 'technical'" class="">
-                        <?= i::__('Nota da avaliação:') ?> <strong>{{formatNote(registration.consolidatedResult)}}</strong>
-                    </div>
-                </div>
+                
+                <registration-status v-if="shouldShowResults(item)" :registration="registration" :phase="item"></registration-status>
 
                 <div v-if="isDataCollectionPhase(item) && isActive(item, registration) && registration.status == 0">
                     <mc-link :entity="registration" route="edit" class="button button--primary"><?= i::__('Preencher formulário') ?></mc-link>
