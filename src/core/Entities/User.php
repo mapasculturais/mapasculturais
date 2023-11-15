@@ -648,6 +648,23 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $opportunities;
     }
 
+    function getIsEvaluator() {
+        $app = App::i();
+        
+        $relation_class = EvaluationMethodConfigurationAgentRelation::class;
+        $dql = "
+            SELECT 
+                COUNT(ar)
+            FROM 
+                $relation_class ar
+                JOIN ar.agent a WITH a.user = {$this->id}
+        ";
+        
+        $q = $app->em->createQuery($dql);
+        
+        return (bool) $q->getSingleScalarResult();
+    }
+
     function getOpportunitiesCanBeEvaluated() {
         $app = App::i();
 
