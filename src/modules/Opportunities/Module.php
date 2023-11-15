@@ -361,7 +361,7 @@ class Module extends \MapasCulturais\Module{
         });
 
         $this->registerEvauationMethodConfigurationMetadata('publishEvaluationDetails', [
-            'label' => i::__('Publicar para o proponente os pareceres dos avaliadores'),
+            'label' => i::__('Publicar os pareceres para o proponente'),
             'type' => 'json',
         ]);
 
