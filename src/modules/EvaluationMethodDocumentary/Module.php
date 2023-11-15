@@ -349,6 +349,16 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return $value ?: '';
 
     }
+
+    function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
+        $evaluation_configuration = $evaluation->registration->opportunity->evaluationMethodConfiguration;
+        return [];
+    }
+
+    function _getConsolidatedDetails(Entities\Registration $registration): array {
+        $evaluation_configuration = $registration->opportunity->evaluationMethodConfiguration;
+        return [];
+    }
     
     public function fetchRegistrations() {
         return true;
