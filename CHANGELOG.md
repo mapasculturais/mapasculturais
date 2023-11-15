@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona nova tela "Minhas avaliações" no painel de controle
 - Adiciona listagem de suportes disponíveis na tela principal do painel de controle
 - Possibilita que um gestor de uma oportunidade envie uma inscrição
+- Possibilita a publicação do parecer de fases de avaliação técnica para os proponentes
 
 ## [7.0.3] - 2023-11-10
 - exibe a nota da avaliação técnica para o proponente quando o resultado estiver publicado.
