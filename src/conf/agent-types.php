@@ -112,7 +112,7 @@ return array(
                 return Utils::formatCnpjCpf($value);
             },
             'unserialize' => function($value, $entity) {
-                if (!$value && $entity->type->id == 2) {
+                if (!$value && isset($entity->type) && $entity->type->id == 2) {
                     $value = $entity->documento;
                 }
     

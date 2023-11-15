@@ -68,6 +68,7 @@ return [
             'meus-projetos'            => ['panel', 'projects'],
             'minhas-oportunidades'     => ['panel', 'opportunities'],
             'minhas-inscricoes'        => ['panel', 'registrations'],
+            'minhas-avaliacoes'        => ['panel', 'evaluations'],
             'minhas-prestacoes-de-contas'        => ['panel', 'prestacoes-de-conta'],
 
             'conta-e-privacidade'        => ['panel', 'my-account'],

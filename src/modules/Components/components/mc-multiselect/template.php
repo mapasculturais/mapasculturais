@@ -11,7 +11,7 @@ $this->import('
 ');
 ?>
 <div class="mc-multiselect">
-    <mc-popover :openside="openside" :title="title">
+    <mc-popover :title="title">
         <template #button="popover">
             <slot :popover="popover" :setFilter="setFilter"></slot>
         </template>

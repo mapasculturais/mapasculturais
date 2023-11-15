@@ -1,0 +1,93 @@
+@use '../0.settings/mixins' as *;
+
+.panel-evaluations {
+    display: grid;
+    gap: size(40);
+    padding: size(25) size(30);
+
+    .tabs-component {
+        &.hasDrafts {
+            li.notSent {
+                margin-right: size(10);
+
+                &::before {
+                    background-color: #FF9F1C;
+                    border-radius: var(--mc-border-radius-pill);
+                    content: '';
+                    height: size(10);
+                    position: absolute;
+                    top: 0;
+                    right: size(-10);
+                    width: size(10);
+                }
+            }
+        }
+    }
+
+    &__filter {
+        align-items: center;
+        display: flex;
+        gap: size(24);
+        width: 100%;
+
+        @media (max-width: size(650)) {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .search {
+            align-items: center;
+            display: flex;
+            max-width: size(370);
+            position: relative;
+            width: 100%;
+
+            @media (max-width: size(650)) {
+                max-width: unset;
+            }
+
+            .input {
+                border-radius: var(--mc-border-radius-pill);
+                border: var(--mc-border-hairline) var(--mc-gray-500);
+                font-size: size(16);
+                font-weight: 400;
+                line-height: size(19);                    
+                margin: 0;
+                padding: size(10) size(20);
+                width: 100%;
+            }
+
+            .button {
+                background: unset;
+                border-radius: 0 var(--mc-border-radius-pill) var(--mc-border-radius-pill) 0;
+                padding: size(7.5) size(20);
+                position: absolute;
+                right: 0;
+
+                .iconify {
+                    font-size: size(22);
+                }
+            }
+        }
+
+        .order {
+            appearance: none;
+            background: url('https://api.iconify.design/ic/baseline-arrow-drop-down.svg?color=%230074c1') no-repeat 96% center/contain;
+            background-color: var(--mc-high-500);
+            background-size: size(20);
+            border-radius: var(--mc-border-radius-sm);
+            padding: size(10) size(26) size(10) size(16);
+        }
+    }
+
+    &__cards {
+        display: grid;
+        gap: size(30);
+    }
+
+    &__label {
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        padding: 0 0 size(8);
+    }
+
+}

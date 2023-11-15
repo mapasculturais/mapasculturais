@@ -49,6 +49,7 @@ class PermissionAction extends DoctrineEnumType
             'requestEventRelation' => 'requestEventRelation',
             'send' => 'send',
             'sendUserEvaluations' => 'sendUserEvaluations',
+            'support' => 'support',
             'unpublish' => 'unpublish',
             'unarchive' => 'unarchive',
             'view' => 'view',

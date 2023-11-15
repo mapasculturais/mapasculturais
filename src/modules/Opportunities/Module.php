@@ -10,6 +10,7 @@ use MapasCulturais\i;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationEvaluation;
 use PHPUnit\Util\Annotation\Registry;
 
 class Module extends \MapasCulturais\Module{
@@ -145,6 +146,11 @@ class Module extends \MapasCulturais\Module{
             $this->render('registrations', []);
         });
 
+        $app->hook('GET(panel.evaluations)', function() use($app) {
+            $this->requireAuthentication();
+            $this->render('evaluations', []);
+        });
+
         $app->hook('GET(registration.registrationPrint)', function() use($app) {
             $this->requireAuthentication();
 
@@ -159,10 +165,13 @@ class Module extends \MapasCulturais\Module{
             $this->render("registration-print", ['entity' => $entity]);
         });
 
-        $app->hook('panel.nav', function(&$nav_items){
+        $app->hook('panel.nav', function(&$nav_items) use($app) {
             $nav_items['opportunities']['items'] = [
                 ['route' => 'panel/opportunities', 'icon' => 'opportunity', 'label' => i::__('Minhas oportunidades')],
                 ['route' => 'panel/registrations', 'icon' => 'opportunity', 'label' => i::__('Minhas inscrições')],
+                ['route' => 'panel/evaluations', 'icon' => 'opportunity', 'label' => i::__('Minhas avaliações'), 'condition' => function () use($app) {
+                    return $app->user->getIsEvaluator();
+                }]
             ];
         });
 
@@ -297,6 +306,45 @@ class Module extends \MapasCulturais\Module{
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
             $this->jsObject['config']['evaluationMethods'] = $app->getRegisteredEvaluationMethods();
         });
+
+        // adiciona o parecer ao jsonSerialize da registration
+        $app->hook('entity(Registration).jsonSerialize', function (&$data) use($app) {
+            /** @var \MapasCulturais\Entities\Registration $this */
+            $opportunity = $this->opportunity;
+            if ($opportunity->publishedRegistrations && ($evaluation_configuration = $opportunity->evaluationMethodConfiguration)) {
+                if ($evaluation_configuration->publishEvaluationDetails){
+                    $em = $evaluation_configuration->evaluationMethod;
+                    $data['consolidatedDetails'] = $em->getConsolidatedDetails($this);
+                    $data['evaluationsDetails'] = [];
+
+                    $evaluations = $this->sentEvaluations;
+
+                    foreach($evaluations as $eval) {
+                        $detail = $em->getEvaluationDetails($eval);
+                        if ($evaluation_configuration->publishValuerNames){
+                            $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
+                        }
+                        $data['evaluationsDetails'][] = $detail;
+                    }
+                }
+            }
+        });
+
+        $app->hook('entity(Registration).propertiesMetadata', function(&$result) {
+            $result['consolidatedDetails'] = [
+                'isMetadata' => false,
+                'isEntityRelation' => false,
+                'isReadonly' => true,
+                'label' => i::__('Detalhes consolidados da avaliação')
+            ];
+
+            $result['evaluationsDetails'] = [
+                'isMetadata' => false,
+                'isEntityRelation' => false,
+                'isReadonly' => true,
+                'label' => i::__('Detalhes das avaliações')
+            ];
+        });
     }
 
     function register(){
@@ -313,6 +361,16 @@ class Module extends \MapasCulturais\Module{
                 'type' => 'json',
             ]);
         });
+
+        $this->registerEvauationMethodConfigurationMetadata('publishEvaluationDetails', [
+            'label' => i::__('Publicar os pareceres para o proponente'),
+            'type' => 'json',
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('publishValuerNames', [
+            'label' => i::__('Publicar o nome dos avaliadores nos pareceres'),
+            'type' => 'json',
+        ]);
            
     }
 }
