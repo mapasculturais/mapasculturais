@@ -10,6 +10,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona nova tela "Minhas avaliações" no painel de controle
 - Adiciona listagem de suportes disponíveis na tela principal do painel de controle
 - No Thema do subsite, evita que quebre o codigo ao tentar criar a pasta do sass do subsite caso a mesma já exista
+- Possibilita a publicação do parecer de fases de avaliação técnica para os proponentes
+
+## Correções
+- Corrige erro ao tentar acessar a propriedade CNPJ do agente e o mesmo fro agente individual
 
 ## [7.0.4] - 2023-11-14
 ### Melhorias
@@ -20,8 +24,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige condicionais que exibiam os botões de açoes das avaliações na tela de avaliação
 - Corrige erro que impedia uma entidade de ser salva parcialmente
 
-## Correção
-- Corrige erro ao tentar acessar a propriedade CNPJ do agente e o mesmo fro agente individual
 ## [7.0.3] - 2023-11-10
 - exibe a nota da avaliação técnica para o proponente quando o resultado estiver publicado.
 

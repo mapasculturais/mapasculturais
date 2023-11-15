@@ -17,6 +17,9 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     abstract protected function _getConsolidatedResult(Entities\Registration $registration);
     abstract function getEvaluationResult(Entities\RegistrationEvaluation $evaluation);
 
+    abstract function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array;
+    abstract function _getConsolidatedDetails(Entities\Registration $registration): array;
+
     abstract function valueToString($value);
 
     public function cmpValues($value1, $value2){
@@ -160,6 +163,20 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $registration->checkPermission('viewConsolidatedResult');
 
         return $this->_getConsolidatedResult($registration);
+    }
+
+    function getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
+        $app = App::i();
+        $result = $this->_getEvaluationDetails($evaluation);
+        $app->applyHookBoundTo($evaluation, "{$evaluation->hookPrefix}.details", [&$result]);
+        return $result;
+    }
+
+    function getConsolidatedDetails(Entities\Registration $registration): array {
+        $app = App::i();
+        $result = $this->_getConsolidatedDetails($registration);
+        $app->applyHookBoundTo($registration, "{$registration->hookPrefix}.details", [&$result]);
+        return $result;
     }
 
     private $_canUserEvaluateRegistrationCache = [];

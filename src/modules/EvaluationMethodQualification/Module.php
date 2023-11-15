@@ -94,6 +94,17 @@ class Module extends \MapasCulturais\EvaluationMethod
         }
     }
 
+    function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
+        $evaluation_configuration = $evaluation->registration->opportunity->evaluationMethodConfiguration;
+
+        return [];
+    }
+
+    function _getConsolidatedDetails(Entities\Registration $registration): array {
+        $evaluation_configuration = $registration->opportunity->evaluationMethodConfiguration;
+        return [];
+    }
+
     protected function _register()
     {
         $this->registerEvaluationMethodConfigurationMetadata('sections', [

@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
+use MapasCulturais\Entities;
 
 trait RegisterFunctions {
     function registerMetadata($entity_class, $key, $cfg) {
@@ -21,6 +22,10 @@ trait RegisterFunctions {
 
     function registerSpaceMetadata($key, $cfg) {
         return $this->registerMetadata('MapasCulturais\Entities\Space', $key, $cfg);
+    }
+
+    function registerEvauationMethodConfigurationMetadata($key, $cfg) {
+        return $this->registerMetadata(Entities\EvaluationMethodConfiguration::class, $key, $cfg);
     }
 
     function registerAgentMetadata($key, $cfg) {
