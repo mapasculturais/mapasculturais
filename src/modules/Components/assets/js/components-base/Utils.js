@@ -81,6 +81,9 @@ globalThis.Utils = {
         action_name = action_name || $MAPAS.routes.default_action_name;
         
         if (args) {
+            if(JSON.stringify(Object.keys(args)) == '["0"]') {
+                args = [args[0]];
+            }
             args = this.sortOjectProperties(args);
         }
 
