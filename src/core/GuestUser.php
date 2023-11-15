@@ -20,6 +20,10 @@ class GuestUser implements UserInterface{
     function isAttorney($action, $user= null){
         return false;
     }
+
+    function getIsEvaluator() {
+        return false;
+    }
     
     function equals($obj){
         return $this == $obj;
