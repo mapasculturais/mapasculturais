@@ -6,7 +6,7 @@ app.component('entity-table', {
         const messages = useMessages();
         const hasSlot = name => !!slots[name];
         const text = Utils.getTexts('entity-table')
-        return { optionalHeadersSelected: [], hasSlot, activeSlots, messages, text};
+        return { optionalHeadersSelected: [], hasSlot, activeSlots, messages, text };
     },
 
     mounted() {
@@ -36,6 +36,9 @@ app.component('entity-table', {
             modifiedHeaders,
             activeHeaders,
             value: '',
+            filterOptions: [],
+            searchText: '',
+            activeItems: this.items
         }
 
     },
@@ -76,15 +79,15 @@ app.component('entity-table', {
             })
         },
     },
-    watch: {
-        statusFilter(newStatus) {
-            this.filterOptions = {
-                field: 'status',
-                comparison: '=',
-                criteria: newStatus
-            };
-        }
-     },
+    // watch: {
+    //     statusFilter(newStatus) {
+    //         this.filterOptions = {
+    //             field: 'status',
+    //             comparison: '=',
+    //             criteria: newStatus
+    //         };
+    //     }
+    //  },
     computed: {
         selectRows() {
             return this.optionalHeaders.map(header => {
@@ -127,6 +130,25 @@ app.component('entity-table', {
     },
 
     methods: {
+        search(searchText) {
+            const term = String(searchText);
+            const searchRegex = new RegExp(term, 'i');
+            this.activeItems = this.items;
+            this.activeItems = this.activeItems.filter((item) => {
+                let find = false;
+
+                Object.entries(item).forEach(entry => {
+                    const [key, value] = entry;
+
+                    if (searchRegex.test(value)) {
+                        find = true;
+                    }
+                });
+
+                return find;
+            });
+        },
+
         removeFromColumns(tag) {
             // if (this.activeColumns.includes(tag)) {
             //     this.activeHeaders = this.activeHeaders.filter(header => (header.text != tag || header.required));
@@ -134,7 +156,7 @@ app.component('entity-table', {
 
             if (this.activeColumns.includes(tag)) {
                 const headerToRemove = this.activeHeaders.find(header => header.text === tag);
-                
+
                 if (headerToRemove && headerToRemove.required) {
                     this.messages.error(this.text('item obrigatório') + ' ' + headerToRemove.text);
                 } else {

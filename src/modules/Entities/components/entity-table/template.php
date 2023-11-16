@@ -18,8 +18,9 @@ $this->import('
 
     <div class="opportunity-registration-table__filter">
         <div class="opportunity-registration-table__search-key">
-            <input type="text" placeholder="<?= i::__('Busque pelo número de inscrição, status, parecer técnico?') ?>" class="opportunity-registration-table__search-input" />
-            <button @click="search()" class="opportunity-registration-table__search-button">
+            <input v-model="searchText" type="text" placeholder="<?= i::__('Busque pelo número de inscrição, status, parecer técnico?') ?>" class="opportunity-registration-table__search-input" />
+            {{searchText}}
+            <button @click="search(searchText)" class="opportunity-registration-table__search-button">
                 <mc-icon name="search"></mc-icon>
             </button>
         </div>
@@ -63,7 +64,7 @@ $this->import('
         </div>
     </div>
 
-    <EasyDataTable :headers="activeHeaders" :filter-options="filterOptions" table-class-name="entity-table__table" :body-row-class-name="customRowClassName" :items="items" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
+    <EasyDataTable :headers="activeHeaders" :filter-options="filterOptions" table-class-name="entity-table__table" :body-row-class-name="customRowClassName" :items="activeItems" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
         <template v-for="slot in activeSlots" #[slot]="item">
             <slot :name="slot" v-bind="item"></slot>
         </template>
