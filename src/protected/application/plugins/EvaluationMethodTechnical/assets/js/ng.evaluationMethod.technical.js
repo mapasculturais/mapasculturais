@@ -66,6 +66,7 @@
             }
 
             $scope.save = function(){
+                $scope.alert = false;
                 var data = {
                     sections: $scope.data.sections,
                     criteria: [],
@@ -76,8 +77,18 @@
                     affirmativePoliciesRoof: $scope.data.affirmativePolicieRoof || 0.00
                 };
 
-                console.log(data);
-
+                if(data?.affirmativePolicies){
+                    data.affirmativePolicies.forEach((obj) => {
+                        Object.keys(obj).forEach((key) => {
+                            if(!obj[key]){
+                                $scope.alert = true;
+                                MapasCulturais.Messages.alert(labels['alertPendingAffirmativePolicies']);
+                                return;
+                            }
+                        })
+                    })
+                }
+                
                 $scope.data.criteria.forEach(function (crit) {
                     for (var i in data.sections) {
                         var section = data.sections[i];
@@ -87,12 +98,15 @@
                     }
                 });
 
-                TechnicalEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
-                    MapasCulturais.Messages.success(labels.changesSaved);
-                    $scope.data.sections = data.sections;
-                    $scope.data.criteria = data.criteria;
-                    $scope.data.enableViability = data.enableViability;
-                });
+                if(!$scope.alert){
+                    TechnicalEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
+                        MapasCulturais.Messages.success(labels.changesSaved);
+                        $scope.data.sections = data.sections;
+                        $scope.data.criteria = data.criteria;
+                        $scope.data.enableViability = data.enableViability;
+                    });
+                }
+               
             };
 
             $scope.addSection = function(){
