@@ -45,10 +45,10 @@ $entity = $this->controller->requestedEntity;
                 </h5>
             </div>
         <div class="col-12"> 
-            <entity-table :headers="headers" :items="items" required="nome,id" visible="status,cpf">
-                <template #item-cpf="{cpf}">
+            <entity-table :headers="headers" :items="items" required="registration" visible="status">
+                <!-- <template #item-cpf="{cpf}">
                     cpf: {{cpf}}
-                </template>
+                </template> -->
             </entity-table>
             <v1-embed-tool route="registrationmanager" :id="phase.id" min-height="600px"></v1-embed-tool>
         </div>
