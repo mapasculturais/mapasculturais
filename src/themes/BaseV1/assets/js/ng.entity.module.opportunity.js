@@ -2196,6 +2196,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             },1500);
         };
 
+        $scope.$watch('data.removeDraft', function(new_val, old_val){
+            if(new_val != old_val);
+            do_filter();
+        });
+
         //data.registrations.filtro
         $scope.data.last_search_value = undefined;
         $scope.$watch('data.registrationsFilter', function(new_val, old_val) {
