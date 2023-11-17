@@ -43,6 +43,7 @@ $this->import('
                         <strong v-if="role.subsite">{{`<?= i::esc_attr__('${role.name} em ${role.subsite.name}') ?>`}}</strong>
                         <strong v-else>{{role.name}}</strong>
                     </li>
+                    <user-management--add-role-modal :user="entity"></user-management--add-role-modal>
                 </ul>
             </div>
         </slot>
