@@ -8,25 +8,25 @@ app.component('opportunity-registrations-table', {
     },
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
+
         const text = Utils.getTexts('opportunity-registrations-table');
         return { text }
     },
     data() {
         return {
             headers: [
-                { text: "Nome", value: "nome"},
-                { text: "ID", value: "id"},
-                { text: "cpf", value: "cpf"},
-                { text: "status", value: "status"},
-                { text: "Conferir Inscrição", value: "open"},
-                { text: "Situação", value: "option"},
+
+                { text: "Inscrição", value: "registration" },
+                { text: "Categoria", value: "category" },
+                { text: "Agente", value: "agent" },
+                // { text: "Resultado final das avaliações", value: "evaluation" },
+                { text: "status", value: "status" },
+                // { text: "Situação", value: "" },
+                { text: "Conferir Inscrição", value: "open" },
 
             ],
-            items: [
-                { nome: "Nometeste", id: 1, cpf: "089478383", status: 1 },
-                { nome: "Nomedois", id: 2, cpf: "089455583", status: 10 },
-                { nome: "Nomedois", id: 3, cpf: "089455583", status: 10, option: [2, 3, 4] },
-            ],
+            items: this.registrationsItems(),
+
         }
     },
 
@@ -40,6 +40,23 @@ app.component('opportunity-registrations-table', {
     },
 
     methods: {
+        registrationsItems() {
+            const registrations = $MAPAS.config.opportunityRegistrationsTable.registrations;
+            let result = []
+            console.log(registrations);
+            registrations.forEach(registration => {
+                let item = {
+                    'registration': registration.number,
+                    'category': registration.category,
+                    'agent': registration.owner.name,
+                    'status': registration.status,
+
+                };
+                result.push(item);
+            });
+            console.log(result);
+            return result;
+        },
         isFuture() {
             const phase = this.phase;
             if (phase.isLastPhase) {
