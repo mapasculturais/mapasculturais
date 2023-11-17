@@ -5,6 +5,11 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Novas funcionalidades
+- Implementa filtro que possibilida a remoção dos rascunhos na lista de inscritos
+
+## Correções
+- Faz com que o select de seleção de funções apareça novamente na gestão de usuários
 
 ## [7.1.0] - 2023-11-15
 ### Novas funcionalidades
