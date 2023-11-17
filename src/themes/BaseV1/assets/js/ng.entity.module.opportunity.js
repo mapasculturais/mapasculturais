@@ -2176,7 +2176,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             $scope.filterTimeout = $timeout(function() {
                 var qdata = {
                     'status': 'GT(-1)',
-                    '@files': '(zipArchive):url',
+                    'status': `GT(${status})`,
                     '@opportunity': getOpportunityId(),
                     '@select': 'id,singleUrl,category,status,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,' + select_fields.join(','),
                     '@order': 'consolidatedResult DESC'
