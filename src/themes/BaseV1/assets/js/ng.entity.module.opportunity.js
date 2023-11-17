@@ -2172,10 +2172,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
     if(jQuery('.js-registration-list').length) {
         var do_filter = function(){
-            $timeout.cancel($scope.filterTimeout);
+            let status = $scope.data.removeDraft ? 0 : -1;
+
             $scope.filterTimeout = $timeout(function() {
                 var qdata = {
-                    'status': 'GT(-1)',
+                    'status': `GT(${status})`,
                     '@files': '(zipArchive):url',
                     '@opportunity': getOpportunityId(),
                     '@select': 'id,singleUrl,category,status,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,' + select_fields.join(','),
@@ -2194,6 +2195,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                 $scope.findRegistrations();
             },1500);
         };
+
+        $scope.$watch('data.removeDraft', function(new_val, old_val){
+            if(new_val != old_val);
+            do_filter();
+        });
 
         //data.registrations.filtro
         $scope.data.last_search_value = undefined;
