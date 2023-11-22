@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "06f84d96b096be64b6cf81ffbcd630ee",
+    "content-hash": "38da6047a659c02b306ed800609460c5",
     "packages": [
         {
             "name": "acelaya/doctrine-enum-type",
@@ -1926,17 +1926,11 @@
         },
         {
             "name": "opauth/opauth",
-            "version": "0.4.5",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/opauth/opauth.git",
-                "reference": "3f979012d0bdf2d447bb02b97f7f7d9f482c77e8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/opauth/opauth/zipball/3f979012d0bdf2d447bb02b97f7f7d9f482c77e8",
-                "reference": "3f979012d0bdf2d447bb02b97f7f7d9f482c77e8",
-                "shasum": ""
+                "url": "https://github.com/mapasculturais/opauth.git",
+                "reference": "b615e43c094b9c1f730eced7cf1bb93f91301852"
             },
             "require": {
                 "php": ">=5.2.0"
@@ -1952,7 +1946,6 @@
                     "lib/Opauth/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1966,20 +1959,16 @@
             "description": "Multi-provider authentication framework for PHP",
             "homepage": "http://opauth.org",
             "keywords": [
-                "Authentication",
-                "OpenId",
                 "auth",
+                "authentication",
                 "facebook",
                 "google",
                 "oauth",
                 "omniauth",
+                "openid",
                 "twitter"
             ],
-            "support": {
-                "issues": "https://github.com/opauth/opauth/issues",
-                "source": "https://github.com/opauth/opauth/tree/master"
-            },
-            "time": "2018-02-25T03:18:21+00:00"
+            "time": "2023-11-22T20:10:47+00:00"
         },
         {
             "name": "opauth/openid",
