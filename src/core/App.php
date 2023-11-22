@@ -763,6 +763,11 @@ class App {
      * @return void 
      */
     protected function _initAuthProvider() {
+        // register auth providers
+        $this->registerAuthProvider('OpenID');
+        $this->registerAuthProvider('logincidadao');
+        $this->registerAuthProvider('authentik');
+        
         $auth_class_name = strpos($this->config['auth.provider'], '\\') !== false ? 
             $this->config['auth.provider'] : 
             'MapasCulturais\AuthProviders\\' . $this->config['auth.provider'];
@@ -2205,11 +2210,6 @@ class App {
         $this->_registered = true;
 
         $this->applyHookBoundTo($this, 'app.register:before');
-
-        // register auth providers
-        // @TODO veridicar se isto está sendo usado, se não remover
-        $this->registerAuthProvider('OpenID');
-        $this->registerAuthProvider('logincidadao');
 
         // register controllers
 
