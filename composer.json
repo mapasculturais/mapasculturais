@@ -10,6 +10,8 @@
         "monolog/monolog": "^3.4",
         "mustache/mustache": "^2.11",
         "opauth/openid": "*",
+        "opauth/logincidadao" : "*",
+        "opauth/authentik" : "*",
         "pomo/pomo": "^1.5",
         "psy/psysh": "^0.11.12",
         "respect/validation": "^2.2",
@@ -31,5 +33,15 @@
             "MapasCulturais\\Modules\\": "src/modules",
             "MapasCulturais\\Themes\\": "src/themes"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/hacklabr/opauth-logincidadao.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/mapasculturais/opauth-authentik.git"
+        }
+    ]
 }
