@@ -36,5 +36,16 @@ return [
             ]
         ]
     ]
+
+    //Example Authentik
+    auth.provider' => 'MapasCulturais\AuthProviders\OpauthAuthentik',
+    'auth.config' => [
+        'salt' => env('AUTH_SALT', 'SECURITY_SALT'),
+        'timeout' => '24 hours',
+        'client_id' => env('AUTH_AUTHENTIK_APP_ID', ''),
+        'client_secret' => env('AUTH_AUTHENTIK_APP_SECRET', ''),
+        'scope' => env('AUTH_AUTHENTIK_SCOPE', 'openid profile email'),
+        'login_url' => env('AUTH_AUTHENTIK_LOGIN_URL', ''),
+    ]
     */
 ];
