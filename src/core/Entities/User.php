@@ -652,17 +652,19 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $app = App::i();
         
         $relation_class = EvaluationMethodConfigurationAgentRelation::class;
-        $dql = "
+        
+        $result = $app->em->getConnection()->fetchNumeric("
             SELECT 
-                COUNT(ar)
+                COUNT(DISTINCT(ar.id)) 
             FROM 
-                $relation_class ar
-                JOIN ar.agent a WITH a.user = {$this->id}
-        ";
+                agent_relation ar 
+                    LEFT JOIN agent a ON a.id = ar.agent_id 
+                    LEFT JOIN usr u ON u.id = a.id 
+            WHERE 
+                ar.object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration' AND
+                u.id = {$this->id}");
         
-        $q = $app->em->createQuery($dql);
-        
-        return (bool) $q->getSingleScalarResult();
+        return (bool) $result;
     }
 
     function getOpportunitiesCanBeEvaluated() {
