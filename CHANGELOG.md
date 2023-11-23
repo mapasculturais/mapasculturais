@@ -5,6 +5,8 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## Correções
+- Corrige rota de acessos as avaliações no componente evaluation-card
 
 ## [7.1.2] - 2023-11-23
 ### Novas funcionalidades
