@@ -31,5 +31,5 @@ $this->import('
         </div>
     </div>
 
-    <mc-link route="support/list" :params="[entity.id]" class="button button--primary button--right-icon evaluation-card__button"> {{buttonLabel}} <mc-icon name="arrow-right-ios"></mc-icon> </mc-link>
+    <mc-link route="opportunity/userEvaluations" :params="[entity.id]" class="button button--primary button--right-icon evaluation-card__button"> {{buttonLabel}} <mc-icon name="arrow-right-ios"></mc-icon> </mc-link>
 </div>

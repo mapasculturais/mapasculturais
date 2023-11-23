@@ -1047,6 +1047,9 @@ textarea {
 
 /* Registration Manager */
 .action-registrationmanager #filtro-inscritos {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
     background: white;
     border-radius: 4px 4px 0 0;
     border: none;
@@ -1062,6 +1065,11 @@ textarea {
     border-radius: 0 0 4px 4px;
     width: unset !important;
     margin: 0 0 8px !important;
+}
+
+.action-registrationmanager #filtro-inscritos .label-removeDraft {
+    padding-block: 16px;
+    margin: 0;
 }
 
 .action-registrationmanager #selected-filters span {
