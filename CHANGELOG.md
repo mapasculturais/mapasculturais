@@ -5,14 +5,28 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-## Correções
+### Novas funcionalidades
+- Possibilidade de configuração do sistema para autenticação com Authentik
+
+### Ajustes
+- Oculta a seção de destaque de oportunidades da home quando não há oportunidades ativas
+
+### Correções
+- Modifica cnsultas para evitar quebra do painel para novos usuários
+
+## [7.1.4] - 2023-11-23
+### Correções
 - Corrige rota de acessos as avaliações no componente evaluation-card
+
+## [7.1.3] - 2023-11-23
+### Correções
+- Corrige exebição dos botões que adicionam e remove as funções de usuarios
 
 ## [7.1.2] - 2023-11-23
 ### Novas funcionalidades
 - Implementa filtro que possibilida a remoção dos rascunhos na lista de inscritos
 
-## Correções
+### Correções
 - Faz com que o select de seleção de funções apareça novamente na gestão de usuários
 
 ## [7.1.0] - 2023-11-15
@@ -23,7 +37,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - No Thema do subsite, evita que quebre o codigo ao tentar criar a pasta do sass do subsite caso a mesma já exista
 - Possibilita a publicação do parecer de fases de avaliação técnica para os proponentes
 
-## Correções
+### Correções
 - Corrige erro ao tentar acessar a propriedade CNPJ do agente e o mesmo fro agente individual
 
 ## [7.0.4] - 2023-11-14
