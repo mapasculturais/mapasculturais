@@ -11,9 +11,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Ajustes
 - Oculta a seção de destaque de oportunidades da home quando não há oportunidades ativas
 
-### Correções
-- Modifica cnsultas para evitar quebra do painel para novos usuários
-
 ## [7.1.4] - 2023-11-23
 ### Correções
 - Corrige rota de acessos as avaliações no componente evaluation-card
