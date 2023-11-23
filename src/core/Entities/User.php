@@ -651,8 +651,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getIsEvaluator() {
         $app = App::i();
         
-        $relation_class = EvaluationMethodConfigurationAgentRelation::class;
-        
         $result = $app->em->getConnection()->fetchNumeric("
             SELECT 
                 COUNT(DISTINCT(ar.id)) 
