@@ -6,6 +6,4 @@ $queryParams =  [
 ];
 $queryOpportunities = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Opportunity::class, $queryParams);
 
-var_dump($queryOpportunities->getFindResult());
-
 $this->jsObject['entitySupports'] = $queryOpportunities->getFindResult();

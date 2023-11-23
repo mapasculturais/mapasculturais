@@ -42,8 +42,17 @@ $this->import('
                     <li v-for="role in roles" class="primary__border--solid primary__color mc-tag-list__tag mc-tag-list__tag--editable">
                         <strong v-if="role.subsite">{{`<?= i::esc_attr__('${role.name} em ${role.subsite.name}') ?>`}}</strong>
                         <strong v-else>{{role.name}}</strong>
+
+                        <mc-confirm-button v-if="global.auth.is('superAdmin')" 
+                            :message="`<?= i::esc_attr__('Deseja remover a função "${role.name}" do usuário "${username}"?') ?>`"
+                            @confirm="deleteRole(role)">
+                            <template #button="modal">
+                                <mc-icon @click="modal.open()" name='delete'></mc-icon>
+                            </template>
+
+                        </mc-confirm-button>
                     </li>
-                    <user-management--add-role-modal :user="entity"></user-management--add-role-modal>
+                    <user-management--add-role-modal v-if="global.auth.is('superAdmin')" :user="entity"></user-management--add-role-modal>
                 </ul>
             </div>
         </slot>

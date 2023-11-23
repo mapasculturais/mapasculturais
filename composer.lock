@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38da6047a659c02b306ed800609460c5",
+    "content-hash": "303ea928b16a4e31f8ddd1e98c2942ca",
     "packages": [
         {
             "name": "acelaya/doctrine-enum-type",
@@ -1092,16 +1092,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.17.1",
+            "version": "2.16.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "1a4fe6e0bb67762370937a7e6cee3da40a9122d1"
+                "reference": "609647a51a1b28a674de270204a5cea3af57d554"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/1a4fe6e0bb67762370937a7e6cee3da40a9122d1",
-                "reference": "1a4fe6e0bb67762370937a7e6cee3da40a9122d1",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/609647a51a1b28a674de270204a5cea3af57d554",
+                "reference": "609647a51a1b28a674de270204a5cea3af57d554",
                 "shasum": ""
             },
             "require": {
@@ -1119,7 +1119,7 @@
                 "ext-ctype": "*",
                 "php": "^7.1 || ^8.0",
                 "psr/cache": "^1 || ^2 || ^3",
-                "symfony/console": "^4.2 || ^5.0 || ^6.0 || ^7.0",
+                "symfony/console": "^4.2 || ^5.0 || ^6.0",
                 "symfony/polyfill-php72": "^1.23",
                 "symfony/polyfill-php80": "^1.16"
             },
@@ -1187,9 +1187,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.17.1"
+                "source": "https://github.com/doctrine/orm/tree/2.16.3"
             },
-            "time": "2023-11-17T06:25:40+00:00"
+            "time": "2023-10-21T17:35:18+00:00"
         },
         {
             "name": "doctrine/persistence",
