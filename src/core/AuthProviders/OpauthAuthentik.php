@@ -20,7 +20,7 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
             'client_id' => '',
             'login_url' => '',
             'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $url),
-            'logout_url' => $app->createUrl('auth','logout'),
+            'logout_url' => $app->createUrl('site','index'),
         ], $this->_config);
         
         
@@ -103,7 +103,7 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
         
         if($config['logout_url']){
             $app->hook('auth.logout:after', function() use($app, $config){
-                $app->redirect($config['logout_url'] . '?next=' . $app->baseUrl);
+                $app->redirect($config['logout_url']);
             });
         }
         
