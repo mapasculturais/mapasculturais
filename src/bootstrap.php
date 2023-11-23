@@ -23,7 +23,7 @@ define('DOCTRINE_PROXIES_PATH', VAR_PATH . 'DoctrineProxies/');
 define('PRIVATE_FILES_PATH', env('PRIVATE_FILES_PATH', VAR_PATH . 'private-files/'));
 define('SESSIONS_SAVE_PATH', env('SESSIONS_SAVE_PATH', VAR_PATH . 'sessions/'));
 
-define('SESSION_TIMEOUT', intval(env('SESSION_TIMEOUT', 2 * HOUR_IN_SECONDS)));
+define('SESSION_TIMEOUT', intval(env('SESSION_TIMEOUT', 12 * HOUR_IN_SECONDS)));
 define('REDIS_SESSION', strpos(SESSIONS_SAVE_PATH, 'tcp://') !== false);
 
 define('AUTOLOAD_TTL', 5 * MINUTE_IN_SECONDS);
