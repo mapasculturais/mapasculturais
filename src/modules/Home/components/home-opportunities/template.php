@@ -11,7 +11,7 @@ $this->import('
 	mc-avatar
 ');
 ?>
-<div v-if="global.enabledEntities.opportunities" class="home-opportunities">
+<div v-if="global.enabledEntities.opportunities && opportunities.length > 0" class="home-opportunities">
 	<div class="home-opportunities__header">
 		<div class="home-opportunities__header title">
 			<label> <?= $this->text('title', i::__('Oportunidades do momento'))?> </label>
