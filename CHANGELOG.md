@@ -5,6 +5,10 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Ajustes
+- Faz com que o componente panel-entity-tabs retorne no status de publicado, todas as inscrições que estão no mínimo enviadas
+
+## [7.2.0] - 2023-11-24
 ### Novas funcionalidades
 - Possibilidade de configuração do sistema para autenticação com Authentik
 

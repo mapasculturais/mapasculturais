@@ -13,7 +13,7 @@ $this->import('
     mc-title
 ');
 ?>
-<div v-if="editable || entity.terms?.[taxonomy].length > 0" :class="['entity-terms', classes, error]">
+<div v-if="taxomyExists() && (editable || entity.terms?.[taxonomy].length > 0)" :class="['entity-terms', classes, error]">
     <div class="entity-terms__header">
         <mc-title tag="h4" :short-length="0" size="medium" class="bold">{{title ?? taxonomy}}</mc-title>
         <span v-if="required && !hideRequired" class="entity-terms__required">*<?=i::__('obrigatório');?></span>
