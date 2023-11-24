@@ -11,6 +11,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Ajustes
 - Oculta a seção de destaque de oportunidades da home quando não há oportunidades ativas
 - Modifica o tempo padrão de duração de sessão para 12 horas
+- Implementa botão para acessar o formulário de inscrição de uma fase de coleta de dados diretamente na ficha de inscrição
 
 ## [7.1.4] - 2023-11-23
 ### Correções
