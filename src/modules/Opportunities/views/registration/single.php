@@ -12,9 +12,11 @@ $this->addOpportunityPhasesToJs();
 $this->addRegistrationPhasesToJs();
 
 $this->import('
+    mc-alert
     mc-avatar
     mc-breadcrumb
     mc-card
+    mc-link
     mc-tab
     mc-tabs
     opportunity-header
@@ -32,6 +34,7 @@ $this->breadcrumb = [
 
 $entity = $entity->firstPhase;
 
+$today = new DateTime();
 ?>
 
 <div class="main-app registration single">
@@ -240,14 +243,25 @@ $entity = $entity->firstPhase;
                 </mc-card>
 
                 <?php while($entity): $opportunity = $entity->opportunity;?>
-                    <?php if($opportunity->isDataCollection):?>
+                    <?php if($opportunity->isDataCollection && $today >= $opportunity->registrationFrom):?>
                         <?php if($opportunity->isFirstPhase):?>
                             <h2><?= i::__('Inscrição') ?></h2>
                         <?php else: ?>
                             <h2><?= $opportunity->name ?></h2>
                         <?php endif ?>
-
-                        <v1-embed-tool route="registrationview" :id="<?=$entity->id?>"></v1-embed-tool>
+                        <?php if($entity->status < 1 && !$opportunity->isFirstPhase): ?>
+                            <mc-alert type="warning">
+                                <?= i::__('Nesta etapa, é necessário inserir informações. Por favor, clique no botão para acessar o formulário e preenchê-lo') ?> <br>
+                                <?= i::__('dentro do período de') ?>  <?=$entity->opportunity->registrationFrom->format("d/m/Y")?> <?= i::__('à') ?> <?=$entity->opportunity->registrationTo->format("d/m/Y H:i:s")?>
+                            </mc-alert>
+                            <div class="grid-12">
+                                <div class="col-3 sm:col-12">
+                                    <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$entity->id])?>"><?= i::__('Preencher formulário') ?></a>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <v1-embed-tool route="registrationview" :id="<?=$entity->id?>"></v1-embed-tool>
+                        <?php endif ?>
                     <?php endif ?>
                     <?php $entity = $entity->nextPhase; ?>
                 <?php endwhile ?>
