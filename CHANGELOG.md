@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.2.2] - 2023-11-24
+### Correções
+- Corrige resolução do avatar das entidades no componente que exibe os avatares
+
 ## [7.2.1] - 2023-11-24
 ### Ajustes
 - Faz com que o componente panel-entity-tabs retorne no status de publicado, todas as inscrições que estão no mínimo enviadas

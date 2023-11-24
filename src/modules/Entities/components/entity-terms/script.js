@@ -8,12 +8,8 @@ app.component('entity-terms', {
     },
 
     beforeCreate() {
-        this.definition = $TAXONOMIES[this.taxonomy];
-
-        if (!this.definition) {
-            throw Error(`Taxonomia ${this.taxonomy} não registrada na aplicação`);
-        }
-
+        this.definition = $TAXONOMIES[this.taxonomy] || {};
+        
         this.entity.terms[this.taxonomy] = this.entity.terms[this.taxonomy] || [];
     },
 
@@ -127,6 +123,10 @@ app.component('entity-terms', {
                 this.terms.push(term);
             }
            
+        },
+
+        taxomyExists() {
+            return !!$TAXONOMIES[this.taxonomy];
         }
     }
 });
