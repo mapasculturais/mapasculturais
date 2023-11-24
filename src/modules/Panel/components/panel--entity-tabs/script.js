@@ -22,7 +22,7 @@ app.component('panel--entity-tabs', {
         return {
             description: $DESCRIPTIONS[this.type],
             queries: {
-                publish: { status: 'EQ(1)', ...query },
+                publish: { status: 'GTE(1)', ...query },
                 draft: { status: 'EQ(0)', ...query },
                 granted: { '@Permissions': '@control', ...query, user: '!EQ(@me)' },
                 trash: { status: 'EQ(-10)', ...query },
