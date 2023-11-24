@@ -16,12 +16,8 @@ app.component('entity-field', {
         let uid = Math.random().toString(36).slice(2);
         let description, 
             value = this.entity[this.prop];
-        try{
-            description = this.entity.$PROPERTIES[this.prop];
-        } catch (e) {
-            console.error(`Propriedade ${this.prop} não existe na entidade`);
-            return {};
-        }
+
+        description = this.entity.$PROPERTIES[this.prop] || {};
         
         if (description.type == 'array' && !(value instanceof Array)) {
             if (!value) {
@@ -148,7 +144,10 @@ app.component('entity-field', {
     },
     
     methods: {
-        
+        propExists(){
+            return !! this.entity.$PROPERTIES[this.prop];
+        },
+
         change(event, now) {
             clearTimeout(this.__timeout);
             let oldValue = this.entity[this.prop];

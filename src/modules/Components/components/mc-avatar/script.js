@@ -23,7 +23,22 @@ app.component('mc-avatar', {
             return [`mc-avatar--${this.size}`, { 'mc-avatar--icon': !this.image }, { 'mc-avatar--square': this.square }]
         },
         image() {
-            return this.entity.files.avatar?.transformations?.avatarSmall?.url;
+            const map = {
+                big: 'avatarBig',
+                medium: 'avatarBig',
+                small: 'avatarMedium',
+                xsmall: 'avatarSmall'
+            };
+
+            const size = map[this.size];
+
+            const transformations = this.entity.files.avatar?.transformations;
+            
+            if(transformations) {
+                return transformations[size]?.url;
+            } else {
+                return undefined;
+            }
         }
     },
     methods: {
