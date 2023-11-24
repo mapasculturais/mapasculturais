@@ -7,6 +7,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Ajustes
 - Faz com que o componente panel-entity-tabs retorne no status de publicado, todas as inscrições que estão no mínimo enviadas
+###
+- Corrige resolução do avatar das entidades no componente que exibe os avatares
 
 ## [7.2.0] - 2023-11-24
 ### Novas funcionalidades
