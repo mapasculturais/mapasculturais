@@ -180,7 +180,7 @@ app.component('entity-location', {
             let estado      = this.entity.En_Estado          == null ? '' : this.entity.En_Estado;
             let cep         = this.entity.En_CEP             == null ? '' : this.entity.En_CEP;
 
-            if (estado && cidade && rua) {
+            if (estado && cidade) {
                 var address = bairro ?
                     rua + " " + numero + ", " + bairro + ", " + cidade + ", " + estado :
                     rua + " " + numero + ", " + cidade + ", " + estado;
