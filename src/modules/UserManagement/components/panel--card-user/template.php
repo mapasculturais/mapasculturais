@@ -27,7 +27,7 @@ $this->import('
 
     <template #subtitle>
         <?php $this->applyComponentHook('subtitle', 'begin') ?>
-        <slot name="subtitle" :entity="entity">
+        <slot v-if="global.showIds[entity.__objectType]" name="subtitle" :entity="entity">
             <code>ID: {{entity.id}}</code>
         </slot>
         <?php $this->applyComponentHook('subtitle', 'end') ?>
