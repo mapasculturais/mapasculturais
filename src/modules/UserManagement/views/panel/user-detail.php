@@ -37,7 +37,7 @@ $this->import('
                             </div>
                         </div>
                         <div class="management-content__info">
-                            <p>ID: {{entity.id}}</p>
+                            <p v-if="global.showIds[entity.__objectType]" >ID: {{entity.id}}</p>
                             <p><?= i::__('Último login') ?>: {{entity.lastLoginTimestamp.date('long year')}} <?= i::__('às') ?> {{entity.lastLoginTimestamp.time()}}</p>
                             <p>
                                 <?= i::__('Status') ?>:

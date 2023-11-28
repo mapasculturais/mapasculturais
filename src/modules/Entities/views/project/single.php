@@ -40,7 +40,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity">
         <template #metadata>
-            <dl class="metadata__id" v-if="entity.id">
+            <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
                 <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
                 <dd><strong>{{entity.id}}</strong></dd>
             </dl> 

@@ -22,6 +22,7 @@ globalThis.useGlobalState = Pinia.defineStore('globalState', {
             visibleFooter: true,
             auth,
             showTemplateHook: false,
+            showIds: $MAPAS.config.showIds,
         }
     },
 

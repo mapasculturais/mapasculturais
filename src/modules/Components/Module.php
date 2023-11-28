@@ -56,6 +56,7 @@ class Module extends \MapasCulturais\Module {
         });
 
         $app->hook('mapas.printJsObject:before', function () use($app) {
+            $this->jsObject['config']['showIds'] = $app->config['app.showEntityIds'];
             $roles = [];
             $user = $app->user;
 
