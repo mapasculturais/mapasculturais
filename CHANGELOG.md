@@ -8,6 +8,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Ajustes
 - Faz com que ao selecionar o Estado e o município o pin do Mapa seja posicionado
 
+### Correções
+- Corrige erro de duplicidades no front da lista de inscrição
+
 ## [7.2.3] - 2023-11-28
 ### Novas funcionalidades
 - Implementa configuração que possibilita Habilitar ou Desabilitar a exibição dos ids das entidades
