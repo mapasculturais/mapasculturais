@@ -1,4 +1,7 @@
-<?php $sentDate = $entity->sentTimestamp; ?>
+<?php 
+$entity = $this->controller->requestedEntity;
+$sentDate = $entity->sentTimestamp; 
+?>
 
 <h3 class="registration-header"><?php \MapasCulturais\i::_e("Formulário de Inscrição");?></h3>
 
