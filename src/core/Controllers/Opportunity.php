@@ -467,9 +467,10 @@ class Opportunity extends EntityController {
         }
 
         $em = $opportunity->evaluationMethod;
+        
+        if($em->slug == "technical" && isset($data['@order']) && !preg_match('#consolidatedResult as \w+#i', $data['@order'])){
 
-        if($em->slug == "technical"){
-            $data['@order'] = "consolidatedResult DESC";
+            $data['@order'] = str_replace('consolidatedResult', 'consolidatedResult AS FLOAT', $data['@order']);
         }
             
         $query = new ApiQuery('MapasCulturais\Entities\Registration', $data, false, false, $opportunity->publishedRegistrations);

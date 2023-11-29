@@ -3,6 +3,9 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [Unreleased]
+### Correções
+- corrige a ordenação de inscrições em fases de avaliação técnica
 
 ## [7.2.4] - 2023-11-29
 ### Ajustes
