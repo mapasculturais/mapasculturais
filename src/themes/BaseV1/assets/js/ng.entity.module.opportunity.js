@@ -2099,7 +2099,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                     var metadata = headers()['api-metadata'] ?  JSON.parse(headers()['api-metadata']) : {};
                     
                     $scope.data[meta_key] = metadata;
-                    $scope.data[varname] = $scope.data[varname].concat(response);
+
+                    if(page > 2) {
+                        $scope.data[varname] = $scope.data[varname].concat(response);
+                    }else{
+                        $scope.data[varname] = response;
+                    }
                 });
             };
 
