@@ -15,42 +15,42 @@ $this->import('
     <div v-if="!editable" class="entity-social-media__links">
         <div v-if="entity.instagram" class="entity-social-media__links--link">
             <mc-icon name="instagram"></mc-icon>
-            <a :href="entity.instagram">{{entity.instagram}}</a>
+            <a target="_blank" :href="buildSocialMediaLink('instagram')">{{entity.instagram}}</a>
         </div>
 
         <div v-if="entity.twitter" class="entity-social-media__links--link">
             <mc-icon name="twitter"></mc-icon>
-            <a :href="entity.twitter">{{entity.twitter}}</a>
+            <a target="_blank" :href="buildSocialMediaLink('twitter')">{{entity.twitter}}</a>
         </div>
 
         <div v-if="entity.facebook" class="entity-social-media__links--link">
             <mc-icon name="facebook"></mc-icon>
-            <a :href="entity.facebook">{{entity.facebook}}</a>
+            <a target="_blank" :href="buildSocialMediaLink('facebook')">{{entity.facebook}}</a>
         </div>
 
         <div v-if="entity.youtube" class="entity-social-media__links--link">
             <mc-icon name="youtube"></mc-icon>
-            <a :href="entity.youtube">{{entity.youtube}}</a>
+            <a target="_blank" :href="buildSocialMediaLink('youtube')">{{entity.youtube}}</a>
         </div>
 
         <div v-if="entity.linkedin" class="entity-social-media__links--link">
             <mc-icon name="linkedin"></mc-icon>
-            <a :href="entity.linkedin">{{entity.linkedin}}</a>
+            <a target="_blank" :href="buildSocialMediaLink('linkedin')">{{entity.linkedin}}</a>
         </div>
 
         <div v-if="entity.vimeo" class="entity-social-media__links--link">
             <mc-icon name="vimeo"></mc-icon>
-            <a :href="entity.vimeo">{{entity.vimeo}}</a>
+            <a target="_blank" :href="buildSocialMediaLink('vimeo')">{{entity.vimeo}}</a>
         </div>
 
         <div v-if="entity.spotify" class="entity-social-media__links--link">
             <mc-icon name="spotify"></mc-icon>
-            <a :href="entity.spotify">{{entity.spotify}}</a>
+            <a target="_blank" :href="buildSocialMediaLink('spotify')">{{entity.spotify}}</a>
         </div>
 
         <div v-if="entity.pinterest" class="entity-social-media__links--link">
             <mc-icon name="pinterest"></mc-icon>
-            <a :href="entity.pinterest">{{entity.pinterest}}</a>
+            <a target="_blank" :href="buildSocialMediaLink('pinterest')">{{entity.pinterest}}</a>
         </div>
     </div>
 
