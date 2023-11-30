@@ -12,6 +12,6 @@ final class UrlDomain extends AbstractRule {
     }
 
     public function validate($input): bool {
-        return (bool) preg_match("#^https?://[^/]*{$this->domain}/?#gi", trim((string) $input));
+        return (bool) preg_match("#^https?://[^/]*{$this->domain}/?#i", trim((string) $input));
     }
 }
