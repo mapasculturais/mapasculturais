@@ -254,4 +254,8 @@ globalThis.Utils = {
             list.push(entity);  // adiciona a entidade na lista
         }
     },
+
+    buildSocialMediaLink(entity, socialMedia){
+        return "https://" + socialMedia + ".com/" + entity[socialMedia];
+    }
 }
