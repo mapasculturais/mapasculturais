@@ -3,6 +3,7 @@
 namespace MapasCulturais;
 
 use Doctrine\ORM\Query;
+use Exception;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Opportunity;
@@ -452,6 +453,12 @@ class ApiQuery {
     protected $hookPrefix;
 
     /**
+     * Casts das ordenações
+     * @var array
+     */
+    protected $orderCasts = [];
+
+    /**
      *
      * @var ApiQuery
      */
@@ -794,10 +801,10 @@ class ApiQuery {
     }
 
     public function getFindDQL(string $select = null) {
-        $select = $select ?: $this->generateSelect();
         $where = $this->generateWhere();
         $order = $this->generateOrder();
         $joins = $this->generateJoins();
+        $select = $select ?: $this->generateSelect();
 
         $dql = "SELECT\n\t{$select}\nFROM \n\t{$this->entityClassName} e {$joins}";
         if ($where) {
@@ -1059,30 +1066,59 @@ class ApiQuery {
             $select .= ', __subsite__.url AS originSiteUrl';
         }
         
+        foreach($this->orderCasts as $order_cast) {
+            $select .= ", $order_cast";
+        }
         return $select;
     }
 
     protected function generateOrder() {
         if ($this->_order) {
             $order = [];
+            $_order = null;
             foreach (explode(',', $this->_order) as $prop) {
                 $key = trim(preg_replace('#asc|desc#i', '', $prop));
+                $app = App::i();
+                $app->log->debug($key);
+
+                $cast = null;
+                if(preg_match('#(\w+) +AS +(\w+)#i', $key, $matches)) {
+                    $key = $matches[1];
+                    $cast = $matches[2];
+                    $prop = str_replace($matches[0], $key, $prop);
+
+                    if (!in_array(strtoupper($cast), ['VARCHAR', 'INTEGER', 'FLOAT'])) {
+                        throw new Exception(i::__('CAST inválido para a ordenação'));
+                    }
+                }
                 if (key_exists($key, $this->_keys)) {
-                    $order[] = str_ireplace($key, $this->_keys[$key], $prop);
+                    $_order = str_ireplace($key, $this->_keys[$key], $prop);
                 } elseif (in_array($key, $this->entityProperties)) {
-                    $order[] = str_ireplace($key, 'e.' . $key, $prop);
+                    $_order = str_ireplace($key, 'e.' . $key, $prop);
                 } elseif (in_array($key, $this->registeredMetadata)) {
                     
                     $meta_alias = $this->getAlias('meta_'.$key);
                     
                     $this->joins .= str_replace(['{ALIAS}', '{KEY}'], [$meta_alias, $key], $this->_templateJoinMetadata);
 
-                    $order[] = str_replace($key, "$meta_alias.value", $prop);
+                    $_order = str_replace($key, "$meta_alias.value", $prop);
 
                 // ordenação de usuário pelo nome do agente profile
                 } else if ($this->entityClassName == User::class && $key == 'name') {
                     $this->joins .= "\n\tLEFT JOIN e.profile __profile__";
-                    $order[] = str_replace($key, "__profile__.name", $prop);
+                    $_order = str_replace($key, "__profile__.name", $prop);
+                }
+
+                if($_order) {
+                    if ($cast) {
+                        $new_oder = str_replace('.', '_', preg_replace('#^([^ ]+)#', '$1_' . $cast, $_order));
+                        $alias = preg_replace("# .*#", '', $new_oder);
+                        $_prop = preg_replace("# .*#", '', $_order);
+                        $this->orderCasts[] = "CAST({$_prop} AS $cast) AS HIDDEN $alias";
+                        $_order = $new_oder;
+
+                    }
+                    $order[] = $_order;
                 }
             }
             return implode(', ', $order);
