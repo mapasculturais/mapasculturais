@@ -435,7 +435,33 @@ return array(
             'available_for_opportunities' => true
         ),
         'facebook' => array(
+            'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Facebook'),
+            'serialize' =>function($value){
+               $_value = trim($value);
+               $_value = preg_replace("~^(?:https?:\/\/)?(?:www\.)?~i", "",$_value);
+               $_value = rtrim($_value, '/');
+                
+                $regex = "/(?:facebook\.com)\/([a-zA-Z0-9_]+)/i";
+                preg_match($regex,$_value, $matches);
+                
+                if (isset($matches[1])) {
+                    $user = $matches[1];
+                    $result = "@" . $user;
+                } else {
+                    if(strpos($_value,'@') === false){
+                        $result = "@" . $_value;
+                    }else{
+                        
+                        $result = $_value;
+                    }
+                }
+                    return $result;
+            },
+               
+            'unserialize' => function($value){
+                return $value;
+            },
             'validations' => array(
                 "v::url('facebook.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             ),
