@@ -483,7 +483,7 @@ return array(
             'available_for_opportunities' => true
         ),
         'vimeo' => array(
-             'type' => "socialMedia",
+            'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Vimeo'),
             'validations' => array(
                 "v::oneOf(v::urlDomain('vimeo.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
