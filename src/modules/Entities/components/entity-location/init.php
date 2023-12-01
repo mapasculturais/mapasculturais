@@ -10,3 +10,4 @@
 
  $app->view->jsObject['config']['statesAndCities'] = $data;
  $app->view->jsObject['config']['statesAndCitiesEnable'] = $app->config['statesAndCities.enable'];
+ $app->view->jsObject['config']['statesAndCitiesCountryCode'] = $app->config['statesAndCities.countryCode'];

@@ -22,6 +22,9 @@ app.component('entity-location', {
         statesAndCitiesEnable(){
             return $MAPAS.config.statesAndCitiesEnable;
         },
+        statesAndCitiesCountryCode() {
+            return $MAPAS.config.statesAndCitiesCountryCode;
+        },
         states(){
             let states = [];
             Object.keys(this.statesAndCities).forEach((item) => {
@@ -59,7 +62,25 @@ app.component('entity-location', {
         },
     },
 
+    watch: {
+        'entity.En_Pais'(_new, _old){
+            if(_new != _old) {
+                this.entity.En_Nome_Logradouro = "";
+                this.entity.En_Num             = "";
+                this.entity.En_Complemento     = "";
+                this.entity.En_Bairro          = "";
+                this.entity.En_Municipio       = "";
+                this.entity.En_Estado          = "";
+                this.entity.En_CEP             = "";
+            }
+        }
+    },
+
     methods: {
+        propId(prop) {
+            let uid = Math.random().toString(36).slice(2);
+            return`${this.entity.__objectId}--${prop}--${uid}`;
+        },
         verifiedAdress() {
             if(this.entity.currentUserPermissions['@control']){
                 return true;
@@ -76,6 +97,7 @@ app.component('entity-location', {
             return result;
         },
         address() {
+            this.entity.En_Pais == null ? '' : this.entity.En_Pais;
             let rua         = this.entity.En_Nome_Logradouro == null ? '' : this.entity.En_Nome_Logradouro;
             let numero      = this.entity.En_Num             == null ? '' : this.entity.En_Num;
             let complemento = this.entity.En_Complemento     == null ? '' : this.entity.En_Complemento;

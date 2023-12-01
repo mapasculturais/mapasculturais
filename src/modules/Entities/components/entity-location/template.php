@@ -25,12 +25,19 @@ $this->import('
             <entity-field @change="address()" classes="col-2 sm:col-4" :entity="entity" prop="En_Num"></entity-field>
             <entity-field @change="address()" classes="col-10 sm:col-8" :entity="entity" prop="En_Bairro"></entity-field>
             <entity-field @change="address()" classes="col-12" :entity="entity" prop="En_Complemento" label="<?php i::_e('Complemento ou ponto de referência')?>"></entity-field>
-            <entity-field v-if="!statesAndCitiesEnable" @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Estado" label="<?php i::_e('Estado')?>"></entity-field>
-            <entity-field v-if="!statesAndCitiesEnable" @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Municipio" label="<?php i::_e('Município')?>"></entity-field>
+            <entity-field @change="address()" classes="col-12" :entity="entity" prop="En_Pais" label="<?php i::_e('País')?>"></entity-field>
         </div>
     </div>
+
+    <div class="col-12" v-if="editable && !statesAndCitiesEnable">
+        <div class="grid-12" v-if="!entity.En_Pais || entity.En_Pais == statesAndCitiesCountryCode">
+            <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Estado" label="<?php i::_e('Estado')?>"></entity-field>
+            <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Municipio" label="<?php i::_e('Município')?>"></entity-field>
+        </div>            
+    </div>
+ 
     <div class="col-12" v-if="editable && statesAndCitiesEnable">
-        <div class="grid-12">
+        <div class="grid-12" v-if="!entity.En_Pais || entity.En_Pais == statesAndCitiesCountryCode">
             <div class="field col-6">
                 <label class="field__title">
                     <?php i::_e('Estado')?>
@@ -51,6 +58,27 @@ $this->import('
             </div>
         </div>
     </div>
+
+    <div class="col-12">
+        <div class="grid-12" v-if="entity.En_Pais && entity.En_Pais != statesAndCitiesCountryCode">
+            <div class="field col-6">
+                    <label class="field__title">
+                    <?php i::_e('Estado')?>
+                    <span v-if="isRequired('En_Estado')" class="required">*<?php i::_e('obrigatório') ?></span>
+                </label>
+                <input :id="propId('En_Estado')" v-model="entity.En_Estado" type="text" @change="address()" autocomplete="off">
+            </div>
+
+            <div class="field col-6">
+                <label class="field__title">
+                    <?php i::_e('Município')?>
+                    <span v-if="isRequired('En_Municipio')" class="required">*<?php i::_e('obrigatório') ?></span>
+                </label>
+                <input v-model="entity.En_Municipio" :id="propId('En_Municipio')"  type="text" @change="address()" autocomplete="off">
+            </div>
+        </div>
+    </div>
+
     <div class="col-12" v-if="editable && hasPublicLocation">
         <div class="col-6 sm:col-12 public-location">
             <entity-field  @change="address()" type="checkbox" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::esc_attr_e('Localização pública')?>"></entity-field>
