@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções
 - corrige a ordenação de inscrições em fases de avaliação técnica
+- Corrige o problema que impedia a exibição dos pareceres da avaliação técnica ao publicar uma fase e configurar para que eles fossem exibidos.
 
 ## [7.2.4] - 2023-11-29
 ### Ajustes
