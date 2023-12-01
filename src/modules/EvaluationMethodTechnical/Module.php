@@ -637,9 +637,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $max_score += $section->maxScore;
         }
 
-        $affirmative_policy = $registration->appliedAffirmativePolicy;
-
-        $affirmative_policy->roof = $evaluation_configuration->affirmativePoliciesRoof;
+        if($affirmative_policy = $registration->appliedAffirmativePolicy){
+            $affirmative_policy->roof = $evaluation_configuration->affirmativePoliciesRoof;
+        }
         
         return [
             'maxScore' => $max_score,
