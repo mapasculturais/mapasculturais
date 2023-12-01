@@ -14,6 +14,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erro de duplicidades no front da lista de inscrição
 
+## [unreleased]
+### Melhorias
+- Insere opção de selecionar o país no cadastro do agente deixando em aberto o preenchimento dos campos de estado e munícípio, caso nao seja selecionado um país diferente do Brasil
+
 ## [7.2.3] - 2023-11-28
 ### Novas funcionalidades
 - Implementa configuração que possibilita Habilitar ou Desabilitar a exibição dos ids das entidades
