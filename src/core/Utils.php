@@ -181,19 +181,22 @@ class Utils {
      *  
      * @return string|null 
      */
-    static function parseSocialMediaUser(string $domain, string $value) : string|null {
-        $domain = preg_quote($domain);
-        
-        $_value = trim($value);
-        $_value = preg_replace("~^(?:https?:\/\/)?(?:www\.)?~i", "", $_value);
-        $_value = rtrim($_value, '/');
+    static function parseSocialMediaUser(string $domain, ?string $value) : string|null {
+        $result = null;
 
-        if (preg_match("/(?:{$domain})\/(profile\.php\?id=)?([\w\d\.]+)/i", $_value, $matches)) {
-            $result = $matches[2];
-        } else if(preg_match("/^@?([\w\d\.]+)$/i", $_value, $matches)){
-            $result = $matches[1];
-        } else {
-            $result = null;
+        if($value){
+
+            $domain = preg_quote($domain);
+            
+            $_value = trim($value);
+            $_value = preg_replace("~^(?:https?:\/\/)?(?:www\.)?~i", "", $_value);
+            $_value = rtrim($_value, '/');
+    
+            if (preg_match("/(?:{$domain})\/(profile\.php\?id=)?([\w\d\.]+)/i", $_value, $matches)) {
+                $result = $matches[2];
+            } else if(preg_match("/^@?([\w\d\.]+)$/i", $_value, $matches)){
+                $result = $matches[1];
+            }
         }
 
         return $result;
