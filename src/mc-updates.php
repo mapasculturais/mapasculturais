@@ -359,5 +359,51 @@ return [
             }
 
         });
+    },
+
+    'padronização dos campos de rede social' => function() {
+        $app = App::i();
+
+        $social_media = [
+            "facebook",
+            "instagram",
+            "twitter",
+            "instagram",
+            "linkedin",
+            "vimeo",
+            "spotify",
+            "youtube",
+            "pinterest",
+        ];
+        $entities = [
+            "Agent",
+            "Space",
+            "Project",
+            "Opportunity",
+            "Event"
+        ];
+
+        foreach($entities as $entity){
+
+            DB_UPDATE::enqueue($entity, "status >= 0 ", function ($obj) use($social_media, $app, $entity) {
+                foreach($social_media as $media){
+
+                    if( $_social_media = $obj->$media){
+
+                        $domain = $media.".com";
+                        $result = Utils::parseSocialMediaUser($domain,$_social_media);
+                        if(!$result){
+                            $app->log->debug("NÃO CONSEGUIU VALIDAR");
+                        }
+                        $obj->$media = $result;
+                        // $app->log->debug("Midia social {$media} da entidade {$entity} alterada de {$_social_media} para {$obj->$media}");
+                        $obj->save(true);
+                    }
+                }
+    
+            });
+        };
+
+     return false;  
     }
 ];
