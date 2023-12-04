@@ -3,6 +3,7 @@
 use MapasCulturais\App;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\i;
+use MapasCulturais\Utils;
 
 return [
     'recreate pcache' => function () {
