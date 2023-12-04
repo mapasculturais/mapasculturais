@@ -3,6 +3,7 @@
 use MapasCulturais\App;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\i;
+use MapasCulturais\Utils;
 
 return [
     'recreate pcache' => function () {
@@ -359,5 +360,50 @@ return [
             }
 
         });
+    },
+
+    'Padronização dos campos de rede social' => function() {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        $social_media = [
+            "facebook",
+            "instagram",
+            "twitter",
+            "instagram",
+            "linkedin",
+            "vimeo",
+            "spotify",
+            "youtube",
+            "pinterest",
+        ];
+
+        $entities = [
+            "Agent",
+            "Space",
+            "Project",
+            "Opportunity",
+            "Event"
+        ];
+
+        foreach($entities as $entity){
+            DB_UPDATE::enqueue($entity, "status >= 0 ", function ($obj) use($social_media, $app, $entity, $conn) {
+                foreach($social_media as $media){
+                    if($_social_media = $obj->$media){
+                        $domain = $media.".com";
+                        if($result = Utils::parseSocialMediaUser($domain,$_social_media)) {
+                            $obj->$media = $result;
+                            $obj->save(true);
+                            $app->log->debug("Mídia social {$media} da entidade {$entity} alterada de {$_social_media} para {$obj->$media} {$obj->id}");
+                        } else {
+                            $entity_meta = strtolower($entity)."_meta";
+                            $new_key = "bkp_{$media}";
+                            $em = $conn->executeQuery("UPDATE {$entity_meta} set key = '{$new_key}' WHERE object_id = $obj->id AND key = '{$media}'");
+                            $app->log->debug("Mídia social {$media} não foi validada e foi alterada a chave {$new_key} {$obj->id}");
+                        }
+                    }
+                }
+            });
+        };
     }
 ];
