@@ -21,4 +21,12 @@ app.component('entity-social-media', {
             required: false
         },
     },
+    methods: {
+        getPlaceHolders(){
+            console.log($DESCRIPITIONS);
+        },
+        buildSocialMediaLink(socialMedia){
+            return Utils.buildSocialMediaLink(this.entity, socialMedia);
+        }
+    },
 });

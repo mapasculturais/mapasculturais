@@ -172,4 +172,33 @@ class Utils {
       
       return preg_replace("/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/", "\$1.\$2.\$3/\$4-\$5", $cnpj_cpf);
     }
+
+    /**
+     * Retorna o usuário da rede social 
+     *  
+     * @param string $domain Dominio da rede social.
+     * @param string $value
+     *  
+     * @return string|null 
+     */
+    static function parseSocialMediaUser(string $domain, ?string $value) : string|null {
+        $result = null;
+
+        if($value){
+
+            $domain = preg_quote($domain);
+            
+            $_value = trim($value);
+            $_value = preg_replace("~^(?:https?:\/\/)?(?:www\.)?~i", "", $_value);
+            $_value = rtrim($_value, '/');
+    
+            if (preg_match("/(?:{$domain})\/(profile\.php\?id=)?([\w\d\.]+)/i", $_value, $matches)) {
+                $result = $matches[2];
+            } else if(preg_match("/^@?([\w\d\.]+)$/i", $_value, $matches)){
+                $result = $matches[1];
+            }
+        }
+
+        return $result;
+    }
 }
