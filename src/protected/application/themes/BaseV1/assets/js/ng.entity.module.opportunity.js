@@ -1177,8 +1177,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         field.unchangedFieldJSON = JSON.stringify(val);        
-
-        if (field.fieldType == 'date' && typeof val == 'string' ) {
+        if ( /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(val)) {
+            val = new Date(val);
+        } else if (field.fieldType == 'date' && typeof val == 'string' ) {
             val = moment(val).format("YYYY-MM-DD");
         } else if(field.fieldType == 'number' && typeof val == 'string' ) {
             val = parseFloat(val);
