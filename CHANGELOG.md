@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.8.9] - 2023-12-05
+### Correções
+- Corrige erro no processamento de campos de tadas informados no formulário de inscrição
+
 ## ['5.8.8'] - 2023-11-29
 - Garante que o $entity seja carregado corretamente pegando a entidade carregada na tela no header single da inscrição
 
