@@ -4,6 +4,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.2.7] - 2023-12-05
+### Correções
+- Ajusta erro de carregamento das medias sociais no formulário de inscrição apos a padronização
+
+### Melhorias
+- Melhora desempenho na verificação de exibição dos pareceres no acompanhamento da inscrição
+
 ## [7.2.6] - 2023-12-05
 ### Correções
 - Corrige erro ao acessar acompanhamento de uma inscrição cuja o edital esta configurado para exibir os pareceres porem na inscrição existe avaliações enviadas
