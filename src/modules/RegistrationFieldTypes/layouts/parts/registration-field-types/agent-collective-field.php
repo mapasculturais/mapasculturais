@@ -15,6 +15,10 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
                 $def->field_type = 'text';
             }
         }
+
+        if($def->field_type === "socialMedia"){
+            $def->field_type = "url";
+        }
         $definitions[$key] = $def;
     }
 }
