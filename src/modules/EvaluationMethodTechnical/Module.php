@@ -605,42 +605,43 @@ class Module extends \MapasCulturais\EvaluationMethod {
     function _getConsolidatedDetails(Entities\Registration $registration): array {
         $evaluation_configuration = $registration->opportunity->evaluationMethodConfiguration;
         
-        $evaluations = $registration->sentEvaluations;
-
-        $sections = $evaluation_configuration->sections ?: [];
-        $criteria = $evaluation_configuration->criteria ?: [];
-        $max_score = 0;
-
-        foreach($sections as &$section) {
-            $section->criteria = [];
-            $section->score = 0;
-            $section->maxScore = 0;
-
-            foreach($criteria as &$cri){
-                if(($cri->sid ?? false) == $section->id) {
-                    unset($cri->sid);
-                    $score = 0;
-
-                    foreach($evaluations as $evaluation) {
-                        $_score = $evaluation->evaluationData->{$cri->id};
-                        $score += is_numeric($_score) ? $cri->weight * $_score : 0;
+        if($evaluations = $registration->sentEvaluations){
+            $sections = $evaluation_configuration->sections ?: [];
+            $criteria = $evaluation_configuration->criteria ?: [];
+            $max_score = 0;
+    
+            foreach($sections as &$section) {
+                $section->criteria = [];
+                $section->score = 0;
+                $section->maxScore = 0;
+    
+                foreach($criteria as &$cri){
+                    if(($cri->sid ?? false) == $section->id) {
+                        unset($cri->sid);
+                        $score = 0;
+    
+                        foreach($evaluations as $evaluation) {
+                            $_score = $evaluation->evaluationData->{$cri->id};
+                            $score += is_numeric($_score) ? $cri->weight * $_score : 0;
+                        }
+    
+                        $cri->score = $score / count($evaluations);
+                        $cri->maxScore = $cri->max * $cri->weight;
+                        $section->score += $cri->score;
+                        $section->maxScore += $cri->maxScore;
+                        $section->criteria[] = $cri;
                     }
-
-                    $cri->score = $score / count($evaluations);
-                    $cri->maxScore = $cri->max * $cri->weight;
-                    $section->score += $cri->score;
-                    $section->maxScore += $cri->maxScore;
-                    $section->criteria[] = $cri;
                 }
+    
+                $max_score += $section->maxScore;
             }
-
-            $max_score += $section->maxScore;
+    
+            if($affirmative_policy = $registration->appliedAffirmativePolicy){
+                $affirmative_policy->roof = $evaluation_configuration->affirmativePoliciesRoof;
+            }
+            
         }
-
-        if($affirmative_policy = $registration->appliedAffirmativePolicy){
-            $affirmative_policy->roof = $evaluation_configuration->affirmativePoliciesRoof;
-        }
-        
+       
         return [
             'maxScore' => $max_score,
             'scores' => $sections,
