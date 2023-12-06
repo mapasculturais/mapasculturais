@@ -16,8 +16,7 @@ if($requestedEntity instanceof MapasCulturais\Entities\EvaluationMethodConfigura
     $conn = $app->em->getConnection();
     $user = isset($this->controller->data['user']) ? $app->repo("User")->find($this->controller->data['user']) : $app->user;
 
-
-    if ($entity->opportunity->canUser('@control')) {
+    if ($entity->opportunity->canUser('@control') && $this->controller->action == "allEvaluations") {
         $user_filter = ' > 0';
     } else {
         $user_filter = "= {$user->id}";
