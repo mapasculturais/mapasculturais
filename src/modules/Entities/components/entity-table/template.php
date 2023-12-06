@@ -11,6 +11,7 @@ $this->import('
     mc-card
     mc-link
     mc-multiselect
+    mc-entities
     mc-tag-list
 ');
 ?>
@@ -62,6 +63,17 @@ $this->import('
             <mc-tag-list editable class="opportunity-registration-table__taglists" classes="opportunity__background" :tags="selectedColumns" @remove="removeFromColumns"></mc-tag-list>
         </div>
     </div>
+    <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
+        
+        <template #default="{entities}">
+            <div class="registrations__list">
+                <span v-for="registration in entities" >
+                    {{registration.number}}
+                    {{registration.status}}
+                </span>
+            </div>
+        </template>
+    </mc-entities>
 
     <EasyDataTable :headers="activeHeaders" :filter-options="filterOptions" table-class-name="entity-table__table" :body-row-class-name="customRowClassName" :items="activeItems" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
         <template v-for="slot in activeSlots" #[slot]="item">
