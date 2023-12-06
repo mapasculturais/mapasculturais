@@ -23,12 +23,12 @@ $this->import('
                 <div class="opportunity-phase-list-evaluation__status col-6">
                     <h4 class="bold"><?php i::_e("Status das inscrições") ?></h4>
                     <!-- <p><?= i::__("Status da avaliação:") ?> <strong>Em andamento</strong></p> -->
-                    <p v-if="entity.summary.registrations"><?= i::__("Quantidade inscrições:") ?> <strong>{{entity.summary.registrations}}</strong> <?php i::_e('inscrições') ?></p>
-                    <p v-if="entity.summary.evaluated"><?= i::__("Quantidade de inscrições <strong>avaliadas</strong>:") ?> <strong>{{entity.summary.evaluated}}</strong> <?php i::_e('inscrições') ?></p>
-                    <p v-if="entity.summary.Approved"><?= i::__("Quantidade de inscrições <strong>selecionadas</strong>:") ?> <strong>{{entity.summary.Approved}}</strong> <?php i::_e('inscrições') ?></p>
-                    <p v-if="entity.summary.Waitlist"><?= i::__("Quantidade de inscrições <strong>suplentes</strong>:") ?> <strong>{{entity.summary.Waitlist}}</strong> <?php i::_e('inscrições') ?></p>
-                    <p v-if="entity.summary.Invalid"><?= i::__("Quantidade de inscrições <strong>inválidas</strong>:") ?> <strong>{{entity.summary.Invalid}}</strong> <?php i::_e('inscrições') ?></p>
-                    <p v-if="entity.summary.Pending"><?= i::__("Quantidade de inscrições <strong>pendentes</strong>:") ?> <strong>{{entity.summary.Pending}}</strong> <?php i::_e('inscrições') ?></p>
+                    <p v-if="entity.opportunity.summary.registrations"><?= i::__("Quantidade inscrições:") ?> <strong>{{entity.opportunity.summary.registrations}}</strong> <?php i::_e('inscrições') ?></p>
+                    <p v-if="entity.opportunity.summary.evaluated"><?= i::__("Quantidade de inscrições <strong>avaliadas</strong>:") ?> <strong>{{entity.opportunity.summary.evaluated}}</strong> <?php i::_e('inscrições') ?></p>
+                    <p v-if="entity.opportunity.summary.Approved"><?= i::__("Quantidade de inscrições <strong>selecionadas</strong>:") ?> <strong>{{entity.opportunity.summary.Approved}}</strong> <?php i::_e('inscrições') ?></p>
+                    <p v-if="entity.opportunity.summary.Waitlist"><?= i::__("Quantidade de inscrições <strong>suplentes</strong>:") ?> <strong>{{entity.opportunity.summary.Waitlist}}</strong> <?php i::_e('inscrições') ?></p>
+                    <p v-if="entity.opportunity.summary.Invalid"><?= i::__("Quantidade de inscrições <strong>inválidas</strong>:") ?> <strong>{{entity.opportunity.summary.Invalid}}</strong> <?php i::_e('inscrições') ?></p>
+                    <p v-if="entity.opportunity.summary.Pending"><?= i::__("Quantidade de inscrições <strong>pendentes</strong>:") ?> <strong>{{entity.opportunity.summary.Pending}}</strong> <?php i::_e('inscrições') ?></p>
                             
                 </div>   
                 <div class="col-6 opportunity-phase-list-evaluation__cardfooter">
