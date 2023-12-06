@@ -17,6 +17,14 @@ app.component('entity-table', {
         });
     },
     data() {
+
+        let query = {
+            '@select' : 'id,number,category,status,createTimestamp,owner.{id,name,files.avatar,}',
+             'status' : 'GTE(0)',
+             'opportunity' :`EQ(${this.entity.id})`,
+             '@order': 'createTimestamp DESC'
+ 
+         };
         const visible = this.visible.split(",");
         const required = this.required.split(",");
         const modifiedHeaders = this.headers.map(header => {
@@ -38,11 +46,18 @@ app.component('entity-table', {
             value: '',
             filterOptions: [],
             searchText: '',
-            activeItems: this.items
+            activeItems: this.items,
+            query
+            
         }
 
     },
     props: {
+        entity: {
+            type: [Entity, Object],
+            required: true,
+
+        },
         headers: {
             type: Array,
             required: true
@@ -79,15 +94,7 @@ app.component('entity-table', {
             })
         },
     },
-    // watch: {
-    //     statusFilter(newStatus) {
-    //         this.filterOptions = {
-    //             field: 'status',
-    //             comparison: '=',
-    //             criteria: newStatus
-    //         };
-    //     }
-    //  },
+
     computed: {
         selectRows() {
             return this.optionalHeaders.map(header => {
@@ -150,10 +157,6 @@ app.component('entity-table', {
         },
 
         removeFromColumns(tag) {
-            // if (this.activeColumns.includes(tag)) {
-            //     this.activeHeaders = this.activeHeaders.filter(header => (header.text != tag || header.required));
-            // }
-
             if (this.activeColumns.includes(tag)) {
                 const headerToRemove = this.activeHeaders.find(header => header.text === tag);
 

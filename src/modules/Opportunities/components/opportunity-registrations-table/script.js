@@ -13,6 +13,13 @@ app.component('opportunity-registrations-table', {
         return { text }
     },
     data() {
+        let query = {
+            '@select' : 'id,number,category,status,createTimestamp,owner.{id,name,files.avatar,}',
+             'status' : 'GTE(0)',
+             'opportunity' :`EQ(${this.phase.id})`,
+             '@order': 'createTimestamp DESC'
+            };
+            console.log(query);
         return {
             headers: [
 
@@ -54,7 +61,6 @@ app.component('opportunity-registrations-table', {
                 };
                 result.push(item);
             });
-            console.log(result);
             return result;
         },
         isFuture() {
