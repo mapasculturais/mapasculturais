@@ -17,7 +17,6 @@ app.component('entity-table', {
         });
     },
     data() {
-
         const visible = this.visible.split(",");
         const required = this.required.split(",");
         const modifiedHeaders = this.headers.map(header => {
@@ -48,7 +47,6 @@ app.component('entity-table', {
         entity: {
             type: [Entity, Object],
             required: true,
-
         },
         query: {
             type: Object,
@@ -70,11 +68,6 @@ app.component('entity-table', {
             type: String,
             default: ''
         },
-        items: {
-            type: Array,
-            required: true
-        },
-
         statusClasses: {
             type: Object,
             default: () => ({
@@ -184,14 +177,5 @@ app.component('entity-table', {
                 this.activeHeaders.push(column)
             }
         },
-        // toggleSelection(items) {
-        //     console.log(itemsSelected);
-        //     const index = this.itemsSelected.findIndex(itemsSelected=> itemsSelectedid === item.id);
-        //     if (index !== -1) {
-        //         this.itemsSelected.push(item);
-        //     } else {
-        //         this.itemsSelected.splice(index, 1);
-        //     }
-        // }
     },
 });

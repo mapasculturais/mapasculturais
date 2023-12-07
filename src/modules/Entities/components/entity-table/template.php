@@ -63,7 +63,6 @@ $this->import('
             <mc-tag-list editable class="opportunity-registration-table__taglists" classes="opportunity__background" :tags="selectedColumns" @remove="removeFromColumns"></mc-tag-list>
         </div>
     </div>
-    <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
         
         <template #default="{entities}">
             <div class="registrations__list">
