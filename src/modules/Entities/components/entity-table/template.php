@@ -75,7 +75,7 @@ $this->import('
         </template>
     </mc-entities>
 
-    <EasyDataTable :headers="activeHeaders" :filter-options="filterOptions" table-class-name="entity-table__table" :body-row-class-name="customRowClassName" :items="activeItems" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
+    <EasyDataTable :query="query" :headers="activeHeaders" :filter-options="filterOptions" table-class-name="entity-table__table" :body-row-class-name="customRowClassName" :items="activeItems" rows-per-page-message="<?= i::esc_attr__('linhas por página') ?>">
         <template v-for="slot in activeSlots" #[slot]="item">
             <slot :name="slot" v-bind="item"></slot>
         </template>

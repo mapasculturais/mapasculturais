@@ -45,7 +45,7 @@ $entity = $this->controller->requestedEntity;
                 </h5>
             </div>
         <div class="col-12"> 
-            <entity-table :entity="phase" :headers="headers" :items="items" required="registration" visible="status">
+            <entity-table  :query="query" :entity="phase" :headers="headers" :items="items" required="registration" visible="status">
                 <!-- <template #item-cpf="{cpf}">
                     cpf: {{cpf}}
                 </template> -->

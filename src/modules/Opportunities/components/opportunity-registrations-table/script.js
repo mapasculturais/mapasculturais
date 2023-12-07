@@ -33,6 +33,7 @@ app.component('opportunity-registrations-table', {
 
             ],
             items: this.registrationsItems(),
+            query
 
         }
     },
