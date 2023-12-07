@@ -18,13 +18,6 @@ app.component('entity-table', {
     },
     data() {
 
-        let query = {
-            '@select' : 'id,number,category,status,createTimestamp,owner.{id,name,files.avatar,}',
-             'status' : 'GTE(0)',
-             'opportunity' :`EQ(${this.entity.id})`,
-             '@order': 'createTimestamp DESC'
- 
-         };
         const visible = this.visible.split(",");
         const required = this.required.split(",");
         const modifiedHeaders = this.headers.map(header => {
@@ -47,7 +40,6 @@ app.component('entity-table', {
             filterOptions: [],
             searchText: '',
             activeItems: this.items,
-            query
             
         }
 
@@ -57,6 +49,10 @@ app.component('entity-table', {
             type: [Entity, Object],
             required: true,
 
+        },
+        query: {
+            type: Object,
+            default: {}
         },
         headers: {
             type: Array,
