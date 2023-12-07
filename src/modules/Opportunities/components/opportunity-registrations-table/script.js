@@ -8,33 +8,20 @@ app.component('opportunity-registrations-table', {
     },
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
-
         const text = Utils.getTexts('opportunity-registrations-table');
         return { text }
     },
     data() {
-        let query = {
-            '@select' : 'id,number,category,status,createTimestamp,owner.{id,name,files.avatar,}',
-             'status' : 'GTE(0)',
-             'opportunity' :`EQ(${this.phase.id})`,
-             '@order': 'createTimestamp DESC'
-            };
-            console.log(query);
         return {
             headers: [
 
                 { text: "Inscrição", value: "registration" },
                 { text: "Categoria", value: "category" },
                 { text: "Agente", value: "agent" },
-                // { text: "Resultado final das avaliações", value: "evaluation" },
                 { text: "status", value: "status" },
-                // { text: "Situação", value: "" },
                 { text: "Conferir Inscrição", value: "open" },
 
             ],
-            items: this.registrationsItems(),
-            query
-
         }
     },
 
@@ -48,22 +35,6 @@ app.component('opportunity-registrations-table', {
     },
 
     methods: {
-        registrationsItems() {
-            const registrations = $MAPAS.config.opportunityRegistrationsTable.registrations;
-            let result = []
-            console.log(registrations);
-            registrations.forEach(registration => {
-                let item = {
-                    'registration': registration.number,
-                    'category': registration.category,
-                    'agent': registration.owner.name,
-                    'status': registration.status,
-
-                };
-                result.push(item);
-            });
-            return result;
-        },
         isFuture() {
             const phase = this.phase;
             if (phase.isLastPhase) {

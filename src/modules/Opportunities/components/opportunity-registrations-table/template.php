@@ -45,12 +45,7 @@ $entity = $this->controller->requestedEntity;
                 </h5>
             </div>
         <div class="col-12"> 
-            <entity-table  :query="query" :entity="phase" :headers="headers" :items="items" required="registration" visible="status">
-                <!-- <template #item-cpf="{cpf}">
-                    cpf: {{cpf}}
-                </template> -->
-            </entity-table>
-            <v1-embed-tool route="registrationmanager" :id="phase.id" min-height="600px"></v1-embed-tool>
+            <entity-table select="id,number,category,status,createTimestamp,owner.{id,name,files.avatar}" :entity="phase" type="registration" :headers="headers" required="registration" visible="status"></entity-table>
         </div>
     </template>
 </div>
