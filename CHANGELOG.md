@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.2.11] - 2023-12-07
+### Correções
+- Corrige erro no resumo de inscrições nas fases de avaliações, quando não existia inscrições a serem carregadas
+
 ## [7.2.10] - 2023-12-06
 ### Correções
 - Corrige erro que fazia contagem errada nos cards coloridos de resumo das avaliações
