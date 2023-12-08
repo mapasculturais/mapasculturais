@@ -10,6 +10,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.2.10] - 2023-12-06
 ### Correções
+- Redireciona o usuario para a primeira fase quando o mesmo tenta acessar a oportunidade com o id de uma fase posterior
+
+## [7.2.11] - 2023-12-07
+### Correções
+- Corrige erro no resumo de inscrições nas fases de avaliações, quando não existia inscrições a serem carregadas
+
+## [7.2.10] - 2023-12-06
+### Correções
 - Corrige erro que fazia contagem errada nos cards coloridos de resumo das avaliações
 
 ## [7.2.9] - 2023-12-06
