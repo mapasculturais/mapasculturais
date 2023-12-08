@@ -19,8 +19,9 @@ app.component('entity-table', {
     data() {
         const visible = this.visible.split(",");
         const required = this.required.split(",");
+
         const modifiedHeaders = this.headers.map(header => {
-            if (visible.includes(header.value)) {
+            if (visible.includes(this.parseSlug(header))) {
                 return { ...header, visible: true };
             }
             if (required.includes(header.value)) {
@@ -28,6 +29,7 @@ app.component('entity-table', {
             }
             return header;
         });
+
         const activeHeaders = Vue.ref(modifiedHeaders.filter(
             header => header.required
         ));
@@ -39,7 +41,6 @@ app.component('entity-table', {
             filterOptions: [],
             searchText: '',
             activeItems: this.items,
-            
         }
 
     },
@@ -115,24 +116,21 @@ app.component('entity-table', {
 
     methods: {
         parseSlug(header) {
-            if(header.slug){
+            if (header.slug) {
                 return header.slug
             }
 
             return header.value
         },
-        
+
         getEntityData(obj, value) {
             let val = eval(`obj.${value}`);
             return val;
         },
 
         search(searchText, entities) {
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-                this.query['@keyword'] = searchText
-                entities.refresh();
-            }, 1500);
+            this.query['@keyword'] = searchText
+            entities.refresh(this.watchDebounce);
         },
 
         removeFromColumns(tag) {
