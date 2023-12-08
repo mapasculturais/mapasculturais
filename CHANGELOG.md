@@ -11,6 +11,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Redireciona o usuario para a primeira fase quando o mesmo tenta acessar a oportunidade com o id de uma fase posterior
 
+### Ajustes
+- Ajusta botão de sair do modo de edição das entidades para que o mesmo não salve a entidade
+
 ## [7.2.10] - 2023-12-06
 ### Correções
 - Redireciona o usuario para a primeira fase quando o mesmo tenta acessar a oportunidade com o id de uma fase posterior
