@@ -26,6 +26,12 @@ app.component('opportunity-registrations-table', {
     },
 
     computed: {
+        query() {
+            return {'opportunity': `EQ(${this.phase.id})`}
+        },
+        select() {
+            return "id,number,category,status,createTimestamp,statusesNames,owner.{id,name,files.avatar}";
+        },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
             const index = phases.findIndex(item => item.__objectType == this.phase.__objectType && item.id == this.phase.id) - 1;
