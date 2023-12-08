@@ -53,6 +53,10 @@ app.component('entity-table', {
             type: Object || String,
             default: {}
         },
+        watchDebounce: {
+            type: Number,
+            default: 500
+        },
         headers: {
             type: Array,
             required: true
@@ -123,23 +127,12 @@ app.component('entity-table', {
             return val;
         },
 
-        search(searchText) {
-            const term = String(searchText);
-            const searchRegex = new RegExp(term, 'i');
-            this.activeItems = this.items;
-            this.activeItems = this.activeItems.filter((item) => {
-                let find = false;
-
-                Object.entries(item).forEach(entry => {
-                    const [key, value] = entry;
-
-                    if (searchRegex.test(value)) {
-                        find = true;
-                    }
-                });
-
-                return find;
-            });
+        search(searchText, entities) {
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+                this.query['@keyword'] = searchText
+                entities.refresh();
+            }, 1500);
         },
 
         removeFromColumns(tag) {

@@ -17,10 +17,10 @@ $this->import('
 ?>
 <div class="entity-table">
     <mc-entities :select="select" :type="type" :query="query">
-        <template #header>
+        <template #header={entities}>
             <div class="opportunity-registration-table__filter">
                 <div class="opportunity-registration-table__search-key">
-                    <input v-model="searchText" @keyup="search(searchText)" type="text" placeholder="<?= i::__('Busque pelo número de inscrição, status, parecer técnico?') ?>" class="opportunity-registration-table__search-input" />
+                    <input v-model="searchText" @keyup="search(searchText, entities)" type="text" placeholder="<?= i::__('Busque pelo número de inscrição, status, parecer técnico?') ?>" class="opportunity-registration-table__search-input" />
                     <button @click="search(searchText)" class="opportunity-registration-table__search-button">
                         <mc-icon name="search"></mc-icon>
                     </button>
