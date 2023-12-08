@@ -1,12 +1,10 @@
 app.component('entity-table', {
     template: $TEMPLATES['entity-table'],
 
-    setup({ headers }, { slots }) {
-        const activeSlots = Object.keys(slots);
+    setup() {
         const messages = useMessages();
-        const hasSlot = name => !!slots[name];
         const text = Utils.getTexts('entity-table')
-        return { optionalHeadersSelected: [], hasSlot, activeSlots, messages, text };
+        return { optionalHeadersSelected: [], messages, text };
     },
 
     mounted() {
