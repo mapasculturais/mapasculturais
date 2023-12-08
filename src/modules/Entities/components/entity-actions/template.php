@@ -73,8 +73,8 @@ $this->import('
                         <?php i::_e('Você está certo que deseja publicar esta entidade?') ?>
                     </template>
                 </mc-confirm-button>
-                <button v-if="entity.status == 1 && entity.currentUserPermissions?.modify" @click="save()" class="button button--md publish publish-exit">
-                    <?php i::_e("Concluir Edição e Sair") ?>
+                <button v-if="entity.status == 1 && entity.currentUserPermissions?.modify" @click="exit()" class="button button--md publish publish-exit">
+                    <?php i::_e("Sair") ?>
                 </button>
 
                 <?php $this->applyTemplateHook('entity-actions--secondary', 'end') ?>
