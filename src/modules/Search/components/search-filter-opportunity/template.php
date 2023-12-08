@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    entity-terms
     mc-icon 
     mc-multiselect 
     mc-tag-list
@@ -35,6 +36,15 @@ $this->import('
             </mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" classes="opportunity__background opportunity__color"></mc-tag-list>
 
+        </div>
+        <div class="field">
+            <label> <?php i::_e('Área de interesse') ?></label>
+            <mc-multiselect :model="pseudoQuery['term:area']" title="<?php i::_e('Selecione as áreas de interesse') ?>" :items="terms" hide-filter hide-button>
+                <template #default="{setFilter, popover}">
+                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
+                </template>
+            </mc-multiselect>
+            <mc-tag-list editable :tags="pseudoQuery['term:area']" classes="agent__background agent__color"></mc-tag-list>
         </div>
         <?php $this->applyTemplateHook('search-filter-opportunity', 'end') ?>
     </form>
