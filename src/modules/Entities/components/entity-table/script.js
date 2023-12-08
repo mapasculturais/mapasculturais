@@ -44,12 +44,13 @@ app.component('entity-table', {
 
     },
     props: {
-        entity: {
-            type: [Entity, Object],
-            required: true,
+        type: {
+            type: String,
+            required: true
         },
+        select: String,
         query: {
-            type: Object,
+            type: Object || String,
             default: {}
         },
         headers: {
