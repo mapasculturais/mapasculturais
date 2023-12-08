@@ -19,18 +19,22 @@ app.component('entity-table', {
         const required = this.required.split(",");
 
         const modifiedHeaders = this.headers.map(header => {
-            if (visible.includes(this.parseSlug(header))) {
-                return { ...header, visible: true };
+            let slug = this.parseSlug(header);
+
+            if (visible.includes(slug)) {
+                header.visible = true;
             }
-            if (required.includes(header.value)) {
-                return { ...header, required: true };
+            if (required.includes(slug)) {
+                header.required = true;
             }
+
             return header;
         });
 
         const activeHeaders = Vue.ref(modifiedHeaders.filter(
             header => header.required
         ));
+        
         return {
             itemsSelected: Vue.ref([]),
             modifiedHeaders,
