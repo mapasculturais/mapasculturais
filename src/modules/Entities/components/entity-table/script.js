@@ -86,27 +86,10 @@ app.component('entity-table', {
     },
 
     computed: {
-        selectRows() {
-            return this.optionalHeaders.map(header => {
-                return {
-                    label: header.text,
-                    value: header.value,
-                }
-            })
-        },
-
         activeColumns() {
             return this.activeHeaders.map(header => (header.text));
         },
 
-        visibleColumns() {
-            return this.activeHeaders.reduce((columns, header) => {
-                if (header.visible) {
-                    columns.push(header);
-                }
-                return columns;
-            }, []);
-        },
         selectedColumns() {
             return this.activeHeaders.reduce((columns, header) => {
                 columns.push(header.text);
@@ -170,14 +153,11 @@ app.component('entity-table', {
                 }
             }
         },
+
         addInColumns(tag) {
             if (!this.activeColumns.includes(tag)) {
                 this.activeHeaders.push(this.modifiedHeaders.find(header => header.text == tag));
             }
-        },
-        customRowClassName(item) {
-            return this.statusClasses[item.status];
-
         },
 
         isActive(column) {
