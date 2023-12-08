@@ -126,6 +126,14 @@ app.component('entity-table', {
     },
 
     methods: {
+        parseSlugSlot(header) {
+            if(header.slug){
+                return header.slug
+            }
+
+            return header.value
+        },
+        
         getEntityData(obj, value) {
             let val = eval(`obj.${value}`);
             return val;
