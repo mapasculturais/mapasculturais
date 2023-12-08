@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-07 15:54-0400\n"
+"PO-Revision-Date: 2023-12-08 16:10-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -151,7 +151,7 @@ msgstr "RUT"
 
 #: conf/agent-types.php:122
 msgid "O número de CNPJ informado é inválido."
-msgstr "El número proporcionado no es válido"
+msgstr "El número proporcionado no es válido."
 
 #: conf/agent-types.php:128
 #: modules/Entities/components/agent-data-1/template.php:32
@@ -165,7 +165,7 @@ msgstr "CI ou Rut"
 
 #: conf/agent-types.php:149
 msgid "O número de CPF informado é inválido."
-msgstr "\"El número de documento ingresado no es válido"
+msgstr "El número de documento ingresado no es válido."
 
 #: conf/agent-types.php:156
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:231
@@ -221,13 +221,13 @@ msgstr "Localización"
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:192
 #: themes/BaseV1/layouts/parts/singles/location.php:28
 msgid "Pública"
-msgstr "Publica"
+msgstr "Pública"
 
 #: conf/agent-types.php:209
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:192
 #: themes/BaseV1/layouts/parts/singles/location.php:28
 msgid "Privada"
-msgstr ""
+msgstr "Privada"
 
 #: conf/agent-types.php:215
 #: modules/Entities/components/agent-data-1/template.php:87
@@ -237,31 +237,31 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:55
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:127
 msgid "Gênero"
-msgstr ""
+msgstr "Género"
 
 #: conf/agent-types.php:219
 msgid "Mulher Cis"
-msgstr ""
+msgstr "Mujer Cis"
 
 #: conf/agent-types.php:220
 msgid "Homem Cis"
-msgstr ""
+msgstr "Hombre cis"
 
 #: conf/agent-types.php:221
 msgid "Mulher Trans/travesti"
-msgstr ""
+msgstr "Mujer Transexual"
 
 #: conf/agent-types.php:222
 msgid "Homem Trans"
-msgstr ""
+msgstr "Hombre Transexual"
 
 #: conf/agent-types.php:223
 msgid "Não Binárie/outra variabilidade"
-msgstr ""
+msgstr "Sin binarios/ otra variabilidad"
 
 #: conf/agent-types.php:224
 msgid "Não declarada"
-msgstr ""
+msgstr "No declarada"
 
 #: conf/agent-types.php:232
 #: modules/Entities/components/agent-data-1/template.php:93
@@ -271,31 +271,31 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:62
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:131
 msgid "Orientação Sexual"
-msgstr ""
+msgstr "Orientación sexual"
 
 #: conf/agent-types.php:236
 msgid "Heterossexual"
-msgstr ""
+msgstr "Heterosexual"
 
 #: conf/agent-types.php:237
 msgid "Lésbica"
-msgstr ""
+msgstr "Lésbica"
 
 #: conf/agent-types.php:238
 msgid "Gay"
-msgstr ""
+msgstr "Gay"
 
 #: conf/agent-types.php:239
 msgid "Bissexual"
-msgstr ""
+msgstr "Bisexual"
 
 #: conf/agent-types.php:240
 msgid "Assexual"
-msgstr ""
+msgstr "Asexual"
 
 #: conf/agent-types.php:241
 msgid "Outras"
-msgstr ""
+msgstr "Otras"
 
 #: conf/agent-types.php:247
 #: modules/Entities/components/agent-data-1/template.php:99
@@ -305,7 +305,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:69
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:135
 msgid "Agente Itinerante"
-msgstr ""
+msgstr "Agente itinerante"
 
 #: conf/agent-types.php:251 conf/event-types.php:48 conf/event-types.php:58
 #: conf/space-types.php:85 core/ApiOutputs/Html.php:190
@@ -319,7 +319,7 @@ msgstr ""
 #: modules/EventImporter/Module.php:185
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:188
 msgid "Sim"
-msgstr ""
+msgstr "Sí"
 
 #: conf/agent-types.php:252 conf/event-types.php:49 conf/event-types.php:59
 #: conf/space-types.php:86
@@ -334,7 +334,7 @@ msgstr ""
 #: modules/EventImporter/Module.php:193
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:189
 msgid "Não"
-msgstr ""
+msgstr "No"
 
 #: conf/agent-types.php:263 conf/project-types.php:65 conf/space-types.php:8
 #: modules/Entities/components/agent-data-2/template.php:61
@@ -345,11 +345,11 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_space.php:144
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:29
 msgid "Email Público"
-msgstr ""
+msgstr "E-mail Público"
 
 #: conf/agent-types.php:265 conf/project-types.php:67
 msgid "O endereço informado não é email válido."
-msgstr ""
+msgstr "El email proporcionado no es un email válido."
 
 #: conf/agent-types.php:273 conf/project-types.php:75 conf/space-types.php:16
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:98
@@ -362,11 +362,11 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_space.php:140
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:33
 msgid "Email Privado"
-msgstr ""
+msgstr "E-mail Privado"
 
 #: conf/agent-types.php:276 conf/project-types.php:78
 msgid "O endereço informado não é um email válido."
-msgstr ""
+msgstr "El e-mail proporcionado ne es un e-mail válido."
 
 #: conf/agent-types.php:283 conf/project-types.php:85 conf/space-types.php:37
 #: modules/Entities/components/agent-data-1/template.php:44
@@ -382,13 +382,13 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_space.php:148
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:37
 msgid "Telefone Público"
-msgstr ""
+msgstr "Teléfono Público"
 
 #: conf/agent-types.php:286 conf/agent-types.php:297 conf/agent-types.php:309
 #: conf/project-types.php:88 conf/project-types.php:98
 #: conf/project-types.php:109
 msgid "O número de telefone informado é inválido."
-msgstr ""
+msgstr "El número de teléfono proporcionado no es válido."
 
 #: conf/agent-types.php:294 conf/project-types.php:95 conf/space-types.php:47
 #: modules/Opportunities/views/opportunity/report-drafts.php:25
@@ -398,7 +398,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:155
 #: themes/BaseV1/layouts/parts/singles/history_space.php:152
 msgid "Telefone 1"
-msgstr ""
+msgstr "Teléfono 1"
 
 #: conf/agent-types.php:306 conf/project-types.php:106 conf/space-types.php:59
 #: modules/Opportunities/views/opportunity/report-drafts.php:26
@@ -408,7 +408,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:159
 #: themes/BaseV1/layouts/parts/singles/history_space.php:156
 msgid "Telefone 2"
-msgstr ""
+msgstr "Teléfono 2"
 
 #: conf/agent-types.php:319 conf/space-types.php:122
 #: core/ApiOutputs/Html.php:83
@@ -426,7 +426,7 @@ msgstr ""
 #: themes/BaseV1/views/event/edit.php:93
 #: themes/BaseV1/views/event/single.php:93
 msgid "Endereço"
-msgstr ""
+msgstr "Dirección"
 
 #: conf/agent-types.php:324 conf/space-types.php:128
 #: core/ApiOutputs/Html.php:31
@@ -437,7 +437,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_space.php:171
 #: themes/BaseV1/layouts/parts/singles/location.php:14
 msgid "CEP"
-msgstr ""
+msgstr "CP"
 
 #: conf/agent-types.php:331 conf/space-types.php:131
 #: core/ApiOutputs/Html.php:32
@@ -447,7 +447,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_space.php:172
 #: themes/BaseV1/layouts/parts/singles/location.php:15
 msgid "Logradouro"
-msgstr ""
+msgstr "Calle"
 
 #: conf/agent-types.php:337 conf/space-types.php:134
 #: core/ApiOutputs/Html.php:33
@@ -460,7 +460,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_space.php:173
 #: themes/BaseV1/layouts/parts/singles/location.php:16
 msgid "Número"
-msgstr ""
+msgstr "Número"
 
 #: conf/agent-types.php:343 conf/space-types.php:137
 #: core/ApiOutputs/Html.php:34
@@ -470,7 +470,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_space.php:174
 #: themes/BaseV1/layouts/parts/singles/location.php:17
 msgid "Complemento"
-msgstr ""
+msgstr "Complemento"
 
 #: conf/agent-types.php:349 conf/space-types.php:140
 #: core/ApiOutputs/Html.php:35
@@ -482,7 +482,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:43
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:72
 msgid "Bairro"
-msgstr ""
+msgstr "Barrio"
 
 #: conf/agent-types.php:355 conf/space-types.php:143
 #: core/ApiOutputs/Html.php:36
@@ -495,7 +495,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:39
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:68
 msgid "Município"
-msgstr ""
+msgstr "Municipio/Localidad"
 
 #: conf/agent-types.php:361 conf/space-types.php:146
 #: core/ApiOutputs/Html.php:37
@@ -508,11 +508,11 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/location.php:20
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:64
 msgid "Estado"
-msgstr ""
+msgstr "Departamento"
 
 #: conf/agent-types.php:398
 msgid "País"
-msgstr ""
+msgstr "País"
 
 #: conf/agent-types.php:431 conf/event-types.php:64
 #: conf/opportunity-types.php:41 conf/project-types.php:8
@@ -535,7 +535,7 @@ msgstr ""
 #: themes/BaseV1/views/space/single.php:72
 #: themes/BaseV1/views/space/single.php:74
 msgid "Site"
-msgstr ""
+msgstr "Página web"
 
 #: conf/agent-types.php:433 conf/agent-types.php:440 conf/agent-types.php:447
 #: conf/agent-types.php:463 conf/agent-types.php:470 conf/agent-types.php:476
@@ -555,25 +555,25 @@ msgstr ""
 #: conf/space-types.php:227 conf/space-types.php:234 conf/space-types.php:240
 #: conf/space-types.php:247 conf/space-types.php:254
 msgid "A url informada é inválida."
-msgstr ""
+msgstr "La url ingresada no es válida."
 
 #: conf/agent-types.php:438 conf/event-types.php:70
 #: conf/opportunity-types.php:48 conf/project-types.php:15
 #: conf/space-types.php:198
 msgid "Facebook"
-msgstr ""
+msgstr "Facebook"
 
 #: conf/agent-types.php:445 conf/event-types.php:76
 #: conf/opportunity-types.php:54 conf/project-types.php:21
 #: conf/space-types.php:205
 msgid "Twitter"
-msgstr ""
+msgstr "Twitter"
 
 #: conf/agent-types.php:452 conf/event-types.php:82
 #: conf/opportunity-types.php:90 conf/project-types.php:28
 #: conf/space-types.php:218
 msgid "Instagram"
-msgstr ""
+msgstr "Instagram"
 
 #: conf/agent-types.php:456
 msgid "https://instagram.com/"
@@ -583,35 +583,35 @@ msgstr ""
 #: conf/opportunity-types.php:66 conf/project-types.php:34
 #: conf/space-types.php:225
 msgid "Linkedin"
-msgstr ""
+msgstr "Linkedin"
 
 #: conf/agent-types.php:468 conf/event-types.php:94
 #: conf/opportunity-types.php:60 conf/project-types.php:40
 #: conf/space-types.php:232
 msgid "Vimeo"
-msgstr ""
+msgstr "Vimeo"
 
 #: conf/agent-types.php:474 conf/event-types.php:100
 #: conf/opportunity-types.php:72 conf/project-types.php:46
 #: conf/space-types.php:238
 msgid "Spotify"
-msgstr ""
+msgstr "Spotify"
 
 #: conf/agent-types.php:481 conf/event-types.php:106
 #: conf/opportunity-types.php:78 conf/project-types.php:52
 #: conf/space-types.php:245
 msgid "YouTube"
-msgstr ""
+msgstr "YouTube"
 
 #: conf/agent-types.php:488 conf/event-types.php:112
 #: conf/opportunity-types.php:84 conf/project-types.php:58
 #: conf/space-types.php:252
 msgid "Pinterest"
-msgstr ""
+msgstr "Pinterest"
 
 #: conf/agent-types.php:496
 msgid "Individual"
-msgstr ""
+msgstr "Individual"
 
 #: conf/agent-types.php:497
 #: modules/Opportunities/views/registration/single.php:175
@@ -619,11 +619,11 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:58
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:54
 msgid "Coletivo"
-msgstr ""
+msgstr "Colectivo"
 
 #: conf/event-types.php:8
 msgid "Sub-Título"
-msgstr ""
+msgstr "Subtítulo"
 
 #: conf/event-types.php:12 conf/project-types.php:151
 #: modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:28
@@ -642,7 +642,7 @@ msgstr ""
 #: themes/BaseV1/views/event/edit.php:209
 #: themes/BaseV1/views/event/single.php:209
 msgid "Inscrições"
-msgstr ""
+msgstr "Inscripciones"
 
 #: conf/event-types.php:16 core/ApiOutputs/Html.php:86
 #: modules/Entities/components/event-age-rating/template.php:10
@@ -652,44 +652,45 @@ msgstr ""
 #: themes/BaseV1/views/event/edit.php:213
 #: themes/BaseV1/views/event/single.php:213
 msgid "Classificação Etária"
-msgstr ""
+msgstr "Clasificación etaria"
 
 #: conf/event-types.php:19 modules/EventImporter/Module.php:233
 msgid "Livre"
-msgstr ""
+msgstr "Libre"
 
 #: conf/event-types.php:20 modules/EventImporter/Module.php:36
 msgid "18 anos"
-msgstr ""
+msgstr "18 años"
 
 #: conf/event-types.php:21 modules/EventImporter/Module.php:35
 msgid "16 anos"
-msgstr ""
+msgstr "16 años"
 
 #: conf/event-types.php:22 modules/EventImporter/Module.php:34
 msgid "14 anos"
-msgstr ""
+msgstr "14 años"
 
 #: conf/event-types.php:23 modules/EventImporter/Module.php:33
 msgid "12 anos"
-msgstr ""
+msgstr "12 años"
 
 #: conf/event-types.php:24 modules/EventImporter/Module.php:32
 msgid "10 anos"
-msgstr ""
+msgstr "10 años"
 
 #: conf/event-types.php:27
 msgid "A classificação etária é obrigatória."
-msgstr ""
+msgstr "La clasificación etaria es obligatoria."
 
 #: conf/event-types.php:32 themes/BaseV1/views/event/edit.php:219
 #: themes/BaseV1/views/event/single.php:219
 msgid "Mais Informações"
-msgstr ""
+msgstr "Más información"
 
 #: conf/event-types.php:35 conf/space-types.php:40
 msgid "Por favor, informe o telefone público no formato (xx) xxxx-xxxx."
 msgstr ""
+"Por favor, introduzca el teléfono público en el formato (xx) xxxx-xxxx."
 
 #: conf/event-types.php:40
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:108
@@ -698,14 +699,14 @@ msgstr ""
 #: themes/BaseV1/views/event/single.php:51
 #: themes/BaseV1/views/event/single.php:91
 msgid "Preço"
-msgstr ""
+msgstr "Precio"
 
 #: conf/event-types.php:44
 #: themes/BaseV1/layouts/parts/singles/history_event.php:138
 #: themes/BaseV1/views/event/edit.php:228
 #: themes/BaseV1/views/event/single.php:228
 msgid "Tradução para LIBRAS"
-msgstr ""
+msgstr "Traducción para lenguaje de señas"
 
 #: conf/event-types.php:47 conf/event-types.php:57 conf/space-types.php:84
 #: modules/Components/components/event-info/template.php:47
@@ -714,106 +715,110 @@ msgstr ""
 #: themes/BaseV1/views/event/single.php:50
 #: themes/BaseV1/views/event/single.php:51
 msgid "Não Informado"
-msgstr ""
+msgstr "No Informado"
 
 #: conf/event-types.php:54
 msgid "Áudio descrição"
-msgstr ""
+msgstr "Audio descripción"
 
 #: conf/event-types.php:84 conf/opportunity-types.php:92
 #: conf/project-types.php:30 conf/space-types.php:220
 msgid ""
 "O usuário informado é inválido. Informe no formato @usuario e tente novamente"
 msgstr ""
+"El usuario ingresado no es válido. Ingrese en formato @usuario y vuelva a "
+"intentarlo"
 
 #: conf/event-types.php:126
 msgid "Padrão"
-msgstr ""
+msgstr "Estándar"
 
 #: conf/notification-types.php:11
 #: modules/Components/components/complaint-suggestion/template.php:15
 #: modules/Components/components/complaint-suggestion/template.php:65
 msgid "Denúncia"
-msgstr ""
+msgstr "Denuncia"
 
 #: conf/notification-types.php:12
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:24
 #: modules/Components/components/complaint-suggestion/template.php:71
 #: modules/Components/components/complaint-suggestion/template.php:128
 msgid "Contato"
-msgstr ""
+msgstr "Contacto"
 
 #: conf/notification-types.php:19
 msgid "Conteúdo ofensivo ou inadequado"
-msgstr ""
+msgstr "Contenido ofensivo o inadecuado"
 
 #: conf/notification-types.php:20
 msgid "Conteúdo incorreto ou calunioso"
-msgstr ""
+msgstr "Contenido incorrecto o calumnioso"
 
 #: conf/notification-types.php:21
 msgid "Conteúdo que viola direitos"
-msgstr ""
+msgstr "Contenido que viola derechos"
 
 #: conf/notification-types.php:22 conf/notification-types.php:34
 #: conf/space-types.php:93 conf/space-types.php:478 conf/taxonomies.php:80
 #: conf/taxonomies.php:111
 msgid "Outros"
-msgstr ""
+msgstr "Otros"
 
 #: conf/notification-types.php:30
 msgid "Sugestão"
-msgstr ""
+msgstr "Sugerencia"
 
 #: conf/notification-types.php:31
 msgid "Crítica"
-msgstr ""
+msgstr "Crítica"
 
 #: conf/notification-types.php:32
 msgid "Comentários"
-msgstr ""
+msgstr "Comentarios"
 
 #: conf/notification-types.php:33
 msgid "Reclamações"
-msgstr ""
+msgstr "Reclamos"
 
 #: conf/opportunity-types.php:9
 msgid "Título das opções (ex: Categorias)"
-msgstr ""
+msgstr "Título de las opciones (ejem: Categorías)"
 
 #: conf/opportunity-types.php:13
 msgid "Descrição das opções (ex: Selecione uma categoria)"
-msgstr ""
+msgstr "Descripción de las opciones (ejem.: Selección una categoría)"
 
 #: conf/opportunity-types.php:18
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:42
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:44
 msgid "Número máximo de inscrições por agente responsável"
-msgstr ""
+msgstr "Número máximo de inscripciones por agente responsable"
 
 #: conf/opportunity-types.php:20
 msgid ""
 "O número máximo de inscrições por agente responsável deve ser um número "
 "inteiro"
 msgstr ""
+"El número máximo de inscripciones por agente responsable debe ser un número"
 
 #: conf/opportunity-types.php:26
 msgid "Número máximo de inscrições na oportunidade"
-msgstr ""
+msgstr "O número máximo de inscripciones en la oportunidad"
 
 #: conf/opportunity-types.php:28
 msgid ""
 "O número máximo de inscrições na oportunidade deve ser um número inteiro"
 msgstr ""
+"El número máximo de inscripciones en la oportunidad debe ser un número entero"
 
 #: conf/opportunity-types.php:32
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--space-relations.php:29
 msgid "Espaço Cultural"
-msgstr ""
+msgstr "Espacio Cultural"
 
 #: conf/opportunity-types.php:35
 msgid "Não utilizar"
-msgstr ""
+msgstr "No utilizar"
 
 #: conf/opportunity-types.php:36 conf/opportunity-types.php:110
 #: modules/Opportunities/components/opportunity-form-builder/template.php:35
@@ -822,7 +827,7 @@ msgstr ""
 #: modules/Opportunities/components/opportunity-form-builder/template.php:85
 #: themes/BaseV1/Theme.php:2124 themes/BaseV1/Theme.php:2169
 msgid "Obrigatório"
-msgstr ""
+msgstr "Obligatorio"
 
 #: conf/opportunity-types.php:37 conf/opportunity-types.php:109
 #: modules/Opportunities/components/opportunity-form-builder/template.php:36
@@ -831,7 +836,7 @@ msgstr ""
 #: modules/Opportunities/components/opportunity-form-builder/template.php:86
 #: themes/BaseV1/Theme.php:2125 themes/BaseV1/Theme.php:2170
 msgid "Opcional"
-msgstr ""
+msgstr "Opcional"
 
 #: conf/opportunity-types.php:98 core/ApiOutputs/Html.php:128
 #: core/Entities/Seal.php:237
@@ -843,14 +848,14 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/home-seals.php:27
 #: themes/BaseV1/views/panel/index.php:131
 msgid "Selos"
-msgstr ""
+msgstr "Sellos"
 
 #: conf/opportunity-types.php:105 core/Entities/Opportunity.php:1021
 #: modules/Opportunities/views/registration/single.php:161
 #: themes/BaseV1/layouts/parts/singles/registration-edit--header.php:17
 #: themes/BaseV1/layouts/parts/singles/registration-single--header.php:35
 msgid "Nome do Projeto"
-msgstr ""
+msgstr "Nombre del Proyecto"
 
 #: conf/opportunity-types.php:108
 #: modules/Opportunities/components/opportunity-form-builder/template.php:34
@@ -858,214 +863,214 @@ msgstr ""
 #: modules/Opportunities/components/opportunity-form-builder/template.php:68
 #: modules/Opportunities/components/opportunity-form-builder/template.php:84
 msgid "Não Utilizar"
-msgstr ""
+msgstr "No utilizar"
 
 #: conf/opportunity-types.php:119 conf/project-types.php:117
 msgid "Festival"
-msgstr ""
+msgstr "Festival"
 
 #: conf/opportunity-types.php:120 conf/project-types.php:118
 msgid "Encontro"
-msgstr ""
+msgstr "Encuentro"
 
 #: conf/opportunity-types.php:121 conf/project-types.php:119
 msgid "Sarau"
-msgstr ""
+msgstr "Salón"
 
 #: conf/opportunity-types.php:122 conf/project-types.php:120
 msgid "Reunião"
-msgstr ""
+msgstr "Reunión"
 
 #: conf/opportunity-types.php:123 conf/project-types.php:121
 msgid "Mostra"
-msgstr ""
+msgstr "Muestra"
 
 #: conf/opportunity-types.php:124 conf/project-types.php:122
 msgid "Convenção"
-msgstr ""
+msgstr "Convención"
 
 #: conf/opportunity-types.php:125 conf/project-types.php:123
 msgid "Ciclo"
-msgstr ""
+msgstr "Ciclo"
 
 #: conf/opportunity-types.php:126 conf/project-types.php:124
 msgid "Programa"
-msgstr ""
+msgstr "Programa"
 
 #: conf/opportunity-types.php:127 conf/project-types.php:125
 msgid "Edital"
-msgstr ""
+msgstr "Edital"
 
 #: conf/opportunity-types.php:128 conf/project-types.php:126
 msgid "Concurso"
-msgstr ""
+msgstr "Concurso"
 
 #: conf/opportunity-types.php:129 conf/project-types.php:127
 #: conf/taxonomies.php:103
 msgid "Exposição"
-msgstr ""
+msgstr "Exposición"
 
 #: conf/opportunity-types.php:130 conf/opportunity-types.php:143
 #: conf/project-types.php:128 conf/project-types.php:141
 msgid "Jornada"
-msgstr ""
+msgstr "Jornada"
 
 #: conf/opportunity-types.php:131 conf/project-types.php:129
 msgid "Exibição"
-msgstr ""
+msgstr "Muestra"
 
 #: conf/opportunity-types.php:132 conf/project-types.php:130
 msgid "Feira"
-msgstr ""
+msgstr "Feria"
 
 #: conf/opportunity-types.php:133 conf/project-types.php:131
 msgid "Intercâmbio Cultural"
-msgstr ""
+msgstr "Intercambio Cultural"
 
 #: conf/opportunity-types.php:134 conf/project-types.php:132
 msgid "Festa Popular"
-msgstr ""
+msgstr "Fiesta Popular"
 
 #: conf/opportunity-types.php:135 conf/project-types.php:133
 msgid "Festa Religiosa"
-msgstr ""
+msgstr "Fiesta Religiosa"
 
 #: conf/opportunity-types.php:136 conf/project-types.php:134
 msgid "Seminário"
-msgstr ""
+msgstr "Seminario"
 
 #: conf/opportunity-types.php:137 conf/project-types.php:135
 msgid "Congresso"
-msgstr ""
+msgstr "Congreso"
 
 #: conf/opportunity-types.php:138 conf/project-types.php:136
 msgid "Palestra"
-msgstr ""
+msgstr "Conferencia"
 
 #: conf/opportunity-types.php:139 conf/project-types.php:137
 msgid "Simpósio"
-msgstr ""
+msgstr "Simposio"
 
 #: conf/opportunity-types.php:140 conf/project-types.php:138
 msgid "Fórum"
-msgstr ""
+msgstr "Foro"
 
 #: conf/opportunity-types.php:141 conf/project-types.php:139
 msgid "Curso"
-msgstr ""
+msgstr "Curso"
 
 #: conf/opportunity-types.php:142 conf/project-types.php:140
 msgid "Oficina"
-msgstr ""
+msgstr "Oficina/taller"
 
 #: conf/opportunity-types.php:144 conf/project-types.php:142
 msgid "Conferência Pública Setorial"
-msgstr ""
+msgstr "Conferencia Pública Sectorial"
 
 #: conf/opportunity-types.php:145 conf/project-types.php:143
 msgid "Conferência Pública Nacional"
-msgstr ""
+msgstr "Conferencia Pública Nacional"
 
 #: conf/opportunity-types.php:146 conf/project-types.php:144
 msgid "Conferência Pública Estadual"
-msgstr ""
+msgstr "Conferencia Pública Departamental"
 
 #: conf/opportunity-types.php:147 conf/project-types.php:145
 msgid "Conferência Pública Municipal"
-msgstr ""
+msgstr "Conferencia Pública Municipal"
 
 #: conf/opportunity-types.php:155
 msgid "Abaixo-assinado"
-msgstr ""
+msgstr "Abajofirmante"
 
 #: conf/opportunity-types.php:156
 msgid "Campanhas"
-msgstr ""
+msgstr "Campañas"
 
 #: conf/opportunity-types.php:157 conf/project-types.php:152
 #: conf/taxonomies.php:72
 msgid "Pesquisa"
-msgstr ""
+msgstr "Investigación"
 
 #: conf/opportunity-types.php:158
 msgid "Oportunidade de trabalho"
-msgstr ""
+msgstr "Oportunidad de trabajo"
 
 #: conf/opportunity-types.php:159
 msgid "Outros eventos"
-msgstr ""
+msgstr "Otros eventos"
 
 #: conf/opportunity-types.php:160
 msgid "Outros tipos de inscrição"
-msgstr ""
+msgstr "Otros tipos de inscripción"
 
 #: conf/project-types.php:146
 msgid "Parada e Desfile Militar"
-msgstr ""
+msgstr "Desfile Militar"
 
 #: conf/project-types.php:147
 msgid "Parada e Desfile Cívico"
-msgstr ""
+msgstr "Desfile Cívico"
 
 #: conf/project-types.php:148
 msgid "Parada e Desfile Festivo"
-msgstr ""
+msgstr "Desfile Festivo"
 
 #: conf/project-types.php:149
 msgid "Parada e Desfile Político"
-msgstr ""
+msgstr "Desfile Político"
 
 #: conf/project-types.php:150
 msgid "Parada e Desfile de Ações Afirmativas"
-msgstr ""
+msgstr "Desfile de Acciones Afirmativas"
 
 #: conf/project-types.php:153
 msgid "Consulta"
-msgstr ""
+msgstr "Consulta"
 
 #: conf/seal-types.php:19
 msgid "Infinita"
-msgstr ""
+msgstr "Infinita"
 
 #: conf/seal-types.php:20
 msgid "Dias"
-msgstr ""
+msgstr "Días"
 
 #: conf/seal-types.php:21
 msgid "Semanas"
-msgstr ""
+msgstr "Semanas"
 
 #: conf/seal-types.php:22
 msgid "Meses"
-msgstr ""
+msgstr "Meses"
 
 #: conf/seal-types.php:23
 msgid "Anos"
-msgstr ""
+msgstr "Años"
 
 #: conf/space-types.php:10
 msgid "O email público não é um email válido."
-msgstr ""
+msgstr "El email público no es un email válido."
 
 #: conf/space-types.php:18
 msgid "O email privado não é um email válido."
-msgstr ""
+msgstr "El email privado ne es un email válido."
 
 #: conf/space-types.php:27
 msgid "O número de documento informado é inválido."
-msgstr ""
+msgstr "El número de documento ingresado no es válido"
 
 #: conf/space-types.php:32
 msgid "Razão Social"
-msgstr ""
+msgstr "Razón Social"
 
 #: conf/space-types.php:50
 msgid "Por favor, informe o telefone 1 no formato (xx) xxxx xxxx."
-msgstr ""
+msgstr "Por favor, introduzca el teléfono 1 en el formato (xx) xxxx-xxxx."
 
 #: conf/space-types.php:62
 msgid "Por favor, informe o telefone 2 no formato "
-msgstr ""
+msgstr "Por favor, introduzca el teléfono 2 en el formato "
 
 #: conf/space-types.php:81
 #: modules/Components/components/event-info/template.php:14
@@ -1080,615 +1085,636 @@ msgstr ""
 #: themes/BaseV1/views/event/single.php:225
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-visitacao.php:42
 msgid "Acessibilidade"
-msgstr ""
+msgstr "Accesibilidad"
 
 #: conf/space-types.php:90 modules/Entities/views/space/edit.php:104
 #: themes/BaseV1/layouts/parts/singles/history_space.php:117
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:14
 msgid "Acessibilidade física"
-msgstr ""
+msgstr "Accesibilidad física"
 
 #: conf/space-types.php:95
 msgid "Banheiros adaptados"
-msgstr ""
+msgstr "Baños adaptados"
 
 #: conf/space-types.php:96 conf/space-types.php:106
 msgid "Rampa de acesso"
-msgstr ""
+msgstr "Rampa de acceso"
 
 #: conf/space-types.php:97
 msgid "Elevador"
-msgstr ""
+msgstr "Elevador"
 
 #: conf/space-types.php:98
 msgid "Sinalização tátil"
-msgstr ""
+msgstr "Señalización táctil"
 
 #: conf/space-types.php:101
 msgid "Bebedouro adaptado"
-msgstr ""
+msgstr "Bebedero adaptado"
 
 #: conf/space-types.php:102
 msgid "Cadeira de rodas para uso do visitante"
-msgstr ""
+msgstr "Silla de ruedas para uso de los visitantes"
 
 #: conf/space-types.php:103
 msgid "Circuito de visitação adaptado"
-msgstr ""
+msgstr "Circuito de visita adaptado"
 
 #: conf/space-types.php:104
 msgid "Corrimão nas escadas e rampas"
-msgstr ""
+msgstr "Pasamanos en las escaleras y rampas"
 
 #: conf/space-types.php:105
 msgid "Elevador adaptado"
-msgstr ""
+msgstr "Elevador adaptado"
 
 #: conf/space-types.php:107
 msgid "Sanitário adaptado"
-msgstr ""
+msgstr "Sanitario adaptado"
 
 #: conf/space-types.php:108
 msgid "Telefone público adaptado"
-msgstr ""
+msgstr "fono público adaptado"
 
 #: conf/space-types.php:109
 msgid "Vaga de estacionamento exclusiva para deficientes"
-msgstr ""
+msgstr "Estacionamiento exclusivo para personas con discapacidad"
 
 #: conf/space-types.php:110
 msgid "Vaga de estacionamento exclusiva para idosos"
-msgstr ""
+msgstr "Estacionamiento exclusivo para ancianos"
 
 #: conf/space-types.php:114 modules/Entities/views/space/edit.php:112
 #: themes/BaseV1/layouts/parts/singles/history_space.php:124
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:21
 msgid "Capacidade"
-msgstr ""
+msgstr "Capacidad"
 
 #: conf/space-types.php:116
 msgid "A capacidade deve ser um número positivo."
-msgstr ""
+msgstr "La capacidad debe ser un número positivo."
 
 #: conf/space-types.php:180
 #: modules/Components/components/space-info/template.php:18
 #: themes/BaseV1/layouts/parts/singles/history_space.php:130
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:25
 msgid "Horário de funcionamento"
-msgstr ""
+msgstr "Horario de funcionamento"
 
 #: conf/space-types.php:186 themes/BaseV1/Theme.php:323
 #: themes/BaseV1/Theme.php:324
 msgid "Critérios de uso do espaço"
-msgstr ""
+msgstr "Criterios de uso del espacio"
 
 #: conf/space-types.php:212
 msgid "Google+"
-msgstr ""
+msgstr "Google+"
 
 #: conf/space-types.php:266
 msgid "Espaços de Exibição de Filmes"
-msgstr ""
+msgstr "Espacio de Exhibición de Películas"
 
 #: conf/space-types.php:269
 msgid "Cine itinerante"
-msgstr ""
+msgstr "Cine itinerante"
 
 #: conf/space-types.php:270
 msgid "Cineclube"
-msgstr ""
+msgstr "Cineclub"
 
 #: conf/space-types.php:271
 msgid "Drive-in"
-msgstr ""
+msgstr "Drive-in"
 
 #: conf/space-types.php:272
 msgid "Espaço Público Para Projeção de Filmes"
-msgstr ""
+msgstr "Espacio Público Para Proyección de Películas"
 
 #: conf/space-types.php:273
 msgid "Sala de cinema"
-msgstr ""
+msgstr "Sala de cine"
 
 #: conf/space-types.php:277 themes/BaseV1/Theme.php:257
 msgid "Bibliotecas"
-msgstr ""
+msgstr "Bibliotecas"
 
 #: conf/space-types.php:280
 msgid "Biblioteca Pública"
-msgstr ""
+msgstr "Biblioteca Pública"
 
 #: conf/space-types.php:281
 msgid "Biblioteca Privada"
-msgstr ""
+msgstr "Biblioteca Privada"
 
 #: conf/space-types.php:282
 msgid "Biblioteca Comunitária (incluí­dos os pontos de leitura)"
-msgstr ""
+msgstr "Biblioteca Comunitaria (incluyendo los puntos de lectura)"
 
 #: conf/space-types.php:283
 msgid "Biblioteca Escolar"
-msgstr ""
+msgstr "Biblioteca Escolar"
 
 #: conf/space-types.php:284
 msgid "Biblioteca Nacional"
-msgstr ""
+msgstr "Biblioteca Nacional"
 
 #: conf/space-types.php:285
 msgid "Biblioteca Universitária"
-msgstr ""
+msgstr "Biblioteca Universitaria"
 
 #: conf/space-types.php:286
 msgid "Biblioteca Especializada"
-msgstr ""
+msgstr "Biblioteca Especializada"
 
 #: conf/space-types.php:290
 msgid "Teatros"
-msgstr ""
+msgstr "Teatros"
 
 #: conf/space-types.php:293
 msgid "Teatro Público"
-msgstr ""
+msgstr "Teatro Público"
 
 #: conf/space-types.php:294
 msgid "Teatro Privado"
-msgstr ""
+msgstr "Teatro Privado"
 
 #: conf/space-types.php:298
 msgid "Circos"
-msgstr ""
+msgstr "Circos"
 
 #: conf/space-types.php:301
 msgid "Circo Itinerante"
-msgstr ""
+msgstr "Circo Itinerante"
 
 #: conf/space-types.php:302
 msgid "Circo Fixo"
-msgstr ""
+msgstr "Circo Fijo"
 
 #: conf/space-types.php:303
 msgid "Terreno para Circo"
-msgstr ""
+msgstr "Terreno para Circo"
 
 #: conf/space-types.php:304
 msgid "Circo Tradicional"
-msgstr ""
+msgstr "Circo Tradicional"
 
 #: conf/space-types.php:305
 msgid "Circo Moderno"
-msgstr ""
+msgstr "Circo Moderno"
 
 #: conf/space-types.php:309
 msgid "Centros Culturais"
-msgstr ""
+msgstr "Centros Culturales"
 
 #: conf/space-types.php:312
 msgid "Centro Cultural Público"
-msgstr ""
+msgstr "Centro Cultural Público"
 
 #: conf/space-types.php:313
 msgid "Centro Cultural Privado"
-msgstr ""
+msgstr "Centro Cultural Privado"
 
 #: conf/space-types.php:317
 msgid "Arquivos"
-msgstr ""
+msgstr "Archivos"
 
 #: conf/space-types.php:320
 msgid "Arquivo Público"
-msgstr ""
+msgstr "Archivo Público"
 
 #: conf/space-types.php:321
 msgid "Arquivo Privado"
-msgstr ""
+msgstr "Archivo Privado"
 
 #: conf/space-types.php:325 themes/BaseV1/Theme.php:257
 msgid "Museus"
-msgstr ""
+msgstr "Museos"
 
 #: conf/space-types.php:328
 msgid "Museu Público"
-msgstr ""
+msgstr "Museo Público"
 
 #: conf/space-types.php:329
 msgid "Museu Privado"
-msgstr ""
+msgstr "Museo Privado"
 
 #: conf/space-types.php:333
 msgid "Demais Equipamentos Culturais"
-msgstr ""
+msgstr "Demás Equipamientos Culturales"
 
 #: conf/space-types.php:336
 msgid "Galeria de arte"
-msgstr ""
+msgstr "Galería de arte"
 
 #: conf/space-types.php:337
 msgid "Livraria"
-msgstr ""
+msgstr "Librería"
 
 #: conf/space-types.php:338
 msgid "Sebo"
-msgstr ""
+msgstr "Librería de usados y raros"
 
 #: conf/space-types.php:339
 msgid "Videolocadora"
-msgstr ""
+msgstr "Alquiler de videos"
 
 #: conf/space-types.php:340
 msgid "Lan-house"
-msgstr ""
+msgstr "Lan-house"
 
 #: conf/space-types.php:341
 msgid "Antiquário"
-msgstr ""
+msgstr "Anticuario"
 
 #: conf/space-types.php:342
 msgid "Ateliê"
-msgstr ""
+msgstr "Atelié"
 
 #: conf/space-types.php:343
 msgid "Centro de artesanato"
-msgstr ""
+msgstr "Centro de artesanos"
 
 #: conf/space-types.php:344
 msgid "Casa de espetáculo"
-msgstr ""
+msgstr "Casa de espetáculo"
 
 #: conf/space-types.php:345
 msgid "Danceteria"
-msgstr ""
+msgstr "Discoteca"
 
 #: conf/space-types.php:346
 msgid "Estúdio"
-msgstr ""
+msgstr "Estudio"
 
 #: conf/space-types.php:347
 msgid "Concha acústica"
-msgstr ""
+msgstr "Anfiteatro"
 
 #: conf/space-types.php:348
 msgid "Banca de jornal"
-msgstr ""
+msgstr "Puesto de periódicos"
 
 #: conf/space-types.php:349
 msgid "Espaço para Eventos"
-msgstr ""
+msgstr "Espacio para Eventos"
 
 #: conf/space-types.php:350
 msgid "Creative Bureau"
-msgstr ""
+msgstr "Buró Creativo"
 
 #: conf/space-types.php:351
 msgid "Ponto de Leitura Afro"
-msgstr ""
+msgstr "Punto de Lectura Afro"
 
 #: conf/space-types.php:352
 msgid "Centro Comunitário"
-msgstr ""
+msgstr "Centro Comunitario"
 
 #: conf/space-types.php:353
 msgid "Casa do Patrimônio"
-msgstr ""
+msgstr "Casa del Patrimonio"
 
 #: conf/space-types.php:354
 msgid "Ponto de Cultura"
-msgstr ""
+msgstr "Punto de Cultura"
 
 #: conf/space-types.php:355
 msgid "Usina Cultural"
-msgstr ""
+msgstr "Usina Cultural"
 
 #: conf/space-types.php:356
 msgid "Praça dos esportes e da cultura"
-msgstr ""
+msgstr "Plaza de deportes y cultura"
 
 #: conf/space-types.php:357
 msgid "Espaço Mais Cultura"
-msgstr ""
+msgstr "Espacio Más Cultura"
 
 #: conf/space-types.php:358
 msgid "Sala de dança"
-msgstr ""
+msgstr "Sala de danza"
 
 #: conf/space-types.php:359
 msgid "Gafieira"
-msgstr ""
+msgstr "Baile popular"
 
 #: conf/space-types.php:360
 msgid "Espaço para apresentação de dança"
-msgstr ""
+msgstr "Espacio para presentación de danza"
 
 #: conf/space-types.php:361
 msgid "Centro cultural itinerante"
-msgstr ""
+msgstr "Centro cultural itinerante"
 
 #: conf/space-types.php:362
 msgid "Trio elétrico"
-msgstr ""
+msgstr "Trío eléctrico"
 
 #: conf/space-types.php:363
 msgid "Clube social"
-msgstr ""
+msgstr "Club social"
 
 #: conf/space-types.php:364
 msgid "Centro de tradições"
-msgstr ""
+msgstr "Centro tradicional"
 
 #: conf/space-types.php:365
 msgid "Sala Multiuso"
-msgstr ""
+msgstr "Sala Multiuso"
 
 #: conf/space-types.php:366
 msgid "Rádio Comunitária"
-msgstr ""
+msgstr "Radio Comunitaria"
 
 #: conf/space-types.php:367
 msgid "Audioteca"
-msgstr ""
+msgstr "Audioteca"
 
 #: conf/space-types.php:368
 msgid "Centro de Artes e Esportes Unificados - CEUs"
-msgstr ""
+msgstr "Centro de Artes y Deportes Unificados"
 
 #: conf/space-types.php:369
 msgid "Coreto"
-msgstr ""
+msgstr "Mirador/pabellón"
 
 #: conf/space-types.php:370
 msgid "Ginásio Poliesportivo"
-msgstr ""
+msgstr "Gimnasio Polideportivo"
 
 #: conf/space-types.php:371
 msgid "Sala de Leitura"
-msgstr ""
+msgstr "Sala de lectura"
 
 #: conf/space-types.php:372
 msgid "Pontos de Memória"
-msgstr ""
+msgstr "Puntos de la Memoria"
 
 #: conf/space-types.php:373
 msgid "Núcleos de Produção Digital"
-msgstr ""
+msgstr "Núcleos de Producción Digital"
 
 #: conf/space-types.php:375
 msgid "Outros Equipamentos Culturais"
-msgstr ""
+msgstr "Otros Equipamientos Culturales"
 
 #: conf/space-types.php:379
 msgid "Centros de Documentação"
-msgstr ""
+msgstr "Centros de Documentación"
 
 #: conf/space-types.php:382
 msgid "Centro de Documentação Público"
-msgstr ""
+msgstr "Centro de Documentación Público"
 
 #: conf/space-types.php:383
 msgid "Centro de Documentação Privado"
-msgstr ""
+msgstr "Centro de Documentación Privado"
 
 #: conf/space-types.php:387
 msgid "Espaços Religiosos"
-msgstr ""
+msgstr "Espacios Religiosos"
 
 #: conf/space-types.php:390
 msgid "Templo"
-msgstr ""
+msgstr "Templo"
 
 #: conf/space-types.php:391
 msgid "Terreiro"
-msgstr ""
+msgstr "Terreiro"
 
 #: conf/space-types.php:392
 msgid "Mesquitas"
-msgstr ""
+msgstr "Mezquita"
 
 #: conf/space-types.php:393
 msgid "Sinagoga"
-msgstr ""
+msgstr "Sinagoga"
 
 #: conf/space-types.php:394
 msgid "Igreja"
-msgstr ""
+msgstr "Iglesia"
 
 #: conf/space-types.php:395
 msgid "Centro Espírita"
-msgstr ""
+msgstr "Centro Espiritual"
 
 #: conf/space-types.php:403
 msgid "Instituições Públicas de Ensino Regular"
-msgstr ""
+msgstr "Instituciones Públicas de Enseñanza Regular"
 
 #: conf/space-types.php:406
 msgid "Instituição Pública de Ensino Regular Federal"
-msgstr ""
+msgstr "Instituciones Públicas de Enseñanza Regular Federal"
 
 #: conf/space-types.php:407
 msgid "Instituição Pública de Ensino Regular Estadual"
-msgstr ""
+msgstr "Institución Pública de Enseñanza Regular Departamental"
 
 #: conf/space-types.php:408
 msgid "Instituição Pública de Ensino Regular Municipal"
-msgstr ""
+msgstr "Institución Pública de Enseñanza Regular Municipal"
 
 #: conf/space-types.php:409
 msgid "Instituição Pública de Ensino Regular Distrital"
-msgstr ""
+msgstr "Instituciones Públicas de Enseñanza Regular Regional"
 
 #: conf/space-types.php:413
 msgid " Instituições Privadas de Ensino Regular"
-msgstr ""
+msgstr "Instituciones Privadas de Enseñanza Regular"
 
 #: conf/space-types.php:416
 msgid "Instituição Privada Particular"
-msgstr ""
+msgstr "Institución Privada Particular"
 
 #: conf/space-types.php:417
 msgid "Instituição Privada Comunitária"
-msgstr ""
+msgstr "Institución Privada Comunitaria"
 
 #: conf/space-types.php:418
 msgid "Instituição Privada Confessional"
-msgstr ""
+msgstr "Institución Privada Confesional"
 
 #: conf/space-types.php:419
 msgid "Instituição Privada Filantrópica"
-msgstr ""
+msgstr "Institución Privada Filantrópica"
 
 #: conf/space-types.php:423
 msgid ""
 "Instituições Públicas exclusivamente voltada para formação artistica e "
 "cultural"
 msgstr ""
+"Instituciones Públicas exclusivamente orientadas a la formación artística y "
+"cultural"
 
 #: conf/space-types.php:426
 msgid ""
 "Instituição Pública Federal exclusivamente voltada para formação artistica e "
 "cultural"
 msgstr ""
+"Institución Pública Federal exclusivamente orientada a la formación "
+"artística y cultural"
 
 #: conf/space-types.php:427
 msgid ""
 "Instituição Pública Estadual exclusivamente voltada para formação artistica "
 "e cultural"
 msgstr ""
+"Institución Pública Departamental exclusivamente orientada a la formación "
+"\"\n"
+"\"artística y cultural"
 
 #: conf/space-types.php:428
 msgid ""
 "Instituição Pública Municipal exclusivamente voltada para formação artistica "
 "e cultural"
 msgstr ""
+"Institución Pública Departamental exclusivamente orientada a la formación "
+"artística y cultural"
 
 #: conf/space-types.php:429
 msgid ""
 "Instituição Pública Distrital exclusivamente voltada para formação artistica "
 "e cultural"
 msgstr ""
+"Institución Pública Distrital exclusivamente orientada a la formación "
+"artística y cultural"
 
 #: conf/space-types.php:433
 msgid ""
 "Instituições Privadas exclusivamente voltada para formação artistica e "
 "cultural"
 msgstr ""
+"Instituciones Privadas exclusivamente orientadas a la formación artística y "
+"cultural"
 
 #: conf/space-types.php:436
 msgid ""
 "Instituição Privada Particular exclusivamente voltada para formação "
 "artistica e cultural"
 msgstr ""
+"Instituciones Privadas Particular exclusivamente orientadas a la formación "
+"artística y cultural"
 
 #: conf/space-types.php:437
 msgid ""
 "Instituição Privada Comunitária exclusivamente voltada para formação "
 "artistica e cultural"
 msgstr ""
+"Instituciones Privadas Comunitaria exclusivamente orientadas a la formación "
+"artística y cultural"
 
 #: conf/space-types.php:438
 msgid ""
 "Instituição Privada Confessional exclusivamente voltada para formação "
 "artistica e cultural"
 msgstr ""
+"Instituciones Privadas Confesional exclusivamente orientadas a la formación "
+"artística y cultural"
 
 #: conf/space-types.php:439
 msgid ""
 "Instituição Privada Filantrópica exclusivamente voltada para formação "
 "artistica e cultural"
 msgstr ""
+"Instituciones Privadas Filantropica exclusivamente orientadas a la formación "
+"artística y cultural"
 
 #: conf/space-types.php:443
 msgid "Escolas livres"
-msgstr ""
+msgstr "Escuelas libres"
 
 #: conf/space-types.php:446
 msgid "Escola livre de Artes Cênicas"
-msgstr ""
+msgstr "Escuela libre de Artes Escénicas"
 
 #: conf/space-types.php:447
 msgid "Escola livre de Artes Visuais"
-msgstr ""
+msgstr "Escuela libre de Artes Visuales"
 
 #: conf/space-types.php:448
 msgid "Escola livre de Audiovisual"
-msgstr ""
+msgstr "Escuela libre de Audiovisual"
 
 #: conf/space-types.php:449
 msgid "Escola livre de Hip Hop"
-msgstr ""
+msgstr "Escuela libre de Hip Hop"
 
 #: conf/space-types.php:450
 msgid "Escola livre de Cultura Digital"
-msgstr ""
+msgstr "Escuela libre de Cultura Digital"
 
 #: conf/space-types.php:451
 msgid "Escola livre de Música"
-msgstr ""
+msgstr "Escuela libre de Música"
 
 #: conf/space-types.php:452
 msgid "Escola livre de Cultura Popular"
-msgstr ""
+msgstr "Escuela libre de Cultura Popular"
 
 #: conf/space-types.php:453
 msgid "Escola livre de Gestão Cultural"
-msgstr ""
+msgstr "Escuela libre de Gestión Cultural"
 
 #: conf/space-types.php:454
 msgid "Escola livre de Pontinhos de cultura"
-msgstr ""
+msgstr "Escuela libre de Puntos de cultura"
 
 #: conf/space-types.php:455
 msgid "Escola livre de Patrimônio"
-msgstr ""
+msgstr "Escuela libre de Patrimonio"
 
 #: conf/space-types.php:456
 msgid "Escola livre de Design"
-msgstr ""
+msgstr "Escuela libre de Diseño"
 
 #: conf/space-types.php:464 conf/space-types.php:467
 msgid "Bens culturais de natureza material"
-msgstr ""
+msgstr "Bienes culturales de naturaleza material"
 
 #: conf/space-types.php:468
 msgid "Bem Imóvel"
-msgstr ""
+msgstr "Bien inmueble"
 
 #: conf/space-types.php:469
 msgid "Bem Arqueológico"
-msgstr ""
+msgstr "Bien Arqueológico"
 
 #: conf/space-types.php:470
 msgid "Bem Paisagístico"
-msgstr ""
+msgstr "Bien Paisajístico"
 
 #: conf/space-types.php:471
 msgid "Bem Móvel ou Integrado"
-msgstr ""
+msgstr "Bien Móvil o integrado"
 
 #: conf/space-types.php:472
 msgid "Sitio Histórico"
-msgstr ""
+msgstr "Lugar Histórico"
 
 #: conf/space-types.php:473
 msgid "Documentação"
-msgstr ""
+msgstr "Documentación"
 
 #: conf/space-types.php:474
 msgid "Coleções"
-msgstr ""
+msgstr "Colecciones"
 
 #: conf/space-types.php:476
 msgid "Bens culturais de natureza imaterial"
-msgstr ""
+msgstr "Bienes culturales de naturaleza inmaterial"
 
 #: conf/space-types.php:482
 msgid "Temporário"
-msgstr ""
+msgstr "Temporario"
 
 #: conf/space-types.php:485
 msgid "Palco de Rua"
-msgstr ""
+msgstr "Palco de calle"
 
 #: conf/taxonomies.php:7
 msgid "Tag"
-msgstr ""
+msgstr "Etiquetas"
 
 #: conf/taxonomies.php:19
 #: modules/Entities/components/create-agent/template.php:22
@@ -1698,27 +1724,27 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:31
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:55
 msgid "Área de Atuação"
-msgstr ""
+msgstr "Área de actuación"
 
 #: conf/taxonomies.php:20
 msgid "Você deve informar ao menos uma área de atuação"
-msgstr ""
+msgstr "Usted debe introducir al menos un área de actuación"
 
 #: conf/taxonomies.php:26 conf/taxonomies.php:93
 msgid "Artes Circenses"
-msgstr ""
+msgstr "Artes Circenses"
 
 #: conf/taxonomies.php:27
 msgid "Antropologia"
-msgstr ""
+msgstr "Antropología"
 
 #: conf/taxonomies.php:28
 msgid "Arqueologia"
-msgstr ""
+msgstr "Arqueología"
 
 #: conf/taxonomies.php:29
 msgid "Arquitetura-Urbanismo"
-msgstr ""
+msgstr "Arquitectura-Urbanismo"
 
 #: conf/taxonomies.php:30
 #: modules/Entities/components/entity-files-list/template.php:81
@@ -1736,199 +1762,199 @@ msgstr ""
 #: themes/BaseV1/views/panel/spaces.php:30
 #: themes/BaseV1/views/panel/subsite.php:25
 msgid "Arquivo"
-msgstr ""
+msgstr "Archivo"
 
 #: conf/taxonomies.php:31
 msgid "Arte de Rua"
-msgstr ""
+msgstr "Arte callejero"
 
 #: conf/taxonomies.php:32
 msgid "Arte Digital"
-msgstr ""
+msgstr "Arte Digital"
 
 #: conf/taxonomies.php:33 conf/taxonomies.php:95
 msgid "Artes Visuais"
-msgstr ""
+msgstr "Artes Visuales"
 
 #: conf/taxonomies.php:34
 msgid "Artesanato"
-msgstr ""
+msgstr "Artesanato"
 
 #: conf/taxonomies.php:35 conf/taxonomies.php:96
 msgid "Audiovisual"
-msgstr ""
+msgstr "Audiovisual"
 
 #: conf/taxonomies.php:36 conf/taxonomies.php:97
 msgid "Cinema"
-msgstr ""
+msgstr "Cine"
 
 #: conf/taxonomies.php:37
 msgid "Circo"
-msgstr ""
+msgstr "Circo"
 
 #: conf/taxonomies.php:38
 msgid "Comunicação"
-msgstr ""
+msgstr "Comunicación"
 
 #: conf/taxonomies.php:39
 msgid "Cultura Cigana"
-msgstr ""
+msgstr "Cultura Gitana"
 
 #: conf/taxonomies.php:40 conf/taxonomies.php:98
 msgid "Cultura Digital"
-msgstr ""
+msgstr "Cultura Digital"
 
 #: conf/taxonomies.php:41
 msgid "Cultura Estrangeira (imigrantes)"
-msgstr ""
+msgstr "Cultura Extranjera (inmigrantes"
 
 #: conf/taxonomies.php:42 conf/taxonomies.php:99
 msgid "Cultura Indígena"
-msgstr ""
+msgstr "Cultura Indígena"
 
 #: conf/taxonomies.php:43
 msgid "Cultura LGBT"
-msgstr ""
+msgstr "Cultura LGBT"
 
 #: conf/taxonomies.php:44
 msgid "Cultura Negra"
-msgstr ""
+msgstr "Cultura Negra"
 
 #: conf/taxonomies.php:45
 msgid "Cultura Popular"
-msgstr ""
+msgstr "Cultura Popular"
 
 #: conf/taxonomies.php:46 conf/taxonomies.php:102
 msgid "Dança"
-msgstr ""
+msgstr "Danza"
 
 #: conf/taxonomies.php:47
 msgid "Design"
-msgstr ""
+msgstr "Diseño"
 
 #: conf/taxonomies.php:48
 msgid "Direito Autoral"
-msgstr ""
+msgstr "Derecho Actoral"
 
 #: conf/taxonomies.php:49
 msgid "Economia Criativa"
-msgstr ""
+msgstr "Economía Creativa"
 
 #: conf/taxonomies.php:50
 msgid "Educação"
-msgstr ""
+msgstr "Educación"
 
 #: conf/taxonomies.php:51
 msgid "Esporte"
-msgstr ""
+msgstr "Deporte"
 
 #: conf/taxonomies.php:52
 msgid "Filosofia"
-msgstr ""
+msgstr "Filosofía"
 
 #: conf/taxonomies.php:53
 msgid "Fotografia"
-msgstr ""
+msgstr "Fotografía"
 
 #: conf/taxonomies.php:54
 msgid "Gastronomia"
-msgstr ""
+msgstr "Gastronomía"
 
 #: conf/taxonomies.php:55
 msgid "Gestão Cultural"
-msgstr ""
+msgstr "Gestión Cultural"
 
 #: conf/taxonomies.php:56
 msgid "História"
-msgstr ""
+msgstr "Historia"
 
 #: conf/taxonomies.php:57
 msgid "Jogos Eletrônicos"
-msgstr ""
+msgstr "Juegos Electrónicos"
 
 #: conf/taxonomies.php:58
 msgid "Jornalismo"
-msgstr ""
+msgstr "Periodismo"
 
 #: conf/taxonomies.php:59
 msgid "Leitura"
-msgstr ""
+msgstr "Lectura"
 
 #: conf/taxonomies.php:60
 msgid "Literatura"
-msgstr ""
+msgstr "Literatura"
 
 #: conf/taxonomies.php:61
 msgid "Livro"
-msgstr ""
+msgstr "Libro"
 
 #: conf/taxonomies.php:62
 msgid "Meio Ambiente"
-msgstr ""
+msgstr "Medio Ambiente"
 
 #: conf/taxonomies.php:63
 msgid "Mídias Sociais"
-msgstr ""
+msgstr "Redes Sociales"
 
 #: conf/taxonomies.php:64
 msgid "Moda"
-msgstr ""
+msgstr "Moda"
 
 #: conf/taxonomies.php:65 themes/BaseV1/Theme.php:251
 msgid "Museu"
-msgstr ""
+msgstr "Museo"
 
 #: conf/taxonomies.php:66
 msgid "Música"
-msgstr ""
+msgstr "Música"
 
 #: conf/taxonomies.php:67
 msgid "Novas Mídias"
-msgstr ""
+msgstr "Nuevos Medios"
 
 #: conf/taxonomies.php:68
 msgid "Ópera"
-msgstr ""
+msgstr "Ópera"
 
 #: conf/taxonomies.php:69
 msgid "Patrimônio Cultural"
-msgstr ""
+msgstr "Patrimonio Cultural"
 
 #: conf/taxonomies.php:70
 msgid "Patrimônio Imaterial"
-msgstr ""
+msgstr "Patrimonio Inmaterial"
 
 #: conf/taxonomies.php:71
 msgid "Patrimônio Material"
-msgstr ""
+msgstr "Patrimonio Material"
 
 #: conf/taxonomies.php:73
 msgid "Produção Cultural"
-msgstr ""
+msgstr "Producción Cultural"
 
 #: conf/taxonomies.php:74 conf/taxonomies.php:109
 msgid "Rádio"
-msgstr ""
+msgstr "Radio"
 
 #: conf/taxonomies.php:75
 msgid "Saúde"
-msgstr ""
+msgstr "Salud"
 
 #: conf/taxonomies.php:76
 msgid "Sociologia"
-msgstr ""
+msgstr "Sociología"
 
 #: conf/taxonomies.php:77 conf/taxonomies.php:110
 msgid "Teatro"
-msgstr ""
+msgstr "Teatro"
 
 #: conf/taxonomies.php:78
 msgid "Televisão"
-msgstr ""
+msgstr "Televisión"
 
 #: conf/taxonomies.php:79
 msgid "Turismo"
-msgstr ""
+msgstr "Turismo"
 
 #: conf/taxonomies.php:86 themes/BaseV1/Theme.php:716
 #: themes/BaseV1/Theme.php:720 themes/BaseV1/Theme.php:2483
@@ -1942,7 +1968,7 @@ msgstr ""
 
 #: conf/taxonomies.php:87
 msgid "Você deve informar ao menos uma linguagem"
-msgstr ""
+msgstr "Usted debe introducir al menos un idioma"
 
 #: conf/taxonomies.php:94
 msgid "Artes Integradas"
