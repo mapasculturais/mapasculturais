@@ -110,7 +110,7 @@ app.component('entity-table', {
     },
 
     methods: {
-        parseSlugSlot(header) {
+        parseSlug(header) {
             if(header.slug){
                 return header.slug
             }

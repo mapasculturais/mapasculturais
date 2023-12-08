@@ -80,7 +80,7 @@ $this->import('
                         <tr v-for="item in entities">
                             <template v-for="header in activeHeaders">
                                 <td>
-                                    <slot :name="parseSlugSlot(header)" v-bind="item">
+                                    <slot :name="parseSlug(header)" v-bind="item">
                                         {{getEntityData(item, header.value)}}
                                     </slot>
                                 </td>
