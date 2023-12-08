@@ -14,13 +14,10 @@ app.component('opportunity-registrations-table', {
     data() {
         return {
             headers: [
-
-                { text: "Inscrição", value: "registration" },
+                { text: "Inscrição", value: "number" },
                 { text: "Categoria", value: "category" },
-                { text: "Agente", value: "agent" },
-                { text: "status", value: "status" },
-                { text: "Conferir Inscrição", value: "open" },
-
+                { text: "Agente", value: "owner.name", slug: "agent"},
+                { text: "status", value: "status"},
             ],
         }
     },
@@ -37,7 +34,6 @@ app.component('opportunity-registrations-table', {
             const index = phases.findIndex(item => item.__objectType == this.phase.__objectType && item.id == this.phase.id) - 1;
             return phases[index];
         },
-
     },
 
     methods: {
