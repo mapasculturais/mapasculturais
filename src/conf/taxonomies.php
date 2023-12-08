@@ -20,7 +20,8 @@ return array(
         'required' => i::__("Você deve informar ao menos uma área de atuação"),
         'entities' => array(
             'MapasCulturais\Entities\Space',
-            'MapasCulturais\Entities\Agent'
+            'MapasCulturais\Entities\Agent',
+            'MapasCulturais\Entities\Opportunity',
         ),
         'restricted_terms' => array(
             i::__('Artes Circenses'),
