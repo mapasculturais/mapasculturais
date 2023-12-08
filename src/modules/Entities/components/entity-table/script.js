@@ -126,6 +126,11 @@ app.component('entity-table', {
     },
 
     methods: {
+        getEntityData(obj, value) {
+            let val = eval(`obj.${value}`);
+            return val;
+        },
+
         search(searchText) {
             const term = String(searchText);
             const searchRegex = new RegExp(term, 'i');
