@@ -45,7 +45,11 @@ $entity = $this->controller->requestedEntity;
                 </h5>
             </div>
         <div class="col-12"> 
-            <entity-table select="id,number,category,status,createTimestamp,owner.{id,name,files.avatar}" :entity="phase" type="registration" :headers="headers" required="registration" visible="status"></entity-table>
+            <entity-table :select="select" :query="query" type="registration" :headers="headers" required="number" >
+                <template #status="item">
+                   {{statusToString(item.status)}}
+                </template>
+            </entity-table>
         </div>
     </template>
 </div>

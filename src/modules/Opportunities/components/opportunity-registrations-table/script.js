@@ -41,6 +41,9 @@ app.component('opportunity-registrations-table', {
     },
 
     methods: {
+        statusToString (status) {
+            return this.text(status)
+        },
         isFuture() {
             const phase = this.phase;
             if (phase.isLastPhase) {
