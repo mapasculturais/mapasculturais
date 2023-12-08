@@ -8,6 +8,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Insere a taxonomia área de interesse na intidade oportunidade   
 
+### Correções
+- Redireciona o usuario para a primeira fase quando o mesmo tenta acessar a oportunidade com o id de uma fase posterior
+
 ## [7.2.10] - 2023-12-06
 ### Correções
 - Redireciona o usuario para a primeira fase quando o mesmo tenta acessar a oportunidade com o id de uma fase posterior
