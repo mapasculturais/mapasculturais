@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-11 08:28-0400\n"
+"PO-Revision-Date: 2023-12-11 16:21-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -1964,7 +1964,7 @@ msgstr "Turismo"
 #: themes/BaseV1/layouts/parts/singles/project-events.php:36
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:84
 msgid "Linguagem"
-msgstr ""
+msgstr "Linguagem"
 
 #: conf/taxonomies.php:87
 msgid "Você deve informar ao menos uma linguagem"
@@ -2387,193 +2387,193 @@ msgstr "Montador(a)"
 
 #: conf/taxonomies.php:215
 msgid "Montador(a) de Palco"
-msgstr ""
+msgstr "Montador(a) de palco"
 
 #: conf/taxonomies.php:216
 msgid "Motorista de Audiovisual"
-msgstr ""
+msgstr "Motorista de Audiovisual"
 
 #: conf/taxonomies.php:217
 msgid "Músico-Musicista"
-msgstr ""
+msgstr "Músico"
 
 #: conf/taxonomies.php:218
 msgid "Operador(a) de Luz"
-msgstr ""
+msgstr "Operador de luz"
 
 #: conf/taxonomies.php:219
 msgid "Operador(a) de Som"
-msgstr ""
+msgstr "Operador de Sonido"
 
 #: conf/taxonomies.php:220
 msgid "Outra função técnica"
-msgstr ""
+msgstr "Otra función técnica"
 
 #: conf/taxonomies.php:221
 msgid "Passador (a)"
-msgstr ""
+msgstr "pasador(a)"
 
 #: conf/taxonomies.php:222
 msgid "Peruqueiro"
-msgstr ""
+msgstr "Peluquero"
 
 #: conf/taxonomies.php:223
 msgid "Peruqueiro(a)"
-msgstr ""
+msgstr "Peluquero(a)"
 
 #: conf/taxonomies.php:224
 msgid "Pilotista"
-msgstr ""
+msgstr "Piloto"
 
 #: conf/taxonomies.php:225
 msgid "Produtor de Casting"
-msgstr ""
+msgstr "Productor(a) de Casting"
 
 #: conf/taxonomies.php:226
 msgid "Produtor(a) de Casting/Booker"
-msgstr ""
+msgstr "Productor(a) de Casting/Booker"
 
 #: conf/taxonomies.php:227
 msgid "Produtor(a) Fonográfico"
-msgstr ""
+msgstr "Productor(a) Fonográfico"
 
 #: conf/taxonomies.php:228
 msgid "Radialista"
-msgstr ""
+msgstr "Locutor"
 
 #: conf/taxonomies.php:229
 msgid "Roadie"
-msgstr ""
+msgstr "Roadie"
 
 #: conf/taxonomies.php:230
 msgid "Sapateiro"
-msgstr ""
+msgstr "Zapatero"
 
 #: conf/taxonomies.php:231
 msgid "Secretario(a) de Frente"
-msgstr ""
+msgstr "Secretario(a) de Frente"
 
 #: conf/taxonomies.php:232
 msgid "Secretário(a) Teatral"
-msgstr ""
+msgstr "Secretario(a) Teatral"
 
 #: conf/taxonomies.php:233
 msgid "Serigrafista"
-msgstr ""
+msgstr "Serigrafista"
 
 #: conf/taxonomies.php:234
 msgid "Sonoplasta"
-msgstr ""
+msgstr "Sonidista"
 
 #: conf/taxonomies.php:235
 msgid "Tatuador"
-msgstr ""
+msgstr "Tatuador"
 
 #: conf/taxonomies.php:236
 msgid "Técnico de Luz"
-msgstr ""
+msgstr "Técnico de iluminación"
 
 #: conf/taxonomies.php:237
 msgid "Técnico(a) Contábil"
-msgstr ""
+msgstr "Técnico(a) Contable"
 
 #: conf/taxonomies.php:238
 msgid "Técnico(a) de Estúdio"
-msgstr ""
+msgstr "Técnico(a) de Estudio"
 
 #: conf/taxonomies.php:239
 msgid "Técnico(a) de Luz"
-msgstr ""
+msgstr "Técnico(a) de iluminación"
 
 #: conf/taxonomies.php:240
 msgid "Técnico(a) de Palco"
-msgstr ""
+msgstr "Técnico(a) de Palco"
 
 #: conf/taxonomies.php:241
 msgid "Técnico(a) de Som"
-msgstr ""
+msgstr "Técnico(a) de Sonido"
 
 #: conf/taxonomies.php:242
 msgid "Técnico(a) de Som Direto"
-msgstr ""
+msgstr "Técnico(a) de Sonido Directo"
 
 #: conf/taxonomies.php:243
 msgid "Tradutor(a) ou Intérprete de Libras"
-msgstr ""
+msgstr "Traductor(a) o Intérprete de lengua de señas"
 
 #: conf/taxonomies.php:244
 msgid "Transcritor ou Revisor em Braille"
-msgstr ""
+msgstr "Transcriptor o Revisor en Braille"
 
 #: conf/taxonomies.php:245
 msgid "Visagista"
-msgstr ""
+msgstr "Visagista"
 
 #: conf/taxonomies.php:246
 msgid "Visual Merchandiser"
-msgstr ""
+msgstr "Visual Merchandiser"
 
 #: conf/taxonomies.php:247
 msgid "Vitrinista"
-msgstr ""
+msgstr "Vitrinista"
 
 #: core/ApiOutputs/Html.php:15
 msgid "Data Inicial"
-msgstr ""
+msgstr "Fecha Inicial"
 
 #: core/ApiOutputs/Html.php:16 modules/Entities/views/project/edit.php:92
 msgid "Data Final"
-msgstr ""
+msgstr "Fecha final"
 
 #: core/ApiOutputs/Html.php:17
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:43
 #: themes/BaseV1/views/event/edit.php:54
 #: themes/BaseV1/views/event/single.php:54
 msgid "Duração"
-msgstr ""
+msgstr "Duración"
 
 #: core/ApiOutputs/Html.php:18
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:51
 #: themes/BaseV1/views/event/edit.php:58
 #: themes/BaseV1/views/event/single.php:58
 msgid "Frequência"
-msgstr ""
+msgstr "Frecuencia"
 
 #: core/ApiOutputs/Html.php:19
 msgid "Horário Inicial"
-msgstr ""
+msgstr "Horario inicial"
 
 #: core/ApiOutputs/Html.php:20
 msgid "Horário Final"
-msgstr ""
+msgstr "Horario final"
 
 #: core/ApiOutputs/Html.php:22
 msgid "Repete-Domingo"
-msgstr ""
+msgstr "Repite domingo"
 
 #: core/ApiOutputs/Html.php:23
 msgid "Repete-Segunda"
-msgstr ""
+msgstr "Repite lunes"
 
 #: core/ApiOutputs/Html.php:24
 msgid "Repete-Terça"
-msgstr ""
+msgstr "Repite martes"
 
 #: core/ApiOutputs/Html.php:25
 msgid "Repete-Quarta"
-msgstr ""
+msgstr "Repite miércoles"
 
 #: core/ApiOutputs/Html.php:26
 msgid "Repete-Quinta"
-msgstr ""
+msgstr "Repite jueves"
 
 #: core/ApiOutputs/Html.php:27
 msgid "Repete-Sexta"
-msgstr ""
+msgstr "Repite viernes"
 
 #: core/ApiOutputs/Html.php:28
 msgid "Repete-Sábado"
-msgstr ""
+msgstr "Repite sábado"
 
 #: core/ApiOutputs/Html.php:30 core/ApiOutputs/Html.php:116
 #: core/Entities/Space.php:251
@@ -2590,11 +2590,11 @@ msgstr ""
 #: modules/Panel/components/panel--pending-evaluations/texts.php:6
 #: themes/BaseV1/Theme.php:251 themes/BaseV1/Theme.php:252
 msgid "Espaço"
-msgstr ""
+msgstr "Espacio"
 
 #: core/ApiOutputs/Html.php:65
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
 #: core/ApiOutputs/Html.php:68 core/EvaluationMethod.php:96
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:31
@@ -2614,13 +2614,13 @@ msgstr ""
 #: themes/BaseV1/views/generic/list.php:17
 #: themes/BaseV1/views/generic/list.php:32
 msgid "Nome"
-msgstr ""
+msgstr "Nombre"
 
 #: core/ApiOutputs/Html.php:71
 #: modules/Entities/components/entity-links/template.php:40
 #: modules/Entities/components/entity-links/template.php:85
 msgid "Link"
-msgstr ""
+msgstr "Vínculo"
 
 #: core/ApiOutputs/Html.php:74
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:40
@@ -2661,7 +2661,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:186
 #: themes/BaseV1/layouts/parts/singles/type.php:10
 msgid "Tipo"
-msgstr ""
+msgstr "Tipo"
 
 #: core/ApiOutputs/Html.php:77
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:9
@@ -2677,11 +2677,11 @@ msgstr ""
 #: themes/BaseV1/views/seal/single.php:68 themes/BaseV1/views/space/edit.php:68
 #: themes/BaseV1/views/space/single.php:68
 msgid "Descrição Curta"
-msgstr ""
+msgstr "Descripción breve"
 
 #: core/ApiOutputs/Html.php:80
 msgid "Termos"
-msgstr ""
+msgstr "Condiciones"
 
 #: core/ApiOutputs/Html.php:89 core/ApiOutputs/Html.php:122
 #: core/Entities/Project.php:218
@@ -2702,11 +2702,11 @@ msgstr ""
 #: themes/BaseV1/views/event/single.php:408
 #: themes/BaseV1/views/event/single.php:435
 msgid "Projeto"
-msgstr ""
+msgstr "Proyecto"
 
 #: core/ApiOutputs/Html.php:92
 msgid "Descrição Legível do Horário"
-msgstr ""
+msgstr "Descripción legible del horario"
 
 #: core/ApiOutputs/Html.php:95 modules/Entities/views/agent/single-1.php:76
 #: modules/Entities/views/agent/single-2.php:76
@@ -2721,11 +2721,11 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/widget-tags.php:9
 #: themes/BaseV1/layouts/parts/widget-tags.php:11
 msgid "Tags"
-msgstr ""
+msgstr "Etiquetas"
 
 #: core/ApiOutputs/Html.php:98
 msgid "Áreas"
-msgstr ""
+msgstr "Áreas"
 
 #: core/ApiOutputs/Html.php:101
 #: modules/Search/components/search-filter-event/template.php:54
@@ -2738,15 +2738,15 @@ msgstr ""
 
 #: core/ApiOutputs/Html.php:104
 msgid "Semanal"
-msgstr ""
+msgstr "Semanal"
 
 #: core/ApiOutputs/Html.php:107
 msgid "Uma vez"
-msgstr ""
+msgstr "Una vez"
 
 #: core/ApiOutputs/Html.php:110 modules/EventImporter/Controller.php:773
 msgid "Diariamente"
-msgstr ""
+msgstr "Diariamente"
 
 #: core/ApiOutputs/Html.php:113 core/Entities/Agent.php:294
 #: modules/Entities/components/create-opportunity/template.php:74
@@ -2759,7 +2759,7 @@ msgstr ""
 #: modules/Panel/components/panel--last-edited/template.php:30
 #: modules/Panel/components/panel--pending-evaluations/texts.php:5
 msgid "Agente"
-msgstr ""
+msgstr "Agente"
 
 #: core/ApiOutputs/Html.php:119 core/Entities/Event.php:220
 #: modules/Components/components/space-card/template.php:24
@@ -2774,11 +2774,11 @@ msgstr ""
 #: themes/BaseV1/views/event/edit.php:125
 #: themes/BaseV1/views/event/single.php:125
 msgid "Evento"
-msgstr ""
+msgstr "Evento"
 
 #: core/ApiOutputs/Html.php:125 core/Entities/Seal.php:239
 msgid "Selo"
-msgstr ""
+msgstr "Sello"
 
 #: core/ApiOutputs/Html.php:131
 #: modules/Entities/components/entity-owner/texts.php:5
@@ -2795,184 +2795,184 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_event.php:228
 #: themes/BaseV1/layouts/parts/singles/history_space.php:229
 msgid "Publicado por"
-msgstr ""
+msgstr "Publicado por"
 
 #: core/ApiOutputs/Html.php:134
 msgid "Entidade pai"
-msgstr ""
+msgstr "Entidad padre"
 
 #: core/ApiOutputs/Html.php:137
 msgid "Data de Criação"
-msgstr ""
+msgstr "Fecha de creación"
 
 #: core/ApiOutputs/Html.php:140
 msgid "Verificado"
-msgstr ""
+msgstr "Verificado"
 
 #: core/ApiOutputs/Html.php:143
 msgid "Selos Verificadores"
-msgstr ""
+msgstr "Sellos Verificadores"
 
 #: core/ApiOutputs/Html.php:146
 msgid "Selo Verificador"
-msgstr ""
+msgstr "Sello Verificadore"
 
 #: core/ApiOutputs/Html.php:540
 msgid "Planilha gerada em: "
-msgstr ""
+msgstr "Planilla generada en:"
 
 #: core/App.php:2266
 msgid "Super Administrador do SaaS"
-msgstr ""
+msgstr "Súper Administrador del SaaS"
 
 #: core/App.php:2267
 msgid "Super Administradores do SaaS"
-msgstr ""
+msgstr "Súper Administradores del SaaS"
 
 #: core/App.php:2275
 msgid "Administrador do SaaS"
-msgstr ""
+msgstr "Administrador del SaaS"
 
 #: core/App.php:2276
 msgid "Administradores do SaaS"
-msgstr ""
+msgstr "Administradores del SaaS"
 
 #: core/App.php:2284
 #: modules/UserManagement/components/user-management--add-role-modal/template.php:23
 #: modules/UserManagement/views/panel/user-management.php:40
 #: modules/UserManagement/views/panel/user-management.php:55
 msgid "Super Administrador"
-msgstr ""
+msgstr "Súper Administrador"
 
 #: core/App.php:2285 themes/BaseV1/layouts/parts/related-profiles-agents.php:9
 msgid "Super Administradores"
-msgstr ""
+msgstr "Súper Administradores"
 
 #: core/App.php:2293
 #: modules/UserManagement/components/user-management--add-role-modal/template.php:24
 #: modules/UserManagement/views/panel/user-management.php:41
 #: modules/UserManagement/views/panel/user-management.php:56
 msgid "Administrador"
-msgstr ""
+msgstr "Administrador"
 
 #: core/App.php:2294 themes/BaseV1/layouts/parts/panel-nav.php:78
 #: themes/BaseV1/layouts/parts/related-admin-agents.php:9
 #: themes/BaseV1/layouts/parts/related-profiles-agents.php:36
 #: themes/BaseV1/layouts/parts/user-management/info-admin.php:84
 msgid "Administradores"
-msgstr ""
+msgstr "Administradores"
 
 #: core/App.php:2316 core/App.php:2317 core/App.php:2318 core/App.php:2321
 #: core/App.php:2322 core/App.php:2323 core/App.php:2324 core/App.php:2325
 #: core/App.php:2397 core/App.php:2412
 msgid "O arquivo enviado não é uma imagem válida."
-msgstr ""
+msgstr "El archivo enviado no es una imagen válida."
 
 #: core/App.php:2319 core/App.php:2320 core/Controllers/Registration.php:87
 msgid "O arquivo enviado não é um documento válido."
-msgstr ""
+msgstr "El archivo enviado no es un documento válido."
 
 #: core/App.php:2326
 msgid "O arquivo não é um ZIP."
-msgstr ""
+msgstr "El archivo no es un ZIP."
 
 #: core/App.php:2393
 msgid "O link é obrigatório"
-msgstr ""
+msgstr "El enlace es obligatorio:"
 
 #: core/App.php:2408
 msgid "O link do vídeo é obrigatório"
-msgstr ""
+msgstr "El enlace del video es obligatorio"
 
 #: core/AssetManager.php:47
 #, php-format
 msgid "Dependência de scripts faltando: %s depende de %s"
-msgstr ""
+msgstr "Dependencia de scripts faltando: %s depende de %s"
 
 #: core/AuthProvider.php:81
 msgid "Esta ação requer autenticação"
-msgstr ""
+msgstr "Esta acción requiere autenticación"
 
 #: core/AuthProvider.php:120
 msgid "Usuário não está ativo"
-msgstr ""
+msgstr "Usuario no está activo"
 
 #: core/AuthProviders/OpauthLoginCidadao.php:114
 msgid "This action requires authentication"
-msgstr ""
+msgstr "Esta acción requiere autenticación"
 
 #: core/AuthProviders/Test.php:24
 msgid "This action requires authentication."
-msgstr ""
+msgstr "Esta acción requiere autenticación"
 
 #: core/Controllers/Auth.php:36
 msgid "Parâmetro attorney não informado"
-msgstr ""
+msgstr "Parámetro attorney no informado"
 
 #: core/Controllers/Auth.php:40
 msgid "Parâmetro permission não informado"
-msgstr ""
+msgstr "Parámetro de permiso no informado"
 
 #: core/Controllers/Auth.php:55
 msgid "Usuário procurador não encontrado"
-msgstr ""
+msgstr "Usuario procurador no encontrado"
 
 #: core/Controllers/Auth.php:64
 msgid "Formato do parâmetro until inválido"
-msgstr ""
+msgstr "Formato de parámetro no valido"
 
 #: core/Controllers/Opportunity.php:57 core/Entities/Opportunity.php:429
 msgid "A entidade é obrigatória"
-msgstr ""
+msgstr "La entidad es obligatoria"
 
 #: core/Controllers/Opportunity.php:142
 #, php-format
 msgid "oportunidade-%s--inscricoes--%s"
-msgstr ""
+msgstr "oportunidad-%s--inscripciones--%s"
 
 #: core/Controllers/Opportunity.php:159
 #, php-format
 msgid "oportunidade-%s--rascunhos--%s"
-msgstr ""
+msgstr "oportunidad-%s--borradores--%s"
 
 #: core/Controllers/Opportunity.php:192
 #, php-format
 msgid "oportunidade-%s--avaliacoes"
-msgstr ""
+msgstr "oportunidad-%s--evaluaciones"
 
 #: core/Controllers/Registration.php:308
 msgid "Este formulário é um pré-visualização da da ficha de inscrição."
-msgstr ""
+msgstr "Este formulario es una pre visualización de la ficha de inscripción."
 
 #: core/Controllers/Site.php:48
 msgid "Deletando cache do site... "
-msgstr ""
+msgstr "Borrando el cache del sitio..."
 
 #: core/Controllers/Site.php:50 core/Controllers/Site.php:56
 msgid "ok\n"
-msgstr ""
+msgstr "ok\n"
 
 #: core/Controllers/Site.php:54
 msgid "Deletado cache do multisite..."
-msgstr ""
+msgstr "Borrando el cache del multisio..."
 
 #: core/Controllers/Subsite.php:85
 msgid "Tema Personalizável"
-msgstr ""
+msgstr "Tema personalizable"
 
 #: core/Controllers/User.php:66 core/Controllers/User.php:88
 #: modules/BaseV1EmbedTools/Controller.php:60 themes/BaseV1/Theme.php:738
 #: themes/BaseV1/Theme.php:742
 msgid "Permissão negada"
-msgstr ""
+msgstr "Permiso denegado"
 
 #: core/Definitions/ChatThreadType.php:55
 msgid "Entre no site com seu usuário para visualizar."
-msgstr ""
+msgstr "Ingrese al sitio con su usuario para poder ver."
 
 #: core/Definitions/ChatThreadType.php:63
 msgid "Você tem uma nova mensagem"
-msgstr ""
+msgstr "Tiene un nuevo mensaje"
 
 #: core/Entities/Agent.php:292
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:36
@@ -3017,88 +3017,90 @@ msgstr ""
 #: themes/BaseV2/layouts/parts/main-header.php:48
 #: themes/BaseV2/layouts/parts/navbar.php:22
 msgid "Agentes"
-msgstr ""
+msgstr "Agentes"
 
 #: core/Entities/Agent.php:301
 msgid "O nome do agente é obrigatório"
-msgstr ""
+msgstr "El nombre del agente es obligatorio"
 
 #: core/Entities/Agent.php:304 core/Entities/Event.php:230
 #: core/Entities/Project.php:228 core/Entities/Seal.php:177
 #: core/Entities/Space.php:261
 msgid "A descrição curta é obrigatória"
-msgstr ""
+msgstr "La descripción breve es obligatoria"
 
 #: core/Entities/Agent.php:305 core/Entities/Event.php:231
 #: core/Entities/Project.php:229 core/Entities/Seal.php:178
 #: core/Entities/Space.php:262
 msgid "A descrição curta deve ter no máximo 400 caracteres"
-msgstr ""
+msgstr "La descripción breve debe tener máximo 400 caracteres"
 
 #: core/Entities/Agent.php:308
 msgid "O tipo do agente é obrigatório"
-msgstr ""
+msgstr "El nombre del agente es obligatorio"
 
 #: core/Entities/EntityRevision.php:167 core/Traits/EntityRevision.php:160
 msgid "Registro criado."
-msgstr ""
+msgstr "Registro creado."
 
 #: core/Entities/EntityRevision.php:168 core/Entities/EntityRevision.php:175
 #: core/Entities/EntityRevision.php:176 core/Traits/EntityRevision.php:170
 msgid "Registro atualizado."
-msgstr ""
+msgstr "Registro actualizado."
 
 #: core/Entities/EntityRevision.php:169 core/Traits/EntityRevision.php:186
 msgid "Registro publicado."
-msgstr ""
+msgstr "Registro publicado."
 
 #: core/Entities/EntityRevision.php:170 core/Traits/EntityRevision.php:191
 msgid "Registro arquivado."
-msgstr ""
+msgstr "Registro archivado."
 
 #: core/Entities/EntityRevision.php:171 core/Traits/EntityRevision.php:196
 msgid "Registro recuperado da lixeira."
-msgstr ""
+msgstr "Registro recuperado de la papelera."
 
 #: core/Entities/EntityRevision.php:172 core/Traits/EntityRevision.php:199
 msgid "Registro desarquivado."
-msgstr ""
+msgstr "Registro desarchivado."
 
 #: core/Entities/EntityRevision.php:173 core/Traits/EntityRevision.php:203
 msgid "Registro despublicado."
-msgstr ""
+msgstr "Registro despublicado."
 
 #: core/Entities/EntityRevision.php:174 core/Traits/EntityRevision.php:209
 msgid "Registro movido para a lixeira."
-msgstr ""
+msgstr "Registro movido a la papelera."
 
 #: core/Entities/EvaluationMethodConfiguration.php:114
 msgid "O nome da fase de avaliação é obrigatório"
-msgstr ""
+msgstr "El nombre de la fase de evaluación es obligatorio"
 
 #: core/Entities/EvaluationMethodConfiguration.php:117
 msgid "A data inicial das avaliações é obrigatória"
-msgstr ""
+msgstr "La fecha inicial de las evaluaciones es obligatoria"
 
 #: core/Entities/EvaluationMethodConfiguration.php:118
 #: core/Entities/EvaluationMethodConfiguration.php:122
 #: core/Entities/Opportunity.php:422 core/Entities/Opportunity.php:425
 #: core/Entities/Project.php:235 core/Entities/Project.php:239
 msgid "O valor informado não é uma data válida"
-msgstr ""
+msgstr "El valor informado no es una fecha válida"
 
 #: core/Entities/EvaluationMethodConfiguration.php:121
 msgid "A data final das avaliações é obrigatória"
-msgstr ""
+msgstr "La fecha de finalización de las evaluaciones es obligatoria"
 
 #: core/Entities/EvaluationMethodConfiguration.php:123
 msgid "A data final das avaliações deve ser maior ou igual a data inicial"
 msgstr ""
+"La fecha final de las evaluaciones debe ser mayor o igual que la fecha "
+"inicial"
 
 #: core/Entities/EvaluationMethodConfiguration.php:343
 #: themes/BaseV1/Theme.php:2184
 msgid "Não Avaliada"
-msgstr ""
+msgstr "No evaluada"
 
 #: core/Entities/Event.php:218 modules/Entities/views/agent/single-1.php:62
 #: modules/Entities/views/agent/single-2.php:63
@@ -3125,103 +3127,103 @@ msgstr ""
 #: themes/BaseV2/layouts/parts/main-header.php:54
 #: themes/BaseV2/layouts/parts/navbar.php:28
 msgid "Eventos"
-msgstr ""
+msgstr "Eventos"
 
 #: core/Entities/Event.php:227
 msgid "O nome do evento é obrigatório"
-msgstr ""
+msgstr "El nombre del evento es obligatorio"
 
 #: core/Entities/Event.php:234
 msgid "Você não pode criar eventos neste projeto."
-msgstr ""
+msgstr "El nombre del evento es obligatorio"
 
 #: core/Entities/Event.php:308
 msgid "Tipo inválido para o campo project"
-msgstr ""
+msgstr "Tipo no valido para el campo project"
 
 #: core/Entities/EventAttendance.php:153
 msgid "O tipo do comparecimento é obrigatório"
-msgstr ""
+msgstr "El tipo de asistencia es obligatorio"
 
 #: core/Entities/EventAttendance.php:154
 msgid "O tipo deve ser \"confirmation\" ou \"interested\""
-msgstr ""
+msgstr "El tipo debe ser \"confirmation\" o \"interested\""
 
 #: core/Entities/EventAttendance.php:157
 msgid "A string da recorrência é obrigatória"
-msgstr ""
+msgstr "La Frecuencia es obligatoria"
 
 #: core/Entities/EventAttendance.php:158
 msgid "A string da recorrência é inválida"
-msgstr ""
+msgstr "La frecuencia ingresada no es válida"
 
 #: core/Entities/EventOccurrence.php:173
 msgid "Data de inicio é obrigatória"
-msgstr ""
+msgstr "La frecuencia ingresada no es válida"
 
 #: core/Entities/EventOccurrence.php:174
 msgid "Data de inicio inválida"
-msgstr ""
+msgstr "Fecha inicial incorrecta"
 
 #: core/Entities/EventOccurrence.php:177 core/Entities/EventOccurrence.php:195
 msgid "Data final inválida"
-msgstr ""
+msgstr "Fecha final incorrecta"
 
 #: core/Entities/EventOccurrence.php:180
 msgid "Hora de inicio é obrigatória"
-msgstr ""
+msgstr "Hora de inicio obligatoria"
 
 #: core/Entities/EventOccurrence.php:181
 msgid "Hora de inicio inválida"
-msgstr ""
+msgstr "Hora de inicio no es válida"
 
 #: core/Entities/EventOccurrence.php:185
 msgid "Duração inválida"
-msgstr ""
+msgstr "Duración incorrecta"
 
 #: core/Entities/EventOccurrence.php:188
 msgid "Frequência é obrigatória"
-msgstr ""
+msgstr "La Frecuencia es obligatoria"
 
 #: core/Entities/EventOccurrence.php:189
 msgid "Frequência inválida"
-msgstr ""
+msgstr "Frecuencia incorrecta"
 
 #: core/Entities/EventOccurrence.php:192
 msgid "Erro interno"
-msgstr ""
+msgstr "Error interno"
 
 #: core/Entities/EventOccurrence.php:196
 msgid "Data final antes da inicial"
-msgstr ""
+msgstr "Fecha inicial antes de la inicial"
 
 #: core/Entities/EventOccurrence.php:199
 msgid "Evento é obrigatório"
-msgstr ""
+msgstr "El Evento es obligatorio"
 
 #: core/Entities/EventOccurrence.php:202
 msgid "Espaço é obrigatório"
-msgstr ""
+msgstr "Espacio es obligatorio"
 
 #: core/Entities/EventOccurrence.php:205
 msgid "A descrição legível do horário é obrigatória"
-msgstr ""
+msgstr "Descripción legible del horario es obligatoria"
 
 #: core/Entities/EventOccurrence.php:208
 msgid "O valor da entrada é obrigatório"
-msgstr ""
+msgstr "La entrada es obligatoria."
 
 #: core/Entities/File.php:161
 msgid "Tipo de arquivo não permitido"
-msgstr ""
+msgstr "El Tipo de archivo no permitido"
 
 #: core/Entities/MetaList.php:99
 msgid "O título é obrigatório"
-msgstr ""
+msgstr "El título es obligatorio"
 
 #: core/Entities/MetaList.php:100
 msgid "O título não pode ter mais que 255 caracteres"
-msgstr ""
+msgstr "El título no puede tener más de 255 caracteres."
 
 #: core/Entities/MetaList.php:103
 msgid "A o valor é obrigatória"
@@ -3251,7 +3253,7 @@ msgstr ""
 #: themes/BaseV1/views/panel/user-management.php:48
 #: themes/BaseV2/layouts/parts/main-header.php:42
 msgid "Oportunidades"
-msgstr ""
+msgstr "Oportunidades"
 
 #: core/Entities/Opportunity.php:394
 #: modules/Entities/components/entity-actions/script.js:33
@@ -3261,32 +3263,34 @@ msgstr ""
 #: modules/Panel/components/panel--pending-evaluations/texts.php:8
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-registrations.php:14
 msgid "Oportunidade"
-msgstr ""
+msgstr "Oportunidad"
 
 #: core/Entities/Opportunity.php:402
 msgid "A introdução é obrigatória"
-msgstr ""
+msgstr "La introducción es obligatoria"
 
 #: core/Entities/Opportunity.php:415
 msgid "O nome da oportunidade é obrigatório"
-msgstr ""
+msgstr "El nombre de la oportunidad es obligatorio"
 
 #: core/Entities/Opportunity.php:419
 msgid "O tipo da oportunidade é obrigatório"
-msgstr ""
+msgstr "El tipo de oportunidad es obligatorio"
 
 #: core/Entities/Opportunity.php:426 core/Entities/Project.php:240
 msgid "A data final das inscrições deve ser maior ou igual a data inicial"
 msgstr ""
+"La fecha final de las inscripciones debe ser mayor o igual que la fecha "
+"inicial"
 
 #: core/Entities/Opportunity.php:1064
 msgid "O campo é obrigatório"
-msgstr ""
+msgstr "El campo es obligatorio"
 
 #: core/Entities/OpportunityAgentRelation.php:60
 #: core/Entities/ProjectAgentRelation.php:62
 msgid "Aprovados"
-msgstr ""
+msgstr "Aprobados"
 
 #: core/Entities/Project.php:216 modules/Entities/views/agent/single-1.php:64
 #: modules/Entities/views/agent/single-2.php:65
@@ -3317,27 +3321,29 @@ msgstr ""
 #: themes/BaseV2/layouts/parts/main-header.php:66
 #: themes/BaseV2/layouts/parts/navbar.php:40
 msgid "Projetos"
-msgstr ""
+msgstr "Proyectos"
 
 #: core/Entities/Project.php:225
 msgid "O nome do projeto é obrigatório"
-msgstr ""
+msgstr "El nombre del proyecto es obligatorio"
 
 #: core/Entities/Project.php:232
 msgid "O tipo do projeto é obrigatório"
-msgstr ""
+msgstr "El título del proyecto es obligatorio"
 
 #: core/Entities/Project.php:236
 msgid "Data final obrigatória caso data inicial preenchida"
 msgstr ""
+"Fecha final obligatoria, en el caso de que la fecha final fuera completada"
 
 #: core/Entities/Registration.php:290
 msgid "O agente responsável é obrigatório."
-msgstr ""
+msgstr "El agente responsable es obligatorio."
 
 #: core/Entities/Registration.php:291
 msgid "Foi excedido o limite de inscrições para este agente responsável."
 msgstr ""
+"Fue superado el número máximo de inscripciones para este agente responsable"
 
 #: core/Entities/Registration.php:789
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--apply-results.php:39
@@ -3350,7 +3356,7 @@ msgstr ""
 #: themes/BaseV1/Theme.php:2163 themes/BaseV1/Theme.php:2746
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:227
 msgid "Pendente"
-msgstr ""
+msgstr "Pendiente"
 
 #: core/Entities/Registration.php:790
 #: modules/Entities/components/entity-table/template.php:44
@@ -3367,7 +3373,7 @@ msgstr ""
 #: modules/Reports/Module.php:319 themes/BaseV1/Theme.php:2119
 #: themes/BaseV1/Theme.php:2164 themes/BaseV1/Theme.php:2747
 msgid "Inválida"
-msgstr ""
+msgstr "No es válida"
 
 #: core/Entities/Registration.php:791
 #: modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/init.php:12
@@ -3379,7 +3385,7 @@ msgstr ""
 #: themes/BaseV1/Theme.php:2120 themes/BaseV1/Theme.php:2165
 #: themes/BaseV1/Theme.php:2748
 msgid "Não selecionada"
-msgstr ""
+msgstr "No seleccionada"
 
 #: core/Entities/Registration.php:792
 #: modules/Entities/components/entity-table/template.php:46
@@ -3393,7 +3399,7 @@ msgstr ""
 #: modules/Reports/Module.php:321 themes/BaseV1/Theme.php:2121
 #: themes/BaseV1/Theme.php:2166 themes/BaseV1/Theme.php:2749
 msgid "Suplente"
-msgstr ""
+msgstr "Suplente"
 
 #: core/Entities/Registration.php:793
 #: modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/init.php:14
@@ -3406,16 +3412,16 @@ msgstr ""
 #: modules/Reports/Module.php:322 themes/BaseV1/Theme.php:2122
 #: themes/BaseV1/Theme.php:2167 themes/BaseV1/Theme.php:2750
 msgid "Selecionada"
-msgstr ""
+msgstr "Seleccionada"
 
 #: core/Entities/Registration.php:936 core/Entities/Registration.php:1058
 msgid "O campo é obrigatório."
-msgstr ""
+msgstr "El campo es obligatorio."
 
 #: core/Entities/Registration.php:949
 #, php-format
 msgid "O agente \"%s\" é obrigatório."
-msgstr ""
+msgstr "El agente \"%s\" es obligatorio"
 
 #: core/Entities/Registration.php:955
 #, php-format
@@ -3425,23 +3431,24 @@ msgstr ""
 #: core/Entities/Registration.php:959
 #, php-format
 msgid "Este agente deve ser do tipo \"%s\"."
-msgstr ""
+msgstr "Este agente debe ser del tipo \"%s \"."
 
 #: core/Entities/Registration.php:979
 msgid "O espaço é obrigatório"
-msgstr ""
+msgstr "El espacio es obligatorio"
 
 #: core/Entities/Registration.php:985
 msgid "O espaço vinculado a esta inscrição aguarda autorização do responsável"
 msgstr ""
+"El espacio vinculado a esta inscripción espera autorización del responsable"
 
 #: core/Entities/Registration.php:1007
 msgid "O arquivo é obrigatório."
-msgstr ""
+msgstr "El archivo es obligatorio."
 
 #: core/Entities/Registration.php:1087
 msgid "O nome do projeto é obrigatório."
-msgstr ""
+msgstr "El nombre del proyecto es obligatorio."
 
 #: core/Entities/RegistrationEvaluation.php:176 core/Entity.php:279
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--apply-results.php:38
@@ -3457,49 +3464,49 @@ msgstr ""
 #: themes/BaseV1/Theme.php:2123 themes/BaseV1/Theme.php:2168
 #: themes/BaseV1/Theme.php:2751
 msgid "Rascunho"
-msgstr ""
+msgstr "Borrador"
 
 #: core/Entities/RegistrationEvaluation.php:179
 msgid "Avaliado"
-msgstr ""
+msgstr "Evaluado"
 
 #: core/Entities/RegistrationEvaluation.php:182
 msgid "Enviado"
-msgstr ""
+msgstr "Enviado"
 
 #: core/Entities/RegistrationFieldConfiguration.php:127
 msgid "O projeto é obrigatório."
-msgstr ""
+msgstr "El proyecto es obligatorio."
 
 #: core/Entities/RegistrationFieldConfiguration.php:130
 #: core/Entities/RegistrationFileConfiguration.php:112
 msgid "O título do anexo é obrigatório."
-msgstr ""
+msgstr "El título del adjunto es obligatorio."
 
 #: core/Entities/RegistrationFieldConfiguration.php:133
 msgid "O tipo de campo é obrigatório"
-msgstr ""
+msgstr "El tipo de campo es obligatorio"
 
 #: core/Entities/RegistrationFileConfiguration.php:109
 msgid "A oportunidade é obrigatória."
-msgstr ""
+msgstr "La oportunidad es obligatoria."
 
 #: core/Entities/RequestEntitiesTransference.php:71
 #, php-format
 msgid "As seguintes entidades foram transferidas para você: %s"
-msgstr ""
+msgstr "Se le han transferido las siguientes entidades: %s"
 
 #: core/Entities/Seal.php:174
 msgid "O nome do selo é obrigatório"
-msgstr ""
+msgstr "El nombre del sello es obligatorio"
 
 #: core/Entities/Seal.php:181
 msgid "Validade do selo é obrigatória."
-msgstr ""
+msgstr "El validado del sello es obligatorio."
 
 #: core/Entities/Seal.php:182
 msgid "Validade do selo deve ser um número inteiro."
-msgstr ""
+msgstr "Validado del sello debe ser un número entero."
 
 #: core/Entities/SealRelation.php:141
 #: modules/RegistrationFieldTypes/Module.php:101
@@ -3508,27 +3515,27 @@ msgstr ""
 
 #: core/Entities/SealRelation.php:310
 msgid "<b>Nome do Selo</b>"
-msgstr ""
+msgstr "<b>Nombre del Sello</b>"
 
 #: core/Entities/SealRelation.php:311
 msgid "<b>Dono do Selo</b>"
-msgstr ""
+msgstr "<b>Dueño del Sello</b>"
 
 #: core/Entities/SealRelation.php:312
 msgid "<b>Descrição Curta</b>"
-msgstr ""
+msgstr "<b>Descripción corta</b>"
 
 #: core/Entities/SealRelation.php:313
 msgid "<b>Tipo de Entidade</b>"
-msgstr ""
+msgstr "<b>Tipo de Entidad</b>"
 
 #: core/Entities/SealRelation.php:314
 msgid "<b>Nome da Entidade</b>"
-msgstr ""
+msgstr "\"<b>Nombre de la Entidad</b>"
 
 #: core/Entities/SealRelation.php:315
 msgid "<b>Data de Criação</b>"
-msgstr ""
+msgstr "\"<b>Fecha de creación:</b>"
 
 #: core/Entities/Space.php:249 modules/Entities/views/agent/single-1.php:61
 #: modules/Entities/views/agent/single-2.php:62
@@ -3552,54 +3559,55 @@ msgstr ""
 #: themes/BaseV2/layouts/parts/main-header.php:60
 #: themes/BaseV2/layouts/parts/navbar.php:34
 msgid "Espaços"
-msgstr ""
+msgstr "Espacios"
 
 #: core/Entities/Space.php:258
 msgid "O nome do espaço é obrigatório"
-msgstr ""
+msgstr "El nombre del espacio es obligatorio"
 
 #: core/Entities/Space.php:265
 msgid "O tipo do espaço é obrigatório"
-msgstr ""
+msgstr "El tipo de espacio es obligatorio"
 
 #: core/Entities/Subsite.php:156
 msgid "O nome da instalação é obrigatório"
-msgstr ""
+msgstr "El nombre de la instalación es obligatorio"
 
 #: core/Entities/Subsite.php:159
 msgid "A url da instalação é obrigatória"
-msgstr ""
+msgstr "La url de la instalación es obligatoria"
 
 #: core/Entities/Subsite.php:160 core/Entities/Subsite.php:163
 msgid "Esta URL já está sendo utilizada"
-msgstr ""
+msgstr "Esta URL ya está siendo usada"
 
 #: core/Entities/User.php:140
 msgid "Este e-mail já está sendo utilizado por outro usuário"
-msgstr ""
+msgstr "Este email ya está siendo utilizado por otro usuario."
 
 #: core/Entities/User.php:141
 msgid "O e-mail é obrigatório"
-msgstr ""
+msgstr "e-mail es obligatorio."
 
 #: core/Entities/User.php:142
 msgid "O valor informado não é um e-mail válido"
-msgstr ""
+msgstr "El email proporcionado ne es un email válido."
 
 #: core/Entities/User.php:171
 #: modules/UserManagement/components/system-roles--modal/texts.php:5
 msgid "Usuários"
-msgstr ""
+msgstr "Usuarios"
 
 #: core/Entities/User.php:173
 msgid "Usuário"
-msgstr ""
+msgstr "Usuario"
 
 #: core/Entities/User.php:801
 #, php-format
 msgid ""
 "Seu último acesso foi em <b>%s</b>, atualize suas informações se necessário."
 msgstr ""
+"Su último acceso fue el <b>%s</b>, actualice sus datos si es necesario."
 
 #: core/Entities/User.php:815
 #, php-format
@@ -3608,6 +3616,9 @@ msgid ""
 "informações se necessário. <a class='btn btn-small btn-primary' href='%s' "
 "rel='noopener noreferrer'>editar</a>'"
 msgstr ""
+"\"El agente <b>%s</b> no está actualizado desde <b>%s</b>, si es necesario "
+"actualice los datos. \"<a class='btn btn-small btn-primary' "
+"href='%s'>editar</a>'"
 
 #: core/Entities/User.php:832
 #, php-format
