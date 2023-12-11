@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-08 16:10-0400\n"
+"PO-Revision-Date: 2023-12-11 08:28-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -1058,7 +1058,7 @@ msgstr "El email privado ne es un email válido."
 
 #: conf/space-types.php:27
 msgid "O número de documento informado é inválido."
-msgstr "El número de documento ingresado no es válido"
+msgstr "El número de documento ingresado no es válido."
 
 #: conf/space-types.php:32
 msgid "Razão Social"
@@ -1135,7 +1135,7 @@ msgstr "Sanitario adaptado"
 
 #: conf/space-types.php:108
 msgid "Telefone público adaptado"
-msgstr "fono público adaptado"
+msgstr "Fono público adaptado"
 
 #: conf/space-types.php:109
 msgid "Vaga de estacionamento exclusiva para deficientes"
@@ -1521,7 +1521,7 @@ msgstr "Instituciones Públicas de Enseñanza Regular Regional"
 
 #: conf/space-types.php:413
 msgid " Instituições Privadas de Ensino Regular"
-msgstr "Instituciones Privadas de Enseñanza Regular"
+msgstr " Instituciones Privadas de Enseñanza Regular"
 
 #: conf/space-types.php:416
 msgid "Instituição Privada Particular"
@@ -1972,74 +1972,74 @@ msgstr "Usted debe introducir al menos un idioma"
 
 #: conf/taxonomies.php:94
 msgid "Artes Integradas"
-msgstr ""
+msgstr "Artes Integradas"
 
 #: conf/taxonomies.php:100
 msgid "Cultura Tradicional"
-msgstr ""
+msgstr "Cultura Tradicional"
 
 #: conf/taxonomies.php:101
 msgid "Curso ou Oficina"
-msgstr ""
+msgstr "Curso o Taller"
 
 #: conf/taxonomies.php:104
 msgid "Hip Hop"
-msgstr ""
+msgstr "Hip Hop"
 
 #: conf/taxonomies.php:105
 msgid "Livro e Literatura"
-msgstr ""
+msgstr "Libro y Literatura"
 
 #: conf/taxonomies.php:106
 msgid "Música Popular"
-msgstr ""
+msgstr "Música Popular"
 
 #: conf/taxonomies.php:107
 msgid "Música Erudita"
-msgstr ""
+msgstr "Música Erudita"
 
 #: conf/taxonomies.php:108
 msgid "Palestra, Debate ou Encontro"
-msgstr ""
+msgstr "Conferencia, Debate o Encuentro"
 
 #: conf/taxonomies.php:116
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:6
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:23
 #: modules/UserManagement/components/user-management--add-role-modal/template.php:18
 msgid "Função"
-msgstr ""
+msgstr "Función"
 
 #: conf/taxonomies.php:121
 msgid "Aderecista"
-msgstr ""
+msgstr "Fabricante de accesorios"
 
 #: conf/taxonomies.php:122
 msgid "Adestrador(a) para Artes Cênicas"
-msgstr ""
+msgstr "Formador de Artes Escénicas"
 
 #: conf/taxonomies.php:123
 msgid "Afinador de Instrumentos"
-msgstr ""
+msgstr "Afinador de instrumentos"
 
 #: conf/taxonomies.php:124
 msgid "Ajudante de Câmera"
-msgstr ""
+msgstr "Ayudante de Cámara"
 
 #: conf/taxonomies.php:125
 msgid "Ajudante de Locação"
-msgstr ""
+msgstr "Ayudante de Locación"
 
 #: conf/taxonomies.php:126
 msgid "Ajudante de Objetos"
-msgstr ""
+msgstr "Ayudante de objetos"
 
 #: conf/taxonomies.php:127
 msgid "Ajudante de Produção"
-msgstr ""
+msgstr "Ayudante de produccíon"
 
 #: conf/taxonomies.php:128
 msgid "Amestrador(a)"
-msgstr ""
+msgstr "Entrenador(a)"
 
 #: conf/taxonomies.php:129
 msgid "Aplicador(a) de sign"
@@ -2047,343 +2047,343 @@ msgstr ""
 
 #: conf/taxonomies.php:130
 msgid "Armeiro(a)"
-msgstr ""
+msgstr "Armero(a)"
 
 #: conf/taxonomies.php:131
 msgid "Assessor(a) de Comunicação"
-msgstr ""
+msgstr "Asesor(a) de Comunicaciones"
 
 #: conf/taxonomies.php:132
 msgid "Assistente Administrativo"
-msgstr ""
+msgstr "Asistente Administrativo"
 
 #: conf/taxonomies.php:133
 msgid "Assistente de Arte"
-msgstr ""
+msgstr "Asistente Arte"
 
 #: conf/taxonomies.php:134
 msgid "Assistente de Artista Gráfico"
-msgstr ""
+msgstr "Asistente de Artista Gráfico"
 
 #: conf/taxonomies.php:135
 msgid "Assistente de Backstage"
-msgstr ""
+msgstr "Asistente de Backstage"
 
 #: conf/taxonomies.php:136
 msgid "Assistente de Camarim"
-msgstr ""
+msgstr "Asistente de Camarín"
 
 #: conf/taxonomies.php:137
 msgid "Assistente de Câmera"
-msgstr ""
+msgstr "Asistente de Cámara"
 
 #: conf/taxonomies.php:138
 msgid "Assistente de Cenotécnica"
-msgstr ""
+msgstr "Asistente de Escena"
 
 #: conf/taxonomies.php:139
 msgid "Assistente de Continuidade"
-msgstr ""
+msgstr "Asistente de Continuidad"
 
 #: conf/taxonomies.php:140
 msgid "Assistente de Controller"
-msgstr ""
+msgstr "Asistente de Controller"
 
 #: conf/taxonomies.php:141
 msgid "Assistente de Criação Artística"
-msgstr ""
+msgstr "Asistente de Creación Artística"
 
 #: conf/taxonomies.php:142
 msgid "Assistente de Edição"
-msgstr ""
+msgstr "Asistente de Edición"
 
 #: conf/taxonomies.php:143
 msgid "Assistente de Edição de Som"
-msgstr ""
+msgstr "Asistente de Edición de Sonido"
 
 #: conf/taxonomies.php:144
 msgid "Assistente de Eletricista"
-msgstr ""
+msgstr "Asistente de Electricista"
 
 #: conf/taxonomies.php:145
 msgid "Assistente de Figurino"
-msgstr ""
+msgstr "Asistente de Vestuario"
 
 #: conf/taxonomies.php:146
 msgid "Assistente de Ilha de Edição"
-msgstr ""
+msgstr "Asistente de Isla de edición"
 
 #: conf/taxonomies.php:147
 msgid "Assistente de Maquiagem"
-msgstr ""
+msgstr "Asistente de Maquiyaje"
 
 #: conf/taxonomies.php:148
 msgid "Assistente de Maquinaria"
-msgstr ""
+msgstr "Asistente de Maquinaria"
 
 #: conf/taxonomies.php:149
 msgid "Assistente de Montagem"
-msgstr ""
+msgstr "Asistente de Montaje"
 
 #: conf/taxonomies.php:150
 msgid "Assistente de Objetos"
-msgstr ""
+msgstr "Asistente de Objetos"
 
 #: conf/taxonomies.php:151
 msgid "Assistente de Pós Produção"
-msgstr ""
+msgstr "Asistente de Post Producción"
 
 #: conf/taxonomies.php:152
 msgid "Assistente de Produção (Base ou Set"
-msgstr ""
+msgstr "Asistente de Producción"
 
 #: conf/taxonomies.php:153
 msgid "Assistente de Produção de Arte"
-msgstr ""
+msgstr "Asistente de Producción de Arte"
 
 #: conf/taxonomies.php:154
 msgid "Assistente de Produção de Elenco"
-msgstr ""
+msgstr "Asistente de Producción de Elenco"
 
 #: conf/taxonomies.php:155
 msgid "Assistente de Produção de Locação"
-msgstr ""
+msgstr "Asistente de Producción de Locación"
 
 #: conf/taxonomies.php:156
 msgid "Assistente de Produção em geral"
-msgstr ""
+msgstr "Asistente de Producción en General"
 
 #: conf/taxonomies.php:157
 msgid "Assistente de Produção Musical"
-msgstr ""
+msgstr "Asistente de Producción Musical"
 
 #: conf/taxonomies.php:158
 msgid "Assistente de Roteiro"
-msgstr ""
+msgstr "Asistente de Guión"
 
 #: conf/taxonomies.php:159
 msgid "Assistente de Som"
-msgstr ""
+msgstr "Asistente de Sonido"
 
 #: conf/taxonomies.php:160
 msgid "Assistente de Transporte"
-msgstr ""
+msgstr "Asistente de Transporte"
 
 #: conf/taxonomies.php:161
 msgid "Assistente Mixador(a)"
-msgstr ""
+msgstr "Asistente de mezcla de sonido"
 
 #: conf/taxonomies.php:162
 msgid "Audiodescritor(a)"
-msgstr ""
+msgstr "Audio descriptor(a)"
 
 #: conf/taxonomies.php:163
 msgid "Barreira"
-msgstr ""
+msgstr "Barrera"
 
 #: conf/taxonomies.php:164
 msgid "Bilheteiro(a)"
-msgstr ""
+msgstr "Agente de viajes"
 
 #: conf/taxonomies.php:165
 msgid "Bordadeiro(a)"
-msgstr ""
+msgstr "Bordador(a)"
 
 #: conf/taxonomies.php:166
 msgid "Cabeleireiro"
-msgstr ""
+msgstr "Peluquero(a)"
 
 #: conf/taxonomies.php:167
 msgid "Cabeleireiro(a)"
-msgstr ""
+msgstr "Peluquero(a)"
 
 #: conf/taxonomies.php:168
 msgid "Camareiro(a)"
-msgstr ""
+msgstr "Camarero(a)"
 
 #: conf/taxonomies.php:169
 msgid "Capataz(a) - Montador(a)"
-msgstr ""
+msgstr "Capataz(a)"
 
 #: conf/taxonomies.php:170
 msgid "Carpinteiro(a)"
-msgstr ""
+msgstr "Carpintero(a)"
 
 #: conf/taxonomies.php:171
 msgid "Cenógrafo(a)"
-msgstr ""
+msgstr "Escenógrafo(a)"
 
 #: conf/taxonomies.php:172
 msgid "Cenotécnico(a)"
-msgstr ""
+msgstr "Técnico de Escena"
 
 #: conf/taxonomies.php:173
 msgid "Chefe de Maquinária"
-msgstr ""
+msgstr "Jefe de Maquinaria"
 
 #: conf/taxonomies.php:174
 msgid "Cinegrafista"
-msgstr ""
+msgstr "Camarógrafo"
 
 #: conf/taxonomies.php:175
 msgid "Colorista"
-msgstr ""
+msgstr "Colorista"
 
 #: conf/taxonomies.php:176
 msgid "Colorista Assistente"
-msgstr ""
+msgstr "Colorista Asistente"
 
 #: conf/taxonomies.php:177
 msgid "Consultor de Imagem"
-msgstr ""
+msgstr "Consultor de Imagen"
 
 #: conf/taxonomies.php:178
 msgid "Consultor em Legendagem"
-msgstr ""
+msgstr "Consultor de subtitulado"
 
 #: conf/taxonomies.php:179
 msgid "Consultor(a) em Audiodescrição"
-msgstr ""
+msgstr "Consultor(a) en Audiodescripción"
 
 #: conf/taxonomies.php:180
 msgid "Consultor(a) em Braille"
-msgstr ""
+msgstr "Consultor(a) en Braille"
 
 #: conf/taxonomies.php:181
 msgid "Consultor(a) em Libras"
-msgstr ""
+msgstr "Consultor(a) en lenguaje de señas"
 
 #: conf/taxonomies.php:182
 msgid "Continuista"
-msgstr ""
+msgstr "Continuista"
 
 #: conf/taxonomies.php:183
 msgid "Contrarregra"
-msgstr ""
+msgstr "Tramoyista"
 
 #: conf/taxonomies.php:184
 msgid "Coolhunter"
-msgstr ""
+msgstr "Investigador de Tendencias"
 
 #: conf/taxonomies.php:185
 msgid "Coordenador(a) de Palco"
-msgstr ""
+msgstr "Coordinador(a) de Palco"
 
 #: conf/taxonomies.php:186
 msgid "Cortineiro(a)"
-msgstr ""
+msgstr "Cortinero(a)"
 
 #: conf/taxonomies.php:187
 msgid "Costureiro(a)"
-msgstr ""
+msgstr "Costurero(a)"
 
 #: conf/taxonomies.php:188
 msgid "Design de Montagem"
-msgstr ""
+msgstr "Diseño de montaje"
 
 #: conf/taxonomies.php:189
 msgid "Diagramador(a)"
-msgstr ""
+msgstr "Diagramador(a)"
 
 #: conf/taxonomies.php:190
 msgid "Digitalizador(a)"
-msgstr ""
+msgstr "Digitalizador(a)"
 
 #: conf/taxonomies.php:191
 msgid "Diretor(a) de Palco"
-msgstr ""
+msgstr "Director(a) de Palco"
 
 #: conf/taxonomies.php:192
 msgid "Editor de Partituras"
-msgstr ""
+msgstr "Editor de partituras"
 
 #: conf/taxonomies.php:193
 msgid "Editor(a)"
-msgstr ""
+msgstr "Editor(a)"
 
 #: conf/taxonomies.php:194
 msgid "Editor(a) de Som"
-msgstr ""
+msgstr "Editor(a) de Sonido"
 
 #: conf/taxonomies.php:195
 msgid "Eletricista"
-msgstr ""
+msgstr "Electricista"
 
 #: conf/taxonomies.php:196
 msgid "Eletricista Chefe"
-msgstr ""
+msgstr "Electricista jefe"
 
 #: conf/taxonomies.php:197
 msgid "Engenheiro(a) de Som"
-msgstr ""
+msgstr "Ingeniero(a) de Sonido"
 
 #: conf/taxonomies.php:198
 msgid "Ensaiador(a)"
-msgstr ""
+msgstr "Ensayador(a)"
 
 #: conf/taxonomies.php:199
 msgid "Estampador"
-msgstr ""
+msgstr "Estampador"
 
 #: conf/taxonomies.php:200
 msgid "Figurinista"
-msgstr ""
+msgstr "Estampador"
 
 #: conf/taxonomies.php:201
 msgid "Foley"
-msgstr ""
+msgstr "Foley"
 
 #: conf/taxonomies.php:202
 msgid "Guia-intérprete de língua de sinais"
-msgstr ""
+msgstr "Guía-intérprete de lengua de señas"
 
 #: conf/taxonomies.php:203
 msgid "Iluminador"
-msgstr ""
+msgstr "Iluminador"
 
 #: conf/taxonomies.php:204
 msgid "Iluminador(a)"
-msgstr ""
+msgstr "Iluminador(a)"
 
 #: conf/taxonomies.php:205
 msgid "Legendista ou Tradutor(a)"
-msgstr ""
+msgstr "Subtitulador o Traductor"
 
 #: conf/taxonomies.php:206
 msgid "Logger"
-msgstr ""
+msgstr "Logger"
 
 #: conf/taxonomies.php:207
 msgid "Luthier"
-msgstr ""
+msgstr "Lutier"
 
 #: conf/taxonomies.php:208
 msgid "Maquiador"
-msgstr ""
+msgstr "Maquillador"
 
 #: conf/taxonomies.php:209
 msgid "Maquiador(a)"
-msgstr ""
+msgstr "Maquillador(a)"
 
 #: conf/taxonomies.php:210
 msgid "Maquinista"
-msgstr ""
+msgstr "Maquinista"
 
 #: conf/taxonomies.php:211
 msgid "Marcador(a) de Cena"
-msgstr ""
+msgstr "Marcador(a) de Escena"
 
 #: conf/taxonomies.php:212
 msgid "Mediador(a)"
-msgstr ""
+msgstr "Mediador(a)"
 
 #: conf/taxonomies.php:213
 msgid "Mestre(a) de Pista"
-msgstr ""
+msgstr "Maestro(a) de Pista"
 
 #: conf/taxonomies.php:214
 msgid "Montador(a)"
-msgstr ""
+msgstr "Montador(a)"
 
 #: conf/taxonomies.php:215
 msgid "Montador(a) de Palco"
