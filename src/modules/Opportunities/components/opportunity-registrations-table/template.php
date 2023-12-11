@@ -45,7 +45,7 @@ $entity = $this->controller->requestedEntity;
                 </h5>
             </div>
         <div class="col-12"> 
-            <entity-table :select="select" :query="query" type="registration" :headers="headers" required="number" visible="number,status,agent" >
+            <entity-table :select="select" :query="query" type="registration" limit="50" :headers="headers" required="number" visible="number,status,agent" >
                 <template #filters="{entities, filters}">
                    
                 </template>

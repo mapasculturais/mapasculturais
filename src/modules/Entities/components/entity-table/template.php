@@ -9,14 +9,14 @@ use MapasCulturais\i;
 
 $this->import('
     mc-card
+    mc-entities
     mc-link
     mc-multiselect
-    mc-entities
     mc-tag-list
 ');
 ?>
 <div class="entity-table">
-    <mc-entities :select="select" :type="type" :query="query">
+    <mc-entities :select="select" :type="type" :query="query" :limit="limit">
         <template #header="{entities, filters}">
             <div class="opportunity-registration-table__filter">
                 <div class="opportunity-registration-table__search-key">
