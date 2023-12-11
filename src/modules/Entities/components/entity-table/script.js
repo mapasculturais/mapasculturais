@@ -130,8 +130,8 @@ app.component('entity-table', {
             return val;
         },
 
-        search(searchText, entities) {
-            this.query['@keyword'] = searchText
+        keyword(entities) {
+            this.query['@keyword'] = this.searchText
             entities.refresh(this.watchDebounce);
         },
 
