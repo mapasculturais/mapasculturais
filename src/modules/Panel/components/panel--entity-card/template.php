@@ -23,7 +23,7 @@ $this->import('
             <div class="panel-entity-card__header--info">
                 <slot name="title" :entity="entity">
                     <mc-title tag="h2" :shortLength="100" :longLength="110">
-                        {{ entity?.name || entity?.email || entity?.number || entity?.id }}
+                        {{ entity.name || entity.email || entity.number || entity.id }}
                     </mc-title>
                 </slot>
                 <p class="panel-entity-card__header--info-subtitle">
