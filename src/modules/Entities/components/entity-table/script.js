@@ -40,7 +40,7 @@ app.component('entity-table', {
             modifiedHeaders,
             activeHeaders,
             value: '',
-            filterOptions: [],
+            filters: '',
             searchText: '',
             activeItems: this.items,
         }

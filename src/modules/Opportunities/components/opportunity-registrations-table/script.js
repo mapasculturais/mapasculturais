@@ -12,22 +12,23 @@ app.component('opportunity-registrations-table', {
         return { text }
     },
     data() {
-        return {
-            headers: [
+        return { }
+    },
+
+    computed: {
+        headers () {
+            return [
                 { text: "Inscrição", value: "number" },
                 { text: "Agente", value: "owner.name", slug: "agent"},
                 { text: "Categoria", value: "category" },
                 { text: "status", value: "status"},
-            ],
-        }
-    },
-
-    computed: {
+            ];
+        },
         query() {
             return {'opportunity': `EQ(${this.phase.id})`}
         },
         select() {
-            return "id,number,category,status,createTimestamp,statusesNames,owner.{id,name,files.avatar}";
+            return "id,number,category,status,createTimestamp,statusesNames,consolidatedResult,owner.{id,name,files.avatar}";
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
