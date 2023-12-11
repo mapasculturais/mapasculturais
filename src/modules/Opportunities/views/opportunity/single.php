@@ -70,6 +70,7 @@ $this->breadcrumb = [
   </entity-header>
 
     <mc-tabs class="tabs">
+        <?php $this->applyTemplateHook("tabs", "begin")?>
         <mc-tab label="<?= i::__('Informações') ?>" slug="info">
             <mc-container class="opportunity">
                 <main class="grid-12">
@@ -124,7 +125,7 @@ $this->breadcrumb = [
         <?php $this->part('opportunity-tab-results', ['entity' => $entity]); ?>
         
         <?php $this->part('opportunity-tab-support', ['entity' => $entity]); ?>
-
+        <?php $this->applyTemplateHook("tabs", "end")?>
     </mc-tabs>
     <entity-actions :entity="entity"></entity-actions>
 </div>
