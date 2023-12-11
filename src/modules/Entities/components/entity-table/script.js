@@ -52,6 +52,7 @@ app.component('entity-table', {
             required: true
         },
         select: String,
+        limit: Number,
         query: {
             type: Object || String,
             default: {}
