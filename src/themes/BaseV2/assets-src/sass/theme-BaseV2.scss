@@ -22,6 +22,7 @@
 @import '2.components/create-entity-modal';
 @import '2.components/create-modal';
 @import '2.components/create-occurrence';
+@import '2.components/data-table';
 @import '2.components/datepicker';
 @import '2.components/debug';
 @import '2.components/entity-actions';
@@ -35,10 +36,10 @@
 @import '2.components/entity-list';
 @import '2.components/entity-location';
 @import '2.components/entity-log';
+@import '2.components/entity-link-project';
 @import '2.components/entity-occurrence-list';
 @import '2.components/entity-owner';
 @import '2.components/entity-parent-edit';
-@import '2.components/entity-link-project';
 @import '2.components/entity-profile';
 @import '2.components/entity-related-agents';
 @import '2.components/entity-request-ownership';
@@ -48,6 +49,7 @@
 @import '2.components/event-age-rating';
 @import '2.components/event-importer-files';
 @import '2.components/event-importer-upload';
+@import '2.components/entity-table';
 @import '2.components/faq-accordion';
 @import '2.components/faq-search';
 @import '2.components/faq-search-results';
