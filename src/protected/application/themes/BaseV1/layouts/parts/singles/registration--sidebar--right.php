@@ -24,7 +24,7 @@ foreach ($opportunity->getEvaluationCommittee() as $evaluation_user) {
     <?= $this->applyTemplateHook('registration-sidebar-rigth','begin')?>
     <?php if($action === 'single' && $entity->canUser('viewUserEvaluation')): ?>
         <div id="registration-evaluation-form" class="evaluation-form evaluation-form--<?php echo $evaluationMethod->getSlug(); ?>">
-            <?php if($evaluationAgent && $entity->canUser('evaluate')): ?>
+            <?php if($evaluationAgent && $entity->canUser('evaluate') || $opportunity->canUser('@control')): ?>
                 <?php if($infos): ?>
                     <div id="documentary-evaluation-info" class="alert info">
                         <div class="close" style="cursor: pointer;"></div>
