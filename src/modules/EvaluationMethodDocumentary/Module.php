@@ -355,12 +355,19 @@ class Module extends \MapasCulturais\EvaluationMethod {
         if($data = (array) $evaluation->evaluationData){
             foreach($data as $id => $value) {
                 if(isset($value['evaluation']) && $value['evaluation'] != ""){
-                    $value["fieldId"] = $id;
-                    $result[] = $value;
+                    $data = [
+                        "fieldId" => $id,
+                        "label" => $value['label'],
+                        "obs" => $value['obs'],
+                        "obs_items" => $value['obs_items'],
+                        "evaluation" => $value['evaluation'],
+                    ];
+
+                    $result['evaluations'][] = $data;
                 }
             }
         }
-
+        $result['evaluationResult'] = $evaluation->result;
         return $result;
     }
 
