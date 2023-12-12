@@ -5,6 +5,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+### Novas funcionalidades
+- Possibilita a publicação do parecer de fases de avaliação documental para os proponentes
+
 ### Melhorias
 - Insere a taxonomia área de interesse na intidade oportunidade   
 
