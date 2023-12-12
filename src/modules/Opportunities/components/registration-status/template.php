@@ -23,7 +23,7 @@ $this->import('
         <p v-if="registration.status == 0"><?= i::__('Inscrição não enviada') ?></p>
     </div>
 
-    <template v-if="phase.type == 'technical'">
+    <template v-if="phase.type == 'technical' || phase.type == 'documentary'">
         <div><?= i::__('Pontuação:') ?> <strong>{{formatNote(registration.consolidatedResult)}}</strong></div>
     
         <registration-results v-if="phase.publishEvaluationDetails" :registration="registration" :phase="phase"></registration-results>
