@@ -4,7 +4,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [7.3.0] - 2023-12-12
 ### Novas funcionalidades
 - Possibilita a publicação do parecer de fases de avaliação documental para os proponentes
 
