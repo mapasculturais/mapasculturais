@@ -350,10 +350,16 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
     }
 
-    function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
-        $evaluation_configuration = $evaluation->registration->opportunity->evaluationMethodConfiguration;
-        return [];
-    }
+    function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): ?array {
+        $result = [];
+        if($data = (array) $evaluation->evaluationData){
+            foreach($data as $id => $value) {
+                if(isset($value['evaluation']) && $value['evaluation'] != ""){
+                    $value["fieldId"] = $id;
+                    $result[] = $value;
+                }
+            }
+        }
 
     function _getConsolidatedDetails(Entities\Registration $registration): array {
         $evaluation_configuration = $registration->opportunity->evaluationMethodConfiguration;
