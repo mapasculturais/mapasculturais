@@ -26,14 +26,11 @@ use MapasCulturais\i;
                     <div>
                         <strong>{{item.label}}</strong>
                     </div>
-                    <div v-if="item.evaluation == 'valid'">
-                        <mc-icon name="circle" class="success__color"></mc-icon>
-                        <?= i::__('Válido: ') ?>
+                    <div>
+                        <mc-icon name="circle" :class="stausColor(item)"></mc-icon>
+                        {{statusString(item)}}
                     </div>
-                    <div v-if="item.evaluation == 'invalid' || item.evaluation == '' ">
-                        <mc-icon name="circle" class="danger__color"></mc-icon>
-                        <?= i::__('Inválido: ') ?>
-                    </div>
+                   
                     <div>
                         {{item.obs}}
                     </div>
