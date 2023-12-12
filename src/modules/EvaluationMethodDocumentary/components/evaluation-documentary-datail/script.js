@@ -22,12 +22,12 @@ app.component('evaluation-documentary-datail', {
 
     methods: {
         stausColor(data) {
-            switch (data.evaluation) {
-                case 1 :
+            switch (data) {
+                case "1" :
                 case 'valid' :
                     return 'success__color';
                     
-                case -1 : 
+                case "-1" : 
                 case 'invalid' : 
 
                     return 'danger__color';
@@ -36,12 +36,12 @@ app.component('evaluation-documentary-datail', {
             }
         },
         statusString(data) {
-            switch (data.evaluation) {
-                case 1 :
+            switch (data) {
+                case "1" :
                 case 'valid' :
                     return this.text('valido');
                     
-                case -1 : 
+                case "-1" : 
                 case 'invalid' : 
 
                     return this.text('invalido');
