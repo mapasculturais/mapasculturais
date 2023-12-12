@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-12 13:22-0400\n"
+"PO-Revision-Date: 2023-12-12 16:04-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -2411,7 +2411,7 @@ msgstr "Otra función técnica"
 
 #: conf/taxonomies.php:221
 msgid "Passador (a)"
-msgstr "pasador(a)"
+msgstr "Pasador(a)"
 
 #: conf/taxonomies.php:222
 msgid "Peruqueiro"
@@ -2734,7 +2734,7 @@ msgstr "Áreas"
 #: themes/BaseV1/views/event/single.php:141
 #: themes/BaseV1/views/event/single.php:143
 msgid "Linguagens"
-msgstr ""
+msgstr "Lenguajes"
 
 #: core/ApiOutputs/Html.php:104
 msgid "Semanal"
@@ -2819,7 +2819,7 @@ msgstr "Sello Verificadore"
 
 #: core/ApiOutputs/Html.php:540
 msgid "Planilha gerada em: "
-msgstr "Planilla generada en:"
+msgstr "Planilla generada en: "
 
 #: core/App.php:2266
 msgid "Super Administrador do SaaS"
@@ -2878,7 +2878,7 @@ msgstr "El archivo no es un ZIP."
 
 #: core/App.php:2393
 msgid "O link é obrigatório"
-msgstr "El enlace es obligatorio:"
+msgstr "El enlace es obligatorio: "
 
 #: core/App.php:2408
 msgid "O link do vídeo é obrigatório"
@@ -2903,7 +2903,7 @@ msgstr "Esta acción requiere autenticación"
 
 #: core/AuthProviders/Test.php:24
 msgid "This action requires authentication."
-msgstr "Esta acción requiere autenticación"
+msgstr "Esta acción requiere autenticación."
 
 #: core/Controllers/Auth.php:36
 msgid "Parâmetro attorney não informado"
@@ -2946,7 +2946,7 @@ msgstr "Este formulario es una pre visualización de la ficha de inscripción."
 
 #: core/Controllers/Site.php:48
 msgid "Deletando cache do site... "
-msgstr "Borrando el cache del sitio..."
+msgstr "Borrando el cache del sitio... "
 
 #: core/Controllers/Site.php:50 core/Controllers/Site.php:56
 msgid "ok\n"
@@ -3135,7 +3135,7 @@ msgstr "El nombre del evento es obligatorio"
 
 #: core/Entities/Event.php:234
 msgid "Você não pode criar eventos neste projeto."
-msgstr "El nombre del evento es obligatorio"
+msgstr "El nombre del evento es obligatorio."
 
 #: core/Entities/Event.php:308
 msgid "Tipo inválido para o campo project"
@@ -3770,15 +3770,15 @@ msgstr "Resultado"
 #: themes/BaseV1/layouts/parts/singles/project-events.php:34
 #: themes/BaseV1/layouts/parts/singles/space-public.php:2
 msgid "Status"
-msgstr ""
+msgstr "Estado"
 
 #: core/EvaluationMethod.php:121
 msgid "Informações sobre as inscrições e proponentes"
-msgstr ""
+msgstr "Información sobre las inscripciones y los proponentes"
 
 #: core/EvaluationMethod.php:127
 msgid "Informações sobre o avaliador"
-msgstr ""
+msgstr "Información sobre el evaluador"
 
 #: core/EvaluationMethod.php:133 db-updates.php:1801
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:37
@@ -3800,46 +3800,49 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:61
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:89
 msgid "Avaliação"
-msgstr ""
+msgstr "Evaluación"
 
 #: core/EvaluationMethod.php:330
 msgid "Configuração da distribuição das inscrições entre os avaliadores"
 msgstr ""
+"Configuración de la distribución de las inscripciones entre los evaluadores"
 
 #: core/EvaluationMethod.php:339
 msgid ""
 "Configuração da distribuição das inscrições entre os avaliadores por "
 "categoria"
 msgstr ""
+"Configuración de la distribución de las inscripciones entre los evaluadores "
+"por categoría"
 
 #: core/EvaluationMethod.php:348
 msgid "Textos informativos para os avaliadores"
-msgstr ""
+msgstr "Textos informativos para  evaluadores"
 
 #: core/Exceptions/FileUploadError.php:16
 msgid "O arquivo enviado é maior do que o permitido."
-msgstr ""
+msgstr "El archivo enviado es mayor que lo permitido."
 
 #: core/Exceptions/FileUploadError.php:18 themes/BaseV1/Theme.php:960
 #: themes/BaseV1/views/event/edit.php:28
 #: themes/BaseV1/views/event/single.php:28
 msgid "Erro inesperado."
-msgstr ""
+msgstr "Error inesperado."
 
 #: core/Exceptions/PermissionDenied.php:25
 #, php-format
 msgid "O usuário %s não tem permissão para \"%s\" o %s de id %s"
-msgstr ""
+msgstr "El usuario %s no tiene permiso para \"%s\" el %s de id %s"
 
 #: core/Exceptions/PermissionDenied.php:27
 #, php-format
 msgid "O usuário %s não tem permissão para \"%s\" o %s"
-msgstr ""
+msgstr "El usuario %s no tiene permiso para \"%s\" el %s"
 
 #: core/Exceptions/PermissionDenied.php:31
 #, php-format
 msgid "O usuário %s não tem permissão sobre o %s de id %s"
-msgstr ""
+msgstr "El usuario %s no tiene permiso para \"%s\" de id %s"
 
 #: core/Exceptions/PermissionDenied.php:33
 #, php-format
@@ -3858,7 +3861,7 @@ msgstr ""
 
 #: core/Traits/ControllerChangeOwner.php:11
 msgid "The ownerId is required."
-msgstr ""
+msgstr "Se requiere el ownerId."
 
 #: core/Traits/ControllerChangeOwner.php:16
 #, php-format
@@ -3867,7 +3870,7 @@ msgstr ""
 
 #: core/Traits/ControllerOpportunities.php:27
 msgid "Nova Oportunidade"
-msgstr ""
+msgstr "Nueva Oportunidad"
 
 #: core/Traits/ControllerSealRelation.php:119
 #, php-format
@@ -3884,62 +3887,67 @@ msgid ""
 "entidade e do certificado. <a class=\"btn btn-small btn-sucess\" href=\"%s\" "
 "rel=\"noopener noreferrer\">editar</a>"
 msgstr ""
+"Validez del sello %s para la entidad %s renovada.<br>Acceda a la página de "
+"la entidad del certificado. <a class=\"btn btn-small btn-sucess\" "
+"href=\"%s\" rel=\"noopener noreferrer\">editar</a>"
 
 #: core/Traits/ControllerUploads.php:60
 msgid "O dono não existe"
-msgstr ""
+msgstr "El dueño no existe"
 
 #: core/Traits/ControllerUploads.php:70
 msgid "Nenhum arquivo enviado"
-msgstr ""
+msgstr "Ningún archivo enviado"
 
 #: core/Traits/ControllerUploads.php:135
 msgid "nenhum arquivo válido enviado"
-msgstr ""
+msgstr "ningún archivo válido enviado"
 
 #: core/Traits/EntityAgentRelation.php:211
 msgid "Error to create agent relation"
-msgstr ""
+msgstr "Error al crear relación de agente"
 
 #: core/Traits/EntityGeoLocation.php:85
 msgid ""
 "The location must be an instance of \\MapasCulturais\\Types\\GeoPoint or an "
 "array with two numeric values, "
 msgstr ""
+"La ubicación debe ser una instancia de \\MapasCulturais\\Types\\GeoPoint o "
+"una matriz con dos valores numéricos, "
 
 #: core/Traits/EntityNested.php:84
 msgid "A entidade mãe deve ser do mesmo tipo"
-msgstr ""
+msgstr "La entidad madre debe ser del mismo tipo"
 
 #: core/Traits/EntityNested.php:85
 msgid "As entidades mãe e filha são o mesmo objeto"
-msgstr ""
+msgstr "Las entidades madre e hija son del mismo objeto"
 
 #: core/Traits/EntityNested.php:86
 msgid "Referência circular"
-msgstr ""
+msgstr "Referencia circular"
 
 #: core/Traits/EntityRevision.php:223
 msgid "Registro deletado."
-msgstr ""
+msgstr "Registro eliminado."
 
 #: core/Types/GeoPoint.php:80
 msgid "Latitude precisa ser um float entre 90 e -90"
-msgstr ""
+msgstr "La latitud debe ser un float entre 90 y -90"
 
 #: core/Types/GeoPoint.php:94
 msgid "Longitude precisa ser um float entre 180 em -180"
-msgstr ""
+msgstr "La latitud debe ser un flotador entre 180 y -180"
 
 #: mc-updates.php:293 mc-updates.php:296
 #: modules/Entities/components/create-occurrence/script.js:238
 #: modules/Entities/components/create-occurrence/texts.php:10
 msgid "Gratuito"
-msgstr ""
+msgstr "Gratuito"
 
 #: modules/Apps/Module.php:63 modules/Apps/views/panel/apps.php:21
 msgid "Meus aplicativos"
-msgstr ""
+msgstr "Mis aplicaciones"
 
 #: modules/Apps/components/app-card-content/script.js:50
 #: modules/Apps/components/app-card-content/script.js:58
@@ -3948,15 +3956,15 @@ msgstr ""
 
 #: modules/Apps/components/app-card-content/template.php:12
 msgid "Chave Pública:"
-msgstr ""
+msgstr "Clave Pública"
 
 #: modules/Apps/components/app-card-content/template.php:25
 msgid "Chave Privada:"
-msgstr ""
+msgstr "Clave privada"
 
 #: modules/Apps/components/app-card-content/texts.php:5
 msgid "chave copiada para a área de transferência"
-msgstr ""
+msgstr "Clave copiada al portapapeles"
 
 #: modules/Apps/components/create-app/script.js:37
 msgid "appCriado"
@@ -3977,7 +3985,7 @@ msgstr ""
 
 #: modules/Apps/components/create-app/template.php:16
 msgid "Criar App"
-msgstr ""
+msgstr "Crear App"
 
 #: modules/Apps/components/create-app/template.php:19
 #: modules/Entities/components/create-agent/template.php:21
@@ -3986,7 +3994,7 @@ msgstr ""
 #: modules/Entities/components/create-space/template.php:20
 #: modules/Seals/components/create-seal/template.php:21
 msgid "Nome ou título"
-msgstr ""
+msgstr "Nombre o título"
 
 #: modules/Apps/components/create-app/template.php:26
 #: modules/Components/components/mc-map-card/template.php:19
@@ -3996,7 +4004,7 @@ msgstr ""
 #: modules/Apps/components/create-app/template.php:32
 #: modules/Apps/components/create-app/texts.php:6
 msgid "Criar Aplicativo"
-msgstr ""
+msgstr "Crear Aplicación"
 
 #: modules/Apps/components/create-app/template.php:36
 #: modules/Entities/components/create-opportunity/template.php:131
@@ -4012,7 +4020,7 @@ msgstr ""
 #: themes/BaseV1/views/app/create.php:12
 #: themes/BaseV1/views/auth/fake-authentication.php:106
 msgid "Criar"
-msgstr ""
+msgstr "Crear"
 
 #: modules/Apps/components/create-app/template.php:37
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:63
@@ -4101,15 +4109,15 @@ msgstr ""
 
 #: modules/Apps/components/create-app/texts.php:5
 msgid "Aplicativo Criado!"
-msgstr ""
+msgstr "¡Aplicativo Creado!"
 
 #: modules/Apps/components/create-app/texts.php:7
 msgid "Aplicativo criado em rascunho"
-msgstr ""
+msgstr "Aplicativo Creado en borrador"
 
 #: modules/Apps/views/panel/apps.php:25
 msgid "Nesta seção você pode adicionar e gerenciar seus aplicativos"
-msgstr ""
+msgstr " En esta sección usted puede agregar o administrar sus aplicaciones"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluation--form.php:34
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:24
@@ -4117,12 +4125,12 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:38
 #: themes/BaseV1/layouts/parts/singles/registration--sidebar--right.php:52
 msgid "Avaliador"
-msgstr ""
+msgstr "Evaluador"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluation--form.php:42
 #: themes/BaseV1/layouts/parts/singles/registration--sidebar--right.php:59
 msgid "Finalizar Avaliação e Avançar"
-msgstr ""
+msgstr "Finalizar Evaluación y Siguiente"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:8
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:10
@@ -4130,7 +4138,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:22
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:24
 msgid "Baixar lista de avaliações"
-msgstr ""
+msgstr "Descargar lista de evaluaciones"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:9
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:57
@@ -4146,7 +4154,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-tabs.php:20
 #: themes/BaseV1/views/panel/opportunities.php:32
 msgid "Avaliações"
-msgstr ""
+msgstr "Evaluaciones"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:21
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:30
@@ -4168,7 +4176,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:8
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-registrations.php:13
 msgid "Inscrição"
-msgstr ""
+msgstr "Inscripción"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:27
 #: modules/Opportunities/components/opportunity-subscription/template.php:59
@@ -4179,21 +4187,21 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:41
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:23
 msgid "Categoria"
-msgstr ""
+msgstr "Categoría"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:51
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:53
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:65
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:69
 msgid "Nenhuma avaliação enviada."
-msgstr ""
+msgstr "Ninguna evaluación enviada"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:52
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:54
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:66
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:70
 msgid "1 avaliação encontrada."
-msgstr ""
+msgstr "1 evaluación encontrada"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:80
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:70
@@ -4206,7 +4214,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:32
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-registrations.php:15
 msgid "Responsável"
-msgstr ""
+msgstr "Responsable"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:106
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:101
@@ -4216,12 +4224,12 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:173
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:69
 msgid "Carregar mais"
-msgstr ""
+msgstr "Cargando"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:17
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:26
 msgid "Suas avaliações já foram enviadas:"
-msgstr ""
+msgstr "Sus evaluaciones ya fueron enviadas"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:39
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:60
@@ -4231,20 +4239,20 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:55
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:86
 msgid "Anexos"
-msgstr ""
+msgstr "Adjunto"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:80
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:120
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:96
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:147
 msgid "Baixar arquivos"
-msgstr ""
+msgstr "Descargar archivos"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:7
 #: modules/Support/layouts/parts/support/opportunity-support.php:15
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:29
 msgid "Filtrar inscrição:"
-msgstr ""
+msgstr "Filtrar inscripciones"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:8
 #: modules/Support/layouts/parts/support/opportunity-support.php:16
@@ -4253,18 +4261,20 @@ msgid ""
 "Busque pelo número de inscrição, status da avaliação, nome ou cpf do "
 "responsável"
 msgstr ""
+"Búsqueda por número de registro, estado de evaluación, nombre o CI del "
+"responsable"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:12
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:34
 msgid "Colunas Habilitadas:"
-msgstr ""
+msgstr "Columnas Habilitadas"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:74
 #: modules/Support/layouts/parts/support/opportunity-support.php:50
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:102
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:27
 msgid "Nenhuma inscrição."
-msgstr ""
+msgstr "Ninguna Inscripción"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:75
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:86
@@ -4274,59 +4284,59 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:114
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:28
 msgid "Nenhuma inscrição encontrada com os filtros selecionados."
-msgstr ""
+msgstr "Ninguna inscripción encontrada con los filtros seleccionados."
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:76
 #: modules/Support/layouts/parts/support/opportunity-support.php:52
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:104
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:29
 msgid "1 inscrição."
-msgstr ""
+msgstr "1 Inscripción"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:77
 #: modules/Support/layouts/parts/support/opportunity-support.php:53
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:105
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:30
 msgid "1 inscrição encontrada com os filtros selecionados."
-msgstr ""
+msgstr "1 Inscripción encontrada con los filtros seleccionados."
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:79
 #: modules/Support/layouts/parts/support/opportunity-support.php:55
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:107
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:32
 msgid "inscrições."
-msgstr ""
+msgstr "inscripciones"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:81
 #: modules/Support/layouts/parts/support/opportunity-support.php:57
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:109
 msgid "Número máximo de vagas na oportunidade:"
-msgstr ""
+msgstr "Número máximo de vacantes en la oportunidad: "
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:91
 #: modules/Support/layouts/parts/support/opportunity-support.php:67
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:119
 msgid "inscrição encontrada"
-msgstr ""
+msgstr "Inscripción encontrada"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:92
 #: modules/Support/layouts/parts/support/opportunity-support.php:68
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:120
 msgid "inscrições encontradas"
-msgstr ""
+msgstr "inscripciones encontradas"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:93
 #: modules/Support/layouts/parts/support/opportunity-support.php:69
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:121
 msgid " com os filtros selecionados."
-msgstr ""
+msgstr " con los filtros seleccionados."
 
 #: modules/BaseV1EmbedTools/layouts/parts/support-edit-view.php:3
 #: modules/Support/views/support/registration.php:46
 #: themes/BaseV1/layouts/parts/singles/registration-edit--header.php:1
 #: themes/BaseV1/layouts/parts/singles/registration-single--header.php:3
 msgid "Formulário de Inscrição"
-msgstr ""
+msgstr "Formulario de inscripción"
 
 #: modules/BaseV1EmbedTools/layouts/parts/support-edit-view.php:5
 #: modules/OpportunityAccountability/layouts/parts/accountability/project-tab-content.php:57
@@ -4334,18 +4344,18 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/registration-edit--header.php:3
 #: themes/BaseV1/layouts/parts/singles/registration-single--header.php:16
 msgid "Número da Inscrição"
-msgstr ""
+msgstr "Número de Inscripción"
 
 #: modules/BaseV1EmbedTools/layouts/parts/support-edit-view.php:10
 #: modules/Support/views/support/registration.php:53
 msgid "Não existem campos disponíveis para suporte."
-msgstr ""
+msgstr "No hay campos disponibles para soporte"
 
 #: modules/BaseV1EmbedTools/layouts/parts/support-edit-view.php:13
 #: modules/Support/views/support/registration.php:56
 #: themes/BaseV1/layouts/parts/singles/registration-single--fields.php:3
 msgid "Campos adicionais do formulário de inscrição."
-msgstr ""
+msgstr "Campos adicionales del formulario de inscripción"
 
 #: modules/BaseV1EmbedTools/views/embedtools/evaluation-manager.php:53
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--config.php:59
@@ -4353,6 +4363,8 @@ msgid ""
 "As inscrições para esta oportunidade já foram encerradas. Não é mais "
 "possível configurar a avaliação."
 msgstr ""
+"Las inscripciones para esta oportunidad ya se han cerrado. No es posible "
+"configurar la evaluación."
 
 #: modules/BaseV1EmbedTools/views/embedtools/report-manager.php:82
 #: modules/Opportunities/components/registration-print/template.php:12
@@ -5831,15 +5843,15 @@ msgstr "¿El evento será gratuito?"
 
 #: modules/Entities/components/create-occurrence/template.php:203
 msgid "Valor da entrada:"
-msgstr "Valor de entrada"
+msgstr "Valor de entrada/;"
 
 #: modules/Entities/components/create-occurrence/template.php:213
 msgid "Informações adicionais sobre a entrada:"
-msgstr "información adicional sobre la entrada:"
+msgstr "Información adicional sobre la entrada:"
 
 #: modules/Entities/components/create-occurrence/template.php:222
 msgid "Resumo das informações: "
-msgstr "Resumen de información"
+msgstr "Resumen de información "
 
 #: modules/Entities/components/create-occurrence/template.php:228
 msgid "Descrição legível de data e horário"
@@ -5962,27 +5974,27 @@ msgstr "domingo"
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:110
 msgid "segunda"
-msgstr "Lunes"
+msgstr "lunes"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:111
 msgid "terça"
-msgstr "Martes"
+msgstr "martes"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:112
 msgid "quarta"
-msgstr "Miércoles"
+msgstr "miércoles"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:113
 msgid "quinta"
-msgstr "Jueves"
+msgstr "jueves"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:114
 msgid "sexta"
-msgstr "Viernes"
+msgstr "viernes"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:115
@@ -7992,7 +8004,7 @@ msgstr "El evento no está registrado"
 
 #: modules/EventImporter/Controller.php:375
 msgid "O selo não está cadastrado"
-msgstr "El sello no está registrado."
+msgstr "El sello no está registrado"
 
 #: modules/EventImporter/Controller.php:381
 msgid "A coluna nome está vazia"
@@ -8016,7 +8028,7 @@ msgstr "El proyecto no está registrado"
 
 #: modules/EventImporter/Controller.php:436
 msgid "A coluna proprietário espera o número ID do agente. "
-msgstr "La columna propietario espera el número de identificación del agente."
+msgstr "La columna propietario espera el número de identificación del agente"
 
 #: modules/EventImporter/Controller.php:439
 msgid "A coluna agente é obrigatória. Informo o ID do agente responsável"
@@ -8086,8 +8098,8 @@ msgid ""
 "A coluna data final é inválida. O formato esperado é DD/MM/YYYY Ex.: "
 "01/01/2022"
 msgstr ""
-" columna de fecha de finalización no es válida. El formato esperado es DD/MM/"
-"YYYY Ej.: 01/01/2022"
+"La columna de fecha de finalización no es válida. El formato esperado es DD/"
+"MM/YYYY Ej.: 01/01/2022"
 
 #: modules/EventImporter/Controller.php:535
 msgid "A coluna total de público é inválida. Essa coluna so aceita números"
@@ -8233,7 +8245,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:80 themes/BaseV1/Theme.php:1855
 msgid "selo"
-msgstr "Sello"
+msgstr "sello"
 
 #: modules/EventImporter/Module.php:81
 msgid "id_evento"
@@ -8249,7 +8261,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:82
 msgid "nome"
-msgstr "Nombre"
+msgstr "nombre"
 
 #: modules/EventImporter/Module.php:83
 msgid "subtítulo"
@@ -8338,7 +8350,7 @@ msgstr ""
 #: modules/OpportunityAccountability/Module.php:618
 #: modules/OpportunityAccountability/Module.php:641
 msgid "inscrições"
-msgstr "Inscripciones"
+msgstr "inscripciones"
 
 #: modules/EventImporter/Module.php:99
 msgid "faixa etária"
