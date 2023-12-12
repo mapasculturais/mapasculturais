@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-11 16:21-0400\n"
+"PO-Revision-Date: 2023-12-12 13:22-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -3616,9 +3616,9 @@ msgid ""
 "informações se necessário. <a class='btn btn-small btn-primary' href='%s' "
 "rel='noopener noreferrer'>editar</a>'"
 msgstr ""
-"\"El agente <b>%s</b> no está actualizado desde <b>%s</b>, si es necesario "
-"actualice los datos. \"<a class='btn btn-small btn-primary' "
-"href='%s'>editar</a>'"
+"El agente <b>%s</b> no está actualizado desde <b>%s</b>, si es necesario "
+"actualice los datos. <a class='btn btn-small btn-primary' href='%s' "
+"rel='noopener noreferrer'>editar</a>'"
 
 #: core/Entities/User.php:832
 #, php-format
@@ -3627,6 +3627,9 @@ msgid ""
 "informações se necessário. <a class='btn btn-small btn-primary' href='%s' "
 "rel='noopener noreferrer'>editar</a>"
 msgstr ""
+"El espacio <b>%s</b> no está actualizado desde <b>%s</b>, si es  necesario "
+"actualice los datos. <a class='btn btn-small btn-primary' href='%s' "
+"rel='noopener noreferrer'>editar</a>"
 
 #: core/Entities/User.php:852
 #, php-format
@@ -3635,6 +3638,9 @@ msgid ""
 "entidade e solicite a renovação da validade. <a class='btn btn-small btn-"
 "primary' href='%s' rel='noopener noreferrer'>editar</a>"
 msgstr ""
+"El Agente <b>%s</b> está con su sello<b>%s</b> vencido.<br>Acceda a la "
+"entidad y solicite la renovación de la validez.  <a class='btn btn-small btn-"
+"primary' href='%s' rel='noopener noreferrer'>editar</a>"
 
 #: core/Entities/User.php:859
 #, php-format
@@ -3643,6 +3649,10 @@ msgid ""
 "<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-"
 "small btn-primary' href='' rel='noopener noreferrer'>editar</a>"
 msgstr ""
+"El Agente <b>%s</b> está con su sello<b>%s</b> pronto a vencerse en %s "
+"dia(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a "
+"class='btn btn-small btn-primary' href='' rel='noopener noreferrer'>editar</"
+"a>"
 
 #: core/Entities/User.php:873
 #, php-format
@@ -3662,15 +3672,15 @@ msgstr ""
 
 #: core/Entity.php:277 modules/Entities/components/entity-table/template.php:40
 msgid "Arquivado"
-msgstr ""
+msgstr "Archivado"
 
 #: core/Entity.php:278
 msgid "Desabilitado"
-msgstr ""
+msgstr "Deshabilitado"
 
 #: core/Entity.php:280
 msgid "Ativado"
-msgstr ""
+msgstr "Activado"
 
 #: core/Entity.php:281 modules/Entities/components/entity-table/template.php:39
 #: modules/Panel/components/panel--entity-tabs/template.php:22
@@ -3688,19 +3698,19 @@ msgstr ""
 #: themes/BaseV1/views/panel/spaces.php:29
 #: themes/BaseV1/views/panel/subsite.php:24
 msgid "Lixeira"
-msgstr ""
+msgstr "Papelera"
 
 #: core/Entity.php:1103
 msgid "Não é permitido a inclusão de scripts"
-msgstr ""
+msgstr "No está permitida la inclusión de scripts"
 
 #: core/Entity.php:1159
 msgid "O Tipo é obrigatório"
-msgstr ""
+msgstr "El Tipo es obligatorio"
 
 #: core/Entity.php:1161
 msgid "Tipo inválido"
-msgstr ""
+msgstr "Tipo no válido"
 
 #: core/EvaluationMethod.php:58
 #: modules/Components/components/mc-summary-project/template.php:16
@@ -3712,22 +3722,22 @@ msgstr ""
 #: modules/Opportunities/views/registration/single.php:75
 #: themes/BaseV1/Theme.php:2202
 msgid "Nome do projeto"
-msgstr ""
+msgstr "Nombre del proyecto"
 
 #: core/EvaluationMethod.php:67
 #: modules/Opportunities/views/registration/single.php:59
 msgid "Categoria de inscrição"
-msgstr ""
+msgstr "Categoría de inscripción"
 
 #: core/EvaluationMethod.php:76
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:31
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:45
 msgid "Agente Responsável"
-msgstr ""
+msgstr "Agente Responsable"
 
 #: core/EvaluationMethod.php:82
 msgid "Número de inscrição"
-msgstr ""
+msgstr "Número de inscripción"
 
 #: core/EvaluationMethod.php:106
 #: modules/OpportunityAccountability/layouts/parts/accountability--evaluation-form.php:14
@@ -3736,7 +3746,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/opportunity-phases/opportunity-phases-tabs.php:8
 #: themes/BaseV1/layouts/parts/singles/opportunity-tabs.php:14
 msgid "Resultado"
-msgstr ""
+msgstr "Resultado"
 
 #: core/EvaluationMethod.php:112
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:34
@@ -5564,7 +5574,7 @@ msgstr ""
 #: modules/Seals/components/create-seal/template.php:47
 #: modules/Seals/components/create-seal/template.php:52
 msgid "Completar Depois"
-msgstr ""
+msgstr "Completar después"
 
 #: modules/Entities/components/create-agent/template.php:48
 #: modules/Entities/components/create-agent/template.php:53
@@ -5579,7 +5589,7 @@ msgstr ""
 #: modules/Seals/components/create-seal/template.php:48
 #: modules/Seals/components/create-seal/template.php:53
 msgid "Completar Informações"
-msgstr ""
+msgstr "Complete las informaciones"
 
 #: modules/Entities/components/create-agent/texts.php:5
 msgid "Agente Criado!"
@@ -5602,20 +5612,20 @@ msgstr ""
 #: modules/Panel/views/panel/events.php:23
 #: modules/Search/views/search/event.php:30
 msgid "Criar Evento"
-msgstr ""
+msgstr "Crear Evento"
 
 #: modules/Entities/components/create-event/template.php:19
 msgid "Crie um evento com informações básicas"
-msgstr ""
+msgstr "Crear un evento con información básica."
 
 #: modules/Entities/components/create-event/template.php:22
 #: modules/Entities/views/event/single.php:74
 msgid "Linguagem cultural"
-msgstr ""
+msgstr "Lenguaje cultural"
 
 #: modules/Entities/components/create-event/template.php:23
 msgid "Adicione uma Descrição curta para o Evento"
-msgstr ""
+msgstr "Agregue una breve descripción para el evento"
 
 #: modules/Entities/components/create-event/template.php:30
 msgid ""
@@ -5628,27 +5638,29 @@ msgid ""
 "Para completar e publicar seu novo evento, acesse a área <b>Rascunhos</b> em "
 "<b>Meus Eventos</b> no <b>Painel de Controle</b>.  "
 msgstr ""
+"Para completar y publicar su nuevo evento, acceda al área <b>Borradores</b> "
+"en <b>Mis eventos</b> en el <b>Panel de control</b>."
 
 #: modules/Entities/components/create-event/template.php:47
 #: modules/Entities/components/create-event/template.php:52
 msgid "Ver Evento"
-msgstr ""
+msgstr "Ver evento"
 
 #: modules/Entities/components/create-event/texts.php:5
 msgid "Evento Criado!"
-msgstr ""
+msgstr "¡Evento creado!"
 
 #: modules/Entities/components/create-event/texts.php:7
 msgid "Evento criado em rascunho!"
-msgstr ""
+msgstr "¡Evento creado en borrador!"
 
 #: modules/Entities/components/create-occurrence/script.js:75
 msgid "meses"
-msgstr ""
+msgstr "meses"
 
 #: modules/Entities/components/create-occurrence/script.js:76
 msgid "dias"
-msgstr ""
+msgstr "días"
 
 #: modules/Entities/components/create-occurrence/script.js:81
 #: modules/Entities/components/create-occurrence/template.php:71
@@ -5656,13 +5668,13 @@ msgstr ""
 #: themes/BaseV1/Theme.php:2279
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:53
 msgid "uma vez"
-msgstr ""
+msgstr "una vez"
 
 #: modules/Entities/components/create-occurrence/script.js:84
 #: modules/EventImporter/Controller.php:766 modules/EventImporter/Module.php:24
 #: modules/EventImporter/Module.php:52
 msgid "diariamente"
-msgstr ""
+msgstr "diariamente"
 
 #: modules/Entities/components/create-occurrence/script.js:88
 msgid "todo"
@@ -5698,15 +5710,15 @@ msgstr ""
 
 #: modules/Entities/components/create-occurrence/template.php:16
 msgid "Inserir ocorrência no evento"
-msgstr ""
+msgstr "Insertar ocurrencia en evento"
 
 #: modules/Entities/components/create-occurrence/template.php:20
 msgid "Vincular um espaço para o evento"
-msgstr ""
+msgstr "vincular un espacio al evento"
 
 #: modules/Entities/components/create-occurrence/template.php:21
 msgid "Espaço vinculado:"
-msgstr ""
+msgstr "Espacio vinculado"
 
 #: modules/Entities/components/create-occurrence/template.php:27
 #: modules/Entities/components/entity-link-project/template.php:41
@@ -5724,19 +5736,19 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/registration-edit--spaces.php:42
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:307
 msgid "Adicionar"
-msgstr ""
+msgstr "Agregar"
 
 #: modules/Entities/components/create-occurrence/template.php:50
 msgid "Sem endereço"
-msgstr ""
+msgstr "Sin dirección"
 
 #: modules/Entities/components/create-occurrence/template.php:56
 msgid "Alterar espaço selecionado"
-msgstr ""
+msgstr "Cambiar espacio seleccionado"
 
 #: modules/Entities/components/create-occurrence/template.php:68
 msgid "Qual a frequência do evento?"
-msgstr ""
+msgstr "¿Cuál es la frecuencia del evento?"
 
 #: modules/Entities/components/create-occurrence/template.php:72
 #: modules/EventImporter/Controller.php:809 modules/EventImporter/Module.php:23
@@ -5744,46 +5756,46 @@ msgstr ""
 #: modules/EventImporter/Module.php:265 themes/BaseV1/Theme.php:2281
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:55
 msgid "semanal"
-msgstr ""
+msgstr "semanal"
 
 #: modules/Entities/components/create-occurrence/template.php:73
 #: modules/EventImporter/Controller.php:767 modules/EventImporter/Module.php:25
 #: modules/EventImporter/Module.php:99 themes/BaseV1/Theme.php:2280
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:54
 msgid "todos os dias"
-msgstr ""
+msgstr "todos los días"
 
 #: modules/Entities/components/create-occurrence/template.php:78
 msgid "Que dias da semana o evento se repete?"
-msgstr ""
+msgstr "¿Qué días de la semana se repite el evento?"
 
 #: modules/Entities/components/create-occurrence/template.php:81
 msgid "Domingo"
-msgstr ""
+msgstr "Domingo"
 
 #: modules/Entities/components/create-occurrence/template.php:82
 msgid "Segunda"
-msgstr ""
+msgstr "Lunes"
 
 #: modules/Entities/components/create-occurrence/template.php:83
 msgid "Terça"
-msgstr ""
+msgstr "Martes"
 
 #: modules/Entities/components/create-occurrence/template.php:84
 msgid "Quarta"
-msgstr ""
+msgstr "Miércoles"
 
 #: modules/Entities/components/create-occurrence/template.php:85
 msgid "Quinta"
-msgstr ""
+msgstr "Jueves"
 
 #: modules/Entities/components/create-occurrence/template.php:86
 msgid "Sexta"
-msgstr ""
+msgstr "Viernes"
 
 #: modules/Entities/components/create-occurrence/template.php:87
 msgid "Sabado"
-msgstr ""
+msgstr "Sábado"
 
 #: modules/Entities/components/create-occurrence/template.php:95
 msgid "Quando o evento ocorrerá?"
@@ -5811,41 +5823,48 @@ msgstr ""
 
 #: modules/Entities/components/create-occurrence/template.php:189
 msgid "Como será a entrada?"
-msgstr ""
+msgstr "¿Cómo será la entrada?"
 
 #: modules/Entities/components/create-occurrence/template.php:195
 msgid "O evento será gratuito?"
-msgstr ""
+msgstr "¿El evento será gratuito?"
 
 #: modules/Entities/components/create-occurrence/template.php:203
 msgid "Valor da entrada:"
-msgstr ""
+msgstr "Valor de entrada"
 
 #: modules/Entities/components/create-occurrence/template.php:213
 msgid "Informações adicionais sobre a entrada:"
-msgstr ""
+msgstr "información adicional sobre la entrada:"
 
 #: modules/Entities/components/create-occurrence/template.php:222
 msgid "Resumo das informações: "
-msgstr ""
+msgstr "Resumen de información"
 
 #: modules/Entities/components/create-occurrence/template.php:228
 msgid "Descrição legível de data e horário"
 msgstr ""
+"Descripción legible del horarioUsted puede introducir una descripción "
+"específica o introduzca la \"\n"
+"\"descripción generada automáticamente haciendo clic en el botón situado al "
+"\"\n"
+"\"lado\""
 
 #: modules/Entities/components/create-occurrence/template.php:237
 msgid ""
 "Você pode usar a descrição gerada pelo sistema OU criar uma descrição "
 "customizada prenchendo o campo abaixo"
 msgstr ""
+"Usted puede utilizar la descripción generada por el sistema O crear una "
+"descripción personalizada completando el campo abajo"
 
 #: modules/Entities/components/create-occurrence/template.php:238
 msgid "Preencha aqui o resumo customizado"
-msgstr ""
+msgstr "Complete el resumen personalizado aquí"
 
 #: modules/Entities/components/create-occurrence/template.php:252
 msgid "Inserir nova ocorrência"
-msgstr ""
+msgstr "Insertar nueva ocurrencia"
 
 #: modules/Entities/components/create-occurrence/template.php:259
 #: modules/EventImporter/views/eventimporter/import-erros.php:24
@@ -5860,7 +5879,7 @@ msgstr ""
 #: modules/Support/views/support/support.php:25
 #: modules/UserManagement/views/panel/user-detail.php:25
 msgid "Voltar"
-msgstr ""
+msgstr "Volver"
 
 #: modules/Entities/components/create-occurrence/template.php:260
 #: modules/Opportunities/components/registration-evaluation-actions/template.php:67
@@ -5873,102 +5892,102 @@ msgstr ""
 
 #: modules/Entities/components/create-occurrence/template.php:277
 msgid "Inserir ocorrência"
-msgstr ""
+msgstr "Insertar ocurrencias"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:56
 msgid "Janeiro"
-msgstr ""
+msgstr "Enero"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:57
 msgid "Fevereiro"
-msgstr ""
+msgstr "Febrero"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:58
 msgid "Março"
-msgstr ""
+msgstr "Marzo"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:59
 msgid "Abril"
-msgstr ""
+msgstr "Abril"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:60
 msgid "Maio"
-msgstr ""
+msgstr "Mayo"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:61
 msgid "Junho"
-msgstr ""
+msgstr "Junio"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:62
 msgid "Julho"
-msgstr ""
+msgstr "Julio"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:63
 msgid "Agosto"
-msgstr ""
+msgstr "Agosto"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:64
 msgid "Setembro"
-msgstr ""
+msgstr "Septiembre"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:65
 msgid "Outubro"
-msgstr ""
+msgstr "Octubre"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:66
 msgid "Novembro"
-msgstr ""
+msgstr "Noviembre"
 
 #: modules/Entities/components/create-occurrence/texts.php:13
 #: modules/EventImporter/Module.php:67
 msgid "Dezembro"
-msgstr ""
+msgstr "Diciembre"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:116
 msgid "domingo"
-msgstr ""
+msgstr "domingo"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:110
 msgid "segunda"
-msgstr ""
+msgstr "Lunes"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:111
 msgid "terça"
-msgstr ""
+msgstr "Martes"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:112
 msgid "quarta"
-msgstr ""
+msgstr "Miércoles"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:113
 msgid "quinta"
-msgstr ""
+msgstr "Jueves"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:114
 msgid "sexta"
-msgstr ""
+msgstr "Viernes"
 
 #: modules/Entities/components/create-occurrence/texts.php:14
 #: modules/EventImporter/Module.php:115
 msgid "sábado"
-msgstr ""
+msgstr "sábado"
 
 #: modules/Entities/components/create-opportunity/script.js:37
 msgid "criarOportunidade"
@@ -6006,7 +6025,7 @@ msgstr ""
 #: themes/BaseV1/Theme.php:263 themes/BaseV1/Theme.php:264
 #: themes/BaseV1/Theme.php:1851
 msgid "espaço"
-msgstr ""
+msgstr "espacio"
 
 #: modules/Entities/components/create-opportunity/script.js:55
 #: modules/Entities/components/create-opportunity/texts.php:8
@@ -6015,7 +6034,7 @@ msgstr ""
 #: themes/BaseV1/Theme.php:436 themes/BaseV1/Theme.php:437
 #: themes/BaseV1/Theme.php:1850
 msgid "agente"
-msgstr ""
+msgstr "agente"
 
 #: modules/Entities/components/create-opportunity/template.php:16
 #: modules/Entities/components/create-opportunity/texts.php:6
@@ -7933,15 +7952,15 @@ msgstr ""
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:48
 msgid "Pontuação Total"
-msgstr ""
+msgstr "Puntuación Total"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:49
 msgid "Pontuação Máxima"
-msgstr ""
+msgstr "Puntuación Máxima"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-view.php:6
 msgid "Pontuações"
-msgstr ""
+msgstr "Puntuaciones"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-view.php:12
 #: modules/Reports/layouts/parts/dynamic-reports.php:34
@@ -7949,135 +7968,148 @@ msgstr ""
 #: modules/Reports/layouts/parts/print/print-dynamic-graphics.php:26
 #: modules/Reports/layouts/parts/print/print-dynamic-graphics.php:36
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-view.php:13
 msgid "Máxima"
-msgstr ""
+msgstr "Máxima"
 
 #: modules/EventImporter/Controller.php:326
 msgid "O arquivo esta vazio, verifique para continuar"
-msgstr ""
+msgstr "El archivo está vacío, verifique para continuar"
 
 #: modules/EventImporter/Controller.php:357
 msgid ""
 "Linha invalida. Os dados da linha são os dados do exemplo, apague a mesma "
 "para continuar"
 msgstr ""
+"Línea inválida. Los datos de línea son datos de ejemplo, bórrelos para "
+"continuar"
 
 #: modules/EventImporter/Controller.php:369
 msgid "O evento não está cadastrado"
-msgstr ""
+msgstr "El evento no está registrado"
 
 #: modules/EventImporter/Controller.php:375
 msgid "O selo não está cadastrado"
-msgstr ""
+msgstr "El sello no está registrado."
 
 #: modules/EventImporter/Controller.php:381
 msgid "A coluna nome está vazia"
-msgstr ""
+msgstr "La columna nombre está vacíaLa columna nombre está vacía"
 
 #: modules/EventImporter/Controller.php:385
 msgid "A coluna descrição curta está vazia"
-msgstr ""
+msgstr "La descripción breve es obligatoriaLa columna nombre está vacía"
 
 #: modules/EventImporter/Controller.php:389
 msgid "A coluna classificação estária está vazia"
-msgstr ""
+msgstr "La clasificación etaria es obligatoria"
 
 #: modules/EventImporter/Controller.php:400
 msgid "A coluna linguagem está vazia"
-msgstr ""
+msgstr "La columna lenguaje está vacía"
 
 #: modules/EventImporter/Controller.php:424
 msgid "O projeto não está cadastrado"
-msgstr ""
+msgstr "El proyecto no está registrado"
 
 #: modules/EventImporter/Controller.php:436
 msgid "A coluna proprietário espera o número ID do agente. "
-msgstr ""
+msgstr "La columna propietario espera el número de identificación del agente."
 
 #: modules/EventImporter/Controller.php:439
 msgid "A coluna agente é obrigatória. Informo o ID do agente responsável"
 msgstr ""
+"La columna del agente es obligatoria. Informo el ID del agente responsable"
 
 #: modules/EventImporter/Controller.php:441
 msgid "O a gente não esta cadastrado"
-msgstr ""
+msgstr "El agente no está registrado"
 
 #: modules/EventImporter/Controller.php:454
 msgid "O espaço não está cadastrado"
-msgstr ""
+msgstr "El espacio no está registrado"
 
 #: modules/EventImporter/Controller.php:465
 msgid "A coluna frequência está vazia"
-msgstr ""
+msgstr "La columna de frecuencia está vacía"
 
 #: modules/EventImporter/Controller.php:483
 msgid ""
 "para a frequencia semanal, pelomenos um dia da semana deve ser informado"
 msgstr ""
+"para la frecuencia semanal, se debe informar al menos un día de la semana"
 
 #: modules/EventImporter/Controller.php:489
 msgid "A coluna Hora inícial está vazia"
-msgstr ""
+msgstr "La columna Hora de inicio está vacía"
 
 #: modules/EventImporter/Controller.php:494
 msgid "A coluna Hora inícial é inválida. O formato esperado é HH:MM Ex.: 12:00"
 msgstr ""
+"La columna Hora de inicio no es válida. El formato esperado es HH:MM, por "
+"ejemplo: 12:00"
 
 #: modules/EventImporter/Controller.php:499
 msgid "A coluna Hora final está vazia"
-msgstr ""
+msgstr "La columna Hora de finalización está vacía"
 
 #: modules/EventImporter/Controller.php:504
 msgid "A coluna Hora final é inválida. O formato esperado é HH:MM Ex.: 12:00"
 msgstr ""
+"La columna Hora de finalización no es válida. El formato esperado es HH:MM "
+"por ejemplo: 12:00\""
 
 #: modules/EventImporter/Controller.php:509
 msgid "A data inicial é maior que a data final."
-msgstr ""
+msgstr "La fecha de inicio es mayor que la fecha de finalización."
 
 #: modules/EventImporter/Controller.php:514
 msgid "A Coluna Data inícial Está vazia"
-msgstr ""
+msgstr "La columna Fecha de inicio está vacía"
 
 #: modules/EventImporter/Controller.php:519
 msgid ""
 "A coluna data inícial é inválida. O formato esperado é DD/MM/YYYY Ex.: "
 "01/01/2022"
 msgstr ""
+"La columna de fecha de inicio no es válida. El formato esperado es DD/MM/"
+"YYYY Ej.: 01/01/2022\""
 
 #: modules/EventImporter/Controller.php:525
 msgid "A Coluna Data final Está vazia"
-msgstr ""
+msgstr "La columna Hora de finalización está vacía"
 
 #: modules/EventImporter/Controller.php:530
 msgid ""
 "A coluna data final é inválida. O formato esperado é DD/MM/YYYY Ex.: "
 "01/01/2022"
 msgstr ""
+" columna de fecha de finalización no es válida. El formato esperado es DD/MM/"
+"YYYY Ej.: 01/01/2022"
 
 #: modules/EventImporter/Controller.php:535
 msgid "A coluna total de público é inválida. Essa coluna so aceita números"
 msgstr ""
+"La columna de audiencia total no es válida. Esta columna solo acepta números"
 
 #: modules/EventImporter/Controller.php:611
 msgid "Criação"
-msgstr ""
+msgstr "Creación"
 
 #: modules/EventImporter/Controller.php:611
 msgid "Edição"
-msgstr ""
+msgstr "Edición"
 
 #: modules/EventImporter/Controller.php:611
 msgid "Deleção"
-msgstr ""
+msgstr "Supresión"
 
 #: modules/EventImporter/Controller.php:611
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:50
 msgid "Não definido"
-msgstr ""
+msgstr "No definido"
 
 #: modules/EventImporter/Controller.php:768
 msgid "diario"
@@ -8085,11 +8117,11 @@ msgstr ""
 
 #: modules/EventImporter/Controller.php:769
 msgid "daily"
-msgstr ""
+msgstr "diario"
 
 #: modules/EventImporter/Controller.php:810
 msgid "toda semana"
-msgstr ""
+msgstr "toda la semana"
 
 #: modules/EventImporter/Controller.php:811
 msgid "weekly"
@@ -8122,11 +8154,11 @@ msgstr ""
 
 #: modules/EventImporter/Controller.php:890
 msgid "once"
-msgstr ""
+msgstr "uma vez"
 
 #: modules/EventImporter/Module.php:31
 msgid "livre"
-msgstr ""
+msgstr "libre"
 
 #: modules/EventImporter/Module.php:39 modules/EventImporter/Module.php:277
 #: modules/EventImporter/Module.php:297
@@ -8201,7 +8233,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:80 themes/BaseV1/Theme.php:1855
 msgid "selo"
-msgstr ""
+msgstr "Sello"
 
 #: modules/EventImporter/Module.php:81
 msgid "id_evento"
@@ -8217,7 +8249,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:82
 msgid "nome"
-msgstr ""
+msgstr "Nombre"
 
 #: modules/EventImporter/Module.php:83
 msgid "subtítulo"
@@ -8306,7 +8338,7 @@ msgstr ""
 #: modules/OpportunityAccountability/Module.php:618
 #: modules/OpportunityAccountability/Module.php:641
 msgid "inscrições"
-msgstr ""
+msgstr "Inscripciones"
 
 #: modules/EventImporter/Module.php:99
 msgid "faixa etária"
@@ -8362,7 +8394,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:117
 msgid "preço"
-msgstr ""
+msgstr "precio"
 
 #: modules/EventImporter/Module.php:118
 msgid "mais_informacoes_sobre_a_entrada"
