@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-12 16:17-0400\n"
+"PO-Revision-Date: 2023-12-13 16:00-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -2878,7 +2878,7 @@ msgstr "El archivo no es un ZIP."
 
 #: core/App.php:2393
 msgid "O link é obrigatório"
-msgstr "El enlace es obligatorio: "
+msgstr "El enlace es obligatorio:"
 
 #: core/App.php:2408
 msgid "O link do vídeo é obrigatório"
@@ -3211,7 +3211,7 @@ msgstr "Descripción legible del horario es obligatoria"
 
 #: core/Entities/EventOccurrence.php:208
 msgid "O valor da entrada é obrigatório"
-msgstr "La entrada es obligatoria."
+msgstr "La entrada es obligatoria"
 
 #: core/Entities/File.php:161
 msgid "Tipo de arquivo não permitido"
@@ -3223,7 +3223,7 @@ msgstr "El título es obligatorio"
 
 #: core/Entities/MetaList.php:100
 msgid "O título não pode ter mais que 255 caracteres"
-msgstr "El título no puede tener más de 255 caracteres."
+msgstr "El título no puede tener más de 255 caracteres"
 
 #: core/Entities/MetaList.php:103
 msgid "A o valor é obrigatória"
@@ -3343,7 +3343,7 @@ msgstr "El agente responsable es obligatorio."
 #: core/Entities/Registration.php:291
 msgid "Foi excedido o limite de inscrições para este agente responsável."
 msgstr ""
-"Fue superado el número máximo de inscripciones para este agente responsable"
+"Fue superado el número máximo de inscripciones para este agente responsable."
 
 #: core/Entities/Registration.php:789
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--apply-results.php:39
@@ -3421,7 +3421,7 @@ msgstr "El campo es obligatorio."
 #: core/Entities/Registration.php:949
 #, php-format
 msgid "O agente \"%s\" é obrigatório."
-msgstr "El agente \"%s\" es obligatorio"
+msgstr "El agente \"%s\" es obligatorio."
 
 #: core/Entities/Registration.php:955
 #, php-format
@@ -3583,15 +3583,15 @@ msgstr "Esta URL ya está siendo usada"
 
 #: core/Entities/User.php:140
 msgid "Este e-mail já está sendo utilizado por outro usuário"
-msgstr "Este email ya está siendo utilizado por otro usuario."
+msgstr "Este email ya está siendo utilizado por otro usuario"
 
 #: core/Entities/User.php:141
 msgid "O e-mail é obrigatório"
-msgstr "e-mail es obligatorio."
+msgstr "email es obligatorio"
 
 #: core/Entities/User.php:142
 msgid "O valor informado não é um e-mail válido"
-msgstr "El email proporcionado ne es un email válido."
+msgstr "El email proporcionado ne es un email válido"
 
 #: core/Entities/User.php:171
 #: modules/UserManagement/components/system-roles--modal/texts.php:5
@@ -3661,6 +3661,9 @@ msgid ""
 "entidade e solicite a renovação da validade. <a class='btn btn-small btn-"
 "primary' href='%s' rel='noopener noreferrer'>editar</a>"
 msgstr ""
+"El Espacio<b>%s</b>  está con su sello <b>%s</b> vencido.<br>Acceda a la "
+"entidad y solicite la renovación de la validez. <a class='btn btn-small btn-"
+"primary' href='%s' rel='noopener noreferrer'>editar</a>"
 
 #: core/Entities/User.php:880
 #, php-format
@@ -3669,6 +3672,10 @@ msgid ""
 "<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-"
 "small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"
 msgstr ""
+"El Agente <b>%s</b> está com con su  sello <b>%s</b> pronto a vencerse en %s "
+"dia(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a "
+"class='btn btn-small btn-primary' href='%s' rel='noopener "
+"noreferrer'>editar</a>"
 
 #: core/Entity.php:277 modules/Entities/components/entity-table/template.php:40
 msgid "Arquivado"
@@ -3847,17 +3854,17 @@ msgstr "El usuario %s no tiene permiso para \"%s\" de id %s"
 #: core/Exceptions/PermissionDenied.php:33
 #, php-format
 msgid "O usuário %s não tem permissão para \"%s\""
-msgstr ""
+msgstr "El usuario %s no tiene permiso para \"%s\""
 
 #: core/Exceptions/PermissionDenied.php:35
 #, php-format
 msgid "O usuário %s não tem permissão para executar esta ação"
-msgstr ""
+msgstr "El usuario %s no tiene permiso para ejecutar esta acción"
 
 #: core/Traits/ControllerAPI.php:77
 #, php-format
 msgid "tipo %s não está registrado."
-msgstr ""
+msgstr "tipo %s no está registrado"
 
 #: core/Traits/ControllerChangeOwner.php:11
 msgid "The ownerId is required."
@@ -3866,7 +3873,7 @@ msgstr "Se requiere el ownerId."
 #: core/Traits/ControllerChangeOwner.php:16
 #, php-format
 msgid "The agent with id %s not found."
-msgstr ""
+msgstr "El agente con id %s no fue encontrado."
 
 #: core/Traits/ControllerOpportunities.php:27
 msgid "Nova Oportunidade"
@@ -3879,6 +3886,9 @@ msgid ""
 "da entidade e renove o certificado. <a class=\"btn btn-small btn-primary\" "
 "href=\"%s\" rel=\"noopener noreferrer\">editar</a>"
 msgstr ""
+"Solicitud de renovación del sello %s para la entidad %s. <br>Acceda a la "
+"página de la entidad y renueve el certificado. <a class=\"btn btn-small btn-"
+"primary\" href=\"%s\" rel=\"noopener noreferrer\">editar</a>"
 
 #: core/Traits/ControllerSealRelation.php:160
 #, php-format
@@ -3956,15 +3966,15 @@ msgstr ""
 
 #: modules/Apps/components/app-card-content/template.php:12
 msgid "Chave Pública:"
-msgstr "Clave Pública"
+msgstr "Clave Pública:"
 
 #: modules/Apps/components/app-card-content/template.php:25
 msgid "Chave Privada:"
-msgstr "Clave privada"
+msgstr "Clave privada:"
 
 #: modules/Apps/components/app-card-content/texts.php:5
 msgid "chave copiada para a área de transferência"
-msgstr "Clave copiada al portapapeles"
+msgstr "clave copiada al portapapeles"
 
 #: modules/Apps/components/create-app/script.js:37
 msgid "appCriado"
@@ -4097,7 +4107,7 @@ msgstr "Crear"
 #: themes/BaseV1/layouts/parts/singles/registration-single--agents.php:34
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:89
 msgid "Cancelar"
-msgstr ""
+msgstr "Cancelar"
 
 #: modules/Apps/components/create-app/template.php:41
 #: themes/BaseV1/layouts/parts/header-main-nav.php:125
@@ -4117,7 +4127,7 @@ msgstr "Aplicativo Creado en borrador"
 
 #: modules/Apps/views/panel/apps.php:25
 msgid "Nesta seção você pode adicionar e gerenciar seus aplicativos"
-msgstr " En esta sección usted puede agregar o administrar sus aplicaciones"
+msgstr "En esta sección usted puede agregar o administrar sus aplicaciones"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluation--form.php:34
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:24
@@ -4194,14 +4204,14 @@ msgstr "Categoría"
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:65
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:69
 msgid "Nenhuma avaliação enviada."
-msgstr "Ninguna evaluación enviada"
+msgstr "Ninguna evaluación enviada."
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:52
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:54
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:66
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:70
 msgid "1 avaliação encontrada."
-msgstr "1 evaluación encontrada"
+msgstr "1 evaluación encontrada."
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:80
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:70
@@ -4229,7 +4239,7 @@ msgstr "Cargando"
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:17
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:26
 msgid "Suas avaliações já foram enviadas:"
-msgstr "Sus evaluaciones ya fueron enviadas"
+msgstr "Sus evaluaciones ya fueron enviadas:"
 
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:39
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:60
@@ -4252,7 +4262,7 @@ msgstr "Descargar archivos"
 #: modules/Support/layouts/parts/support/opportunity-support.php:15
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:29
 msgid "Filtrar inscrição:"
-msgstr "Filtrar inscripciones"
+msgstr "Filtrar inscripciones:"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:8
 #: modules/Support/layouts/parts/support/opportunity-support.php:16
@@ -4267,14 +4277,14 @@ msgstr ""
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:12
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:34
 msgid "Colunas Habilitadas:"
-msgstr "Columnas Habilitadas"
+msgstr "Columnas Habilitadas:"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:74
 #: modules/Support/layouts/parts/support/opportunity-support.php:50
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:102
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:27
 msgid "Nenhuma inscrição."
-msgstr "Ninguna Inscripción"
+msgstr "Ninguna Inscripción."
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:75
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:86
@@ -4291,7 +4301,7 @@ msgstr "Ninguna inscripción encontrada con los filtros seleccionados."
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:104
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:29
 msgid "1 inscrição."
-msgstr "1 Inscripción"
+msgstr "1 Inscripción."
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:77
 #: modules/Support/layouts/parts/support/opportunity-support.php:53
@@ -4305,19 +4315,19 @@ msgstr "1 Inscripción encontrada con los filtros seleccionados."
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:107
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:32
 msgid "inscrições."
-msgstr "inscripciones"
+msgstr "inscripciones."
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:81
 #: modules/Support/layouts/parts/support/opportunity-support.php:57
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:109
 msgid "Número máximo de vagas na oportunidade:"
-msgstr "Número máximo de vacantes en la oportunidad: "
+msgstr "Número máximo de vacantes en la oportunidad:"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:91
 #: modules/Support/layouts/parts/support/opportunity-support.php:67
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:119
 msgid "inscrição encontrada"
-msgstr "Inscripción encontrada"
+msgstr "inscripción encontrada"
 
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:92
 #: modules/Support/layouts/parts/support/opportunity-support.php:68
@@ -4349,13 +4359,13 @@ msgstr "Número de Inscripción"
 #: modules/BaseV1EmbedTools/layouts/parts/support-edit-view.php:10
 #: modules/Support/views/support/registration.php:53
 msgid "Não existem campos disponíveis para suporte."
-msgstr "No hay campos disponibles para soporte"
+msgstr "No hay campos disponibles para soporte."
 
 #: modules/BaseV1EmbedTools/layouts/parts/support-edit-view.php:13
 #: modules/Support/views/support/registration.php:56
 #: themes/BaseV1/layouts/parts/singles/registration-single--fields.php:3
 msgid "Campos adicionais do formulário de inscrição."
-msgstr "Campos adicionales del formulario de inscripción"
+msgstr "Campos adicionales del formulario de inscripción."
 
 #: modules/BaseV1EmbedTools/views/embedtools/evaluation-manager.php:53
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--config.php:59
@@ -4370,64 +4380,64 @@ msgstr ""
 #: modules/Opportunities/components/registration-print/template.php:12
 #: modules/Reports/layouts/parts/opportunity-reports.php:14
 msgid "Imprimir"
-msgstr ""
+msgstr "Imprimir"
 
 #: modules/Charts/layouts/parts/charts/bar.php:89
 #: modules/Charts/layouts/parts/charts/line.php:69
 #: modules/Charts/layouts/parts/charts/pie.php:58
 msgid "Baixar em CSV"
-msgstr ""
+msgstr "Descargar en CSV"
 
 #: modules/CompliantSuggestion/Module.php:122
 #: modules/CompliantSuggestion/Module.php:127
 msgid "O preenchimento do e-mail é obrigatório."
-msgstr ""
+msgstr "Es obligatorio competar el correo electrónico."
 
 #: modules/CompliantSuggestion/Module.php:123
 msgid "O preenchimento do tipo de denúncia é obrigatório."
-msgstr ""
+msgstr "Es obligatorio completar el tipo de denuncia."
 
 #: modules/CompliantSuggestion/Module.php:124
 msgid "O preenchimento da mensagem da denúncia é obrigatório."
-msgstr ""
+msgstr "Es obligatorio completar el mensaje de denuncia."
 
 #: modules/CompliantSuggestion/Module.php:125
 msgid "A denúncia foi enviada."
-msgstr ""
+msgstr "La denuncia fue enviada"
 
 #: modules/CompliantSuggestion/Module.php:126
 #: modules/CompliantSuggestion/Module.php:143
 #: modules/CompliantSuggestion/Module.php:216
 msgid "Recaptcha não selecionado ou inválido, tente novamente."
-msgstr ""
+msgstr "Recaptcha no seleccionado o no válido, inténtelo de nuevo."
 
 #: modules/CompliantSuggestion/Module.php:128
 msgid "O preenchimento do tipo de sugestão é obrigatório."
-msgstr ""
+msgstr "Es obligatorio completar el tipo de sugerencia."
 
 #: modules/CompliantSuggestion/Module.php:129
 msgid "O preenchimento da mensagem é obrigatório."
-msgstr ""
+msgstr "Es obligatorio completar el mensaje."
 
 #: modules/CompliantSuggestion/Module.php:130
 msgid "A sugestão foi enviada."
-msgstr ""
+msgstr "La sugerencia fue enviada."
 
 #: modules/CompliantSuggestion/Module.php:132
 msgid "Erro inesperado ao o enviar a mensagem"
-msgstr ""
+msgstr "Error inesperado al enviar el mensaje"
 
 #: modules/CompliantSuggestion/Module.php:148
 #: modules/CompliantSuggestion/Module.php:149
 #: modules/CompliantSuggestion/Module.php:222
 #: modules/CompliantSuggestion/Module.php:223
 msgid "Anônimo"
-msgstr ""
+msgstr "Anónimo"
 
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:17
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:19
 msgid "Denunciar"
-msgstr ""
+msgstr "Denunciar"
 
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:35
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:83
@@ -4438,48 +4448,48 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:91
 #: themes/BaseV1/views/auth/fake-authentication.php:105
 msgid "E-mail"
-msgstr ""
+msgstr "E-mail"
 
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:44
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:96
 #: modules/Components/components/complaint-suggestion/template.php:45
 #: modules/OpportunityClaimForm/layouts/parts/claim-form.php:13
 msgid "Mensagem"
-msgstr ""
+msgstr "Mensaje"
 
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:49
 msgid "Denúncia anônima"
-msgstr ""
+msgstr "Denuncia anónima"
 
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:53
 msgid "Receber cópia da denúncia"
-msgstr ""
+msgstr "Recibir copia de la renuncia."
 
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:64
 #: modules/Components/components/complaint-suggestion/template.php:60
 msgid "Enviar Denúncia"
-msgstr ""
+msgstr "Enviar Denuncia"
 
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:68
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:131
 msgid "Enviando mensagem"
-msgstr ""
+msgstr "Enviando mensaje"
 
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:103
 msgid "Mensagem anônima"
-msgstr ""
+msgstr "Mensaje anónimo"
 
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:109
 msgid "Enviar somente para o Responsável"
-msgstr ""
+msgstr "Enviar solamente al responsable"
 
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:115
 msgid "Receber cópia da mensagem"
-msgstr ""
+msgstr "Recibir copia del mensaje"
 
 #: modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:127
 msgid "Enviar mensagem"
-msgstr ""
+msgstr "Enviar mensaje"
 
 #: modules/Components/components/__template__/script.js:33
 msgid "texto localizado"
@@ -4487,7 +4497,7 @@ msgstr ""
 
 #: modules/Components/components/__template__/template.php:13
 msgid "Definir Nomes"
-msgstr ""
+msgstr "Establecer Nombres"
 
 #: modules/Components/components/__template__/texts.php:5
 #: modules/Components/components/permission-publish/texts.php:5
@@ -4507,7 +4517,7 @@ msgstr ""
 
 #: modules/Components/components/complaint-suggestion/template.php:21
 msgid "Enviar a denúncia de forma anônima"
-msgstr ""
+msgstr "Enviar la denuncia anónima"
 
 #: modules/Components/components/complaint-suggestion/template.php:39
 #: modules/Components/components/complaint-suggestion/template.php:96
@@ -4522,47 +4532,47 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:15
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:7
 msgid "Selecione"
-msgstr ""
+msgstr "Seleccione"
 
 #: modules/Components/components/complaint-suggestion/template.php:52
 #: modules/Components/components/complaint-suggestion/template.php:115
 msgid "Receber copia da mensagem"
-msgstr ""
+msgstr "Recibir copia del mensaje"
 
 #: modules/Components/components/complaint-suggestion/template.php:61
 #: modules/Components/components/error-display/template.php:22
 #: themes/BaseV1/layouts/parts/header-main-nav.php:124
 #: themes/BaseV1/views/panel/index.php:224
 msgid "cancelar"
-msgstr ""
+msgstr "cancelar"
 
 #: modules/Components/components/complaint-suggestion/template.php:78
 msgid "Enviar a mensagem de forma anônima"
-msgstr ""
+msgstr "Enviar el mensaje de forma anónima"
 
 #: modules/Components/components/complaint-suggestion/template.php:102
 msgid "Mensagem:"
-msgstr ""
+msgstr "Mensaje:"
 
 #: modules/Components/components/complaint-suggestion/template.php:109
 msgid "Enviar somente para o responsável"
-msgstr ""
+msgstr "Enviar sólo al responsable"
 
 #: modules/Components/components/complaint-suggestion/template.php:123
 msgid "Enviar Mensagem"
-msgstr ""
+msgstr "Enviar mensaje"
 
 #: modules/Components/components/complaint-suggestion/texts.php:6
 msgid "Recaptcha inválida"
-msgstr ""
+msgstr "Recaptcha no válido"
 
 #: modules/Components/components/complaint-suggestion/texts.php:7
 msgid "Todos os campos são obrigatorio"
-msgstr ""
+msgstr "Todos los campos son obligatorios"
 
 #: modules/Components/components/complaint-suggestion/texts.php:8
 msgid "Dados enviados com suscesso"
-msgstr ""
+msgstr "Datos enviados con éxito"
 
 #: modules/Components/components/entity-card/template.php:27
 #: modules/Components/components/mc-map-card/template.php:26
@@ -4574,22 +4584,22 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/panel-space.php:17
 #: themes/BaseV1/layouts/parts/singles/opportunity-projects--tab-content.php:23
 msgid "Tipo:"
-msgstr ""
+msgstr "Tipo:"
 
 #: modules/Components/components/entity-card/template.php:37
 #: themes/BaseV1/Theme.php:2524 themes/BaseV1/Theme.php:2551
 msgid "Inscrições Abertas"
-msgstr ""
+msgstr "Inscripciones abiertas"
 
 #: modules/Components/components/entity-card/template.php:45
 #: modules/Components/components/mc-map-card/template.php:32
 msgid "ONDE: "
-msgstr ""
+msgstr "DÓNDE:"
 
 #: modules/Components/components/entity-card/template.php:52
 #: modules/Components/components/entity-card/texts.php:7
 msgid "As inscrições encerrarão no dia"
-msgstr ""
+msgstr "as inscripciones se cerrarán el día"
 
 #: modules/Components/components/entity-card/template.php:52
 #: modules/Components/components/entity-card/template.php:60
@@ -4618,11 +4628,11 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--config.php:23
 #: themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:13
 msgid "às"
-msgstr ""
+msgstr "a las"
 
 #: modules/Components/components/entity-card/template.php:60
 msgid "Inscrições de"
-msgstr ""
+msgstr "Inscripciones de"
 
 #: modules/Components/components/entity-card/template.php:60
 #: modules/Opportunities/components/opportunity-phase-evaluation/template.php:20
@@ -4630,37 +4640,37 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:151
 #: themes/BaseV1/layouts/parts/singles/opportunity-projects--tab-content.php:24
 msgid "até"
-msgstr ""
+msgstr "hasta"
 
 #: modules/Components/components/entity-card/template.php:67
 msgid "As inscrições encerraram no dia"
-msgstr ""
+msgstr "Las inscripciones se cerraron el día"
 
 #: modules/Components/components/entity-card/template.php:84
 #: modules/Components/components/mc-map-card/template.php:39
 msgid "ACESSIBILIDADE:"
-msgstr ""
+msgstr "accesibilidad"
 
 #: modules/Components/components/entity-card/template.php:85
 #: modules/Components/components/mc-map-card/template.php:41
 msgid "Oferece"
-msgstr ""
+msgstr "Ofrece"
 
 #: modules/Components/components/entity-card/template.php:93
 #: modules/Components/components/mc-map-card/template.php:50
 msgid "Áreas de atuação:"
-msgstr ""
+msgstr "Áreas de actuación"
 
 #: modules/Components/components/entity-card/template.php:100
 #: modules/Components/components/occurrence-card/template.php:63
 #: themes/BaseV1/layouts/parts/singles/opportunity-projects--tab-content.php:34
 msgid "Tags:"
-msgstr ""
+msgstr "Etiquetas"
 
 #: modules/Components/components/entity-card/template.php:107
 #: modules/Components/components/occurrence-card/template.php:69
 msgid "linguagens:"
-msgstr ""
+msgstr "idiomas:"
 
 #: modules/Components/components/entity-card/template.php:127
 #: modules/Components/components/mc-map-card/template.php:56
@@ -4670,93 +4680,93 @@ msgstr ""
 #: modules/Panel/components/panel--entity-card/template.php:65
 #: modules/UserManagement/components/panel--card-user/template.php:51
 msgid "Acessar"
-msgstr ""
+msgstr "Acceder"
 
 #: modules/Components/components/entity-card/texts.php:5
 msgid "As inscrições encerraram-se no dia"
-msgstr ""
+msgstr "Las inscripciones se cerraron el día"
 
 #: modules/Components/components/entity-card/texts.php:6
 msgid "As inscrições encerram-se no dia"
-msgstr ""
+msgstr "Las inscripciones se cierran el día"
 
 #: modules/Components/components/error-display/template.php:15
 #: themes/BaseV2/views/site/error-403.php:15
 msgid "Erro 403"
-msgstr ""
+msgstr "Error 403"
 
 #: modules/Components/components/error-display/template.php:21
 #: themes/BaseV2/views/site/error-403.php:23
 #: themes/BaseV2/views/site/error-404.php:21
 #: themes/BaseV2/views/site/error-500.php:26
 msgid "Voltar para a página inicial"
-msgstr ""
+msgstr "Volver a la página de inicio"
 
 #: modules/Components/components/event-info/template.php:16
 #: modules/Components/components/event-info/template.php:43
 msgid "Libras:"
-msgstr ""
+msgstr "Lenguaje de señas"
 
 #: modules/Components/components/event-info/template.php:20
 msgid "Áudio de Descrição:"
-msgstr ""
+msgstr "Audiodescripción:"
 
 #: modules/Components/components/event-info/template.php:25
 #: modules/Components/components/space-info/template.php:35
 #: modules/Entities/views/project/single.php:65
 msgid "Informações adicionais"
-msgstr ""
+msgstr "información adicional"
 
 #: modules/Components/components/event-info/template.php:27
 msgid "Total de público:"
-msgstr ""
+msgstr "Audiencia total:"
 
 #: modules/Components/components/event-info/template.php:31
 #: modules/Entities/views/project/single.php:68
 msgid "telefone:"
-msgstr ""
+msgstr "teléfono:"
 
 #: modules/Components/components/event-info/template.php:35
 msgid "Informações sobre a inscrição:"
-msgstr ""
+msgstr "Información sobre la inscripción:"
 
 #: modules/Components/components/event-info/template.php:52
 msgid "Áudio Descrição:"
-msgstr ""
+msgstr "Audiodescripción"
 
 #: modules/Components/components/main-footer/template.php:42
 msgid "Acesse"
-msgstr ""
+msgstr "acceder"
 
 #: modules/Components/components/main-footer/template.php:46
 msgid "editais e oportunidades"
-msgstr ""
+msgstr "convocatorias y oportunidades"
 
 #: modules/Components/components/main-footer/template.php:51
 #: modules/Panel/components/panel--entities-summary/script.js:37
 #: themes/BaseV1/Theme.php:601 themes/BaseV1/Theme.php:602
 #: themes/BaseV1/views/site/search.php:40
 msgid "eventos"
-msgstr ""
+msgstr "eventos"
 
 #: modules/Components/components/main-footer/template.php:56
 #: modules/Panel/components/panel--entities-summary/script.js:33
 #: themes/BaseV1/Theme.php:442 themes/BaseV1/Theme.php:443
 #: themes/BaseV1/views/site/search.php:48
 msgid "agentes"
-msgstr ""
+msgstr "agentes"
 
 #: modules/Components/components/main-footer/template.php:61
 #: modules/Panel/components/panel--entities-summary/script.js:29
 #: themes/BaseV1/Theme.php:269 themes/BaseV1/Theme.php:270
 msgid "espaços"
-msgstr ""
+msgstr "espacios"
 
 #: modules/Components/components/main-footer/template.php:66
 #: modules/Panel/components/panel--entities-summary/script.js:41
 #: themes/BaseV1/Theme.php:495 themes/BaseV1/Theme.php:496
 msgid "projetos"
-msgstr ""
+msgstr "proyectos"
 
 #: modules/Components/components/main-footer/template.php:73
 #: modules/Entities/views/agent/edit-1.php:35
@@ -4776,7 +4786,7 @@ msgstr ""
 #: modules/Components/components/main-footer/template.php:76
 #: modules/Panel/components/panel--nav/init.php:15
 msgid "Editais e oportunidades"
-msgstr ""
+msgstr "Convocatorias y oportunidades"
 
 #: modules/Components/components/main-footer/template.php:79
 #: modules/Entities/views/event/edit.php:35
@@ -4784,7 +4794,7 @@ msgstr ""
 #: modules/Panel/views/panel/events.php:13 themes/BaseV1/Theme.php:577
 #: themes/BaseV1/Theme.php:578 themes/BaseV1/views/panel/events.php:18
 msgid "Meus eventos"
-msgstr ""
+msgstr "Mis eventos"
 
 #: modules/Components/components/main-footer/template.php:82
 #: modules/Entities/views/agent/edit-1.php:33
@@ -4794,13 +4804,13 @@ msgstr ""
 #: modules/Panel/views/panel/agents.php:19 themes/BaseV1/Theme.php:424
 #: themes/BaseV1/Theme.php:425 themes/BaseV1/views/panel/agents.php:19
 msgid "Meus agentes"
-msgstr ""
+msgstr "Mis agentes"
 
 #: modules/Components/components/main-footer/template.php:85
 #: modules/Panel/views/panel/spaces.php:13 themes/BaseV1/Theme.php:281
 #: themes/BaseV1/Theme.php:282
 msgid "Meus espaços"
-msgstr ""
+msgstr "Mis espacios"
 
 #: modules/Components/components/main-footer/template.php:89
 #: modules/Components/components/mc-header-menu-user/template.php:50
@@ -4814,33 +4824,33 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/header-profile-link.php:17
 #: themes/BaseV1/layouts/parts/nav-main-user.php:102
 msgid "Sair"
-msgstr ""
+msgstr "Salir"
 
 #: modules/Components/components/main-footer/template.php:96
 msgid "Ajuda e privacidade"
-msgstr ""
+msgstr "Ayuda y Privacidad"
 
 #: modules/Components/components/main-footer/template.php:100
 #: modules/FAQ/views/faq/section.php:12
 msgid "Dúvidas frequentes"
-msgstr ""
+msgstr "Preguntas frecuentes"
 
 #: modules/Components/components/main-footer/template.php:120
 msgid "plataforma criada pela comunidade"
-msgstr ""
+msgstr "plataforma creada por la comunidad"
 
 #: modules/Components/components/main-footer/template.php:121
 msgid "mapas culturais"
-msgstr ""
+msgstr "Cultura enmapas culturales"
 
 #: modules/Components/components/main-footer/template.php:122
 msgid "e desenvolvida por "
-msgstr ""
+msgstr "y desarrollada por"
 
 #: modules/Components/components/main-footer/template.php:126
 #: modules/Home/components/home-developers/template.php:17
 msgid "Conheça o repositório"
-msgstr ""
+msgstr "Conoce el repositorio"
 
 #: modules/Components/components/mc-alert/template.php:23
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:32
@@ -4849,7 +4859,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/related-seals.php:17
 #: themes/BaseV1/layouts/parts/singles/registration-single--agents.php:71
 msgid "Fechar"
-msgstr ""
+msgstr "Cerrar"
 
 #: modules/Components/components/mc-breadcrumb/template.php:9
 msgid "Breadcrumbs"
@@ -4857,15 +4867,15 @@ msgstr ""
 
 #: modules/Components/components/mc-entities/template.php:33
 msgid "Nenhuma entidade encontrada"
-msgstr ""
+msgstr "Ninguna entidad encontrada"
 
 #: modules/Components/components/mc-entities/template.php:41
 msgid "Carregar Mais"
-msgstr ""
+msgstr "Cargar más..."
 
 #: modules/Components/components/mc-entity/texts.php:4
 msgid "Houve um erro inesperado"
-msgstr ""
+msgstr "Ocurrió un error inesperado"
 
 #: modules/Components/components/mc-entity/texts.php:5
 msgid "Corrija os erros indicados"
@@ -4877,43 +4887,43 @@ msgstr ""
 
 #: modules/Components/components/mc-entity/texts.php:7
 msgid "Não foi possível se conectar ao servidor"
-msgstr ""
+msgstr "No se puede conectar al servidor"
 
 #: modules/Components/components/mc-entity/texts.php:9
 msgid "Criando"
-msgstr ""
+msgstr "Creando"
 
 #: modules/Components/components/mc-entity/texts.php:10
 msgid "Salvando a entidade"
-msgstr ""
+msgstr "Guardando la entidad"
 
 #: modules/Components/components/mc-entity/texts.php:11
 msgid "Publicando a entidade"
-msgstr ""
+msgstr "Publicando la entidad"
 
 #: modules/Components/components/mc-entity/texts.php:12
 msgid "Arquivando a entidade"
-msgstr ""
+msgstr "Archivando la entidad"
 
 #: modules/Components/components/mc-entity/texts.php:13
 msgid "Excluindo a entidade"
-msgstr ""
+msgstr "eliminando la entidad"
 
 #: modules/Components/components/mc-entity/texts.php:14
 msgid "Excluindo a entidade definitivamente"
-msgstr ""
+msgstr "eliminando la entidad de forma permanente"
 
 #: modules/Components/components/mc-entity/texts.php:15
 msgid "Recuperando a entidade"
-msgstr ""
+msgstr "recuperando la entidad"
 
 #: modules/Components/components/mc-entity/texts.php:17
 msgid "Modificações salvas"
-msgstr ""
+msgstr "Modificaciones guardadas"
 
 #: modules/Components/components/mc-entity/texts.php:18
 msgid "Entidade salva"
-msgstr ""
+msgstr "Entidad guardada"
 
 #: modules/Components/components/mc-entity/texts.php:19
 msgid "Entidade removida"
@@ -4921,68 +4931,68 @@ msgstr ""
 
 #: modules/Components/components/mc-entity/texts.php:20
 msgid "Entidade removida definitivamente"
-msgstr ""
+msgstr "Entidad eliminada de forma permanente"
 
 #: modules/Components/components/mc-entity/texts.php:21
 msgid "Entidade publicada"
-msgstr ""
+msgstr "Entidad publicada"
 
 #: modules/Components/components/mc-entity/texts.php:22
 msgid "Entidade arquivada"
-msgstr ""
+msgstr "Entidad archivada"
 
 #: modules/Components/components/mc-entity/texts.php:23
 msgid "Entidade recuperada"
-msgstr ""
+msgstr "Entidad recuperada"
 
 #: modules/Components/components/mc-entity/texts.php:25
 msgid "Enviando arquivo"
-msgstr ""
+msgstr "Enviando archivo"
 
 #: modules/Components/components/mc-entity/texts.php:26
 msgid "Removendo arquivo"
-msgstr ""
+msgstr "Eliminando archivo"
 
 #: modules/Components/components/mc-entity/texts.php:27
 msgid "Salvando arquivo"
-msgstr ""
+msgstr "Guardando archivo"
 
 #: modules/Components/components/mc-entity/texts.php:29
 msgid "Seu pedido foi enviado com sucesso!"
-msgstr ""
+msgstr "¡Tu pedido se ha enviado correctamente!"
 
 #: modules/Components/components/mc-entity/texts.php:30
 msgid "Adicionando agente relacionado"
-msgstr ""
+msgstr "Agregando agente relacionado"
 
 #: modules/Components/components/mc-entity/texts.php:31
 msgid "Removendo agente relacionado"
-msgstr ""
+msgstr "eliminando agente relacionado"
 
 #: modules/Components/components/mc-entity/texts.php:32
 msgid "Removendo grupo de agentes relacionados"
-msgstr ""
+msgstr "Eliminando grupo de agentes relacionados"
 
 #: modules/Components/components/mc-entity/texts.php:33
 msgid "Renomeando grupo de agentes relacionados"
-msgstr ""
+msgstr "Renombrando grupo de agentes relacionados"
 
 #: modules/Components/components/mc-entity/texts.php:34
 msgid "Adicionando administrador"
-msgstr ""
+msgstr "Agregando administrador"
 
 #: modules/Components/components/mc-entity/texts.php:36
 msgid "Removendo selo da entidade"
-msgstr ""
+msgstr "Eliminando sello de entidad"
 
 #: modules/Components/components/mc-entity/texts.php:37
 msgid "Relacionando selo à entidade"
-msgstr ""
+msgstr " Relacionando el sello con entidad"
 
 #: modules/Components/components/mc-header-menu-user/template.php:26
 #: modules/Components/components/mc-header-menu-user/template.php:65
 msgid "Minha conta"
-msgstr ""
+msgstr "Mi cuenta"
 
 #: modules/Components/components/mc-header-menu-user/template.php:49
 #: modules/Components/components/mc-header-menu-user/template.php:87
@@ -4993,42 +5003,42 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/panel-agent.php:14
 #: themes/BaseV1/layouts/parts/panel-nav.php:8
 msgid "Meu Perfil"
-msgstr ""
+msgstr "Mi Perfil"
 
 #: modules/Components/components/mc-header-menu/template.php:49
 #: modules/Opportunities/views/registration/evaluation.php:25
 #: modules/Panel/views/panel/index.php:28
 msgid "Painel de controle"
-msgstr ""
+msgstr "Panel de control"
 
 #: modules/Components/components/mc-image-uploader/template.php:14
 msgid "Recorte a imagem"
-msgstr ""
+msgstr "Recorta la imagen"
 
 #: modules/Components/components/mc-image-uploader/template.php:17
 msgid "Descrição da imagem"
-msgstr ""
+msgstr "Descripción de la imagen"
 
 #: modules/Components/components/mc-image-uploader/template.php:35
 msgid "Recortar e subir imagem"
-msgstr ""
+msgstr "Recortar y subir imagen"
 
 #: modules/Components/components/mc-loading/template.php:10
 msgid "carregando..."
-msgstr ""
+msgstr "cargando..."
 
 #: modules/Components/components/mc-map-card/template.php:34
 #: modules/Entities/components/entity-location/template.php:63
 msgid "Sem Endereço"
-msgstr ""
+msgstr "Sin Dirección"
 
 #: modules/Components/components/mc-modal/template.php:30
 msgid "Defina a propriedade `buttonLabel` do componente modal"
-msgstr ""
+msgstr "Establezca la propiedad `buttonLabel` del componente modal"
 
 #: modules/Components/components/mc-multiselect/template.php:21
 msgid "Filtro"
-msgstr ""
+msgstr "Filtro"
 
 #: modules/Components/components/mc-multiselect/template.php:33
 #: modules/Entities/components/entity-files-list/template.php:41
@@ -5045,28 +5055,28 @@ msgstr ""
 #: modules/Opportunities/components/opportunity-rules/template.php:65
 #: modules/UserManagement/components/user-management--add-role-modal/template.php:39
 msgid "Confirmar"
-msgstr ""
+msgstr "Confirmar"
 
 #: modules/Components/components/mc-notification/texts.php:5
 msgid "Sucesso na operação"
-msgstr ""
+msgstr "Éxito en la operación"
 
 #: modules/Components/components/mc-notification/texts.php:6
 msgid "Ocorreu um erro ao realizar o processamento"
-msgstr ""
+msgstr "ocurrió un error al procesar"
 
 #: modules/Components/components/mc-notification/texts.php:7
 msgid "Informações disponíveis."
-msgstr ""
+msgstr "Información disponible"
 
 #: modules/Components/components/mc-popover/template.php:16
 #: modules/Components/components/mc-popover/template.php:34
 msgid "Defina a propriedade button-label do componente popover"
-msgstr ""
+msgstr "Establezca la propiedad button-label del componente popover"
 
 #: modules/Components/components/mc-relation-card/template.php:33
 msgid "Este agente atua de forma"
-msgstr ""
+msgstr "Este agente actúa de una forma"
 
 #: modules/Components/components/mc-relation-card/template.php:37
 #: modules/Entities/views/agent/edit-1.php:71
@@ -5075,120 +5085,120 @@ msgstr ""
 #: modules/Entities/views/space/single.php:83
 #: themes/BaseV1/layouts/parts/search/infobox-agent.php:13
 msgid "Áreas de atuação"
-msgstr ""
+msgstr "Áreas de actuación"
 
 #: modules/Components/components/mc-relation-card/template.php:47
 msgid "A solicitação para `entidade` está pendente"
-msgstr ""
+msgstr "La solicitud para entidad está pendiente"
 
 #: modules/Components/components/mc-stepper-vertical/template.php:22
 #: modules/Opportunities/components/opportunity-subscribe-results/template.php:59
 msgid "Diminuir"
-msgstr ""
+msgstr "Reducir"
 
 #: modules/Components/components/mc-stepper-vertical/template.php:23
 #: modules/Opportunities/components/opportunity-subscribe-results/template.php:60
 msgid "Expandir"
-msgstr ""
+msgstr "Expandir"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:16
 #: modules/Opportunities/views/registration/single.php:115
 msgid "Dados do proponente"
-msgstr ""
+msgstr "Datos del proponente"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:18
 #: modules/Components/components/mc-summary-agent-info/template.php:55
 msgid "ID:"
-msgstr ""
+msgstr "ID:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:19
 #: modules/Components/components/mc-summary-agent-info/template.php:56
 msgid "Nome:"
-msgstr ""
+msgstr "Nombre:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:20
 #: modules/Components/components/mc-summary-agent-info/template.php:57
 msgid "Localização:"
-msgstr ""
+msgstr "Ubicación:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:21
 msgid "Nome completo:"
-msgstr ""
+msgstr "Nombre Completo:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:22
 msgid "CPF:"
-msgstr ""
+msgstr "CP:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:23
 msgid "Raça/cor:"
-msgstr ""
+msgstr "Raza/color"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:24
 msgid "Nascimento:"
-msgstr ""
+msgstr "Nacimiento:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:25
 msgid "Gênero:"
-msgstr ""
+msgstr "Género:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:26
 msgid "Email público:"
-msgstr ""
+msgstr "E-mail Público:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:27
 msgid "Email Privado:"
-msgstr ""
+msgstr "E-mail Privado:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:28
 msgid "Telefone público:"
-msgstr ""
+msgstr "Teléfono público:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:29
 #: modules/Components/components/mc-summary-agent-info/template.php:58
 msgid "Telefone 1:"
-msgstr ""
+msgstr "Teléfono 1:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:30
 msgid "Telefone 2:"
-msgstr ""
+msgstr "Teléfono 2:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:31
 msgid "Endereço:"
-msgstr ""
+msgstr "Dirección:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:32
 msgid "CEP:"
-msgstr ""
+msgstr "CP:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:33
 msgid "Logradouro:"
-msgstr ""
+msgstr "Calle:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:34
 msgid "Número:"
-msgstr ""
+msgstr "Número:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:35
 msgid "Complemento:"
-msgstr ""
+msgstr "Complemento:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:36
 msgid "Bairro:"
-msgstr ""
+msgstr "Barrio:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:37
 msgid "Município:"
-msgstr ""
+msgstr "Municipio/Localidad:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:38
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:63
 msgid "Estado:"
-msgstr ""
+msgstr "Departamento:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:39
 #: themes/BaseV1/layouts/parts/singles/agent-header.php:39
 msgid "Site:"
-msgstr ""
+msgstr "Página web:"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:40
 msgid "Facebook:"
@@ -5200,59 +5210,59 @@ msgstr ""
 
 #: modules/Components/components/mc-summary-agent-info/template.php:45
 msgid "Dados do coletivo"
-msgstr ""
+msgstr "Datos del colectivo"
 
 #: modules/Components/components/mc-summary-agent-info/template.php:51
 msgid "Instituição não informada"
-msgstr ""
+msgstr "Institución no informada"
 
 #: modules/Components/components/mc-summary-agent/template.php:15
 msgid "Agente proponente"
-msgstr ""
+msgstr "Agente proponente"
 
 #: modules/Components/components/mc-summary-evaluate/template.php:19
 msgid "Avaliações pendente"
-msgstr ""
+msgstr "Evaluaciones pendientes"
 
 #: modules/Components/components/mc-summary-evaluate/template.php:20
 msgid "avaliações disponíveis"
-msgstr ""
+msgstr "avaluaciones disponibles"
 
 #: modules/Components/components/mc-summary-evaluate/template.php:29
 msgid "Avaliações iniciadas"
-msgstr ""
+msgstr "Evaluaciones iniciadas"
 
 #: modules/Components/components/mc-summary-evaluate/template.php:30
 #: modules/Components/components/mc-summary-evaluate/template.php:40
 #: modules/Components/components/mc-summary-evaluate/template.php:50
 #: modules/OpportunityAccountability/Module.php:622
 msgid "avaliações"
-msgstr ""
+msgstr "evaluaciones"
 
 #: modules/Components/components/mc-summary-evaluate/template.php:39
 msgid "Avaliações concluídas"
-msgstr ""
+msgstr "Evaluaciones completadas"
 
 #: modules/Components/components/mc-summary-evaluate/template.php:49
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:89
 msgid "Avaliações enviadas"
-msgstr ""
+msgstr "Evaluaciones enviadas"
 
 #: modules/Components/components/mc-summary-project/template.php:24
 #: modules/Opportunities/views/registration/single.php:167
 msgid "Nome do projeto não informado"
-msgstr ""
+msgstr "Nombre del Proyecto no informado"
 
 #: modules/Components/components/mc-summary-spaces/template.php:16
 #: modules/Opportunities/views/registration/single.php:221
 #: themes/BaseV1/layouts/parts/singles/registration-edit--spaces.php:8
 #: themes/BaseV1/layouts/parts/singles/registration-single--spaces.php:9
 msgid "Espaço Vinculado"
-msgstr ""
+msgstr "Espacio Vinculado:"
 
 #: modules/Components/components/mc-summary-spaces/template.php:22
 msgid "Espaço não informado"
-msgstr ""
+msgstr "Espacio no Informado"
 
 #: modules/Components/components/occurrence-card/template.php:50
 #: themes/BaseV1/Theme.php:2493
@@ -5260,11 +5270,11 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/search/list-event-item.php:40
 #: themes/BaseV1/layouts/parts/singles/project-events.php:37
 msgid "Classificação"
-msgstr ""
+msgstr "Clasificación"
 
 #: modules/Components/components/occurrence-card/template.php:55
 msgid "Entrada"
-msgstr ""
+msgstr "Entrada"
 
 #: modules/Components/components/permission-publish/template.php:10
 #: modules/UserManagement/components/system-roles--card/template.php:16
@@ -5273,37 +5283,37 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:74
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:251
 msgid "Permissões"
-msgstr ""
+msgstr "Permisos"
 
 #: modules/Components/components/permission-publish/template.php:11
 msgid "Você pode permitir que outras pessoas criem Eventos neste Espaço."
-msgstr ""
+msgstr "Puedes permitir que otras personas creen Eventos en este Espacio."
 
 #: modules/Components/components/permission-publish/template.php:15
 msgid "Restringir publicação por outras pessoas"
-msgstr ""
+msgstr "Restringir la publicación a otros"
 
 #: modules/Components/components/permission-publish/template.php:16
 msgid "Permitir publicação por outras pessoas"
-msgstr ""
+msgstr "Permitir la publicación por parte de otros"
 
 #: modules/Components/components/select-entity/template.php:46
 #: modules/Entities/components/create-occurrence/template.php:31
 #: modules/Opportunities/components/opportunity-phases-config/template.php:72
 msgid "ou"
-msgstr ""
+msgstr "o"
 
 #: modules/Components/components/select-entity/texts.php:5
 msgid "Selecione um dos agentes"
-msgstr ""
+msgstr "Seleccione uno de los agentes"
 
 #: modules/Components/components/select-entity/texts.php:6
 msgid "Crie um novo agente"
-msgstr ""
+msgstr "Crear un nuevo agente"
 
 #: modules/Components/components/select-entity/texts.php:7
 msgid "Pesquise por agentes"
-msgstr ""
+msgstr "Buscar agentes"
 
 #: modules/Components/components/select-entity/texts.php:9
 msgid "Selecione um dos espaços"
@@ -5369,11 +5379,11 @@ msgstr ""
 
 #: modules/Components/components/space-info/template.php:42
 msgid "Telefone:"
-msgstr ""
+msgstr "Teléfono:"
 
 #: modules/Components/components/space-info/template.php:46
 msgid "Email:"
-msgstr ""
+msgstr "E-mail:"
 
 #: modules/DeleteAccount/Module.php:69
 msgid "Sua conta será removida e não poderá ser recuperada, deseja continuar?"
@@ -5628,7 +5638,7 @@ msgstr "Crear Evento"
 
 #: modules/Entities/components/create-event/template.php:19
 msgid "Crie um evento com informações básicas"
-msgstr "Crear un evento con información básica."
+msgstr "Crear un evento con información básica"
 
 #: modules/Entities/components/create-event/template.php:22
 #: modules/Entities/views/event/single.php:74
@@ -5651,7 +5661,7 @@ msgid ""
 "<b>Meus Eventos</b> no <b>Painel de Controle</b>.  "
 msgstr ""
 "Para completar y publicar su nuevo evento, acceda al área <b>Borradores</b> "
-"en <b>Mis eventos</b> en el <b>Panel de control</b>."
+"en <b>Mis eventos</b> en el <b>Panel de control</b>"
 
 #: modules/Entities/components/create-event/template.php:47
 #: modules/Entities/components/create-event/template.php:52
@@ -5726,11 +5736,11 @@ msgstr "Insertar ocurrencia en evento"
 
 #: modules/Entities/components/create-occurrence/template.php:20
 msgid "Vincular um espaço para o evento"
-msgstr "vincular un espacio al evento"
+msgstr "Vincular un espacio al evento"
 
 #: modules/Entities/components/create-occurrence/template.php:21
 msgid "Espaço vinculado:"
-msgstr "Espacio vinculado"
+msgstr "Espacio vinculado:"
 
 #: modules/Entities/components/create-occurrence/template.php:27
 #: modules/Entities/components/entity-link-project/template.php:41
@@ -5843,7 +5853,7 @@ msgstr "¿El evento será gratuito?"
 
 #: modules/Entities/components/create-occurrence/template.php:203
 msgid "Valor da entrada:"
-msgstr "Valor de entrada/;"
+msgstr "Valor de entrada:"
 
 #: modules/Entities/components/create-occurrence/template.php:213
 msgid "Informações adicionais sobre a entrada:"
@@ -8028,7 +8038,7 @@ msgstr "El proyecto no está registrado"
 
 #: modules/EventImporter/Controller.php:436
 msgid "A coluna proprietário espera o número ID do agente. "
-msgstr "La columna propietario espera el número de identificación del agente"
+msgstr "La columna propietario espera el número de identificación del agente. "
 
 #: modules/EventImporter/Controller.php:439
 msgid "A coluna agente é obrigatória. Informo o ID do agente responsável"
