@@ -9,7 +9,10 @@ app.component('notification-modal' , {
     
     created() {
         globalThis.addEventListener('afterFetch', (e) => {
-            this.notificationsCount = e.detail.headers.get('MC-notifications-count');
+            const header = e.detail.headers.get('MC-notifications-count');
+            if(header !== null){
+                this.notificationsCount = header;
+            }
         });
     },
 
