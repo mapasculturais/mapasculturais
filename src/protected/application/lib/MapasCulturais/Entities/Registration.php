@@ -1192,7 +1192,12 @@ class Registration extends \MapasCulturais\Entity
         if($this->status <= 0 || $user->is('guest')) {
             return false;
         }
+
         $app = App::i();
+
+        if ($this->opportunity->canUser('@control', $user)) {
+            return true;
+        }
 
         $can = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
 
