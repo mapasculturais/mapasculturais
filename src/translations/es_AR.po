@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-14 12:09-0400\n"
+"PO-Revision-Date: 2023-12-14 16:00-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -6342,7 +6342,7 @@ msgstr ""
 
 #: modules/Entities/components/entity-actions/template.php:86
 msgid "Gerenciar"
-msgstr ""
+msgstr "Administrar"
 
 #: modules/Entities/components/entity-actions/template.php:89
 #: modules/Entities/components/entity-occurrence-list/template.php:86
@@ -6365,35 +6365,35 @@ msgstr ""
 #: themes/BaseV1/views/event/edit.php:74
 #: themes/BaseV1/views/event/single.php:74
 msgid "Editar"
-msgstr ""
+msgstr "Editar"
 
 #: modules/Entities/components/entity-actions/texts.php:9
 #: modules/Panel/components/panel--entities-summary/script.js:45
 #: themes/BaseV1/Theme.php:551 themes/BaseV1/Theme.php:552
 #: themes/BaseV1/Theme.php:1854
 msgid "oportunidade"
-msgstr ""
+msgstr "oportunidad"
 
 #: modules/Entities/components/entity-admins/template.php:19
 msgid "Administrado por"
-msgstr ""
+msgstr "Administrado por"
 
 #: modules/Entities/components/entity-admins/template.php:37
 #: modules/Entities/components/entity-related-agents/template.php:73
 msgid "Remover agente relacionado?"
-msgstr ""
+msgstr "¿Eliminar agente relacionado?"
 
 #: modules/Entities/components/entity-admins/template.php:49
 msgid "Adicionar administrador"
-msgstr ""
+msgstr "Agregar administrador"
 
 #: modules/Entities/components/entity-cover/template.php:20
 msgid "Alterar Imagem de Capa"
-msgstr ""
+msgstr "Editar imagen de la portada"
 
 #: modules/Entities/components/entity-cover/template.php:24
 msgid "Adicionar Imagem de Capa"
-msgstr ""
+msgstr "Agregar imagen de la portada"
 
 #: modules/Entities/components/entity-data/template.php:42
 #: modules/OpportunityAccountability/Module.php:157
@@ -6412,7 +6412,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:64
 #: themes/BaseV1/layouts/parts/singles/registration-single--spaces.php:20
 msgid "Não informado"
-msgstr ""
+msgstr "No Informado"
 
 #: modules/Entities/components/entity-field/template.php:17
 #: modules/Entities/components/entity-file/template.php:20
@@ -6439,38 +6439,38 @@ msgstr ""
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/url.php:8
 #: themes/BaseV1/layouts/parts/singles/registration-field-edit.php:16
 msgid "obrigatório"
-msgstr ""
+msgstr "obligatorio"
 
 #: modules/Entities/components/entity-file/template.php:31
 #: modules/Entities/components/entity-file/template.php:36
 #: modules/Entities/components/entity-files-list/template.php:22
 #: modules/Opportunities/components/opportunity-rules/template.php:22
 msgid "Sem descrição"
-msgstr ""
+msgstr "Sin discripción"
 
 #: modules/Entities/components/entity-file/template.php:47
 msgid "Deseja remover este arquivo?"
-msgstr ""
+msgstr "¿Quieres eliminar este archivo?"
 
 #: modules/Entities/components/entity-file/template.php:58
 msgid "Anexe um arquivo"
-msgstr ""
+msgstr "Adjuntar un archivo"
 
 #: modules/Entities/components/entity-file/template.php:64
 msgid "Anexar"
-msgstr ""
+msgstr "Adjuntar"
 
 #: modules/Entities/components/entity-file/template.php:72
 #: modules/Entities/components/entity-files-list/template.php:35
 #: modules/Entities/components/entity-files-list/template.php:74
 #: modules/Entities/components/entity-files-list/texts.php:6
 msgid "Título do arquivo"
-msgstr ""
+msgstr "Título del archivo"
 
 #: modules/Entities/components/entity-file/template.php:77
 #: modules/OpportunityClaimForm/components/opportunity-claim-form/template.php:17
 msgid "Descreva abaixo os motivos do recurso"
-msgstr ""
+msgstr "Describa los motivos del recurso"
 
 #: modules/Entities/components/entity-file/template.php:88
 #: modules/Entities/components/entity-file/template.php:98
@@ -6485,28 +6485,28 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:10
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:15
 msgid "Enviar"
-msgstr ""
+msgstr "Enviar"
 
 #: modules/Entities/components/entity-file/template.php:91
 #: modules/Opportunities/components/opportunity-rules/template.php:48
 #: themes/BaseV1/views/app/edit.php:23 themes/BaseV1/views/app/single.php:23
 msgid "Atualizar"
-msgstr ""
+msgstr "Actualizar"
 
 #: modules/Entities/components/entity-files-list/template.php:36
 msgid "Informe o título do arquivo"
-msgstr ""
+msgstr "Indique el título del archivo"
 
 #: modules/Entities/components/entity-files-list/template.php:52
 #: modules/Entities/components/entity-links/template.php:57
 #: modules/Opportunities/components/opportunity-rules/template.php:31
 msgid "Deseja remover o link?"
-msgstr ""
+msgstr "¿Quieres eliminar el enlace?"
 
 #: modules/Entities/components/entity-files-list/template.php:59
 #: modules/Opportunities/components/opportunity-rules/template.php:38
 msgid "Adicionar arquivo"
-msgstr ""
+msgstr "Agregar archivo"
 
 #: modules/Entities/components/entity-gallery-video/script.js:40
 msgid "title"
@@ -6515,52 +6515,52 @@ msgstr ""
 #: modules/Entities/components/entity-gallery-video/template.php:38
 #: modules/Entities/components/entity-gallery-video/template.php:81
 msgid "Título do vídeo"
-msgstr ""
+msgstr "Título del vídeo"
 
 #: modules/Entities/components/entity-gallery-video/template.php:53
 msgid "Deseja remover este vídeo?"
-msgstr ""
+msgstr "¿Quieres eliminar este vídeo?"
 
 #: modules/Entities/components/entity-gallery-video/template.php:60
 #: modules/Entities/components/entity-gallery-video/template.php:61
 #: themes/BaseV1/layouts/parts/video-gallery.php:79
 msgid "Adicionar Vídeo"
-msgstr ""
+msgstr "Agregar Vídeo"
 
 #: modules/Entities/components/entity-gallery-video/template.php:66
 #: themes/BaseV1/layouts/parts/video-gallery.php:84
 msgid "Adicionar vídeo"
-msgstr ""
+msgstr "Agregar vídeo"
 
 #: modules/Entities/components/entity-gallery-video/template.php:75
 msgid "URL do vídeo"
-msgstr ""
+msgstr "URL del vídeo"
 
 #: modules/Entities/components/entity-gallery-video/template.php:98
 msgid "Sem vimeo por enquanto."
-msgstr ""
+msgstr "Sin vimeo por ahora"
 
 #: modules/Entities/components/entity-gallery-video/texts.php:5
 #: modules/Entities/components/entity-links/texts.php:5
 msgid "Preencha todos os campos"
-msgstr ""
+msgstr "Complete todos los campos"
 
 #: modules/Entities/components/entity-gallery-video/texts.php:6
 msgid "Galeria de vídeo"
-msgstr ""
+msgstr "Galeria de vídeo"
 
 #: modules/Entities/components/entity-gallery/template.php:38
 msgid "Informe a descrição da imagem"
-msgstr ""
+msgstr "Indique la descripción de la imagen"
 
 #: modules/Entities/components/entity-gallery/template.php:52
 msgid "Deseja excluir essa imagem?"
-msgstr ""
+msgstr "¿Quieres eliminar esta imagen?"
 
 #: modules/Entities/components/entity-gallery/template.php:64
 #: themes/BaseV1/layouts/parts/gallery.php:31
 msgid "Adicionar imagem"
-msgstr ""
+msgstr "Agregar imagen"
 
 #: modules/Entities/components/entity-header/script.js:26
 msgid "title agent-1"
@@ -6603,7 +6603,7 @@ msgstr ""
 #: modules/Seals/components/seal-content-share/texts.php:5
 #: themes/BaseV1/layouts/parts/social-share.php:2
 msgid "Compartilhar"
-msgstr ""
+msgstr "Compartir"
 
 #: modules/Entities/components/entity-header/template.php:63
 #: modules/Entities/views/event/single.php:43
@@ -6617,36 +6617,36 @@ msgstr ""
 
 #: modules/Entities/components/entity-header/texts.php:5
 msgid "Edição do agente individual"
-msgstr ""
+msgstr "Edición del Agente individual"
 
 #: modules/Entities/components/entity-header/texts.php:6
 msgid "Edição do agente coletivo"
-msgstr ""
+msgstr "Edición del Agente colectivo"
 
 #: modules/Entities/components/entity-header/texts.php:7
 msgid "Edição do projeto"
-msgstr ""
+msgstr "Edición del proyecto"
 
 #: modules/Entities/components/entity-header/texts.php:8
 msgid "Edição do espaço"
-msgstr ""
+msgstr "Edición del espacio"
 
 #: modules/Entities/components/entity-header/texts.php:9
 msgid "Edição da oportunidade"
-msgstr ""
+msgstr "edición de la oportunidad"
 
 #: modules/Entities/components/entity-header/texts.php:10
 msgid "Edição do evento"
-msgstr ""
+msgstr "Edición del evento"
 
 #: modules/Entities/components/entity-header/texts.php:11
 msgid "Edição do selo"
-msgstr ""
+msgstr "Edición del sello"
 
 #: modules/Entities/components/entity-link-project/script.js:27
 #: modules/Entities/components/entity-parent-edit/script.js:30
 msgid "vinculado"
-msgstr ""
+msgstr "vinculado"
 
 #: modules/Entities/components/entity-link-project/template.php:20
 msgid "{{entity.project.name}}"
@@ -6654,7 +6654,7 @@ msgstr ""
 
 #: modules/Entities/components/entity-link-project/template.php:28
 msgid "Trocar projeto vinculado ao evento"
-msgstr ""
+msgstr "Cambiar proyecto vinculado al evento"
 
 #: modules/Entities/components/entity-link-project/template.php:38
 #: modules/Entities/components/entity-parent-edit/template.php:40
@@ -6663,49 +6663,51 @@ msgstr ""
 
 #: modules/Entities/components/entity-link-project/template.php:39
 msgid "Selecione um projeto a ser vinculado ao evento"
-msgstr ""
+msgstr "Seleccione un proyecto para vincularlo al evento"
 
 #: modules/Entities/components/entity-link-project/texts.php:5
 #: modules/Entities/components/entity-parent-edit/texts.php:5
 msgid "vinculado a"
-msgstr ""
+msgstr "vinculado al"
 
 #: modules/Entities/components/entity-links/template.php:24
 msgid "Editar link"
-msgstr ""
+msgstr "Editar enlace"
 
 #: modules/Entities/components/entity-links/template.php:33
 #: modules/Entities/components/entity-links/template.php:78
 msgid "Título do link"
-msgstr ""
+msgstr "Título del enlace"
 
 #: modules/Entities/components/entity-links/template.php:65
 #: modules/Entities/components/entity-links/template.php:69
 #: themes/BaseV1/layouts/parts/link-list.php:34
 msgid "Adicionar Link"
-msgstr ""
+msgstr "Agregar Enlace"
 
 #: modules/Entities/components/entity-list/texts.php:5
 msgid "Mensagem de Sucesso"
-msgstr ""
+msgstr "Mensaje de Éxito"
 
 #: modules/Entities/components/entity-location/template.php:27
 msgid "Complemento ou ponto de referência"
-msgstr ""
+msgstr "Complemento o punto de referencia"
 
 #: modules/Entities/components/entity-location/template.php:56
 msgid "Localização pública"
-msgstr ""
+msgstr "Ubicación pública"
 
 #: modules/Entities/components/entity-location/template.php:57
 msgid ""
 "Marque o campo acima para tornar o endereço público ou deixe desmarcado para "
 "manter o endereço privado."
 msgstr ""
+"Marque el campo arriba para hacer pública la dirección o déjala sin marcar "
+"para mantener la dirección privada."
 
 #: modules/Entities/components/entity-log/template.php:9
 msgid "Histórico de alterações"
-msgstr ""
+msgstr "Registro de modificaciones"
 
 #: modules/Entities/components/entity-occurrence-list/script.js:46
 msgid "currency"
@@ -6713,30 +6715,33 @@ msgstr ""
 
 #: modules/Entities/components/entity-occurrence-list/template.php:20
 msgid "Data, hora e local do evento"
-msgstr ""
+msgstr "Fecha, hora y sede del evento"
 
 #: modules/Entities/components/entity-occurrence-list/template.php:23
 msgid ""
 "Adicione data, hora e local da ocorrência do seu evento. Você pode criar "
 "várias ocorrências com informações diferentes."
 msgstr ""
+"Agregue fecha, hora y lugar de la ocurrencia de su evento. Puede crear "
+"varias ocurrencias con informaciones diferentes."
 
 #: modules/Entities/components/entity-occurrence-list/template.php:29
 msgid "Deseja inserir uma ocorrência para o seu Evento?"
-msgstr ""
+msgstr "¿Desea insertar una ocurrencia para su Evento?"
 
 #: modules/Entities/components/entity-occurrence-list/template.php:32
 msgid ""
 "Você pode inserir agora uma ocorrência do seu evento ou a ocorrência única."
 msgstr ""
+"Puedes insertar ahora una ocurrencia de tu evento o la ocurrencia única."
 
 #: modules/Entities/components/entity-occurrence-list/template.php:49
 msgid "Ver mapa"
-msgstr ""
+msgstr "ver el mapa"
 
 #: modules/Entities/components/entity-occurrence-list/template.php:97
 msgid "Deseja remover essa ocorrência?"
-msgstr ""
+msgstr "¿Desea eliminar la ocurrencia?"
 
 #: modules/Entities/components/entity-occurrence-list/texts.php:5
 msgid "BRL"
@@ -6744,11 +6749,11 @@ msgstr ""
 
 #: modules/Entities/components/entity-owner/script.js:18
 msgid "publicado por"
-msgstr ""
+msgstr "publicado por"
 
 #: modules/Entities/components/entity-owner/template.php:32
 msgid "Alterar Propriedade"
-msgstr ""
+msgstr "Cambiar propriedad"
 
 #: modules/Entities/components/entity-parent-edit/template.php:22
 msgid "{{entity.parent.name}}"
@@ -6756,70 +6761,74 @@ msgstr ""
 
 #: modules/Entities/components/entity-parent-edit/template.php:30
 msgid "Trocar supra espaço"
-msgstr ""
+msgstr "Cambiar supra espacio"
 
 #: modules/Entities/components/entity-parent-edit/template.php:31
 msgid "Trocar supra projeto"
-msgstr ""
+msgstr "Cambiar supra proyecto"
 
 #: modules/Entities/components/entity-parent-edit/template.php:41
 msgid ""
 "Selecione um espaço para que o seu espaço atual seja vinculado como "
 "integrante"
 msgstr ""
+"Seleccione un espacio para que su espacio actual sea vinculado como "
+"integrante"
 
 #: modules/Entities/components/entity-parent-edit/template.php:42
 msgid ""
 "Selecione um projeto para que o seu projeto atual seja vinculado como "
 "integrante"
 msgstr ""
+"Seleccione un proyecto para que su proyecto actual sea vinculado como "
+"integrante"
 
 #: modules/Entities/components/entity-profile/template.php:22
 msgid "Adicionar imagem de perfil"
-msgstr ""
+msgstr "Agregar imagen de perfil"
 
 #: modules/Entities/components/entity-related-agents/template.php:17
 msgid "Agentes relacionados"
-msgstr ""
+msgstr "Agentes relacionados"
 
 #: modules/Entities/components/entity-related-agents/template.php:34
 #: modules/Entities/components/entity-related-agents/template.php:111
 msgid "Digite o nome do grupo"
-msgstr ""
+msgstr "Ingrese el nombre el grupo"
 
 #: modules/Entities/components/entity-related-agents/template.php:51
 msgid "Remover grupo de agentes relacionados?"
-msgstr ""
+msgstr "¿Eliminar grupo de agentes relacionados?"
 
 #: modules/Entities/components/entity-related-agents/template.php:85
 #: modules/Support/layouts/parts/support/opportunity-support-settings.php:11
 #: themes/BaseV1/layouts/parts/search/list-agent.php:3
 msgid "Adicionar agente"
-msgstr ""
+msgstr "Agregar agente"
 
 #: modules/Entities/components/entity-related-agents/template.php:98
 msgid "Adicionar novo grupo de Agentes"
-msgstr ""
+msgstr "Agregar grupo dea gentes relacionados?"
 
 #: modules/Entities/components/entity-related-agents/template.php:102
 msgid "Adicionar grupo"
-msgstr ""
+msgstr "Agregar grupo"
 
 #: modules/Entities/components/entity-request-ownership/template.php:16
 msgid "Reivindicar Propriedade"
-msgstr ""
+msgstr "Reivindicar propiedad"
 
 #: modules/Entities/components/entity-request-ownership/template.php:19
 msgid "Deseja reivindicar essa propriedade?"
-msgstr ""
+msgstr "¿Desea reivindicar esta propiedad?"
 
 #: modules/Entities/components/entity-social-media/template.php:13
 msgid "Redes sociais"
-msgstr ""
+msgstr "Redes sociales"
 
 #: modules/Entities/components/entity-social-media/template.php:58
 msgid "Adicionar redes sociais"
-msgstr ""
+msgstr "Agregar redes sociales"
 
 #: modules/Entities/components/entity-status/texts.php:5
 #, php-format
@@ -6827,6 +6836,8 @@ msgid ""
 "<strong>Este %entity% está arquivado.</strong> Você pode <strong>publicar</"
 "strong> novamente para desarquivá-lo."
 msgstr ""
+"<strong>Este %entity% está archivado.</strong> Puede <strong>publicar</"
+"strong> nuevamente para desarchivarlo"
 
 #: modules/Entities/components/entity-status/texts.php:6
 #, php-format
@@ -6834,6 +6845,8 @@ msgid ""
 "<strong>Este %entity% está em rascunho.</strong> Você precisa "
 "<strong>publicar</strong> para exibir para todas as pessoas. "
 msgstr ""
+"<strong>Este %entity% está en borrador.</strong> Debes <strong>publicar</"
+"strong> para mostrar a todas las personas."
 
 #: modules/Entities/components/entity-status/texts.php:7
 #, php-format
@@ -6841,6 +6854,8 @@ msgid ""
 "<strong>Este %entity% está excluído.</strong> Você pode <strong>recuperar</"
 "strong> ou <strong>excluir em definitivo</strong>."
 msgstr ""
+"<strong>Este %entity% está eliminado.</strong> Puedes <strong>recuperarlo</"
+"strong> o <strong>eliminarlo definitivamente</strong>."
 
 #: modules/Entities/components/entity-status/texts.php:8
 #, php-format
@@ -6848,6 +6863,8 @@ msgid ""
 "<strong>Esta %entity% está arquivada.</strong> Você pode <strong>publicar</"
 "strong> novamente para desarquivá-la."
 msgstr ""
+"<strong>Esta %entity% está archivada.</strong> Puedes <strong>publicarla</"
+"strong> nuevamente para desarchivarla."
 
 #: modules/Entities/components/entity-status/texts.php:9
 #, php-format
@@ -6855,6 +6872,8 @@ msgid ""
 "<strong>Esta %entity% está em rascunho.</strong> Você precisa "
 "<strong>publicar</strong> para exibir para todas as pessoas. "
 msgstr ""
+"<strong>Esta %entity% está em rascunho.</strong> Você precisa "
+"<strong>publicar</strong> para exibir para todas as pessoas. "
 
 #: modules/Entities/components/entity-status/texts.php:10
 #, php-format
@@ -6862,14 +6881,16 @@ msgid ""
 "<strong>Esta %entity% está excluída.</strong> Você pode <strong>recuperar</"
 "strong> ou <strong>excluir em definitivo</strong>."
 msgstr ""
+"<strong>Esta %entity% está eliminada.</strong> Puedes <strong>recuperarla</"
+"strong> o <strong>eliminarla definitivamente</strong>."
 
 #: modules/Entities/components/entity-table/template.php:22
 msgid "Busque pelo número de inscrição, status, parecer técnico?"
-msgstr ""
+msgstr "¿Búsqueda por número de registro, estado, evaluación técnica?"
 
 #: modules/Entities/components/entity-table/template.php:28
 msgid "Filtrar:"
-msgstr ""
+msgstr "Filtrar:"
 
 #: modules/Entities/components/entity-table/template.php:32
 msgid "Operador:"
@@ -6877,16 +6898,16 @@ msgstr ""
 
 #: modules/Entities/components/entity-table/template.php:38
 msgid "Status da inscrição"
-msgstr ""
+msgstr "Estado de la inscripción"
 
 #: modules/Entities/components/entity-table/template.php:41
 msgid "Não habilitada"
-msgstr ""
+msgstr "No habilitado"
 
 #: modules/Entities/components/entity-table/template.php:42
 #: modules/Panel/components/panel--entity-tabs/template.php:19
 msgid "Em rascunho"
-msgstr ""
+msgstr "En borrador"
 
 #: modules/Entities/components/entity-table/template.php:43
 #: modules/Opportunities/components/registration-card/texts.php:6
@@ -6894,43 +6915,43 @@ msgstr ""
 #: modules/Opportunities/views/registration/single.php:82
 #: modules/Reports/Controller.php:452 themes/BaseV1/Theme.php:2186
 msgid "Enviada"
-msgstr ""
+msgstr "Enviada"
 
 #: modules/Entities/components/entity-table/template.php:45
 #: modules/OpportunityAccountability/Module.php:658
 #: modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:40
 msgid "Não aprovada"
-msgstr ""
+msgstr "No aprobada"
 
 #: modules/Entities/components/entity-table/template.php:47
 msgid "Aprovada:"
-msgstr ""
+msgstr "Aprobada:"
 
 #: modules/Entities/components/entity-table/template.php:53
 msgid "Exequibilidade (R$)"
-msgstr ""
+msgstr "Viabilidad (moneda)"
 
 #: modules/Entities/components/entity-table/template.php:60
 msgid "Colunas habilitadas na tabela"
-msgstr ""
+msgstr "Columnas habilitadas en la tabla"
 
 #: modules/Entities/components/entity-table/template.php:78
 msgid "linhas por página"
-msgstr ""
+msgstr "líneas por página"
 
 #: modules/Entities/components/entity-table/template.php:86
 msgid "Conferir inscrição"
-msgstr ""
+msgstr "Consultar registro"
 
 #: modules/Entities/components/entity-table/texts.php:5
 #: themes/BaseV1/Theme.php:2211
 msgid "Não é permitido desabilitar a coluna"
-msgstr ""
+msgstr "No está permitido deshabilitar la columna."
 
 #: modules/Entities/components/entity-terms/template.php:25
 #: modules/Entities/components/entity-terms/template.php:50
 msgid "Adicionar nova"
-msgstr ""
+msgstr "Agregar nueva"
 
 #: modules/Entities/components/entity-terms/template.php:34
 msgid "Adicione uma nova tag"
