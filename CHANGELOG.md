@@ -4,11 +4,15 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.8.11] - 2023-12-05
+## [5.8.12] - 2023-12-14
+### Correções 
+- Corrige permissão para que gestores não administradores do sistema modifiquem avaliação após a fase ser publicada
+
+## [5.8.11] - 2023-12-13
 ### Correções 
 - Corrige permissão para que gestores modifiquem avaliação após a fase ser publicada
 
-## [5.8.10] - 2023-12-05
+## [5.8.10] - 2023-12-12
 ### Correções 
 - Corrige exibição de formulário das avaliações dos avaliadores para o gestor
 
