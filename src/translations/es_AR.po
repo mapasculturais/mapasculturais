@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-15 08:01-0400\n"
+"PO-Revision-Date: 2023-12-15 16:01-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -6633,7 +6633,7 @@ msgstr "Edición del espacio"
 
 #: modules/Entities/components/entity-header/texts.php:9
 msgid "Edição da oportunidade"
-msgstr "edición de la oportunidad"
+msgstr "Edición de la oportunidad"
 
 #: modules/Entities/components/entity-header/texts.php:10
 msgid "Edição do evento"
@@ -7053,24 +7053,24 @@ msgstr "Seleccione Raza/color"
 
 #: modules/Entities/views/agent/edit-1.php:118
 msgid "Selecione a sua Escolaridade"
-msgstr ""
+msgstr "Seleccione su Escolaridad"
 
 #: modules/Entities/views/agent/edit-1.php:119
 msgid "É agente itinerante?"
-msgstr ""
+msgstr "¿Es agente itinerante?"
 
 #: modules/Entities/views/agent/edit-1.php:120
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:176
 msgid "Pessoa com Deficiência"
-msgstr ""
+msgstr "Persona con Discapacidad"
 
 #: modules/Entities/views/agent/edit-1.php:122
 msgid "Não encontrou sua comunidade Tradicional"
-msgstr ""
+msgstr "No encontró su comunidad Tradicional"
 
 #: modules/Entities/views/agent/edit-1.php:128
 msgid "Informações públicas"
-msgstr ""
+msgstr "informaciones públicas"
 
 #: modules/Entities/views/agent/edit-1.php:129
 #: modules/Entities/views/agent/edit-2.php:107
@@ -7079,6 +7079,8 @@ msgid ""
 "Os dados inseridos abaixo assim como as informações de apresentação também "
 "são exibidos publicamente"
 msgstr ""
+"Los datos que se introducen a continuación, así como la información de "
+"presentación, también se muestran públicamente."
 
 #: modules/Entities/views/agent/edit-1.php:134
 #: modules/Entities/views/event/edit.php:128
@@ -7086,7 +7088,7 @@ msgstr ""
 #: modules/Entities/views/space/edit.php:148
 #: modules/Seals/components/seal-form-information-seal/template.php:104
 msgid "Adicionar arquivos para download"
-msgstr ""
+msgstr "Agregar archivos para descargar"
 
 #: modules/Entities/views/agent/edit-1.php:135
 #: modules/Entities/views/agent/edit-2.php:113
@@ -7096,7 +7098,7 @@ msgstr ""
 #: modules/Opportunities/components/opportunity-basic-info/template.php:65
 #: modules/Seals/components/seal-form-information-seal/template.php:105
 msgid "Adicionar links"
-msgstr ""
+msgstr "Agregar enlaces"
 
 #: modules/Entities/views/agent/edit-1.php:136
 #: modules/Entities/views/agent/edit-2.php:114
@@ -7104,7 +7106,7 @@ msgstr ""
 #: modules/Entities/views/project/edit.php:120
 #: modules/Entities/views/space/edit.php:150
 msgid "Adicionar vídeos"
-msgstr ""
+msgstr "Agregar Vídeos"
 
 #: modules/Entities/views/agent/edit-1.php:137
 #: modules/Entities/views/agent/edit-2.php:115
@@ -7112,7 +7114,7 @@ msgstr ""
 #: modules/Entities/views/project/edit.php:121
 #: modules/Entities/views/space/edit.php:151
 msgid "Adicionar fotos na galeria"
-msgstr ""
+msgstr "Agregar fotos a la galería"
 
 #: modules/Entities/views/agent/edit-2.php:77
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:11
@@ -7125,27 +7127,27 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/search/list-agent-item.php:14
 #: themes/BaseV1/layouts/parts/search/list-space-item.php:17
 msgid "Área de atuação"
-msgstr ""
+msgstr "Área de actuación"
 
 #: modules/Entities/views/agent/edit-2.php:86
 msgid "Dados do Agente Coletivo"
-msgstr ""
+msgstr "Datos del Agente colectivo"
 
 #: modules/Entities/views/agent/edit-2.php:91
 msgid "Nome fantasia ou razão social"
-msgstr ""
+msgstr "Nombre Fantasía o Razón Social"
 
 #: modules/Entities/views/agent/edit-2.php:93
 msgid "Data de fundação"
-msgstr ""
+msgstr "Fecha de fundación"
 
 #: modules/Entities/views/agent/edit-2.php:94
 msgid "E-mail privado "
-msgstr ""
+msgstr "E-mail privado "
 
 #: modules/Entities/views/agent/edit-2.php:106
 msgid "informações públicas"
-msgstr ""
+msgstr "informaciones públicas"
 
 #: modules/Entities/views/agent/single-1.php:32
 #: modules/Entities/views/agent/single-2.php:34
@@ -7160,7 +7162,7 @@ msgstr ""
 #: modules/Search/views/search/project.php:14
 #: modules/Search/views/search/space.php:20
 msgid "Inicio"
-msgstr ""
+msgstr "Inicio"
 
 #: modules/Entities/views/agent/single-1.php:51
 #: modules/Entities/views/agent/single-2.php:53
@@ -7168,7 +7170,7 @@ msgstr ""
 #: modules/Entities/views/project/single.php:78
 #: modules/Entities/views/space/single.php:67
 msgid "Descrição Detalhada"
-msgstr ""
+msgstr "Descripción Breve"
 
 #: modules/Entities/views/agent/single-1.php:55
 #: modules/Entities/views/agent/single-2.php:56
@@ -7178,7 +7180,7 @@ msgstr ""
 #: modules/Opportunities/views/opportunity/single.php:97
 #: modules/Seals/views/seal/single.php:37
 msgid "Arquivos para download"
-msgstr ""
+msgstr "Archivos para descargar"
 
 #: modules/Entities/views/agent/single-1.php:56
 #: modules/Entities/views/agent/single-2.php:57
@@ -7192,18 +7194,18 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_event.php:344
 #: themes/BaseV1/layouts/parts/singles/history_space.php:326
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
 #: modules/Entities/views/agent/single-1.php:60
 #: modules/Entities/views/agent/single-2.php:61
 msgid "Propriedades do Agente:"
-msgstr ""
+msgstr "Propriedad del Agente:"
 
 #: modules/Entities/views/agent/single-1.php:72
 #: themes/BaseV1/layouts/parts/widget-functions.php:19
 #: themes/BaseV1/layouts/parts/widget-functions.php:21
 msgid "Funções"
-msgstr ""
+msgstr "Funciones"
 
 #: modules/Entities/views/agent/single-1.php:74
 #: modules/Entities/views/agent/single-2.php:74
@@ -7214,7 +7216,7 @@ msgstr ""
 #: modules/Opportunities/views/opportunity/single.php:106
 #: modules/Seals/components/entity-seals/texts.php:5
 msgid "Verificações"
-msgstr ""
+msgstr "Verificaciones"
 
 #: modules/Entities/views/agent/single-1.php:75
 #: modules/Entities/views/agent/single-2.php:75
@@ -7225,7 +7227,7 @@ msgstr ""
 #: modules/Opportunities/views/opportunity/single.php:108
 #: modules/Seals/views/seal/single.php:44
 msgid "Agentes Relacionados"
-msgstr ""
+msgstr "Agentes Relacionados"
 
 #: modules/Entities/views/agent/single-1.php:77
 #: modules/Entities/views/agent/single-2.php:77
@@ -7234,66 +7236,68 @@ msgstr ""
 #: modules/Entities/views/space/single.php:89
 #: modules/Opportunities/views/opportunity/single.php:111
 msgid "Veja este link:"
-msgstr ""
+msgstr "Mira este enlace:"
 
 #: modules/Entities/views/event/edit.php:35
 #: modules/Entities/views/event/single.php:31
 msgid "Evantos"
-msgstr ""
+msgstr "Eventos"
 
 #: modules/Entities/views/event/edit.php:69
 msgid "Nome do evento"
-msgstr ""
+msgstr "Nombre del evento"
 
 #: modules/Entities/views/event/edit.php:70
 msgid "Subtítulo do evento"
-msgstr ""
+msgstr "Subtítulo del evento"
 
 #: modules/Entities/views/event/edit.php:83
 msgid "Vincular a um projeto"
-msgstr ""
+msgstr "Vincular a un proyecto"
 
 #: modules/Entities/views/event/edit.php:103
 msgid "Informações sobre o evento"
-msgstr ""
+msgstr "Información sobre el evento"
 
 #: modules/Entities/views/event/edit.php:122
 msgid "Informações públicas do Evento"
-msgstr ""
+msgstr "Informaciones públicas del Evento"
 
 #: modules/Entities/views/event/edit.php:123
 msgid ""
 "Este é um espaço para você apresentar melhor o seu Evento. Adicione "
 "documentos, links, vídeos e imagens."
 msgstr ""
+"Este es un espacio para que presente mejor su Evento. Agregue documentos, "
+"enlaces, videos e imágenes."
 
 #: modules/Entities/views/event/edit.php:127
 #: modules/Opportunities/views/opportunity/single.php:93
 msgid "Apresentação"
-msgstr ""
+msgstr "Presentación"
 
 #: modules/Entities/views/project/edit.php:34
 #: modules/Entities/views/project/single.php:31
 #: modules/Panel/views/panel/projects.php:13 themes/BaseV1/Theme.php:465
 #: themes/BaseV1/Theme.php:466 themes/BaseV1/views/panel/projects.php:17
 msgid "Meus projetos"
-msgstr ""
+msgstr "Mis proyectos"
 
 #: modules/Entities/views/project/edit.php:68
 msgid "Tipo do projeto"
-msgstr ""
+msgstr "Tipo del proyecto"
 
 #: modules/Entities/views/project/edit.php:74
 msgid "Link para página ou site do projeto"
-msgstr ""
+msgstr "Enlace a la página o sitio web del proyecto"
 
 #: modules/Entities/views/project/edit.php:79
 msgid "Adicione a um projeto principal"
-msgstr ""
+msgstr "Agregue a un proyecto principal"
 
 #: modules/Entities/views/project/edit.php:87
 msgid "Período de execução do projeto"
-msgstr ""
+msgstr "Período de ejecución del proyecto"
 
 #: modules/Entities/views/project/edit.php:91
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:65
@@ -7304,16 +7308,16 @@ msgstr ""
 #: themes/BaseV1/views/event/edit.php:60
 #: themes/BaseV1/views/event/single.php:60
 msgid "Data inicial"
-msgstr ""
+msgstr "Fecha Inicial"
 
 #: modules/Entities/views/project/edit.php:98
 msgid "Contatos do projeto"
-msgstr ""
+msgstr "Contactos del proyecto"
 
 #: modules/Entities/views/project/edit.php:112
 #: modules/Entities/views/space/edit.php:142
 msgid "Mais informações públicas"
-msgstr ""
+msgstr "Más informaciones públicas"
 
 #: modules/Entities/views/project/edit.php:117
 #: modules/Entities/views/space/edit.php:147
@@ -7341,82 +7345,85 @@ msgstr ""
 #: themes/BaseV1/views/seal/edit.php:100
 #: themes/BaseV1/views/seal/single.php:100
 msgid "Descrição"
-msgstr ""
+msgstr "Descripción"
 
 #: modules/Entities/views/project/single.php:52
 msgid "Projeto integrante de"
-msgstr ""
+msgstr "Proyecto integrante de"
 
 #: modules/Entities/views/project/single.php:73
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:27
 msgid "email:"
-msgstr ""
+msgstr "E-mail:"
 
 #: modules/Entities/views/project/single.php:98
 msgid "Propriedades do Projeto"
-msgstr ""
+msgstr "Propriedad del Proyecto"
 
 #: modules/Entities/views/project/single.php:99
 msgid "Subprojetos"
-msgstr ""
+msgstr "SubProyectos"
 
 #: modules/Entities/views/space/edit.php:36
 #: modules/Panel/components/panel--nav/init.php:32 themes/BaseV1/Theme.php:275
 #: themes/BaseV1/Theme.php:276
 msgid "Meus Espaços"
-msgstr ""
+msgstr "Mis Espacios"
 
 #: modules/Entities/views/space/edit.php:86
 msgid "Endereço do espaço"
-msgstr ""
+msgstr "Dirección del espacio"
 
 #: modules/Entities/views/space/edit.php:120
 msgid "Horário e funcionamento"
-msgstr ""
+msgstr "Horario y funcionamiento"
 
 #: modules/Entities/views/space/edit.php:128
 msgid "Informações sobre o espaço"
-msgstr ""
+msgstr "Información sobre el espacio"
 
 #: modules/Entities/views/space/edit.php:143
 msgid "Apresente melhor o seu Espaço."
-msgstr ""
+msgstr "Presenta mejor tu espacio."
 
 #: modules/Entities/views/space/edit.php:143
 msgid "Adicione documentos, links, vídeos e imagens que contem a sua história."
 msgstr ""
+"Agregue documentos, enlaces, videos e imágenes que contengan su historia"
 
 #: modules/Entities/views/space/edit.php:165
 msgid "Adicionar Supra Espaço"
-msgstr ""
+msgstr "Agregar Supra Espacio"
 
 #: modules/Entities/views/space/single.php:50
 msgid "Espaço integrante de"
-msgstr ""
+msgstr "Espacio integrante de"
 
 #: modules/Entities/views/space/single.php:75
 msgid "Propriedades do Espaço"
-msgstr ""
+msgstr "Propriedad del Espacio"
 
 #: modules/Entities/views/space/single.php:76 themes/BaseV1/Theme.php:365
 #: themes/BaseV1/Theme.php:366
 msgid "Subespaços"
-msgstr ""
+msgstr "Subespacios"
 
 #: modules/EvaluationMethodDocumentary/Module.php:20
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-view.php:19
 msgid "Avaliação Documental"
-msgstr ""
+msgstr "Evaluación Documental"
 
 #: modules/EvaluationMethodDocumentary/Module.php:24
 msgid ""
 "Consiste num checkbox e um textarea para cada campo do formulário de "
 "inscrição."
 msgstr ""
+"Consiste en una casilla de verificación y un área de texto para cada campo "
+"del formulario de inscripción."
 
 #: modules/EvaluationMethodDocumentary/Module.php:63
 msgid "Nenhum campo foi avaliado"
-msgstr ""
+msgstr "Ningún campo ha sido evaluado"
 
 #: modules/EvaluationMethodDocumentary/Module.php:127
 #: modules/EvaluationMethodDocumentary/Module.php:344
@@ -7424,7 +7431,7 @@ msgstr ""
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-form.php:28
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-view.php:28
 msgid "Válida"
-msgstr ""
+msgstr "Válida"
 
 #: modules/EvaluationMethodDocumentary/Module.php:139
 #: modules/EvaluationMethodQualification/Module.php:261
@@ -7433,31 +7440,31 @@ msgstr ""
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:31
 #: modules/EvaluationMethodSimple/Module.php:127
 msgid "Observações"
-msgstr ""
+msgstr "Observaciones"
 
 #: modules/EvaluationMethodDocumentary/Module.php:151
 msgid "Descumprimento do(s) item(s) do edital"
-msgstr ""
+msgstr "No cumplimiento del(los) ítem(s) del edital"
 
 #: modules/EvaluationMethodDocumentary/Module.php:185
 msgid "Somente para avaliações documentais"
-msgstr ""
+msgstr "Solo para evaluaciones documentales"
 
 #: modules/EvaluationMethodDocumentary/Module.php:190
 #: modules/OpportunityAccountability/EvaluationMethod.php:92
 msgid "os status válidos são 0, 2, 3, 8 e 10"
-msgstr ""
+msgstr "los estados válidos son 0, 2, 3, 8 e 10"
 
 #: modules/EvaluationMethodDocumentary/Module.php:267
 #: modules/EvaluationMethodSimple/Module.php:244
 #, php-format
 msgid "Avaliações aplicadas à %s inscrições"
-msgstr ""
+msgstr "Evaluaciones aplicadas a %s inscripciones"
 
 #: modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:18
 #: themes/BaseV1/Theme.php:2187
 msgid "Aplicar resultado das avaliações"
-msgstr ""
+msgstr "Aplicar los resultados de la evaluación"
 
 #: modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:27
 #: modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/template.php:26
@@ -7465,7 +7472,7 @@ msgstr ""
 #: modules/Search/components/search-filter-agent/template.php:27
 #: themes/BaseV1/Theme.php:2000 themes/BaseV1/Theme.php:2447
 msgid "Todos"
-msgstr ""
+msgstr "Todos"
 
 #: modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:39
 #: modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/template.php:38
@@ -7473,11 +7480,13 @@ msgid ""
 "Se você preferir não marcar a caixa abaixo, as avaliações serão aplicadas "
 "somente nas inscrições que com o status 'Pendente'."
 msgstr ""
+"Si prefiere no marcar la casilla a continuación, las evaluaciones se "
+"aplicarán solo a las inscripciones que tengan el estado 'Pendiente'."
 
 #: modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:44
 #: modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/template.php:43
 msgid "Aplicar para todas as inscrições enviadas"
-msgstr ""
+msgstr "Aplicar a todas las inscripciones enviadas"
 
 #: modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:53
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--apply-results.php:18
@@ -7492,21 +7501,21 @@ msgstr ""
 #: modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/texts.php:6
 #: modules/EvaluationMethodSimple/layouts/parts/simple--apply-results.php:11
 msgid "Aplicar avaliações"
-msgstr ""
+msgstr "Aplicar evaluaciones"
 
 #: modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/texts.php:7
 #: modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/texts.php:7
 msgid "Rascunho em análise"
-msgstr ""
+msgstr "Borrador en análisis"
 
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--apply-results.php:15
 msgid "Aplicar resultado das avaliações documentais"
-msgstr ""
+msgstr "Aplicar los resultados de las evaluaciones documentales"
 
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--apply-results.php:43
 #: modules/EvaluationMethodSimple/layouts/parts/simple--apply-results.php:43
 msgid "Aplicar a todas as inscrições enviadas"
-msgstr ""
+msgstr "Aplicar a todas las inscripciones enviadas"
 
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--apply-results.php:44
 #: modules/EvaluationMethodSimple/layouts/parts/simple--apply-results.php:44
@@ -7514,25 +7523,29 @@ msgid ""
 "Deixando desmarcado, o status será aplicado somente às inscrições com status "
 "pendente"
 msgstr ""
+"Si deja la casilla sin marcar, el estado se aplicará solo a las "
+"inscripciones con estado pendiente"
 
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-form.php:24
 msgid "Não avaliar"
-msgstr ""
+msgstr "No avaliar"
 
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-form.php:37
 msgid "Descumprimento do(s) item(s) do edital:"
-msgstr ""
+msgstr "No cumplimiento del(los) ítem(s) del edital:"
 
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-form.php:41
 #: modules/EvaluationMethodSimple/layouts/parts/simple--evaluation-form.php:14
 msgid "Justificativa / Observações"
-msgstr ""
+msgstr "Justificación / Observaciones"
 
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-info.php:1
 msgid ""
 "Para <strong>validar</strong> a inscrição salve a avaliação sem invalidar "
 "nenhum campo."
 msgstr ""
+"Para <strong>validar</strong> la inscripción, guarde la evaluación sin "
+"invalidar ningún campo."
 
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-info.php:2
 msgid ""
@@ -7541,6 +7554,10 @@ msgid ""
 "preencha a justificativa. Após invalidar todos os campos inválidos, salve a "
 "avaliação."
 msgstr ""
+"Para <strong>invalidar</strong> la inscripción, cliquee el(los) campo(s) "
+"inválido(s), marque el checkbox <strong>Marcar como inválido</strong> y "
+"complete la justificación. Después de invalidar todos los campos no válidos, "
+"guarde la evaluación."
 
 #: modules/EvaluationMethodQualification/Module.php:19
 msgid "qualification"
@@ -7548,7 +7565,7 @@ msgstr ""
 
 #: modules/EvaluationMethodQualification/Module.php:24
 msgid "Avaliação de habilitação documental"
-msgstr ""
+msgstr "Evaluación de la capacidad documental"
 
 #: modules/EvaluationMethodQualification/Module.php:46
 #: modules/EvaluationMethodQualification/Module.php:70
@@ -7563,7 +7580,7 @@ msgstr ""
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:13
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:26
 msgid "Habilitado"
-msgstr ""
+msgstr "Habilitado"
 
 #: modules/EvaluationMethodQualification/Module.php:49
 #: modules/EvaluationMethodQualification/Module.php:79
@@ -7575,7 +7592,7 @@ msgstr ""
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:17
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:27
 msgid "Inabilitado"
-msgstr ""
+msgstr " inhabilitado"
 
 #: modules/EvaluationMethodQualification/Module.php:70
 #: modules/EvaluationMethodQualification/Module.php:164
@@ -7583,29 +7600,29 @@ msgstr ""
 #: modules/EvaluationMethodQualification/Module.php:223
 #: modules/EvaluationMethodQualification/Module.php:248
 msgid "Não se aplica"
-msgstr ""
+msgstr "No se aplica"
 
 #: modules/EvaluationMethodQualification/Module.php:100
 #: modules/EvaluationMethodTechnical/Module.php:81
 msgid "Seções"
-msgstr ""
+msgstr "Secciones"
 
 #: modules/EvaluationMethodQualification/Module.php:111
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:6
 #: modules/EvaluationMethodTechnical/Module.php:92
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:6
 msgid "Critérios"
-msgstr ""
+msgstr "Criterios"
 
 #: modules/EvaluationMethodQualification/Module.php:157
 #: modules/EvaluationMethodTechnical/Module.php:167
 msgid "Já existe uma seção com o mesmo nome"
-msgstr ""
+msgstr "Ya existe una sección con el mismo nombre."
 
 #: modules/EvaluationMethodQualification/Module.php:158
 #: modules/EvaluationMethodTechnical/Module.php:168
 msgid "Alteraçṍes salvas"
-msgstr ""
+msgstr "Cambios guardados"
 
 #: modules/EvaluationMethodQualification/Module.php:159
 #: modules/EvaluationMethodTechnical/Module.php:169
@@ -7613,124 +7630,133 @@ msgid ""
 "Deseja remover a seção? Esta ação não poderá ser desfeita e também removerá "
 "todas os critérios desta seção."
 msgstr ""
+"¿Desea eliminar la sección? Esta acción no se podrá deshacer y también "
+"eliminará todos los criterios de esta sección."
 
 #: modules/EvaluationMethodQualification/Module.php:160
 #: modules/EvaluationMethodTechnical/Module.php:170
 msgid ""
 "Deseja remover este critério de avaliação? Esta ação não poderá ser desfeita."
 msgstr ""
+"¿Desea eliminar este criterio de evaluación? Esta acción no se puede "
+"deshacer."
 
 #: modules/EvaluationMethodQualification/Module.php:161
 #: modules/EvaluationMethodTechnical/Module.php:171
 msgid ""
 "Deseja remover esta política afirmativa? Esta ação não poderá ser desfeita."
 msgstr ""
+"¿Desea eliminar este política afirmativa? Esta acción no se puede deshacer"
 
 #: modules/EvaluationMethodQualification/Module.php:165
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-form.php:43
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-form.php:59
 #: modules/Reports/layouts/parts/registrationsEvaluation.php:65
 msgid "Não avaliada"
-msgstr ""
+msgstr "No evaluada"
 
 #: modules/EvaluationMethodQualification/Module.php:242
 msgid "Motivo(s) da inabilitação"
-msgstr ""
+msgstr "Motivo(s) de la inhabilitación"
 
 #: modules/EvaluationMethodQualification/Module.php:271
 #: modules/EvaluationMethodTechnical/Module.php:348
 msgid "Válido"
-msgstr ""
+msgstr "Válido"
 
 #: modules/EvaluationMethodQualification/Module.php:272
 #: modules/EvaluationMethodTechnical/Module.php:349
 msgid "Inválido"
-msgstr ""
+msgstr "Inválido"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:7
 msgid "Configure abaixo os critérios de avaliação de habilitação documental"
 msgstr ""
+"Configura abajo los criterios de evaluación de la calificación documental a "
+"continuación"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:11
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:10
 msgid "informe o nome da seção"
-msgstr ""
+msgstr "Informe el nombre de la sección"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:12
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:24
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:23
 msgid "Adicionar critério"
-msgstr ""
+msgstr "Agregar criterio"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:13
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:11
 msgid "Remover seção"
-msgstr ""
+msgstr "eliminar la sección"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:19
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:26
 msgid "Nome do critério"
-msgstr ""
+msgstr "Nombre del criterio"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:20
 #: modules/Reports/layouts/parts/charts-reports-dropdown-data.php:7
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:15
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:30
 msgid "Opções"
-msgstr ""
+msgstr "Opciones"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:31
 msgid "Configurar critério"
-msgstr ""
+msgstr "Configurar criterio"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:32
 msgid "Configuração do critério"
-msgstr ""
+msgstr "Configurar del criterio"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:35
 msgid "Descrição do critério"
-msgstr ""
+msgstr "Descripción del criterio"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:39
 msgid "Opções ou motivos de "
-msgstr ""
+msgstr "Opciones o motivos de "
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:39
 msgid "inabilitação"
-msgstr ""
+msgstr "inhabilitación"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:40
 msgid ""
 "As opções Habilitado e inabilitado já são definidas automaticamente pelo "
 "sistema"
 msgstr ""
+"Las opciones Habilitado e inhabilitado ya están definidas automáticamente "
+"por el sistema"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:45
 msgid "Habilitar a opção Não se aplica"
-msgstr ""
+msgstr "Activar la opción No aplica"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:54
 msgid "As opções devem estar configuradas cada uma em uma linha"
-msgstr ""
+msgstr "Las opciones deben estar configuradas cada una en una línea"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:60
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:60
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:33
 msgid "Remover critério"
-msgstr ""
+msgstr "Eliminar criterio"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:66
 msgid "Adicionar seção"
-msgstr ""
+msgstr "Agregar sección"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-form.php:42
 msgid "Resultado da seção"
-msgstr ""
+msgstr "Resultado de la sección"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-info.php:2
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-info.php:2
 msgid "Informe TODOS os valores abaixo."
-msgstr ""
+msgstr "Informe TODOS los valores abajo."
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:6
 msgid "Resultados das seções"
@@ -7738,20 +7764,21 @@ msgstr ""
 
 #: modules/EvaluationMethodSimple/Module.php:17
 msgid "Avaliação Simplificada"
-msgstr ""
+msgstr "Evaluación Simplificada"
 
 #: modules/EvaluationMethodSimple/Module.php:21
 msgid "Consiste num select box com os status possíveis para uma inscrição."
 msgstr ""
+"Consta de uno box de selección con los posibles estados para una inscripción"
 
 #: modules/EvaluationMethodSimple/Module.php:44
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:43
 msgid "status"
-msgstr ""
+msgstr "estados"
 
 #: modules/EvaluationMethodSimple/Module.php:45
 msgid "O campo Status é obrigatório"
-msgstr ""
+msgstr "El camo Estado es obligatorio"
 
 #: modules/EvaluationMethodSimple/Module.php:48
 msgid "obs"
@@ -7759,23 +7786,23 @@ msgstr ""
 
 #: modules/EvaluationMethodSimple/Module.php:49
 msgid "O campo Observações é obrigatório"
-msgstr ""
+msgstr "El campo Observaciones es obligatorio"
 
 #: modules/EvaluationMethodSimple/Module.php:67
 msgid "Avaliação salva"
-msgstr ""
+msgstr "Evaluación guardada"
 
 #: modules/EvaluationMethodSimple/Module.php:68
 msgid "É necessário selecionar os campos Avaliação e Status"
-msgstr ""
+msgstr "Debe seleccionar los campos Evaluación y Estado"
 
 #: modules/EvaluationMethodSimple/Module.php:69
 msgid "Avaliações aplicadas com sucesso"
-msgstr ""
+msgstr "Evaluaciones aplicadas con éxito"
 
 #: modules/EvaluationMethodSimple/Module.php:70
 msgid "As avaliações não foram aplicadas."
-msgstr ""
+msgstr "Las evaluaciones no fueron aplicadas"
 
 #: modules/EvaluationMethodSimple/Module.php:92
 msgid "inválida,invalida,inválido,invalido"
@@ -7801,7 +7828,7 @@ msgstr ""
 
 #: modules/EvaluationMethodSimple/Module.php:162
 msgid "os status válidos são 0,1,2, 3, 8 e 10"
-msgstr ""
+msgstr "los estados válidos são 0,1,2, 3, 8 e 10"
 
 #: modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/template.php:18
 msgid "Aplicar resultados das avaliações"
