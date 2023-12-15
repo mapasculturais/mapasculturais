@@ -6,6 +6,8 @@ $this->bodyProperties['ng-controller'] = "EntityController";
 $this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 $this->jsObject['angularAppDependencies'][] = 'ui.sortable';
 
+$this->jsObject['opportunityControl'] = $entity->canUser('@control');
+
 $this->addEntityToJs($entity);
 
 $this->addOpportunityToJs($entity);
