@@ -1721,7 +1721,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if(MapasCulturais.entity.canUserEvaluate){
-            if(result && !$scope.isAvaliableEvaluationFields(field)){
+            if(MapasCulturais.opportunityControl) {
+                result = true;
+            } else if(result && !$scope.isAvaliableEvaluationFields(field)){
                 result = false;
             }
         }
@@ -1730,7 +1732,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     };
 
     $scope.isAvaliableEvaluationFields = function(field){
-        if($scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
+        if($scope.data.avaliableEvaluationFields && $scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
             return true;
         }
         
