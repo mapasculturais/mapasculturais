@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-14 16:00-0400\n"
+"PO-Revision-Date: 2023-12-15 08:01-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -4715,7 +4715,7 @@ msgstr "Audiodescripción:"
 #: modules/Components/components/space-info/template.php:35
 #: modules/Entities/views/project/single.php:65
 msgid "Informações adicionais"
-msgstr "información adicionalI"
+msgstr ""
 
 #: modules/Components/components/event-info/template.php:27
 msgid "Total de público:"
@@ -4841,7 +4841,7 @@ msgstr "plataforma creada por la comunidad"
 
 #: modules/Components/components/main-footer/template.php:121
 msgid "mapas culturais"
-msgstr "Cultura en Línea"
+msgstr "cultura en Línea"
 
 #: modules/Components/components/main-footer/template.php:122
 msgid "e desenvolvida por "
@@ -5530,7 +5530,7 @@ msgstr ""
 
 #: modules/Entities/components/create-agent/template.php:18
 msgid "Crie um agente com informações básicas"
-msgstr "Crear un agente con información básica."
+msgstr "Crear un agente con información básica"
 
 #: modules/Entities/components/create-agent/template.php:18
 #: modules/Entities/components/create-event/template.php:19
@@ -5555,7 +5555,7 @@ msgid ""
 "depois.  "
 msgstr ""
 "Puede completar la información de su agente ahora o puede dejarla para "
-"después."
+"después. "
 
 #: modules/Entities/components/create-agent/template.php:32
 msgid ""
@@ -5571,7 +5571,7 @@ msgid ""
 "<b>Meus Agentes</b> no <b>Painel de Controle</b>.  "
 msgstr ""
 "Para completar y publicar su nuevo agente, acceda a la sección "
-"<b>Borradores</b> en <b>Mis Agentes</b> en el <b>Panel de Control</b>."
+"<b>Borradores</b> en <b>Mis Agentes</b> en el <b>Panel de Control</b>. "
 
 #: modules/Entities/components/create-agent/template.php:40
 #: modules/Entities/components/create-event/template.php:42
@@ -5666,7 +5666,7 @@ msgid ""
 "depois. "
 msgstr ""
 "Puedes completar las informaciones de su evento ahora o puede dejarla para "
-"después."
+"después. "
 
 #: modules/Entities/components/create-event/template.php:31
 msgid ""
@@ -6148,7 +6148,7 @@ msgid ""
 "em <b>Minhas Oportunidades</b> no <b>Painel de Controle</b>.  "
 msgstr ""
 "Para completar y publicar tu oportunidad, accede a la sección <b>Borradores</"
-"b> en <b>Mis Oportunidades</b> en el <b>Panel de Control</b>."
+"b> en <b>Mis Oportunidades</b> en el <b>Panel de Control</b>.  "
 
 #: modules/Entities/components/create-opportunity/template.php:136
 #: modules/Entities/components/create-opportunity/template.php:142
@@ -6161,7 +6161,7 @@ msgstr "Oportunidad Creada!"
 
 #: modules/Entities/components/create-opportunity/texts.php:7
 msgid "Oportunidade criada em rascunho!"
-msgstr "Oportunidad Creada en borrador"
+msgstr "¡Oportunidad Creada en borrador!"
 
 #: modules/Entities/components/create-project/script.js:40
 msgid "projetoCriado"
@@ -6180,7 +6180,7 @@ msgstr ""
 
 #: modules/Entities/components/create-project/template.php:18
 msgid "Crie um projeto com informações básicas"
-msgstr "Crear un proyecto con información básica."
+msgstr "Crear un proyecto con información básica"
 
 #: modules/Entities/components/create-project/template.php:23
 msgid "Adicione uma Descrição curta para o Projeto"
@@ -6192,7 +6192,7 @@ msgid ""
 "depois. "
 msgstr ""
 "Puede completar la información de su proyecto ahora o puede dejarla para "
-"después."
+"después. "
 
 #: modules/Entities/components/create-project/template.php:31
 msgid ""
@@ -6200,12 +6200,12 @@ msgid ""
 "em <b>Meus Projetos</b> no <b>Painel de Controle</b>.  "
 msgstr ""
 "Para completar y publicar su nuevo proyecto, acceda a la sección "
-"<b>Borradores</b> en <b>Mis Agentes</b> en el <b>Panel de Control</b>."
+"<b>Borradores</b> en <b>Mis Agentes</b> en el <b>Panel de Control</b>. "
 
 #: modules/Entities/components/create-project/template.php:46
 #: modules/Entities/components/create-project/template.php:51
 msgid "Ver Projeto"
-msgstr "ver Proyecto"
+msgstr "Ver Proyecto"
 
 #: modules/Entities/components/create-project/texts.php:5
 msgid "Projeto Criado!"
@@ -6232,7 +6232,7 @@ msgstr ""
 
 #: modules/Entities/components/create-space/template.php:18
 msgid "Crie um espaço com informações básicas"
-msgstr "Crear un espacio con informaciones básicas."
+msgstr "Crear un espacio con informaciones básicas"
 
 #: modules/Entities/components/create-space/template.php:21
 msgid "Selecione o tipo do espaço"
@@ -6265,7 +6265,7 @@ msgstr "¡Espacio creado!"
 
 #: modules/Entities/components/create-space/texts.php:7
 msgid "Espaço criado em Rascunho"
-msgstr "¡Espacio creado en borrador!"
+msgstr "Espacio creado en borrador"
 
 #: modules/Entities/components/entity-actions/template.php:29
 #: modules/Panel/components/panel--entity-actions/template.php:38
@@ -6538,7 +6538,7 @@ msgstr "URL del vídeo"
 
 #: modules/Entities/components/entity-gallery-video/template.php:98
 msgid "Sem vimeo por enquanto."
-msgstr "Sin vimeo por ahora"
+msgstr "Sin vimeo por ahora."
 
 #: modules/Entities/components/entity-gallery-video/texts.php:5
 #: modules/Entities/components/entity-links/texts.php:5
@@ -6737,7 +6737,7 @@ msgstr ""
 
 #: modules/Entities/components/entity-occurrence-list/template.php:49
 msgid "Ver mapa"
-msgstr "ver el mapa"
+msgstr "Ver el mapa"
 
 #: modules/Entities/components/entity-occurrence-list/template.php:97
 msgid "Deseja remover essa ocorrência?"
@@ -6808,7 +6808,7 @@ msgstr "Agregar agente"
 
 #: modules/Entities/components/entity-related-agents/template.php:98
 msgid "Adicionar novo grupo de Agentes"
-msgstr "Agregar grupo dea gentes relacionados?"
+msgstr "Agregar grupo de agentes relacionados"
 
 #: modules/Entities/components/entity-related-agents/template.php:102
 msgid "Adicionar grupo"
@@ -6837,7 +6837,7 @@ msgid ""
 "strong> novamente para desarquivá-lo."
 msgstr ""
 "<strong>Este %entity% está archivado.</strong> Puede <strong>publicar</"
-"strong> nuevamente para desarchivarlo"
+"strong> nuevamente para desarchivarlo."
 
 #: modules/Entities/components/entity-status/texts.php:6
 #, php-format
@@ -6846,7 +6846,7 @@ msgid ""
 "<strong>publicar</strong> para exibir para todas as pessoas. "
 msgstr ""
 "<strong>Este %entity% está en borrador.</strong> Debes <strong>publicar</"
-"strong> para mostrar a todas las personas."
+"strong> para mostrar a todas las personas. "
 
 #: modules/Entities/components/entity-status/texts.php:7
 #, php-format
@@ -6946,7 +6946,7 @@ msgstr "Consultar registro"
 #: modules/Entities/components/entity-table/texts.php:5
 #: themes/BaseV1/Theme.php:2211
 msgid "Não é permitido desabilitar a coluna"
-msgstr "No está permitido deshabilitar la columna."
+msgstr "No está permitido deshabilitar la columna"
 
 #: modules/Entities/components/entity-terms/template.php:25
 #: modules/Entities/components/entity-terms/template.php:50
@@ -6955,7 +6955,7 @@ msgstr "Agregar nueva"
 
 #: modules/Entities/components/entity-terms/template.php:34
 msgid "Adicione uma nova tag"
-msgstr ""
+msgstr "Agregar una nueva etiqueta"
 
 #: modules/Entities/views/agent/edit-1.php:47
 #: modules/Entities/views/agent/edit-2.php:46
@@ -6970,7 +6970,7 @@ msgstr ""
 #: modules/Opportunities/views/opportunity/edit.php:39
 #: modules/Opportunities/views/opportunity/single.php:73
 msgid "Informações"
-msgstr ""
+msgstr "Informaciones"
 
 #: modules/Entities/views/agent/edit-1.php:52
 #: modules/Entities/views/agent/edit-2.php:51
@@ -6978,7 +6978,7 @@ msgstr ""
 #: modules/Entities/views/project/edit.php:53
 #: modules/Entities/views/space/edit.php:52
 msgid "Informações de Apresentação"
-msgstr ""
+msgstr "Informaciones de presentación"
 
 #: modules/Entities/views/agent/edit-1.php:53
 #: modules/Entities/views/agent/edit-2.php:52
@@ -6987,48 +6987,48 @@ msgstr ""
 #: modules/Entities/views/space/edit.php:53
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-visitacao.php:24
 msgid "Os dados inseridos abaixo serão exibidos para todos os usuários"
-msgstr ""
+msgstr "Los datos ingresados ​​abajo se mostrarán a todos los usuarios"
 
 #: modules/Entities/views/agent/edit-1.php:66
 #: modules/Entities/views/agent/edit-2.php:65
 msgid "Nome do Agente"
-msgstr ""
+msgstr "Nombre del agente"
 
 #: modules/Entities/views/agent/edit-1.php:72
 msgid "Mini bio"
-msgstr ""
+msgstr "Breve descripción"
 
 #: modules/Entities/views/agent/edit-1.php:79
 msgid "Informe sua função na cultura"
-msgstr ""
+msgstr "Informe su función en la cultura"
 
 #: modules/Entities/views/agent/edit-1.php:89
 msgid "Não se preocupe, esses dados não serão exibidos publicamente."
-msgstr ""
+msgstr "No te preocupes, estos datos no se mostrarán públicamente."
 
 #: modules/Entities/views/agent/edit-1.php:97
 msgid "E-mail pessoal"
-msgstr ""
+msgstr "E-mail personal"
 
 #: modules/Entities/views/agent/edit-1.php:98
 #: modules/Entities/views/agent/edit-2.php:95
 msgid "Telefone público com DDD"
-msgstr ""
+msgstr "Teléfono Público con DDD"
 
 #: modules/Entities/views/agent/edit-1.php:99
 #: modules/Entities/views/agent/edit-2.php:96
 msgid "E-mail público"
-msgstr ""
+msgstr "E-mail público"
 
 #: modules/Entities/views/agent/edit-1.php:100
 #: modules/Entities/views/agent/edit-2.php:97
 msgid "Telefone privado 1 com DDD"
-msgstr ""
+msgstr "Teléfono privado 1 con DDD"
 
 #: modules/Entities/views/agent/edit-1.php:101
 #: modules/Entities/views/agent/edit-2.php:98
 msgid "Telefone privado 2 com DDD"
-msgstr ""
+msgstr "Teléfono privado 2 con DDD"
 
 #: modules/Entities/views/agent/edit-1.php:110
 #: modules/Entities/views/agent/edit-2.php:87
@@ -7036,18 +7036,20 @@ msgid ""
 "Os dados inseridos abaixo serão registrados apenas no sistemas e não serão "
 "exibidos publicamente"
 msgstr ""
+"Los datos insertados a continuación se registrarán solo en los sistemas y no "
+"se mostrarán públicamente"
 
 #: modules/Entities/views/agent/edit-1.php:115
 msgid "Selecione o Gênero"
-msgstr ""
+msgstr "Seleccione el Género"
 
 #: modules/Entities/views/agent/edit-1.php:116
 msgid "Selecione a Orientação Sexual"
-msgstr ""
+msgstr "Seleccione la Orientación Sexual"
 
 #: modules/Entities/views/agent/edit-1.php:117
 msgid "Selecione a Raça/Cor"
-msgstr ""
+msgstr "Seleccione Raza/color"
 
 #: modules/Entities/views/agent/edit-1.php:118
 msgid "Selecione a sua Escolaridade"
