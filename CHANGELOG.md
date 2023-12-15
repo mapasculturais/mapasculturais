@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.2] - 2023-12-15
+### Correções
+- Corrige erro que conflitava edição de uma inscrição de um agente com permissão de avaliação e de suporte 
+
 ## [7.3.1] - 2023-12-14
 ### Correções
 - Corrige erro ao carregar ícone que exibe as novas notificações 
