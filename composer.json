@@ -1,4 +1,9 @@
 {
+    "require-dev": {
+        "squizlabs/php_codesniffer": "3.*",
+        "phpunit/phpunit": "^10",
+        "vimeo/psalm": "^5.17"
+    },
     "require": {
         "acelaya/doctrine-enum-type": "^2.3",
         "akrabat/ip-address-middleware": "^2.1",

@@ -1,0 +1,78 @@
+services:
+  backend:
+    image: mapasculturais/backend
+    build: .
+    # uncomment the following line if you want to run this in a production environment
+    # restart: always
+    depends_on:
+      - frontend
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./:/app
+      - caddy_data:/data
+      - caddy_config:/config
+      # - ./Caddyfile:/etc/caddy/Caddyfile
+    # comment the following line in production, it allows to have nice human-readable logs in dev
+    tty: true
+
+  frontend:
+    image: mapasculturais/frontend
+    depends_on:
+      - migrations
+    build: ./src
+    command: /bin/bash -c 'pnpm i --recursive && pnpm run dev'
+    volumes:
+      - ./src:/app
+
+  jobs:
+    image: mapasculturais/backend
+    command: php ./src/tools/execute-job.php
+    volumes:
+      - ./:/app
+    depends_on:
+      - backend
+
+  migrations:
+    image: mapasculturais/backend
+    command: php src/tools/apply-updates.php
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+
+  mailhog: 
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+
+  redis:
+    image: redis:6
+    command: --maxmemory 256Mb --maxmemory-policy allkeys-lru  
+
+  sessions:
+    image: redis:6
+    restart: unless-stopped
+    command: --maxmemory 128Mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-sessions:/data
+
+  db:
+    image: postgis/postgis:14-master
+    environment:
+      - POSTGRES_PASSWORD=mapas
+      - POSTGRES_USER=mapas
+      - POSTGRES_DB=mapas
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+      - ./dev/db:/docker-entrypoint-initdb.d
+
+# Volumes needed for Caddy certificates and configuration
+volumes:
+  caddy_data:
+  caddy_config:
+  redis-sessions:
+  postgis_data:

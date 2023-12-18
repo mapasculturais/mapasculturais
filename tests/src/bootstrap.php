@@ -18,28 +18,34 @@ use MapasCulturais\App;
 
 date_default_timezone_set('America/Sao_Paulo');
 
-require __DIR__ . "/../src/protected/application/bootstrap-common.php";
-require_once __DIR__ . "/../src/protected/vendor/autoload.php";
+require __DIR__ . "/../../src/bootstrap.php";
+// require_once __DIR__ . "/../src/vendor/autoload.php";
 
  // Prepare a mock environment
-\Slim\Environment::mock(array_merge(array(
-    'REQUEST_METHOD' => 'get',
-    'PATH_INFO'      => '/',
-    'SERVER_NAME'    => 'local.dev',
-)));
+// \Slim\Environment::mock(array_merge(array(
+//     'REQUEST_METHOD' => 'get',
+//     'PATH_INFO'      => '/',
+//     'SERVER_NAME'    => 'local.dev',
+// )));
 
 
-$config = include __DIR__ . '/../src/protected/application/conf/conf-test.php';
+// $config = include __DIR__ . '/../src/protected/application/conf/conf-test.php';
 
-if(isset($_ENV['MAPASCULTURAIS_CONFIG_FILE'])){
-    $config = include __DIR__ . '/../src/protected/application/conf/'. $_ENV['MAPASCULTURAIS_CONFIG_FILE'];    
-}else if(isset($_SERVER['MAPASCULTURAIS_CONFIG_FILE'])){
-    $config = include __DIR__ . '/../src/protected/application/conf/' . $_SERVER['MAPASCULTURAIS_CONFIG_FILE'];
-}
+// if(isset($_ENV['MAPASCULTURAIS_CONFIG_FILE'])){
+//     $config = include __DIR__ . '/../src/protected/application/conf/'. $_ENV['MAPASCULTURAIS_CONFIG_FILE'];    
+// }else if(isset($_SERVER['MAPASCULTURAIS_CONFIG_FILE'])){
+//     $config = include __DIR__ . '/../src/protected/application/conf/' . $_SERVER['MAPASCULTURAIS_CONFIG_FILE'];
+// }
+$config_filename = APPLICATION_PATH . 'conf/config.php';
+
+require APPLICATION_PATH . "load-translation.php";
+
+$config = require $config_filename;
+
 
 // create the App instance
 $app = App::i()->init($config);
-$app->register();
+// $app->register();
 
 require __DIR__ . '/classes/TestCase.php';
 require __DIR__ . '/classes/TestFactory.php';
