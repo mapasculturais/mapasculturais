@@ -83,8 +83,8 @@ Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e ba
 
 #### Migração do Banco de Dados
 
-`docker compose exec php php src/tools/apply-updates.php`
-`docker compose exec php php src/tools/apply-multicore-db-update.php`
+`docker compose exec backend php src/tools/apply-updates.php`
+`docker compose exec backend php src/tools/apply-multicore-db-update.php`
 
 #### Frontend
 
@@ -98,11 +98,11 @@ npx oxlint@latest
 
 #### Phpunit
 
-`docker compose exec php ./vendor/bin/phpunit`
+`docker compose exec backend ./vendor/bin/phpunit`
 
 #### Phpcs
 
-`docker compose exec php ./vendor/bin/phpcs -d memory_limit=1024M src/**/*.php`
+`docker compose exec backend ./vendor/bin/phpcs -d memory_limit=1024M src/**/*.php`
 
 #### Phplint
 
