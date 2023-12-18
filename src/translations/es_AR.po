@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-15 16:01-0400\n"
+"PO-Revision-Date: 2023-12-18 12:09-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -6325,7 +6325,7 @@ msgstr "¿Desea Salir?"
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:112
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:166
 msgid "Salvar"
-msgstr ""
+msgstr "Guardar"
 
 #: modules/Entities/components/entity-actions/template.php:69
 msgid "Salvar e publicar"
@@ -6338,7 +6338,7 @@ msgstr "¿Está seguro de que desea publicar esta entidad?"
 
 #: modules/Entities/components/entity-actions/template.php:77
 msgid "Concluir Edição e Sair"
-msgstr ""
+msgstr "Finalizar la edición y salir"
 
 #: modules/Entities/components/entity-actions/template.php:86
 msgid "Gerenciar"
@@ -7070,7 +7070,7 @@ msgstr "No encontró su comunidad Tradicional"
 
 #: modules/Entities/views/agent/edit-1.php:128
 msgid "Informações públicas"
-msgstr "informaciones públicas"
+msgstr "Informaciones públicas"
 
 #: modules/Entities/views/agent/edit-1.php:129
 #: modules/Entities/views/agent/edit-2.php:107
@@ -7080,7 +7080,7 @@ msgid ""
 "são exibidos publicamente"
 msgstr ""
 "Los datos que se introducen a continuación, así como la información de "
-"presentación, también se muestran públicamente."
+"presentación, también se muestran públicamente"
 
 #: modules/Entities/views/agent/edit-1.php:134
 #: modules/Entities/views/event/edit.php:128
@@ -7354,7 +7354,7 @@ msgstr "Proyecto integrante de"
 #: modules/Entities/views/project/single.php:73
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:27
 msgid "email:"
-msgstr "E-mail:"
+msgstr "e-mail:"
 
 #: modules/Entities/views/project/single.php:98
 msgid "Propriedades do Projeto"
@@ -7389,7 +7389,7 @@ msgstr "Presenta mejor tu espacio."
 #: modules/Entities/views/space/edit.php:143
 msgid "Adicione documentos, links, vídeos e imagens que contem a sua história."
 msgstr ""
-"Agregue documentos, enlaces, videos e imágenes que contengan su historia"
+"Agregue documentos, enlaces, videos e imágenes que contengan su historia."
 
 #: modules/Entities/views/space/edit.php:165
 msgid "Adicionar Supra Espaço"
@@ -7592,7 +7592,7 @@ msgstr "Habilitado"
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:17
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:27
 msgid "Inabilitado"
-msgstr " inhabilitado"
+msgstr "inhabilitado"
 
 #: modules/EvaluationMethodQualification/Module.php:70
 #: modules/EvaluationMethodQualification/Module.php:164
@@ -7617,7 +7617,7 @@ msgstr "Criterios"
 #: modules/EvaluationMethodQualification/Module.php:157
 #: modules/EvaluationMethodTechnical/Module.php:167
 msgid "Já existe uma seção com o mesmo nome"
-msgstr "Ya existe una sección con el mismo nombre."
+msgstr "Ya existe una sección con el mismo nombre"
 
 #: modules/EvaluationMethodQualification/Module.php:158
 #: modules/EvaluationMethodTechnical/Module.php:168
@@ -7646,7 +7646,7 @@ msgstr ""
 msgid ""
 "Deseja remover esta política afirmativa? Esta ação não poderá ser desfeita."
 msgstr ""
-"¿Desea eliminar este política afirmativa? Esta acción no se puede deshacer"
+"¿Desea eliminar este política afirmativa? Esta acción no se puede deshacer."
 
 #: modules/EvaluationMethodQualification/Module.php:165
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-form.php:43
@@ -7678,7 +7678,7 @@ msgstr ""
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:11
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:10
 msgid "informe o nome da seção"
-msgstr "Informe el nombre de la sección"
+msgstr "informe el nombre de la sección"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:12
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:24
@@ -7689,7 +7689,7 @@ msgstr "Agregar criterio"
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:13
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:11
 msgid "Remover seção"
-msgstr "eliminar la sección"
+msgstr "Eliminar la sección"
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:19
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:26
@@ -7769,7 +7769,7 @@ msgstr "Evaluación Simplificada"
 #: modules/EvaluationMethodSimple/Module.php:21
 msgid "Consiste num select box com os status possíveis para uma inscrição."
 msgstr ""
-"Consta de uno box de selección con los posibles estados para una inscripción"
+"Consta de uno box de selección con los posibles estados para una inscripción."
 
 #: modules/EvaluationMethodSimple/Module.php:44
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:43
@@ -7802,7 +7802,7 @@ msgstr "Evaluaciones aplicadas con éxito"
 
 #: modules/EvaluationMethodSimple/Module.php:70
 msgid "As avaliações não foram aplicadas."
-msgstr "Las evaluaciones no fueron aplicadas"
+msgstr "Las evaluaciones no fueron aplicadas."
 
 #: modules/EvaluationMethodSimple/Module.php:92
 msgid "inválida,invalida,inválido,invalido"
@@ -7824,79 +7824,79 @@ msgstr ""
 
 #: modules/EvaluationMethodSimple/Module.php:157
 msgid "Somente para avaliações simplificadas"
-msgstr ""
+msgstr "Solo para evaluaciones simplificadas"
 
 #: modules/EvaluationMethodSimple/Module.php:162
 msgid "os status válidos são 0,1,2, 3, 8 e 10"
-msgstr "los estados válidos são 0,1,2, 3, 8 e 10"
+msgstr "los estados válidos son 0,1,2, 3, 8 e 10"
 
 #: modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/template.php:18
 msgid "Aplicar resultados das avaliações"
-msgstr ""
+msgstr "Aplicar los resultados de las evaluaciones"
 
 #: modules/EvaluationMethodSimple/layouts/parts/simple--apply-results.php:15
 msgid "Aplicar resultado das avaliações simples"
-msgstr ""
+msgstr "Aplicar resultado de la evaluación simples"
 
 #: modules/EvaluationMethodSimple/layouts/parts/simple--evaluation-form.php:11
 msgid "Selecione o status"
-msgstr ""
+msgstr "Seleccione el estado"
 
 #: modules/EvaluationMethodSimple/layouts/parts/simple--evaluation-info.php:1
 msgid "Selecione o status desta inscrição."
-msgstr ""
+msgstr "Seleccione el estado de esta inscripción"
 
 #: modules/EvaluationMethodTechnical/Module.php:22
 msgid "Avaliação Técnica"
-msgstr ""
+msgstr "Evaluación Técnica"
 
 #: modules/EvaluationMethodTechnical/Module.php:26
 msgid "Consiste em avaliação por critérios e cotas."
-msgstr ""
+msgstr "Consiste en evaluación por criterios y cuotas"
 
 #: modules/EvaluationMethodTechnical/Module.php:103
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:8
 msgid "Políticas Afirmativas"
-msgstr ""
+msgstr "Políticas Afirmativas"
 
 #: modules/EvaluationMethodTechnical/Module.php:114
 msgid "Políticas Afirmativas aplicadas a inscrição"
-msgstr ""
+msgstr "Políticas Afirmativas aplicadas a la inscripción"
 
 #: modules/EvaluationMethodTechnical/Module.php:127
 msgid "Controla se as politicas afirmativas estão ou não ativadas"
-msgstr ""
+msgstr "Controla si las políticas afirmativas están o no activadas"
 
 #: modules/EvaluationMethodTechnical/Module.php:135
 msgid "Define o valor máximo das políticas afirmativas"
-msgstr ""
+msgstr "Define el valor máximo de las políticas afirmativas"
 
 #: modules/EvaluationMethodTechnical/Module.php:140
 msgid "Cotas"
-msgstr ""
+msgstr "Cuotas"
 
 #: modules/EvaluationMethodTechnical/Module.php:151
 msgid "Habilitar Análise de Exiquibilidade das inscrições?"
-msgstr ""
+msgstr "¿Habilitar el análisis de la viabilidad de las inscripciones?"
 
 #: modules/EvaluationMethodTechnical/Module.php:154
 msgid "Habilitar Análise de Exiquibilidade"
-msgstr ""
+msgstr "Habilitar Análisis de la Viabilidad"
 
 #: modules/EvaluationMethodTechnical/Module.php:155
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:58
 msgid "Não habilitar"
-msgstr ""
+msgstr "No habilitar"
 
 #: modules/EvaluationMethodTechnical/Module.php:286
 #, php-format
 msgid "(peso: %s)"
-msgstr ""
+msgstr "(peso: %s)"
 
 #: modules/EvaluationMethodTechnical/Module.php:303
 #, php-format
 msgid "Subtotal (max: %s)"
-msgstr ""
+msgstr "Subtotal (max: %s)"
 
 #: modules/EvaluationMethodTechnical/Module.php:330
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:29
@@ -7904,119 +7904,124 @@ msgstr ""
 #: modules/OpportunityAccountability/Module.php:619
 #: modules/OpportunityAccountability/Module.php:642
 msgid "Parecer Técnico"
-msgstr ""
+msgstr "Opinión tecnica"
 
 #: modules/EvaluationMethodTechnical/Module.php:337
 msgid "Esta proposta apresenta exequibilidade?"
-msgstr ""
+msgstr "¿Esta propuesta presenta viabilidad?"
 
 #: modules/EvaluationMethodTechnical/Module.php:360
 msgid "Informe sobre a exequibilidade orçamentária desta inscrição!"
-msgstr ""
+msgstr "Informe sobre la viabilidad presupuestaria de esta inscripción!"
 
 #: modules/EvaluationMethodTechnical/Module.php:374
 msgid "Todos os campos devem ser preenchidos"
-msgstr ""
+msgstr "Todos los campos deben ser completados"
 
 #: modules/EvaluationMethodTechnical/Module.php:382
 #, php-format
 msgid "O valor do campo \"%s\" é maior que o valor máximo permitido"
-msgstr ""
+msgstr "El valor del campo \"%s\" es mayor que el valor máximo permitido"
 
 #: modules/EvaluationMethodTechnical/Module.php:385
 #, php-format
 msgid "O valor do campo \"%s\" é menor que o valor mínimo permitido"
-msgstr ""
+msgstr "El valor del campo \"%s\" es menor que el valor mínimo permitido"
 
 #: modules/EvaluationMethodTechnical/Module.php:569
 msgid "Avaliação incompleta"
-msgstr ""
+msgstr "Evaluación incompleta"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:9
 msgid ""
 "Configure abaixo os percentuais de cada Política Afirmativa que serão "
 "aplicados na nota final, caso o proponente se enquadre. "
 msgstr ""
+"Configure a continuación los porcentajes de cada Política Afirmativa que se "
+"aplicarán en la calificación final, en caso de que el postulante califique. "
+"\""
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:13
 msgid "Porcentagem total a ser aplicada"
-msgstr ""
+msgstr "Porcentaje total a aplicar"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:14
 msgid "(0 = Sem limitações)"
-msgstr ""
+msgstr "(0 = Sin limitaciones)"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:20
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:146
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:185
 msgid "Campo"
-msgstr ""
+msgstr "Campo"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:21
 msgid "Valor"
-msgstr ""
+msgstr "Valor"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:22
 msgid "Porcentagem"
-msgstr ""
+msgstr "Porcentaje"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:67
 msgid "Utilizar Políticas Afirmativas"
-msgstr ""
+msgstr "Utilice políticas afirmativas"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:68
 msgid "Não Utilizar Políticas Afirmativas"
-msgstr ""
+msgstr "No utilizar políticas afirmativas"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:7
 msgid "Configure abaixo os critérios de avaliação técnica"
-msgstr ""
+msgstr "Configure los criterios de evaluación técnica"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:18
 msgid "Título do critério"
-msgstr ""
+msgstr "Título del criterio"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:19
 msgid "Mínimo"
-msgstr ""
+msgstr "Mínimo"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:20
 msgid "Máximo"
-msgstr ""
+msgstr "Máximo"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:21
 msgid "Peso"
-msgstr ""
+msgstr "Peso"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:28
 msgid "informe o título do critério"
-msgstr ""
+msgstr "introduzca el nombre del criterio"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:29
 msgid "informe a nota mínima"
-msgstr ""
+msgstr "introduzca la nota mínima"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:30
 msgid "informe a nota máxima"
-msgstr ""
+msgstr "introduzca la nota máxima"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:31
 msgid "informe o peso da nota"
-msgstr ""
+msgstr "introduzca el peso de la nota"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:38
 msgid "Adicionar seção de avaliação técnica"
-msgstr ""
+msgstr "Agregar sección de evaluación técnica"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:46
 msgid "Habilitar avaliação da exequibilidade da inscrição?"
-msgstr ""
+msgstr "¿Habilitar la evaluación de la viabilidad de la inscripción?"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:48
 msgid ""
 "Ao habilitar esta configuração, os avaliadores deverão considerar a "
 "exequibilidade da inscrição."
 msgstr ""
+"Al habilitar esta configuración, los evaluadores deben considerar la "
+"viabilidad de la aplicación."
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:49
 msgid ""
@@ -8024,26 +8029,31 @@ msgid ""
 "a mesma será marcada com o status de inválida para o dono do edital, que "
 "ainda assim poderá mudar seu status para válida."
 msgstr ""
+"Si la mayoría de los evaluadores consideran la inhabilitación por "
+"viabilidad, la misma será marcada con el status de inválida para el dueño "
+"del llamado, que aún así podrá cambiar su status a válida.\""
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:54
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:76
 msgid "Habilitar"
-msgstr ""
+msgstr "Habilitar"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:22
 msgid "Subtotal"
-msgstr ""
+msgstr "Subtotal"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:35
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-view.php:23
 msgid "Exequibilidade Orçamentária"
-msgstr ""
+msgstr "Viabilidad presupuestaria"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:36
 msgid ""
 "Esta proposta está adequada ao orçamento apresentado? Os custos "
 "orçamentários estão compatíveis com os praticados no mercado?"
 msgstr ""
+"¿Esta propuesta es adecuada para el presupuesto presentado? ¿Los costos "
+"presupuestarios son compatibles con los del mercado?"
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:48
 msgid "Pontuação Total"
@@ -8220,11 +8230,11 @@ msgstr "toda la semana"
 
 #: modules/EventImporter/Controller.php:811
 msgid "weekly"
-msgstr ""
+msgstr "semanal"
 
 #: modules/EventImporter/Controller.php:839
 msgid " e "
-msgstr ""
+msgstr "es"
 
 #: modules/EventImporter/Controller.php:845
 msgid ", "
@@ -8249,7 +8259,7 @@ msgstr ""
 
 #: modules/EventImporter/Controller.php:890
 msgid "once"
-msgstr "uma vez"
+msgstr ""
 
 #: modules/EventImporter/Module.php:31
 msgid "livre"
@@ -8258,7 +8268,7 @@ msgstr "libre"
 #: modules/EventImporter/Module.php:39 modules/EventImporter/Module.php:277
 #: modules/EventImporter/Module.php:297
 msgid "sim"
-msgstr ""
+msgstr "si"
 
 #: modules/EventImporter/Module.php:40 modules/EventImporter/Module.php:285
 #: modules/EventImporter/Module.php:301
@@ -8272,23 +8282,23 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:44 modules/EventImporter/Module.php:110
 msgid "seg"
-msgstr ""
+msgstr "lun"
 
 #: modules/EventImporter/Module.php:45 modules/EventImporter/Module.php:111
 msgid "ter"
-msgstr ""
+msgstr "mar"
 
 #: modules/EventImporter/Module.php:46 modules/EventImporter/Module.php:112
 msgid "qua"
-msgstr ""
+msgstr "mie"
 
 #: modules/EventImporter/Module.php:47 modules/EventImporter/Module.php:113
 msgid "qui"
-msgstr ""
+msgstr "jue"
 
 #: modules/EventImporter/Module.php:48 modules/EventImporter/Module.php:114
 msgid "sex"
-msgstr ""
+msgstr "vie"
 
 #: modules/EventImporter/Module.php:49 modules/EventImporter/Module.php:115
 msgid "sab"
@@ -8300,23 +8310,23 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:53
 msgid "limpar ocorrencias"
-msgstr ""
+msgstr "limpiar ocurrencias"
 
 #: modules/EventImporter/Module.php:53
 msgid "apagar ocorrencias"
-msgstr ""
+msgstr "eliminar ocurrencias"
 
 #: modules/EventImporter/Module.php:53
 msgid "zerar ocorrencias"
-msgstr ""
+msgstr "cerar ocurrencias"
 
 #: modules/EventImporter/Module.php:53
 msgid "apagar"
-msgstr ""
+msgstr "eliminar"
 
 #: modules/EventImporter/Module.php:53
 msgid "limpar"
-msgstr ""
+msgstr "limpiar"
 
 #: modules/EventImporter/Module.php:80
 msgid "id_selo"
@@ -8376,7 +8386,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:87
 msgid "tradução libras"
-msgstr ""
+msgstr "Traducción para lenguaje de señas"
 
 #: modules/EventImporter/Module.php:88
 msgid "mais_informações"
@@ -8388,7 +8398,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:88
 msgid "mais info"
-msgstr ""
+msgstr "mas info"
 
 #: modules/EventImporter/Module.php:88
 msgid "info"
@@ -8396,15 +8406,15 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:89
 msgid "audio_descricao"
-msgstr ""
+msgstr "audio_descripción"
 
 #: modules/EventImporter/Module.php:89
 msgid "audio descrição"
-msgstr ""
+msgstr "audio descripción"
 
 #: modules/EventImporter/Module.php:89
 msgid "audio_descrição"
-msgstr ""
+msgstr "audio_descripción"
 
 #: modules/EventImporter/Module.php:97
 msgid "total_de_publico"
@@ -8412,11 +8422,11 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:97
 msgid "total de publico"
-msgstr ""
+msgstr "total de público"
 
 #: modules/EventImporter/Module.php:98
 msgid "inscricoes"
-msgstr ""
+msgstr "inscripciones"
 
 #: modules/EventImporter/Module.php:98
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:26
@@ -8437,43 +8447,43 @@ msgstr "inscripciones"
 
 #: modules/EventImporter/Module.php:99
 msgid "faixa etária"
-msgstr ""
+msgstr "franja etarea"
 
 #: modules/EventImporter/Module.php:99
 msgid "clasificação etária"
-msgstr ""
+msgstr "clasificación etarea"
 
 #: modules/EventImporter/Module.php:99
 msgid "classificação"
-msgstr ""
+msgstr "clasificación"
 
 #: modules/EventImporter/Module.php:99
 msgid "faixa_etária"
-msgstr ""
+msgstr "franja_etarea"
 
 #: modules/EventImporter/Module.php:101
 msgid "línguagem"
-msgstr ""
+msgstr "idioma"
 
 #: modules/EventImporter/Module.php:103
 msgid "proprietário"
-msgstr ""
+msgstr "proprietario"
 
 #: modules/EventImporter/Module.php:105
 msgid "data inicial"
-msgstr ""
+msgstr "fecha Inicial"
 
 #: modules/EventImporter/Module.php:106
 msgid "data final"
-msgstr ""
+msgstr "fecha final"
 
 #: modules/EventImporter/Module.php:107
 msgid "frequência"
-msgstr ""
+msgstr "frecuencia"
 
 #: modules/EventImporter/Module.php:108
 msgid "hora_inicial"
-msgstr ""
+msgstr "hora_inicial"
 
 #: modules/EventImporter/Module.php:108
 msgid "hora inicial"
@@ -8493,19 +8503,19 @@ msgstr "precio"
 
 #: modules/EventImporter/Module.php:118
 msgid "mais_informacoes_sobre_a_entrada"
-msgstr ""
+msgstr "mas_informaciones_sobre_la_entrada"
 
 #: modules/EventImporter/Module.php:118
 msgid "mais_informações_sobre_a_entrada"
-msgstr ""
+msgstr "más_informaciones_sobre_la_entrada"
 
 #: modules/EventImporter/Module.php:121
 msgid "galeria"
-msgstr ""
+msgstr "galería"
 
 #: modules/EventImporter/Module.php:123
 msgid "videos"
-msgstr ""
+msgstr "videos"
 
 #: modules/EventImporter/Module.php:155
 msgid "SEAL ID"
@@ -8516,28 +8526,31 @@ msgid ""
 "PREENCHER O ID DO SELO, CASO QUEIRA APLICAR UM SELO NO EVENTO - garantir que "
 "o selo esteja cadastrado"
 msgstr ""
+"COMPLETA EL ID DEL SELLO, SI DESEA APLICAR UN SELLO EN EL EVENTO - "
+"asegurarse de que el sello esté registrado"
 
 #: modules/EventImporter/Module.php:159
 msgid "ID_EVENTO"
-msgstr ""
+msgstr "ID_EVENTO"
 
 #: modules/EventImporter/Module.php:160
 msgid ""
 "PREENCHER SOMENTE CASO QUEIRA EDITAR UM EVENTO EXISTENTE - Informar ID do "
 "evento"
 msgstr ""
+"COMPLETA SOLO SI QUIERES EDITAR UN EVENTO EXISTENTE - Informar ID del evento"
 
 #: modules/EventImporter/Module.php:163
 msgid "NOME"
-msgstr ""
+msgstr "NOMBRE"
 
 #: modules/EventImporter/Module.php:164
 msgid "PREENCHIMENTO OBRIGATÓRIO - Informar nome do evento"
-msgstr ""
+msgstr "RELLENADO OBLIGATORIO - Informar el nombre del evento"
 
 #: modules/EventImporter/Module.php:165
 msgid "Show da banda O Tranco"
-msgstr ""
+msgstr "Conciero"
 
 #: modules/EventImporter/Module.php:167
 msgid "SUBTITULO"
@@ -8545,28 +8558,28 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:168
 msgid "Informar subtítulo do evento"
-msgstr ""
+msgstr "Ingrese un subtítulo para el evento"
 
 #: modules/EventImporter/Module.php:169
 msgid "Turnê estadual"
-msgstr ""
+msgstr "Gira"
 
 #: modules/EventImporter/Module.php:171
 msgid "DESCRICAO_CURTA"
-msgstr ""
+msgstr "DESCRIPCIÓN_BREVE"
 
 #: modules/EventImporter/Module.php:172
 msgid ""
 "PREENCHIMENTO OBRIGATÓRIO - Breve descrição com no máximo 400 caractéres"
-msgstr ""
+msgstr "LLENADO OBLIGATORIO - Descripción breve con un máximo 400 caracteres"
 
 #: modules/EventImporter/Module.php:173
 msgid "Texto breve falando sobre o evento"
-msgstr ""
+msgstr "Texto breve hablando del evento"
 
 #: modules/EventImporter/Module.php:175
 msgid "DESCRICAO_LONGA"
-msgstr ""
+msgstr "DESCRIPCIÓN_LARGA"
 
 #: modules/EventImporter/Module.php:176
 msgid "Descrição mais detalhada"
@@ -8574,35 +8587,36 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:177
 msgid "Texto mais detalhado do evento"
-msgstr ""
+msgstr "Texto más detallado sobre el evento"
 
 #: modules/EventImporter/Module.php:179
 msgid "SITE"
-msgstr ""
+msgstr "SITIO"
 
 #: modules/EventImporter/Module.php:180
 msgid "Informar o site do evento no formato https://site.com.br"
-msgstr ""
+msgstr "Informar el sitio web del evento en el formato https://site.com.uy"
 
 #: modules/EventImporter/Module.php:181
 msgid "https://rockinrio.com/"
-msgstr ""
+msgstr "T"
 
 #: modules/EventImporter/Module.php:183
 msgid "TRADUCAO_LIBRAS"
-msgstr ""
+msgstr "TRADUCCION_LENGUASEÑAS"
 
 #: modules/EventImporter/Module.php:184
 msgid "Informar se o evento conta com tradução por libras usando SIM ou NÃO"
 msgstr ""
+"Informar si el evento tiene traducción por lengua de señas usando SI o NO"
 
 #: modules/EventImporter/Module.php:187
 msgid "MAIS_INFORMACOES"
-msgstr ""
+msgstr "MAS_INFORMACIONES"
 
 #: modules/EventImporter/Module.php:188
 msgid "Informar número de telefone para mais informações"
-msgstr ""
+msgstr "Ingrese el número de teléfono para más información"
 
 #: modules/EventImporter/Module.php:189
 msgid "99 99999-9999"
@@ -8610,11 +8624,11 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:191
 msgid "AUDIO_DESCRICAO"
-msgstr ""
+msgstr "AUDIO_DESCRIPCIÓN"
 
 #: modules/EventImporter/Module.php:192
 msgid "informar se o evento conta com descrição por audio usando SIM ou NÂO"
-msgstr ""
+msgstr "informar si el evento tiene una descripción de audio usando SI o NO"
 
 #: modules/EventImporter/Module.php:195
 msgid "FACEBOOK"
@@ -8622,7 +8636,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:196
 msgid "Informar o link do Facebook do evento"
-msgstr ""
+msgstr "Agregue el link de Facebook del evento"
 
 #: modules/EventImporter/Module.php:197
 msgid "https://facebook.com.br/evento"
@@ -8634,7 +8648,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:200
 msgid "Informar o link do Instagram do evento"
-msgstr ""
+msgstr "Agregue el link de Instagram del evento"
 
 #: modules/EventImporter/Module.php:201
 msgid "https://instagram.com.br/evento"
@@ -8646,7 +8660,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:204
 msgid "Informar o link do Twitter do evento"
-msgstr ""
+msgstr "Agregue el link de Twitter del evento"
 
 #: modules/EventImporter/Module.php:205
 msgid "https://twitter.com.br/evento"
@@ -8658,7 +8672,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:208
 msgid "Informar o link do Youtube do evento"
-msgstr ""
+msgstr "Agregue el link de Yutube del evento"
 
 #: modules/EventImporter/Module.php:209
 msgid "https://youtube.com.br/evento"
@@ -8670,7 +8684,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:212
 msgid "Informar o link do Linkedin do evento"
-msgstr ""
+msgstr "Agregue el link de Linkedin del evento"
 
 #: modules/EventImporter/Module.php:213
 msgid "https://linkedin.com.br/evento"
@@ -8682,7 +8696,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:216
 msgid "Informar o link do Spotify do evento"
-msgstr ""
+msgstr "Agregue el link de Spotify del evento"
 
 #: modules/EventImporter/Module.php:217
 msgid "https://spotify.com.br/evento"
@@ -8694,7 +8708,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:220
 msgid "Informar o link do Pinterest do evento"
-msgstr ""
+msgstr "Agregue el link de Pinterest del evento"
 
 #: modules/EventImporter/Module.php:221
 msgid "https://pinterest.com.br/evento"
@@ -8708,6 +8722,7 @@ msgstr ""
 msgid ""
 "Informar o número que corresponde ao total de público que o evento suporta"
 msgstr ""
+"Informar el número que corresponde a la audiencia total que soporta el evento"
 
 #: modules/EventImporter/Module.php:225
 msgid "100"
@@ -8719,7 +8734,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:228
 msgid "texto livre"
-msgstr ""
+msgstr "texto libre"
 
 #: modules/EventImporter/Module.php:229
 msgid "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -8727,27 +8742,31 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:231
 msgid "FAIXA_ETARIA"
-msgstr ""
+msgstr "FRANJA_ETAREA"
 
 #: modules/EventImporter/Module.php:232
 msgid ""
 "PREENCHIMENTO OBRIGATÓRIO - Classificação de idade do evento usando as "
 "opções Livre, 10 anos, 12 anos, 14 anos, 16 anos, 18 anos"
 msgstr ""
+"LLENADO OBLIGATORIO - Clasificación por edades del evento utilizando las "
+"opciones Libre, 10 años, 12 años, 14 años, 16 años, 18 años"
 
 #: modules/EventImporter/Module.php:235
 msgid "LINGUAGEM"
-msgstr ""
+msgstr "IDIOMA"
 
 #: modules/EventImporter/Module.php:236
 msgid ""
 "PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as "
 "com ponto e virgula, ;"
 msgstr ""
+"LLENADO OBLIGATORIO - Informar los idiomas del evento separándolos con punto "
+"y coma, ;"
 
 #: modules/EventImporter/Module.php:237
 msgid "Teatro;Música Popular;Livro e Literatura"
-msgstr ""
+msgstr "Teatro, Música Popular, Libro y Poesía"
 
 #: modules/EventImporter/Module.php:239
 msgid "TAGS"
@@ -8755,19 +8774,19 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:240
 msgid "Informar as tags do evento separando-as com ponto e virgula, ;"
-msgstr ""
+msgstr "Informar las etiquetas de evento separándolas con punto y coma, ;"
 
 #: modules/EventImporter/Module.php:241
 msgid "Cultura;Musica;Arte"
-msgstr ""
+msgstr "Cultura;Música;Arte"
 
 #: modules/EventImporter/Module.php:243
 msgid "PROJETO"
-msgstr ""
+msgstr "PROYECTO"
 
 #: modules/EventImporter/Module.php:244
 msgid "Informar o nome ou ID do projeto que o evento esta vinculado"
-msgstr ""
+msgstr "Informar el nombre o ID del proyecto al que se vincula el evento"
 
 #: modules/EventImporter/Module.php:245
 msgid "Projeto Rock2022"
@@ -8775,13 +8794,15 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:247
 msgid "PROPRIETARIO"
-msgstr ""
+msgstr "PROPIETARIO"
 
 #: modules/EventImporter/Module.php:248
 msgid ""
 "PREENCHIMENTO OBRIGATÓRIO - Informar ID do agente reponsável pelo evento. "
 "Esse campod eve ser numérico"
 msgstr ""
+"LLENADO OBLIGATORIO - Informar el ID del agente responsable del evento. Este "
+"campo debe ser numérico"
 
 #: modules/EventImporter/Module.php:249
 msgid "6526"
@@ -8789,11 +8810,11 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:251
 msgid "ESPACO"
-msgstr ""
+msgstr "ESPACIO"
 
 #: modules/EventImporter/Module.php:252
 msgid "Informar o nome ou ID do espaço que o evento esta vinculado"
-msgstr ""
+msgstr "Informar el nombre o id del espacio al que se vincula el evento"
 
 #: modules/EventImporter/Module.php:253
 msgid "8965"
@@ -8808,6 +8829,8 @@ msgid ""
 "PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO OU FREQUEÊNCIA - "
 "Informar inícial do evento no formato HH:MM"
 msgstr ""
+"LLENADO OBLIGATORIO SI SE INFORMA COLUMNA DE ESPACIO O FRECUENCIA - Informar "
+"inicio de evento en formato HH:MM\""
 
 #: modules/EventImporter/Module.php:257
 msgid "12:00"
@@ -8822,6 +8845,8 @@ msgid ""
 "PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO OU FREQUEÊNCIA - "
 "Informar final do evento no formato HH:MM"
 msgstr ""
+"LLENADO OBLIGATORIO SI SE INFORMA COLUMNA DE ESPACIO O FRECUENCIA - Informar "
+"la finalización del evento en formato HH:MM"
 
 #: modules/EventImporter/Module.php:261
 msgid "13:00"
@@ -8829,7 +8854,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:263
 msgid "FREQUENCIA"
-msgstr ""
+msgstr "FRECUENCIA"
 
 #: modules/EventImporter/Module.php:264
 msgid ""
@@ -8837,6 +8862,9 @@ msgid ""
 "frequência que o evento irá acontecer usando as opções todos os dias, "
 "semanal ou uma vez"
 msgstr ""
+"LLENADO OBLIGATORIO SI SE INFORMA LA COLUMNA ESPACIO - Informar con qué "
+"frecuencia se realizará el evento utilizando las opciones todos los días, "
+"semanalmente o una vez"
 
 #: modules/EventImporter/Module.php:267
 msgid "DATA_INICIAL"
@@ -8847,6 +8875,8 @@ msgid ""
 "PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO OU FREQUEÊNCIA - "
 "Informar data inícial do evento no formato DD/MM/YYYY"
 msgstr ""
+"LLENADO OBLIGATORIO SI INFORMA LA COLUMNA DE ESPACIO O FRECUENCIA - Informar "
+"la fecha de inicio del evento en formato DD/MM/AAAA"
 
 #: modules/EventImporter/Module.php:269
 msgid "01/05/2022"
@@ -8861,6 +8891,8 @@ msgid ""
 "PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO OU FREQUEÊNCIA -  "
 "Informar data final do evento no formato DD/MM/YYYY"
 msgstr ""
+"LLENADO OBLIGATORIO SI INFORMA LA COLUMNA DE ESPACIO O FRECUENCIA - Informar "
+"la fecha de finalización del evento en el formato DD/MM/AAAA"
 
 #: modules/EventImporter/Module.php:273
 msgid "30/05/2022"
@@ -8868,7 +8900,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:275
 msgid "SEGUNDA"
-msgstr ""
+msgstr "LUNES"
 
 #: modules/EventImporter/Module.php:276 modules/EventImporter/Module.php:280
 #: modules/EventImporter/Module.php:284 modules/EventImporter/Module.php:288
@@ -8878,50 +8910,52 @@ msgid ""
 "Caso o evento ocorra neste dia informar um dos valores a seguir (sim,x,1) "
 "caso contrario deixar vazio"
 msgstr ""
+"Si el evento ocurre en este día, ingrese uno de los siguientes valores (si, "
+"x,1) de lo contrario déjelo en blanco"
 
 #: modules/EventImporter/Module.php:279
 msgid "TERCA"
-msgstr ""
+msgstr "MARTES"
 
 #: modules/EventImporter/Module.php:283
 msgid "QUARTA"
-msgstr ""
+msgstr "MIÉRCOLES"
 
 #: modules/EventImporter/Module.php:287
 msgid "QUINTA"
-msgstr ""
+msgstr "JUEVES"
 
 #: modules/EventImporter/Module.php:291
 msgid "SEXTA"
-msgstr ""
+msgstr "VIERNES"
 
 #: modules/EventImporter/Module.php:295
 msgid "SABADO"
-msgstr ""
+msgstr "SÁBADO"
 
 #: modules/EventImporter/Module.php:299
 msgid "DOMINGO"
-msgstr ""
+msgstr "DOMINGO"
 
 #: modules/EventImporter/Module.php:303
 msgid "PRECO"
-msgstr ""
+msgstr "PRECIO"
 
 #: modules/EventImporter/Module.php:304
 msgid "Informar os valores cobrados para entrada no evento com texto livre"
-msgstr ""
+msgstr "Informar los montos cobrados por la entrada al evento con texto libre"
 
 #: modules/EventImporter/Module.php:305
 msgid "1 KG de alimento não perecível"
-msgstr ""
+msgstr "1 kg de alimentos no perecederos"
 
 #: modules/EventImporter/Module.php:307
 msgid "MAIS_INFORMACOES_SOBRE_A_ENTRADA"
-msgstr ""
+msgstr "MAS_INFORMACIONES_SOBRE_LA_entrada"
 
 #: modules/EventImporter/Module.php:308
 msgid "Mais informações sobre a entrada"
-msgstr ""
+msgstr "más informaciones sobre la entrada"
 
 #: modules/EventImporter/Module.php:309
 msgid "Complemento das informações de"
