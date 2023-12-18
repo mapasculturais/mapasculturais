@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-18 12:09-0400\n"
+"PO-Revision-Date: 2023-12-18 15:59-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -7592,7 +7592,7 @@ msgstr "Habilitado"
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:17
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:27
 msgid "Inabilitado"
-msgstr "inhabilitado"
+msgstr "Inhabilitado"
 
 #: modules/EvaluationMethodQualification/Module.php:70
 #: modules/EvaluationMethodQualification/Module.php:164
@@ -7844,7 +7844,7 @@ msgstr "Seleccione el estado"
 
 #: modules/EvaluationMethodSimple/layouts/parts/simple--evaluation-info.php:1
 msgid "Selecione o status desta inscrição."
-msgstr "Seleccione el estado de esta inscripción"
+msgstr "Seleccione el estado de esta inscripción."
 
 #: modules/EvaluationMethodTechnical/Module.php:22
 msgid "Avaliação Técnica"
@@ -7852,7 +7852,7 @@ msgstr "Evaluación Técnica"
 
 #: modules/EvaluationMethodTechnical/Module.php:26
 msgid "Consiste em avaliação por critérios e cotas."
-msgstr "Consiste en evaluación por criterios y cuotas"
+msgstr "Consiste en evaluación por criterios y cuotas."
 
 #: modules/EvaluationMethodTechnical/Module.php:103
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:8
@@ -7939,7 +7939,6 @@ msgid ""
 msgstr ""
 "Configure a continuación los porcentajes de cada Política Afirmativa que se "
 "aplicarán en la calificación final, en caso de que el postulante califique. "
-"\""
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:13
 msgid "Porcentagem total a ser aplicada"
@@ -8031,7 +8030,7 @@ msgid ""
 msgstr ""
 "Si la mayoría de los evaluadores consideran la inhabilitación por "
 "viabilidad, la misma será marcada con el status de inválida para el dueño "
-"del llamado, que aún así podrá cambiar su status a válida.\""
+"del llamado, que aún así podrá cambiar su status a válida."
 
 #: modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:54
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:76
@@ -8234,7 +8233,7 @@ msgstr "semanal"
 
 #: modules/EventImporter/Controller.php:839
 msgid " e "
-msgstr "es"
+msgstr " es "
 
 #: modules/EventImporter/Controller.php:845
 msgid ", "
@@ -8386,7 +8385,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:87
 msgid "tradução libras"
-msgstr "Traducción para lenguaje de señas"
+msgstr "traducción para lenguaje de señas"
 
 #: modules/EventImporter/Module.php:88
 msgid "mais_informações"
@@ -8599,7 +8598,7 @@ msgstr "Informar el sitio web del evento en el formato https://site.com.uy"
 
 #: modules/EventImporter/Module.php:181
 msgid "https://rockinrio.com/"
-msgstr "T"
+msgstr "https://rockinrio.com/"
 
 #: modules/EventImporter/Module.php:183
 msgid "TRADUCAO_LIBRAS"
@@ -8955,11 +8954,11 @@ msgstr "MAS_INFORMACIONES_SOBRE_LA_entrada"
 
 #: modules/EventImporter/Module.php:308
 msgid "Mais informações sobre a entrada"
-msgstr "más informaciones sobre la entrada"
+msgstr "Más informaciones sobre la entrada"
 
 #: modules/EventImporter/Module.php:309
 msgid "Complemento das informações de"
-msgstr ""
+msgstr "Complemento de la información de"
 
 #: modules/EventImporter/Module.php:311
 msgid "AVATAR"
@@ -8967,7 +8966,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:312
 msgid "Informar o link da imagem que deseja colocar no avatar do evento"
-msgstr ""
+msgstr "Informa el link de la imagen que quieres poner en el avatar del evento"
 
 #: modules/EventImporter/Module.php:313
 msgid "https://cdn.pensador.com/img/authors/ho/me/homer-simpson-l.jpg"
@@ -8980,6 +8979,7 @@ msgstr ""
 #: modules/EventImporter/Module.php:316
 msgid "Informar o link da imagem que deseja colocar no banner do evento"
 msgstr ""
+"Indique el enlace de la imagen que desea colocar en el banner del evento"
 
 #: modules/EventImporter/Module.php:317
 msgid ""
@@ -8997,6 +8997,9 @@ msgid ""
 "titulo com dois pontos : . A estrutura deve ser seguida para cada imagem que "
 "quiser inserir na galeria de imagens"
 msgstr ""
+"Informar entre corchetes [] el enlace y el título de la imagen. Separe el "
+"enlace y el título con dos puntos: . Se debe seguir la estructura para cada "
+"imagen que se quiera insertar en la galería de imágenes"
 
 #: modules/EventImporter/Module.php:321
 msgid ""
@@ -9007,7 +9010,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:323
 msgid "DOWNLOADS"
-msgstr ""
+msgstr "DESCARGAS"
 
 #: modules/EventImporter/Module.php:324
 msgid ""
@@ -9015,6 +9018,9 @@ msgid ""
 "o titulo com dois pontos :. A estrutura deve ser seguida para cada arquivo "
 "que quiser inserir nos downloads"
 msgstr ""
+"Informar entre corchetes [] el enlace y el título del archivo. Separe el "
+"enlace y el título con dos puntos:. Se debe seguir la estructura para cada "
+"archivo que se quiera insertar en las descargas"
 
 #: modules/EventImporter/Module.php:325
 msgid ""
@@ -9031,6 +9037,9 @@ msgid ""
 "titulo com dois pontos :. A estrutura deve ser seguida para cada imagem que "
 "quiser inserir na galeria de vídeos"
 msgstr ""
+"Informar entre corchetes [] el enlace y título del video. Separe el enlace y "
+"el título con dos puntos:. Se debe seguir la estructura para cada imagen que "
+"se quiera insertar en la galería de videos"
 
 #: modules/EventImporter/Module.php:329
 msgid "[https://www.youtube.com/watch?v=6pKJRAOqAGw:O Rappa]"
@@ -9046,6 +9055,9 @@ msgid ""
 "dois pontos :. A estrutura deve ser seguida para cada link que quiser "
 "inserir na galeria de links"
 msgstr ""
+"Informar entre corchetes [] el enlace y título. Separe el enlace y el título "
+"con dos puntos:. Se debe seguir la estructura para cada enlace que se quiera "
+"insertar en la galería de enlaces"
 
 #: modules/EventImporter/Module.php:333
 msgid "[https://link1.com:descricao]"
@@ -9058,91 +9070,95 @@ msgid ""
 "evento, importe a planilha no botão abaixo e, por fim, ative a integração no "
 "botão Processar"
 msgstr ""
+"En este espacio puede importar eventos a partir del llenado de la planilla "
+"modelo. Para eso, descargue la planilla, complete con los datos de su "
+"evento, importe la planilla en el botón abajo y, por último, active la "
+"integración en el botón Procesar"
 
 #: modules/EventImporter/components/event-importer-files/template.php:27
 msgid "Nome do arquivo"
-msgstr ""
+msgstr "Nombre del archivo"
 
 #: modules/EventImporter/components/event-importer-files/template.php:31
 msgid "Data de importação"
-msgstr ""
+msgstr "Fecha de importación"
 
 #: modules/EventImporter/components/event-importer-files/template.php:39
 msgid "Processado em"
-msgstr ""
+msgstr "Procesado en"
 
 #: modules/EventImporter/components/event-importer-files/template.php:40
 msgid "Não processado"
-msgstr ""
+msgstr "Sin procesar"
 
 #: modules/EventImporter/components/event-importer-files/template.php:44
 msgid "Você está certo que deseja processar este arquivo?"
-msgstr ""
+msgstr "¿Estás seguro de que quieres procesar este archivo?"
 
 #: modules/EventImporter/components/event-importer-files/template.php:47
 msgid "Processado"
-msgstr ""
+msgstr "Procesado"
 
 #: modules/EventImporter/components/event-importer-files/template.php:48
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:61
 msgid "Processar"
-msgstr ""
+msgstr "Procesar"
 
 #: modules/EventImporter/components/event-importer-files/template.php:53
 #: themes/BaseV1/layouts/parts/panel-em-cartaz.php:30
 #: themes/BaseV1/views/panel/em-cartaz.php:67
 msgid "Baixar"
-msgstr ""
+msgstr "Descargar"
 
 #: modules/EventImporter/components/event-importer-files/template.php:55
 msgid "Você está certo que deseja excluir este arquivo?"
-msgstr ""
+msgstr "¿Estás seguro de que quieres eliminar este archivo?"
 
 #: modules/EventImporter/components/event-importer-files/template.php:65
 msgid "Erros encontrados na linha"
-msgstr ""
+msgstr "Errores encontrados en la línea"
 
 #: modules/EventImporter/components/event-importer-upload/template.php:20
 msgid "Para importar eventos, faça upload da planilha de modelo preechida"
-msgstr ""
+msgstr "Para importar eventos, cargue la planilla modelo llenada"
 
 #: modules/EventImporter/components/event-importer-upload/template.php:26
 msgid "Selecionar arquivo"
-msgstr ""
+msgstr "Seleccionar archivo"
 
 #: modules/EventImporter/components/event-importer-upload/template.php:39
 msgid "Carregando"
-msgstr ""
+msgstr "Cargando"
 
 #: modules/EventImporter/components/event-importer-upload/template.php:44
 msgid "Importar Evento"
-msgstr ""
+msgstr "Importar Evento"
 
 #: modules/EventImporter/components/event-importer-upload/template.php:61
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:31
 msgid "Baixar modelo CSV"
-msgstr ""
+msgstr "Descargar modelo CSV"
 
 #: modules/EventImporter/components/event-importer-upload/template.php:66
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:32
 msgid "Baixar modelo XLS"
-msgstr ""
+msgstr "Descargar modelo XLS"
 
 #: modules/EventImporter/components/event-importer-upload/texts.php:5
 msgid "Importar arquivos de eventos"
-msgstr ""
+msgstr "Importar archivos de eventos"
 
 #: modules/EventImporter/layouts/parts/event-importer/tab.php:15
 msgid "Importações"
-msgstr ""
+msgstr "Importaciones"
 
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:34
 msgid "Enviar arquivo para importação"
-msgstr ""
+msgstr "Enviar archivo para importación"
 
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:36
 msgid "Importar CSV de eventos"
-msgstr ""
+msgstr "Importar CSV de eventos"
 
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:42
 #: themes/BaseV1/layouts/parts/downloads.php:24
@@ -9151,19 +9167,19 @@ msgstr ""
 
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:46
 msgid "Arquivo:"
-msgstr ""
+msgstr "Archivo:"
 
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:47
 msgid "Data de envio:"
-msgstr ""
+msgstr "Fecha de envío:"
 
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:48
 msgid "processado em:"
-msgstr ""
+msgstr "procesado en:"
 
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:49
 msgid "Quantidade processada:"
-msgstr ""
+msgstr "Cantidad procesada:"
 
 #: modules/EventImporter/layouts/parts/upload-csv-event.php:52
 msgid "ID dos Eventos:"
@@ -9171,45 +9187,47 @@ msgstr ""
 
 #: modules/FAQ/components/faq-search-results/template.php:16
 msgid "Resultados da pesquisa"
-msgstr ""
+msgstr "Resultados de la búsqueda"
 
 #: modules/FAQ/components/faq-search-results/template.php:46
 msgid "Ops! nenhum resultado foi encontrado para sua busca"
-msgstr ""
+msgstr "¡Ups! No se encontraron resultados para su búsqueda"
 
 #: modules/FAQ/components/faq-search-results/template.php:47
 msgid "VOLTAR À AJUDA"
-msgstr ""
+msgstr "VOLVER A AYUDA"
 
 #: modules/FAQ/components/faq-search/template.php:11
 msgid "Pesquise por palavra-chave"
-msgstr ""
+msgstr "Buscar por palabra clave"
 
 #: modules/FAQ/layouts/faq-layout.php:28
 msgid "Está com dúvidas?"
-msgstr ""
+msgstr "¿Tienes alguna duda?"
 
 #: modules/FAQ/layouts/faq-layout.php:29
 msgid "Confira nossas perguntas frequentes"
-msgstr ""
+msgstr "Consulta nuestras preguntas frecuentes"
 
 #: modules/FAQ/views/faq/index.php:17
 msgid "Principais sugestões"
-msgstr ""
+msgstr "Sugerencias principales"
 
 #: modules/FAQ/views/faq/index.php:36
 msgid ""
 "Confira todas as dúvidas mais frequentes agrupadas em categorias disponíveis "
 "para que você possa consultar."
 msgstr ""
+"Consulta todas las dudas más frecuentes agrupadas por categorías disponibles "
+"para que puedas consultarlas."
 
 #: modules/FAQ/views/faq/section.php:29
 msgid "Navegue entra as categorias:"
-msgstr ""
+msgstr "Explora las categorías:"
 
 #: modules/Home/components/home-developers/template.php:11
 msgid "Alô desenvolvedores"
-msgstr ""
+msgstr "Hola desarrolladores"
 
 #: modules/Home/components/home-developers/template.php:13
 msgid ""
@@ -9218,16 +9236,22 @@ msgid ""
 "e coletivos que investem na plataforma. Você pode contribuir para o seu "
 "desenvolvimento através do GitHub."
 msgstr ""
+"Además, Cultura en Línea es un software gratuito, creado en colaboración "
+"entre hacklab/, departamentos de cultura, organizaciones no gubernamentales, "
+"empresas y colectivos que invierten en la plataforma. Puedes contribuir a su "
+"desarrollo a través de GitHub."
 
 #: modules/Home/components/home-entities/template.php:18
 msgid "Aqui você encontra as informações da cultura de sua região!"
-msgstr ""
+msgstr "¡Aquí encontrarás informaciones sobre la cultura de tu región!"
 
 #: modules/Home/components/home-entities/template.php:21
 msgid ""
 "Mas para isso, precisamos da sua ajuda!!! Faça parte você também: cadastre "
 "seus projetos, espaços e eventos."
 msgstr ""
+"Pero para eso necesitamos tu ayuda!!! Sé parte también: registra tus "
+"proyectos, espacios y eventos."
 
 #: modules/Home/components/home-entities/template.php:43
 #: modules/Search/components/search-map/texts.php:6 themes/BaseV1/Theme.php:216
@@ -9236,6 +9260,9 @@ msgid ""
 "editais, oficinas, prêmios e concursos. Você também pode criar o seu próprio "
 "formulário e divulgar uma oportunidade para outros agentes culturais."
 msgstr ""
+"Haga su inscripción o acceda al resultado de diversas convocatorias. Usted "
+"puede crear su propio formulario y divulgar una oportunidad para otros "
+"agentes culturales."
 
 #: modules/Home/components/home-entities/template.php:45
 #: modules/Home/components/home-entities/template.php:70
@@ -9243,7 +9270,7 @@ msgstr ""
 #: modules/Home/components/home-entities/template.php:120
 #: modules/Home/components/home-entities/template.php:145
 msgid "Ver todos"
-msgstr ""
+msgstr "Ver todos"
 
 #: modules/Home/components/home-entities/template.php:68
 #: modules/Search/components/search-map/texts.php:8
@@ -9252,6 +9279,9 @@ msgid ""
 "usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-"
 "los gratuitamente. (Mais uma linha aqui pra fechar cinco linhas)"
 msgstr ""
+"Puedes buscar eventos culturales en los campos de búsqueda combinada. Como "
+"usuario registrado, puedes incluir tus eventos en la plataforma y "
+"promocionarlos gratuitamente. (Más una línea aquí para cerrar cinco líneas)"
 
 #: modules/Home/components/home-entities/template.php:93
 #: modules/Search/components/search-map/texts.php:9 themes/BaseV1/Theme.php:206
@@ -9268,6 +9298,10 @@ msgid ""
 "atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais "
 "agentes (grupos, coletivos, bandas instituições, empresas, etc.), (...)"
 msgstr ""
+"En este espacio, están registrados artistas, gestores y productores; una red "
+"de actores involucrados en la escena cultural de la región. Usted puede "
+"registrar uno o más agentes (grupos, colectivos, bandas, instituciones, "
+"empresas, etc.), (...)"
 
 #: modules/Home/components/home-entities/template.php:143
 #: modules/Search/components/search-map/texts.php:7
