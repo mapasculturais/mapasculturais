@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-18 15:59-0400\n"
+"PO-Revision-Date: 2023-12-19 18:46-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -3426,7 +3426,7 @@ msgstr "El agente \"%s\" es obligatorio."
 #: core/Entities/Registration.php:955
 #, php-format
 msgid "O agente %s ainda não confirmou sua participação neste projeto."
-msgstr ""
+msgstr "El agente %s aún no ha confirmado su participación en este proyecto."
 
 #: core/Entities/Registration.php:959
 #, php-format
@@ -8582,7 +8582,7 @@ msgstr "DESCRIPCIÓN_LARGA"
 
 #: modules/EventImporter/Module.php:176
 msgid "Descrição mais detalhada"
-msgstr ""
+msgstr "Descripción más detallada"
 
 #: modules/EventImporter/Module.php:177
 msgid "Texto mais detalhado do evento"
@@ -9290,6 +9290,10 @@ msgid ""
 "de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também "
 "os espaços onde desenvolve suas atividades artísticas e culturais."
 msgstr ""
+"Busque espacios culturales incluidos en la plataforma, accediendo a los "
+"campos de búsqueda combinada que ayudan a la precisión de su investigación. "
+"Registre también los espacios donde desarrolla sus actividades artísticas y "
+"culturales."
 
 #: modules/Home/components/home-entities/template.php:118
 #: modules/Search/components/search-map/texts.php:5
@@ -9310,22 +9314,25 @@ msgid ""
 "criados, além de diversas iniciativas cadastradas pelos usuários da "
 "plataforma."
 msgstr ""
+"Aquí encontrarás leyes de fomento, muestras, convocatorias y concursos "
+"creados, además de diversas iniciativas registradas por los usuarios de la "
+"plataforma."
 
 #: modules/Home/components/home-feature/template.php:20
 msgid "Em destaque"
-msgstr ""
+msgstr "En destaque"
 
 #: modules/Home/components/home-feature/template.php:23
 msgid "Confira os últimos destaques de cada uma das entidades"
-msgstr ""
+msgstr "Consulta las últimas novedades destacadas de cada entidad"
 
 #: modules/Home/components/home-feature/template.php:125
 msgid "Nenhuma entidade em destaque foi encontrada."
-msgstr ""
+msgstr "No se encontraron entidades destacadas."
 
 #: modules/Home/components/home-header/template.php:19
 msgid "Bem-vinde ao Mapas Culturais"
-msgstr ""
+msgstr "Bienvenide al Mapa Cultural"
 
 #: modules/Home/components/home-header/template.php:22
 msgid ""
@@ -9335,34 +9342,44 @@ msgid ""
 "todas as etapas de editais e fomentos, organização de uma agenda cultural e "
 "divulgação espaços culturais dos territórios."
 msgstr ""
+"Mapas Cultural es una herramienta de gestión cultural que garantiza la "
+"estructuración de Sistemas de Información e Indicadores. La plataforma "
+"ofrece soluciones para el mapeo colaborativo de agentes culturales, la "
+"realización de todas las etapas de convocatorias y fomentos, la organización "
+"de una agenda cultural y la difusión de espacios culturales de los "
+"territorios."
 
 #: modules/Home/components/home-map/template.php:14
 msgid "Visualize também no mapa"
-msgstr ""
+msgstr "Visualice también en el mapa"
 
 #: modules/Home/components/home-map/template.php:15
 msgid ""
 "Os agentes, espaços e eventos cadastrados contam com a geo localização de "
 "seus endereços, encontre-os aqui:"
 msgstr ""
+"Los agentes, espacios y eventos registrados cuentan con la geolocalización "
+"de sus direcciones, encuéntralos aquí:"
 
 #: modules/Home/components/home-opportunities/template.php:17
 msgid "Oportunidades do momento"
-msgstr ""
+msgstr "Oportunidades del momento"
 
 #: modules/Home/components/home-opportunities/template.php:20
 msgid ""
 "Cadastre-se, participe de editais e oportunidade e concorra aos benefícios "
 "sem sair de casa"
 msgstr ""
+"Regístrate, participa de convocatorias y oportunidades y compita a los "
+"beneficios sin salir de casa"
 
 #: modules/Home/components/home-opportunities/template.php:41
 msgid "Nenhuma oportunidade do momento foi encontrada."
-msgstr ""
+msgstr "No se encontró ninguna oportunidad del momento."
 
 #: modules/Home/components/home-register/template.php:15
 msgid "Faça seu cadastro e colabore com o Mapas Culturais"
-msgstr ""
+msgstr "Regístrate y colabora con Mapas Culturales"
 
 #: modules/Home/components/home-register/template.php:16
 msgid ""
@@ -9371,45 +9388,50 @@ msgid ""
 "gestão pública, dos mecanismos de participação e da democratização do acesso "
 "às políticas culturais promovidas pela Secretaria da Cultura."
 msgstr ""
+"Colabora con la plataforma libre, colaborativa e interactiva de mapeo del "
+"panorama cultural e instrumento de gobernanza digital para el mejoramiento "
+"de la gestión pública, de los mecanismos de participación y de la "
+"democratización del acceso a las políticas culturales promovidas por la "
+"Secretaría de Cultura."
 
 #: modules/Home/components/home-register/template.php:19
 msgid "Fazer Cadastro"
-msgstr ""
+msgstr "Registrarse"
 
 #: modules/Home/components/home-search/template.php:19
 #: modules/Opportunities/components/opportunity-evaluations-list/template.php:25
 #: modules/Search/components/search-filter/template.php:24
 #: modules/Search/components/search-filter/template.php:30
 msgid "Filtrar"
-msgstr ""
+msgstr "Filtrar"
 
 #: modules/LGPD/components/accept-terms/template.php:22
 msgid "Termos e condições"
-msgstr ""
+msgstr "Términos y condiciones"
 
 #: modules/LGPD/components/accept-terms/template.php:28
 msgid "Salvando aceite dos termos..."
-msgstr ""
+msgstr "Guardando aceptación de términos..."
 
 #: modules/LGPD/components/accept-terms/texts.php:5
 #: modules/UserManagement/components/user-accepted-terms/texts.php:5
 msgid "Política de privacidade"
-msgstr ""
+msgstr "Política de privacidad"
 
 #: modules/LGPD/components/accept-terms/texts.php:6
 #: modules/UserManagement/components/user-accepted-terms/texts.php:6
 msgid "Termos de uso"
-msgstr ""
+msgstr "Condiciones de uso"
 
 #: modules/LGPD/components/accept-terms/texts.php:7
 #: modules/UserManagement/components/user-accepted-terms/texts.php:7
 msgid "Autorização de uso de imagem"
-msgstr ""
+msgstr "Autorización de uso de imagen"
 
 #: modules/LGPD/views/lgpd/accept.php:10
 #, php-format
 msgid "Aceito em %s"
-msgstr ""
+msgstr "Aceptado en %s"
 
 #: modules/LGPD/views/lgpd/accept.php:10
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:52
@@ -9421,38 +9443,40 @@ msgstr ""
 #: modules/LGPD/views/lgpd/accept.php:14
 #: modules/Notifications/components/notification-list/template.php:56
 msgid "Aceitar"
-msgstr ""
+msgstr "Aceptar"
 
 #: modules/LGPD/views/lgpd/accept.php:17
 msgid "Recusar"
-msgstr ""
+msgstr "Recusar"
 
 #: modules/LGPD/views/lgpd/terms.php:16 modules/LGPD/views/lgpd/view.php:16
 msgid "Termos e Condições"
-msgstr ""
+msgstr "Términos y condiciones"
 
 #: modules/Notifications/Module.php:143
 msgid "Requisição para avaliar oportunidade"
-msgstr ""
+msgstr "Solicitud para evaluar una oportunidad"
 
 #: modules/Notifications/Module.php:144
 #, php-format
 msgid "%s te convida para avaliar a oportunidade %s vinculada ao %s %s. %s"
-msgstr ""
+msgstr "%s te invita a evaluar la oportunidad %s vinculada a %s %s. %s"
 
 #: modules/Notifications/Module.php:145
 #, php-format
 msgid "Seu convite para fazer do agente %s um avaliador foi enviada."
 msgstr ""
+"Su invitación para convertir el agente %s en un evaluador ha sido enviada."
 
 #: modules/Notifications/Module.php:152 modules/Notifications/Module.php:156
 msgid "Requisição para relacionar agente em uma inscrição"
-msgstr ""
+msgstr "Solicitud para vincular el agente con una inscripción"
 
 #: modules/Notifications/Module.php:153
 #, php-format
 msgid "%s quer relacionar o agente %s à inscrição %s no projeto %s."
 msgstr ""
+"%s quiere relacionar el agente %s con la inscripción %s en el proyecto %s."
 
 #: modules/Notifications/Module.php:154
 #, php-format
@@ -9460,11 +9484,14 @@ msgid ""
 "Sua requisição para relacionar o agente %s à inscrição %s no projeto %s foi "
 "enviada."
 msgstr ""
+"Su solicitud para vincular el agente %s a la inscripción %s en el proyecto "
+"%s ha sido enviada."
 
 #: modules/Notifications/Module.php:157
 #, php-format
 msgid "%s quer relacionar o agente %s à inscrição %s na oportunidade %s."
 msgstr ""
+"%s quiere vincular el agente %s a la inscripción %s en la oportunidad %s."
 
 #: modules/Notifications/Module.php:158
 #, php-format
@@ -9472,45 +9499,48 @@ msgid ""
 "Sua requisição para relacionar o agente %s à inscrição %s no oportunidade %s "
 "foi enviada."
 msgstr ""
+"Su solicitud para vincular el agente %s a la inscripción %s en la "
+"oportunidad %s ha sido enviada."
 
 #: modules/Notifications/Module.php:160 modules/Notifications/Module.php:166
 msgid "Requisição para relacionar agente"
-msgstr ""
+msgstr "Solicitud para vincular agente"
 
 #: modules/Notifications/Module.php:161
 #, php-format
 msgid "%s quer relacionar o agente %s ao %s %s."
-msgstr ""
+msgstr "%s quiere relacionar el agente %s al %s %s."
 
 #: modules/Notifications/Module.php:162 modules/Notifications/Module.php:170
 #, php-format
 msgid "Sua requisição para relacionar o agente %s ao %s %s foi enviada."
-msgstr ""
+msgstr "Su solicitud para vincular el agente %s al %s %s ha sido enviada."
 
 #: modules/Notifications/Module.php:168
 #, php-format
 msgid "%s quer relacionar o agente %s ao %s %s. %s"
-msgstr ""
+msgstr "%s quiere relacionar el agente %s con %s %s. %s"
 
 #: modules/Notifications/Module.php:175
 msgid "Requisição de transferência de entidades"
-msgstr ""
+msgstr "Solicitud de transferencia de entidades"
 
 #: modules/Notifications/Module.php:176
 #, php-format
 msgid ""
 "%s apagou sua conta e transferiu todas as suas entidades para seu agente %s"
-msgstr ""
+msgstr "%s eliminó su cuenta y transfirió todas sus entidades a su agente %s"
 
 #: modules/Notifications/Module.php:179
 msgid "Requisição de mudança de propriedade"
-msgstr ""
+msgstr "Solicitud de cambio de propiedad"
 
 #: modules/Notifications/Module.php:180
 #, php-format
 msgid ""
 "%s está requisitando a mudança de propriedade do %s %s para o agente %s. %s"
 msgstr ""
+"%s está solicitando el cambio de propiedad de %s %s para el agente %s. %s"
 
 #: modules/Notifications/Module.php:181
 #, php-format
@@ -9518,73 +9548,79 @@ msgid ""
 "Sua requisição para alterar a propriedade do %s %s para o agente %s foi "
 "enviada."
 msgstr ""
+"Se ha enviado su solicitud para cambiar la propiedad del %s %s para el "
+"agente %s."
 
 #: modules/Notifications/Module.php:184
 #, php-format
 msgid "Requisição para criação de um %s filho"
-msgstr ""
+msgstr "Solicitud para creación de un %s hijo"
 
 #: modules/Notifications/Module.php:185
 #, php-format
 msgid "%s quer que o %s %s seja um %s filho de %s. %s"
-msgstr ""
+msgstr "%s quiere que %s %s sea un %s hijo de %s. %s"
 
 #: modules/Notifications/Module.php:186
 #, php-format
 msgid "Sua requisição para fazer do %s %s um %s filho de %s foi enviada."
 msgstr ""
+"Su solicitud para convertir  %s %s en un %s hijo de %s ha sido enviada."
 
 #: modules/Notifications/Module.php:189
 msgid "Requisição para adicionar evento"
-msgstr ""
+msgstr "Solicitud para agregar evento"
 
 #: modules/Notifications/Module.php:190
 #, php-format
 msgid "%s quer adicionar o evento %s que ocorre %s no espaço %s. %s"
-msgstr ""
+msgstr "%s quiere agregar el evento %s que ocurre %s en el espacio %s. %s"
 
 #: modules/Notifications/Module.php:191
 #, php-format
 msgid ""
 "Sua requisição para criar a ocorrência do evento %s no espaço %s foi enviada."
 msgstr ""
+"Su solicitud para crear la ocurrencia del evento %s en el espacio %s ha sido "
+"enviada."
 
 #: modules/Notifications/Module.php:194
 msgid "Requisição para relacionar o evento ao projeto"
-msgstr ""
+msgstr "Solicitud para relacionar el evento al proyecto"
 
 #: modules/Notifications/Module.php:195
 #, php-format
 msgid "%s quer relacionar o evento %s ao projeto %s. %s"
-msgstr ""
+msgstr "%s quiere relacionar el evento %s al proyecto %s. %s"
 
 #: modules/Notifications/Module.php:196
 #, php-format
 msgid "Sua requisição para associar o evento %s ao projeto %s foi enviada."
-msgstr ""
+msgstr "Su solicitud para asociar el evento %s al proyecto %s ha sido enviada."
 
 #: modules/Notifications/Module.php:199
 msgid "Requisição para relacionar selo"
-msgstr ""
+msgstr "Solicitud para relacionar sello"
 
 #: modules/Notifications/Module.php:200
 #, php-format
 msgid "%s quer relacionar o selo %s ao %s %s. %s"
-msgstr ""
+msgstr "%s quiere asociar el sello %s al %s %s. %s"
 
 #: modules/Notifications/Module.php:201
 #, php-format
 msgid "Sua requisição para relacionar o selo %s ao %s %s foi enviada."
-msgstr ""
+msgstr "Se ha enviado su solicitud para relacionar el sello %s al %s %s."
 
 #: modules/Notifications/Module.php:215
 msgid "Requisição para relacionar o espaço ao projeto"
-msgstr ""
+msgstr "Solicitud para relacionar el espacio con el proyecto"
 
 #: modules/Notifications/Module.php:216
 #, php-format
 msgid "%s quer relacionar o espaço %s à inscrição %s no projeto %s."
 msgstr ""
+"%s quiere relacionar el espaco %s a la inscripción %s en el proyecto %s."
 
 #: modules/Notifications/Module.php:217
 #, php-format
@@ -9592,109 +9628,117 @@ msgid ""
 "Sua requisição para relacionar o espaço %s à inscrição %s no projeto %s foi "
 "enviada."
 msgstr ""
+"Su solicitud para vincular el espacio %s a la inscripción %s en el proyecto "
+"%s ha sido enviada."
 
 #: modules/Notifications/Module.php:283
 #, php-format
 msgid "%s aceitou o relacionamento do agente %s à inscrição %s no projeto %s."
 msgstr ""
+"%s aceptó la relación del agente %s con la inscripción %s en el proyecto %s."
 
 #: modules/Notifications/Module.php:285
 #, php-format
 msgid "%s aceitou o relacionamento do agente %s com o %s %s."
-msgstr ""
+msgstr "%s aceptó la relación del agente %s con el %s %s."
 
 #: modules/Notifications/Module.php:289
 #, php-format
 msgid "%s aceitou a mudança de propriedade do %s %s para o agente %s."
-msgstr ""
+msgstr "%s ha aceptado el cambio de propiedad de %s %s para el agente %s."
 
 #: modules/Notifications/Module.php:292
 #, php-format
 msgid "%s aceitou que o %s %s seja um %s filho de %s."
-msgstr ""
+msgstr "%s aceptó que %s %s sea un %s hijo de %s."
 
 #: modules/Notifications/Module.php:295
 #, php-format
 msgid "%s aceitou adicionar o evento %s que ocorre %s no espaço %s."
-msgstr ""
+msgstr "%s aceptó agregar el evento %s que ocurre %s en el espacio %s."
 
 #: modules/Notifications/Module.php:298
 #, php-format
 msgid "%s aceitou relacionar o evento %s ao projeto %s."
-msgstr ""
+msgstr "%s aceptó relacionar el evento %s al proyecto %s."
 
 #: modules/Notifications/Module.php:301
 msgid "A requisição foi aprovada."
-msgstr ""
+msgstr "La solicitud fue aprobada."
 
 #: modules/Notifications/Module.php:367
 #, php-format
 msgid "%s cancelou o relacionamento do agente %s à inscrição %s no projeto %s."
 msgstr ""
+"%s canceló la relación del agente %s con la inscripción %s en el proyecto %s."
 
 #: modules/Notifications/Module.php:369
 #, php-format
 msgid "%s cancelou o pedido de relacionamento do agente %s com o %s %s."
-msgstr ""
+msgstr "%s canceló la solicitud de relación del agente %s con el %s %s."
 
 #: modules/Notifications/Module.php:373
 #, php-format
 msgid "%s rejeitou o relacionamento do agente %s à inscrição %s no projeto %s."
 msgstr ""
+"%s rechazó la relación del agente %s con la inscripción %s en el proyecto %s."
 
 #: modules/Notifications/Module.php:375
 #, php-format
 msgid "%s rejeitou o relacionamento do agente %s com o %s %s."
-msgstr ""
+msgstr "%s rechazó la relación del agente %s con %s %s."
 
 #: modules/Notifications/Module.php:382 modules/Notifications/Module.php:386
 #, php-format
 msgid "%s cancelou o pedido de propriedade do %s %s para o agente %s."
-msgstr ""
+msgstr "%s ha cancelado el cambio de propiedad del %s %s para el agente %s."
 
 #: modules/Notifications/Module.php:383 modules/Notifications/Module.php:387
 #, php-format
 msgid "%s rejeitou a mudança de propriedade do %s %s para o agente %s."
-msgstr ""
+msgstr "%s rechazó el cambio de propiedad del %s %s para el agente %s."
 
 #: modules/Notifications/Module.php:392
 #, php-format
 msgid "%s cancelou o pedido para que o %s %s seja um %s filho de %s."
-msgstr ""
+msgstr "%s canceló la solicitud para que el %s %s sea un %s hijo de %s."
 
 #: modules/Notifications/Module.php:393
 #, php-format
 msgid "%s rejeitou que o %s %s seja um %s filho de %s."
-msgstr ""
+msgstr "%s rechazó que %s %s sea un %s hijo de %s."
 
 #: modules/Notifications/Module.php:397
 #, php-format
 msgid ""
 "%s cancelou o pedido de autorização do evento %s que ocorre %s no espaço %s."
 msgstr ""
+"%s canceló la solicitud de autorización para el evento %s que ocurre %s en "
+"el espacio %s."
 
 #: modules/Notifications/Module.php:398
 #, php-format
 msgid "%s rejeitou o evento %s que ocorre %s no espaço %s."
-msgstr ""
+msgstr "%s rechazó el evento %s que ocurre %s en el espacio %s."
 
 #: modules/Notifications/Module.php:402
 #, php-format
 msgid "%s cancelou o pedido de relacionamento do evento %s ao projeto %s."
 msgstr ""
+"%s canceló la solicitud de relación para el evento %s con el proyecto %s."
 
 #: modules/Notifications/Module.php:403
 #, php-format
 msgid "%s rejeitou o relacionamento do evento %s ao projeto %s."
-msgstr ""
+msgstr "%s rechazó la relación del evento %s con el proyecto %s."
 
 #: modules/Notifications/Module.php:407
 msgid "A requisição foi cancelada."
-msgstr ""
+msgstr "La solicitud fue cancelada."
 
 #: modules/Notifications/Module.php:408
 msgid "A requisição foi rejeitada."
-msgstr ""
+msgstr "La solicitud fue rechazada."
 
 #: modules/Notifications/components/notification-list/template.php:30
 #: modules/Notifications/components/notification-list/template.php:43
@@ -9703,19 +9747,19 @@ msgstr ""
 
 #: modules/Notifications/components/notification-list/template.php:51
 msgid "Rejeitar"
-msgstr ""
+msgstr "Rechazar"
 
 #: modules/Notifications/components/notification-list/texts.php:5
 msgid "Requsição Aprovada"
-msgstr ""
+msgstr "Solicitud Aprobada"
 
 #: modules/Notifications/components/notification-list/texts.php:6
 msgid "Requsição Recusada"
-msgstr ""
+msgstr "Solicitud cancelada"
 
 #: modules/Notifications/components/notification-list/texts.php:7
 msgid "Requsição Cancelada"
-msgstr ""
+msgstr "Solicitud Cancelada"
 
 #: modules/Notifications/components/notification-modal/template.php:14
 #: modules/Notifications/components/notification-modal/template.php:41
@@ -9727,31 +9771,31 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/header-main-nav.php:111
 #: themes/BaseV2/layouts/parts/navbar.php:46
 msgid "Notificações"
-msgstr ""
+msgstr "Notificaciones"
 
 #: modules/Notifications/components/notification-modal/template.php:20
 msgid "Você tem"
-msgstr ""
+msgstr "Usted tienes"
 
 #: modules/Notifications/components/notification-modal/template.php:22
 msgid "notificação"
-msgstr ""
+msgstr "notificación"
 
 #: modules/Notifications/components/notification-modal/template.php:33
 msgid "Ver todas as notificações"
-msgstr ""
+msgstr "Ver todas las notificaciones"
 
 #: modules/Opportunities/Module.php:38
 msgid "A data inicial das inscrições é obrigatória"
-msgstr ""
+msgstr "La fecha de inicio de las inscripciones es obligatoria"
 
 #: modules/Opportunities/Module.php:39
 msgid "A data final das inscrições é obrigatória"
-msgstr ""
+msgstr "La fecha final de las inscripciones es obligatoria"
 
 #: modules/Opportunities/Module.php:40
 msgid "A descrição curtá é obrigatória"
-msgstr ""
+msgstr "La descripción breve es obligatoria"
 
 #: modules/Opportunities/Module.php:164 modules/Opportunities/Module.php:199
 #: modules/Opportunities/views/opportunity/edit.php:26
@@ -9761,7 +9805,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:9
 #: themes/BaseV1/views/panel/opportunities.php:20
 msgid "Minhas oportunidades"
-msgstr ""
+msgstr "Mis oportunidades"
 
 #: modules/Opportunities/Module.php:165
 #: modules/Opportunities/views/panel/registrations.php:17
@@ -9769,11 +9813,11 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-registrations.php:9
 #: themes/BaseV1/views/panel/registrations.php:15
 msgid "Minhas inscrições"
-msgstr ""
+msgstr "Mis inscripciones"
 
 #: modules/Opportunities/Module.php:193
 msgid "Minhas avaliações"
-msgstr ""
+msgstr "Mis evaluaciones"
 
 #: modules/Opportunities/Module.php:205
 #: modules/Opportunities/components/opportunity-phase-support/template.php:18
@@ -9783,48 +9827,50 @@ msgstr ""
 #: modules/OpportunityClaimForm/Module.php:58
 #: modules/OpportunityPhases/Module.php:716
 msgid "Período de inscrição"
-msgstr ""
+msgstr "Período de inscripción"
 
 #: modules/Opportunities/Module.php:312
 msgid "Textos informativos para as fichas de avaliação"
-msgstr ""
+msgstr "Textos informativos para formularios de evaluación"
 
 #: modules/Opportunities/components/opportunity-basic-info/template.php:35
 msgid "Informações obrigatórias"
-msgstr ""
+msgstr "Informaciones obligatorias"
 
 #: modules/Opportunities/components/opportunity-basic-info/template.php:43
 msgid "Publicação final de resultados (data e hora)"
-msgstr ""
+msgstr "Publicación final de resultados (fecha y hora)"
 
 #: modules/Opportunities/components/opportunity-basic-info/template.php:64
 msgid "Adicionar arquivos"
-msgstr ""
+msgstr "Agregar archivos"
 
 #: modules/Opportunities/components/opportunity-basic-info/template.php:75
 msgid "Adicionar regulamento"
-msgstr ""
+msgstr "Agregar reglamento"
 
 #: modules/Opportunities/components/opportunity-category-list/template.php:18
 #: modules/Opportunities/components/opportunity-form-builder-category-list/template.php:18
 #: themes/BaseV1/Theme.php:2191
 msgid "Categorias"
-msgstr ""
+msgstr "Categorías"
 
 #: modules/Opportunities/components/opportunity-category/template.php:19
 msgid "Categorias de inscrição"
-msgstr ""
+msgstr "Categorías de inscripción"
 
 #: modules/Opportunities/components/opportunity-category/template.php:20
 msgid ""
 "Crie opções para as pessoas escolherem na hora de se inscrever, como, por "
 "exemplo, \"categorias\" ou \"modalidades\"."
 msgstr ""
+"Cree opciones para que las personas elijan al momento de inscribirse, como,  "
+"por ejemplo, \"categorías\" o \"modalidades\"."
 
 #: modules/Opportunities/components/opportunity-create-data-collect-phase/template.php:11
 #: modules/Opportunities/components/opportunity-create-data-collect-phase/template.php:32
 msgid "Adicionar fase de Coleta de Dados"
-msgstr ""
+msgstr "Agregar fase de Recolección de Datos"
 
 #: modules/Opportunities/components/opportunity-create-evaluation-phase/template.php:13
 msgid "Adicionar Fase de Avaliação"
