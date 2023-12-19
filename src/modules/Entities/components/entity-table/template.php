@@ -19,6 +19,7 @@ $this->import('
     <mc-entities :select="select" :type="type" :query="query" :limit="limit">
         <template #header="{entities, filters}">
             <div class="opportunity-registration-table__filter">
+                <slot name="actions-table" :entities="entities" :filters="filters"></slot>
                 <div class="opportunity-registration-table__search-key">
                     <input v-model="searchText" @keyup="keyword(entities)" type="text" placeholder="<?= i::__('Busque pelo número de inscrição, status, parecer técnico?') ?>" class="opportunity-registration-table__search-input" />
                     <button @click="keyword(entities)" class="opportunity-registration-table__search-button">
