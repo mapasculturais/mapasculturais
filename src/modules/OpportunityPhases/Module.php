@@ -1320,7 +1320,7 @@ class Module extends \MapasCulturais\Module{
         foreach ($registrations as $registration) {
             $template = "opportunityphases/selected-communication.html";
             $params = [
-                "siteName" => $app->view->dict("site: name", false),
+                "siteName" => $app->siteName,
                 "user" => $registration->owner->name,
                 "baseUrl" => $app->getBaseUrl(),
                 "opportunityTitle" => $opportunity->name
