@@ -77,6 +77,10 @@ app.component('entity-table', {
             type: String,
             default: ''
         },
+        endpoint: {
+            type: String,
+            default: 'find'
+        },
         statusClasses: {
             type: Object,
             default: () => ({

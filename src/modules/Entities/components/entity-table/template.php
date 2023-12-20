@@ -16,7 +16,7 @@ $this->import('
 ');
 ?>
 <div class="entity-table">
-    <mc-entities :select="select" :type="type" :query="query" :limit="limit">
+    <mc-entities :select="select" :type="type" :query="query" :limit="limit" :endpoint="endpoint">
         <template #header="{entities, filters}">
             <div class="opportunity-registration-table__filter">
                 <slot name="actions-table" :entities="entities" :filters="filters"></slot>
