@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-19 18:48-0400\n"
+"PO-Revision-Date: 2023-12-20 19:00-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -4715,7 +4715,7 @@ msgstr "Audiodescripción:"
 #: modules/Components/components/space-info/template.php:35
 #: modules/Entities/views/project/single.php:65
 msgid "Informações adicionais"
-msgstr ""
+msgstr "Información adicional"
 
 #: modules/Components/components/event-info/template.php:27
 msgid "Total de público:"
@@ -4781,7 +4781,7 @@ msgstr "proyectos"
 #: modules/Seals/views/seal/edit.php:31 themes/BaseV1/Theme.php:151
 #: themes/BaseV1/layouts/parts/panel-nav.php:4
 msgid "Painel"
-msgstr ""
+msgstr "Panel"
 
 #: modules/Components/components/main-footer/template.php:76
 #: modules/Panel/components/panel--nav/init.php:15
@@ -7494,7 +7494,7 @@ msgstr "Aplicar a todas las inscripciones enviadas"
 #: modules/EvaluationMethodSimple/layouts/parts/simple--apply-results.php:18
 #: modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:16
 msgid "Aplicar"
-msgstr ""
+msgstr "Aplicar"
 
 #: modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/texts.php:6
 #: modules/EvaluationMethodDocumentary/layouts/parts/documentary--apply-results.php:11
@@ -7810,17 +7810,17 @@ msgstr ""
 
 #: modules/EvaluationMethodSimple/Module.php:94
 msgid "não selecionado,nao selecionado,não selecionada,nao selecionada"
-msgstr ""
+msgstr "no seleccionado, no seleccionado, no seleccionado, no seleccionado"
 
 #: modules/EvaluationMethodSimple/Module.php:96
 #: modules/Opportunities/views/opportunity/report-csv.php:23
 #: modules/Opportunities/views/opportunity/report.php:18
 msgid "suplente"
-msgstr ""
+msgstr "suplente"
 
 #: modules/EvaluationMethodSimple/Module.php:98
 msgid "selecionado,selecionada"
-msgstr ""
+msgstr "seleccionado,seleccionado"
 
 #: modules/EvaluationMethodSimple/Module.php:157
 msgid "Somente para avaliações simplificadas"
@@ -8233,7 +8233,7 @@ msgstr "semanal"
 
 #: modules/EventImporter/Controller.php:839
 msgid " e "
-msgstr " es "
+msgstr " y "
 
 #: modules/EventImporter/Controller.php:845
 msgid ", "
@@ -9874,99 +9874,102 @@ msgstr "Agregar fase de Recolección de Datos"
 
 #: modules/Opportunities/components/opportunity-create-evaluation-phase/template.php:13
 msgid "Adicionar Fase de Avaliação"
-msgstr ""
+msgstr "Agregar Fase de Evaluación"
 
 #: modules/Opportunities/components/opportunity-create-evaluation-phase/template.php:37
 msgid "Adicionar fase Avaliação"
-msgstr ""
+msgstr "Agregar fase Evaluación"
 
 #: modules/Opportunities/components/opportunity-evaluations-list/template.php:31
 msgid "Mostrar somente pendentes"
-msgstr ""
+msgstr "Mostrar solo pendientes"
 
 #: modules/Opportunities/components/opportunity-evaluations-list/template.php:51
 msgid "Data da inscrição"
-msgstr ""
+msgstr "Fecha de Inscripción"
 
 #: modules/Opportunities/components/opportunity-evaluations-list/template.php:58
 msgid "Resultado de avaliação"
-msgstr ""
+msgstr "Resultado de la evaluación"
 
 #: modules/Opportunities/components/opportunity-evaluations-list/text.php:5
 msgid "Informe a palavra chave"
-msgstr ""
+msgstr "Indique la palabra clave"
 
 #: modules/Opportunities/components/opportunity-evaluations-table/template.php:17
 msgid "As avaliações já estão encerradas"
-msgstr ""
+msgstr "Las evaluaciones ya están cerradas"
 
 #: modules/Opportunities/components/opportunity-evaluations-table/template.php:18
 msgid "As avaliações estão em andamento"
-msgstr ""
+msgstr "Las evaluaciones están en curso"
 
 #: modules/Opportunities/components/opportunity-evaluations-table/template.php:19
 msgid "As avaliações ainda não iniciaram"
-msgstr ""
+msgstr "Las evaluaciones aún no han comenzado"
 
 #: modules/Opportunities/components/opportunity-evaluations-table/template.php:24
 msgid "Enviar avaliações"
-msgstr ""
+msgstr "Enviar las evaluaciones"
 
 #: modules/Opportunities/components/opportunity-form-builder-category-list/template.php:32
 msgid "Adicionar categoria"
-msgstr ""
+msgstr "Agregar categoría"
 
 #: modules/Opportunities/components/opportunity-form-builder-category-list/template.php:44
 msgid "Descrição da categoria"
-msgstr ""
+msgstr "Descripción de la categoría"
 
 #: modules/Opportunities/components/opportunity-form-builder/template.php:22
 msgid "Configuração de formulário de coleta de dados"
-msgstr ""
+msgstr "Configuración del formulario de recolección de datos"
 
 #: modules/Opportunities/components/opportunity-form-builder/template.php:31
 msgid "Utilizar campo para vínculo de agente coletivo"
-msgstr ""
+msgstr "Utilizar campo para vinculación de agente colectivo"
 
 #: modules/Opportunities/components/opportunity-form-builder/template.php:32
 msgid "Permite que o inscrito vincule um Agente Coletivo com a sua inscrição."
-msgstr ""
+msgstr "Permite que el inscrito vincule un Agente Colectivo a su inscripción."
 
 #: modules/Opportunities/components/opportunity-form-builder/template.php:49
 msgid "Utilizar campo de instituição responsável"
-msgstr ""
+msgstr "Utilice el campo de institución responsable"
 
 #: modules/Opportunities/components/opportunity-form-builder/template.php:50
 msgid "Permite a vinculação de instituições (agentes coletivos com CNPJ)."
-msgstr ""
+msgstr "Permite la vinculación de instituciones (CI o RUT)."
 
 #: modules/Opportunities/components/opportunity-form-builder/template.php:65
 msgid "Utilizar campo para vínculo de espaço"
-msgstr ""
+msgstr "Utilizar campo para vinculación de espacio"
 
 #: modules/Opportunities/components/opportunity-form-builder/template.php:66
 msgid "Permite que o proponente selecione um espaço para associar à inscrição."
 msgstr ""
+"Permite al proponente seleccionar un espacio para asociar a la inscripción."
 
 #: modules/Opportunities/components/opportunity-form-builder/template.php:81
 msgid "Utilizar campo de nome de projeto"
-msgstr ""
+msgstr "Utilizar campo de nombre de proyecto"
 
 #: modules/Opportunities/components/opportunity-form-builder/template.php:82
 msgid "Permite que o inscrito dê nome a um projeto no momento da inscrição."
 msgstr ""
+"Permite que el inscrito asigne un nombre a un proyecto en el momento de la "
+"inscripción."
 
 #: modules/Opportunities/components/opportunity-form-export/template.php:10
 msgid "Exportar"
-msgstr ""
+msgstr "Exportar"
 
 #: modules/Opportunities/components/opportunity-form-import/template.php:20
 msgid "Importar Formulário"
-msgstr ""
+msgstr "Importar Formulario"
 
 #: modules/Opportunities/components/opportunity-form-import/template.php:30
 msgid "Importe o arquivo de formulário"
-msgstr ""
+msgstr "Importa el archivo de Formulario"
 
 #: modules/Opportunities/components/opportunity-form-import/template.php:31
 msgid "O arquivo importado deve estar no formato .txt "
@@ -9978,11 +9981,11 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/panel-em-cartaz.php:28
 #: themes/BaseV1/views/panel/em-cartaz.php:65
 msgid "Visualizar"
-msgstr ""
+msgstr "Visualizar"
 
 #: modules/Opportunities/components/opportunity-list/template.php:18
 msgid "Lista de oportunidades vinculadas"
-msgstr ""
+msgstr "Lista de oportunidades vinculadas"
 
 #: modules/Opportunities/components/opportunity-owner-type/template.php:9
 msgid "{{ownerType(entity)}}"
@@ -9990,122 +9993,123 @@ msgstr ""
 
 #: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:25
 msgid "Configurar formulário"
-msgstr ""
+msgstr "Configurar formulario"
 
 #: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:33
 msgid "Limites na inscrição"
-msgstr ""
+msgstr "Límites en la inscripción"
 
 #: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:35
 msgid "Total de vagas"
-msgstr ""
+msgstr "Total de vacantes"
 
 #: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:36
 msgid "Defina o número limite de vagas  para o edital ou oportunidade"
-msgstr ""
+msgstr "Defina el número máximo de vacantes en la oportunidad"
 
 #: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:37
 msgid "Inscrições por agente"
-msgstr ""
+msgstr "Inscripciones por agente"
 
 #: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:38
 msgid ""
 "Defina o número de inscrições máximas para um agente (pessoa ou coletivo)"
 msgstr ""
+"Ingrese el número máximo de inscripciones por agente (persona o colectivo)"
 
 #: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:52
 #: modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:73
 msgid "Confirma a execução da ação?"
-msgstr ""
+msgstr "¿Confirma la ejecución de la acción?"
 
 #: modules/Opportunities/components/opportunity-phase-config-data-collection/texts.php:5
 #: modules/Opportunities/components/opportunity-phase-config-evaluation/texts.php:5
 #: modules/Opportunities/components/opportunity-phases-config/texts.php:5
 #: modules/Opportunities/components/opportunity-subscribe-results/texts.php:5
 msgid "Não foi possível remover a fase"
-msgstr ""
+msgstr "No fue posible eliminar la fase"
 
 #: modules/Opportunities/components/opportunity-phase-config-data-collection/texts.php:6
 #: modules/Opportunities/components/opportunity-phases-config/texts.php:7
 #: modules/Opportunities/components/opportunity-subscribe-results/texts.php:7
 msgid "Excluir fase de coleta de dados"
-msgstr ""
+msgstr "Eliminar fase de recolección de datos"
 
 #: modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:21
 #: modules/Opportunities/components/opportunity-phase-header/template.php:15
 #: modules/Opportunities/components/opportunity-phases-config/template.php:34
 #: modules/Opportunities/components/opportunity-subscribe-results/template.php:33
 msgid "Data de início"
-msgstr ""
+msgstr "Fecha de inicio"
 
 #: modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:22
 msgid "Data de término"
-msgstr ""
+msgstr "Fecha final"
 
 #: modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:33
 msgid "Configurar campos visíveis para avaliação"
-msgstr ""
+msgstr "Configurar campos visibles para evaluación"
 
 #: modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:34
 msgid "Defina quais campos serão habilitados para avaliação."
-msgstr ""
+msgstr "Determina qué campos serán habilitados para la evaluación."
 
 #: modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:37
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations-fields--config.php:3
 msgid "Configurar campos visíveis para os avaliadores"
-msgstr ""
+msgstr "Configurar campos visibles para los evaluadores"
 
 #: modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:42
 msgid "Abrir campos"
-msgstr ""
+msgstr "Abrir campos"
 
 #: modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:50
 msgid "Adicionar textos explicativos das avaliações"
-msgstr ""
+msgstr "Agregar textos explicativos de las evaluaciones"
 
 #: modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:54
 msgid "Texto configuração geral"
-msgstr ""
+msgstr "Texto de configuración general"
 
 #: modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:79
 #: modules/Opportunities/components/opportunity-phases-config/texts.php:6
 #: modules/Opportunities/components/opportunity-subscribe-results/texts.php:6
 msgid "Excluir fase de avaliação"
-msgstr ""
+msgstr "Eliminar Fase de Evaluación"
 
 #: modules/Opportunities/components/opportunity-phase-config-results/texts.php:5
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/texts.php:5
 #: modules/Opportunities/components/opportunity-phases-config/texts.php:8
 #: modules/Opportunities/components/opportunity-subscribe-results/texts.php:8
 msgid "Tem certeza que deseja publicar o resultado?"
-msgstr ""
+msgstr "¿Está seguro de que desea publicar el resultado?"
 
 #: modules/Opportunities/components/opportunity-phase-evaluation/template.php:10
 msgid "Avaliações abertas e disponíveis"
-msgstr ""
+msgstr "Evaluaciones abiertas y disponibles"
 
 #: modules/Opportunities/components/opportunity-phase-evaluation/template.php:20
 #: modules/Opportunities/components/opportunity-phase-evaluation/template.php:41
 msgid "PERÍODO DE AVALIAÇÃO"
-msgstr ""
+msgstr "PERIODO DE EVALUACIÓN"
 
 #: modules/Opportunities/components/opportunity-phase-evaluation/template.php:24
 #: modules/Opportunities/components/opportunity-phase-evaluation/template.php:45
 #: modules/Panel/components/panel--pending-evaluations/template.php:65
 msgid "Avaliar"
-msgstr ""
+msgstr "Evaluar"
 
 #: modules/Opportunities/components/opportunity-phase-evaluation/template.php:28
 msgid "Você não tem avaliações abertas ou disponíveis."
-msgstr ""
+msgstr "No tienes evaluaciones abiertas o disponibles."
 
 #: modules/Opportunities/components/opportunity-phase-evaluation/template.php:30
 msgid "Avaliações Encerradas"
-msgstr ""
+msgstr "Evaluaciones Cerradas"
 
 #: modules/Opportunities/components/opportunity-phase-evaluation/template.php:32
 msgid "Você ainda não tem avaliações encerradas."
-msgstr ""
+msgstr "No tienes evaluaciones cerradas."
 
 #: modules/Opportunities/components/opportunity-phase-header/template.php:19
 #: modules/Opportunities/components/opportunity-phases-config/template.php:39
@@ -10118,105 +10122,107 @@ msgstr ""
 #: themes/BaseV1/views/event/edit.php:62
 #: themes/BaseV1/views/event/single.php:62
 msgid "Data final"
-msgstr ""
+msgstr "Fecha final"
 
 #: modules/Opportunities/components/opportunity-phase-header/template.php:23
 #: modules/Opportunities/components/opportunity-subscribe-results/template.php:43
 msgid "Data de publicação"
-msgstr ""
+msgstr "Fecha de publicación"
 
 #: modules/Opportunities/components/opportunity-phase-header/texts.php:5
 msgid "1. Período de inscrição"
-msgstr ""
+msgstr "1. Período de inscripción"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:18
 msgid ""
 "Após a finalização das avaliações, você precisa acessar a <strong>lista de "
 "inscrições para aplicar os resultados dessas avaliações</strong>."
 msgstr ""
+"Después de finalizar las evaluaciones, debe acceder a la <strong>lista de "
+"inscripciones para aplicar los resultados de esas evaluaciones</strong>."
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:24
 #: modules/Opportunities/components/opportunity-phase-list-registrations/template.php:16
 #: modules/Reports/layouts/parts/registrationsStatus.php:10
 msgid "Status das inscrições"
-msgstr ""
+msgstr "Estado de las inscripciones"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:25
 msgid "Status da avaliação:"
-msgstr ""
+msgstr "Estado de la evaluación:"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:26
 msgid "Quantidade inscrições:"
-msgstr ""
+msgstr "Cantidad de inscripciones:"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:27
 msgid "Quantidade de inscrições <strong>avaliadas</strong>:"
-msgstr ""
+msgstr "Cantidad de inscripciones <strong>evaluadas</strong>:"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:28
 msgid "Quantidade de inscrições <strong>selecionadas</strong>:"
-msgstr ""
+msgstr "Cantidad de inscripciones <strong>seleccionadas</strong>:"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:29
 msgid "Quantidade de inscrições <strong>suplentes</strong>:"
-msgstr ""
+msgstr "Cantidad de inscripciones <strong>suplentes</strong>:"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:30
 msgid "Quantidade de inscrições <strong>inválidas</strong>:"
-msgstr ""
+msgstr "Cantidad de inscripciones <strong>inválidas</strong>:"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:31
 #: modules/Opportunities/components/opportunity-phase-list-registrations/template.php:19
 msgid "Quantidade de inscrições <strong>pendentes</strong>:"
-msgstr ""
+msgstr "Cantidad de inscripciones <strong>pendientes</strong>:"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:35
 #: modules/Opportunities/components/opportunity-phase-list-registrations/template.php:23
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:62
 msgid "A lista de inscrições pode ser acessada utilizando o botão abaixo"
-msgstr ""
+msgstr "Se puede acceder a la lista de registro usando el botón abajo"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:37
 #: modules/Opportunities/components/opportunity-phase-list-registrations/template.php:25
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:64
 msgid "Conferir lista de inscrições"
-msgstr ""
+msgstr "Consultar lista de inscripciones"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:46
 msgid "Status das avaliações"
-msgstr ""
+msgstr "Cosultar de las evaluaciones"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:47
 msgid "Quantidade de inscrições"
-msgstr ""
+msgstr "Cantidad de inscripciones"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:50
 msgid "Confira a lista de avaliações e acesse-as individualmente"
-msgstr ""
+msgstr "Consulta la lista de evaluaciones y accede a ellas individualmente"
 
 #: modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:52
 #: modules/Opportunities/views/opportunity/evaluations-list--all.php:10
 #: modules/Opportunities/views/opportunity/evaluations-list--user.php:10
 #: modules/Opportunities/views/registration/evaluation.php:56
 msgid "Lista de avaliações"
-msgstr ""
+msgstr "Lista de evaluaciones"
 
 #: modules/Opportunities/components/opportunity-phase-list-registrations/template.php:17
 msgid "Quantidade de inscrições:"
-msgstr ""
+msgstr "Cantidad de inscripciones:"
 
 #: modules/Opportunities/components/opportunity-phase-list-registrations/template.php:18
 msgid "Quantidade de inscrições <strong>enviadas</strong>:"
-msgstr ""
+msgstr "Cantidad de inscripciones <strong>enviadas</strong>:"
 
 #: modules/Opportunities/components/opportunity-phase-list-registrations/template.php:20
 msgid "Quantidade de inscrições <strong>rascunho</strong>:"
-msgstr ""
+msgstr "Cantidad de inscripciones <strong>en borrador</strong>:"
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:25
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:23
 msgid "Despublicar"
-msgstr ""
+msgstr "Despublicar"
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:34
 msgid ""
@@ -10224,56 +10230,63 @@ msgid ""
 "o término da fase. <strong>Esta ação deixará público o nome e o número de "
 "inscrição das pessoas inscritas.</strong>"
 msgstr ""
+"¡Atención! La publicación del resultado es opcional y solo puede realizarse "
+"después de la finalización de la fase. <strong>Esta acción hará público el "
+"nombre y el número de inscripción de las personas inscritas.</strong>"
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:40
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:74
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:38
 #, php-format
 msgid "O resultado será publicado automaticamente no dia %s às %s"
-msgstr ""
+msgstr "El resultado se publicará automáticamente en el día %s a las %s"
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:47
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:81
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:45
 #, php-format
 msgid "O resultado será publicado no dia %s às %s"
-msgstr ""
+msgstr "El resultado se publicará en el día %s a las %s"
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:54
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:88
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:52
 msgid "O resultado será publicado automaticamente"
-msgstr ""
+msgstr "El resultado se publicará automáticamente"
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:57
 msgid ""
 "Você pode publicar o resultado manualmente a qualquer momento utilizando o "
 "botão ao lado."
 msgstr ""
+"Puedes publicar el resultado manualmente en cualquier momento usando el "
+"botón de al lado."
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:91
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:55
 msgid "A publicação do resultado é opcional."
-msgstr ""
+msgstr "La publicación del resultado es opcional."
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:99
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:62
 msgid "Publicar Resultados"
-msgstr ""
+msgstr "Publicar Resultados"
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:103
 msgid "Deseja publicar os resultados?"
-msgstr ""
+msgstr "¿Desea publicar los resultados?"
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:105
 msgid ""
 "Antes de publicar os resultados, verifique cuidadosamente se todas as "
 "inscrições foram avaliadas e aplicadas."
 msgstr ""
+"Antes de publicar los resultados, asegúrate de que todas las inscripciones "
+"han sido evaluadas y aplicadas."
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:106
 msgid "Com essa ação o resultado da fase ficará público."
-msgstr ""
+msgstr "Con esta acción, el resultado de la fase será público."
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/texts.php:5
 msgid ""
@@ -10285,53 +10298,53 @@ msgstr ""
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/texts.php:6
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/texts.php:6
 msgid "Tem certeza que deseja despublicar o resultado?"
-msgstr ""
+msgstr "¿Estás seguro de que quieres despublicar el resultado?"
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/texts.php:7
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/texts.php:7
 msgid "Os resultados serão publicados automaticamente"
-msgstr ""
+msgstr "Los resultados se publicarán automáticamente"
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/texts.php:8
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/texts.php:8
 msgid "Os resultados serão publicados em"
-msgstr ""
+msgstr "Los resultados se publicarán en"
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/texts.php:9
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/texts.php:9
 msgid "Os resultados serão publicados automaticamente em"
-msgstr ""
+msgstr "Los resultados se publicarán automáticamente en"
 
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:17
 msgid "Publicação de Resultados"
-msgstr ""
+msgstr "Publicación de resultados"
 
 #: modules/Opportunities/components/opportunity-phase-reports/template.php:21
 #: modules/Opportunities/components/opportunity-phase-support/template.php:21
 #: modules/Opportunities/components/opportunity-phases-config/template.php:27
 #: modules/Opportunities/components/opportunity-subscribe-results/template.php:26
 msgid "Coleta de dados"
-msgstr ""
+msgstr "Recolección de Datos"
 
 #: modules/Opportunities/components/opportunity-phase-reports/texts.php:5
 msgid "Periodo de inscrições"
-msgstr ""
+msgstr "Periodo de inscripción"
 
 #: modules/Opportunities/components/opportunity-phase-support/template.php:27
 msgid "Realizar suporte"
-msgstr ""
+msgstr "Realizar soporte"
 
 #: modules/Opportunities/components/opportunity-phases-config/template.php:44
 msgid "Data publicação"
-msgstr ""
+msgstr "Fecha de publicación"
 
 #: modules/Opportunities/components/opportunity-phases-config/template.php:80
 msgid "Não se pode criar novas fases após a publicação do resultado final"
-msgstr ""
+msgstr "No se pueden crear nuevas fases después de publicar el resultado final"
 
 #: modules/Opportunities/components/opportunity-phases-timeline/template.php:18
 msgid "Fase de inscrições"
-msgstr ""
+msgstr "Fase de inscripciones"
 
 #: modules/Opportunities/components/opportunity-phases-timeline/template.php:21
 #: modules/Reports/layouts/parts/info-dynamic-graphics-break.php:8
@@ -10358,43 +10371,43 @@ msgstr ""
 
 #: modules/Opportunities/components/opportunity-phases-timeline/template.php:36
 msgid "RESULTADO DA FASE"
-msgstr ""
+msgstr "RESULTADO DE LA FASE"
 
 #: modules/Opportunities/components/opportunity-phases-timeline/template.php:39
 msgid "Inscrição selecionada"
-msgstr ""
+msgstr "Inscripción seleccionada"
 
 #: modules/Opportunities/components/opportunity-phases-timeline/template.php:40
 msgid "Inscrição suplente"
-msgstr ""
+msgstr "Inscripción suplente"
 
 #: modules/Opportunities/components/opportunity-phases-timeline/template.php:41
 msgid "Inscrição não selecionada"
-msgstr ""
+msgstr "Inscripción no seleccionada"
 
 #: modules/Opportunities/components/opportunity-phases-timeline/template.php:42
 msgid "Inscrição inválida"
-msgstr ""
+msgstr "Inscripción invalida"
 
 #: modules/Opportunities/components/opportunity-phases-timeline/template.php:43
 msgid "Inscrição não enviada"
-msgstr ""
+msgstr "Inscripción no enviada"
 
 #: modules/Opportunities/components/opportunity-phases-timeline/template.php:48
 msgid "Preencher formulário"
-msgstr ""
+msgstr "Llenar el formulario"
 
 #: modules/Opportunities/components/opportunity-registrations-table/template.php:23
 msgid "Os resultados já foram publicados"
-msgstr ""
+msgstr "Los resultados ya han sido publicados."
 
 #: modules/Opportunities/components/opportunity-registrations-table/template.php:24
 msgid "As inscrições já estão encerradas"
-msgstr ""
+msgstr "Las inscripciones ya está cerrada"
 
 #: modules/Opportunities/components/opportunity-registrations-table/template.php:25
 msgid "As inscrições estão em andamento"
-msgstr ""
+msgstr "Las inscripciones están en curso"
 
 #: modules/Opportunities/components/opportunity-registrations-table/template.php:26
 msgid "As inscrições ainda não iniciaram"
@@ -10402,11 +10415,11 @@ msgstr ""
 
 #: modules/Opportunities/components/opportunity-registrations-table/template.php:33
 msgid "Baixar rascunho"
-msgstr ""
+msgstr "Descargar borrador"
 
 #: modules/Opportunities/components/opportunity-registrations-table/template.php:36
 msgid "Baixar lista de inscrições"
-msgstr ""
+msgstr "Descargar lista de inscripciones"
 
 #: modules/Opportunities/components/opportunity-registrations-table/template.php:43
 msgid ""
@@ -10414,32 +10427,37 @@ msgid ""
 "participantes, ou basta selecionar várias inscrições para alterar o status "
 "em mais de uma inscrição"
 msgstr ""
+"Puede cambiar el estado individualmente de acuerdo con las notas de los "
+"participantes, o simplemente puede seleccionar varias inscripciones para "
+"cambiar el estado en más de una inscripción"
 
 #: modules/Opportunities/components/opportunity-registrations-table/template.php:44
 msgid ""
 "Utilize o filtro numérico para visualizar inscrições com notas dentro de um "
 "intervalo específico.."
 msgstr ""
+"Utilice el filtro numérico para visualizar las inscripciones con notas "
+"dentro de un intervalo específico."
 
 #: modules/Opportunities/components/opportunity-subscribe-results/template.php:22
 #, php-format
 msgid "Inscritos em %s"
-msgstr ""
+msgstr "Suscriptores en %s"
 
 #: modules/Opportunities/components/opportunity-subscribe-results/template.php:51
 msgid "Configurações de suporte"
-msgstr ""
+msgstr "Configuración de soporte"
 
 #: modules/Opportunities/components/opportunity-subscribe-results/template.php:56
 #: modules/Opportunities/layouts/parts/opportunity-tab-support.php:32
 #: modules/Support/layouts/parts/support/opportunity-support--tab.php:13
 #: modules/Support/views/support/support.php:30
 msgid "Suporte"
-msgstr ""
+msgstr "Soporte"
 
 #: modules/Opportunities/components/opportunity-subscription-list/template.php:18
 msgid "Você tem inscrições neste edital"
-msgstr ""
+msgstr "Usted tiene inscripciones en este edital"
 
 #: modules/Opportunities/components/opportunity-subscription-list/template.php:21
 msgid "Acompanhe suas inscrições e saiba o andamento da Oportunidade."
