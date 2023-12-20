@@ -31,9 +31,7 @@ app.component('entity-table', {
             return header;
         });
 
-        const activeHeaders = Vue.ref(modifiedHeaders.filter(
-            header => header.required
-        ));
+        const activeHeaders = modifiedHeaders
         
         return {
             itemsSelected: Vue.ref([]),
