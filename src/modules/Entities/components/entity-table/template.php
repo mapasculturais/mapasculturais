@@ -49,11 +49,11 @@ $this->import('
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item in entities">
+                        <tr v-for="entity in entities">
                             <template v-for="header in activeHeaders">
                                 <td>
-                                    <slot :name="parseSlug(header)" v-bind="item">
-                                        {{getEntityData(item, header.value)}}
+                                    <slot :name="parseSlug(header)" v-bind="entity">
+                                        {{getEntityData(entity, header.value)}}
                                     </slot>
                                 </td>
                             </template>
