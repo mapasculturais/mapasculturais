@@ -4,6 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Correções
+- Corrige erro na listagem de inscrições de um edital quando não exitia nehuma inscrição
+- Corrige erro que ocorria no momento da publicação de resultado final ocasionado pela tentativa de enviar os e-mails
+
 ## [7.3.2] - 2023-12-15
 ### Correções
 - Corrige erro que conflitava edição de uma inscrição de um agente com permissão de avaliação e de suporte 
