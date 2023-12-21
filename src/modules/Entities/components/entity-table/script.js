@@ -130,6 +130,11 @@ app.component('entity-table', {
 
         getEntityData(obj, value) {
             let val = eval(`obj.${value}`);
+
+            if(val instanceof McDate) {
+                val = val.date('numeric year')
+            }
+
             return val;
         },
 
