@@ -7,13 +7,7 @@ app.component('entity-table', {
         return { optionalHeadersSelected: [], messages, text };
     },
 
-    mounted() {
-        this.modifiedHeaders.forEach(header => {
-            if (header.visible || header.required) {
-                this.addInColumns(header.text);
-            }
-        });
-    },
+    mounted() { },
     data() {
         const visible = this.visible.split(",");
         const required = this.required.split(",");
@@ -21,9 +15,10 @@ app.component('entity-table', {
         const modifiedHeaders = this.headers.map(header => {
             let slug = this.parseSlug(header);
 
-            if (visible.includes(slug)) {
+            if (visible.includes(slug) || required.includes(slug)) {
                 header.visible = true;
             }
+
             if (required.includes(slug)) {
                 header.required = true;
             }
@@ -96,16 +91,24 @@ app.component('entity-table', {
     },
 
     computed: {
-        activeColumns() {
-            return this.activeHeaders.map(header => (header.text));
+        items() {
+            let columns = []
+            this.modifiedHeaders.map(function(header) {
+                if(!header.required){
+                    columns.push(header.text)
+                }
+            })
+            return columns;
         },
 
         selectedColumns() {
-            return this.activeHeaders.reduce((columns, header) => {
-                columns.push(header.text);
-                this.addInColumns(header.text)
-                return columns;
-            }, []);
+            let columns = []
+            this.modifiedHeaders.map(function(header) {
+                if(header.visible || header.required){
+                    columns.push(header.text)
+                }
+            })
+            return columns;
         },
 
         optionalHeaders() {
@@ -144,33 +147,21 @@ app.component('entity-table', {
         },
 
         removeFromColumns(tag) {
-            if (this.activeColumns.includes(tag)) {
-                const headerToRemove = this.activeHeaders.find(header => header.text === tag);
-
-                if (headerToRemove && headerToRemove.required) {
-                    this.messages.error(this.text('item obrigatório') + ' ' + headerToRemove.text);
-                } else {
-                    this.activeHeaders = this.activeHeaders.filter(header => header.text !== tag);
+            this.modifiedHeaders.find(header => {
+                if(header.text == tag && header.required) {
+                    this.messages.error(this.text('item obrigatório') + ' ' + header.text);
+                }else if(header.text == tag && header.visible) {
+                    header.visible = false;
                 }
-            }
+            })
         },
 
         addInColumns(tag) {
-            if (!this.activeColumns.includes(tag)) {
-                this.activeHeaders.push(this.modifiedHeaders.find(header => header.text == tag));
-            }
-        },
-
-        isActive(column) {
-            return this.activeColumns.includes(column.text);
-        },
-
-        toggleColumn(column) {
-            if (this.isActive(column)) {
-                this.activeHeaders = this.activeHeaders.filter(header => header.text != column.text)
-            } else {
-                this.activeHeaders.push(column)
-            }
+            this.modifiedHeaders.find(header => {
+                if(header.text == tag) {
+                    header.visible = true;
+                }
+            })
         },
     },
 });
