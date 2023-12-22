@@ -4,41 +4,9 @@ app.component('entity-table', {
     setup() {
         const messages = useMessages();
         const text = Utils.getTexts('entity-table')
-        return { optionalHeadersSelected: [], messages, text };
+        return { messages, text };
     },
 
-    mounted() { },
-    data() {
-        const visible = this.visible.split(",");
-        const required = this.required.split(",");
-
-        const modifiedHeaders = this.headers.map(header => {
-            let slug = this.parseSlug(header);
-
-            if (visible.includes(slug) || required.includes(slug)) {
-                header.visible = true;
-            }
-
-            if (required.includes(slug)) {
-                header.required = true;
-            }
-
-            return header;
-        });
-
-        const activeHeaders = modifiedHeaders
-        
-        return {
-            itemsSelected: Vue.ref([]),
-            modifiedHeaders,
-            activeHeaders,
-            value: '',
-            filters: '',
-            searchText: '',
-            activeItems: this.items,
-        }
-
-    },
     props: {
         type: {
             type: String,
@@ -59,7 +27,7 @@ app.component('entity-table', {
             required: true
         },
         required: {
-            type: String,
+            type: [String, Array],
             default: ''
         },
         labelColumn: {
@@ -67,7 +35,7 @@ app.component('entity-table', {
             default: 'nome'
         },
         visible: {
-            type: String,
+            type: [String, Array],
             default: ''
         },
         endpoint: {
@@ -90,35 +58,51 @@ app.component('entity-table', {
         },
     },
 
+    created() {
+        const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
+        const required = this.required instanceof Array ? this.required : this.required.split(",");
+        
+        for(let header of this.columns) {
+            header.slug = this.parseSlug(header);
+
+            header.visible = visible.includes(header.slug) || required.includes(header.slug);
+
+            header.required = required.includes(header.slug);
+            
+        }
+    },
+
+    mounted() { },
+    data() {
+        
+        return {
+            columns: this.headers,
+            searchText: '',
+            activeItems: this.items,
+        }
+
+    },
+    
     computed: {
         items() {
             let columns = []
-            this.modifiedHeaders.map(function(header) {
+            for(let header of this.columns) {
                 if(!header.required){
                     columns.push(header.text)
                 }
-            })
+            }
+            
             return columns;
         },
 
         selectedColumns() {
             let columns = []
-            this.modifiedHeaders.map(function(header) {
+            for(let header of this.columns) {
                 if(header.visible || header.required){
                     columns.push(header.text)
                 }
-            })
+            }
             return columns;
-        },
-
-        optionalHeaders() {
-            return this.modifiedHeaders.reduce((columns, header) => {
-                if (!header.required) {
-                    columns.push(header.text);
-                }
-                return columns;
-
-            }, []);
         },
     },
 
@@ -147,21 +131,21 @@ app.component('entity-table', {
         },
 
         removeFromColumns(tag) {
-            this.modifiedHeaders.find(header => {
+            for(let header of this.columns) {
                 if(header.text == tag && header.required) {
                     this.messages.error(this.text('item obrigatório') + ' ' + header.text);
                 }else if(header.text == tag && header.visible) {
                     header.visible = false;
                 }
-            })
+            }
         },
 
         addInColumns(tag) {
-            this.modifiedHeaders.find(header => {
+            for(let header of this.columns) {
                 if(header.text == tag) {
                     header.visible = true;
                 }
-            })
+            }
         },
     },
 });
