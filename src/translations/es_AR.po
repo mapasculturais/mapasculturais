@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-21 18:06-0400\n"
+"PO-Revision-Date: 2023-12-22 17:17-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -5226,7 +5226,7 @@ msgstr "Evaluaciones pendientes"
 
 #: modules/Components/components/mc-summary-evaluate/template.php:20
 msgid "avaliações disponíveis"
-msgstr "avaluaciones disponibles"
+msgstr "evaluaciones disponibles"
 
 #: modules/Components/components/mc-summary-evaluate/template.php:29
 msgid "Avaliações iniciadas"
@@ -10701,7 +10701,7 @@ msgstr "Estás seguro de que quieres eliminar la inscripción"
 
 #: modules/Opportunities/components/registration-card/template.php:72
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: modules/Opportunities/components/registration-card/template.php:75
 msgid "Acompanhar"
@@ -10872,7 +10872,7 @@ msgstr "Mostrar opiniones de la fase"
 #: modules/Opportunities/components/registration-steps/texts.php:5
 #: modules/Opportunities/views/registration/edit.php:74
 msgid "Informações básicas"
-msgstr ""
+msgstr "Informaciones básicas"
 
 #: modules/Opportunities/layouts/parts/opportunity-tab-results.php:18
 msgid "Resultados"
@@ -10951,7 +10951,7 @@ msgstr "Teléfono Público"
 
 #: modules/Opportunities/views/opportunity/report.php:114
 msgid "zip"
-msgstr ""
+msgstr "zip"
 
 #: modules/Opportunities/views/opportunity/single.php:66
 msgid "Vinculado com "
@@ -11383,58 +11383,66 @@ msgstr "Reabrir Rendición de cuentas"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability--evaluation-form.php:52
 msgid "Resultado já publicado"
-msgstr ""
+msgstr "Resultado ya publicado"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability--evaluation-form.php:56
 msgid "Finalizar e enviar o parecer técnico"
-msgstr ""
+msgstr "Finalizar y enviar la opinión técnica"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-evaluation-admin-table-head.php:2
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-registrations.php:16
 msgid "Data de envio"
-msgstr ""
+msgstr "Fecha de envío"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-evaluation-admin-table-head.php:6
 msgid "Data avaliação"
-msgstr ""
+msgstr "Fecha de evaluación"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-phase-confirmation.php:14
 #: modules/OpportunityAccountability/layouts/parts/widget-opportunity-accountability.php:11
 #: modules/OpportunityAccountability/layouts/parts/widget-opportunity-phase-only.php:12
 msgid "Assinale caso a oportunidade exija prestação de contas"
-msgstr ""
+msgstr "Indique si la oportunidad requiere rendición de cuentas"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-phase-info.php:6
 msgid "ATENÇÃO"
-msgstr ""
+msgstr "ATENCIÓN"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-phase-info.php:7
 msgid ""
 "- Após criar e publicar a prestação de contas, esta ação <strong>não</"
 "strong> poderá ser desfeita."
 msgstr ""
+"- Una vez creada y publicada la rendición de cuentas, esta acción "
+"<strong>no</strong> se puede deshacer."
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-phase-info.php:8
 msgid ""
 "- Após criar a prestação de contas <strong>não</strong> será mais possível "
 "criar fases."
 msgstr ""
+"Después de crear la rendición de cuentas, <strong>no</strong> será posible "
+"crear más fases."
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-phase-project-info.php:7
 msgid ""
 "Seu projeto foi contemplado! O próximo passo é mantê-lo atualizado para a "
 "fase de prestação de contas, que começa em"
 msgstr ""
+"¡Su proyecto ha sido contemplado! El siguiente paso es mantenerlo para la "
+"fase de rendición de cuentas, que comienza en"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-phase-project-info.php:9
 msgid "Para começar:"
-msgstr ""
+msgstr "Para empezar:"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-phase-project-info.php:11
 msgid ""
 "Edite este projeto, preencha os dados solicitados e publique. Atualizações "
 "podem ser realizadas com frequência!"
 msgstr ""
+"Edite este proyecto, rellene los datos solicitados y publíquelos. ¡Las "
+"actualizaciones se pueden realizar con frecuencia!"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-phase-project-info.php:12
 msgid ""
@@ -11442,163 +11450,176 @@ msgid ""
 "edição e acessar a aba <strong>\"Prestação de contas\"</strong> para "
 "preencher os dados solicitados e enviá-lo"
 msgstr ""
+"Cuando llegue el momento de la rendición de cuentas, debe salir del modo de "
+"edición y acceder a la pestaña <strong>\"Rendición de cuentas\"</strong> "
+"para completar los datos solicitados y enviarlos\""
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-registrations-list.php:8
 #: modules/Panel/components/panel--entity-actions/template.php:30
 #: themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:9
 msgid "Publicar"
-msgstr ""
+msgstr "Publicar"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability-registrations-list.php:9
 msgid "Publicado"
-msgstr ""
+msgstr "Publicado"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/accountability-nav-panel.php:4
 #: modules/OpportunityAccountability/views/panel/accountabilitys.php:15
 msgid "Minhas prestações de contas"
-msgstr ""
+msgstr "Mis rendiciones de cuentas"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:9
 msgid "Aplicar pareceres"
-msgstr ""
+msgstr "Aplicar evaluaciones"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:13
 msgid "Aplicar resultado dos pareceres"
-msgstr ""
+msgstr "Aplicar resultado de las evaluaciones"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:34
 msgid "Status da prestação de contas"
-msgstr ""
+msgstr "Estado de la rendición de cuentas"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:39
 msgid "Aprovada com ressalvas"
-msgstr ""
+msgstr "Aprobado con reservas"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:43
 msgid "Aplicar a todas as prestações de contas enviadas"
-msgstr ""
+msgstr "Aplicar a todos los envíos de rendición de cuentas enviados"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:44
 msgid ""
 "Deixando desmarcado, o status será aplicado somente às prestações de contas "
 "com status pendente"
 msgstr ""
+"Si se deja sin marcar, el estado solo se aplicará a la rendición de cuenta "
+"con estado pendiente"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/import-last-phase-button.php:4
 msgid "Importar as novas inscrições selecionadas da última fase."
-msgstr ""
+msgstr "Importe las nuevas suscripciones seleccionadas de la última fase."
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/import-last-phase-button.php:4
 msgid "Importar novas inscrições"
-msgstr ""
+msgstr "Importar nuevas inscripciones"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/panel-project.php:15
 msgid "Oportunidade:"
-msgstr ""
+msgstr "Oportunidad:"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/panel-project.php:16
 #: themes/BaseV1/layouts/parts/panel-registration.php:30
 msgid "Responsável:"
-msgstr ""
+msgstr "Responsable:"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/project-accountability-panel.php:9
 msgid "Projetos contemplados"
-msgstr ""
+msgstr "Proyectos contemplados"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/project-tab-content.php:49
 #, php-format
 msgid "Prazo da prestação é de %s a %s até às %s."
 msgstr ""
+"Plazo de entrega de la rendición de cuentas es de %s a %s hasta las %s."
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/project-tab-content.php:52
 #: modules/OpportunityAccountability/layouts/parts/accountability/project-tab-content.php:78
 msgid "Formulário de prestação de contas"
-msgstr ""
+msgstr "Formulario de rendición de cuentas"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/project-tab-content.php:53
 msgid ""
 "Confira as informações e preencha os campos em aberto para realizar a "
 "prestação solicitada pela equipe gestora da oportunidade."
 msgstr ""
+"Verifique la información y complete los campos abiertos para realizar el "
+"servicio solicitado por el equipo de gestión de oportunidades."
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/registration-accountability-panel.php:10
 msgid "Prestações de contas enviadas"
-msgstr ""
+msgstr "Rendiciones de cuentas enviadas"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/registration-accountability-panel.php:28
 msgid "Prestações de contas ainda não enviadas"
-msgstr ""
+msgstr "Rendiciones de cuentas aún no enviadas"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/registration-field-controls.php:8
 msgid "Abrir campo para edição"
-msgstr ""
+msgstr "Abrir campo para edición"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/registration-field-controls.php:16
 #: themes/BaseV1/layouts/parts/singles/project--events.php:28
 msgid "Abrir conversação com proponente"
-msgstr ""
+msgstr "Conversación abierta con el proponente"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/registration-revisions.php:20
 #: themes/BaseV1/layouts/parts/history.php:12
 msgid "Histórico"
-msgstr ""
+msgstr "Histórico"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/registration-revisions.php:35
 msgid "Prestação de contas enviada"
-msgstr ""
+msgstr "Rendición de cuentas enviada"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/registration-tab.php:2
 msgid "Ficha de Inscrição"
-msgstr ""
+msgstr "Ficha de inscripción"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:8
 msgid ""
 "Certifique-se que você preencheu as informações corretamente antes de enviar "
 "sua prestação de contas."
 msgstr ""
+"Asegúrese de haber completado la información correctamente antes de enviar "
+"su rendición de cuentas."
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:8
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:21
 msgid "Depois de enviada, não será mais possível editá-la."
-msgstr ""
+msgstr "Después de enviada, no será posible editarla."
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:9
 msgid "A prestaçao de contas pode ser enviada até"
-msgstr ""
+msgstr "La rendición de cuentas se puede enviar hasta"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:10
 msgid "Enviar prestação de contas"
-msgstr ""
+msgstr "Enviar rendición de cuentas"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:15
 #, php-format
 msgid "As prestações de contas encerraram-se em %s."
-msgstr ""
+msgstr "La rendiciones de cuentas finalizaron el %s."
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:18
 #, php-format
 msgid "As prestações de contas terão início em %s."
-msgstr ""
+msgstr "La rendiciones de cuentas comenzarán el %s."
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:26
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:39
 msgid "reenviar"
-msgstr ""
+msgstr "reenviar"
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:28
 msgid ""
 "Somente super admins podem usar este botão e somente deve ser usado para "
 "enviar prestações de contas que não foram enviadas por problema do sistema."
 msgstr ""
+"Solamente súper administradores pueden usar este botón y solamente debe ser "
+"usado para enviar rendiciones de cuenta que no fueron enviadas por problemas "
+"del sistema."
 
 #: modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:28
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:41
 msgid "enviar esta inscrição"
-msgstr ""
+msgstr "enviar la inscripción"
 
 #: modules/OpportunityAccountability/layouts/parts/widget-opportunity-accountability.php:10
 msgid "Haverá prestação de contas"
-msgstr ""
+msgstr "Habrá rendición de cuentas"
 
 #: modules/OpportunityAccountability/views/panel/accountabilitys.php:22
 #: modules/Reports/layouts/parts/registrationsDraftVsSent.php:5
@@ -11619,152 +11640,168 @@ msgstr ""
 #: themes/BaseV1/views/panel/spaces.php:28
 #: themes/BaseV1/views/panel/subsite.php:23
 msgid "Rascunhos"
-msgstr ""
+msgstr "Borradores"
 
 #: modules/OpportunityAccountability/views/panel/accountabilitys.php:33
 msgid "Você não possui nenhum rascunho de prestação de conta."
-msgstr ""
+msgstr "No tienes ningún borrador de rendición de cuenta."
 
 #: modules/OpportunityAccountability/views/panel/accountabilitys.php:42
 msgid "Você não enviou nenhuma prestação de conta."
-msgstr ""
+msgstr "No enviaste ninguna rendición de cuenta."
 
 #: modules/OpportunityClaimForm/Module.php:16
 msgid "Por favor escreva a mensagem"
-msgstr ""
+msgstr "Por favor escribe el mensaje"
 
 #: modules/OpportunityClaimForm/Module.php:17
 #: modules/OpportunityClaimForm/components/opportunity-claim-form/text.php:5
 msgid "Solicitação de recurso enviada"
-msgstr ""
+msgstr "Solicitud de recurso enviada"
 
 #: modules/OpportunityClaimForm/Module.php:18
 msgid "Ocorreu um erro ao tentar enviar o recurso"
-msgstr ""
+msgstr "Ocurrió un error al intentar enviar el recurso"
 
 #: modules/OpportunityClaimForm/Module.php:39
 #: modules/OpportunityClaimForm/Module.php:45
 msgid "Inscrição não encontrada"
-msgstr ""
+msgstr "Inscripción no encontrada"
 
 #: modules/OpportunityClaimForm/Module.php:96
 #, php-format
 msgid "Solicitação de Recurso na Oportunidade %s"
-msgstr ""
+msgstr "Solicitu de Recurso en la Oportunidad %s"
 
 #: modules/OpportunityClaimForm/Module.php:148
 msgid "Desabilitar formulário de recursos"
-msgstr ""
+msgstr "Deshabilitar formulario de recursos"
 
 #: modules/OpportunityClaimForm/Module.php:153
 msgid "Email de destino do formulário de recursos"
-msgstr ""
+msgstr "Correo electrónico de destino del formulario de recursos"
 
 #: modules/OpportunityClaimForm/Module.php:155
 msgid "Email inválido"
-msgstr ""
+msgstr "Correo electrónico no válido"
 
 #: modules/OpportunityClaimForm/components/opportunity-claim-form/template.php:23
 msgid "Solicitar"
-msgstr ""
+msgstr "Solicitar"
 
 #: modules/OpportunityClaimForm/components/opportunity-claim-form/template.php:26
 msgid "Discorda do resultado?"
-msgstr ""
+msgstr "¿No estás de acuerdo con el resultado?"
 
 #: modules/OpportunityClaimForm/components/opportunity-claim-form/template.php:27
 #: modules/OpportunityClaimForm/layouts/parts/claim-form.php:8
 msgid "Solicitar Recurso"
-msgstr ""
+msgstr "Solicitar Recurso"
 
 #: modules/OpportunityClaimForm/components/opportunity-enable-claim/template.php:17
 msgid "Recurso"
-msgstr ""
+msgstr "Recurso"
 
 #: modules/OpportunityClaimForm/components/opportunity-enable-claim/template.php:21
 msgid "Habilitar Recurso"
-msgstr ""
+msgstr "Habilitar Recurso"
 
 #: modules/OpportunityClaimForm/layouts/parts/claim-configuration.php:11
 msgid "Formulário para recursos"
-msgstr ""
+msgstr "Formulario para recursos"
 
 #: modules/OpportunityClaimForm/layouts/parts/claim-configuration.php:14
 msgid "Formulário de recursos"
-msgstr ""
+msgstr "Formulario de recursos"
 
 #: modules/OpportunityClaimForm/layouts/parts/claim-configuration.php:17
 msgid "Email de destino dos recursos"
-msgstr ""
+msgstr "Correo electrónico de destino de los recursos"
 
 #: modules/OpportunityClaimForm/layouts/parts/claim-configuration.php:18
 msgid "Email do destinatário"
-msgstr ""
+msgstr "Correo electrónico del destinatario"
 
 #: modules/OpportunityPhases/Module.php:646
 #: modules/OpportunityPhases/Module.php:656
 msgid ""
 "Sincronização das inscrições enfileirada para processamento em segundo plano"
 msgstr ""
+"Sincronización de suscripciones en cola para procesamiento en segundo plano"
 
 #: modules/OpportunityPhases/Module.php:724
 #: modules/OpportunityPhases/Module.php:1206
 #: modules/OpportunityPhases/mc-updates.php:23
 msgid "Publicação final do resultado"
-msgstr ""
+msgstr "Publicación del resultado"
 
 #: modules/OpportunityPhases/Module.php:1037
 msgid "A data inicial não pode ser menor que a data inicial da fase anterior"
 msgstr ""
+"La fecha inicial no puede ser menor que la fecha inicial de la fase anterior"
 
 #: modules/OpportunityPhases/Module.php:1045
 msgid "A data final deve ser menor que a data de publicação do resultado final"
 msgstr ""
+"La fecha final debe ser menor que la fecha de publicación del resultado final"
 
 #: modules/OpportunityPhases/Module.php:1058
 msgid ""
 "A data de publicação do resultado não pode ser anterior ao término da fase "
 "anterior"
 msgstr ""
+"La fecha de publicación del resultado no puede ser anterior al final de la "
+"fase anterior"
 
 #: modules/OpportunityPhases/Module.php:1063
 msgid ""
 "A data de publicação do resultado deve ser maior que a data de término da "
 "fase anterior"
 msgstr ""
+"La fecha de publicación del resultado debe ser posterior a la fecha de "
+"finalización de la fase anterior"
 
 #: modules/OpportunityPhases/Module.php:1068
 msgid ""
 "A data de publicação do resultado deve ser maior que a data de término da "
 "fase"
 msgstr ""
+"La fecha de publicación del resultado debe ser mayor que la fecha de "
+"finalización de la fase"
 
 #: modules/OpportunityPhases/Module.php:1087
 msgid "A data inicial deve ser maior que a data de inicio da fase anterior"
 msgstr ""
+"La fecha inicial debe ser mayor que la fecha de inicio de la fase anterior"
 
 #: modules/OpportunityPhases/Module.php:1092
 msgid ""
 "A data final deve ser menor que a data de final de publicação dos resultados"
 msgstr ""
+"La fecha final debe ser menor que la fecha de publicación final de los "
+"resultados"
 
 #: modules/OpportunityPhases/Module.php:1095
 msgid "A data final deve ser menor que a data de término da próxima fase"
 msgstr ""
+"La fecha final debe ser menor que la fecha de finalización de la siguiente "
+"fase"
 
 #: modules/OpportunityPhases/Module.php:1161
 msgid "Indica se o objeto é a primeira fase da oportunidade"
-msgstr ""
+msgstr "Indica si el objeto es la primera fase de la oportunidad"
 
 #: modules/OpportunityPhases/Module.php:1170
 msgid ""
 "Nome da fase para exibição do usuário, considerando a fase de avaliação "
 "conjunta"
 msgstr ""
+"Nombre de la fase para la visualización del usuario, teniendo en cuenta la "
+"fase de evaluación conjunta"
 
 #: modules/OpportunityPhases/Module.php:1182
 msgid "Resumo dos status da fase"
-msgstr ""
+msgstr "Resumen de los estados de la fase"
 
 #: modules/OpportunityPhases/Module.php:1250
 msgid "Is a opportunity phase?"
@@ -11784,359 +11821,364 @@ msgstr ""
 
 #: modules/OpportunityPhases/Module.php:1264
 msgid "Indica se a oportunidade é a última fase da oportunidade"
-msgstr ""
+msgstr "Indica si la oportunidad es la última fase de la oportunidad"
 
 #: modules/OpportunityPhases/Module.php:1302
 #, php-format
 msgid "Aviso sobre a sua inscrição na oportunidade %s"
-msgstr ""
+msgstr "Aviso sobre su inscripción en la oportunidad %s"
 
 #: modules/Panel/components/panel--entities-summary/script.js:45
 #: themes/BaseV1/Theme.php:557 themes/BaseV1/Theme.php:558
 msgid "oportunidades"
-msgstr ""
+msgstr "oportunidades"
 
 #: modules/Panel/components/panel--entity-actions/template.php:22
 msgid "Você está certo que deseja recuperar esta entidade da lixeira?"
-msgstr ""
+msgstr "¿Estás seguro de que quieres recuperar esta entidad de la papelera?"
 
 #: modules/Panel/components/panel--entity-actions/template.php:23
 #: modules/UserManagement/components/system-roles--list/template.php:18
 #: themes/BaseV1/layouts/parts/singles/control--view-buttons.php:10
 msgid "Recuperar"
-msgstr ""
+msgstr "Recuperar"
 
 #: modules/Panel/components/panel--entity-actions/template.php:36
 msgid "Você está certo que deseja arquivar esta entidade?"
-msgstr ""
+msgstr "¿Está seguro de que desea archivar esta entidad?"
 
 #: modules/Panel/components/panel--entity-actions/template.php:44
 msgid "Você está certo que deseja excluir esta entidade?"
-msgstr ""
+msgstr "¿Estás seguro de que quieres eliminar esta entidade?"
 
 #: modules/Panel/components/panel--entity-actions/template.php:52
 msgid "Você está certo que deseja excluir definitivamente esta entidade?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminar permanentemente esta entidad?"
 
 #: modules/Panel/components/panel--entity-actions/template.php:54
 msgid "Excluir permanentemente"
-msgstr ""
+msgstr "Eliminar definitivamente"
 
 #: modules/Panel/components/panel--entity-actions/template.php:60
 msgid "Você está certo que deseja transformar esta entidade em rascunho?"
-msgstr ""
+msgstr "¿Está seguro de que desea convertir esta entidad en un borrador?"
 
 #: modules/Panel/components/panel--entity-actions/template.php:61
 msgid "Tornar rascunho"
-msgstr ""
+msgstr "Convertir en borrador"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:18
 msgid "Publicados"
-msgstr ""
+msgstr "Publicados"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:20
 msgid "Com permissão"
-msgstr ""
+msgstr "Con permiso"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:21
 msgid "Arquivados"
-msgstr ""
+msgstr "Archivados"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:28
 msgid "Ordem alfabética"
-msgstr ""
+msgstr "Orden alfabetica"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:29
 #: modules/Search/components/search-list/template.php:31
 #: modules/Search/components/search-list/template.php:55
 msgid "Mais recentes primeiro"
-msgstr ""
+msgstr "Más recientes primero"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:30
 #: modules/Search/components/search-list/template.php:30
 #: modules/Search/components/search-list/template.php:54
 msgid "Mais antigas primeiro"
-msgstr ""
+msgstr "Más antiguas primero"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:31
 #: modules/Search/components/search-list/template.php:32
 #: modules/Search/components/search-list/template.php:56
 msgid "Modificadas recentemente"
-msgstr ""
+msgstr "Modificadas recientemente"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:32
 #: modules/Search/components/search-list/template.php:33
 #: modules/Search/components/search-list/template.php:57
 msgid "Modificadas há mais tempo"
-msgstr ""
+msgstr "Modificadas hace más tiempo"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:61
 msgid "Palavras-chave"
-msgstr ""
+msgstr "Palabras-clave"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:62
 msgid "Buscar por palavras-chave"
-msgstr ""
+msgstr "Búsqueda por palabras clave"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:66
 msgid "Ordernar por:"
-msgstr ""
+msgstr "Ordernar por:"
 
 #: modules/Panel/components/panel--entity-tabs/template.php:95
 msgid "Tipo: "
-msgstr ""
+msgstr "Tipo: "
 
 #: modules/Panel/components/panel--last-edited/template.php:18
 msgid "Editados recentemente"
-msgstr ""
+msgstr "Editados recientemente"
 
 #: modules/Panel/components/panel--last-edited/template.php:40
 msgid "Modificado em"
-msgstr ""
+msgstr "Modificado en"
 
 #: modules/Panel/components/panel--last-registrations/template.php:16
 msgid "Inscrições recentes"
-msgstr ""
+msgstr "Inscripciones recientes"
 
 #: modules/Panel/components/panel--last-registrations/template.php:30
 msgid "Acessar e acompanhar"
-msgstr ""
+msgstr "Acceder y acompañar"
 
 #: modules/Panel/components/panel--nav/init.php:7
 msgid "Menu do Painel de Controle"
-msgstr ""
+msgstr "Menú del panel de control"
 
 #: modules/Panel/components/panel--nav/init.php:10 themes/BaseV1/Theme.php:151
 #: themes/BaseV1/Theme.php:152
 msgid "Painel de Controle"
-msgstr ""
+msgstr "Panel de control"
 
 #: modules/Panel/components/panel--nav/init.php:26 themes/BaseV1/Theme.php:418
 #: themes/BaseV1/Theme.php:419 themes/BaseV1/layouts/parts/nav-main-user.php:25
 #: themes/BaseV1/layouts/parts/panel-nav.php:14
 msgid "Meus Agentes"
-msgstr ""
+msgstr "Mis Agentes"
 
 #: modules/Panel/components/panel--nav/init.php:38 themes/BaseV1/Theme.php:571
 #: themes/BaseV1/Theme.php:572 themes/BaseV1/layouts/parts/nav-main-user.php:35
 #: themes/BaseV1/layouts/parts/panel-nav.php:20
 msgid "Meus Eventos"
-msgstr ""
+msgstr "Mis Eventos"
 
 #: modules/Panel/components/panel--nav/init.php:44 themes/BaseV1/Theme.php:459
 #: themes/BaseV1/Theme.php:460 themes/BaseV1/layouts/parts/nav-main-user.php:62
 #: themes/BaseV1/layouts/parts/panel-nav.php:38
 msgid "Meus Projetos"
-msgstr ""
+msgstr "Mis Proyectos"
 
 #: modules/Panel/components/panel--nav/init.php:56
 msgid "Outras opções"
-msgstr ""
+msgstr "Otras opciones"
 
 #: modules/Panel/components/panel--nav/init.php:59
 msgid "Conta e Privacidade"
-msgstr ""
+msgstr "Cuenta y Privacidad"
 
 #: modules/Panel/components/panel--nav/init.php:64
 msgid "Administração"
-msgstr ""
+msgstr "Administración"
 
 #: modules/Panel/components/panel--open-opportunities/template.php:17
 msgid "Oportunidades abertas"
-msgstr ""
+msgstr "Oportunidades abiertas"
 
 #: modules/Panel/components/panel--open-opportunities/template.php:30
 msgid "Configurar e gerir"
-msgstr ""
+msgstr "Configurar y administrar"
 
 #: modules/Panel/components/panel--pending-evaluations/template.php:20
 msgid "Avaliações disponíveis"
-msgstr ""
+msgstr "Evaluaciones disponibles"
 
 #: modules/Panel/components/panel--pending-evaluations/template.php:51
 msgid "PERÍODO DE AVALIAÇÃO: "
-msgstr ""
+msgstr "PERIODO DE EVALUACIÓN: "
 
 #: modules/Panel/views/panel/agents.php:23
 msgid ""
 "Nesta seção você visualiza e gerencia seu perfil de usuário e outros agentes "
 "criados"
 msgstr ""
+"En esta sección usted ve y administra su perfil de usuario y otros agentes "
+"creados"
 
 #: modules/Panel/views/panel/agents.php:29
 msgid "Criar agente"
-msgstr ""
+msgstr "Crear agente"
 
 #: modules/Panel/views/panel/events.php:17
 msgid "Nesta seção você pode adicionar e gerenciar seus eventos culturais"
-msgstr ""
+msgstr "En esta sección usted puede agregar o administrar eventos culturales"
 
 #: modules/Panel/views/panel/index.php:41
 msgid "Olá, "
-msgstr ""
+msgstr "Hola, "
 
 #: modules/Panel/views/panel/index.php:46
 msgid "Acessar meu perfil"
-msgstr ""
+msgstr "Acceder Mi Perfil"
 
 #: modules/Panel/views/panel/index.php:59
 #: themes/BaseV1/layouts/parts/singles/opportunity-tabs.php:5
 msgid "Principal"
-msgstr ""
+msgstr "Principal"
 
 #: modules/Panel/views/panel/projects.php:17
 msgid "Nesta seção você pode adicionar e gerenciar seus projetos"
-msgstr ""
+msgstr "En esta sección usted puede agregar o administrar sus proyectos"
 
 #: modules/Panel/views/panel/spaces.php:17
 msgid "Nesta seção você pode adicionar e gerenciar seus espaços culturais"
 msgstr ""
+"En esta sección usted puede agregar o administrar sus espacios culturales"
 
 #: modules/ProfileCompletion/layouts/parts/profile-complete-message.php:2
 msgid "Complete seu cadastro"
-msgstr ""
+msgstr "Completa su registro"
 
 #: modules/ProfileCompletion/layouts/parts/profile-complete-message.php:3
 msgid ""
 "Para que seu cadastro fique minimamente preenchido, atente-se em preencher "
 "os dados obrigatórios indicados com caracter"
 msgstr ""
+"Para que su registro esté mínimamente lleno, asegúrese de completar los "
+"datos obligatorios indicados con carácter"
 
 #: modules/RegistrationFieldTypes/Module.php:240
 msgid "Campo de texto (textarea)"
-msgstr ""
+msgstr "Campo de texto (textarea)"
 
 #: modules/RegistrationFieldTypes/Module.php:246
 msgid "Campo de texto simples"
-msgstr ""
+msgstr "Campo de texto simple"
 
 #: modules/RegistrationFieldTypes/Module.php:252
 msgid "Campo de moeda (R$)"
-msgstr ""
+msgstr "Campo de moneda"
 
 #: modules/RegistrationFieldTypes/Module.php:256
 msgid "O valor não está no formato de moeda real (R$)"
-msgstr ""
+msgstr "El valor no está en el formato de moneda real (R$)"
 
 #: modules/RegistrationFieldTypes/Module.php:261
 msgid "Campo de data"
-msgstr ""
+msgstr "Campo de fecha"
 
 #: modules/RegistrationFieldTypes/Module.php:267
 msgid "Campo de URL (link)"
-msgstr ""
+msgstr "Campo de URL (enlace)"
 
 #: modules/RegistrationFieldTypes/Module.php:271
 msgid "O valor não é uma URL válida"
-msgstr ""
+msgstr "El valor no es una URL válida"
 
 #: modules/RegistrationFieldTypes/Module.php:276
 msgid "Campo de email"
-msgstr ""
+msgstr "Campo de email"
 
 #: modules/RegistrationFieldTypes/Module.php:280
 msgid "O valor não é um endereço de email válido"
-msgstr ""
+msgstr "El valor no es una dirección de email válido"
 
 #: modules/RegistrationFieldTypes/Module.php:285
 msgid "Campo de telefone do Brasil"
-msgstr ""
+msgstr "Campo de teléfono"
 
 #: modules/RegistrationFieldTypes/Module.php:289
 msgid "O valor não é um telefone válido"
-msgstr ""
+msgstr "El valor no es una teléfono válido"
 
 #: modules/RegistrationFieldTypes/Module.php:294
 msgid "Seleção única (select)"
-msgstr ""
+msgstr "Selección única (select)"
 
 #: modules/RegistrationFieldTypes/Module.php:301
 msgid "# Título de Seção"
-msgstr ""
+msgstr "# Título de Sección"
 
 #: modules/RegistrationFieldTypes/Module.php:307
 msgid "Campo numérico"
-msgstr ""
+msgstr "Campo numerico"
 
 #: modules/RegistrationFieldTypes/Module.php:311
 msgid "O valor inserido não é válido"
-msgstr ""
+msgstr "El valor informado no es válido"
 
 #: modules/RegistrationFieldTypes/Module.php:316
 msgid "Campo de CPF"
-msgstr ""
+msgstr "Campo de CPF"
 
 #: modules/RegistrationFieldTypes/Module.php:320
 msgid "O cpf inserido não é válido"
-msgstr ""
+msgstr "El CPF no es válido"
 
 #: modules/RegistrationFieldTypes/Module.php:325
 msgid "Campo de CNPJ"
-msgstr ""
+msgstr "Campo de CNPJ"
 
 #: modules/RegistrationFieldTypes/Module.php:329
 msgid "O cnpj inserido não é válido"
-msgstr ""
+msgstr "El CNPJ no es válido"
 
 #: modules/RegistrationFieldTypes/Module.php:334
 msgid "Caixa de verificação (checkbox)"
-msgstr ""
+msgstr "Casilla de verificación (checkbox)"
 
 #: modules/RegistrationFieldTypes/Module.php:340
 msgid "Seleção múltipla (checkboxes)"
-msgstr ""
+msgstr "Selección múltiple (checkboxes)"
 
 #: modules/RegistrationFieldTypes/Module.php:360
 msgid "Campo de listagem de pessoas"
-msgstr ""
+msgstr "Campo de listado de personas"
 
 #: modules/RegistrationFieldTypes/Module.php:396
 msgid "Campo de listagem de links"
-msgstr ""
+msgstr "Campo de listado de links"
 
 #: modules/RegistrationFieldTypes/Module.php:433
 msgid "@ Campo do Agente Responsável"
-msgstr ""
+msgstr "@ Campo de Agente Responsable"
 
 #: modules/RegistrationFieldTypes/Module.php:470
 msgid "@ Campo do Agente Coletivo"
-msgstr ""
+msgstr "@ Campo de Agente Colectivo"
 
 #: modules/RegistrationFieldTypes/Module.php:516
 msgid "@ Campo do Espaço"
-msgstr ""
+msgstr "@ Campo del Espacio"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:10
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:10
 msgid " Campos de endereço"
-msgstr ""
+msgstr " Campos de dirección"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:11
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:11
 msgid " Área de atuação"
-msgstr ""
+msgstr " Área de actuación"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:12
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:12
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:12
 msgid " Links"
-msgstr ""
+msgstr " Enlaces"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:30
 msgid "Campo do agente coletivo:"
-msgstr ""
+msgstr "Campo del agente colectivo:"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:41
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:62
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:37
 msgid "Definir a latitude e longitude baseado no CEP?"
-msgstr ""
+msgstr "¿Establecer la latitud y la longitud según el código postal?"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:42
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:63
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:38
 msgid "Fornecer opção para mudar a privacidade da localização?"
-msgstr ""
+msgstr "¿Ofrece la opción de cambiar la privacidad de la ubicación?"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:45
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:41
@@ -12145,6 +12187,9 @@ msgid ""
 "mapeamento de valores utilize <strong>valor salvo:valor exibido</strong>. "
 "Exemplo: <strong>Dança:Artes da Dança</strong>"
 msgstr ""
+"Ingrese los términos que estarán disponibles para su selección. <br> Para "
+"hacer un mapeo de valores, use <strong> valor guardado: valor mostrado </"
+"strong>. Ejemplo: <strong> Danza: artes de la danza </strong>"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:47
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:51
@@ -12156,32 +12201,32 @@ msgstr ""
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:43
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:48
 msgid "Opções de seleção"
-msgstr ""
+msgstr "Opciones de selección"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:50
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:68
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:75
 msgid "Informe os termos que estarão disponíveis para seleção."
-msgstr ""
+msgstr "Introduzca los términos que estarán disponibles para su selección."
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:54
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:80
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/links-config.php:3
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:51
 msgid "Pedir de título"
-msgstr ""
+msgstr "Título de la solicitud"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field.php:29
 msgid "Este campo será salvo no agente coletivo"
-msgstr ""
+msgstr "Este campo se guardará en el agente colectivo"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:10
 msgid "Campos de endereço"
-msgstr ""
+msgstr "Campos de dirección"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:52
 msgid "Campo do agente responsável:"
-msgstr ""
+msgstr "Campo del Agente responsable:"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field.php:29
 msgid "Este campo será salvo no agente responsável pela inscrição"
