@@ -29,7 +29,7 @@ $this->import('
                 <slot name="filters-table" :entities="entities" :filters="filters"></slot>
                 <div class="field opportunity-registration-table__select-tag">
 
-                    <mc-multiselect #default="{setFilter, popover}" @selected="addInColumns" @removed="removeFromColumns" :model="selectedColumns" :items="optionalHeaders" hide-filter hide-button>
+                    <mc-multiselect #default="{setFilter, popover}" @selected="addInColumns($event)" @removed="removeFromColumns" :model="selectedColumns" :items="items" hide-filter hide-button>
                         <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Colunas habilitadas na tabela') ?>">
                     </mc-multiselect>
 
@@ -43,15 +43,15 @@ $this->import('
                 <table>
                     <thead>
                         <tr>
-                            <template v-for="header in activeHeaders">
-                                <th>{{header.text}}</th>
+                            <template v-for="header in modifiedHeaders">
+                                <th v-if="header?.visible">{{header.text}}</th>
                             </template>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="entity in entities">
-                            <template v-for="header in activeHeaders">
-                                <td>
+                            <template v-for="header in modifiedHeaders">
+                                <td v-if="header?.visible">
                                     <slot :name="parseSlug(header)" v-bind="entity">
                                         {{getEntityData(entity, header.value)}}
                                     </slot>
