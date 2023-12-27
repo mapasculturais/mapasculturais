@@ -2296,7 +2296,7 @@ class ApiQuery {
     }
 
     protected function appendTerms(array &$entities){
-        $class = $this->entityClassName;
+        $class = $this->rootEntityClassName;
         $term_relation_class_name = $this->termRelationClassName;
         if($term_relation_class_name && in_array('terms', $this->_selecting)){
             $app = App::i();

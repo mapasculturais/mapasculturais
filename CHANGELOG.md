@@ -4,6 +4,36 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Correções
+- Corrige erro na listagem de inscrições de um edital quando não exitia nehuma inscrição
+- Corrige erro que ocorria no momento da publicação de resultado final ocasionado pela tentativa de enviar os e-mails
+
+## [7.3.2] - 2023-12-15
+### Correções
+- Corrige erro que conflitava edição de uma inscrição de um agente com permissão de avaliação e de suporte 
+
+## [7.3.1] - 2023-12-14
+### Correções
+- Corrige erro ao carregar ícone que exibe as novas notificações 
+
+## [7.3.0] - 2023-12-12
+### Novas funcionalidades
+- Possibilita a publicação do parecer de fases de avaliação documental para os proponentes
+
+### Melhorias
+- Insere a taxonomia área de interesse na intidade oportunidade   
+
+### Correções
+- Redireciona o usuario para a primeira fase quando o mesmo tenta acessar a oportunidade com o id de uma fase posterior
+
+### Ajustes
+- Ajusta botão de sair do modo de edição das entidades para que o mesmo não salve a entidade
+
+## [7.2.10] - 2023-12-06
+### Correções
+- Redireciona o usuario para a primeira fase quando o mesmo tenta acessar a oportunidade com o id de uma fase posterior
+
 ## [7.2.11] - 2023-12-07
 ### Correções
 - Corrige erro no resumo de inscrições nas fases de avaliações, quando não existia inscrições a serem carregadas
