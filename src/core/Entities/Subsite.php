@@ -3,6 +3,8 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\API;
+use MapasCulturais\ApiQuery;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 
@@ -181,9 +183,8 @@ class Subsite extends \MapasCulturais\Entity
 
     public function getSubsiteUrl() {
         $app = \MapasCulturais\App::i();
-        $req = $app->request;
-
-        return $req->getScheme() . "://" . $this->url;
+        $uri = $app->request->psr7request->getUri();
+        return $uri->getScheme() . "://" . $this->url;
     }
 
     protected $_logo;
@@ -301,19 +302,20 @@ class Subsite extends \MapasCulturais\Entity
 
         foreach($this->filters as $controller_id => $entity_filters){
             $entity_class_name = $app->controller($controller_id)->entityClassName;
-            $query = new \MapasCulturais\ApiQuery($entity_class_name, $entity_filters, $this->id);
+            $query = new ApiQuery($entity_class_name, $entity_filters, $this->id);
 
             $this->_entityApiQueryFilters[$entity_class_name] = $query;
 
-            $app->hook("API.<<*>>({$controller_id}).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($query) {
-                $query_dql = $query->getSubDQL();
-                $dql_where .=  " AND e.id IN({$query_dql})";
+            $app->hook("ApiQuery({$controller_id}).params", function() use($query) {
+                /** @var ApiQuery $this */
+                $this->addFilterByApiQuery($query);
             });
         }
 
-        $app->hook("API.<<*>>(PROJECT).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($subsite_id) {
-            $dql_where .= " AND e._subsiteId = {$subsite_id}";
+        $app->hook("ApiQuery(<<project|opportunity>>).params", function(&$api_params) use($subsite_id, $app) {
+            $api_params['_subsiteId'] = API::EQ($subsite_id);
         });
+
 
         $app->applyHookBoundTo($this, 'subsite.applyFilters:after');
     }
