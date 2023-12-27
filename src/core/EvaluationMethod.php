@@ -17,8 +17,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     abstract protected function _getConsolidatedResult(Entities\Registration $registration);
     abstract function getEvaluationResult(Entities\RegistrationEvaluation $evaluation);
 
-    abstract function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array;
-    abstract function _getConsolidatedDetails(Entities\Registration $registration): array;
+    abstract function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): ?array;
+    abstract function _getConsolidatedDetails(Entities\Registration $registration): ?array;
 
     abstract function valueToString($value);
 

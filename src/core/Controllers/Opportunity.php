@@ -468,7 +468,7 @@ class Opportunity extends EntityController {
 
         $em = $opportunity->evaluationMethod;
         
-        if($em->slug == "technical" && isset($data['@order']) && !preg_match('#consolidatedResult as \w+#i', $data['@order'])){
+        if($em && $em->slug == "technical" && isset($data['@order']) && !preg_match('#consolidatedResult as \w+#i', $data['@order'])){
 
             $data['@order'] = str_replace('consolidatedResult', 'consolidatedResult AS FLOAT', $data['@order']);
         }
