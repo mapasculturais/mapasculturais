@@ -30,6 +30,7 @@ use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Definitions\RegistrationAgentRelation;
 use MapasCulturais\Definitions\RegistrationFieldType;
+use MapasCulturais\Entities\Subsite;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\MailTemplateNotFound;
 use MapasCulturais\Exceptions\NotFound;
@@ -62,8 +63,11 @@ use Throwable;
  * @property-read Slim\App $slim instância do Slim
  * @property-read Hooks $hooks gerenciador de hooks
  * @property-read EntityManager $em Doctrine Entity Manager
+ * @property-read AuthProvider $auth provedor de autenticação
  * @property-read string $siteName nome do site
  * @property-read string $siteDescription descrição do site
+ * @property-read Subsite $subsite Subsite atual
+ * @property-read Subsite $currentSubsite Subsite atual
  * @property-read string $currentLCode código da linguagem configurada. ex: pt_BR
  * @property-read int|null $currentSubsiteId id do subsite atual
  * @property-read string|float|int $maxUploadSize tamanho máximo de arquivo para upload aceito pelo PHP
@@ -536,7 +540,7 @@ class App {
      * @return void 
      */
     protected function _initAutoloader() {
-        $config = $this->config;
+        $config = &$this->config;
 
         // list of modules
         if($handle = opendir(MODULES_PATH)){
@@ -564,15 +568,19 @@ class App {
             }
         }
 
-        spl_autoload_register(function($class) use ($config){
+        spl_autoload_register(function($class) use (&$config){
             $namespaces = $config['namespaces'];
 
             $namespaces['MapasCulturais\\DoctrineProxies'] = DOCTRINE_PROXIES_PATH;
 
             $subfolders = ['Controllers','Entities','Repositories','Jobs'];
 
-            foreach($config['plugins'] as $plugin){
-                if(is_string($plugin)) {
+            foreach($config['plugins'] as $key => &$plugin){
+                if(is_array($plugin) && isset($plugin['namespace'])) {
+                    // do nothing
+                } else if (is_string($key) && is_array($plugin) && !isset($plugin['namespace'])) {
+                    $plugin = ['namespace' => $key, 'config' => $plugin];
+                } else if (is_numeric($key) && is_string($plugin)) {
                     $plugin = ['namespace' => $plugin];
                 }
                 $namespace = $plugin['namespace'];
