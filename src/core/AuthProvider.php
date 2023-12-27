@@ -84,12 +84,19 @@ abstract class AuthProvider {
         }
     }
 
+    /**
+     * Defines the URL to redirect after authentication
+     * @param string $redirect_path
+     */
+    public function setRedirectPath(string $redirect_path) {
+        $this->_setRedirectPath($redirect_path);
+    }
 
     /**
      * Defines the URL to redirect after authentication
      * @param string $redirect_path
      */
-    protected function _setRedirectPath($redirect_path) {
+    protected function _setRedirectPath(string $redirect_path) {
         $_SESSION['mapasculturais.auth.redirect_path'] = $redirect_path;
     }
 
