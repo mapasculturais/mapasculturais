@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-22 17:17-0400\n"
+"PO-Revision-Date: 2023-12-27 18:05-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -3502,11 +3502,11 @@ msgstr "El nombre del sello es obligatorio"
 
 #: core/Entities/Seal.php:181
 msgid "Validade do selo é obrigatória."
-msgstr "El validado del sello es obligatorio."
+msgstr "La validez del sello es obligatoria."
 
 #: core/Entities/Seal.php:182
 msgid "Validade do selo deve ser um número inteiro."
-msgstr "Validado del sello debe ser un número entero."
+msgstr "La validez del sello debe ser un número entero."
 
 #: core/Entities/SealRelation.php:141
 #: modules/RegistrationFieldTypes/Module.php:101
@@ -7760,7 +7760,7 @@ msgstr "Informe TODOS los valores abajo."
 
 #: modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:6
 msgid "Resultados das seções"
-msgstr ""
+msgstr "Resultados de las secciones"
 
 #: modules/EvaluationMethodSimple/Module.php:17
 msgid "Avaliação Simplificada"
@@ -7778,7 +7778,7 @@ msgstr "estados"
 
 #: modules/EvaluationMethodSimple/Module.php:45
 msgid "O campo Status é obrigatório"
-msgstr "El camo Estado es obligatorio"
+msgstr "El campo Estado es obligatorio"
 
 #: modules/EvaluationMethodSimple/Module.php:48
 msgid "obs"
@@ -7806,7 +7806,7 @@ msgstr "Las evaluaciones no fueron aplicadas."
 
 #: modules/EvaluationMethodSimple/Module.php:92
 msgid "inválida,invalida,inválido,invalido"
-msgstr ""
+msgstr "invalida,invalida,inválido,invalido"
 
 #: modules/EvaluationMethodSimple/Module.php:94
 msgid "não selecionado,nao selecionado,não selecionada,nao selecionada"
@@ -8217,7 +8217,7 @@ msgstr "No definido"
 
 #: modules/EventImporter/Controller.php:768
 msgid "diario"
-msgstr ""
+msgstr "diario"
 
 #: modules/EventImporter/Controller.php:769
 msgid "daily"
@@ -8397,11 +8397,11 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:88
 msgid "mais info"
-msgstr "mas info"
+msgstr "más info"
 
 #: modules/EventImporter/Module.php:88
 msgid "info"
-msgstr ""
+msgstr "info"
 
 #: modules/EventImporter/Module.php:89
 msgid "audio_descricao"
@@ -8486,15 +8486,15 @@ msgstr "hora_inicial"
 
 #: modules/EventImporter/Module.php:108
 msgid "hora inicial"
-msgstr ""
+msgstr "hora inicial"
 
 #: modules/EventImporter/Module.php:109
 msgid "hora_final"
-msgstr ""
+msgstr "hora_final"
 
 #: modules/EventImporter/Module.php:109
 msgid "hora final"
-msgstr ""
+msgstr "hora final"
 
 #: modules/EventImporter/Module.php:117
 msgid "preço"
@@ -8962,7 +8962,7 @@ msgstr "Complemento de la información de"
 
 #: modules/EventImporter/Module.php:311
 msgid "AVATAR"
-msgstr ""
+msgstr "AVATAR"
 
 #: modules/EventImporter/Module.php:312
 msgid "Informar o link da imagem que deseja colocar no avatar do evento"
@@ -8974,7 +8974,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:315
 msgid "BANNER"
-msgstr ""
+msgstr "BANNER"
 
 #: modules/EventImporter/Module.php:316
 msgid "Informar o link da imagem que deseja colocar no banner do evento"
@@ -8989,7 +8989,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:319
 msgid "GALERIA"
-msgstr ""
+msgstr "GALERÍA"
 
 #: modules/EventImporter/Module.php:320
 msgid ""
@@ -9029,7 +9029,7 @@ msgstr ""
 
 #: modules/EventImporter/Module.php:327
 msgid "VIDEOS"
-msgstr ""
+msgstr "VIDEOS"
 
 #: modules/EventImporter/Module.php:328
 msgid ""
@@ -9973,7 +9973,7 @@ msgstr "Importa el archivo de Formulario"
 
 #: modules/Opportunities/components/opportunity-form-import/template.php:31
 msgid "O arquivo importado deve estar no formato .txt "
-msgstr ""
+msgstr "El archivo importado debe estar en formato .txt "
 
 #: modules/Opportunities/components/opportunity-form-view/template.php:10
 #: modules/Support/layouts/parts/support/opportunity-support-fields-association.php:21
@@ -10294,6 +10294,9 @@ msgid ""
 "inscrições foram avaliadas e aplicadas. Com essa ação o resultado da fase "
 "ficará público."
 msgstr ""
+"Antes de publicar los resultados, asegúrese cuidadosamente si todas las "
+"inscripciones han sido evaluadas y aplicadas. Con esta acción, el resultado "
+"de la fase quedará público."
 
 #: modules/Opportunities/components/opportunity-phase-publish-config-registration/texts.php:6
 #: modules/Opportunities/components/opportunity-phase-publish-date-config/texts.php:6
@@ -12230,27 +12233,27 @@ msgstr "Campo del Agente responsable:"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field.php:29
 msgid "Este campo será salvo no agente responsável pela inscrição"
-msgstr ""
+msgstr "Este campo se guardará en el agente responsable de la inscripción"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:3
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:3
 msgid "Opções do campo"
-msgstr ""
+msgstr "Opciones del campo"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:5
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/section-config.php:3
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:5
 msgid "Informe uma opção por linha."
-msgstr ""
+msgstr "Una opción por línea."
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:59
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:62
 msgid "Cidade"
-msgstr ""
+msgstr "Ciudad"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:74
 msgid "Marque para deixar tornar sua localização pública."
-msgstr ""
+msgstr "Marque para que su ubicación se haga pública."
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:8
 #: themes/BaseV1/layouts/parts/panel-subsite.php:17
@@ -12261,76 +12264,76 @@ msgstr ""
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:42
 #: modules/UserManagement/Module.php:34
 msgid "remover"
-msgstr ""
+msgstr "eliminar"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:15
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:45
 msgid "adicionar"
-msgstr ""
+msgstr "agregar"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:3
 msgid "Pedir informação de nome"
-msgstr ""
+msgstr "Solicitar información de nombre"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:4
 msgid "Pedir informação de cpf"
-msgstr ""
+msgstr "Solicitar información de la CI"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:5
 msgid "Pedir informação de parentesco"
-msgstr ""
+msgstr "Solicitar información sobre parentesco"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:27
 msgid "Parentesco"
-msgstr ""
+msgstr "Parentesco"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:29
 msgid "Cônjuge ou Companheiro(a)"
-msgstr ""
+msgstr "Cónyuge o pareja"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:30
 msgid "Filho(a)"
-msgstr ""
+msgstr "Hijo(a)"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:31
 msgid "Enteado(a)"
-msgstr ""
+msgstr "Hijastro(a)"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:32
 msgid "Neto (a) ou Bisneto (a)"
-msgstr ""
+msgstr "Nieto(a) o Bisnieto(a)"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:33
 msgid "Pai ou Mãe"
-msgstr ""
+msgstr "Padre o Madre"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:34
 msgid "Sogro(a)"
-msgstr ""
+msgstr "Suegro(a)"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:35
 msgid "Irmão ou Irmã"
-msgstr ""
+msgstr "Hermano o Hermana"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:36
 msgid "Genro ou Nora"
-msgstr ""
+msgstr "Yerno o nuera"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:37
 msgid "Outro Parente"
-msgstr ""
+msgstr "Otro pariente"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:38
 msgid "Não Parente"
-msgstr ""
+msgstr "No es pariente"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:13
 msgid " Tipo"
-msgstr ""
+msgstr " Tipo"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:28
 msgid "Campo do epaço:"
-msgstr ""
+msgstr "Campo del espacio:"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:46
 msgid ""
@@ -12339,66 +12342,70 @@ msgid ""
 "Exemplo: <strong>Biblioteca Privada:Biblioteca</strong> vai exibir somente "
 "<em>Biblioteca</em> mas salvará o tipo <em>Biblioteca Privada</em>"
 msgstr ""
+"Informe los tipos que estarán disponibles para su selección. <br> Para hacer "
+"un mapeo de valores, use <strong> valor guardado: valor mostrado </strong>. "
+"Ejemplo: <strong> Biblioteca privada: Biblioteca </strong> solo mostrará "
+"<em> Biblioteca </em> pero guardará el tipo <em> Biblioteca privada </em>"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field.php:32
 msgid "Este campo será salvo no espaço relacionado"
-msgstr ""
+msgstr "Este campo se guardará en el espacio relacionado"
 
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/text-config.php:2
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/textarea-config.php:2
 msgid "Quantidade máxima de caracteres"
-msgstr ""
+msgstr "Cantidad máxima de caracteres"
 
 #: modules/Reports/Controller.php:136 modules/Reports/Controller.php:259
 #: modules/Reports/Controller.php:306 modules/Reports/Controller.php:395
 #: modules/Reports/Controller.php:444
 msgid "STATUS"
-msgstr ""
+msgstr "ESTADO"
 
 #: modules/Reports/Controller.php:137 modules/Reports/Controller.php:187
 #: modules/Reports/Controller.php:260 modules/Reports/Controller.php:307
 #: modules/Reports/Controller.php:346 modules/Reports/Controller.php:396
 #: modules/Reports/Controller.php:446 modules/Reports/Controller.php:631
 msgid "QUANTIDADE"
-msgstr ""
+msgstr "CANTIDAD"
 
 #: modules/Reports/Controller.php:180
 #: themes/BaseV1/layouts/parts/panel-evaluation.php:51
 #: themes/BaseV1/layouts/parts/panel-opportunity.php:40
 #: themes/BaseV1/layouts/parts/panel-project.php:23
 msgid "de "
-msgstr ""
+msgstr "de "
 
 #: modules/Reports/Controller.php:180
 #: themes/BaseV1/layouts/parts/panel-evaluation.php:51
 #: themes/BaseV1/layouts/parts/panel-opportunity.php:40
 #: themes/BaseV1/layouts/parts/panel-project.php:23
 msgid " a "
-msgstr ""
+msgstr " hasta "
 
 #: modules/Reports/Controller.php:186
 msgid "AVALIACAO"
-msgstr ""
+msgstr "EVALUACIÓN"
 
 #: modules/Reports/Controller.php:247
 msgid "AVALIADA"
-msgstr ""
+msgstr "EVALUADA"
 
 #: modules/Reports/Controller.php:252
 msgid "NAO AVALIADA"
-msgstr ""
+msgstr "NO EVALUADA"
 
 #: modules/Reports/Controller.php:345
 msgid "CATEGORIA"
-msgstr ""
+msgstr "CATEGORÍA"
 
 #: modules/Reports/Controller.php:445
 msgid "DATA"
-msgstr ""
+msgstr "FECHA"
 
 #: modules/Reports/Controller.php:459
 msgid "Iniciada"
-msgstr ""
+msgstr "Iniciada"
 
 #: modules/Reports/Controller.php:607
 msgid "dynamicGraphic"
@@ -12406,146 +12413,146 @@ msgstr ""
 
 #: modules/Reports/Controller.php:1007
 msgid "(dado não informado)"
-msgstr ""
+msgstr "(dato no informado)"
 
 #: modules/Reports/Controller.php:1055
 msgid "Faixa etária"
-msgstr ""
+msgstr "Rango de edad"
 
 #: modules/Reports/Controller.php:1057
 msgid "Área de atuação do agente responsável"
-msgstr ""
+msgstr "Área de actuación del agente responsable"
 
 #: modules/Reports/Controller.php:1060
 msgid "Área de atuação do agente coletivo"
-msgstr ""
+msgstr "Área de actuación del agente colectivo"
 
 #: modules/Reports/Controller.php:1064
 msgid "Área de atuação da instituição"
-msgstr ""
+msgstr "Área de Actuación de la institución"
 
 #: modules/Reports/Controller.php:1134 modules/Reports/Module.php:311
 #: modules/Reports/Module.php:320
 msgid "Não Selecionada"
-msgstr ""
+msgstr "No seleccionada"
 
 #: modules/Reports/layouts/parts/charts-reports-dropdown-data.php:9
 msgid "Baixar CSV"
-msgstr ""
+msgstr "Descargar CSV"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:11
 #: modules/Reports/layouts/parts/opportunity-reports.php:54
 msgid "Criar novo gráfico"
-msgstr ""
+msgstr "Crear nuevo gráfico"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:15
 msgid ""
 "Antes de definir os parâmetros, defina o tipo de gráfico que você deseja:"
-msgstr ""
+msgstr "Antes de definir los parámetros, defina el tipo de gráfico que desea:"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:16
 msgid "Tipo de visualização"
-msgstr ""
+msgstr "Tipo de visualización"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:19
 msgid "Gráfico de pizza"
-msgstr ""
+msgstr "Gráfico circular"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:23
 msgid "Gráfico de linha"
-msgstr ""
+msgstr "Gráfico de líneas"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:27
 msgid "Gráfico de coluna"
-msgstr ""
+msgstr "Gráfico de columnas"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:31
 msgid "Gráfico de barra"
-msgstr ""
+msgstr "Gráfico de barras"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:35
 msgid "Gráfico de tabela"
-msgstr ""
+msgstr "Gráfico de tabla"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:41
 msgid "Agrupar dados"
-msgstr ""
+msgstr "Agrupar datos"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:51
 msgid "Criar novo gráfico de {{data.graphic}}"
-msgstr ""
+msgstr "Crear un nuevo gráfico {{data.graphic}}"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:55
 msgid "Agora defina o título e dados exibido no gráfico"
-msgstr ""
+msgstr "Ahora defina el título y los datos que se muestran en el gráfico"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:60
 msgid "Título do gráfico"
-msgstr ""
+msgstr "Título del gráfico"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:61
 msgid "Digite um título que represente os dados do novo gráfico"
-msgstr ""
+msgstr "Ingrese un título que represente los datos del nuevo gráfico"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:64
 msgid "Breve descrição"
-msgstr ""
+msgstr "Breve descripción"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:65
 msgid "Digite uma descrição resumida"
-msgstr ""
+msgstr "Escriba una descripción breve"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:71
 #: modules/Reports/layouts/parts/create-reports-modal.php:80
 msgid "Dados a serem exibidos"
-msgstr ""
+msgstr "Datos que se mostrarán"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:72
 #: modules/Reports/layouts/parts/create-reports-modal.php:73
 msgid "Dados a serem exibidos na linha"
-msgstr ""
+msgstr "Datos que se mostrarán en la fila"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:81
 #: modules/Reports/layouts/parts/create-reports-modal.php:82
 msgid "Dados a serem exibidos na coluna"
-msgstr ""
+msgstr "Datos para mostrar en la columna"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:94
 msgid "Proxima etapa"
-msgstr ""
+msgstr "Próxima etapa"
 
 #: modules/Reports/layouts/parts/create-reports-modal.php:95
 #: modules/Reports/layouts/parts/create-reports-modal.php:96
 msgid "Gerar gráfico"
-msgstr ""
+msgstr "Generar gráfico"
 
 #: modules/Reports/layouts/parts/dynamic-reports.php:8
 msgid "Filtrar dados por"
-msgstr ""
+msgstr "Filtrar datos por: "
 
 #: modules/Reports/layouts/parts/dynamic-reports.php:9
 msgid "Não existem gráficos a serem filtrados no momento"
-msgstr ""
+msgstr "No hay gráficos que se puedan filtrar en este momento"
 
 #: modules/Reports/layouts/parts/dynamic-reports.php:11
 msgid "Selecione uma opção ..."
-msgstr ""
+msgstr "Seleccione una opción..."
 
 #: modules/Reports/layouts/parts/dynamic-reports.php:18
 msgid "Imprimir relatório"
-msgstr ""
+msgstr "Imprimir informe"
 
 #: modules/Reports/layouts/parts/dynamic-reports.php:19
 msgid "Excluir gráfico"
-msgstr ""
+msgstr "Borrar gráfico"
 
 #: modules/Reports/layouts/parts/info-dynamic-graphics-break.php:8
 msgid "Este gráfico esta dividido em"
-msgstr ""
+msgstr "Este gráfico se divide en"
 
 #: modules/Reports/layouts/parts/info-dynamic-graphics-break.php:8
 msgid "partes. Esta é a parte"
-msgstr ""
+msgstr "partes. Esta es la parte"
 
 #: modules/Reports/layouts/parts/info-dynamic-graphics-break.php:8
 msgid "."
@@ -12553,40 +12560,40 @@ msgstr ""
 
 #: modules/Reports/layouts/parts/opportunity-reports.php:12
 msgid "Veja abaixo os gráficos referentes a essa oportunidade"
-msgstr ""
+msgstr "Vea a continuación los gráficos referentes a esta oportunidad"
 
 #: modules/Reports/layouts/parts/registrationsByCategory.php:12
 msgid "Categorias da oportunidade"
-msgstr ""
+msgstr "Categorías de la oportunidad"
 
 #: modules/Reports/layouts/parts/registrationsByEvaluationStatus.php:12
 msgid "Status de avaliações"
-msgstr ""
+msgstr "Estado de las evaluaciones"
 
 #: modules/Reports/layouts/parts/registrationsByTime.php:11
 msgid "Inscrições ao longo do tempo"
-msgstr ""
+msgstr "Inscripciones a lo largo del tiempo"
 
 #: modules/Reports/layouts/parts/registrationsDraftVsSent.php:11
 msgid "Status de envio das inscrições"
-msgstr ""
+msgstr "Estado de envío de las inscripciones"
 
 #: modules/Reports/layouts/parts/registrationsEvaluation.php:11
 msgid "Resultado da avaliação"
-msgstr ""
+msgstr "Resultado de la evaluación"
 
 #: modules/Reports/layouts/parts/registrationsEvaluation.php:63
 #: themes/BaseV1/Theme.php:2183
 msgid "Avaliada"
-msgstr ""
+msgstr "Evaluada"
 
 #: modules/Seals/Module.php:25
 msgid "Gerenciar Selos"
-msgstr ""
+msgstr "Gestionar Sellos"
 
 #: modules/Seals/Module.php:35
 msgid "Gestão de Selos"
-msgstr ""
+msgstr "Gestión de Sellos"
 
 #: modules/Seals/components/create-seal/script.js:43
 msgid "seloCriado"
@@ -12603,112 +12610,116 @@ msgstr ""
 
 #: modules/Seals/components/create-seal/template.php:19
 msgid "Crie um selo com informações básicas"
-msgstr ""
+msgstr "Crea un sello con información básica"
 
 #: modules/Seals/components/create-seal/template.php:22
 msgid "Adicione uma Descrição curta para o Selo"
-msgstr ""
+msgstr "Agregue una breve descripción para el Sello"
 
 #: modules/Seals/components/create-seal/template.php:30
 msgid ""
 "Você pode completar as informações do seu selo agora ou pode deixar para "
 "depois. "
 msgstr ""
+"Puede completar la información de su sello ahora o puede dejarla para "
+"después. "
 
 #: modules/Seals/components/create-seal/template.php:31
 msgid ""
 "Para completar e publicar seu novo selo, acesse a área <b>Rascunhos</b> em "
 "<b>Meus Selos</b> no <b>Painel de Controle</b>.  "
 msgstr ""
+"Para completar y publicar su nuevo sello, acceda a la sección <b>Borradores</"
+"b> en <b>Mis Sellos</b> en el <b>Panel de Control</b>. "
 
 #: modules/Seals/components/create-seal/template.php:46
 #: modules/Seals/components/create-seal/template.php:51
 msgid "Ver Selo"
-msgstr ""
+msgstr "Ver Sello"
 
 #: modules/Seals/components/create-seal/texts.php:5
 msgid "Selo Criado!"
-msgstr ""
+msgstr "¡Sello Creado!"
 
 #: modules/Seals/components/create-seal/texts.php:7
 msgid "Selo criado em rascunho!"
-msgstr ""
+msgstr "¡Sello creado en borrador!"
 
 #: modules/Seals/components/entity-seals/script.js:18
 msgid "verificacoes"
-msgstr ""
+msgstr "verificaciones"
 
 #: modules/Seals/components/entity-seals/template.php:39
 msgid "Remover selo?"
-msgstr ""
+msgstr "¿Eliminar Sello?"
 
 #: modules/Seals/components/seal-content-share/template.php:19
 msgid "Nas redes sociais"
-msgstr ""
+msgstr "En las redes sociales"
 
 #: modules/Seals/components/seal-content-share/template.php:38
 msgid "Ou copie o link"
-msgstr ""
+msgstr "O copia el enlace"
 
 #: modules/Seals/components/seal-content-share/template.php:44
 msgid "Copiar"
-msgstr ""
+msgstr "Copiar"
 
 #: modules/Seals/components/seal-content-share/texts.php:6
 msgid "Compartilhe o seu certificado"
-msgstr ""
+msgstr "Comparte tu certificado"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:22
 msgid "Informações de selos"
-msgstr ""
+msgstr "Información sobre sellos"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:23
 msgid "Texto exemplo de texto"
-msgstr ""
+msgstr "Texto ejemplo de texto"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:55
 msgid "Palavras-chaves disponíveis:"
-msgstr ""
+msgstr "Palabras clave disponibles:"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:59
 msgid " Nome do selo"
-msgstr ""
+msgstr " Nombre del sello"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:63
 msgid " Link relacionado ao selo"
-msgstr ""
+msgstr "Enlace relacionado con el sello"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:67
 msgid " Descrição curta do selo"
-msgstr ""
+msgstr " Breve descripción del sello"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:71
 msgid " Tipo da entidade contemplada"
-msgstr ""
+msgstr " Tipo de entidad contemplada"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:75
 msgid " Dona ou dono do selo"
-msgstr ""
+msgstr " Dueña o dueño del sello"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:79
 msgid " Data de início"
-msgstr ""
+msgstr " Fecha de inicio"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:83
 msgid " Nome da entidade contemplada"
-msgstr ""
+msgstr " Nombre de la entidad contemplada"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:87
 msgid " Data de final"
-msgstr ""
+msgstr " Fecha final"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:98
 msgid "Outras informações"
-msgstr ""
+msgstr "Otras informaciones"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:99
 msgid "Os dados inseridos abaixo também são exibidos publicamente"
-msgstr ""
+msgstr "Los datos introducidos a continuación también se muestran públicamente"
 
 #: modules/Seals/components/seal-form-information-seal/texts.php:5
 msgid ""
@@ -12718,18 +12729,23 @@ msgid ""
 "        dinâmicas para customizar o conteúdo do certificado que será "
 "recebido pelas entidades contempladas."
 msgstr ""
+"Puede personalizar el texto del certificado del sello.\n"
+"        Observe el modelo a continuación y siéntase libre de cambiar la "
+"composición del texto utilizando las palabras clave \n"
+"        dinámicas para personalizar el contenido del certificado que "
+"recibirán las entidades contempladas."
 
 #: modules/Seals/components/seal-form-information-seal/texts.php:8
 msgid "Personalize informações do certificado gerado pelo selo"
-msgstr ""
+msgstr "Personaliza la información del certificado generado por el sello"
 
 #: modules/Seals/components/seal-form-valid-period/template.php:15
 msgid "Habilitar selo com validade"
-msgstr ""
+msgstr "Habilitar sello con validez"
 
 #: modules/Seals/components/seal-form-valid-period/template.php:17
 msgid "Insira o número de meses que o certificado do selo deve ser válido"
-msgstr ""
+msgstr "Ingrese el número de meses que el certificado de sello debe ser válido"
 
 #: modules/Seals/components/seal-locked-field/template.php:15
 #: themes/BaseV1/layouts/parts/singles/seal-locked-fields.php:15
@@ -12737,73 +12753,77 @@ msgid ""
 "Selecione abaixo os campos que devem ser bloqueados nos agentes e espaços "
 "que possuírem este selo"
 msgstr ""
+"Seleccione a continuación los campos que deben bloquearse en agentes y "
+"espacios que tienen este sello"
 
 #: modules/Seals/components/seal-locked-field/template.php:31
 #: modules/Seals/components/seal-locked-field/template.php:57
 #: themes/BaseV1/layouts/parts/singles/seal-locked-fields.php:28
 #: themes/BaseV1/layouts/parts/singles/seal-locked-fields.php:48
 msgid "Taxonomias"
-msgstr ""
+msgstr "Taxonomías"
 
 #: modules/Seals/views/panel/seals.php:16 themes/BaseV1/Theme.php:679
 #: themes/BaseV1/Theme.php:680 themes/BaseV1/views/panel/seals.php:20
 msgid "Meus selos"
-msgstr ""
+msgstr "Mis sellos"
 
 #: modules/Seals/views/panel/seals.php:20
 msgid ""
 "Nesta seção você visualiza e gerencia seu perfil de usuário e outros selos "
 "criados"
 msgstr ""
+"En esta sección puedes ver y administrar tu perfil de usuario y otros sellos "
+"creados"
 
 #: modules/Seals/views/panel/seals.php:26
 msgid "Criar selo"
-msgstr ""
+msgstr "Crear sello"
 
 #: modules/Seals/views/seal/edit.php:32 modules/Seals/views/seal/single.php:18
 #: themes/BaseV1/Theme.php:673 themes/BaseV1/Theme.php:674
 msgid "Meus Selos"
-msgstr ""
+msgstr "Mis sellos"
 
 #: modules/Seals/views/seal/edit.php:62 themes/BaseV1/Theme.php:819
 msgid "Bloqueio de campos"
-msgstr ""
+msgstr "Bloqueo de campos"
 
 #: modules/Seals/views/seal/single.php:30
 msgid "Validade do certificado do selo"
-msgstr ""
+msgstr "Validez del certificado del sello"
 
 #: modules/Search/components/search-filter-agent/template.php:18
 msgid "Filtros de agente"
-msgstr ""
+msgstr "Filtros de agentes"
 
 #: modules/Search/components/search-filter-agent/template.php:21
 msgid "Status do agente"
-msgstr ""
+msgstr "Estado del agente"
 
 #: modules/Search/components/search-filter-agent/template.php:22
 msgid "Agentes oficiais"
-msgstr ""
+msgstr "Agentes oficiales"
 
 #: modules/Search/components/search-filter-agent/template.php:28
 msgid "Agente Individual"
-msgstr ""
+msgstr "Agente individual"
 
 #: modules/Search/components/search-filter-agent/template.php:29
 msgid "Agente Coletivo"
-msgstr ""
+msgstr "Agente Colectivo"
 
 #: modules/Search/components/search-filter-agent/template.php:34
 #: modules/Search/components/search-filter-space/template.php:37
 msgid "Selecione as áreas de atuação"
-msgstr ""
+msgstr "Seleccione las áreas de actuación"
 
 #: modules/Search/components/search-filter-agent/template.php:36
 #: modules/Search/components/search-filter-space/template.php:39
 #: themes/BaseV1/Theme.php:708 themes/BaseV1/Theme.php:712
 #: themes/BaseV1/Theme.php:2438
 msgid "Selecione as áreas"
-msgstr ""
+msgstr "Seleccione las áreas"
 
 #: modules/Search/components/search-filter-agent/template.php:41
 #: modules/Search/components/search-filter-event/template.php:62
@@ -12811,168 +12831,168 @@ msgstr ""
 #: modules/Search/components/search-filter-project/template.php:34
 #: modules/Search/components/search-filter-space/template.php:44
 msgid "Limpar todos os filtros"
-msgstr ""
+msgstr "Limpiar todos los filtros"
 
 #: modules/Search/components/search-filter-event/script.js:35
 msgid "ontem"
-msgstr ""
+msgstr "ayer"
 
 #: modules/Search/components/search-filter-event/script.js:39
 msgid "hoje"
-msgstr ""
+msgstr "hoy"
 
 #: modules/Search/components/search-filter-event/script.js:43
 msgid "amanhã"
-msgstr ""
+msgstr "mañana"
 
 #: modules/Search/components/search-filter-event/script.js:47
 msgid "semana passada"
-msgstr ""
+msgstr "semana pasada"
 
 #: modules/Search/components/search-filter-event/script.js:51
 msgid "esta semana"
-msgstr ""
+msgstr "esta semana"
 
 #: modules/Search/components/search-filter-event/script.js:55
 msgid "próxima semana"
-msgstr ""
+msgstr "próxima semana"
 
 #: modules/Search/components/search-filter-event/script.js:59
 msgid "fim de semana passado"
-msgstr ""
+msgstr "fin de semana pasado"
 
 #: modules/Search/components/search-filter-event/script.js:63
 msgid "este fim de semana"
-msgstr ""
+msgstr "este fin de semana"
 
 #: modules/Search/components/search-filter-event/script.js:67
 msgid "próximo fim de semana"
-msgstr ""
+msgstr "próximo fin de semana"
 
 #: modules/Search/components/search-filter-event/script.js:71
 msgid "últimos 7 dias"
-msgstr ""
+msgstr "últimos 7 días"
 
 #: modules/Search/components/search-filter-event/script.js:75
 msgid "próximos 7 dias"
-msgstr ""
+msgstr "próximos 7 dias"
 
 #: modules/Search/components/search-filter-event/script.js:79
 msgid "últimos 30 dias"
-msgstr ""
+msgstr "últimos 30 días"
 
 #: modules/Search/components/search-filter-event/script.js:83
 msgid "próximos 30 dias"
-msgstr ""
+msgstr "próximos 30 días"
 
 #: modules/Search/components/search-filter-event/template.php:19
 msgid "Filtros de eventos"
-msgstr ""
+msgstr "Filtros de eventos"
 
 #: modules/Search/components/search-filter-event/template.php:22
 msgid "Eventos acontecendo"
-msgstr ""
+msgstr "Eventos sucediendo"
 
 #: modules/Search/components/search-filter-event/template.php:41
 msgid "Status do evento"
-msgstr ""
+msgstr "Estado del evento"
 
 #: modules/Search/components/search-filter-event/template.php:42
 msgid "Eventos oficiais"
-msgstr ""
+msgstr "Eventos oficiales"
 
 #: modules/Search/components/search-filter-event/template.php:55
 #: modules/Search/components/search-filter-event/template.php:57
 #: themes/BaseV1/Theme.php:730 themes/BaseV1/Theme.php:734
 #: themes/BaseV1/Theme.php:2484
 msgid "Selecione as linguagens"
-msgstr ""
+msgstr "Seleccione las lenguajes"
 
 #: modules/Search/components/search-filter-event/texts.php:5
 #: modules/Search/components/search-list-event/template.php:28
 #: modules/Search/components/search-map-event/template.php:50
 msgid "Ontem"
-msgstr ""
+msgstr "Ayer"
 
 #: modules/Search/components/search-filter-event/texts.php:6
 #: modules/Search/components/search-list-event/template.php:26
 #: modules/Search/components/search-map-event/template.php:48
 msgid "Hoje"
-msgstr ""
+msgstr "Hoy"
 
 #: modules/Search/components/search-filter-event/texts.php:7
 #: modules/Search/components/search-list-event/template.php:27
 #: modules/Search/components/search-map-event/template.php:49
 msgid "Amanhã"
-msgstr ""
+msgstr "Mañana"
 
 #: modules/Search/components/search-filter-event/texts.php:8
 msgid "Semana passada"
-msgstr ""
+msgstr "Semana pasada"
 
 #: modules/Search/components/search-filter-event/texts.php:9
 msgid "Esta semana"
-msgstr ""
+msgstr "Esta semana"
 
 #: modules/Search/components/search-filter-event/texts.php:10
 msgid "Próxima semana"
-msgstr ""
+msgstr "Próxima semana"
 
 #: modules/Search/components/search-filter-event/texts.php:11
 msgid "Fim de semana passado"
-msgstr ""
+msgstr "Fin de semana pasado"
 
 #: modules/Search/components/search-filter-event/texts.php:12
 msgid "Este fim de semana"
-msgstr ""
+msgstr "Este fin de semana"
 
 #: modules/Search/components/search-filter-event/texts.php:13
 msgid "Próximo fim de semana"
-msgstr ""
+msgstr "Próximo fin de semana"
 
 #: modules/Search/components/search-filter-event/texts.php:14
 msgid "Últimos 7 dias"
-msgstr ""
+msgstr "Últimos 7 días"
 
 #: modules/Search/components/search-filter-event/texts.php:15
 msgid "Próximos 7 dias"
-msgstr ""
+msgstr "Próximos 7 dias"
 
 #: modules/Search/components/search-filter-event/texts.php:16
 msgid "Últimos 30 dias"
-msgstr ""
+msgstr "Últimos 30 días"
 
 #: modules/Search/components/search-filter-event/texts.php:17
 msgid "Próximos 30 dias"
-msgstr ""
+msgstr "Próximos 30 días"
 
 #: modules/Search/components/search-filter-opportunity/template.php:19
 msgid "Filtros de oportunidades"
-msgstr ""
+msgstr "Filtros de oportunidades"
 
 #: modules/Search/components/search-filter-opportunity/template.php:22
 msgid "Status das oportunidades"
-msgstr ""
+msgstr "Estado de las oportunidades"
 
 #: modules/Search/components/search-filter-opportunity/template.php:23
 msgid "Inscrições abertas"
-msgstr ""
+msgstr "Inscripciones abiertas"
 
 #: modules/Search/components/search-filter-opportunity/template.php:24
 msgid "Inscrições encerradas"
-msgstr ""
+msgstr "Inscripciones cerradas"
 
 #: modules/Search/components/search-filter-opportunity/template.php:25
 msgid "Inscrições futuras"
-msgstr ""
+msgstr "Inscripciones futuras"
 
 #: modules/Search/components/search-filter-opportunity/template.php:26
 msgid "Editais oficiais"
-msgstr ""
+msgstr "Edictos oficiales"
 
 #: modules/Search/components/search-filter-opportunity/template.php:29
 msgid "Tipo de oportunidade"
-msgstr ""
+msgstr "Tipo de oportunidad"
 
 #: modules/Search/components/search-filter-opportunity/template.php:30
 #: modules/Search/components/search-filter-opportunity/template.php:32
@@ -12981,43 +13001,43 @@ msgstr ""
 #: modules/Search/components/search-filter-space/template.php:28
 #: modules/Search/components/search-filter-space/template.php:30
 msgid "Selecione os tipos: "
-msgstr ""
+msgstr "Seleccione los tipos: "
 
 #: modules/Search/components/search-filter-project/template.php:16
 msgid "Filtros de projeto"
-msgstr ""
+msgstr "Filtros de proyectos"
 
 #: modules/Search/components/search-filter-project/template.php:20
 msgid "Status do projeto"
-msgstr ""
+msgstr "Estado del proyecto"
 
 #: modules/Search/components/search-filter-project/template.php:21
 msgid "Projetos oficiais"
-msgstr ""
+msgstr "Proyectos oficiales"
 
 #: modules/Search/components/search-filter-project/template.php:25
 msgid "Tipos de projetos"
-msgstr ""
+msgstr "Tipos de proyectos"
 
 #: modules/Search/components/search-filter-space/template.php:18
 msgid "Filtros de espaço"
-msgstr ""
+msgstr "Filtros de espacio"
 
 #: modules/Search/components/search-filter-space/template.php:21
 msgid "Status do espaço"
-msgstr ""
+msgstr "Estado del espacio"
 
 #: modules/Search/components/search-filter-space/template.php:22
 msgid "Possui acessibilidade"
-msgstr ""
+msgstr "Tiene accesibilidad"
 
 #: modules/Search/components/search-filter-space/template.php:23
 msgid "Espaços oficiais"
-msgstr ""
+msgstr "Espacios oficiales"
 
 #: modules/Search/components/search-filter-space/template.php:26
 msgid "Tipos de espaços"
-msgstr ""
+msgstr "Tipos de espacios"
 
 #: modules/Search/components/search-list-event/template.php:26
 #: modules/Search/components/search-list-event/template.php:27
@@ -13037,95 +13057,95 @@ msgstr ""
 #: modules/Search/components/search-list/template.php:28
 #: modules/Search/components/search-list/template.php:52
 msgid "Ordem alfabética (A - Z)"
-msgstr ""
+msgstr "Orden alfabético (A - Z)"
 
 #: modules/Search/components/search-list/template.php:29
 #: modules/Search/components/search-list/template.php:53
 msgid "Ordem alfabética (Z - A)"
-msgstr ""
+msgstr "Orden alfabético (Z - A)"
 
 #: modules/Search/components/search-list/template.php:34
 #: modules/Search/components/search-list/template.php:58
 msgid "Início das inscrições (recentes-antigas)"
-msgstr ""
+msgstr "Inicio de las inscripciones (recientes-antiguas)"
 
 #: modules/Search/components/search-list/template.php:35
 #: modules/Search/components/search-list/template.php:59
 msgid "Início das inscrições (antigas-recentes)"
-msgstr ""
+msgstr "Inicio de las inscripciones (antiguas-recientes)"
 
 #: modules/Search/components/search-list/template.php:39
 #: modules/Search/components/search-list/template.php:63
 msgid "encontrados"
-msgstr ""
+msgstr "encontrados"
 
 #: modules/Search/components/search-map-event/template.php:28
 msgid "Eventos encontrados no espaço:"
-msgstr ""
+msgstr "Eventos encontrados en el espacio:"
 
 #: modules/Search/views/search/agent.php:37
 #: modules/Search/views/search/event.php:38
 #: modules/Search/views/search/space.php:37
 msgid "Visualizar como:"
-msgstr ""
+msgstr "Visualizar como:"
 
 #: modules/Search/views/search/agent.php:40
 #: modules/Search/views/search/event.php:41
 #: modules/Search/views/search/space.php:40
 msgid "Lista"
-msgstr ""
+msgstr "Lista"
 
 #: modules/Search/views/search/agent.php:49
 #: modules/Search/views/search/event.php:46
 #: modules/Search/views/search/space.php:49
 #: themes/BaseV1/layouts/parts/singles/subsite-tabs.php:10
 msgid "Mapa"
-msgstr ""
+msgstr "Mapa"
 
 #: modules/Support/Controller.php:73
 msgid "Usuário não é do grupo de suporte"
-msgstr ""
+msgstr "El usuario no es del grupo de soporte"
 
 #: modules/Support/components/support-actions/template.php:16
 #: modules/Support/views/support/support-edit.php:67
 msgid "Salvar alterações"
-msgstr ""
+msgstr "Guardar cambios"
 
 #: modules/Support/layouts/parts/support/opportunity-support--tab.php:10
 msgid "Configuração do Suporte"
-msgstr ""
+msgstr "Configuración de soporte"
 
 #: modules/Support/layouts/parts/support/opportunity-support-fields-association.php:11
 msgid "Selecione os campos que o agente poderá manipular"
-msgstr ""
+msgstr "Seleccionar los campos que el agente puede manipular"
 
 #: modules/Support/layouts/parts/support/opportunity-support-fields-association.php:16
 msgid "Selecionar todos"
-msgstr ""
+msgstr "Seleccionar todos"
 
 #: modules/Support/layouts/parts/support/opportunity-support-fields-association.php:20
 #: modules/Support/layouts/parts/support/opportunity-support-fields-association.php:39
 msgid "Sem permissão"
-msgstr ""
+msgstr "Sin permiso"
 
 #: modules/Support/layouts/parts/support/opportunity-support-fields-association.php:22
 #: modules/Support/layouts/parts/support/opportunity-support-fields-association.php:41
 msgid "Modificar"
-msgstr ""
+msgstr "Modificar"
 
 #: modules/Support/layouts/parts/support/opportunity-support-settings.php:10
 msgid "Agentes autorizados"
-msgstr ""
+msgstr "Agentes autorizados"
 
 #: modules/Support/layouts/parts/support/opportunity-support-settings.php:14
 #: themes/BaseV1/layouts/parts/related-agents.php:15
 msgid "Adicionar agentes"
-msgstr ""
+msgstr "Agregar agentes"
 
 #: modules/Support/layouts/parts/support/opportunity-support-settings.php:24
 #: themes/BaseV1/layouts/parts/templates.php:7
 msgid "área de atuação:"
-msgstr ""
+msgstr "área de actuación:"
 
 #: modules/Support/layouts/parts/support/opportunity-support-settings.php:27
 #: themes/BaseV1/layouts/parts/related-admin-agents.php:25
@@ -13134,89 +13154,91 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/related-profiles-agents.php:48
 #: themes/BaseV1/layouts/parts/templates.php:10
 msgid "tipo:"
-msgstr ""
+msgstr "tipo:"
 
 #: modules/Support/layouts/parts/support/opportunity-support-settings.php:36
 msgid "Gerencie os agentes de suporte dessa oportunidade."
-msgstr ""
+msgstr "Gestione los agentes de soporte de esta oportunidad."
 
 #: modules/Support/layouts/parts/support/opportunity-support-settings.php:39
 msgid "Nenhum agente cadastrado"
-msgstr ""
+msgstr "Ningún agente registrado"
 
 #: modules/Support/layouts/parts/support/opportunity-support-settings.php:52
 msgid "Autorizar campos"
-msgstr ""
+msgstr "Autorizar campos"
 
 #: modules/Support/layouts/parts/support/support-link.php:5
 msgid "Acessar página de suporte"
-msgstr ""
+msgstr "Acceder a la página de soporte"
 
 #: modules/Support/views/support/support-edit.php:41
 msgid ""
 "Você está realizando suporte dessa ficha de inscrição. Verifique os dados e "
 "corrija caso seja necessário."
 msgstr ""
+"Usted está realizando soporte de esta ficha de inscripción. Verifique los "
+"datos y corríjalos si es necesario."
 
 #: modules/UserManagement/Entities/SystemRole.php:87
 msgid "Funções de usuário"
-msgstr ""
+msgstr "Funciones de usuario"
 
 #: modules/UserManagement/Entities/SystemRole.php:89
 msgid "Função de usuário"
-msgstr ""
+msgstr "Función de usuario"
 
 #: modules/UserManagement/Entities/SystemRole.php:100
 msgid "O nome da função é obrigatório"
-msgstr ""
+msgstr "El nombre de la función es obligatorio"
 
 #: modules/UserManagement/Entities/SystemRole.php:101
 msgid "O nome da função já está sendo utilizado"
-msgstr ""
+msgstr "El nombre de la función ya está en uso"
 
 #: modules/UserManagement/Entities/SystemRole.php:104
 msgid "O slug da função é obrigatório"
-msgstr ""
+msgstr "El slug de la función es obligatorio"
 
 #: modules/UserManagement/Entities/SystemRole.php:107
 msgid "Ao menos uma permissão deve ser informada"
-msgstr ""
+msgstr "Debe informar al menos una autorización"
 
 #: modules/UserManagement/Module.php:31
 msgid "*controlar"
-msgstr ""
+msgstr "*controlar"
 
 #: modules/UserManagement/Module.php:32
 msgid "criar"
-msgstr ""
+msgstr "crear"
 
 #: modules/UserManagement/Module.php:33
 msgid "modificar"
-msgstr ""
+msgstr "modificar"
 
 #: modules/UserManagement/Module.php:35
 msgid "remover conta"
-msgstr ""
+msgstr "eliminar Cuenta"
 
 #: modules/UserManagement/Module.php:36
 msgid "remover permanentemente"
-msgstr ""
+msgstr "eliminar definitivamente"
 
 #: modules/UserManagement/Module.php:37
 msgid "avaliar"
-msgstr ""
+msgstr "evaluar"
 
 #: modules/UserManagement/Module.php:38
 msgid "visualizar"
-msgstr ""
+msgstr "visualizar"
 
 #: modules/UserManagement/Module.php:39
 msgid "enviar"
-msgstr ""
+msgstr "enviar"
 
 #: modules/UserManagement/Module.php:40
 msgid "mudar proprietário"
-msgstr ""
+msgstr "cambiar propietario"
 
 #: modules/UserManagement/Module.php:41
 #: themes/BaseV1/layouts/parts/panel-agent.php:50
@@ -13234,11 +13256,11 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:34
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:34
 msgid "publicar"
-msgstr ""
+msgstr "publicar"
 
 #: modules/UserManagement/Module.php:42
 msgid "despublicar"
-msgstr ""
+msgstr "despublicar"
 
 #: modules/UserManagement/Module.php:43
 #: themes/BaseV1/layouts/parts/panel-agent.php:47
@@ -13254,7 +13276,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:31
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:31
 msgid "arquivar"
-msgstr ""
+msgstr "archivar"
 
 #: modules/UserManagement/Module.php:44
 #: themes/BaseV1/layouts/parts/panel-agent.php:54
@@ -13275,75 +13297,75 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:38
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:38
 msgid "desarquivar"
-msgstr ""
+msgstr "desarchivar"
 
 #: modules/UserManagement/Module.php:45
 msgid "visualizar dados privados"
-msgstr ""
+msgstr "visualizar datos privados"
 
 #: modules/UserManagement/Module.php:46
 msgid "visualizar arquivos privados"
-msgstr ""
+msgstr "visualizar archivos privados"
 
 #: modules/UserManagement/Module.php:48
 msgid "relacionar agentes"
-msgstr ""
+msgstr "relacionar agentes"
 
 #: modules/UserManagement/Module.php:49
 msgid "remover agentes relacionados"
-msgstr ""
+msgstr "eliminar agentes relacionados"
 
 #: modules/UserManagement/Module.php:51
 msgid "relacionar espaços"
-msgstr ""
+msgstr "relacionar espacios"
 
 #: modules/UserManagement/Module.php:52
 msgid "remover espaços relacionados"
-msgstr ""
+msgstr "eliminar espacios relacionados"
 
 #: modules/UserManagement/Module.php:54
 msgid "adicionar adiministradores"
-msgstr ""
+msgstr "agregar administradores"
 
 #: modules/UserManagement/Module.php:55
 msgid "remover administradores"
-msgstr ""
+msgstr "eliminar administradores"
 
 #: modules/UserManagement/Module.php:57
 msgid "aplicar selos"
-msgstr ""
+msgstr "aplicar sellos"
 
 #: modules/UserManagement/Module.php:58
 msgid "remover selos"
-msgstr ""
+msgstr "eliminar sellos"
 
 #: modules/UserManagement/Module.php:60
 msgid "criar eventos"
-msgstr ""
+msgstr "crear eventos"
 
 #: modules/UserManagement/Module.php:62
 msgid "inscrever-se"
-msgstr ""
+msgstr "inscribirse"
 
 #: modules/UserManagement/Module.php:64
 msgid "modificar campos do formulário"
-msgstr ""
+msgstr "modificar campos del formulario"
 
 #: modules/UserManagement/Module.php:65
 msgid "publicar resultado"
-msgstr ""
+msgstr "publicar resultado"
 
 #: modules/UserManagement/Module.php:66
 msgid "enviar avaliações do usuário"
-msgstr ""
+msgstr "enviar las evaluaciones del usuario"
 
 #: modules/UserManagement/Module.php:67
 msgid "visualizar avaliações"
-msgstr ""
+msgstr "visualizar evaluaciones"
 
 #: modules/UserManagement/Module.php:68
 msgid "visualizar avaliação"
-msgstr ""
+msgstr "visualizar evaluación"
 
 #: modules/UserManagement/Module.php:70
 msgid "reabrir avaliações dos avaliadores"
