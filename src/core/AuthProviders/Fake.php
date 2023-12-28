@@ -4,14 +4,16 @@ namespace MapasCulturais\AuthProviders;
 
 use MapasCulturais\App;
 
-class Fake extends \MapasCulturais\AuthProvider {
+class Fake extends \MapasCulturais\AuthProvider
+{
 
-    protected function _init() {
+    protected function _init()
+    {
         $app = App::i();
 
         // add actions to auth controller
-        $app->hook('GET(auth.index)', function () use($app) {
-            
+        $app->hook('GET(auth.index)', function () use ($app) {
+
             $searchQuery = trim($app->request->get('q', ''));
             if ($searchQuery !== '') {
                 $searchQuery = '%' . $searchQuery . '%';
@@ -44,29 +46,38 @@ class Fake extends \MapasCulturais\AuthProvider {
             }
         });
 
-        $app->hook('GET(auth.fakeLogin)', function () use($app) {
+        $app->hook('GET(auth.fakeLogin)', function () use ($app) {
             $app->auth->processResponse();
 
-            if ($app->auth->isUserAuthenticated()) {        
-                $url = $app->auth->getRedirectPath();
-                $app->redirect($url);
-                
+
+            if ($app->auth->isUserAuthenticated()) {
+
+                if ($app->view->version > 1) {
+                    $this->json($app->user);
+                }
+
+                if (!$app->view->version > 1) {
+                    $url = $app->auth->getRedirectPath();
+                    $app->redirect($url);
+                }
             } else {
                 $app->redirect($this->createUrl(''));
             }
         });
 
-        $app->hook('POST(user.index)', function() use($app) {
+        $app->hook('POST(user.index)', function () use ($app) {
             $new_user = $app->auth->createUser($this->postData);
             $app->redirect($app->createUrl('auth', 'fakeLogin') . '?fake_authentication_user_id=' . $new_user->id);
         });
     }
 
-    public function _cleanUserSession() {
+    public function _cleanUserSession()
+    {
         unset($_SESSION['auth.fakeAuthenticationUserId']);
     }
 
-    public function _getAuthenticatedUser() {
+    public function _getAuthenticatedUser()
+    {
         $user = null;
         if (key_exists('auth.fakeAuthenticationUserId', $_SESSION ?? [])) {
             $user_id = $_SESSION['auth.fakeAuthenticationUserId'];
@@ -81,7 +92,8 @@ class Fake extends \MapasCulturais\AuthProvider {
      * Process the Opauth authentication response and creates the user if it not exists
      * @return boolean true if the response is valid or false if the response is not valid
      */
-    public function processResponse() {
+    public function processResponse()
+    {
         if (key_exists('fake_authentication_user_id', $_GET)) {
             $_SESSION['auth.fakeAuthenticationUserId'] = $_GET['fake_authentication_user_id'];
             $this->_setAuthenticatedUser($this->_getAuthenticatedUser());
@@ -89,7 +101,8 @@ class Fake extends \MapasCulturais\AuthProvider {
         }
     }
 
-    protected function _createUser($data) {
+    protected function _createUser($data)
+    {
         $app = App::i();
         $app->disableAccessControl();
         $user = new \MapasCulturais\Entities\User;
@@ -116,9 +129,9 @@ class Fake extends \MapasCulturais\AuthProvider {
         return $user;
     }
 
-    public function login($user_id) {
+    public function login($user_id)
+    {
         $_SESSION['auth.fakeAuthenticationUserId'] = $user_id;
         $this->_setAuthenticatedUser($this->_getAuthenticatedUser());
     }
-
 }
