@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro na listagem de inscrições de um edital quando não exitia nehuma inscrição
 - Corrige erro que ocorria no momento da publicação de resultado final ocasionado pela tentativa de enviar os e-mails
 - Corrige filtros da api de oportunidades e projetos de subsites, fazendo só serem exibidos aqueles criados no subsite atual
+- Corrige validação de metadados preenchidos com valores que o php, com cast para boolean, resolve como false (Ex: 0, [], '')
 
 ## [7.3.2] - 2023-12-15
 ### Correções
