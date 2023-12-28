@@ -8,6 +8,8 @@ $this->bodyProperties['ng-controller'] = "EntityController";
 
 $this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 
+$this->jsObject['opportunityControl'] = $entity->opportunity->canUser('@control');
+
 $this->addEntityToJs($entity);
 
 $this->addOpportunityToJs($entity->opportunity);
