@@ -88,9 +88,7 @@ app.component("fake-user-create", {
       this.entity.terms = { area: [] };
     },
 
-    createUser(e) {
-      //Event
-      e.preventDefault(); //impedir reload da pagina
+    createUser() {
       const api = new API();
 
       const validateEmail = (email) => {
@@ -131,10 +129,6 @@ app.component("fake-user-create", {
               window.location = Utils.createUrl("painel", "index");
             }
           });
-        this.user = {
-          name: "",
-          email: "",
-        };
       } catch (e) {
         console.log(e);
       }

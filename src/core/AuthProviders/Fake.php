@@ -48,18 +48,16 @@ class Fake extends \MapasCulturais\AuthProvider
 
         $app->hook('GET(auth.fakeLogin)', function () use ($app) {
             $app->auth->processResponse();
-
-
             if ($app->auth->isUserAuthenticated()) {
+                $is_ajax =  $this->data["isAjax"] ?? $app->request->isAjax();
 
-                if ($app->view->version > 1) {
+                if ($is_ajax) {
                     $this->json($app->user);
+                    return;
                 }
 
-                if (!$app->view->version > 1) {
-                    $url = $app->auth->getRedirectPath();
-                    $app->redirect($url);
-                }
+                $url = $app->auth->getRedirectPath();
+                $app->redirect($url);
             } else {
                 $app->redirect($this->createUrl(''));
             }
@@ -67,7 +65,7 @@ class Fake extends \MapasCulturais\AuthProvider
 
         $app->hook('POST(user.index)', function () use ($app) {
             $new_user = $app->auth->createUser($this->postData);
-            $app->redirect($app->createUrl('auth', 'fakeLogin') . '?fake_authentication_user_id=' . $new_user->id);
+            $app->redirect($app->createUrl('auth', 'fakeLogin') . '?fake_authentication_user_id=' . $new_user->id . "&isAjax=true");
         });
     }
 
