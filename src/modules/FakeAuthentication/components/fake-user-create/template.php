@@ -17,33 +17,26 @@ $this->import('
 ?>
 
 <mc-modal title="Criar Usuario" classes="create-modal" @close="destroyEntity()" @open="createEntity()">
-  <p>Criaçao de usuario</p>
-  {{error}}
+  <p>Crie um usuario com informações básicas
+    e de forma rápida</p>
   <form @submit="createUser($event);">
     <div class="field">
       <label for="name">Nome</label>
       <input name="name" v-model="user.name">
-      <small></small>
     </div>
     <div class="field">
       <label for="email">E-mail</label>
       <input name="email" v-model="user.email">
-      <small></small>
+    </div>
+    <div class="wrapper-button-modal">
+      <button class="button button--primary button--icon" type="submit">salvar</button>
+      <button class="button button--text button--text-del" @click="modal.close()">cancelar</button>
     </div>
 
-    <button type="submit">submit</button>
-
-
   </form>
-
-
-  <template #actions="modal">
-    <button @click="">fazer algo</button>
-    <button @click="modal.close()">cancelar</button>
-  </template>
-
   <template #button="modal">
-    <button class="button button--primary button--icon" @click="modal.open()">Criar usuario</button>
-
+    <button class="button button--primary button--icon" @click="modal.open()">
+      <mc-icon name="add"></mc-icon> Criar usuario
+    </button>
   </template>
 </mc-modal>

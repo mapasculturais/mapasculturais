@@ -87,10 +87,37 @@ app.component("fake-user-create", {
       this.entity.type = 1;
       this.entity.terms = { area: [] };
     },
+
     createUser(e) {
-      e.preventDefault();
+      //Event
+      e.preventDefault(); //impedir reload da pagina
       const api = new API();
+
+      const validateEmail = (email) => {
+        const regex =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return regex.test(String(email));
+      };
+
       const URL = Utils.createUrl("user", "index");
+
+      if (!this.user.name && !this.user.email) {
+        this.messages.error(this.text("errorFormData"));
+        return;
+      }
+
+      if (!this.user.name) {
+        this.messages.error(this.text("errorName"));
+        return;
+      }
+      if (!this.user.email) {
+        this.messages.error(this.text("errorEmail"));
+        return;
+      }
+      if (!validateEmail(this.user.email)) {
+        this.messages.error(this.text("errorInvalidEmail"));
+        return;
+      }
       try {
         const data = api
           .POST(URL, this.user)
@@ -99,11 +126,8 @@ app.component("fake-user-create", {
             if (data?.error) {
               console.log("setStatusError");
               this.error = JSON.stringify(data);
-              this.messages.error(this.text("error"));
             } else {
-              console.log(data);
               console.log("setStatusSuccess");
-              console.log(window);
               window.location = Utils.createUrl("painel", "index");
             }
           });
@@ -115,6 +139,7 @@ app.component("fake-user-create", {
         console.log(e);
       }
     },
+
     destroyEntity() {
       // para o conteúdo da modal não sumir antes dela fechar
       setTimeout(() => (this.entity = null), 200);
