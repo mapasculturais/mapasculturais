@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2023-12-27 18:06-0400\n"
+"PO-Revision-Date: 2024-01-02 18:08-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -12528,7 +12528,7 @@ msgstr "Generar gráfico"
 
 #: modules/Reports/layouts/parts/dynamic-reports.php:8
 msgid "Filtrar dados por"
-msgstr "Filtrar datos por: "
+msgstr "Filtrar datos por"
 
 #: modules/Reports/layouts/parts/dynamic-reports.php:9
 msgid "Não existem gráficos a serem filtrados no momento"
@@ -12687,7 +12687,7 @@ msgstr " Nombre del sello"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:63
 msgid " Link relacionado ao selo"
-msgstr "Enlace relacionado con el sello"
+msgstr " Enlace relacionado con el sello"
 
 #: modules/Seals/components/seal-form-information-seal/template.php:67
 msgid " Descrição curta do selo"
@@ -13369,83 +13369,84 @@ msgstr "visualizar evaluación"
 
 #: modules/UserManagement/Module.php:70
 msgid "reabrir avaliações dos avaliadores"
-msgstr ""
+msgstr "reabrir las evaluaciones de los revisores"
 
 #: modules/UserManagement/Module.php:71
 msgid "avaliar inscrições"
-msgstr ""
+msgstr "evaluar inscripciones"
 
 #: modules/UserManagement/Module.php:73
 msgid "visualizar resultado"
-msgstr ""
+msgstr "visualizar resultado"
 
 #: modules/UserManagement/Module.php:74
 msgid "modificar status"
-msgstr ""
+msgstr "modificar estados"
 
 #: modules/UserManagement/Module.php:75
 msgid "solicitar evento relacionado"
-msgstr ""
+msgstr "solicitar evento relacionado"
 
 #: modules/UserManagement/Module.php:209
 #: modules/UserManagement/views/panel/user-management.php:20
 msgid "Gestão de usuários"
-msgstr ""
+msgstr "Gestión de Usuários"
 
 #: modules/UserManagement/Module.php:218
 #: modules/UserManagement/views/panel/system-roles.php:19
 msgid "Funções de usuários"
-msgstr ""
+msgstr "Funciones de usuarios"
 
 #: modules/UserManagement/Module.php:232
 msgid "Gerenciar Funções de Usuário"
-msgstr ""
+msgstr "Administrar Funciones de Usuario"
 
 #: modules/UserManagement/Module.php:246 modules/UserManagement/Module.php:260
 #: modules/UserManagement/Module.php:278
 msgid "Gerenciar Usuários"
-msgstr ""
+msgstr "Administrar Usuários"
 
 #: modules/UserManagement/components/panel--card-user/template.php:30
 msgid "Funções do usuário:"
-msgstr ""
+msgstr "Funciones de usuario:"
 
 #: modules/UserManagement/components/panel--card-user/template.php:33
 msgid "${role.name} em ${role.subsite.name}"
-msgstr ""
+msgstr "${role.name} en ${role.subsite.name}"
 
 #: modules/UserManagement/components/panel--card-user/template.php:36
 msgid "Deseja remover a função \"${role.name}\" do usuário \"${username}\"?"
 msgstr ""
+"¿Desea eliminar la función \"${role.name}\" del usuario \"${username}\"?"
 
 #: modules/UserManagement/components/system-roles--card/template.php:31
 msgid "Deseja excluir a função \"${entity.name}\"?"
-msgstr ""
+msgstr "¿Desea eliminar la función \"${entity.name}\"?"
 
 #: modules/UserManagement/components/system-roles--card/texts.php:5
 msgid "Pessoas Usuárias"
-msgstr ""
+msgstr "Personas Usuarias"
 
 #: modules/UserManagement/components/system-roles--modal/template.php:24
 msgid "Selecione as permissões para essa função:"
-msgstr ""
+msgstr "Seleccione los permisos para esta función:"
 
 #: modules/UserManagement/components/system-roles--modal/template.php:51
 #: modules/UserManagement/components/system-roles--modal/texts.php:13
 msgid "Criar nova função de usuário"
-msgstr ""
+msgstr "Crear nueva función de usuario"
 
 #: modules/UserManagement/components/system-roles--modal/texts.php:15
 msgid "Editar função de usuário"
-msgstr ""
+msgstr "Editar función de usuario"
 
 #: modules/UserManagement/components/system-roles--modal/texts.php:16
 msgid "Atualizar função"
-msgstr ""
+msgstr "Actualizar función"
 
 #: modules/UserManagement/components/user-accepted-terms/template.php:14
 msgid "Aceite de termos"
-msgstr ""
+msgstr "Aceptar los terminos"
 
 #: modules/UserManagement/components/user-accepted-terms/template.php:20
 msgid "{{term.title}}"
@@ -13453,35 +13454,35 @@ msgstr ""
 
 #: modules/UserManagement/components/user-accepted-terms/template.php:21
 msgid " aceito em {{formatDate(user[\"lgpd_\"+slug][term.md5].timestamp)}}"
-msgstr ""
+msgstr " aceptado en {{formatDate(user[\"lgpd_\"+slug][term.md5].timestamp)}}"
 
 #: modules/UserManagement/components/user-accepted-terms/template.php:22
 msgid " pelo ip {{user[\"lgpd_\"+slug][term.md5].ip}}"
-msgstr ""
+msgstr " por ip  {{user[\"lgpd_\"+slug][term.md5].ip}}"
 
 #: modules/UserManagement/components/user-mail/template.php:19
 msgid "Configurações da conta do usuário"
-msgstr ""
+msgstr "Configuración de cuenta de usuario"
 
 #: modules/UserManagement/components/user-mail/template.php:23
 msgid "Alterar email"
-msgstr ""
+msgstr "Cambiar email"
 
 #: modules/UserManagement/components/user-management--add-role-modal/template.php:15
 msgid "Adicionar função ao usuário"
-msgstr ""
+msgstr "Agregar función de usuario"
 
 #: modules/UserManagement/components/user-management--add-role-modal/template.php:21
 #: modules/UserManagement/views/panel/user-management.php:38
 #: modules/UserManagement/views/panel/user-management.php:53
 msgid "Super Administrador da Rede"
-msgstr ""
+msgstr "Súper Administrador de red"
 
 #: modules/UserManagement/components/user-management--add-role-modal/template.php:22
 #: modules/UserManagement/views/panel/user-management.php:39
 #: modules/UserManagement/views/panel/user-management.php:54
 msgid "Administrador da Rede"
-msgstr ""
+msgstr "Administrador de red"
 
 #: modules/UserManagement/components/user-management--add-role-modal/template.php:30
 #: themes/BaseV1/Theme.php:630 themes/BaseV1/Theme.php:632
@@ -13491,17 +13492,19 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:15
 #: themes/BaseV1/views/panel/index.php:117
 msgid "Subsite"
-msgstr ""
+msgstr "Subsitio"
 
 #: modules/UserManagement/components/user-management--add-role-modal/template.php:46
 msgid "Adicionar função"
-msgstr ""
+msgstr "Agregar función"
 
 #: modules/UserManagement/components/user-management--delete/template.php:19
 msgid ""
 "A remoção da conta fará com que a maioria de suas informações não sejas mas "
 "acessíveis publicamente."
 msgstr ""
+"Eliminar la cuenta hará que la mayor parte de su información ya no sea "
+"accesible al público."
 
 #: modules/UserManagement/components/user-management--delete/template.php:20
 msgid ""
@@ -13511,99 +13514,108 @@ msgid ""
 "                                que será questionado se deseja recebê-las. "
 "No caso do usuário se negar a receber as entidades, estas serão excluidas."
 msgstr ""
+"Algunas informaciones, como por ejemplo las inscripciones en avisos, "
+"seguirán siendo accesibles. Puedes optar por transferir tus entidades a otro "
+"usuario,\n"
+"                                que será preguntado si desea recibirlas. En "
+"el caso de que el usuario se niegue a recibir las entidades, éstas serán "
+"eliminadas."
 
 #: modules/UserManagement/components/user-management--delete/template.php:22
 msgid "Se desejar escolha o usuário para receber suas entidades:"
-msgstr ""
+msgstr "Si quieres elegir el usuario para recibir tus entidades:"
 
 #: modules/UserManagement/components/user-management--delete/template.php:27
 msgid "Selecione o usuário"
-msgstr ""
+msgstr "Seleccione el usuario"
 
 #: modules/UserManagement/views/panel/delete-account.php:15
 msgid "Exclua sua conta"
-msgstr ""
+msgstr "Elimina tu cuenta"
 
 #: modules/UserManagement/views/panel/my-account.php:30
 msgid "Conta e privacidade"
-msgstr ""
+msgstr "Cuenta y Privacidad"
 
 #: modules/UserManagement/views/panel/my-account.php:46
 #: modules/UserManagement/views/panel/user-detail.php:41
 msgid "Último login"
-msgstr ""
+msgstr "Último acceso"
 
 #: modules/UserManagement/views/panel/my-account.php:49
 #: modules/UserManagement/views/panel/user-detail.php:44
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:46
 msgid "Ativo"
-msgstr ""
+msgstr "Activo"
 
 #: modules/UserManagement/views/panel/my-account.php:50
 #: modules/UserManagement/views/panel/user-detail.php:45
 msgid "Excluído"
-msgstr ""
+msgstr "Eliminado"
 
 #: modules/UserManagement/views/panel/my-account.php:52
 #: modules/UserManagement/views/panel/user-detail.php:47
 #: themes/BaseV1/Theme.php:2005
 msgid "Data de criação"
-msgstr ""
+msgstr "Fecha de creación"
 
 #: modules/UserManagement/views/panel/my-account.php:61
 msgid "Verificações da pessoa usuária"
-msgstr ""
+msgstr "Verificaciones de usuario"
 
 #: modules/UserManagement/views/panel/system-roles.php:23
 msgid ""
 "Nesta seção você visualiza e gerencia as funções de usuário customizadas."
 msgstr ""
+"En esta sección, puede ver y administrar las funciones de usuario "
+"personalizadas."
 
 #: modules/UserManagement/views/panel/user-detail.php:70
 msgid "Propriedades do usuário"
-msgstr ""
+msgstr "Propriedad del usuario"
 
 #: modules/UserManagement/views/panel/user-management.php:24
 msgid "Gestão dos usuários do sistema"
-msgstr ""
+msgstr "Gestión de usuarios del sistema"
 
 #: modules/UserManagement/views/panel/user-management.php:32
 #: modules/UserManagement/views/panel/user-management.php:47
 msgid "Filtrar por função:"
-msgstr ""
+msgstr "Filtrar por función:"
 
 #: modules/UserManagement/views/panel/user-management.php:37
 #: modules/UserManagement/views/panel/user-management.php:52
 msgid "Exibir todas"
-msgstr ""
+msgstr "Ver todo"
 
 #: themes/BaseV1/Theme.php:71
 msgid "Diversos"
-msgstr ""
+msgstr "Diversos"
 
 #: themes/BaseV1/Theme.php:72
 msgid "Textos utilizados em diversos lugares do site"
-msgstr ""
+msgstr "Textos utilizados en diferentes lugares del sitio"
 
 #: themes/BaseV1/Theme.php:75
 msgid "Página Inicial"
-msgstr ""
+msgstr "Página de inicio"
 
 #: themes/BaseV1/Theme.php:76
 msgid "Textos utilizados exclusivamente na home do site"
-msgstr ""
+msgstr "Textos utilizados exclusivamente en la página de inicio del sitio"
 
 #: themes/BaseV1/Theme.php:79
 msgid "Busca / Mapa"
-msgstr ""
+msgstr "Búsqueda / Mapa"
 
 #: themes/BaseV1/Theme.php:80
 msgid "Textos utilizados exclusivamente na página de busca do site"
 msgstr ""
+"Textos utilizados exclusivamente en la página de búsqueda del sitio web"
 
 #: themes/BaseV1/Theme.php:83
 msgid "Nomes das entidades"
-msgstr ""
+msgstr "Nombres de las entidades"
 
 #: themes/BaseV1/Theme.php:84
 msgid ""
@@ -13611,24 +13623,30 @@ msgid ""
 "é interessante renomear as entidades, como por exemplo em uma instalação que "
 "só exibe museus é interessante chamar os espaços de museus."
 msgstr ""
+"Textos relacionados con los nombres de las entidades utilizadas en el sitio. "
+"En algunos casos es interesante renombrar las entidades, como por ejemplo en "
+"una instalación que solo exhibe museos es interesante llamar a los espacios "
+"de museos."
 
 #: themes/BaseV1/Theme.php:108
 msgid "nome do site"
-msgstr ""
+msgstr "nombre del sitio"
 
 #: themes/BaseV1/Theme.php:109
 msgid ""
 "usado para formar o título do site e título do compartilhamento das páginas "
 "do site"
 msgstr ""
+"utilizado para formar el título del sitio web y el título del intercambio de "
+"las páginas del sitio web"
 
 #: themes/BaseV1/Theme.php:110
 msgid "Mapa da Cultura"
-msgstr ""
+msgstr "Cultura en Línea"
 
 #: themes/BaseV1/Theme.php:110
 msgid "Mapa Cultural do Estado do Acre"
-msgstr ""
+msgstr "Mapa Cultural del Estado do Acre"
 
 #: themes/BaseV1/Theme.php:110
 msgid "Mapa da Cultura de Rio Branco"
@@ -13636,23 +13654,25 @@ msgstr ""
 
 #: themes/BaseV1/Theme.php:115
 msgid "descrição do site"
-msgstr ""
+msgstr "descripción del sitio"
 
 #: themes/BaseV1/Theme.php:116
 msgid "usado principalmente como texto do compartilhamento da home do site"
 msgstr ""
+"utilizado principalmente como el texto principal del sitio para compartir"
 
 #: themes/BaseV1/Theme.php:121
 msgid "nome da instituição responsável pelo site"
-msgstr ""
+msgstr "nombre de la institución responsable del sitio"
 
 #: themes/BaseV1/Theme.php:122
 msgid "usado nos lugares do site onde aparece o nome da instituição"
 msgstr ""
+"usado en los lugares del sitio donde aparece el nombre de la institución"
 
 #: themes/BaseV1/Theme.php:123
 msgid "Ministério da Cultura"
-msgstr ""
+msgstr "Ministerio de Educación y Cultura"
 
 #: themes/BaseV1/Theme.php:123
 msgid "Fundação de Cultura Elias Mansour"
@@ -13660,21 +13680,23 @@ msgstr ""
 
 #: themes/BaseV1/Theme.php:124
 msgid "Secretaria"
-msgstr ""
+msgstr "Secretaría"
 
 #: themes/BaseV1/Theme.php:128
 msgid "texto \"pela instituição responsável pelo site\""
-msgstr ""
+msgstr "texto \"por la institución responsable por el sitio\""
 
 #: themes/BaseV1/Theme.php:129
 msgid ""
 "usado nos lugares do site onde se quer dizer que algo foi feito \"pela "
 "instituição responsável\""
 msgstr ""
+"usado en los lugares del sitio web donde se quiere decir que algo fue hecho "
+"\"por la institución responsable\""
 
 #: themes/BaseV1/Theme.php:130
 msgid "pelo Ministério da Cultura"
-msgstr ""
+msgstr "por el Ministerio de Educación y Cultura"
 
 #: themes/BaseV1/Theme.php:130
 msgid "pela Fundação de Cultura Elias Mansour"
@@ -13682,23 +13704,23 @@ msgstr ""
 
 #: themes/BaseV1/Theme.php:131
 msgid "pela Secretaria"
-msgstr ""
+msgstr "por la Secretaría"
 
 #: themes/BaseV1/Theme.php:135
 msgid "texto \"na região \""
-msgstr ""
+msgstr "texto \"en la región \""
 
 #: themes/BaseV1/Theme.php:136
 msgid "usado nos lugares do site onde se quer dizer \"na região\""
-msgstr ""
+msgstr "usado en los lugares del sitio donde se quiere decir \"en la región\""
 
 #: themes/BaseV1/Theme.php:137
 msgid "no Brasil"
-msgstr ""
+msgstr "en el Brasil"
 
 #: themes/BaseV1/Theme.php:137
 msgid "no Estado do Acre"
-msgstr ""
+msgstr "en el Estado do Acre"
 
 #: themes/BaseV1/Theme.php:137
 msgid "na cidade de Rio Branco"
@@ -13706,111 +13728,122 @@ msgstr ""
 
 #: themes/BaseV1/Theme.php:138
 msgid "na região"
-msgstr ""
+msgstr "en la región"
 
 #: themes/BaseV1/Theme.php:142
 msgid "texto \"da região\""
-msgstr ""
+msgstr "texto \"de la región\""
 
 #: themes/BaseV1/Theme.php:143
 msgid "usado nos lugares do site onde se quer dizer que algo é \"da região\""
 msgstr ""
+"usado en los lugares del sitio donde se quiere decir que algo es \"de la "
+"región\""
 
 #: themes/BaseV1/Theme.php:144
 msgid "do Brasil"
-msgstr ""
+msgstr "del Brasil"
 
 #: themes/BaseV1/Theme.php:144
 msgid "do Estado do Acre"
-msgstr ""
+msgstr "del Estado do Acre"
 
 #: themes/BaseV1/Theme.php:144
 msgid "da cidade de Rio Branco"
-msgstr ""
+msgstr "de la ciudad de Rio Branco"
 
 #: themes/BaseV1/Theme.php:145
 msgid "da região"
-msgstr ""
+msgstr "de la región"
 
 #: themes/BaseV1/Theme.php:149
 msgid "nome do painel de controle"
-msgstr ""
+msgstr "nombre del panel de control"
 
 #: themes/BaseV1/Theme.php:150
 msgid ""
 "usado principalmente como título dos links para a área administrativa do site"
 msgstr ""
+"usado principalmente como título de los enlaces para el área administrativa "
+"del sitio"
 
 #: themes/BaseV1/Theme.php:151
 msgid "Área Administrativa"
-msgstr ""
+msgstr "Área Administrativa"
 
 #: themes/BaseV1/Theme.php:155
 msgid "como usar do site"
-msgstr ""
+msgstr "cómo usar el sitio"
 
 #: themes/BaseV1/Theme.php:156
 msgid "usado para orientar o usuário a utilizar a plataforma Mapas Culturais"
-msgstr ""
+msgstr "se utiliza para guiar al usuario a usar la plataforma Cultura en Línea"
 
 #: themes/BaseV1/Theme.php:157
 msgid "como Usar"
-msgstr ""
+msgstr "cómo Usar"
 
 #: themes/BaseV1/Theme.php:157
 msgid "Manual do Usuário"
-msgstr ""
+msgstr "Guía del Usuario"
 
 #: themes/BaseV1/Theme.php:157
 msgid "Manual de Utilização"
-msgstr ""
+msgstr "Guía del usuario"
 
 #: themes/BaseV1/Theme.php:158
 msgid "Como Usar"
-msgstr ""
+msgstr "Cómo Usar"
 
 #: themes/BaseV1/Theme.php:163
 msgid "título da mensagem de boas-vindas"
-msgstr ""
+msgstr "título del mensaje de bienvenida"
 
 #: themes/BaseV1/Theme.php:164
 msgid "usado na home do site para desejar as boas-vindas"
 msgstr ""
+"usado en el home (página principal) del sitio para desear la bienvenida"
 
 #: themes/BaseV1/Theme.php:165 themes/BaseV1/Theme.php:166
 msgid "Bem-vind@!"
-msgstr ""
+msgstr "¡Bienvenid@!"
 
 #: themes/BaseV1/Theme.php:165
 msgid "Bem-vindo"
-msgstr ""
+msgstr "Bienvenido"
 
 #: themes/BaseV1/Theme.php:169
 msgid "texto de boas-vindas"
-msgstr ""
+msgstr "texto de bienvenida"
 
 #: themes/BaseV1/Theme.php:170
 msgid "texto que aparece embaixo da mensagem de boas-vindas na home do site"
 msgstr ""
+"texto que aparece debajo del mensaje de bienvenida en el home (página "
+"principal) del sitio"
 
 #: themes/BaseV1/Theme.php:171
 msgid ""
 "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de "
 "mapeamento cultural."
 msgstr ""
+"Cultura en Línea es una plataforma de software libre, de cartografía "
+"cultural libre y colaborativa."
 
 #: themes/BaseV1/Theme.php:174
 msgid "abreviação ou sigla da instituição responsável pelo site"
-msgstr ""
+msgstr "abreviación o sigla de la institución responsabel del sitio"
 
 #: themes/BaseV1/Theme.php:175
 msgid ""
 "usado principalmente na home para se referir à instituição de maneira curta"
 msgstr ""
+"usado principalmente en la home (página principal) para referirse a la "
+"institución de forma abreviada"
 
 #: themes/BaseV1/Theme.php:176
 msgid "MinC"
-msgstr ""
+msgstr "MEC"
 
 #: themes/BaseV1/Theme.php:176
 msgid "FEM"
@@ -13826,45 +13859,47 @@ msgstr ""
 
 #: themes/BaseV1/Theme.php:177
 msgid "MC"
-msgstr ""
+msgstr "CulturaEnLínea"
 
 #: themes/BaseV1/Theme.php:181
 msgid "Url da página da instituição responsável pelo site"
-msgstr ""
+msgstr "Url de la página de la institución responsable del sitio"
 
 #: themes/BaseV1/Theme.php:182
 msgid ""
 "usado principalmente na home para criar um link à página da instituição "
 "responsável pelo site"
 msgstr ""
+"usado principalmente en la página principal para crear un vínculo a la "
+"página de la institución responsable del sitio"
 
 #: themes/BaseV1/Theme.php:188
 msgid "texto do botão colabore"
-msgstr ""
+msgstr "texto del botón colabore"
 
 #: themes/BaseV1/Theme.php:189
 msgid "texto do botão que chama o usuário para colaborar com o mapeamento"
-msgstr ""
+msgstr "texto del botón que llama al usuario a colaborar con el mapeamiento"
 
 #: themes/BaseV1/Theme.php:190
 msgid "Colabore com o SNIIC"
-msgstr ""
+msgstr "Colabore con el SNIIC"
 
 #: themes/BaseV1/Theme.php:190
 msgid "Colabore com o Mapa da Cultura"
-msgstr ""
+msgstr "Colabore con Cultura en Línea"
 
 #: themes/BaseV1/Theme.php:190
 msgid "Colabore com o SpCultura"
-msgstr ""
+msgstr "Colabore con SpCultura"
 
 #: themes/BaseV1/Theme.php:191
 msgid "Colabore com o Mapas Culturais"
-msgstr ""
+msgstr "Colabore con Cultura en Línea"
 
 #: themes/BaseV1/Theme.php:194
 msgid "texto da seção \"eventos\" da home"
-msgstr ""
+msgstr "texto de la sección \"eventos\" de la home (página principal)"
 
 #: themes/BaseV1/Theme.php:196
 msgid ""
@@ -13872,10 +13907,13 @@ msgid ""
 "usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-"
 "los gratuitamente."
 msgstr ""
+"Puede buscar eventos culturales en los campos de búsqueda combinados. Como "
+"usuario registrado, puede incluir su evento en la plataforma y darlo a "
+"conocer de forma gratuita."
 
 #: themes/BaseV1/Theme.php:199
 msgid "texto da seção \"agentes\" da home"
-msgstr ""
+msgstr "texto de la sección \"agentes\" de la home (página principal)"
 
 #: themes/BaseV1/Theme.php:201
 msgid ""
@@ -13886,14 +13924,20 @@ msgid ""
 "coletivos, bandas instituições, empresas, etc.), além de associar ao seu "
 "perfil eventos e espaços culturais com divulgação gratuita."
 msgstr ""
+"\"Puede colaborar en la gestión de la cultura con su propia información "
+"completando su perfil de agente cultural. En este espacio, son artistas "
+"registrados, gestores y productores; una red de actores involucrados en la "
+"escena cultural de la región. Usted puede registrar uno o más agentes "
+"(grupos, colectivos, grupos de instituciones, empresas, etc.), y asociar con "
+"sus eventos de perfil y espacios culturales con libre difusión."
 
 #: themes/BaseV1/Theme.php:204
 msgid "texto da seção \"espaços\" da home"
-msgstr ""
+msgstr "texto de la sección \"espacios\" de la home (página principal)"
 
 #: themes/BaseV1/Theme.php:209
 msgid "texto da seção \"projetos\" da home"
-msgstr ""
+msgstr "texto de la sección \"proyectos\" de la home (página principal)"
 
 #: themes/BaseV1/Theme.php:211
 msgid ""
@@ -13902,14 +13946,18 @@ msgid ""
 "além de diversas iniciativas cadastradas pelos usuários da plataforma. "
 "Cadastre-se e divulgue seus projetos."
 msgstr ""
+"Reúna proyectos culturales o eventos grupales de todo tipo. En este espacio, "
+"se encuentran las formas de financiación, espectáculos, reuniones y edictos "
+"creados, y varias iniciativas registradas por los usuarios de la plataforma. "
+"Regístrese ahora y publicar sus proyectos."
 
 #: themes/BaseV1/Theme.php:214
 msgid "texto da seção \"oportunidades\" da home"
-msgstr ""
+msgstr "texto de la sección \"oportunidades\" de la home (página principal)"
 
 #: themes/BaseV1/Theme.php:219
 msgid "texto da seção \"desenvolvedores\" da home"
-msgstr ""
+msgstr "texto de la sección \"desarrolladores\" de la home (página principal)"
 
 #: themes/BaseV1/Theme.php:221
 msgid ""
@@ -13927,590 +13975,605 @@ msgid ""
 "com/hacklabr/mapasculturais/\" target=\"_blank\" rel=\"noopener "
 "noreferrer\">GitHub</a>."
 msgstr ""
+"Hay varias formas en las que los desarrolladores interactúan con los mapas "
+"culturales. La primera es a través de nuestra <a href=\"https://github.com/"
+"LibreCoopUruguay/mapasculturais/blob/master/doc/api.md\" target=\"_blank\" "
+"rel=\"noopener noreferrer\">API</a>. Con ella usted puede acceder a los "
+"datos públicos de nuestra base de datos y utilizarlos para desarrollar "
+"aplicaciones externas. Además, el sistema fue desarrollado a partir del "
+"software libre Mapas cCulturais<a href=\"http://institutotim.org.br/project/"
+"mapas-culturais/\" target=\"_blank\" rel=\"noopener noreferrer\">Mapas "
+"Culturais</a>, creado por Hacklabr en asociación con el Instituto TIM, y "
+"puede contribuir con su desarrollo a través de GitHub."
 
 #: themes/BaseV1/Theme.php:226
 msgid "resultados verifiados"
-msgstr ""
+msgstr "resultados verificados"
 
 #: themes/BaseV1/Theme.php:227
 msgid "texto do botão que aplica/remove o filtro por resultados verificados"
 msgstr ""
+"texto del botón que aplica/remueve el filtro por resultados verificados"
 
 #: themes/BaseV1/Theme.php:228 themes/BaseV1/Theme.php:229
 msgid "resultados verificados"
-msgstr ""
+msgstr "resultados verificados"
 
 #: themes/BaseV1/Theme.php:228
 msgid "resultados certificados"
-msgstr ""
+msgstr "resultados certificados"
 
 #: themes/BaseV1/Theme.php:228
 msgid "entidades certificadas"
-msgstr ""
+msgstr "entidades certificadas"
 
 #: themes/BaseV1/Theme.php:228
 msgid "entidades validadas"
-msgstr ""
+msgstr "entidades validadas"
 
 #: themes/BaseV1/Theme.php:232
 msgid "exibir somente resultados verifiados"
-msgstr ""
+msgstr "mostrar solamente resultados verificados"
 
 #: themes/BaseV1/Theme.php:233
 msgid ""
 "texto explicativo do botão que aplica/remove o filtro por resultados "
 "verificados"
 msgstr ""
+"texto explicativo del botón que aplica/remueve el filtro por resultados "
+"verificados"
 
 #: themes/BaseV1/Theme.php:234 themes/BaseV1/Theme.php:235
 msgid "exibir somente resultados verificados"
-msgstr ""
+msgstr "mostrar solamente resultados verificados"
 
 #: themes/BaseV1/Theme.php:234
 msgid "exibir somente resultados certificados"
-msgstr ""
+msgstr "mostrar solo resultados certificados"
 
 #: themes/BaseV1/Theme.php:234
 msgid "exibir somente entidades certificadas"
-msgstr ""
+msgstr "mostrar solamente entidades certificadas"
 
 #: themes/BaseV1/Theme.php:234
 msgid "exibir somente entidades validadas"
-msgstr ""
+msgstr "mostrar solamente entidades validadas"
 
 #: themes/BaseV1/Theme.php:238
 msgid "label do filtro de resultados verificados"
-msgstr ""
+msgstr "etiqueta del filtro resultados verificados"
 
 #: themes/BaseV1/Theme.php:239
 msgid ""
 "texto do label do filtro de resultados que aparece quando o filtro por "
 "resultados veridicados é aplicado"
 msgstr ""
+"texto de la etiqueta del filtro de resultados que aparece cuando el filtro "
+"por resultados verificados es aplicado"
 
 #: themes/BaseV1/Theme.php:240 themes/BaseV1/Theme.php:241
 msgid "verificados"
-msgstr ""
+msgstr "verificados"
 
 #: themes/BaseV1/Theme.php:240
 msgid "certificados"
-msgstr ""
+msgstr "certificados"
 
 #: themes/BaseV1/Theme.php:249
 msgid "texto \"Espaço\""
-msgstr ""
+msgstr "texto \"Espacio\""
 
 #: themes/BaseV1/Theme.php:250
 msgid "nome da entidade Espaço no singular"
-msgstr ""
+msgstr "nombre de la entidad Espacio en sigular"
 
 #: themes/BaseV1/Theme.php:251
 msgid "Biblioteca"
-msgstr ""
+msgstr "Biblioteca"
 
 #: themes/BaseV1/Theme.php:255
 msgid "texto \"Espaços\""
-msgstr ""
+msgstr "texto \"Espacios\""
 
 #: themes/BaseV1/Theme.php:256
 msgid "nome da entidade Espaço no plural"
-msgstr ""
+msgstr "nombre de la entidad Espacio en plural"
 
 #: themes/BaseV1/Theme.php:261
 msgid "texto \"espaço\""
-msgstr ""
+msgstr "texto \"espacio\""
 
 #: themes/BaseV1/Theme.php:262
 msgid "nome da entidade espaço no singular"
-msgstr ""
+msgstr "nombre de la entidad espacio en singular"
 
 #: themes/BaseV1/Theme.php:263
 msgid "museu"
-msgstr ""
+msgstr "museo"
 
 #: themes/BaseV1/Theme.php:263
 msgid "biblioteca"
-msgstr ""
+msgstr "biblioteca"
 
 #: themes/BaseV1/Theme.php:267
 msgid "texto \"espaços\""
-msgstr ""
+msgstr "texto \"espacios\""
 
 #: themes/BaseV1/Theme.php:268
 msgid "nome da entidade espaço no plural"
-msgstr ""
+msgstr "nombre de la entidad espacio en plural"
 
 #: themes/BaseV1/Theme.php:269
 msgid "museus"
-msgstr ""
+msgstr "museos"
 
 #: themes/BaseV1/Theme.php:269
 msgid "bibliotecas"
-msgstr ""
+msgstr "bibliotecas"
 
 #: themes/BaseV1/Theme.php:273
 msgid "texto \"Meus Espaços\""
-msgstr ""
+msgstr "texto \"Mis Espacios\""
 
 #: themes/BaseV1/Theme.php:275
 msgid "Meus Museus"
-msgstr ""
+msgstr "Mis Museos"
 
 #: themes/BaseV1/Theme.php:275
 msgid "Minhas Bibliotecas"
-msgstr ""
+msgstr "Mis bibliotecas"
 
 #: themes/BaseV1/Theme.php:279
 msgid "texto \"Meus espaços\""
-msgstr ""
+msgstr "texto \"Mis espacios\""
 
 #: themes/BaseV1/Theme.php:281
 msgid "Meus museus"
-msgstr ""
+msgstr "Mis museos"
 
 #: themes/BaseV1/Theme.php:281
 msgid "Minhas bibliotecas"
-msgstr ""
+msgstr "Mis bibliotecas"
 
 #: themes/BaseV1/Theme.php:285
 msgid "texto \"Descrição do Espaço\""
-msgstr ""
+msgstr "texto \"Descripción del Espacio\""
 
 #: themes/BaseV1/Theme.php:287 themes/BaseV1/Theme.php:288
 msgid "Descrição do Espaço"
-msgstr ""
+msgstr "Descripción del Espacio"
 
 #: themes/BaseV1/Theme.php:287
 msgid "Descrição do Museu"
-msgstr ""
+msgstr "Descripción del Museo"
 
 #: themes/BaseV1/Theme.php:287
 msgid "Descrição da Biblioteca"
-msgstr ""
+msgstr "Descripción de la Biblioteca"
 
 #: themes/BaseV1/Theme.php:291
 msgid "texto \"espaço pai\""
-msgstr ""
+msgstr "texto \"espacio padre\""
 
 #: themes/BaseV1/Theme.php:293 themes/BaseV1/Theme.php:294
 msgid "espaço pai"
-msgstr ""
+msgstr "espacio padre"
 
 #: themes/BaseV1/Theme.php:293
 msgid "museu pai"
-msgstr ""
+msgstr "museo padre"
 
 #: themes/BaseV1/Theme.php:293
 msgid "biblioteca mãe"
-msgstr ""
+msgstr "biblioteca madre"
 
 #: themes/BaseV1/Theme.php:297
 msgid "texto \"um espaço\""
-msgstr ""
+msgstr "texto \"un espacio\""
 
 #: themes/BaseV1/Theme.php:299 themes/BaseV1/Theme.php:300
 msgid "um espaço"
-msgstr ""
+msgstr "un espacio"
 
 #: themes/BaseV1/Theme.php:299
 msgid "um museu"
-msgstr ""
+msgstr "un museo"
 
 #: themes/BaseV1/Theme.php:299
 msgid "uma biblioteca"
-msgstr ""
+msgstr "una biblioteca"
 
 #: themes/BaseV1/Theme.php:303
 msgid "texto \"o espaço\""
-msgstr ""
+msgstr "texto \"el espacio\""
 
 #: themes/BaseV1/Theme.php:305 themes/BaseV1/Theme.php:306
 msgid "o espaço"
-msgstr ""
+msgstr "el espacio"
 
 #: themes/BaseV1/Theme.php:305
 msgid "o museu"
-msgstr ""
+msgstr "el museo"
 
 #: themes/BaseV1/Theme.php:305
 msgid "a biblioteca"
-msgstr ""
+msgstr "la biblioteca"
 
 #: themes/BaseV1/Theme.php:309
 msgid "texto \"do espaço\""
-msgstr ""
+msgstr "texto \"del espacio\""
 
 #: themes/BaseV1/Theme.php:311 themes/BaseV1/Theme.php:312
 msgid "do espaço"
-msgstr ""
+msgstr "del espacio"
 
 #: themes/BaseV1/Theme.php:311
 msgid "do museu"
-msgstr ""
+msgstr "del museo"
 
 #: themes/BaseV1/Theme.php:311
 msgid "da biblioteca"
-msgstr ""
+msgstr "de la biblioteca"
 
 #: themes/BaseV1/Theme.php:315
 msgid "texto \"Descrição do espaço\""
-msgstr ""
+msgstr "texto \"Descripción del espacio\""
 
 #: themes/BaseV1/Theme.php:317 themes/BaseV1/Theme.php:318
 msgid "Descrição do espaço"
-msgstr ""
+msgstr "Descripción del espacio"
 
 #: themes/BaseV1/Theme.php:317
 msgid "Descrição do museu"
-msgstr ""
+msgstr "Descripción del museo"
 
 #: themes/BaseV1/Theme.php:317
 msgid "Descrição da biblioteca"
-msgstr ""
+msgstr "Descripción de la biblioteca"
 
 #: themes/BaseV1/Theme.php:321
 msgid "texto \"Critérios de uso do espaço\""
-msgstr ""
+msgstr "texto \"Criterios de uso del espacio\""
 
 #: themes/BaseV1/Theme.php:323
 msgid "Critérios de uso do museu"
-msgstr ""
+msgstr "Criterios de uso del museo"
 
 #: themes/BaseV1/Theme.php:323
 msgid "Critérios de uso da biblioteca"
-msgstr ""
+msgstr "Criterios de uso de la biblioteca"
 
 #: themes/BaseV1/Theme.php:327
 msgid "texto \"Neste espaço\""
-msgstr ""
+msgstr "texto \"En este espacio\""
 
 #: themes/BaseV1/Theme.php:329 themes/BaseV1/Theme.php:330
 msgid "Neste espaço"
-msgstr ""
+msgstr "En este espacio"
 
 #: themes/BaseV1/Theme.php:329
 msgid "Neste museu"
-msgstr ""
+msgstr "En este museo"
 
 #: themes/BaseV1/Theme.php:329
 msgid "Nesta biblioteca"
-msgstr ""
+msgstr "En esta biblioteca"
 
 #: themes/BaseV1/Theme.php:333
 msgid "texto \"neste espaço\""
-msgstr ""
+msgstr "texto \"en este espacio\""
 
 #: themes/BaseV1/Theme.php:335 themes/BaseV1/Theme.php:336
 msgid "neste espaço"
-msgstr ""
+msgstr "en este espacio"
 
 #: themes/BaseV1/Theme.php:335
 msgid "neste museu"
-msgstr ""
+msgstr "en este museo"
 
 #: themes/BaseV1/Theme.php:335
 msgid "nesta biblioteca"
-msgstr ""
+msgstr "en esta biblioteca"
 
 #: themes/BaseV1/Theme.php:339
 msgid "texto \"espaços cadastrados\""
-msgstr ""
+msgstr "texto \"espacios registrados\""
 
 #: themes/BaseV1/Theme.php:341 themes/BaseV1/Theme.php:342
 msgid "espaços cadastrados"
-msgstr ""
+msgstr "espacios registrados"
 
 #: themes/BaseV1/Theme.php:341
 msgid "museus cadastrados"
-msgstr ""
+msgstr "museos registrados"
 
 #: themes/BaseV1/Theme.php:341
 msgid "bibliotecas cadastradas"
-msgstr ""
+msgstr "bibliotecas registradas"
 
 #: themes/BaseV1/Theme.php:345
 msgid "texto \"nenhum espaço cadastrado\""
-msgstr ""
+msgstr "texto \"ningún espacio registrado\""
 
 #: themes/BaseV1/Theme.php:347 themes/BaseV1/Theme.php:348
 msgid "nenhum espaço cadastrado"
-msgstr ""
+msgstr "ningún espacio registrado"
 
 #: themes/BaseV1/Theme.php:347
 msgid "nenhum museu cadastrado"
-msgstr ""
+msgstr "ningún museo registrado"
 
 #: themes/BaseV1/Theme.php:347
 msgid "nenhuma biblioteca cadastrada"
-msgstr ""
+msgstr "ninguna biblioteca registrada"
 
 #: themes/BaseV1/Theme.php:351
 msgid "texto \"nenhum espaço\""
-msgstr ""
+msgstr "texto \"ningún espacio\""
 
 #: themes/BaseV1/Theme.php:353 themes/BaseV1/Theme.php:354
 msgid "nenhum espaço"
-msgstr ""
+msgstr "ningún espacio"
 
 #: themes/BaseV1/Theme.php:353
 msgid "nenhum museu"
-msgstr ""
+msgstr "ningún museo"
 
 #: themes/BaseV1/Theme.php:353
 msgid "nenhuma biblioteca"
-msgstr ""
+msgstr "ninguna biblioteca"
 
 #: themes/BaseV1/Theme.php:357
 msgid "texto \"novo espaço\""
-msgstr ""
+msgstr "texto \"nuevo espacio\""
 
 #: themes/BaseV1/Theme.php:359 themes/BaseV1/Theme.php:360
 msgid "novo espaço"
-msgstr ""
+msgstr "nuevo espacio"
 
 #: themes/BaseV1/Theme.php:359
 msgid "novo museu"
-msgstr ""
+msgstr "nuevo museo"
 
 #: themes/BaseV1/Theme.php:359
 msgid "nova biblioteca"
-msgstr ""
+msgstr "nueva biblioteca"
 
 #: themes/BaseV1/Theme.php:363
 msgid "texto \"Subespaços\""
-msgstr ""
+msgstr "texto \"Subespacios\""
 
 #: themes/BaseV1/Theme.php:365
 msgid "Espaços filhos"
-msgstr ""
+msgstr "Espacios hijos"
 
 #: themes/BaseV1/Theme.php:365
 msgid "Museus filhos"
-msgstr ""
+msgstr "Museos hijos"
 
 #: themes/BaseV1/Theme.php:365
 msgid "Subespaços do museu"
-msgstr ""
+msgstr "Subespacios del museo"
 
 #: themes/BaseV1/Theme.php:365
 msgid "Bibliotecas filhas"
-msgstr ""
+msgstr "Bibliotecas hijas"
 
 #: themes/BaseV1/Theme.php:365
 msgid "Subespaços da biblioteca"
-msgstr ""
+msgstr "Subespacios de la biblioteca"
 
 #: themes/BaseV1/Theme.php:369
 msgid "texto \"Adicionar subespaço\""
-msgstr ""
+msgstr "texto \"Agregar subespacio"
 
 #: themes/BaseV1/Theme.php:371 themes/BaseV1/Theme.php:372
 msgid "Adicionar subespaço"
-msgstr ""
+msgstr "Agregar subespacio"
 
 #: themes/BaseV1/Theme.php:371
 msgid "Adicionar espaço filho"
-msgstr ""
+msgstr "Agregar espacio hijo"
 
 #: themes/BaseV1/Theme.php:371
 msgid "Adicionar museu filho"
-msgstr ""
+msgstr "Agregar museo hijo"
 
 #: themes/BaseV1/Theme.php:371
 msgid "Adicionar subespaço do museu"
-msgstr ""
+msgstr "Agregar subespacio del museo"
 
 #: themes/BaseV1/Theme.php:371
 msgid "Adicionar biblioteca filha"
-msgstr ""
+msgstr "Agregar biblioteca hija"
 
 #: themes/BaseV1/Theme.php:371
 msgid "Adicionar subespaço da biblioteca"
-msgstr ""
+msgstr "Agregar subespacio de la biblioteca"
 
 #: themes/BaseV1/Theme.php:375
 msgid "teto \"espaço encontrado\""
-msgstr ""
+msgstr "texto \"espacio encontrado\""
 
 #: themes/BaseV1/Theme.php:377 themes/BaseV1/Theme.php:378
 msgid "espaço encontrado"
-msgstr ""
+msgstr "espacio encontrado"
 
 #: themes/BaseV1/Theme.php:377
 msgid "museu encontrado"
-msgstr ""
+msgstr "museo encontrado"
 
 #: themes/BaseV1/Theme.php:377
 msgid "biblioteca encontrada"
-msgstr ""
+msgstr "biblioteca encontrada"
 
 #: themes/BaseV1/Theme.php:381
 msgid "espaços encontrado"
-msgstr ""
+msgstr "espacios encontrados"
 
 #: themes/BaseV1/Theme.php:383 themes/BaseV1/Theme.php:384
 msgid "espaços encontrados"
-msgstr ""
+msgstr "espacios encontrados"
 
 #: themes/BaseV1/Theme.php:383
 msgid "museus encontrados"
-msgstr ""
+msgstr "museos encontrados"
 
 #: themes/BaseV1/Theme.php:383
 msgid "bibliotecas encontradas"
-msgstr ""
+msgstr "bibliotecas encontradas"
 
 #: themes/BaseV1/Theme.php:387
 msgid "texto \"Espaços do agente\""
-msgstr ""
+msgstr "texto \"Espacios del agente\""
 
 #: themes/BaseV1/Theme.php:389 themes/BaseV1/Theme.php:390
 msgid "Espaços do agente"
-msgstr ""
+msgstr "Espacios del agente"
 
 #: themes/BaseV1/Theme.php:389
 msgid "Museus do agente"
-msgstr ""
+msgstr "Museos del agente"
 
 #: themes/BaseV1/Theme.php:389
 msgid "Bibliotecas do agente"
-msgstr ""
+msgstr "Bibliotecas del agente"
 
 #: themes/BaseV1/Theme.php:398
 msgid "texto \"Agentes\""
-msgstr ""
+msgstr "texto \"Agentes\""
 
 #: themes/BaseV1/Theme.php:399
 msgid "nome da entidade Agente no plural"
-msgstr ""
+msgstr "nombre de la entidad Agente en plural"
 
 #: themes/BaseV1/Theme.php:404
 msgid "texto \"agente econtrado\""
-msgstr ""
+msgstr "texto \"agente econtrado\""
 
 #: themes/BaseV1/Theme.php:406 themes/BaseV1/Theme.php:407
 msgid "agente encontrado"
-msgstr ""
+msgstr "agente encontrado"
 
 #: themes/BaseV1/Theme.php:410
 msgid "texto \"agentes encontrados\""
-msgstr ""
+msgstr "texto \"agentes encontrados\""
 
 #: themes/BaseV1/Theme.php:412 themes/BaseV1/Theme.php:413
 msgid "agentes encontrados"
-msgstr ""
+msgstr "agentes encontrados"
 
 #: themes/BaseV1/Theme.php:416
 msgid "texto \"Meus Agentes\""
-msgstr ""
+msgstr "texto \"Mis Agentes\""
 
 #: themes/BaseV1/Theme.php:422
 msgid "texto \"Meus agentes\""
-msgstr ""
+msgstr "mis Agentes"
 
 #: themes/BaseV1/Theme.php:428
 msgid "texto \"Sub-agentes\""
-msgstr ""
+msgstr "texto \"Sub-agentes\""
 
 #: themes/BaseV1/Theme.php:429
 msgid "texto nomeia os agentes filhos, ou sub-agentes, de outro agente"
-msgstr ""
+msgstr "nombres de texto de los agentes hijos o sub-agentes, de otro agente"
 
 #: themes/BaseV1/Theme.php:430
 msgid "Sub-agentes"
-msgstr ""
+msgstr "Sub-agentes"
 
 #: themes/BaseV1/Theme.php:430
 msgid "Agentes Filhos"
-msgstr ""
+msgstr "Agentes Hijos"
 
 #: themes/BaseV1/Theme.php:434
 msgid "texto \"agente\""
-msgstr ""
+msgstr "texto \"agente\""
 
 #: themes/BaseV1/Theme.php:435
 msgid "nome da entidade Agente no singular em minúsculo"
-msgstr ""
+msgstr "nombre de la entidad Agente en singular en minúscula"
 
 #: themes/BaseV1/Theme.php:440
 msgid "texto \"agentes\""
-msgstr ""
+msgstr "texto \"agentes\""
 
 #: themes/BaseV1/Theme.php:441
 msgid "nome da entidade Agente no plural em minúsculo"
-msgstr ""
+msgstr "nombre de la entidad Agente en plural en minúscula"
 
 #: themes/BaseV1/Theme.php:451
 msgid "texto \"Projetos\""
-msgstr ""
+msgstr "texto \"Proyectos\""
 
 #: themes/BaseV1/Theme.php:452
 msgid "nome da entidade Projeto no plural"
-msgstr ""
+msgstr "nombre de la entidad Proyecto en plural"
 
 #: themes/BaseV1/Theme.php:457
 msgid "texto \"Meus Projetos\""
-msgstr ""
+msgstr "texto \"Mis Proyectos\""
 
 #: themes/BaseV1/Theme.php:463
 msgid "texto \"Meus projetos\""
-msgstr ""
+msgstr "mis Proyectos"
 
 #: themes/BaseV1/Theme.php:469
 msgid "texto \"projeto encontrado\""
-msgstr ""
+msgstr "texto \"proyecto encontrado\""
 
 #: themes/BaseV1/Theme.php:471 themes/BaseV1/Theme.php:472
 msgid "projeto encontrado"
-msgstr ""
+msgstr "proyecto encontrado"
 
 #: themes/BaseV1/Theme.php:475
 msgid "texto \"projetos encontrados\""
-msgstr ""
+msgstr "texto \"proyectos encontrados\""
 
 #: themes/BaseV1/Theme.php:477 themes/BaseV1/Theme.php:478
 msgid "projetos encontrados"
-msgstr ""
+msgstr "proyectos encontrados"
 
 #: themes/BaseV1/Theme.php:481
 msgid "texto \"Projetos do agente\""
-msgstr ""
+msgstr "texto \"Proyectos del agente\""
 
 #: themes/BaseV1/Theme.php:482
 msgid "Título da listagem dos projetos do agente em seu perfil"
-msgstr ""
+msgstr "Título del listado de proyectos del agente en su perfil"
 
 #: themes/BaseV1/Theme.php:483 themes/BaseV1/Theme.php:484
 msgid "Projetos do agente"
-msgstr ""
+msgstr "Proyectos del agente"
 
 #: themes/BaseV1/Theme.php:483 themes/BaseV1/Theme.php:533
 msgid "Editais do agente"
-msgstr ""
+msgstr "Ediciones del agente"
 
 #: themes/BaseV1/Theme.php:483 themes/BaseV1/Theme.php:533
 msgid "Convocatórias do agente"
-msgstr ""
+msgstr "Convocatorias del agente"
 
 #: themes/BaseV1/Theme.php:487
 msgid "texto \"projeto\""
-msgstr ""
+msgstr "texto \"proyecto\""
 
 #: themes/BaseV1/Theme.php:488
 msgid "nome da entidade Projeto no singular em minúsculo"
-msgstr ""
+msgstr "nombre de la entidad Proyecto en singular en minúscula"
 
 #: themes/BaseV1/Theme.php:493
 msgid "texto \"projetos\""
-msgstr ""
+msgstr "texto \"proyectos\""
 
 #: themes/BaseV1/Theme.php:494
 msgid "nome da entidade Projeto no plural em minúsculo"
-msgstr ""
+msgstr "nombre de la entidad Proyecto en plural en minúscula"
 
 #: themes/BaseV1/Theme.php:501
 msgid "texto \"Oportunidades\""
-msgstr ""
+msgstr "texto \"Oportunidades\""
 
 #: themes/BaseV1/Theme.php:502
 msgid "nome da entidade Oportunidade no plural"
@@ -14518,89 +14581,89 @@ msgstr ""
 
 #: themes/BaseV1/Theme.php:507
 msgid "texto \"Minhas Oportunidades\""
-msgstr ""
+msgstr "texto \"Mis Oportunidades\""
 
 #: themes/BaseV1/Theme.php:509 themes/BaseV1/Theme.php:510
 #: themes/BaseV1/layouts/parts/nav-main-user.php:72
 #: themes/BaseV1/layouts/parts/panel-nav.php:44
 msgid "Minhas Oportunidades"
-msgstr ""
+msgstr "Mis Oportunidades"
 
 #: themes/BaseV1/Theme.php:513
 msgid "texto \"Minhas oportunidades\""
-msgstr ""
+msgstr "texto \"Mis Oportunidades\""
 
 #: themes/BaseV1/Theme.php:519
 msgid "texto \"oportunidade encontrada\""
-msgstr ""
+msgstr "texto \"oportunidad encontrada\""
 
 #: themes/BaseV1/Theme.php:521 themes/BaseV1/Theme.php:522
 msgid "oportunidade encontrada"
-msgstr ""
+msgstr "oportunidad encontrada"
 
 #: themes/BaseV1/Theme.php:525
 msgid "texto \"oportunidades encontradas\""
-msgstr ""
+msgstr "texto texto \\\"oportunidad encontrada\"oportunidades encontradas\""
 
 #: themes/BaseV1/Theme.php:527 themes/BaseV1/Theme.php:528
 msgid "oportunidades encontradas"
-msgstr ""
+msgstr "oportunidades encontradas"
 
 #: themes/BaseV1/Theme.php:531
 msgid "texto \"Oportunidades do agente\""
-msgstr ""
+msgstr "texto \"Oportunidades del agente\""
 
 #: themes/BaseV1/Theme.php:532
 msgid "Título da listagem das oportunidades do agente em seu perfil"
-msgstr ""
+msgstr "Título del listado de las oportunidades del agente en su perfil"
 
 #: themes/BaseV1/Theme.php:533 themes/BaseV1/Theme.php:534
 msgid "Oportunidades do agente"
-msgstr ""
+msgstr "Oportunidades del agente"
 
 #: themes/BaseV1/Theme.php:537
 msgid "texto \"Oportunidades do espaço\""
-msgstr ""
+msgstr "texto \"Oportunidades del espacio\""
 
 #: themes/BaseV1/Theme.php:538
 msgid "Título da listagem das oportunidades do espaço"
-msgstr ""
+msgstr "Título del listado de las oportunidades del espacio"
 
 #: themes/BaseV1/Theme.php:539 themes/BaseV1/Theme.php:540
 msgid "Oportunidades do espaço"
-msgstr ""
+msgstr "Oportunidades del espacio"
 
 #: themes/BaseV1/Theme.php:539
 msgid "Editais do espaço"
-msgstr ""
+msgstr "Convocatorias del espacio"
 
 #: themes/BaseV1/Theme.php:539
 msgid "Convocatórias do espaço"
-msgstr ""
+msgstr "Convocatorias del espacio"
 
 #: themes/BaseV1/Theme.php:543
 msgid "texto \"Oportunidades do evento\""
-msgstr ""
+msgstr "texto \"Oportunidades del evento\""
 
 #: themes/BaseV1/Theme.php:544
 msgid "Título da listagem das oportunidades do evento"
-msgstr ""
+msgstr "Título del listado de las oportunidades del evento"
 
 #: themes/BaseV1/Theme.php:545 themes/BaseV1/Theme.php:546
 msgid "Oportunidades do evento"
-msgstr ""
+msgstr "Oportunidades del evento"
 
 #: themes/BaseV1/Theme.php:545
 msgid "Editais do evento"
-msgstr ""
+msgstr "Convocatorias del evento"
 
 #: themes/BaseV1/Theme.php:545
 msgid "Convocatórias do evento"
-msgstr ""
+msgstr "Convocatorias del evento"
 
 #: themes/BaseV1/Theme.php:549
 msgid "texto \"oportunidade\""
-msgstr ""
+msgstr "texto \"oportunidad\""
 
 #: themes/BaseV1/Theme.php:550
 msgid "nome da entidade Oportunidade no singular em minúsculo"
