@@ -1,10 +1,12 @@
 app.component('entity-table', {
     template: $TEMPLATES['entity-table'],
 
-    setup() {
+    setup(props, { slots }) {
+        console.log(slots);
+        const hasSlot = name => !!slots[name]
         const messages = useMessages();
         const text = Utils.getTexts('entity-table')
-        return { messages, text };
+        return { messages, text, hasSlot};
     },
 
     props: {
