@@ -17,50 +17,63 @@ $this->import('
 ?>
 <div class="entity-table">
     <mc-entities :select="select" :type="type" :query="query" :limit="limit" :endpoint="endpoint">
-        <template #header="{entities, filters}">
-            <div class="opportunity-registration-table__filter">
-                <slot name="actions-table" :entities="entities" :filters="filters"></slot>
-                <div class="opportunity-registration-table__search-key">
-                    <input v-model="searchText" @keyup="keyword(entities)" type="text" placeholder="<?= i::__('Busque pelo número de inscrição, status, parecer técnico?') ?>" class="opportunity-registration-table__search-input" />
-                    <button @click="keyword(entities)" class="opportunity-registration-table__search-button">
-                        <mc-icon name="search"></mc-icon>
-                    </button>
-                </div>
-                <slot name="filters-table" :entities="entities" :filters="filters"></slot>
-                <div class="field opportunity-registration-table__select-tag">
 
+        <template #header="{entities, filters}">
+            <div class="entity-table__filters">
+
+                <div v-if="hasSlot('actions-primary')" class="entity-table__actions-primary">
+                    <slot name="actions-primary" :entities="entities" :filters="filters"></slot>
+                </div>
+
+                <div class="entity-table__mid">
+                    <div class="entity-table__search">
+                        <input v-model="searchText" @keyup="keyword(entities)" type="text" placeholder="<?= i::__('Busque pelo número de inscrição, status, parecer técnico?') ?>" class="entity-table__search-field" />
+                        <button @click="keyword(entities)" class="entity-table__search-button">
+                            <mc-icon name="search"></mc-icon>
+                        </button>
+                    </div>
+
+                    <div v-if="hasSlot('actions-secondary')" class="entity-table__actions-secondary">
+                        <slot name="actions-secondary" :entities="entities" :filters="filters"></slot>
+                    </div>
+                </div>
+                
+                <div v-if="hasSlot('table-filters')" class="entity-table__filter">
+                    <slot name="table-filters" :entities="entities" :filters="filters"></slot>
+                </div>
+
+                <div class="field entity-table__select-tag">
                     <mc-multiselect #default="{setFilter, popover}" @selected="addInColumns($event)" @removed="removeFromColumns($event)" :model="selectedColumns" :items="items" hide-filter hide-button>
                         <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Colunas habilitadas na tabela') ?>">
                     </mc-multiselect>
-
-                    <mc-tag-list editable class="opportunity-registration-table__taglists" classes="opportunity__background" :tags="selectedColumns" @remove="removeFromColumns"></mc-tag-list>
+                    <mc-tag-list editable class="entity-table__taglists" classes="opportunity__background" :tags="selectedColumns" @remove="removeFromColumns"></mc-tag-list>
                 </div>
+
             </div>
         </template>
 
         <template #default="{entities}">
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <template v-for="header in columns">
-                                <th v-if="header.visible">{{header.text}}</th>
-                            </template>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="entity in entities">
-                            <template v-for="header in columns">
-                                <td v-if="header.visible">
-                                    <slot :name="header.slug" v-bind="entity">
-                                        {{getEntityData(entity, header.value)}}
-                                    </slot>
-                                </td>
-                            </template>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <table class="entity-table__table">
+                <thead>
+                    <tr>
+                        <template v-for="header in columns">
+                            <th v-if="header.visible">{{header.text}}</th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="entity in entities">
+                        <template v-for="header in columns">
+                            <td v-if="header.visible">
+                                <slot :name="header.slug" v-bind="entity">
+                                    {{getEntityData(entity, header.value)}}
+                                </slot>
+                            </td>
+                        </template>
+                    </tr>
+                </tbody>
+            </table>
         </template>
+
     </mc-entities>
 </div>

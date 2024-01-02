@@ -1,5 +1,84 @@
 @use '../0.settings/mixins' as *;
 
+.entity-table {
+    background-color: var(--mc-white);
+
+    &__actions-primary {
+
+    }
+
+    &__actions-secondary {
+
+    }
+
+    &__mid {
+        align-items: center;
+        display: flex;
+        gap: size(8);
+        justify-content: space-between;
+    }
+
+    &__filters {
+        display: flex;
+        flex-direction: column;
+        gap: size(12);
+        padding: size(35) size(25) size(15);
+    }
+
+    &__search {
+        align-items: center;
+        display: flex;
+        max-width: size(470);
+        position: relative;
+        width: 100%;
+    }
+
+    &__search-field {
+        border-radius: var(--mc-border-radius-pill);
+        border: var(--mc-border-hairline) var(--mc-gray-500);
+        font-size: var(--mc-font-size-xs);
+        overflow: hidden;
+        padding: size(13) size(70) size(12) size(20);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+    }
+
+    &__search-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        height: 46px;
+        position: absolute;
+        right: 0;
+        width: 70px;
+        
+        .iconify {
+            font-size: size(22);
+        }
+    }
+
+    &__select-tag {
+        .mc-multiselect--input {
+            max-width: size(470);
+            width: 100%;
+        }
+    }
+
+    &__table {
+        background-color: var(--mc-white);
+        padding: 0 size(25);
+        text-align: left;
+
+        & > thead > tr {
+            height: size(48);
+        }
+
+        & > tbody > tr {
+            height: size(41);
+        }
+    }
+}
 
 // .vue3-easy-data-table {
 //     border: none !important;
