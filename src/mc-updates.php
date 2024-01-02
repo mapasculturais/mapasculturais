@@ -405,5 +405,25 @@ return [
                 }
             });
         };
-    }
+    },
+
+    'create opportunities history entries' => function() {
+        $app = \MapasCulturais\App::i();
+        foreach (['Opportunity'] as $class){
+            DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entities\Opportunity $entity) use ($app) {
+                $entity->registerFieldsMetadata();
+
+                $user = $entity->owner->user;
+                $app->user = $user;
+                $app->auth->authenticatedUser = $user;
+                $entity->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_CREATED;
+
+                /*
+                * Versão de Criação
+                */
+                $entity->_newCreatedRevision();
+            });
+        }
+        $app->auth->logout();
+    },
 ];
