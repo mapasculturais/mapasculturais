@@ -64,6 +64,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityAvatar,
         Traits\EntityMetaLists,
         Traits\EntityTaxonomies,
+        Traits\EntityRevision,
         Traits\EntityAgentRelation,
         Traits\EntitySealRelation,
         Traits\EntityNested,
