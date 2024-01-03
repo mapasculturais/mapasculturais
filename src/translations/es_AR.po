@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2024-01-02 18:08-0400\n"
+"PO-Revision-Date: 2024-01-03 18:05-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -14667,550 +14667,558 @@ msgstr "texto \"oportunidad\""
 
 #: themes/BaseV1/Theme.php:550
 msgid "nome da entidade Oportunidade no singular em minúsculo"
-msgstr ""
+msgstr "nombre de la entidad Oportunidad en singular en minúscula"
 
 #: themes/BaseV1/Theme.php:555
 msgid "texto \"oportunidades\""
-msgstr ""
+msgstr "texto \"oportunidades\""
 
 #: themes/BaseV1/Theme.php:556
 msgid "nome da entidade Oportunidade no plural em minúsculo"
-msgstr ""
+msgstr "nombre de la entidad Oportunidad en plural en minúscula"
 
 #: themes/BaseV1/Theme.php:563
 msgid "texto \"Eventos\""
-msgstr ""
+msgstr "texto \"Eventos'"
 
 #: themes/BaseV1/Theme.php:564
 msgid "nome da entidade Evento no plural"
-msgstr ""
+msgstr "nombre de la entidad Evento en plural"
 
 #: themes/BaseV1/Theme.php:565
 msgid "Ações"
-msgstr ""
+msgstr "Acciones"
 
 #: themes/BaseV1/Theme.php:569
 msgid "texto \"Meus Eventos\""
-msgstr ""
+msgstr "texto \"Mis Eventos'"
 
 #: themes/BaseV1/Theme.php:571
 msgid "Minhas Ações"
-msgstr ""
+msgstr "Mis Acciones"
 
 #: themes/BaseV1/Theme.php:575
 msgid "texto \"Meus eventos\""
-msgstr ""
+msgstr "texto \"Mis Eventos\""
 
 #: themes/BaseV1/Theme.php:577
 msgid "Minhas ações"
-msgstr ""
+msgstr "Mis Acciones"
 
 #: themes/BaseV1/Theme.php:581
 msgid "texto \"evento encontrado\""
-msgstr ""
+msgstr "texto \"evento encontrado\""
 
 #: themes/BaseV1/Theme.php:583 themes/BaseV1/Theme.php:584
 msgid "evento encontrado"
-msgstr ""
+msgstr "evento encontrado"
 
 #: themes/BaseV1/Theme.php:583
 msgid "ação encontrada"
-msgstr ""
+msgstr "acción encontrada"
 
 #: themes/BaseV1/Theme.php:587
 msgid "texto \"eventos encontrados\""
-msgstr ""
+msgstr "texto \"eventos encontrados\""
 
 #: themes/BaseV1/Theme.php:589 themes/BaseV1/Theme.php:590
 msgid "eventos encontrados"
-msgstr ""
+msgstr "eventos encontrados"
 
 #: themes/BaseV1/Theme.php:589
 msgid "ações encontradas"
-msgstr ""
+msgstr "acciones encontradas"
 
 #: themes/BaseV1/Theme.php:593
 msgid "texto \"evento\""
-msgstr ""
+msgstr "texto \"evento\""
 
 #: themes/BaseV1/Theme.php:594
 msgid "nome da entidade Evento no singular em minúsculo"
-msgstr ""
+msgstr "nombre de la entidad Evento en singular en minúscula"
 
 #: themes/BaseV1/Theme.php:599
 msgid "texto \"eventos\""
-msgstr ""
+msgstr "texto \"evento'"
 
 #: themes/BaseV1/Theme.php:600
 msgid "nome da entidade Evento no plural em minúsculo"
-msgstr ""
+msgstr "nombre de la entidad Evento en plural en minúscula"
 
 #: themes/BaseV1/Theme.php:607
 msgid "texto \"Descrição do Subsite\""
-msgstr ""
+msgstr "texto \"Descripción del subsitio\""
 
 #: themes/BaseV1/Theme.php:609 themes/BaseV1/Theme.php:611
 msgid "Descrição do Subsite"
-msgstr ""
+msgstr "Descripción del subsitio"
 
 #: themes/BaseV1/Theme.php:609
 msgid "Descrição da Instalação"
-msgstr ""
+msgstr "Descripción de la instalación"
 
 #: themes/BaseV1/Theme.php:614
 msgid "texto \"Meus Subsites\""
-msgstr ""
+msgstr "texto \"Mis Subsitios\""
 
 #: themes/BaseV1/Theme.php:616 themes/BaseV1/Theme.php:618
 msgid "Meus Subsites"
-msgstr ""
+msgstr "Mis Subsitios"
 
 #: themes/BaseV1/Theme.php:616
 msgid "Minhas Instalações"
-msgstr ""
+msgstr "Mis instalaciones"
 
 #: themes/BaseV1/Theme.php:621
 msgid "texto \"Meus subsites\""
-msgstr ""
+msgstr "texto \"Mis Subsitios\""
 
 #: themes/BaseV1/Theme.php:623 themes/BaseV1/Theme.php:625
 msgid "Meus subsites"
-msgstr ""
+msgstr "Mis Subsitios"
 
 #: themes/BaseV1/Theme.php:623
 msgid "Minhas instalações"
-msgstr ""
+msgstr "Mis instalaciones"
 
 #: themes/BaseV1/Theme.php:628
 msgid "texto \"Subsite\""
-msgstr ""
+msgstr "texto \"Subsitio\""
 
 #: themes/BaseV1/Theme.php:630
 msgid "Instalação"
-msgstr ""
+msgstr "Instalación"
 
 #: themes/BaseV1/Theme.php:635
 msgid "texto \"nenhum subsite cadastrado\""
-msgstr ""
+msgstr "texto \"ningún subsitio registrado\""
 
 #: themes/BaseV1/Theme.php:637 themes/BaseV1/Theme.php:639
 msgid "nenhum subsite cadastrado"
-msgstr ""
+msgstr "ningún subsitio registrado"
 
 #: themes/BaseV1/Theme.php:637
 msgid "nenhuma instalação cadastrada"
-msgstr ""
+msgstr "ninguna instalación registrada"
 
 #: themes/BaseV1/Theme.php:642
 msgid "texto \"nenhum subsite\""
-msgstr ""
+msgstr "texto \"ningún subsitio\""
 
 #: themes/BaseV1/Theme.php:644 themes/BaseV1/Theme.php:646
 msgid "nenhum subsite"
-msgstr ""
+msgstr "ningún subsitio\""
 
 #: themes/BaseV1/Theme.php:644
 msgid "nenhuma instalação"
-msgstr ""
+msgstr "ninguna instalación registrada"
 
 #: themes/BaseV1/Theme.php:649
 msgid "texto \"subsite cadastrado\""
 msgstr ""
+"texto \"\n"
+"subsitio registrado\""
 
 #: themes/BaseV1/Theme.php:651 themes/BaseV1/Theme.php:653
 msgid "subsite cadastrado"
-msgstr ""
+msgstr "subsitio registrado"
 
 #: themes/BaseV1/Theme.php:651
 msgid "instalação cadastrada"
-msgstr ""
+msgstr "instalación registrada"
 
 #: themes/BaseV1/Theme.php:656
 msgid "texto \"adicionar novo subsite\""
-msgstr ""
+msgstr "texto \"agregar nuevo subsitio\""
 
 #: themes/BaseV1/Theme.php:658 themes/BaseV1/Theme.php:660
 msgid "adicionar novo subsite"
-msgstr ""
+msgstr "agregar nuevo subsitio"
 
 #: themes/BaseV1/Theme.php:658
 msgid "adcionar nova instalação"
-msgstr ""
+msgstr "agregar nueva instalación"
 
 #: themes/BaseV1/Theme.php:665
 msgid "texto \"Selos\""
-msgstr ""
+msgstr "texto \"Sellos\""
 
 #: themes/BaseV1/Theme.php:666
 msgid "nome da entidade Selos no plural"
-msgstr ""
+msgstr "nombre de la entidad Sellos en plural"
 
 #: themes/BaseV1/Theme.php:667
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:8
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:17
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:13
 msgid "Selos Certificadores"
-msgstr ""
+msgstr "Sellos Certificadores"
 
 #: themes/BaseV1/Theme.php:667
 msgid "Certificações"
-msgstr ""
+msgstr "Certificaciones"
 
 #: themes/BaseV1/Theme.php:671
 msgid "texto \"Meus Selos\""
-msgstr ""
+msgstr "texto \"Mis Sellos\""
 
 #: themes/BaseV1/Theme.php:673
 msgid "Meus Selos Certificadores"
-msgstr ""
+msgstr "Mis sellos Certificadores"
 
 #: themes/BaseV1/Theme.php:673
 msgid "Minhas Certificações"
-msgstr ""
+msgstr "Mis Certificaciones"
 
 #: themes/BaseV1/Theme.php:677
 msgid "texto \"Meus selos\""
-msgstr ""
+msgstr "texto \"Mis Sellos\""
 
 #: themes/BaseV1/Theme.php:679
 msgid "Meus selos certificadores"
-msgstr ""
+msgstr "Mis sellos certificadores"
 
 #: themes/BaseV1/Theme.php:679
 msgid "Minhas certificações"
-msgstr ""
+msgstr "Mis Certificaciones"
 
 #: themes/BaseV1/Theme.php:684
 msgid "texto \"Usuários e papéis\""
-msgstr ""
+msgstr "texto \"Usuarios y roles\""
 
 #: themes/BaseV1/Theme.php:688
 msgid "Usuários e papéis"
-msgstr ""
+msgstr "Usuarios y roles"
 
 #: themes/BaseV1/Theme.php:695
 msgid "Colocar qual é a área de atuação"
-msgstr ""
+msgstr "Indique su área de actuación"
 
 #: themes/BaseV1/Theme.php:701
 msgid "Selecione pelos menos uma área"
-msgstr ""
+msgstr "Usted debe introducir al menos un área de actuación"
 
 #: themes/BaseV1/Theme.php:702
 msgid "Precisa ter pelo menos uma área selecionada"
-msgstr ""
+msgstr "Debe introducir al menos una área de actuación"
 
 #: themes/BaseV1/Theme.php:705
 msgid "Selecione pelo menos uma área"
-msgstr ""
+msgstr "Usted debe introducir al menos una área"
 
 #: themes/BaseV1/Theme.php:709
 msgid "Selecionar quantas áreas for preciso"
-msgstr ""
+msgstr "Seleccione tantas áreas como sea necesario"
 
 #: themes/BaseV1/Theme.php:717
 msgid "Informar qual é a linguagem"
-msgstr ""
+msgstr "Indique su área de actuaciónInformar cuál es el tipo de evento"
 
 #: themes/BaseV1/Theme.php:723
 msgid "Selecione pelos menos uma linguagem"
-msgstr ""
+msgstr "Seleccione por lo menos un tipo de evento"
 
 #: themes/BaseV1/Theme.php:724
 msgid "Precisa ter pelo menos uma linguagem selecionada"
-msgstr ""
+msgstr "Necesita tener por lo menos un tipo de evento seleccionado"
 
 #: themes/BaseV1/Theme.php:727 themes/BaseV1/views/event/edit.php:143
 #: themes/BaseV1/views/event/single.php:143
 msgid "Selecione pelo menos uma linguagem"
-msgstr ""
+msgstr "Seleccione por lo menos un tipo de evento"
 
 #: themes/BaseV1/Theme.php:731
 msgid "Selecionar quantas linguagens for preciso"
-msgstr ""
+msgstr "Seleccionar cuántos tipos de eventos se necesitan"
 
 #: themes/BaseV1/Theme.php:745
 msgid "Você não tem permissão para executar esta ação"
-msgstr ""
+msgstr "No tiene permiso para ejecutar esta operación"
 
 #: themes/BaseV1/Theme.php:749
 msgid "Você não tem permissão para executar esta ação."
-msgstr ""
+msgstr "No tiene permiso para ejecutar esta operación."
 
 #: themes/BaseV1/Theme.php:752
 msgid "Página não encontrada"
-msgstr ""
+msgstr "Página no encontrada"
 
 #: themes/BaseV1/Theme.php:756
 msgid "Página não encontrada."
-msgstr ""
+msgstr "Página no encontrada."
 
 #: themes/BaseV1/Theme.php:759 themes/BaseV1/Theme.php:760
 msgid "Messagem Error 404"
-msgstr ""
+msgstr "Mensaje de error 404"
 
 #: themes/BaseV1/Theme.php:766 themes/BaseV1/Theme.php:770
 msgid "Um erro inesperado aconteceu"
-msgstr ""
+msgstr "Ocurrió un error inesperado"
 
 #: themes/BaseV1/Theme.php:773
 msgid "Error 500"
-msgstr ""
+msgstr "Error 500"
 
 #: themes/BaseV1/Theme.php:774
 msgid "Mensagem Error 500"
-msgstr ""
+msgstr "Mensaje de error 500"
 
 #: themes/BaseV1/Theme.php:957 themes/BaseV1/Theme.php:1937
 #: themes/BaseV1/Theme.php:2133 themes/BaseV1/Theme.php:2178
 #: themes/BaseV1/views/event/edit.php:25
 #: themes/BaseV1/views/event/single.php:25
 msgid "Corrija os erros indicados abaixo."
-msgstr ""
+msgstr "Corrija los errores indicados abajo."
 
 #: themes/BaseV1/Theme.php:958 themes/BaseV1/views/event/edit.php:26
 #: themes/BaseV1/views/event/single.php:26
 #, php-format
 msgid "Sua requisição para adicionar este evento no espaço %s foi enviada."
-msgstr ""
+msgstr "Su solicitud para agregar el evento en el espacio %s ha sido enviada."
 
 #: themes/BaseV1/Theme.php:959 themes/BaseV1/views/event/edit.php:27
 #: themes/BaseV1/views/event/single.php:27
 msgid "Você não tem permissão para criar eventos nesse espaço."
-msgstr ""
+msgstr "Usted no tiene permiso para crear eventos en este espacio."
 
 #: themes/BaseV1/Theme.php:961 themes/BaseV1/views/event/edit.php:29
 #: themes/BaseV1/views/event/single.php:29
 msgid ""
 "As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?"
 msgstr ""
+"Las fechas fueron cambiadas pero la descripción no. ¿Está seguro (a) que "
+"desea guardar?"
 
 #: themes/BaseV1/Theme.php:962 themes/BaseV1/views/event/edit.php:30
 #: themes/BaseV1/views/event/single.php:30
 msgid "Erro"
-msgstr ""
+msgstr "Error"
 
 #: themes/BaseV1/Theme.php:1190
 msgid "Já foi criada a última fase!"
-msgstr ""
+msgstr "¡La última fase ya ha sido creada!"
 
 #: themes/BaseV1/Theme.php:1194
 msgid "Segunda fase"
-msgstr ""
+msgstr "Segunda fase"
 
 #: themes/BaseV1/Theme.php:1195
 msgid "Terceira fase"
-msgstr ""
+msgstr "Tercera fase"
 
 #: themes/BaseV1/Theme.php:1196
 msgid "Quarta fase"
-msgstr ""
+msgstr "Cuarta fase"
 
 #: themes/BaseV1/Theme.php:1197
 msgid "Quinta fase"
-msgstr ""
+msgstr "Quinta fase"
 
 #: themes/BaseV1/Theme.php:1198
 msgid "Sexta fase"
-msgstr ""
+msgstr "Sexta fase"
 
 #: themes/BaseV1/Theme.php:1199
 msgid "Sétima fase"
-msgstr ""
+msgstr "Séptima fase"
 
 #: themes/BaseV1/Theme.php:1200
 msgid "Oitava fase"
-msgstr ""
+msgstr "Octava fase"
 
 #: themes/BaseV1/Theme.php:1201
 msgid "Nona fase"
-msgstr ""
+msgstr "Novena fase"
 
 #: themes/BaseV1/Theme.php:1202
 msgid "Décima fase"
-msgstr ""
+msgstr "Décima fase"
 
 #: themes/BaseV1/Theme.php:1221
 #, php-format
 msgid "Descrição da %s"
-msgstr ""
+msgstr "Descripción de la %s"
 
 #: themes/BaseV1/Theme.php:1533
 #, php-format
 msgid "%s - Inscrição %s"
-msgstr ""
+msgstr "%s - Inscripción %s"
 
 #: themes/BaseV1/Theme.php:1844
 msgid "Próxima"
-msgstr ""
+msgstr "Próxima"
 
 #: themes/BaseV1/Theme.php:1846
 msgid "%curr% de %total%"
-msgstr ""
+msgstr "%curr% de %total%"
 
 #: themes/BaseV1/Theme.php:1858
 msgid "Você deseja excluir a entidade?"
-msgstr ""
+msgstr "¿Está seguro (a) que desea borrar la entidad?"
 
 #: themes/BaseV1/Theme.php:1859
 msgid ""
 "Você deseja excluir definitivamente a entidade? Esta operação não poderá ser "
 "desfeita."
 msgstr ""
+"¿Quieres eliminar definitivamente la entidad? Esta operación no se puede "
+"deshacer."
 
 #: themes/BaseV1/Theme.php:1876
 msgid "There was an error"
-msgstr ""
+msgstr "Ocurrió un error"
 
 #: themes/BaseV1/Theme.php:1920
 msgid "Cancelar Alteração (Esc)"
-msgstr ""
+msgstr "Cancelar Edición (Esc)"
 
 #: themes/BaseV1/Theme.php:1921
 msgid "Confirmar Alteração (Enter)"
-msgstr ""
+msgstr "Confirmar Edición (Enter)"
 
 #: themes/BaseV1/Theme.php:1922
 msgid "Confirmar Alteração (Ctrl+Enter)"
-msgstr ""
+msgstr "Confirmar Edición (Ctrl+Enter)"
 
 #: themes/BaseV1/Theme.php:1923
 msgid "Há alterações não salvas nesta página."
-msgstr ""
+msgstr "Hay cambios no guardados en esta página."
 
 #: themes/BaseV1/Theme.php:1924
 #: themes/BaseV1/layouts/parts/singles/space-public.php:6
 #: themes/BaseV1/layouts/parts/singles/space-public.php:15
 msgid "Publicação livre"
-msgstr ""
+msgstr "Publicación libre"
 
 #: themes/BaseV1/Theme.php:1925
 #: themes/BaseV1/layouts/parts/singles/space-public.php:9
 #: themes/BaseV1/layouts/parts/singles/space-public.php:18
 msgid "Publicação restrita"
-msgstr ""
+msgstr "Publicación restringida"
 
 #: themes/BaseV1/Theme.php:1926
 #: themes/BaseV1/layouts/parts/singles/space-public.php:7
 #: themes/BaseV1/layouts/parts/singles/space-public.php:16
 msgid "Qualquer pessoa pode criar eventos."
-msgstr ""
+msgstr "Cualquier persona puede crear eventos."
 
 #: themes/BaseV1/Theme.php:1927
 #: themes/BaseV1/layouts/parts/singles/space-public.php:10
 #: themes/BaseV1/layouts/parts/singles/space-public.php:19
 msgid "Requer autorização para criar eventos."
-msgstr ""
+msgstr "Requiere autorización para crear eventos."
 
 #: themes/BaseV1/Theme.php:1928
 msgid "este agente"
-msgstr ""
+msgstr "este agente"
 
 #: themes/BaseV1/Theme.php:1929
 msgid "este espaço"
-msgstr ""
+msgstr "este espacio"
 
 #: themes/BaseV1/Theme.php:1930
 msgid "este evento"
-msgstr ""
+msgstr "este eventos"
 
 #: themes/BaseV1/Theme.php:1931
 msgid "este projeto"
-msgstr ""
+msgstr "este proyecto"
 
 #: themes/BaseV1/Theme.php:1932
 msgid "esta oportunidade"
-msgstr ""
+msgstr "esta oportunidad"
 
 #: themes/BaseV1/Theme.php:1933
 #, php-format
 msgid "Você tem certeza que deseja publicar %s?"
-msgstr ""
+msgstr "¿Está seguro (a) que desea publicar %s?"
 
 #: themes/BaseV1/Theme.php:1934
 #, php-format
 msgid "Você tem certeza que deseja publicar %s? Isto não poderá ser desfeito."
-msgstr ""
+msgstr "¿Está seguro (a) que desea publicar %s? Esto no se podrá deshacer."
 
 #: themes/BaseV1/Theme.php:1935
 #, php-format
 msgid "Sua requisição para fazer deste %s filho de %s foi enviada."
-msgstr ""
+msgstr "Su solicitud para hacer %s hijo de %s fue enviada."
 
 #: themes/BaseV1/Theme.php:1936
 #, php-format
 msgid "Sua requisição para associar este evento ao projeto %s foi enviada."
-msgstr ""
+msgstr "Su solicitud para asociar este evento al proyecto %s fue enviada."
 
 #: themes/BaseV1/Theme.php:1938
 msgid "Edições salvas."
-msgstr ""
+msgstr "Cambios guardados."
 
 #: themes/BaseV1/Theme.php:1939 themes/BaseV1/Theme.php:2142
 msgid "Um erro inesperado aconteceu."
-msgstr ""
+msgstr "Ocurrió un error inesperado."
 
 #: themes/BaseV1/Theme.php:1940
 msgid "Insira um título para seu vídeo."
-msgstr ""
+msgstr "Ingrese un título para su video."
 
 #: themes/BaseV1/Theme.php:1941
 msgid "Insira uma url de um vídeo do YouTube ou do Vimeo."
-msgstr ""
+msgstr "Agregue una url de un video de YouTube o Vimeo."
 
 #: themes/BaseV1/Theme.php:1942
 msgid "Insira um título para seu link."
-msgstr ""
+msgstr "Agregue un título para el enlace."
 
 #: themes/BaseV1/Theme.php:1943
 msgid ""
 "A url do link é inválida, insira uma url completa como http://www.google."
 "com/."
 msgstr ""
+"La url del enlace no es válida, agregue una url completa como http://www."
+"google.com/."
 
 #: themes/BaseV1/Theme.php:1944
 msgid "Limpar"
-msgstr ""
+msgstr "Limpiar"
 
 #: themes/BaseV1/Theme.php:1945
 msgid "Recortar"
-msgstr ""
+msgstr "Recortar"
 
 #: themes/BaseV1/Theme.php:1946
 msgid "Arraste para recortar"
-msgstr ""
+msgstr "Arraste para recortar"
 
 #: themes/BaseV1/Theme.php:1947
 msgid "Tem certeza que deseja remover a imagem de capa?"
-msgstr ""
+msgstr "¿Usted está seguro que desea eliminar la imagen de portada?"
 
 #: themes/BaseV1/Theme.php:1952
 msgid "A avaliação foi salva"
-msgstr ""
+msgstr "La evaluación fue guardada"
 
 #: themes/BaseV1/Theme.php:1983
 msgid "Eventos encontrados no espaço"
-msgstr ""
+msgstr "Eventos encontrados en el espacio"
 
 #: themes/BaseV1/Theme.php:1988
 msgid "Clique e arraste para desenhar o círculo"
-msgstr ""
+msgstr "Haga clic y arrastre para diseñar el círculo"
 
 #: themes/BaseV1/Theme.php:1989
 msgid "Solte o mouse para finalizar o desenho"
-msgstr ""
+msgstr "Suelte el mouse para finalizar el diseño"
 
 #: themes/BaseV1/Theme.php:1990
 msgid "Cancelar desenho"
-msgstr ""
+msgstr "Cancelar diseño"
 
 #: themes/BaseV1/Theme.php:1992
 msgid "Desenhar um círculo"
-msgstr ""
+msgstr "Diseñar un círculo"
 
 #: themes/BaseV1/Theme.php:1993
 msgid "Raio"
-msgstr ""
+msgstr "Radio"
 
 #: themes/BaseV1/Theme.php:1994
 msgid ""
@@ -15218,91 +15226,98 @@ msgid ""
 "erro de {{errorMargin}} metros. Buscando resultados dentro de um raio de "
 "{{radius}}KM deste ponto."
 msgstr ""
+"Según su navegador,usted está aproximadamente en este punto con margen de "
+"error de {{errorMargin}} metros. Buscando resultados dentro de un radio de "
+"{{radius}}KM de este punto."
 
 #: themes/BaseV1/Theme.php:2083
 msgid ""
 "Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com "
 "sucesso."
 msgstr ""
+"Su solicitud para enviar un contacto por Cultura en Línea fue enviada con "
+"éxito."
 
 #: themes/BaseV1/Theme.php:2093
 msgid "O proprietário da entidade foi modificado"
-msgstr ""
+msgstr "El propietario de la entidad no puede ser modificado"
 
 #: themes/BaseV1/Theme.php:2094
 msgid "O proprietário da entidade não pode ser modificado"
-msgstr ""
+msgstr "El propietario de la entidad fue modificado"
 
 #: themes/BaseV1/Theme.php:2095
 msgid ""
 "Sua requisição para mudança de propriedade deste {{type}} para o agente "
 "{{recipient}} foi enviada."
 msgstr ""
+"Su solicitud para el cambio de propiedad de este  {{type}} para el agente "
+"{{recipient}} fue enviada."
 
 #: themes/BaseV1/Theme.php:2100 themes/BaseV1/Theme.php:2144
 msgid "Selecione o tipo de campo"
-msgstr ""
+msgstr "Seleccione el tipo de campo"
 
 #: themes/BaseV1/Theme.php:2101 themes/BaseV1/Theme.php:2145
 msgid "Campo criado."
-msgstr ""
+msgstr "Campo creado."
 
 #: themes/BaseV1/Theme.php:2102 themes/BaseV1/Theme.php:2146
 msgid "Campo removido."
-msgstr ""
+msgstr "Campo eliminado."
 
 #: themes/BaseV1/Theme.php:2103 themes/BaseV1/Theme.php:2147
 msgid "Alterações Salvas."
-msgstr ""
+msgstr "Cambios guardados."
 
 #: themes/BaseV1/Theme.php:2104 themes/BaseV1/Theme.php:2148
 msgid "Anexo criado."
-msgstr ""
+msgstr "Adjunto creado."
 
 #: themes/BaseV1/Theme.php:2105 themes/BaseV1/Theme.php:2149
 msgid "Anexo removido."
-msgstr ""
+msgstr "Adjunto eliminado."
 
 #: themes/BaseV1/Theme.php:2106 themes/BaseV1/Theme.php:2115
 #: themes/BaseV1/Theme.php:2150 themes/BaseV1/Theme.php:2159
 msgid "Deseja remover este anexo?"
-msgstr ""
+msgstr "Desea eliminar este adjunto?"
 
 #: themes/BaseV1/Theme.php:2107 themes/BaseV1/Theme.php:2151
 msgid "Deseja remover este modelo?"
-msgstr ""
+msgstr "Desea eliminar este modelo?"
 
 #: themes/BaseV1/Theme.php:2108 themes/BaseV1/Theme.php:2152
 msgid "Modelo removido."
-msgstr ""
+msgstr "Modelo eliminado."
 
 #: themes/BaseV1/Theme.php:2109 themes/BaseV1/Theme.php:2153
 msgid "publicado"
-msgstr ""
+msgstr "publicado"
 
 #: themes/BaseV1/Theme.php:2110 themes/BaseV1/Theme.php:2154
 msgid "rascunho"
-msgstr ""
+msgstr "borrador"
 
 #: themes/BaseV1/Theme.php:2111 themes/BaseV1/Theme.php:2155
 msgid "Publicando..."
-msgstr ""
+msgstr "Publicando..."
 
 #: themes/BaseV1/Theme.php:2112 themes/BaseV1/Theme.php:2156
 msgid "Eventos publicados."
-msgstr ""
+msgstr "Eventos publicados."
 
 #: themes/BaseV1/Theme.php:2113 themes/BaseV1/Theme.php:2157
 msgid "Tornando rascunho..."
-msgstr ""
+msgstr "Convirtiendo en borrador..."
 
 #: themes/BaseV1/Theme.php:2114 themes/BaseV1/Theme.php:2158
 msgid "Eventos transformados em rascunho."
-msgstr ""
+msgstr "Eventos transformados en borradores."
 
 #: themes/BaseV1/Theme.php:2116 themes/BaseV1/Theme.php:2160
 msgid "Agente responsável pela inscrição"
-msgstr ""
+msgstr "Agente responsable por la inscripción"
 
 #: themes/BaseV1/Theme.php:2117 themes/BaseV1/Theme.php:2162
 #: themes/BaseV1/Theme.php:2185
@@ -15311,122 +15326,136 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:136
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:171
 msgid "Todas"
-msgstr ""
+msgstr "Todas"
 
 #: themes/BaseV1/Theme.php:2126 themes/BaseV1/Theme.php:2171
 msgid ""
 "Você tem certeza que deseja reabrir este formulário para edição? Ao fazer "
 "isso, ele sairá dessa lista."
 msgstr ""
+"¿Estás seguro de que deseas reabrir este formulario para edición? Al "
+"hacerlo, saldrá de esta lista."
 
 #: themes/BaseV1/Theme.php:2127 themes/BaseV1/Theme.php:2172
 msgid ""
 "Você não definiu um número de vagas. Para selecionar essa inscrição, "
 "configure um número de vagas na aba Inscrições, em Agentes."
 msgstr ""
+"No ha definido un número de vacantes. Para seleccionar esta inscripción, "
+"configure un número de vacantes en la pestaña Inscripciones, en Agentes."
 
 #: themes/BaseV1/Theme.php:2128 themes/BaseV1/Theme.php:2173
 msgid "Você atingiu o limite máximo de 1 inscrição aprovada"
-msgstr ""
+msgstr "Usted ha alcanzado el límite máximo de 1 inscripción aprobada"
 
 #: themes/BaseV1/Theme.php:2129 themes/BaseV1/Theme.php:2174
 msgid "Você atingiu o limite máximo de {{num}} inscrições aprovadas"
-msgstr ""
+msgstr "Usted alcanzó el límite máximo de  {{num}} inscripciones aprobadas"
 
 #: themes/BaseV1/Theme.php:2130 themes/BaseV1/Theme.php:2175
 msgid "O limite de inscrições para o agente informado se esgotou."
-msgstr ""
+msgstr "El límite de inscripciones para el agente informado ha sido alcanzado."
 
 #: themes/BaseV1/Theme.php:2131
 msgid "O número de vagas da inscrição no projeto se esgotou."
-msgstr ""
+msgstr "El número de vacantes de la inscripción al proyecto se ha agotado."
 
 #: themes/BaseV1/Theme.php:2132
 msgid ""
 "Para se inscrever neste projeto você deve selecionar um agente responsável."
 msgstr ""
+"Para inscribirse en este proyecto debe seleccionar un agente responsable."
 
 #: themes/BaseV1/Theme.php:2134 themes/BaseV1/Theme.php:2179
 msgid "Inscrição enviada. Aguarde tela de sumário."
-msgstr ""
+msgstr "Inscripción enviada. Aguarde la pantalla de resumen."
 
 #: themes/BaseV1/Theme.php:2135
 msgid "Todas opções"
-msgstr ""
+msgstr "Todas las opciones"
 
 #: themes/BaseV1/Theme.php:2143
 msgid "Todas as categorias"
-msgstr ""
+msgstr "Todas las categorías"
 
 #: themes/BaseV1/Theme.php:2161
 msgid "O Agente selecionado já foi adicionado na comissão de avaliadores"
-msgstr ""
+msgstr "El Agente seleccionado ya fue agregado en el tribunal de evaluadores"
 
 #: themes/BaseV1/Theme.php:2176
 msgid "O número de vagas da inscrição no oportunidade se esgotou."
 msgstr ""
+"El número de vacantes de la inscripción en la oportunidad se ha agotado."
 
 #: themes/BaseV1/Theme.php:2177
 msgid ""
 "Para se inscrever nesta oportunidade você deve selecionar um agente "
 "responsável."
 msgstr ""
+"Para inscribirse en esta oportunidad usted debe seleccionar un agente "
+"responsable."
 
 #: themes/BaseV1/Theme.php:2180
 msgid "Você tem certeza que deseja excluir o avaliador?"
-msgstr ""
+msgstr "¿Está seguro (a) que desea borrar el evaluador?"
 
 #: themes/BaseV1/Theme.php:2181
 msgid "Você tem certeza que deseja reabrir as avaliações para este avaliador?"
 msgstr ""
+"¿Está seguro (a) que desea reabrir las evaluaciones para este/a el evaluador/"
+"ar?"
 
 #: themes/BaseV1/Theme.php:2182
 msgid "As avaliações foram reabertas"
-msgstr ""
+msgstr "Las evaluaciones han sido reabiertas"
 
 #: themes/BaseV1/Theme.php:2188
 msgid ""
 "Deseja aplicar o resultado de todas as avaliações como o status das "
 "respectivas inscrições?"
 msgstr ""
+"¿Desea aplicar el resultado de todas las evaluaciones como el estado de las "
+"respectivas inscripciones?"
 
 #: themes/BaseV1/Theme.php:2196
 msgid "Sua requisição para relacionar o espaço {{space}} foi enviada."
-msgstr ""
+msgstr "Su solicitud para relacionar el espacio {{space}} fue enviada."
 
 #: themes/BaseV1/Theme.php:2198
 msgid "Informe a qual campo quer condicionar a obrigatoriedade"
-msgstr ""
+msgstr "Indique a qué campo desea condicionar la obligatoriedad"
 
 #: themes/BaseV1/Theme.php:2199
 msgid "Informe o valor condicionante do campo"
-msgstr ""
+msgstr "Indique el valor condicionante del campo"
 
 #: themes/BaseV1/Theme.php:2201
 msgid "Deseja remover este campo?"
-msgstr ""
+msgstr "¿Desea eliminar este campo?"
 
 #: themes/BaseV1/Theme.php:2203
 msgid "Resumo dos agentes"
-msgstr ""
+msgstr "Resumen de los agentes"
 
 #: themes/BaseV1/Theme.php:2204
 msgid "Resumo dos espaços"
-msgstr ""
+msgstr "Resumen de los espacios"
 
 #: themes/BaseV1/Theme.php:2205
 msgid ""
 "Você desativou a categoria, todos os campos vinculado a alguma categoria "
 "serão também desativados"
 msgstr ""
+"Has desactivado la categoría, todos los campos vinculados a alguna categoría "
+"también se desactivarán"
 
 #: themes/BaseV1/Theme.php:2206
 msgid "Salvo com sucesso"
-msgstr ""
+msgstr "Guardado con éxito"
 
 #: themes/BaseV1/Theme.php:2207
 msgid "Para ativar este campo, ative também o campo Categoria"
-msgstr ""
+msgstr "Para activar este campo, también active el campo Categoría"
 
 #: themes/BaseV1/Theme.php:2208
 msgid ""
@@ -15434,20 +15463,25 @@ msgid ""
 "condicional ou vinculado a alguma categoria, verifique se todos foram que "
 "deseja marcar foram marcados corretamente"
 msgstr ""
+"¡Atención! Has intentado marcar campos que están debilitados por algún tipo "
+"de condicional o vinculados a alguna categoría. Por favor, verifica si todos "
+"los que deseas marcar han sido marcados correctamente"
 
 #: themes/BaseV1/Theme.php:2209
 msgid ""
 "Ao enviar a prestação de contas, não será mais permitido editar os campos. "
 "tem certeza que deseja continuar?"
 msgstr ""
+"Al enviar la rendición de cuentas, ya no se podrán editar los campos. ¿Está "
+"seguro de que desea continuar?"
 
 #: themes/BaseV1/Theme.php:2210
 msgid "Não é permitido desabilitar todas as colunas da tabela"
-msgstr ""
+msgstr "No está permitido deshabilitar todas las columnas de la tabla."
 
 #: themes/BaseV1/Theme.php:2219 themes/BaseV1/Theme.php:2224
 msgid "Sua requisição para relacionar o agente {{agent}} foi enviada."
-msgstr ""
+msgstr "Su solicitud para relacionar al agente {{agent}} se ha enviado."
 
 #: themes/BaseV1/Theme.php:2225
 #, php-format
@@ -15455,144 +15489,146 @@ msgid ""
 "Tem certeza que deseja remover o grupo %s? A relação com todos os agentes "
 "dentro deste grupo será removida."
 msgstr ""
+"¿Está seguro de que desea eliminar el grupo %s? Se eliminará la relación con "
+"todos los agentes dentro de este grupo."
 
 #: themes/BaseV1/Theme.php:2282
 msgid "mensal"
-msgstr ""
+msgstr "mensual"
 
 #: themes/BaseV1/Theme.php:2404 themes/BaseV1/Theme.php:2446
 msgid "Tipos"
-msgstr ""
+msgstr "Tipos"
 
 #: themes/BaseV1/Theme.php:2405 themes/BaseV1/Theme.php:2516
 #: themes/BaseV1/Theme.php:2543
 msgid "Selecione os tipos"
-msgstr ""
+msgstr "Seleccione los tipos"
 
 #: themes/BaseV1/Theme.php:2414
 msgid "Exibir somente resultados com Acessibilidade"
-msgstr ""
+msgstr "Mostrar solamente resultados con Accesibilidad"
 
 #: themes/BaseV1/Theme.php:2494
 msgid "Selecione a classificação"
-msgstr ""
+msgstr "Seleccione la clasificación"
 
 #: themes/BaseV1/Theme.php:3185
 #, php-format
 msgid "Informe o %s do seu novo %s"
-msgstr ""
+msgstr "Informe el %s de su nuevo %s"
 
 #: themes/BaseV1/layouts/parts/ajax-uploader.php:2
 msgid "Para subir arquivos você primeiro deve salvar."
-msgstr ""
+msgstr "Para subir archivos, primero debe salvar."
 
 #: themes/BaseV1/layouts/parts/ajax-uploader.php:21
 msgid "Tipos de arquivos suportados: "
-msgstr ""
+msgstr "Tipos de archivos soportados "
 
 #: themes/BaseV1/layouts/parts/ajax-uploader.php:22
 msgid "Tamanho máximo do arquivo: "
-msgstr ""
+msgstr "Tamaño máximo de archivo: "
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:43
 msgid "Ver resultados em lista"
-msgstr ""
+msgstr "Ver resultados en lista"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:44
 msgid "Ver resultados no mapa"
-msgstr ""
+msgstr "Ver resultados en el mapa"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:50
 msgid "Exportar dados"
-msgstr ""
+msgstr "Exportar datos"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:54
 msgid "Compartilhar resultado"
-msgstr ""
+msgstr "Compartir resultado"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:56
 msgid "Compartilhar resultado: "
-msgstr ""
+msgstr "Compartir resultado: "
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:69
 msgid "obtendo resultados..."
-msgstr ""
+msgstr "obteniendo resultados..."
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:74
 msgid "agentes sem localização"
-msgstr ""
+msgstr "agentes sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:80
 msgid "sem localização"
-msgstr ""
+msgstr "sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:87
 msgid "eventos sem localização"
-msgstr ""
+msgstr "eventos sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:109
 #: themes/BaseV1/layouts/parts/busca-avancada.php:115
 msgid "Nenhum resultado encontrado"
-msgstr ""
+msgstr "Ningún resultado encontrado"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:110
 msgid "resultados sem localização"
-msgstr ""
+msgstr "resultados sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:145
 msgid "Área Delimitada"
-msgstr ""
+msgstr "Área Delimitada"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:146
 msgid "Próximo a mim"
-msgstr ""
+msgstr "Próximo a mi"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:149
 msgid "Remover todos filtros"
-msgstr ""
+msgstr "Remover todos los filtros"
 
 #: themes/BaseV1/layouts/parts/chat.php:28
 msgid "Escreva uma mensagem"
-msgstr ""
+msgstr "Escriba un mensaje"
 
 #: themes/BaseV1/layouts/parts/downloads.php:2
 #: themes/BaseV1/layouts/parts/downloads.php:10
 msgid "Nenhum download disponível"
-msgstr ""
+msgstr "Ninguna descarga disponible"
 
 #: themes/BaseV1/layouts/parts/downloads.php:15
 msgid "editando"
-msgstr ""
+msgstr "editando"
 
 #: themes/BaseV1/layouts/parts/downloads.php:15
 msgid "Downloads"
-msgstr ""
+msgstr "Descargas"
 
 #: themes/BaseV1/layouts/parts/downloads.php:17
 msgid "Clique para adicionar arquivo para download"
-msgstr ""
+msgstr "Haga clic para agregar archivo para descarga"
 
 #: themes/BaseV1/layouts/parts/downloads.php:18
 msgid "Adicionar Arquivo"
-msgstr ""
+msgstr "Agregar Archivo"
 
 #: themes/BaseV1/layouts/parts/downloads.php:28
 msgid "Remover este vídeo?"
-msgstr ""
+msgstr "¿Quieres eliminar este vídeo?"
 
 #: themes/BaseV1/layouts/parts/downloads.php:28
 msgid "Excluir arquivo"
-msgstr ""
+msgstr "Eliminar archivo"
 
 #: themes/BaseV1/layouts/parts/editable-entity-logo.php:1
 msgid "Mapas Culturais"
-msgstr ""
+msgstr "Cultura en Línea"
 
 #: themes/BaseV1/layouts/parts/entity-parent.php:8
 #: themes/BaseV1/layouts/parts/entity-parent.php:10
 #: themes/BaseV1/layouts/parts/entity-parent.php:17
 msgid "Selecionar projeto pai"
-msgstr ""
+msgstr "Seleccione proyecto padre"
 
 #: themes/BaseV1/layouts/parts/entity-parent.php:41
 #: themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:13
@@ -15603,45 +15639,45 @@ msgstr ""
 #: themes/BaseV1/views/event/single.php:46
 #: themes/BaseV1/views/event/single.php:431
 msgid "Aguardando confirmação"
-msgstr ""
+msgstr "Esperando confirmación"
 
 #: themes/BaseV1/layouts/parts/footer.php:15
 msgid "Recortar imagem"
-msgstr ""
+msgstr "Recortar imagen"
 
 #: themes/BaseV1/layouts/parts/gallery.php:6
 #: themes/BaseV1/layouts/parts/gallery.php:12
 msgid "Nenhuma imagem disponível"
-msgstr ""
+msgstr "Ninguna imagen disponible"
 
 #: themes/BaseV1/layouts/parts/gallery.php:16
 msgid "Galeria"
-msgstr ""
+msgstr "Galería"
 
 #: themes/BaseV1/layouts/parts/gallery.php:32
 msgid "Adicionar Imagem na Galeria"
-msgstr ""
+msgstr "Agregar una imagen a la Galería"
 
 #: themes/BaseV1/layouts/parts/header-about-nav.php:4
 msgid "Sobre os Mapas Culturais"
-msgstr ""
+msgstr "Acerca de Cultura en Línea"
 
 #: themes/BaseV1/layouts/parts/header-about-nav.php:5
 #: themes/Subsite/layouts/parts/header-about-nav.php:22
 msgid "Como usar"
-msgstr ""
+msgstr "Cómo usar"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:14
 msgid "Logado como Admin"
-msgstr ""
+msgstr "Logueado como Admin"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:15
 msgid "Logado como Admin."
-msgstr ""
+msgstr "Logueado como Admin."
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:112
 msgid "Marcar todas como lidas"
-msgstr ""
+msgstr "Marcar todas como leídas"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:120
 #: themes/BaseV1/views/panel/index.php:221
