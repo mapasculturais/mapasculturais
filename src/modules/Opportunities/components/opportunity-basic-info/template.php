@@ -43,7 +43,6 @@ $this->import('
                 <entity-field v-if="lastPhase" :entity="lastPhase" prop="publishTimestamp" :autosave="3000" classes="col-6">
                     <label><?= i::__("Publicação final de resultados (data e hora)") ?></label>
                 </entity-field>
-                <opportunity-payments-config :entity="entity"></opportunity-payments-config>
             </div>
         </template>
     </mc-card>
