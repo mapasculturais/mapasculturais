@@ -8,6 +8,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Nova lib instalada (league/csv), para geração de arquivos csv.
 
+### Correções
+- Corrige erro da instalação do npm após o node. 
+
 ## [7.2.11] - 2023-12-07
 ### Correções
 - Corrige erro no resumo de inscrições nas fases de avaliações, quando não existia inscrições a serem carregadas
