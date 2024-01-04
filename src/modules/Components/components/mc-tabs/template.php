@@ -4,6 +4,8 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
+use MapasCulturais\i;
+
 $this->import('
     mc-icon
     mc-tab
@@ -39,6 +41,11 @@ $this->import('
             <slot name="after-tablist"></slot>
         </div>
     </div>
+
+    <div v-if="hasSlot('tabs-alert')" class="tabs-component__alert">
+        <slot name="tabs-alert"></slot>
+    </div>
+
     <div class="tabs-component__panels">
         <slot></slot>
     </div>
