@@ -38,6 +38,16 @@
         }
     }
 
+    &__currence {
+        align-items: center;
+        display: flex;
+        gap: size(9);
+    }
+
+    &__currence-sign {
+        font-size: var(--mc-font-size-xs);
+    }
+
     .required {
         font-family: Open Sans;
         font-size: size(12);
@@ -72,11 +82,13 @@
     }
 
     input, textarea, select {
-        border: size(1) solid var(--mc-gray-500);
         border-radius: var(--mc-border-radius-xs);
-        font-size: size(16);
+        border: size(1) solid var(--mc-gray-500);
+        font-family: Open Sans;
+        font-size: var(--mc-font-size-xxs);
         padding: size(14);
         width: 100%;
+
         &.dp__input {
             padding-left: size(35);
         }
