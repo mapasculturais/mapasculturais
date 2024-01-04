@@ -8,7 +8,8 @@
     }
 
     &__actions-secondary {
-
+        display: flex;
+        gap: size(9);
     }
 
     &__mid {
@@ -67,15 +68,24 @@
 
     &__table {
         background-color: var(--mc-white);
-        padding: 0 size(25);
+        padding: 0 size(25) size(35);
         text-align: left;
 
         & > thead > tr {
             height: size(48);
+
+            & > th {
+                border-bottom: var(--mc-border-hairline) var(--mc-gray-500);
+            }
         }
 
         & > tbody > tr {
             height: size(41);
+
+            & > td {
+                border-bottom: var(--mc-border-hairline) var(--mc-gray-500);
+                font-size: var(--mc-font-size-xxs);
+            }
         }
     }
 }
