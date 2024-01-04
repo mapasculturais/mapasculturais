@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2024-01-03 18:05-0400\n"
+"PO-Revision-Date: 2024-01-04 18:06-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -13700,7 +13700,7 @@ msgstr "por el Ministerio de Educación y Cultura"
 
 #: themes/BaseV1/Theme.php:130
 msgid "pela Fundação de Cultura Elias Mansour"
-msgstr ""
+msgstr "por la Fundaçión de Cultura Elias Mansour"
 
 #: themes/BaseV1/Theme.php:131
 msgid "pela Secretaria"
@@ -13724,7 +13724,7 @@ msgstr "en el Estado do Acre"
 
 #: themes/BaseV1/Theme.php:137
 msgid "na cidade de Rio Branco"
-msgstr ""
+msgstr "en la ciudad de Rio Branco"
 
 #: themes/BaseV1/Theme.php:138
 msgid "na região"
@@ -15477,7 +15477,7 @@ msgstr ""
 
 #: themes/BaseV1/Theme.php:2210
 msgid "Não é permitido desabilitar todas as colunas da tabela"
-msgstr "No está permitido deshabilitar todas las columnas de la tabla."
+msgstr "No está permitido deshabilitar todas las columnas de la tabla"
 
 #: themes/BaseV1/Theme.php:2219 themes/BaseV1/Theme.php:2224
 msgid "Sua requisição para relacionar o agente {{agent}} foi enviada."
@@ -15682,42 +15682,42 @@ msgstr "Marcar todas como leídas"
 #: themes/BaseV1/layouts/parts/header-main-nav.php:120
 #: themes/BaseV1/views/panel/index.php:221
 msgid "aceitar"
-msgstr ""
+msgstr "aceptar"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:128
 #: themes/BaseV1/views/panel/index.php:227
 msgid "rejeitar"
-msgstr ""
+msgstr "rechazar"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:140
 msgid "Ver todas atividades"
-msgstr ""
+msgstr "Ver todas las actividades"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:156
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:19
 #: themes/BaseV2/layouts/parts/main-header.php:80
 msgid "Entrar"
-msgstr ""
+msgstr "Entrar"
 
 #: themes/BaseV1/layouts/parts/header-profile-link.php:13
 msgid "Meu perfil"
-msgstr ""
+msgstr "Mi Perfil"
 
 #: themes/BaseV1/layouts/parts/header.php:30
 msgid "Corrija os erros abaixo e tente novamente."
-msgstr ""
+msgstr "Corrija los errores a continuación y vuelva a intentarlo."
 
 #: themes/BaseV1/layouts/parts/home-agents.php:33
 msgid "agentes cadastrados"
-msgstr ""
+msgstr "agentes registrados"
 
 #: themes/BaseV1/layouts/parts/home-agents.php:37
 msgid "agentes da "
-msgstr ""
+msgstr "agentes de la "
 
 #: themes/BaseV1/layouts/parts/home-agents.php:41
 msgid "Encontre agentes por"
-msgstr ""
+msgstr "Búsqueda de agentes por"
 
 #: themes/BaseV1/layouts/parts/home-agents.php:66
 #: themes/BaseV1/layouts/parts/home-events.php:56
@@ -15727,7 +15727,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/home-seals.php:45
 #: themes/BaseV1/layouts/parts/home-spaces.php:65
 msgid "destaque"
-msgstr ""
+msgstr "destaque"
 
 #: themes/BaseV1/layouts/parts/home-agents.php:73
 #: themes/BaseV1/layouts/parts/home-events.php:63
@@ -15737,107 +15737,107 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/home-seals.php:53
 #: themes/BaseV1/layouts/parts/home-spaces.php:72
 msgid "Ver tudo"
-msgstr ""
+msgstr "Ver todo"
 
 #: themes/BaseV1/layouts/parts/home-developers.php:4
 #: themes/BaseV1/layouts/parts/home-nav.php:47
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:42
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:43
 msgid "Desenvolvedores"
-msgstr ""
+msgstr "Desarrolladores"
 
 #: themes/BaseV1/layouts/parts/home-events.php:31
 msgid "eventos agendados"
-msgstr ""
+msgstr "eventos programados"
 
 #: themes/BaseV1/layouts/parts/home-events.php:35
 msgid "eventos da "
-msgstr ""
+msgstr "eventos\" de la "
 
 #: themes/BaseV1/layouts/parts/home-events.php:39
 msgid "Encontre eventos por"
-msgstr ""
+msgstr "Búsqueda de eventos por"
 
 #: themes/BaseV1/layouts/parts/home-nav.php:7
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--intro.php:4
 msgid "Introdução"
-msgstr ""
+msgstr "Introducción"
 
 #: themes/BaseV1/layouts/parts/home-opportunities.php:30
 msgid "oportunidades cadastradas"
-msgstr ""
+msgstr "oportunidades registradas"
 
 #: themes/BaseV1/layouts/parts/home-opportunities.php:34
 msgid "oportunidades da "
-msgstr ""
+msgstr "oportunidades de la "
 
 #: themes/BaseV1/layouts/parts/home-opportunities.php:38
 msgid "Encontre oportunidades por"
-msgstr ""
+msgstr "Búsqueda de oportunidades por"
 
 #: themes/BaseV1/layouts/parts/home-projects.php:30
 msgid "projetos cadastrados"
-msgstr ""
+msgstr "proyectos registrados"
 
 #: themes/BaseV1/layouts/parts/home-projects.php:34
 msgid "projetos da "
-msgstr ""
+msgstr "proyectos de la "
 
 #: themes/BaseV1/layouts/parts/home-projects.php:38
 msgid "Encontre projetos por"
-msgstr ""
+msgstr "Búsqueda de proyectos por"
 
 #: themes/BaseV1/layouts/parts/home-saas.php:38
 #, php-format
 msgid "Encontre %s por"
-msgstr ""
+msgstr "Búsqueda %s por"
 
 #: themes/BaseV1/layouts/parts/home-seals.php:31
 msgid "selos cadastrados"
-msgstr ""
+msgstr "sellos registrados"
 
 #: themes/BaseV1/layouts/parts/home-seals.php:35
 msgid "selos da "
-msgstr ""
+msgstr "sellos de la "
 
 #: themes/BaseV1/layouts/parts/home-seals.php:52
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:19
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:49
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:79
 msgid "Adicionar selo"
-msgstr ""
+msgstr "Agregar sello"
 
 #: themes/BaseV1/layouts/parts/home-search.php:9
 #: themes/BaseV1/views/panel/user-management.php:36
 msgid "Digite uma palavra-chave"
-msgstr ""
+msgstr "Indique la palabra clave"
 
 #: themes/BaseV1/layouts/parts/home-search.php:11
 #: themes/BaseV1/layouts/parts/search/filter.php:14
 #: themes/BaseV1/views/panel/user-management.php:40
 msgid "Buscar"
-msgstr ""
+msgstr "Buscar"
 
 #: themes/BaseV1/layouts/parts/home-search.php:41
 msgid "Saiba mais"
-msgstr ""
+msgstr "Sepa mas"
 
 #: themes/BaseV1/layouts/parts/home-spaces.php:35
 msgid " da "
-msgstr ""
+msgstr " de la "
 
 #: themes/BaseV1/layouts/parts/home-spaces.php:39
 msgid "Encontre "
-msgstr ""
+msgstr "Encontrar "
 
 #: themes/BaseV1/layouts/parts/home-spaces.php:39
 msgid " por "
-msgstr ""
+msgstr " por "
 
 #: themes/BaseV1/layouts/parts/link-list.php:18
 #: themes/BaseV1/layouts/parts/link-list.php:54
 msgid "Excluir este link?"
-msgstr ""
+msgstr "¿Eliminar este enlace?"
 
 #: themes/BaseV1/layouts/parts/link-list.php:18
 #: themes/BaseV1/layouts/parts/link-list.php:55
@@ -15868,15 +15868,15 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:30
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:35
 msgid "excluir"
-msgstr ""
+msgstr "eliminar"
 
 #: themes/BaseV1/layouts/parts/link-list.php:24
 msgid "Nenhum link disponível"
-msgstr ""
+msgstr "Ningun enlace disponible"
 
 #: themes/BaseV1/layouts/parts/link-list.php:37
 msgid "Clique para adicionar links"
-msgstr ""
+msgstr "Haga clic para agregar archivo enlaces"
 
 #: themes/BaseV1/layouts/parts/link-list.php:52
 #: themes/BaseV1/layouts/parts/panel-agent.php:40
@@ -15888,15 +15888,15 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/panel-space.php:32
 #: themes/BaseV1/layouts/parts/panel-subsite.php:24
 msgid "editar"
-msgstr ""
+msgstr "editar"
 
 #: themes/BaseV1/layouts/parts/link-list.php:62
 msgid "Editar Link"
-msgstr ""
+msgstr "Editar Enlace"
 
 #: themes/BaseV1/layouts/parts/link-list.php:67
 msgid "Endereço (com http://)"
-msgstr ""
+msgstr "Dirección (con http://)"
 
 #: themes/BaseV1/layouts/parts/link-list.php:70
 msgid "Para adicionar links você primeiro deve salvar."
@@ -15904,59 +15904,64 @@ msgstr ""
 
 #: themes/BaseV1/layouts/parts/modal/actions-event.php:10
 msgid "Criar evento"
-msgstr ""
+msgstr "Crear evento"
 
 #: themes/BaseV1/layouts/parts/modal/before-form.php:3
 msgid "Enviando..."
-msgstr ""
+msgstr "Enviando..."
 
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:2
 msgid "Novo local e data"
-msgstr ""
+msgstr "Nueva ubicación y fecha"
 
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:29
 msgid "Ou crie e vincule um novo espaço"
-msgstr ""
+msgstr "O cree y vincule un nuevo espacio"
 
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:39
 #: themes/BaseV1/views/event/edit.php:52
 #: themes/BaseV1/views/event/single.php:52
 msgid "Horário inicial"
-msgstr ""
+msgstr "Horario inicial"
 
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:47
 #: themes/BaseV1/views/event/edit.php:56
 #: themes/BaseV1/views/event/single.php:56
 msgid "Horário final"
-msgstr ""
+msgstr "Horario final"
 
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:76
 msgid "Repete"
-msgstr ""
+msgstr "RepiteD|L|M|M|J|V|S"
 
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:78
 msgid "D|S|T|Q|Q|S|S"
-msgstr ""
+msgstr "D|L|M|M|J|V|S"
 
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:97
 msgid "Descrição legível do horário"
-msgstr ""
+msgstr "Descripción legible del horario"
 
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:98
 msgid ""
 "Você pode inserir uma descrição própria ou inserir a descrição gerada "
 "automaticamente clicando no botão ao lado"
 msgstr ""
+"Usted puede introducir una descripción específica o introduzca la "
+"descripción generada automáticamente haciendo clic en el botón situado al "
+"lado"
 
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:100
 msgid "Descrição gerada pelo sistema automaticamente"
-msgstr ""
+msgstr "Descripción generada por el sistema automaticamente"
 
 #: themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:103
 msgid ""
 "Coloque neste campo somente informações sobre a data e hora desta ocorrência "
 "do evento."
 msgstr ""
+"Coloque en este campo solamente información sobre la fecha y la hora de este "
+"evento."
 
 #: themes/BaseV1/layouts/parts/modal/feedback-event.php:3
 #: themes/BaseV1/layouts/parts/modal/feedback.php:2
@@ -15966,38 +15971,38 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/modal/feedback-event.php:15
 #: themes/BaseV1/layouts/parts/modal/feedback.php:14
 msgid "Novo "
-msgstr ""
+msgstr "Nuevo "
 
 #: themes/BaseV1/layouts/parts/modal/feedback-event.php:23
 #: themes/BaseV1/layouts/parts/modal/feedback.php:22
 msgid "Continuar navegando"
-msgstr ""
+msgstr "Continuar navegando"
 
 #: themes/BaseV1/layouts/parts/modal/feedback-event.php:27
 #: themes/BaseV1/layouts/parts/modal/feedback.php:26
 msgid "Ver "
-msgstr ""
+msgstr "Ver "
 
 #: themes/BaseV1/layouts/parts/modal/feedback-event.php:32
 msgid "Completar criação agora"
-msgstr ""
+msgstr "Completar creación ahora"
 
 #: themes/BaseV1/layouts/parts/modal/feedback-event.php:34
 msgid "Clique para inserir o local e data data"
-msgstr ""
+msgstr "Haga clic para agregar ubicación y fecha"
 
 #: themes/BaseV1/layouts/parts/modal/feedback-event.php:35
 msgid "Inserir local e data"
-msgstr ""
+msgstr "Agregar ubicación y fecha"
 
 #: themes/BaseV1/layouts/parts/modal/feedback-event.php:39
 #: themes/BaseV1/layouts/parts/modal/feedback.php:30
 msgid "Completar edição agora"
-msgstr ""
+msgstr "Complete la edición ahora"
 
 #: themes/BaseV1/layouts/parts/modal/field--select.php:9
 msgid "Tipo de avaliação"
-msgstr ""
+msgstr "Tipo de evaluación"
 
 #: themes/BaseV1/layouts/parts/modal/field--textarea.php:2
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:9
@@ -16009,39 +16014,39 @@ msgstr ""
 #: themes/BaseV1/views/seal/single.php:68 themes/BaseV1/views/space/edit.php:68
 #: themes/BaseV1/views/space/single.php:68
 msgid "Insira uma descrição curta"
-msgstr ""
+msgstr "Agregue una descripción breve"
 
 #: themes/BaseV1/layouts/parts/modal/footer.php:3
 msgid "Todos os campos são obrigatórios."
-msgstr ""
+msgstr "Todos los campos son obligatorios."
 
 #: themes/BaseV1/layouts/parts/modal/form-event.php:7
 #: themes/BaseV1/layouts/parts/modal/form.php:6
 #, php-format
 msgid "Crie um %s com informações básicas"
-msgstr ""
+msgstr "Cree un %s con datos básicos"
 
 #: themes/BaseV1/layouts/parts/modal/form-event.php:52
 msgid "Espaços vinculados a esse evento"
-msgstr ""
+msgstr "Espacios vinculados a este evento"
 
 #: themes/BaseV1/layouts/parts/modal/form-event.php:64
 #: themes/BaseV1/layouts/parts/panel-space.php:21
 msgid "Local:"
-msgstr ""
+msgstr "Local:"
 
 #: themes/BaseV1/layouts/parts/modal/form-event.php:65
 msgid "Data:"
-msgstr ""
+msgstr "Fecha:"
 
 #: themes/BaseV1/layouts/parts/modal/form-event.php:66
 msgid "Valor:"
-msgstr ""
+msgstr "Valor:"
 
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:7
 #, php-format
 msgid "Crie uma %s com informações básicas"
-msgstr ""
+msgstr "Cree una %s con datos básicos"
 
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:50
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:52
@@ -16049,7 +16054,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/owner.php:16
 #: themes/BaseV1/layouts/parts/owner.php:18
 msgid "Selecione um agente"
-msgstr ""
+msgstr "Seleccione un agente"
 
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:60
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:77
@@ -16057,19 +16062,19 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:111
 #: themes/BaseV1/layouts/parts/owner.php:26
 msgid "Repassar propriedade"
-msgstr ""
+msgstr "Pasar propiedad"
 
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:67
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:69
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:78
 msgid "Selecione um evento"
-msgstr ""
+msgstr "Seleccione un evento"
 
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:84
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:86
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:95
 msgid "Selecione um espaço"
-msgstr ""
+msgstr "Seleccione un espacio"
 
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:101
 #: themes/BaseV1/layouts/parts/modal/form-opportunity.php:103
@@ -16079,60 +16084,64 @@ msgstr ""
 #: themes/BaseV1/views/event/single.php:414
 #: themes/BaseV1/views/event/single.php:416
 msgid "Selecione um projeto"
-msgstr ""
+msgstr "Seleccione un proyecto"
 
 #: themes/BaseV1/layouts/parts/modal/modal.php:13
 msgid "Modal de Entidade"
-msgstr ""
+msgstr "Modal de Entidad"
 
 #: themes/BaseV1/layouts/parts/modal/required-metadata.php:19
 msgid "Campo obrigatório"
-msgstr ""
+msgstr "Campo obligatorio"
 
 #: themes/BaseV1/layouts/parts/nav-main-user.php:81
 #: themes/BaseV1/layouts/parts/panel-nav.php:48
 msgid "Minhas Inscrições"
-msgstr ""
+msgstr "Mis Inscripciones"
 
 #: themes/BaseV1/layouts/parts/nav-main-user.php:99
 msgid "Trocar Usuário"
-msgstr ""
+msgstr "Cambiar usuario"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/import-last-phase-button.php:4
 msgid ""
 "importar como rascunho: Utilize esta opção se for necessária interação com "
 "os agentes inscritos. A inscrição deverá ser reenviada para esta fase."
 msgstr ""
+"importar como borrador: Utilice esta opción si es necesaria la interacción "
+"con los agentes inscritos. La inscripción deberá ser reenviada a esta fase."
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/import-last-phase-button.php:4
 msgid "como rascunho"
-msgstr ""
+msgstr "como borrador"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/import-last-phase-button.php:5
 msgid ""
 "importar como enviada: Utilize esta opção se NÃO for necessária interação "
 "com os agentes inscritos."
 msgstr ""
+"importar como enviada: Utilice esta opción si NO fuera necesaria interección "
+"con los agentes inscriptos."
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/import-last-phase-button.php:5
 msgid "importar inscrições"
-msgstr ""
+msgstr "importar inscripciones"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/next-phase-registration-link.php:1
 msgid "Esta formulário de inscrição continua na"
-msgstr ""
+msgstr "Este formulario de inscripción continúa en la"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/next-phase-registration-link.php:1
 msgid "inscrição de número"
-msgstr ""
+msgstr "inscripción de número"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/opportunity-phase-status.php:10
 msgid "Esta fase da oportunidade é um rascunho."
-msgstr ""
+msgstr "Esta fase de la oportunidad es un borrador."
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/opportunity-phase-status.php:12
 msgid "Esta fase da oportunidade está na lixeira."
-msgstr ""
+msgstr "Esta fase de la oportunidad está en la papelera."
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/opportunity-phases-tabs.php:4
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:88
@@ -16151,220 +16160,220 @@ msgstr ""
 #: themes/BaseV1/views/seal/single.php:54 themes/BaseV1/views/space/edit.php:96
 #: themes/BaseV1/views/space/single.php:96
 msgid "Sobre"
-msgstr ""
+msgstr "Acerca de"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:6
 msgid "do Ciclo"
-msgstr ""
+msgstr "del Ciclo"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:7
 msgid "do Concurso"
-msgstr ""
+msgstr "del Concurso"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:8
 msgid "da Conferência Pública Estadual"
-msgstr ""
+msgstr "de la Conferencia Pública Departamental"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:9
 msgid "da Conferência Pública Municipal"
-msgstr ""
+msgstr "de la Conferencia Pública Municipal"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:10
 msgid "da Conferência Pública Nacional"
-msgstr ""
+msgstr "de la Conferencia Pública Nacional"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:11
 msgid "da Conferência Pública Setorial"
-msgstr ""
+msgstr "de la Conferencia Pública Sectorial"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:12
 msgid "do Congresso"
-msgstr ""
+msgstr "del Congreso"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:13
 msgid "da Convenção"
-msgstr ""
+msgstr "de la Convención"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:14
 msgid "do Curso"
-msgstr ""
+msgstr "del Curso"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:15
 msgid "do Edital"
-msgstr ""
+msgstr "de la convocatoria"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:16
 msgid "do Encontro"
-msgstr ""
+msgstr "del Encuentro"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:17
 msgid "da Exibição"
-msgstr ""
+msgstr "de la Exhibición"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:18
 msgid "da Exposição"
-msgstr ""
+msgstr "de la Exposición"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:19
 msgid "da Feira"
-msgstr ""
+msgstr "de la Feria"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:20
 msgid "da Festa Popular"
-msgstr ""
+msgstr "de la Fiesta Popular"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:21
 msgid "da Festa Religiosa"
-msgstr ""
+msgstr "de la Fiesta Religiosa"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:22
 msgid "do Festival"
-msgstr ""
+msgstr "del Festival"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:23
 msgid "do Fórum"
-msgstr ""
+msgstr "del Foro"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:24
 msgid "do Intercâmbio Cultural"
-msgstr ""
+msgstr "del Intercambio Cultural"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:25
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:26
 msgid "da Jornada"
-msgstr ""
+msgstr "de la Jornada"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:27
 msgid "da Mostra"
-msgstr ""
+msgstr "de la Muestra"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:28
 msgid "da Oficina"
-msgstr ""
+msgstr "de la Oficina"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:29
 msgid "da Palestra"
-msgstr ""
+msgstr "de la Conferencia"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:30
 msgid "da Parada e Desfile Cívico"
-msgstr ""
+msgstr "del Desfile Cívico"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:31
 msgid "da Parada e Desfile Festivo"
-msgstr ""
+msgstr "del Desfile Festivo"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:32
 msgid "da Parada e Desfile Militar"
-msgstr ""
+msgstr "del Desfile Militar"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:33
 msgid "da Parada e Desfile Político"
-msgstr ""
+msgstr "del Desfile Político"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:34
 msgid "da Parada e Desfile de Ações Afirmativas"
-msgstr ""
+msgstr "del Desfile de Acciones Afirmativas"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:35
 msgid "do Programa"
-msgstr ""
+msgstr "del Programa"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:36
 msgid "da Reunião"
-msgstr ""
+msgstr "de la Reunión"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:37
 msgid "do Sarau"
-msgstr ""
+msgstr "del salón"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:38
 msgid "do Seminário"
-msgstr ""
+msgstr "del Seminario"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:39
 msgid "do Simpósio"
-msgstr ""
+msgstr "del Simposio"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:40
 msgid "da Inscrição"
-msgstr ""
+msgstr "de la Inscripción"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:53
 msgid "Criar nova fase"
-msgstr ""
+msgstr "Crear nueva fase"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:53
 msgid "Avançar"
-msgstr ""
+msgstr "Avance"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:60
 msgid "Fase de coleta de dados"
-msgstr ""
+msgstr "Fase de Recolección de Datos"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:61
 msgid "Selecione aqui caso seja uma fase de coleta de dados"
-msgstr ""
+msgstr "Seleccione aquí si es una fase de recolección de datos"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:92
 msgid "Está será a última fase"
-msgstr ""
+msgstr "Esta será la última fase"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:93
 msgid "Assinale apenas se for a fase final"
-msgstr ""
+msgstr "Marque solo si es la etapa final"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:105
 msgid "Adicionar fase"
-msgstr ""
+msgstr "Agregar fase"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:125
 #: themes/BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php:14
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--config.php:24
 #: themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:14
 msgid "Hora final"
-msgstr ""
+msgstr "Hora final"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:164
 msgid "a partir de"
-msgstr ""
+msgstr "a partir de"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:171
 msgid "(rascunho)"
-msgstr ""
+msgstr "(borrador)"
 
 #: themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:174
 msgid "(última fase)"
-msgstr ""
+msgstr "(última fase)"
 
 #: themes/BaseV1/layouts/parts/owner.php:37
 msgid "Reportar erro"
-msgstr ""
+msgstr "Reportar error"
 
 #: themes/BaseV1/layouts/parts/owner.php:39
 msgid "Ceder propriedade"
-msgstr ""
+msgstr "Ceder propiedad"
 
 #: themes/BaseV1/layouts/parts/owner.php:41
 msgid "Reivindicar propriedade"
-msgstr ""
+msgstr "Reivindicar propiedad"
 
 #: themes/BaseV1/layouts/parts/owner.php:43
 msgid "Selecione o agente para o qual você deseja passar a propriedade deste"
-msgstr ""
+msgstr "Seleccione el agente para el cual desea pasar la propiedad de este"
 
 #: themes/BaseV1/layouts/parts/panel-agent.php:13
 msgid "Este é seu perfil."
-msgstr ""
+msgstr "Este es tu perfil."
 
 #: themes/BaseV1/layouts/parts/panel-agent.php:16
 msgid "Agente secundário"
-msgstr ""
+msgstr "Agente secundario"
 
 #: themes/BaseV1/layouts/parts/panel-agent.php:25
 #: themes/BaseV1/layouts/parts/panel-space.php:20
 msgid "Área(s) de atuação:"
-msgstr ""
+msgstr "Área(s) de actuación:"
 
 #: themes/BaseV1/layouts/parts/panel-agent.php:60
 #: themes/BaseV1/layouts/parts/panel-app.php:15
@@ -16380,7 +16389,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:41
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:41
 msgid "recuperar"
-msgstr ""
+msgstr "recuperar"
 
 #: themes/BaseV1/layouts/parts/panel-agent.php:62
 #: themes/BaseV1/layouts/parts/panel-app.php:17
@@ -16398,7 +16407,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:43
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:43
 msgid "excluir definitivamente"
-msgstr ""
+msgstr "eliminar definitivamente"
 
 #: themes/BaseV1/layouts/parts/panel-em-cartaz.php:14
 #: themes/BaseV1/views/panel/em-cartaz.php:46
@@ -16408,271 +16417,274 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/panel-em-cartaz.php:16
 #: themes/BaseV1/views/panel/em-cartaz.php:48
 msgid "Filtrar Eventos"
-msgstr ""
+msgstr "Filtrar Eventos"
 
 #: themes/BaseV1/layouts/parts/panel-evaluation.php:40
 #: themes/BaseV1/layouts/parts/panel-opportunity.php:29
 #: themes/BaseV1/layouts/parts/panel-project.php:14
 #: themes/BaseV1/layouts/parts/singles/opportunity-projects--tab-content.php:24
 msgid "Inscrições:"
-msgstr ""
+msgstr "Inscripciones:"
 
 #: themes/BaseV1/layouts/parts/panel-evaluation.php:44
 #: themes/BaseV1/layouts/parts/panel-opportunity.php:33
 msgid "Abertas "
-msgstr ""
+msgstr "Abiertas "
 
 #: themes/BaseV1/layouts/parts/panel-evaluation.php:47
 #: themes/BaseV1/layouts/parts/panel-opportunity.php:36
 #: themes/BaseV1/layouts/parts/panel-project.php:19
 msgid "a partir de "
-msgstr ""
+msgstr "a partir de "
 
 #: themes/BaseV1/layouts/parts/panel-evaluation.php:49
 #: themes/BaseV1/layouts/parts/panel-opportunity.php:38
 #: themes/BaseV1/layouts/parts/panel-project.php:21
 msgid " até "
-msgstr ""
+msgstr " hasta "
 
 #: themes/BaseV1/layouts/parts/panel-evaluation.php:56
 #: themes/BaseV1/layouts/parts/panel-opportunity.php:46
 #: themes/BaseV1/layouts/parts/panel-project.php:28
 msgid "Organização:"
-msgstr ""
+msgstr "Organización:"
 
 #: themes/BaseV1/layouts/parts/panel-evaluation.php:68
 msgid "Visualizar Inscritos"
-msgstr ""
+msgstr "Visualizar Inscriptos"
 
 #: themes/BaseV1/layouts/parts/panel-event.php:13
 msgid "Linguagens: "
-msgstr ""
+msgstr "Tipos de eventos: "
 
 #: themes/BaseV1/layouts/parts/panel-event.php:15
 msgid "Classificação:"
-msgstr ""
+msgstr "Clasificación:"
 
 #: themes/BaseV1/layouts/parts/panel-event.php:27
 #: themes/BaseV1/layouts/parts/singles/project-events.php:12
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:33
 msgid "tornar rascunho"
-msgstr ""
+msgstr "convertir en borrador"
 
 #: themes/BaseV1/layouts/parts/panel-nav.php:60
 msgid "Meus Apps"
-msgstr ""
+msgstr "Mis Apps"
 
 #: themes/BaseV1/layouts/parts/panel-nav.php:68
 msgid "Gestão de Usuários"
-msgstr ""
+msgstr "Gestión de Usuarios"
 
 #: themes/BaseV1/layouts/parts/panel-search.php:9
 msgid "Buscar por palavra-chave"
-msgstr ""
+msgstr "Buscar por palabra clave"
 
 #: themes/BaseV1/layouts/parts/panel-search.php:13
 msgid "Ordenar por: "
-msgstr ""
+msgstr "Ordenar por: "
 
 #: themes/BaseV1/layouts/parts/panel-search.php:15
 msgid "Nome (Z-A)"
-msgstr ""
+msgstr "Nombre (Z-A)"
 
 #: themes/BaseV1/layouts/parts/panel-search.php:16
 msgid "Data mais recente"
-msgstr ""
+msgstr "Fecha más reciente"
 
 #: themes/BaseV1/layouts/parts/panel-search.php:17
 msgid "Data mais antiga"
-msgstr ""
+msgstr "Fecha más antígua"
 
 #: themes/BaseV1/layouts/parts/panel-space.php:22
 msgid "Acessibilidade:"
-msgstr ""
+msgstr "Accesibilidad:"
 
 #: themes/BaseV1/layouts/parts/panel-space.php:24
 #: themes/BaseV1/layouts/parts/panel-subsite.php:20
 msgid "Data de Criação:"
-msgstr ""
+msgstr "Fecha de creación:"
 
 #: themes/BaseV1/layouts/parts/panel/highlighted-message.php:6
 #, php-format
 msgid "Olá, %s, bem-vindo ao painel do %s!"
-msgstr ""
+msgstr "¡Hola %s, bienvenido al panel de %s!"
 
 #: themes/BaseV1/layouts/parts/redes-sociais.php:3
 msgid "REDES SOCIAIS"
-msgstr ""
+msgstr "REDES SOCIALES"
 
 #: themes/BaseV1/layouts/parts/redes-sociais.php:7
 msgid "Perfil no Twitter"
-msgstr ""
+msgstr "Perfil en Twitter"
 
 #: themes/BaseV1/layouts/parts/redes-sociais.php:15
 msgid "Perfil no Facebook"
-msgstr ""
+msgstr "Perfil en Facebook"
 
 #: themes/BaseV1/layouts/parts/redes-sociais.php:23
 msgid "Perfil no Instagram"
-msgstr ""
+msgstr "Perfil en Instagram"
 
 #: themes/BaseV1/layouts/parts/redes-sociais.php:31
 msgid "Perfil no Linkedin"
-msgstr ""
+msgstr "Perfil en Linkedin"
 
 #: themes/BaseV1/layouts/parts/redes-sociais.php:39
 msgid "Perfil no Spotify"
-msgstr ""
+msgstr "Perfil en Spotify"
 
 #: themes/BaseV1/layouts/parts/redes-sociais.php:47
 msgid "Perfil no YouTube"
-msgstr ""
+msgstr "Perfil en YouTube"
 
 #: themes/BaseV1/layouts/parts/redes-sociais.php:55
 msgid "Perfil no Pinterest"
-msgstr ""
+msgstr "Perfil en Pinterest"
 
 #: themes/BaseV1/layouts/parts/related-admin-agents.php:19
 #: themes/BaseV1/layouts/parts/related-agents.php:34
 msgid "Aguardando confirmação."
-msgstr ""
+msgstr "Esperando confirmación."
 
 #: themes/BaseV1/layouts/parts/related-admin-agents.php:32
 msgid "Adicionar Agente aos Administradores"
-msgstr ""
+msgstr "Agregar Agente a los Administradores"
 
 #: themes/BaseV1/layouts/parts/related-admin-agents.php:34
 #: themes/BaseV1/layouts/parts/related-agents.php:54
 msgid "Adicionar agente relacionado"
-msgstr ""
+msgstr "Agregar agente relacionado"
 
 #: themes/BaseV1/layouts/parts/related-agents.php:9
 msgid "Adicionar grupo de agentes"
-msgstr ""
+msgstr "Agregar grupo de agentes"
 
 #: themes/BaseV1/layouts/parts/related-agents.php:10
 msgid "Nome do grupo de agentes"
-msgstr ""
+msgstr "Nombre del grupo de agentes"
 
 #: themes/BaseV1/layouts/parts/related-agents.php:12
 msgid "Renomear grupo de agentes"
-msgstr ""
+msgstr "Renombrar gurpo de agentes"
 
 #: themes/BaseV1/layouts/parts/related-agents.php:12
 msgid "Renomear"
-msgstr ""
+msgstr "Renombrar"
 
 #: themes/BaseV1/layouts/parts/related-agents.php:15
 msgid ""
 "Grupos de agentes podem ser usados para exibir membros de um coletivo, "
 "equipes técnicas, etc."
 msgstr ""
+"Grupos de agentes pueden ser usados para exhibir miembros de un colectivo, "
+"equipos técnicos, etc."
 
 #: themes/BaseV1/layouts/parts/related-agents.php:22
 msgid "Renomear este grupo"
-msgstr ""
+msgstr "Renombrar este grupo"
 
 #: themes/BaseV1/layouts/parts/related-agents.php:23
 msgid "Remover este grupo"
-msgstr ""
+msgstr "Eliminar este grupo"
 
 #: themes/BaseV1/layouts/parts/related-agents.php:43
 msgid "Permitir editar:"
-msgstr ""
+msgstr "Permitir editar:"
 
 #: themes/BaseV1/layouts/parts/related-agents.php:53
 msgid "Adicionar Integrante a este Grupo"
-msgstr ""
+msgstr "Agregar Integrante a este Grupo"
 
 #: themes/BaseV1/layouts/parts/related-profiles-agents.php:28
 msgid "Adicionar Super Administrador"
-msgstr ""
+msgstr "Agregar Súper Administrador"
 
 #: themes/BaseV1/layouts/parts/related-profiles-agents.php:55
 msgid "Adicionar Administrador"
-msgstr ""
+msgstr "Agregar Administrador"
 
 #: themes/BaseV1/layouts/parts/related-seals.php:11
 #, php-format
 msgid "Para relacionar o selo ao %s, primeiro é preciso salvar o registro."
 msgstr ""
+"Para relacionar el sello al %s, primero es preciso guardar el registro."
 
 #: themes/BaseV1/layouts/parts/related-seals.php:16
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:248
 #: themes/BaseV1/layouts/parts/singles/history_event.php:242
 #: themes/BaseV1/layouts/parts/singles/history_space.php:243
 msgid "Selos Aplicados"
-msgstr ""
+msgstr "Sellos Aplicados"
 
 #: themes/BaseV1/layouts/parts/related-seals.php:16
 #: themes/BaseV1/layouts/parts/related-seals.php:17
 msgid "Adicionar selo relacionado"
-msgstr ""
+msgstr "Agregar sello relacionado"
 
 #: themes/BaseV1/layouts/parts/related-seals.php:19
 msgid "Selos Disponíveis"
-msgstr ""
+msgstr "Sellos Disponibles"
 
 #: themes/BaseV1/layouts/parts/related-seals.php:36
 msgid "Excluir selo"
-msgstr ""
+msgstr "Borrar sello"
 
 #: themes/BaseV1/layouts/parts/related-seals.php:47
 #: themes/BaseV1/views/seal/sealrelation.php:69
 msgid "Solicitar renovação"
-msgstr ""
+msgstr "Solicitar renovación"
 
 #: themes/BaseV1/layouts/parts/related-seals.php:50
 #: themes/BaseV1/views/seal/sealrelation.php:73
 msgid "Renovação Solicitada"
-msgstr ""
+msgstr "Renovación Solicitada"
 
 #: themes/BaseV1/layouts/parts/related-seals.php:55
 #: themes/BaseV1/views/seal/sealrelation.php:78
 msgid "Renovar selo"
-msgstr ""
+msgstr "Renovar selo"
 
 #: themes/BaseV1/layouts/parts/search/advanced-filters.php:1
 msgid "Exibir opções avançadas"
-msgstr ""
+msgstr "Mostrar opciones avanzadas"
 
 #: themes/BaseV1/layouts/parts/search/advanced-filters.php:4
 msgid "Filtros Avançados"
-msgstr ""
+msgstr "Filtros Avanzados"
 
 #: themes/BaseV1/layouts/parts/search/filter.php:9
 msgid "Palavra-chave"
-msgstr ""
+msgstr "Palabra clave"
 
 #: themes/BaseV1/layouts/parts/search/infobox-event.php:5
 msgid "Eventos encontrados em:"
-msgstr ""
+msgstr "Eventos encontrados en:"
 
 #: themes/BaseV1/layouts/parts/search/list-event.php:3
 msgid "Adicionar evento"
-msgstr ""
+msgstr "Agregar evento"
 
 #: themes/BaseV1/layouts/parts/search/list-project-item.php:15
 msgid "Período de execução"
-msgstr ""
+msgstr "Período de ejecución"
 
 #: themes/BaseV1/layouts/parts/search/list-project.php:4
 msgid "Adicionar projeto"
-msgstr ""
+msgstr "Agregar proyecto"
 
 #: themes/BaseV1/layouts/parts/search/list-space.php:3
 msgid "Adicionar espaço"
-msgstr ""
+msgstr "Agregar espacio"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:68
 msgid "Informe seu nome social"
-msgstr ""
+msgstr "Informe su razón social"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:76
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:31
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:111
 msgid "Nome Completo ou Razão Social"
-msgstr ""
+msgstr "Nombre Completo o Razón Social"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:76
 msgid "Preencha o nome de registro"
