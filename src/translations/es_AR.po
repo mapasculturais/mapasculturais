@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2024-01-04 18:06-0400\n"
+"PO-Revision-Date: 2024-01-05 16:58-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -16412,7 +16412,7 @@ msgstr "eliminar definitivamente"
 #: themes/BaseV1/layouts/parts/panel-em-cartaz.php:14
 #: themes/BaseV1/views/panel/em-cartaz.php:46
 msgid "Revista Em Cartaz"
-msgstr ""
+msgstr "Revista publicada"
 
 #: themes/BaseV1/layouts/parts/panel-em-cartaz.php:16
 #: themes/BaseV1/views/panel/em-cartaz.php:48
@@ -16688,19 +16688,19 @@ msgstr "Nombre Completo o Razón Social"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:76
 msgid "Preencha o nome de registro"
-msgstr ""
+msgstr "Introduzca el nombre de registro"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:84
 msgid "Informe seu CPF  com pontos, hífens e barras"
-msgstr ""
+msgstr "Informe su CI o RUT con puntos, guiones y barras"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:91
 msgid "CNPJ (MEI)"
-msgstr ""
+msgstr "RUT"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:92
 msgid "Caso seja Micro Empreendedor Individual informe seu CNPJ"
-msgstr ""
+msgstr "Si eres Micro Emprendedor Individual, informa a tu RUT"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:99
 #: themes/BaseV1/layouts/parts/singles/agent-form-2.php:80
@@ -16709,11 +16709,11 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_space.php:140
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:33
 msgid "Insira um email que não será exibido publicamente"
-msgstr ""
+msgstr "Ingrese un e-mail no que será exhibido públicamente"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:107
 msgid "E-mail Público"
-msgstr ""
+msgstr "E-mail Público"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:108
 #: themes/BaseV1/layouts/parts/singles/agent-form-2.php:89
@@ -16722,7 +16722,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_space.php:144
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:29
 msgid "Insira um email que será exibido publicamente"
-msgstr ""
+msgstr "Ingrese un e-mail que será exhibido públicamente"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:117
 #: themes/BaseV1/layouts/parts/singles/agent-form-2.php:97
@@ -16732,7 +16732,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/history_space.php:148
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:37
 msgid "Insira um telefone que será exibido publicamente"
-msgstr ""
+msgstr "Ingrese un teléfono que será exhibido públicamente"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:127
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:134
@@ -16747,7 +16747,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:41
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:42
 msgid "Telefone Privado"
-msgstr ""
+msgstr "Teléfono Privado"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:127
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:134
@@ -16762,101 +16762,101 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:41
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:42
 msgid "Insira um telefone que não será exibido publicamente"
-msgstr ""
+msgstr "Ingrese un teléfono que no será exhibido públicamente"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:155
 msgid "Dados Pessoais Sensíveis"
-msgstr ""
+msgstr "Datos personales sensibles"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:161
 msgid "Pertence alguma comunidade tradicional?"
-msgstr ""
+msgstr "¿Pertenece a una comunidad tradicional?"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:168
 msgid "Não encontrou sua comunidade Tradicional?"
-msgstr ""
+msgstr "¿No encuentras tu comunidad tradicional?"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:169
 msgid "Informe outra comunidade tradicional?"
-msgstr ""
+msgstr "¿Informar a otra comunidad tradicional?"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:169
 msgid "Preencha aqui"
-msgstr ""
+msgstr "Completa aquí"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:183
 msgid "Informe sua Escolaridade"
-msgstr ""
+msgstr "Informa tu Escolaridad"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:183
 msgid "Informe o seu nível escolar"
-msgstr ""
+msgstr "Informe su nivel escolar"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:191
 msgid "Insira a data de nascimento"
-msgstr ""
+msgstr "Fecha de Nacimiento"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:199
 msgid "Pessoa idosa (a cima de 60 anos)"
-msgstr ""
+msgstr "Persona mayor (mayores de 60 años)"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:200
 msgid "SIM"
-msgstr ""
+msgstr "SÍ"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:200
 msgid "NÂO"
-msgstr ""
+msgstr "SÍ"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:207
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:55
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:127
 msgid "Selecione o gênero se for pessoa física"
-msgstr ""
+msgstr "Seleccione el género, en el caso de persona física"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:214
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:62
 msgid "Selecione uma orientação sexual se for pessoa física"
-msgstr ""
+msgstr "Seleccione una orientación sexual en caso de ser persona física"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:222
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:69
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:135
 msgid ""
 "Responda sim, caso seja agente Itinerante ou não se possuir residência fixa"
-msgstr ""
+msgstr "Responda sí, si es un agente Itinerante o si no tiene residencia fija"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-1.php:231
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:76
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:139
 msgid "Selecione a raça/cor se for pessoa física"
-msgstr ""
+msgstr "Seleccione raza/color en caso de persona física"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-2.php:53
 msgid "Nome Fantasia"
-msgstr ""
+msgstr "Nombre Fantasía"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-2.php:54
 msgid "Nome Fantasia ou Razão Social"
-msgstr ""
+msgstr "Nombre Fantasía o Razón Social"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-2.php:54
 msgid "Informe o nome fantasia ou razão social"
-msgstr ""
+msgstr "Informe su Nombre fantasía o razón social"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-2.php:62
 msgid "Informe seu CNPJ com pontos, hífens e barras"
-msgstr ""
+msgstr "Informe su CI o RUT con puntos, guiones y barras"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-2.php:71
 msgid "Data de Fundação"
-msgstr ""
+msgstr "Fecha de fundación"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form-2.php:72
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:47
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:120
 msgid "Insira a data de nascimento ou fundação do agente"
-msgstr ""
+msgstr "Ingrese la fecha de nacimiento o fundación del agente"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:4
 #: themes/BaseV1/layouts/parts/singles/agent-header.php:28
@@ -16870,6 +16870,8 @@ msgid ""
 "O limite de caracteres da descrição curta foi diminuido para 400, mas seu "
 "texto atual possui"
 msgstr ""
+"El límite de caracteres de la descripción breve fue acortado a 400, pero su "
+"texto actual posee"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:6
 #: themes/BaseV1/layouts/parts/singles/agent-header.php:30
@@ -16880,7 +16882,7 @@ msgstr ""
 #: themes/BaseV1/views/space/edit.php:63
 #: themes/BaseV1/views/space/single.php:63
 msgid "caracteres. Você deve alterar seu texto ou este será cortado ao salvar."
-msgstr ""
+msgstr "caracteres. Usted debe cambiar su texto o será cortado al guardar."
 
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:19
 #: themes/BaseV1/layouts/parts/singles/agent-header.php:41
@@ -16889,67 +16891,67 @@ msgstr ""
 #: themes/BaseV1/views/space/edit.php:74
 #: themes/BaseV1/views/space/single.php:74
 msgid "Insira a url de seu site"
-msgstr ""
+msgstr "Agregue la url de su página web"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:31
 msgid "Informe seu nome completo ou razão social"
-msgstr ""
+msgstr "Informe su Nombre Completo o razón social"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:38
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:39
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:115
 msgid "CPF/CNPJ"
-msgstr ""
+msgstr "CI/RUT"
 
 #: themes/BaseV1/layouts/parts/singles/agent-form.php:39
 msgid "Informe seu CPF ou CNPJ com pontos, hífens e barras"
-msgstr ""
+msgstr "Informe su CI o RUT con puntos, guiones y barras"
 
 #: themes/BaseV1/layouts/parts/singles/agent-header.php:34
 #: themes/BaseV1/views/seal/create.php:67 themes/BaseV1/views/seal/edit.php:67
 #: themes/BaseV1/views/seal/single.php:67
 msgid "/400 Caracteres"
-msgstr ""
+msgstr "/400 Caracteres"
 
 #: themes/BaseV1/layouts/parts/singles/avatar.php:10
 msgid "Editar avatar"
-msgstr ""
+msgstr "Editar avatar"
 
 #: themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:3
 msgid "Sair do modo de edição"
-msgstr ""
+msgstr "Salir del modo edición"
 
 #: themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:8
 #, php-format
 msgid "Salvar este %s como rascunho."
-msgstr ""
+msgstr "Guardar este %s como borrador."
 
 #: themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:8
 msgid "Salvar rascunho"
-msgstr ""
+msgstr "Guardar borrador"
 
 #: themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:9
 #, php-format
 msgid "Salvar e publicar este %s."
-msgstr ""
+msgstr "Guardar y publicar este %s."
 
 #: themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:16
 msgid "Desarquivar"
-msgstr ""
+msgstr "Desarchivar"
 
 #: themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:32
 msgid "Os ícones de lápis indicam conteúdos editáveis."
-msgstr ""
+msgstr "Los íconos de lápiz indican contenidos editables."
 
 #: themes/BaseV1/layouts/parts/singles/control--roles.php:16
 #: themes/BaseV1/layouts/parts/singles/control--roles.php:22
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:280
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: themes/BaseV1/layouts/parts/singles/control--view-buttons.php:13
 msgid "Excluir Definitivamente"
-msgstr ""
+msgstr "Eliminar Definitivamente"
 
 #: themes/BaseV1/layouts/parts/singles/control--view-buttons.php:17
 #, php-format
@@ -16957,64 +16959,66 @@ msgid ""
 "Você possui permissão para editar este %s. Use os botões à direita para "
 "editar ou excluir."
 msgstr ""
+"Usted posee permiso para editar este %s. Use los botones a la derecha para "
+"editar o eliminar."
 
 #: themes/BaseV1/layouts/parts/singles/entity-status.php:11
 #, php-format
 msgid "Este %s é um rascunho"
-msgstr ""
+msgstr "Este %s es un borrador"
 
 #: themes/BaseV1/layouts/parts/singles/entity-status.php:13
 #, php-format
 msgid "Este %s está na lixeira"
-msgstr ""
+msgstr "Este %s está en la papelera"
 
 #: themes/BaseV1/layouts/parts/singles/entity-status.php:15
 #, php-format
 msgid "Este %s está arquivado"
-msgstr ""
+msgstr "Este %s está archivado"
 
 #: themes/BaseV1/layouts/parts/singles/header-image.php:19
 msgid "Editar Imagem da Capa"
-msgstr ""
+msgstr "Editar imagen de la portada"
 
 #: themes/BaseV1/layouts/parts/singles/header-image.php:25
 msgid "Excluir capa"
-msgstr ""
+msgstr "Excluir portada"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:38
 #: themes/BaseV1/layouts/parts/singles/history_event.php:34
 #: themes/BaseV1/layouts/parts/singles/history_space.php:38
 #, php-format
 msgid "As informações deste registro é histórico gerado em %s."
-msgstr ""
+msgstr "La información de este registro y el histórico generado en %s."
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:41
 #: themes/BaseV1/layouts/parts/singles/history_event.php:37
 #: themes/BaseV1/layouts/parts/singles/history_space.php:41
 #, php-format
 msgid "Este %s está como <b>publicado</b>"
-msgstr ""
+msgstr "Este %s está como <b>publicado</b>"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:43
 #: themes/BaseV1/layouts/parts/singles/history_event.php:39
 #: themes/BaseV1/layouts/parts/singles/history_space.php:43
 #, php-format
 msgid "Este %s é um <b>rascunho</b>"
-msgstr ""
+msgstr "Este %s es un  <b>borrador</b>"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:45
 #: themes/BaseV1/layouts/parts/singles/history_event.php:41
 #: themes/BaseV1/layouts/parts/singles/history_space.php:45
 #, php-format
 msgid "Este %s está na <b>lixeira</b>"
-msgstr ""
+msgstr "Este %s está en la <b>papelera</b>"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:47
 #: themes/BaseV1/layouts/parts/singles/history_event.php:43
 #: themes/BaseV1/layouts/parts/singles/history_space.php:47
 #, php-format
 msgid "Este %s está <b>arquivado</b>"
-msgstr ""
+msgstr "Este %s está <b>archivado</b>"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:48
 #: themes/BaseV1/layouts/parts/singles/history_event.php:44
@@ -17024,12 +17028,14 @@ msgid ""
 "e pode ser acessado clicando <a href=\"%s\" rel='noopener noreferrer'>aqui</"
 "a>"
 msgstr ""
+"y se puede acceder haciendo clic <a href=\\\"%s\\\" rel='noopener \"\n"
+"\"noreferrer'>aqui</a>"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:66
 #: themes/BaseV1/layouts/parts/singles/history_space.php:66
 #: themes/BaseV1/layouts/parts/singles/type.php:10
 msgid "Selecione um tipo"
-msgstr ""
+msgstr "Seleccione un tipo"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:74
 #: themes/BaseV1/layouts/parts/singles/history_event.php:67
@@ -17038,67 +17044,67 @@ msgstr ""
 #: themes/BaseV1/views/seal/sealrelation.php:33
 #: themes/BaseV1/views/seal/sealrelation.php:42
 msgid "Nome de exibição"
-msgstr ""
+msgstr "Nombre para mostrar"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:111
 msgid "Insira seu nome completo ou razão social"
-msgstr ""
+msgstr "Agregue el Nombre Completo o la Razón Social"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:115
 msgid "Insira o CPF ou CNPJ com pontos, hífens e barras"
-msgstr ""
+msgstr "Ingrese CI o RUT con puntos, guiones y barras"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:131
 msgid "Selecione a orientação sexual se for pessoa física"
-msgstr ""
+msgstr "Seleccione la orientación sexual en caso de persona física"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:177
 #: themes/BaseV1/layouts/parts/singles/history_space.php:169
 #: themes/BaseV1/layouts/parts/singles/location.php:12
 msgid "Insira o endereço"
-msgstr ""
+msgstr "Ingrese una dirección"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:179
 #: themes/BaseV1/layouts/parts/singles/history_space.php:171
 #: themes/BaseV1/layouts/parts/singles/location.php:14
 msgid "Insira o CEP"
-msgstr ""
+msgstr "Ingrese el CP"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:180
 #: themes/BaseV1/layouts/parts/singles/history_space.php:172
 #: themes/BaseV1/layouts/parts/singles/location.php:15
 msgid "Insira o logradouro"
-msgstr ""
+msgstr "Ingrese la calle"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:181
 #: themes/BaseV1/layouts/parts/singles/history_space.php:173
 #: themes/BaseV1/layouts/parts/singles/location.php:16
 msgid "Insira o Número"
-msgstr ""
+msgstr "Ingrese el Número"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:182
 #: themes/BaseV1/layouts/parts/singles/history_space.php:174
 #: themes/BaseV1/layouts/parts/singles/location.php:17
 msgid "Insira um complemento"
-msgstr ""
+msgstr "Ingrese un complemento"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:183
 #: themes/BaseV1/layouts/parts/singles/history_space.php:175
 #: themes/BaseV1/layouts/parts/singles/location.php:18
 msgid "Insira o Bairro"
-msgstr ""
+msgstr "Ingrese el Barrio"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:184
 #: themes/BaseV1/layouts/parts/singles/history_space.php:176
 #: themes/BaseV1/layouts/parts/singles/location.php:19
 msgid "Insira o Município"
-msgstr ""
+msgstr "Ingrese el Municipio/Localidad"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:185
 #: themes/BaseV1/layouts/parts/singles/history_space.php:177
 #: themes/BaseV1/layouts/parts/singles/location.php:20
 msgid "Insira o Estado"
-msgstr ""
+msgstr "Ingrese el Departamento"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:207
 #: themes/BaseV1/views/agent/edit-1.php:57
@@ -17108,7 +17114,7 @@ msgstr ""
 #: themes/BaseV1/views/agent/single-2.php:55
 #: themes/BaseV1/views/agent/single.php:81
 msgid "Descrição do Agente"
-msgstr ""
+msgstr "Descripción del Agente"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:207
 #: themes/BaseV1/views/agent/edit-1.php:57
@@ -17118,89 +17124,89 @@ msgstr ""
 #: themes/BaseV1/views/agent/single-2.php:55
 #: themes/BaseV1/views/agent/single.php:81
 msgid "Insira uma descrição do agente"
-msgstr ""
+msgstr "Ingrese una descripción del agente"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:214
 #: themes/BaseV1/layouts/parts/singles/history_event.php:199
 #: themes/BaseV1/layouts/parts/singles/history_space.php:200
 #: themes/BaseV1/layouts/parts/video-gallery.php:35
 msgid "Vídeos"
-msgstr ""
+msgstr "Videos"
 
 #: themes/BaseV1/layouts/parts/singles/history_event.php:73
 #: themes/BaseV1/views/event/edit.php:134
 #: themes/BaseV1/views/event/single.php:134
 msgid "Subtítulo"
-msgstr ""
+msgstr "Subtítulo"
 
 #: themes/BaseV1/layouts/parts/singles/history_event.php:73
 #: themes/BaseV1/views/event/edit.php:134
 #: themes/BaseV1/views/event/single.php:134
 msgid "Insira um subtítulo para o evento"
-msgstr ""
+msgstr "Ingrese un subtítulo para el evento"
 
 #: themes/BaseV1/layouts/parts/singles/history_event.php:110
 #: themes/BaseV1/views/event/edit.php:209
 #: themes/BaseV1/views/event/single.php:209
 msgid "Informações sobre as inscrições"
-msgstr ""
+msgstr "Datos acerca de las inscripciones"
 
 #: themes/BaseV1/layouts/parts/singles/history_event.php:120
 #: themes/BaseV1/views/event/edit.php:213
 #: themes/BaseV1/views/event/single.php:213
 msgid "Informe a classificação etária do evento"
-msgstr ""
+msgstr "Clasificación etaria del evento"
 
 #: themes/BaseV1/layouts/parts/singles/history_event.php:142
 #: themes/BaseV1/views/event/edit.php:232
 #: themes/BaseV1/views/event/single.php:232
 msgid "Áudio Descrição"
-msgstr ""
+msgstr "Audio Descripción"
 
 #: themes/BaseV1/layouts/parts/singles/history_event.php:142
 #: themes/BaseV1/views/event/edit.php:232
 #: themes/BaseV1/views/event/single.php:232
 msgid "Descrição Sonora"
-msgstr ""
+msgstr "Descripción Sonora"
 
 #: themes/BaseV1/layouts/parts/singles/history_event.php:161
 #: themes/BaseV1/views/event/edit.php:44 themes/BaseV1/views/event/edit.php:84
 #: themes/BaseV1/views/event/single.php:44
 #: themes/BaseV1/views/event/single.php:84
 msgid "ver mapa"
-msgstr ""
+msgstr "ver mapa"
 
 #: themes/BaseV1/layouts/parts/singles/history_event.php:161
 #: themes/BaseV1/views/event/edit.php:44 themes/BaseV1/views/event/edit.php:84
 #: themes/BaseV1/views/event/single.php:44
 #: themes/BaseV1/views/event/single.php:84
 msgid "ocultar mapa"
-msgstr ""
+msgstr "ocultar mapa"
 
 #: themes/BaseV1/layouts/parts/singles/list-relations.php:8
 msgid "Grupos que participa"
-msgstr ""
+msgstr "Grupos en los que participa"
 
 #: themes/BaseV1/layouts/parts/singles/list-relations.php:13
 msgid "em"
-msgstr ""
+msgstr "en"
 
 #: themes/BaseV1/layouts/parts/singles/location.php:50
 msgid "Informações Geográficas"
-msgstr ""
+msgstr "Datos geográficos"
 
 #: themes/BaseV1/layouts/parts/singles/location.php:62
 msgid "Encontrar minha localização"
-msgstr ""
+msgstr "Encontrar mi localización"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php:7
 #: themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:7
 msgid "Inscrições abertas de"
-msgstr ""
+msgstr "Inscripciones abiertas desde el"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php:17
 msgid "Data para publicação automática dos resultados"
-msgstr ""
+msgstr "Fecha de publicación automática de resultados"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php:18
 msgid "DD\\MM\\YYYY"
@@ -17212,37 +17218,41 @@ msgstr ""
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php:20
 msgid "Horário"
-msgstr ""
+msgstr "Horario"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:9
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:9
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--config.php:17
 msgid "Avaliações abertas de"
-msgstr ""
+msgstr "Evaluaciones abiertas desde el"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--buttons.php:7
 msgid ""
 "Não é possível enviar as avaliações antes do início do período de avaliação"
 msgstr ""
+"No es posible enviar las evaluaciones antes del inicio del período de "
+"evaluación"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--buttons.php:9
 msgid "Não é possível enviar após término do período de avaliação"
-msgstr ""
+msgstr "No se puede enviar después de finalizar el período de evaluación"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--buttons.php:11
 msgid "Para Enviar as avaliações, você deve avaliar todas as inscrições"
-msgstr ""
+msgstr "Para enviar las evaluaciones, debes evaluar todas las inscripciones"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--buttons.php:17
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--buttons.php:19
 msgid "Enviar Avaliações"
-msgstr ""
+msgstr "Enviar las evaluaciones"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:32
 msgid ""
 "Após avaliar todas as inscrições clique no botão <strong>Enviar Avaliações</"
 "strong>:"
 msgstr ""
+"Después de evaluar todas las inscripciones, haga clic en el botón "
+"<strong>Enviar evaluaciones</strong>:"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:55
 msgid ""
@@ -17251,60 +17261,75 @@ msgid ""
 "avaliador. Você pode dividir as inscrições pelo final dos números das "
 "inscrições e/ou pela categoria definida nas inscrições."
 msgstr ""
+"Si desea <strong>distribuir las inscripciones</strong> entre los "
+"evaluadores, puede utilizar los <strong>campos de distribución</strong> para "
+"cada evaluador. Puede distribuir las inscripciones por el final de los "
+"números de las inscripciones y/o por la categoría definida en las "
+"inscripciones."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:58
 msgid ""
 "No <strong>primeiro</strong> campo da distribuição informe o <strong>final "
 "do número de inscrição</strong>, de acordo com os exemplos abaixo."
 msgstr ""
+"En el <strong>primer</strong> campo de la distribución, informe el "
+"<strong>final del número de inscripción</strong>, de acuerdo con los "
+"ejemplos a continuación."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:60
 msgid "<strong>00-09</strong> - para as inscrições com final entre 0 e 9</li>"
-msgstr ""
+msgstr "<strong>00-09</strong> - para inscripciones con final entre 0 y 9</li>"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:61
 msgid ""
 "<strong>10-60</strong> - para as inscrições com final entre 10 e 60</li>"
 msgstr ""
+"<strong>10-60</strong> - para inscripciones con final entre 10 y 60</li>"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:62
 msgid ""
 "<strong>61-99</strong> - para as inscrições com final entre 61 e 99</li>"
 msgstr ""
+"<strong>61-99</strong> - para las inscripciones con final entre 61 y 99</li>"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:66
 msgid ""
 "No <strong>segundo</strong> campo da distribuição informe a(s) "
 "<strong>categoria(s) de inscrição</strong>."
 msgstr ""
+"En el <strong> segundo </strong> campo de la distribución informe el "
+"<strong> final del número de inscripción </strong>, de acuerdo con los "
+"ejemplos abajo."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:72
 msgid "Aguardando confirmação do avaliador"
-msgstr ""
+msgstr "Esperando confirmación del evaluador"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:75
 msgid "Desabilitar"
-msgstr ""
+msgstr "Deshabilitar"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:78
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:82
 msgid "Reabrir avaliações"
-msgstr ""
+msgstr "Reabrir evaluaciones"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:90
 #: themes/BaseV1/views/panel/index.php:153
 msgid "Avaliações pendentes"
-msgstr ""
+msgstr "Evaluaciones pendientes"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:97
 msgid ""
 "Distribuição das inscrições: use para dividir as inscrições entre os "
 "avaliadores"
 msgstr ""
+"Distribución de las inscripciones: utilice para dividir las inscripciones "
+"entre los evaluadores"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:97
 msgid "Distribuição"
-msgstr ""
+msgstr "Distribución"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:99
 msgid "0-9"
@@ -17312,60 +17337,60 @@ msgstr ""
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:100
 msgid "Categorias separadas por ponto e vírgula"
-msgstr ""
+msgstr "Categorías separadas por punto y coma"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:105
 msgid "Não há nenhum avaliador definido."
-msgstr ""
+msgstr "No hay ningún evaluador definido."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:106
 msgid "Adicionar avaliador"
-msgstr ""
+msgstr "Agregar evaluador"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:108
 msgid "Adicionar agente à comissão de avaliadores"
-msgstr ""
+msgstr "Agregar agente al tribunal de evaluadores"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--config.php:42
 msgid "Textos informativos para a fichas de inscrição"
-msgstr ""
+msgstr "Textos informativos para las fichas de inscripción"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--config.php:44
 msgid "Para todas as inscrições"
-msgstr ""
+msgstr "Para todas las inscripciones"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--config.php:49
 msgid "Por categoria"
-msgstr ""
+msgstr "Por categoría"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations-fields--config.php:7
 msgid "Filtrar campo"
-msgstr ""
+msgstr "Filtrar campo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations-fields--config.php:8
 msgid "Pesquise pelo título ou pelo ID"
-msgstr ""
+msgstr "Buscar por título o ID"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations-fields--config.php:13
 msgid "Selecionar todos os campos"
-msgstr ""
+msgstr "Seleccionar todos los campos"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations-fields--config.php:19
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:95
 msgid "Clique para copiar"
-msgstr ""
+msgstr "Haga clic para copiar"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-projects--tab-content.php:22
 msgid "Por:"
-msgstr ""
+msgstr "Por:"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-projects--tab-content.php:40
 msgid "Status:"
-msgstr ""
+msgstr "Estado:"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-projects--tab-content.php:41
 msgid "Ver agenda"
-msgstr ""
+msgstr "Ver agenda"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:13
 msgid ""
@@ -17374,6 +17399,10 @@ msgid ""
 "coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas "
 "informações são necessárias e se são obrigatórias."
 msgstr ""
+"Toda inscripción obligatoriamente debe poseer un Agente Individual "
+"responsable, pero es posible que la inscripción sea hecha en nombre de un "
+"agente colectivo, con o sin RUT. En esos casos, es preciso definir abajo si "
+"esa información es necesaria y si es obligatoria."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:14
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:17
@@ -17382,31 +17411,33 @@ msgid ""
 "A edição destas opções estão desabilitadas porque agentes já se inscreveram "
 "neste projeto."
 msgstr ""
+"La edición de estas opciones están deshabilitadas porque agentes ya se "
+"inscribieron en este proyecto."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:29
 msgid "Selecione uma opção"
-msgstr ""
+msgstr "Seleccione una opción"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:36
 msgid "Número máximo de vagas no projeto"
-msgstr ""
+msgstr "Número máximo de vacantes en el proyecto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:37
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:43
 msgid "Zero (0) significa sem limites"
-msgstr ""
+msgstr "Cero (0) significa sin límites"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:38
 msgid "Número máximo de inscrições no projeto"
-msgstr ""
+msgstr "Número máximo de inscripciones en el proyecto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:38
 msgid "Insira o número máximo de inscrições no projeto"
-msgstr ""
+msgstr "Ingrese el número máximo de inscripciones en el proyecto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:44
 msgid "Insira o número máximo de inscrições por agente responsável"
-msgstr ""
+msgstr "Ingrese el número máximo de inscripciones por agente responsable"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:16
 msgid ""
@@ -17414,373 +17445,403 @@ msgid ""
 "inscrever, como, por exemplo, \"categorias\" ou \"modalidades\". Se não "
 "desejar utilizar este recurso, deixe em branco o campo \"Opções\"."
 msgstr ""
+"Es posible crear opciones para que los postulantes elijan a la hora de "
+"inscribirse, como por ejemplo \"categorías\" o \"modalidades\". Si no desea "
+"utilizar este recurso, deje en blanco el campo \"Opciones\"."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:22
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:23
 msgid "Título das opções"
-msgstr ""
+msgstr "Título de las opciones"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:23
 msgid "Insira um título para o campo de opções"
-msgstr ""
+msgstr "Ingrese un título para el campo de opciones"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:26
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:27
 msgid "Descrição das opções"
-msgstr ""
+msgstr "Descripción de las opciones"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:27
 msgid "Insira uma descrição para o campo de opções"
-msgstr ""
+msgstr "Ingrese una descripción para el campo de opciones"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:27
 msgid "Selecione uma categoria"
-msgstr ""
+msgstr "Seleccione un categoría"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:32
 msgid "Opções de inscrição (coloque uma opção por linha)"
-msgstr ""
+msgstr "Opciones de inscripción (coloque una opción por línea)"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:32
 msgid "Insira as opções de inscrição"
-msgstr ""
+msgstr "Ingrese las opciones de inscripción"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--config.php:20
 msgid "Pré-visualizar ficha de inscrição"
-msgstr ""
+msgstr "Previsualizar ficha de inscripción"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--export.php:2
 msgid ""
 "É possível exportar as configurações deste formulário para utilizar como "
 "modelo ao montar um novo formulário."
 msgstr ""
+"Es posible exportar las configuraciones de este formulario para utilizar "
+"como modelo para construir un nuevo formulario."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--export.php:4
 msgid "Exportar o formulário"
-msgstr ""
+msgstr "Exportar el formulario"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--export.php:7
 msgid ""
 "Clique no botão abaixo para exportar as configurações e campos deste "
 "formulário. Salve o arquivo e o utilize para importar em outro formulário."
 msgstr ""
+"Haga clic en el botón de abajo para exportar la configuración y los campos "
+"de este formulario. Guarde el archivo y utilícelo para importar en otra "
+"formulario."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--export.php:11
 msgid "Exportar formulário"
-msgstr ""
+msgstr "Exportar el formulario"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields--field-require.php:6
 msgid "Marca campo como obrigatório"
-msgstr ""
+msgstr "Marcar campo como obligatorio"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields--field-require.php:11
 msgid "Condicionar a outro campo"
-msgstr ""
+msgstr "Condicionar a otro campo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields--field-require.php:13
 msgid ""
 "Marque se deseja que este campo dependa da resposta de um outro campo do "
 "formulário. Por exemplo:outras opções"
 msgstr ""
+"Marque si desea que este campo dependa de la respuesta de otro campo del "
+"formulario. Por ejemplo: otras opciones"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields--field-require.php:18
 msgid "Campo Relacionado"
-msgstr ""
+msgstr "Campo Relacionado"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields--field-require.php:25
 msgid "Campo Condicionado"
-msgstr ""
+msgstr "Campo Condicionado"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields--project-name.php:3
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields--project-name.php:4
 msgid "Campo de Nome de Projeto"
-msgstr ""
+msgstr "Campo de Nombre del Proyecto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields--project-name.php:4
 msgid "Habilite o campo de Nome de Projeto"
-msgstr ""
+msgstr "Habilite el campo del Nombre del Proyecto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:19
 msgid "Campos"
-msgstr ""
+msgstr "Campos"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:21
 msgid "Configure aqui os campos do formulário de inscrição."
-msgstr ""
+msgstr "Configure aquí los campos del formulario de inscripción."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:27
 msgid "Antes de configurar os campos é preciso salvar o projeto."
-msgstr ""
+msgstr "Antes de configurar los campos es preciso guardar el proyecto."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:31
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:37
 msgid "Adicionar campo"
-msgstr ""
+msgstr "Agregar campo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:32
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:71
 msgid "Adicionar anexo"
-msgstr ""
+msgstr "Agregar adjunto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:39
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:40
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:114
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:115
 msgid "Nome do campo"
-msgstr ""
+msgstr "Nombre del campo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:43
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:44
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:118
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:119
 msgid "Descrição do campo"
-msgstr ""
+msgstr "Descripción del campo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:47
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:122
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:153
 msgid "Tipo do campo"
-msgstr ""
+msgstr "Tipo del campo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:64
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:135
 msgid "Selecione em quais categorias este campo é utilizado"
-msgstr ""
+msgstr "Seleccione en cuáles categorías este campo es utilizado"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:72
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:167
 msgid "Nome do anexo"
-msgstr ""
+msgstr "Nombre del adjunto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:73
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:168
 msgid "Descrição do anexo"
-msgstr ""
+msgstr "Descripción del adjunto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:78
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:170
 msgid "Selecione em quais categorias este anexo é utilizado"
-msgstr ""
+msgstr "Seleccione en cuáles categorías ese adjunto será utilizado"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:85
 msgid "Exibir os campos de todas as categorias"
-msgstr ""
+msgstr "Mostrar los campos de todas las categorías"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:86
 msgid "Exibir os campos da categoria \"{{category}}\""
-msgstr ""
+msgstr "Mostrar campos de categoría \"{{category}}\""
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:99
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:153
 msgid "Somente para"
-msgstr ""
+msgstr "Solamente para"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:112
 msgid "Editar Campo"
-msgstr ""
+msgstr "Editar Campo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:141
 msgid "editar campo"
-msgstr ""
+msgstr "editar campo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:142
 msgid "excluir campo"
-msgstr ""
+msgstr "borrar campo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:157
 msgid "Anexo"
-msgstr ""
+msgstr "Adjunto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:166
 msgid "Editar Anexo"
-msgstr ""
+msgstr "Editar Adjunto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:179
 msgid "Excluir modelo"
-msgstr ""
+msgstr "Borrar modelo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:187
 msgid "Enviar modelo"
-msgstr ""
+msgstr "Enviar modelo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:193
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:18
 msgid "Tamanho máximo do arquivo"
-msgstr ""
+msgstr "Tamaño máximo del archivo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:205
 msgid "editar anexo"
-msgstr ""
+msgstr "editar adjunto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:206
 msgid "enviar modelo"
-msgstr ""
+msgstr "enviar modelo"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:207
 #: themes/BaseV1/layouts/parts/singles/registration-field-edit.php:31
 msgid "excluir anexo"
-msgstr ""
+msgstr "eliminar adjunto"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:4
 msgid ""
 "Para iniciar sua inscrição, selecione o agente responsável. Ele deve ser um "
 "agente individual (pessoa física), com um CPF válido preenchido."
 msgstr ""
+"Para iniciar su inscripción, seleccione el agente responsable. Él debe ser "
+"un agente individual (persona física), con un documento de identidad válido "
+"ingresado."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:7
 msgid "Selecione o agente responsável pela inscrição."
-msgstr ""
+msgstr "Seleccione el agente responsable por la inscripción."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:9
 msgid "Apenas são visíveis os agentes publicados."
-msgstr ""
+msgstr "Solo son visibles los agentes publicados."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:9
 msgid "Ver mais."
-msgstr ""
+msgstr "Ver más."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:17
 msgid ""
 "Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. "
 "Clique no botão abaixo para criar uma conta ou fazer login."
 msgstr ""
+"Para inscribirse es preciso tener una cuenta y estar logueado en esta "
+"plataforma. Cliquee el botón abajo para crear una cuenta o ingrese a la "
+"plataforma (login)."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--import.php:5
 msgid "Importar o formulário"
-msgstr ""
+msgstr "Importar el formulario"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--import.php:7
 msgid ""
 "Selecione abaixo um arquivo exportado de outro formulário. As configurações "
 "e campos deste formulário serão substituídas pelas do arquivo importado."
 msgstr ""
+"\"Seleccione a continuación un archivo exportado de otro formulario. La "
+"configuración y los campos de este formulario serán reemplazados por el "
+"archivo importado."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--import.php:15
 msgid "Enviar campos"
-msgstr ""
+msgstr "Importar Campos"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--import.php:19
 msgid ""
 "Não é possível importar porque você não possui permissão para alterar os "
 "campos deste formulário"
 msgstr ""
+"No se puede importar porque no tiene permiso para cambiar los campos de este "
+"formulario"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--intro.php:5
 msgid "Crie um texto de introdução."
-msgstr ""
+msgstr "Cree un texto de introducción."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--intro.php:6
 msgid "Introdução da inscrição"
-msgstr ""
+msgstr "Introducción de la inscripción"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--intro.php:6
 msgid "Insira o texto."
-msgstr ""
+msgstr "Ingrese el texto."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--publish-button.php:4
 msgid "O resultado já foi publicado"
-msgstr ""
+msgstr "El resultado ya fue publicado"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--publish-button.php:9
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--publish-button.php:11
 msgid "Publicar resultados"
-msgstr ""
+msgstr "Publicar resultados"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--publish-button.php:11
 msgid ""
 "Você só pode publicar a lista de aprovados após o término do período de "
 "inscrições."
 msgstr ""
+"Usted solo puede publicar la lista de aprobados después del término del "
+"período de inscripciones."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:1
 msgid "Baixar o regulamento"
-msgstr ""
+msgstr "Descargar las bases"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:6
 msgid "Antes de subir o regulamento é preciso salvar o projeto."
-msgstr ""
+msgstr "Antes de cargar las bases es preciso salvar el proyecto."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:9
 msgid "Envie um arquivo com o regulamento. Formatos aceitos .doc, .odt e .pdf."
-msgstr ""
+msgstr "Envíe un archivo con las bases. Formatos aceptados: .doc, .odt y .pdf."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:10
 msgid "Enviar regulamento"
-msgstr ""
+msgstr "Enviar bases"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:13
 msgid "excluir regulamento"
-msgstr ""
+msgstr "eliminar bases"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:10
 msgid ""
 "Relacione os selos que serão atribuídos as entidades relacionadas a "
 "inscrição quando o inscrito for aprovado."
 msgstr ""
+"Relacione los sellos que serán atribuidos a las entidades relacionadas a la "
+"inscripción cuando el inscripto sea aprobado."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:13
 msgid "(Selos atribuídos a agentes)"
-msgstr ""
+msgstr "(Sellos atribuidos a agentes)"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:36
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:66
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:96
 msgid "Trocar selo"
-msgstr ""
+msgstr "Cambiar sello"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:37
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:67
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:97
 msgid "excluir selo"
-msgstr ""
+msgstr "borrar sello"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:44
 msgid "(Selos atribuídos a instituições)"
-msgstr ""
+msgstr "(Sellos atribuidos a instituciones)"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:74
 msgid "(Selos atribuídos a agentes coletivos)"
-msgstr ""
+msgstr "(Sellos atribuidos a agentes colectivos)"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--space-relations.php:31
 msgid ""
 "Uma inscrição pode pedir para que o agente relacione um Espaço Cultural a "
 "ela. Indique aqui se quer habilitar esta opção."
 msgstr ""
+"Una inscripción puede pedir al agente que relacione un Espacio Cultural a "
+"ella. Indique aquí si desea habilitar esta opción."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:10
 msgid "Baixar inscritos"
-msgstr ""
+msgstr "Descargar inscriptos"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:11
 msgid "Baixar rascunhos"
-msgstr ""
+msgstr "Descargar borradores"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:16
 msgid ""
 "Altere os status das inscrições na última coluna da tabela de acordo com o "
 "seguinte critério:"
 msgstr ""
+"Cambie el estado de las inscripciones en la última columna de la tabla de "
+"acuerdo con el siguiente criterio:"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:18
 msgid "Inválida - em desacordo com o regulamento (ex. documentação incorreta)."
 msgstr ""
+"Inválida - em desacordo com o regulamento (ex. documentação incorreta)."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:19
 msgid "Pendente - ainda não avaliada."
-msgstr ""
+msgstr "Pendiente - aún no validada."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:20
 msgid "Não selecionada - avaliada, mas não selecionada."
-msgstr ""
+msgstr "No seleccionada - evaluada, pero no seleccionada."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:21
 msgid "Suplente - avaliada, mas aguardando vaga."
-msgstr ""
+msgstr "Suplente - evaluada, pero aguardando vacante."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:22
 msgid "Selecionada - avaliada e selecionada."
-msgstr ""
+msgstr "Seleccionada - evaluada y seleccionada."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:23
 msgid ""
@@ -17788,86 +17849,89 @@ msgid ""
 "reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais "
 "exibida nesta tabela."
 msgstr ""
+"Borrador - utilice esta opción para permitir que el responsable edite y "
+"reenvíe una inscripción. Al seleccionar esta opción, la inscripción no será "
+"más exhibida en esta tabla."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:100
 msgid "Expandir tabela"
-msgstr ""
+msgstr "Expandir tabla"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:5
 msgid "Veja abaixo as inscrições suplentes/selecionadas"
-msgstr ""
+msgstr "Vea abajo las inscripciones suplentes / seleccionadas"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:14
 msgid "categoria"
-msgstr ""
+msgstr "categoría"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:34
 msgid "inscrições encontradas com os filtros selecionados."
-msgstr ""
+msgstr "inscripciones encontradas con los filtros seleccionados."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:52
 msgid "Enviada em"
-msgstr ""
+msgstr "Enviada en"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:54
 msgid "Não enviada."
-msgstr ""
+msgstr "No enviada."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:55
 msgid "Editar e enviar"
-msgstr ""
+msgstr "Editar e enviar"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-tabs.php:8
 msgid "Configuração do Formulário"
-msgstr ""
+msgstr "Configuración del Formulario"
 
 #: themes/BaseV1/layouts/parts/singles/permissions.php:16
 msgid "Área(s) de atuação"
-msgstr ""
+msgstr "Área(s) de actuación"
 
 #: themes/BaseV1/layouts/parts/singles/permissions.php:21
 msgid "Você não possui nenhum agente com permissão."
-msgstr ""
+msgstr "Usted no posee ningún agente con permiso."
 
 #: themes/BaseV1/layouts/parts/singles/project--events.php:20
 msgid "Eventos vinculados a este projeto"
-msgstr ""
+msgstr "Eventos vinculados a este proyecto"
 
 #: themes/BaseV1/layouts/parts/singles/project--events.php:22
 msgid "Adicionar Evento"
-msgstr ""
+msgstr "Agregar Evento"
 
 #: themes/BaseV1/layouts/parts/singles/project--events.php:56
 msgid "Nenhum evento encontrado neste projeto"
-msgstr ""
+msgstr "Ningún evento encontrado en este proyecto"
 
 #: themes/BaseV1/layouts/parts/singles/project-about.php:13
 msgid "Descrição do Projeto"
-msgstr ""
+msgstr "Descripción del Proyecto"
 
 #: themes/BaseV1/layouts/parts/singles/project-about.php:13
 msgid "Insira uma descrição do projeto"
-msgstr ""
+msgstr "Ingrese una descripción del proyecto"
 
 #: themes/BaseV1/layouts/parts/singles/project-events.php:5
 msgid "marcar eventos listados"
-msgstr ""
+msgstr "marcar eventos listados"
 
 #: themes/BaseV1/layouts/parts/singles/project-events.php:6
 msgid "desmarcar eventos listados"
-msgstr ""
+msgstr "desmarcar eventos listados"
 
 #: themes/BaseV1/layouts/parts/singles/project-events.php:8
 msgid "filtrar eventos"
-msgstr ""
+msgstr "filtrar eventos"
 
 #: themes/BaseV1/layouts/parts/singles/project-events.php:35
 msgid "Autor"
-msgstr ""
+msgstr "Autor"
 
 #: themes/BaseV1/layouts/parts/singles/project-tabs.php:10
 msgid "Status dos eventos"
-msgstr ""
+msgstr "Estado de los eventos"
 
 #: themes/BaseV1/layouts/parts/singles/project-tabs.php:18
 #: themes/BaseV1/views/agent/edit-1.php:38
@@ -17882,19 +17946,19 @@ msgstr ""
 #: themes/BaseV1/views/seal/single.php:56 themes/BaseV1/views/space/edit.php:98
 #: themes/BaseV1/views/space/single.php:98
 msgid "Responsáveis"
-msgstr ""
+msgstr "Responsables"
 
 #: themes/BaseV1/layouts/parts/singles/registration--sidebar--left.php:11
 msgid "Somente avaliações pendentes"
-msgstr ""
+msgstr "Sólo evaluaciones pendientes"
 
 #: themes/BaseV1/layouts/parts/singles/registration--sidebar--left.php:12
 msgid "Filtre pelo nome do agente"
-msgstr ""
+msgstr "Filtre por el nombre del agente"
 
 #: themes/BaseV1/layouts/parts/singles/registration--sidebar--left.php:27
 msgid "Avaliação:"
-msgstr ""
+msgstr "Evaluación:"
 
 #: themes/BaseV1/layouts/parts/singles/registration--valuers-list.php:44
 msgid ""
@@ -17902,41 +17966,46 @@ msgid ""
 "selecionados aqueles que avaliam de acordo com as regras de distribuição "
 "definidas."
 msgstr ""
+"Marque/desmarque los evaluadores de esta inscripción. De forma "
+"predeterminada, se seleccionan aquellos que evalúan de acuerdo con las "
+"reglas de distribución definidas."
 
 #: themes/BaseV1/layouts/parts/singles/registration--valuers-list.php:73
 msgid "Avaliador desta inscrição pela regra de distribuição."
-msgstr ""
+msgstr "Avaliador desta inscrição pela regra de distribuição."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:3
 #: themes/BaseV1/layouts/parts/singles/registration-single--agents.php:9
 msgid "Agentes (proponentes)"
-msgstr ""
+msgstr "Agentes (postulantes)"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:4
 msgid "Relacione os agentes responsáveis pela inscrição."
-msgstr ""
+msgstr "Relaciones los agentes responsables por la inscripción."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:25
 msgid "Trocar agente"
-msgstr ""
+msgstr "Cambiar agente"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--categories.php:11
 msgid ""
 "O campo categoria/opções não será exibido para o usuário final. Está neste "
 "formulário somente para auxiliar nos testes dos campos condicionados."
 msgstr ""
+"El campo categoría/opciones no se mostrará al usuario final. Está en este "
+"formulario solo para ayudar en las pruebas de los campos condicionados."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:3
 msgid "Campos adicionais"
-msgstr ""
+msgstr "Campos adicionales"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:4
 msgid "Para efetuar sua inscrição, informe os campos abaixo."
-msgstr ""
+msgstr "Para afectuar su inscripción, complete los campos abajo."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--header.php:20
 msgid "Informe o nome do projeto"
-msgstr ""
+msgstr "Introduzca el nombre del proyecto"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:18
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:14
@@ -17944,83 +18013,92 @@ msgid ""
 "Selos certificadores que serão atribuídos aos agentes da inscrição quando a "
 "mesma for aprovada."
 msgstr ""
+"Sellos certificadores que serán atribuidos a los agentes de la inscripción "
+"en caso que su propuesta sea seleccionada."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:24
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:20
 msgid "Selos atribuídos a agentes"
-msgstr ""
+msgstr "Sellos atribuidos a agentes"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:42
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:38
 msgid "Selos atribuídos a instituições"
-msgstr ""
+msgstr "Sellos atribuidos a instituciones"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:60
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:56
 msgid "Selos atribuídos a agentes coletivos"
-msgstr ""
+msgstr "Sellos atribuidos a agentes colectivos"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:8
 msgid "O cadastro não foi enviado!"
-msgstr ""
+msgstr "¡El registro no fue enviado todavía!"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:9
 msgid ""
 "Corrija os campos listados abaixo e valide seu formulário utilizando o botão "
 "Salvar e validar."
 msgstr ""
+"Corrija los campos que se enumeran a continuación y valide su formulario "
+"usando el botón Guardar y validar."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:21
 msgid ""
 "Certifique-se que você preencheu as informações corretamente antes de enviar "
 "sua inscrição."
 msgstr ""
+"Asegúrese de que ha introducido la información correcta antes de enviar su "
+"inscripción."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:22
 msgid "Enviar inscrição"
-msgstr ""
+msgstr "Enviar inscripción"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:32
 msgid "As inscrições encerraram-se em"
-msgstr ""
+msgstr "Las inscripciones se cerrarán en"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:41
 msgid ""
 "Somente super admins podem usar este botão e somente deve ser usado para "
 "enviar inscrições que não foram enviadas por problema do sistema."
 msgstr ""
+"Solamente súper administradores pueden usar este botón y solamente debe ser "
+"usado para enviar inscripciones que no fueron enviadas por problemas del "
+"sistema."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--spaces.php:30
 msgid "Trocar Espaço"
-msgstr ""
+msgstr "Cambiar espacio"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--spaces.php:50
 msgid "Selecionar Espaço"
-msgstr ""
+msgstr "Seleccione Espacio"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--spaces.php:57
 msgid "Nenhum espaço encontrado"
-msgstr ""
+msgstr "Ningún espacio encontrado"
 
 #: themes/BaseV1/layouts/parts/singles/registration-field-edit.php:22
 msgid "baixar modelo"
-msgstr ""
+msgstr "descargar modelo"
 
 #: themes/BaseV1/layouts/parts/singles/registration-field-edit.php:30
 msgid "anexo"
-msgstr ""
+msgstr "adjunto"
 
 #: themes/BaseV1/layouts/parts/singles/registration-field-edit.php:34
 msgid "Enviar anexo"
-msgstr ""
+msgstr "Enviar adjunto"
 
 #: themes/BaseV1/layouts/parts/singles/registration-field-edit.php:34
 msgid "Carregando ..."
-msgstr ""
+msgstr "Cargando ..."
 
 #: themes/BaseV1/layouts/parts/singles/registration-field-edit.php:38
 msgid "Tamanho máximo do arquivo:"
-msgstr ""
+msgstr "Tamaño máximo de archivo:"
 
 #: themes/BaseV1/layouts/parts/singles/registration-field-view.php:6
 msgid "Campo não informado."
