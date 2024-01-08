@@ -127,6 +127,7 @@ app.component('entity-table', {
         },
 
         keyword(entities) {
+            window.dispatchEvent(new CustomEvent('entityTableSearchText', { detail: {searchText: this.searchText} }));
             this.query['@keyword'] = this.searchText
             entities.refresh(this.watchDebounce);
         },
