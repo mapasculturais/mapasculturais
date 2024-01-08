@@ -13,41 +13,67 @@ $this->import('
     mc-link
     mc-multiselect
     mc-tag-list
+    mc-collapse
 ');
 ?>
 <div class="entity-table">
     <mc-entities :select="select" :type="type" :query="query" :limit="limit" :endpoint="endpoint">
 
         <template #header="{entities, filters}">
-            <div class="entity-table__filters">
+            <div class="entity-table__header">
 
-                <div v-if="hasSlot('actions-primary')" class="entity-table__actions-primary">
-                    <slot name="actions-primary" :entities="entities" :filters="filters"></slot>
+                <!-- título - opcional -->
+                <div v-if="hasSlot('title')" class="entity-table__title">
+                    <slot name="title"></slot>
                 </div>
 
-                <div class="entity-table__mid">
-                    <div class="entity-table__search">
-                        <input v-model="searchText" @keyup="keyword(entities)" type="text" placeholder="<?= i::__('Busque pelo número de inscrição, status, parecer técnico?') ?>" class="entity-table__search-field" />
-                        <button @click="keyword(entities)" class="entity-table__search-button">
-                            <mc-icon name="search"></mc-icon>
-                        </button>
-                    </div>
+                <!-- ações - opcional -->
+                <mc-collapse v-if="hasSlot('actions')">
+                    <template #header>
+                        <slot name="actions" :entities="entities" :filters="filters"></slot>
+                    </template>
 
-                    <div v-if="hasSlot('actions-secondary')" class="entity-table__actions-secondary">
-                        <slot name="actions-secondary" :entities="entities" :filters="filters"></slot>
-                    </div>
-                </div>
-                
-                <div v-if="hasSlot('table-filters')" class="entity-table__filter">
-                    <slot name="table-filters" :entities="entities" :filters="filters"></slot>
-                </div>
+                    <template v-if="hasSlot('advanced-actions')" #content>
+                        <slot name="advanced-actions" :entities="entities" :filters="filters"></slot>
+                    </template>
+                </mc-collapse>
 
-                <div class="field entity-table__select-tag">
-                    <mc-multiselect #default="{setFilter, popover}" @selected="addInColumns($event)" @removed="removeFromColumns($event)" :model="selectedColumns" :items="items" hide-filter hide-button>
-                        <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Colunas habilitadas na tabela') ?>">
-                    </mc-multiselect>
-                    <mc-tag-list editable class="entity-table__taglists" classes="opportunity__background" :tags="selectedColumns" @remove="removeFromColumns"></mc-tag-list>
-                </div>
+                <!-- filtros - pré-definido -->
+                <mc-collapse v-if="hasSlot('filters')">
+                    <template #header>
+                        <div class="entity-table__main-filter">
+                            <div class="entity-table__search">
+                                <div class="entity-table__search-title">
+                                    <h4 class="bold"><?= i::__('Filtrar:') ?></h4>
+                                </div>
+                                <div class="entity-table__search-field">
+                                    <input v-model="searchText" @keyup="keyword(entities)" type="text" placeholder="<?= i::__('Pesquise por palavra-chave') ?>" class="entity-table__search-input" />
+                                    <button @click="keyword(entities)" class="entity-table__search-button">
+                                        <mc-icon name="search"></mc-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <slot name="filters" :entities="entities" :filters="filters"></slot>
+                        </div>
+                    </template>
+
+                    <template #content>
+                        <div class="entity-table__advanced-filters">
+                            <div class="field">
+                                <label><?= i::__('Exibir colunas')?></label>
+
+                                <div class="field__group">
+                                    <label v-for="column in columns" class="field__checkbox">
+                                        <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleColumns($event)"> {{column.text}} 
+                                    </label>
+                                </div>
+                            </div>
+
+                            <slot name="advanced-filters" :entities="entities" :filters="filters"></slot>
+                        </div>
+                    </template>
+                </mc-collapse>
 
             </div>
         </template>
@@ -74,6 +100,5 @@ $this->import('
                 </tbody>
             </table>
         </template>
-
     </mc-entities>
 </div>
