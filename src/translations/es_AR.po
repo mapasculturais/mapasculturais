@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2024-01-05 16:59-0400\n"
+"PO-Revision-Date: 2024-01-08 18:00-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -15900,7 +15900,7 @@ msgstr "Dirección (con http://)"
 
 #: themes/BaseV1/layouts/parts/link-list.php:70
 msgid "Para adicionar links você primeiro deve salvar."
-msgstr ""
+msgstr "Para agregar enlaces, primero debe salvar."
 
 #: themes/BaseV1/layouts/parts/modal/actions-event.php:10
 msgid "Criar evento"
@@ -15966,7 +15966,7 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/modal/feedback-event.php:3
 #: themes/BaseV1/layouts/parts/modal/feedback.php:2
 msgid "Entidade criada com sucesso!"
-msgstr ""
+msgstr "¡Entidad creada con éxito!"
 
 #: themes/BaseV1/layouts/parts/modal/feedback-event.php:15
 #: themes/BaseV1/layouts/parts/modal/feedback.php:14
@@ -18102,99 +18102,107 @@ msgstr "Tamaño máximo de archivo:"
 
 #: themes/BaseV1/layouts/parts/singles/registration-field-view.php:6
 msgid "Campo não informado."
-msgstr ""
+msgstr "Campo no informado."
 
 #: themes/BaseV1/layouts/parts/singles/registration-field-view.php:35
 msgid "Arquivo não enviado."
-msgstr ""
+msgstr "Archivo no enviado."
 
 #: themes/BaseV1/layouts/parts/singles/registration-single--agents.php:38
 msgid "Visualizar Portfólio"
-msgstr ""
+msgstr "Visualizar Portfolio"
 
 #: themes/BaseV1/layouts/parts/singles/registration-single--header.php:11
 #, php-format
 msgid ""
 "Obrigado por utilizar o %s. Suas informações foram enviadas com sucesso no "
 "dia"
-msgstr ""
+msgstr "Gracias por usar %s. Su información fue enviada con éxito el día"
 
 #: themes/BaseV1/layouts/parts/singles/registration-single--header.php:12
 msgid "d/m/Y à\\s H:i:s"
-msgstr ""
+msgstr "d/m/Y a H:i:s"
 
 #: themes/BaseV1/layouts/parts/singles/space-public.php:4
 msgid "Publicação restrita - requer autorização para criar eventos"
-msgstr ""
+msgstr "Publicación restringida - requiere autorización para crear eventos"
 
 #: themes/BaseV1/layouts/parts/singles/space-public.php:4
 msgid "Publicação livre - qualquer pessoa pode criar eventos"
-msgstr ""
+msgstr "Publicación libre - cualquier persona puede crear eventos"
 
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:5
 msgid "Virtual ou Físico? (se for virtual a localização não é obrigatória)"
-msgstr ""
+msgstr "Virtual o Físico? (si fuera virtual la localización no es obligatoria)"
 
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:15
 msgid "Acessibilidade física:"
-msgstr ""
+msgstr "Accesibilidad física:"
 
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:21
 msgid "Especifique a capacidade"
-msgstr ""
+msgstr "Especifique la capacidad"
 
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:25
 msgid "Horário de Funcionamento"
-msgstr ""
+msgstr "Horario de funcionamiento"
 
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:25
 msgid "Insira o horário de abertura e fechamento"
-msgstr ""
+msgstr "Ingrese el horario de apertura y cierre"
 
 #: themes/BaseV1/layouts/parts/singles/subsite--login-cidadao--content.php:6
 msgid ""
 "Use esta seção para configurar as chaves utilizada pelo subsite na "
 "autenticação com o Login Cidadão."
 msgstr ""
+"Use esta sección para configurar las claves utilizadas por el subsitio en la "
+"autenticación con el Login Ciudadano."
 
 #: themes/BaseV1/layouts/parts/singles/subsite--login-cidadao--content.php:7
 msgid ""
 "A configuração será aplicada somente se ambos os campos abaixo forem "
 "preenchidos."
 msgstr ""
+"La configuración será aplicada solamente si los campos que se encuentran "
+"debajo son completados."
 
 #: themes/BaseV1/layouts/parts/singles/subsite--login-cidadao--content.php:13
 #: themes/BaseV1/layouts/parts/singles/subsite--login-cidadao--content.php:18
 msgid ""
 "Utilizando a configuração da instalação principal (clique para configurar)"
 msgstr ""
+"Utilizado en la configuración de la instalación principal (haga clic para "
+"configurar)"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:3
 msgid ""
 "Nesta seção você configura as entidades que estarão habilitadas na "
 "instalação e as cores para cada uma das entidades."
 msgstr ""
+"En esta sección configura las entidades que estarán habilitadas en la "
+"instalación y los colores para cada una de las entidades."
 
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:6
 msgid "Entidades Habilitadas:"
-msgstr ""
+msgstr "Entidades Habilitadas:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:7
 msgid "Entidades habilitadas:"
-msgstr ""
+msgstr "Entidades habilitadas:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:34
 msgid "Cores:"
-msgstr ""
+msgstr "Colores:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:37
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:38
 msgid "Introdução Site"
-msgstr ""
+msgstr "Introducción del sitio"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:38
 msgid "Introdução do Site"
-msgstr ""
+msgstr "Introducción del sitio"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:22
 msgid ""
@@ -18202,141 +18210,144 @@ msgid ""
 "instalação principal. Deixe em branco os campos onde você não quer aplicar "
 "filtro algum, deixando aparecer todos os dados da instalação principal."
 msgstr ""
+"Configure aquí los filtros que se aplicarán a los datos registrados en el "
+"sitio principal. Dejar campos en blanco en el que no desea aplicar ningún "
+"filtro, dejando que aparezcan todos los datos de la instalación principal."
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:30
 msgid "Área de Atuação do Agente:"
-msgstr ""
+msgstr "Área de actuación del Agente:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:31
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:55
 msgid "Selecione a(s) área(s) de atuação"
-msgstr ""
+msgstr "Seleccione la(s) Área(s) de actuación"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:34
 msgid "Estado(s):"
-msgstr ""
+msgstr "Departamento(s):"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:35
 msgid "Estado(s)"
-msgstr ""
+msgstr "Departamento(s)"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:35
 msgid "Selecione o(s) estado(s) para o(s) Agente(s)"
-msgstr ""
+msgstr "Seleccione el/los estado(s) para el/los Agente(s)"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:38
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:67
 msgid "Municipio(s):"
-msgstr ""
+msgstr "Municipio(s)/Localidades:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:39
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:68
 msgid "Selecione o(s) município(s) para o(s) Agente(s)"
-msgstr ""
+msgstr "Seleccione el/los municipio(s)/localidades para el/los Agente(s)"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:42
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:71
 msgid "Bairro(s):"
-msgstr ""
+msgstr "Barrio(s):"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:43
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:72
 msgid "Selecione o(s) bairro(s) para o(s) Agente(s)"
-msgstr ""
+msgstr "Seleccione el/los barrio(s) para el/los Agente(s)"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:54
 msgid "Área de Atuação do Espaço:"
-msgstr ""
+msgstr "Área de Actuación del Espacio:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:58
 msgid "Tipo de Espaço:"
-msgstr ""
+msgstr "Tipo de Espacio:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:59
 msgid "Tipo de Espaço"
-msgstr ""
+msgstr "Tipo de Espacio"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:59
 msgid "Selecione o(s) tipo(s) de espaço(s)"
-msgstr ""
+msgstr "Seleccione el(los) tipo(s) de espacio(s)"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:64
 msgid "Selecione o(s) estado(s) para o(s) Espaço(s)"
-msgstr ""
+msgstr "Seleccione el(los) estado(s) para el(los) Espacio(s)"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:83
 msgid "Linguagem:"
-msgstr ""
+msgstr "Tipo de Evento:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:84
 msgid "Selecione o(s) tipos(s) de linguagem"
-msgstr ""
+msgstr "Seleccione el(los) tipo(s) de eventos(s)"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:93
 msgid "Selos:"
-msgstr ""
+msgstr "Sellos:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:128
 msgid "Filtragem dos dados"
-msgstr ""
+msgstr "Filtros de datos"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:161
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:187
 msgid "Filtro Avançado"
-msgstr ""
+msgstr "Filtro Avanzado"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:166
 msgid "Preencha todos os campos para adicionar um filtro"
-msgstr ""
+msgstr "Complete todos los campos para agregar un filtro"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:194
 msgid "Mover para cima"
-msgstr ""
+msgstr "Mover hacia arriba"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:199
 msgid "Mover para baixo"
-msgstr ""
+msgstr "Mover hacia abajo"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:204
 msgid "Remover filtro"
-msgstr ""
+msgstr "Remover filtro"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:210
 msgid "Sem filtros configurados"
-msgstr ""
+msgstr "Sin filtros configurados"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-header--domains.php:2
 msgid "Domínio Principal:"
-msgstr ""
+msgstr "Dominio Principal:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-header--domains.php:3
 msgid "Domínio Principal"
-msgstr ""
+msgstr "Dominio Principal"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-header--domains.php:3
 #: themes/BaseV1/layouts/parts/singles/subsite-header--domains.php:8
 msgid "Ex: mapas.cultura.gov.br"
-msgstr ""
+msgstr "Ejem.: mapas.cultura.gub.uy"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-header--domains.php:7
 msgid "Domínio Secundário:"
-msgstr ""
+msgstr "Dominio Secundario:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-header.php:9
 msgid "Nome da Instalação"
-msgstr ""
+msgstr "Nombre de la Instalación"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-header.php:9
 msgid "Nome da instalação"
-msgstr ""
+msgstr "Nombre de la istalación"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-header.php:14
 msgid "Tema:"
-msgstr ""
+msgstr "Tema:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-header.php:15
 msgid "Selecione a o tema a ser utilizado"
-msgstr ""
+msgstr "Seleccione el tema a ser utilizado"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-images.php:3
 msgid ""
@@ -18344,10 +18355,13 @@ msgid ""
 "possível selecionar o logo da instalação, o background e o logo da "
 "instituição."
 msgstr ""
+"En esta sección configura las imágenes que aparecerán en la instalación. Se "
+"puede seleccionar el logo de la instalación, el fondo y el logo de la "
+"institución."
 
 #: themes/BaseV1/layouts/parts/singles/subsite-images.php:7
 msgid "Logo:"
-msgstr ""
+msgstr "Logo:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-images.php:27
 #: themes/BaseV1/layouts/parts/singles/subsite-images.php:84
@@ -18355,28 +18369,29 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/subsite-images.php:143
 #, php-format
 msgid "Deve ter as dimensões de %s com extensões %s"
-msgstr ""
+msgstr "Debe tener las dimensiones de %s con extensiones %s"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-images.php:34
 msgid "Background:"
-msgstr ""
+msgstr "Fondo:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-images.php:55
 #, php-format
 msgid "Deve ter extensões %s com extensões %s e deve ter fundo transparente"
 msgstr ""
+"Debe tener extensiones %s con extensiones %s y debe tener fondo transparente"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-images.php:63
 msgid "Logo da Instituição:"
-msgstr ""
+msgstr "Logo de la Institución:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-images.php:93
 msgid "Imagem de compartilhamento padrão:"
-msgstr ""
+msgstr "Imagen compartida predeterminada:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-images.php:122
 msgid "Favicon da Instalação:"
-msgstr ""
+msgstr "Favicón de instalación:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:11
 msgid ""
@@ -18385,90 +18400,95 @@ msgid ""
 "podendo fazer um zoom mínimo e máximo. Informe o endereço/nome município/"
 "nome estado no campo “Digite um endereço”."
 msgstr ""
+"En esta sección se indica la posición inicial en el mapa, es decir, cuando l "
+"usuario abre el mapa se mostrará la información en esta posición ya "
+"establecida, pudiendo hacer un mínimo y máximo de zoom. Introduzca la "
+"dirección / nombre del municipio o localidad / ciudad / departamento / en el "
+"campo \"Introducir una dirección\"."
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:13
 msgid "Busque pelo nome da cidade ou estado"
-msgstr ""
+msgstr "Busque por el nombre de la ciudad o departamento"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:14
 msgid "buscar"
-msgstr ""
+msgstr "Buscar"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:21
 msgid "Latitude:"
-msgstr ""
+msgstr "Latitud:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:22
 msgid "Latitude"
-msgstr ""
+msgstr "Latitud"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:22
 msgid "Ex.: 40.7143528"
-msgstr ""
+msgstr "Ejem.: 40.7143528"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:24
 msgid "Longitude:"
-msgstr ""
+msgstr "Longitud:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:25
 msgid "longitude"
-msgstr ""
+msgstr "longitud"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:25
 msgid "Ex.: 24.2028"
-msgstr ""
+msgstr "Ejem.: 24.2028"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:27
 msgid "Zoom Padrão:"
-msgstr ""
+msgstr "Zoom estándar:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:28
 msgid "Zoom Padrão"
-msgstr ""
+msgstr "Zoom Estándar"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:28
 msgid "Zoom padrão do mapa"
-msgstr ""
+msgstr "Zoom estándar del mapa"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:33
 msgid "Zoom Mínimo:"
-msgstr ""
+msgstr "Zoom Mínimo:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:34
 msgid "Zoom Mínimo"
-msgstr ""
+msgstr "Zoom Mínimo"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:34
 msgid "Zoom mínimo do mapa"
-msgstr ""
+msgstr "Zoom mínimo del mapa"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:37
 msgid "Zoom Máximo:"
-msgstr ""
+msgstr "Zoom Máximo:"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:38
 msgid "Zoom Máximo"
-msgstr ""
+msgstr "Zoom Máximo"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:38
 msgid "Zoom máximo do mapa"
-msgstr ""
+msgstr "Zoom máximo del mapa"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-tabs.php:6
 msgid "Filtros"
-msgstr ""
+msgstr "Filtros"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-tabs.php:7
 msgid "Textos"
-msgstr ""
+msgstr "Textos"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-tabs.php:8
 msgid "Entidades"
-msgstr ""
+msgstr "Entidades"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-tabs.php:9
 msgid "Imagens"
-msgstr ""
+msgstr "Imágenes"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-texts.php:12
 msgid ""
@@ -18477,34 +18497,38 @@ msgid ""
 "opção de “exibir opções avançadas” possibilita que outros campos apareçam "
 "para definição dos textos."
 msgstr ""
+"En esta sección se configuran los textos utilizados en la interfaz del "
+"sitio. Cada texto tiene una explicación del lugar en el que debe aparecer la "
+"información. La opción de \\\"mostrar opciones avanzadas\\\" permite que "
+"otros campos aparezcan para definición de textos."
 
 #: themes/BaseV1/layouts/parts/singles/subsite-texts.php:19
 msgid "exibir opções avançadas"
-msgstr ""
+msgstr "mostrar opciones avanzadas"
 
 #: themes/BaseV1/layouts/parts/social-share.php:5
 msgid "Tweet"
-msgstr ""
+msgstr "Tweet"
 
 #: themes/BaseV1/layouts/parts/user-management/info-admin.php:76
 msgid "Administradores do Subsite:"
-msgstr ""
+msgstr "Administradores del Subsitio:"
 
 #: themes/BaseV1/layouts/parts/user-management/info-admin.php:92
 msgid "Grupo"
-msgstr ""
+msgstr "Grupo"
 
 #: themes/BaseV1/layouts/parts/user-management/info-admin.php:93
 msgid "Operação"
-msgstr ""
+msgstr "Operación"
 
 #: themes/BaseV1/layouts/parts/user-management/info-admin.php:114
 msgid "Você tem certeza que deseja remover este usuário da lista"
-msgstr ""
+msgstr "Está seguro que desea eliminar este usuario de la lista"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:23
 msgid "id:"
-msgstr ""
+msgstr "id:"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:24
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:255
@@ -18514,52 +18538,52 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:13
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:13
 msgid "id"
-msgstr ""
+msgstr "id"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:28
 msgid "email"
-msgstr ""
+msgstr "email"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:31
 msgid "autenticação:"
-msgstr ""
+msgstr "autenticación:"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:32
 msgid "autenticação"
-msgstr ""
+msgstr "autenticación"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:35
 msgid "id autenticação:"
-msgstr ""
+msgstr "id autenticación:"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:36
 msgid "id autenticação"
-msgstr ""
+msgstr "id autenticación"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:42
 msgid "status:"
-msgstr ""
+msgstr "estado:"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:48
 msgid "Inativo"
-msgstr ""
+msgstr "Inactivo"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:52
 msgid "último login"
-msgstr ""
+msgstr "último acceso"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:55
 msgid "data criação:"
-msgstr ""
+msgstr "fecha de creación:"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:56
 msgid "data criação"
-msgstr ""
+msgstr "fecha de creación"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:75
 #: themes/BaseV1/views/panel/index.php:207
 msgid "Atividades"
-msgstr ""
+msgstr "Actividades"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:86
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:115
@@ -18575,7 +18599,7 @@ msgstr ""
 #: themes/BaseV1/views/panel/spaces.php:26
 #: themes/BaseV1/views/panel/subsite.php:22
 msgid "Ativos"
-msgstr ""
+msgstr "Activos"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:87
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:116
@@ -18589,81 +18613,81 @@ msgstr ""
 #: themes/BaseV1/views/panel/seals.php:30
 #: themes/BaseV1/views/panel/spaces.php:27
 msgid "Concedidos"
-msgstr ""
+msgstr "Concedidos"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:228
 msgid "Selecionadas"
-msgstr ""
+msgstr "Seleccionadas"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:229
 msgid "Não Selecionadas"
-msgstr ""
+msgstr "No Seleccionadas"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:256
 msgid "subsite"
-msgstr ""
+msgstr "subsitio"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:257
 #: themes/BaseV1/views/auth/procuration.php:15
 msgid "permissão"
-msgstr ""
+msgstr "permiso"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:310
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:334
 msgid "Adicionar permissão"
-msgstr ""
+msgstr "Agregar permiso"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:313
 msgid "Subsite:"
-msgstr ""
+msgstr "Subsitio:"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:324
 msgid "Permissão:"
-msgstr ""
+msgstr "Permiso:"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:344
 msgid "Obtendo histório..."
-msgstr ""
+msgstr "Obteniendo historial..."
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:349
 msgid "Log de atividades"
-msgstr ""
+msgstr "Registro de actividades"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:353
 msgid "id da entidade"
-msgstr ""
+msgstr "id de la entidad"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:354
 msgid "tipo entidade"
-msgstr ""
+msgstr "tipo entidad"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:355
 msgid "descrição"
-msgstr ""
+msgstr "descripción"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:356
 msgid "data"
-msgstr ""
+msgstr "fecha"
 
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-agent.php:9
 msgid "obtendo agentes..."
-msgstr ""
+msgstr "obteniendo agentes..."
 
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-event.php:9
 msgid "obtendo eventos..."
-msgstr ""
+msgstr "obteniendo eventos..."
 
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-opportunity.php:9
 msgid "obtendo oportunidades..."
-msgstr ""
+msgstr "obteniedo oportunidades..."
 
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-project.php:9
 msgid "obtendo projetos..."
-msgstr ""
+msgstr "obteniendo proyectos..."
 
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-space.php:9
 msgid "obtendo espaços..."
-msgstr ""
+msgstr "obteniendo espacios.."
 
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:24
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:16
@@ -18671,58 +18695,58 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:16
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:16
 msgid "Operações"
-msgstr ""
+msgstr "Operaciones"
 
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:77
 msgid "Excluir agente padrão"
-msgstr ""
+msgstr "Eliminar agente por defecto"
 
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:83
 msgid "Apagar"
-msgstr ""
+msgstr "Eliminar"
 
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:86
 msgid "Transferir"
-msgstr ""
+msgstr "Transferir"
 
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-registrations.php:37
 msgid "Não foram encontradas inscrições"
-msgstr ""
+msgstr "No se encontraron inscripciones"
 
 #: themes/BaseV1/layouts/parts/video-gallery.php:6
 #: themes/BaseV1/layouts/parts/video-gallery.php:31
 msgid "Nenhum vídeo disponível"
-msgstr ""
+msgstr "Ningún video disponible"
 
 #: themes/BaseV1/layouts/parts/video-gallery.php:50
 #: themes/BaseV1/layouts/parts/video-gallery.php:65
 msgid "Editar Vídeo"
-msgstr ""
+msgstr "Editar Video"
 
 #: themes/BaseV1/layouts/parts/video-gallery.php:57
 msgid "Excluir este vídeo?"
-msgstr ""
+msgstr "Eliminar este video?"
 
 #: themes/BaseV1/layouts/parts/video-gallery.php:69
 msgid "Endereço do vídeo (Youtube ou Vimeo)"
-msgstr ""
+msgstr "Dirección del video (Youtube o Vimeo)"
 
 #: themes/BaseV1/layouts/parts/video-gallery.php:71
 msgid "Para adicionar vídeos você primeiro deve salvar."
-msgstr ""
+msgstr "Para agregar videos, primero debe salvar."
 
 #: themes/BaseV1/layouts/parts/widget-functions.php:21
 msgid "Selecione suas funções"
-msgstr ""
+msgstr "Seleccione sus funciones"
 
 #: themes/BaseV1/layouts/parts/widget-tags.php:11
 msgid "Insira tags"
-msgstr ""
+msgstr "Introduzca etiquetas"
 
 #: themes/BaseV1/views/agent/edit-1.php:52
 #: themes/BaseV1/views/agent/edit-2.php:50
 msgid "Outras informações públicas"
-msgstr ""
+msgstr "Otros datos públicos"
 
 #: themes/BaseV1/views/agent/edit-1.php:53
 #: themes/BaseV1/views/agent/edit-2.php:51
@@ -18730,6 +18754,8 @@ msgid ""
 "Assim como o cartão de visitas, os dados abaixo também serão exibidos para "
 "quem visitar o seu perfil."
 msgstr ""
+"Al igual que la tarjeta de presentación, los datos a continuación también se "
+"mostrarán a cualquier persona que visite su perfil."
 
 #: themes/BaseV1/views/agent/edit-1.php:85
 #: themes/BaseV1/views/agent/edit-2.php:83
@@ -18741,146 +18767,148 @@ msgid ""
 "Para adicionar arquivos para download ou links, primeiro é preciso salvar o "
 "agente."
 msgstr ""
+"Para agregar archivos para descarga o enlaces, primero es precioso guardar "
+"el agente."
 
 #: themes/BaseV1/views/app/create.php:8
 msgid "Novo App"
-msgstr ""
+msgstr "Nueva App"
 
 #: themes/BaseV1/views/app/create.php:11 themes/BaseV1/views/app/edit.php:12
 #: themes/BaseV1/views/app/single.php:12
 msgid "Nome do Aplicativo"
-msgstr ""
+msgstr "Nombre del Aplicativo"
 
 #: themes/BaseV1/views/app/edit.php:16 themes/BaseV1/views/app/single.php:16
 msgid "Chave Pública"
-msgstr ""
+msgstr "Clave Pública"
 
 #: themes/BaseV1/views/app/edit.php:20 themes/BaseV1/views/app/single.php:20
 msgid "Chave Privada"
-msgstr ""
+msgstr "Clave Privada"
 
 #: themes/BaseV1/views/app/edit.php:21 themes/BaseV1/views/app/single.php:21
 msgid "ver/ocultar"
-msgstr ""
+msgstr "ver/ocultar"
 
 #: themes/BaseV1/views/auth/fake-authentication.php:1
 msgid "Autenticação Fake"
-msgstr ""
+msgstr "Autenticación Fake"
 
 #: themes/BaseV1/views/auth/fake-authentication.php:64
 msgid "Filtrar usuário"
-msgstr ""
+msgstr "Filtrar usuario"
 
 #: themes/BaseV1/views/auth/fake-authentication.php:69
 msgid "Login com usuario"
-msgstr ""
+msgstr "Acceder con usuario"
 
 #: themes/BaseV1/views/auth/fake-authentication.php:98
 msgid "Logar"
-msgstr ""
+msgstr "Acceder"
 
 #: themes/BaseV1/views/auth/fake-authentication.php:103
 msgid "Criar novo usuário"
-msgstr ""
+msgstr "Crear nuevo usuario"
 
 #: themes/BaseV1/views/auth/fake-authentication.php:104
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #: themes/BaseV1/views/auth/procuration.php:7
 msgid "Procuração"
-msgstr ""
+msgstr "Poder"
 
 #: themes/BaseV1/views/auth/procuration.php:9
 msgid "Dono da procuração"
-msgstr ""
+msgstr "Dueño del poder"
 
 #: themes/BaseV1/views/auth/procuration.php:12
 msgid "Procurador"
-msgstr ""
+msgstr "Abogado"
 
 #: themes/BaseV1/views/auth/procuration.php:19
 msgid "validade"
-msgstr ""
+msgstr "validez"
 
 #: themes/BaseV1/views/event/edit.php:50
 #: themes/BaseV1/views/event/single.php:50
 msgid "Descrição Legível"
-msgstr ""
+msgstr "Descripción Legible"
 
 #: themes/BaseV1/views/event/edit.php:54
 #: themes/BaseV1/views/event/single.php:54
 msgid "min"
-msgstr ""
+msgstr "min"
 
 #: themes/BaseV1/views/event/edit.php:71
 #: themes/BaseV1/views/event/single.php:71
 msgid "Modificar local e data"
-msgstr ""
+msgstr "Modificar ubicación y fecha"
 
 #: themes/BaseV1/views/event/edit.php:74
 #: themes/BaseV1/views/event/single.php:74
 msgid "Editar local e data"
-msgstr ""
+msgstr "Editar ubicación y fecha"
 
 #: themes/BaseV1/views/event/edit.php:75
 #: themes/BaseV1/views/event/single.php:75
 msgid "Excluir este local e data?"
-msgstr ""
+msgstr "¿Eliminar esta ubicación y fecha?"
 
 #: themes/BaseV1/views/event/edit.php:75
 #: themes/BaseV1/views/event/single.php:75
 msgid "Excluir local e data"
-msgstr ""
+msgstr "Borrar ubicación y fecha"
 
 #: themes/BaseV1/views/event/edit.php:167
 #: themes/BaseV1/views/event/single.php:167
 #: themes/BaseV1/views/project/edit.php:71
 #: themes/BaseV1/views/project/single.php:71
 msgid "/400 Caracteres)"
-msgstr ""
+msgstr "/400 Caracteres)"
 
 #: themes/BaseV1/views/event/edit.php:168
 #: themes/BaseV1/views/event/single.php:168
 msgid "Insira uma descrição curta para o evento"
-msgstr ""
+msgstr "Agregue una descripción breve para el evento"
 
 #: themes/BaseV1/views/event/edit.php:174
 #: themes/BaseV1/views/event/single.php:174
 msgid "Informe o endereço do site do evento"
-msgstr ""
+msgstr "Agregue la dirección de la página web del evento"
 
 #: themes/BaseV1/views/event/edit.php:351
 #: themes/BaseV1/views/event/edit.php:354
 #: themes/BaseV1/views/event/single.php:351
 #: themes/BaseV1/views/event/single.php:354
 msgid "Adicionar local e data"
-msgstr ""
+msgstr "Agregar ubicación y fecha"
 
 #: themes/BaseV1/views/event/edit.php:353
 #: themes/BaseV1/views/event/single.php:353
 msgid "Clique para adicionar local e data"
-msgstr ""
+msgstr "Haga clic para agregar ubicación y fecha"
 
 #: themes/BaseV1/views/event/edit.php:360
 #: themes/BaseV1/views/event/single.php:360
 msgid "Para adicionar local e data, primeiro é preciso salvar o evento"
-msgstr ""
+msgstr "Para agregar ubicación y fecha, primero debe guardar el evento"
 
 #: themes/BaseV1/views/event/edit.php:371
 #: themes/BaseV1/views/event/single.php:371
 msgid "Descrição do Evento"
-msgstr ""
+msgstr "Descripción del Evento"
 
 #: themes/BaseV1/views/event/edit.php:371
 #: themes/BaseV1/views/event/single.php:371
 msgid "Insira uma descrição do evento"
-msgstr ""
+msgstr "Agregue una descripción del evento"
 
 #: themes/BaseV1/views/event/edit.php:427
 #: themes/BaseV1/views/event/single.php:427
 msgid "Selecionar um Projeto"
-msgstr ""
+msgstr "Seleccione un proyecto"
 
 #: themes/BaseV1/views/event/edit.php:450
 #: themes/BaseV1/views/event/single.php:450
@@ -18888,22 +18916,24 @@ msgid ""
 "Para adicionar arquivos para download ou links, primeiro é preciso salvar o "
 "evento"
 msgstr ""
+"Para agregar archivos para descarga o enlaces, primero es precioso guardar "
+"el evento"
 
 #: themes/BaseV1/views/generic/edit.php:1
 msgid "list"
-msgstr ""
+msgstr "lista"
 
 #: themes/BaseV1/views/generic/list.php:27
 msgid "edit"
-msgstr ""
+msgstr "editar"
 
 #: themes/BaseV1/views/generic/list.php:39
 msgid "Your comments here..."
-msgstr ""
+msgstr "Sus comentario aquí..."
 
 #: themes/BaseV1/views/generic/list.php:40
 msgid "Enter comments"
-msgstr ""
+msgstr "Ingrese comentarios"
 
 #: themes/BaseV1/views/opportunity/edit.php:117
 #: themes/BaseV1/views/opportunity/single.php:117
@@ -18913,298 +18943,301 @@ msgid ""
 "Para adicionar arquivos para download ou links, primeiro é preciso salvar o "
 "projeto"
 msgstr ""
+"Para agregar archivos para descarga o enlaces, primero es preciso guardar el "
+"proyecto"
 
 #: themes/BaseV1/views/panel/agents.php:5
 msgid "Adicionar novo agente"
-msgstr ""
+msgstr "Agregar nuevo agente"
 
 #: themes/BaseV1/views/panel/agents.php:38
 msgid "Você não possui nenhum agente cadastrado."
-msgstr ""
+msgstr "Usted no posee ningún agente registrado."
 
 #: themes/BaseV1/views/panel/agents.php:47
 msgid "Você não possui nenhum rascunho agente."
-msgstr ""
+msgstr "Usted no posee ningún borrador agente."
 
 #: themes/BaseV1/views/panel/agents.php:56
 msgid "Você não possui nenhum agente na lixeira."
-msgstr ""
+msgstr "Usted no posee ningún agente en la papelera."
 
 #: themes/BaseV1/views/panel/agents.php:66
 msgid "Você não possui nenhum agente arquivado."
-msgstr ""
+msgstr "Usted no posee ningún agente archivado."
 
 #: themes/BaseV1/views/panel/agents.php:76
 msgid "Você não possui nenhum agente liberado."
-msgstr ""
+msgstr "Usted no posee ningún agente liberado."
 
 #: themes/BaseV1/views/panel/apps.php:10
 msgid "Meus apps"
-msgstr ""
+msgstr "Mis Apps"
 
 #: themes/BaseV1/views/panel/apps.php:11
 msgid "Adicionar novo app"
-msgstr ""
+msgstr "Agregar nueva app"
 
 #: themes/BaseV1/views/panel/apps.php:25
 msgid "Você não possui nenhum app cadastrado."
-msgstr ""
+msgstr "Usted no posee ninguna app registrada."
 
 #: themes/BaseV1/views/panel/apps.php:35
 msgid "Você não possui nenhum app na lixeira."
-msgstr ""
+msgstr "Usted no posee ninguna app en la papelera."
 
 #: themes/BaseV1/views/panel/events.php:5
 msgid "Adicionar novo evento"
-msgstr ""
+msgstr "Agregar nuevo evento"
 
 #: themes/BaseV1/views/panel/events.php:43
 msgid "Você não possui nenhum evento cadastrado."
-msgstr ""
+msgstr "Usted no posee ningún evento registrado."
 
 #: themes/BaseV1/views/panel/events.php:52
 msgid "Você não possui nenhum rascunho de evento."
-msgstr ""
+msgstr "Usted no posee ningún borrador de evento."
 
 #: themes/BaseV1/views/panel/events.php:61
 msgid "Você não possui nenhum evento na lixeira."
-msgstr ""
+msgstr "Usted no posee ningún evento en la papelera."
 
 #: themes/BaseV1/views/panel/events.php:71
 msgid "Você não possui nenhum evento arquivado."
-msgstr ""
+msgstr "Usted no posee ningún evento archivado."
 
 #: themes/BaseV1/views/panel/events.php:81
 msgid "Você não possui nenhum evento liberado."
-msgstr ""
+msgstr "Usted no posee ningún evento liberado."
 
 #: themes/BaseV1/views/panel/index.php:20
 #, php-format
 msgid "Você é administrador deste subsite. Clique %saqui%s para configurar."
 msgstr ""
+"Usted es administrador de este subsitio. Haga clic %saquí%s para configurar."
 
 #: themes/BaseV1/views/panel/index.php:35
 msgid "Ver Meus eventos"
-msgstr ""
+msgstr "Ver mis eventos"
 
 #: themes/BaseV1/views/panel/index.php:37
 msgid "Ver Eventos Cedidos"
-msgstr ""
+msgstr "Ver Eventos Cedidos"
 
 #: themes/BaseV1/views/panel/index.php:53
 msgid "Ver meus agentes"
-msgstr ""
+msgstr "Ver mis agentes"
 
 #: themes/BaseV1/views/panel/index.php:55
 msgid "Ver Agentes Cedidos"
-msgstr ""
+msgstr "Ver Agentes Cedidos"
 
 #: themes/BaseV1/views/panel/index.php:70
 msgid "Ver"
-msgstr ""
+msgstr "Ver"
 
 #: themes/BaseV1/views/panel/index.php:72
 msgid "Ver Espaços Cedidos"
-msgstr ""
+msgstr "Ver espacios Cedidos"
 
 #: themes/BaseV1/views/panel/index.php:87
 msgid "Ver meus projetos"
-msgstr ""
+msgstr "Ver mis Proyectos"
 
 #: themes/BaseV1/views/panel/index.php:89
 msgid "Ver Projetos Cedidos"
-msgstr ""
+msgstr "Ver Proyectos Cedidos"
 
 #: themes/BaseV1/views/panel/index.php:104
 msgid "Ver minhas oportunidades"
-msgstr ""
+msgstr "Ver mis oportunidades"
 
 #: themes/BaseV1/views/panel/index.php:106
 msgid "Ver Oportunidades Cedidas"
-msgstr ""
+msgstr "Ver Oportunidades Cedidas"
 
 #: themes/BaseV1/views/panel/index.php:121
 msgid "Ver meus subsites"
-msgstr ""
+msgstr "Ver mis subsitios"
 
 #: themes/BaseV1/views/panel/index.php:122
 msgid "Adicionar subsite"
-msgstr ""
+msgstr "Agregar subsitio"
 
 #: themes/BaseV1/views/panel/index.php:135
 msgid "Ver meus selos"
-msgstr ""
+msgstr "Ver mis sellos"
 
 #: themes/BaseV1/views/panel/index.php:137
 msgid "Ver Selos Cedidos"
-msgstr ""
+msgstr "Ver Sellos Cedidos"
 
 #: themes/BaseV1/views/panel/index.php:138
 msgid "Adicionar selos"
-msgstr ""
+msgstr "Agregar sellos"
 
 #: themes/BaseV1/views/panel/index.php:171
 msgid "Inscrições ainda não enviadas"
-msgstr ""
+msgstr "Inscripciones aún no enviados"
 
 #: themes/BaseV1/views/panel/index.php:189
 msgid "Inscrições enviadas"
-msgstr ""
+msgstr "Inscripciones enviadas"
 
 #: themes/BaseV1/views/panel/index.php:216
 msgid "Em"
-msgstr ""
+msgstr "En"
 
 #: themes/BaseV1/views/panel/opportunities.php:39
 msgid "Você não possui nehuma oportunidade."
-msgstr ""
+msgstr "Usted no posee ninguna oportunidad."
 
 #: themes/BaseV1/views/panel/opportunities.php:48
 msgid "Você não possui nenhum rascunho de oportunidade."
-msgstr ""
+msgstr "Usted no posee ningún borrador de oportunidad."
 
 #: themes/BaseV1/views/panel/opportunities.php:57
 msgid "Você não possui nenhuma oportunidade na lixeira."
-msgstr ""
+msgstr "Usted no posee ninguna oportunidad en la papelera."
 
 #: themes/BaseV1/views/panel/opportunities.php:67
 msgid "Você não possui nenhuma oportunidade arquivada."
-msgstr ""
+msgstr "Usted no posee ninguna oportunidad archivada."
 
 #: themes/BaseV1/views/panel/opportunities.php:77
 msgid "Você não possui nehuma oportunidade liberada."
-msgstr ""
+msgstr "Usted no posee ninguna oportunidad liberada."
 
 #: themes/BaseV1/views/panel/opportunities.php:89
 #, php-format
 msgid "Você não possui nenhuma %s liberada para avaliação."
-msgstr ""
+msgstr "Usted no posee ninguna %s liberada para evaluar."
 
 #: themes/BaseV1/views/panel/projects.php:5
 msgid "Adicionar novo projeto"
-msgstr ""
+msgstr "Agregar nuevo proyecto"
 
 #: themes/BaseV1/views/panel/projects.php:36
 msgid "Você não possui nenhum projeto."
-msgstr ""
+msgstr "Usted no posee ningún proyecto."
 
 #: themes/BaseV1/views/panel/projects.php:45
 msgid "Você não possui nenhum rascunho de projeto."
-msgstr ""
+msgstr "Usted no posee ningún borrador de proyecto."
 
 #: themes/BaseV1/views/panel/projects.php:54
 msgid "Você não possui nenhum projeto na lixeira."
-msgstr ""
+msgstr "Usted no posee ningún proyecto en la papelera."
 
 #: themes/BaseV1/views/panel/projects.php:74
 msgid "Você não possui nenhum projeto liberado."
-msgstr ""
+msgstr "Usted no posee ningún proyecto liberado."
 
 #: themes/BaseV1/views/panel/registrations.php:33
 msgid "Você não possui nenhum rascunho de inscrição."
-msgstr ""
+msgstr "Usted no posee ningún borrador de inscripción."
 
 #: themes/BaseV1/views/panel/registrations.php:42
 msgid "Você não enviou nenhuma inscrição."
-msgstr ""
+msgstr "Usted no envió ninguna inscripción."
 
 #: themes/BaseV1/views/panel/seals.php:21
 msgid "Adicionar novo selo"
-msgstr ""
+msgstr "Agregar nuevo sello"
 
 #: themes/BaseV1/views/panel/seals.php:29
 msgid "Meus"
-msgstr ""
+msgstr "Mis"
 
 #: themes/BaseV1/views/panel/seals.php:54
 msgid "Você não possui nenhum rascunho selo."
-msgstr ""
+msgstr "Usted no posee ningún borrador sello."
 
 #: themes/BaseV1/views/panel/seals.php:63
 msgid "Você não possui nenhum selo na lixeira."
-msgstr ""
+msgstr "Usted no posee ningún sello en la papelera."
 
 #: themes/BaseV1/views/panel/seals.php:73
 msgid "Você não possui nenhum selo arquivado."
-msgstr ""
+msgstr "Usted no posee ningún sello archivado."
 
 #: themes/BaseV1/views/panel/seals.php:83
 msgid "Você não possui nenhum selo liberado."
-msgstr ""
+msgstr "Usted no posee ningún sello liberado."
 
 #: themes/BaseV1/views/panel/spaces.php:6
 msgid "Adicionar "
-msgstr ""
+msgstr "Agregar "
 
 #: themes/BaseV1/views/panel/spaces.php:49
 #, php-format
 msgid "Você não possui nenhum rascunho de %s"
-msgstr ""
+msgstr "Usted no posee ningún borrador de %s"
 
 #: themes/BaseV1/views/panel/spaces.php:58
 #, php-format
 msgid "%s na lixeira."
-msgstr ""
+msgstr "%s en la papelera."
 
 #: themes/BaseV1/views/panel/spaces.php:68
 #, php-format
 msgid "%s arquivado."
-msgstr ""
+msgstr "\"%s archivado."
 
 #: themes/BaseV1/views/panel/spaces.php:78
 #, php-format
 msgid "%s liberado."
-msgstr ""
+msgstr "%s liberado."
 
 #: themes/BaseV1/views/panel/subsite.php:32
 msgid "Você não possui nenhum Subsite."
-msgstr ""
+msgstr "Usted no posee ningún Subsitio."
 
 #: themes/BaseV1/views/panel/subsite.php:41
 msgid "Você não possui nenhum rascunho de subsite."
-msgstr ""
+msgstr "Usted no posee ningún borrador de subsitio."
 
 #: themes/BaseV1/views/panel/subsite.php:50
 msgid "Você não possui nenhum subsite na lixeira."
-msgstr ""
+msgstr "Usted no posee ningún subsitio en la papelera."
 
 #: themes/BaseV1/views/panel/subsite.php:60
 msgid "Você não possui nenhum subsite arquivado."
-msgstr ""
+msgstr "Usted no posee ningún subsitio archivado."
 
 #: themes/BaseV1/views/panel/user-management.php:20
 msgid "Gerenciador de usuários"
-msgstr ""
+msgstr "Administración de usuarios"
 
 #: themes/BaseV1/views/project/edit.php:72
 #: themes/BaseV1/views/project/single.php:72
 msgid "Insira uma descrição curta para o projeto"
-msgstr ""
+msgstr "Agregue una descripción breve para el proyecto"
 
 #: themes/BaseV1/views/seal/create.php:67 themes/BaseV1/views/seal/edit.php:67
 #: themes/BaseV1/views/seal/single.php:67
 msgid "Descrição curta:"
-msgstr ""
+msgstr "Descripción breve:"
 
 #: themes/BaseV1/views/seal/create.php:75 themes/BaseV1/views/seal/edit.php:75
 #: themes/BaseV1/views/seal/single.php:75
 msgid "Validade"
-msgstr ""
+msgstr "Validez"
 
 #: themes/BaseV1/views/seal/create.php:76 themes/BaseV1/views/seal/edit.php:76
 #: themes/BaseV1/views/seal/single.php:76
 msgid "Periodo"
-msgstr ""
+msgstr "Período"
 
 #: themes/BaseV1/views/seal/create.php:76 themes/BaseV1/views/seal/edit.php:76
 #: themes/BaseV1/views/seal/single.php:76
 msgid "Informe o período de duração da validade do selo"
-msgstr ""
+msgstr "Período de duración de validez del sello"
 
 #: themes/BaseV1/views/seal/create.php:81 themes/BaseV1/views/seal/edit.php:81
 #: themes/BaseV1/views/seal/single.php:81
 msgid "Selo sem prazo de Validade"
-msgstr ""
+msgstr "Sello sin plazo de Validez"
 
 #: themes/BaseV1/views/seal/create.php:88 themes/BaseV1/views/seal/edit.php:88
 #: themes/BaseV1/views/seal/single.php:88
@@ -19212,24 +19245,26 @@ msgid ""
 "(Informar 0 (zero) para validade infinita ou indicar o número de meses "
 "correspondente a validade do selo)"
 msgstr ""
+"(Informar 0 (cero) para validez infinita o indicar el número de meses "
+"correspondiente a la validez del sello)"
 
 #: themes/BaseV1/views/seal/create.php:101
 #: themes/BaseV1/views/seal/edit.php:101
 #: themes/BaseV1/views/seal/single.php:101
 msgid "Descrição do Selo"
-msgstr ""
+msgstr "Descripción del Sello"
 
 #: themes/BaseV1/views/seal/create.php:101
 #: themes/BaseV1/views/seal/edit.php:101
 #: themes/BaseV1/views/seal/single.php:101
 msgid "Insira uma descrição do selo"
-msgstr ""
+msgstr "Ingrese una descripción del sello"
 
 #: themes/BaseV1/views/seal/create.php:108
 #: themes/BaseV1/views/seal/edit.php:108
 #: themes/BaseV1/views/seal/single.php:108
 msgid "Conteúdo da Impressão"
-msgstr ""
+msgstr "Contenido de la impresión"
 
 #: themes/BaseV1/views/seal/create.php:109
 #: themes/BaseV1/views/seal/edit.php:109
@@ -19239,54 +19274,57 @@ msgid ""
 "utilizar as seguintes palavras chaves para obter informações das entidades "
 "relacionadas com o selo no texto abaixo."
 msgstr ""
+"\"Para personalizar el contenido de la impresión del sello aplicado, es "
+"posible utilizar las siguientes palabras claves para obtener información de "
+"las entidades relacionadas con el sello en el texto abajo."
 
 #: themes/BaseV1/views/seal/create.php:110
 #: themes/BaseV1/views/seal/edit.php:110
 #: themes/BaseV1/views/seal/single.php:110
 msgid "Nome do selo aplicado"
-msgstr ""
+msgstr "Nombre del Sello aplicado"
 
 #: themes/BaseV1/views/seal/create.php:111
 #: themes/BaseV1/views/seal/edit.php:111
 #: themes/BaseV1/views/seal/single.php:111
 msgid "Descrição curta do selo aplicado"
-msgstr ""
+msgstr "Descripción breve del sello aplicado"
 
 #: themes/BaseV1/views/seal/create.php:112
 #: themes/BaseV1/views/seal/edit.php:112
 #: themes/BaseV1/views/seal/single.php:112
 msgid "Agente que aplicou o selo"
-msgstr ""
+msgstr "Agente que aplicó el sello"
 
 #: themes/BaseV1/views/seal/create.php:113
 #: themes/BaseV1/views/seal/edit.php:113
 #: themes/BaseV1/views/seal/single.php:113
 msgid "Link de autencidade do selo aplicado"
-msgstr ""
+msgstr "Enlace de autenticidad del sello aplicado"
 
 #: themes/BaseV1/views/seal/create.php:114
 #: themes/BaseV1/views/seal/edit.php:114
 #: themes/BaseV1/views/seal/single.php:114
 msgid "Descrição da entidade (Agente/Projeto/Espaço/Evento)"
-msgstr ""
+msgstr "Descripción de la entidad(Agente/Proyecto/Espacio/Evento)"
 
 #: themes/BaseV1/views/seal/create.php:115
 #: themes/BaseV1/views/seal/edit.php:115
 #: themes/BaseV1/views/seal/single.php:115
 msgid "Nome da entidade (Teatro Municipal)"
-msgstr ""
+msgstr "Nombre de la entidad (Teatro Municipal)"
 
 #: themes/BaseV1/views/seal/create.php:116
 #: themes/BaseV1/views/seal/edit.php:116
 #: themes/BaseV1/views/seal/single.php:116
 msgid "Data de Início da Validade do selo aplicado"
-msgstr ""
+msgstr "Fecha de inicio de la validez del sello aplicado"
 
 #: themes/BaseV1/views/seal/create.php:117
 #: themes/BaseV1/views/seal/edit.php:117
 #: themes/BaseV1/views/seal/single.php:117
 msgid "Data de Fim da Validade do selo aplicado"
-msgstr ""
+msgstr "Fecha de finalización de la validez del sello aplicado"
 
 #: themes/BaseV1/views/seal/create.php:118
 #: themes/BaseV1/views/seal/edit.php:118
@@ -19298,7 +19336,7 @@ msgstr ""
 #: themes/BaseV1/views/seal/edit.php:118
 #: themes/BaseV1/views/seal/single.php:118
 msgid "Insira o conteúdo da impressão do certificado do selo."
-msgstr ""
+msgstr "Agregue el contenido de la impresión del certificado del sello."
 
 #: themes/BaseV1/views/seal/create.php:141
 #: themes/BaseV1/views/seal/create.php:155
@@ -19309,38 +19347,40 @@ msgid ""
 "Para adicionar arquivos para imagens, download ou links, primeiro é preciso "
 "salvar o selo"
 msgstr ""
+"Para agregar archivo de imágenes, descargar o enlaces, primero es preciso "
+"guardar el sello"
 
 #: themes/BaseV1/views/seal/printsealrelation.php:25
 msgid "Certificado"
-msgstr ""
+msgstr "Certificado"
 
 #: themes/BaseV1/views/seal/sealrelation.php:59
 msgid "<b>Expirado em:</b>"
-msgstr ""
+msgstr "<b>Vencido el:</b>"
 
 #: themes/BaseV1/views/seal/sealrelation.php:62
 msgid "<b>Válido até:</b>"
-msgstr ""
+msgstr "<b>Válido hasta:</b>"
 
 #: themes/BaseV1/views/site/permission-denied.php:1
 msgid "Você não tem permissão para executar esta operação."
-msgstr ""
+msgstr "Usted no tiene permiso para ejecutar esta acción."
 
 #: themes/BaseV1/views/site/search.php:27
 msgid "Local"
-msgstr ""
+msgstr "Local"
 
 #: themes/BaseV1/views/site/search.php:28
 msgid "Digite um endereço"
-msgstr ""
+msgstr "Digite una dirección"
 
 #: themes/BaseV1/views/site/search.php:32
 msgid "Buscar somente resultados próximos a mim."
-msgstr ""
+msgstr "Buscar solamente resultados próximos a mi."
 
 #: themes/BaseV1/views/site/search.php:37
 msgid "Mostrar"
-msgstr ""
+msgstr "Mostrar"
 
 #: themes/BaseV1/views/site/search.php:53
 msgid "selos"
