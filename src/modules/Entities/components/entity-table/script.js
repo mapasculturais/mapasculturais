@@ -148,5 +148,19 @@ app.component('entity-table', {
                 }
             }
         },
+
+        toggleColumns(event) {
+            for (let column of this.columns) {
+                if (column.slug == event.target.value) {
+                    if (column.required) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        this.messages.error(this.text('item obrigatório') + ' ' + column.text);
+                    } else {
+                        column.visible = !column.visible;
+                    }
+                }
+            }
+        }
     },
 });
