@@ -6,6 +6,15 @@
     gap: size(8);
     margin: 0;
     width: 100%;
+    overflow: hidden;
+
+    &--horizontal {
+        flex-direction: row;
+
+        & > label {
+            white-space: nowrap;
+        }
+    }
     
     &__shortdescription {
         text-align: right;
@@ -48,6 +57,22 @@
         font-size: var(--mc-font-size-xs);
     }
 
+    &__group {
+        &::-webkit-scrollbar {
+            width: size(8);               /* width of the entire scrollbar */
+        }
+        
+        &::-webkit-scrollbar-track {
+            background: var(--mc-gray-100);        /* color of the tracking area */
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--mc-gray-500);    /* color of the scroll thumb */
+            border-radius: size(5);       /* roundness of the scroll thumb */
+            border: size(2) solid var(--mc-gray-100);  /* creates padding around scroll thumb */
+        }
+    }
+
     .required {
         font-family: Open Sans;
         font-size: size(12);
@@ -70,7 +95,7 @@
         }
     }
 
-    label {
+    & > label {
         display: flex;
         font-family: var(--mc-font-headings);
         font-size: size(14);
@@ -81,11 +106,24 @@
         align-items: center;
     }
 
+    &__checkbox {
+        align-items: center;
+        display: grid;
+        font-family: var(--mc-font-headings);
+        font-size: size(14);
+        font-style: normal;
+        font-weight: 600;
+        gap: size(8);
+        grid-template-columns: size(18) 1fr;
+        line-height: size(19);
+    }
+
     input, textarea, select {
         border-radius: var(--mc-border-radius-xs);
         border: size(1) solid var(--mc-gray-500);
         font-family: Open Sans;
         font-size: var(--mc-font-size-xxs);
+        line-height: normal;
         padding: size(14);
         width: 100%;
 
