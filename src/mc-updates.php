@@ -411,7 +411,7 @@ return [
         $app = \MapasCulturais\App::i();
         foreach (['Opportunity'] as $class){
             DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entities\Opportunity $entity) use ($app) {
-                $entity->registerFieldsMetadata();
+                $entity->registerRegistrationMetadata();
 
                 $user = $entity->owner->user;
                 $app->user = $user;
