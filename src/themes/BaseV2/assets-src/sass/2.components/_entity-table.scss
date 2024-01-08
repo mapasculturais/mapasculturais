@@ -3,38 +3,50 @@
 .entity-table {
     background-color: var(--mc-white);
 
-    &__actions-primary {
-
-    }
-
-    &__actions-secondary {
-        display: flex;
-        gap: size(9);
-    }
-
-    &__mid {
-        align-items: center;
-        display: flex;
-        gap: size(8);
-        justify-content: space-between;
-    }
-
-    &__filters {
+    &__header {
         display: flex;
         flex-direction: column;
         gap: size(12);
-        padding: size(35) size(25) size(15);
+        padding: size(35) size(25) size(30);
+    }
+
+    &__main-filter {
+        align-items: center;
+        display: flex;
+        gap: size(16) size(31);
+
+        @media (max-width: size(1024)) {
+            flex-wrap: wrap;
+
+            .field--horizontal {
+                flex-direction: column;
+            }
+        }
     }
 
     &__search {
         align-items: center;
         display: flex;
-        max-width: size(470);
-        position: relative;
-        width: 100%;
+        gap: size(25);
+
+        @media (max-width: size(1024)) {
+            width: 100%;            
+        }
     }
 
     &__search-field {
+        align-items: center;
+        display: flex;
+        max-width: size(470);
+        position: relative;
+        width: 100%;
+
+        @media (max-width: size(1024)) {
+            max-width: none;            
+        }
+    }
+
+    &__search-input {
         border-radius: var(--mc-border-radius-pill);
         border: var(--mc-border-hairline) var(--mc-gray-500);
         font-size: var(--mc-font-size-xs);
@@ -43,27 +55,56 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         width: 100%;
+
+        @media (min-width: size(1024)) {
+            min-width: size(300);
+        }
     }
 
     &__search-button {
         background: none;
         border: none;
         cursor: pointer;
-        height: 46px;
+        height: size(45);
         position: absolute;
         right: 0;
-        width: 70px;
+        width: size(70);
         
         .iconify {
-            font-size: size(22);
+            font-size: size(20);
         }
     }
 
-    &__select-tag {
-        .mc-multiselect--input {
-            max-width: size(470);
-            width: 100%;
+    &__advanced-filters {
+        display: flex;
+        gap: size(16) size(5);
+        flex-wrap: wrap;
+
+        & > * {
+            @media (min-width: size(830)) {
+                flex-basis: calc(25% - size(3.8));
+                /* max-height: 120px; */
+            }
+            
+            @media (max-width: size(830)) {
+                flex-basis: calc(33% - size(5));
+                /* max-height: 120px; */
+            }
+
+            @media (max-width: size(700)) {
+                flex-basis: calc(50% - size(2.5));
+                /* max-height: 120px; */
+            }
         }
+
+
+        .field__group {
+            display: grid;
+            gap: size(5);
+            overflow: auto;
+            padding-right: size(5);
+        }
+        
     }
 
     &__table {
@@ -89,77 +130,3 @@
         }
     }
 }
-
-// .vue3-easy-data-table {
-//     border: none !important;
-//     border-radius: var(--mc-border-radius-xs);
-
-//     &>table {}
-
-//     &__main {
-//         &>table>theader {
-
-//             background-color: red;
-//         }
-//     }
-
-//     &__header {
-//         &>tr>th {
-//             background-color: red;
-//         }
-
-//         .vue3-easy-data-table__main {}
-//     }
-
-//     &__body {
-//         & tr td {
-//             background-color: unset;
-//         }
-//     }
-
-//     &__footer {}
-
-//     &.entity-table {
-//     }
-    
-// }
-
-// .entity-table {
-//     &__table {
-//         margin-bottom: size(16);
-
-
-//         .vue3-easy-data-table__header {
-//             &>tr>th {
-//                 border-bottom: 1px solid var(--mc-gray-300);
-//             }
-//         }
-
-//         .vue3-easy-data-table__body {
-
-//             &__row {
-//                 &--selected {
-//                     &>td {
-//                         background-color: red;
-//                     }
-//                 }
-//             }
-
-//             &>tr>td {
-//                 font-weight: bold;
-//                 font-size: size(14);
-//                 padding: size(16);
-//             }
-
-
-//             &>td {
-//                 font-size: size(14);
-//                 font-weight: bold;
-//             }
-//         }
-
-//         .vue3-easy-data-table__footer & {}
-//     }
-
-
-// }
