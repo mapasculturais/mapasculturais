@@ -51,8 +51,14 @@ class Fake extends \MapasCulturais\AuthProvider
 
 
             if ($app->auth->isUserAuthenticated()) {
-                $url = $app->auth->getRedirectPath();
-                $app->redirect($url);
+                if ($app->view->version > 1) {
+                    $this->json($app->user);
+                }
+
+                if (!$app->view->version <= 1) {
+                    $url = $app->auth->getRedirectPath();
+                    $app->redirect($url);
+                }
             } else {
                 $app->redirect($this->createUrl(''));
             }
