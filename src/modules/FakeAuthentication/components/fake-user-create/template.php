@@ -30,16 +30,12 @@ $this->import('
       <input name="email" v-model="user.email">
       <small></small>
     </div>
-
-    <button type="submit">submit</button>
-
-
   </form>
 
 
   <template #actions="modal">
-    <button @click="">fazer algo</button>
-    <button @click="modal.close()">cancelar</button>
+    <button class="button button--primary" @click="">fazer algo</button>
+    <button class="button button--primary" @click="modal.close()">cancelar</button>
   </template>
 
   <template #button="modal">
