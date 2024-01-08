@@ -23,7 +23,6 @@ app.component('mc-tabs', {
     emits: ['changed', 'clicked'],
 
     setup(props, context) {
-        console.log(context); 
         const hasSlot = name => !!context.slots[name];
         const state = Vue.reactive({
             activeTab: '',
