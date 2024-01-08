@@ -15,7 +15,6 @@ $this->import('
 ?>
 
 <mc-modal title="<?php i::_e("Criação de usuário");?>" classes="create-modal" @close="destroyEntity()" @open="createEntity()">
-  {{error}}
   <form>
     <div class="field">
       <label for="name"><?php i::_e("Nome");?></label>
