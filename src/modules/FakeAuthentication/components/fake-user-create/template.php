@@ -16,7 +16,7 @@ $this->import('
 
 <mc-modal title="<?php i::_e("Criação de usuário");?>" classes="create-modal" @close="destroyEntity()" @open="createEntity()">
   {{error}}
-  <form @submit="createUser($event);">
+  <form>
     <div class="field">
       <label for="name"><?php i::_e("Nome");?></label>
       <input name="name" v-model="user.name">
@@ -31,7 +31,7 @@ $this->import('
 
 
   <template #actions="modal">
-    <button class="button button--primary" @click=""><?php i::_e("Criar");?></button>
+    <button class="button button--primary" @click="createUser($event)"><?php i::_e("Criar");?></button>
     <button class="button button--primary" @click="modal.close()"><?php i::_e("Cancelar");?></button>
   </template>
 
