@@ -68,6 +68,7 @@ $iconset = [
     'favorite' => 'mdi:star-outline',
     'filter' => 'ic:baseline-filter-alt',
     'help-outline' => 'material-symbols:help-outline',
+    'history' => 'material-symbols:history',
     'home' => 'ci:home-fill',
     'image' => 'bi:image-fill',
     'info-full' => 'material-symbols:info-rounded',

@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Melhorias
 - Nova lib instalada (league/csv), para geração de arquivos csv.
+- Adicionado novo ícone para o histórico de alterações.
 
 ### Correções
 - Corrige erro da instalação do npm após o node. 
