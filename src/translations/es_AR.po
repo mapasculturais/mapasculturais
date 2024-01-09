@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-12-07 14:36-0400\n"
-"PO-Revision-Date: 2024-01-08 18:00-0400\n"
+"PO-Revision-Date: 2024-01-09 14:28-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -3227,7 +3227,7 @@ msgstr "El título no puede tener más de 255 caracteres"
 
 #: core/Entities/MetaList.php:103
 msgid "A o valor é obrigatória"
-msgstr ""
+msgstr "El valor es obligatorio"
 
 #: core/Entities/Opportunity.php:392
 #: modules/Home/components/home-entities/template.php:34
@@ -4493,7 +4493,7 @@ msgstr "Enviar mensaje"
 
 #: modules/Components/components/__template__/script.js:33
 msgid "texto localizado"
-msgstr ""
+msgstr "texto localizado"
 
 #: modules/Components/components/__template__/template.php:13
 msgid "Definir Nomes"
@@ -4505,7 +4505,7 @@ msgstr "Establecer Nombres"
 #: modules/Search/components/search-map-event/texts.php:5
 #: modules/UserManagement/components/user-management--ownership-tabs/texts.php:5
 msgid "Aqui o texto localizado que será exibido"
-msgstr ""
+msgstr "Aquí el texto localizado que se mostrará"
 
 #: modules/Components/components/__template__/texts.php:6
 #: modules/Components/components/permission-publish/texts.php:6
@@ -4513,7 +4513,7 @@ msgstr ""
 #: modules/Search/components/search-map-event/texts.php:6
 #: modules/UserManagement/components/user-management--ownership-tabs/texts.php:6
 msgid "Outro texto localizado"
-msgstr ""
+msgstr "Otro texto localizado"
 
 #: modules/Components/components/complaint-suggestion/template.php:21
 msgid "Enviar a denúncia de forma anônima"
@@ -6240,24 +6240,28 @@ msgstr ""
 
 #: modules/Entities/components/create-space/template.php:23
 msgid "Adicione uma Descrição curta para o Espaço"
-msgstr ""
+msgstr "Agregue una breve descripción para el espacio"
 
 #: modules/Entities/components/create-space/template.php:29
 msgid ""
 "Você pode completar as informações do seu espaço agora ou pode deixar para "
 "depois.  "
 msgstr ""
+"Puede completar la información de su spacio ahora o puede dejarla para "
+"después. "
 
 #: modules/Entities/components/create-space/template.php:30
 msgid ""
 "Para completar e publicar seu novo espaço, acesse a área <b>Rascunhos</b> em "
 "<b>Meus Espaços</b> no <b>Painel de Controle</b>.  "
 msgstr ""
+"Para completar y publicar su nuevo espacio, acceda a la sección "
+"<b>Borradores</b> en <b>Mis Espacios</b> en el <b>Panel de Control</b>. "
 
 #: modules/Entities/components/create-space/template.php:44
 #: modules/Entities/components/create-space/template.php:49
 msgid "Ver Espaço"
-msgstr ""
+msgstr "Ver Espacio"
 
 #: modules/Entities/components/create-space/texts.php:5
 msgid "Espaço Criado!"
@@ -11808,19 +11812,19 @@ msgstr "Resumen de los estados de la fase"
 
 #: modules/OpportunityPhases/Module.php:1250
 msgid "Is a opportunity phase?"
-msgstr ""
+msgstr "¿Es una fase de oportunidad?"
 
 #: modules/OpportunityPhases/Module.php:1251
 msgid "Previous phase registrations imported"
-msgstr ""
+msgstr "Registro de fases anteriores importado"
 
 #: modules/OpportunityPhases/Module.php:1256
 msgid "Previous phase registration id"
-msgstr ""
+msgstr "ID de registro de fase anterior"
 
 #: modules/OpportunityPhases/Module.php:1257
 msgid "Next phase registration id"
-msgstr ""
+msgstr "ID de registro de la siguiente fase"
 
 #: modules/OpportunityPhases/Module.php:1264
 msgid "Indica se a oportunidade é a última fase da oportunidade"
@@ -13676,7 +13680,7 @@ msgstr "Ministerio de Educación y Cultura"
 
 #: themes/BaseV1/Theme.php:123
 msgid "Fundação de Cultura Elias Mansour"
-msgstr ""
+msgstr "Fundaçión de Cultura Elias Mansour"
 
 #: themes/BaseV1/Theme.php:124
 msgid "Secretaria"
@@ -14577,7 +14581,7 @@ msgstr "texto \"Oportunidades\""
 
 #: themes/BaseV1/Theme.php:502
 msgid "nome da entidade Oportunidade no plural"
-msgstr ""
+msgstr "nombre de la entidad Oportunidad en plural"
 
 #: themes/BaseV1/Theme.php:507
 msgid "texto \"Minhas Oportunidades\""
@@ -17028,7 +17032,7 @@ msgid ""
 "e pode ser acessado clicando <a href=\"%s\" rel='noopener noreferrer'>aqui</"
 "a>"
 msgstr ""
-"y se puede acceder haciendo clic <a href=\\\"%s\\\" rel='noopener \"\n"
+"y se puede acceder haciendo clic <a href=\"%s\" rel='noopener \"\n"
 "\"noreferrer'>aqui</a>"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:66
@@ -18412,7 +18416,7 @@ msgstr "Busque por el nombre de la ciudad o departamento"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:14
 msgid "buscar"
-msgstr "Buscar"
+msgstr "buscar"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-map.php:21
 msgid "Latitude:"
@@ -19330,7 +19334,7 @@ msgstr "Fecha de finalización de la validez del sello aplicado"
 #: themes/BaseV1/views/seal/edit.php:118
 #: themes/BaseV1/views/seal/single.php:118
 msgid "Conteúdo da Impressão do Certificado"
-msgstr ""
+msgstr "Contenido de impresión del certificado"
 
 #: themes/BaseV1/views/seal/create.php:118
 #: themes/BaseV1/views/seal/edit.php:118
@@ -19384,188 +19388,198 @@ msgstr "Mostrar"
 
 #: themes/BaseV1/views/site/search.php:53
 msgid "selos"
-msgstr ""
+msgstr "sellos"
 
 #: themes/BaseV1/views/space/edit.php:67
 #: themes/BaseV1/views/space/single.php:67
 msgid "/400 Carecteres)"
-msgstr ""
+msgstr "/400 Caracteres)"
 
 #: themes/BaseV1/views/space/edit.php:153
 #: themes/BaseV1/views/space/single.php:153
 msgid ""
 "Para adicionar arquivos para download ou links, primeiro é preciso salvar"
-msgstr ""
+msgstr "Para agregar archivos para descarga o enlaces, primero debe guardar"
 
 #: themes/BaseV1/views/subsite/create.php:16
 #: themes/BaseV1/views/subsite/edit.php:16
 #: themes/BaseV1/views/subsite/single.php:16
 msgid "exemplos:"
-msgstr ""
+msgstr "ejemplos:"
 
 #: themes/BaseV1/views/subsite/create.php:101
 #: themes/BaseV1/views/subsite/edit.php:101
 #: themes/BaseV1/views/subsite/single.php:101
 msgid ""
 "Parar configurar os administradores você deve primeiro salvar o subsite."
-msgstr ""
+msgstr "Para configurar los administradores primero debe guardar el subsitio."
 
 #: themes/BaseV2/layouts/parts/main-header.php:36
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: themes/BaseV2/layouts/parts/navbar.php:16
 msgid "Editais"
-msgstr ""
+msgstr "Edictos"
 
 #: themes/BaseV2/layouts/parts/navbar.php:53
 msgid "Painel de controles"
-msgstr ""
+msgstr "Panel de Controles"
 
 #: themes/BaseV2/views/site/error-403.php:16
 msgid "Acesso Privado"
-msgstr ""
+msgstr "Acceso Privado"
 
 #: themes/BaseV2/views/site/error-403.php:18
 msgid " A página que você está tentando acessar é particular."
-msgstr ""
+msgstr " La página a la que intentas acceder es privada."
 
 #: themes/BaseV2/views/site/error-403.php:19
 msgid "Faça login com outra conta ou solicite acesso."
-msgstr ""
+msgstr "Inicie sesión con otra cuenta o solicite acceso."
 
 #: themes/BaseV2/views/site/error-404.php:11
 msgid "Erro 404"
-msgstr ""
+msgstr "Error 404"
 
 #: themes/BaseV2/views/site/error-404.php:12
 msgid "Ops, página "
-msgstr ""
+msgstr "Ups, página "
 
 #: themes/BaseV2/views/site/error-404.php:12
 msgid "não encontrada."
-msgstr ""
+msgstr "no encontrada."
 
 #: themes/BaseV2/views/site/error-404.php:15
 msgid "Essa página não existe mais ou mudou de endereço."
-msgstr ""
+msgstr "Esta página ya no existe o ha cambiado de dirección."
 
 #: themes/BaseV2/views/site/error-404.php:17
 msgid ""
 "Mas não se preocupe, existem muitas outras páginas para conhecer aqui no "
 "Mapas."
 msgstr ""
+"Pero no te preocupes, hay muchas otras páginas por descubrir aquí en Mapas."
 
 #: themes/BaseV2/views/site/error-500.php:15
 msgid "Erro 500"
-msgstr ""
+msgstr "Error 500"
 
 #: themes/BaseV2/views/site/error-500.php:19
 msgid ""
 "Identificamos um problema no servidor aqui do nosso lado, mas não se "
 "preocupe. "
 msgstr ""
+"Hemos identificado un problema con el servidor de nuestra parte, pero no te "
+"preocupes "
 
 #: themes/BaseV2/views/site/error-500.php:21
 msgid ""
 "Já estamos investigando o que aconteceu.\n"
 "Tente novamente após alguns minutos.."
 msgstr ""
+"Estamos investigando lo que pasó.\n"
+"Intente nuevamente en unos minutos."
 
 #: themes/MapasMuseus/components/home-spaces/template.php:17
 msgid "Conheça os museus de Pernambuco"
-msgstr ""
+msgstr "Descubre los museos de Pernambuco"
 
 #: themes/MapasMuseus/components/home-spaces/template.php:39
 msgid "Nenhuma museu foi encontrada."
-msgstr ""
+msgstr "Descubra los museos de Pernambuco."
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-acervo.php:18
 #: themes/MapasMuseus/layouts/parts/museus/tab-single-acervo.php:20
 msgid "Acervo"
-msgstr ""
+msgstr "Acervo"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-acervo.php:20
 msgid "Nos dê informações sobre o acervo que o museu abriga."
-msgstr ""
+msgstr "Dénanos información sobre la colección que alberga el museo."
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-acervo.php:24
 msgid "Informe sobre o acervo"
-msgstr ""
+msgstr "Informe sobre el acervo"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-acervo.php:33
 #: themes/MapasMuseus/layouts/parts/museus/tab-single-acervo.php:31
 msgid "Classifique as tipologias de acervo existentes no museu:"
-msgstr ""
+msgstr "Clasifica los tipos de acervos del museo:"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-acervo.php:54
 msgid "Somente para museus virtuais"
-msgstr ""
+msgstr "Sólo para museos virtuales"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-gestao.php:17
 #: themes/MapasMuseus/layouts/parts/museus/tab-single-gestao.php:19
 msgid "Gestao"
-msgstr ""
+msgstr "Gestión"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-gestao.php:19
 msgid ""
 "Forneça algumas informações administrativos do museu sobre a gestão e como "
 "esse museu se caracteriza"
 msgstr ""
+"Proporcionar información administrativa sobre el museo sobre la gestión y "
+"cómo se caracteriza este museo"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-gestao.php:23
 msgid "Informações sobre a gestão"
-msgstr ""
+msgstr "Información sobre la gestión"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-gestao.php:54
 #: themes/MapasMuseus/layouts/parts/museus/tab-single-gestao.php:47
 msgid "Caracterização"
-msgstr ""
+msgstr "Caracterización"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-visitacao.php:17
 #: themes/MapasMuseus/layouts/parts/museus/tab-single-visitacao.php:19
 msgid "Visitação"
-msgstr ""
+msgstr "Visitación"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-visitacao.php:19
 msgid ""
 "Informe aos visitantes o horário de funcionamento do museu, formas de "
 "entrada, acessibilidade e instalações  do local e as atividades realizadas."
 msgstr ""
+"Informar a los visitantes del horario de apertura del museo, métodos de "
+"acceso, accesibilidad e instalaciones del recinto y de las actividades que "
+"se realizan."
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-visitacao.php:23
 msgid "Público, acessibilidade e serviços"
-msgstr ""
+msgstr "Audiencia, accesibilidad y servicios"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-visitacao.php:56
 msgid "Instalações"
-msgstr ""
+msgstr "Instalaciones"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-edit-visitacao.php:75
 msgid "Atividades educativas e culturais "
-msgstr ""
+msgstr "Actividades educativas y culturales "
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-single-acervo.php:25
 #: themes/MapasMuseus/layouts/parts/museus/tab-single-visitacao.php:23
 msgid "Sobre o acervo do museu"
-msgstr ""
+msgstr "Sobre el acervo del museo"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-single-acervo.php:50
 msgid "Museus virtuais"
-msgstr ""
+msgstr "Museos virtuales"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-single-gestao.php:23
 msgid "Gestão e administração"
-msgstr ""
+msgstr "Gestión y Administración"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-single-visitacao.php:43
 msgid "Instalações que o museu oferece aos visitantes"
-msgstr ""
+msgstr "Instalaciones que el museo ofrece a los visitantes"
 
 #: themes/MapasMuseus/layouts/parts/museus/tab-single-visitacao.php:56
 msgid "Atividades educativas e culturais para públicos específicos"
-msgstr ""
+msgstr "Actividades educativas y culturales para públicos específicos"
 
 #: themes/Subsite/layouts/parts/header-about-nav.php:21
 msgid "Sobre o Site"
-msgstr ""
+msgstr "Acerca del sitio web"
