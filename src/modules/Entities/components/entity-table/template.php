@@ -65,8 +65,8 @@ $this->import('
 
                                 <div class="field__group">
                                     <template v-for="column in columns">
-                                        <label v-if="!column.required" class="field__checkbox">
-                                            <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleColumns($event)"> {{column.text}}
+                                        <label class="field__checkbox">
+                                            <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleColumns($event)" :disabled="column.required"> {{column.text}}
                                         </label>
                                     </template>
 
