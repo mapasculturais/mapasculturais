@@ -43,20 +43,6 @@ app.component('entity-table', {
             type: String,
             default: 'find'
         },
-        statusClasses: {
-            type: Object,
-            default: () => ({
-                '-10': 'row--trash',
-                '-2': 'row--archived',
-                '-9': 'row--disabled',
-                0: 'row--draft',
-                1: 'row--enabled row--sent',
-                2: 'row--invalid',
-                3: 'row--notapproved',
-                8: 'row--waitlist',
-                10: 'row--approved',
-            })
-        },
     },
 
     created() {
@@ -79,7 +65,6 @@ app.component('entity-table', {
         return {
             columns: this.headers,
             searchText: '',
-            activeItems: this.items,
         }
 
     },
@@ -93,16 +78,6 @@ app.component('entity-table', {
                 }
             }
             
-            return columns;
-        },
-
-        selectedColumns() {
-            let columns = []
-            for(let header of this.columns) {
-                if(header.visible || header.required){
-                    columns.push(header.text)
-                }
-            }
             return columns;
         },
     },
@@ -130,24 +105,6 @@ app.component('entity-table', {
             window.dispatchEvent(new CustomEvent('entityTableSearchText', { detail: {searchText: this.searchText} }));
             this.query['@keyword'] = this.searchText
             entities.refresh(this.watchDebounce);
-        },
-
-        removeFromColumns(tag) {
-            for(let header of this.columns) {
-                if(header.text == tag && header.required) {
-                    this.messages.error(this.text('item obrigatório') + ' ' + header.text);
-                }else if(header.text == tag && header.visible) {
-                    header.visible = false;
-                }
-            }
-        },
-
-        addInColumns(tag) {
-            for(let header of this.columns) {
-                if(header.text == tag) {
-                    header.visible = true;
-                }
-            }
         },
 
         toggleColumns(event) {

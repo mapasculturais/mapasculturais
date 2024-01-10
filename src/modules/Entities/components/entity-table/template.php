@@ -39,7 +39,7 @@ $this->import('
                 </mc-collapse>
 
                 <!-- filtros - pré-definido -->
-                <mc-collapse v-if="hasSlot('filters')">
+                <mc-collapse>
                     <template #header>
                         <div class="entity-table__main-filter">
                             <div class="entity-table__search">
@@ -64,9 +64,12 @@ $this->import('
                                 <label><?= i::__('Exibir colunas')?></label>
 
                                 <div class="field__group">
-                                    <label v-for="column in columns" class="field__checkbox">
-                                        <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleColumns($event)"> {{column.text}} 
-                                    </label>
+                                    <template v-for="column in columns">
+                                        <label class="field__checkbox">
+                                            <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleColumns($event)"> {{column.text}}
+                                        </label>
+                                    </template>
+
                                 </div>
                             </div>
 
@@ -77,7 +80,7 @@ $this->import('
 
             </div>
         </template>
-
+        
         <template #default="{entities}">
             <table class="entity-table__table">
                 <thead>
