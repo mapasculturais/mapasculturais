@@ -45,7 +45,7 @@ $entity = $this->controller->requestedEntity;
                 </h5>
             </div>
         <div class="col-12"> 
-            <v1-embed-tool route="registrationmanager" :id="phase.id" min-height="600px"></v1-embed-tool>
+            <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,status,options"></entity-table>
         </div>
     </template>
 </div>
