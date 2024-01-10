@@ -103,6 +103,7 @@ $this->breadcrumb = [
                 </main>
                 <aside>
                     <div class="grid-12">
+                        <entity-terms :entity="entity" hide-required title="<?php i::_e('Área de Interesse') ?>" taxonomy="area"></entity-terms>
                         <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
                         <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
                         <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags');?>"></entity-terms>

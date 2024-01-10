@@ -1140,6 +1140,16 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        /** Define os termos das fases como igual aos termos da primeira fase */
+        $app->hook('entity(Opportunity).set(<<parent|parentId>>)', function ($parent) use($app) {
+            /** @var Opportunity $this */
+            if ($parent) {
+                if(is_numeric($parent)){
+                    $parent = $app->repo('Opportunity')->find($parent);
+                }
+                $this->terms = (array) $parent->terms;
+            }
+        });
 
         /** 
          * Corrige a propriedade opportunity da fase de avaliação antes da criação.
@@ -1320,7 +1330,7 @@ class Module extends \MapasCulturais\Module{
         foreach ($registrations as $registration) {
             $template = "opportunityphases/selected-communication.html";
             $params = [
-                "siteName" => $app->view->dict("site: name", false),
+                "siteName" => $app->siteName,
                 "user" => $registration->owner->name,
                 "baseUrl" => $app->getBaseUrl(),
                 "opportunityTitle" => $opportunity->name

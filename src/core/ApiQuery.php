@@ -1078,9 +1078,6 @@ class ApiQuery {
             $_order = null;
             foreach (explode(',', $this->_order) as $prop) {
                 $key = trim(preg_replace('#asc|desc#i', '', $prop));
-                $app = App::i();
-                $app->log->debug($key);
-
                 $cast = null;
                 if(preg_match('#(\w+) +AS +(\w+)#i', $key, $matches)) {
                     $key = $matches[1];
@@ -2296,7 +2293,7 @@ class ApiQuery {
     }
 
     protected function appendTerms(array &$entities){
-        $class = $this->entityClassName;
+        $class = $this->rootEntityClassName;
         $term_relation_class_name = $this->termRelationClassName;
         if($term_relation_class_name && in_array('terms', $this->_selecting)){
             $app = App::i();
