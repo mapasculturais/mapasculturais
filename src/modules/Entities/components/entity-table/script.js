@@ -1,51 +1,13 @@
 app.component('entity-table', {
     template: $TEMPLATES['entity-table'],
 
-    setup() {
+    setup(props, { slots }) {
+        const hasSlot = name => !!slots[name]
         const messages = useMessages();
         const text = Utils.getTexts('entity-table')
-        return { optionalHeadersSelected: [], messages, text };
+        return { messages, text, hasSlot};
     },
 
-    mounted() {
-        this.modifiedHeaders.forEach(header => {
-            if (header.visible || header.required) {
-                this.addInColumns(header.text);
-            }
-        });
-    },
-    data() {
-        const visible = this.visible.split(",");
-        const required = this.required.split(",");
-
-        const modifiedHeaders = this.headers.map(header => {
-            let slug = this.parseSlug(header);
-
-            if (visible.includes(slug)) {
-                header.visible = true;
-            }
-            if (required.includes(slug)) {
-                header.required = true;
-            }
-
-            return header;
-        });
-
-        const activeHeaders = Vue.ref(modifiedHeaders.filter(
-            header => header.required
-        ));
-        
-        return {
-            itemsSelected: Vue.ref([]),
-            modifiedHeaders,
-            activeHeaders,
-            value: '',
-            filters: '',
-            searchText: '',
-            activeItems: this.items,
-        }
-
-    },
     props: {
         type: {
             type: String,
@@ -66,7 +28,7 @@ app.component('entity-table', {
             required: true
         },
         required: {
-            type: String,
+            type: [String, Array],
             default: ''
         },
         labelColumn: {
@@ -74,8 +36,12 @@ app.component('entity-table', {
             default: 'nome'
         },
         visible: {
-            type: String,
+            type: [String, Array],
             default: ''
+        },
+        endpoint: {
+            type: String,
+            default: 'find'
         },
         statusClasses: {
             type: Object,
@@ -93,27 +59,51 @@ app.component('entity-table', {
         },
     },
 
+    created() {
+        const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
+        const required = this.required instanceof Array ? this.required : this.required.split(",");
+        
+        for(let header of this.columns) {
+            header.slug = this.parseSlug(header);
+
+            header.visible = visible.includes(header.slug) || required.includes(header.slug);
+
+            header.required = required.includes(header.slug);
+            
+        }
+    },
+
+    mounted() { },
+    data() {
+        
+        return {
+            columns: this.headers,
+            searchText: '',
+            activeItems: this.items,
+        }
+
+    },
+    
     computed: {
-        activeColumns() {
-            return this.activeHeaders.map(header => (header.text));
+        items() {
+            let columns = []
+            for(let header of this.columns) {
+                if(!header.required){
+                    columns.push(header.text)
+                }
+            }
+            
+            return columns;
         },
 
         selectedColumns() {
-            return this.activeHeaders.reduce((columns, header) => {
-                columns.push(header.text);
-                this.addInColumns(header.text)
-                return columns;
-            }, []);
-        },
-
-        optionalHeaders() {
-            return this.modifiedHeaders.reduce((columns, header) => {
-                if (!header.required) {
-                    columns.push(header.text);
+            let columns = []
+            for(let header of this.columns) {
+                if(header.visible || header.required){
+                    columns.push(header.text)
                 }
-                return columns;
-
-            }, []);
+            }
+            return columns;
         },
     },
 
@@ -128,42 +118,50 @@ app.component('entity-table', {
 
         getEntityData(obj, value) {
             let val = eval(`obj.${value}`);
+
+            if(val instanceof McDate) {
+                val = val.date('numeric year')
+            }
+
             return val;
         },
 
         keyword(entities) {
+            window.dispatchEvent(new CustomEvent('entityTableSearchText', { detail: {searchText: this.searchText} }));
             this.query['@keyword'] = this.searchText
             entities.refresh(this.watchDebounce);
         },
 
         removeFromColumns(tag) {
-            if (this.activeColumns.includes(tag)) {
-                const headerToRemove = this.activeHeaders.find(header => header.text === tag);
-
-                if (headerToRemove && headerToRemove.required) {
-                    this.messages.error(this.text('item obrigatório') + ' ' + headerToRemove.text);
-                } else {
-                    this.activeHeaders = this.activeHeaders.filter(header => header.text !== tag);
+            for(let header of this.columns) {
+                if(header.text == tag && header.required) {
+                    this.messages.error(this.text('item obrigatório') + ' ' + header.text);
+                }else if(header.text == tag && header.visible) {
+                    header.visible = false;
                 }
             }
         },
 
         addInColumns(tag) {
-            if (!this.activeColumns.includes(tag)) {
-                this.activeHeaders.push(this.modifiedHeaders.find(header => header.text == tag));
+            for(let header of this.columns) {
+                if(header.text == tag) {
+                    header.visible = true;
+                }
             }
         },
 
-        isActive(column) {
-            return this.activeColumns.includes(column.text);
-        },
-
-        toggleColumn(column) {
-            if (this.isActive(column)) {
-                this.activeHeaders = this.activeHeaders.filter(header => header.text != column.text)
-            } else {
-                this.activeHeaders.push(column)
+        toggleColumns(event) {
+            for (let column of this.columns) {
+                if (column.slug == event.target.value) {
+                    if (column.required) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        this.messages.error(this.text('item obrigatório') + ' ' + column.text);
+                    } else {
+                        column.visible = !column.visible;
+                    }
+                }
             }
-        },
+        }
     },
 });

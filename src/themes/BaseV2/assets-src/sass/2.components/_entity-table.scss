@@ -1,76 +1,132 @@
 @use '../0.settings/mixins' as *;
 
+.entity-table {
+    background-color: var(--mc-white);
 
-// .vue3-easy-data-table {
-//     border: none !important;
-//     border-radius: var(--mc-border-radius-xs);
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: size(12);
+        padding: size(35) size(25) size(30);
+    }
 
-//     &>table {}
+    &__main-filter {
+        align-items: center;
+        display: flex;
+        gap: size(16) size(31);
 
-//     &__main {
-//         &>table>theader {
+        @media (max-width: size(1024)) {
+            flex-wrap: wrap;
 
-//             background-color: red;
-//         }
-//     }
+            .field--horizontal {
+                flex-direction: column;
+            }
+        }
+    }
 
-//     &__header {
-//         &>tr>th {
-//             background-color: red;
-//         }
+    &__search {
+        align-items: center;
+        display: flex;
+        gap: size(25);
 
-//         .vue3-easy-data-table__main {}
-//     }
+        @media (max-width: size(1024)) {
+            width: 100%;            
+        }
+    }
 
-//     &__body {
-//         & tr td {
-//             background-color: unset;
-//         }
-//     }
+    &__search-field {
+        align-items: center;
+        display: flex;
+        max-width: size(470);
+        position: relative;
+        width: 100%;
 
-//     &__footer {}
+        @media (max-width: size(1024)) {
+            max-width: none;            
+        }
+    }
 
-//     &.entity-table {
-//     }
-    
-// }
+    &__search-input {
+        border-radius: var(--mc-border-radius-pill);
+        border: var(--mc-border-hairline) var(--mc-gray-500);
+        font-size: var(--mc-font-size-xs);
+        overflow: hidden;
+        padding: size(13) size(70) size(12) size(20);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
 
-// .entity-table {
-//     &__table {
-//         margin-bottom: size(16);
+        @media (min-width: size(1024)) {
+            min-width: size(300);
+        }
+    }
+
+    &__search-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        height: size(45);
+        position: absolute;
+        right: 0;
+        width: size(70);
+        
+        .iconify {
+            font-size: size(20);
+        }
+    }
+
+    &__advanced-filters {
+        display: flex;
+        gap: size(16) size(5);
+        flex-wrap: wrap;
+
+        & > * {
+            @media (min-width: size(830)) {
+                flex-basis: calc(25% - size(3.8));
+                /* max-height: 120px; */
+            }
+            
+            @media (max-width: size(830)) {
+                flex-basis: calc(33% - size(5));
+                /* max-height: 120px; */
+            }
+
+            @media (max-width: size(700)) {
+                flex-basis: calc(50% - size(2.5));
+                /* max-height: 120px; */
+            }
+        }
 
 
-//         .vue3-easy-data-table__header {
-//             &>tr>th {
-//                 border-bottom: 1px solid var(--mc-gray-300);
-//             }
-//         }
+        .field__group {
+            display: grid;
+            gap: size(5);
+            overflow: auto;
+            padding-right: size(5);
+        }
+        
+    }
 
-//         .vue3-easy-data-table__body {
+    &__table {
+        background-color: var(--mc-white);
+        padding: 0 size(25) size(35);
+        text-align: left;
 
-//             &__row {
-//                 &--selected {
-//                     &>td {
-//                         background-color: red;
-//                     }
-//                 }
-//             }
+        & > thead > tr {
+            height: size(48);
 
-//             &>tr>td {
-//                 font-weight: bold;
-//                 font-size: size(14);
-//                 padding: size(16);
-//             }
+            & > th {
+                border-bottom: var(--mc-border-hairline) var(--mc-gray-500);
+            }
+        }
 
+        & > tbody > tr {
+            height: size(41);
 
-//             &>td {
-//                 font-size: size(14);
-//                 font-weight: bold;
-//             }
-//         }
-
-//         .vue3-easy-data-table__footer & {}
-//     }
-
-
-// }
+            & > td {
+                border-bottom: var(--mc-border-hairline) var(--mc-gray-500);
+                font-size: var(--mc-font-size-xxs);
+            }
+        }
+    }
+}
