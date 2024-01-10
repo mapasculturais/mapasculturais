@@ -107,6 +107,11 @@
         
     }
 
+    &__clear-filters {
+        display: flex;
+        justify-content: flex-end;
+    }
+
     &__table {
         background-color: var(--mc-white);
         padding: 0 size(25) size(35);
