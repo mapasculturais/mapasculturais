@@ -32,10 +32,6 @@ app.component('entity-table', {
             type: [String, Array],
             default: ''
         },
-        labelColumn: {
-            type: String,
-            default: 'nome'
-        },
         visible: {
             type: [String, Array],
             default: ''
