@@ -79,8 +79,7 @@ $this->import('
                 </div>
             </div>
         </template>
-        
-        <template #default="{entities}">
+        <template #default="{entities, refresh}">
             <table class="entity-table__table">
                 <thead>
                     <tr>
@@ -93,7 +92,7 @@ $this->import('
                     <tr v-for="entity in entities">
                         <template v-for="header in columns">
                             <td v-if="header.visible">
-                                <slot :name="header.slug" v-bind="entity">
+                                <slot :name="header.slug" :entity="entity" :refresh="refresh">
                                     {{getEntityData(entity, header.value)}}
                                 </slot>
                             </td>
