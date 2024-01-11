@@ -59,7 +59,10 @@ $this->import('
                                 <option v-if="type == 'opportunity'" value="registrationFrom DESC"> <?php i::_e('Início das inscrições (antigas-recentes)') ?> </option>
                             </select>
                         </div>
-                        <div class="foundResults">
+                        <div v-if="entityType=='Oportunidades'" class="foundResults">
+                            {{entities.metadata.count}} {{entityType}} <?= i::__('encontradas') ?> 
+                        </div>
+                        <div v-if="entityType!='Oportunidades'" class="foundResults">
                             {{entities.metadata.count}} {{entityType}} <?= i::__('encontrados') ?> 
                         </div>
                     </div>
