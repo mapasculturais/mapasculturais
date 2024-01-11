@@ -21,7 +21,6 @@ $this->import('
 
         <template #header="{entities, filters}">
             <div class="entity-table__header">
-
                 <!-- título - opcional -->
                 <div v-if="hasSlot('title')" class="entity-table__title">
                     <slot name="title"></slot>
@@ -64,12 +63,9 @@ $this->import('
                                 <label><?= i::__('Exibir colunas')?></label>
 
                                 <div class="field__group">
-                                    <template v-for="column in columns">
-                                        <label class="field__checkbox">
-                                            <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleColumns($event)"> {{column.text}}
-                                        </label>
-                                    </template>
-
+                                    <label v-for="column in columns" class="field__checkbox">
+                                        <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
+                                    </label>
                                 </div>
                             </div>
 
@@ -78,10 +74,12 @@ $this->import('
                     </template>
                 </mc-collapse>
 
+                <div class="entity-table__clear-filters">
+                    <button class="button button--text button--icon" @click="clearFilters(entities)"> <?= i::__("Limpar filtros") ?> <mc-icon name="trash"></mc-icon> </button>
+                </div>
             </div>
         </template>
-        
-        <template #default="{entities}">
+        <template #default="{entities, refresh}">
             <table class="entity-table__table">
                 <thead>
                     <tr>
@@ -94,7 +92,7 @@ $this->import('
                     <tr v-for="entity in entities">
                         <template v-for="header in columns">
                             <td v-if="header.visible">
-                                <slot :name="header.slug" v-bind="entity">
+                                <slot :name="header.slug" :entity="entity" :refresh="refresh">
                                     {{getEntityData(entity, header.value)}}
                                 </slot>
                             </td>
