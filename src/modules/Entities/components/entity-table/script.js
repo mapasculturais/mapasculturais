@@ -1,5 +1,6 @@
 app.component('entity-table', {
     template: $TEMPLATES['entity-table'],
+    emits: ['clear-filters'],
 
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name]
@@ -31,10 +32,6 @@ app.component('entity-table', {
             type: [String, Array],
             default: ''
         },
-        labelColumn: {
-            type: String,
-            default: 'nome'
-        },
         visible: {
             type: [String, Array],
             default: ''
@@ -51,35 +48,16 @@ app.component('entity-table', {
         
         for(let header of this.columns) {
             header.slug = this.parseSlug(header);
-
             header.visible = visible.includes(header.slug) || required.includes(header.slug);
-
             header.required = required.includes(header.slug);
-            
         }
     },
 
-    mounted() { },
     data() {
-        
         return {
             columns: this.headers,
             searchText: '',
         }
-
-    },
-    
-    computed: {
-        items() {
-            let columns = []
-            for(let header of this.columns) {
-                if(!header.required){
-                    columns.push(header.text)
-                }
-            }
-            
-            return columns;
-        },
     },
 
     methods: {
@@ -107,18 +85,37 @@ app.component('entity-table', {
             entities.refresh(this.watchDebounce);
         },
 
-        toggleColumns(event) {
-            for (let column of this.columns) {
-                if (column.slug == event.target.value) {
-                    if (column.required) {
+        toggleHeaders(event) {
+            for (let header of this.columns) {
+                if (header.slug == event.target.value) {
+                    if (header.required) {
                         event.preventDefault();
                         event.stopPropagation();
-                        this.messages.error(this.text('item obrigatório') + ' ' + column.text);
+                        this.messages.error(this.text('item obrigatório') + ' ' + header.text);
                     } else {
-                        column.visible = !column.visible;
+                        header.visible = !header.visible;
                     }
                 }
             }
+        },
+
+        clearFilters(entities) {
+            const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
+            const required = this.required instanceof Array ? this.required : this.required.split(",");
+
+            for (let header of this.columns) {
+                if(visible.includes(header.slug) || required.includes(header.slug)) {
+                    header.visible = true;
+                } else {
+                    header.visible = false;
+                }
+            }
+
+            this.searchText = '';
+            delete this.query['@keyword'];
+            entities.refresh(this.watchDebounce);
+
+            this.$emit('clear-filters', entities);
         }
     },
 });
