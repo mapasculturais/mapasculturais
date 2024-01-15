@@ -25,13 +25,15 @@ app.component('opportunity-registrations-table', {
                 { text: "Agente", value: "owner.name", slug: "agent"},
                 { text: "Categoria", value: "category" },
                 { text: "Status", value: "status"},
+                { text: "Resultado final da avaliação", value: "consolidatedResult"},
+                { text: "", value: "options"},
             ];
         },
         query() {
             return {'opportunity': `EQ(${this.phase.id})`}
         },
         select() {
-            return "id,number,category,status,createTimestamp,statusesNames,consolidatedResult,owner.{id,name,files.avatar}";
+            return "number,category,consolidatedResult,status,singleUrl,owner.{name}";
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
@@ -41,7 +43,10 @@ app.component('opportunity-registrations-table', {
     },
 
     methods: {
-        statusToString (status) {
+        alterStatus(entity){
+            entity.save();
+        },
+        statusToString(status) {
             return this.text(status)
         },
         isFuture() {
