@@ -16,6 +16,9 @@ app.component('opportunity-registrations-table', {
     },
 
     computed: {
+        statusDict () {
+            return $MAPAS.config.opportunityRegistrationTable;
+        },
         headers () {
             return [
                 { text: "Inscrição", value: "number" },
