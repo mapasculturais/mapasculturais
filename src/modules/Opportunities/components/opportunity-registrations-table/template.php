@@ -45,13 +45,16 @@ $entity = $this->controller->requestedEntity;
                 </h5>
             </div>
         <div class="col-12"> 
-            <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,status,options">
-                <template #status="entity">
-                  <select v-model="entity.status">
+            <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult">
+                <template #status="{entity}">
+                  <select v-model="entity.status" @change="alterStatus(entity)">
                         <template v-for="item in statusDict">
                             <option :value="item.value">{{item.label}}</option>
                         </template>
                   </select>
+                </template>
+                <template #options="{entity}">
+                    <a :href="entity.singleUrl" class="button button--primary">Conferir inscrição</a>
                 </template>
             </entity-table>
         </div>
