@@ -4,7 +4,7 @@ app.component('mc-select', {
 
     props: {
         defaultValue: {
-            type: String,
+            type: [String, Number],
             required: false,
             default: null,
         },
