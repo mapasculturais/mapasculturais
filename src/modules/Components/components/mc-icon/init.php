@@ -44,6 +44,7 @@ $iconset = [
     'arrowPoint-down' => 'fe:arrow-down',
     'arrowPoint-left' => 'fe:arrow-left',
     'arrowPoint-right' => 'fe:arrow-right',
+    'attachment' => 'mdi:paperclip',
     'arrowPoint-up' => 'fe:arrow-up',
     'check' => 'material-symbols:check-circle',
     'circle' => 'material-symbols:circle',
