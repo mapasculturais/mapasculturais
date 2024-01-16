@@ -54,7 +54,7 @@ $entity = $this->controller->requestedEntity;
                   </select>
                 </template>
                 <template #options="{entity}">
-                    <a :href="entity.singleUrl" class="button button--primary">Conferir inscrição</a>
+                    <a :href="entity.singleUrl" class="button button--primary"><?= i::__("Conferir inscrição")?></a>
                 </template>
             </entity-table>
         </div>
