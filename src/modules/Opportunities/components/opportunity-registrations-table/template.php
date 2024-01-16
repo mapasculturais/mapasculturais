@@ -53,6 +53,9 @@ $entity = $this->controller->requestedEntity;
                         </template>
                   </select>
                 </template>
+                <template #consolidatedResult="{entity}">
+                    {{consolidatedResultToString(entity)}}
+                </template>
                 <template #number="{entity}">
                     <a :href="entity.singleUrl">{{entity.number}}</a>
                 </template>

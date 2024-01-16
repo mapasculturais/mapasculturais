@@ -17,7 +17,10 @@ app.component('opportunity-registrations-table', {
 
     computed: {
         statusDict () {
-            return $MAPAS.config.opportunityRegistrationTable;
+            return $MAPAS.config.opportunityRegistrationTable.registrationStatusDict;
+        },
+        statusEvaluation () {
+            return $MAPAS.config.opportunityRegistrationTable.evaluationStatusDict;
         },
         headers () {
             return [
@@ -45,6 +48,17 @@ app.component('opportunity-registrations-table', {
     methods: {
         alterStatus(entity){
             entity.save();
+        },
+        consolidatedResultToString(entity) {
+            if(this.phase.evaluationMethodConfiguration){
+                let type = this.phase.evaluationMethodConfiguration.type;
+                if(type == "technical"){
+                    return entity.consolidatedResult;
+                }else{
+                    return this.statusEvaluation[type][entity.consolidatedResult];
+                }
+            }
+            return "";
         },
         statusToString(status) {
             return this.text(status)
