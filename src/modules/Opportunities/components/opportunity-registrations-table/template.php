@@ -53,6 +53,9 @@ $entity = $this->controller->requestedEntity;
                         </template>
                   </select>
                 </template>
+                <template #number="{entity}">
+                    <a :href="entity.singleUrl">{{entity.number}}</a>
+                </template>
                 <template #options="{entity}">
                     <a :href="entity.singleUrl" class="button button--primary"><?= i::__("Conferir inscrição")?></a>
                 </template>
