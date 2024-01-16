@@ -4,7 +4,9 @@ $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle();
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $app->getCurrentLCode(); ?>" dir="ltr">
+    <?php $this->applyTemplateHook('main-head','before'); ?>
     <head>
+        <?php $this->applyTemplateHook('main-head','begin'); ?>
         <meta charset="UTF-8" />
         <title><?php echo $title == $site_name ? $title : "{$site_name} - {$title}"; ?></title>
         <link rel="profile" href="http://gmpg.org/xfn/11" />
@@ -13,7 +15,9 @@ $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle();
         <!--[if lt IE 9]>
         <script src="<?php $this->asset('js/html5.js'); ?>" type="text/javascript"></script>
         <![endif]-->
+        <?php $this->applyTemplateHook('main-head','after'); ?>
     </head>
+    <?php $this->applyTemplateHook('main-head','end'); ?>
 
     <body <?php $this->bodyProperties() ?> >
         <div id="blockdiv" style="background-color: rgba(0,0,0,0.6);width: 100%;height: 100%;position: absolute;z-index: 1800;top: 0;display: none;"></div>
