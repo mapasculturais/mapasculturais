@@ -25,10 +25,10 @@ app.component('opportunity-registrations-table', {
         headers () {
             return [
                 { text: "Inscrição", value: "number" },
-                { text: "Agente", value: "owner.name", slug: "agent"},
                 { text: "Categoria", value: "category" },
-                { text: "Status", value: "status"},
+                { text: "Agente", value: "owner.name", slug: "agent"},
                 { text: "Resultado final da avaliação", value: "consolidatedResult"},
+                { text: "Status", value: "status"},
                 { text: "", value: "options"},
             ];
         },
