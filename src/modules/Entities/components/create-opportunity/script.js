@@ -82,10 +82,15 @@ app.component('create-opportunity', {
     },
 
     methods: {
+
+    handleSubmit(event) {
+        event.preventDefault();
+    },    
     createEntity() {
 
         this.entity = new Entity('opportunity');
         this.entity.type = 1;
+        this.entity.terms = { area: [] }
     },
     createDraft(modal) {
         this.entity.status = 0;

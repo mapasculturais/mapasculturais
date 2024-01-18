@@ -75,7 +75,7 @@ $this->import('
                 classes="col-4 opportunity-phase-publish-date-config__checkbox"></entity-field>
             
         </div>
-        <template v-if="phase.evaluationMethodConfiguration && phase.evaluationMethodConfiguration.type == 'technical'">
+        <template v-if="phase.evaluationMethodConfiguration?.type == 'technical' || phase.evaluationMethodConfiguration?.type == 'documentary'">
             <div class="col-12">
                 <entity-field :entity="phase.evaluationMethodConfiguration" prop="publishEvaluationDetails" type="checkbox" :autosave="300" ></entity-field>
             </div>
