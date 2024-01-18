@@ -85,6 +85,19 @@ app.component('entity-table', {
             entities.refresh(this.watchDebounce);
         },
 
+        resetHeaders() {
+            const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
+            const required = this.required instanceof Array ? this.required : this.required.split(",");
+            
+            for (let header of this.columns) {
+                if(visible.includes(header.slug) || required.includes(header.slug)) {
+                    header.visible = true;
+                } else {
+                    header.visible = false;
+                }
+            }
+        },
+
         toggleHeaders(event) {
             for (let header of this.columns) {
                 if (header.slug == event.target.value) {
@@ -100,23 +113,17 @@ app.component('entity-table', {
         },
 
         showAllHeaders() {
-            for (let header of this.columns) {
-                header.visible = true;
+            if (!this.$refs.allHeaders.checked) {
+                this.resetHeaders();
+            } else {
+                for (let header of this.columns) {
+                    header.visible = true;
+                }
             }
         },
 
         clearFilters(entities) {
-            const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
-            const required = this.required instanceof Array ? this.required : this.required.split(",");
-
-            for (let header of this.columns) {
-                if(visible.includes(header.slug) || required.includes(header.slug)) {
-                    header.visible = true;
-                } else {
-                    header.visible = false;
-                }
-            }
-
+            this.resetHeaders();
             this.$refs.allHeaders.checked = false;
 
             if(this.searchText != '') {
