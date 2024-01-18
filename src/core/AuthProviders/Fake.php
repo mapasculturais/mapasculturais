@@ -49,15 +49,20 @@ class Fake extends \MapasCulturais\AuthProvider
         $app->hook('GET(auth.fakeLogin)', function () use ($app) {
             $app->auth->processResponse();
             if ($app->auth->isUserAuthenticated()) {
+ 
                 $is_ajax =  $this->data["isAjax"] ?? $app->request->isAjax();
 
                 if ($is_ajax) {
+ 
                     $this->json($app->user);
                     return;
                 }
-
-                $url = $app->auth->getRedirectPath();
-                $app->redirect($url);
+ 
+                if (!$app->view->version <= 1) {
+                    $url = $app->auth->getRedirectPath();
+                    $app->redirect($url);
+                }
+ 
             } else {
                 $app->redirect($this->createUrl(''));
             }

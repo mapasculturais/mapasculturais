@@ -12,6 +12,7 @@ $this->import('
      mc-modal
 ');
 ?>
+
 <mc-modal title="<?= i::esc_attr__("Criar Usuario") ?>" classes="create-modal" @close="destroyEntity()" @open="createEntity()">
     <p><?= i::__("Crie um usuario com informações básicas e de forma rápida") ?></p>
     <form @submit.prevent="createUser();" ref="form">
@@ -34,4 +35,5 @@ $this->import('
             <mc-icon name="add"></mc-icon> <?= i::__("Criar Usuário") ?>
         </button>
     </template>
+
 </mc-modal>
