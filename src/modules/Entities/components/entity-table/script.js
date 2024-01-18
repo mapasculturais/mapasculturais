@@ -99,6 +99,12 @@ app.component('entity-table', {
             }
         },
 
+        showAllHeaders() {
+            for (let header of this.columns) {
+                header.visible = true;
+            }
+        },
+
         clearFilters(entities) {
             const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
             const required = this.required instanceof Array ? this.required : this.required.split(",");
@@ -111,9 +117,13 @@ app.component('entity-table', {
                 }
             }
 
-            this.searchText = '';
-            delete this.query['@keyword'];
-            entities.refresh(this.watchDebounce);
+            this.$refs.allHeaders.checked = false;
+
+            if(this.searchText != '') {
+                this.searchText = '';
+                delete this.query['@keyword'];
+                entities.refresh(this.watchDebounce);
+            }
 
             this.$emit('clear-filters', entities);
         }
