@@ -261,7 +261,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             $can = $can && !in_array($user->id, $registration->valuersExcludeList);
             $this->_canUserEvaluateRegistrationCache[$cache_id] = $can;
         }
-        
+       
         return $can;
     }
 

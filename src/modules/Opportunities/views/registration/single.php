@@ -22,6 +22,7 @@ $this->import('
     opportunity-header
     opportunity-phases-timeline
     registration-print
+    registration-valuers-list
     v1-embed-tool
 ');
 
@@ -260,7 +261,7 @@ $today = new DateTime();
                                 </div>
                             </div>
                         <?php else: ?>
-                            <v1-embed-tool route="registrationview" :id="<?=$entity->id?>"></v1-embed-tool>
+                            <registration-valuers-list :registration_id="<?=$entity->id?>"></registration-valuers-list>
                         <?php endif ?>
                     <?php endif ?>
                     <?php $entity = $entity->nextPhase; ?>

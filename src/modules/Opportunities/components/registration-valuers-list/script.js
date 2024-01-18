@@ -29,7 +29,11 @@ app.component('registration-valuers-list', {
         exceptionsList() {
             return this.committee.valuersExceptionsList
         },
+
     },
     
-    methods: { },
+    methods: { 
+        saveExceptions() {
+        }
+    },
 });

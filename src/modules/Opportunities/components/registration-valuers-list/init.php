@@ -30,6 +30,9 @@ if ($phases = $entity->opportunity->allPhases) {
                     'userId' => $valuer->user->id,
                     'agentId' => $valuer->id,
                     'agentName' => $valuer->name,
+                    'include_list' => false,
+                    'exclude_list' => false,
+                    'can_Evaluate' =>false,
                 ];
             }
         }
@@ -38,26 +41,24 @@ if ($phases = $entity->opportunity->allPhases) {
 
 $can_evaluate = [];
 $rules_list = [];
+$exclude_list = [];
+$include_list = [];
 if($allRegistrations = $app->repo("Registration")->findBy(['number' => $entity->number])) {
     foreach($allRegistrations as $registration) {
         $valuersExceptionsList[$registration->id] = $registration->valuersExceptionsList;
-        
-        if($evaluators = $result[$registration->opportunity->id]) {
-
-            foreach($evaluators as $valuer) {
-
-                if ($em->canUserEvaluateRegistration($registration, $valuer['user'])) {
-                    $can_evaluate[] = $valuer;
-                }
-            
-                if ($em->canUserEvaluateRegistration($registration, $valuer['user'], true)) {
-                    $can_evaluate[] = $valuer;
-                }
-
-                if(in_array($valuer->user->id, $entity->valuersIncludeList)) {
-                    $include_list[] = $valuer;
-                } elseif (in_array($valuer->user->id, $entity->valuersExcludeList)) {
-                    $exclude_list[] = $valuer;
+        if(in_array($registration->opportunity->id, array_keys($result))) {
+            if($evaluators = $result[$registration->opportunity->id]) {
+                foreach($evaluators as $key => $valuer) {
+                    $result[$registration->opportunity->id][$key]['regid'] = $registration->id;
+                    if ($em->canUserEvaluateRegistration($registration, $valuer['user'], true)) {
+                        $result[$registration->opportunity->id][$key]['can_Evaluate'] = true;
+                    }
+   
+                    if(in_array($valuer['userId'], $registration->valuersIncludeList)) {
+                        $result[$registration->opportunity->id][$key]['include_list'] = true;
+                    } elseif (in_array($valuer['userId'], $registration->valuersExcludeList)) {
+                        $result[$registration->opportunity->id][$key]['exclude_list'] = true;
+                    }
                 }
             }
         }
