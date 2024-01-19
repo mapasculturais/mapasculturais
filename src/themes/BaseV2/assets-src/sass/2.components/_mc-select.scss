@@ -28,6 +28,7 @@
         &--open {
             &:after {
                 border-color: transparent transparent var(--mc-low-500) transparent;
+                top: size(16);
             }
         }
     }
