@@ -49,6 +49,35 @@ app.component('opportunity-registrations-table', {
         alterStatus(entity){
             entity.save();
         },
+
+        clearFilters(entities) {
+            this.selectedCategory = null,
+            this.selectedStatus = null,
+            this.selectedStatus = null,
+            this.selectedAvaliation = null
+            delete this.query['category'];
+            delete this.query['status'];
+            delete this.query['consolidatedResult'];
+            entities.refresh();
+        },
+
+        filterByCategory(option,entities) {
+            this.selectedCategory = option.value;
+            this.query['category'] = `EQ(${this.selectedCategory})`;
+            entities.refresh();
+        },
+        filterByStatus(option,entities) {
+            this.selectedStatus = option.value;
+            this.query['status'] = `EQ(${this.selectedStatus})`;
+            entities.refresh();
+        },
+        filterAvaliation(option,entities){
+            this.selectedAvaliation = option.value;
+            this.query['consolidatedResult'] = `EQ(${this.selectedAvaliation})`;
+            entities.refresh();
+            
+        },
+
         consolidatedResultToString(entity) {
             if(this.phase.evaluationMethodConfiguration){
                 let type = this.phase.evaluationMethodConfiguration.type;
@@ -60,6 +89,7 @@ app.component('opportunity-registrations-table', {
             }
             return "";
         },
+        
         statusToString(status) {
             return this.text(status)
         },
