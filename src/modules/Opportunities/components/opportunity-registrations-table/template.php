@@ -45,7 +45,18 @@ $entity = $this->controller->requestedEntity;
                 </h5>
             </div>
         <div class="col-12"> 
-            <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult">
+            <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult" @clear-filters="clearFilters">
+                <template #filters="{entities,filters}">
+                    <mc-select :default-value="selectedAvaliation" @change-option="filterAvaliation($event,entities)">
+                        <option v-for="(item,index) in statusEvaluationResult" :value="index">{{item}}</option>
+                    </mc-select>
+                    <mc-select :default-value="selectedStatus" @change-option="filterByStatus($event,entities)">
+                        <option v-for="item in statusDict" :value="item.value">{{item.label}}</option>
+                    </mc-select>
+                    <mc-select :default-value="selectedCategory" @change-option="filterByCategory($event,entities)">
+                        <option v-for="item in statusCategory" :value="item">{{item}}</option>
+                    </mc-select>
+                </template>
                 <template #status="{entity}">
                   <select v-model="entity.status" @change="alterStatus(entity)">
                         <template v-for="item in statusDict">
