@@ -31,12 +31,7 @@ $entity = $this->controller->requestedEntity;
         <?php $this->applyTemplateHook('registration-list-actions', 'before', ['entity' => $entity]); ?>
             <div class="col-12 opportunity-registration-table__buttons">
                 <?php $this->applyTemplateHook('registration-list-actions', 'begin', ['entity' => $entity]); ?>
-                <div class="col-4 text-right">
-                    <mc-link :entity="phase" route="reportDrafts" class="button button--secondarylight button--md"><label class="down-draft"><?= i::__("Baixar rascunho") ?></label></mc-link>
-                </div>
-                <div class="col-4">
-                    <mc-link :entity="phase" route="report" class="button button--secondarylight button--md"><label class="down-list"><?= i::__("Baixar lista de inscrições") ?></label></mc-link>
-                </div>
+               
                 <?php $this->applyTemplateHook('registration-list-actions', 'end', ['entity' => $entity]); ?>
             </div>
             <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
@@ -48,16 +43,35 @@ $entity = $this->controller->requestedEntity;
             </div>
         <div class="col-12"> 
             <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult" @clear-filters="clearFilters">
+                <template #actions="{entities,filters}">
+                    <div class="col-4 text-right">
+                        <mc-link :entity="phase" route="reportDrafts" class="button button--secondarylight button--md"><label class="down-draft"><?= i::__("Baixar rascunho") ?></label></mc-link>
+                    </div>
+                    <div class="col-4">
+                        <mc-link :entity="phase" route="report" class="button button--secondarylight button--md"><label class="down-list"><?= i::__("Baixar lista de inscrições") ?></label></mc-link>
+                    </div>
+                </template>
                 <template #filters="{entities,filters}">
-                    <mc-select :default-value="selectedAvaliation" @change-option="filterAvaliation($event,entities)">
-                        <option v-for="(item,index) in statusEvaluationResult" :value="index">{{item}}</option>
-                    </mc-select>
-                    <mc-select :default-value="selectedStatus" @change-option="filterByStatus($event,entities)">
-                        <option v-for="item in statusDict" :value="item.value">{{item.label}}</option>
-                    </mc-select>
-                    <mc-select :default-value="selectedCategory" @change-option="filterByCategory($event,entities)">
-                        <option v-for="item in statusCategory" :value="item">{{item}}</option>
-                    </mc-select>
+                    <div class="grid-12">
+                        <mc-select class="col-5" :default-value="selectedAvaliation" @change-option="filterAvaliation($event,entities)">
+                            <template #empetyOption>
+                                <?= i::__("Resultado de avaliação") ?>
+                            </template>
+                            <option v-for="(item,index) in statusEvaluationResult" :value="index">{{item}}</option>
+                        </mc-select>
+                        <mc-select class="col-4" :default-value="selectedStatus" @change-option="filterByStatus($event,entities)">
+                            <template #empetyOption>
+                                <?= i::__("Status de inscrição") ?>
+                            </template>
+                            <option v-for="item in statusDict" :value="item.value">{{item.label}}</option>
+                        </mc-select>
+                        <mc-select class="col-3" :default-value="selectedCategory" @change-option="filterByCategory($event,entities)">
+                            <template #empetyOption>
+                                <?= i::__("Categoria") ?>
+                            </template>
+                            <option v-for="item in statusCategory" :value="item">{{item}}</option>
+                        </mc-select>
+                    </div>
                 </template>
                 <template #status="{entity}">
                   <select v-model="entity.status" @change="alterStatus(entity)">
