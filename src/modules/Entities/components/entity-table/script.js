@@ -85,6 +85,19 @@ app.component('entity-table', {
             entities.refresh(this.watchDebounce);
         },
 
+        resetHeaders() {
+            const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
+            const required = this.required instanceof Array ? this.required : this.required.split(",");
+            
+            for (let header of this.columns) {
+                if(visible.includes(header.slug) || required.includes(header.slug)) {
+                    header.visible = true;
+                } else {
+                    header.visible = false;
+                }
+            }
+        },
+
         toggleHeaders(event) {
             for (let header of this.columns) {
                 if (header.slug == event.target.value) {
@@ -99,21 +112,25 @@ app.component('entity-table', {
             }
         },
 
-        clearFilters(entities) {
-            const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
-            const required = this.required instanceof Array ? this.required : this.required.split(",");
-
-            for (let header of this.columns) {
-                if(visible.includes(header.slug) || required.includes(header.slug)) {
+        showAllHeaders() {
+            if (!this.$refs.allHeaders.checked) {
+                this.resetHeaders();
+            } else {
+                for (let header of this.columns) {
                     header.visible = true;
-                } else {
-                    header.visible = false;
                 }
             }
+        },
 
-            this.searchText = '';
-            delete this.query['@keyword'];
-            entities.refresh(this.watchDebounce);
+        clearFilters(entities) {
+            this.resetHeaders();
+            this.$refs.allHeaders.checked = false;
+
+            if(this.searchText != '') {
+                this.searchText = '';
+                delete this.query['@keyword'];
+                entities.refresh(this.watchDebounce);
+            }
 
             this.$emit('clear-filters', entities);
         }
