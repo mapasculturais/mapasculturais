@@ -23,7 +23,7 @@ app.component('opportunity-registrations-table', {
             return $MAPAS.config.opportunityRegistrationTable.evaluationStatusDict;
         },
         headers () {
-            return [
+            let itens = [
                 { text: "Inscrição", value: "number" },
                 { text: "Categoria", value: "category" },
                 { text: "Agente", value: "owner.name", slug: "agent"},
