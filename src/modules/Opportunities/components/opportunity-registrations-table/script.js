@@ -27,7 +27,6 @@ app.component('opportunity-registrations-table', {
                 { text: "Inscrição", value: "number" },
                 { text: "Categoria", value: "category" },
                 { text: "Agente", value: "owner.name", slug: "agent"},
-                { text: "Resultado final da avaliação", value: "consolidatedResult"},
                 { text: "Status", value: "status"},
                 { text: "", value: "options"},
             ];
