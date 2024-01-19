@@ -22,6 +22,13 @@ app.component('opportunity-registrations-table', {
         statusEvaluation () {
             return $MAPAS.config.opportunityRegistrationTable.evaluationStatusDict;
         },
+        statusEvaluationResult () {
+            let evaluationType =  this.phase.evaluationMethodConfiguration.type;
+            return this.statusEvaluation[evaluationType];
+        },
+        statusCategory (){
+            return this.phase.registrationCategories;
+        },
         headers () {
             let itens = [
                 { text: "Inscrição", value: "number" },
