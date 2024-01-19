@@ -851,7 +851,7 @@ class Opportunity extends EntityController {
                 valuer_user_id IN({$users}) AND
                 registration_id IN ({$registration_ids})
                 $sql_status
-            ORDER BY registration_sent_timestamp ASC
+            ORDER BY registration_sent_timestamp, valuer_user_id ASC
             $sql_limit
         ", $params);
         
