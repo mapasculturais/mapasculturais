@@ -31,9 +31,10 @@ app.component('opportunity-registrations-table', {
                 { text: "Status", value: "status"},
                 { text: "", value: "options"},
             ];
-        },
-        query() {
-            return {'opportunity': `EQ(${this.phase.id})`}
+            if(this.phase.evaluationMethodConfiguration){
+                itens.splice(3,0,{ text: "Resultado final da avaliação", value: "consolidatedResult"});
+            }
+            return itens;
         },
         select() {
             return "number,category,consolidatedResult,status,singleUrl,owner.{name}";
@@ -46,7 +47,7 @@ app.component('opportunity-registrations-table', {
     },
 
     methods: {
-        alterStatus(entity){
+        alterStatus(entity) {
             entity.save();
         },
 
