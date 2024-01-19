@@ -11,6 +11,8 @@ $this->layout = 'entity';
 $this->import('
     entity-table
     mc-card
+    mc-multiselect
+    mc-select
     mc-tag-list
     mc-icon
     v1-embed-tool
