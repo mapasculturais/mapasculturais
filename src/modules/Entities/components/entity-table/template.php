@@ -63,6 +63,9 @@ $this->import('
                                 <label><?= i::__('Exibir colunas')?></label>
 
                                 <div class="field__group">
+                                    <label class="field__checkbox">
+                                        <input ref="allHeaders" type="checkbox" @click="showAllHeaders()"> <?= i::__('Todas as colunas') ?>
+                                    </label>
                                     <label v-for="column in columns" class="field__checkbox">
                                         <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
                                     </label>
