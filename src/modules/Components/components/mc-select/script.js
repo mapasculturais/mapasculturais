@@ -19,21 +19,23 @@ app.component('mc-select', {
 
     mounted() {
         const childrens = this.$refs.options.children;
-        for (const [index, child] of Object.entries(childrens)) {
-            child.addEventListener("click", (e) => this.selectOption(e));
+            for (const [index, child] of Object.entries(childrens)) {
+                child.addEventListener("click", (e) => this.selectOption(e));
 
-            if (child.value == this.defaultValue) {
-                this.selected = {
-                    text: child.text,
-                    value: child.value,
+                if (this.defaultValue && child.value == this.defaultValue) {
+                    this.selected = {
+                        text: child.text,
+                        value: child.value,
+                    }
                 }
-            }
-        };
+            };
+        },
 
-        if (!this.selected.text && !this.selected.value) {
+    beforeUpdate() {
+        if (!this.defaultValue) {
             this.selected = {
-                text: childrens[0].text,
-                value: childrens[0].value,
+                text:  null,
+                value: null,
             }
         }
     },
