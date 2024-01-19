@@ -12,7 +12,17 @@ app.component('opportunity-registrations-table', {
         return { text }
     },
     data() {
-        return { }
+        return {
+            filters: {},
+            resultStatus:[],
+            query: {
+                opportunity: `EQ(${this.phase.id})`,
+            },
+            selectedCategory:null,
+            selectedStatus:null,
+            selectedStatus:null,
+            selectedAvaliation:null
+        }
     },
 
     computed: {
