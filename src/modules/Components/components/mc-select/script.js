@@ -32,8 +32,7 @@ app.component('mc-select', {
                     let optionText = option.text ?? option.textContent;
                     let optionValue = option.value ?? option.getAttribute('value');
                     let optionItem = option.outerHTML;
-
-                    console.log(optionValue, this.defaultValue);
+                    
                     if (optionValue == this.defaultValue) {
                         this.optionSelected = {
                             text: optionText,
