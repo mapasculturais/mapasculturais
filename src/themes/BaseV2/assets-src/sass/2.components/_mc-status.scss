@@ -1,0 +1,38 @@
+@use '../0.settings/mixins' as *;
+
+.mc-status {
+    display: grid;
+    grid-template-columns: size(16) 1fr;
+    align-items: center;
+    white-space: nowrap;
+    gap: size(8);
+    font-weight: var(--mc-font-bold);
+
+    &--draft {
+        color: var(--mc-low-300);
+    }
+
+    &--success {
+        color: var(--mc-success-500);
+    }
+
+    &--error {
+        color: var(--mc-danger-500);
+    }
+
+    &--warnign {
+        color: var(--mc-warning-500);
+    }
+
+    &--primary {
+        color: var(--mc-primary-500);
+    }
+
+    &--default {
+        color: var(--mc-low-500);
+    }
+
+    .iconify {
+        font-size: size(16);
+    }
+}
