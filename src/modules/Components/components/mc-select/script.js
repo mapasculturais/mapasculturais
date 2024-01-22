@@ -5,9 +5,13 @@ app.component('mc-select', {
     props: {
         defaultValue: {
             type: [String, Number],
-            required: false,
             default: null,
         },
+
+        placeholder: {
+            type: String,
+            default: 'Selecione'
+        }
     },
 
     setup(props, { slots }) {
@@ -18,33 +22,61 @@ app.component('mc-select', {
     },
 
     mounted() {
-        const childrens = this.$refs.options.children;
-        for (const [index, child] of Object.entries(childrens)) {
-            child.addEventListener("click", (e) => this.selectOption(e));
+        setTimeout(() => {
+            const options = this.$refs.options.children;
 
-            if (child.value == this.defaultValue) {
-                this.selected = {
-                    text: child.text,
-                    value: child.value,
+            for (const [index, option] of Object.entries(options)) {
+                option.addEventListener("click", (e) => this.selectOption(e));
+                
+                if (this.defaultValue) {
+                    let optionText = option.text ?? option.textContent;
+                    let optionValue = option.value ?? option.getAttribute('value');
+                    let optionItem = option.outerHTML;
+
+                    if (optionValue == this.defaultValue) {
+                        this.optionSelected = {
+                            text: optionText,
+                            value: optionValue,
+                        }
+                        
+                        this.$refs.selected.innerHTML = optionItem;
+                    }
                 }
             }
-        };
 
-        if (!this.selected.text && !this.selected.value) {
-            this.selected = {
-                text: childrens[0].text,
-                value: childrens[0].value,
+            if (!this.defaultValue) {
+                this.$refs.selected.innerHTML = this.placeholder;
             }
-        }
+        });
+
+        document.addEventListener('mousedown', (event) => {
+            let className = ['mc-select', 'mc-select__selected-option', 'mc-select__options'];
+            
+            const targetClasses = Array.from(event.target.classList);
+            const parentClasses = Array.from(event.target.parentElement.classList);
+
+            const targetMatch = className.some(classString => targetClasses.includes(classString));
+            const parentMatch = className.some(classString => parentClasses.includes(classString));
+
+            if (!targetMatch && !parentMatch) {
+                this.open = false;
+            }
+        });
+    },
+
+    unmounted() {
+        document.removeEventListener('mousedown', {});
+        document.removeEventListener('click', {});
     },
 
     data() {
         return {
-            selected: {
+            optionSelected: {
                 text: null,
                 value: null,
             },
             open: false,
+            uniqueID: (Math.floor(Math.random() * 9000) + 1000),
         };
     },
 
@@ -54,19 +86,27 @@ app.component('mc-select', {
         },
 
         selectOption(event) {
-            this.toggleSelect();
-            const childrens = this.$refs.options.children;
-            if (this.selected.text != event.target.text) {
-                for (const [index, child] of Object.entries(childrens)) {
-                    if (child.text == event.target.text) {
-                        this.selected = {
-                            text: event.target.text,
-                            value: event.target.value,
+            const options = this.$refs.options.children;       
+            let optionText = event.target.text ?? event.target.textContent;
+            let optionValue = event.target.value ?? event.target.getAttribute('value');
+            let optionItem = event.target.outerHTML;
+
+            if (this.optionSelected.text != optionText) {
+                for (const [index, option] of Object.entries(options)) {
+                    if (option.text == optionText || option.textContent == optionText) {
+                        this.optionSelected = {
+                            text: optionText,
+                            value: optionValue,
                         }
+
+                        this.$refs.selected.innerHTML = optionItem;
                     }
                 };
-                this.$emit("changeOption", this.selected);
+                
+                this.$emit("changeOption", this.optionSelected);
             }
+            
+            this.toggleSelect();
         },
     },
 });
