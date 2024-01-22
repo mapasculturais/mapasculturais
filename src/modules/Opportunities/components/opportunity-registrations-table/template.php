@@ -43,14 +43,20 @@ $entity = $this->controller->requestedEntity;
             </div>
         <div class="col-12"> 
             <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult" @clear-filters="clearFilters">
+                <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'before', ['entity' => $entity]); ?>
                 <template #actions="{entities,filters}">
+                    <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'begin', ['entity' => $entity]); ?>
+
                     <div class="col-4 text-right">
                         <mc-link :entity="phase" route="reportDrafts" class="button button--secondarylight button--md"><label class="down-draft"><?= i::__("Baixar rascunho") ?></label></mc-link>
                     </div>
                     <div class="col-4">
                         <mc-link :entity="phase" route="report" class="button button--secondarylight button--md"><label class="down-list"><?= i::__("Baixar lista de inscrições") ?></label></mc-link>
                     </div>
+                    <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'end', ['entity' => $entity]); ?>
+
                 </template>
+                <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'after', ['entity' => $entity]); ?>
                 <template #filters="{entities,filters}">
                     <div class="grid-12">
                         <mc-select class="col-5" :default-value="selectedAvaliation" @change-option="filterAvaliation($event,entities)">
