@@ -37,8 +37,8 @@ $entity = $this->controller->requestedEntity;
             <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
             <div class="col-12">
                 <h5>
-                    <strong><?= i::__("Você pode mudar o status individualmente de acordo com as notas dos participantes, ou basta selecionar várias inscrições para alterar o status em mais de uma inscrição") ?></strong>
-                    <?= i::__("Utilize o filtro numérico para visualizar inscrições com notas dentro de um intervalo específico..") ?>
+                    <strong><?= i::__("Clique no número de uma inscrição para conferir todas as avaliações realizadas. Após conferir, você pode alterar os status das inscrições de maneira coletiva ou individual e aplicar os resultados das avaliações.") ?></strong>
+                    <?= i::__(" Após conferir, você pode alterar os status das inscrições de maneira coletiva ou individual e aplicar os resultados das avaliações.") ?>
                 </h5>
             </div>
         <div class="col-12"> 
