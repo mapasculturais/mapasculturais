@@ -47,8 +47,14 @@ app.component('opportunity-registrations-table', {
                 { text: "Status", value: "status"},
                 { text: "", value: "options"},
             ];
+
             if(this.phase.evaluationMethodConfiguration){
                 itens.splice(3,0,{ text: "Resultado final da avaliação", value: "consolidatedResult"});
+            }
+
+            if(this.statusCategory.length == 0){
+                let categoryInxed = itens.findIndex((item) => item.text === "Categoria");
+                itens.splice(categoryInxed,1);
             }
             return itens;
         },
