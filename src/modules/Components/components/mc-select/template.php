@@ -12,12 +12,6 @@ use MapasCulturais\i;
     <div ref="selected" :id="uniqueID" :class="['mc-select__selected-option', {'mc-select__selected-option--open': open }]" @click="toggleSelect()"> 
     </div>
 
-    <div v-if="!selected.value" :class="['mc-select__selected-option', {'mc-select__selected-option--open': open }]" @click="toggleSelect()">
-        <slot name="empetyOption">
-            <?= i::__("Selecione uma opção") ?>
-        </slot>   
-    </div>
-
     <div v-show="open" class="mc-select__options" ref="options">
         <slot></slot>
     </div>
