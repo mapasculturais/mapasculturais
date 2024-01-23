@@ -8,9 +8,8 @@
 use MapasCulturais\i;
 ?>
 
-<div class="mc-select" @blur="open = false">
-    <div v-if="selected.value" :class="['mc-select__selected-option', {'mc-select__selected-option--open': open }]" @click="toggleSelect()">
-        {{ selected.text }}
+<div class="mc-select" @blur="console.log('oxe')">
+    <div ref="selected" :id="uniqueID" :class="['mc-select__selected-option', {'mc-select__selected-option--open': open }]" @click="toggleSelect()"> 
     </div>
 
     <div v-if="!selected.value" :class="['mc-select__selected-option', {'mc-select__selected-option--open': open }]" @click="toggleSelect()">
