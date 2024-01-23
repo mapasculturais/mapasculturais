@@ -25,6 +25,7 @@ app.component('mc-status', {
                     break;
                 
                 case 'selecionado':
+                case 'selecionada':
                 case 'válido':
                 case 'aceito':
                 case 'disponível':
@@ -33,8 +34,10 @@ app.component('mc-status', {
                     break;
                 
                 case 'não selecionado':
+                case 'não selecionada':
                 case 'não aceito':
                 case 'inválido':
+                case 'inválida':
                 case 'falha':
                     classes.push('mc-status--error');
                     break;
