@@ -261,7 +261,7 @@ class Metadata extends \MapasCulturais\Definition{
         if($this->is_required && is_null($value)){
             $errors[] = $this->is_required_error_message;
 
-        }elseif($value){
+        }elseif(!is_null($value)){
             foreach($this->_validations as $validation => $message){
                 $ok = true;
 
