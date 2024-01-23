@@ -33,8 +33,8 @@ app.component('opportunity-registrations-table', {
             return $MAPAS.config.opportunityRegistrationTable.evaluationStatusDict;
         },
         statusEvaluationResult () {
-            let evaluationType =  this.phase.evaluationMethodConfiguration.type;
-            return this.statusEvaluation[evaluationType];
+            let evaluationType = this.phase.evaluationMethodConfiguration ? this.phase.evaluationMethodConfiguration.type : null;
+            return evaluationType ? this.statusEvaluation[evaluationType] : null;
         },
         statusCategory (){
             return this.phase.registrationCategories;
@@ -69,7 +69,8 @@ app.component('opportunity-registrations-table', {
     },
 
     methods: {
-        alterStatus(entity) {
+        setStatus(selected, entity) {
+            entity.status = selected.value;
             entity.save();
         },
 

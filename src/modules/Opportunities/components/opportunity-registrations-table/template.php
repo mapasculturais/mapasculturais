@@ -11,10 +11,11 @@ $this->layout = 'entity';
 $this->import('
     entity-table
     mc-card
+    mc-icon
     mc-multiselect
     mc-select
+    mc-status
     mc-tag-list
-    mc-icon
     v1-embed-tool
 ');
 
@@ -28,38 +29,44 @@ $entity = $this->controller->requestedEntity;
         <h2 v-if="isFuture()"><?= i::__("As inscrições ainda não iniciaram") ?></h2>
     </div>
     <template v-if="!isFuture()">
+
         <?php $this->applyTemplateHook('registration-list-actions', 'before', ['entity' => $entity]); ?>
-            <div class="col-12 opportunity-registration-table__buttons">
-                <?php $this->applyTemplateHook('registration-list-actions', 'begin', ['entity' => $entity]); ?>
-               
-                <?php $this->applyTemplateHook('registration-list-actions', 'end', ['entity' => $entity]); ?>
-            </div>
-            <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
-            <div class="col-12">
-                <h5>
-                    <strong><?= i::__("Clique no número de uma inscrição para conferir todas as avaliações realizadas. Após conferir, você pode alterar os status das inscrições de maneira coletiva ou individual e aplicar os resultados das avaliações.") ?></strong>
-                    <?= i::__(" Após conferir, você pode alterar os status das inscrições de maneira coletiva ou individual e aplicar os resultados das avaliações.") ?>
-                </h5>
-            </div>
+        <div class="col-12 opportunity-registration-table__buttons">
+            <?php $this->applyTemplateHook('registration-list-actions', 'begin', ['entity' => $entity]); ?>
+            
+            <?php $this->applyTemplateHook('registration-list-actions', 'end', ['entity' => $entity]); ?>
+        </div>
+        <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
+
         <div class="col-12"> 
+
             <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult" @clear-filters="clearFilters">
+
+                <template #title>
+                    <h5>
+                        <strong><?= i::__("Clique no número de uma inscrição para conferir todas as avaliações realizadas.") ?></strong>
+                        <?= i::__("Após conferir, você pode alterar os status das inscrições de maneira coletiva ou individual e aplicar os resultados das avaliações.") ?>
+                    </h5>
+                </template>
+                
                 <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'before', ['entity' => $entity]); ?>
                 <template #actions="{entities,filters}">
-                    <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'begin', ['entity' => $entity]); ?>
+                    <div class="opportunity-payment-table__actions">
+                        <h4 class="bold"><?= i::__('Ações:') ?></h4>
 
-                    <div class="col-4 text-right">
-                        <mc-link :entity="phase" route="reportDrafts" class="button button--secondarylight button--md"><label class="down-draft"><?= i::__("Baixar rascunho") ?></label></mc-link>
+                        <div class="opportunity-payment-table__actions grid-12">
+                            <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'begin', ['entity' => $entity]); ?>
+                                <mc-link :entity="phase" route="reportDrafts" class="button button--primarylight button--icon button--large col-4"><?= i::__("Baixar rascunho") ?> <mc-icon name="download"></mc-icon></mc-link>
+                                <mc-link :entity="phase" route="report" class="button button--primarylight button--icon button--large col-4"><?= i::__("Baixar lista de inscrições") ?> <mc-icon name="download"></mc-icon></mc-link>
+                            <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'end', ['entity' => $entity]); ?>
+                        </div>
                     </div>
-                    <div class="col-4">
-                        <mc-link :entity="phase" route="report" class="button button--secondarylight button--md"><label class="down-list"><?= i::__("Baixar lista de inscrições") ?></label></mc-link>
-                    </div>
-                    <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'end', ['entity' => $entity]); ?>
-
                 </template>
                 <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'after', ['entity' => $entity]); ?>
+
                 <template #filters="{entities,filters}">
                     <div class="grid-12">
-                        <mc-select class="col-5" :default-value="selectedAvaliation" @change-option="filterAvaliation($event,entities)">
+                        <mc-select v-if="statusEvaluationResult" class="col-5" :default-value="selectedAvaliation" @change-option="filterAvaliation($event,entities)">
                             <template #empetyOption>
                                 <?= i::__("Resultado de avaliação") ?>
                             </template>
@@ -79,21 +86,23 @@ $entity = $this->controller->requestedEntity;
                         </mc-select>
                     </div>
                 </template>
+
                 <template #status="{entity}">
-                  <select v-model="entity.status" @change="alterStatus(entity)">
-                        <template v-for="item in statusDict">
-                            <option :value="item.value">{{item.label}}</option>
-                        </template>
-                  </select>
+                    <mc-select :default-value="entity.status" @change-option="setStatus($event, entity)">
+                        <mc-status v-for="item in statusDict" :value="item.value" :status-name="item.label"></mc-status>
+                    </mc-select>
                 </template>
+
                 <template #consolidatedResult="{entity}">
                     {{consolidatedResultToString(entity)}}
                 </template>
+
                 <template #number="{entity}">
                     <a :href="entity.singleUrl">{{entity.number}}</a>
                 </template>
+
                 <template #options="{entity}">
-                    <a :href="entity.singleUrl" class="button button--primary"><?= i::__("Conferir inscrição")?></a>
+                    <a :href="entity.singleUrl" class="button button--sm button--primary"><?= i::__("Conferir inscrição")?></a>
                 </template>
             </entity-table>
         </div>
