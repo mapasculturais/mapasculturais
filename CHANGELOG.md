@@ -9,14 +9,25 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Nova lib instalada (league/csv), para geração de arquivos csv.
 - Adicionado novo ícone para o histórico de alterações.
 
+## [7.3.5] - 2023-01-24
+### Correções
+- Corrige erro ao exibir resumo de uma fase de avaliação após a última correção não contemplar a lista de inscrição
+
+## [7.3.4] - 2023-01-24
+### Correções
+- Corrige erro ao exibir resumo de uma fase de avaliação, quando existem 2 avaliações sequênciais
+
+## [7.3.3] - 2023-01-23
+### Melhorias
+- Implementa revisões iniciais na entidade de oportunidades
+- Implementa a criação de usuário atravéz do fake-autenticate
+
 ### Correções
 - Corrige erro da instalação do npm após o node. 
 - Corrige erro na listagem de inscrições de um edital quando não exitia nehuma inscrição
 - Corrige erro que ocorria no momento da publicação de resultado final ocasionado pela tentativa de enviar os e-mails
 - Corrige validação de metadados preenchidos com valores que o php, com cast para boolean, resolve como false (Ex: 0, [], '')
 - Corrige criação de fase de coleta de dados que ficou quebrada após a implementação das áreas de interesse
-- Implementa revisões iniciais na entidade de oportunidades
-- Implementa a criação de usuário atravéz do fake-autenticate
 
 ## [7.3.2] - 2023-12-15
 ### Correções
