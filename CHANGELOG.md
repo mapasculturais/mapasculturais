@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.6] - 2024-01-24
+### Correções
+- Corrige datas do CHANGELOG.md
+
 ## [7.3.5] - 2024-01-24
 ### Correções
 - Corrige erro ao exibir resumo de uma fase de avaliação após a última correção não contemplar a lista de inscrição
