@@ -4,15 +4,15 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.3.5] - 2023-01-24
+## [7.3.5] - 2024-01-24
 ### Correções
 - Corrige erro ao exibir resumo de uma fase de avaliação após a última correção não contemplar a lista de inscrição
 
-## [7.3.4] - 2023-01-24
+## [7.3.4] - 2024-01-24
 ### Correções
 - Corrige erro ao exibir resumo de uma fase de avaliação, quando existem 2 avaliações sequênciais
 
-## [7.3.3] - 2023-01-23
+## [7.3.3] - 2024-01-23
 ### Melhorias
 - Implementa revisões iniciais na entidade de oportunidades
 - Implementa a criação de usuário atravéz do fake-autenticate
