@@ -448,7 +448,7 @@ class Module extends \MapasCulturais\Module{
 
                         $app->applyHook('module(OpportunityPhases).evaluationPhaseData', [&$mout_simplify]);
 
-                        $result[] = $emc->simplify("{$mout_simplify},opportunity,infos,evaluationFrom,evaluationTo");
+                        $result[] = $emc->opportunity->simplify("{$mout_simplify},opportunity,infos,evaluationFrom,evaluationTo");
                     }
                 }
             }
