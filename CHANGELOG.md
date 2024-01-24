@@ -4,14 +4,16 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [7.3.3] - 2023-01-23
+### Melhorias
+- Implementa revisões iniciais na entidade de oportunidades
+- Implementa a criação de usuário atravéz do fake-autenticate
+
 ### Correções
 - Corrige erro na listagem de inscrições de um edital quando não exitia nehuma inscrição
 - Corrige erro que ocorria no momento da publicação de resultado final ocasionado pela tentativa de enviar os e-mails
 - Corrige validação de metadados preenchidos com valores que o php, com cast para boolean, resolve como false (Ex: 0, [], '')
 - Corrige criação de fase de coleta de dados que ficou quebrada após a implementação das áreas de interesse
-- Implementa revisões iniciais na entidade de oportunidades
-- Implementa a criação de usuário atravéz do fake-autenticate
 
 ## [7.3.2] - 2023-12-15
 ### Correções
