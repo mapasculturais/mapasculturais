@@ -1,0 +1,56 @@
+@use '../0.settings/mixins' as *;
+
+.mc-select {
+    outline: none;
+    position: relative;
+    text-align: left;
+    width: 100%;
+
+    &__selected-option {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-500);
+        color: var(--mc-low-500);
+        cursor: pointer;
+        padding: size(12.5) size(14);
+
+        &:after {
+            border: size(5) solid transparent;
+            border-color: var(--mc-low-500) transparent transparent transparent;
+            content: "";
+            height: 0;
+            position: absolute;
+            right: size(24);
+            top: size(22);
+            width: 0;
+        }
+
+        &--open {
+            &:after {
+                border-color: transparent transparent var(--mc-low-500) transparent;
+                top: size(16);
+            }
+        }
+    }
+
+    &__options {
+        background-color: var(--mc-white);
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-500);
+        margin-top: size(1);
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+        
+        & > * {
+            border-radius: var(--mc-border-radius-xs);
+            color: var(--mc-low-500);
+            cursor: pointer;
+            padding: size(5) size(10);
+    
+            &:hover {
+                background-color: var(--mc-gray-300);
+            }
+        }
+    }
+}

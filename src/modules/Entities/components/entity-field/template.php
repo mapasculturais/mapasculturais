@@ -55,7 +55,7 @@ $this->import('
         </template>
         
         <template v-if="is('multiselect')">
-           <div class="content">
+           <div class="field__group">
                <label class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
                    <input :checked="value?.includes(optionValue)" type="checkbox" :value="optionValue" @input="change($event)" @blur="change($event,true)"> {{description.options[optionValue]}} 
                 </label>
@@ -63,7 +63,7 @@ $this->import('
         </template>
 
         <template v-if="is('checkbox')">
-            <label>
+            <label class="field__checkbox">
                 <input :id="propId" type="checkbox" :disabled="disabled" :checked="value" @click="change($event)" />
                 <slot>{{label || description.label}}</slot>
             </label>
