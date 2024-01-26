@@ -13,6 +13,7 @@ import * as FloatingVue from 'floating-vue'
 import MediaQuery from './media-query'
 import { vMaska } from 'maska'
 import { VueRecaptcha } from 'vue-recaptcha';
+import Slider from '@vueform/slider'
 
 const app = Vue.createApp({})
 const pinia = Pinia.createPinia()
@@ -23,6 +24,7 @@ app.use(FloatingVue)
 app.component('Iconify', Icon)
 app.component('Cropper', VueAdvancedCropper)
 app.component('Datepicker', Datepicker);
+app.component('Slider', Slider);
 app.directive('maska', vMaska);
 app.use(MediaQuery)
 
