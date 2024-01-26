@@ -93,6 +93,7 @@ $iconset = [
     'previous' => 'ooui:previous-ltr',
     'print' => 'material-symbols:print-outline',
     'projects' => 'ri:file-list-2-line',
+    'process' => 'fluent-mdl2:processing-pause',
     'question' => 'fe:question',
     'role'  => 'ri:profile-line',
     'seal' => 'mdi:seal-variant',
