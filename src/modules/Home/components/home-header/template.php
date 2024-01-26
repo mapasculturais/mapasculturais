@@ -23,7 +23,7 @@ $this->import('
             </p>
         </div>
 
-        <div class="home-header__banners">
+        <div v-if="banner || secondBanner" class="home-header__banners">
             <div v-if="banner" class="home-header__banner">
                 <a v-if="bannerLink" :href="bannerLink" :download="downloadableLink ? '' : undefined"  :target="!downloadableLink ? '_blank' : null">
                     <img :src="banner" />

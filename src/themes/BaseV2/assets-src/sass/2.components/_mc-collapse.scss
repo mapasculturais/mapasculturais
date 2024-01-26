@@ -1,0 +1,49 @@
+@use '../0.settings/mixins' as *;
+
+.mc-collapse {
+    border-radius: var(--mc-border-radius-xs);
+    border: var(--mc-border-hairline) var(--mc-gray-300);
+
+    &__header {
+        padding: size(9) size(24);
+    }
+
+    &__body {
+        padding: 0 size(16);
+    }
+
+    &__content {
+        border-top: var(--mc-border-hairline) var(--mc-gray-300);
+        overflow: hidden;
+        margin-top: size(4);
+        padding: 0 size(10) size(10);
+    }
+
+    &__toggle {
+        max-height: 0;
+        opacity: 0;
+        transition: all .5s ease;
+        visibility: collapse;
+
+        &.expanded {
+            visibility: visible;
+            opacity: 1;
+            max-height: size(999);
+        }
+    }
+
+    &__toggle-close {
+        padding: size(10) 0;
+        display: flex;
+        justify-content: flex-end;
+        
+        .iconify {
+            cursor: pointer;
+        }
+    }
+
+    &__toggle-button {
+        display: flex;
+        justify-content: flex-end;
+    }
+}
