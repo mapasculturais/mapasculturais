@@ -31,14 +31,15 @@ app.component('mc-avatar', {
             };
 
             const size = map[this.size];
+            const avatar = this.entity.files?.avatar;
 
-            const transformations = this.entity.files.avatar?.transformations;
-            
-            if(transformations) {
-                return transformations[size]?.url;
-            } else {
-                return undefined;
+            if(avatar && avatar.hasOwnProperty('transformations')) {
+                return avatar.transformations[size].url;
+            } else if (avatar) {
+                return avatar?.files[size].url;
             }
+
+            return false;
         }
     },
     methods: {
