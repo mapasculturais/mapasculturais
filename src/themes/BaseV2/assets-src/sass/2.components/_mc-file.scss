@@ -1,0 +1,19 @@
+@use '../0.settings/mixins' as *;
+
+.mc-file {
+    display: flex;
+    flex-direction: column;
+    gap: size(10);
+
+    &__field {
+        align-items: center;
+        color: var(--mc-gray-500);
+        display: grid;
+        gap: size(8);
+        grid-template-columns: size(200) 1fr;
+    }
+
+    &__input {
+        display: none;
+    }
+}

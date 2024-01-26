@@ -1,0 +1,464 @@
+@use '../0.settings/mixins' as *;
+
+.vue3-easy-data-table {
+    position: relative;
+    box-sizing: border-box;
+    border-radius: var(--mc-border-radius-xs);
+    overflow: hidden;
+    margin-bottom: size(103);
+}
+
+.vue3-easy-data-table__main {
+    border: none;
+    width: 100%;
+    overflow: auto;
+    background-color: var(--mc-high-500);
+    margin-top: size(8);
+
+    &::-webkit-scrollbar-track {
+        border-radius: size(10);
+        background-color: var(--mc-high-500);
+    }
+
+    &::-webkit-scrollbar {
+        width: size(7);
+        height: size(7);
+        background-color: var(--mc-high-500);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: size(10);
+        background-color: var(--mc-high-500);
+    }
+
+    &::-webkit-scrollbar-corner {
+        background-color: var(--mc-high-500);
+    }
+
+    &.table-fixed {
+        table {
+            table-layout: fixed;
+        }
+    }
+
+    &.show-shadow {
+
+        th.shadow,
+        td.shadow {
+            &::after {
+                box-shadow: inset 6px 0 5px -3px rgb(0 0 0 / 20%);
+            }
+        }
+    }
+
+    &.fixed-header {
+        th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+    }
+
+    &.hoverable {
+        tr:hover td {
+            background-color: var(--mc-gray-100);
+            color: var(--mc-black);
+        }
+
+        .vue3-easy-data-table__body.row-alternation {
+            .even-row:hover td {
+                color: var(--mc-black);
+                background-color: var(--mc-black);
+            }
+        }
+    }
+
+    &.border-cell {
+        .vue3-easy-data-table__header th {
+            border-right: size(1) solid var(--mc-high-500);
+        }
+
+        .vue3-easy-data-table__header th:last-of-type {
+            border-right: none;
+        }
+
+        .vue3-easy-data-table__body td {
+            border-right: size(1) solid var(--mc-high-500);
+        }
+
+        .vue3-easy-data-table__body td:last-of-type {
+            border-right: none;
+        }
+    }
+}
+
+.vue3-easy-data-table__body.row-alternation {
+    tr.even-row td {
+        color: var(--mc-low-300);
+        background-color: var(--mc-high-500);
+    }
+}
+
+table {
+    border-collapse: initial;
+    display: table;
+    width: 100%;
+    border-spacing: 0;
+    margin: 0;
+}
+
+// fixed-columns feature related
+.vue3-easy-data-table__header,
+vue3-easy-data-table__body {
+    position: relative;
+}
+
+.vue3-easy-data-table__header tr {
+    font-size: size(12);
+    border: none;
+    height: size(36);
+}
+
+.vue3-easy-data-table__header th {
+    background-color: var(--mc-high-500);
+    color: var(--mc-low-300);
+    border: none;
+    border-bottom: size(1) solid var(--mc-high-500);
+
+    padding: 0 size(10);
+
+    position: relative;
+
+    .header {
+        display: flex;
+        align-items: center;
+
+        &.direction-left {
+            justify-content: flex-start;
+        }
+
+        &.direction-center {
+            justify-content: center;
+        }
+
+        &.direction-right {
+            justify-content: flex-end;
+        }
+    }
+
+    &.sortable {
+        cursor: pointer;
+
+        .sortType-icon {
+            border: 5px solid transparent;
+            margin-top: size(-3);
+            margin-left: size(4);
+            display: inline-block;
+            height: 0;
+            width: 0;
+            position: relative;
+            border-bottom-color: var(--mc-low-300);
+        }
+
+        .multi-sort__number {
+            border-radius: 50%;
+            height: 1.5em;
+            width: 1.5em;
+            line-height: 1.5em;
+            margin-left: size(4);
+            background-color: var(--mc-low-300);
+            color: var(--mc-high-500);
+        }
+
+        &.none {
+            &:hover {
+                .sortType-icon {
+                    opacity: 1;
+                }
+            }
+
+            .sortType-icon {
+                opacity: 0;
+                transition: 0.5s ease;
+            }
+        }
+
+        &.desc {
+            .sortType-icon {
+                margin-top: size(5);
+                transform: rotate(180deg);
+            }
+        }
+    }
+}
+
+.vue3-easy-data-table__body  {
+        .row {
+            
+            &--waitlist {
+                & > td {
+                    background-color: var(--mc-warning-500);
+                }
+            }
+            &--sent, &--enabled {
+                & > td {
+                    background-color: var(--mc-success-300);
+                }
+            }
+            
+            &--invalid {
+                & > td {
+                    background-color:var(--mc-danger-300)
+                }
+            }
+            &--substitute {
+                & > td {
+                    background-color:var(--mc-agents-500)
+                }
+            }
+            
+            &--notapproved {
+                & > td {
+                    background-color: var(--mc-white);
+                }
+            }
+            
+        }
+}
+
+// fixed-columns feature related
+.vue3-easy-data-table__header th,
+.vue3-easy-data-table__body td {
+    font-family: Open Sans;
+    font-size: size(14);
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: var(--mc-low-700);
+    border-bottom: size(1) solid var(--mc-gray-300);
+
+    &.shadow {
+        &::after {
+            pointer-events: none;
+            content: "";
+            width: size(36);
+            display: inline-block;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            right: size(-36);
+            box-shadow: none;
+        }
+    }
+}
+
+.vue3-easy-data-table__body tr {
+    height: size(36);
+    color: var(--mc-low-700);
+    font-size: size(12);
+    
+    &:last-child {
+        td {
+            border-bottom: none;
+        }
+    }
+
+    &:first-child {
+
+        td {
+            border-bottom: px solid var(--mc-high-500);
+        }
+    }
+}
+
+.vue3-easy-data-table__body td {
+    padding: 0 size(10);
+    background-color: var(--mc-high-500);
+    border: none;
+    border-bottom: px solid var(--mc-high-500);
+    font-weight: 700;
+    font-size: size(14);
+    font-family: 'Open Sans';
+    color: var(--mc-low-700);
+    padding: size(16);
+    &:first-child {
+        color: var(--mc-opportunities-500);
+        font-weight: 600;
+        font-size: size(14);
+        font-family: 'Open Sans';
+    }
+
+    &.direction-left {
+        text-align: left;
+    }
+
+    &.direction-center {
+        text-align: center;
+    }
+
+    &.direction-right {
+        text-align: right;
+    }
+
+    position: relative;
+
+    .expand-icon {
+        border: solid;
+        border-color: var(--mc-low-700);
+
+        border-width: 0 2px 2px 0;
+        display: inline-block;
+        padding: size(3);
+        transform: rotate(-45deg);
+        transition: 0.2s;
+
+        &.expanding {
+            transform: rotate(45deg);
+        }
+    }
+}
+
+// expandable row feature related
+.vue3-easy-data-table__body td.expand {
+    position: relative;
+
+    .expand-loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+.vue3-easy-data-table__body td.can-expand {
+    cursor: pointer;
+}
+
+.vue3-easy-data-table__footer {
+    background-color: var(--mc-high-500);
+    color: var(--mc-low-700);
+    border-top: size(1) solid var(--mc-high-500);
+    font-size: size(12);
+    height: size(36);
+    padding: 0 size(5);
+
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .pagination__rows-per-page {
+        display: flex;
+        align-items: center;
+    }
+
+    .pagination__items-index {
+        margin: 0 size(20) 0 size(10);
+    }
+}
+
+.vue3-easy-data-table__message {
+    color: var(--mc-low-700);
+    font-size: size(12);
+    padding: size(20);
+
+    text-align: center;
+}
+
+.vue3-easy-data-table__loading {
+    z-index: 3;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loading-entity {
+        z-index: 1;
+    }
+}
+
+.vue3-easy-data-table__loading-mask {
+    background-color: var(--mc-high-500);
+    opacity: 0.5;
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+
+//   .vue3-easy-data-table__footer .pagination__rows-per-page[data-v-32683533] {
+//     display: flex;
+//     align-items: center;
+// }
+.easy-data-table__rows-selector {
+    display: inline-block;
+    min-width: size(45);
+    position: relative;
+    margin: 0 size(10);
+    width: auto;
+
+    .rows-input__wrapper {
+        height: size(20);
+        border-bottom: size(1) solid black;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 size(5);
+        cursor: pointer;
+
+        .triangle {
+            display: inline-block;
+            vertical-align: middle;
+            width: 0;
+            height: 0;
+            border-top: solid size(6) black;
+            border-left: solid size(6) transparent;
+            border-right: solid size(6) transparent;
+        }
+    }
+
+    ul.select-items {
+        &.show {
+            display: block;
+        }
+
+        &.inside {
+            bottom: 0;
+            top: auto;
+        }
+
+        position: absolute;
+        top: size(20);
+        left: 0;
+        width: 100%;
+        display: none;
+        margin: 0;
+        padding: 0;
+        text-align: left;
+        list-style-type: none;
+        box-shadow: 0 5px 5px -3px rgb(0 0 0 / 20%),
+        0 8px 10pxsize(1) rgb(0 0 0 / 14%),
+        0 3px 14px 2px rgb(0 0 0 / 12%);
+        z-index: auto;
+
+        li {
+            cursor: pointer;
+            padding: size(5);
+            background-color: var(--mc-high-500);
+
+            &.selected {
+                color: var(--mc-high-500);
+                background-color: var(--mc-success-500);
+            }
+        }
+    }
+}
