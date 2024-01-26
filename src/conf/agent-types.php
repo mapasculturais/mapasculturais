@@ -58,7 +58,7 @@ return array(
             'label' => \MapasCulturais\i::__('Comunidades tradicionais'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não sou'),
+                '' => \MapasCulturais\i::__('Não pertenço'),
                 MapasCulturais\i::__('Comunidade extrativista'),
                 MapasCulturais\i::__('Comunidade ribeirinha'),
                 MapasCulturais\i::__('Comunidade rural'),
