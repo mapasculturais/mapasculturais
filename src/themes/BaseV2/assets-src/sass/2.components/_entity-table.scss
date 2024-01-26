@@ -115,6 +115,7 @@
     &__table {
         background-color: var(--mc-white);
         padding: 0 size(25) size(35);
+        table-layout: fixed;
         text-align: left;
 
         & > thead > tr {
@@ -133,6 +134,29 @@
                 border-bottom: var(--mc-border-hairline) var(--mc-gray-500);
                 font-size: var(--mc-font-size-xxs);
                 padding: 0 size(10);
+            }
+        }
+
+        /* estilização específica de componentes internos */
+        .mc-select {
+            &__selected-option {
+                padding-block: 3px;
+
+                &::after {
+                    top: 12px;
+                    right: 20px;
+                }
+
+                &--open {
+                    &:after {
+                        border-color: transparent transparent var(--mc-low-500) transparent;
+                        top: 8px;
+                    }
+                }
+            }
+
+            &__option {
+                padding-block: 3px;
             }
         }
     }

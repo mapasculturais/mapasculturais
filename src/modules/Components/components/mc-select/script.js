@@ -28,7 +28,7 @@ app.component('mc-select', {
             for (const [index, option] of Object.entries(options)) {
                 option.addEventListener("click", (e) => this.selectOption(e));
                 
-                if (this.defaultValue != null) {
+                if (this.defaultValue != null || this.defaultValue != '') {
                     let optionText = option.text ?? option.textContent;
                     let optionValue = option.value ?? option.getAttribute('value');
                     let optionItem = option.outerHTML;
@@ -44,7 +44,7 @@ app.component('mc-select', {
                 }
             }
 
-            if (this.defaultValue == null) {
+            if (this.defaultValue === null || this.defaultValue === '') {
                 this.$refs.selected.innerHTML = this.placeholder;
             }
         });

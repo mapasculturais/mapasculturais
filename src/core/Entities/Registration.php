@@ -677,9 +677,9 @@ class Registration extends \MapasCulturais\Entity
     }
     
 
-    function setStatus($status){
-        // do nothing
-    }
+    // function setStatus($status){
+    //     // do nothing
+    // }
 
     function _setStatusTo($status){
         if($this->status === self::STATUS_DRAFT && $status === self::STATUS_SENT){
