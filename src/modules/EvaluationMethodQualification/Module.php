@@ -31,7 +31,9 @@ class Module extends \MapasCulturais\EvaluationMethod
     protected function _getConsolidatedResult(Entities\Registration $registration)
     {
         $app = App::i();
-        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
+        $status = [
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_DRAFT,
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
             \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
         ];
 
