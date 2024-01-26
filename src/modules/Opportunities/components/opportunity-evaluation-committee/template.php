@@ -16,6 +16,12 @@ $this->import('
 ');
 ?>
 <div class="opportunity-evaluation-committee">
+    <h2><?php i::_e('Configuração da Avaliação') ?></h2>
+    <p><?php i::_e('A avaliação técnica consiste em um valor quantitativo, por exemplo, uma nota de 0 a 10.') ?></p>
+    
+    <p class="bold"><?php i::_e('Comissão de avaliação técnica') ?></p>
+    <p><?php i::_e('Defina os agentes que serão avaliadores desta fase.') ?></p>
+
     <select-entity type="agent" :select="queryString" @select="selectAgent($event)" openside="down-right">
         <template #button="{ toggle }">
             <button class="button button--sm button--icon button--primary" @click="toggle()">
