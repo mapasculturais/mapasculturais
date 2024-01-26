@@ -2,6 +2,10 @@ app.component('mc-file', {
     template: $TEMPLATES['mc-file'],
     emits: ['fileSelected'],
     
+    mounted() {
+        window.addEventListener('mcFileClear', this.mcFileClear);
+    },
+    
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name];
         const text = Utils.getTexts('mc-file')
@@ -23,6 +27,9 @@ app.component('mc-file', {
     },
     
     methods: {
+        mcFileClear() {
+            this.newFile = null
+        },
         setFile(event) {
             this.newFile = event.target.files[0];
             this.$emit('fileSelected', this.newFile);

@@ -11,7 +11,11 @@
         border: var(--mc-border-hairline) var(--mc-gray-500);
         color: var(--mc-low-500);
         cursor: pointer;
-        padding: size(12.5) size(14);
+        max-width: 100%;
+        overflow: hidden;
+        padding: size(12.5) size(48) size(12.5) size(14);
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
         &:after {
             border: size(5) solid transparent;
