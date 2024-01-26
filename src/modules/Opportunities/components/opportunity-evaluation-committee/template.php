@@ -67,7 +67,7 @@ $this->import('
                     <input type="text" @change="sendDefinition" v-model="entity.fetch[infoReviewer.agentUserId]"/>
                 </div>
 
-                <div>
+                <div v-if="entity.opportunity.registrationCategories.length > 0">
                     <span class="bold"><?php i::_e('Categorias a serem avaliadas') ?></span>
                     <mc-tag-list :tags="entity.fetchCategories[infoReviewer.agentUserId]" @remove="sendDefinition" editable></mc-tag-list>
                     <mc-multiselect :model="entity.fetchCategories[infoReviewer.agentUserId]" :items="entity.opportunity.registrationCategories" #default="{popover, setFilter}" @selected="sendDefinition" @removed="sendDefinition">

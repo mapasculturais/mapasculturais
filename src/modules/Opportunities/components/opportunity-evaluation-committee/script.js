@@ -55,7 +55,7 @@ app.component('opportunity-evaluation-committee', {
 
             api.POST(url, this.agentData).then(res => res.json()).then(data => {
                 this.loadReviewers();
-                this.loadCategories();
+                this.loadFetchs();
             });
         },
         loadReviewers() {
@@ -72,7 +72,7 @@ app.component('opportunity-evaluation-committee', {
                 this.infosReviewers = data;
                 this.showReviewers = !!this.infosReviewers;
                 this.ReviewerSelect = false;
-                this.loadCategories();
+                this.loadFetchs();
             });
         },
         delReviewer(agent) {
@@ -132,17 +132,28 @@ app.component('opportunity-evaluation-committee', {
                 this.loadReviewers();
             });
         },
-        loadCategories() {
-            this.infosReviewers.forEach(info => {
-                if(!this.entity.fetchCategories) {
-                    this.entity.fetchCategories = {};
-                    this.entity.fetchCategories[info.agentUserId] = [];
-                }
+        loadFetchs() {
+            if(this.infosReviewers) {
+                this.infosReviewers.forEach(info => {
+                    if(!this.entity.fetch) {
+                        this.entity.fetch = {};
+                        this.entity.fetch[info.agentUserId] = ""
+                    }
 
-                if(this.entity.fetchCategories && !this.entity.fetchCategories[info.agentUserId]) {
-                    this.entity.fetchCategories[info.agentUserId] = [];
-                }
-            });
+                    if(this.entity.fetch && !this.entity.fetch[info.agentUserId]) {
+                        this.entity.fetch[info.agentUserId] = "";
+                    }
+    
+                    if(!this.entity.fetchCategories) {
+                        this.entity.fetchCategories = {};
+                        this.entity.fetchCategories[info.agentUserId] = [];
+                    }
+    
+                    if(this.entity.fetchCategories && !this.entity.fetchCategories[info.agentUserId]) {
+                        this.entity.fetchCategories[info.agentUserId] = [];
+                    }
+                });
+            }
         }
     },
 });
