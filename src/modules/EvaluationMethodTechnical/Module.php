@@ -5,6 +5,7 @@ namespace EvaluationMethodTechnical;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\Registration;
 
 class Module extends \MapasCulturais\EvaluationMethod {
     function __construct(array $config = []) {
@@ -177,6 +178,110 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app = App::i();
 
         $plugin = $this;
+
+        $app->hook('template(opportunity.registrations.registration-list-actions-entity-table):begin', function($entity){
+            if($em = $entity->evaluationMethodConfiguration){
+                if($em->getEvaluationMethod()->slug == "technical"){
+                    $this->part('technical--apply-results');
+                }
+            }
+        });
+
+        $app->hook('POST(opportunity.appyTechnicalEvaluation)', function() {
+            $this->requireAuthentication();
+
+            set_time_limit(0);
+            ini_set('max_execution_time', 0);
+            ini_set('memory_limit', '-1');
+    
+            $app = App::i();
+    
+            $opp = $this->requestedEntity;
+    
+            $type = $opp->evaluationMethodConfiguration->getDefinition()->slug;
+    
+            if($type != 'technical') {
+                $this->errorJson(i::__('Somente para avaliações técnicas'), 400);
+                die;
+            }
+            if ($this->data['to'] && (!is_numeric($this->data['to']) || !in_array($this->data['to'], [0,1,2,3,8,10]))) {
+                $this->errorJson(i::__('os status válidos são 0, 1, 2, 3, 8 e 10'), 400);
+                die;
+            }
+            $new_status = intval($this->data['to']);
+            
+            $apply_status = $this->data['status'];
+
+            if ($apply_status == 'all') {
+                $status = 'r.status IN (0,1,2,3,8,10)';
+            } else {
+                $status = 'r.status = 1';
+            }
+    
+            $opp->checkPermission('@control');
+
+            // pesquise todas as registrations da opportunity que esta vindo na request
+            $mim = $this->data['from'][0];
+            $max = $this->data['from'][1];
+
+            $dql = "
+            SELECT 
+                r.id
+            FROM
+                MapasCulturais\Entities\Registration r
+            WHERE 
+                r.opportunity = $opp->id AND
+                r.status <> $new_status AND
+                $status AND
+                CAST(r.consolidatedResult AS FLOAT) BETWEEN  $mim AND  $max 
+            ";
+            $query = $app->em->createQuery($dql);
+          
+            $registrations = $query->getScalarResult();
+
+            $count = 0;
+            $total = count($registrations);
+            
+            if ($total > 0) {
+                $opp->enqueueToPCacheRecreation();
+            }
+            // faça um foreach em cada registration e pegue as suas avaliações
+            foreach ($registrations as $reg) {
+                $count++;
+                $registration = $app->repo('Registration')->find($reg['id']);
+                $registration->__skipQueuingPCacheRecreation = true;
+
+                $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
+                switch ($new_status) {
+                    case Registration::STATUS_DRAFT:
+                        $registration->setStatusToDraft();
+                    break;
+                    case Registration::STATUS_INVALID:
+                        $registration->setStatusToInvalid();
+                    break;
+                    case Registration::STATUS_NOTAPPROVED:
+                        $registration->setStatusToNotApproved();
+                    break;
+                    case Registration::STATUS_WAITLIST:
+                        $registration->setStatusToWaitlist();
+                    break;
+                    case Registration::STATUS_APPROVED:
+                        $registration->setStatusToApproved();
+                    break;
+                    case Registration::STATUS_SENT:
+                        $registration->setStatusToSent();
+                    break;
+                    default:
+                        $registration->_setStatusTo($new_status);
+                }
+                $app->disableAccessControl();
+                $registration->save(true);
+                $app->enableAccessControl();
+            }
+
+            $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
+        });
+
 
          // Reconsolida a avaliação da inscrição caso em fases posteriores exista avaliação técnica com políticas afirmativas aplicadas
          $app->hook('entity(Registration).update:after', function() use ($app){
