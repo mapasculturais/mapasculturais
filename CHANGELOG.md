@@ -5,8 +5,13 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+### Melhorias
+- Nova lib instalada (league/csv), para geração de arquivos csv.
+- Adicionado novo ícone para o histórico de alterações.
+
 ### Correções
 - Corrige erro que não exibia carregamento do avatar no novo componente
+- Corrige erro da instalação do npm após o node. 
 
 ## [7.3.6] - 2024-01-24
 ### Correções

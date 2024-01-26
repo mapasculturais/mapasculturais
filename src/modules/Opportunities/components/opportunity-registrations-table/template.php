@@ -9,7 +9,10 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    entity-table
     mc-card
+    mc-tag-list
+    mc-icon
     v1-embed-tool
 ');
 
@@ -36,7 +39,10 @@ $entity = $this->controller->requestedEntity;
             </div>
             <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
             <div class="col-12">
-                <h5><?= i::__("Visualize a lista de pessoas inscritas neste edital. E acompanhe os projetos criados para os Agentes Culturais aceitos.") ?></h5>
+                <h5>
+                    <strong><?= i::__("Você pode mudar o status individualmente de acordo com as notas dos participantes, ou basta selecionar várias inscrições para alterar o status em mais de uma inscrição") ?></strong>
+                    <?= i::__("Utilize o filtro numérico para visualizar inscrições com notas dentro de um intervalo específico..") ?>
+                </h5>
             </div>
         <div class="col-12"> 
             <v1-embed-tool route="registrationmanager" :id="phase.id" min-height="600px"></v1-embed-tool>
