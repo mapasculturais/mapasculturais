@@ -10,6 +10,7 @@ $this->import('
     entity-field
     mc-confirm-button
     mc-modal
+    opportunity-evaluation-committee
     opportunity-phase-publish-date-config
     v1-embed-tool
 ');
@@ -25,7 +26,7 @@ $this->import('
         <div class="evaluation-line col-12"></div>
         
         <section class="evaluation-section col-12">
-            <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>
+            <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>
         </section>
 
         <section class="evaluation-section col-12">
