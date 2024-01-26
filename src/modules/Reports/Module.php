@@ -38,8 +38,10 @@ class Module extends \MapasCulturais\Module
 
         // Adiciona a aba do módulo de relatórios
         $app->hook('template(opportunity.single.tabs):end', function () use ($app, $self) {
-            if ($this->controller->requestedEntity->canUser("@control") && $self->hasRegistrations($this->controller->requestedEntity)) {
-                $this->part('opportunity-reports--tab');
+            if($app->view->version < 2) {
+                if ($this->controller->requestedEntity->canUser("@control") && $self->hasRegistrations($this->controller->requestedEntity)) {
+                    $this->part('opportunity-reports--tab');
+                }
             }
         });
 
