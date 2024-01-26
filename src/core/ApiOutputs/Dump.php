@@ -22,7 +22,12 @@ class Dump extends \MapasCulturais\ApiOutput{
         <!DOCTYPE html>
         <html>
             <head>
-                <title><?php echo sprintf(App::txts("%s $singular_object_name encontrado.", "%s $plural_object_name encontrados.", count($data)), count($data)) ?></title>
+                <?php if(count($data) === 1):?>
+                    <title><?php echo sprintf("%s $singular_object_name encontrado.", count($data)) ?></title>
+                <?php else:?>
+                    <title><?php echo sprintf("%s $plural_object_name encontrados.", count($data)) ?></title>
+                <?php endif?>
+
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <style>
