@@ -67,6 +67,7 @@ return array(
                 MapasCulturais\i::__('Povos ciganos'),
                 MapasCulturais\i::__('Povos de terreiro'),
                 MapasCulturais\i::__('Povos de quilombola'),
+                MapasCulturais\i::__('Pomeranos'),
             ),
             'available_for_opportunities' => true
         ),
