@@ -58,7 +58,7 @@ return array(
             'label' => \MapasCulturais\i::__('Comunidades tradicionais'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não sou'),
+                '' => \MapasCulturais\i::__('Não pertenço'),
                 MapasCulturais\i::__('Comunidade extrativista'),
                 MapasCulturais\i::__('Comunidade ribeirinha'),
                 MapasCulturais\i::__('Comunidade rural'),
@@ -67,6 +67,7 @@ return array(
                 MapasCulturais\i::__('Povos ciganos'),
                 MapasCulturais\i::__('Povos de terreiro'),
                 MapasCulturais\i::__('Povos de quilombola'),
+                MapasCulturais\i::__('Pomeranos'),
             ),
             'available_for_opportunities' => true
         ),
