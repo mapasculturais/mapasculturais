@@ -4,6 +4,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[unreleased]
 ### Melhorias
 - Nova lib instalada (league/csv), para geração de arquivos csv.
 - Adicionado novo ícone para o histórico de alterações.
@@ -11,6 +12,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erro da instalação do npm após o node. 
 - Corrige extrações de planilhas em excel das entidades via API
+
+## [7.3.7] - 2024-01-26
+### Melhorias
+- Inserir nova comunidade tradicional
 
 ## [7.3.6] - 2024-01-24
 ### Correções
