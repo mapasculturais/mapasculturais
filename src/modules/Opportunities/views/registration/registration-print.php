@@ -14,6 +14,7 @@ $this->import('
     registration-info
     v1-embed-tool
     opportunity-phases-timeline
+    mc-card
 ');
 
 $entity = $entity->firstPhase;
@@ -24,6 +25,9 @@ $this->enqueueScript('app-v2', 'registration-print', 'js/registration-print.js')
 <main class="print-registration grid-12">
     <mc-summary-agent :entity="entity" classes="col-12 print__side-registration-padding"></mc-summary-agent>
     <registration-info :registration="entity" classes="col-12 print__side-registration-padding"></registration-info>
+    <div class="col-12 bold" v-if="entity.sentTimestamp" class="sentDate"> 
+        <?= i::__('Inscrição realizada em') ?> {{entity.sentTimestamp.date('2-digit year')}} <?= i::__('às') ?> {{entity.sentTimestamp.time('long')}} 
+    </div>
     <opportunity-phases-timeline class="col-12" center big></opportunity-phases-timeline>
     <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
     <h3 class="col-12 print__side-registration-padding"><?= i::__('Dados informados no formulário') ?></h3>
