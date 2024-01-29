@@ -34,7 +34,6 @@ app.component('evaluation-method-technical--apply', {
         apply(modal,entity) {
             this.applyData.status = this.applyData.applyAll ? 'all' : false;
             this.entity.disableMessages();
-            console.log(this.applyData);
             this.entity.POST('appyTechnicalEvaluation', {
                 data: this.applyData, callback: data => {
                     const messages = useMessages();
