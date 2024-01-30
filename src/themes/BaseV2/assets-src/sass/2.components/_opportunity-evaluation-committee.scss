@@ -11,6 +11,10 @@
         gap: size(24);
     }
 
+    &__new-evaluator {
+        display: flex;
+    }
+
     &__header,
     &__header-definitions {
         display: flex;
@@ -25,39 +29,58 @@
     }
 
     &__card {
+        border-radius: var(--mc-border-radius-xs);
+        border: size(1) solid var(--mc-low-300);
         display: flex;
         flex-direction: column;
-        border: size(1) solid var(--mc-low-300);
-        border-radius: var(--mc-border-radius-xs);
     }
 
     &__card-header {
-        display: flex;
-        border-bottom: size(1) solid var(--mc-low-300);
-        padding: size(16) size(24);
         align-items: center;
+        border-bottom: size(1) solid var(--mc-low-300);
+        display: flex;
         justify-content: space-between;
+        padding: size(16) size(24);
     }
 
     &__card-header-info {
-        display: flex;
         align-items: center;
+        display: flex;
         gap: size(16);
     }
 
-    &__card-header-actions {
+    &__pending-evaluations {
         display: flex;
         align-items: center;
+        gap: size(8);
+        font-size: var(--mc-font-size-sm);
+
+        .iconify {
+            font-size: var(--mc-font-size-md);
+        }
+    }
+
+    &__card-header-actions {
+        align-items: center;
+        display: flex;
         gap: size(16);
     }
 
     &__card-content {
-        padding: size(24);
         display: flex;
         gap: size(24);
+        padding: size(24);
     }
 
     &__distribution {
         max-width: size(120);
+    }
+
+    &__categories {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: size(10);
+        min-height: size(49);
     }
 }

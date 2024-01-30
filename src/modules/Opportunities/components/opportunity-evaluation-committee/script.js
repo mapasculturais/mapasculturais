@@ -12,6 +12,7 @@ app.component('opportunity-evaluation-committee', {
         const text = Utils.getTexts('opportunity-evaluations-list');
         return { text }
     },
+
     computed: {
         query() {
             return {
@@ -24,13 +25,17 @@ app.component('opportunity-evaluation-committee', {
             return "id,owner,agent,agentUserId";
         }
     },
+
     mounted() {
         this.loadReviewers();
     },
+
     setup() {
+        const messages = useMessages();
         const text = Utils.getTexts('opportunity-evaluation-committee')
-        return { text }
+        return { text, messages }
     },
+
     data() {
         return {
             agentData: null,
@@ -40,9 +45,7 @@ app.component('opportunity-evaluation-committee', {
             selectCategories: []
         }
     },
-    watch: {
-        
-    },
+    
     methods: {   
         selectAgent(agent) {
             const api = new API();
@@ -58,6 +61,7 @@ app.component('opportunity-evaluation-committee', {
                 this.loadFetchs();
             });
         },
+        
         loadReviewers() {
             let args = {
                 '@opportunity': this.entity.opportunity.id,
@@ -75,6 +79,7 @@ app.component('opportunity-evaluation-committee', {
                 this.loadFetchs();
             });
         },
+
         delReviewer(agent) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'removeAgentRelation', {id: this.entity.id});
@@ -87,6 +92,7 @@ app.component('opportunity-evaluation-committee', {
                 this.loadReviewers();
             });
         },
+
         disableOrEnableReviewer(infoReviewer) {
             let enableOrDisabled = infoReviewer.status === 8 ? 'enabled' : 'disabled';;
             const api = new API();
@@ -105,6 +111,7 @@ app.component('opportunity-evaluation-committee', {
                 this.loadReviewers();
             });
         },
+
         reopenEvaluations(user) {
             const api = new API();
             let url = Utils.createUrl('opportunity', 'reopenEvaluations');
@@ -117,10 +124,12 @@ app.component('opportunity-evaluation-committee', {
                 this.loadReviewers();
             });
         },
+
         buttonText(status) {
             return status === 8 ? this.text('enable') : this.text('disable');
         },
-        sendDefinition() {
+
+        sendDefinition(field) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'single', {id: this.entity.id});
             let testData = {
@@ -129,9 +138,21 @@ app.component('opportunity-evaluation-committee', {
             };
             
             api.POST(url, testData).then(res => res.json()).then(data => {
+                switch (field) {
+                    case 'distribution':
+                        this.messages.success('A distribuição de avaliações foi atualizada com sucesso.');
+                        break;
+                    case 'category':
+                        this.messages.success('Categoria adicionada com sucesso.');
+                        break;
+                    case 'categoryRemove':
+                        this.messages.success('Categoria removida com sucesso.');
+                        break;
+                }
                 this.loadReviewers();
             });
         },
+
         loadFetchs() {
             if(this.infosReviewers) {
                 this.infosReviewers.forEach(info => {

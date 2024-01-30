@@ -28,13 +28,15 @@ $this->import('
             <p><?php i::_e('Defina os agentes que serão avaliadores desta fase.') ?></p>
         </div>
 
-        <select-entity type="agent" :select="queryString" @select="selectAgent($event)" openside="down-right">
-            <template #button="{ toggle }">
-                <button class="button button--sm button--icon button--primary" @click="toggle()">
-                    <?php i::_e('Adicionador pessoa avaliadora') ?>
-                </button>
-            </template>
-        </select-entity>
+        <div class="opportunity-evaluation-committee__new-evaluator">
+            <select-entity type="agent" :select="queryString" @select="selectAgent($event)" openside="down-right">
+                <template #button="{ toggle }">
+                    <button class="button button--sm button--icon button--primary" @click="toggle()">
+                        <?php i::_e('Adicionador pessoa avaliadora') ?>
+                    </button>
+                </template>
+            </select-entity>
+        </div>
 
         <div v-if="showReviewers" class="opportunity-evaluation-committee__card-grouping">
 
@@ -43,6 +45,10 @@ $this->import('
                     <div class="opportunity-evaluation-committee__card-header-info">
                         <mc-avatar :entity="infoReviewer.agent" size="xsmall"></mc-avatar>
                         <span class="bold">{{infoReviewer.agent.name}}</span>
+
+                        <div class="opportunity-evaluation-committee__pending-evaluations">
+                            <mc-icon name="info"></mc-icon> <?= i::__('Avaliações pendentes') ?>
+                        </div>
                     </div>
 
                     <div class="opportunity-evaluation-committee__card-header-actions">
@@ -57,13 +63,13 @@ $this->import('
                             </template> 
                         </mc-confirm-button>
                         
-                        <button class="button button--text button--icon" @click="disableOrEnableReviewer(infoReviewer)">
+                        <button class="button button--disable button--icon button--sm" @click="disableOrEnableReviewer(infoReviewer)">
                             <mc-icon name="close"></mc-icon> {{buttonText(infoReviewer.status)}}
                         </button>
         
                         <mc-confirm-button @confirm="delReviewer(infoReviewer.agent)">
                             <template #button="{open}">
-                                <button class="button button--text button--icon" @click="open()">
+                                <button class="button button--delete button--icon button--sm" @click="open()">
                                     <mc-icon name="trash"></mc-icon> <?= i::__('Excluir') ?>
                                 </button>
                             </template> 
@@ -77,15 +83,20 @@ $this->import('
                 <div class="opportunity-evaluation-committee__card-content">
                     <div class="field opportunity-evaluation-committee__distribution">
                         <label><?php i::_e('Distribuição') ?></label>
-                        <input type="text" @change="sendDefinition" v-model="entity.fetch[infoReviewer.agentUserId]"/>
+                        <input type="text" @change="sendDefinition('distribution')" v-model="entity.fetch[infoReviewer.agentUserId]"/>
                     </div>
 
-                    <div v-if="entity.opportunity.registrationCategories.length > 0">
-                        <span class="bold"><?php i::_e('Categorias a serem avaliadas') ?></span>
-                        <mc-tag-list :tags="entity.fetchCategories[infoReviewer.agentUserId]" @remove="sendDefinition" editable></mc-tag-list>
-                        <mc-multiselect :model="entity.fetchCategories[infoReviewer.agentUserId]" :items="entity.opportunity.registrationCategories" #default="{popover, setFilter}" @selected="sendDefinition" @removed="sendDefinition">
-                            <input @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os itens: ') ?>">
-                        </mc-multiselect>
+                    <div v-if="entity.opportunity.registrationCategories.length > 0" class="field">
+                        <label><?php i::_e('Categorias a serem avaliadas') ?></label>
+                        <div class="opportunity-evaluation-committee__categories">
+                            <mc-tag-list :tags="entity.fetchCategories[infoReviewer.agentUserId]" classes="opportunity__background" @remove="sendDefinition('categoryRemove')" editable></mc-tag-list>
+                            <mc-multiselect :model="entity.fetchCategories[infoReviewer.agentUserId]" :items="entity.opportunity.registrationCategories" #default="{popover, setFilter}" @selected="sendDefinition('category')" @removed="sendDefinition('categoryRemove')">
+                                <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
+                                    <?php i::_e("Adicionar nova") ?>
+                                    <mc-icon name="add"></mc-icon>
+                                </button>
+                            </mc-multiselect>
+                        </div>
                     </div>
                 </div>
             </div>
