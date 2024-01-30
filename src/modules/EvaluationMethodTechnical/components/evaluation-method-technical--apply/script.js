@@ -11,8 +11,9 @@ app.component('evaluation-method-technical--apply', {
 
     data() {
         applyAll = false;
+        let max = parseFloat($MAPAS.config.evaluationMethodTechnicalApply.max_result || "0.00");
         applyData = {
-            from:[10,20]
+            from:[0,max]
         };
 
         return {
@@ -27,6 +28,9 @@ app.component('evaluation-method-technical--apply', {
     computed: {
         statusList() {
             return $MAPAS.config.evaluationMethodTechnicalApply.registrationStatusDict;
+        },
+        maxResult() {
+            return parseFloat($MAPAS.config.evaluationMethodTechnicalApply.max_result || "0.00");
         },
     },
 
