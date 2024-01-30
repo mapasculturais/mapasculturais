@@ -16,7 +16,7 @@ $this->import('
 <mc-modal title="<?= i::esc_attr__('Aplicar resultados das avaliações') ?>" classes="apply-evaluations">
 
     <template #button="modal">
-        <button class="button button--primary button--icon col-4" @click="modal.open()">
+        <button  class="button button--primary button--icon col-4" @click="modal.open()">
             <mc-icon name="add"></mc-icon>
             <?php i::_e('Aplicar resultados das avaliações') ?>
         </button>
