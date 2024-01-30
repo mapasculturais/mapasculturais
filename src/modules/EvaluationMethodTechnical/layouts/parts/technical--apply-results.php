@@ -10,6 +10,4 @@ evaluation-method-technical--apply
 ');
 ?>
 
-<div class="col-4 text-right">
-    <evaluation-method-technical--apply :entity="phase"></evaluation-method-technical--apply>
-</div>
+<evaluation-method-technical--apply :entity="phase"></evaluation-method-technical--apply>
