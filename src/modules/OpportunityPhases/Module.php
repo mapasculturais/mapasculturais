@@ -1274,8 +1274,10 @@ class Module extends \MapasCulturais\Module{
                 }
             });
 
+            // se não for enviado os parâmetros opportunity, previousPhaseRegistrationId ou id, a API de registration só deve retornar inscrições da primeira fase
             $app->hook('ApiQuery(Registration).params', function(&$params) {
-                if(!isset($params['opportunity']) && !isset($params['previousPhaseRegistrationId']) && !isset($params['id'])) {
+                /** @var ApiQuery $this */
+                if(!$this->parentQuery && !isset($params['opportunity']) && !isset($params['previousPhaseRegistrationId']) && !isset($params['id'])) {
                     $params['previousPhaseRegistrationId'] = API::NULL();
                 }
             });
