@@ -24,7 +24,13 @@ $this->import('
 
     <template #default>
         <div class="grid-12">
-            <Slider class="col-12" v-model="applyData.from"></Slider>
+            <div class="col-12 apply-evaluations__range">
+                <Slider :step="-1" :tooltips="true" :max="maxResult" v-model="applyData.from"></Slider>
+            </div>
+            <div class="col-12">
+                <input class="col-6" v-model="applyData.from[0]" type="number" step="0.01"/>
+                <input class="col-6" v-model="applyData.from[1]" type="number" step="0.01" />
+            </div>
             <div class="field col-12">
                 <label><?php i::_e('Status') ?></label>
                 <select v-model="applyData.to">
