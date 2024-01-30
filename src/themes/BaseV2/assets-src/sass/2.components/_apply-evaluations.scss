@@ -1,0 +1,10 @@
+@use '../0.settings/mixins' as *;
+
+.apply-evaluations {
+    &__range {
+        min-height: size(50);
+        margin: 0 size(20);
+        display: inline-grid;
+        align-items: end;
+    }
+}
