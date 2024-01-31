@@ -66,22 +66,16 @@ $entity = $this->controller->requestedEntity;
 
                 <template #filters="{entities,filters}">
                     <div class="grid-12">
-                        <mc-select v-if="statusEvaluationResult" class="col-5" :default-value="selectedAvaliation" @change-option="filterAvaliation($event,entities)">
+                        <mc-select v-if="statusEvaluationResult" class="col-5" :default-value="selectedAvaliation" @change-option="filterAvaliation($event,entities)" placeholder="<?= i::__("Resultado de avaliação") ?>">
                             <template #empetyOption>
                                 <?= i::__("Resultado de avaliação") ?>
                             </template>
                             <option v-for="(item,index) in statusEvaluationResult" :value="index">{{item}}</option>
                         </mc-select>
-                        <mc-select class="col-4" :default-value="selectedStatus" @change-option="filterByStatus($event,entities)">
-                            <template #empetyOption>
-                                <?= i::__("Status de inscrição") ?>
-                            </template>
+                        <mc-select class="col-4" :default-value="selectedStatus" @change-option="filterByStatus($event,entities)" placeholder="<?= i::__("Status de inscrição") ?>">
                             <option v-for="item in statusDict" :value="item.value">{{item.label}}</option>
                         </mc-select>
-                        <mc-select v-if="statusCategory.length > 0" class="col-3" :default-value="selectedCategory" @change-option="filterByCategory($event,entities)">
-                            <template #empetyOption>
-                                <?= i::__("Categoria") ?>
-                            </template>
+                        <mc-select v-if="statusCategory.length > 0" class="col-3" :default-value="selectedCategory" @change-option="filterByCategory($event,entities)" placeholder="<?= i::__("Categoria") ?>">
                             <option v-for="item in statusCategory" :value="item">{{item}}</option>
                         </mc-select>
                     </div>
