@@ -604,7 +604,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
     function _getConsolidatedDetails(Entities\Registration $registration): array {
         $evaluation_configuration = $registration->opportunity->evaluationMethodConfiguration;
-        
+        $sections =  [];
+        $criteria = [];
+        $max_score = 0;
+        $affirmative_policy = null;
+
         if($evaluations = $registration->sentEvaluations){
             $sections = $evaluation_configuration->sections ?: [];
             $criteria = $evaluation_configuration->criteria ?: [];
