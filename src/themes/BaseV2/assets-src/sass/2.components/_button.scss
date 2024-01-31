@@ -148,6 +148,7 @@
                 color: var(--mc-white);       
             }
         }
+        
         &-noborder {
             background-color: var(--mc-white);
             border: size(2) solid var(--mc-white);
@@ -157,6 +158,30 @@
                 border-color: var(--mc-primary-700);
                 background-color: var(--mc-primary-700);   
                 color: var(--mc-white);       
+            }
+        }
+    }
+
+    &--primarylight {
+        background-color: var(--mc-primary-300);
+        border: size(2) solid var(--mc-primary-300);
+        color: var(--mc-low-500);
+
+        &:hover {
+            border-color: var(--mc-primary-700);
+            background-color: var(--mc-primary-700);
+            color: var(--mc-high-500);
+        }
+
+        &-outline {
+            background-color: var(--mc-white);
+            border: size(2) solid var(--mc-primary-300);
+            color: var(--mc-primary-300);
+
+            &:hover {
+                border-color: var(--mc-highlight-700);
+                background-color: var(--mc-highlight-700);
+                color: var(--mc-high-500);
             }
         }
     }
