@@ -15,7 +15,10 @@ app.component('entity-table', {
             required: true
         },
         select: String,
-        limit: Number,
+        limit: {
+            type: Number,
+            default: 60
+        },
         query: {
             type: Object || String,
             default: {}
