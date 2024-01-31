@@ -24,6 +24,11 @@ $this->import('
         </section>
 
         <div class="evaluation-line col-12"></div>
+
+        <section class="evaluation-section col-12">
+            <h2><?php i::_e('Configuração da Avaliação') ?></h2>
+            <p><?php i::_e('A avaliação técnica consiste em um valor quantitativo, por exemplo, uma nota de 0 a 10.') ?></p>
+        </section>
         
         <section class="evaluation-section col-12">
             <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>

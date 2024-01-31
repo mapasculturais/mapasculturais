@@ -23,7 +23,7 @@ app.component('opportunity-evaluation-committee', {
         },
         select() {
             return "id,owner,agent,agentUserId";
-        }
+        },
     },
 
     mounted() {
@@ -42,7 +42,11 @@ app.component('opportunity-evaluation-committee', {
             showReviewers: false,
             infosReviewers: {},
             queryString: 'id,name,files.avatar,user',
-            selectCategories: []
+            selectCategories: [],
+            registrationCategories: [
+                'sem avaliações',
+                ...this.entity.opportunity.registrationCategories
+            ]
         }
     },
     
@@ -129,9 +133,17 @@ app.component('opportunity-evaluation-committee', {
             return status === 8 ? this.text('enable') : this.text('disable');
         },
 
-        sendDefinition(field) {
+        sendDefinition(field, userId, event = null) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'single', {id: this.entity.id});
+            
+
+            if (event == 'sem avaliações' && this.entity.fetchCategories[userId].length > 1) {
+                this.entity.fetchCategories[userId] = this.entity.fetchCategories[userId].filter((category) => category == 'sem avaliações');
+            } else if (event != 'sem avaliações' && this.entity.fetchCategories[userId].includes('sem avaliações')) {
+                this.entity.fetchCategories[userId] = this.entity.fetchCategories[userId].filter((category) => category != 'sem avaliações');
+            }
+
             let testData = {
                 fetch: this.entity.fetch,
                 fetchCategories: this.entity.fetchCategories
@@ -139,13 +151,13 @@ app.component('opportunity-evaluation-committee', {
             
             api.POST(url, testData).then(res => res.json()).then(data => {
                 switch (field) {
-                    case 'distribution':
+                    case 'addDistribution':
                         this.messages.success('A distribuição de avaliações foi atualizada com sucesso.');
                         break;
-                    case 'category':
+                    case 'addCategory':
                         this.messages.success('Categoria adicionada com sucesso.');
                         break;
-                    case 'categoryRemove':
+                    case 'removeCategory':
                         this.messages.success('Categoria removida com sucesso.');
                         break;
                 }
@@ -173,6 +185,9 @@ app.component('opportunity-evaluation-committee', {
                     if(this.entity.fetchCategories && !this.entity.fetchCategories[info.agentUserId]) {
                         this.entity.fetchCategories[info.agentUserId] = [];
                     }
+
+                    info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0) ? false : true;
+
                 });
             }
         }
