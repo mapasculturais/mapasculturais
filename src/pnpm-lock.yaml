@@ -77,6 +77,9 @@ importers:
       vue3-carousel:
         specifier: ^0.1.48
         version: 0.1.48(vue@3.3.4)
+      vue3-easy-data-table:
+        specifier: ^1.5.47
+        version: 1.5.47
     devDependencies:
       '@mapas/scripts':
         specifier: workspace:0.0.0
@@ -5776,6 +5779,12 @@ packages:
     resolution: {integrity: sha512-B0rAsQr2D6VO1oi2+QXItWsRZUyXG0kF0fQHFC0oA6MQK7dKFMAhKMsy9HJkRJ7tXB/lBl/EfHhOqw16TncZ3Q==}
     peerDependencies:
       vue: ^3.2.0
+    dependencies:
+      vue: 3.3.4
+    dev: false
+
+  /vue3-easy-data-table@1.5.47:
+    resolution: {integrity: sha512-q0bZBlWIwQ3FIhB+F98ylFPfBJWiS3Xv7QqBe3xS5MbRNZP96RFjaQn7C0Pi0J/aaucNW8gFWxPyh9NESS1ehw==}
     dependencies:
       vue: 3.3.4
     dev: false
