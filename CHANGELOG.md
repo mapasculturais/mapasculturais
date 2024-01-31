@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro da instalação do npm após o node. 
 - Corrige extrações de planilhas em excel das entidades via API
 - Ajusta estilização do componente que lista as áreas de interesse na single da oportunidade
+- Ajusta o disparo de e-mails de criação e envio da inscrição para que sejam feitos em toda fase da coleta de dados
 
 ## [7.3.7] - 2024-01-26
 ### Melhorias
