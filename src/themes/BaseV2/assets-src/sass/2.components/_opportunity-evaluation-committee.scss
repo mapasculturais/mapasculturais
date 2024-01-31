@@ -3,23 +3,16 @@
 .opportunity-evaluation-committee {
     display: flex;
     flex-direction: column;
-    gap: size(40);
+    gap: size(24);    
 
-    &__definitions {
-        display: flex;
-        flex-direction: column;
-        gap: size(24);
-    }
-
-    &__new-evaluator {
-        display: flex;
-    }
-
-    &__header,
-    &__header-definitions {
+    &__header{
         display: flex;
         flex-direction: column;
         gap: size(8);
+    }
+
+    &__add-new-evaluator {
+        display: flex;
     }
 
     &__card-grouping {
@@ -49,17 +42,6 @@
         gap: size(16);
     }
 
-    &__pending-evaluations {
-        display: flex;
-        align-items: center;
-        gap: size(8);
-        font-size: var(--mc-font-size-sm);
-
-        .iconify {
-            font-size: var(--mc-font-size-md);
-        }
-    }
-
     &__card-header-actions {
         align-items: center;
         display: flex;
@@ -67,9 +49,18 @@
     }
 
     &__card-content {
+        padding: size(24);
+    }
+
+    &__change-distributions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__distributions {
         display: flex;
         gap: size(24);
-        padding: size(24);
     }
 
     &__distribution {
