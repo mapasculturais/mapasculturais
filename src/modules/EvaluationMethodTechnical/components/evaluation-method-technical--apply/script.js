@@ -35,7 +35,7 @@ app.component('evaluation-method-technical--apply', {
     },
 
     methods: {
-        resultnote() {
+        validateValues() {
             const min = 0;
             const max = this.maxResult;
             
@@ -46,7 +46,7 @@ app.component('evaluation-method-technical--apply', {
                 this.applyData.from[1] = max;
             }
         },
-        
+
         modalClose() {
             delete this.applyData.to;
             this.applyData.from[0] = 0;
