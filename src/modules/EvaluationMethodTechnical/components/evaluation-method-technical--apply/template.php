@@ -13,7 +13,7 @@ $this->import('
 ');
 ?>
 
-<mc-modal title="<?= i::esc_attr__('Aplicar resultados das avaliações') ?>" classes="apply-evaluations">
+<mc-modal title="<?= i::esc_attr__('Aplicar resultados das avaliações') ?>" classes="apply-evaluations" @close="modalClose()">
 
     <template #button="modal">
         <button  class="button button--primary button--icon col-4" @click="modal.open()">
@@ -27,9 +27,15 @@ $this->import('
             <div class="col-12 apply-evaluations__range">
                 <Slider :step="-1" :tooltips="true" :max="maxResult" v-model="applyData.from"></Slider>
             </div>
-            <div class="col-12">
-                <input class="col-6" v-model="applyData.from[0]" type="number" step="0.01"/>
-                <input class="col-6" v-model="applyData.from[1]" type="number" step="0.01" />
+            <div class="col-12 grid-12">
+                <div class="field field--horizontal col-6">
+                    <label>Nota mínima</label>
+                    <input v-model.number.trim="applyData.from[0]" type="number" min="0" :max="maxResult" step="0.01" @input="resultnote()">
+                </div>
+                <div class="field field--horizontal col-6">
+                    <label>Nota maximo</label>
+                    <input v-model.number.trim="applyData.from[1]" type="number" min="0" :max="maxResult" step="0.01" @input="resultnote()">
+                </div>
             </div>
             <div class="field col-12">
                 <label><?php i::_e('Status') ?></label>
