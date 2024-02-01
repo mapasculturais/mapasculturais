@@ -13,6 +13,7 @@ import * as FloatingVue from 'floating-vue'
 import MediaQuery from './media-query'
 import { vMaska } from 'maska'
 import { VueRecaptcha } from 'vue-recaptcha';
+import Slider from '@vueform/slider'
 import Vue3EasyDataTable from 'vue3-easy-data-table';
 
 
@@ -26,6 +27,7 @@ app.use(FloatingVue)
 app.component('Iconify', Icon)
 app.component('Cropper', VueAdvancedCropper)
 app.component('Datepicker', Datepicker);
+app.component('Slider', Slider);
 app.component('EasyDataTable', Vue3EasyDataTable);
 app.directive('maska', vMaska);
 app.use(MediaQuery)
