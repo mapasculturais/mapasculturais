@@ -30,11 +30,11 @@ $this->import('
             <div class="col-12 grid-12">
                 <div class="field field--horizontal col-6">
                     <label>Nota mínima</label>
-                    <input v-model.number.trim="applyData.from[0]" type="number" min="0" :max="maxResult" step="0.01" @input="resultnote()">
+                    <input v-model.number.trim="applyData.from[0]" type="number" min="0" :max="maxResult" step="0.01" @input="validateValues()">
                 </div>
                 <div class="field field--horizontal col-6">
                     <label>Nota maximo</label>
-                    <input v-model.number.trim="applyData.from[1]" type="number" min="0" :max="maxResult" step="0.01" @input="resultnote()">
+                    <input v-model.number.trim="applyData.from[1]" type="number" min="0" :max="maxResult" step="0.01" @input="validateValues()">
                 </div>
             </div>
             <div class="field col-12">
