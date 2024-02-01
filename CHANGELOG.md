@@ -7,11 +7,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 [unreleased]
 
+### Novas funcionalidades
+- Implementa botão de aplicar avaliações para avaliações técnicas
+
 ### Melhorias
 - Nova lib instalada (league/csv), para geração de arquivos csv.
 - Adicionado novo ícone para o histórico de alterações.
 - Adiciona data de envio da inscrição na tela de impressão da ficha
 - Implementa novos componentes vuejs para trabalhar implementação de tabelas 
+- Refatora listagem de inscrições para uma tabela visualmente mais agradavel
 
 ### Correções
 
