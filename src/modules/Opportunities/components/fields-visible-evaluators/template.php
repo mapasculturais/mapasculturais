@@ -27,7 +27,7 @@ use MapasCulturais\i;
                 <div class="fields-visible-evaluators__fields">
                     <div v-for="field in fields" :class="['field', {'disabled':field.disabled}]">
                         <label class="field__checkbox">
-                            <input :id="field.id" type="checkbox" :checked="field.checked" :disabled="field.disabled"/> #{{field.id}} {{field.title}}
+                            <input :id="field.id" type="checkbox" :checked="field.checked" :disabled="field.disabled"/> <span v-if="field.id">#{{field.id}}</span> {{field.title}}
                         </label>
                     </div>
                 </div>

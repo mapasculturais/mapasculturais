@@ -57,7 +57,7 @@ app.component('fields-visible-evaluators', {
             let avaliableFields = $MAPAS.requestedEntity.avaliableEvaluationFields;
 
             fields.map(function (item) {
-                item.checked = avaliableFields[item.fieldName] ? true : false;
+                item.checked = !!avaliableFields[item.fieldName];
 
                 if (!avaliableFields["category"] && item.categories?.length > 0) {
                     item.disabled = true;
