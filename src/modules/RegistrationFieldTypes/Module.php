@@ -236,6 +236,19 @@ class Module extends \MapasCulturais\Module
 
         $registration_field_types = [
             [
+                'slug' => 'bankFields',
+                'name' => \MapasCulturais\i::__('Campo de dados bancários'),
+                'viewTemplate' => 'registration-field-types/bankFields',
+                'configTemplate' => 'registration-field-types/bankFields-config',
+                'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                    $module->saveToEntity($registration->owner, $value, $registration, $metadata_definition);
+                    return json_encode($value);
+                },
+                'unserialize' => function($value) {
+                    return json_decode($value ?: '[]');
+                }
+            ],
+            [
                 'slug' => 'textarea',
                 'name' => \MapasCulturais\i::__('Campo de texto (textarea)'),
                 'viewTemplate' => 'registration-field-types/textarea',
@@ -635,6 +648,14 @@ class Module extends \MapasCulturais\Module
             } else if($entity_field == '@type' && $value) {
                 $type = $app->getRegisteredEntityTypeByTypeName($entity, $value);
                 $entity->type = $type;
+            } else if($entity_field == 'bankFields' && $value) {
+                $entity->payment_bank_account_type = $value['account_type'];
+                $entity->payment_bank_number = $value['number'];
+                $entity->payment_bank_branch = $value['branch'];
+                $entity->payment_bank_dv_branch = $value['dv_branch'];
+                $entity->payment_bank_account_number = $value['account_number'];
+                $entity->payment_bank_dv_account_number = $value['dv_account_number'];
+                $entity->save(true);
             } else {
                 $entity->$entity_field = $value;
             }
@@ -692,6 +713,16 @@ class Module extends \MapasCulturais\Module
                 $links = isset($metaLists['links'])? $metaLists['links']:[];
                 $videos = isset($metaLists['videos'])? $metaLists['videos']:[];
                 $value = array_merge($links,$videos);
+            } else if($entity_field == 'bankFields') {
+                $value = [
+                    'account_type' => $entity->payment_bank_account_type,
+                    'number' => $entity->payment_bank_number,
+                    'branch' => (int) $entity->payment_bank_branch,
+                    'dv_branch' => $entity->payment_bank_dv_branch,
+                    'account_number' => (int) $entity->payment_bank_account_number,
+                    'dv_account_number' => $entity->payment_bank_dv_account_number,
+                ];
+
             }
              else {
                 $value = $entity->$entity_field;
