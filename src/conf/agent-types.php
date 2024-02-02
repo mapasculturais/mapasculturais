@@ -514,6 +514,13 @@ return array(
             'dafault' => '[]',
             'available_for_opportunities' => true
         ),
+        'bankFields' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Campo de dados bancários'),
+            'field_type' => 'bankFields',
+            'dafault' => '[]',
+            'available_for_opportunities' => true,
+        ),
         
         
         
