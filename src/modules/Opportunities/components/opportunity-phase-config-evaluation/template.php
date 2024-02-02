@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field
+    fields-visible-evaluators
     mc-confirm-button
     mc-modal
     opportunity-phase-publish-date-config
@@ -29,20 +30,7 @@ $this->import('
         </section>
 
         <section class="evaluation-section col-12">
-            <div class="evaluation-section__header">
-                <span class="title"><?= i::__('Configurar campos visíveis para avaliação') ?></span>
-                <span class="subtitle"><?= i::__('Defina quais campos serão habilitados para avaliação.') ?></span>
-            </div>
-
-            <mc-modal title="<?= i::esc_attr__('Configurar campos visíveis para os avaliadores')?>" classes="modalEmbedTools">
-                <template #default="modal">
-                    <v1-embed-tool route="fieldsvisible" :id="phase.opportunity.id"></v1-embed-tool>
-                </template>
-                <template #button="modal">
-                    <button class="evaluation-fields-button button button--bg button--secondarylight" @click="modal.open"><?= i::__('Abrir campos') ?></button>
-                </template>
-            </mc-modal>  
-
+            <fields-visible-evaluators></fields-visible-evaluators>
         </section>
 
         <section class="evaluation-section col-12">
