@@ -20,13 +20,14 @@ use MapasCulturais\i;
                 <div class="fields-visible-evaluators__filter">
                     <?= i::__('Filtrar por categoria') ?>
                     <mc-select placeholder="<?= i::esc_attr__('Selecione uma categoria') ?>">
-                    
+                        <!-- aqui vão as categorias a serem filtradas -->
                     </mc-select>
                 </div>
+
                 <div class="fields-visible-evaluators__fields">
-                    <div v-for="field in fields" class="field">
+                    <div v-for="field in fields" :class="['field', {'disabled':field.disabled}]">
                         <label class="field__checkbox">
-                            <input :id="field.id" type="checkbox" /> #{{field.id}} {{field.title}}
+                            <input :id="field.id" type="checkbox" :checked="field.checked" :disabled="field.disabled"/> #{{field.id}} {{field.title}}
                         </label>
                     </div>
                 </div>
