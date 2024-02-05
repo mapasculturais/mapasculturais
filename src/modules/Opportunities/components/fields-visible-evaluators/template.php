@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -13,9 +14,9 @@ use MapasCulturais\i;
         <p class="subtitle"><?= i::__('Defina quais campos serão habilitados para avaliação.') ?></p>
     </div>
 
-    <mc-modal title="<?= i::esc_attr__('Configurar campos visíveis para os avaliadores')?>" classes="modalEmbedTools">
+    <mc-modal title="<?= i::esc_attr__('Configurar campos visíveis para os avaliadores') ?>" classes="modalEmbedTools">
         <template #default="modal">
-            
+
             <div class="fields-visible-evaluators__content">
                 <div class="fields-visible-evaluators__filter">
                     <?= i::__('Filtrar por categoria') ?>
@@ -25,9 +26,9 @@ use MapasCulturais\i;
                 </div>
 
                 <div class="fields-visible-evaluators__fields">
-                    <div v-for="field in fields" :class="['field', {'disabled':field.disabled}]">
-                        <label class="field__checkbox">
-                            <input :id="field.id" type="checkbox" :checked="field.checked" :disabled="field.disabled"/> <span v-if="field.id">#{{field.id}}</span> {{field.title}}
+                    <div v-for="field in fields" :class="['fields-visible-evaluators__field' , {'disabled':field.disabled}]">
+                        <label>
+                            <input :id="field.id" type="checkbox" :checked="field.checked" :disabled="field.disabled" /> <span v-if="field.id">#{{field.id}}</span> {{field.title}}
                         </label>
                     </div>
                 </div>

@@ -25,4 +25,19 @@
         gap: size(9);
         text-wrap: nowrap;
     }
+    &__field {
+        margin: 0;
+        padding: 9px 20px;
+        background: #E8E8E8;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        flex-direction: column;
+    }
+    &__fields {
+      overflow: auto;
+    }
+   
 }
