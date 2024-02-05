@@ -16,6 +16,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona data de envio da inscrição na tela de impressão da ficha
 - Implementa novos componentes vuejs para trabalhar implementação de tabelas 
 - Refatora listagem de inscrições para uma tabela visualmente mais agradavel
+- Insere a opção de alterar o tipo dos agentes no modo de edição do perfil quando o usuario logado tem essa permissão
 
 ### Correções
 
@@ -58,11 +59,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa a criação de usuário atravéz do fake-autenticate
 
 ### Correções
-<<<<<<< HEAD
-
-=======
-- Corrige erro da instalação do npm após o node. 
->>>>>>> feature/technical-result-apply
 - Corrige erro na listagem de inscrições de um edital quando não exitia nehuma inscrição
 - Corrige erro que ocorria no momento da publicação de resultado final ocasionado pela tentativa de enviar os e-mails
 - Corrige validação de metadados preenchidos com valores que o php, com cast para boolean, resolve como false (Ex: 0, [], '')
@@ -99,13 +95,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta botão de sair do modo de edição das entidades para que o mesmo não salve a entidade
 
 ## [7.2.10] - 2023-12-06
-<<<<<<< HEAD
 
 ### Correções
 
-=======
-### Correções
->>>>>>> feature/technical-result-apply
 - Redireciona o usuario para a primeira fase quando o mesmo tenta acessar a oportunidade com o id de uma fase posterior
 
 ## [7.2.11] - 2023-12-07
