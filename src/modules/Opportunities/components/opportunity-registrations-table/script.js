@@ -75,12 +75,12 @@ app.component('opportunity-registrations-table', {
         },
 
         clearFilters(entities) {
-            this.selectedCategory = null,
-            this.selectedStatus = null,
-            this.selectedStatus = null,
-            this.selectedAvaliation = null
+            this.selectedCategory = null;
+            this.selectedStatus = null;
+            this.selectedStatus = null;
+            this.selectedAvaliation = null;
+            this.query['status'] = `GTE(0)`;
             delete this.query['category'];
-            delete this.query['status'];
             delete this.query['consolidatedResult'];
             entities.refresh();
         },
