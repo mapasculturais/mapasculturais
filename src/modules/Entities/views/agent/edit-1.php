@@ -68,9 +68,17 @@ $this->breadcrumb = [
                                     <?php $this->applyTemplateHook('entity-info','end') ?>
                                 </div>
                                 
+                                <?php $this->applyTemplateHook('edit1-entity-info-taxonomie-area','before') ?>
                                 <entity-terms :entity="entity" taxonomy="area" editable classes="col-12" title="<?php i::_e('Áreas de atuação'); ?>"></entity-terms>
+                                <?php $this->applyTemplateHook('edit1-entity-info-taxonomie-area','after') ?>
+
+                                <?php $this->applyTemplateHook('edit1-entity-info-shortDescription','before') ?>
                                 <entity-field :entity="entity" classes="col-12" prop="shortDescription" label="<?php i::_e('Mini bio') ?>"></entity-field>
+                                <?php $this->applyTemplateHook('edit1-entity-info-shortDescription','after') ?>
+
+                                <?php $this->applyTemplateHook('edit1-entity-info-site','before') ?>
                                 <entity-field :entity="entity" classes="col-12" prop="site"></entity-field>
+                                <?php $this->applyTemplateHook('edit1-entity-info-site','after') ?>
                             </div>
                         </div>
                         <div class="divider"></div>
@@ -113,6 +121,10 @@ $this->breadcrumb = [
                         <template #content>
                             <div class="grid-12">
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="dataDeNascimento" label="<?= i::__('Data de Nascimento') ?>"></entity-field>
+                                <div class="field col-6">
+                                    <label>{{entity.$PROPERTIES['idoso'].label}}</label>
+                                    <input type="text" disabled :value="entity.idoso ? 'Sim' : 'Não'" />
+                                </div>    
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="genero" label="<?= i::__('Selecione o Gênero') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="orientacaoSexual" label="<?= i::__('Selecione a Orientação Sexual') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="raca" label="<?= i::__('Selecione a Raça/Cor') ?>"></entity-field>
