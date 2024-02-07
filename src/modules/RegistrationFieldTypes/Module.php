@@ -54,7 +54,7 @@ class Module extends \MapasCulturais\Module
                 /** @var Registration $this */
 
                 $registration_field = $field->fieldName;
-
+                
                 if(empty($this->metadata[$registration_field])) {
                     $metadata_definition = (object) [
                         'config' => [
@@ -194,7 +194,7 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links', '@terms:segmento'];
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links', '@terms:segmento', '@bankFields'];
         
         $definitions = Agent::getPropertiesMetadata();
         foreach ($definitions as $key => $def) {
@@ -245,8 +245,17 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value) {
-                    return json_decode($value ?: '[]');
-                }
+                    return json_decode($value ?: '{}');
+                },
+                'validations' => [
+                    'v::attribute("account_number", null, true)' => 'ALgo asdasd',
+                    'v::attribute("account_type", null, true)' => 'ALgo asdasd',
+                    'v::attribute("branch", null, true)' => 'ALgo asdasd',
+                    'v::attribute("dv_account_number", null, true)' => 'ALgo asdasd',
+                    'v::attribute("dv_branch", null, true)' => 'ALgo asdasd',
+                    'v::attribute("number", null, true)' => 'ALgo asdasd',
+                    
+                ]
             ],
             [
                 'slug' => 'textarea',
@@ -648,7 +657,7 @@ class Module extends \MapasCulturais\Module
             } else if($entity_field == '@type' && $value) {
                 $type = $app->getRegisteredEntityTypeByTypeName($entity, $value);
                 $entity->type = $type;
-            } else if($entity_field == 'bankFields' && $value) {
+            } else if($entity_field == '@bankFields' && $value) {
                 $entity->payment_bank_account_type = $value['account_type'];
                 $entity->payment_bank_number = $value['number'];
                 $entity->payment_bank_branch = $value['branch'];
@@ -713,7 +722,7 @@ class Module extends \MapasCulturais\Module
                 $links = isset($metaLists['links'])? $metaLists['links']:[];
                 $videos = isset($metaLists['videos'])? $metaLists['videos']:[];
                 $value = array_merge($links,$videos);
-            } else if($entity_field == 'bankFields') {
+            } else if($entity_field == '@bankFields') {
                 $value = [
                     'account_type' => $entity->payment_bank_account_type,
                     'number' => $entity->payment_bank_number,

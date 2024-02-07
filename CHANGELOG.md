@@ -17,6 +17,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa novos componentes vuejs para trabalhar implementação de tabelas 
 - Refatora listagem de inscrições para uma tabela visualmente mais agradavel
 - Insere a opção de alterar o tipo dos agentes no modo de edição do perfil quando o usuario logado tem essa permissão
+- Implementa nova opção de campo de dados bancários no formulário na oportunidade.
 
 ### Correções
 
