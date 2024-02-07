@@ -175,6 +175,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_ENABLED;
 
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="registration_proponent_types", type="text", nullable=true)
+     */
+    protected $registrationProponentTypes;
+
+         /**
+     * @var string
+     *
+     * @ORM\Column(name="registrations_range_values", type="text", nullable=true)
+     */
+    protected $registrationsRangeValues;
+
     /**
      * @var \MapasCulturais\Entities\Opportunity
      *

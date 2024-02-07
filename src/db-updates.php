@@ -2077,5 +2077,10 @@ $$
         __exec("ALTER TABLE registration ADD COLUMN proponent_type VARCHAR(255) NULL");
         __exec("ALTER TABLE registration ADD COLUMN range_value VARCHAR(255) NULL");
     },
+    
+    "Cria novas colunas na tabela opportunity" => function() use ($conn){
+        __exec("ALTER TABLE opportunity ADD COLUMN registration_proponent_types TEXT NULL");
+        __exec("ALTER TABLE opportunity ADD COLUMN registrations_range_values TEXT NULL");
+    },
 
 ] + $updates ;   
