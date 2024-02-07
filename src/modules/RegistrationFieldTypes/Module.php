@@ -54,7 +54,7 @@ class Module extends \MapasCulturais\Module
                 /** @var Registration $this */
 
                 $registration_field = $field->fieldName;
-                
+
                 if(empty($this->metadata[$registration_field])) {
                     $metadata_definition = (object) [
                         'config' => [
@@ -248,13 +248,12 @@ class Module extends \MapasCulturais\Module
                     return json_decode($value ?: '{}');
                 },
                 'validations' => [
-                    'v::attribute("account_number", null, true)' => 'ALgo asdasd',
-                    'v::attribute("account_type", null, true)' => 'ALgo asdasd',
-                    'v::attribute("branch", null, true)' => 'ALgo asdasd',
-                    'v::attribute("dv_account_number", null, true)' => 'ALgo asdasd',
-                    'v::attribute("dv_branch", null, true)' => 'ALgo asdasd',
-                    'v::attribute("number", null, true)' => 'ALgo asdasd',
-                    
+                    'v::attribute("account_number", null, true)' => \MapasCulturais\i::__('O número da conta não está preenchido'),
+                    'v::attribute("account_type", null, true)' => \MapasCulturais\i::__('O tipo de conta não está preenchido'),
+                    'v::attribute("branch", null, true)' => \MapasCulturais\i::__('A agência não está preenchida'),
+                    'v::attribute("dv_account_number", null, true)' => \MapasCulturais\i::__('O dígito verificador da conta não está preenchido'),
+                    'v::attribute("dv_branch", null, true)' => \MapasCulturais\i::__('O dígito verificador da agência não está preenchido'),
+                    'v::attribute("number", null, true)' => \MapasCulturais\i::__('O número da conta não está preenchido'),
                 ]
             ],
             [
