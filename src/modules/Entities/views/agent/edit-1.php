@@ -78,7 +78,7 @@ $this->breadcrumb = [
 
                                 <?php $this->applyTemplateHook('edit1-entity-info-site','before') ?>
                                 <entity-field :entity="entity" classes="col-12" prop="site"></entity-field>
-                                <?php $this->applyTemplateHook('edit1-entity-info-site','before') ?>
+                                <?php $this->applyTemplateHook('edit1-entity-info-site','after') ?>
                             </div>
                         </div>
                         <div class="divider"></div>
