@@ -1,4 +1,5 @@
 <?php
+
 use MapasCulturais\i;
 
 return [
@@ -6,5 +7,6 @@ return [
     'category' => i::__('Categoria'),
     'projectName' => i::__('Nome do projeto'),
     'agentsSummary' => i::__('Resumo dos agentes'),
+    'sucess' => i::__('Salvo com sucesso'),
     'spaceSummary' => i::__('Resumo dos espaços'),
 ];
