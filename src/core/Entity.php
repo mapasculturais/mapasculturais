@@ -500,7 +500,11 @@ abstract class Entity implements \JsonSerializable{
      * 
      */ 
     protected function canUserViewPrivateFiles($user) {
-        return $this->canUser('view', $user);
+        if($this->isPrivateEntity()) {
+            return $this->canUser('view', $user);
+        }else {
+            return $this->canUser('@control', $user);
+        }
     }
 
     public function isUserAdmin(UserInterface $user, $role = 'admin'){
