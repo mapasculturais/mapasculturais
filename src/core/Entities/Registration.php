@@ -145,6 +145,19 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_DRAFT;
 
+      /**
+     * @var string
+     *
+     * @ORM\Column(name="proponent_type", type="text", nullable=false)
+     */
+    protected $proponentType;
+
+         /**
+     * @var string
+     *
+     * @ORM\Column(name="range_value", type="text", nullable=false)
+     */
+    protected $rangeValue;
     
     /**
      * @var integer

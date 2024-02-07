@@ -2071,5 +2071,11 @@ $$
                 p1.object_type = p2.object_type AND 
                 p1.object_id = p2.object_id AND 
                 p1.action = p2.action;");
-    }
-] + $updates ;
+    },
+    
+    "Cria novas colunas na tabela registration" => function() use ($conn){
+        __exec("ALTER TABLE registration ADD COLUMN proponent_type VARCHAR(255) NULL");
+        __exec("ALTER TABLE registration ADD COLUMN range_value VARCHAR(255) NULL");
+    },
+
+] + $updates ;   
