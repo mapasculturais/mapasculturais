@@ -4,6 +4,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.9] - 2024-02-07
+### Melhorias
+- Corrige CHANGELOG.md
+
+## [7.3.8] - 2024-02-07
+### Melhorias
+- Cria novos hooks na tela de edição dos agentes
+
 ## [7.3.7] - 2024-01-26
 ### Melhorias
 - Inserir nova comunidade tradicional
