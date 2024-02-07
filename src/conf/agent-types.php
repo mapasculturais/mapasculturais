@@ -262,21 +262,18 @@ return array(
                 '1' => \MapasCulturais\i::__('Conta corrente'),
                 '2' => \MapasCulturais\i::__('Conta Poupança'),
             ),
-            'available_for_opportunities' => true
         ),
         'payment_bank_account_number' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Número da conta bancária para pagamentos'),
             'type' => 'text',
             'dafault' => '[]',
-            'available_for_opportunities' => true
         ),
         'payment_bank_branch' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Agência bancária para pagamentos'),
             'type' => 'text',
             'dafault' => '[]',
-            'available_for_opportunities' => true
         ),
         'payment_bank_number' => array(
             'private' => true,
@@ -505,21 +502,18 @@ return array(
             'label' => \MapasCulturais\i::__('Dígito verificador da agéncia bancária'),
             'type' => 'text',
             'dafault' => '[]',
-            'available_for_opportunities' => true
         ),
         'payment_bank_dv_account_number' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Dígito verificador da conta bancária'),
             'type' => 'text',
             'dafault' => '[]',
-            'available_for_opportunities' => true
         ),
         'bankFields' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Campo de dados bancários'),
             'field_type' => 'bankFields',
             'dafault' => '[]',
-            'available_for_opportunities' => true,
         ),
         
         
