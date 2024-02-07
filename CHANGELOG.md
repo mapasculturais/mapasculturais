@@ -26,6 +26,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro na exibição do paracer técnico da avaliação técnica, quando nao existe avaliações enviadas
 - Ajusta em ordem alfabética os tipos de entidades nas entidades opportunity, space e project
 - Ajusta o disparo de e-mails de criação e envio da inscrição para que sejam feitos em toda fase da coleta de dados
+- Corrige permissão de visualização de arquivos privados
+- Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 
 ## [7.3.9] - 2024-02-07
 ### Melhorias
