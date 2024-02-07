@@ -2,8 +2,8 @@
 
 use MapasCulturais\i;
 $definitions = MapasCulturais\Entities\Agent::getPropertiesMetadata();
-$account_types = $definitions['payment_bank_account_type']['options'];
-$bank_types = $definitions['payment_bank_number']['options'];
+$account_types = $app->config['module.registrationFieldTypes']['account_types'];
+$bank_types = $app->config['module.registrationFieldTypes']['bank_types'];
 ?>
 <div>
     <div>
@@ -31,7 +31,7 @@ $bank_types = $definitions['payment_bank_number']['options'];
     <div>
         <label>
             <br><strong><?= i::__('Agência') ?></strong>
-            <input type="number" ng-required="requiredField(field)" ng-model="entity[fieldName].branch" ng-blur="saveField(field, entity[fieldName])" />
+            <input type="text" js-mask="99999" ng-required="requiredField(field)" ng-model="entity[fieldName].branch" ng-blur="saveField(field, entity[fieldName])" />
         </label>
     </div>
     <div>
@@ -43,7 +43,7 @@ $bank_types = $definitions['payment_bank_number']['options'];
     <div>
         <label>
             <br><strong><?= i::__('Número da conta') ?></strong>
-            <input type="number" ng-required="requiredField(field)" ng-model="entity[fieldName].account_number" ng-blur="saveField(field, entity[fieldName])" />
+            <input type="text" js-mask="999999999999" ng-required="requiredField(field)" ng-model="entity[fieldName].account_number" ng-blur="saveField(field, entity[fieldName])" />
         </label>
     </div>
     <div>
