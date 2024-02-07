@@ -17,6 +17,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa novos componentes vuejs para trabalhar implementação de tabelas 
 - Refatora listagem de inscrições para uma tabela visualmente mais agradavel
 - Insere a opção de alterar o tipo dos agentes no modo de edição do perfil quando o usuario logado tem essa permissão
+- Exibe campo de pessoa idosa na single do agente
 
 ### Correções
 
@@ -26,6 +27,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro na exibição do paracer técnico da avaliação técnica, quando nao existe avaliações enviadas
 - Ajusta em ordem alfabética os tipos de entidades nas entidades opportunity, space e project
 - Ajusta o disparo de e-mails de criação e envio da inscrição para que sejam feitos em toda fase da coleta de dados
+- Corrige permissão de visualização de arquivos privados
+- Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
+
+## [7.3.9] - 2024-02-07
+### Melhorias
+- Corrige CHANGELOG.md
+
+## [7.3.8] - 2024-02-07
+### Melhorias
+- Cria novos hooks na tela de edição dos agentes
 
 ## [7.3.7] - 2024-01-26
 

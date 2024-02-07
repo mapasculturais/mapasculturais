@@ -188,7 +188,7 @@ return array(
         'idoso' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Pessoa idosa'),
-            'type' => 'readonly',
+            'type' => 'boolean',
             'serialize' => function($value, $entity = null){
                 if($entity->dataDeNascimento){
                     $today = new DateTime('now');
