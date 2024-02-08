@@ -49,6 +49,14 @@ return [
     'app.mode' => env('APP_MODE', APPMODE_PRODUCTION),
 
     /* 
+    Define a moeda a ser utilizada. 
+    É possível definir mais de uma moeda e desta forma a moeda será escolhida com base na configuração do navegador do usuário.
+
+    Exemplo: 'BRL,EUR' ou 'EUR' 
+    */
+    'app.currency' => env('APP_CURRENCY', 'BRL'),
+
+    /* 
     Define se o Doctrine está rodando em modo de desenvolvimento, o que basicamente evita o cacheamento dos metadados do mapeamento do ORM.
     [Mais informações na documentação do Doctrine](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/advanced-configuration.html#development-vs-production-configuration)
 
