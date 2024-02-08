@@ -182,12 +182,12 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     protected $registrationProponentTypes;
 
-         /**
+    /**
      * @var string
      *
-     * @ORM\Column(name="registrations_range_values", type="text", nullable=true)
+     * @ORM\Column(name="registration_ranges", type="json", nullable=true)
      */
-    protected $registrationsRangeValues;
+    protected $registrationRanges;
 
     /**
      * @var \MapasCulturais\Entities\Opportunity
