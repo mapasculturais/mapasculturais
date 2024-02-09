@@ -12,6 +12,7 @@ $this->import('
     opportunity-phase-publish-date-config
     opportunity-enable-claim
     opportunity-category
+    opportunity-ranges-config
 ');
 ?>
     <div class="opportunity-data-collection grid-12">
@@ -44,6 +45,10 @@ $this->import('
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
         <?php $this->applyTemplateHook('opportunity-data-collection-config','afeter')?>
+
+        <div class="col-12">
+            <opportunity-ranges-config :entity="phase"></opportunity-ranges-config>
+        </div>
 
         <div class="col-12 sm:col-12">
             <?php $this->applyComponentHook('bottom') ?>
