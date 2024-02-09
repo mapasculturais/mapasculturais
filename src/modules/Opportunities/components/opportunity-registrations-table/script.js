@@ -17,6 +17,7 @@ app.component('opportunity-registrations-table', {
             resultStatus:[],
             query: {
                 opportunity: `EQ(${this.phase.id})`,
+                status: `GTE(0)`,
             },
             selectedCategory:null,
             selectedStatus:null,
