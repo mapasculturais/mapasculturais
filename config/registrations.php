@@ -2,6 +2,13 @@
 
 return [
     'registration.prefix' => env('REGISTRATION_PREFIX', 'on-'),
+    
+    'registration.proponentTypes' => [
+        'Pessoa Física',
+        'MEI',
+        'Coletivo',
+        'Pessoa Jurídica',
+    ],
 
     /* 
     Timeout para o auto salvamento das inscrições (em milisegundos)
