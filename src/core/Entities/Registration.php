@@ -148,14 +148,14 @@ class Registration extends \MapasCulturais\Entity
       /**
      * @var string
      *
-     * @ORM\Column(name="proponent_type", type="text", nullable=false)
+     * @ORM\Column(name="proponent_type", type="string", nullable=false)
      */
     protected $proponentType;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ranges", type="json", nullable=false)
+     * @ORM\Column(name="ranges", type="string", nullable=false)
      */
     protected $ranges;
     
