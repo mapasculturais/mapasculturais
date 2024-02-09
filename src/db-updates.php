@@ -2075,11 +2075,11 @@ $$
     
     "Cria novas colunas na tabela registration" => function() use ($conn){
         __exec("ALTER TABLE registration ADD COLUMN proponent_type VARCHAR(255) NULL");
-        __exec("ALTER TABLE registration ADD COLUMN ranges JSON NULL");
+        __exec("ALTER TABLE registration ADD COLUMN ranges VARCHAR(255) NULL");
     },
     
     "Cria novas colunas na tabela opportunity" => function() use ($conn){
-        __exec("ALTER TABLE opportunity ADD COLUMN registration_proponent_types TEXT NULL");
+        __exec("ALTER TABLE opportunity ADD COLUMN registration_proponent_types JSON NULL");
         __exec("ALTER TABLE opportunity ADD COLUMN registration_ranges JSON NULL");
     },
 
