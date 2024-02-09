@@ -44,6 +44,13 @@ $this->import('
             </div>
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
+        <div class="col-12">
+            <h3><?= i::__("Tipos do preponente")?></h3>
+            <p><?= i::__("Selecione um ou mais tipos de preponente que poderá participar do edital")?></p>
+            <div class="grid-12 col-12">
+                <entity-field :entity="phase" prop="registrationProponentTypes" :autosave="300" hide-label></entity-field>
+            </div>
+        </div>
         <?php $this->applyTemplateHook('opportunity-data-collection-config','afeter')?>
 
         <div class="col-12">
