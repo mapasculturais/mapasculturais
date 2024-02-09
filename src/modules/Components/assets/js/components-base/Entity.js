@@ -184,7 +184,7 @@ class Entity {
                 if (prop == 'type') {
                     val = val.id;
                 } else {
-                    result[prop] = Object.assign({}, val);
+                    result[prop] = JSON.parse(JSON.stringify(val));
                 }
             } else {
                 result[prop] = val;
