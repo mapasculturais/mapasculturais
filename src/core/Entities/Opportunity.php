@@ -283,6 +283,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
     
     abstract function getSpecializedClassName();
 
+    public static function getPropertiesMetadata($include_column_name = false){
+        $app = App::i();
+        $result = parent::getPropertiesMetadata($include_column_name);
+        $result["registrationProponentTypes"]["type"] = "multiselect";
+        $options = [];
+        foreach($app->config["registration.proponentTypes"] as $value){
+            $options[$value] = $value;
+        }
+        $result["registrationProponentTypes"]["options"] = $options;
+        $result["registrationProponentTypes"]["optionsOrder"] = $app->config["registration.proponentTypes"];
+        
+        return $result;
+    }
+
     /**
      * 
      * @return RegistrationFileConfiguration[]
