@@ -255,16 +255,14 @@ class Module extends \MapasCulturais\Module{
 
             $this->enableCacheGetterResult('previousPhase');
 
-            $from_field = $this->isLastPhase ? 'publishTimestamp' : 'registrationFrom';
-
             $class = Opportunity::class;
             $query = $app->em->createQuery("
                 SELECT o 
                 FROM $class o 
                 WHERE 
                     o.id = :parent OR
-                    (o.parent = :parent AND o.registrationFrom < (SELECT this.{$from_field} FROM $class this WHERE this.id = :this))
-                ORDER BY o.registrationFrom DESC");
+                    (o.parent = :parent AND o.id <> :this)
+                ORDER BY o.id DESC");
 
             $query->setMaxResults(1);
             $query->setParameters([
