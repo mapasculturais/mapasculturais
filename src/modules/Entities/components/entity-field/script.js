@@ -150,7 +150,7 @@ app.component('entity-field', {
 
         change(event, now) {
             clearTimeout(this.__timeout);
-            let oldValue = this.entity[this.prop];
+            let oldValue = JSON.parse(JSON.stringify(this.entity[this.prop]));
             
             this.__timeout = setTimeout(() => {
                if(this.is('date') || this.is('datetime') || this.is('time')) {
@@ -165,26 +165,18 @@ app.component('entity-field', {
                     this.entity[this.prop] = event.target.checked;
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.checked});
                 } else if (this.is('multiselect')) {
-
                     if (this.entity[this.prop] === '' || !this.entity[this.prop]) {
                         this.entity[this.prop] = []
                     } else if (typeof this.entity[this.prop] !== 'object') {
                         this.entity[this.prop] = this.entity[this.prop].split(";");
                     }
 
-                    if (!this.entity[this.prop].includes(event.target.value)){
-                        if (event.target.value === '') {
-                            this.entity[this.prop] = [];
-                        } else {
-                            let index = this.entity[this.prop].indexOf('');
-
-                            if (index >= 0) {
-                                this.entity[this.prop].splice(index, 1);
-                            }
-                        }
-
-                        this.entity[this.prop].push(event.target.value);
-                    }  
+                    let index = this.entity[this.prop].indexOf(event.target.value);
+                    if (index >= 0) {
+                        this.entity[this.prop].splice(index, 1);
+                    } else {
+                        this.entity[this.prop].push(event.target.value)
+                    }
 
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
                 } else {
@@ -192,7 +184,7 @@ app.component('entity-field', {
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
                 }
 
-                if (this.autosave && (now || this.entity[this.prop] != oldValue)) {
+                if (this.autosave && (now || JSON.stringify(this.entity[this.prop]) != JSON.stringify(oldValue))) {
                     clearTimeout(this.entity.__autosaveTimeout);
                     this.entity.__autosaveTimeout = setTimeout(() => {
                         this.entity.save();
