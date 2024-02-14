@@ -7,6 +7,9 @@
 
 use MapasCulturais\i;
 
+$this->import('
+    mc-icon
+')
 ?>
 <div class="registration-results__card">
     <div class="registration-results__card-header">
@@ -17,7 +20,15 @@ use MapasCulturais\i;
         </div>
 
         <div>
-            <p><label><?= i::__('Resultado: ') ?></label> <strong>{{registration.consolidatedResult}}</strong></p>
+            <p>
+                <label><?= i::__('Resultado: ') ?></label>
+                <strong v-if="registration.consolidatedResult === 'Habilitado'" class="success__color">
+                    <mc-icon name="circle" class="success__color"></mc-icon>{{registration.consolidatedResult}}
+                </strong>
+                <strong v-if="registration.consolidatedResult === 'Inabilitado'" class="danger__color">
+                    <mc-icon name="circle" class="danger__color"></mc-icon>{{registration.consolidatedResult}}
+                </strong>
+            </p>
         </div>
     </div>
 </div>
@@ -32,7 +43,17 @@ use MapasCulturais\i;
                 <?= i::__('Parecerista: ') ?> #{{index+1}}
             </h4>
 
-            <p><label><?= i::__('Resultado: ') ?></label> <strong>{{registration.consolidatedResult}}</strong></p>
+            <p>
+                <label><?= i::__('Resultado: ') ?></label>
+
+                <strong v-if="registration.consolidatedResult === 'Habilitado'" class="success__color">
+                    <mc-icon name="circle" class="success__color"></mc-icon>{{registration.consolidatedResult}}
+                </strong>
+                <strong v-if="registration.consolidatedResult === 'Inabilitado'" class="danger__color">
+                    <mc-icon name="circle" class="danger__color"></mc-icon>{{registration.consolidatedResult}}
+                </strong>
+            </p>
+
         </div>
     </div>
     <div class="registration-results__card-content">
