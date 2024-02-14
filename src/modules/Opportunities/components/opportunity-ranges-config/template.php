@@ -14,24 +14,44 @@ $this->import('
 ');
 ?>
 <div class="opportunity-ranges-config">
-    <h4 class="bold"><?= i::__('Configuração por Faixas') ?></h4>
-    <p><?= i::__('Crie e configure as faixas abaixo, inserindo um breve resumo, quantidade e valor de cada uma delas.') ?></p>
+    <div class="opportunity-ranges-config__header">
+        <h4 class="bold"><?= i::__('Configuração por Faixas') ?></h4>
+        <h6><?= i::__('Crie e configure as faixas abaixo, inserindo um breve resumo, quantidade e valor de cada uma delas.') ?></h6>
+    </div>
 
-    <div v-for="(range, index) in entity.registrationRanges" :key="index">
-        <h5 class="bold"><?= i::__('Faixa') ?> {{index+1}}</h5>
-
-        <input type="text" v-model="range.label" @blur="autoSaveRange(range)" placeholder="<?= i::__('Descrição da faixa') ?>">
-        <input type="number" v-model="range.limit" @blur="autoSaveRange(range)">
-        <mc-currency-input v-model.lazy="range.value" @blur="autoSaveRange(range)"></mc-currency-input>
+    
+    <div class="opportunity-ranges-config__content grid-12" v-for="(range, index) in entity.registrationRanges" :key="index">
+        <div class="field">
+            <h5 class="bold field__title"><?= i::__('Faixa') ?> {{index+1}}</h5>
+            <input class="field__input" type="text" v-model="range.label" @blur="autoSaveRange(range)" placeholder="<?= i::__('Descrição da faixa') ?>">
+        </div>
+            
+        <div class="field field--small"> 
+            <h6 class="field__title"><?= i::__('Quantidade de vagas') ?></h6>
+            <input class="field__input field__input--small" type="number" v-model="range.limit" @blur="autoSaveRange(range)">
+        </div>
+            
+        <div class="field field--small">
+            <h6 class="field__title"><?= i::__('Valor') ?></h6>
+            <mc-currency-input class="field__input field__input--small" v-model.lazy="range.value" @blur="autoSaveRange(range)"></mc-currency-input>
+        </div>
+            
         <mc-confirm-button @confirm="removeRange(index)">
             <template #button="{open}">
-                <mc-icon name="trash" @click="open()"></mc-icon>
+                <div class="field__trash">
+                    <mc-icon class="danger__color" name="trash" @click="open()"></mc-icon>
+                </div>
             </template>
             <template #message="message">
                 <?php i::_e('Deseja deletar a faixa?') ?>
             </template>
         </mc-confirm-button>
     </div>
-
-    <button @click="addRange"><?= i::__('Adicionar Faixa') ?></button>
+    
+    <div class="opportunity-ranges-config__button">
+        <button class="opportunity-ranges-config__button__add button button--primary button--icon" @click="addRange">
+            <mc-icon name="add"></mc-icon><label><?php i::_e("Adicionar Faixa") ?></label>
+        </button>
+    </div>
+    
 </div>
