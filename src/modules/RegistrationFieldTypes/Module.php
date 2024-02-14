@@ -457,7 +457,12 @@ class Module extends \MapasCulturais\Module
                 'requireValuesConfiguration' => true,
                 'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
                     $module->saveToEntity($registration->owner, $value, $registration, $metadata_definition);
-                    return json_encode($value);
+
+                    if(is_object($value) || is_array($value)) {
+                        return json_encode($value);
+                    }else {
+                        return $value;
+                    }
                 },
                 'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
 
@@ -466,7 +471,15 @@ class Module extends \MapasCulturais\Module
                     }
                     
                     if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value ?: "");
+                        $value = $value ?: "";
+
+                        $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
+                        if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
+                            $result = json_decode($value ?: "");
+                        }else {
+                            $result = $value;
+                        }
+
                     }else{
                         $disable_access_control = false;
 
@@ -497,7 +510,11 @@ class Module extends \MapasCulturais\Module
                     if($agent){
                         $module->saveToEntity($agent[0], $value, $registration, $metadata_definition);
                     }
-                    return json_encode($value);
+                    if(is_object($value) || is_array($value)) {
+                        return json_encode($value);
+                    }else {
+                        return $value;
+                    }
                 },
                 'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
                     if(!$registration instanceof \MapasCulturais\Entities\Registration){
@@ -505,7 +522,14 @@ class Module extends \MapasCulturais\Module
                     }
 
                     if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value ?: "");
+                            
+                        $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
+                        if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
+                            $result = json_decode($value ?: "");
+                        }else {
+                            $result = $value;
+                        }
+
                     } else {
                         $disable_access_control = false;
 
@@ -544,7 +568,11 @@ class Module extends \MapasCulturais\Module
                     if($space_relation){
                         $module->saveToEntity($space_relation->space, $value, $registration, $metadata_definition);
                     }
-                    return json_encode($value);
+                    if(is_object($value) || is_array($value)) {
+                        return json_encode($value);
+                    }else {
+                        return $value;
+                    }
                 },
                 'unserialize' => function($value, $registration = null, Metadata $metadata_definition = null) use ($module, $app) {
                     if(!$registration instanceof \MapasCulturais\Entities\Registration){
@@ -552,7 +580,12 @@ class Module extends \MapasCulturais\Module
                     }
                     
                     if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value ?: "");
+                        $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
+                        if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
+                            $result = json_decode($value ?: "");
+                        }else {
+                            $result = $value;
+                        }
                     } else {
                         $disable_access_control = false;
                     

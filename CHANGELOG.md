@@ -18,9 +18,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Refatora listagem de inscrições para uma tabela visualmente mais agradavel
 - Insere a opção de alterar o tipo dos agentes no modo de edição do perfil quando o usuario logado tem essa permissão
 - Exibe campo de pessoa idosa na single do agente
+- Implementa exibição de parecer na avaliação documental
+- Implementa exibição de parecer na avaliação qualificação documental
 
 ### Correções
-
 - Corrige erro da instalação do npm após o node.
 - Corrige extrações de planilhas em excel das entidades via API
 - Ajusta estilização do componente que lista as áreas de interesse na single da oportunidade

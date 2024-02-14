@@ -35,7 +35,7 @@ return [
     'app.usePermissionsCache'        => (bool) env('CACHE_PERMISSIONS', env('REDIS_CACHE', false)),
     'app.useRegisterCache'           => __env_not_false('CACHE_REGISTER'),
     'app.useApiCache'                => env('CACHE_API', false),
-    'app.useOpportunitySummaryCache' => __env_not_false('CACHE_OPPORTUNITY_SUMARY'),
+    'app.useOpportunitySummaryCache' =>false,
 
 
     'app.registeredAutoloadCache.lifetime'  => env('CACHE_AUTOLOAD', YEAR_IN_SECONDS),
