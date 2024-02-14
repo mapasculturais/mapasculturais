@@ -51,8 +51,8 @@ $this->import('
             <mc-icon name="add"></mc-icon>
         </button>
     </mc-multiselect>
-    <mc-tag-list :editable="editable" :classes="entity.__objectType+'__background'" :tags="entity.terms[this.taxonomy]"></mc-tag-list>
     <small class="field__error" v-if="hasErrors">        
         {{errors.join('; ')}}
     </small>
+    <mc-tag-list :editable="editable" :classes="entity.__objectType+'__background'" :tags="entity.terms[this.taxonomy]"></mc-tag-list>
 </div>
