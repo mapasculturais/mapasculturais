@@ -17,9 +17,14 @@ use MapasCulturais\i;
             <h4 v-else class="registration-results__opinion-title bold">
                 <?= i::__('Parecerista: ') ?> #{{index+1}}
             </h4>
-            <p :class="stausColor(detail.evaluationResult)">
-                <mc-icon name="circle" :class="stausColor(detail.evaluationResult)"></mc-icon>
-                <strong> {{statusString(detail.evaluationResult)}} </strong>
+            <p>
+                <label>
+                    <?= i::__('Resultado final: ') ?>
+                </label>
+                <strong :class="stausColor(detail.evaluationResult)">
+                    <mc-icon name="circle" :class="stausColor(detail.evaluationResult)"></mc-icon>
+                    {{statusString(detail.evaluationResult)}}
+                </strong>
             </p>
         </div>
     </div>
@@ -29,14 +34,30 @@ use MapasCulturais\i;
             <div class="registration-results__opinion registration-results__opinion--document">
                 <div class="registration-results__opinion-text">
                     <p>
-                        <strong>{{item.label}}</strong>
-                    </p>
-                    <p :class="stausColor(item.evaluation)">
                         <mc-icon name="circle" :class="stausColor(item.evaluation)"></mc-icon>
-                        <strong>{{statusString(item.evaluation)}}</strong>
+                        <strong :class="stausColor(item.evaluation)"> {{statusString(item.evaluation)}} </strong>
                     </p>
                     <p>
-                        {{item.obs}}
+                        <strong> {{item.label}} </strong>
+                    </p>
+                    <br>
+                    <h5 class="registration-results__opinion-title bold"><?= i::__('Parecer') ?>:</h5>
+                    <p>
+                    <ul>
+                        <li>
+                            {{item.obs}}
+                        </li>
+                    </ul>
+
+                    </p>
+                    <br>
+                    <p v-if="item.obs_items">
+                    <h5 class="registration-results__opinion-title bold"><?= i::__('Detalhamento') ?>:</h5>
+                    <ul>
+                        <li>
+                            {{item.obs_items}}
+                        </li>
+                    </ul>
                     </p>
                 </div>
             </div>
