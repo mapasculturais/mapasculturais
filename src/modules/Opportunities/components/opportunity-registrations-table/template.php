@@ -51,9 +51,8 @@ $entity = $this->controller->requestedEntity;
                 
                 <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'before', ['entity' => $entity]); ?>
                 <template #actions="{entities,filters}">
+                    <h4 class="bold"><?= i::__('Ações:') ?></h4>
                     <div class="opportunity-payment-table__actions">
-                        <h4 class="bold"><?= i::__('Ações:') ?></h4>
-
                         <div class="opportunity-payment-table__actions grid-12">
                             <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'begin', ['entity' => $entity]); ?>
                                 <mc-link :entity="phase" route="reportDrafts" class="button button--primarylight button--icon button--large col-4"><?= i::__("Baixar rascunho") ?> <mc-icon name="download"></mc-icon></mc-link>
