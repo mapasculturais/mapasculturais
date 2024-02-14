@@ -76,10 +76,10 @@ $this->import('
             
         </div>
         <template v-if="phase.evaluationMethodConfiguration?.type == 'technical' || phase.evaluationMethodConfiguration?.type == 'documentary'">
-            <div class="col-12">
+            <div class="col-12" v-if="phase.evaluationMethodConfiguration">
                 <entity-field :entity="phase.evaluationMethodConfiguration" prop="publishEvaluationDetails" type="checkbox" :autosave="300" ></entity-field>
             </div>
-            <div class="col-12">
+            <div class="col-12" v-if="phase.evaluationMethodConfiguration">
                 <entity-field :entity="phase.evaluationMethodConfiguration" prop="publishValuerNames" type="checkbox" :autosave="300"></entity-field>
             </div>
         </template>
