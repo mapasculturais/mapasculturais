@@ -32,7 +32,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige permissão de visualização de arquivos privados
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige texto do erro no campo 'área de interesse'
-- Remove erros duplicados na criação de uma nova oportunidade
+- Remove duplicidade da mensagem de erro da falta de area de interesse no modal de criação de oportunidade
 
 ## [7.3.9] - 2024-02-07
 ### Melhorias
