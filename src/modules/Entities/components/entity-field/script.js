@@ -64,7 +64,7 @@ app.component('entity-field', {
             description: description,
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
             fieldType,
-
+            currencyValue: this.entity[this.prop],
         }
     },
 
@@ -86,6 +86,10 @@ app.component('entity-field', {
             default: null
         },
         hideLabel: {
+            type: Boolean,
+            default: false
+        },
+        hideDescription: {
             type: Boolean,
             default: false
         },
@@ -161,6 +165,9 @@ app.component('entity-field', {
                     }
 
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event});
+                } else if(this.is('currency')) {
+                    this.entity[this.prop] = this.currencyValue;
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.checked});
                 } else if(this.is('checkbox')) {
                     this.entity[this.prop] = event.target.checked;
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.checked});
