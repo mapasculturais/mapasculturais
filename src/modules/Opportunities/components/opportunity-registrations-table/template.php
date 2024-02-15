@@ -40,7 +40,7 @@ $entity = $this->controller->requestedEntity;
 
         <div class="col-12"> 
 
-            <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult" @clear-filters="clearFilters">
+            <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult,attachments" @clear-filters="clearFilters">
 
                 <template #title>
                     <h5>
