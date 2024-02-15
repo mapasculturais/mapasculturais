@@ -150,7 +150,7 @@ app.component('entity-field', {
 
         change(event, now) {
             clearTimeout(this.__timeout);
-            let oldValue = JSON.parse(JSON.stringify(this.entity[this.prop]));
+            let oldValue = this.entity[this.prop] ? JSON.parse(JSON.stringify(this.entity[this.prop])) : null;
             
             this.__timeout = setTimeout(() => {
                if(this.is('date') || this.is('datetime') || this.is('time')) {
