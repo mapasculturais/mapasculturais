@@ -45,6 +45,7 @@ app.component('opportunity-registrations-table', {
                 { text: "Inscrição", value: "number" },
                 { text: "Categoria", value: "category" },
                 { text: "Agente", value: "owner.name", slug: "agent"},
+                { text: "Anexo", value: "attachments" },
                 { text: "Status", value: "status"},
             ];
 
@@ -59,7 +60,7 @@ app.component('opportunity-registrations-table', {
             return itens;
         },
         select() {
-            return "number,category,consolidatedResult,status,singleUrl,owner.{name}";
+            return "number,category,consolidatedResult,status,singleUrl,files,owner.{name}";
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
