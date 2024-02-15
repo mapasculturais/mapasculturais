@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa exibição de parecer na avaliação documental
 - Implementa exibição de parecer na avaliação qualificação documental
 - Implementa campo de dados bancários vinculado ao agente responsável via campo @
+- Implementa botão que faz a sincronia das inscrições entre as fases
 
 ### Melhorias
 - Nova lib instalada (league/csv), para geração de arquivos csv.
@@ -21,6 +22,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Refatora listagem de inscrições para uma tabela visualmente mais agradavel
 - Insere a opção de alterar o tipo dos agentes no modo de edição do perfil quando o usuario logado tem essa permissão
 - Exibe campo de pessoa idosa na single do agente
+- Implementa a exibição de nova coluna na listagem de inscrições para baixar os anexos
+- Altera nome da coluna resultado final da avaliação para "Avaliação" na listagem de inscrições
 
 ### Correções
 - Corrige erro da instalação do npm após o node.
