@@ -34,6 +34,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige texto do erro no campo 'área de interesse'
 - Remove duplicidade da mensagem de erro da falta de area de interesse no modal de criação de oportunidade
 
+## [7.3.10] - 2024-02-15
+### Correções
+- Executa a validação de erros da avaliação independentemente da mesma precisar ser enviada para validar
+- Corrige erro ao abrir fase de inscrição, sem ter nehuma avaliação criada
+
 ## [7.3.9] - 2024-02-07
 ### Melhorias
 - Corrige CHANGELOG.md
