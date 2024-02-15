@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->import('
     entity-field-datepicker
     mc-alert
+    mc-currency-input
 ')
 ?>
 <div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]" :style="is('checkbox') ? { flexDirection: 'row' } : {}">
@@ -75,9 +76,13 @@ $this->import('
                 <option :value='false' :selected="!value"> <?= i::_e('Não')?>  </option>
             </select>
         </template>
+        
+        <template v-if="is('currency')">
+            <mc-currency-input v-model="currencyValue" :entity="entity" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)"></mc-currency-input>
+        </template>
 
     </slot>
-    <small class="field__description" v-if="fieldDescription"> {{fieldDescription}} </small>
+    <small class="field__description" v-if="!hideDescription && (fieldDescription || description.description)"> {{ fieldDescription || description.description}} </small>
     <small class="field__error" v-if="hasErrors">        
         {{errors.join('; ')}}
     </small>
