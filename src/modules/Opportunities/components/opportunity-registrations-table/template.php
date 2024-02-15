@@ -80,6 +80,10 @@ $entity = $this->controller->requestedEntity;
                     </div>
                 </template>
 
+                <template #attachments={entity}>
+                    <a v-if="entity.files?.zipArchive?.url" :href="entity.files?.zipArchive?.url">Anexo</a>
+                </template>
+
                 <template #status="{entity}">
                     <mc-select :default-value="entity.status" @change-option="setStatus($event, entity)">
                         <mc-status v-for="item in statusDict" :value="item.value" :status-name="item.label"></mc-status>
