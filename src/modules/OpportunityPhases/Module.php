@@ -640,6 +640,9 @@ class Module extends \MapasCulturais\Module{
             $opportunity = $this->requestedEntity;
 
             $opportunity->enqueueRegistrationSync();
+            $cache_key = "MapasCulturais\Entities\Opportunity::getSummary:{$opportunity->id}";
+
+            $app->cache->delete($cache_key);
 
             $this->finish(['message' => i::__('Sincronização das inscrições enfileirada para processamento em segundo plano')]);
         });
