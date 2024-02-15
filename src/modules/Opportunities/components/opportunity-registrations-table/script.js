@@ -50,7 +50,7 @@ app.component('opportunity-registrations-table', {
             ];
 
             if(this.phase.evaluationMethodConfiguration){
-                itens.splice(3,0,{ text: "Resultado final da avaliação", value: "consolidatedResult"});
+                itens.splice(3,0,{ text: "Avaliação", value: "consolidatedResult"});
             }
 
             if(this.statusCategory.length == 0){
