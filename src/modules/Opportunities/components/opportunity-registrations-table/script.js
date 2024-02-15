@@ -46,7 +46,6 @@ app.component('opportunity-registrations-table', {
                 { text: "Categoria", value: "category" },
                 { text: "Agente", value: "owner.name", slug: "agent"},
                 { text: "Status", value: "status"},
-                { text: "", value: "options"},
             ];
 
             if(this.phase.evaluationMethodConfiguration){

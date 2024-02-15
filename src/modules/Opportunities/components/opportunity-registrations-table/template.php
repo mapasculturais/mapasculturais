@@ -94,9 +94,6 @@ $entity = $this->controller->requestedEntity;
                     <a :href="entity.singleUrl">{{entity.number}}</a>
                 </template>
 
-                <template #options="{entity}">
-                    <a :href="entity.singleUrl" class="button button--sm button--primary"><?= i::__("Conferir inscrição")?></a>
-                </template>
             </entity-table>
         </div>
     </template>
