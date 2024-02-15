@@ -35,8 +35,8 @@ $this->import('
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
         <div class="col-12">
-                <h3><?= i::esc_attr__('Limites na inscrição no edital')?></h3>
-                <p><?= i::esc_attr__('Configure abaixo a quantidade de vagas do edital, o valor total, e os limites de inscritos (se houver) e a quantidade de incrições por agente.')?></p>
+            <h3><?= i::esc_attr__('Limites na inscrição no edital')?></h3>
+            <p><?= i::esc_attr__('Configure abaixo a quantidade de vagas do edital, o valor total, e os limites de inscritos (se houver) e a quantidade de incrições por agente.')?></p>
                 <div class="col-12 grid-12">
                     <entity-field :entity="phase" prop="vacancies" :autosave="3000" class="col-3"></entity-field>
                     <entity-field :entity="phase" prop="totalResource" :autosave="3000" class="col-3"></entity-field>
