@@ -70,6 +70,7 @@ return array(
         'registrationLimitPerOwner' => array(
             'type' => 'integer',
             'label' => \MapasCulturais\i::__('Número máximo de inscrições por agente responsável'),
+            'description' => \MapasCulturais\i::__('Defina o limite de inscritos por agente responsável pela avaliação.'),
             'validations' => array(
                 "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições por agente responsável deve ser um número inteiro")
             )
@@ -78,6 +79,7 @@ return array(
         'registrationLimit' => array(
             'type' => 'integer',
             'label' => \MapasCulturais\i::__('Número máximo de inscrições na oportunidade'),
+            'description' => \MapasCulturais\i::__('Defina se haverá uma quantidade máxima de inscritos (0 = sem limites).'),
             'validations' => array(
                 "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições na oportunidade deve ser um número inteiro")
             )
@@ -213,6 +215,19 @@ return array(
             'unserialize' => function($val){
                 return intval($val);
             }
+        ),
+
+        'totalResource' => array(
+            'type' => 'float',
+            'field_type' => 'currency',
+            'label' => \MapasCulturais\i::__('Total do valor'),
+            'description' => \MapasCulturais\i::__("Valor total que esse edital irá disponibilizar."),
+        ),
+
+        'vacancies' => array(
+            'type' => 'integer',
+            'label' => \MapasCulturais\i::__('Total de vagas'),
+            'description' => \MapasCulturais\i::__("Quantidades de vagas que esse edital irá disponibilizar."),
         ),
     ),
     'items' => $items,
