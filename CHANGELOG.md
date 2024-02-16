@@ -24,7 +24,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Exibe campo de pessoa idosa na single do agente
 - Implementa a exibição de nova coluna na listagem de inscrições para baixar os anexos
 - Altera nome da coluna resultado final da avaliação para "Avaliação" na listagem de inscrições
-- Faz com que a imagem de compartilhamento use a imagem da entidade corrente ao invez da padrão
 
 ### Correções
 - Corrige erro da instalação do npm após o node.
@@ -37,6 +36,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige texto do erro no campo 'área de interesse'
 - Remove duplicidade da mensagem de erro da falta de area de interesse no modal de criação de oportunidade
+
+## [7.3.11] - 2024-02-16
+### Melhorias
+- Faz com que a imagem de compartilhamento use a imagem da entidade corrente ao invez da padrão
 
 ## [7.3.10] - 2024-02-15
 ### Correções
