@@ -61,4 +61,26 @@
     &__registration {
         padding-left: size(35);
     }
+
+    &__preponent {
+        display: flex;
+        flex-direction: column;
+        gap: size(10);
+
+        .field__preponent > .field__group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: size(8);
+            width: 80%;
+
+            & > .input__label {
+                display: flex;
+                align-items: center;
+
+                & > input {
+                    margin-right: size(12);
+                }
+            }
+        }
+    }
 }
