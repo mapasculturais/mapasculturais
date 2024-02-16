@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -8,21 +9,17 @@ use MapasCulturais\i;
 
 $this->import('
     mc-modal
-'); 
+');
 ?>
-<div class="mc-image-uploader">  
+<div class="mc-image-uploader">
     <mc-modal title="<?php i::_e("Recorte a imagem") ?>" @open="reset()">
         <template #default>
             <div class="field">
                 <input v-if="useDescription" v-model="description" class="input" placeholder="<?php i::esc_attr_e('Descrição da imagem') ?>">
             </div>
 
-            <cropper
-                ref="cropper"
-                :src="image.src"
-                :stencil-props="stencilProps"
-                :default-size="defaultSize"
-            />
+            <cropper v-if="circular" ref="cropper" :src="image.src" :stencil-props="stencilProps" :stencil-component="$options.components.CircleStencil" :default-size="defaultSize" :style="style" />
+            <cropper v-if="!circular" ref="cropper" :src="image.src" :stencil-props="stencilProps" :default-size="defaultSize" :style="style" />
         </template>
 
         <template #button="modal">
