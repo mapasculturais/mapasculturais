@@ -2735,7 +2735,7 @@ class Theme extends MapasCulturais\Theme {
                     }
                 }
             }
-            $_opportunity = $_opportunity->parent;
+            $_opportunity = $_opportunity->previousPhase;
         }
     }
 
