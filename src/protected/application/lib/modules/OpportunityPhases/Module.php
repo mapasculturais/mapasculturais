@@ -310,7 +310,8 @@ class Module extends \MapasCulturais\Module{
             if(!$this->canUser('viewPrivateData')) {
                 return;
             }
-            if(empty($value) && ($previous_phase = $this->previousPhase)){
+
+            if(is_null($value) && ($previous_phase = $this->previousPhase)){
                 $previous_phase->registerFieldsMetadata();
 
                 $app->disableAccessControl();
