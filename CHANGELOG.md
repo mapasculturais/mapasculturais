@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.11] - 2024-02-16
+### Melhorias
+- Faz com que a imagem de compartilhamento use a imagem da entidade corrente ao invez da padrão
+
 ## [7.3.10] - 2024-02-15
 ### Correções
 - Executa a validação de erros da avaliação independentemente da mesma precisar ser enviada para validar
