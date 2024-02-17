@@ -211,7 +211,7 @@ class Module extends \MapasCulturais\Module{
         $app = App::i();
         $self = $this;
         $registration_repository = $app->repo('Registration');
-
+        
         $app->hook('view.partial(singles/registration-edit--categories).params', function(&$params, &$template) use ($app) {
             if($this->controller->requestedEntity->opportunity->isOpportunityPhase && !$this->controller->requestedEntity->preview) {
                 $template = '_empty';
@@ -1279,6 +1279,17 @@ class Module extends \MapasCulturais\Module{
                 /** @var ApiQuery $this */
                 if(!$this->parentQuery && !isset($params['opportunity']) && !isset($params['previousPhaseRegistrationId']) && !isset($params['id'])) {
                     $params['previousPhaseRegistrationId'] = API::NULL();
+                }
+            });
+
+            // Adiciona os proponentes, as faixas e as categorias para as novas fases de coleta de dados criadas
+            $app->hook('entity(Opportunity).insert:after', function() use ($app) {
+                /** @var Opportunity $this */
+                if($this->parent && $this->isDataCollection) {
+                    $this->registrationCategories = $this->parent->registrationCategories;
+                    $this->registrationProponentTypes = $this->parent->registrationProponentTypes;
+                    $this->registrationRanges = $this->parent->registrationRanges;
+                    $this->save(true);
                 }
             });
         }
