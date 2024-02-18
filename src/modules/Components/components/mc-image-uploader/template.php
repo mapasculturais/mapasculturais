@@ -18,8 +18,8 @@ $this->import('
                 <input v-if="useDescription" v-model="description" class="input" placeholder="<?php i::esc_attr_e('Descrição da imagem') ?>">
             </div>
 
-            <cropper v-if="circular" ref="cropper" :src="image.src" :stencil-props="stencilProps" :stencil-component="$options.components.CircleStencil" :default-size="defaultSize" :style="style" />
-            <cropper v-if="!circular" ref="cropper" :src="image.src" :stencil-props="stencilProps" :default-size="defaultSize" :style="style" />
+            <cropper v-if="circular" ref="cropper" :src="image.src" :stencil-props="stencilProps" :stencil-component="$options.components.CircleStencil" :default-size="defaultSize" />
+            <cropper v-if="!circular" ref="cropper" :src="image.src" :stencil-props="stencilProps" :default-size="defaultSize" />
         </template>
 
         <template #button="modal">
