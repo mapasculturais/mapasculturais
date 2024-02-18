@@ -77,8 +77,15 @@ app.component("mc-image-uploader", {
     defaultSize() {
       let width = this.width;
       let height = this.height;
-      let aspectRatio = this.aspectRatio;
 
+      if (this.circular && this.image.width && this.image.height) {
+        return {
+          width: this.image.width,
+          height: this.image.height,
+        };
+      }
+
+      let aspectRatio = this.aspectRatio;
       if (aspectRatio && width && !height) {
         height = width / aspectRatio;
       } else if (aspectRatio && height && !width) {
@@ -172,6 +179,15 @@ app.component("mc-image-uploader", {
         // 2. Create the blob link to the file to optimize performance:
         const blob = URL.createObjectURL(files[0]);
 
+        let img = new Image();
+        img.src = blob;
+        let size;
+        img.onload = async () => {
+          size = {
+            width: img.width,
+            height: img.height,
+          };
+        };
         // 3. The steps below are designated to determine a file mime type to use it during the
         // getting of a cropped image from the canvas. You can replace it them by the following string,
         // but the type will be derived from the extension and it can lead to an incorrect result:
@@ -192,6 +208,7 @@ app.component("mc-image-uploader", {
             src: blob,
             // Determine the image type to preserve it during the extracting the image from canvas:
             type: getMimeType(e.target.result, files[0].type),
+            ...size,
           };
         };
         // Start the reader job - read file as a data url (base64 format)
