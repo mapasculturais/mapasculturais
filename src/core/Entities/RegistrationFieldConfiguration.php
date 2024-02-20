@@ -120,6 +120,20 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
       */
     protected $conditionalValue;
 
+     /**
+      * @var boolean
+      *
+      * @ORM\Column(name="registration_ranges", type="json", nullable=true)
+      */
+    protected $registrationRanges = [];
+
+     /**
+      * @var boolean
+      *
+      * @ORM\Column(name="proponent_types", type="json", nullable=true)
+      */
+    protected $proponentTypes = [];
+
     static function getValidations() {
         $app = App::i();
         $validations = [
