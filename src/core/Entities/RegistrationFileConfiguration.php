@@ -94,20 +94,6 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      */
     protected $conditionalValue;
 
-     /**
-      * @var boolean
-      *
-      * @ORM\Column(name="registration_ranges", type="json", nullable=true)
-      */
-    protected $registrationRanges = [];
-
-     /**
-      * @var boolean
-      *
-      * @ORM\Column(name="proponent_types", type="json", nullable=true)
-      */
-    protected $proponentTypes = [];
-
     /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
@@ -177,7 +163,9 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         return $this->owner->canUser('modifyRegistrationFields', $user);
     }
 
-    protected function canUserModify($user){
+            'conditionalValue' => $this->conditionalValue,
+            'registrationRanges' => $this->registrationRanges,
+            'proponentTypes' => $this->proponentTypes,
         return $this->_canUser($user);
     }
 
