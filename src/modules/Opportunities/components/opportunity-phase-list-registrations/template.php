@@ -19,7 +19,7 @@ $this->import('
         <p v-if="entity.summary?.Pending"><?= i::__("Quantidade de inscrições <strong>pendentes</strong>:") ?> <strong>{{entity.summary.Pending}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
         <p v-if="entity.summary?.Draft"><?= i::__("Quantidade de inscrições <strong>rascunho</strong>:") ?> <strong>{{entity.summary.Draft}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
     </div>
-    <div class="col-6 opportunity-phase-list-registrations__endbox">
+    <div class="col-6 grid-2 opportunity-phase-list-registrations__endbox">
         <div>
             <mc-link :entity="entity" class="button button--primary button--icon" icon="external" route="registrations" right-icon>
                 <h4 class="semibold"><?= i::__("Lista de inscrições") ?></h4>
