@@ -466,6 +466,14 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             return model.categories.length === 0;
         }
 
+        $scope.allRanges = function(model){
+            return model.registrationRanges.length === 0;
+        }
+
+        $scope.allProponentTypes = function(model){
+            return model.proponentTypes.length === 0;
+        }
+
         function sortFields(){
             $scope.data.fields.sort(function(a,b){
                 if(a.displayOrder > b.displayOrder){
