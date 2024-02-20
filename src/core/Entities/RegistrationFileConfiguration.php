@@ -149,7 +149,9 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'displayOrder' => $this->displayOrder,
             'conditional' => $this->conditional ? true : false,
             'conditionalField' => $this->conditionalField,
-            'conditionalValue' => $this->conditionalValue
+            'conditionalValue' => $this->conditionalValue,
+            'registrationRanges' => $this->registrationRanges,
+            'proponentTypes' => $this->proponentTypes,
         ];
 
         $app = App::i();
