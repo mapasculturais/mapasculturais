@@ -610,7 +610,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 categories: model.categories.length ? model.categories : '',
                 conditional: model.conditional ? true : false,
                 conditionalField: model.conditionalField,
-                conditionalValue: model.conditionalValue
+                conditionalValue: model.conditionalValue,
+                registrationRanges: model.registrationRanges,
+                proponentTypes: model.proponentTypes
 
             };
 
