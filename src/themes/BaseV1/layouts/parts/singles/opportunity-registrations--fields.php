@@ -66,9 +66,9 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                     return false" ng-click="data.newFieldConfiguration.categories = []" ng-checked="allCategories(data.newFieldConfiguration)"> <?php i::_e("Todas"); ?> </label>
                 <label class="checkbox-label" ng-repeat="category in data.categories"><input type="checkbox" checklist-model="data.newFieldConfiguration.categories" checklist-value="category"> {{category}} </label>
             </p>
-            
+
             <div ng-init="field = data.newFieldConfiguration" >
-                <?php $this->part('singles/opportunity-registrations--proponent'); ?>
+                <?php $this->part('singles/opportunity-registrations-field--proponent'); ?>
             </div>
 
         </edit-box>
@@ -84,6 +84,10 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                 <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="data.newFileConfiguration.categories = []" ng-checked="allCategories(data.newFileConfiguration)"> <?php i::_e("Todas"); ?> </label>
                 <label class="checkbox-label" ng-repeat="category in data.categories"><input type="checkbox" checklist-model="data.newFileConfiguration.categories" checklist-value="category"> {{category}} </label>
             </p>
+            <div ng-init="field = data.newFileConfiguration" >
+                <?php $this->part('singles/opportunity-registrations-file--proponent'); ?>
+            </div>
+
         </edit-box>
 
         <select ng-if="data.categories.length > 0" ng-model="data.filterFieldConfigurationByCategory">
@@ -138,9 +142,36 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
                         <p ng-if="data.categories.length > 1">
                             <small><?php i::_e("Selecione em quais categorias este campo é utilizado"); ?>:</small><br>
-                            <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> <?php i::_e("Todas"); ?> </label>
-                            <label class="checkbox-label" ng-repeat="category in data.categories"><input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> <?php i::_e("Todas"); ?> 
+                            </label>
+                            <label class="checkbox-label" ng-repeat="category in data.categories">
+                                <input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
+                                {{field.categories}}
                         </p>
+
+                        <p ng-if="data.entity.object.registrationRanges">
+                            <small><?php i::_e("Selecione em quais Faixas este campo é utilizado"); ?>:</small><br>
+                            <label class="checkbox-label">
+                                <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.registrationRanges = []" ng-checked="allRanges(field)"> <?php i::_e("Todas"); ?>
+                            </label>
+                            <label class="checkbox-label" ng-repeat="range in data.entity.object.registrationRanges">
+                                <input type="checkbox" checklist-model="field.registrationRanges" checklist-value="range.label"> {{range.label}}
+                            </label>
+                            {{field.registrationRanges}}
+                        </p>
+
+                        <p ng-if="data.entity.object.registrationProponentTypes">
+                            <small><?php i::_e("Selecione em quais Tipos do preponente este campo é utilizado"); ?>:</small><br>
+                            <label class="checkbox-label">
+                                <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.proponentTypes = []" ng-checked="allProponentTypes(field)"> <?php i::_e("Todas"); ?>
+                            </label>
+                            <label class="checkbox-label" ng-repeat="proponent in data.entity.object.registrationProponentTypes">
+                                <input type="checkbox" checklist-model="field.proponentTypes" checklist-value="proponent"> {{proponent}}
+                            </label>
+                            {{field.proponentTypes}}
+                        </p>
+                        
                     </edit-box>
                     <div ng-if="data.entity.canUserModifyRegistrationFields && !isBlockedFields(field.id)" class="btn-group">
                         <a ng-click="openFieldConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php i::esc_attr_e("editar campo"); ?>"></a>
