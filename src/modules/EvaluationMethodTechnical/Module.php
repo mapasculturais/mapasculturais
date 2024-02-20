@@ -6,7 +6,6 @@ use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Registration;
-use MapasCulturais\Entities\EvaluationMethodConfiguration;
 
 class Module extends \MapasCulturais\EvaluationMethod {
     function __construct(array $config = []) {
@@ -158,19 +157,16 @@ class Module extends \MapasCulturais\EvaluationMethod {
             ),
         ]);
 
-        $app = App::i();
-        $app->hook('app.register', function(){
-            $this->view->registerMetadata(evaluationMethodConfiguration::class, 'geoQuotaConfiguration', [
-                'label' => i::__('Configuração territorial'),
-                'type' => 'json',
-                'serialize' => function ($val){
-                    return (!empty($val)) ? json_encode($val) : "[]";
-                },
-                'unserialize' => function($val){
-                    return json_decode((string) $val);
-                }
-            ]);
-        });
+        $this->registerEvaluationMethodConfigurationMetadata('geoQuotaConfiguration', [
+            'label' => i::__('Configuração territorial'),
+            'type' => 'json',
+            'serialize' => function ($val){
+                return (!empty($val)) ? json_encode($val) : "[]";
+            },
+            'unserialize' => function($val){
+                return json_decode((string) $val);
+            }
+        ]);
     }
 
     function enqueueScriptsAndStyles() {
