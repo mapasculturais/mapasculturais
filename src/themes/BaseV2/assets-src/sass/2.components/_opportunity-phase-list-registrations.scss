@@ -12,13 +12,18 @@
     }
 
     &__endbox {
+        gap: size(8);
         a {
-            margin-top: size(8);
             color: var(--mc-white);
 
             .iconify {
                 font-size: size(17.5);
             }
+        }
+
+        div {
+            display: flex;
+            align-items: center;
         }
     }
 
