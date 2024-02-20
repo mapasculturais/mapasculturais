@@ -2083,4 +2083,9 @@ $$
         __exec("ALTER TABLE opportunity ADD COLUMN registration_ranges JSON NULL");
     },
 
+    "Cria novas colunas na registration_field_configuration" => function() use ($conn){
+        __exec("ALTER TABLE registration_field_configuration ADD COLUMN registration_ranges JSON NULL");
+        __exec("ALTER TABLE registration_field_configuration ADD COLUMN proponent_type JSON NULL");
+    },
+
 ] + $updates ;   
