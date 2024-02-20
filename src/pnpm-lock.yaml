@@ -41,6 +41,9 @@ importers:
       '@vue-leaflet/vue-leaflet':
         specifier: ^0.6.1
         version: 0.6.1(@types/leaflet@1.9.3)(leaflet@1.7.1)(vue@3.3.4)
+      '@vueform/slider':
+        specifier: ^2.1.10
+        version: 2.1.10
       '@vuepic/vue-datepicker':
         specifier: ^4.5.1
         version: 4.5.1(vue@3.3.4)
@@ -1758,6 +1761,10 @@ packages:
 
   /@vue/shared@3.3.4:
     resolution: {integrity: sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==}
+    dev: false
+
+  /@vueform/slider@2.1.10:
+    resolution: {integrity: sha512-L2G3Ju51Yq6yWF2wzYYsicUUaH56kL1QKGVtimUVHT1K1ADcRT94xVyIeJpS0klliVEeF6iMZFbdXtHq8AsDHw==}
     dev: false
 
   /@vuepic/vue-datepicker@4.5.1(vue@3.3.4):
