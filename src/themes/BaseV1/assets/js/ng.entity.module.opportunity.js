@@ -351,6 +351,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         conditional : false,
         conditionalField : null,
         conditionalValue : null,
+        registrationRanges : [],
+        proponentTypes : []
     };
 
     var fieldConfigurationSkeleton = {
@@ -365,6 +367,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         conditional : false,
         conditionalField : null,
         conditionalValue : null,
+        registrationRanges : [],
+        proponentTypes : [],
     };
 
     $scope.isBlockedFields = function(fieldID){
