@@ -2085,12 +2085,12 @@ $$
 
     "Cria novas colunas na registration_field_configuration" => function() use ($conn){
         __exec("ALTER TABLE registration_field_configuration ADD COLUMN registration_ranges JSON NULL");
-        __exec("ALTER TABLE registration_field_configuration ADD COLUMN proponent_type JSON NULL");
+        __exec("ALTER TABLE registration_field_configuration ADD COLUMN proponent_types JSON NULL");
     },
 
     "Cria novas colunas na  RegistrationFileConfiguration" => function() use ($conn){
         __exec("ALTER TABLE registration_file_configuration ADD COLUMN registration_ranges JSON NULL");
-        __exec("ALTER TABLE registration_file_configuration ADD COLUMN proponent_type JSON NULL");
+        __exec("ALTER TABLE registration_file_configuration ADD COLUMN proponent_types JSON NULL");
     },
 
 ] + $updates ;   
