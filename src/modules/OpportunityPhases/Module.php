@@ -252,6 +252,9 @@ class Module extends \MapasCulturais\Module{
                 $value = $first_phase->lastPhase->previousPhase;
                 return;
             }
+            if($this->isFirstPhase) {
+                return null;
+            }
 
             $this->enableCacheGetterResult('previousPhase');
             
