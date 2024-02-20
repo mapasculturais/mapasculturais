@@ -66,6 +66,11 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                     return false" ng-click="data.newFieldConfiguration.categories = []" ng-checked="allCategories(data.newFieldConfiguration)"> <?php i::_e("Todas"); ?> </label>
                 <label class="checkbox-label" ng-repeat="category in data.categories"><input type="checkbox" checklist-model="data.newFieldConfiguration.categories" checklist-value="category"> {{category}} </label>
             </p>
+            
+            <div ng-init="field = data.newFieldConfiguration" >
+                <?php $this->part('singles/opportunity-registrations--proponent'); ?>
+            </div>
+
         </edit-box>
 
         <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files" position="right" title="<?php i::esc_attr_e("Adicionar anexo"); ?>" cancel-label="<?php i::esc_attr_e("Cancelar"); ?>" submit-label="<?php i::esc_attr_e("Criar"); ?>" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
