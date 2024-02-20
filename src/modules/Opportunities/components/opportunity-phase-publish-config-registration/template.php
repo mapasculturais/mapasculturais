@@ -53,8 +53,10 @@ $this->import('
                     <div v-else-if="phase.autoPublish" class="msg-auto-pub col-4">
                         <p class="bold"><?= i::__('O resultado será publicado automaticamente') ?></p>
                     </div>
-                    <div v-else class="col-4">
-                        <p class="bold"><?= i::__("Você pode publicar o resultado manualmente a qualquer momento utilizando o botão ao lado.") ?></p>
+                    <div v-else>
+                        <div v-if="!isOpenPhase" class="col-4">
+                            <p class="bold"><?= i::__("Você pode publicar o resultado manualmente a qualquer momento utilizando o botão ao lado. AA") ?></p>
+                        </div>
                     </div>
             </div>
             <div class="opportunity-phase-publish-config-registration__unpublishedlast" :class="[{'col-6':!phase.isLastPhase}, {'col-12 grid-12' : phase.isLastPhase}]">
@@ -95,7 +97,7 @@ $this->import('
                     <div class="opportunity-phase-publish-config-registration__button " :class="{'col-6': !phase.isLastPhase}">
                         <mc-confirm-button  yes="Publicar Resultado" @confirm="publishRegistration()">
                             <template #button="modal">
-                                <button :class="['button', 'button--primary', {'button--large col-6': !phase.isLastPhase}, {'disabled': !firstPhase.status >0}, {'button--bg': phase.isLastPhase}]" @click="modal.open()">
+                                <button  :class="['button', 'button--primary', {'button--large col-6': !phase.isLastPhase}, {'disabled': !firstPhase.status >0}, {'button--bg': phase.isLastPhase}, {'disabled': isOpenPhase}]" @click="modal.open()">
                                     <?= i::__("Publicar Resultados") ?>
                                 </button>
                             </template>
