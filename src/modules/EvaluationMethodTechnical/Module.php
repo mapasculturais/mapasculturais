@@ -464,6 +464,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 'invalid' => i::__('Inválido')
             ];
         });
+
+        // Cria a affirmativePoliciesEligibleFields com os campos da fase atual e anterior
+        $app->hook('entity(Opportunity).jsonSerialize', function(&$result) {
+            /** @var Entities\Opportunity $this */
+            if($this->evaluationMethodConfiguration && $this->evaluationMethodConfiguration->getDefinition()->slug == 'technical') {
+                $result['affirmativePoliciesEligibleFields'] = $this->getFields();
+            }
+        });
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
