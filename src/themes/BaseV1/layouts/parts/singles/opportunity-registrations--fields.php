@@ -147,7 +147,6 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             </label>
                             <label class="checkbox-label" ng-repeat="category in data.categories">
                                 <input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
-                                {{field.categories}}
                         </p>
 
                         <p ng-if="data.entity.object.registrationRanges">
@@ -158,7 +157,6 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             <label class="checkbox-label" ng-repeat="range in data.entity.object.registrationRanges">
                                 <input type="checkbox" checklist-model="field.registrationRanges" checklist-value="range.label"> {{range.label}}
                             </label>
-                            {{field.registrationRanges}}
                         </p>
 
                         <p ng-if="data.entity.object.registrationProponentTypes">
@@ -169,7 +167,6 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             <label class="checkbox-label" ng-repeat="proponent in data.entity.object.registrationProponentTypes">
                                 <input type="checkbox" checklist-model="field.proponentTypes" checklist-value="proponent"> {{proponent}}
                             </label>
-                            {{field.proponentTypes}}
                         </p>
                         
                     </edit-box>
