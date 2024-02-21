@@ -48,7 +48,12 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     <?php $this->applyTemplateHook('registrationFieldTypes--agent-owner-field','after'); ?>
     
     <?php foreach ($definitions as $key => $def) :  ?>
-        <?php $type = $key == 'documento' ? 'cpf' : $def->field_type;  ?>
+        <?php 
+            $type = $key == 'documento' ? 'cpf' : $def->field_type;  
+            if($type == 'boolean') {
+                $type = 'checkbox';
+            }
+        ?>
         <div ng-if="::field.config.entityField == '<?= $key ?>'">
             <?php $this->part('registration-field-types/fields/' . $type) ?>
         </div>
