@@ -23,9 +23,9 @@ $getFieldsAllPhases = function () use ($entity) {
 $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
 
 $app->view->jsObject['affirmativePoliciesFieldsList'] = $getFieldsAllPhases();
-$app->view->jsObject['isActiveAffirmativePolicies'] = $evaluationMethodConfiguration->isActiveAffirmativePolicies;
-$app->view->jsObject['affirmativePolicies'] = $evaluationMethodConfiguration->affirmativePolicies;
-$app->view->jsObject['affirmativePoliciesRoof'] = $evaluationMethodConfiguration->affirmativePoliciesRoof;
+$app->view->jsObject['pointsByInductionPoliciesRoof'] = $evaluationMethodConfiguration->pointsByInductionPoliciesRoof;
+$app->view->jsObject['pointsByInduction'] = $evaluationMethodConfiguration->pointsByInduction;
+$app->view->jsObject['pointsByInductionPoliciesRoof'] = $evaluationMethodConfiguration->pointsByInductionPoliciesRoof;
 ?>
 
 <div id="evaluations-config" class="aba-content ng-scope" ng-controller="EvaluationMethodConfigurationController" style="display: block;">
