@@ -30,8 +30,6 @@ app.component('opportunity-subscription' , {
         if ($MAPAS.config.opportunitySubscription.agents.length == 1) {
             agent = $MAPAS.config.opportunitySubscription.agents[0];
         }
-        const registrationCategories = this.entity.registrationCategories || {};
-        const categories = Object.keys(registrationCategories).length > 0 ? registrationCategories : null;
 
         if($MAPAS.opportunityPhases && $MAPAS.opportunityPhases.length > 0) {
             phases = $MAPAS.opportunityPhases;
@@ -40,7 +38,9 @@ app.component('opportunity-subscription' , {
         return {
             agent,
             category: null,
-            categories,
+            registrationRange: null,
+            registrationProponentType: null,
+            categories: this.entity.registrationCategories || [],
             dateStart: this.entity.registrationFrom, 
             dateEnd: this.entity.registrationTo,
             entities: {},
@@ -49,12 +49,20 @@ app.component('opportunity-subscription' , {
             phases,
             totalRegistrations: $MAPAS.config.opportunitySubscription.totalRegistrations,
             totalRegistrationsPerUser: $MAPAS.config.opportunitySubscription.totalRegistrationsPerUser,
-            registrationProponentTypes: this.entity.registrationProponentTypes,
-            registrationRanges: this.entity.registrationRanges
+            registrationProponentTypes: this.entity.registrationProponentTypes || [],
+            registrationRanges: this.entity.registrationRanges || [],
         }
     },
 
     computed: {
+        numberFields() {
+            return [
+                this.entitiesLength > 1, 
+                this.categories.length, 
+                this.registrationRanges.length, 
+                this.registrationProponentTypes.length
+            ].filter(i => i).length;
+        },
         infoRegistration() {
             let description = ''
 
@@ -173,20 +181,17 @@ app.component('opportunity-subscription' , {
         async subscribe() {
             const messages = useMessages();
 
-            if (!this.agent && this.categories?.length && !this.category) {
-                messages.error(this.text('selecione agente e categoria'));
-                return;
-            } else if (!this.agent) {
+            if (!this.agent) {
                 messages.error(this.text('selecione agente'));
                 return;
             } else if (this.categories?.length && !this.category) {
                 messages.error(this.text('selecione categoria'));
                 return;
             } else if (this.registrationRanges?.length && !this.registrationRange) {
-                messages.error(this.text('selecione uma faixa'));
+                messages.error(this.text('selecione faixa'));
                 return;
             } else if (this.registrationProponentTypes?.length && !this.registrationProponentType) {
-                messages.error(this.text('selecione um tipo do preponente'));
+                messages.error(this.text('selecione tipo do preponente'));
                 return;
             }
             this.processing = true;
@@ -198,10 +203,10 @@ app.component('opportunity-subscription' , {
                 registration.category = this.category;
             }
             if (this.registrationRange) {
-                registration.registrationRange = this.registrationRange;
+                registration.range = this.registrationRange;
             }
             if (this.registrationProponentType) {
-                registration.registrationProponentType = this.registrationProponentType;
+                registration.proponentType = this.registrationProponentType;
             }
 
             registration.disableMessages();
