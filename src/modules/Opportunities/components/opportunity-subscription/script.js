@@ -49,6 +49,8 @@ app.component('opportunity-subscription' , {
             phases,
             totalRegistrations: $MAPAS.config.opportunitySubscription.totalRegistrations,
             totalRegistrationsPerUser: $MAPAS.config.opportunitySubscription.totalRegistrationsPerUser,
+            registrationProponentTypes: this.entity.registrationProponentTypes,
+            registrationRanges: this.entity.registrationRanges
         }
     },
 
@@ -180,8 +182,13 @@ app.component('opportunity-subscription' , {
             } else if (this.categories?.length && !this.category) {
                 messages.error(this.text('selecione categoria'));
                 return;
+            } else if (this.registrationRanges?.length && !this.registrationRange) {
+                messages.error(this.text('selecione uma faixa'));
+                return;
+            } else if (this.registrationProponentTypes?.length && !this.registrationProponentType) {
+                messages.error(this.text('selecione um tipo do preponente'));
+                return;
             }
-
             this.processing = true;
 
             const registration = new Entity('registration');
@@ -190,11 +197,17 @@ app.component('opportunity-subscription' , {
             if (this.category) {
                 registration.category = this.category;
             }
+            if (this.registrationRange) {
+                registration.registrationRange = this.registrationRange;
+            }
+            if (this.registrationProponentType) {
+                registration.registrationProponentType = this.registrationProponentType;
+            }
 
             registration.disableMessages();
             try {
                 await registration.save().then(res => {
-                    window.location.href = registration.editUrl;
+                    //window.location.href = registration.editUrl;
                 });    
             } catch (error) {
                 if (error.error) {
