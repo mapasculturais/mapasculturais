@@ -207,7 +207,7 @@ app.component('opportunity-subscription' , {
             registration.disableMessages();
             try {
                 await registration.save().then(res => {
-                    //window.location.href = registration.editUrl;
+                    window.location.href = registration.editUrl;
                 });    
             } catch (error) {
                 if (error.error) {
