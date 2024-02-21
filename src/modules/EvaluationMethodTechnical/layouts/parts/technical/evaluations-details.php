@@ -21,11 +21,11 @@
         </div>
     </div>
 
-    <div v-if="registration.consolidatedDetails.appliedAffirmativePolicy" 
-         v-for="policy in [registration.consolidatedDetails.appliedAffirmativePolicy]" class="registration-results__card-content">                    
+    <div v-if="registration.consolidatedDetails.appliedPointsByInduction" 
+         v-for="policy in [registration.consolidatedDetails.appliedPointsByInduction]" class="registration-results__card-content">                    
         <div class="registration-results__opinion registration-results__opinion--document">
             <h5 class="registration-results__opinion-title bold">
-                <?= i::__('Políticas afirmativas') ?>
+                <?= i::__('Indução por pontuação') ?>
             </h5>
 
             <div>
