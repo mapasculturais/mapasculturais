@@ -465,10 +465,21 @@ class Module extends \MapasCulturais\EvaluationMethod {
             ];
         });
 
+        $app->hook('entity(Opportunity).propertiesMetadata', function(&$result) {
+            $result['affirmativePoliciesEligibleFields'] = [
+                'label' => i::__('Campos disponíveis para políticas afirmativas'),
+                'type' => 'array',
+                'isEntityRelation' => false,
+                'isMetadata' => false,
+                'private' => false,
+                'required' => false
+            ];
+        });
+        
         // Cria a affirmativePoliciesEligibleFields com os campos da fase atual e anterior
         $app->hook('entity(Opportunity).jsonSerialize', function(&$result) {
             /** @var Entities\Opportunity $this */
-            if($this->evaluationMethodConfiguration && $this->evaluationMethodConfiguration->getDefinition()->slug == 'technical') {
+            if($this->evaluationMethodConfiguration && $this->evaluationMethodConfiguration->definition->slug == 'technical') {
                 $result['affirmativePoliciesEligibleFields'] = $this->getFields();
             }
         });
