@@ -468,7 +468,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app->hook('entity(Opportunity).propertiesMetadata', function(&$result) {
             $result['affirmativePoliciesEligibleFields'] = [
                 'label' => i::__('Campos disponíveis para políticas afirmativas'),
-                'type' => 'array'
+                'type' => 'array',
+                'isEntityRelation' => false,
+                'isMetadata' => false,
+                'private' => false,
+                'required' => false
             ];
         });
         
