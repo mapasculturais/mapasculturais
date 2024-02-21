@@ -27,7 +27,7 @@ if ($evaluation_method->slug == "technical") {
     $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
 
     $app->view->jsObject['pointsByInductionFieldsList'] = $getFieldsAllPhases();
-    $app->view->jsObject['pointsByInductionPoliciesRoof'] = $evaluationMethodConfiguration->isActivePointsByInduction;
+    $app->view->jsObject['isActivePointsByInduction'] = $evaluationMethodConfiguration->isActivePointsByInduction;
     $app->view->jsObject['pointsByInduction'] = $evaluationMethodConfiguration->pointsByInduction;
     $app->view->jsObject['pointsByInductionPoliciesRoof'] = $evaluationMethodConfiguration->pointsByInductionPoliciesRoof;
 }
