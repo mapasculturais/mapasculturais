@@ -317,7 +317,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     public function getRegistrationFieldConfigurations() {
         $app = App::i();
-
+        
         $result = App::i()->repo('RegistrationFieldConfiguration')->findBy(['owner' => $this]);
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.registrationFieldConfigurations", [&$result]);
@@ -1020,6 +1020,42 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
 
         $app->applyHookBoundTo($this, "opportunity.summary", [&$data]);
+
+        return $data;
+    }
+
+    /**
+     * Retorna os campos de seleção e/ou seleção múltipla e/ou booleanos ou todos
+     * 
+     * @return array
+     */
+    function getFields($select = true, $multiselect = true, $boolean = true, $all = false, $include_previous_phases = true ) {
+        $data = [];
+        $fields = $this->registrationFieldConfigurations;
+        $currentPhase = $this;
+        while($currentPhase !== null) {
+            foreach($fields as $field) {
+                if($all) {
+                    $data[] = $field;
+                }
+
+                if($select && $field->fieldType == 'select') {
+                    $data[] = $field;
+                }
+
+                if($multiselect && $field->fieldType == 'checkboxes') {
+                    $data[] = $field;
+                }
+
+                if($boolean && $field->fieldType == 'checkbox') {
+                    $data[] = $field;
+                }
+            }
+
+            if($include_previous_phases) {
+                $currentPhase = ($currentPhase->isFirstPhase) ? null : $currentPhase->previousPhase;
+            }
+        }
 
         return $data;
     }
