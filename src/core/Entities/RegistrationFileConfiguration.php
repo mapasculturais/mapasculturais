@@ -179,9 +179,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         return $this->owner->canUser('modifyRegistrationFields', $user);
     }
 
-            'conditionalValue' => $this->conditionalValue,
-            'registrationRanges' => $this->registrationRanges,
-            'proponentTypes' => $this->proponentTypes,
+    protected function canUserModify($user){
         return $this->_canUser($user);
     }
 
