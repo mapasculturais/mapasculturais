@@ -26,10 +26,10 @@ if ($evaluation_method->slug == "technical") {
 
     $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
 
-    $app->view->jsObject['affirmativePoliciesFieldsList'] = $getFieldsAllPhases();
-    $app->view->jsObject['isActiveAffirmativePolicies'] = $evaluationMethodConfiguration->isActiveAffirmativePolicies;
-    $app->view->jsObject['affirmativePolicies'] = $evaluationMethodConfiguration->affirmativePolicies;
-    $app->view->jsObject['affirmativePoliciesRoof'] = $evaluationMethodConfiguration->affirmativePoliciesRoof;
+    $app->view->jsObject['pointsByInductionFieldsList'] = $getFieldsAllPhases();
+    $app->view->jsObject['pointsByInductionPoliciesRoof'] = $evaluationMethodConfiguration->isActivePointsByInduction;
+    $app->view->jsObject['pointsByInduction'] = $evaluationMethodConfiguration->pointsByInduction;
+    $app->view->jsObject['pointsByInductionPoliciesRoof'] = $evaluationMethodConfiguration->pointsByInductionPoliciesRoof;
 }
 
 $configuration = $entity->evaluationMethodConfiguration;
