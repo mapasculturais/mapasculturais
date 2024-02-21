@@ -100,8 +100,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
-        $this->registerEvaluationMethodConfigurationMetadata('affirmativePolicies', [
-            'label' => i::__('Políticas Afirmativas'),
+        $this->registerEvaluationMethodConfigurationMetadata('pointsByInduction', [
+            'label' => i::__('Indução por pontuação'),
             'type' => 'json',
             'serialize' => function ($val){
                 return (!empty($val)) ? json_encode($val) : "[]";
@@ -111,8 +111,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
-        $this->registerRegistrationMetadata('appliedAffirmativePolicy', [
-            'label' => i::__('Políticas Afirmativas aplicadas a inscrição'),
+        $this->registerRegistrationMetadata('appliedPointsByInduction', [
+            'label' => i::__('Indução por pontuação aplicadas a inscrição'),
             'type' => 'json',
             'private' => true,
             'serialize' => function ($val){
@@ -124,16 +124,16 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
-        $this->registerEvaluationMethodConfigurationMetadata('isActiveAffirmativePolicies', [
-            'label' => i::__('Controla se as politicas afirmativas estão ou não ativadas'),
+        $this->registerEvaluationMethodConfigurationMetadata('isActivePointsByInduction', [
+            'label' => i::__('Controla se as induções por pontuação estão ou não ativadas'),
             'type' => 'boolean',
             'serialize' => function ($val){
                 return ($val == "true") ? true : false;
             }
         ]);
 
-        $this->registerEvaluationMethodConfigurationMetadata('affirmativePoliciesRoof', [
-            'label' => i::__('Define o valor máximo das políticas afirmativas'),
+        $this->registerEvaluationMethodConfigurationMetadata('pointsByInductionPoliciesRoof', [
+            'label' => i::__('Define o valor máximo das induções por pontuação'),
             'type' => 'string',
         ]);
 
@@ -293,7 +293,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         });
 
 
-         // Reconsolida a avaliação da inscrição caso em fases posteriores exista avaliação técnica com políticas afirmativas aplicadas
+         // Reconsolida a avaliação da inscrição caso em fases posteriores exista avaliação técnica com indução por pontuação aplicadas
          $app->hook('entity(Registration).update:after', function() use ($app){
             /** @var \MapasCulturais\Entities\Registration $this */
             $phase = $this;
@@ -310,19 +310,19 @@ class Module extends \MapasCulturais\EvaluationMethod {
         });
 
 
-        // Insere valores das políticas afirmativas aplicadas na planilha de inscritos
+        // Insere valores das indução por pontuação aplicadas na planilha de inscritos
         $app->hook('opportunity.registrations.reportCSV', function(\MapasCulturais\Entities\Opportunity $opportunity, $registrations, &$header, &$body) use ($app){
             
-            $isActiveAffirmativePolicies = filter_var($opportunity->evaluationMethodConfiguration->isActiveAffirmativePolicies, FILTER_VALIDATE_BOOL);
+            $isActivePointsByInduction = filter_var($opportunity->evaluationMethodConfiguration->isActivePointsByInduction, FILTER_VALIDATE_BOOL);
 
-            if($isActiveAffirmativePolicies){
+            if($isActivePointsByInduction){
 
                 $header[] = 'POLITICAS-AFIRMATIVAS';
                             
                 foreach($body as $i => $line){    
                     $reg = $app->repo("Registration")->findOneBy(['number' => $line[0], 'opportunity' => $opportunity]);
 
-                    $policies = $reg->appliedAffirmativePolicy;
+                    $policies = $reg->appliedPointsByInduction;
 
                     if(!$policies || !$policies->rules){
                         continue;
@@ -330,7 +330,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
                     $valuePencentage = (($policies->raw * $policies->percentage)/100);
                     $cell = "";
-                    $cell.= "Políticas afirmativas atribuídas \n\n";
+                    $cell.= "Indução por pontuação atribuídas \n\n";
                     foreach($policies->rules as $k => $rule){
                         $_value = is_array($rule->value) ? implode(",", $rule->value) : $rule->value;
                         $cell.= "{$rule->field->title}: {$_value} (+{$rule->percentage}%)\n";
@@ -347,17 +347,17 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         });
 
-        // passa os dados de configuração das políticas afirmativas para JS
+        // passa os dados de configuração das indução por pontuação para JS
         $app->hook('GET(opportunity.edit):before', function() use ($app, $plugin){
             $entity = $this->requestedEntity;
             if($entity->evaluationMethodConfiguration){
-                $app->view->jsObject['affirmativePoliciesFieldsList'] = $plugin->getFieldsAllPhases($entity);
+                $app->view->jsObject['pointsByInductionFieldsList'] = $plugin->getFieldsAllPhases($entity);
                
                 $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
     
-                $app->view->jsObject['isActiveAffirmativePolicies'] = $evaluationMethodConfiguration->isActiveAffirmativePolicies;
-                $app->view->jsObject['affirmativePolicies'] = $evaluationMethodConfiguration->affirmativePolicies;
-                $app->view->jsObject['affirmativePoliciesRoof'] = $evaluationMethodConfiguration->affirmativePoliciesRoof;
+                $app->view->jsObject['isActivePointsByInduction'] = $evaluationMethodConfiguration->isActivePointsByInduction;
+                $app->view->jsObject['pointsByInduction'] = $evaluationMethodConfiguration->pointsByInduction;
+                $app->view->jsObject['pointsByInductionPoliciesRoof'] = $evaluationMethodConfiguration->pointsByInductionPoliciesRoof;
             }
         });
 
@@ -555,13 +555,13 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $reg->registerFieldsMetadata();
         } while($reg = $reg->previousPhase);
         
-        $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->affirmativePolicies;
-        $affirmativePoliciesRoof = $registration->opportunity->evaluationMethodConfiguration->affirmativePoliciesRoof;
-        $isActiveAffirmativePolicies = filter_var($registration->opportunity->evaluationMethodConfiguration->isActiveAffirmativePolicies, FILTER_VALIDATE_BOOL);
+        $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->pointsByInduction;
+        $pointsByInductionPoliciesRoof = $registration->opportunity->evaluationMethodConfiguration->pointsByInductionPoliciesRoof;
+        $isActivePointsByInduction = filter_var($registration->opportunity->evaluationMethodConfiguration->isActivePointsByInduction, FILTER_VALIDATE_BOOL);
         $metadata = $registration->getRegisteredMetadata();
 
        
-        if(!$isActiveAffirmativePolicies || empty($affirmativePoliciesConfig)){
+        if(!$isActivePointsByInduction || empty($affirmativePoliciesConfig)){
             return $result;
         }
 
@@ -627,9 +627,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         }
         
-        $percentage = (($affirmativePoliciesRoof > 0) && $totalPercent > $affirmativePoliciesRoof) ? $affirmativePoliciesRoof : $totalPercent;
+        $percentage = (($pointsByInductionPoliciesRoof > 0) && $totalPercent > $pointsByInductionPoliciesRoof) ? $pointsByInductionPoliciesRoof : $totalPercent;
 
-        $registration->appliedAffirmativePolicy = [
+        $registration->appliedPointsByInduction = [
             'raw' => $result,
             'percentage' => $percentage,
             'rules' => $appliedPolicies
@@ -763,8 +763,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $max_score += $section->maxScore;
             }
     
-            if($affirmative_policy = $registration->appliedAffirmativePolicy){
-                $affirmative_policy->roof = $evaluation_configuration->affirmativePoliciesRoof;
+            if($affirmative_policy = $registration->appliedPointsByInduction){
+                $affirmative_policy->roof = $evaluation_configuration->pointsByInductionPoliciesRoof;
             }
             
         }
@@ -772,7 +772,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return [
             'maxScore' => $max_score,
             'scores' => $sections,
-            'appliedAffirmativePolicy' => $affirmative_policy,
+            'appliedPointsByInduction' => $affirmative_policy,
         ];
     }
 
