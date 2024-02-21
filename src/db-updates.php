@@ -2092,5 +2092,32 @@ $$
         __exec("ALTER TABLE registration_file_configuration ADD COLUMN registration_ranges JSON NULL");
         __exec("ALTER TABLE registration_file_configuration ADD COLUMN proponent_types JSON NULL");
     },
+    
+    'trigger to update children and parent opportunities' => function () {
+        __exec("CREATE OR REPLACE FUNCTION fn_propagate_opportunity_update()
+                    RETURNS TRIGGER
+                    LANGUAGE plpgsql
+                    COST 100
+                    VOLATILE NOT LEAKPROOF AS $$
+                    BEGIN
+                        UPDATE opportunity
+                        SET 
+                            registration_ranges = NEW.registration_ranges,
+                            registration_categories = NEW.registration_categories,
+                            registration_proponent_types = NEW.registration_proponent_types
+                        WHERE (parent_id = OLD.id OR id = OLD.parent_id)
+                        AND (
+                            registration_ranges::jsonb IS DISTINCT FROM NEW.registration_ranges::jsonb OR
+                            registration_categories::jsonb IS DISTINCT FROM NEW.registration_categories::jsonb OR
+                            registration_proponent_types::jsonb IS DISTINCT FROM NEW.registration_proponent_types::jsonb
+                        );
+                        RETURN NEW;
+                    END; $$;");
+
+        __try("CREATE TRIGGER trigger_propagate_opportunity_update
+                    AFTER UPDATE ON opportunity
+                    FOR EACH ROW
+                    EXECUTE FUNCTION fn_propagate_opportunity_update()");
+    },
 
 ] + $updates ;   

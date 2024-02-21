@@ -157,6 +157,16 @@ class Module extends \MapasCulturais\EvaluationMethod {
             ),
         ]);
 
+        $this->registerEvaluationMethodConfigurationMetadata('geoQuotaConfiguration', [
+            'label' => i::__('Configuração territorial'),
+            'type' => 'json',
+            'serialize' => function ($val){
+                return (!empty($val)) ? json_encode($val) : "[]";
+            },
+            'unserialize' => function($val){
+                return json_decode((string) $val);
+            }
+        ]);
     }
 
     function enqueueScriptsAndStyles() {
@@ -453,6 +463,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 'valid' => i::__('Válido'),
                 'invalid' => i::__('Inválido')
             ];
+        });
+
+        // Cria a affirmativePoliciesEligibleFields com os campos da fase atual e anterior
+        $app->hook('entity(Opportunity).jsonSerialize', function(&$result) {
+            /** @var Entities\Opportunity $this */
+            if($this->evaluationMethodConfiguration && $this->evaluationMethodConfiguration->getDefinition()->slug == 'technical') {
+                $result['affirmativePoliciesEligibleFields'] = $this->getFields();
+            }
         });
     }
 
