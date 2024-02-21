@@ -1035,20 +1035,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $currentPhase = $this;
         while($currentPhase !== null) {
             foreach($fields as $field) {
-                if($all) {
-                    $data[] = $field;
-                }
-
-                if($select && $field->fieldType == 'select') {
-                    $data[] = $field;
-                }
-
-                if($multiselect && $field->fieldType == 'checkboxes') {
-                    $data[] = $field;
-                }
-
-                if($boolean && $field->fieldType == 'checkbox') {
-                    $data[] = $field;
+                if($all 
+                    || ($select && $field->fieldType == 'select') 
+                    || ($multiselect && $field->fieldType == 'checkboxes') 
+                    || ($boolean && $field->fieldType == 'checkbox')
+                ){
+                    if (!in_array($field, $data)) {
+                        $data[] = $field;
+                    }
                 }
             }
 
