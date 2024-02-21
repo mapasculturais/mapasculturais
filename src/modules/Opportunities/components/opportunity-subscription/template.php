@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -27,7 +28,7 @@ $this->import('
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
 		<div v-if="global.auth.isLoggedIn" class="logged">
-			<p v-if="categories && entitiesLength > 1" class="logged__description"> <?= i::__("Escolha um Agente Cultural e uma categoria para fazer a inscrição.") ?> </p>			
+			<p v-if="categories && entitiesLength > 1" class="logged__description"> <?= i::__("Escolha um Agente Cultural e uma categoria para fazer a inscrição.") ?> </p>
 			<p v-if="!categories && entitiesLength > 1" class="logged__description"> <?= i::__("Escolha um Agente Cultural para fazer a inscrição.") ?> </p>
 			<p v-if="categories && entitiesLength == 1" class="logged__description"> <?= i::__("Escolha uma categoria para fazer a inscrição.") ?> </p>
 			<p v-if="!categories && entitiesLength == 1" class="logged__description"> <?= i::__("Clique no botão abaixo para fazer a inscrição.") ?> </p>
@@ -60,6 +61,20 @@ $this->import('
 						<option v-for="category in categories" :value="category"> {{category}} </option>
 					</select>
 				</div>
+				<div v-if="registrationRanges" class="col-6 sm:col-12 field">
+					<select name="registrationRanges" v-model="registrationRange">
+						<option value="null" disabled selected> <?= i::__('Faixa') ?> </option>
+						<option v-for="registrationRange in registrationRanges" :value="registrationRange.label"> {{registrationRange.label}} </option>
+					</select>
+				</div>
+
+				<div v-if="registrationProponentTypes" class="col-6 sm:col-12 field">
+					<select name="registrationProponentTypes" v-model="registrationProponentType">
+						<option value="null" disabled selected> <?= i::__('Tipos do preponente') ?> </option>
+						<option v-for="registrationProponentType in registrationProponentTypes" :value="registrationProponentType"> {{registrationProponentType}} </option>
+					</select>
+				</div>
+
 
 				<button v-if="!processing" @click="subscribe()" class="col-12 button button--xbg button--primary button--large">
 					<?= i::__("Fazer inscrição") ?>
