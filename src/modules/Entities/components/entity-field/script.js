@@ -81,6 +81,9 @@ app.component('entity-field', {
             type: String,
             default: null
         },
+        placeholder: {
+            type: String
+        },
         type: {
             type: String,
             default: null

@@ -34,7 +34,9 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     use Traits\EntityTypes,
         Traits\EntityMetadata,
         Traits\EntityAgentRelation,
-        Traits\EntityPermissionCache;
+        Traits\EntityPermissionCache{
+            Traits\EntityTypes::setType as traitSetType;
+        }
         
     protected $__enableMagicGetterHook = true;
     protected $__enableMagicSetterHook = true;
@@ -144,6 +146,18 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         }else{
             return true;
+        }
+    }
+
+    function setType($value) {
+        $app = App::i();
+        
+        $this->traitSetType($value);
+
+        $definition = $app->getRegisteredEntityTypeById($this, $this->_type);
+
+        if(!$this->name && $definition) {
+            $this->name = $definition->name;
         }
     }
 

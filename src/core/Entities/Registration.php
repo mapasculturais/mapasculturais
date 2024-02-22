@@ -155,9 +155,9 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="ranges", type="string", nullable=false)
+     * @ORM\Column(name="range", type="string", nullable=false)
      */
-    protected $ranges;
+    protected $range;
     
     /**
      * @var integer
