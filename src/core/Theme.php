@@ -870,6 +870,10 @@ abstract class Theme {
             if(property_exists ($entity_class_name, 'project')) {
                 $query_params['@select'] .= ',project.{name,type,files.avatar,terms,seals}';
             }
+
+            if(property_exists ($entity_class_name, 'evaluationMethodConfiguration')) {
+                $query_params['@select'] .= ',evaluationMethodConfiguration.*';
+            }
             
             if ($entity_class_name::usesAgentRelation()) {
                 $query_params['@select'] .= ',agentRelations';
