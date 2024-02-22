@@ -1021,13 +1021,7 @@ abstract class Entity implements \JsonSerializable{
 
         // adiciona as permissões do usuário sobre a entidade:
         if ($this->usesPermissionCache()) {
-            $permissions_list = $this->getPermissionsList();
-            $permissions = [];
-            foreach($permissions_list as $action) {
-                $permissions[$action] = $this->canUser($action);
-            }
-
-            $result['currentUserPermissions'] = $permissions;
+            $result['currentUserPermissions'] = $this->currentUserPermissions;
         }
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
