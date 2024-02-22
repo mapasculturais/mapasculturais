@@ -24,9 +24,9 @@ $this->import('
         <p v-if="registration.status == 0"><?= i::__('Inscrição não enviada') ?></p>
     </div>
 
-    <template v-if="phase.type == 'technical' || phase.type == 'documentary'">
-        <div v-if="phase.type == 'technical'"><?= i::__('Pontuação:') ?> <strong>{{formatNote(registration.consolidatedResult)}}</strong></div>
-        <div v-if="phase.type == 'documentary'"> 
+    <template v-if="phase.type?.id == 'technical' || phase.type?.id == 'documentary'">
+        <div v-if="phase.type?.id == 'technical'"><?= i::__('Pontuação:') ?> <strong>{{formatNote(registration.consolidatedResult)}}</strong></div>
+        <div v-if="phase.type?.id == 'documentary'"> 
             <strong v-if="registration.consolidatedResult == '1'">
                 <mc-icon name="circle" class="success__color"></mc-icon>
                 <?= i::__('Válido') ?>
