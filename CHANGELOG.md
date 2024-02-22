@@ -5,8 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-[unreleased]
+## [unreleased - 7.5]
+### Melhorias
+- torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
 
+## [unreleased]
 ### Novas funcionalidades
 - Implementa botão de aplicar avaliações para avaliações técnicas
 
