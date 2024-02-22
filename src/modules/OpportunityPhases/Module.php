@@ -428,7 +428,7 @@ class Module extends \MapasCulturais\Module{
 
             if($opportunity_phases = $firstPhase->allPhases){
                 foreach($opportunity_phases as $key => $opportunity){
-                    $mout_simplify = "id,name,summary";
+                    $mout_simplify = "id,name,summary,currentUserPermissions";
 
                     $emc = $opportunity->evaluationMethodConfiguration;
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase || $opportunity->isLastPhase){
