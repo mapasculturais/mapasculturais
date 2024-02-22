@@ -104,7 +104,7 @@ app.component('opportunity-registrations-table', {
 
         consolidatedResultToString(entity) {
             if(this.phase.evaluationMethodConfiguration){
-                let type = this.phase.evaluationMethodConfiguration.type;
+                let type = this.phase.evaluationMethodConfiguration.type.id || this.phase.evaluationMethodConfiguration.type;
                 if(type == "technical"){
                     return entity.consolidatedResult;
                 }else{
