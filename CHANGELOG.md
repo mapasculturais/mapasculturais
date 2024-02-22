@@ -40,6 +40,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige exibição do botão publicar resultados e suas frases de advertência para que sejam exibidos e funcionais somente quando a fase estiver terminada
 
+## [7.3.13] - 2024-02-22
+### Melhorias
+- Ajusta para que o crop do avatar inicie no tamanho da imagem quando a mesma for do tamanho correto do avatar
+
+## [7.3.12] - 2024-02-22
+### Melhorias
+- Ajusta crop e stencil do avatar
+
 ## [7.3.11] - 2024-02-16
 ### Melhorias
 - Faz com que a imagem de compartilhamento use a imagem da entidade corrente ao invez da padrão
