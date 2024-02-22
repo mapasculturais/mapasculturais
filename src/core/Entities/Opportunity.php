@@ -1031,9 +1031,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     function getFields($select = true, $multiselect = true, $boolean = true, $all = false, $include_previous_phases = true ) {
         $data = [];
-        $fields = $this->registrationFieldConfigurations;
         $currentPhase = $this;
         while($currentPhase !== null) {
+            $fields = $currentPhase->registrationFieldConfigurations;
             foreach($fields as $field) {
                 if($all 
                     || ($select && $field->fieldType == 'select') 

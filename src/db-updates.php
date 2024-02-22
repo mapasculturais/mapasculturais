@@ -2073,24 +2073,44 @@ $$
                 p1.action = p2.action;");
     },
     
-    "Cria novas colunas na tabela registration" => function() use ($conn){
-        __exec("ALTER TABLE registration ADD COLUMN proponent_type VARCHAR(255) NULL");
-        __exec("ALTER TABLE registration ADD COLUMN ranges VARCHAR(255) NULL");
+    "Cria colunas proponent_type e registration na tabela registration" => function() use ($conn){
+        if(!__column_exists('registration', 'proponent_type')) {
+            __exec("ALTER TABLE registration ADD COLUMN proponent_type VARCHAR(255) NULL");
+        }
+
+        if(!__column_exists('registration', 'range')) {
+            __exec("ALTER TABLE registration ADD COLUMN range VARCHAR(255) NULL");
+        }
     },
     
-    "Cria novas colunas na tabela opportunity" => function() use ($conn){
-        __exec("ALTER TABLE opportunity ADD COLUMN registration_proponent_types JSON NULL");
-        __exec("ALTER TABLE opportunity ADD COLUMN registration_ranges JSON NULL");
+    "Cria colunas registration_proponent_types e registration_ranges na tabela opportunity" => function() use ($conn){
+        if(!__column_exists('opportunity', 'registration_proponent_types')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN registration_proponent_types JSON NULL");
+        }
+
+        if(!__column_exists('opportunity', 'registration_ranges')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN registration_ranges JSON NULL");
+        }
     },
 
-    "Cria novas colunas na registration_field_configuration" => function() use ($conn){
-        __exec("ALTER TABLE registration_field_configuration ADD COLUMN registration_ranges JSON NULL");
-        __exec("ALTER TABLE registration_field_configuration ADD COLUMN proponent_types JSON NULL");
+    "Cria colunas registration_ranges e proponent_types na tabela registration_field_configuration" => function() use ($conn){
+        if(!__column_exists('registration_field_configuration', 'registration_ranges')) {
+            __exec("ALTER TABLE registration_field_configuration ADD COLUMN registration_ranges JSON NULL");
+        }
+
+        if(!__column_exists('registration_field_configuration', 'proponent_types')) {
+            __exec("ALTER TABLE registration_field_configuration ADD COLUMN proponent_types JSON NULL");
+        }
     },
 
-    "Cria novas colunas na  RegistrationFileConfiguration" => function() use ($conn){
-        __exec("ALTER TABLE registration_file_configuration ADD COLUMN registration_ranges JSON NULL");
-        __exec("ALTER TABLE registration_file_configuration ADD COLUMN proponent_types JSON NULL");
+    "Cria colunas registration_ranges e proponent_types na tabela registration_file_configuration" => function() use ($conn){
+        if(!__column_exists('registration_file_configuration', 'registration_ranges')) {
+            __exec("ALTER TABLE registration_file_configuration ADD COLUMN registration_ranges JSON NULL");
+        }
+
+        if(!__column_exists('registration_file_configuration', 'proponent_types')) {
+            __exec("ALTER TABLE registration_file_configuration ADD COLUMN proponent_types JSON NULL");
+        }
     },
     
     'trigger to update children and parent opportunities' => function () {
