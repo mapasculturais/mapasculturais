@@ -99,10 +99,14 @@ class Entity {
 
     parseRelation(prop, key) {
         const type = prop?.['@entityType'] || this.$RELATIONS[key]?.targetEntity?.toLocaleLowerCase();
-        if (type && prop?.id) {
+        const id = typeof prop == 'number' ? prop : prop?.id 
+
+        if (type && id) {
             const propAPI = new API(type, this.__scope);
-            const instance = propAPI.getEntityInstance(prop.id);
-            instance.populate(prop, true);
+            const instance = propAPI.getEntityInstance(id);
+            if(typeof prop != 'number') {
+                instance.populate(prop, true);
+            }
             return instance;
         } else {
             return prop;
