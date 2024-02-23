@@ -81,12 +81,12 @@ $this->import('
 		<!-- Deslogado -->
 		<div v-if="!global.auth.isLoggedIn" class="loggedOut">
 			<p class="loggedOut__description">
-				<?= i::__("Você precisa acessar sua conta ou  criar uma cadastro na plataforma para poder se inscrever em editais ou oportunidades") ?>
+				<?= i::__("Você precisa acessar sua conta ou criar um cadastro na plataforma para poder se inscrever em editais ou oportunidades") ?>
 			</p>
 
 			<div class="loggedOut__button col-12">
 				<button @click="redirectLogin" class="button button--xbg button--primary">
-					<?= i::__("Fazer inscrição") ?>
+				<?= i::__("Acessar ou criar conta") ?>
 				</button>
 			</div>
 
