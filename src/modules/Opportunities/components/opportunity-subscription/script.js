@@ -148,7 +148,7 @@ app.component('opportunity-subscription' , {
             this.agent = null;
         },
         redirectLogin() {
-            let url = Utils.createUrl('auth', '');
+            let url = Utils.createUrl('auth', '') + `?redirectTo=${this.entity.singleUrl.pathname}`;
             window.location.href = url;
         },
         fetch(entities) {
