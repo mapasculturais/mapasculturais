@@ -4,6 +4,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.14] - 2024-02-23
+### Correções
+- Ajusta estilização do componente que lista as áreas de interesse na single da oportunidade
+- Remove duplicidade da mensagem de erro da falta de area de interesse no modal de criação de oportunidade
+- Corrige texto do erro no campo 'área de interesse'
+
 ## [7.3.13] - 2024-02-22
 ### Melhorias
 - Ajusta para que o crop do avatar inicie no tamanho da imagem quando a mesma for do tamanho correto do avatar
