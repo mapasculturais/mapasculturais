@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.3.17] - 2024-02-23
 ### Correções
 - Corrige redirecionamento após a autenticação
+- Corrige componente de mudança de entidade vinculada das oportunidades
 
 ## [7.3.16] - 2024-02-23
 ### Melhorias
