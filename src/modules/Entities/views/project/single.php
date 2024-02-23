@@ -106,11 +106,11 @@ $this->breadcrumb = [
             </div>
         </mc-tab>
 
-        <mc-tab v-if="entity.children" label="<?= i::_e('Subprojetos') ?>" slug="subprojects">
+        <mc-tab label="<?= i::_e('Subprojetos') ?>" slug="subprojects">
             <div class="single-project__subproject">
                 <mc-container>
                     <main class="grid-12">
-                        <mc-entities type="project" select="name,type,shortDescription,files.avatar,seals,terms" :query="{id: `IN(${entity.children})`}" :limit="20" watch-query>
+                        <mc-entities v-if="entity.children" type="project" select="name,type,shortDescription,files.avatar,seals,terms" :query="{id: `IN(${entity.children})`}" :limit="20" watch-query>
                             <template #default="{entities}">
                                 <entity-card :entity="entity" v-for="entity in entities" :key="entity.__objectId" class="col-12">
                                     <template #avatar>
@@ -125,6 +125,10 @@ $this->breadcrumb = [
                                 </entity-card>
                             </template>                                
                         </mc-entities>
+
+                        <div v-if="!entity.children" class="single-project__not-found">
+                            <p class="semibold"><?= i::__('Nenhum subprojeto vinculado.') ?></p>
+                        </div>
                     </main>
                     <aside>
                         <div class="grid-12">

@@ -12,6 +12,11 @@
                     background-color: var(--mc-gray-100);
                 }
             }
+
+            &__not-found {
+                display: flex;
+                justify-content: center;
+            }
         }
 
         .additional-info {
