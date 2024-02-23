@@ -160,12 +160,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $this->registerEvaluationMethodConfigurationMetadata('geoQuotaConfiguration', [
             'label' => i::__('Configuração territorial'),
             'type' => 'json',
-            'serialize' => function ($val){
-                return (!empty($val)) ? json_encode($val) : "[]";
-            },
-            'unserialize' => function($val){
-                return json_decode((string) $val);
-            }
+        ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('tiebreakerCriteriaConfiguration', [
+            'label' => i::__('Definição dos critérios de desempate'),
+            'type' => 'json',
         ]);
     }
 
