@@ -76,7 +76,7 @@ $this->import('
             <?php $this->applyTemplateHook('mc-header-menu-user', 'before') ?>
             <?php if ($app->user->is('guest')): ?>
                 <!-- Botão login -->
-                <a href="<?= $app->createUrl('auth') ?>" class="logIn">
+                <a href="<?= $app->createUrl('auth') ?>?redirectTo=<?=$_SERVER['REQUEST_URI']?>" class="logIn">
                     <?php i::_e('Entrar') ?>
                 </a>
             <?php else: ?>
