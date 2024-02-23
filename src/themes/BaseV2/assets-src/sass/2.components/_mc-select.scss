@@ -17,6 +17,10 @@
         text-overflow: ellipsis;
         white-space: nowrap;
 
+        & > * {
+            max-height: size(22);
+        }
+
         &:after {
             border: size(5) solid transparent;
             border-color: var(--mc-low-500) transparent transparent transparent;
@@ -45,7 +49,7 @@
         position: absolute;
         width: 100%;
         z-index: 1;
-        
+
         & > * {
             border-radius: var(--mc-border-radius-xs);
             color: var(--mc-low-500);
@@ -54,6 +58,28 @@
     
             &:hover {
                 background-color: var(--mc-gray-300);
+            }
+        }
+
+        &--groups {
+            & > * {
+                cursor: default;
+
+                &:hover {
+                    background-color: unset;
+                }
+            }
+
+            & > optgroup > * {
+                border-radius: var(--mc-border-radius-xs);
+                color: var(--mc-low-500);
+                cursor: pointer;
+                padding: size(5) size(10) size(5) size(15);
+                z-index: 2;
+
+                &:hover {
+                    background-color: var(--mc-gray-300);
+                }
             }
         }
     }
