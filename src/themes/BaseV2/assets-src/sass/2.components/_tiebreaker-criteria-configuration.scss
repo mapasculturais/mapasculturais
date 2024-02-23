@@ -1,0 +1,26 @@
+@use '../0.settings/mixins' as *;
+
+.tiebreaker-criteria {
+    border: var(--mc-border-hairline) var(--mc-gray-300);
+    border-radius: var(--mc-border-radius-xs);
+
+    &__header {
+        padding: size(24) size(23);
+        display: flex;
+        align-items: center;
+        gap: size(8);
+
+        .iconify {
+            font-size: size(24);
+        }
+    }
+
+    &__criterion {
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        padding: size(6) size(21) size(16);
+    }
+
+    &__footer {
+        padding: size(13) size(23);
+    }
+}

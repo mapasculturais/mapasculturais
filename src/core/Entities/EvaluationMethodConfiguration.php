@@ -194,6 +194,13 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $result = parent::jsonSerialize();
         $result['type'] = $this->type;
         $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl,summary');
+
+        /**
+         * @todo Arranjar um modo de colocar isso no módulo de avaliação técnica
+         */
+        if ($this->_type == 'technical') {
+            $result['opportunity']->affirmativePoliciesEligibleFields = $this->opportunity->getFields();
+        }
         
         return $result;
     }
