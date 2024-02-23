@@ -12,7 +12,7 @@ use MapasCulturais\i;
     <div ref="selected" :id="uniqueID" :class="['mc-select__selected-option', {'mc-select__selected-option--open': open }]" @click="toggleSelect()"> 
     </div>
 
-    <div v-show="open" class="mc-select__options" ref="options">
+    <div v-show="open" class="mc-select__options" :class="[{'mc-select__options--groups' : hasGroups}]" ref="options">
         <slot></slot>
     </div>
 </div>

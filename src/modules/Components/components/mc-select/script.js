@@ -11,7 +11,12 @@ app.component('mc-select', {
         placeholder: {
             type: String,
             default: 'Selecione'
-        }
+        },
+
+        hasGroups: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     setup(props, { slots }) {
@@ -23,24 +28,17 @@ app.component('mc-select', {
 
     mounted() {
         setTimeout(() => {
-            const options = this.$refs.options.children;
-
+            const options = this.$refs.options.children;            
             for (const [index, option] of Object.entries(options)) {
-                option.addEventListener("click", (e) => this.selectOption(e));
                 
-                if (this.defaultValue != null || this.defaultValue != '') {
-                    let optionText = option.text ?? option.textContent;
-                    let optionValue = option.value ?? option.getAttribute('value');
-                    let optionItem = option.outerHTML;
-                    
-                    if (optionValue == this.defaultValue) {
-                        this.optionSelected = {
-                            text: optionText,
-                            value: optionValue,
-                        }
-                        
-                        this.$refs.selected.innerHTML = optionItem;
+                if (this.hasGroups) {
+                    for (const [_index, _option] of Object.entries(option.children)) {
+                        _option.addEventListener("click", (e) => this.selectOption(e));
+                        this.setDefaultOption(_option);
                     }
+                } else {
+                    option.addEventListener("click", (e) => this.selectOption(e));
+                    this.setDefaultOption(option);
                 }
             }
 
@@ -50,15 +48,22 @@ app.component('mc-select', {
         });
 
         document.addEventListener('mousedown', (event) => {
-            let className = ['mc-select', 'mc-select__selected-option', 'mc-select__options'];
+            let className = [
+                'mc-select', 
+                'mc-select__selected-option', 
+                'mc-select__options', 
+                'mc-select__options--groups'
+            ];
             
             const targetClasses = Array.from(event.target.classList);
             const parentClasses = Array.from(event.target.parentElement.classList);
+            const groupClasses = Array.from(event.target.parentElement.parentElement.classList);
 
             const targetMatch = className.some(classString => targetClasses.includes(classString));
             const parentMatch = className.some(classString => parentClasses.includes(classString));
+            const groupMatch = className.some(classString => groupClasses.includes(classString));
 
-            if (!targetMatch && !parentMatch) {
+            if (!targetMatch && !parentMatch && !groupMatch) {
                 this.open = false;
             }
         });
@@ -93,13 +98,27 @@ app.component('mc-select', {
 
             if (this.optionSelected.text != optionText) {
                 for (const [index, option] of Object.entries(options)) {
-                    if (option.text == optionText || option.textContent == optionText) {
-                        this.optionSelected = {
-                            text: optionText,
-                            value: optionValue,
-                        }
 
-                        this.$refs.selected.innerHTML = optionItem;
+                    if (this.hasGroups) {
+                        for (const [_index, _option] of Object.entries(option.children)) {
+                            if (_option.text == optionText || _option.textContent == optionText) {
+                                this.optionSelected = {
+                                    text: optionText,
+                                    value: optionValue,
+                                }
+        
+                                this.$refs.selected.innerHTML = optionItem;
+                            }
+                        }
+                    } else {
+                        if (option.text == optionText || option.textContent == optionText) {
+                            this.optionSelected = {
+                                text: optionText,
+                                value: optionValue,
+                            }
+    
+                            this.$refs.selected.innerHTML = optionItem;
+                        }   
                     }
                 };
 
@@ -108,5 +127,22 @@ app.component('mc-select', {
             
             this.toggleSelect();
         },
+
+        setDefaultOption(option) {
+            if (this.defaultValue != null || this.defaultValue != '') {
+                let optionText = option.text ?? option.textContent;
+                let optionValue = option.value ?? option.getAttribute('value');
+                let optionItem = option.outerHTML;
+                
+                if (optionValue == this.defaultValue) {
+                    this.optionSelected = {
+                        text: optionText,
+                        value: optionValue,
+                    }
+                    
+                    this.$refs.selected.innerHTML = optionItem;
+                }
+            }
+        }
     },
 });
