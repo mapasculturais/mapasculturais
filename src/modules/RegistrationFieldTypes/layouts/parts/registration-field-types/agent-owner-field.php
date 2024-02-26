@@ -45,6 +45,9 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     <div ng-if="::field.config.entityField == '@terms:area'">
         <?php $this->part('registration-field-types/fields/checkboxes') ?>
     </div>
+    <div ng-if="::field.config.entityField == '@bankFields'">
+        <?php $this->part('registration-field-types/fields/bankFields') ?>
+    </div>
     <?php $this->applyTemplateHook('registrationFieldTypes--agent-owner-field','after'); ?>
     
     <?php foreach ($definitions as $key => $def) :  ?>

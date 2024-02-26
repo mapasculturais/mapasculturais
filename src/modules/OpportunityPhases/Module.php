@@ -258,16 +258,14 @@ class Module extends \MapasCulturais\Module{
 
             $this->enableCacheGetterResult('previousPhase');
 
-            $from_field = $this->isLastPhase ? 'publishTimestamp' : 'registrationFrom';
-
             $class = Opportunity::class;
             $query = $app->em->createQuery("
                 SELECT o 
                 FROM $class o 
                 WHERE 
                     o.id = :parent OR
-                    (o.parent = :parent AND o.registrationFrom < (SELECT this.{$from_field} FROM $class this WHERE this.id = :this))
-                ORDER BY o.registrationFrom DESC");
+                    (o.parent = :parent AND o.id <> :this)
+                ORDER BY o.id DESC");
 
             $query->setMaxResults(1);
             $query->setParameters([
@@ -434,7 +432,7 @@ class Module extends \MapasCulturais\Module{
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase || $opportunity->isLastPhase){
                         $app->applyHook('module(OpportunityPhases).dataCollectionPhaseData', [&$mout_simplify]);
 
-                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase");
+                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,files");
                         
                         if($emc){
                             $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo");
@@ -645,6 +643,9 @@ class Module extends \MapasCulturais\Module{
             $opportunity = $this->requestedEntity;
 
             $opportunity->enqueueRegistrationSync();
+            $cache_key = "MapasCulturais\Entities\Opportunity::getSummary:{$opportunity->id}";
+
+            $app->cache->delete($cache_key);
 
             $this->finish(['message' => i::__('Sincronização das inscrições enfileirada para processamento em segundo plano')]);
         });
