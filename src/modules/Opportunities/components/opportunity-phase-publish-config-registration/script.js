@@ -37,6 +37,14 @@ app.component('opportunity-phase-publish-config-registration' , {
     },
 
     computed: {
+        isOpenPhase() {
+            if(this.phase?.evaluationMethodConfiguration) {
+                return this.phase?.evaluationMethodConfiguration?.evaluationTo.isFuture();
+            }
+
+            return this.phase?.registrationTo.isFuture();
+
+        },
         minDate () {
             return this.phase.evaluationTo?._date || this.phase.registrationTo?._date;
         },

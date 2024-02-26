@@ -99,12 +99,53 @@ class Module extends \MapasCulturais\EvaluationMethod
     function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
         $evaluation_configuration = $evaluation->registration->opportunity->evaluationMethodConfiguration;
 
-        return [];
+        $sections = $evaluation_configuration->sections ?: [];
+        $criteria = $evaluation_configuration->criteria ?: [];
+
+        foreach($sections as &$section) {
+            $section->criteria = [];
+
+            foreach($criteria as &$cri){
+                if(($cri->sid ?? false) == $section->id) {
+                    unset($cri->sid);
+                    $result = isset($evaluation->evaluationData->{$cri->id}) ? $evaluation->evaluationData->{$cri->id} : '';
+                    
+                    $cri->result = $result;
+                    $section->criteria[] = $cri;
+                }
+            }
+        }
+        
+        return [
+            'scores' => $sections,
+            'obs' => $evaluation->evaluationData->obs
+        ];
     }
 
     function _getConsolidatedDetails(Entities\Registration $registration): array {
         $evaluation_configuration = $registration->opportunity->evaluationMethodConfiguration;
-        return [];
+        $sections =  [];
+        $criteria = [];
+
+        if($registration->sentEvaluations){
+            $sections = $evaluation_configuration->sections ?: [];
+            $criteria = $evaluation_configuration->criteria ?: [];
+    
+            foreach($sections as &$section) {
+                $section->criteria = [];
+    
+                foreach($criteria as &$cri){
+                    if(($cri->sid ?? false) == $section->id) {
+                        unset($cri->sid);
+                        $section->criteria[] = $cri;
+                    }
+                }
+            }
+        }
+        
+        return [
+            'scores' => $sections,
+        ];
     }
 
     protected function _register()

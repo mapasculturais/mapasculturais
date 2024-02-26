@@ -83,6 +83,12 @@ $this->import('
                     <label class="box__content">{{entity.dataDeNascimento.date('long year')}}</label>
                 </div>
             </div>
+            <div v-if="entity.dataDeNascimento" class="agent-data__fields--field">
+                <label class="title"><?php i::_e("Pessoa idosa") ?></label>
+                <div class="box">
+                    <label class="box__content">{{entity.idoso ? 'Sim' : 'Não'}}</label>
+                </div>
+            </div>
             <div v-if="entity.genero" class="agent-data__fields--field">
                 <label class="title"><?php i::_e("Gênero") ?></label>
                 <div class="box">
