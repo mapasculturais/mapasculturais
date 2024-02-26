@@ -37,6 +37,28 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige exibição do botão publicar resultados e suas frases de advertência para que sejam exibidos e funcionais somente quando a fase estiver terminada
 
+## [7.3.19] - 2024-02-26
+### Correções
+- Corrige exibição da data de fechamento dos editais no card de editais relacionados na single do agente 
+
+## [7.3.18] - 2024-02-26
+### Correções
+- Corrige redirecionamentos do método de autenticação OpauthAuthentik
+
+## [7.3.17] - 2024-02-23
+### Correções
+- Corrige redirecionamento após a autenticação
+- Corrige componente de mudança de entidade vinculada das oportunidades
+
+## [7.3.16] - 2024-02-23
+### Melhorias
+- Faz o botão "Entrar" sempre redirecionar para a página atual após a autenticação
+
+## [7.3.15] - 2024-02-23
+### Correções
+- Cria aba para listar os subprojetos na entidade Project
+- Ajusta tamanho do botão de inscreva-se 
+
 ## [7.3.14] - 2024-02-23
 ### Correções
 - Ajusta estilização do componente que lista as áreas de interesse na single da oportunidade
