@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.19] - 2024-02-26
+### Correções
+- Corrige exibição da data de fechamento dos editais no card de editais relacionados na single do agente 
+
 ## [7.3.18] - 2024-02-26
 ### Correções
 - Corrige redirecionamentos do método de autenticação OpauthAuthentik
