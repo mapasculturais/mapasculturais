@@ -21,13 +21,12 @@ $this->import('
     <entity-terms :entity="entity" :editable="true" title="<?php i::_e('Área de Interesse') ?>" taxonomy="area"></entity-terms>
     <label class="link-opportunity__title bold"><?php i::_e('Entidade Vinculada') ?><br></label>
     <div class="link-opportunity__ownerEntity">
-        <div class= "link-opportunity__header" :class="[entity.ownerEntity.__objectType+'__border', entity.ownerEntity.__objectType+'__color']">
+        <div class="link-opportunity__header" :class="[entity.ownerEntity.__objectType+'__border', entity.ownerEntity.__objectType+'__color']">
             <mc-avatar :entity="entity.ownerEntity" size="xsmall"></mc-avatar>
             {{entity.ownerEntity.name}}
         </div>
 
         <div class="link-opportunity__actions">
-
             <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down" create-new>
                 <template #selected>
                     <label class="link-opportunity__message semibold"><?php i::_e('Selecione um dos ') ?>{{verifySelected(entityTypeSelected)}}</label>
@@ -46,6 +45,7 @@ $this->import('
                 <h4 class="primary__color"><?php i::_e('Alterar entidade') ?></h4>
             </a>
         </div>
+        
         <template v-if="!selected">
             <div class="link-opportunity__selected">
                 <label class="link-opportunity__link semibold"><?php i::_e('Vincule a oportunidade a uma entidade:') ?><a @click="toggleSelected()"><mc-icon name="closed" class=""></mc-icon></a></label>
@@ -57,7 +57,7 @@ $this->import('
 
                             </template>
                             <template #button="{ toggle }">
-                                <a class="" @click="setEntity()">
+                                <a class="link-opportunity__selection" @click="toggle()">
                                     <label for="inputProject" class="link-opportunity__inner link-opportunity__selection" :class="{'inner--error': hasObjectTypeErrors()}">
                                         <a class="link-opportunity__itemlabel">
                                             <input v-model="entityTypeSelected" type="radio" id="inputProject" name="inputName" value="project" @click="toggle()"/>
@@ -71,8 +71,8 @@ $this->import('
                             </template>
                         </select-entity>
                     </div>
-                    <div class="link-opportunity__option">
 
+                    <div class="link-opportunity__option">
                         <select-entity type="event" @select="setEntity($event); toggleSelected();" openside="right-down" create-new>
                             <template #selected>
                                 <label class="link-opportunity__message semibold"><?php i::_e('Selecione um dos eventos') ?></label>
@@ -92,6 +92,7 @@ $this->import('
                             </template>
                         </select-entity>
                     </div>
+
                     <div class="link-opportunity__option">
                         <select-entity type="space" @select="setEntity($event); toggleSelected();" openside="right-down" create-new>
                             <template #selected>
@@ -113,6 +114,7 @@ $this->import('
                             </template>
                         </select-entity>
                     </div>
+
                     <div class="link-opportunity__option">
                         <select-entity type="agent" @select="setEntity($event); toggleSelected();" openside="right-down" create-new>
                             <template #selected>
@@ -133,9 +135,7 @@ $this->import('
                         </select-entity>
                     </div>
                 </div>
-
             </div>
         </template>
-
     </div>
 </div>

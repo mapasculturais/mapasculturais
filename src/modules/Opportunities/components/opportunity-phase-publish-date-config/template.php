@@ -75,7 +75,6 @@ $this->import('
                 classes="col-4 opportunity-phase-publish-date-config__checkbox"></entity-field>
             
         </div>
-        
         <div class="col-12 grid-12" v-if="true">
             <div class="col-12" v-if="phase.evaluationMethodConfiguration">
                 <entity-field :entity="phase.evaluationMethodConfiguration" prop="publishEvaluationDetails" type="checkbox" :autosave="300" ></entity-field>
