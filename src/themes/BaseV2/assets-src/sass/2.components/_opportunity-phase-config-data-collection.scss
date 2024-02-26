@@ -83,4 +83,54 @@
             }
         }
     }
+
+    &__limits {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+        margin-bottom: size(20);
+        
+        .field {
+            position: relative;
+
+            &::after {
+                position: absolute ;
+                content: '';
+                grid-column: 1 / span 12;
+                height: 10px; 
+                width: 100%;
+                background-color: var(--mc-gray-100);
+                top: size(45);
+                left: 0;
+            }     
+
+            &__limits {
+                & input {
+                    max-width: 8rem;
+                    z-index: 2;
+                }
+
+                > .field__title {
+                    font-weight: 700;
+                    font-size: size(16);
+                }
+            }
+        }
+
+    }
+
+    &__fields {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: size(20) 0;
+
+        @media (max-width: 1181px) {
+            grid-template-columns: repeat(2, 1fr);
+
+        }
+
+        @media (max-width: 640px) {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
 }
