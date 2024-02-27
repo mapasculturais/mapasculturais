@@ -149,10 +149,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
         ]);
 
         $this->registerEvaluationMethodConfigurationMetadata('enableViability',[
-            'label' => i::__('Habilitar Análise de Exiquibilidade das inscrições?'),
+            'label' => i::__('Exequibilidade da inscrição'),
+            'description' => i::__('Ao habilitar esta configuração, os avaliadores deverão considerar a exequibilidade da inscrição. Se a maioria dos avaliadores considerarem a inabilitação por exequibilidade, a mesma será marcada com o status de inválida para o dono do edital, que ainda assim poderá mudar seu status para válida.'),
             'type' => 'radio',
             'options' => array(
-                'true' => i::__('Habilitar Análise de Exiquibilidade'),
+                'true' => i::__('Habilitar'),
                 'false' => i::__('Não habilitar'),
             ),
         ]);
