@@ -7,7 +7,6 @@
 use MapasCulturais\i;
 
 $this->import('
-    affirmative-policies--quota-configuration
     entity-field
     mc-confirm-button
     mc-modal
@@ -57,10 +56,6 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                 </template>
             </mc-modal>  
 
-        </section>
-
-        <section class="evaluation-section col-12" v-if="phase.type.id == 'technical'">
-            <affirmative-policies--quota-configuration :entity="phase"></affirmative-policies--quota-configuration>
         </section>
 
         <section class="evaluation-section col-12">
