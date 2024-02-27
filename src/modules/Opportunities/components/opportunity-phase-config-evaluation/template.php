@@ -14,6 +14,8 @@ $this->import('
     opportunity-phase-publish-date-config
     v1-embed-tool
 ');
+
+$evaluation_methods = $app->getRegisteredEvaluationMethods();
 ?>
 <mc-card> 
     <div class="evaluation-step grid-12">
@@ -24,6 +26,17 @@ $this->import('
         </section>
 
         <div class="evaluation-line col-12"></div>
+
+        <?php foreach($evaluation_methods as $evaluation_method): ?>
+            <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'before') ?>
+            <template v-if="phase.type.id == '<?=$evaluation_method->slug?>'">
+                <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'begin') ?>
+                <?= $this->part("{$evaluation_method->slug}/phase-config") ?>
+                <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'end') ?>
+            </template>
+            <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'after') ?>
+        <?php endforeach; ?>
+
         
         <section class="evaluation-section col-12">
             <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>
