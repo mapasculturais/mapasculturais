@@ -11,6 +11,7 @@
         border: var(--mc-border-hairline) var(--mc-gray-500);
         color: var(--mc-low-500);
         cursor: pointer;
+        line-height: size(22);
         max-width: 100%;
         overflow: hidden;
         padding: size(12.5) size(48) size(12.5) size(14);
@@ -19,6 +20,9 @@
 
         & > * {
             max-height: size(22);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         &:after {
@@ -44,10 +48,10 @@
         background-color: var(--mc-white);
         border-radius: var(--mc-border-radius-xs);
         border: var(--mc-border-hairline) var(--mc-gray-500);
-        margin-top: size(1);
+        margin-top: size(2);
+        min-width: 100%;
         overflow: hidden;
         position: absolute;
-        width: 100%;
         z-index: 1;
 
         & > * {
@@ -56,6 +60,10 @@
             cursor: pointer;
             padding: size(5) size(10);
     
+            &.active {
+                background-color: var(--mc-gray-100);
+            }
+
             &:hover {
                 background-color: var(--mc-gray-300);
             }
@@ -77,7 +85,8 @@
                 padding: size(5) size(10) size(5) size(15);
                 z-index: 2;
 
-                &:hover {
+                &:hover,
+                &.active {
                     background-color: var(--mc-gray-300);
                 }
             }
