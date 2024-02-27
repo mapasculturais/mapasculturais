@@ -166,6 +166,17 @@ class Module extends \MapasCulturais\EvaluationMethod {
             'label' => i::__('Definição dos critérios de desempate'),
             'type' => 'json',
         ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('quotaConfiguration', [
+            'label' => i::__('Configuração de cotas'),
+            'type' => 'json',
+            'serialize' => function ($val){
+                return (!empty($val)) ? json_encode($val) : "[]";
+            },
+            'unserialize' => function($val){
+                return json_decode((string) $val);
+            }
+        ]);
     }
 
     function enqueueScriptsAndStyles() {

@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    affirmative-policies--quota-configuration
     entity-field
     mc-confirm-button
     mc-modal
@@ -14,7 +15,7 @@ $this->import('
     v1-embed-tool
 ');
 ?>
-<mc-card>
+<mc-card> 
     <div class="evaluation-step grid-12">
         <section class="evaluation-section col-12 grid-12">
             <entity-field :entity="phase" prop="name" :autosave="3000" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
@@ -43,6 +44,10 @@ $this->import('
                 </template>
             </mc-modal>  
 
+        </section>
+
+        <section class="evaluation-section col-12" v-if="phase.type.id == 'technical'">
+            <affirmative-policies--quota-configuration :entity="phase"></affirmative-policies--quota-configuration>
         </section>
 
         <section class="evaluation-section col-12">
