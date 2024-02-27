@@ -21,11 +21,11 @@
         </div>
     </div>
 
-    <div v-if="registration.consolidatedDetails.appliedPointsByInduction" 
-         v-for="policy in [registration.consolidatedDetails.appliedPointsByInduction]" class="registration-results__card-content">                    
+    <div v-if="registration.consolidatedDetails.appliedPointReward" 
+         v-for="policy in [registration.consolidatedDetails.appliedPointReward]" class="registration-results__card-content">                    
         <div class="registration-results__opinion registration-results__opinion--document">
             <h5 class="registration-results__opinion-title bold">
-                <?= i::__('Indução por pontuação') ?>
+                <?= i::__('Bônus por pontuação') ?>
             </h5>
 
             <div>
