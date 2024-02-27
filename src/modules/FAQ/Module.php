@@ -16,7 +16,27 @@ class Module extends \MapasCulturais\Module
     public function _init()
     {
         $app = App::i();
-        $self  = $this;
+        $self = $this;
+
+        $app->hook('Theme::info', function ($result, string $path, $title = null) use($app, $self) {
+            $this->jsObject['config']['faq-info'] = $this->jsObject['config']['faq-info'] ?? [];
+
+            $exploded_path = explode("->", $path);
+
+            if(count($exploded_path) != 3) {
+                throw new \Exception("O caminho da info deve ser no formato 'nome-da-secao->nome-do-contexto->nome-da-pergunta");
+            }
+
+            $exploded_path = array_map(function($item) { return trim($item); }, $exploded_path);
+
+            if($question = $self->getQuestion(...$exploded_path)) {
+                $this->jsObject['config']['faq-info'][$path] = $question;
+                $this->import('faq-info');
+                echo "<faq-info path=\"{$path}\" title=\"{$title}\"></faq-info>";
+            } else {
+                $app->log->warning("FAQ: Pergunta não encontrada no caminho {$path}");
+            }
+        });
     }
 
     public function register()
