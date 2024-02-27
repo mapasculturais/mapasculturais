@@ -1029,25 +1029,30 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * 
      * @return array
      */
-    function getFields($select = true, $multiselect = true, $boolean = true, $all = false, $include_previous_phases = true ) {
+    function getFields($select = true, $multiselect = true, $boolean = true, $all = false, $include_previous_phases = true) {
         $data = [];
         $currentPhase = $this;
-        while($currentPhase !== null) {
-            $fields = $currentPhase->registrationFieldConfigurations;
-            foreach($fields as $field) {
-                if($all 
-                    || ($select && $field->fieldType == 'select') 
-                    || ($multiselect && $field->fieldType == 'checkboxes') 
-                    || ($boolean && $field->fieldType == 'checkbox')
-                ){
-                    if (!in_array($field, $data)) {
-                        $data[] = $field;
+        $phases[] = $currentPhase;
+
+        if($include_previous_phases) {
+            $phases = $currentPhase->allPhases;
+        }
+
+        foreach($phases as $phase) {
+            if($phase->isDataCollection) {
+                if($fields = $phase->registrationFieldConfigurations) {
+                    foreach($fields as $field) {
+                        if($all 
+                            || ($select && $field->fieldType == 'select') 
+                            || ($multiselect && $field->fieldType == 'checkboxes') 
+                            || ($boolean && $field->fieldType == 'checkbox')
+                        ){
+                            if (!in_array($field, $data)) {
+                                $data[] = $field;
+                            }
+                        }
                     }
                 }
-            }
-
-            if($include_previous_phases) {
-                $currentPhase = ($currentPhase->isFirstPhase) ? null : $currentPhase->previousPhase;
             }
         }
 
