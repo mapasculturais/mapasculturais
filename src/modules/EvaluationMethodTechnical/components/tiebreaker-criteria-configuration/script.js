@@ -10,27 +10,23 @@ app.component('tiebreaker-criteria-configuration', {
     
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name];
-        // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('tiebreaker-criteria-configuration')
         return { text, hasSlot }
     },
-
-    beforeCreate() {},
-    created() {},
-
-    beforeMount() {},
-    mounted() {},
-
-    beforeUpdate() {},
-    updated() {},
-
-    beforeUnmount() {},
-    unmounted() {},
+    
+    updated () {
+        this.save();
+    },
 
     data() {
+        let totalCriteria = Object.keys(this.phase.tiebreakerCriteriaConfiguration).length;
+        let criteria = Object.assign({}, this.phase.tiebreakerCriteriaConfiguration);
+        let isActive = !!Object.keys(criteria).length;
+
         return {
-            totalCriteria: 0,
-            criteria: {},
+            isActive,
+            totalCriteria,
+            criteria,
         }
     },
 
@@ -53,51 +49,72 @@ app.component('tiebreaker-criteria-configuration', {
         fields() {
             return $MAPAS.config.tiebreakerCriteriaConfiguration.fields[this.phase.opportunity._id];
         },
-
-        allCriteria() {
-            return this.criteria;
-        },
-
-        countCriteria() {
-            return this.totalCriteria;
-        },
     },
     
     methods: {
-        newCriterion() {
+        open() {
+            this.isActive = true;
+        },
+
+        close() {
+            this.isActive = false;
+        },
+
+        newCriterion() {     
+            this.criteria[this.totalCriteria+1] = {
+                id: this.totalCriteria+1,
+                name: __('critério', 'tiebreaker-criteria-configuration') + ' ' + (this.totalCriteria+1),
+            };
             this.totalCriteria++;
-            this.criteria[this.totalCriteria] = {
-                id: this.totalCriteria,
-                name: __('critério', 'tiebreaker-criteria-configuration') + ' ' + this.totalCriteria,
-            }
         },
 
         setCriterion(option, id) {
-            const field = Object.values(this.fields).filter(field => field.id == option.value);
+            const field = Object.values(this.fields).filter(field => field.fieldName == option.value);
             this.criteria[id].selected = !!field.length ? field[0] : null;
-            this.criteria[id].select = option.value;
+            this.criteria[id].criterionType = option.value;
+            this.criteria[id].preferences = this.checkCriterionType(this.criteria[id], ['checkboxes', 'select']) ? [] : null;
+        },
+
+        setPreference(option, id) {
+            this.criteria[id].preferences = option.value;
         },
 
         unsetCriterion(id) {
-            delete this.criteria[id];
-            this.totalCriteria--;
+            let counter = 1;
+            for (const criterion in this.criteria) {
+                if (criterion == id) {
+                    delete this.criteria[criterion];
+                }
+                counter++;
+            }
             this.reorderCriteria();
         },
 
         reorderCriteria() {
-            const newCriteria = {};
             let counter = 1;
+            let newCriteria = {};
             for (const criterion in this.criteria) {
                 this.criteria[criterion].id = counter;
                 this.criteria[criterion].name = __('critério', 'tiebreaker-criteria-configuration') + ' ' + counter;
                 newCriteria[counter] = this.criteria[criterion];
                 counter++;
             }
+            
             this.criteria = newCriteria;
+            this.totalCriteria = Object.keys(this.criteria).length ?? 0;
+
+            if (!!!this.totalCriteria) {
+                this.isActive = false;
+            }
         },
 
-        criterionHasOptions(criterion) {
-            return (criterion.selected && (criterion.selected.fieldType == 'checkboxes' || criterion.selected.fieldType == 'select'));
+        checkCriterionType(criterion, allowedTypes = []) {
+            return criterion.selected ? !!allowedTypes.includes(criterion.selected.fieldType) : false 
+        },
+
+        async save() {
+            this.phase.tiebreakerCriteriaConfiguration = this.criteria;
+            await this.phase.save();
         }
     },
 });
