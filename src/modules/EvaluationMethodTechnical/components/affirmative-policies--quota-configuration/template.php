@@ -63,5 +63,13 @@ $this->import('
         </div>
     </div>
 
-    <button @click="addConfig"><?= i::__('Adicionar categoria') ?></button>
+    <button @click="addConfig();" class="button button--primary button--icon">
+        <mc-icon name="add"></mc-icon>
+        <label v-if="entity.quotaConfiguration && entity.quotaConfiguration.rules.length > 0">
+            <?php i::_e("Adicionar categoria") ?>
+        </label>
+        <label v-else>
+            <?php i::_e("Configurar Cotas por Categoria") ?>
+        </label>
+    </button>
 </div>
