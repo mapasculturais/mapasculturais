@@ -262,9 +262,11 @@ class Module extends \MapasCulturais\Module{
             $query = $app->em->createQuery("
                 SELECT o 
                 FROM $class o 
+                JOIN o.__metadata m WITH m.key = 'isLastPhase'
                 WHERE 
                     o.id = :parent OR
-                    (o.parent = :parent AND o.id <> :this)
+                    (o.parent = :parent AND o.id <> :this) AND
+                    m.value IS NOT NULL
                 ORDER BY o.id DESC");
 
             $query->setMaxResults(1);
