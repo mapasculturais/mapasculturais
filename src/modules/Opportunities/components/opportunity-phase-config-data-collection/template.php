@@ -29,9 +29,6 @@ $this->import('
                 </mc-link>
             </div>
 
-            <div class="opportunity-data-collection__category col-12">
-                <opportunity-category v-if="phase.isFirstPhase" :entity="phase"></opportunity-category>
-            </div>
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
         <div class="opportunity-data-collection__limits col-12" v-if="phase.isFirstPhase">
@@ -45,6 +42,11 @@ $this->import('
                 </div>
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
+
+        <div class="col-12">
+            <opportunity-category v-if="phase.isFirstPhase" :entity="phase"></opportunity-category>
+        </div>
+
         <div class="opportunity-data-collection__preponent col-12" v-if="phase.isFirstPhase">
             <h4 class="bold"><?= i::__("Tipos do preponente")?></h4>
             <h6><?= i::__("Selecione um ou mais tipos de preponente que poderá participar do edital")?></h6>
