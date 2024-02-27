@@ -48,22 +48,10 @@ app.component('mc-select', {
         });
 
         document.addEventListener('mousedown', (event) => {
-            let className = [
-                'mc-select', 
-                'mc-select__selected-option', 
-                'mc-select__options', 
-                'mc-select__options--groups'
-            ];
-            
-            const targetClasses = Array.from(event.target.classList);
-            const parentClasses = Array.from(event.target.parentElement.classList);
-            const groupClasses = Array.from(event.target.parentElement.parentElement.classList);
-
-            const targetMatch = className.some(classString => targetClasses.includes(classString));
-            const parentMatch = className.some(classString => parentClasses.includes(classString));
-            const groupMatch = className.some(classString => groupClasses.includes(classString));
-
-            if (!targetMatch && !parentMatch && !groupMatch) {
+            const select = event.target.closest('.mc-select');
+            if (!select) {
+                this.open = false
+            } else if (event.target.closest('.mc-select').getAttribute('id') != this.uniqueID) {
                 this.open = false;
             }
         });
@@ -96,7 +84,7 @@ app.component('mc-select', {
             let optionValue = event.target.value ?? event.target.getAttribute('value');
             let optionItem = event.target.outerHTML;
 
-            if (this.optionSelected.text != optionText) {
+            if (this.optionSelected.value != optionValue) {
                 for (const [index, option] of Object.entries(options)) {
 
                     if (this.hasGroups) {
@@ -106,9 +94,11 @@ app.component('mc-select', {
                                     text: optionText,
                                     value: optionValue,
                                 }
-        
+
                                 this.$refs.selected.innerHTML = optionItem;
                             }
+
+                            _option.classList.remove('active');
                         }
                     } else {
                         if (option.text == optionText || option.textContent == optionText) {
@@ -119,11 +109,15 @@ app.component('mc-select', {
     
                             this.$refs.selected.innerHTML = optionItem;
                         }   
+
+                        option.classList.remove('active');
                     }
                 };
 
                 this.$emit("changeOption", this.optionSelected);
             }
+
+            event.target.classList.add('active');
             
             this.toggleSelect();
         },
@@ -139,6 +133,8 @@ app.component('mc-select', {
                         text: optionText,
                         value: optionValue,
                     }
+                    
+                    option.classList.add('active');
                     
                     this.$refs.selected.innerHTML = optionItem;
                 }
