@@ -121,7 +121,7 @@ app.component('opportunity-evaluation-committee', {
             let url = Utils.createUrl('opportunity', 'reopenEvaluations');
             let data = {
                 uid: user,
-                opportunityId: this.entity.id 
+                opportunityId: this.entity.opportunity.id
             };
 
             api.POST(url, data).then(res => res.json()).then(data => {
