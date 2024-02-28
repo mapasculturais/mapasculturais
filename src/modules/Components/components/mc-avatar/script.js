@@ -32,7 +32,7 @@ app.component('mc-avatar', {
 
             const size = map[this.size];
 
-            const transformations = this.entity.files.avatar?.transformations;
+            const transformations = this.entity.files?.avatar?.transformations;
             
             if(transformations) {
                 return transformations[size]?.url;
