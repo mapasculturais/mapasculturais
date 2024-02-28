@@ -43,6 +43,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         
         <section class="evaluation-section col-12">
             <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>
+            <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>
         </section>
 
         <section class="evaluation-section col-12">
