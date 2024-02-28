@@ -19,8 +19,9 @@ app.component('tiebreaker-criteria-configuration', {
     },
 
     data() {
-        let totalCriteria = Object.keys(this.phase.tiebreakerCriteriaConfiguration).length;
-        let criteria = Object.assign({}, this.phase.tiebreakerCriteriaConfiguration);
+        const config = this.phase.tiebreakerCriteriaConfiguration || {};
+        let totalCriteria = Object.keys(config).length;
+        let criteria = Object.assign({}, config);
         let isActive = !!Object.keys(criteria).length;
 
         return {
