@@ -153,13 +153,13 @@ app.component('opportunity-evaluation-committee', {
             api.POST(url, testData).then(res => res.json()).then(data => {
                 switch (field) {
                     case 'addDistribution':
-                        this.messages.success('A distribuição de avaliações foi atualizada com sucesso.');
+                        this.messages.success(this.text('addDistribution'));
                         break;
                     case 'addCategory':
-                        this.messages.success('Categoria adicionada com sucesso.');
+                        this.messages.success(this.text('addCategory'));
                         break;
                     case 'removeCategory':
-                        this.messages.success('Categoria removida com sucesso.');
+                        this.messages.success(this.text('removeCategory'));
                         break;
                 }
                 this.loadReviewers();
