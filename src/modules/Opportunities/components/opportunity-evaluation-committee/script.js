@@ -125,6 +125,7 @@ app.component('opportunity-evaluation-committee', {
             };
 
             api.POST(url, data).then(res => res.json()).then(data => {
+                this.messages.success(this.text('reopenEvaluationsSuccess'));
                 this.loadReviewers();
             });
         },
