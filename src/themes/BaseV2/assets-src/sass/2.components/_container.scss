@@ -110,15 +110,15 @@ $col-columns: 12;
     }
 
     &.h-center {
-        justify-self: center;
+        justify-items: center;
     }
 
     &.h-left {
-        justify-self: left;
+        justify-items: left;
     }
 
     &.h-right {
-        justify-self: right;
+        justify-items: right;
     }
 
     @media (max-width: size(300)) {
