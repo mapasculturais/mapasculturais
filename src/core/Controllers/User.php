@@ -64,7 +64,8 @@ class User extends Controller {
         $app = App::i();
         if (!$app->user->is('admin')) {
             $is_fake_authentication = $app->auth instanceof \MapasCulturais\AuthProviders\Fake;
-            $is_fake_auth_request = $app->request->getHeaderLine('referer') == $app->createUrl('auth', 'index');
+            
+            $is_fake_auth_request = str_starts_with($app->request->getHeaderLine('referer'), $app->createUrl('auth', 'index'));
             
             if(!$is_fake_authentication || !$is_fake_auth_request) {
                 $this->errorJson(i::__('Permissão negada', 403));
