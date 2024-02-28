@@ -15,13 +15,13 @@ $this->import("
 ?>
 
 <mc-popover openside="down-right">
-    <div style="max-width: 400px;">
-        <mc-title>{{title || question.question}}</mc-title>
-        <mc-tag-list :tags="tags"></mc-tag-list>
-        <div v-html="answer" style="white-space: pre-line;"></div>
+    <div class="faq-info">
+        <mc-title class="faq-info__title bold">{{title || question.question}}</mc-title>
+        <div class="faq-info__content" v-html="answer" ></div>
+        <mc-tag-list class="faq-info__tags" :tags="tags"></mc-tag-list>
     </div>
 
     <template #button="popover">
-        <a href="#" @click.prevent="popover.toggle()" :title="title"><mc-icon name="info-full"></mc-icon></a>
+        <a href="#" @click.prevent="popover.toggle()" :title="title"><mc-icon name="help"></mc-icon></a>
     </template>
 </mc-popover>
