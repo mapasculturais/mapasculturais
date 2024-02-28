@@ -3,7 +3,18 @@ namespace MapasCulturais\Controllers;
 use \MapasCulturais\App;
 use \MapasCulturais\i;
 
-class Auth extends \MapasCulturais\Controller{
+class Auth extends \MapasCulturais\Controller {
+    function __construct()
+    {
+        $app = App::i();
+        
+        $app->hook('GET(auth.index)', function () use($app){
+            if(isset($this->data['redirectTo'])){
+                $app->auth->setRedirectPath($this->data['redirectTo']);
+            }
+        },-10);
+    }
+
     function ALL_logout(){
         $app = App::i();
         $app->auth->logout();
@@ -12,9 +23,8 @@ class Auth extends \MapasCulturais\Controller{
     
     function GET_login(){
         $app = App::i();
-        
-        if(isset($this->getData['redirectTo'])){
-            $app->auth->requireAuthentication($this->getData['redirectTo']);
+        if(isset($this->data['redirectTo'])){
+            $app->auth->requireAuthentication($this->data['redirectTo']);
         }else{
             $app->auth->requireAuthentication();
         }

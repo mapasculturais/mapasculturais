@@ -50,9 +50,22 @@
         display: inline-block;
         list-style: none;
         transform: rotateX(180deg);
+        
+        a {
+            align-items: center;
+            color: inherit;
+            display: flex;
+            font-weight: var(--mc-font-regular);
+            line-height: size(20);
+            padding: size(7) size(13);
+            text-decoration: none;
+        }
 
         &--active {
-
+            a {
+                font-weight: var(--mc-font-semibold);
+            }
+            
             &::after {
                 border-radius: var(--mc-border-radius-sm);
                 background-color: black;
@@ -61,21 +74,12 @@
                 content: '';
                 width: 100%;
             }
-        }        
-
-        a {
-            align-items: center;
-            color: inherit;
-            display: flex;
-            line-height: size(20);
-            padding: size(7) 0;
-            text-decoration: none;
         }
 
         .iconify {
             color: var(--mc-gray-700);
             font-size: size(20);
-            margin: 0 size(6);
+            margin-right: size(6);
         }
 
         &.is-active {

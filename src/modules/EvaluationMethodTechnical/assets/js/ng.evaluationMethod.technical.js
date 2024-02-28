@@ -46,10 +46,10 @@
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
                 enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
                 registrationFieldConfigurations: [],
-                criteriaAffirmativePolicies: MapasCulturais.pointsByInduction || [],
+                criteriaAffirmativePolicies: MapasCulturais.pointReward || [],
                 fieldsAffiermativePolicie: {},
-                isActivePointsByInduction: MapasCulturais.isActivePointsByInduction ? true : false,
-                pointsByInductionPoliciesRoof: parseFloat(MapasCulturais.pointsByInductionPoliciesRoof) || 0.00,
+                isActivePointReward: MapasCulturais.isActivePointReward ? true : false,
+                pointRewardRoof: parseFloat(MapasCulturais.pointRewardRoof) || 0.00,
                 
                 debounce: 2000
             };
@@ -71,9 +71,9 @@
                     criteria: [],
                     quotas: $scope.data.quotas,
                     enableViability: $scope.data.enableViability,
-                    pointsByInduction: JSON.stringify($scope.data.criteriaAffirmativePolicies) == "[]" ? null : $scope.data.criteriaAffirmativePolicies,
-                    isActivePointsByInduction: $scope.data.isActivePointsByInduction,
-                    pointsByInductionPoliciesRoof: $scope.data.pointsByInductionPoliciesRoof || 0.00
+                    pointReward: JSON.stringify($scope.data.criteriaAffirmativePolicies) == "[]" ? null : $scope.data.criteriaAffirmativePolicies,
+                    isActivePointReward: $scope.data.isActivePointReward,
+                    pointRewardRoof: $scope.data.pointRewardRoof || 0.00
                 };
 
                 $scope.data.criteria.forEach(function (crit) {
@@ -143,7 +143,7 @@
             }
 
             $scope.activeAffirmativePolicies = function(){
-                $scope.data.isActivePointsByInduction = !$scope.data.isActivePointsByInduction;
+                $scope.data.isActivePointReward = !$scope.data.isActivePointReward;
                 $scope.save();
             }
 

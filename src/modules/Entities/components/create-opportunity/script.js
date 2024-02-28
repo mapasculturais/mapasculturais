@@ -8,8 +8,6 @@ app.component('create-opportunity', {
         return { text }
     },
 
-
-
     data() {
         return {
             entity: null,
@@ -26,12 +24,10 @@ app.component('create-opportunity', {
     },
 
     computed: {
-        areaErrors() {
-            return this.entity.__validationErrors['term-area'];
-        },
         areaClasses() {
             return this.areaErrors ? 'field error' : 'field';
         },
+        
         modalTitle() {
             if (!this.entity?.id) {
                 return __('criarOportunidade', 'create-opportunity');
@@ -41,8 +37,8 @@ app.component('create-opportunity', {
                 return __('oportunidadeCriada', 'create-opportunity');
 
             }
-
         },
+
         entityType(){
             switch(this.entity.ownerEntity.__objectType) {
                 case 'project':
@@ -55,6 +51,7 @@ app.component('create-opportunity', {
                     return __('agente', 'create-opportunity');
             }
         },
+
         entityColorClass() {
             switch(this.entity.ownerEntity.__objectType) {
                 case 'project':
@@ -67,6 +64,7 @@ app.component('create-opportunity', {
                     return 'agent__color--dark';
             }
         },
+
         entityColorBorder() {
             switch(this.entity.ownerEntity.__objectType) {
                 case 'project':
@@ -82,57 +80,61 @@ app.component('create-opportunity', {
     },
 
     methods: {
+        handleSubmit(event) {
+            event.preventDefault();
+        },    
 
-    handleSubmit(event) {
-        event.preventDefault();
-    },    
-    createEntity() {
+        createEntity() {
+            this.entity = new Entity('opportunity');
+            this.entity.type = 1;
+            this.entity.terms = { area: [] }
+        },
 
-        this.entity = new Entity('opportunity');
-        this.entity.type = 1;
-        this.entity.terms = { area: [] }
-    },
-    createDraft(modal) {
-        this.entity.status = 0;
-        this.save(modal);
-    },
-    createPublic(modal) {
-        //lançar dois eventos
-        this.entity.status = 1;
-        this.save(modal);
-    },
-    save(modal) {
-        modal.loading(true);
-        this.entity.save().then((response) => {
-            this.$emit('create', response);
-            modal.loading(false);
-            Utils.pushEntityToList(this.entity);
-        }).catch((e) => {
-            modal.loading(false);
-        });
-    },
-    setEntity(Entity) {
-        this.entity.ownerEntity = Entity;
-    },
-    resetEntity() {
-        this.entity.ownerEntity = null;
-        this.entityTypeSelected = null;
-    },
+        createDraft(modal) {
+            this.entity.status = 0;
+            this.save(modal);
+        },
 
-    destroyEntity() {
-        // para o conteúdo da modal não sumir antes dela fechar
-        setTimeout(() => {
-            this.entity = null;
+        createPublic(modal) {
+            //lançar dois eventos
+            this.entity.status = 1;
+            this.save(modal);
+        },
+
+        save(modal) {
+            modal.loading(true);
+            this.entity.save().then((response) => {
+                this.$emit('create', response);
+                modal.loading(false);
+                Utils.pushEntityToList(this.entity);
+            }).catch((e) => {
+                modal.loading(false);
+            });
+        },
+
+        setEntity(Entity) {
+            this.entity.ownerEntity = Entity;
+        },
+
+        resetEntity() {
+            this.entity.ownerEntity = null;
             this.entityTypeSelected = null;
-        }, 200);
-    },
+        },
 
-    hasObjectTypeErrors() {
-        return !this.entity.ownerEntity && this.entity.__validationErrors?.objectType;
-    },
+        destroyEntity() {
+            // para o conteúdo da modal não sumir antes dela fechar
+            setTimeout(() => {
+                this.entity = null;
+                this.entityTypeSelected = null;
+            }, 200);
+        },
 
-    getObjectTypeErrors() {
-        return this.hasObjectTypeErrors() ? this.entity.__validationErrors?.objectType : [];
+        hasObjectTypeErrors() {
+            return !this.entity.ownerEntity && this.entity.__validationErrors?.objectType;
+        },
+
+        getObjectTypeErrors() {
+            return this.hasObjectTypeErrors() ? this.entity.__validationErrors?.objectType : [];
+        },
     },
-},
 });

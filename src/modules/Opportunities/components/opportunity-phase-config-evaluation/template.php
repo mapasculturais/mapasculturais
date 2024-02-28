@@ -11,10 +11,15 @@ $this->import('
     mc-confirm-button
     mc-modal
     opportunity-phase-publish-date-config
+    tiebreaker-criteria-configuration
     v1-embed-tool
+
+    affirmative-policies--geo-quota-configuration
 ');
+
+$evaluation_methods = $app->getRegisteredEvaluationMethods();
 ?>
-<mc-card>
+<mc-card> 
     <div class="evaluation-step grid-12">
         <section class="evaluation-section col-12 grid-12">
             <entity-field :entity="phase" prop="name" :autosave="3000" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
@@ -23,6 +28,17 @@ $this->import('
         </section>
 
         <div class="evaluation-line col-12"></div>
+
+        <?php foreach($evaluation_methods as $evaluation_method): ?>
+            <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'before') ?>
+            <template v-if="phase.type.id == '<?=$evaluation_method->slug?>'">
+                <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'begin') ?>
+                <?= $this->part("{$evaluation_method->slug}/phase-config") ?>
+                <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'end') ?>
+            </template>
+            <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'after') ?>
+        <?php endforeach; ?>
+
         
         <section class="evaluation-section col-12">
             <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>
@@ -43,6 +59,10 @@ $this->import('
                 </template>
             </mc-modal>  
 
+        </section>
+
+        <section class="evaluation-section col-12">
+            <affirmative-policies--geo-quota-configuration></affirmative-policies--geo-quota-configuration>
         </section>
 
         <section class="evaluation-section col-12">

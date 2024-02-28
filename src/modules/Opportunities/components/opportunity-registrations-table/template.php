@@ -40,7 +40,7 @@ $entity = $this->controller->requestedEntity;
 
         <div class="col-12"> 
 
-            <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult" @clear-filters="clearFilters">
+            <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult,attachments" @clear-filters="clearFilters">
 
                 <template #title>
                     <h5>
@@ -51,9 +51,8 @@ $entity = $this->controller->requestedEntity;
                 
                 <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'before', ['entity' => $entity]); ?>
                 <template #actions="{entities,filters}">
+                    <h4 class="bold"><?= i::__('Ações:') ?></h4>
                     <div class="opportunity-payment-table__actions">
-                        <h4 class="bold"><?= i::__('Ações:') ?></h4>
-
                         <div class="opportunity-payment-table__actions grid-12">
                             <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'begin', ['entity' => $entity]); ?>
                                 <mc-link :entity="phase" route="reportDrafts" class="button button--primarylight button--icon button--large col-4"><?= i::__("Baixar rascunho") ?> <mc-icon name="download"></mc-icon></mc-link>
@@ -81,6 +80,10 @@ $entity = $this->controller->requestedEntity;
                     </div>
                 </template>
 
+                <template #attachments={entity}>
+                    <a v-if="entity.files?.zipArchive?.url" :href="entity.files?.zipArchive?.url">Anexo</a>
+                </template>
+
                 <template #status="{entity}">
                     <mc-select :default-value="entity.status" @change-option="setStatus($event, entity)">
                         <mc-status v-for="item in statusDict" :value="item.value" :status-name="item.label"></mc-status>
@@ -95,9 +98,6 @@ $entity = $this->controller->requestedEntity;
                     <a :href="entity.singleUrl">{{entity.number}}</a>
                 </template>
 
-                <template #options="{entity}">
-                    <a :href="entity.singleUrl" class="button button--sm button--primary"><?= i::__("Conferir inscrição")?></a>
-                </template>
             </entity-table>
         </div>
     </template>

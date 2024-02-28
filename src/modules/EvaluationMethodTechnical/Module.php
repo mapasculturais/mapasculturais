@@ -100,8 +100,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
-        $this->registerEvaluationMethodConfigurationMetadata('pointsByInduction', [
-            'label' => i::__('Indução por pontuação'),
+        $this->registerEvaluationMethodConfigurationMetadata('pointReward', [
+            'label' => i::__('Bônus por pontuação'),
             'type' => 'json',
             'serialize' => function ($val){
                 return (!empty($val)) ? json_encode($val) : "[]";
@@ -111,8 +111,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
-        $this->registerRegistrationMetadata('appliedPointsByInduction', [
-            'label' => i::__('Indução por pontuação aplicadas a inscrição'),
+        $this->registerRegistrationMetadata('appliedPointReward', [
+            'label' => i::__('Bônus por pontuação aplicadas a inscrição'),
             'type' => 'json',
             'private' => true,
             'serialize' => function ($val){
@@ -124,7 +124,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
-        $this->registerEvaluationMethodConfigurationMetadata('isActivePointsByInduction', [
+        $this->registerEvaluationMethodConfigurationMetadata('isActivePointReward', [
             'label' => i::__('Controla se as induções por pontuação estão ou não ativadas'),
             'type' => 'boolean',
             'serialize' => function ($val){
@@ -132,7 +132,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
-        $this->registerEvaluationMethodConfigurationMetadata('pointsByInductionPoliciesRoof', [
+        $this->registerEvaluationMethodConfigurationMetadata('pointRewardRoof', [
             'label' => i::__('Define o valor máximo das induções por pontuação'),
             'type' => 'string',
         ]);
@@ -149,16 +149,27 @@ class Module extends \MapasCulturais\EvaluationMethod {
         ]);
 
         $this->registerEvaluationMethodConfigurationMetadata('enableViability',[
-            'label' => i::__('Habilitar Análise de Exiquibilidade das inscrições?'),
+            'label' => i::__('Exequibilidade da inscrição'),
+            'description' => i::__('Ao habilitar esta configuração, os avaliadores deverão considerar a exequibilidade da inscrição. Se a maioria dos avaliadores considerarem a inabilitação por exequibilidade, a mesma será marcada com o status de inválida para o dono do edital, que ainda assim poderá mudar seu status para válida.'),
             'type' => 'radio',
             'options' => array(
-                'true' => i::__('Habilitar Análise de Exiquibilidade'),
+                'true' => i::__('Habilitar'),
                 'false' => i::__('Não habilitar'),
             ),
         ]);
 
         $this->registerEvaluationMethodConfigurationMetadata('geoQuotaConfiguration', [
             'label' => i::__('Configuração territorial'),
+            'type' => 'json',
+        ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('tiebreakerCriteriaConfiguration', [
+            'label' => i::__('Definição dos critérios de desempate'),
+            'type' => 'json',
+        ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('quotaConfiguration', [
+            'label' => i::__('Configuração de cotas'),
             'type' => 'json',
             'serialize' => function ($val){
                 return (!empty($val)) ? json_encode($val) : "[]";
@@ -293,7 +304,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         });
 
 
-         // Reconsolida a avaliação da inscrição caso em fases posteriores exista avaliação técnica com indução por pontuação aplicadas
+         // Reconsolida a avaliação da inscrição caso em fases posteriores exista avaliação técnica com bônus por pontuação aplicadas
          $app->hook('entity(Registration).update:after', function() use ($app){
             /** @var \MapasCulturais\Entities\Registration $this */
             $phase = $this;
@@ -310,19 +321,19 @@ class Module extends \MapasCulturais\EvaluationMethod {
         });
 
 
-        // Insere valores das indução por pontuação aplicadas na planilha de inscritos
+        // Insere valores das bônus por pontuação aplicadas na planilha de inscritos
         $app->hook('opportunity.registrations.reportCSV', function(\MapasCulturais\Entities\Opportunity $opportunity, $registrations, &$header, &$body) use ($app){
             
-            $isActivePointsByInduction = filter_var($opportunity->evaluationMethodConfiguration->isActivePointsByInduction, FILTER_VALIDATE_BOOL);
+            $isActivePointReward = filter_var($opportunity->evaluationMethodConfiguration->isActivePointReward, FILTER_VALIDATE_BOOL);
 
-            if($isActivePointsByInduction){
+            if($isActivePointReward){
 
                 $header[] = 'POLITICAS-AFIRMATIVAS';
                             
                 foreach($body as $i => $line){    
                     $reg = $app->repo("Registration")->findOneBy(['number' => $line[0], 'opportunity' => $opportunity]);
 
-                    $policies = $reg->appliedPointsByInduction;
+                    $policies = $reg->appliedPointReward;
 
                     if(!$policies || !$policies->rules){
                         continue;
@@ -330,7 +341,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
                     $valuePencentage = (($policies->raw * $policies->percentage)/100);
                     $cell = "";
-                    $cell.= "Indução por pontuação atribuídas \n\n";
+                    $cell.= "Bônus por pontuação atribuídos \n\n";
                     foreach($policies->rules as $k => $rule){
                         $_value = is_array($rule->value) ? implode(",", $rule->value) : $rule->value;
                         $cell.= "{$rule->field->title}: {$_value} (+{$rule->percentage}%)\n";
@@ -347,7 +358,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         });
 
-        // passa os dados de configuração das indução por pontuação para JS
+        // passa os dados de configuração das bônus por pontuação para JS
         $app->hook('GET(opportunity.edit):before', function() use ($app, $plugin){
             $entity = $this->requestedEntity;
             if($entity->evaluationMethodConfiguration){
@@ -355,9 +366,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
                
                 $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
     
-                $app->view->jsObject['isActivePointsByInduction'] = $evaluationMethodConfiguration->isActivePointsByInduction;
-                $app->view->jsObject['pointsByInduction'] = $evaluationMethodConfiguration->pointsByInduction;
-                $app->view->jsObject['pointsByInductionPoliciesRoof'] = $evaluationMethodConfiguration->pointsByInductionPoliciesRoof;
+                $app->view->jsObject['isActivePointReward'] = $evaluationMethodConfiguration->isActivePointReward;
+                $app->view->jsObject['pointReward'] = $evaluationMethodConfiguration->pointReward;
+                $app->view->jsObject['pointRewardRoof'] = $evaluationMethodConfiguration->pointRewardRoof;
             }
         });
 
@@ -566,13 +577,13 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $reg->registerFieldsMetadata();
         } while($reg = $reg->previousPhase);
         
-        $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->pointsByInduction;
-        $pointsByInductionPoliciesRoof = $registration->opportunity->evaluationMethodConfiguration->pointsByInductionPoliciesRoof;
-        $isActivePointsByInduction = filter_var($registration->opportunity->evaluationMethodConfiguration->isActivePointsByInduction, FILTER_VALIDATE_BOOL);
+        $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->pointReward;
+        $pointRewardRoof = $registration->opportunity->evaluationMethodConfiguration->pointRewardRoof;
+        $isActivePointReward = filter_var($registration->opportunity->evaluationMethodConfiguration->isActivePointReward, FILTER_VALIDATE_BOOL);
         $metadata = $registration->getRegisteredMetadata();
 
        
-        if(!$isActivePointsByInduction || empty($affirmativePoliciesConfig)){
+        if(!$isActivePointReward || empty($affirmativePoliciesConfig)){
             return $result;
         }
 
@@ -638,9 +649,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         }
         
-        $percentage = (($pointsByInductionPoliciesRoof > 0) && $totalPercent > $pointsByInductionPoliciesRoof) ? $pointsByInductionPoliciesRoof : $totalPercent;
+        $percentage = (($pointRewardRoof > 0) && $totalPercent > $pointRewardRoof) ? $pointRewardRoof : $totalPercent;
 
-        $registration->appliedPointsByInduction = [
+        $registration->appliedPointReward = [
             'raw' => $result,
             'percentage' => $percentage,
             'rules' => $appliedPolicies
@@ -774,8 +785,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $max_score += $section->maxScore;
             }
     
-            if($affirmative_policy = $registration->appliedPointsByInduction){
-                $affirmative_policy->roof = $evaluation_configuration->pointsByInductionPoliciesRoof;
+            if($affirmative_policy = $registration->appliedPointReward){
+                $affirmative_policy->roof = $evaluation_configuration->pointRewardRoof;
             }
             
         }
@@ -783,7 +794,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return [
             'maxScore' => $max_score,
             'scores' => $sections,
-            'appliedPointsByInduction' => $affirmative_policy,
+            'appliedPointReward' => $affirmative_policy,
         ];
     }
 
