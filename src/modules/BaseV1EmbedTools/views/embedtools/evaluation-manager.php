@@ -45,7 +45,6 @@ if (is_object($definition) && property_exists($definition, 'evaluationMethod')) 
     $evaluationMethod = $definition->evaluationMethod;
     $config_form_part_name = $evaluationMethod->getConfigurationFormPartName();
 ?>
-    <?php $this->part('singles/opportunity-evaluations--committee', ['entity' => $entity]) ?>
     <?php if ($config_form_part_name) : ?>
         <div> <?php $this->part($config_form_part_name, ['entity' => $entity]) ?> </div>
     <?php endif; ?>
