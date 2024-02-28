@@ -193,6 +193,14 @@
                     },50)
                 });
             },
+
+            getSelectedRange: function(){
+                return $q(function(resolve){
+                    setTimeout(function(){
+                            resolve(MapasCulturais.entity.object.range);
+                    },50)
+                });
+            },
             
             registrationStatuses: MapasCulturais.entity.registrationStatuses,
             registrationStatusesToFilter: [{label: 'Todos os status', value: undefined}, ...MapasCulturais.entity.registrationStatuses],
@@ -437,7 +445,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldsRequiredLabel: labels['requiredLabel'],
             fieldsOptionalLabel: labels['optionalLabel'],
             categories: MapasCulturais.entity.registrationCategories,
-            taxonomies: MapasCulturais.Taxonomies
+            taxonomies: MapasCulturais.Taxonomies,
+            registrationRanges : MapasCulturais.entity.object.registrationRanges,
+            proponentTypes : MapasCulturais.entity.object.registrationProponentTypes,
         };
         
         $scope.allowedFieldCondition = function(type){
@@ -611,8 +621,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 conditional: model.conditional ? true : false,
                 conditionalField: model.conditionalField,
                 conditionalValue: model.conditionalValue,
-                registrationRanges: model.registrationRanges,
-                proponentTypes: model.proponentTypes
+                registrationRanges: model.registrationRanges.length ? model.registrationRanges : '',
+                proponentTypes: model.proponentTypes.length ? model.proponentTypes : '',
 
             };
 
@@ -711,7 +721,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 categories: model.categories.length ? model.categories : '',
                 conditional: model.conditional ? true : false,
                 conditionalField: model.conditionalField,
-                conditionalValue: model.conditionalValue
+                conditionalValue: model.conditionalValue,
+                registrationRanges: model.registrationRanges.length ? model.registrationRanges : '',
+                proponentTypes: model.proponentTypes.length ? model.proponentTypes : '',
             };
 
             if(data.fieldType == "section"){
@@ -1651,6 +1663,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     
 
     $scope.useCategories = MapasCulturais.entity.registrationCategories.length > 0;
+    $scope.useRegistrationsRanges = MapasCulturais.entity.registrationRanges.length > 0;
+    $scope.useProponentTypes = MapasCulturais.entity.registrationProponentTypes?.length > 0;
 
 
     if($scope.useCategories){
@@ -1717,13 +1731,20 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.showField = function(field){
         
-        var result;
-        if (!$scope.useCategories){
-            result = true;
-        } else {
-            result = field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0;
+        var result = true;
+
+        if ($scope.useCategories) {
+            result = result && (field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0);
         }
 
+        if ($scope.useRegistrationsRanges) {
+            result = result && (field.registrationRanges.length === 0 || field.registrationRanges.indexOf(MapasCulturais.entity.object.range) >= 0);
+        }
+
+        if ($scope.useProponentTypes) {
+            result = result && (field.proponentTypes.length === 0 || field.proponentTypes.indexOf(MapasCulturais.entity.object.proponentType) >= 0);
+        }
+      
         if(field.conditional){
             result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
         }
