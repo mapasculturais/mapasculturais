@@ -10,6 +10,7 @@ $this->import('
     entity-field
     mc-confirm-button
     mc-modal
+    opportunity-evaluation-committee
     opportunity-phase-publish-date-config
     tiebreaker-criteria-configuration
     v1-embed-tool
@@ -41,7 +42,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
 
         
         <section class="evaluation-section col-12">
-            <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>
+            <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>
         </section>
 
         <section class="evaluation-section col-12">

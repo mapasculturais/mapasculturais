@@ -36,6 +36,8 @@ app.component('mc-avatar', {
             
             if(transformations) {
                 return transformations[size]?.url;
+            } else if(this.entity.avatar) {
+                return this.entity.avatar[size]?.url;
             } else {
                 return undefined;
             }
