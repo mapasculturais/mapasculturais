@@ -33,6 +33,7 @@ app.component('search-filter-opportunity', {
             delete this.pseudoQuery['@verified'];
             delete this.pseudoQuery.registrationFrom;
             delete this.pseudoQuery.registrationTo;
+            delete this.pseudoQuery['term:area'];
             this.$refs.form.reset();
         },
         actualDate() {
