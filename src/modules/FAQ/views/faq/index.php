@@ -21,7 +21,7 @@ $message = $app->config['module.FAQ']['support-message'] ?? '';
                 <a href="<?= $this->controller->createUrl('index', [$section->slug]) ?>" class="faq__card bold  primary__color">
                     <div class="faq__card--frequent">
                         <div class="faq__headerbtn">
-                            <mc-icon name="help" class="faq__helper"></mc-icon>
+                            <mc-icon name="help-outline" class="faq__helper"></mc-icon>
                             <?= $section->title ?>
                         </div>
                         <div class="faq__infobtn bold">
