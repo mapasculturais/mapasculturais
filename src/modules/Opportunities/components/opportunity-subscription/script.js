@@ -26,9 +26,11 @@ app.component('opportunity-subscription' , {
     data () {
         let agent = null;
         let phases = null;
+        let hideSelect = false;
 
         if ($MAPAS.config.opportunitySubscription.agents.length == 1) {
             agent = $MAPAS.config.opportunitySubscription.agents[0];
+            hideSelect = true;
         }
         const registrationCategories = this.entity.registrationCategories || {};
         const categories = Object.keys(registrationCategories).length > 0 ? registrationCategories : null;
@@ -49,6 +51,7 @@ app.component('opportunity-subscription' , {
             phases,
             totalRegistrations: $MAPAS.config.opportunitySubscription.totalRegistrations,
             totalRegistrationsPerUser: $MAPAS.config.opportunitySubscription.totalRegistrationsPerUser,
+            hideSelect,
         }
     },
 
@@ -145,7 +148,7 @@ app.component('opportunity-subscription' , {
             this.agent = null;
         },
         redirectLogin() {
-            let url = Utils.createUrl('auth', '');
+            let url = Utils.createUrl('auth', '') + `?redirectTo=${this.entity.singleUrl.pathname}`;
             window.location.href = url;
         },
         fetch(entities) {
