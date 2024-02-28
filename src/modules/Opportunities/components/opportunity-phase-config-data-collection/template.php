@@ -29,22 +29,24 @@ $this->import('
                 </mc-link>
             </div>
 
-            <div class="opportunity-data-collection__category col-12">
-                <opportunity-category v-if="phase.isFirstPhase" :entity="phase"></opportunity-category>
-            </div>
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
-        <div class="col-12" v-if="phase.isFirstPhase">
-            <h3><?= i::esc_attr__('Limites na inscrição no edital')?></h3>
-            <p><?= i::esc_attr__('Configure abaixo a quantidade de vagas do edital, o valor total, e os limites de inscritos (se houver) e a quantidade de incrições por agente.')?></p>
-                <div class="col-12 grid-12">
-                    <entity-field :entity="phase" prop="vacancies" :autosave="3000" class="col-3"></entity-field>
-                    <entity-field :entity="phase" prop="totalResource" :autosave="3000" class="col-3"></entity-field>
-                    <entity-field :entity="phase" prop="registrationLimit" :autosave="3000" class="col-3"></entity-field>
-                    <entity-field :entity="phase" prop="registrationLimitPerOwner" :autosave="3000" class="col-3"></entity-field>
+        <div class="opportunity-data-collection__limits col-12" v-if="phase.isFirstPhase">
+            <h4 class="bold"><?= i::esc_attr__('Limites na inscrição no edital')?></h4>
+            <h6><?= i::esc_attr__('Configure abaixo a quantidade de vagas do edital, o valor total, e os limites de inscritos (se houver) e a quantidade de incrições por agente.')?></h6>
+                <div class="opportunity-data-collection__fields">
+                    <entity-field :entity="phase" prop="vacancies" :autosave="3000" class="field__limits"></entity-field>
+                    <entity-field :entity="phase" prop="totalResource" :autosave="3000" class="field__limits"></entity-field>
+                    <entity-field :entity="phase" prop="registrationLimit" :autosave="3000" class="field__limits"></entity-field>
+                    <entity-field :entity="phase" prop="registrationLimitPerOwner" :autosave="3000" class="field__limits"></entity-field>
                 </div>
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
+
+        <div class="col-12">
+            <opportunity-category v-if="phase.isFirstPhase" :entity="phase"></opportunity-category>
+        </div>
+
         <div class="opportunity-data-collection__preponent col-12" v-if="phase.isFirstPhase">
             <h4 class="bold"><?= i::__("Tipos do preponente")?></h4>
             <h6><?= i::__("Selecione um ou mais tipos de preponente que poderá participar do edital")?></h6>

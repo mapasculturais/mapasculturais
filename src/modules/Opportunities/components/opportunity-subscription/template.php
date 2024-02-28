@@ -28,7 +28,6 @@ $this->import('
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
 		<div v-if="global.auth.isLoggedIn" class="logged">
-
 			<p v-if="numberFields > 1" class="logged__description">
 				<?= i::__('Selecione as opções abaixo e clique no botão para se inscrever') ?>
 			</p>
@@ -56,7 +55,6 @@ $this->import('
 								<mc-avatar :entity="agent" size="xsmall"></mc-avatar>
 								{{agent.name}}
 							</span>
-
 						</template>
 					</select-entity>
 				</div>
@@ -82,9 +80,12 @@ $this->import('
 				</div>
 
 
-				<button v-if="!processing" @click="subscribe()" class="col-12 button button--xbg button--primary button--large">
-					<?= i::__("Fazer inscrição") ?>
-				</button>
+				<div class="logged__button col-12">
+					<button v-if="!processing" @click="subscribe()" class="button button--xbg button--primary">
+						<?= i::__("Fazer inscrição") ?>
+					</button>
+				</div>
+
 				<div v-if="processing" class="col-12">
 					<mc-loading :condition="processing"> <?= i::__('Fazendo inscrição') ?></mc-loading>
 				</div>
@@ -94,12 +95,15 @@ $this->import('
 		<!-- Deslogado -->
 		<div v-if="!global.auth.isLoggedIn" class="loggedOut">
 			<p class="loggedOut__description">
-				<?= i::__("Você precisa acessar sua conta ou  criar uma cadastro na plataforma para poder se inscrever em editais ou oportunidades") ?>
+				<?= i::__("Você precisa acessar sua conta ou criar um cadastro na plataforma para poder se inscrever em editais ou oportunidades") ?>
 			</p>
 
-			<button class="col-12 button button--xbg button--primary button--large" @click="redirectLogin">
-				<?= i::__("Fazer inscrição") ?>
-			</button>
+			<div class="loggedOut__button col-12">
+				<button @click="redirectLogin" class="button button--xbg button--primary">
+				<?= i::__("Acessar ou criar conta") ?>
+				</button>
+			</div>
+
 		</div>
 	</div>
 </div>

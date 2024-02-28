@@ -6,6 +6,17 @@
             &__longdescription {
                 white-space: pre-line;
             }
+
+            &__subproject {
+                .entity-card {
+                    background-color: var(--mc-gray-100);
+                }
+            }
+
+            &__not-found {
+                display: flex;
+                justify-content: center;
+            }
         }
 
         .additional-info {

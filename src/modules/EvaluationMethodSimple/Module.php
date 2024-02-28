@@ -333,13 +333,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
     function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
         $evaluation_configuration = $evaluation->registration->opportunity->evaluationMethodConfiguration;
-
-        return [];
+        
+        return [
+            'obs' => $evaluation->evaluationData->obs
+        ];
     }
 
-    function _getConsolidatedDetails(Entities\Registration $registration): array {
-        $evaluation_configuration = $registration->opportunity->evaluationMethodConfiguration;
-        return [];
+    function _getConsolidatedDetails(Entities\Registration $registration): ?array {
+        return null;
     }
     
     public function fetchRegistrations() {

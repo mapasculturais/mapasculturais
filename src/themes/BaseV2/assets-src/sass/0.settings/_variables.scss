@@ -49,6 +49,11 @@ $spaces-500: #538D0A !default;
 $spaces-300: lighten($spaces-500, $lightness-300) !default;
 $spaces-700: darken($spaces-500, $lightness-700) !default;
 
+// FAQ
+$faq-500: #ffcf8f !default;
+$faq-300: lighten($faq-500, $lightness-300) !default;
+$faq-700: darken($faq-500, $lightness-700) !default;
+
 // Feedback colors
 $danger-500: #EF1010 !default;
 $danger-300: lighten($danger-500, $lightness-300) !default;
@@ -185,6 +190,9 @@ $shadow-lv-1-up: 0px -4px 8px rgba(0, 0, 0, 0.16);
     --mc-spaces-300: #{$spaces-300};
     --mc-spaces-500: #{$spaces-500};
     --mc-spaces-700: #{$spaces-700};
+    --mc-faq-300: #{$faq-300};
+    --mc-faq-500: #{$faq-500};
+    --mc-faq-700: #{$faq-700};
     --mc-success-300: #{$success-300};
     --mc-success-500: #{$success-500};
     --mc-success-700: #{$success-700};

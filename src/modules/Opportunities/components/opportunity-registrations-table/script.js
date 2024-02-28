@@ -17,6 +17,7 @@ app.component('opportunity-registrations-table', {
             resultStatus:[],
             query: {
                 opportunity: `EQ(${this.phase.id})`,
+                status: `GTE(0)`,
             },
             selectedCategory:null,
             selectedStatus:null,
@@ -44,12 +45,12 @@ app.component('opportunity-registrations-table', {
                 { text: "Inscrição", value: "number" },
                 { text: "Categoria", value: "category" },
                 { text: "Agente", value: "owner.name", slug: "agent"},
+                { text: "Anexo", value: "attachments" },
                 { text: "Status", value: "status"},
-                { text: "", value: "options"},
             ];
 
             if(this.phase.evaluationMethodConfiguration){
-                itens.splice(3,0,{ text: "Resultado final da avaliação", value: "consolidatedResult"});
+                itens.splice(3,0,{ text: "Avaliação", value: "consolidatedResult"});
             }
 
             if(this.statusCategory.length == 0){
@@ -59,7 +60,7 @@ app.component('opportunity-registrations-table', {
             return itens;
         },
         select() {
-            return "number,category,consolidatedResult,status,singleUrl,owner.{name}";
+            return "number,category,consolidatedResult,status,singleUrl,files,owner.{name}";
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
@@ -75,12 +76,12 @@ app.component('opportunity-registrations-table', {
         },
 
         clearFilters(entities) {
-            this.selectedCategory = null,
-            this.selectedStatus = null,
-            this.selectedStatus = null,
-            this.selectedAvaliation = null
+            this.selectedCategory = null;
+            this.selectedStatus = null;
+            this.selectedStatus = null;
+            this.selectedAvaliation = null;
+            this.query['status'] = `GTE(0)`;
             delete this.query['category'];
-            delete this.query['status'];
             delete this.query['consolidatedResult'];
             entities.refresh();
         },
