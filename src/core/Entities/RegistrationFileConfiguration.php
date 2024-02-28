@@ -150,6 +150,24 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         $this->categories = $value;
     }
 
+    public function setRegistrationRanges($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->registrationRanges = $value;
+    }
+
+    public function setProponentTypes($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->proponentTypes = $value;
+    }
+
     public function jsonSerialize(): array {
         $result = [
             'id' => $this->id,
