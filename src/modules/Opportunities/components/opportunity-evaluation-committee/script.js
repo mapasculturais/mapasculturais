@@ -139,9 +139,9 @@ app.component('opportunity-evaluation-committee', {
             let url = Utils.createUrl('evaluationMethodConfiguration', 'single', {id: this.entity.id});
             
 
-            if (event == 'sem avaliações' && this.entity.fetchCategories[userId].length > 1) {
+            if (event && event == 'sem avaliações' && this.entity.fetchCategories[userId].length > 1) {
                 this.entity.fetchCategories[userId] = this.entity.fetchCategories[userId].filter((category) => category == 'sem avaliações');
-            } else if (event != 'sem avaliações' && this.entity.fetchCategories[userId].includes('sem avaliações')) {
+            } else if (event && event != 'sem avaliações' && this.entity.fetchCategories[userId].includes('sem avaliações')) {
                 this.entity.fetchCategories[userId] = this.entity.fetchCategories[userId].filter((category) => category != 'sem avaliações');
             }
 
