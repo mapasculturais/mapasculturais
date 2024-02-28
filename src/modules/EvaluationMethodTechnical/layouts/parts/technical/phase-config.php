@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import("
     affirmative-policies--geo-quota-configuration
+    affirmative-policies--quota-configuration
     entity-field
     mc-icon
     tiebreaker-criteria-configuration
