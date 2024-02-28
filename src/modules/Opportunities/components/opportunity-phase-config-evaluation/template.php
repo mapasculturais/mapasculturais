@@ -13,6 +13,8 @@ $this->import('
     opportunity-phase-publish-date-config
     tiebreaker-criteria-configuration
     v1-embed-tool
+
+    affirmative-policies--geo-quota-configuration
 ');
 
 $evaluation_methods = $app->getRegisteredEvaluationMethods();
@@ -43,10 +45,6 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         </section>
 
         <section class="evaluation-section col-12">
-            <tiebreaker-criteria-configuration :phase="phase"></tiebreaker-criteria-configuration>
-        </section>
-
-        <section class="evaluation-section col-12">
             <div class="evaluation-section__header">
                 <span class="title"><?= i::__('Configurar campos visíveis para avaliação') ?></span>
                 <span class="subtitle"><?= i::__('Defina quais campos serão habilitados para avaliação.') ?></span>
@@ -61,6 +59,10 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                 </template>
             </mc-modal>  
 
+        </section>
+
+        <section class="evaluation-section col-12">
+            <affirmative-policies--geo-quota-configuration></affirmative-policies--geo-quota-configuration>
         </section>
 
         <section class="evaluation-section col-12">
