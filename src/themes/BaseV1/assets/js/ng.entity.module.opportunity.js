@@ -1666,7 +1666,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.useRegistrationsRanges = MapasCulturais.entity.registrationRanges.length > 0;
     $scope.useProponentTypes = MapasCulturais.entity.registrationProponentTypes?.length > 0;
 
-    $scope.registrationRanges = $scope.useRegistrationsRanges ? MapasCulturais.entity.registrationRanges : [1,2,3];
+    $scope.registrationRanges = $scope.useRegistrationsRanges ? MapasCulturais.entity.registrationRanges : [];
     $scope.registrationProponentTypes = $scope.useProponentTypes ? MapasCulturais.entity.registrationProponentTypes: [];
 
     if($scope.useCategories){
