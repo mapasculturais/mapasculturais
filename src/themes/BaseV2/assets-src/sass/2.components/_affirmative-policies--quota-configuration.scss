@@ -1,0 +1,102 @@
+@use '../0.settings/mixins' as *;
+
+.affirmative-policies--quota-configuration {
+    margin: size(10) 0;
+    border: size(1) solid var(--mc-gray-300);
+    border-radius: var(--mc-border-radius-xs);
+    padding: size(20) size(20) size(8);
+
+    &__content {
+        .fields {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            padding: size(18) 0;
+        }
+        
+        .field__title {
+            display: flex;
+            flex-direction: column;
+            font-weight: var(--mc-font-regular);
+            font-size: var(--mc-font-size-xxs);
+
+            & input {
+                max-width: size(92);
+                margin-top: size(8);
+                width: 100%;
+                padding: size(16) size(54) size(16) size(14);
+                border: size(1) solid var(--mc-gray-500);
+                border-radius: 4px;   
+            }
+        }
+        
+    }
+
+    &__quota {
+        display: grid;
+        grid-template-columns: 
+            calc(60% - size(65)) 
+            calc(20% - size(45)) 
+            calc(20% - size(45))
+            size(70);
+        border-top: 1px solid var(--mc-gray-300);
+        padding: size(18) 0;
+        gap: size(30);
+
+        .field__title--semibold {
+            font-weight: var(--mc-font-semibold);
+        }
+        
+        .field__column {
+            margin-top: size(16);
+            display: flex;
+            flex-direction: row;
+            gap: size(54);
+
+            & label {
+                display: flex;
+                align-items: center;
+                font-size: var(--mc-font-size-xxs);
+                font-weight: var(--mc-font-semibold);
+                line-height: size(17);
+            }
+
+            .input {
+                margin-right: size(8);
+            }
+        }
+
+        .quota__fields {
+            padding-top: size(2);
+        }
+
+        & select {
+            font-size: var(--mc-font-size-xs);
+            font-weight: 400;
+            color: var(--mc-gray-700);
+            background-color: #fff;
+            outline: none;
+            position: relative;
+            width: 100%;
+            border-radius: var(--mc-border-radius-xs);
+            padding: size(16) size(54) size(16) size(14);
+            margin-top: size(8);
+        }
+
+        .quota__trash {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    &__footer {
+        border-top: 1px solid var(--mc-gray-300);
+        padding-top: size(14);
+    }
+
+    @media (max-width: 810px) {
+        &__quota {
+            grid-template-columns: 1fr;
+        }
+    }
+}
