@@ -137,7 +137,10 @@ class Module extends \MapasCulturais\EvaluationMethod
         foreach($evaluation_method_configuration->criteria as $key => $c){
             if(isset($data[$c->id])){
                 $val = $data[$c->id];
-                $options = array_merge($c->options, ['Habilitado', 'Inabilitado', 'Não se aplica']);
+                $options = ['Habilitado', 'Inabilitado', 'Não se aplica'];
+                if($c->options) {
+                    $options = array_merge($c->options, $options);
+                }
                 if(!in_array($val, $options)){
                     $errors[] = i::__("O valor do critério {$c->name} é inválido");
                     break;
