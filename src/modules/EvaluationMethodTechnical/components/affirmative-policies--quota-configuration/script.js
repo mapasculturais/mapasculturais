@@ -23,11 +23,28 @@ app.component('affirmative-policies--quota-configuration', {
             totalVacancies: this.entity.opportunity.vacancies ?? 0,
             totalQuota: this.entity.quotaConfiguration ? this.entity.quotaConfiguration.vacancies : 0,
             totalPercentage: 0,
-            rulesPercentages: []
+            rulesPercentages: [],
+            fields: $MAPAS.config.affirmativePoliciesQuotaConfiguration.fields[this.entity.opportunity.id]
         }
     },
 
     methods: {
+        getField(quota) {
+            const fieldName = quota.fieldName;
+            const field = this.fields.find((field) => field.fieldName == fieldName);
+            return field;
+        },
+
+        getFieldType(quota) {
+            const field = this.getField(quota);
+            return field?.fieldType;
+        },
+
+        getFieldOptions(quota) {
+            const field = this.getField(quota);
+            return field?.fieldOptions;
+        },
+
         addConfig() {
             if (!this.entity.quotaConfiguration) {
                 this.entity.quotaConfiguration = {
@@ -47,7 +64,7 @@ app.component('affirmative-policies--quota-configuration', {
             return rules;
         },
         selectField(fieldName, index, load = false) {
-            this.selectedField[index] = this.entity.opportunity.affirmativePoliciesEligibleFields.find(item => item.fieldName === fieldName);
+            this.selectedField[index] = this.fields.find(item => item.fieldName === fieldName);
             if (!load) {
                 this.autoSave();
             }
@@ -61,8 +78,8 @@ app.component('affirmative-policies--quota-configuration', {
         autoSave() {
             clearTimeout(this.timeout);
             this.timeout = setTimeout(() => {
-                this.entity.save()
-            }, 300);
+                this.entity.save(true)
+            }, 3000);
         },
         updateTotalQuotas() {
             this.totalQuota = (this.totalVacancies * this.totalPercentage) / 100;

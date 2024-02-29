@@ -23,31 +23,29 @@ $this->import('
         <div v-for="(quota, index) in entity.quotaConfiguration.rules" :key="index">
             <h5 class="bold field__title"><?= i::__('Cota') ?> {{index+1}}</h5>
 
-            <select v-model="quota.fieldName" @change="selectField(quota.fieldName, index)">
-                <option v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
+            <select v-model="quota.fieldName">
+                <option v-for="(item, index) in fields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
             </select>
 
-            <input type="number" v-model="rulesPercentages[index]" @change="updateRuleQuotas(quota, index)" min="0" max="100"> %
+            <input type="number" v-model="quota.rulesPercentages[index]" @change="updateRuleQuotas(quota, index)" min="0" max="100"> %
             <input type="number" v-model="quota.vacancies" @change="updateRuleQuotaPercentage(quota, index)" min="0" :max="totalQuota">
 
-            <div v-if="selectedField.length > 0 && selectedField[index]">
-                <div v-if="selectedField[index].fieldType === 'select'">
-                    <div v-for="(option, index) in selectedField[index].fieldOptions" :key="index">
-                        <input type="checkbox" :id="'option_' + index" :value="option" v-model="quota.eligibleValues" @change="autoSave">
-                        <label :for="'option_' + index">{{ option }}</label>
-                    </div>
-                </div>
+            <div v-if="getFieldType(quota) === 'select' || getFieldType(quota) === 'multiselect'">
+                <label v-for="option in getFieldOptions(quota)">
+                    <input type="checkbox" :value="option" v-model="quota.eligibleValues" @change="autoSave()">
+                    {{option}}
+                </label>
+            </div>
 
-                <div v-if="selectedField[index].fieldType === 'checkbox'">
-                    <div>
-                        <input type="radio" id="trueOption" name="checkboxOption" value="true" v-model="quota.eligibleValues" @change="autoSave">
-                        <label for="trueOption"><?= i::__('Sim') ?></label>
-                    </div>
-                    <div>
-                        <input type="radio" id="falseOption" name="checkboxOption" value="false" v-model="quota.eligibleValues" @change="autoSave">
-                        <label for="falseOption"><?= i::__('Não') ?></label>
-                    </div>
-                </div>
+            <div v-if="getFieldType(quota) === 'checkbox' || getFieldType(quota) === 'boolean'">
+                <label>
+                    <input type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.eligibleValues" @change="autoSave()">
+                    <?php i::__('Sim / Marcado') ?>
+                </label>
+                <label>
+                    <input type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="quota.eligibleValues" @change="autoSave()">
+                    <?php i::__('Não / Desmarcado') ?>
+                </label>
             </div>
 
             <mc-confirm-button @confirm="removeConfig(index)">
