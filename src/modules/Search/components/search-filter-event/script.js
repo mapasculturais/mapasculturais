@@ -159,13 +159,14 @@ app.component('search-filter-event', {
 
     methods: {
         clearFilters() {
-            this.date = [this.defaultDateFrom, this.defaultDateTo];
-            this.pseudoQuery['@from'] = d0.date('sql');
-            this.pseudoQuery['@to'] = d1.date('sql');
             delete this.pseudoQuery['event:@verified'];
-            this.pseudoQuery['event:classificacaoEtaria'].length = 0;
-            this.pseudoQuery['event:term:linguagem'].length = 0;        
+            delete this.pseudoQuery['event:term:linguagem'];
+            delete this.pseudoQuery['event:classificacaoEtaria'];
+            this.date = [this.defaultDateFrom, this.defaultDateTo];
+            this.pseudoQuery['@from'] = this.parseDate(this.today);
+            this.pseudoQuery['@to'] = this.parseDate(this.nextMonth);
         },
+
         dateFormat(date) {
             const d0 = new Date(date[0]);
             const d1 = new Date(date[1]);
