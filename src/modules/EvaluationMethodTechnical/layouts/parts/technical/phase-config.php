@@ -11,9 +11,14 @@ $this->import("
     affirmative-policies--quota-configuration
     entity-field
     mc-icon
+    technical-assessment-section
     tiebreaker-criteria-configuration
 ");
 ?>
+<div class="col-12">
+    <h3><?= i::__('Configuração de critérios') ?></h3>
+    <technical-assessment-section :entity="phase"></technical-assessment-section>
+</div>
 <div class="col-12">
     <h3><?= i::__('Critérios de avaliação') ?></h3>
     <entity-field :entity="phase" prop="enableViability" :autosave="3000"></entity-field>
