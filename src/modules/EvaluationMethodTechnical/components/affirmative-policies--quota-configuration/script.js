@@ -18,12 +18,9 @@ app.component('affirmative-policies--quota-configuration', {
 
     data() {
         return {
-            selectedField: [],
-            timeout: null,
             totalVacancies: this.entity.opportunity.vacancies ?? 0,
             totalQuota: this.entity.quotaConfiguration ? this.entity.quotaConfiguration.vacancies : 0,
             totalPercentage: 0,
-            rulesPercentages: [],
             fields: $MAPAS.config.affirmativePoliciesQuotaConfiguration.fields[this.entity.opportunity.id]
         }
     },
@@ -63,17 +60,11 @@ app.component('affirmative-policies--quota-configuration', {
             }
             return rules;
         },
-        selectField(fieldName, index, load = false) {
-            this.selectedField[index] = this.fields.find(item => item.fieldName === fieldName);
-            if (!load) {
-                this.autoSave();
-            }
-        },
         removeConfig(item) {
             this.entity.quotaConfiguration.rules = this.entity.quotaConfiguration.rules.filter(function(value, key) {
                 return item != key;
             });
-            this.autoSave();
+            this.distributeQuotas(false)
         },
         autoSave() {
             this.entity.save(3000)            
@@ -86,12 +77,12 @@ app.component('affirmative-policies--quota-configuration', {
             this.totalPercentage = (this.totalQuota * 100) / this.totalVacancies;
             this.entity.quotaConfiguration.vacancies = this.totalQuota;
         },
-        updateRuleQuotas(quota, index) {
-            quota.vacancies = (this.totalQuota * this.rulesPercentages[index] ) / 100;
+        updateRuleQuotas(quota) {
+            quota.vacancies = (this.totalQuota * quota.percentage ) / 100;
             this.distributeQuotas();
         },
-        updateRuleQuotaPercentage(quota, index, load = false) {
-            this.rulesPercentages[index] = (quota.vacancies * 100) / this.totalQuota;
+        updateRuleQuotaPercentage(quota, load = false) {
+            quota.percentage = (quota.vacancies * 100) / this.totalVacancies;
             this.distributeQuotas(load);
         },
         distributeQuotas(load) {
@@ -100,10 +91,12 @@ app.component('affirmative-policies--quota-configuration', {
                 this.entity.quotaConfiguration.rules.forEach((quota, index) => {
                     countVacancies += quota.vacancies;
                 });
+                this.totalQuota = countVacancies;
 
-                if(countVacancies > this.totalQuota) {
+                if(this.totalQuota > this.totalVacancies) {
                     this.messages.error(this.text('limitQuota'));
                 } else {
+                    this.updateQuotaPercentage();
                     if(!load) {
                         this.autoSave();
                     }
@@ -115,10 +108,6 @@ app.component('affirmative-policies--quota-configuration', {
     mounted() {
         if(this.entity.quotaConfiguration && this.entity.quotaConfiguration.rules.length > 0) {
             this.updateQuotaPercentage();
-            this.entity.quotaConfiguration.rules.forEach((quota, index) => {
-                this.updateRuleQuotaPercentage(quota, index, true);
-                this.selectField(quota.fieldName, index, true);
-            });
         }
     }
 });

@@ -17,6 +17,7 @@ $field_types = [
     'multiselect', 
     'number', 
     'select',
+    'checkbox'
 ];
 
 $parse_agent_field = function ($field) use ($agent_description, $field_types) {
