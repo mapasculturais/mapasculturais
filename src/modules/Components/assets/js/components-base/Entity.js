@@ -67,7 +67,9 @@ class Entity {
                 };
             }
             if(JSON.stringify(this[prop]) != JSON.stringify(val)) {
-                this[prop] = val;
+                if(!preserveValues || this[prop] == undefined) {
+                    this[prop] = val;
+                }
             }
         }
 
