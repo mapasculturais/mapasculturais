@@ -4,6 +4,41 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Novas funcionalidades
+- Implementa botão de aplicar avaliações para avaliações técnicas
+- Implementa exibição de parecer na avaliação documental
+- Implementa exibição de parecer na avaliação qualificação documental
+- Implementa campo de dados bancários vinculado ao agente responsável via campo @
+- Implementa botão que faz a sincronia das inscrições entre as fases
+
+### Melhorias
+- Nova lib instalada (league/csv), para geração de arquivos csv.
+- Adicionado novo ícone para o histórico de alterações.
+- Adiciona data de envio da inscrição na tela de impressão da ficha
+- Implementa novos componentes vuejs para trabalhar implementação de tabelas 
+- Refatora listagem de inscrições para uma tabela visualmente mais agradavel
+- Insere a opção de alterar o tipo dos agentes no modo de edição do perfil quando o usuario logado tem essa permissão
+- Exibe campo de pessoa idosa na single do agente
+- Implementa a exibição de nova coluna na listagem de inscrições para baixar os anexos
+- Altera nome da coluna resultado final da avaliação para "Avaliação" na listagem de inscrições
+- Implementa estêncil circular para definir tamanho do avatar durante o recorte
+
+### Correções
+- Corrige erro da instalação do npm após o node.
+- Corrige extrações de planilhas em excel das entidades via API
+- Corrige erro na exibição do paracer técnico da avaliação técnica, quando nao existe avaliações enviadas
+- Ajusta em ordem alfabética os tipos de entidades nas entidades opportunity, space e project
+- Ajusta o disparo de e-mails de criação e envio da inscrição para que sejam feitos em toda fase da coleta de dados
+- Corrige permissão de visualização de arquivos privados
+- Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
+- Corrige configuração do crop da imagem do avatar
+- Corrige exibição do botão publicar resultados e suas frases de advertência para que sejam exibidos e funcionais somente quando a fase estiver terminada
+
+## [7.3.22] - 2024-03-01
+### Correções
+- Ajusta para que o terceiro banner carregue a imagem correta.
+
 ## [7.3.21] - 2024-03-01
 ### Correções
 - Ajusta para que os os links do terceiro banner da home funcione.
