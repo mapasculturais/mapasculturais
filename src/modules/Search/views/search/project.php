@@ -12,7 +12,7 @@ $this->import('
 
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
-    ['label' => i::__('Projetos'), 'url' => $app->createUrl('projects')],
+    ['label' => i::__('Projetos'), 'url' => $app->createUrl('projetos')],
 ];
 ?>
 
