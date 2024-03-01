@@ -257,20 +257,24 @@ class Module extends \MapasCulturais\Module{
             }
 
             $this->enableCacheGetterResult('previousPhase');
+            
+            $last_phase = $this->isLastPhase ? $this : $this->lastPhase;
 
             $class = Opportunity::class;
             $query = $app->em->createQuery("
                 SELECT o 
-                FROM $class o 
-                JOIN o.__metadata m WITH m.key = 'isLastPhase'
+                FROM MapasCulturais\Entities\Opportunity o 
                 WHERE 
-                    o.id = :parent OR
-                    (o.parent = :parent AND o.id <> :this) AND
-                    m.value IS NOT NULL
+                    o.id <> :last AND 
+                    (
+                        o.id = :parent OR
+                        (o.parent = :parent AND o.id <> :this)
+                    )
                 ORDER BY o.id DESC");
 
             $query->setMaxResults(1);
             $query->setParameters([
+                "last" => $last_phase,
                 "parent" => $first_phase,
                 "this" => $this,
             ]);
