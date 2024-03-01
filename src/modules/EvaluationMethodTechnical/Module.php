@@ -99,7 +99,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 return json_decode((string) $val);
             }
         ]);
-
+        
         $this->registerEvaluationMethodConfigurationMetadata('pointReward', [
             'label' => i::__('Bônus por pontuação'),
             'type' => 'json',
@@ -178,6 +178,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 return json_decode((string) $val);
             }
         ]);
+
+        $this->registerRegistrationMetadata('appliedForQuota', [
+            'label' => i::__('A inscrição está concorrendo por cotas?'),
+            'type' => 'boolean',
+            'private' => true,
+            'default' => false
+        ]);
+
     }
 
     function enqueueScriptsAndStyles() {
