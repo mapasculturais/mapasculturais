@@ -105,9 +105,7 @@ app.component('opportunity-phase-config-evaluation' , {
 
         },
         savePhase () {
-            setTimeout(() => {
-                this.phase.save();
-            }, 300);
+            this.phase.save(3000);
         }
     }
 });

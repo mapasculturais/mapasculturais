@@ -102,7 +102,7 @@ app.component('registration-actions', {
             if (iframe) {
                 const promise = new Promise((resolve, reject) => {
                     Promise.all([
-                        registration.save(false),
+                        registration.save(300, false),
                     ]).then((values) => {
                         resolve(values[0]);
                     });
@@ -110,7 +110,7 @@ app.component('registration-actions', {
                 return promise;
 
             } else {
-                return registration.save(false);
+                return registration.save(300, false);
             }
         },
         exit() {

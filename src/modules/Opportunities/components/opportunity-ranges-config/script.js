@@ -34,10 +34,7 @@ app.component('opportunity-ranges-config', {
             }
         },
         autoSave() {
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-                this.entity.save()
-            }, 300);
+            this.entity.save(3000)
         }
     }
 });
