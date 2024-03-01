@@ -15,7 +15,6 @@ $this->import('
 ');
 ?>
 <div class="opportunity-category-list">
-    <h5 class="semibold"><?= i::__("Categorias") ?></h5>
 
     <div class="opportunity-category-list__add-category">
         <div class="field">
