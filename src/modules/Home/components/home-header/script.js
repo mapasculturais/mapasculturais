@@ -15,6 +15,7 @@ app.component('home-header', {
             bannerLink: $MAPAS.config.homeHeader.bannerLink,
             downloadableLink: $MAPAS.config.homeHeader.downloadableLink,
 
+            thirdBanner: $MAPAS.config.homeHeader.thirdBanner,
             secondBanner: $MAPAS.config.homeHeader.secondBanner,
             secondBannerLink: $MAPAS.config.homeHeader.secondBannerLink,
             secondDownloadableLink: $MAPAS.config.homeHeader.secondDownloadableLink,
