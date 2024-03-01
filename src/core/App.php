@@ -2221,7 +2221,6 @@ class App {
         if(($this->view) instanceof Themes\BaseV1\Theme ) {
             $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
         }
-        $this->registerController('geoDivision',    'MapasCulturais\Controllers\GeoDivision');
 
         $this->registerController('user',   'MapasCulturais\Controllers\User');
 
