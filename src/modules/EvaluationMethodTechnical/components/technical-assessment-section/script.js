@@ -52,19 +52,7 @@ app.component('technical-assessment-section', {
             });
         },
         sendConfigs() {
-            let configs = {
-                sections: this.entity.sections,
-                criteria: this.entity.criteria,
-            };
-        
-            let url = Utils.createUrl('evaluationMethodConfiguration', 'single', {id: this.entity._id});
-            this.api.PATCH(url, configs).then(res => res.json()).then(data => {
-                if (data?.error) {
-                    this.messages.error(this.text('configurationError'));
-                } else {
-                    this.messages.success(this.text('configurationSuccess'));
-                }
-            });
+            this.entity.save(3000);
         },
         editSections(sectionId) {
             this.editingSections[sectionId] = !this.editingSections[sectionId];
@@ -80,10 +68,7 @@ app.component('technical-assessment-section', {
             this.autoSave();
         },
         autoSave() {
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-                this.entity.save()
-            }, 300);
+            this.entity.save(3000)
         }
     }
 });

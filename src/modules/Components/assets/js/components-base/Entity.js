@@ -385,24 +385,55 @@ class Entity {
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
     }
 
-    async save(preserveValues = true) {
+    async save(delay = 300, preserveValues = true) {
         this.__processing = this.text('salvando');
+        
+        clearTimeout(this.__saveTimeout);
 
-        try {
-            const res = await this.API.persistEntity(this);
-            return this.doPromise(res, (entity) => {
+        this.resolvers = this.resolvers || [];
+        this.rejecters = this.rejecters || [];
 
-                if (this.id) {
-                    this.sendMessage(this.text('modificacoes salvas'));
-                } else {
-                    this.sendMessage(this.text('entidade salva'));
+        return new Promise((resolve, reject) => {
+            this.resolvers.push(resolve);
+            this.rejecters.push(reject);
+
+            this.__saveTimeout = setTimeout(async () => {
+                try {
+                    const data = this.data(true);
+                    if(JSON.stringify(data) == '{}') {
+                        const response = this.data();
+                        for(let resolve of this.resolvers) {
+                            resolve(response);
+                        }
+
+                        return;
+                    }
+
+                    const res = await this.API.persistEntity(this);
+                    this.doPromise(res, (entity) => {
+    
+                        if (this.id) {
+                            this.sendMessage(this.text('modificacoes salvas'));
+                        } else {
+                            this.sendMessage(this.text('entidade salva'));
+                        }
+                        this.populate(entity, preserveValues)
+                    }).then((response) => {
+                        for(let resolve of this.resolvers) {
+                            resolve(response);
+                        }
+                    });
+        
+                } catch (error) {
+                    this.doCatch(error).then((response) => {
+                        for(let reject of this.rejecters) {
+                            reject(response);
+                        }                        
+                    });
                 }
-                this.populate(entity, preserveValues)
-            });
 
-        } catch (error) {
-            return this.doCatch(error)
-        }
+            }, delay);
+        });
     }
 
     async delete(removeFromLists) {
@@ -639,7 +670,6 @@ class Entity {
 
     async renameAgentRelationGroup(oldName, newName) {
         this.__processing = this.text('renomeando grupo de agentes relacionados');
-
         try {
             const res = await this.API.POST(this.getUrl('renameAgentRelationGroup'), {oldName, newName});
             this.doPromise(res, (data) => {

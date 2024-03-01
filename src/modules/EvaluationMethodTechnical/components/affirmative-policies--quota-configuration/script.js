@@ -76,10 +76,7 @@ app.component('affirmative-policies--quota-configuration', {
             this.autoSave();
         },
         autoSave() {
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-                this.entity.save(true)
-            }, 3000);
+            this.entity.save(3000)            
         },
         updateTotalQuotas() {
             this.totalQuota = (this.totalVacancies * this.totalPercentage) / 100;
