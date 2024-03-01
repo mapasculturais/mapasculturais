@@ -20,10 +20,10 @@
             font-size: var(--mc-font-size-xxs);
 
             & input {
-                max-width: size(92);
+                max-width: size(116);
                 margin-top: size(8);
                 width: 100%;
-                padding: size(16) size(54) size(16) size(14);
+                padding: size(16) size(14);
                 border: size(1) solid var(--mc-gray-500);
                 border-radius: 4px;   
             }
@@ -65,20 +65,15 @@
             }
         }
 
-        .quota__fields {
-            padding-top: size(2);
-        }
-
         & select {
             font-size: var(--mc-font-size-xs);
             font-weight: 400;
             color: var(--mc-gray-700);
             background-color: #fff;
             outline: none;
-            position: relative;
             width: 100%;
             border-radius: var(--mc-border-radius-xs);
-            padding: size(16) size(54) size(16) size(14);
+            padding: size(14);
             margin-top: size(8);
         }
 
