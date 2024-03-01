@@ -115,7 +115,7 @@ app.component('tiebreaker-criteria-configuration', {
 
         async save() {
             this.phase.tiebreakerCriteriaConfiguration = this.criteria;
-            await this.phase.save();
+            await this.phase.save(3000);
         }
     },
 });
