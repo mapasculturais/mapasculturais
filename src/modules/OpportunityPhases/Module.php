@@ -265,6 +265,7 @@ class Module extends \MapasCulturais\Module{
                 FROM MapasCulturais\Entities\Opportunity o 
                 WHERE 
                     o.id <> :last AND 
+                    o.id < :this AND
                     (
                         o.id = :parent OR
                         (o.parent = :parent AND o.id <> :this)
