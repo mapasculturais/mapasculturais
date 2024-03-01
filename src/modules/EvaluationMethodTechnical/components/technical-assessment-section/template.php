@@ -15,8 +15,18 @@ $this->import('
 
 <div class="technical-assessment-section">
     <div v-if="entity.sections && entity.sections.length > 0">
+        <label>
+            <?php i::_e("Nota máxima:") ?>
+            {{ maxScore }}
+        </label>
+
+        <label>
+            <?php i::_e("Nota de corte:") ?>
+            <input type="number" v-model="entity.cutoffScore" min="0" @blur="autoSave()" placeholder="<?= i::esc_attr__('Nota de corte') ?>">
+        </label>
+
         <div v-for="(section, index) in entity.sections" :key="index">
-            <input v-if="editingSections[section.id]" type="text" v-model="section.name" @blur="sendConfigs();editSections(section.id);">
+            <input v-if="editingSections[section.id]" type="text" v-model="section.name" @blur="sendConfigs();editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
             <span v-else class="bold">{{section.name}}</span>
 
             <button @click="editSections(section.id)">
@@ -39,10 +49,10 @@ $this->import('
             <div v-if="entity.criteria && entity.criteria.length > 0">
                 <div v-for="(criteria, index) in entity.criteria" :key="index">
                     <div v-if="criteria.sid == section.id">
-                        <input type="text" v-model="criteria.title" @blur="sendConfigs">
-                        <input type="number" v-model="criteria.min" @blur="sendConfigs">
-                        <input type="number" v-model="criteria.max" @blur="sendConfigs">
-                        <input type="number" v-model="criteria.weight" @blur="sendConfigs">
+                        <input type="text" v-model="criteria.title" @blur="sendConfigs" placeholder="<?= i::esc_attr__('Nome do critério') ?>">
+                        <input type="number" v-model="criteria.max" @blur="sendConfigs" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>">
+                        <input type="number" v-model="criteria.weight" @blur="sendConfigs" placeholder="<?= i::esc_attr__('Peso') ?>">
+                        
                         <mc-confirm-button @confirm="delCriteria(criteria.id)">
                             <template #button="{open}">
                                 <div class="field__trash">
