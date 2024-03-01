@@ -9,25 +9,29 @@ app.component('technical-assessment-section', {
         }
     },
 
-    setup() {
-        // os textos estão localizados no arquivo texts.php deste componente 
-        const messages = useMessages();
-        const text = Utils.getTexts('technical-assessment-section')
-        return { text, messages }
+    data() {
+        return {
+            editingSections: []
+        }
     },
 
-    data() {
-        const api = new API();
-        return {
-            api,
-            editingSections: [],
-            timeout: null
+    computed: {
+        maxScore() {
+            let totalScore = 0;
+
+            if(this.entity.criteria && this.entity.criteria.length > 0) {
+                this.entity.criteria.forEach(criteria => {
+                    totalScore += criteria.max * criteria.weight;
+                });
+            }
+
+            return totalScore;
         }
     },
 
     methods: {
         generateUniqueNumber() {
-            return 's-' + Date.now() + Math.floor(Math.random() * 1000);
+            return Date.now() + Math.floor(Math.random() * 1000);
         },
         addSection() {
             let sectionId = 's-'+this.generateUniqueNumber();
@@ -47,7 +51,7 @@ app.component('technical-assessment-section', {
                 sid: sectionId,
                 title: '',
                 min: 0,
-                max: 10,
+                max: null,
                 weight: 1
             });
         },

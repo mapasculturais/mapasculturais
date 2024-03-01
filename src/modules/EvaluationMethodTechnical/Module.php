@@ -186,6 +186,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
             'default' => false
         ]);
 
+        $this->registerEvaluationMethodConfigurationMetadata('cutoffScore', [
+            'label' => i::__('Nota de corte'),
+            'type' => 'integer',
+        ]);
     }
 
     function enqueueScriptsAndStyles() {

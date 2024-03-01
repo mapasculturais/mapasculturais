@@ -66,6 +66,7 @@
         display: flex;
         flex-direction: column;
         gap: size(10);
+        margin-bottom: size(16);
 
         .field__preponent > .field__group {
             display: flex;
@@ -88,7 +89,7 @@
         display: flex;
         flex-direction: column;
         gap: size(8);
-        margin-bottom: size(20);
+        margin-bottom: size(16);
         
         .field {
             position: relative;
@@ -106,7 +107,8 @@
 
             &__limits {
                 & input {
-                    max-width: 8rem;
+                    max-width: size(100);
+                    padding: size(8);
                     z-index: 2;
                 }
 
