@@ -18,21 +18,21 @@ $this->import('
 
     <div class="affirmative-policies--quota-configuration__content" v-if="entity.quotaConfiguration && entity.quotaConfiguration.rules.length > 0">
         <div class="fields">
-            <label class="field__title"><?= i::__('Percentual total das Cotas') ?>
-                <div>
-                    <input type="number" v-model="totalPercentage" @change="updateTotalQuotas" @blur="autoSave" min="0" max="100"> %
-                </div>
+            <label class="field__title">
+                <?= i::__('Percentual total das Cotas:') ?>
+                {{totalPercentage}} %
             </label>
 
-            <label class="field__title"><?= i::__('Número total das Cotas') ?>
-                <input type="number" v-model="totalQuota" @change="updateQuotaPercentage" @blur="autoSave" min="0" :max="totalVacancies">
+            <label class="field__title">
+                <?= i::__('Número total das Cotas:') ?>
+                {{totalQuota}}
             </label>
         </div>
 
         <div class="affirmative-policies--quota-configuration__quota" v-for="(quota, index) in entity.quotaConfiguration.rules" :key="index">
             <div class="affirmative-policies--quota-configuration__column">
                 <h5 class="field__title--semibold"><?= i::__('Cota') ?> {{index+1}}</h5>
-                <select v-model="quota.fieldName" @change="selectField(quota.fieldName, index)">
+                <select v-model="quota.fieldName">
                     <option class="select__selected-option" v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
                 </select>
 
@@ -47,11 +47,11 @@ $this->import('
                     <div class="field__column" v-if="getFieldType(quota) === 'checkbox' || getFieldType(quota) === 'boolean'">
                         <label>
                             <input type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.eligibleValues" @change="autoSave()">
-                            <?php i::__('Sim / Marcado') ?>
+                            <?= i::__('Sim / Marcado') ?>
                         </label>
                         <label>
                             <input type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="quota.eligibleValues" @change="autoSave()">
-                            <?php i::__('Não / Desmarcado') ?>
+                            <?= i::__('Não / Desmarcado') ?>
                         </label>
                     </div>
                 </div>
@@ -60,14 +60,14 @@ $this->import('
             <div class="quota__fields">
                 <label class="field__title"><?= i::__('Porcentagem') ?>
                     <div> 
-                        <input type="number" v-model="rulesPercentages[index]" @change="updateRuleQuotas(quota, index)" min="0" max="100"> %
+                        <input type="number" v-model="quota.percentage" @change="updateRuleQuotas(quota)" min="0" max="100"> %
                     </div>
                 </label> 
             </div>
 
             <div class="quota__fields">
                 <label class="field__title"><?= i::__('Número de Vagas') ?> 
-                    <input type="number" v-model="quota.vacancies" @change="updateRuleQuotaPercentage(quota, index)" min="0" :max="totalQuota">
+                    <input type="number" v-model="quota.vacancies" @change="updateRuleQuotaPercentage(quota)" min="0" :max="totalVacancies">
                 </label>
             </div>
             <div class="quota__trash">
