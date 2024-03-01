@@ -36,6 +36,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige exibição do botão publicar resultados e suas frases de advertência para que sejam exibidos e funcionais somente quando a fase estiver terminada
 
+## [7.3.22] - 2024-03-01
+### Correções
+- Ajusta para que o terceiro banner carregue a imagem correta.
+
 ## [7.3.21] - 2024-03-01
 ### Correções
 - Ajusta para que os os links do terceiro banner da home funcione.
