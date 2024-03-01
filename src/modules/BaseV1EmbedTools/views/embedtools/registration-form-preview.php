@@ -21,6 +21,8 @@ $opMetaSpace = $app->repo('OpportunityMeta')->findBy(['owner' =>  $entity->oppor
 
         <?php $this->part('singles/registration-edit--range', $_params) ?>
 
+        <?php $this->part('singles/registration-edit--proponent-types', $_params) ?>
+
         <div ng-controller="OpportunityController">
             <?php $this->part('singles/registration-edit--agents', $_params); ?>
         </div>
