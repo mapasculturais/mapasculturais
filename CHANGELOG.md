@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.21] - 2024-03-01
+### Correções
+- Ajusta para que os os links do terceiro banner da home funcione.
+
 ## [7.3.20] - 2024-03-01
 ### Correções
 - Corrige erro ao enviar avaliações do tipo qualificação documental.
