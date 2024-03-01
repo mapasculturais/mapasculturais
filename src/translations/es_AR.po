@@ -7621,7 +7621,7 @@ msgstr "Mira este enlace:"
 
 #: src/modules/Entities/views/event/edit.php:35
 #: src/modules/Entities/views/event/single.php:31
-msgid "Evantos"
+msgid "Eventos"
 msgstr "Eventos"
 
 #: src/modules/Entities/views/event/edit.php:69
