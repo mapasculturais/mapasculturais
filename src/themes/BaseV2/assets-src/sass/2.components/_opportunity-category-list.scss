@@ -3,14 +3,20 @@
 .opportunity-category-list {
     display: flex;
     flex-direction: column;
-    gap: size(8);
+    gap: size(16);
 
     &__add-category {
         display: flex;
-        gap: size(12);
+        align-items: center;
+        gap: size(32);
         
         .field {
-            min-width: size(140);
+           max-width: size(432);
+
+            & input {
+                max-width: size(432);
+                padding: size(8);
+            }
         }
     }
 }

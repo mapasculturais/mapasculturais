@@ -39,18 +39,18 @@ $this->import('
                 <div class="field">
                     <div class="field__column" v-if="getFieldType(quota) === 'select' || getFieldType(quota) === 'multiselect'">
                         <label v-for="option in getFieldOptions(quota)">
-                            <input type="checkbox" :value="option" v-model="quota.eligibleValues" @change="autoSave()">
+                            <input class="input" type="checkbox" :value="option" v-model="quota.eligibleValues" @change="autoSave()">
                             {{option}}
                         </label>
                     </div>
 
                     <div class="field__column" v-if="getFieldType(quota) === 'checkbox' || getFieldType(quota) === 'boolean'">
                         <label>
-                            <input type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.eligibleValues" @change="autoSave()">
+                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.eligibleValues" @change="autoSave()">
                             <?= i::__('Sim / Marcado') ?>
                         </label>
                         <label>
-                            <input type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="quota.eligibleValues" @change="autoSave()">
+                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="quota.eligibleValues" @change="autoSave()">
                             <?= i::__('Não / Desmarcado') ?>
                         </label>
                     </div>
