@@ -36,6 +36,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige exibição do botão publicar resultados e suas frases de advertência para que sejam exibidos e funcionais somente quando a fase estiver terminada
 
+## [7.3.20] - 2024-03-01
+### Correções
+- Corrige erro ao enviar avaliações do tipo qualificação documental.
+
+### Melhorias
+- Implementa opção de inserir um terceiro banner na home do mapas.
 
 ## [7.3.19] - 2024-02-26
 ### Correções
