@@ -17,7 +17,7 @@ $this->import('
 ');
 ?>
 <div class="entity-table">
-    <mc-entities :select="select" :type="type" :query="query" :limit="limit" :endpoint="endpoint">
+    <mc-entities :select="select" :type="type" :query="query" :order="order" :limit="limit" :endpoint="endpoint">
 
         <template #header="{entities, filters}">
             <div class="entity-table__header">
@@ -46,7 +46,7 @@ $this->import('
                                     <h4 class="bold"><?= i::__('Filtrar:') ?></h4>
                                 </div>
                                 <div class="entity-table__search-field">
-                                    <input v-model="searchText" @keyup="keyword(entities)" type="text" placeholder="<?= i::__('Pesquise por palavra-chave') ?>" class="entity-table__search-input" />
+                                    <input v-model="searchText" @input="keyword(entities)" type="text" placeholder="<?= i::__('Pesquise por palavra-chave') ?>" class="entity-table__search-input" />
                                     <button @click="keyword(entities)" class="entity-table__search-button">
                                         <mc-icon name="search"></mc-icon>
                                     </button>
@@ -83,16 +83,19 @@ $this->import('
             </div>
         </template>
         <template #default="{entities, refresh}">
+        <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
             <table class="entity-table__table">
                 <thead>
                     <tr>
+                        <th v-if="showIndex" class="entity-table__index">&nbsp;</th>
                         <template v-for="header in columns">
                             <th v-if="header.visible">{{header.text}}</th>
                         </template>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="entity in entities">
+                    <tr v-for="(entity, index) in entities">
+                        <td v-if="showIndex" class="entity-table__index">{{index+1}}</td>
                         <template v-for="header in columns">
                             <td v-if="header.visible">
                                 <slot :name="header.slug" :entity="entity" :refresh="refresh">
