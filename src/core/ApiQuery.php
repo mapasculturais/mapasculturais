@@ -1510,6 +1510,7 @@ class ApiQuery {
     ],
 ],
 */
+
                 $skip = isset($cfg['skip']) && $cfg['skip'];
                 $selected = isset($cfg['selected']) && $cfg['selected'];
                 $mtype = $mapping['type'];
@@ -1582,22 +1583,20 @@ class ApiQuery {
 
                     $cfg['query'] = $query;
                     $cfg['query_result'] = [];
+                    $subquery_result = $query->getFindResult();
                     
                     if($mtype == 1 || $mtype === 2) {
-                        $subquery_result = $query->getFindOneResult();
-                        
-                        if($original_select === $this->pk){
-                            $subquery_result_index[$subquery_result[$_target_property]] = $subquery_result[$this->pk];
-
-                        } else {
-                            $subquery_result_index[$subquery_result[$_target_property]] = &$subquery_result;
-                            if(!in_array($_target_property, $query->_selecting)){
-                                unset($subquery_result[$_target_property]);
+                        foreach ($subquery_result as &$r) {
+                            if($original_select === $this->pk){
+                                $subquery_result_index[$r[$_target_property]] = $r[$this->pk];
+                            } else {
+                                $subquery_result_index[$r[$_target_property]] = &$r;
+                                if(!in_array($_target_property, $query->_selecting)){
+                                    unset($subquery_result[$_target_property]);
+                                }
                             }
                         }
                     } else {
-                        $subquery_result = $query->getFindResult();
-
                         foreach ($subquery_result as &$r) {
                             if (is_array($r[$_target_property])) {
                                 if (isset($r[$_target_property][0])) {
@@ -1627,7 +1626,6 @@ class ApiQuery {
                 }
 
                 foreach ($entities as &$entity) {
-                    
                     if ($skip) {
                         continue;
                     } elseif ($selected) {
