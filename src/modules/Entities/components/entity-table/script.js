@@ -19,13 +19,17 @@ app.component('entity-table', {
             type: Number,
             default: 50
         },
+        order: {
+            type: String,
+            default: 'createTimestamp ASC'
+        },
         query: {
             type: Object || String,
             default: {}
         },
         watchDebounce: {
             type: Number,
-            default: 500
+            default: 1500
         },
         headers: {
             type: Array,
@@ -43,6 +47,10 @@ app.component('entity-table', {
             type: String,
             default: 'find'
         },
+        showIndex: {
+            type: Boolean,
+            default: false
+        }
     },
 
     created() {
