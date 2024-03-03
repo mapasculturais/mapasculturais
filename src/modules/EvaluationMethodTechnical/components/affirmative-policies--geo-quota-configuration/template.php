@@ -53,11 +53,11 @@ $this->import('
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>Exemplo</th>
+                    <tr v-for="(value, option) in geoQuota.distribution">
+                        <th>{{option}}</th>
                         <td>
                             <div class="geo-quota__input-area">
-                                <input class="geo-quota__input" type="number" /> %
+                                <input class="geo-quota__input" v-model="geoQuota.distribution[option]" type="number" /> %
                             </div>
                         </td>
                         <td>
