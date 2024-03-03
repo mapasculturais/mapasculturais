@@ -85,7 +85,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         });
 
-        $app->hook('repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword) {
+        $app->hook('repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword, $alias) {
             $key = trim(strtolower(str_replace('%','',$keyword)));
             
             $value = null;
@@ -103,7 +103,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $where .= " OR e.consolidatedResult = '$value'";
             } 
             
-            $where .= " OR unaccent(lower(e.consolidatedResult)) LIKE unaccent(lower(:keyword))";
+            $where .= " OR unaccent(lower(e.consolidatedResult)) LIKE unaccent(lower(:{$alias}))";
         });
 
         $app->hook('evaluationsReport(simple).sections', function (Entities\Opportunity $opportunity, &$sections) use ($app) {
