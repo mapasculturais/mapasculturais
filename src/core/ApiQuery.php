@@ -719,7 +719,8 @@ class ApiQuery {
     
     private $__inSubclassesQuery = false;
     public function getFindResult(string $select = null) {
-
+        $app = App::i();
+        
         if (!$this->__inSubclassesQuery && $this->entityClassMetadata->inheritanceType == 3 && $this->entityClassMetadata->subClasses) {
             $this->__inSubclassesQuery = true;
             $result = $this->getSubClassesResult();
@@ -760,6 +761,8 @@ class ApiQuery {
         if(!$this->_findingIds) {
             $this->processEntities($result);
         }
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.findResult", [&$result]);
 
         return $result;
     }
