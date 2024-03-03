@@ -1364,7 +1364,137 @@ class ApiQuery {
                 } else {
                     continue;
                 }
+/**
+ * types de mapeamentos
+ * 1 - OneToOne
+ * 2 - ManyToOne
+ * 4 - OneToMany
+ * 
+===> ManyToOne <===    
+"parent" => [
+    "fieldName" => "parent",
+    "joinColumns" => [
+        [
+        "name" => "parent_id",
+        "unique" => false,
+        "nullable" => true,
+        "onDelete" => "CASCADE",
+        "columnDefinition" => null,
+        "referencedColumnName" => "id",
+        ],
+    ],
+    "cascade" => [],
+    "inversedBy" => null,
+    "targetEntity" => "MapasCulturais\Entities\Opportunity",
+    "fetch" => 2,
+    "type" => 2,
+    "mappedBy" => null,
+    "isOwningSide" => true,
+    "sourceEntity" => "MapasCulturais\Entities\Opportunity",
+    "isCascadeRemove" => false,
+    "isCascadePersist" => false,
+    "isCascadeRefresh" => false,
+    "isCascadeMerge" => false,
+    "isCascadeDetach" => false,
+    "sourceToTargetKeyColumns" => [
+        "parent_id" => "id",
+    ],
+    "joinColumnFieldNames" => [
+        "parent_id" => "parent_id",
+    ],
+    "targetToSourceKeyColumns" => [
+        "id" => "parent_id",
+    ],
+    "orphanRemoval" => false,
+    "inherited" => "MapasCulturais\Entities\Opportunity",
+    "declared" => "MapasCulturais\Entities\Opportunity",
+],
 
+===> OneToMany <===
+"_children" => [
+    "fieldName" => "_children",
+    "mappedBy" => "parent",
+    "targetEntity" => "MapasCulturais\Entities\Opportunity",
+    "cascade" => [
+        "remove",
+    ],
+    "orphanRemoval" => false,
+    "fetch" => 2,
+    "type" => 4,
+    "inversedBy" => null,
+    "isOwningSide" => false,
+    "sourceEntity" => "MapasCulturais\Entities\Opportunity",
+    "isCascadeRemove" => true,
+    "isCascadePersist" => false,
+    "isCascadeRefresh" => false,
+    "isCascadeMerge" => false,
+    "isCascadeDetach" => false,
+    "inherited" => "MapasCulturais\Entities\Opportunity",
+    "declared" => "MapasCulturais\Entities\Opportunity",
+],
+
+===> OneToOne <===
+"evaluationMethodConfiguration" => [
+    "fieldName" => "evaluationMethodConfiguration",
+    "targetEntity" => "MapasCulturais\Entities\EvaluationMethodConfiguration",
+    "joinColumns" => [],
+    "mappedBy" => "opportunity",
+    "inversedBy" => null,
+    "cascade" => [],
+    "orphanRemoval" => false,
+    "fetch" => 2,
+    "type" => 1,
+    "isOwningSide" => false,
+    "sourceEntity" => "MapasCulturais\Entities\Opportunity",
+    "isCascadeRemove" => false,
+    "isCascadePersist" => false,
+    "isCascadeRefresh" => false,
+    "isCascadeMerge" => false,
+    "isCascadeDetach" => false,
+    "inherited" => "MapasCulturais\Entities\Opportunity",
+    "declared" => "MapasCulturais\Entities\Opportunity",
+],
+
+    ===> OneToOne <===
+"opportunity" => [
+    "fieldName" => "opportunity",
+    "targetEntity" => "MapasCulturais\Entities\Opportunity",
+    "joinColumns" => [
+        [
+        "name" => "opportunity_id",
+        "unique" => true,
+        "nullable" => false,
+        "onDelete" => "CASCADE",
+        "columnDefinition" => null,
+        "referencedColumnName" => "id",
+        ],
+    ],
+    "mappedBy" => null,
+    "inversedBy" => "evaluationMethodConfiguration",
+    "cascade" => [
+        "persist",
+    ],
+    "orphanRemoval" => false,
+    "fetch" => 2,
+    "type" => 1,
+    "isOwningSide" => true,
+    "sourceEntity" => "MapasCulturais\Entities\EvaluationMethodConfiguration",
+    "isCascadeRemove" => false,
+    "isCascadePersist" => true,
+    "isCascadeRefresh" => false,
+    "isCascadeMerge" => false,
+    "isCascadeDetach" => false,
+    "sourceToTargetKeyColumns" => [
+        "opportunity_id" => "id",
+    ],
+    "joinColumnFieldNames" => [
+        "opportunity_id" => "opportunity_id",
+    ],
+    "targetToSourceKeyColumns" => [
+        "id" => "opportunity_id",
+    ],
+],
+*/
                 $skip = isset($cfg['skip']) && $cfg['skip'];
                 $selected = isset($cfg['selected']) && $cfg['selected'];
                 $mtype = $mapping['type'];
@@ -1379,9 +1509,19 @@ class ApiQuery {
                     if(isset($mapping['users'])){
                         $_subquery_where_id_in = implode($mapping['users']);
                         $_target_property = $this->pk;
+                    
+                    // OneToOne
                     }else if ($mtype === 1) {
-                        $_subquery_where_id_in = $this->getSubqueryInIdentities($entities);
-                        $_target_property = $mapping['joinColumns'][0]['referencedColumnName'] ?? $this->pk;
+                        if($mapping['isOwningSide']) { // por exemplo o EvaluationMethodConfiguration->opportunity
+                            $_subquery_where_id_in = $this->getSubqueryInIdentities($entities, $mapping['fieldName']);
+                            $_target_property = $mapping['joinColumns'][0]['referencedColumnName'];
+                        
+                        } else { // por exemplo o Opportunity->evaluationMethodConfiguration
+                            $_subquery_where_id_in = $this->getSubqueryInIdentities($entities);
+                            $_target_property = $mapping['mappedBy'];
+                        }
+
+                    // ManyToOne
                     }else if ($mtype === 2) {
                         if ($selected) {
                             $_subquery_where_id_in = $this->getSubqueryInIdentities($entities, $prop);
@@ -1390,7 +1530,8 @@ class ApiQuery {
                         }
                         $_target_property = $mapping['joinColumns'][0]['referencedColumnName'];
                         
-                    } else {
+                    // OneToMany
+                    } else if($mtype === 4) {
                         $_subquery_where_id_in = $this->getSubqueryInIdentities($entities, $this->pk);
 
                         $_target_property = $mapping['mappedBy'] ?: 'id';
@@ -1427,23 +1568,22 @@ class ApiQuery {
                     $cfg['query'] = $query;
                     $cfg['query_result'] = [];
                     
-                    $subquery_result = $query->getFindResult();
-                    
-                    if($mtype === 2 || $mtype == 1) {
-                        foreach ($subquery_result as &$r) {
-                            if($original_select === $this->pk){
-                                $subquery_result_index[$r[$_target_property]] = $r[$this->pk];
+                    if($mtype == 1 || $mtype === 2) {
+                        $subquery_result = $query->getFindOneResult();
+                        
+                        if($original_select === $this->pk){
+                            $subquery_result_index[$subquery_result[$_target_property]] = $subquery_result[$this->pk];
 
-                            } else {
-                                $subquery_result_index[$r[$_target_property]] = &$r;
-                                if(!in_array($_target_property, $query->_selecting)){
-                                    unset($r[$_target_property]);
-                                }
+                        } else {
+                            $subquery_result_index[$subquery_result[$_target_property]] = &$subquery_result;
+                            if(!in_array($_target_property, $query->_selecting)){
+                                unset($subquery_result[$_target_property]);
                             }
                         }
                     } else {
-                        foreach ($subquery_result as &$r) {
+                        $subquery_result = $query->getFindResult();
 
+                        foreach ($subquery_result as &$r) {
                             if (is_array($r[$_target_property])) {
                                 if (isset($r[$_target_property][0])) {
                                     $__tgt = $r[$_target_property][0];
