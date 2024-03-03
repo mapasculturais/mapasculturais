@@ -3,6 +3,10 @@
 .entity-table {
     background-color: var(--mc-white);
 
+    &__index {
+        width: 50px;
+    }
+
     &__header {
         display: flex;
         flex-direction: column;
