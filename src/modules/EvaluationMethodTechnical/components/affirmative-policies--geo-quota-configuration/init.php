@@ -4,4 +4,5 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
- $this->jsObject['geoQuotaConfiguration']['geoDivisions'] = $app->config['app.geoDivisionsHierarchy'];
+ $geo_divisions = $app->getGeoDivisions(true);
+ $this->jsObject['config']['geoQuotaConfiguration'] = $geo_divisions;

@@ -1,64 +1,37 @@
-/**
- * Vue Lifecycle
- * 1. setup
- * 2. beforeCreate
- * 3. created
- * 4. beforeMount
- * 5. mounted
- * 
- * // sempre que há modificação nos dados
- *  - beforeUpdate
- *  - updated
- * 
- * 6. beforeUnmount
- * 7. unmounted                  
- */
-
 app.component('affirmative-policies--geo-quota-configuration', {
     template: $TEMPLATES['affirmative-policies--geo-quota-configuration'],
-    
-    // define os eventos que este componente emite
-    emits: ['namesDefined'],
 
     props: {
-
+        phase: {
+            type: Entity,
+            required: true,
+        },
     },
     
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name];
-        // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('affirmative-policies--geo-quota-configuration')
         return { text, hasSlot }
     },
 
-    beforeCreate() { },
-    created() { },
-
-    beforeMount() { },
-    mounted() { },
-
-    beforeUpdate() { },
-    updated() { },
-
-    beforeUnmount() {},
-    unmounted() {},
+    updated () {
+        this.save();
+    },
 
     data() {
+        let geoQuota = this.phase.geoQuotaConfiguration || { geoDivision: '', distribution: {} };
+        let isActive = !!Object.keys(geoQuota.distribution).length;
+        
         return {
-            isActive: false,
-            geoQuota: {
-                geoDivision: '',
-                distribution: {
-
-                }
-            }
+            isActive,
+            geoQuota,
         }
     },
 
     computed: {
         divisions() {
-            return $MAPAS.geoQuotaConfiguration.geoDivisions;
-        }
+            return $MAPAS.config.geoQuotaConfiguration;
+        },
     },
     
     methods: {
@@ -67,11 +40,26 @@ app.component('affirmative-policies--geo-quota-configuration', {
         },
 
         close() {
+            this.geoQuota = { geoDivision: '', distribution: {} };
+            this.save();
             this.isActive = false;
         },
 
         setDivision(option) {
+            const distribution = {};
+            const divisions = this.divisions[option.value].data;
+            
+            for (const option in divisions) {
+                distribution[divisions[option]] = 0;
+            }
+
             this.geoQuota.geoDivision = option.value;
+            this.geoQuota.distribution = distribution;
         },
+
+        async save() {
+            this.phase.geoQuotaConfiguration = this.geoQuota;
+            await this.phase.save(3000);
+        }
     },
 });
