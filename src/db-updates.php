@@ -2032,8 +2032,8 @@ $$
 
             $conn->executeQuery("
                 UPDATE request 
-                SET metadata = '{$metadata}'
-                WHERE id = $id");
+                SET metadata = ':metadata'
+                WHERE id = $id", ['metadata'=>$metadata]);
         }
     },
 
@@ -2049,8 +2049,10 @@ $$
 
         $app = App::i();
         
-        foreach($regs as $reg) {
+        $count = count($regs);
+        foreach($regs as $i => $reg) {
             $registration = $app->repo('Registration')->find($reg);
+            echo "\n$i / $count ---- $registration";
             $app->enqueueEntityToPCacheRecreation($registration);
         }
 
