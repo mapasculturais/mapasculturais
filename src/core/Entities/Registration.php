@@ -275,9 +275,8 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
         
         $app->disableAccessControl();
-        
         $em = $this->getEvaluationMethod();
-
+        
         $result = $em->getConsolidatedResult($this);
 
         // para que dentro do hook as permissões funcionem
@@ -285,13 +284,12 @@ class Registration extends \MapasCulturais\Entity
         
         $app->applyHookBoundTo($this, 'entity(Registration).consolidateResult', [&$result, $caller]);
         
-        $app->disableAccessControl();
-        
-        $this->consolidatedResult = $result;
-        
-        $this->save($flush);
-        
-        $app->enableAccessControl(); 
+        $connection = $app->em->getConnection();
+        $connection->executeQuery('UPDATE registration SET consolidated_result = :result WHERE id = :id', [
+            'result' => $result,
+            'id' => $this->id
+        ]);
+
     }
 
     static function isPrivateEntity(){

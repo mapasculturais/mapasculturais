@@ -10,6 +10,7 @@ use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\Registration;
 
 /**
  * Opportunity Controller
@@ -956,31 +957,31 @@ class Opportunity extends EntityController {
                 )
         ", ['opp' => $opportunity->id]);
 
-        $evaluations = $conn->fetchAll("
-            SELECT re.id, r.number 
-            FROM registration_evaluation re, registration r
+        $registrations = $conn->fetchAll("
+            SELECT r.id 
+            FROM registration r
             WHERE
-                r.id = re.registration_id AND
-                re.registration_id IN (
-                    SELECT id FROM registration WHERE opportunity_id = :opp
-                )
-            ORDER BY re.id ASC
+                opportunity_id = :opp AND
+                status > 0
+            ORDER BY r.id ASC
         ", ['opp' => $opportunity->id]);
 
-        $repo = $app->repo('RegistrationEvaluation');
+        $repo = $app->repo('Registration');
         $c = 0;
-        $num = count($evaluations);
+        $num = count($registrations);
 
-        $app->applyHookBoundTo($this, 'controller(opportunity).reconsolidateResult', [$opportunity, &$evaluations]);
+        $app->applyHookBoundTo($this, 'controller(opportunity).reconsolidateResult', [$opportunity, &$registrations]);
 
-        foreach ($evaluations as $ev) {
+        foreach ($registrations as $reg) {
             $c++;
-            $ev = (object) $ev;
-            $eval = $repo->find($ev->id);
-            $app->log->debug("({$c}/{$num}) reconsolidando avaliação da inscrição {$ev->number} (ID: {$ev->id})");
-            $eval->setEvaluationData($eval->getEvaluationData());
-            $eval->registration->__skipQueuingPCacheRecreation = true;
-            $eval->save(true);
+            $reg = (object) $reg;
+            $registration = $repo->find($reg->id);
+            /** @var Registration $registration */
+            $app->log->debug("({$c}/{$num}) reconsolidando avaliaçoes da inscrição {$registration->number} (ID: {$registration->id})");
+            
+            $registration->__skipQueuingPCacheRecreation = true;
+            
+            $registration->consolidateResult();
 
             $app->em->clear();
         }
