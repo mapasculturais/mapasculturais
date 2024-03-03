@@ -2,9 +2,13 @@
 
 namespace EvaluationMethodTechnical;
 
+use MapasCulturais\API;
+use MapasCulturais\ApiQuery;
 use MapasCulturais\i;
 use MapasCulturais\App;
+use MapasCulturais\Controller;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 
 class Module extends \MapasCulturais\EvaluationMethod {
@@ -182,7 +186,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $this->registerRegistrationMetadata('appliedForQuota', [
             'label' => i::__('A inscrição está concorrendo por cotas?'),
             'type' => 'boolean',
-            'private' => true,
+            'private' => false,
             'default' => false
         ]);
 
@@ -207,10 +211,288 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.technical';
     }
 
+    function getRegistrationRegion($registration, $geo_quota_config) {
+        $region = '';
+        foreach($geo_quota_config->fieldNames as $field_name) {
+            if($registration->$field_name) {
+                $region = $registration->$field_name;
+                break;
+            }
+        }
+
+        if(isset($geo_quota_config->distribution->$region)) {
+            return $region;
+        } else {
+            return 'OTHERS';
+        }
+    }
+
+    function getAffirmativePoliciesFields($quota_config, $geo_quota_config) {
+        $fields = ['appliedForQuota', ...$geo_quota_config->fieldNames];
+
+        foreach($quota_config->rules as $rule) {
+            $fields[] = $rule->fieldName;
+        }
+
+        return array_values(array_unique($fields));
+    }
+
+    function getRegistrationsForQuotaSorting($phase_opportunity, $fields) {
+        $app = App::i();
+
+        $cache_key = "$phase_opportunity:quota-registrations";
+
+        if($app->cache->contains($cache_key)){
+            return $app->cache->fetch($cache_key);
+        }
+
+        $conn = $app->em->getConnection();
+        
+        $selects = ['r.id', 'r.number', 'r.range', 'CAST(r.consolidated_result AS FLOAT) as score'];
+        $joins = [];
+
+        foreach($fields as $field) {
+            $alias = $field . '_alias';
+            $selects[] = "$alias.value AS $field";
+            $joins[] = "LEFT JOIN 
+                registration_meta $alias ON 
+                    $alias.key = '$field' AND
+                    $alias.object_id IN (SELECT id FROM registration WHERE number = r.number)";
+        }
+
+        $selects = implode(', ', $selects);
+        $joins = implode("\n\t", $joins);
+
+        $sql = "SELECT $selects 
+        FROM registration r $joins
+        WHERE r.opportunity_id = $phase_opportunity->id
+        ORDER BY score DESC";
+        $registrations = $conn->fetchAllAssociative($sql);
+
+        $result = array_map(function ($reg) {return (object) $reg; }, $registrations);
+
+        $app->cache->save($cache_key, $result);
+
+        return $result;
+    }
+
+    public function getPhaseQuotaRegistrations(int $phase_id) {
+        $app = App::i();
+        
+        $phase_opportunity = $app->repo('Opportunity')->find($phase_id);
+        $phase_evaluation_config = $phase_opportunity->evaluationMethodConfiguration;
+        $first_phase = $phase_opportunity->firstPhase;
+
+        // número total de vagas no edital
+        $vacancies = $first_phase->vacancies;
+        $exclude_ampla_concorrencia = false;
+
+        // configuração de faixas
+        $ranges_config = [];
+        foreach($first_phase->registrationRanges as $range) {
+            $ranges_config[$range['label']] = $range['limit'];
+        }
+
+        $quota_config = $phase_evaluation_config->quotaConfiguration;
+
+        $geo_quota_config = (object) [
+            // 'geoDivision' => 'mesorregiao',
+            // 25379 e 25377
+            'fieldNames' => ['field_25379', 'field_25377'],
+            'distribution' => (object) [
+                'Região Metropolitana' => 100, // 40%
+                'Zona da Mata' => 50, // 20%
+                'Agreste' => 50, // 20%
+                'Sertão' => 50, // 20%
+            ]   
+        ];
+
+
+
+        $selected_global = [];
+        $selected_by_quotas = [];
+        $selected_by_geo = [];
+        $selected_by_ranges = [];
+
+
+        /** ===  inicializa as listas === */
+        // cotas
+        $total_quota = 0;
+        foreach($quota_config->rules as $rule) {
+            $field_name = $rule->fieldName;
+            $rule_id = $field_name . ':' . implode(',', array_values($rule->eligibleValues));
+            $selected_by_quotas[$rule_id] = $selected_by_quotas[$rule_id] ?? [];
+            $total_quota += $rule->vacancies;
+        }
+        $total_ampla_concorrencia = $vacancies - $total_quota;
+
+        // distribuição geográfica
+        $total_distribution = 0;
+        foreach($geo_quota_config->distribution as $region => $num) {
+            $total_distribution += $num;
+            $selected_by_geo[$region] = $selected_by_geo[$region] ?? [];
+        }
+        $geo_quota_config->distribution->OTHERS = $vacancies - $total_distribution;
+    
+        // distribuição nas faixas
+        foreach($ranges_config as $range => $num) {
+            $selected_by_ranges[$range] = $selected_by_ranges[$range] ?? [];
+        }
+
+        $fields = $this->getAffirmativePoliciesFields($quota_config, $geo_quota_config);
+        $registrations = $this->getRegistrationsForQuotaSorting($phase_opportunity, $fields);
+        /** gera as listas */
+
+        // primeiro preenche as cotas
+        foreach($quota_config->rules as $rule) {
+            $field_name = $rule->fieldName;
+
+            // fica algo como "raca:preto,pardo"
+            $rule_id = $field_name . ':' . implode(',', array_values($rule->eligibleValues));
+            
+            foreach($registrations as $i => &$reg) {
+                if($exclude_ampla_concorrencia && $i < $total_ampla_concorrencia) {
+                    continue;
+                }
+
+                // se a pessoa não é elegível, ela não conta nas cotas (pode ser pq falou que não quer ser cotista ou pq nenhum critério configurado bateu)
+                if(!$reg->appliedforquota) {
+                    continue;
+                }
+
+                // para impedir que uma inscrição que se enquadre em mais de 1 critério ocupe 2 vagas
+                if(in_array($reg, $selected_global)) {
+                    continue;
+                }
+
+                $quota_count = count($selected_by_quotas[$rule_id]);
+
+                /** @todo verificar se não excedeu o máximo de vagas em cada região ou faixa*/
+
+                if($quota_count < $rule->vacancies && in_array($reg->$field_name, $rule->eligibleValues)) {
+                    $selected_by_quotas[$rule_id][] = &$reg;
+                    $selected_global[] = &$reg;
+                    $region = $this->getRegistrationRegion($reg, $geo_quota_config);
+
+                    $selected_by_geo[$region][] = &$reg;
+                    $selected_by_ranges[$reg->range][] = &$reg;
+                }
+            }
+        }
+
+        foreach($registrations as &$reg) {
+            if(in_array($reg, $selected_global)) {
+                continue;
+            }
+
+            $selected = true;
+            
+            $region = $this->getRegistrationRegion($reg, $geo_quota_config);
+            $geo_count = count($selected_by_geo[$region] ?? []);
+            if(isset($geo_quota_config->distribution->$region) && $geo_count >= $geo_quota_config->distribution->$region) {
+                // var_dump([$region, $geo_quota_config->distribution->$region, $reg->regiao]);
+                $selected = false;
+            }
+
+            $range = $reg->range;
+            $range_count = count($selected_by_ranges[$range] ?? []);
+            if(isset($ranges_config[$range]) && $range_count >= $ranges_config[$range]) {
+                $selected = false;
+            }
+
+            if($selected) {
+                $selected_by_geo[$region][] = &$reg;
+                $selected_by_ranges[$range][] = &$reg;
+                $selected_global[] = $reg;
+            }
+        }
+
+        usort($selected_global, function($reg1, $reg2) {
+            return ((float) $reg2->score) <=> ((float) $reg1->score);
+        });
+
+        $result = array_values($selected_global);
+
+        foreach($registrations as $reg) {
+            if(!in_array($reg, $result)){
+                $result[] = $reg;
+            }
+        }
+
+        return $result;
+
+    }
+
     public function _init() {
         $app = App::i();
 
-        $plugin = $this;
+        $self = $this;
+
+        $app->hook('entity(Registration).consolidateResult', function() {
+            /** @var Registration $this */
+
+            // salva o metadado appliedPointReward
+            $metadata = $this->getMetadata('appliedPointReward', true);
+            $metadata->save(true);
+
+            $app = App::i();
+            
+            // limpa o cache das cotas
+            $cache_key = "{$this->opportunity}:quota-registrations";
+            $app->cache->delete($cache_key);
+        }); 
+
+        $quota_data = (object)[];
+
+        $app->hook('ApiQuery(registration).params', function(&$params) use($self, &$quota_data) {
+            /** @var ApiQuery $this */
+            $order = $params['@order'] ?? '';
+            preg_match('#EQ\((\d+)\)#', $params['opportunity'] ?? '', $matches);
+            $phase_id = $matches[1] ?? null;
+            if($phase_id && str_starts_with(strtolower(trim($order)), '@quota')){
+                $quota_data->params = $params;
+
+                unset($params['@order']);
+
+                $quota_order = $self->getPhaseQuotaRegistrations((int) $phase_id);
+                $ids = array_map(function($reg) { return $reg->id; }, $quota_order);
+
+                if($limit = (int) ($params['@limit'] ?? 0)) {
+                    $page = $params['@page'] ?? 1;
+                    $offset = ($page - 1) * $limit;
+                    $ids = array_slice($ids, $offset, $limit);
+                    unset($params['@page'], $params['@limit']);
+                }
+
+                $params['id'] = API::IN($ids);
+
+                $quota_data->order = $quota_order;
+                $quota_data->ids = $ids;
+            }
+        });
+
+        $app->hook('ApiQuery(registration).findResult', function(&$result) use(&$quota_data) {
+            /** @var ApiQuery $this */
+            if($quota_data->ids ?? false) {
+                $_new_result = [];
+                foreach($quota_data->ids as $id) {
+                    foreach($result as $registration) {
+                        if($registration['id'] == $id) {
+                            $_new_result[] = $registration;
+                        }
+                    }
+                }
+                $result = $_new_result;
+                $quota_data->result = $result;
+            }
+        });
+
+        $app->hook('API.find(registration).result', function() use($quota_data) {
+            /** @var Controller $this */
+            if($quota_data->ids ?? false) {
+                $this->apiAddHeaderMetadata($quota_data->params, $quota_data->result, count($quota_data->order));
+            }
+        });
 
         $app->hook('template(opportunity.registrations.registration-list-actions-entity-table):begin', function($entity){
             if($em = $entity->evaluationMethodConfiguration){
@@ -371,10 +653,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
         });
 
         // passa os dados de configuração das bônus por pontuação para JS
-        $app->hook('GET(opportunity.edit):before', function() use ($app, $plugin){
+        $app->hook('GET(opportunity.edit):before', function() use ($app, $self){
             $entity = $this->requestedEntity;
             if($entity->evaluationMethodConfiguration){
-                $app->view->jsObject['pointsByInductionFieldsList'] = $plugin->getFieldsAllPhases($entity);
+                $app->view->jsObject['pointsByInductionFieldsList'] = $self->getFieldsAllPhases($entity);
                
                 $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
     
