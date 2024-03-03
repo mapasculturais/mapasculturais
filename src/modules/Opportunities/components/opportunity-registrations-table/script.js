@@ -17,12 +17,13 @@ app.component('opportunity-registrations-table', {
             resultStatus:[],
             query: {
                 opportunity: `EQ(${this.phase.id})`,
-                status: `GTE(0)`,
+                status: `GTE(0)`
             },
             selectedCategory:null,
             selectedStatus:null,
             selectedStatus:null,
-            selectedAvaliation:null
+            selectedAvaliation:null,
+            order: 'consolidatedResult DESC'
         }
     },
 
