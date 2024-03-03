@@ -40,7 +40,7 @@ $entity = $this->controller->requestedEntity;
 
         <div class="col-12"> 
 
-            <entity-table type="registration" :query="query" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult,attachments" @clear-filters="clearFilters">
+            <entity-table type="registration" :query="query" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult,attachments" @clear-filters="clearFilters" show-index>
 
                 <template #title>
                     <h5>
@@ -78,6 +78,17 @@ $entity = $this->controller->requestedEntity;
                             <option v-for="item in statusCategory" :value="item">{{item}}</option>
                         </mc-select>
                     </div>
+                    
+                    <select v-model="order" @change="entities.refresh()">
+                        <option value="status DESC,consolidatedResult AS FLOAT DESC"><?= i::__('Por status descendente') ?></option>
+                        <option value="status ASC,consolidatedResult AS FLOAT ASC"><?= i::__('Por status ascendente') ?></option>
+                        <option value="consolidatedResult AS FLOAT DESC"><?= i::__('Por resultado das avaliações') ?></option>
+                        <option value="@quota"><?= i::__('Por resultado das avaliações CONSIDERANDO COTAS') ?></option>
+                        <option value="createTimestamp ASC"><?= i::__('Mais antigas primeiro') ?></option>
+                        <option value="createTimestamp DESC"><?= i::__('Mais recentes primeiro') ?></option>
+                        <option value="sentTimestamp ASC"><?= i::__('Enviadas a mais tempo primeiro') ?></option>
+                        <option value="sentTimestamp DESC"><?= i::__('Enviadas a menos tempo primeiro') ?></option>
+                    </select>
                 </template>
 
                 <template #attachments={entity}>
@@ -90,7 +101,7 @@ $entity = $this->controller->requestedEntity;
                     </mc-select>
                 </template>
 
-                <template #consolidatedResult="{entity}">
+                <template #consolidatedResult="{entity}"> 
                     {{consolidatedResultToString(entity)}}
                 </template>
 
