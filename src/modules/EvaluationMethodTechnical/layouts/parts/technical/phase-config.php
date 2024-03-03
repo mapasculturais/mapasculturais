@@ -16,11 +16,9 @@ $this->import("
 ");
 ?>
 <div class="col-12">
-    <h3><?= i::__('Configuração de critérios') ?></h3>
-    <technical-assessment-section :entity="phase"></technical-assessment-section>
-</div>
-<div class="col-12">
     <h3><?= i::__('Critérios de avaliação') ?></h3>
+    <technical-assessment-section :entity="phase"></technical-assessment-section>
+    <hr>
     <entity-field :entity="phase" prop="enableViability" :autosave="3000"></entity-field>
 </div>
 <div class="col-12">
