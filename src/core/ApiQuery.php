@@ -884,25 +884,40 @@ class ApiQuery {
     }
     
     function getKeywordSubDQL(){
-        $dql = '';
+        $subdql = '';
         if($this->_keyword){
+            $dqls = [];
+            $keywords = explode(';', $this->_keyword);
             $alias = $this->getAlias('kword');
+            foreach($keywords as $i => $keyword) {
+                $keyword = trim($keyword);
+                if(empty($keyword)) {
+                    continue;
+                }
+                $kword_alias = 'kword'.md5($keyword);
+                
+                if($i === 0) {
+                    $_keyword_dql = $this->entityRepository->getIdsByKeywordDQL($keyword, $kword_alias);
+                } else {
+                    $_keyword_dql = $this->entityRepository->getKeywordDQLWhere($keyword, $kword_alias);
+                }
+                
+                $_keyword_dql = preg_replace('#([^a-z0-9_])e\.#i', "$1{$alias}.", $_keyword_dql);
+                foreach ($this->entityClassMetadata->subClasses as $class) {
+                    $_keyword_dql = str_replace("{$class} e", "{$class} {$alias}", $_keyword_dql);
+                }
+                foreach ($this->entityClassMetadata->parentClasses as $class) {
+                    $_keyword_dql = str_replace("{$class} e", "{$class} {$alias}", $_keyword_dql);
+                }
+                $_keyword_dql = str_replace("{$this->entityClassName} e", "{$this->entityClassName} {$alias}", $_keyword_dql);
             
-            $_keyword_dql = $this->entityRepository->getIdsByKeywordDQL($this->_keyword, $alias);
-            $_keyword_dql = preg_replace('#([^a-z0-9_])e\.#i', "$1{$alias}.", $_keyword_dql);
-            foreach ($this->entityClassMetadata->subClasses as $class) {
-                $_keyword_dql = str_replace("{$class} e", "{$class} {$alias}", $_keyword_dql);
+                $dqls[] = "$_keyword_dql";
+                $this->_dqlParams[$kword_alias] = "%{$keyword}%";
             }
-            foreach ($this->entityClassMetadata->parentClasses as $class) {
-                $_keyword_dql = str_replace("{$class} e", "{$class} {$alias}", $_keyword_dql);
-            }
-            $_keyword_dql = str_replace("{$this->entityClassName} e", "{$this->entityClassName} {$alias}", $_keyword_dql);
-        
-            $dql = "e.{$this->pk} IN ($_keyword_dql)";
-            $this->_dqlParams['keyword'] = "%{$this->_keyword}%";
+            $subdql = "e.{$this->pk} IN (". implode(' OR ', $dqls) . ')';
         }
         
-        return $dql;
+        return $subdql;
     }
 
     function getLimit() {
