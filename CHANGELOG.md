@@ -10,6 +10,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
 - possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
 
+### Correções
+- Corrige seleção de relacionamentos OneToOne
 
 ## [unreleased]
 ### Novas funcionalidades
