@@ -84,17 +84,16 @@ $this->import('
                         <label><?php i::_e('Distribuição') ?></label>
                         <input type="text" placeholder="0-9" maxlength="3" @change="sendDefinition('addDistribution', infoReviewer.agentUserId)" v-model="entity.fetch[infoReviewer.agentUserId]"/>
                     </div>
-
                     <div v-if="registrationCategories.length > 0" class="field">
                         <label><?php i::_e('Categorias a serem avaliadas') ?></label>
                         <div class="opportunity-evaluation-committee__categories">
-                            <mc-multiselect :model="entity.fetchCategories[infoReviewer.agentUserId]" :items="registrationCategories" #default="{popover, setFilter}" @selected="sendDefinition('addCategory', infoReviewer.agentUserId, $event)" @removed="sendDefinition('removeCategory'), infoReviewer.agentUserId">
+                            <mc-multiselect :model="getFetchCategories(infoReviewer.agentUserId)" :items="registrationCategories" #default="{popover, setFilter}" @selected="sendDefinition('addCategory', infoReviewer.agentUserId, $event)" @removed="sendDefinition('removeCategory'), infoReviewer.agentUserId">
                                 <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
                                     <?php i::_e("Adicionar categoria") ?>
                                     <mc-icon name="add"></mc-icon>
                                 </button>
                             </mc-multiselect>
-                            <mc-tag-list :tags="entity.fetchCategories[infoReviewer.agentUserId]" classes="opportunity__background" @remove="sendDefinition('removeCategory', infoReviewer.agentUserId)" editable></mc-tag-list>
+                            <mc-tag-list :tags="getFetchCategories(infoReviewer.agentUserId)" classes="opportunity__background" @remove="sendDefinition('removeCategory', infoReviewer.agentUserId)" editable></mc-tag-list>
                         </div>
                     </div>
                 </div>
