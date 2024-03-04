@@ -2290,7 +2290,7 @@ class Theme extends MapasCulturais\Theme {
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
 
                                 // ordena alfabeticamente
-                                uasort($types, function($a, $b) {q
+                                uasort($types, function($a, $b) {
                                     if ($a->name == $b->name)
                                         return 0;
                                     if ($a->name < $b->name)
