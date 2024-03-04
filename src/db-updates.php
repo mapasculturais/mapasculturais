@@ -2038,7 +2038,7 @@ $$
     },
 
     'corrige permissão de avaliadores que tem avaliação mas não possui permissão de avaliar pela regra configurada' => function() use($conn) {
-        $regs = $conn->fetchFirstColumn("
+        $regs = $conn->fetchFirstColumn(" 
             SELECT 
                 r.id
             FROM registration r
@@ -2141,5 +2141,49 @@ $$
                     FOR EACH ROW
                     EXECUTE FUNCTION fn_propagate_opportunity_update()");
     },
+    'renomeia metadados da funcionalidade AffirmativePollices' => function() use ($conn, $app) {
+        $entity_metadada = [
+            [
+                'entity' => 'evaluationMethodConfiguration_meta',
+                'old' => 'affirmativePolicies',
+                'new' => 'pointReward'
+            ],
+            [
+                'entity' => 'evaluationMethodConfiguration_meta',
+                'old' => 'isActiveAffirmativePolicies',
+                'new' => 'isActivePointReward'
+            ],
+            [
+                'entity' => 'evaluationMethodConfiguration_meta',
+                'old' => 'affirmativePoliciesRoof',
+                'new' => 'pointRewardRoof'
+            ],
+            [
+                'entity' => 'registration_meta',
+                'old' => 'appliedAffirmativePolicy',
+                'new' => 'appliedPointReward'
+            ],
+        ];
+
+        foreach ($entity_metadada as $metadata) {
+           
+            $entity = trim($metadata['entity']);
+            $old = trim($metadata['old']);
+            $new = trim($metadata['new']);
+
+            if($values = $conn->fetchAll("SELECT id FROM {$entity} WHERE key = '{$old}'")) {
+                $total = count($values);
+                foreach ($values as $key => $value) {
+                    $_key = $key + 1;
+                    $id = $value['id'];
+                    __exec("UPDATE {$entity} SET key = '{$new}' WHERE id = {$id}");
+    
+                    $app->log->debug("{$_key} de {$total} - Metadado {$old} alterado para {$new} na entidade {$entity}");
+                }
+            } else {
+                    $app->log->debug("Metadado {$old} não encontrado");
+            }
+        }
+    }
 
 ] + $updates ;   
