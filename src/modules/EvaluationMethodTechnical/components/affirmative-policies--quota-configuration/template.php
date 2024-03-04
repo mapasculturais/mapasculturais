@@ -14,10 +14,10 @@ $this->import('
 ?>
 
 <div class="affirmative-policies--quota-configuration">
-    <div v-if="entity.quotaConfiguration.rules.length == 0" class="affirmative-policies--quota-configuration__active">
+    <div v-if="entity?.quotaConfiguration?.rules.length == 0" class="affirmative-policies--quota-configuration__active">
         <button @click="addConfig();" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
-            <label v-if="entity.quotaConfiguration && entity.quotaConfiguration.rules.length > 0">
+            <label v-if="entity.quotaConfiguration && entity?.quotaConfiguration?.rules.length > 0">
                 <?php i::_e("Adicionar categoria") ?>
             </label>
             <label v-else>
@@ -26,7 +26,7 @@ $this->import('
         </button>
     </div>
 
-    <div v-if="entity.quotaConfiguration.rules.length > 0" class="affirmative-policies--quota-configuration__card">
+    <div v-if="entity?.quotaConfiguration?.rules.length > 0" class="affirmative-policies--quota-configuration__card">
 
         <div class="affirmative-policies--quota-configuration__header">
             <h4 class="bold"><?= i::__('Configuração das cotas por categoria') ?></h4>
@@ -45,7 +45,7 @@ $this->import('
         </div>
 
         <div class="affirmative-policies--quota-configuration__content">
-            <div class="affirmative-policies--quota-configuration__quota" v-for="(quota, index) in entity.quotaConfiguration.rules" :key="index">
+            <div class="affirmative-policies--quota-configuration__quota" v-for="(quota, index) in entity?.quotaConfiguration?.rules" :key="index">
                 <div class="affirmative-policies--quota-configuration__quota-fields">
                     <div class="field">
                         <label><?= i::__('Cota') ?> {{index+1}}</label>
@@ -110,7 +110,7 @@ $this->import('
         <div class="affirmative-policies--quota-configuration__footer">
             <button @click="addConfig();" class="button button--primary button--icon">
                 <mc-icon name="add"></mc-icon>
-                <label v-if="entity.quotaConfiguration && entity.quotaConfiguration.rules.length > 0">
+                <label v-if="entity.quotaConfiguration && entity?.quotaConfiguration?.rules.length > 0">
                     <?php i::_e("Adicionar categoria") ?>
                 </label>
                 <label v-else>
@@ -124,7 +124,7 @@ $this->import('
 <!-- <div class="affirmative-policies--quota-configuration">
     <h4 class="bold"><?= i::__('Configuração das Cotas por Categoria') ?></h4>
 
-    <div class="affirmative-policies--quota-configuration__content" v-if="entity.quotaConfiguration && entity.quotaConfiguration.rules.length > 0">
+    <div class="affirmative-policies--quota-configuration__content" v-if="entity.quotaConfiguration && entity?.quotaConfiguration?.rules.length > 0">
         <div class="fields">
             <label class="field__title">
                 <?= i::__('Percentual total das Cotas:') ?>
@@ -137,7 +137,7 @@ $this->import('
             </label>
         </div>
 
-        <div class="affirmative-policies--quota-configuration__quota" v-for="(quota, index) in entity.quotaConfiguration.rules" :key="index">
+        <div class="affirmative-policies--quota-configuration__quota" v-for="(quota, index) in entity?.quotaConfiguration?.rules" :key="index">
             <div class="affirmative-policies--quota-configuration__column">
                 <h5 class="field__title--semibold"><?= i::__('Cota') ?> {{index+1}}</h5>
 
@@ -198,7 +198,7 @@ $this->import('
     <div class="affirmative-policies--quota-configuration__footer">
         <button @click="addConfig();" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
-            <label v-if="entity.quotaConfiguration && entity.quotaConfiguration.rules.length > 0">
+            <label v-if="entity.quotaConfiguration && entity?.quotaConfiguration?.rules.length > 0">
                 <?php i::_e("Adicionar categoria") ?>
             </label>
             <label v-else>
