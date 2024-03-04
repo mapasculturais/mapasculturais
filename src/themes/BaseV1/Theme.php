@@ -811,6 +811,8 @@ class Theme extends MapasCulturais\Theme {
     	return App::i()->createUrl('site', 'search')."##(global:(enabled:(seal:!t),filterEntity:seal))";
     }
 
+    function register() {}
+
     protected function _init() {
         $app = App::i();
         $this->bodyClasses[] = 'base-v1';
@@ -2288,7 +2290,7 @@ class Theme extends MapasCulturais\Theme {
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
 
                                 // ordena alfabeticamente
-                                uasort($types, function($a, $b) {
+                                uasort($types, function($a, $b) {q
                                     if ($a->name == $b->name)
                                         return 0;
                                     if ($a->name < $b->name)
