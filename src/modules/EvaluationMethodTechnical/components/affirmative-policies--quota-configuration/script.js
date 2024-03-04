@@ -42,6 +42,10 @@ app.component('affirmative-policies--quota-configuration', {
             return field?.fieldOptions;
         },
 
+        setFieldName(option, quota) {
+            quota.fieldName = option.value;
+        },
+
         addConfig() {
             if (!this.entity.quotaConfiguration) {
                 this.entity.quotaConfiguration = {
