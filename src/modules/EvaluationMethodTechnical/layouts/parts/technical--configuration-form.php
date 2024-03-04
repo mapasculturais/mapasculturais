@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 ?>
 <div ng-controller="TechnicalEvaluationMethodConfigurationController" class="technical-evaluation-configuration registration-fieldset">
-    <div class="technical-evaluation-configuration--criteria">
+    <!-- <div class="technical-evaluation-configuration--criteria">
         <h4><?php i::_e('Critérios') ?></h4>
         <p><?php i::_e('Configure abaixo os critérios de avaliação técnica') ?>
         <section id="{{section.id}}" ng-repeat="section in data.sections">
@@ -36,7 +36,7 @@ use MapasCulturais\i;
             </table>
         </section>
         <button ng-click="addSection()" class="btn btn-default add"><?php i::_e('Adicionar seção de avaliação técnica') ?></button>
-    </div>
+    </div> -->
 
     <?php $this->part('technical--affirmative-polices-configuration')?>
 
