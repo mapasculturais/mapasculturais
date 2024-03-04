@@ -1,6 +1,12 @@
 @use '../0.settings/mixins' as *;
 
 .geo-quota {
+    &__active {
+        align-items: center;
+        display: flex;
+        gap: size(19);
+    }
+
     &__card {
         border-radius: var(--mc-border-radius-xs);
         border: size(1) solid var(--mc-gray-300);

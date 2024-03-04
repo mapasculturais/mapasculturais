@@ -15,26 +15,42 @@ $this->import("
     tiebreaker-criteria-configuration
 ");
 ?>
-<div class="col-12">
-    <h3><?= i::__('Critérios de avaliação') ?></h3>
-    <technical-assessment-section :entity="phase"></technical-assessment-section>
-    <hr>
-    <entity-field :entity="phase" prop="enableViability" :autosave="3000"></entity-field>
-</div>
-<div class="col-12">
-    <h3><?= i::__('Critérios de desempate') ?></h3>
-    <tiebreaker-criteria-configuration :phase="phase"></tiebreaker-criteria-configuration>
-</div>
-<div class="col-12">
-    <h3><?= i::__('Políticas afirmativas') ?></h3>
-    <!-- cotas -->
-    <affirmative-policies--quota-configuration :entity="phase"></affirmative-policies--quota-configuration>
-    
-    <!-- distribuição de vagas por território -->
-    <affirmative-policies--geo-quota-configuration :phase="phase"></affirmative-policies--geo-quota-configuration>
 
-</div>
-<div class="col-12">
-    <h3><?= i::__('Comissão de avaliação') ?></h3>
     
-</div>
+<section class="col-12 evaluation-step__section">
+    <div class="evaluation-step__section-header">
+        <div class="evaluation-step__section-label">
+            <h3><?= i::__('Configuração de critérios') ?></h3>
+        </div>
+    </div>
+
+    <div class="evaluation-step__section-content">
+        <technical-assessment-section :entity="phase"></technical-assessment-section>
+        <entity-field :entity="phase" prop="enableViability" :autosave="3000"></entity-field>
+        <tiebreaker-criteria-configuration :phase="phase"></tiebreaker-criteria-configuration>
+    </div>
+</section>
+
+<section class="col-12 evaluation-step__section">
+    <div class="evaluation-step__section-header">
+        <div class="evaluation-step__section-label">
+            <h3><?= i::__('Políticas Afirmativas') ?></h3>
+        </div>
+    </div>
+
+    <div class="col-12 evaluation-step__section-content">
+        <affirmative-policies--quota-configuration :entity="phase"></affirmative-policies--quota-configuration>
+        <affirmative-policies--geo-quota-configuration :phase="phase"></affirmative-policies--geo-quota-configuration>
+    </div>
+</section>
+
+<!-- <section class="col-12 evaluation-step__section">
+    <div class="evaluation-step__section-header">
+        <div class="evaluation-step__section-label">
+            <h3><?= i::__('Comissão de avaliação') ?></h3>
+        </div>
+    </div>
+
+    <div class="evaluation-step__section-content">
+    </div>
+</section> -->
