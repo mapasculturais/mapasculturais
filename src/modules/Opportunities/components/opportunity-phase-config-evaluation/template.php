@@ -64,7 +64,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         </section>
 
         <section class="evaluation-section col-12">
-            <affirmative-policies--geo-quota-configuration></affirmative-policies--geo-quota-configuration>
+            <affirmative-policies--geo-quota-configuration :phase="phase"></affirmative-policies--geo-quota-configuration>
         </section>
 
         <section class="evaluation-section col-12">

@@ -36,6 +36,10 @@ app.component('technical-assessment-section', {
         addSection() {
             let sectionId = 's-'+this.generateUniqueNumber();
 
+            if(!this.entity.sections) {
+                this.entity.sections = [];
+            }
+
             this.entity.sections.push(
                 {
                     id: sectionId,
@@ -46,6 +50,11 @@ app.component('technical-assessment-section', {
         },
         addCriteria(sid) {
             let sectionId = sid;
+
+            if(!this.entity.criteria) {
+                this.entity.criteria = [];
+            }
+
             this.entity.criteria.push({
                 id: 'c-'+this.generateUniqueNumber(),
                 sid: sectionId,
