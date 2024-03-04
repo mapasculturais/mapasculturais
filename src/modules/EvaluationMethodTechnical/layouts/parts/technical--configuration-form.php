@@ -42,11 +42,11 @@ use MapasCulturais\i;
 
     <br><br><hr>
 
-    <div class="technical-evaluation-configuration--feasibility">
-        <h4><?php i::_e('Habilitar avaliação da exequibilidade da inscrição?'); ?></h4>
+    <!-- <div class="technical-evaluation-configuration--feasibility">
+        <h4><?php // i::_e('Habilitar avaliação da exequibilidade da inscrição?'); ?></h4>
         <p>
-            <?php i::_e('Ao habilitar esta configuração, os avaliadores deverão considerar a exequibilidade da inscrição.'); ?>
-            <?php i::_e('Se a maioria dos avaliadores considerarem a inabilitação por exequibilidade, a mesma será marcada com o status de inválida para o dono do edital, que ainda assim poderá mudar seu status para válida.'); ?>
+            <?php //i::_e('Ao habilitar esta configuração, os avaliadores deverão considerar a exequibilidade da inscrição.'); ?>
+            <?php //i::_e('Se a maioria dos avaliadores considerarem a inabilitação por exequibilidade, a mesma será marcada com o status de inválida para o dono do edital, que ainda assim poderá mudar seu status para válida.'); ?>
         </p>
 
         <div class="options">
@@ -58,6 +58,6 @@ use MapasCulturais\i;
                 <input type="radio" ng-model="data.enableViability" value="false" ng-change="save({enableViability: false})" name="enableViability" /> <?php i::_e('Não habilitar'); ?>
             </label>
         </div>
-    </div>
+    </div> -->
 </div>
 
