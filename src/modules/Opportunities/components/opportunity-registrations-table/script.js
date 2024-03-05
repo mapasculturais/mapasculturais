@@ -16,7 +16,7 @@ app.component('opportunity-registrations-table', {
             filters: {},
             resultStatus:[],
             query: {
-                opportunity: `EQ(${this.phase.id})`,
+                '@opportunity': this.phase.id,
                 status: `GTE(0)`
             },
             selectedCategory:null,
