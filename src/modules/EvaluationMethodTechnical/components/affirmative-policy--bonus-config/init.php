@@ -39,7 +39,7 @@ while ($opportunity) {
                 return $field;
             }
         });
-        $phase_fields[$opportunity->id] = $fields;
+        $phase_fields[$opportunity->id] = array_values($fields);
     }
     $opportunity = $opportunity->nextPhase;
 }

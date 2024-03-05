@@ -1,0 +1,83 @@
+@use '../0.settings/mixins' as *;
+
+.technical-assessment-section {
+    &__fields {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        display: grid;
+        align-items: center;
+        grid-template-columns: calc(30% - size(64)) calc(30% - size(32));
+        gap: size(16);
+        padding: size(18) size(23);
+
+        .field__input {
+            max-width: size(150);
+        }
+    }
+    
+    & input {
+        border: size(1) solid var(--mc-gray-500);
+        border-radius: var(--mc-border-radius-xs);
+        padding: size(14);
+        font-size: var(--mc-font-size-xxs);
+    }
+
+    &__card {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        border-top: none;
+
+        .card--add-criterion {
+            padding: size(14) size(23);
+        }
+    }
+
+    &__header {
+        padding: size(13) size(23);
+
+        .title {
+            display: grid;
+            grid-template-columns: 1fr size(256);
+            gap: size(80);
+        }
+
+        .title__buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .iconify {
+                margin-right: size(8);
+            }
+        } 
+    }
+
+    &__criterions {
+        .criterion {
+            align-items: center;
+            border-top: var(--mc-border-hairline) var(--mc-gray-300);
+            display: grid;
+            gap: size(20) size(30);
+            grid-template-columns: 1fr size(70);
+            padding: size(18) size(23);
+        }
+
+        .criterion-fields {
+            display: grid;
+            gap: size(20) size(30);
+            grid-template-columns: 
+                calc(60% - size(20)) 
+                calc(20% - size(4)) 
+                calc(20% - size(36));
+
+            @media (max-width: 1010px) {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+
+    &__footer {
+        padding: size(10) size(23);
+    }
+    
+}

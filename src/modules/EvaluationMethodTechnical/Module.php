@@ -194,6 +194,22 @@ class Module extends \MapasCulturais\EvaluationMethod {
             'label' => i::__('Nota de corte'),
             'type' => 'integer',
         ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('enableQuotasQuestion',[
+            'label' => i::__('Habilitar opção para o candidato declarar interesse nas cotas ou políticas afirmativas'),
+            'description' => i::__('Ao habilitar esta configuração, será liberada a opção para o candidato se autoidentificar para cotas ou políticas afirmativas.'),
+            'type' => 'checkbox',
+            'private' => false,
+            'default' => false,
+        ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('considerQuotasInGeneralList',[
+            'label' => i::__('Considerar os cotistas dentro da listagem da ampla concorrência'),
+            'description' => i::__('Ao habilitar esta configuração, os cotistas seráo considerados na listagem da ampla concorrência.'),
+            'type' => 'checkbox',
+            'private' => false,
+            'default' => false,
+        ]);
     }
 
     function enqueueScriptsAndStyles() {
