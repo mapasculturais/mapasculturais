@@ -2184,6 +2184,11 @@ $$
                     $app->log->debug("Metadado {$old} não encontrado");
             }
         }
+    },
+    "Cria colunas na entidade Registration" => function() use ($conn){
+        if(!__column_exists('Registration', 'score')) {
+            __exec("ALTER TABLE Registration ADD COLUMN score JSON NULL");
+        }
     }
 
 ] + $updates ;   
