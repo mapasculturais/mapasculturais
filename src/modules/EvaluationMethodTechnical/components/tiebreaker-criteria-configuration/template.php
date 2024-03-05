@@ -17,7 +17,7 @@ $this->import('
     <div v-if="!isActive" class="tiebreaker-criteria__active">
         <button class="button button--primary button--icon" @click="open()">
             <mc-icon name="add"></mc-icon>
-            <?= i::__('Adicionar critérios de desempate') ?>
+            <?= i::__('Configurar critérios de desempate') ?>
         </button>
 
         <!-- <mc-icon name="info-full"></mc-icon> -->
@@ -43,7 +43,7 @@ $this->import('
 
                     <div v-if="this.checkCriterionType(criterion, ['checkboxes', 'select'])" class="field">
                         <label><?= i::__('Dar preferência a:') ?></label>
-                        <div class="field field--horizontal field__checkbox tiebreaker-criteria__group-field">
+                        <div class="field field--horizontal tiebreaker-criteria__group-field">
                             <label v-for="option in criterion.selected.fieldOptions">
                                 <input type="checkbox" :true-value="[]" v-model="criterion.preferences" :value="option" />
                                 <slot>{{option}}</slot>
