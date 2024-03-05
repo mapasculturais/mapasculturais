@@ -280,7 +280,7 @@ class Entity {
     }
 
     get __objectId() {
-        return `${this.__objectType}-${this.id}`;
+        return `${this.__scope}-${this.__objectType}-${this.id}`;
     }
 
     get $RELATIONS() {

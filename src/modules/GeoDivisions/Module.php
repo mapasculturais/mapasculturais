@@ -18,7 +18,7 @@ class Module extends \MapasCulturais\Module
     function _init()
     {   
         $app = App::i();
-        $app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($app) {
+        $app->hook('entity(<<agent|space>>).save:before', function() use ($app) {
 
             $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
             $rsm->addScalarResult('type', 'type');
