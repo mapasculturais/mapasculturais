@@ -961,9 +961,19 @@ class Registration extends \MapasCulturais\Entity
         $metadata_definitions = $app->getRegisteredMetadata('MapasCulturais\Entities\Registration');
 
         $use_category = (bool) $opportunity->registrationCategories;
+        $use_range = (bool) $opportunity->registrationRanges;
+        $use_proponent_types = (bool) $opportunity->registrationProponentTypes;
+
+        if($use_range && !$this->range) {
+            $errorsResult['range'] = [\MapasCulturais\i::__('Faixa é um campo obrigatório.')];
+        }
+
+        if($use_proponent_types && !$this->proponentType) {
+            $errorsResult['proponentType'] = [\MapasCulturais\i::__('Tipo de proponente é um campo obrigatório.')];
+        }
 
         if($use_category && !$this->category){
-            $errorsResult['category'] = [\MapasCulturais\i::__('O campo é obrigatório.')];
+            $errorsResult['category'] = [\MapasCulturais\i::__('Categoria é um campo obrigatório.')];
         }
 
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
@@ -1024,6 +1034,14 @@ class Registration extends \MapasCulturais\Entity
                 continue;
             }
 
+            if ($use_range && count($rfc->registrationRanges) > 0 && !in_array($this->range, $rfc->registrationRanges)) {
+                continue;
+            }
+
+            if ($use_proponent_types && count($rfc->proponentTypes) > 0 && !in_array($this->proponentType, $rfc->proponentTypes)) {
+                continue;
+            }
+
             $field_required = $rfc->required;
             if($rfc->conditional){
                 $_fied_name = $rfc->conditionalField;
@@ -1046,6 +1064,14 @@ class Registration extends \MapasCulturais\Entity
         foreach ($opportunity->registrationFieldConfigurations as $field) {
 
             if ($use_category && count($field->categories) > 0 && !in_array($this->category, $field->categories)) {
+                continue;
+            }
+
+            if ($use_range && count($field->registrationRanges) > 0 && !in_array($this->range, $field->registrationRanges)) {
+                continue;
+            }
+
+            if ($use_proponent_types && count($field->proponentTypes) > 0 && !in_array($this->proponentType, $field->proponentTypes)) {
                 continue;
             }
 
