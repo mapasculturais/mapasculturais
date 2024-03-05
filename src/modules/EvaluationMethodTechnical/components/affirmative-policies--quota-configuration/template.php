@@ -14,10 +14,113 @@ $this->import('
 ?>
 
 <div class="affirmative-policies--quota-configuration">
-    <div v-if="entity.quotaConfiguration.rules.length == 0" class="affirmative-policies--quota-configuration__active">
+    <h4 class="bold"><?= i::__('Configuração das Cotas por Categoria') ?></h4>
+
+    <div class="affirmative-policies--quota-configuration__content" v-if="entity.quotaConfiguration && entity?.quotaConfiguration?.rules.length > 0">
+        <div class="fields">
+            <label class="field__title">
+            <?= i::__('Percentual total das Cotas:') ?>
+                {{totalPercentage}} %
+            </label>
+
+            <label class="field__title">
+                <?= i::__('Número total das Cotas:') ?>
+                {{totalQuota}}
+            </label>
+        </div>
+
+        <div class="affirmative-policies--quota-configuration__quota" v-for="(quota, index) in entity.quotaConfiguration.rules" :key="index">
+            <div class="affirmative-policies--quota-configuration__column">
+                <h5 class="field__title--semibold"><?= i::__('Cota') ?> {{index+1}}</h5>
+
+                <div v-for="(field, indexF) in quota.fields" :key="indexF">
+                    <select v-model="field.fieldName">
+                        <option class="select__selected-option" v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
+                    </select>
+    
+                    <div class="field">
+                        <div class="field__column" v-if="getFieldType(field) === 'select' || getFieldType(field) === 'multiselect'">
+                            <label v-for="option in getFieldOptions(field)">
+                                <input class="input" type="checkbox" :value="option" v-model="field.eligibleValues" @change="autoSave()">
+                                {{option}}
+                            </label>
+                        </div>
+    
+                        <div class="field__column" v-if="getFieldType(field) === 'checkbox' || getFieldType(field) === 'boolean'">
+                            <label>
+                                <input class="input" type="radio" :name="field.fieldName + ':' + index" :value="true" v-model="field.eligibleValues" @change="autoSave()">
+                                <?= i::__('Sim / Marcado') ?>
+                            </label>
+                            <label>
+                                <input class="input" type="radio" :name="field.fieldName + ':' + index" :value="false" v-model="field.eligibleValues" @change="autoSave()">
+                                <?= i::__('Não / Desmarcado') ?>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="quota__trash">
+                        <mc-confirm-button @confirm="removeField(index, indexF)">
+                            <template #button="{open}">
+                                <div class="field__trash button button--md button--text-danger button-icon">
+                                    <mc-icon class="danger__color" name="trash" @click="open()"></mc-icon>
+                                </div>
+                            </template>
+                            <template #message="message">
+                                <?= i::__('Deseja deletar o campo?') ?>
+                            </template>
+                        </mc-confirm-button>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="quota__fields">
+                <label class="field__title"><?= i::__('Porcentagem') ?>
+                    <div> 
+                        <input type="number" v-model="quota.percentage" @change="updateRuleQuotas(quota)" min="0" max="100"> %
+                    </div>
+                </label> 
+            </div>
+
+            <div class="quota__fields">
+                <label class="field__title"><?= i::__('Número de Vagas') ?> 
+                    <input type="number" v-model="quota.vacancies" @change="updateRuleQuotaPercentage(quota)" min="0" :max="totalVacancies">
+                </label>
+            </div>
+            <div class="quota__trash">
+                <mc-confirm-button @confirm="removeConfig(index)">
+                    <template #button="{open}">
+                        <div class="field__trash button button--md button--text-danger button-icon">
+                            <mc-icon class="danger__color" name="trash" @click="open()"></mc-icon>
+                        </div>
+                    </template>
+                    <template #message="message">
+                        <?= i::__('Deseja deletar a cota?') ?>
+                    </template>
+                </mc-confirm-button>
+            </div>
+
+            <button class="button button--primary button--icon" @click="addField(index)"><?php i::_e("Adicionar campo") ?></button>
+        </div>
+    </div>
+    <div class="affirmative-policies--quota-configuration__footer">
         <button @click="addConfig();" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
-            <label v-if="entity.quotaConfiguration && entity.quotaConfiguration.rules.length > 0">
+            <label v-if="entity.quotaConfiguration && entity?.quotaConfiguration?.rules.length > 0">
+                <?php i::_e("Adicionar categoria") ?>
+            </label>
+            <label v-else>
+                <?php i::_e("Configurar Cotas por Categoria") ?>
+            </label>
+        </button>
+    </div>
+</div>
+
+<!-- <div class="affirmative-policies--quota-configuration">
+    <div v-if="entity?.quotaConfiguration?.rules.length == 0" class="affirmative-policies--quota-configuration__active">
+        <button @click="addConfig();" class="button button--primary button--icon">
+            <mc-icon name="add"></mc-icon>
+            <label v-if="entity.quotaConfiguration && entity?.quotaConfiguration?.rules.length > 0">
                 <?php i::_e("Adicionar categoria") ?>
             </label>
             <label v-else>
@@ -26,7 +129,7 @@ $this->import('
         </button>
     </div>
 
-    <div v-if="entity.quotaConfiguration.rules.length > 0" class="affirmative-policies--quota-configuration__card">
+    <div v-if="entity?.quotaConfiguration?.rules.length > 0" class="affirmative-policies--quota-configuration__card">
 
         <div class="affirmative-policies--quota-configuration__header">
             <h4 class="bold"><?= i::__('Configuração das cotas por categoria') ?></h4>
@@ -45,7 +148,7 @@ $this->import('
         </div>
 
         <div class="affirmative-policies--quota-configuration__content">
-            <div class="affirmative-policies--quota-configuration__quota" v-for="(quota, index) in entity.quotaConfiguration.rules" :key="index">
+            <div class="affirmative-policies--quota-configuration__quota" v-for="(quota, index) in entity?.quotaConfiguration?.rules" :key="index">
                 <div class="affirmative-policies--quota-configuration__quota-fields">
                     <div class="field">
                         <label><?= i::__('Cota') ?> {{index+1}}</label>
@@ -110,7 +213,7 @@ $this->import('
         <div class="affirmative-policies--quota-configuration__footer">
             <button @click="addConfig();" class="button button--primary button--icon">
                 <mc-icon name="add"></mc-icon>
-                <label v-if="entity.quotaConfiguration && entity.quotaConfiguration.rules.length > 0">
+                <label v-if="entity.quotaConfiguration && entity?.quotaConfiguration?.rules.length > 0">
                     <?php i::_e("Adicionar categoria") ?>
                 </label>
                 <label v-else>
@@ -118,92 +221,5 @@ $this->import('
                 </label>
             </button>
         </div>
-    </div>
-</div>
-
-<!-- <div class="affirmative-policies--quota-configuration">
-    <h4 class="bold"><?= i::__('Configuração das Cotas por Categoria') ?></h4>
-
-    <div class="affirmative-policies--quota-configuration__content" v-if="entity.quotaConfiguration && entity.quotaConfiguration.rules.length > 0">
-        <div class="fields">
-            <label class="field__title">
-                <?= i::__('Percentual total das Cotas:') ?>
-                {{totalPercentage}} %
-            </label>
-
-            <label class="field__title">
-                <?= i::__('Número total das Cotas:') ?>
-                {{totalQuota}}
-            </label>
-        </div>
-
-        <div class="affirmative-policies--quota-configuration__quota" v-for="(quota, index) in entity.quotaConfiguration.rules" :key="index">
-            <div class="affirmative-policies--quota-configuration__column">
-                <h5 class="field__title--semibold"><?= i::__('Cota') ?> {{index+1}}</h5>
-
-                <select v-model="quota.fieldName">
-                    <option class="select__selected-option" v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
-                </select>
-
-                <div class="field">
-                    <div class="field__column" v-if="getFieldType(quota) === 'select' || getFieldType(quota) === 'multiselect'">
-                        <label v-for="option in getFieldOptions(quota)">
-                            <input class="input" type="checkbox" :value="option" v-model="quota.eligibleValues" @change="autoSave()">
-                            {{option}}
-                        </label>
-                    </div>
-
-                    <div class="field__column" v-if="getFieldType(quota) === 'checkbox' || getFieldType(quota) === 'boolean'">
-                        <label>
-                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.eligibleValues" @change="autoSave()">
-                            <?= i::__('Sim / Marcado') ?>
-                        </label>
-                        <label>
-                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="quota.eligibleValues" @change="autoSave()">
-                            <?= i::__('Não / Desmarcado') ?>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="quota__fields">
-                <label class="field__title"><?= i::__('Porcentagem') ?>
-                    <div>
-                        <input type="number" v-model="quota.percentage" @change="updateRuleQuotas(quota)" min="0" max="100"> %
-                    </div>
-                </label>
-            </div>
-
-            <div class="quota__fields">
-                <label class="field__title"><?= i::__('Número de Vagas') ?>
-                    <input type="number" v-model="quota.vacancies" @change="updateRuleQuotaPercentage(quota)" min="0" :max="totalVacancies">
-                </label>
-            </div>
-
-            <div class="quota__trash">
-                <mc-confirm-button @confirm="removeConfig(index)">
-                    <template #button="{open}">
-                        <div class="field__trash button button--md button--text-danger button-icon">
-                            <mc-icon class="danger__color" name="trash" @click="open()"></mc-icon>
-                        </div>
-                    </template>
-                    <template #message="message">
-                        <?= i::__('Deseja deletar a cota?') ?>
-                    </template>
-                </mc-confirm-button>
-            </div>
-        </div>
-    </div>
-
-    <div class="affirmative-policies--quota-configuration__footer">
-        <button @click="addConfig();" class="button button--primary button--icon">
-            <mc-icon name="add"></mc-icon>
-            <label v-if="entity.quotaConfiguration && entity.quotaConfiguration.rules.length > 0">
-                <?php i::_e("Adicionar categoria") ?>
-            </label>
-            <label v-else>
-                <?php i::_e("Configurar Cotas por Categoria") ?>
-            </label>
-        </button>
     </div>
 </div> -->
