@@ -26,3 +26,19 @@ use MapasCulturais\i;
         </div>
     </div>
 </div>
+
+<div :class="['registration-info', classes]">
+    <div class="registration-info__content">
+        <div class="registration-info__data">
+            <h5 class="registration-info__data__title semibold"> <?= i::__('Faixa') ?> </h5>
+            <h4 v-if="registration.range" class="registration-info__data__info bold">{{registration.range}}</h4>
+            <h4 v-if="!registration.range" class="registration-info__data__info bold"><?php i::_e('Sem faixa') ?></h4>
+        </div>
+
+        <div class="registration-info__data">
+            <h5 class="registration-info__data__title semibold"> <?= i::__('Tipo de proponente') ?> </h5>
+            <h4 v-if="registration.proponentType" class="registration-info__data__info bold">{{registration.proponentType}}</h4>
+            <h4 v-if="!registration.proponentType" class="registration-info__data__info bold"><?php i::_e('Tipo de proponente não informado') ?></h4>
+        </div>
+    </div>
+</div>
