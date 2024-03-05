@@ -10,32 +10,41 @@ use MapasCulturais\i;
 $this->import('
     mc-icon
     mc-modal
+    mc-select
 ');
 ?>
 
 
-<div class="affirmative-policies--quota-configuration">
-    <h4 class="bold"><?= i::__('Configuração das Cotas por Categoria') ?></h4>
-
-    <div class="affirmative-policies--quota-configuration__content" v-if="entity.affirmative-policy--bonus-config">
-        <div class="fields">
-            <label class="field__title">
-                <?= i::__('Percentual total de indução:') ?>
-                {{totalPercentage}} %
-            </label>
-
-
+<div class="affirmative-policy--bonus-config">
+    <div class="affirmative-policy--bonus-config__card" v-if="entity.affirmativePolicyBonusConfig">
+        <div class="affirmative-policy--bonus-config__header">
+            <h4 class="bold"><?= i::__('Configuração do Bônus de Pontuação') ?></h4>
+            <div class="affirmative-policy--bonus-config__field field">
+                <label>
+                    <?= i::__('Percentual total de indução:') ?>
+                </label>
+                <span>
+                    <input type="number" /> %
+                </span>
+            </div>
         </div>
 
-        <div class="affirmative-policies--quota-configuration__quota" v-for="(quota, index) in entity.quotaConfiguration.rules" :key="index">
-            <div class="affirmative-policies--quota-configuration__column">
-                <h5 class="field__title--semibold"><?= i::__('Cota') ?> {{index+1}}</h5>
-                <select v-model="quota.fieldName">
-                    <option class="select__selected-option" v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
-                </select>
+        <div class="affirmative-policy--bonus-config__quota" v-for="(quota, index) in entity.affirmativePolicyBonusConfig.rules" :key="index">
+            <div class="affirmative-policy--bonus-config__column">
+                <h5 class="field__title--semibold"><?= i::__('Percentual') ?> {{index+1}}</h5>
 
-                <div class="field">
-                    <div class="field__column" v-if="getFieldType(quota) === 'select' || getFieldType(quota) === 'multiselect'">
+
+                <mc-select @change-option="setFieldName($event, quota)">
+                    <option v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
+                </mc-select>
+
+                <div class="affirmative-policy--bonus-config__fields">
+                    <div class="field">
+                        <label v-if="hasField(quota)">
+                            <?= i::__('Tipo:') ?>
+                        </label>
+                    </div>
+                    <div class="field affirmative-policy--bonus-config__row" v-if="getFieldType(quota) === 'select' || getFieldType(quota) === 'multiselect'">
                         <label v-for="option in getFieldOptions(quota)">
                             <input class="input" type="checkbox" :value="option" v-model="quota.eligibleValues" @change="autoSave()">
                             {{option}}
@@ -55,19 +64,15 @@ $this->import('
                 </div>
             </div>
 
-            <div class="quota__fields">
-                <label class="field__title"><?= i::__('Porcentagem') ?>
+            <div class="affirmative-policy--bonus-config__column">
+                <label class="field"><?= i::__('Porcentagem') ?>
                     <div>
                         <input type="number" v-model="quota.percentage" @change="updateRuleQuotas(quota)" min="0" max="100"> %
                     </div>
                 </label>
             </div>
 
-            <div class="quota__fields">
-                <label class="field__title"><?= i::__('Número de Vagas') ?>
-                    <input type="number" v-model="quota.vacancies" @change="updateRuleQuotaPercentage(quota)" min="0" :max="totalVacancies">
-                </label>
-            </div>
+
             <div class="quota__trash">
                 <mc-confirm-button @confirm="removeConfig(index)">
                     <template #button="{open}">
@@ -81,11 +86,13 @@ $this->import('
                 </mc-confirm-button>
             </div>
         </div>
+
+
     </div>
-    <div class="affirmative-policies--quota-configuration__footer">
+    <div class="affirmative-policy--bonus-config__footer">
         <button @click="addConfig();" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
-            <label v-if="entity.quotaConfiguration && entity.quotaConfiguration.rules.length > 0">
+            <label v-if="entity.affirmativePolicyBonusConfig && entity.affirmativePolicyBonusConfig.rules.length > 0">
                 <?php i::_e("Adicionar categoria") ?>
             </label>
             <label v-else>
