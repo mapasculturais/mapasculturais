@@ -450,6 +450,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             preg_match('#EQ\((\d+)\)#', $params['opportunity'] ?? '', $matches);
             $phase_id = $matches[1] ?? null;
             if($phase_id && str_starts_with(strtolower(trim($order)), '@quota')){
+                $quota_data->objectId = spl_object_id($this);
                 $quota_data->params = $params;
 
                 unset($params['@order']);
@@ -473,7 +474,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $app->hook('ApiQuery(registration).findResult', function(&$result) use(&$quota_data) {
             /** @var ApiQuery $this */
-            if($quota_data->ids ?? false) {
+            if(($quota_data->objectId ?? false) == spl_object_id($this)) {
                 $_new_result = [];
                 foreach($quota_data->ids as $id) {
                     foreach($result as $registration) {
@@ -487,9 +488,15 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         });
 
+        $app->hook('ApiQuery(registration).countResult', function(&$result) use(&$quota_data) {
+            if(($quota_data->objectId ?? false) == spl_object_id($this)) {
+                $result = count($quota_data->order);
+            }
+        });
+
         $app->hook('API.find(registration).result', function() use($quota_data) {
             /** @var Controller $this */
-            if($quota_data->ids ?? false) {
+            if(($quota_data->objectId ?? false) == spl_object_id($this)) {
                 $this->apiAddHeaderMetadata($quota_data->params, $quota_data->result, count($quota_data->order));
             }
         });
