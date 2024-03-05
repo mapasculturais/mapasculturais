@@ -24,7 +24,7 @@ $this->import('
                     <?= i::__('Percentual total de indução:') ?>
                 </label>
                 <span>
-                    <input type="number" /> %
+                    <input type="number" v-model="totalPercentage" /> %
                 </span>
             </div>
         </div>

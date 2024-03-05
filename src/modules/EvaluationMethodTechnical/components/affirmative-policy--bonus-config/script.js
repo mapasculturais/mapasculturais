@@ -29,6 +29,7 @@ app.component("affirmative-policy--bonus-config", {
           ]
         : [],
       criteria: Object.assign({}, config),
+      percent: 0,
     };
   },
   computed: {
@@ -48,7 +49,7 @@ app.component("affirmative-policy--bonus-config", {
     },
   },
   methods: {
-    getField(quota) { 
+    getField(quota) {
       const fieldName = quota.fieldName;
       if (Array.isArray(this?.fields)) {
         const field = this?.fields?.find(
@@ -70,9 +71,6 @@ app.component("affirmative-policy--bonus-config", {
 
     hasField(quota) {
       if (quota?.fieldName === "") return false;
-
-      console.log(quota);
-
       const field = this.getField(quota);
       return !!field;
     },
