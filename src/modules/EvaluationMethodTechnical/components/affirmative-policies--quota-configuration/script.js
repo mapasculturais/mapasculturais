@@ -50,8 +50,8 @@ app.component('affirmative-policies--quota-configuration', {
         addConfig() {
             if (!this.entity.quotaConfiguration) {
                 this.entity.quotaConfiguration = {
-                    vacancies: 0,
                     rules: [{
+                        title: '',
                         vacancies: 0,
                         fields: [this.skeleton()]
                     }]
@@ -94,21 +94,19 @@ app.component('affirmative-policies--quota-configuration', {
         },
         updateTotalQuotas() {
             this.totalQuota = (this.totalVacancies * this.totalPercentage) / 100;
-            this.entity.quotaConfiguration.vacancies = this.totalQuota;
         },
         updateQuotaPercentage() {
             this.totalPercentage = (this.totalQuota * 100) / this.totalVacancies;
-            this.entity.quotaConfiguration.vacancies = this.totalQuota;
         },
         updateRuleQuotas(quota) {
             quota.vacancies = (this.totalVacancies * quota.percentage ) / 100;
             this.distributeQuotas();
         },
-        updateRuleQuotaPercentage(quota) {
+        updateRuleQuotaPercentage(quota, load = false) {
             quota.percentage = (quota.vacancies * 100) / this.totalVacancies;
-            this.distributeQuotas();
+            this.distributeQuotas(false, load);
         },
-        distributeQuotas(deleteQuota = false) {
+        distributeQuotas(deleteQuota = false, load = false) {
             let countVacancies = 0;
             let removeQuota = deleteQuota;
 
@@ -118,10 +116,8 @@ app.component('affirmative-policies--quota-configuration', {
                 });
                 this.totalQuota = countVacancies;
 
-                if(this.totalQuota > this.totalVacancies) {
-                    this.messages.error(this.text('limitQuota'));
-                } else {
-                    this.updateQuotaPercentage();
+                this.updateQuotaPercentage();
+                if(!load) {
                     this.autoSave();
                 }
             }
@@ -130,7 +126,13 @@ app.component('affirmative-policies--quota-configuration', {
 
     mounted() {
         if(this.entity.quotaConfiguration && this.entity.quotaConfiguration.rules.length > 0) {
-            this.updateQuotaPercentage();
+            if(this.totalVacancies > 0) {
+                this.entity.quotaConfiguration.rules.forEach((quota, index) => {
+                    this.updateRuleQuotaPercentage(quota, true);
+                });
+            } else {
+                this.distributeQuotas(false, true);
+            }
         }
     }
 });
