@@ -44,4 +44,4 @@ while ($opportunity) {
     $opportunity = $opportunity->nextPhase;
 }
 
-$this->jsObject['config']['affirmative-policy--bonus-config']['fields'] = $phase_fields;
+$this->jsObject['config']['affirmativePolicyBonusConfig']['fields'] = $phase_fields;
