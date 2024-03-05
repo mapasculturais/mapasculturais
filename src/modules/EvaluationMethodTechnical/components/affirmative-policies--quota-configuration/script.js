@@ -50,24 +50,16 @@ app.component('affirmative-policies--quota-configuration', {
             if (!this.entity.quotaConfiguration) {
                 this.entity.quotaConfiguration = {
                     vacancies: 0,
-                    rules: [{
-                        vacancies: 0,
-                        fields: [this.skeleton()]
-                    }]
+                    rules: [this.skeleton()]
                 };
             } else {
-                this.entity.quotaConfiguration.rules.push({
-                    vacancies: 0,
-                    fields: [this.skeleton()]
-                });
+                this.entity.quotaConfiguration.rules.push(this.skeleton());
             }
-        },
-        addField(index) {
-            this.entity.quotaConfiguration.rules[index].fields.push(this.skeleton());
         },
         skeleton() {
             const rules = {
                 fieldName: '',
+                vacancies: 0,
                 eligibleValues: []
             }
             return rules;
@@ -76,17 +68,7 @@ app.component('affirmative-policies--quota-configuration', {
             this.entity.quotaConfiguration.rules = this.entity.quotaConfiguration.rules.filter(function(value, key) {
                 return item != key;
             });
-            this.distributeQuotas(true);
-        },
-        removeField(ruleIndex, fieldIndex) {
-            this.entity.quotaConfiguration.rules[ruleIndex].fields = this.entity.quotaConfiguration.rules[ruleIndex].fields.filter(function(value, key) {
-                return fieldIndex != key;
-            });
-            if(this.entity.quotaConfiguration.rules[ruleIndex].fields.length === 0) {
-                this.removeConfig(ruleIndex);
-            } else {
-                this.distributeQuotas(true);
-            }
+            this.distributeQuotas(false)
         },
         autoSave() {
             this.entity.save(3000)            
@@ -100,18 +82,16 @@ app.component('affirmative-policies--quota-configuration', {
             this.entity.quotaConfiguration.vacancies = this.totalQuota;
         },
         updateRuleQuotas(quota) {
-            quota.vacancies = (this.totalVacancies * quota.percentage ) / 100;
+            quota.vacancies = (this.totalQuota * quota.percentage ) / 100;
             this.distributeQuotas();
         },
-        updateRuleQuotaPercentage(quota) {
+        updateRuleQuotaPercentage(quota, load = false) {
             quota.percentage = (quota.vacancies * 100) / this.totalVacancies;
-            this.distributeQuotas();
+            this.distributeQuotas(load);
         },
-        distributeQuotas(deleteQuota = false) {
+        distributeQuotas(load) {
             let countVacancies = 0;
-            let removeQuota = deleteQuota;
-
-            if(this.entity.quotaConfiguration && this.entity.quotaConfiguration.rules.length > 0 || removeQuota) {
+            if(this.entity.quotaConfiguration && this.entity.quotaConfiguration.rules.length > 0) {
                 this.entity.quotaConfiguration.rules.forEach((quota, index) => {
                     countVacancies += quota.vacancies;
                 });
@@ -121,7 +101,9 @@ app.component('affirmative-policies--quota-configuration', {
                     this.messages.error(this.text('limitQuota'));
                 } else {
                     this.updateQuotaPercentage();
-                    this.autoSave();
+                    if(!load) {
+                        this.autoSave();
+                    }
                 }
             }
         }
