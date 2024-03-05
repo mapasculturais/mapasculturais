@@ -39,7 +39,7 @@ while ($opportunity) {
     if ($opportunity->evaluationMethodConfiguration && $opportunity->evaluationMethodConfiguration->definition->slug == "technical") {
         $fields = $opportunity->getFields(all:true);
         $fields = array_filter($fields, function ($field) use ($field_types, $parse_agent_field) {
-            if ($field->fieldType == "agent-owner-field" || $field->fieldType == "agent-collective-field") {
+            if ($field->fieldType == "agent-owner-field") {
                 return $parse_agent_field($field);
             } elseif (in_array($field->fieldType, $field_types)) {
                 return $field;
