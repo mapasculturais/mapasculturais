@@ -23,10 +23,11 @@ app.component("affirmative-policy--bonus-config", {
         ? this.entity.affirmativePolicyBonusConfig.vacancies
         : 0,
       totalPercentage: 0,
-      fields:
-        $MAPAS.config.affirmativePolicyBonusConfig.fields[
-          this.entity.opportunity.id
-        ],
+      fields: this.entity.opportunity.id
+        ? $MAPAS.config.affirmativePolicyBonusConfig.fields[
+            this.entity.opportunity.id
+          ]
+        : [],
       criteria: Object.assign({}, config),
     };
   },
@@ -47,10 +48,19 @@ app.component("affirmative-policy--bonus-config", {
     },
   },
   methods: {
-    getField(quota) {
+    getField(quota) { 
       const fieldName = quota.fieldName;
-      const field = this.fields.find((field) => field.fieldName == fieldName);
-      return field;
+      if (Array.isArray(this?.fields)) {
+        const field = this?.fields?.find(
+          (field) => field.fieldName == fieldName
+        );
+        return field;
+      } else {
+        const fieldsArray = Object.keys(this?.fields).map(
+          (id) => this?.fields[id]
+        );
+        return fieldsArray.find((field) => field.fieldName == fieldName);
+      }
     },
 
     getFieldType(quota) {
@@ -59,7 +69,11 @@ app.component("affirmative-policy--bonus-config", {
     },
 
     hasField(quota) {
-      const field = this.getField(quota)
+      if (quota?.fieldName === "") return false;
+
+      console.log(quota);
+
+      const field = this.getField(quota);
       return !!field;
     },
 
