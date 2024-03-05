@@ -277,9 +277,10 @@ class API {
                 }
             } else {
                 result = list || [];
-    
+                
                 objs.forEach(element => {
-                    let entity = this.getEntityInstance(element[this.$PK]);
+                    const api = new API(element['@entityType'], this.scope);
+                    const entity = api.getEntityInstance(element[api.$PK]);
                     entity.populate(element);
                     result.push(entity);
                     entity.$LISTS.push(result);
