@@ -31,5 +31,5 @@ return [
      * 
      * Ex: 'app.geoDivisionsFilters' => [25, 26], 
      */
-    'app.geoDivisionsFilters' => [25], 
+    'app.geoDivisionsFilters' => [], 
 ];
