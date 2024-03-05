@@ -210,6 +210,20 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $_subsiteId;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="score", type="float", nullable=true)
+     */
+    protected $score;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="eligible", type="boolean", nullable=true)
+     */
+    protected $eligible;
+
      /**
      * @var \MapasCulturais\Entities\Subsite
      *
