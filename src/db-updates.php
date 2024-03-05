@@ -2185,6 +2185,14 @@ $$
             }
         }
     },
+    "Cria colunas na entidade Registration" => function() use ($conn){
+        if(!__column_exists('Registration', 'score')) {
+            __exec("ALTER TABLE Registration ADD COLUMN score JSON NULL");
+        }
+        if(!__column_exists('Registration', 'eligible')) {
+            __exec("ALTER TABLE Registration ADD COLUMN eligible JSON NULL");
+        }
+    },
     'corrige os valores da distribuição de avaliação por categorias' => function() use ($conn, $app) {
         if($values = $conn->fetchAll("SELECT * FROM evaluationMethodConfiguration_meta WHERE key = 'fetchCategories'")) {
             foreach($values as $value) {
