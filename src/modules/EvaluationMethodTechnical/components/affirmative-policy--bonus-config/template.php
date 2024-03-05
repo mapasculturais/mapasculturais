@@ -38,9 +38,9 @@ $this->import('
                     <option v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
                 </mc-select>
 
-                <div class="affirmative-policy--bonus-config__fields">
+                <div class="affirmative-policy--bonus-config__fields" v-if="hasField(quota)">
                     <div class="field">
-                        <label v-if="hasField(quota)">
+                        <label>
                             <?= i::__('Tipo:') ?>
                         </label>
                     </div>
@@ -96,7 +96,7 @@ $this->import('
                 <?php i::_e("Adicionar categoria") ?>
             </label>
             <label v-else>
-                <?php i::_e("Configurar Cotas por Categoria") ?>
+                <?php i::_e("Configurar bonus de pontuação") ?>
             </label>
         </button>
     </div>
