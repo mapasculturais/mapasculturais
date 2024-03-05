@@ -101,6 +101,14 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             <?php i::_e("Somente para"); ?> <strong>{{field.categories.join(', ')}}</strong>
                             <br>
                         </span>
+                        <span ng-if="field.proponentTypes.length" class="attachment-description">
+                            <?php i::_e("Somente para"); ?> <strong>{{field.proponentTypes.join(', ')}}</strong>
+                            <br>
+                        </span>
+                        <span ng-if="field.registrationRanges.length" class="attachment-description">
+                            <?php i::_e("Somente para"); ?> <strong>{{field.registrationRanges.join(', ')}}</strong>
+                            <br>
+                        </span>
                         <span class="attachment-description type">
                             <?php i::_e("Tipo"); ?>: <strong>{{data.fieldTypesBySlug[field.fieldType].name}}</strong>
                             <br>
