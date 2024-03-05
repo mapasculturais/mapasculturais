@@ -2189,6 +2189,9 @@ $$
         if(!__column_exists('Registration', 'score')) {
             __exec("ALTER TABLE Registration ADD COLUMN score JSON NULL");
         }
+        if(!__column_exists('Registration', 'eligible')) {
+            __exec("ALTER TABLE Registration ADD COLUMN eligible JSON NULL");
+        }
     }
 
 ] + $updates ;   
