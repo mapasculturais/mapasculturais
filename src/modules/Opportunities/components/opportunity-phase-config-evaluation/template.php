@@ -22,13 +22,16 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
 ?>
 <mc-card> 
     <div class="evaluation-step grid-12">
-        <section class="evaluation-section col-12 grid-12">
-            <entity-field :entity="phase" prop="name" :autosave="3000" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
-            <entity-field :entity="phase" prop="evaluationFrom" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de início') ?>" :min="fromDateMin?._date" :max="fromDateMax?._date"></entity-field>    
-            <entity-field :entity="phase" prop="evaluationTo" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de término') ?>" :min="toDateMin?._date" :max="toDateMax?._date"></entity-field>
-        </section>
 
-        <div class="evaluation-line col-12"></div>
+        <section class="col-12 evaluation-step__section">
+            <div class="evaluation-step__section-content">
+                <div class="grid-12">
+                    <entity-field :entity="phase" prop="name" :autosave="3000" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
+                    <entity-field :entity="phase" prop="evaluationFrom" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de início') ?>" :min="fromDateMin?._date" :max="fromDateMax?._date"></entity-field>    
+                    <entity-field :entity="phase" prop="evaluationTo" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de término') ?>" :min="toDateMin?._date" :max="toDateMax?._date"></entity-field>
+                </div>
+            </div>
+        </section>
 
         <?php foreach($evaluation_methods as $evaluation_method): ?>
             <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'before') ?>
@@ -40,10 +43,17 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'after') ?>
         <?php endforeach; ?>
 
-        
-        <section class="evaluation-section col-12">
-            <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>
-            <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>
+        <section class="col-12 evaluation-step__section">
+            <div class="evaluation-step__section-header">
+                <div class="evaluation-step__section-label">
+                    <h3><?= i::__('Comissão de avaliação') ?></h3>
+                </div>
+            </div>
+
+            <div class="evaluation-step__section-content">
+                <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>
+                <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>
+            </div>
         </section>
 
         <section class="evaluation-section col-12">
@@ -59,8 +69,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                 <template #button="modal">
                     <button class="evaluation-fields-button button button--bg button--secondarylight" @click="modal.open"><?= i::__('Abrir campos') ?></button>
                 </template>
-            </mc-modal>  
-
+            </mc-modal>
         </section>
 
         <section class="evaluation-section col-12">

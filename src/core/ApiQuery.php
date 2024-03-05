@@ -773,6 +773,8 @@ class ApiQuery {
     }
     
     public function getCountResult() {
+        $app = App::i();
+        
         $dql = $this->getCountDQL();
 
         $q = $this->em->createQuery($dql);
@@ -788,6 +790,8 @@ class ApiQuery {
 
         $result = $q->getSingleScalarResult();
 
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.countResult", [&$result]);
+        
         return $result;
     }
     

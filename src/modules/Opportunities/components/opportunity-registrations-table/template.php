@@ -40,7 +40,7 @@ $entity = $this->controller->requestedEntity;
 
         <div class="col-12"> 
 
-            <entity-table type="registration" :query="query" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult,attachments" @clear-filters="clearFilters" show-index>
+            <entity-table type="opportunity" endpoint="findRegistrations" :query="query" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult,attachments" @clear-filters="clearFilters" show-index>
 
                 <template #title>
                     <h5>
@@ -103,6 +103,10 @@ $entity = $this->controller->requestedEntity;
 
                 <template #consolidatedResult="{entity}"> 
                     {{consolidatedResultToString(entity)}}
+                </template>
+
+                <template #agent="{entity}">
+                    <a :href="entity.owner.singleUrl">{{entity.owner.name}}</a>
                 </template>
 
                 <template #number="{entity}">

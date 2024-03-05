@@ -94,7 +94,7 @@ $this->import('
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(entity, index) in entities">
+                    <tr v-for="(entity, index) in entities" :key="entity.__objectId">
                         <td v-if="showIndex" class="entity-table__index">{{index+1}}</td>
                         <template v-for="header in columns">
                             <td v-if="header.visible">
