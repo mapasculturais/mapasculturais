@@ -13,10 +13,14 @@ $this->import('
 ?>
 
 <div class="geo-quota">
-    <button v-if="!isActive" class="button button--primary button--icon" @click="open()">
-        <mc-icon name="add"></mc-icon>
-        <?= i::__('Adicionar cotas por território') ?>
-    </button>
+    <div v-if="!isActive" class="geo-quota__active">
+        <button v-if="!isActive" class="button button--primary button--icon" @click="open()">
+            <mc-icon name="add"></mc-icon>
+            <?= i::__('Adicionar cotas por território') ?>
+        </button>
+
+        <!-- <mc-icon name="info-full"></mc-icon> -->
+    </div>
 
     <div v-if="isActive" class="geo-quota__card">
         <div class="geo-quota__header">

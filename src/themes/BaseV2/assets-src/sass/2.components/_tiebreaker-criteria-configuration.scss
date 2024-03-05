@@ -1,13 +1,10 @@
 @use '../0.settings/mixins' as *;
 
 .tiebreaker-criteria {
-
     &__active {
         align-items: center;
-        border-top: var(--mc-border-hairline) var(--mc-gray-300);
         display: flex;
         gap: size(19);
-        padding: size(12) size(21);
     }
     
     &__card {
