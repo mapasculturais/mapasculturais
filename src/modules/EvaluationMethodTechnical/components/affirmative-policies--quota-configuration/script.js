@@ -17,9 +17,9 @@ app.component('affirmative-policies--quota-configuration', {
     },
 
     data() {
-        const opportunity = this.entity.opportunity.parent ?? this.entity.opportunity;
+        const firstPhase = this.entity.opportunity.parent ?? this.entity.opportunity;
         return {
-            totalVacancies: opportunity.vacancies ?? 0,
+            totalVacancies: firstPhase.vacancies ?? 0,
             totalQuota: this.entity.quotaConfiguration ? this.entity.quotaConfiguration.vacancies : 0,
             totalPercentage: 0,
             fields: $MAPAS.config.affirmativePoliciesQuotaConfiguration.fields[this.entity.opportunity.id]
