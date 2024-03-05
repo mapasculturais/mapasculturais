@@ -42,7 +42,7 @@ app.component('opportunity-phase-publish-config-registration' , {
                 return this.phase?.evaluationMethodConfiguration?.evaluationTo.isFuture();
             }
 
-            return this.phase?.registrationTo.isFuture();
+            return this.phase?.registrationTo?.isFuture();
 
         },
         minDate () {
