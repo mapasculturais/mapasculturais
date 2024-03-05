@@ -193,13 +193,15 @@ app.component('opportunity-evaluation-committee', {
             }
         },
         getFetchCategories(agentUserId) {
+            let values = [];
             if( typeof this.entity.fetchCategories[agentUserId] == "array") {
                 return this.entity.fetchCategories[agentUserId];
             }else if(typeof this.entity.fetchCategories[agentUserId] == "string"){
-                let values = [];
                 values.push(this.entity.fetchCategories[agentUserId]);
                 return values
             }
+
+            return values;
         }
     },
 });
