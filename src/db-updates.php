@@ -2192,6 +2192,28 @@ $$
         if(!__column_exists('Registration', 'eligible')) {
             __exec("ALTER TABLE Registration ADD COLUMN eligible JSON NULL");
         }
+    },
+    'corrige os valores da distribuição de avaliação por categorias' => function() use ($conn, $app) {
+        if($values = $conn->fetchAll("SELECT * FROM evaluationMethodConfiguration_meta WHERE key = 'fetchCategories'")) {
+            foreach($values as $value) {
+                if($fetchCategories = json_decode($value['value'], true)) {
+                    $data = [];
+                    $id = $value['id'];
+                    $val_id = $value['object_id'];
+                    foreach($fetchCategories as $user => $fetchCategorie ) {
+                        if(is_array($fetchCategorie)) {
+                            $data[$user] = $fetchCategorie;
+                        }else {
+                            $categories = explode(";",$fetchCategorie);
+                            $data[$user] = [implode(",", $categories)];
+                        }
+                        $_data = json_encode($data);
+                        __exec("UPDATE evaluationMethodConfiguration_meta SET value = '{$_data}' WHERE id = {$id}");
+                        $app->log->debug("Campo fetchCategories atualizado na avaliação {$val_id}");
+                    }
+                }
+            }
+        }
     }
 
 ] + $updates ;   
