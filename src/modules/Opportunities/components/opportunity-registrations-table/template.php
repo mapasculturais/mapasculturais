@@ -105,6 +105,10 @@ $entity = $this->controller->requestedEntity;
                     {{consolidatedResultToString(entity)}}
                 </template>
 
+                <template #agent="{entity}">
+                    <a :href="entity.owner.singleUrl">{{entity.owner.name}}</a>
+                </template>
+
                 <template #number="{entity}">
                     <a :href="entity.singleUrl">{{entity.number}}</a>
                 </template>
