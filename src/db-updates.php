@@ -2185,7 +2185,7 @@ $$
             }
         }
     },
-    "Cria colunas na entidade Registration" => function() use ($conn){
+    "Cria colunas score e eligible na entidade Registration" => function() use ($conn){
         if(!__column_exists('Registration', 'score')) {
             __exec("ALTER TABLE Registration ADD COLUMN score JSON NULL");
         }
