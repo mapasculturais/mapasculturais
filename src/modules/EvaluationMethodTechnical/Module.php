@@ -194,6 +194,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
             'label' => i::__('Nota de corte'),
             'type' => 'integer',
         ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('enableQuotasQuestion',[
+            'label' => i::__('Deseja habilitar a opção para o candidato se autoidentificar para cotas ou políticas afirmativas?'),
+            'description' => i::__('Ao habilitar esta configuração, será liberada a opção para o candidato se autoidentificar para cotas ou políticas afirmativas.'),
+            'type' => 'checkbox',
+            'private' => false,
+            'default' => false,
+        ]);
     }
 
     function enqueueScriptsAndStyles() {

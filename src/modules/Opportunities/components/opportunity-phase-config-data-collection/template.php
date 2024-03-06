@@ -54,7 +54,7 @@ $this->import('
                 <entity-field class="field__preponent"  :entity="phase" prop="registrationProponentTypes" :autosave="3000" hide-label></entity-field>
             </div>
         </div>
-        <?php $this->applyTemplateHook('opportunity-data-collection-config','afeter')?>
+        <?php $this->applyTemplateHook('opportunity-data-collection-config','after')?>
 
         <div class="col-12" v-if="phase.isFirstPhase">
             <opportunity-ranges-config :entity="phase"></opportunity-ranges-config>
@@ -63,6 +63,11 @@ $this->import('
         <div class="col-12 sm:col-12">
             <?php $this->applyComponentHook('bottom') ?>
         </div>
+
+        <div v-if="phase.evaluationMethodConfiguration" class="col-12">
+            <entity-field :entity="phase.evaluationMethodConfiguration" prop="enableQuotasQuestion" :autosave="3000"></entity-field>
+        </div>
+
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>
             <opportunity-phase-publish-date-config  :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
