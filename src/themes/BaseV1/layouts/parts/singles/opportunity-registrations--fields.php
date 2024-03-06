@@ -97,16 +97,20 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             <code onclick="copyToClipboard(this)" class="hltip field-id" title="<?php i::esc_attr_e('Clique para copiar') ?>">{{field.id}}</code> {{field.title}} 
                             <em ng-if="field.fieldType !== 'section'"><small>({{field.required.toString() === 'true' ? data.fieldsRequiredLabel : data.fieldsOptionalLabel }})</small></em>
                         </div>
+                        
+                        <span class="attachment-description">
+                            <?php i::_e("Campo disponível somente para:"); ?>
+                        </span>
                         <span ng-if="field.categories.length" class="attachment-description">
-                            <?php i::_e("Somente para"); ?> <strong>{{field.categories.join(', ')}}</strong>
+                            <?php i::_e("Categorias: "); ?> <strong>{{field.categories.join(', ')}}</strong>
                             <br>
                         </span>
                         <span ng-if="field.proponentTypes.length" class="attachment-description">
-                            <?php i::_e("Somente para"); ?> <strong>{{field.proponentTypes.join(', ')}}</strong>
+                            <?php i::_e("Tipos de proponentes: "); ?> <strong>{{field.proponentTypes.join(', ')}}</strong>
                             <br>
                         </span>
                         <span ng-if="field.registrationRanges.length" class="attachment-description">
-                            <?php i::_e("Somente para"); ?> <strong>{{field.registrationRanges.join(', ')}}</strong>
+                            <?php i::_e("Faixas: "); ?> <strong>{{field.registrationRanges.join(', ')}}</strong>
                             <br>
                         </span>
                         <span class="attachment-description type">
