@@ -34,7 +34,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige permissão de visualização de arquivos privados
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
+
+## [7.3.24] - 2024-03-06
+### Correções
 - Corrige exibição do botão publicar resultados e suas frases de advertência para que sejam exibidos e funcionais somente quando a fase estiver terminada
+- Corrigido o erro que impedia o botão de exclusão da fase de coleta de dados de ficar ativo para uso
+- Corrige erro na criação de fase de coleta de dados
+
+## [7.3.23] - 2024-03-01
+### Correções
+- Corrige extração de planilha de inscritos para compatibilidade com o php 8.2
 
 ## [7.3.22] - 2024-03-01
 ### Correções
