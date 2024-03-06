@@ -18,7 +18,7 @@ $this->import('
 
     <div class="affirmative-policies--quota-configuration__content" v-if="entity.quotaConfiguration && entity?.quotaConfiguration?.rules.length > 0">
         <div class="fields">
-            <label class="field__title">
+            <label class="field__title" v-if="totalVacancies > 0">
             <?= i::__('Percentual total das Cotas:') ?>
                 {{totalPercentage}} %
             </label>
@@ -31,7 +31,10 @@ $this->import('
 
         <div class="affirmative-policies--quota-configuration__quota" v-for="(quota, index) in entity.quotaConfiguration.rules" :key="index">
             <div class="affirmative-policies--quota-configuration__column">
-                <h5 class="field__title--semibold"><?= i::__('Cota') ?> {{index+1}}</h5>
+                <label>
+                    <?= i::__('Descrição:') ?> 
+                    <input type="text" v-model="quota.title" @blur="autoSave()">
+                </label>
 
                 <div v-for="(field, indexF) in quota.fields" :key="indexF">
                     <select v-model="field.fieldName">
@@ -74,7 +77,7 @@ $this->import('
                 
             </div>
 
-            <div class="quota__fields">
+            <div class="quota__fields" v-if="totalVacancies > 0">
                 <label class="field__title"><?= i::__('Porcentagem') ?>
                     <div> 
                         <input type="number" v-model="quota.percentage" @change="updateRuleQuotas(quota)" min="0" max="100"> %
@@ -84,7 +87,7 @@ $this->import('
 
             <div class="quota__fields">
                 <label class="field__title"><?= i::__('Número de Vagas') ?> 
-                    <input type="number" v-model="quota.vacancies" @change="updateRuleQuotaPercentage(quota)" min="0" :max="totalVacancies">
+                    <input type="number" v-model="quota.vacancies" @change="updateRuleQuotaPercentage(quota)" min="0">
                 </label>
             </div>
             <div class="quota__trash">

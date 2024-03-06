@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -9,6 +10,7 @@ use MapasCulturais\i;
 $this->import("
     affirmative-policies--geo-quota-configuration
     affirmative-policies--quota-configuration
+    affirmative-policy--bonus-config
     entity-field
     mc-icon
     technical-assessment-section
@@ -16,7 +18,7 @@ $this->import("
 ");
 ?>
 
-    
+
 <section class="col-12 evaluation-step__section">
     <div class="evaluation-step__section-header">
         <div class="evaluation-step__section-label">
@@ -41,10 +43,11 @@ $this->import("
     <div class="col-12 evaluation-step__section-content">
         <affirmative-policies--quota-configuration :entity="phase"></affirmative-policies--quota-configuration>
         <affirmative-policies--geo-quota-configuration :phase="phase"></affirmative-policies--geo-quota-configuration>
+        <affirmative-policy--bonus-config :entity="phase"></affirmative-policy--bonus-config>
     </div>
 </section>
 
-<!-- <section class="col-12 evaluation-step__section">
+<section class="col-12 evaluation-step__section">
     <div class="evaluation-step__section-header">
         <div class="evaluation-step__section-label">
             <h3><?= i::__('Comissão de avaliação') ?></h3>
@@ -53,4 +56,4 @@ $this->import("
 
     <div class="evaluation-step__section-content">
     </div>
-</section> -->
+</section>
