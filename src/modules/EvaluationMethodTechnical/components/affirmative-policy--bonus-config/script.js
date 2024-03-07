@@ -103,7 +103,7 @@ app.component("affirmative-policy--bonus-config", {
           : {
               [event.target.value]: event.target.checked,
             };
-       this.autoSave();
+      this.autoSave();
     },
 
     addConfig() {
@@ -115,15 +115,14 @@ app.component("affirmative-policy--bonus-config", {
     },
 
     removeConfig(item) {
-      this.entity.pointRewardpointReward = this.entity.pointReward.filter(
+      this.entity.pointReward = this.entity.pointReward.filter(
         function (value, key) {
           return item != key;
         }
       );
-      this.distributeQuotas(false);
+      this.autoSave();
     },
     autoSave() {
-      this.entity.pointRewardRoof = this.pointRewardRoof;
       this.entity.save(3000);
     },
   },
