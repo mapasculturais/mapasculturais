@@ -200,7 +200,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             'description' => i::__('Ao habilitar esta configuração, será liberada a opção para o candidato se autoidentificar para cotas ou políticas afirmativas.'),
             'type' => 'checkbox',
             'private' => false,
-            'default' => false,
+            'default' => true,
         ]);
 
         $this->registerEvaluationMethodConfigurationMetadata('considerQuotasInGeneralList', [
