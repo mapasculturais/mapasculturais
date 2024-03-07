@@ -19,13 +19,12 @@ $this->import('
     <div class="affirmative-policy--bonus-config__card" v-if="entity.affirmativePolicyBonusConfig || entity.isActivePointReward">
         <div class="affirmative-policy--bonus-config__header">
             <h4 class="bold"><?= i::__('Configuração do Bônus de Pontuação') ?></h4>
-            {{console.log(entity)}}
             <div class="affirmative-policy--bonus-config__field field">
                 <label>
                     <?= i::__('Percentual total de indução:') ?>
                 </label>
                 <span>
-                    <input type="number" v-model="pointRewardRoof" /> %
+                    <input type="number" v-model="pointRewardRoof" @change="autoSave()" min="0" max="100" /> %
                 </span>
             </div>
         </div>
@@ -35,9 +34,10 @@ $this->import('
                 <h5 class="field__title--semibold"><?= i::__('Percentual') ?> {{index+1}}</h5>
 
 
-                <mc-select @change-option="setFieldName($event, quota)" :default-value="quota.field">
+                <mc-select @change-option="setFieldName($event, quota)" :default-value="quota.field" placeholder="Selecione">
                     <option v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.id">{{ '#' + item.id + ' - ' + item.title }}</option>
                 </mc-select>
+
 
                 <div class="affirmative-policy--bonus-config__fields" v-if="hasField(quota)">
                     <div class="field">
@@ -47,14 +47,13 @@ $this->import('
                     </div>
                     <div class="field affirmative-policy--bonus-config__row" v-if="getFieldType(quota) === 'select' || getFieldType(quota) === 'multiselect'">
                         <label v-for="option in getFieldOptions(quota)">
-                            <input class="input" type="checkbox" :value="option" v-model="quota.value[option]" @change="autoSave()">
+                            <input class="input" type="checkbox" :value="option" v-model="quota.value[option]" @change="checkboxUpdate($event,quota)">
                             {{option}}
                         </label>
                     </div>
-
                     <div class="field__column" v-if="getFieldType(quota) === 'checkbox' || getFieldType(quota) === 'boolean'">
                         <label>
-                            {{console.log(quota)}}
+
                             <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.value" @change="autoSave()">
                             <?= i::__('Sim / Marcado') ?>
                         </label>
