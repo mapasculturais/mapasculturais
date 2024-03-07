@@ -38,6 +38,10 @@ app.component('opportunity-phase-config-evaluation' , {
             return this.phases[this.index + 1];
         },
 
+        firstPhase() {
+            return this.phases[0];
+        },
+
         fromDateMin() {
             return this.previousPhase.evaluationFrom || this.previousPhase.registrationFrom;
         },
@@ -90,7 +94,7 @@ app.component('opportunity-phase-config-evaluation' , {
 
         categories(){
             return this.phases[0].registrationCategories || [];
-        }
+        },
     },
 
     methods: {
