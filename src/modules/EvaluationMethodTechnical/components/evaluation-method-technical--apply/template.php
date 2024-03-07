@@ -50,6 +50,37 @@ $this->import('
                     <?php i::_e('Aplicar para todas as inscrições enviadas') ?>
                 </label>
             </div>
+
+            <div class="field col-12">
+                <label>
+                    <input type="radio" name="selectionType" value="first" v-model="selectionType" @change="initConsiderQuotas">
+                    <?php i::_e('Selecionar os primeiros') ?>
+                </label>
+            </div>
+            <div class="field col-12">
+                <label>
+                    <input type="radio" name="selectionType" value="substitute" v-model="selectionType" @change="initConsiderQuotas">
+                    <?php i::_e('Marcar como suplente') ?>
+                </label>
+            </div>
+
+            <div class="field col-12" v-if="selectionType === 'first' || selectionType === 'substitute'">
+                <label>
+                    <?php i::_e('Total de vagas:') ?>
+                    <input type="number" v-model="entity.vacancies">
+                </label>
+                <label>
+                    <input type="checkbox" v-model="considerQuotas" @checked="considerQuotas">
+                    <?php i::_e('Considerar cotas') ?>
+                </label>
+            </div>
+
+            <div class="field col-12">
+                <label>
+                    <input type="radio" name="selectionType" value="delRegistrations" v-model="selectionType" @change="initConsiderQuotas">
+                    <?php i::_e('Eliminar inscrições com nota inferior') ?>
+                </label>
+            </div>
         </div>
     </template>
 
