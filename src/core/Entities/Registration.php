@@ -2,7 +2,7 @@
 namespace MapasCulturais\Entities;
 
 use DateTime;
-use Doctrine\ORM\Exception\NotSupported;
+use MapasCulturais\i;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
