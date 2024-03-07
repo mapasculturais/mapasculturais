@@ -443,21 +443,31 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $self = $this;
 
-        $app->hook('entity(Registration).consolidateResult', function() {
+        $app->hook('entity(Registration).consolidateResult', function(&$result) use ($self) {
             /** @var Registration $this */
-            
             $app = App::i();
 
-            // salva o metadado appliedPointReward
-            $app->disableAccessControl();
-            $metadata = $this->getMetadata('appliedPointReward', true);
-            $metadata->save(true);
-            $app->enableAccessControl();
+            $em = $this->evaluationMethod;
+            if($em->slug === "technical") {
+                $registration = $this;
+                $connection = $app->em->getConnection();
 
-            
-            // limpa o cache das cotas
-            $cache_key = "{$this->opportunity}:quota-registrations";
-            $app->cache->delete($cache_key);
+                $app->disableAccessControl();
+
+                do {
+                    $score = $self->applyAffirmativePolicies((float) $registration->consolidatedResult, $registration);
+                    $connection->executeQuery('UPDATE registration SET score = :score WHERE id = :id', ['score' => $score,'id' => $registration->id]);
+                }
+                while($registration = $this->nexPhase);
+               
+                $app->enableAccessControl();
+                
+                // limpa o cache das cotas
+                $cache_key = "{$this->opportunity}:quota-registrations";
+                $app->cache->delete($cache_key);
+                
+            }
+           
         }); 
 
         $quota_data = (object)[];
@@ -905,9 +915,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $num = count($evaluations);
         if($num){
-            $_result = number_format($result / $num, 2);
-            return $this->applyAffirmativePolicies($_result, $registration);
-
+            return number_format($result / $num, 2);
         } else {
             return null;
         }
