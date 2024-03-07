@@ -811,7 +811,13 @@ class ApiQuery {
         $where = $this->generateWhere();
         $order = $this->generateOrder();
         $joins = $this->generateJoins();
-        $select = $select ?: $this->generateSelect();
+        if($select) {
+            foreach($this->orderCasts as $order_cast) {
+                $select .= ", $order_cast";
+            }
+        } else {
+            $select = $this->generateSelect();
+        }
 
         $dql = "SELECT\n\t{$select}\nFROM \n\t{$this->entityClassName} e {$joins}";
         if ($where) {
