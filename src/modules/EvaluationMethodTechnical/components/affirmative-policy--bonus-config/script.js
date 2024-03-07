@@ -94,32 +94,40 @@ app.component("affirmative-policy--bonus-config", {
       this.autoSave();
     },
     checkboxUpdate(event, quota) {
-      quota.value =
-        typeof quota.value === "object"
-          ? {
-              ...quota.value,
-              [event.target.value]: event.target.checked,
-            }
-          : {
-              [event.target.value]: event.target.checked,
-            };
+      if (event.target.checked) {
+        quota.value =
+          typeof quota.value === "object"
+            ? {
+                ...quota.value,
+                [event.target.value]: String(event.target.checked),
+              }
+            : {
+                [event.target.value]: String(event.target.checked),
+              };
+      } else {
+        delete quota.value[event.target.value];
+      }
+
+      console.log(quota.value);
+
       this.autoSave();
     },
 
     addConfig() {
       if (!this.entity.pointReward) {
-        this.entity.pointReward = [...this.entity.pointReward, {}];
+        this.entity.pointReward = [{}];
       } else {
         this.entity.pointReward.push({});
       }
     },
 
     removeConfig(item) {
-      this.entity.pointReward = this.entity.pointReward.filter(
-        function (value, key) {
-          return item != key;
-        }
-      );
+      this.entity.pointReward = this.entity.pointReward.filter(function (
+        value,
+        key
+      ) {
+        return item != key;
+      });
       this.autoSave();
     },
     autoSave() {
