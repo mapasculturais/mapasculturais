@@ -1302,6 +1302,31 @@ class Module extends \MapasCulturais\Module{
                     $this->save(true);
                 }
             });
+
+            $app->hook('entity(Registration).insert:after', function() use($app){
+                /** @var Registration $this */
+                $app->disableAccessControl();
+                
+                if ($this->previousPhase) {
+                    $this->range = $this->previousPhase->range;
+                    $this->proponentType = $this->previousPhase->proponentType;
+                    $this->save(true);
+                }
+                $app->disableAccessControl();
+
+            });
+
+            $app->hook('entity(Registration).update:after', function() use($app){
+                /** @var Registration $this */
+                $app->disableAccessControl();
+
+                if( $this->nextPhase){
+                    $this->nextPhase->range = $this->range;
+                    $this->nextPhase->proponentType = $this->proponentType;
+                    $this->nextPhase->save(true);
+                }
+                $app->enableAccessControl();
+            });
         }
     }
 
