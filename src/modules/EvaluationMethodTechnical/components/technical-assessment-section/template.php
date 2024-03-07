@@ -18,7 +18,7 @@ $this->import('
         <div class="technical-assessment-section__fields">
             <div class="field">
                 <label><?php i::_e("Nota máxima:") ?>
-                    {{ maxScore }}
+                    <span class="">{{ maxScore }}</span>
                 </label>
             </div>
             <div class="field">
@@ -34,7 +34,7 @@ $this->import('
                     <input v-if="editingSections[section.id]" type="text" v-model="section.name" @blur="sendConfigs();editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
                     <span v-else class="bold">{{section.name}}</span>
                     <div class="title__buttons">
-                        <button class="button button-icon" @click="editSections(section.id)">
+                        <button class="button button--text" @click="editSections(section.id)">
                             <mc-icon name="edit"></mc-icon>
                             <?php i::_e("Editar") ?>
                         </button>
@@ -57,12 +57,17 @@ $this->import('
             </div>
             
             <div class="technical-assessment-section__criterions" v-if="entity.criteria && entity.criteria.length > 0">
+                <div class="criterion__fields criterion__title field">
+                    <label><?php i::_e("Nome do critério") ?></label>
+                    <label><?php i::_e("Nota máxima") ?></label>
+                    <label><?php i::_e("Peso") ?></label>
+                </div>
                 <div v-for="(criteria, index) in entity.criteria" :key="index">
                     <div class="criterion" v-if="criteria.sid == section.id">
-                        <div class="criterion-fields">
+                        <div class="criterion__fields">
                             <input type="text" v-model="criteria.title" @blur="sendConfigs" placeholder="<?= i::esc_attr__('Nome do critério') ?>">
                             <input type="number" v-model="criteria.max" @blur="sendConfigs" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>">
-                            <input type="number" v-model="criteria.weight" @blur="sendConfigs" placeholder="<?= i::esc_attr__('Peso') ?>">
+                            <input type="number" v-model="criteria.weight" @blur="sendConfigs" placeholder="<?= i::esc_attr__('Peso') ?>"> 
                         </div>
                         <div class="field__trash">
                             <mc-confirm-button  @confirm="delCriteria(criteria.id)">
@@ -77,10 +82,10 @@ $this->import('
                             </mc-confirm-button>
                         </div>
                     </div>
-                </div>
-                
+                </div>    
             </div>
-            <div class="card--add-criterion">
+
+            <div class="add-criterion">
                 <button @click="addCriteria(section.id)" class="button button--primary button--icon">
                     <mc-icon name="add"></mc-icon>
                     <label>
