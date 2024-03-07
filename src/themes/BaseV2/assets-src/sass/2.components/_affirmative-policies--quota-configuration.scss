@@ -1,65 +1,73 @@
 @use '../0.settings/mixins' as *;
 
 .affirmative-policies--quota-configuration {
-    &__active {
+    display: grid;
+    gap: size(20);
+
+    &__activate,
+    &__add-category {
         align-items: center;
         display: flex;
         gap: size(19);
     }
-
+    
+    // Estilização do card
     &__card {
         border: size(1) solid var(--mc-gray-300);
         border-radius: var(--mc-border-radius-xs);
     }
 
-    &__header {
+    &__card-header {
+        align-items: center;
         border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
-        display: flex;
-        flex-direction: column;
+        display: grid;
         gap: size(9);
+        grid-template-columns: 
+            calc(100% - size(115)) 
+            size(115);
         padding: size(13) size(23);
     }
 
-    &__quota {
-        align-items: center;
+    &__card-header-info {
+        display: grid;
+        gap: size(8);
+    }
+
+    &__card-content {
         border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
         display: grid;
-        gap: size(20) size(30);
-        grid-template-columns: 1fr size(70);
+        gap: size(20);
         padding: size(18) size(23);
     }
 
-    &__quota-fields {
-        display: grid;
-        gap: size(20) size(30);
-        grid-template-columns: 
-            calc(60% - size(20)) 
-            calc(20% - size(20)) 
-            calc(20% - size(20));
-
-        @media (max-width: size(1024)) {
-            gap: size(20);
-            grid-template-columns: 
-                calc(50% - size(20)) 
-                calc(25% - size(20)) 
-                calc(25% - size(20));
-        }
-    }
-
-    &__field-sufix {
-        display: grid;
-        grid-template-columns: 1fr size(20);
-        justify-items: center;
-        align-items: center;
-    }
-
-    &__footer {
+    &__card-footer {
         padding: size(10) size(23);
     }
 
-    @media (max-width: 810px) {
-        &__quota {
-            grid-template-columns: 1fr;
-        }
+    // Estilização interna
+    &__quota-header {
+        display: grid;
+        gap: size(30);
+        grid-template-columns: 
+            calc(60% - size(20)) 
+            calc(20% - size(20)) 
+            calc(20% - size(20))
+    }
+
+    &__quota-field {
+        border-top: var(--mc-border-hairline) var(--mc-gray-300);
+        display: grid;
+        gap: size(15) size(30);
+        grid-template-columns: 
+            calc(100% - size(100))
+            size(70);
+        padding-top: size(20);
+    }
+
+    &__quota-field-sufix {
+        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr size(20);
+        justify-items: center;
     }
 }
