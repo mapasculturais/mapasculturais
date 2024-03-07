@@ -50,8 +50,7 @@ app.component("affirmative-policy--bonus-config", {
   },
   methods: {
     getField(quota) {
-      const id = quota.field;
-
+      const id = quota.field ?? quota.fieldName;
       if (Array.isArray(this?.fields)) {
         const field = this?.fields?.find((field) => field.id == id);
         return field;
@@ -69,23 +68,10 @@ app.component("affirmative-policy--bonus-config", {
     },
 
     hasField(quota) {
-      if (quota?.fieldName === "") return false;
+      if (quota?.field === "") return false;
       const field = this.getField(quota);
-      return !!field;
-    },
 
-    setCriterion(option, id) {
-      const field = Object.values(this.fields).filter(
-        (field) => field.fieldName == option.value
-      );
-      this.criteria[id].selected = !!field.length ? field[0] : null;
-      this.criteria[id].criterionType = option.value;
-      this.criteria[id].preferences = this.checkCriterionType(
-        this.criteria[id],
-        ["checkboxes", "select"]
-      )
-        ? []
-        : null;
+      return !!field;
     },
 
     checkCriterionType(criterion, allowedTypes = []) {
@@ -100,86 +86,44 @@ app.component("affirmative-policy--bonus-config", {
     },
 
     setFieldName(option, quota) {
-      quota.fieldName = option.value;
+      field = this.getField({ field: option.value });
+      quota.field = option.value;
+      quota.valuesList = field.fieldOptions;
+      quota.value = "";
+      quota.viewDataValues = field.fieldType;
+      this.autoSave();
+    },
+    checkboxUpdate(event, quota) {
+      quota.value =
+        typeof quota.value === "object"
+          ? {
+              ...quota.value,
+              [event.target.value]: event.target.checked,
+            }
+          : {
+              [event.target.value]: event.target.checked,
+            };
+      this.autoSave();
     },
 
     addConfig() {
-      if (!this.entity.affirmativePolicyBonusConfig) {
-        this.entity.affirmativePolicyBonusConfig = {
-          vacancies: 0,
-          rules: [this.skeleton()],
-        };
+      if (!this.entity.pointReward) {
+        this.entity.pointReward = [...this.entity.pointReward, {}];
       } else {
-        this.entity.affirmativePolicyBonusConfig.rules.push(this.skeleton());
+        this.entity.pointReward.push({});
       }
     },
-    skeleton() {
-      const rules = {
-        fieldName: "",
-        vacancies: 0,
-        eligibleValues: [],
-      };
-      return rules;
-    },
+
     removeConfig(item) {
-      this.entity.affirmativePolicyBonusConfig.rules =
-        this.entity.affirmativePolicyBonusConfig.rules.filter(function (
-          value,
-          key
-        ) {
+      this.entity.pointReward = this.entity.pointReward.filter(
+        function (value, key) {
           return item != key;
-        });
-      this.distributeQuotas(false);
+        }
+      );
+      this.autoSave();
     },
     autoSave() {
-      var date = new Date();
-      var new_id = "p-" + date.getTime();
-      this.entity.pointRewardRoof = this.pointRewardRoof;
-      /*  this.entity.pointReward = this.entity.affirmativePolicyBonusConfig.map(
-        (quota) => {
-          return { id: new_id, fieldPercent: 0, field: "", value: "" };
-        }
-      ); */
       this.entity.save(3000);
-    },
-    updateTotalQuotas() {
-      this.totalQuota = (this.totalVacancies * this.totalPercentage) / 100;
-      this.entity.affirmativePolicyBonusConfig.vacancies = this.totalQuota;
-    },
-    updateQuotaPercentage() {
-      this.totalPercentage = (this.totalQuota * 100) / this.totalVacancies;
-      this.entity.affirmativePolicyBonusConfig.vacancies = this.totalQuota;
-    },
-    updateRuleQuotas(quota) {
-      quota.vacancies = (this.totalQuota * quota.percentage) / 100;
-      this.distributeQuotas();
-    },
-    updateRuleQuotaPercentage(quota, load = false) {
-      quota.percentage = (quota.vacancies * 100) / this.totalVacancies;
-      this.distributeQuotas(load);
-    },
-    distributeQuotas(load) {
-      let countVacancies = 0;
-      if (
-        this.entity.affirmativePolicyBonusConfig &&
-        this.entity.affirmativePolicyBonusConfig.rules.length > 0
-      ) {
-        this.entity.affirmativePolicyBonusConfig.rules.forEach(
-          (quota, index) => {
-            countVacancies += quota.vacancies;
-          }
-        );
-        this.totalQuota = countVacancies;
-
-        if (this.totalQuota > this.totalVacancies) {
-          this.messages.error(this.text("limitQuota"));
-        } else {
-          this.updateQuotaPercentage();
-          if (!load) {
-            this.autoSave();
-          }
-        }
-      }
     },
   },
 
