@@ -22,7 +22,7 @@ app.component("affirmative-policy--bonus-config", {
       totalQuota: this.entity.affirmativePolicyBonusConfig
         ? this.entity.affirmativePolicyBonusConfig.vacancies
         : 0,
-      totalPercentage: 0,
+      pointRewardRoof: this.entity.pointRewardRoof,
       fields: this.entity.opportunity.id
         ? $MAPAS.config.affirmativePolicyBonusConfig.fields[
             this.entity.opportunity.id
@@ -50,17 +50,16 @@ app.component("affirmative-policy--bonus-config", {
   },
   methods: {
     getField(quota) {
-      const fieldName = quota.fieldName;
+      const id = quota.field;
+
       if (Array.isArray(this?.fields)) {
-        const field = this?.fields?.find(
-          (field) => field.fieldName == fieldName
-        );
+        const field = this?.fields?.find((field) => field.id == id);
         return field;
       } else {
         const fieldsArray = Object.keys(this?.fields).map(
           (id) => this?.fields[id]
         );
-        return fieldsArray.find((field) => field.fieldName == fieldName);
+        return fieldsArray.find((field) => field.id == id);
       }
     },
 
@@ -133,6 +132,14 @@ app.component("affirmative-policy--bonus-config", {
       this.distributeQuotas(false);
     },
     autoSave() {
+      var date = new Date();
+      var new_id = "p-" + date.getTime();
+      this.entity.pointRewardRoof = this.pointRewardRoof;
+      /*  this.entity.pointReward = this.entity.affirmativePolicyBonusConfig.map(
+        (quota) => {
+          return { id: new_id, fieldPercent: 0, field: "", value: "" };
+        }
+      ); */
       this.entity.save(3000);
     },
     updateTotalQuotas() {
