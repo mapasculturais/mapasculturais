@@ -10,6 +10,7 @@ use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\Opportunity as EntitiesOpportunity;
 use MapasCulturais\Entities\Registration;
 
 /**
@@ -385,13 +386,11 @@ class Opportunity extends EntityController {
         $this->apiResponse($fields);
     }
 
-    function API_findRegistrations() {
+    function apiFindRegistrations($opportunity, $query_data) {
         $app = App::i();
-
         $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
+        $data = $query_data;
 
-        $opportunity = $this->_getOpportunity();
-        $data = $this->data;
         $data['opportunity'] = "EQ({$opportunity->id})";
 
         $_opportunity = $opportunity;
@@ -498,10 +497,21 @@ class Opportunity extends EntityController {
                 }
             }
         }
-        
 
-        $this->apiAddHeaderMetadata($this->data, $registrations, $query->count());
-        $this->apiResponse($registrations);
+        return (object) ['count' => $query->count(), 'registrations' => $registrations,];
+    }
+
+    function API_findRegistrations() {
+        $app = App::i();
+
+        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
+
+        $opportunity = $this->_getOpportunity();
+        
+        $result = $this->apiFindRegistrations($opportunity, $this->data);
+
+        $this->apiAddHeaderMetadata($this->data, $result->registrations, $result->count);
+        $this->apiResponse($result->registrations);
     }
 
     protected function _getOpportunityCommittee($opportunity_id) {
@@ -1142,7 +1152,9 @@ class Opportunity extends EntityController {
         $app = App::i();
 
         $entity = $this->requestedEntity;
-
+        
+        $entity->registerRegistrationMetadata(true);
+        
         if (!$entity) {
             $app->pass();
         }
@@ -1181,6 +1193,8 @@ class Opportunity extends EntityController {
             $valuer_user = $app->user;
         }
 
+        $opportunity->registerRegistrationMetadata(true);
+
         $this->render('evaluations-list--user', ['entity' => $opportunity->evaluationMethodConfiguration, 'valuer_user' => $valuer_user]);
     }
 
@@ -1198,6 +1212,8 @@ class Opportunity extends EntityController {
         $opportunity->checkPermission('@control');
 
         $this->entityClassName = EvaluationMethodConfiguration::class;
+
+        $opportunity->registerRegistrationMetadata(true);
 
         $this->render('evaluations-list--all', ['entity' => $opportunity->evaluationMethodConfiguration]);
     }

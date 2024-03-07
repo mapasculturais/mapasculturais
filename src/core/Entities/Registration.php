@@ -1187,7 +1187,7 @@ class Registration extends \MapasCulturais\Entity
         ];
     }
 
-    protected function _getSpaceData(){
+    function _getSpaceData(){
         
         $spaceRelation =  $this->getSpaceRelation(); 
 
@@ -1203,6 +1203,12 @@ class Registration extends \MapasCulturais\Entity
                     unset($result[$field]);
                 }
             }
+
+            foreach($result as $key => &$value) {
+                if($value instanceof \MapasCulturais\Entity) {
+                    $value = $value->id;
+                }
+            }
             
             $exportData = $result;
         }       
@@ -1211,16 +1217,22 @@ class Registration extends \MapasCulturais\Entity
       
     }
 
-    protected function _getAgentsData(){
+    function _getAgentsData(){
         $exportData = [];
 
         $skip_fields = $this->skipFieldsEntityRelations();
         foreach($this->_getAgentsWithDefinitions() as $agent){
             $result =  $agent->jsonSerialize();
-
+            
             foreach($skip_fields as $field ){
                 if(in_array($field,array_keys($result))){
                     unset($result[$field]);
+                }
+            }
+
+            foreach($result as $key => &$value) {
+                if($value instanceof \MapasCulturais\Entity) {
+                    $value = $value->id;
                 }
             }
 
