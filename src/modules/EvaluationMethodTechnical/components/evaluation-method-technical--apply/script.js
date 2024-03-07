@@ -13,12 +13,19 @@ app.component('evaluation-method-technical--apply', {
         applyAll = false;
         let max = parseFloat($MAPAS.config.evaluationMethodTechnicalApply.max_result || "0.00");
         applyData = {
-            from:[0,max]
+            from:[0,max],
+            cutoffScore: 0,
+            
         };
 
         return {
             applyData,
             applyAll,
+            markSubstitute: false,
+            deleteRegistrations: false,
+            selectFirst: false,
+            considerQuotas: false,
+            selectionType: ''
         }
     },
     watch: {
@@ -51,11 +58,17 @@ app.component('evaluation-method-technical--apply', {
             delete this.applyData.to;
             this.applyData.from[0] = 0;
             this.applyData.from[1] = this.maxResult;
-            
+            this.selectionType = '';
         },
 
         apply(modal,entity) {
             this.applyData.status = this.applyData.applyAll ? 'all' : false;
+            this.applyData.cutoffScore = this.entity.evaluationMethodConfiguration?.cutoffScore;
+            this.applyData.selectFirsts = this.selectFirst;
+            this.applyData.quantityVacancies = this.entity.vacancies;
+            this.applyData.considerQuotas = this.considerQuotas;
+            this.applyData.deleteRegistrations = this.deleteRegistrations;
+            this.applyData.markSubstitute = this.markSubstitute;
             this.entity.disableMessages();
             this.entity.POST('appyTechnicalEvaluation', {
                 data: this.applyData, callback: data => {
@@ -76,6 +89,29 @@ app.component('evaluation-method-technical--apply', {
             setTimeout(() => {
                 document.location.reload(true)
             }, timeout);
+        },
+
+        initConsiderQuotas() {
+            if (this.selectionType === 'first') {
+                this.considerQuotas = true;
+                this.selectFirst = true;
+                this.markSubstitute = false;
+                this.deleteRegistrations = false;
+            } 
+
+            if (this.selectionType === 'substitute') {
+                this.considerQuotas = true;
+                this.markSubstitute = true;
+                this.selectFirst = false;
+                this.deleteRegistrations = false;
+            }
+
+            if (this.selectionType === 'delRegistrations') {
+                this.considerQuotas = false;
+                this.markSubstitute = false;
+                this.selectFirst = false;
+                this.deleteRegistrations = true;
+            }
         }
 
     },

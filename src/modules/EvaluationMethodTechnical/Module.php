@@ -445,12 +445,15 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $app->hook('entity(Registration).consolidateResult', function() {
             /** @var Registration $this */
+            
+            $app = App::i();
 
             // salva o metadado appliedPointReward
+            $app->disableAccessControl();
             $metadata = $this->getMetadata('appliedPointReward', true);
             $metadata->save(true);
+            $app->enableAccessControl();
 
-            $app = App::i();
             
             // limpa o cache das cotas
             $cache_key = "{$this->opportunity}:quota-registrations";
@@ -535,6 +538,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
     
             $opp = $this->requestedEntity;
     
+            $opp->checkPermission('@control');
+
             $type = $opp->evaluationMethodConfiguration->getDefinition()->slug;
     
             if($type != 'technical') {
@@ -550,42 +555,66 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $apply_status = $this->data['status'];
 
             if ($apply_status == 'all') {
-                $status = 'r.status IN (0,1,2,3,8,10)';
+                $status = [0,1,2,3,8,10];
             } else {
-                $status = 'r.status = 1';
+                $status = [1];
             }
+
+            $cutoff_Score = $this->data['cutoffScore'];
+            $select_firsts = $this->data['selectFirsts'];
+            $quantity_vacancies = $this->data['quantityVacancies'];
+            $consider_quotas = $this->data['considerQuotas'];
+            $mark_substitute = $this->data['markSubstitute'];
+            $delete_registrations = $this->data['deleteRegistrations'];
     
-            $opp->checkPermission('@control');
-
             // pesquise todas as registrations da opportunity que esta vindo na request
-            $mim = $this->data['from'][0];
-            $max = $this->data['from'][1];
+            $statusNotEqual =  API::NOT_EQ($new_status);
+            $statusIn = API::IN($status);
+            $score = 'consolidatedResult AS FLOAT DESC';
+            $query_params = [
+                '@select' => 'id', 
+                'opportunity' => "EQ({$opp->id})",
+                '@order' => $score
+            ];
+            
+            // selecionar os primeiros
+            if($select_firsts) {
+                $query_params['status'] = "AND($statusNotEqual, $statusIn)";
+                $query_params['@limit'] = $quantity_vacancies;
+            }
 
-            $dql = "
-            SELECT 
-                r.id
-            FROM
-                MapasCulturais\Entities\Registration r
-            WHERE 
-                r.opportunity = $opp->id AND
-                r.status <> $new_status AND
-                $status AND
-                CAST(r.consolidatedResult AS FLOAT) BETWEEN  $mim AND  $max 
-            ";
-            $query = $app->em->createQuery($dql);
-          
-            $registrations = $query->getScalarResult();
+            // marcar como suplente as inscrições com nota acima da nota de corte mas que não foram selecionados (posição inferior ao máximo de vagas)
+            if($mark_substitute) {
+                $query_params['consolidatedResult'] = API::GTE($cutoff_Score);
+                $query_params['@offset'] = $quantity_vacancies;
+                $new_status = 8;
+            }
 
+            // considerar cotas
+            if($consider_quotas) {
+                $query_params['@order'] = API::EQ('@quota');
+            }
+
+            // eliminar as inscrições com nota inferior a nota de corte
+            if($delete_registrations) {
+                $query_params['consolidatedResult'] = API::LT($cutoff_Score);
+                $new_status = 3;
+            }
+
+            $query = new ApiQuery(Registration::class, $query_params);
+            $registrations_ids = $query->findIds();
+            
             $count = 0;
-            $total = count($registrations);
+            $total = count($registrations_ids);
             
             if ($total > 0) {
                 $opp->enqueueToPCacheRecreation();
             }
+
             // faça um foreach em cada registration e pegue as suas avaliações
-            foreach ($registrations as $reg) {
+            foreach ($registrations_ids as $reg) {
                 $count++;
-                $registration = $app->repo('Registration')->find($reg['id']);
+                $registration = $app->repo('Registration')->find($reg);
                 $registration->__skipQueuingPCacheRecreation = true;
 
                 $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
@@ -614,9 +643,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $app->disableAccessControl();
                 $registration->save(true);
                 $app->enableAccessControl();
+                $app->em->clear();
             }
 
-            $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
+            $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations_ids)), 200);
         });
 
 
