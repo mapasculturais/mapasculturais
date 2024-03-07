@@ -15,7 +15,7 @@ app.component('opportunity-registrations-table', {
         const $DESC = $DESCRIPTIONS.registration;
         const avaliableFields = [];
         
-        if(this.phase.registrationCategories.length > 0) {
+        if(this.phase.registrationCategories?.length > 0) {
             avaliableFields.push({
                 title: $DESC.category.label,
                 fieldName: 'category',
@@ -23,7 +23,7 @@ app.component('opportunity-registrations-table', {
             });
         }
 
-        if(this.phase.registrationProponentTypes.length > 0) {
+        if(this.phase.registrationProponentTypes?.length > 0) {
             avaliableFields.push({
                 title: $DESC.proponentType.label,
                 fieldName: 'proponentType',
@@ -31,7 +31,7 @@ app.component('opportunity-registrations-table', {
             });
         }
 
-        if(this.phase.registrationRanges.length > 0) {
+        if(this.phase.registrationRanges?.length > 0) {
             avaliableFields.push({
                 title: $DESC.range.label,
                 fieldName: 'range',
