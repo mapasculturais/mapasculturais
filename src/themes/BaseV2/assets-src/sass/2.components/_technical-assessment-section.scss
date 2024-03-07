@@ -5,13 +5,17 @@
         border-radius: var(--mc-border-radius-xs);
         border: var(--mc-border-hairline) var(--mc-gray-300);
         display: grid;
-        align-items: center;
         grid-template-columns: calc(30% - size(64)) calc(30% - size(32));
         gap: size(16);
         padding: size(18) size(23);
 
         .field__input {
             max-width: size(150);
+        }
+
+        & label {
+            flex-direction: column;
+            align-items: flex-start;
         }
     }
     
@@ -27,13 +31,13 @@
         border: var(--mc-border-hairline) var(--mc-gray-300);
         border-top: none;
 
-        .card--add-criterion {
+        .add-criterion {
             padding: size(14) size(23);
         }
     }
 
     &__header {
-        padding: size(13) size(23);
+        padding: size(24) size(23);
 
         .title {
             display: grid;
@@ -59,10 +63,10 @@
             display: grid;
             gap: size(20) size(30);
             grid-template-columns: 1fr size(70);
-            padding: size(18) size(23);
+            padding: size(16) size(20);
         }
 
-        .criterion-fields {
+        .criterion__fields {
             display: grid;
             gap: size(20) size(30);
             grid-template-columns: 
@@ -73,6 +77,14 @@
             @media (max-width: 1010px) {
                 grid-template-columns: 1fr;
             }
+        }
+
+        .criterion__title {
+            grid-template-columns: 
+                calc(60% - size(80))
+                calc(20% - size(24))
+                calc(20% - size(56));
+            padding: size(18) size(23);
         }
     }
 
