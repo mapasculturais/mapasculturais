@@ -7,12 +7,7 @@ app.component('entity-field', {
         return { hasSlot }
     },
 
-    created() {
-        
-    },
-
-    data() {
-         
+    data() {         
         let uid = Math.random().toString(36).slice(2);
         let description, 
             value = this.entity[this.prop];

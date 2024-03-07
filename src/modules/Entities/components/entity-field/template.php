@@ -12,7 +12,7 @@ $this->import('
     mc-currency-input
 ')
 ?>
-<div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]" :style="is('checkbox') ? { flexDirection: 'row' } : {}">
+<div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]">
     <label class="field__title" v-if="!hideLabel && !is('checkbox')" :for="propId">
         <slot>{{label || description.label}}</slot>
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
@@ -64,10 +64,12 @@ $this->import('
         </template>
 
         <template v-if="is('checkbox')">
-            <label class="field__checkbox">
-                <input :id="propId" type="checkbox" :disabled="disabled" :checked="value" @click="change($event)" />
-                <slot>{{label || description.label}}</slot>
-            </label>
+            <div class="field__group">
+                <label class="field__checkbox">
+                    <input :id="propId" type="checkbox" :disabled="disabled" :checked="value" @click="change($event)" />
+                    <slot>{{label || description.label}}</slot>
+                </label>
+            </div>
         </template>
 
         <template v-if="is('boolean')">
