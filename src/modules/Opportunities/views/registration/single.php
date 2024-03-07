@@ -63,6 +63,16 @@ $today = new DateTime();
                                             <div v-if="entity.category" class="category__info"> {{entity.category}} </div>
                                             <div v-if="!entity.category" class="category__info"> <?= i::__('Sem categoria') ?> </div>
                                         </div>
+                                        <div class="category">
+                                            <div class="category__label"> <?= i::__('Faixa') ?> </div>
+                                            <div v-if="entity.range" class="category__info"> {{entity.range}} </div>
+                                            <div v-if="!entity.range" class="category__info"> <?= i::__('Faixa não informada') ?> </div>
+                                        </div>
+                                        <div class="category">
+                                            <div class="category__label"> <?= i::__('Tipo de proponente') ?> </div>
+                                            <div v-if="entity.proponentType" class="category__info"> {{entity.proponentType}} </div>
+                                            <div v-if="!entity.proponentType" class="category__info"> <?= i::__('Tipo de proponente não informado') ?> </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="right">

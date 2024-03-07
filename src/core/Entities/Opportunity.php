@@ -27,6 +27,8 @@ use MapasCulturais\Definitions\Metadata as MetadataDefinition;
  * @property \DateTime $registrationFrom
  * @property \DateTime $registrationTo
  * @property array $registrationCategories
+ * @property array $registrationProponentTypes
+ * @property array $registrationRanges
  * @property self $parent
  * @property Agent $owner
  * 
@@ -1075,7 +1077,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
     }
 
-    function registerRegistrationMetadata(){
+    function registerRegistrationMetadata($also_previous_phases = false){
        
         $app = App::i();
 
@@ -1134,6 +1136,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $metadata = new MetadataDefinition ($field->fieldName, $cfg);
 
             $app->registerMetadata($metadata, Registration::class);
+        }
+
+        if($also_previous_phases && $this->parent) {
+            $this->previousPhase->registerRegistrationMetadata();
         }
         
     }

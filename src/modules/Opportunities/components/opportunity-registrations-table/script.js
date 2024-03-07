@@ -12,6 +12,49 @@ app.component('opportunity-registrations-table', {
         return { text }
     },
     data() {
+        const $DESC = $DESCRIPTIONS.registration;
+        const avaliableFields = [];
+        
+        if(this.phase.registrationCategories.length > 0) {
+            avaliableFields.push({
+                title: $DESC.category.label,
+                fieldName: 'category',
+                fieldOptions: this.phase.registrationCategories,
+            });
+        }
+
+        if(this.phase.registrationProponentTypes.length > 0) {
+            avaliableFields.push({
+                title: $DESC.proponentType.label,
+                fieldName: 'proponentType',
+                fieldOptions: this.phase.registrationProponentTypes,
+            });
+        }
+
+        if(this.phase.registrationRanges.length > 0) {
+            avaliableFields.push({
+                title: $DESC.range.label,
+                fieldName: 'range',
+                fieldOptions: this.phase.registrationRanges.map((item) => item.label),
+            });
+        }
+
+        const fieldTypes = ['select', 'agent-owner-field', 'agent-collective-field'];
+        for(let key of Object.keys($DESC)) {
+            const field = $DESC[key];
+
+            if(key.startsWith('field_') && fieldTypes.indexOf(field.field_type) >= 0) {
+                if(field.field_type == 'agent-owner-field' || field.field_type == 'agent-collective-field') {
+                    const angentFieldDescription = $DESCRIPTIONS.agent[field.registrationFieldConfiguration?.config?.entityField];
+                    if(angentFieldDescription) {
+                        avaliableFields.push(field.registrationFieldConfiguration);
+                    }
+                } else {
+                    avaliableFields.push(field.registrationFieldConfiguration);
+                }
+            }
+        }
+
         return {
             filters: {},
             resultStatus:[],
@@ -23,7 +66,8 @@ app.component('opportunity-registrations-table', {
             selectedStatus:null,
             selectedStatus:null,
             selectedAvaliation:null,
-            order: 'consolidatedResult DESC'
+            order: 'consolidatedResult DESC',
+            avaliableFields
         }
     },
 
@@ -44,24 +88,22 @@ app.component('opportunity-registrations-table', {
         headers () {
             let itens = [
                 { text: "Inscrição", value: "number" },
-                { text: "Categoria", value: "category" },
                 { text: "Agente", value: "owner.name", slug: "agent"},
+                ...this.avaliableFields.map((item) => { return {text: item.title, value: item.fieldName} }),
                 { text: "Anexo", value: "attachments" },
                 { text: "Status", value: "status"},
             ];
 
             if(this.phase.evaluationMethodConfiguration){
-                itens.splice(3,0,{ text: "Avaliação", value: "consolidatedResult"});
+                itens.splice(2,0,{ text: "Avaliação", value: "consolidatedResult"});
             }
 
-            if(this.statusCategory.length == 0){
-                let categoryInxed = itens.findIndex((item) => item.text === "Categoria");
-                itens.splice(categoryInxed,1);
-            }
             return itens;
         },
         select() {
-            return "number,category,consolidatedResult,status,singleUrl,files,owner.{name}";
+            const fields = this.avaliableFields.map((item) => item.fieldName);
+            
+            return ['number,consolidatedResult,status,files,owner.{name,geoMesoregiao}', ...fields].join(',');
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
