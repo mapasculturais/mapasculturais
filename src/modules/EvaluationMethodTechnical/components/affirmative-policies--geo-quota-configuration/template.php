@@ -37,7 +37,7 @@ $this->import('
                 <div class="field geo-quota__field">
                     <label><?= i::__('Divisão territorial') ?></label>
                     <mc-select placeholder="Selecione uma divisão" :default-value="geoQuota.geoDivision" @change-option="setDivision"> <!-- :default-value="payment.status" @change-option="setPaymentStatus" -->
-                        <option v-for="(division, index) in divisions" :key="index" :value="index">{{division.name}}</option>
+                        <option v-for="(division, index) in divisions" :key="index" :value="division.metakey">{{division.name}}</option>
                     </mc-select>
                 </div>
 
@@ -61,12 +61,12 @@ $this->import('
                         <th>{{option}}</th>
                         <td>
                             <div class="geo-quota__input-area">
-                                <input class="geo-quota__input" v-model="geoQuota.distribution[option]" type="number" /> %
+                                <input class="geo-quota__input" :value="getPercentage(option)" type="number" @change="setPercentage(option, $event)" /> %
                             </div>
                         </td>
                         <td>
                             <div class="geo-quota__input-area">
-                                <input class="geo-quota__input" type="number" />
+                                <input class="geo-quota__input" v-model="geoQuota.distribution[option]" type="number" />
                             </div>
                         </td>
                     </tr>
