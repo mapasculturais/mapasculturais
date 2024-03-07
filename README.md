@@ -149,6 +149,55 @@ Vale lembrar que os requisitos de hardware podem variar de acordo com a latênci
 * [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
 * Telegram: [![Join the chat at https://t.me/joinchat/WCYOkiRbAWmxQM2y](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/joinchat/WCYOkiRbAWmxQM2y)
 
+### Git Hook
+Crie um arquivo chamado `pre-commit` no diretório `.git/hooks` e conceda permissão de execução com `sudo chmod +x .git/hooks/pre-commit`. Este hook garante a conformidade do código com o padrão estabelecido para o projeto.
+```bash
+#!/bin/bash
+
+echo "Before to commit"
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+PHP_CS_FIXER='docker exec -i dev-mapas-1 vendor/bin/php-cs-fixer'
+
+check_php_cs_fixer() {
+    if ! $PHP_CS_FIXER --version &> /dev/null; then
+        echo -e "${RED}Não foi encontrado  o php-cs-fixer.${NC}"
+        exit 1
+    fi
+}
+
+run_php_cs_fixer() {
+    local modified_files=$1
+
+    echo -e "${GREEN}Executando php-cs-fixer nos arquivos modificados...${NC}"
+    $PHP_CS_FIXER --dry-run -vvv --diff fix --config=.php-cs-fixer.php "$modified_files"
+}
+
+check_php_cs_fixer
+
+modified_files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.php$')
+
+if [ -z "$modified_files" ]; then
+    echo -e "${GREEN}Nenhum arquivo PHP modificado encontrado.${NC}"
+    exit 0
+fi
+
+run_php_cs_fixer "$modified_files"
+
+exit_code=$?
+
+if [ $exit_code -eq 0 ]; then
+    echo -e "${GREEN}php-cs-fixer concluído sem erros.${NC}"
+else
+    echo -e "${RED}ERROR: Abortando o commit.\nO php-cs-fixer encontrou problemas nos arquivos modificados.${NC}"
+fi
+
+exit $exit_code
+```
+
 ### Licença de uso e desenvolvimento
 
 Mapas Culturais é um software livre licenciado com [GPLv3](http://gplv3.fsf.org). 

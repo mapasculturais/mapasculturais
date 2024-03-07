@@ -48,5 +48,8 @@
             "type": "git",
             "url": "https://github.com/mapasculturais/opauth.git"
         }
-    ]
+    ],
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.51"
+    }
 }

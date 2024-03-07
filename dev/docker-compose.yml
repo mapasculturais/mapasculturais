@@ -31,7 +31,8 @@ services:
       - ./docker-data/assets:/var/www/html/assets
       - ./docker-data/public-files:/var/www/html/files
       - ./docker-data/private-files:/var/www/private-files
-      
+
+      - ../.php-cs-fixer.php:/var/www/.php-cs-fixer.php
 
     links:
       - db
