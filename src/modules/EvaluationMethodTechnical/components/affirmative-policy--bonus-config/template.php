@@ -16,26 +16,27 @@ $this->import('
 
 
 <div class="affirmative-policy--bonus-config">
-    <div class="affirmative-policy--bonus-config__card" v-if="entity.affirmativePolicyBonusConfig">
+    <div class="affirmative-policy--bonus-config__card" v-if="entity.affirmativePolicyBonusConfig || entity.isActivePointReward">
         <div class="affirmative-policy--bonus-config__header">
             <h4 class="bold"><?= i::__('Configuração do Bônus de Pontuação') ?></h4>
+            {{console.log(entity)}}
             <div class="affirmative-policy--bonus-config__field field">
                 <label>
                     <?= i::__('Percentual total de indução:') ?>
                 </label>
                 <span>
-                    <input type="number" v-model="totalPercentage" /> %
+                    <input type="number" v-model="pointRewardRoof" /> %
                 </span>
             </div>
         </div>
 
-        <div class="affirmative-policy--bonus-config__quota" v-for="(quota, index) in entity.affirmativePolicyBonusConfig.rules" :key="index">
+        <div class="affirmative-policy--bonus-config__quota" v-if="entity.pointReward" v-for="(quota, index) in entity.pointReward" :key="index">
             <div class="affirmative-policy--bonus-config__column">
                 <h5 class="field__title--semibold"><?= i::__('Percentual') ?> {{index+1}}</h5>
 
 
-                <mc-select @change-option="setFieldName($event, quota)">
-                    <option v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
+                <mc-select @change-option="setFieldName($event, quota)" :default-value="quota.field">
+                    <option v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.id">{{ '#' + item.id + ' - ' + item.title }}</option>
                 </mc-select>
 
                 <div class="affirmative-policy--bonus-config__fields" v-if="hasField(quota)">
@@ -46,18 +47,19 @@ $this->import('
                     </div>
                     <div class="field affirmative-policy--bonus-config__row" v-if="getFieldType(quota) === 'select' || getFieldType(quota) === 'multiselect'">
                         <label v-for="option in getFieldOptions(quota)">
-                            <input class="input" type="checkbox" :value="option" v-model="quota.eligibleValues" @change="autoSave()">
+                            <input class="input" type="checkbox" :value="option" v-model="quota.value[option]" @change="autoSave()">
                             {{option}}
                         </label>
                     </div>
 
                     <div class="field__column" v-if="getFieldType(quota) === 'checkbox' || getFieldType(quota) === 'boolean'">
                         <label>
-                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.eligibleValues" @change="autoSave()">
+                            {{console.log(quota)}}
+                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.value" @change="autoSave()">
                             <?= i::__('Sim / Marcado') ?>
                         </label>
                         <label>
-                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="quota.eligibleValues" @change="autoSave()">
+                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="quota.value" @change="autoSave()">
                             <?= i::__('Não / Desmarcado') ?>
                         </label>
                     </div>
@@ -67,7 +69,7 @@ $this->import('
             <div class="affirmative-policy--bonus-config__column">
                 <label class="field"><?= i::__('Porcentagem') ?>
                     <div>
-                        <input type="number" v-model="quota.percentage" @change="updateRuleQuotas(quota)" min="0" max="100"> %
+                        <input type="number" v-model="quota.fieldPercent" @change="autoSave()" min="0" max="100"> %
                     </div>
                 </label>
             </div>
@@ -92,7 +94,7 @@ $this->import('
     <div class="affirmative-policy--bonus-config__footer">
         <button @click="addConfig();" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
-            <label v-if="entity.affirmativePolicyBonusConfig && entity.affirmativePolicyBonusConfig.rules.length > 0">
+            <label v-if="entity.affirmativePolicyBonusConfig && entity.affirmativePolicyBonusConfig.rules.length > 0 || entity.isActivePointReward">
                 <?php i::_e("Adicionar categoria") ?>
             </label>
             <label v-else>
