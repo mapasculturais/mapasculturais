@@ -10,6 +10,14 @@ return [
         'Pessoa Jurídica',
     ],
 
+    'registration.proponentTypesToAgentsMap' => [
+        'Pessoa Física' => 'owner', 
+        'MEI' => 'owner',
+        'Coletivo' => 'coletivo',
+        'Pessoa Jurídica' => 'coletivo',
+    ],
+
+
     /* 
     Timeout para o auto salvamento das inscrições (em milisegundos)
     */
