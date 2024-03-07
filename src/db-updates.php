@@ -2214,6 +2214,23 @@ $$
                 }
             }
         }
-    }
+    },
+
+    'adiciona índices nas tabelas de revisões de entidades' => function () {
+        __try('CREATE INDEX entity_revision_object_type ON entity_revision (object_type)');
+        __try('CREATE INDEX entity_revision_object_id ON entity_revision (object_id)');
+        __try('CREATE INDEX entity_revision_object ON entity_revision (object_type, object_id)');
+
+        __try('CREATE INDEX entity_revision_revision_data_data_id ON entity_revision_revision_data (revision_data_id)');
+        __try('CREATE INDEX entity_revision_revision_data_revision_id ON entity_revision_revision_data (revision_id)');
+
+        __try('CREATE INDEX entity_revision_data_id ON entity_revision_data (id)');
+        __try('CREATE INDEX entity_revision_data_key ON entity_revision_data (key)');
+
+    },
+
+    'adiciona índice para a coluna action da tabela pcache' => function () {
+        __try('CREATE INDEX pcache_action_idx ON pcache (action)');
+    },
 
 ] + $updates ;   
