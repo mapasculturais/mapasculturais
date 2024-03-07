@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Este arquivo está incluso no componente opportunity-phase-config-evaluation
+ * 
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
@@ -41,7 +43,8 @@ $this->import("
     </div>
 
     <div class="col-12 evaluation-step__section-content">
-        <affirmative-policies--quota-configuration :entity="phase"></affirmative-policies--quota-configuration>
+        <entity-field :entity="firstPhase" prop="enableQuotasQuestion"></entity-field>
+        <affirmative-policies--quota-configuration :phase="phase"></affirmative-policies--quota-configuration>
         <affirmative-policies--geo-quota-configuration :phase="phase"></affirmative-policies--geo-quota-configuration>
         <affirmative-policy--bonus-config :entity="phase"></affirmative-policy--bonus-config>
     </div>
