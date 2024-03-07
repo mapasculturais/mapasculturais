@@ -32,6 +32,12 @@ app.component('affirmative-policies--geo-quota-configuration', {
         divisions() {
             return $MAPAS.config.geoQuotaConfiguration;
         },
+
+        vacancies() {
+            const firstPhase = this.phase.opportunity.parent ? this.phase.opportunity.parent : this.phase.opportunity;
+
+            return firstPhase.vacancies;
+        }
     },
     
     methods: {
@@ -45,9 +51,21 @@ app.component('affirmative-policies--geo-quota-configuration', {
             this.isActive = false;
         },
 
+        getPercentage(option) {
+            const val = this.geoQuota.distribution[option];
+            return this.vacancies ? val / this.vacancies * 100 : 0;
+        },
+
+        setPercentage(option, $event) {
+            const val = $event.target.value / 100 * this.vacancies;
+            this.geoQuota.distribution[option] = val;
+        },
+
         setDivision(option) {
+            
             const distribution = {};
-            const divisions = this.divisions[option.value].data;
+            const division = this.divisions.find((div) => div.metakey == option.value);
+            const divisions = division.data;
             
             for (const option in divisions) {
                 distribution[divisions[option]] = 0;
