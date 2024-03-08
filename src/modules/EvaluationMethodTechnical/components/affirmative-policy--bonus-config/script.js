@@ -104,8 +104,6 @@ app.component("affirmative-policy--bonus-config", {
         delete quota.value[event.target.value];
       }
 
-      console.log(quota.value);
-
       this.autoSave();
     },
 
@@ -114,6 +112,10 @@ app.component("affirmative-policy--bonus-config", {
         this.entity.pointReward = [{}];
       } else {
         this.entity.pointReward.push({});
+      }
+
+      if (!this.entity.isActivePointReward) {
+        this.entity.isActivePointReward = true;
       }
     },
 
@@ -124,6 +126,9 @@ app.component("affirmative-policy--bonus-config", {
       ) {
         return item != key;
       });
+      if (!this.entity.pointReward.length) {
+        this.entity.isActivePointReward = false;
+      }
       this.autoSave();
     },
     autoSave() {

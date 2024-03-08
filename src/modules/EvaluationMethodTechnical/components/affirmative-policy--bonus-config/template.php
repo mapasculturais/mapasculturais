@@ -16,7 +16,7 @@ $this->import('
 
 
 <div class="affirmative-policy--bonus-config">
-    <div class="affirmative-policy--bonus-config__card" v-if="entity.pointReward || entity.isActivePointReward">
+    <div class="affirmative-policy--bonus-config__card" v-if="entity.pointReward && entity.pointReward.length || entity.isActivePointReward">
         <div class="affirmative-policy--bonus-config__header">
             <h4 class="bold"><?= i::__('Configuração do Bônus de Pontuação') ?></h4>
             <div class="affirmative-policy--bonus-config__field field">
