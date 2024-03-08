@@ -203,12 +203,12 @@ class Module extends \MapasCulturais\EvaluationMethod {
             'default' => true,
         ]);
 
-        $this->registerEvaluationMethodConfigurationMetadata('considerQuotasInGeneralList', [
+        $this->registerOpportunityMetadata('considerQuotasInGeneralList', [
             'label' => i::__('Considerar os cotistas dentro da listagem da ampla concorrência'),
             'description' => i::__('Ao habilitar esta configuração, os cotistas seráo considerados na listagem da ampla concorrência.'),
             'type' => 'checkbox',
             'private' => false,
-            'default' => false,
+            'default' => true,
         ]);
     }
 
