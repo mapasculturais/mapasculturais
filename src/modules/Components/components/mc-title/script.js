@@ -23,6 +23,12 @@ app.component('mc-title', {
         longLength: {
             type: Number,
             default: 30
+        },
+
+        text: {
+            type: String,
+            required: true,
+            validator: (value) => value.length >= 20 && value.length <= 30
         }
     },
     setup(props, { slots }) {
