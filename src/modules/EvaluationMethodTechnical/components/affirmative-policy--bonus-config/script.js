@@ -18,10 +18,6 @@ app.component("affirmative-policy--bonus-config", {
   data() {
     const config = this.entity.affirmativePolicyBonusConfig || {};
     return {
-      totalVacancies: this.entity.opportunity.vacancies ?? 0,
-      totalQuota: this.entity.affirmativePolicyBonusConfig
-        ? this.entity.affirmativePolicyBonusConfig.vacancies
-        : 0,
       pointRewardRoof: this.entity.pointRewardRoof,
       fields: this.entity.opportunity.id
         ? $MAPAS.config.affirmativePolicyBonusConfig.fields[
@@ -135,12 +131,5 @@ app.component("affirmative-policy--bonus-config", {
     },
   },
 
-  mounted() {
-    if (
-      this.entity.affirmativePolicyBonusConfig &&
-      this.entity.affirmativePolicyBonusConfig.rules.length > 0
-    ) {
-      this.updateQuotaPercentage();
-    }
-  },
+  mounted() {},
 });
