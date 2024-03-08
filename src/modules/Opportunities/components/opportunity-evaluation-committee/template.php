@@ -18,19 +18,7 @@ $this->import('
 ?>
 <div class="opportunity-evaluation-committee">        
     <div class="opportunity-evaluation-committee__header">
-        <p class="bold"><?php i::_e('Comissão de avaliação técnica') ?></p>
         <p><?php i::_e('Defina os agentes que serão avaliadores desta fase.') ?></p>
-    </div>
-
-    <div class="opportunity-evaluation-committee__add-new-evaluator">
-        <select-entity type="agent" :select="queryString" @select="selectAgent($event)" openside="down-right">
-            <template #button="{ toggle }">
-                <button class="button button--icon button--primary" @click="toggle()">
-                    <mc-icon name="add"></mc-icon>
-                    <?php i::_e('Adicionador pessoa avaliadora') ?>
-                </button>
-            </template>
-        </select-entity>
     </div>
 
     <div v-if="showReviewers" class="opportunity-evaluation-committee__card-grouping">
@@ -99,5 +87,16 @@ $this->import('
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="opportunity-evaluation-committee__add-new-evaluator">
+        <select-entity type="agent" :select="queryString" @select="selectAgent($event)" openside="down-right">
+            <template #button="{ toggle }">
+                <button class="button button--icon button--primary" @click="toggle()">
+                    <mc-icon name="add"></mc-icon>
+                    <?php i::_e('Adicionador pessoa avaliadora') ?>
+                </button>
+            </template>
+        </select-entity>
     </div>
 </div>

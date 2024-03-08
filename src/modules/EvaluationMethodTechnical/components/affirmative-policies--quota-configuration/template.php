@@ -18,27 +18,47 @@ $this->import('
     <div v-if="!isActive" class="affirmative-policies--quota-configuration__activate">
         <button @click="addConfig();" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
-            <?php i::_e("Configurar cotas por categoria") ?>
+            <?php i::_e("Configurar cotas") ?>
         </button>
+    </div>
+    <div v-if="isActive" class="affirmative-policies--quota-configuration__card">
+        <div class="affirmative-policies--quota-configuration__card-header">
+            <div>
+                <h4 class="bold"><?= i::__('Configuração das cotas') ?></h4>
+    
+                <div class="fields">
+                    <label v-if="totalVacancies > 0" class="field__title">
+                        <?= i::__('Percentual total para cotistas:') ?>
+                        {{totalPercentage}} %
+                    </label>
+    
+                    <label class="field__title">
+                        <?= i::__('Vagas para cotistas:') ?>
+                        {{totalQuota}}
+                    </label>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div v-if="isActive" v-for="(quota, index) in phase.quotaConfiguration.rules" :key="index" class="affirmative-policies--quota-configuration__card">
         <div class="affirmative-policies--quota-configuration__card-header">
 
-            <div>
-                <h4 class="bold"><?= i::__('Configuração das cotas por categoria') ?></h4>
-    
-                <div class="fields">
-                    <label v-if="totalVacancies > 0" class="field__title">
-                        <?= i::__('Percentual total das Cotas:') ?>
-                        {{totalPercentage}} %
-                    </label>
-    
-                    <label class="field__title">
-                        <?= i::__('Número total das Cotas:') ?>
-                        {{totalQuota}}
-                    </label>
-                </div>
+            <div class="field">
+                <label><?= i::__('Descrição da cota:') ?></label>
+                <input type="text" v-model="quota.title" @blur="autoSave()">
+            </div>
+
+            <div v-if="totalVacancies > 0" class="field">
+                <label><?= i::__('Porcentagem') ?></label>
+                <span class="affirmative-policies--quota-configuration__quota-field-sufix">
+                    <input type="number" v-model="quota.percentage" @change="updateRuleQuotas(quota)" min="0" max="100"> %
+                </span>
+            </div>
+
+            <div class="field">
+                <label><?= i::__('Número de vagas') ?></label>
+                <input type="number" v-model="quota.vacancies" @change="updateRuleQuotaPercentage(quota)" min="0">
             </div>
 
             <mc-confirm-button @confirm="removeConfig(index)">
@@ -56,28 +76,9 @@ $this->import('
         </div>
 
         <div class="affirmative-policies--quota-configuration__card-content">
-            <div class="affirmative-policies--quota-configuration__quota-header">
+            <div v-for="(field, indexF) in quota.fields" :key="indexF" class="affirmative-policies--quota-configuration__quota-field affirmative-policies--quota-configuration__quota-field--no-border">
                 <div class="field">
-                    <label><?= i::__('Descrição:') ?></label>
-                    <input type="text" v-model="quota.title" @blur="autoSave()">
-                </div>
-
-                <div v-if="totalVacancies > 0" class="field">
-                    <label><?= i::__('Porcentagem') ?></label>
-                    <span class="affirmative-policies--quota-configuration__quota-field-sufix">
-                        <input type="number" v-model="quota.percentage" @change="updateRuleQuotas(quota)" min="0" max="100"> %
-                    </span>
-                </div>
-
-                <div class="field">
-                    <label><?= i::__('Número de Vagas') ?></label>
-                    <input type="number" v-model="quota.vacancies" @change="updateRuleQuotaPercentage(quota)" min="0">
-                </div>
-            </div>
-
-            <div v-for="(field, indexF) in quota.fields" :key="indexF" class="affirmative-policies--quota-configuration__quota-field">
-                <div class="field">
-                    <mc-select placeholder="Selecione uma cota" :default-value="quota.fieldName" @change-option="setFieldName($event, field)">
+                    <mc-select placeholder="Selecione um campo" :default-value="quota.fieldName" @change-option="setFieldName($event, field)">
                         <option v-for="(item, index) in phase.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
                     </mc-select>
                 </div>
@@ -134,7 +135,7 @@ $this->import('
     <div v-if="isActive" class="affirmative-policies--quota-configuration__add-category">
         <button @click="addConfig();" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
-            <?php i::_e("Adicionar nova categoria") ?>
+            <?php i::_e("Adicionar nova configuração de cota") ?>
         </button>
     </div>
 </div>

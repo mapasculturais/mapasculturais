@@ -16,7 +16,7 @@ $this->import('
     <div v-if="!isActive" class="geo-quota__active">
         <button v-if="!isActive" class="button button--primary button--icon" @click="open()">
             <mc-icon name="add"></mc-icon>
-            <?= i::__('Adicionar cotas por território') ?>
+            <?= i::__('Configurar distribuição de vagas por território') ?>
         </button>
 
         <!-- <mc-icon name="info-full"></mc-icon> -->
@@ -25,7 +25,7 @@ $this->import('
     <div v-if="isActive" class="geo-quota__card">
         <div class="geo-quota__header">
             <div class="geo-quota__title">
-                <h4 class="bold"><?= i::__('Configuração de território') ?></h4>
+                <h4 class="bold"><?= i::__('Configuração de distribuição de vagas por território') ?></h4>
 
                 <button class="geo-quota__delete-button" @click="close()">
                     <mc-icon name="closed"></mc-icon>
@@ -76,7 +76,7 @@ $this->import('
             <table v-if="!geoQuota.geoDivision" class="geo-quota__table">
                 <tbody>
                     <tr>
-                        <th><?= i::__('Selecione uma divisão primeiro!') ?></th>
+                        <th><?= i::__('Selecione uma divisão geográfica primeiro!') ?></th>
                     </tr>
                 </tbody>
             </table>

@@ -50,6 +50,15 @@ app.component('entity-table', {
         showIndex: {
             type: Boolean,
             default: false
+        },
+        sortOptions: {
+            type: Array,
+            default: [
+                { order: 'createTimestamp DESC', label: __('mais recentes primeiro', 'entity-table') },
+                { order: 'createTimestamp ASC',  label: __('mais antidas primeiro', 'entity-table') },
+                { order: 'updateTimestamp DESC', label: __('modificadas recentemente', 'entity-table') },
+                { order: 'updateTimestamp ASC',  label: __('modificadas há mais tempo', 'entity-table') },
+            ]
         }
     },
 
@@ -66,8 +75,15 @@ app.component('entity-table', {
 
     data() {
         return {
+            entitiesOrder: this.order,
             columns: this.headers,
             searchText: '',
+        }
+    },
+
+    computed: {
+        visibleColumns() {
+            return this.columns.filter((col) => col.visible);
         }
     },
 

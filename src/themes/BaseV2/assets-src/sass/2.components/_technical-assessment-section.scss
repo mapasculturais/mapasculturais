@@ -29,7 +29,6 @@
     &__card {
         border-radius: var(--mc-border-radius-xs);
         border: var(--mc-border-hairline) var(--mc-gray-300);
-        border-top: none;
 
         .add-criterion {
             padding: size(14) size(23);
@@ -89,7 +88,7 @@
     }
 
     &__footer {
-        padding: size(10) size(23);
+        padding: size(18) 0;
     }
     
 }

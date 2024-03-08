@@ -15,20 +15,7 @@ $this->import('
 
 <div class="technical-assessment-section">
     <div v-if="entity.sections && entity.sections.length > 0">
-        <div class="technical-assessment-section__fields">
-            <div class="field">
-                <label><?php i::_e("Nota máxima:") ?>
-                    <span class="">{{ maxScore }}</span>
-                </label>
-            </div>
-            <div class="field">
-                <label><?php i::_e("Nota de corte:") ?>
-                    <input class="field__input" type="number" v-model="entity.cutoffScore" min="0" @blur="autoSave()" placeholder="<?= i::esc_attr__('Nota de corte') ?>">
-                </label>
-            </div>
-        </div>
-
-        <div class="technical-assessment-section__card" v-for="(section, index) in entity.sections" :key="index">
+        <div v-for="(section, index) in entity.sections" :key="index" class="technical-assessment-section__card" >
             <div class="technical-assessment-section__header">
                 <div class="title">
                     <input v-if="editingSections[section.id]" type="text" v-model="section.name" @blur="sendConfigs();editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
@@ -42,8 +29,8 @@ $this->import('
                         <div class="field__trash">
                             <mc-confirm-button @confirm="delSection(section.id)">
                                 <template #button="{open}">
-                                    <button class="button button-icon button--text-danger">
-                                        <mc-icon class="danger__color" name="trash" @click="open()"></mc-icon>
+                                    <button class="button button-icon button--text-danger" @click="open()">
+                                        <mc-icon class="danger__color" name="trash"></mc-icon>
                                         <label class="semibold field__title"><?php i::_e("Excluir") ?></label>
                                     </button>
                                 </template>
@@ -72,8 +59,8 @@ $this->import('
                         <div class="field__trash">
                             <mc-confirm-button  @confirm="delCriteria(criteria.id)">
                                 <template #button="{open}">
-                                    <button class="button button--md button--text-danger button-icon">
-                                        <mc-icon class="danger__color" name="trash" @click="open()"></mc-icon>
+                                    <button class="button button--md button--text-danger button-icon" @click="open()">
+                                        <mc-icon class="danger__color" name="trash"></mc-icon>
                                     </button>
                                 </template>
                                 <template #message="message">
@@ -96,11 +83,24 @@ $this->import('
         </div>
     </div>
 
+    <div v-if="entity.sections.length > 0" class="technical-assessment-section__fields">
+        <div class="field">
+            <label><?php i::_e("Nota máxima:") ?>
+                <span class="">{{ maxScore }}</span>
+            </label>
+        </div>
+        <div class="field">
+            <label><?php i::_e("Nota de corte:") ?>
+                <input class="field__input" type="number" v-model="entity.cutoffScore" min="0" @blur="autoSave()" placeholder="<?= i::esc_attr__('Nota de corte') ?>">
+            </label>
+        </div>
+    </div>
+
     <div class="technical-assessment-section__footer">
         <button @click="addSection" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
             <label>
-                <?php i::_e("Adicionar nova sessão de Critérios") ?>
+                <?php i::_e("Adicionar sessão de critérios de avaliação") ?>
             </label>
         </button>
     </div>

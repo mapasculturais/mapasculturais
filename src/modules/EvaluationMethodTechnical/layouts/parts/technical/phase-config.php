@@ -19,12 +19,10 @@ $this->import("
     tiebreaker-criteria-configuration
 ");
 ?>
-
-
 <section class="col-12 evaluation-step__section">
     <div class="evaluation-step__section-header">
         <div class="evaluation-step__section-label">
-            <h3><?= i::__('Configuração de critérios') ?></h3>
+            <h3><?= i::__('Configuração da avaliação') ?></h3>
         </div>
     </div>
 
@@ -47,16 +45,5 @@ $this->import("
         <affirmative-policies--quota-configuration :phase="phase"></affirmative-policies--quota-configuration>
         <affirmative-policies--geo-quota-configuration :phase="phase"></affirmative-policies--geo-quota-configuration>
         <affirmative-policy--bonus-config :entity="phase"></affirmative-policy--bonus-config>
-    </div>
-</section>
-
-<section class="col-12 evaluation-step__section">
-    <div class="evaluation-step__section-header">
-        <div class="evaluation-step__section-label">
-            <h3><?= i::__('Comissão de avaliação') ?></h3>
-        </div>
-    </div>
-
-    <div class="evaluation-step__section-content">
     </div>
 </section>
