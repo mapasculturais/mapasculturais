@@ -123,6 +123,8 @@ $this->breadcrumb = [
 
        <opportunity-evaluations-tab :entity="entity"></opportunity-evaluations-tab>
 
+        <?php $this->part('opportunity-tab-registration', ['entity' => $entity]); ?>
+
         <?php $this->part('opportunity-tab-results', ['entity' => $entity]); ?>
         
         <?php $this->part('opportunity-tab-support', ['entity' => $entity]); ?>
