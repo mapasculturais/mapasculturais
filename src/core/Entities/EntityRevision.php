@@ -82,7 +82,7 @@ class EntityRevision extends \MapasCulturais\Entity{
      *      inverseJoinColumns={@ORM\JoinColumn(name="revision_data_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
-    protected $data;
+    protected $__data;
 
 
     /**
@@ -110,7 +110,7 @@ class EntityRevision extends \MapasCulturais\Entity{
         $this->objectId = $entity->id;
         $this->objectType = $entity->getClassName();
         $this->action = $action;
-        $this->data = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->__data = new \Doctrine\Common\Collections\ArrayCollection();
         if ($action == self::ACTION_CREATED) {
             $this->createTimestamp = $entity->createTimestamp;
             foreach ($dataRevision as $key => $data) {
@@ -118,7 +118,7 @@ class EntityRevision extends \MapasCulturais\Entity{
                 $revisionData->key = $key;
                 $revisionData->value = $data;
                 $revisionData->save();
-                $this->data[] = $revisionData;
+                $this->__data[] = $revisionData;
             }
         } else {
             $lastRevision = $entity->getLastRevision();
@@ -147,10 +147,10 @@ class EntityRevision extends \MapasCulturais\Entity{
                     $revisionData->key = $key;
                     $revisionData->setValue($data);
                     $revisionData->save();
-                    $this->data[] = $revisionData;
+                    $this->__data[] = $revisionData;
                     $this->modified = true;
                 } elseif (!is_null($item)) {
-                    $this->data[] = $item;
+                    $this->__data[] = $item;
                 }
             }
         }
@@ -181,6 +181,16 @@ class EntityRevision extends \MapasCulturais\Entity{
         $app = App::i();
         $entity = $app->repo($this->objectType)->find($this->objectId);
         return $entity->canUser($action, $userOrAgent);
+    }
+
+    public function getData() {
+        $app = App::i();
+        
+        $revision_data_list = $app->em->getConnection()->fetchFirstColumn("SELECT revision_data_id FROM entity_revision_revision_data WHERE revision_id = {$this->id}");
+
+        $result = $app->repo('EntityRevisionData')->findBy(['id' => $revision_data_list]);
+
+        return $result;
     }
 
     /*
