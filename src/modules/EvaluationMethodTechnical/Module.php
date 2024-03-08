@@ -270,22 +270,35 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return array_values(array_unique($fields));
     }
 
+    function getTiebreakerConfigurationFields($tiebreaker_config) {
+        $fields = [];
+
+        foreach($tiebreaker_config as $rule) {
+            if(str_starts_with($rule->criterionType, 'field_' ) ) {
+                $fields[] = $rule->criterionType;
+            } else {
+                // @TODO colocar o metadado que salvará a consolidação da avaliação técnica
+            }
+        }
+
+        return array_values(array_unique($fields));
+    }
+
     function getRegistrationsForQuotaSorting(Opportunity $phase_opportunity, $fields) {
         $app = App::i();
         
         $cache_key = "$phase_opportunity:quota-registrations";
-
+        
         if($app->cache->contains($cache_key)){
             return $app->cache->fetch($cache_key);
         }
 
         $result = $app->controller('opportunity')->apiFindRegistrations($phase_opportunity, [
-            '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult', ...$fields]),
-            '@order' => 'consolidatedResult AS FLOAT DESC'
+            '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,score', ...$fields]),
+            '@order' => 'score DESC'
         ]);
 
         $registrations = array_map(function ($reg) {
-            $reg['score'] = (float) $reg['consolidatedResult'];
             return (object) $reg; 
         }, $result->registrations);
 
@@ -318,7 +331,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
 
         $quota_config = $phase_evaluation_config->quotaConfiguration;
-        $geo_quota_config = $phase_evaluation_config->geoQuotaConfiguration;
+        $geo_quota_config = $phase_evaluation_config->geoQuotaConfiguration ?: (object) ['distribution' => (object) [], 'geoDivision' => null];
+        $tiebreaker_config = $phase_evaluation_config->tiebreakerCriteriaConfiguration ?: [];
 
         $selected_global = [];
         $selected_by_quotas = [];
@@ -352,8 +366,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $selected_by_ranges[$range] = $selected_by_ranges[$range] ?? [];
         }
 
-        $fields = $this->getAffirmativePoliciesFields($quota_config, $geo_quota_config);
+        $fields_affirmative_policies = $this->getAffirmativePoliciesFields($quota_config, $geo_quota_config);
+        $fields_tiebreaker = $this->getTiebreakerConfigurationFields($tiebreaker_config);
+        $fields = array_unique([...$fields_affirmative_policies, ...$fields_tiebreaker]);
         $registrations = $this->getRegistrationsForQuotaSorting($phase_opportunity, $fields);
+        $registrations = $this->tiebreaker($tiebreaker_config, $registrations);
         
         /** gera as listas */
         // primeiro preenche as cotas
@@ -1282,4 +1299,75 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return '';
     }
 
+    public static function tiebreaker($tiebreaker_configuration, $registrations) {
+        usort($registrations, function($registration1, $registration2) use($tiebreaker_configuration) {
+            $result = $registration2->score <=> $registration1->score;
+            if($result != 0) {
+                return $result;
+            }
+            
+            foreach($tiebreaker_configuration as $tiebreaker) {
+                $selected = $tiebreaker->selected;
+                if($selected !== null && $selected->fieldType == 'select') {
+                    $registration1Has = in_array($registration1->{$tiebreaker->criterionType}, $tiebreaker->preferences);
+                    $registration2Has = in_array($registration2->{$tiebreaker->criterionType}, $tiebreaker->preferences);
+                    if($registration1Has != $registration2Has) {
+                        return $registration2Has <=> $registration1Has;
+                    }
+                }
+
+                if($selected !== null && in_array($selected->fieldType, ['integer', 'numeric', 'number', 'float', 'currency', 'date'])) {
+                    $registration1Has = $registration1->{$tiebreaker->criterionType};
+                    $registration2Has = $registration2->{$tiebreaker->criterionType};
+
+                    $result = $registration1Has <=> $registration2Has;
+
+                    if($tiebreaker->preferences == 'smallest') {
+                        if ($result !== 0) {
+                            return $result;
+                        }
+                    }
+
+                    if($tiebreaker->preferences == 'largest') {
+                        if ($result !== 0) {
+                            return -$result;
+                        }
+                    }
+                }
+
+                if($selected !== null && in_array($selected->fieldType, ['multiselect', 'checkboxes'])) {
+                    $registration1Has = array_intersect($registration1->{$tiebreaker->criterionType}, $tiebreaker->preferences);
+                    $registration2Has = array_intersect($registration2->{$tiebreaker->criterionType}, $tiebreaker->preferences);
+
+                    $registration1Has = !empty($registration1Has);
+                    $registration2Has = !empty($registration2Has);
+
+                    if($registration1Has != $registration2Has) {
+                        return $registration2Has <=> $registration1Has;
+                    }
+                }
+                
+                if($selected !== null && in_array($selected->fieldType, ['boolean', 'checkbox'])) {
+                    $registration1Has = $registration1->{$tiebreaker->criterionType};
+                    $registration2Has = $registration2->{$tiebreaker->criterionType};
+
+                    $result = $registration1Has <=> $registration2Has;
+
+                    if($tiebreaker->preferences == 'marked') {
+                        if ($result !== 0) {
+                            return -$result;
+                        }
+                    }
+
+                    if($tiebreaker->preferences == 'unmarked') {
+                        if ($result !== 0) {
+                            return $result;
+                        }
+                    }
+                }
+            }
+        });
+        
+        return $registrations;
+    }
 }
