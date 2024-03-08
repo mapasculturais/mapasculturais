@@ -16,7 +16,7 @@ $this->import('
 
 
 <div class="affirmative-policy--bonus-config">
-    <div class="affirmative-policy--bonus-config__card" v-if="entity.affirmativePolicyBonusConfig || entity.isActivePointReward">
+    <div class="affirmative-policy--bonus-config__card" v-if="entity.pointReward || entity.isActivePointReward">
         <div class="affirmative-policy--bonus-config__header">
             <h4 class="bold"><?= i::__('Configuração do Bônus de Pontuação') ?></h4>
             <div class="affirmative-policy--bonus-config__field field">
@@ -93,7 +93,7 @@ $this->import('
     <div class="affirmative-policy--bonus-config__footer">
         <button @click="addConfig();" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
-            <label v-if="entity.affirmativePolicyBonusConfig && entity.affirmativePolicyBonusConfig.rules.length > 0 || entity.isActivePointReward">
+            <label v-if="entity.pointReward && entity.pointReward.length > 0 || entity.isActivePointReward">
                 <?php i::_e("Adicionar categoria") ?>
             </label>
             <label v-else>
