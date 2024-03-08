@@ -478,6 +478,15 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 }
             }
 
+            if($geoQuotaConfiguration = $em->geoQuotaConfiguration) {
+                $geoDivision = $geoQuotaConfiguration->geoDivision;
+                foreach($geoQuotaConfiguration->distribution as $division => $value) {
+                    if($value && $registration->owner->$geoDivision === $division) {
+                        return true;
+                    }
+                }
+            }
+
             return false;
         });
         
