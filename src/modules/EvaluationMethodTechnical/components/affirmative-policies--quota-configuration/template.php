@@ -21,23 +21,20 @@ $this->import('
             <?php i::_e("Configurar cotas") ?>
         </button>
     </div>
-    <div v-if="isActive" class="affirmative-policies--quota-configuration__card">
-        <div class="affirmative-policies--quota-configuration__card-header">
-            <div>
-                <h4 class="bold"><?= i::__('Configuração das cotas') ?></h4>
-    
-                <div class="fields">
-                    <label v-if="totalVacancies > 0" class="field__title">
-                        <?= i::__('Percentual total para cotistas:') ?>
-                        {{totalPercentage}} %
-                    </label>
-    
-                    <label class="field__title">
-                        <?= i::__('Vagas para cotistas:') ?>
-                        {{totalQuota}}
-                    </label>
-                </div>
-            </div>
+
+    <div v-if="isActive" class="affirmative-policies--quota-configuration__header">
+        <h4 class="bold"><?= i::__('Configuração das cotas') ?></h4>
+
+        <div class="affirmative-policies--quota-configuration__header-fields">
+            <label v-if="totalVacancies > 0" class="field__title">
+                <?= i::__('Percentual total para cotistas:') ?>
+                {{totalPercentage}}%
+            </label>
+
+            <label class="field__title">
+                <?= i::__('Vagas para cotistas:') ?>
+                {{totalQuota}}
+            </label>
         </div>
     </div>
 
@@ -76,9 +73,9 @@ $this->import('
         </div>
 
         <div class="affirmative-policies--quota-configuration__card-content">
-            <div v-for="(field, indexF) in quota.fields" :key="indexF" class="affirmative-policies--quota-configuration__quota-field affirmative-policies--quota-configuration__quota-field--no-border">
+            <div v-for="(field, indexF) in quota.fields" :key="indexF" class="affirmative-policies--quota-configuration__quota-field">
                 <div class="field">
-                    <mc-select placeholder="Selecione um campo" :default-value="quota.fieldName" @change-option="setFieldName($event, field)">
+                    <mc-select placeholder="Selecione um campo" :default-value="field.fieldName" @change-option="setFieldName($event, field)">
                         <option v-for="(item, index) in phase.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
                     </mc-select>
                 </div>
