@@ -443,6 +443,43 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $self = $this;
 
+        $app->hook('Entities\\Registration::isEligibleForAffirmativePolicies', function() use($self) {
+            /** @var Registration $this */
+            $registration = $this;
+            $_rules = [];
+            if($pointRewards = $registration->EvaluationMethodConfiguration->pointReward) {
+                foreach($pointRewards as $pointReward) {
+            
+                    if($pointReward->value) {
+                        $field_name = "field_" . $pointReward->field;
+                        $data = [
+                            'fieldName' => $field_name,
+                            'eligibleValues' => $pointReward->value
+                        ];
+
+                        $_rules['fields'][] =  $data;
+                    }
+                }
+
+                if($self->qualifiesForQuotaRule(json_decode(json_encode($_rules)), $registration)) {
+                    return true;
+                }
+
+            }
+
+            if($quota_configurations = $registration->EvaluationMethodConfiguration->quotaConfiguration) {
+                if($rules = $quota_configurations->rules) {
+                    foreach($rules as $rule) {
+                        if($self->qualifiesForQuotaRule($rule, $registration)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        });
+        
         $app->hook('entity(Registration).consolidateResult', function(&$result) use ($self) {
             /** @var Registration $this */
             $app = App::i();
@@ -1023,6 +1060,49 @@ class Module extends \MapasCulturais\EvaluationMethod {
     {
         return (($value * $percent) /100) + $value;
     }
+
+    /**
+     * @param object $rule
+     * @param Registration $registration
+     * @return boolean
+     */
+    public function qualifiesForQuotaRule(object $rule, Registration $registration): bool
+    {
+        if($registration->appliedForQuota) {
+            return false;
+        }
+     
+        foreach($rule->fields as $field) {
+            if($field_name = $field->fieldName) {
+                if($val = $registration->$field_name) {
+                    
+                    if(is_array($val) && array_intersect($val, $field->eligibleValues)) {
+                        return true;
+    
+                    } else if(is_object($field->eligibleValues)) {
+                        $eligibleValues = json_decode(json_encode($field->eligibleValues), true);
+
+                        if(array_keys($eligibleValues) !== range(0, count($eligibleValues) - 1)){
+                            return in_array($val, array_keys($eligibleValues)) ? true : false;
+                            
+                        }else {
+                            return in_array($val, $eligibleValues) ? true : false;
+
+                        }
+                    } else if(in_array($val, ["true", "false"])) {
+                        return $val === "true" ? true : false;
+
+                    } else if(in_array($val, $field->eligibleValues)) {
+                        return true;
+
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+    
 
     public function getFieldsAllPhases($entity)
     {
