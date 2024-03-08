@@ -23,8 +23,11 @@
         display: grid;
         gap: size(9);
         grid-template-columns: 
-            calc(100% - size(115)) 
-            size(115);
+            calc(60% - size(20)) 
+            calc(15% - size(20)) 
+            calc(15% - size(20))
+            calc(10% - size(20));
+            
         padding: size(13) size(23);
     }
 
@@ -50,8 +53,9 @@
         gap: size(30);
         grid-template-columns: 
             calc(60% - size(20)) 
-            calc(20% - size(20)) 
-            calc(20% - size(20))
+            calc(15% - size(20)) 
+            calc(15% - size(20))
+            calc(10% - size(20))
     }
 
     &__quota-field {
@@ -62,6 +66,10 @@
             calc(100% - size(100))
             size(70);
         padding-top: size(20);
+
+        &--no-border {
+            border: 0;
+        }
     }
 
     &__quota-field-sufix {

@@ -52,7 +52,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
 
             <div class="evaluation-step__section-content">
                 <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>
-                <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>
+                <!-- <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool> -->
             </div>
         </section>
 
@@ -70,10 +70,6 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                     <button class="evaluation-fields-button button button--bg button--secondarylight" @click="modal.open"><?= i::__('Abrir campos') ?></button>
                 </template>
             </mc-modal>
-        </section>
-
-        <section class="evaluation-section col-12">
-            <affirmative-policies--geo-quota-configuration :phase="phase"></affirmative-policies--geo-quota-configuration>
         </section>
 
         <section class="evaluation-section col-12">
