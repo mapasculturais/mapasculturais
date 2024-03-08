@@ -446,8 +446,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app->hook('Entities\\Registration::isEligibleForAffirmativePolicies', function() use($self) {
             /** @var Registration $this */
             $registration = $this;
+            $em = $registration->evaluationMethodConfiguration;
+            
             $_rules = [];
-            if($pointRewards = $registration->EvaluationMethodConfiguration->pointReward) {
+            if($pointRewards = $em->pointReward) {
                 foreach($pointRewards as $pointReward) {
             
                     if($pointReward->value) {
@@ -464,10 +466,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 if($self->qualifiesForQuotaRule(json_decode(json_encode($_rules)), $registration)) {
                     return true;
                 }
-
             }
 
-            if($quota_configurations = $registration->EvaluationMethodConfiguration->quotaConfiguration) {
+            if($quota_configurations = $em->quotaConfiguration) {
                 if($rules = $quota_configurations->rules) {
                     foreach($rules as $rule) {
                         if($self->qualifiesForQuotaRule($rule, $registration)) {
