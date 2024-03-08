@@ -77,9 +77,9 @@ $this->import('
             <div class="quota__trash">
                 <mc-confirm-button @confirm="removeConfig(index)">
                     <template #button="{open}">
-                        <div class="field__trash button button--md button--text-danger button-icon">
-                            <mc-icon class="danger__color" name="trash" @click="open()"></mc-icon>
-                        </div>
+                        <button class="field__trash button button--md button--text-danger button-icon" @click="open()">
+                            <mc-icon class="danger__color" name="trash" ></mc-icon>
+                        </button>
                     </template>
                     <template #message="message">
                         <?= i::__('Deseja deletar a cota?') ?>
