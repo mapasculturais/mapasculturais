@@ -100,20 +100,4 @@
         padding: size(8) size(14);
         width: 100%;
     }
-
-    &__delete-button {
-        background-color: var(--mc-danger-500);
-        border-radius: var(--mc-border-radius-sm);
-        border: none;
-        cursor: pointer;
-        display: flex;
-        padding: size(13) size(14);
-        
-        .iconify {
-            background-color: var(--mc-white);
-            border-radius: var(--mc-border-radius-pill);
-            color: var(--mc-danger-500);
-            font-size: size(22);
-        }
-    }
 }
