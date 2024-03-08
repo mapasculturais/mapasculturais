@@ -14,6 +14,11 @@ app.component('entity-table', {
             type: String,
             required: true
         },
+
+        controller: {
+            type: String
+        },
+
         select: String,
         limit: {
             type: Number,
@@ -59,7 +64,7 @@ app.component('entity-table', {
                 { order: 'updateTimestamp DESC', label: __('modificadas recentemente', 'entity-table') },
                 { order: 'updateTimestamp ASC',  label: __('modificadas há mais tempo', 'entity-table') },
             ]
-        }
+        },
     },
 
     created() {
@@ -74,7 +79,9 @@ app.component('entity-table', {
     },
 
     data() {
+
         return {
+            apiController: this.controller || this.type,
             entitiesOrder: this.order,
             columns: this.headers,
             searchText: '',
@@ -84,6 +91,9 @@ app.component('entity-table', {
     computed: {
         visibleColumns() {
             return this.columns.filter((col) => col.visible);
+        },
+        $description() {
+            return $DESCRIPTION[this.type];
         }
     },
 
