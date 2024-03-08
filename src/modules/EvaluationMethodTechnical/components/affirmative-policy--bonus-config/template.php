@@ -16,7 +16,7 @@ $this->import('
 
 
 <div class="affirmative-policy--bonus-config">
-    <div class="affirmative-policy--bonus-config__card" v-if="entity.affirmativePolicyBonusConfig || entity.isActivePointReward">
+    <div class="affirmative-policy--bonus-config__card" v-if="entity.pointReward && entity.pointReward.length || entity.isActivePointReward">
         <div class="affirmative-policy--bonus-config__header">
             <h4 class="bold"><?= i::__('Configuração do Bônus de Pontuação') ?></h4>
             <div class="affirmative-policy--bonus-config__field field">
@@ -77,9 +77,9 @@ $this->import('
             <div class="quota__trash">
                 <mc-confirm-button @confirm="removeConfig(index)">
                     <template #button="{open}">
-                        <div class="field__trash button button--md button--text-danger button-icon">
-                            <mc-icon class="danger__color" name="trash" @click="open()"></mc-icon>
-                        </div>
+                        <button class="field__trash button button--md button--text-danger button-icon" @click="open()">
+                            <mc-icon class="danger__color" name="trash" ></mc-icon>
+                        </button>
                     </template>
                     <template #message="message">
                         <?= i::__('Deseja deletar a cota?') ?>
@@ -93,7 +93,7 @@ $this->import('
     <div class="affirmative-policy--bonus-config__footer">
         <button @click="addConfig();" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
-            <label v-if="entity.affirmativePolicyBonusConfig && entity.affirmativePolicyBonusConfig.rules.length > 0 || entity.isActivePointReward">
+            <label v-if="entity.pointReward && entity.pointReward.length > 0 || entity.isActivePointReward">
                 <?php i::_e("Adicionar categoria") ?>
             </label>
             <label v-else>

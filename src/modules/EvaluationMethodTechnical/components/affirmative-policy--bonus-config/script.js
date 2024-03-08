@@ -18,10 +18,6 @@ app.component("affirmative-policy--bonus-config", {
   data() {
     const config = this.entity.affirmativePolicyBonusConfig || {};
     return {
-      totalVacancies: this.entity.opportunity.vacancies ?? 0,
-      totalQuota: this.entity.affirmativePolicyBonusConfig
-        ? this.entity.affirmativePolicyBonusConfig.vacancies
-        : 0,
       pointRewardRoof: this.entity.pointRewardRoof,
       fields: this.entity.opportunity.id
         ? $MAPAS.config.affirmativePolicyBonusConfig.fields[
@@ -108,8 +104,6 @@ app.component("affirmative-policy--bonus-config", {
         delete quota.value[event.target.value];
       }
 
-      console.log(quota.value);
-
       this.autoSave();
     },
 
@@ -118,6 +112,10 @@ app.component("affirmative-policy--bonus-config", {
         this.entity.pointReward = [{}];
       } else {
         this.entity.pointReward.push({});
+      }
+
+      if (!this.entity.isActivePointReward) {
+        this.entity.isActivePointReward = true;
       }
     },
 
@@ -128,6 +126,9 @@ app.component("affirmative-policy--bonus-config", {
       ) {
         return item != key;
       });
+      if (!this.entity.pointReward.length) {
+        this.entity.isActivePointReward = false;
+      }
       this.autoSave();
     },
     autoSave() {
@@ -135,12 +136,5 @@ app.component("affirmative-policy--bonus-config", {
     },
   },
 
-  mounted() {
-    if (
-      this.entity.affirmativePolicyBonusConfig &&
-      this.entity.affirmativePolicyBonusConfig.rules.length > 0
-    ) {
-      this.updateQuotaPercentage();
-    }
-  },
+  mounted() {},
 });

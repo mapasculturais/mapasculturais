@@ -15,7 +15,7 @@ $this->import('
 
 <div class="technical-assessment-section">
     <div v-if="entity.sections && entity.sections.length > 0">
-        <div v-for="(section, index) in entity.sections" :key="index" class="technical-assessment-section__card" >
+        <div v-for="(section, index) in entity.sections" :key="index" class="technical-assessment-section__card">
             <div class="technical-assessment-section__header">
                 <div class="title">
                     <input v-if="editingSections[section.id]" type="text" v-model="section.name" @blur="sendConfigs();editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
@@ -42,7 +42,7 @@ $this->import('
                     </div>
                 </div>
             </div>
-            
+
             <div class="technical-assessment-section__criterions" v-if="entity.criteria && entity.criteria.length > 0">
                 <div class="criterion__fields criterion__title field">
                     <label><?php i::_e("Nome do critério") ?></label>
@@ -54,10 +54,10 @@ $this->import('
                         <div class="criterion__fields">
                             <input type="text" v-model="criteria.title" @blur="sendConfigs" placeholder="<?= i::esc_attr__('Nome do critério') ?>">
                             <input type="number" v-model="criteria.max" @blur="sendConfigs" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>">
-                            <input type="number" v-model="criteria.weight" @blur="sendConfigs" placeholder="<?= i::esc_attr__('Peso') ?>"> 
+                            <input type="number" v-model="criteria.weight" @blur="sendConfigs" placeholder="<?= i::esc_attr__('Peso') ?>">
                         </div>
                         <div class="field__trash">
-                            <mc-confirm-button  @confirm="delCriteria(criteria.id)">
+                            <mc-confirm-button @confirm="delCriteria(criteria.id)">
                                 <template #button="{open}">
                                     <button class="button button--md button--text-danger button-icon" @click="open()">
                                         <mc-icon class="danger__color" name="trash"></mc-icon>
@@ -69,7 +69,7 @@ $this->import('
                             </mc-confirm-button>
                         </div>
                     </div>
-                </div>    
+                </div>
             </div>
 
             <div class="add-criterion">
@@ -83,7 +83,7 @@ $this->import('
         </div>
     </div>
 
-    <div v-if="entity.sections.length > 0" class="technical-assessment-section__fields">
+    <div v-if="entity?.sections && entity?.sections?.length > 0" class="technical-assessment-section__fields">
         <div class="field">
             <label><?php i::_e("Nota máxima:") ?>
                 <span class="">{{ maxScore }}</span>
