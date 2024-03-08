@@ -51,6 +51,16 @@ $this->import('
                             {{option}}
                         </label>
                     </div>
+
+                <div v-if="getFieldType(quota) === 'checkboxes'" class="field">
+                    <div class="field field--horizontal">
+                        <label v-for="option in getFieldOptions(quota)">
+                            <input type="checkbox" :value="option" :true-value="[]" v-model="quota.eligibleValues" @change="autoSave()" />
+                            <span>{{option}}</span>
+                        </label>
+                    </div>
+                </div>
+                    
                     <div class="field__column" v-if="getFieldType(quota) === 'checkbox' || getFieldType(quota) === 'boolean'">
                         <label>
 
