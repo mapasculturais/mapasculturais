@@ -2,13 +2,12 @@
 namespace MapasCulturais\Entities;
 
 use DateTime;
-use Doctrine\ORM\Exception\NotSupported;
+use MapasCulturais\i;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Exceptions\PermissionDenied;
-use MapasCulturais\i;
-use RuntimeException;
+use MapasCulturais\Definitions\EvaluationMethod;
 
 /**
  * Registration
@@ -17,6 +16,7 @@ use RuntimeException;
  * @property string $category
  * 
  * @property-read EvaluationMethodConfiguration $evaluationMethodConfiguration
+ * @property-read EvaluationMethod $evaluationMethod
  * @property-read mixed $evaluationResultValue valor do resultado consolidado das avaliações
  * @property-read string $evaluationResultString string do resultado consolidado das avaliações
  * @property-read RegistrationEvaluation[] $sentEvaluations lista de avaliações enviadas
