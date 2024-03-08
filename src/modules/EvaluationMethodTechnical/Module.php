@@ -502,7 +502,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $app->disableAccessControl();
 
                 do {
-                    $score = $self->applyAffirmativePolicies((float) $registration->consolidatedResult, $registration);
+                    $score = $self->applyPointReward((float) $registration->consolidatedResult, $registration);
                     $connection->executeQuery('UPDATE registration SET score = :score WHERE id = :id', ['score' => $score,'id' => $registration->id]);
                 }
                 while($registration = $this->nexPhase);
@@ -968,7 +968,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
     }
 
-    public function applyAffirmativePolicies($result, \MapasCulturais\Entities\Registration $registration)
+    public function applyPointReward($result, \MapasCulturais\Entities\Registration $registration)
     {
         $app = App::i();
 
