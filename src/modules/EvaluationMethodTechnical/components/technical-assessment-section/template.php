@@ -18,7 +18,7 @@ $this->import('
         <div v-for="(section, index) in entity.sections" :key="index" class="technical-assessment-section__card">
             <div class="technical-assessment-section__header">
                 <div class="title">
-                    <input v-if="editingSections[section.id]" type="text" v-model="section.name" @blur="sendConfigs();editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
+                    <input class="title__input" v-if="editingSections[section.id]" type="text" v-model="section.name" @blur="sendConfigs();editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
                     <span v-else class="bold">{{section.name}}</span>
                     <div class="title__buttons">
                         <button class="button button--text" @click="editSections(section.id)">
