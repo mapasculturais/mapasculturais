@@ -14,6 +14,16 @@
         padding: size(35) size(25) size(30);
     }
 
+    &__select_columns {
+        text-align: right;
+        >*{
+            display: inline-block;
+        }
+        .iconify {
+            font-size: $font-size-lg;
+        }
+    }
+
     &__main-filter {
         align-items: center;
         display: flex;
