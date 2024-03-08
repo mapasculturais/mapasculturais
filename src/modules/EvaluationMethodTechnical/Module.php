@@ -443,6 +443,32 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $self = $this;
 
+        // Define o valor da coluna eligible da inscrição no momento do insert
+        $app->hook('entity(Registration).insert:after', function() use($app){
+            /** @var Registration $this */
+            $app->disableAccessControl();
+            
+            if ($this->previousPhase) {
+                $this->eligible =  $this->previousPhase->isEligibleForAffirmativePolicies();
+                $this->save(true);
+            }
+            $app->disableAccessControl();
+
+        });
+
+        // Define o valor da coluna eligible da inscrição no momento do update
+        $app->hook('entity(Registration).update:after', function() use($app){
+            /** @var Registration $this */
+            $app->disableAccessControl();
+
+            if( $this->nextPhase){
+                $this->nextPhase->eligible = $this->isEligibleForAffirmativePolicies();
+                $this->nextPhase->save(true);
+            }
+            $app->enableAccessControl();
+        });
+
+        // Devolve se a inscrição é elegível a participar das cotas
         $app->hook('Entities\\Registration::isEligibleForAffirmativePolicies', function() use($self) {
             /** @var Registration $this */
             $registration = $this;
