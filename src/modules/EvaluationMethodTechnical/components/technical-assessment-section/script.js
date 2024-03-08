@@ -63,6 +63,15 @@ app.component('technical-assessment-section', {
                 max: null,
                 weight: 1
             });
+
+
+            this.$nextTick(() => {
+                const criteriaInputs = this.$refs['criteriaTitleInput'];
+                const lastInput = criteriaInputs[criteriaInputs.length - 1];
+                if (lastInput) {
+                    lastInput.focus();
+                }
+            });
         },
         sendConfigs() {
             this.entity.save(3000);
