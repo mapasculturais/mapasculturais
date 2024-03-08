@@ -55,7 +55,19 @@ app.component('opportunity-registrations-table', {
             }
         }
 
+        const sortOptions = [
+            { order: 'status DESC,consolidatedResult AS FLOAT DESC', label: 'por status descendente' },
+            { order: 'status ASC,consolidatedResult AS FLOAT ASC', label: 'por status ascendente' },
+            { order: 'consolidatedResult AS FLOAT DESC', label: 'por resultado das avaliações' },
+            { order: '@quota', label: 'por resultado das avaliações CONSIDERANDO COTAS' },
+            { order: 'createTimestamp ASC', label: 'mais antigas primeiro' },
+            { order: 'createTimestamp DESC', label: 'mais recentes primeiro' },
+            { order: 'sentTimestamp ASC', label: 'enviadas a mais tempo primeiro' },
+            { order: 'sentTimestamp DESC', label: 'enviadas a menos tempo primeiro' },
+        ];
+
         return {
+            sortOptions,
             filters: {},
             resultStatus:[],
             query: {
@@ -66,7 +78,7 @@ app.component('opportunity-registrations-table', {
             selectedStatus:null,
             selectedStatus:null,
             selectedAvaliation:null,
-            order: 'consolidatedResult DESC',
+            order: 'consolidatedResult AS FLOAT DESC',
             avaliableFields
         }
     },

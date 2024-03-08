@@ -39,7 +39,7 @@ $entity = $this->controller->requestedEntity;
         <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
 
         <div class="col-12"> 
-            <entity-table type="opportunity" endpoint="findRegistrations" :query="query" :limit="100" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult,attachments" @clear-filters="clearFilters" show-index>
+            <entity-table controller="opportunity" endpoint="findRegistrations" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult,attachments" @clear-filters="clearFilters" show-index>
                 <template #title>
                     <h5>
                         <strong><?= i::__("Clique no número de uma inscrição para conferir todas as avaliações realizadas.") ?></strong>
@@ -75,16 +75,6 @@ $entity = $this->controller->requestedEntity;
                         <mc-select v-if="statusCategory.length > 0" class="col-3" :default-value="selectedCategory" @change-option="filterByCategory($event,entities)" placeholder="<?= i::__("Categoria") ?>">
                             <option v-for="item in statusCategory" :value="item">{{item}}</option>
                         </mc-select>
-                        <select v-model="order" @change="entities.refresh()">
-                            <option value="status DESC,consolidatedResult AS FLOAT DESC"><?= i::__('Por status descendente') ?></option>
-                            <option value="status ASC,consolidatedResult AS FLOAT ASC"><?= i::__('Por status ascendente') ?></option>
-                            <option value="consolidatedResult AS FLOAT DESC"><?= i::__('Por resultado das avaliações') ?></option>
-                            <option value="@quota"><?= i::__('Por resultado das avaliações CONSIDERANDO COTAS') ?></option>
-                            <option value="createTimestamp ASC"><?= i::__('Mais antigas primeiro') ?></option>
-                            <option value="createTimestamp DESC"><?= i::__('Mais recentes primeiro') ?></option>
-                            <option value="sentTimestamp ASC"><?= i::__('Enviadas a mais tempo primeiro') ?></option>
-                            <option value="sentTimestamp DESC"><?= i::__('Enviadas a menos tempo primeiro') ?></option>
-                        </select>
                     </div>
                 </template>
 
