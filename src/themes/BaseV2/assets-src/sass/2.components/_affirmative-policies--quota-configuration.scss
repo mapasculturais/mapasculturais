@@ -10,7 +10,20 @@
         display: flex;
         gap: size(19);
     }
-    
+
+    &__header {
+        border: size(1) solid var(--mc-gray-300);
+        border-radius: var(--mc-border-radius-xs);
+        padding: size(13) size(23);
+        display: grid;
+        gap: size(8);
+    }
+
+    &__header-fields {
+        display: flex;
+        gap: size(10);
+    }
+
     // Estilização do card
     &__card {
         border: size(1) solid var(--mc-gray-300);
@@ -23,10 +36,10 @@
         display: grid;
         gap: size(9);
         grid-template-columns: 
-            calc(60% - size(20)) 
-            calc(15% - size(20)) 
-            calc(15% - size(20))
-            calc(10% - size(20));
+            calc(60% - size(45)) 
+            calc(20% - size(46)) 
+            calc(20% - size(46))
+            size(110);
             
         padding: size(13) size(23);
     }
@@ -48,16 +61,6 @@
     }
 
     // Estilização interna
-    &__quota-header {
-        display: grid;
-        gap: size(30);
-        grid-template-columns: 
-            calc(60% - size(20)) 
-            calc(15% - size(20)) 
-            calc(15% - size(20))
-            calc(10% - size(20))
-    }
-
     &__quota-field {
         border-top: var(--mc-border-hairline) var(--mc-gray-300);
         display: grid;
@@ -67,7 +70,8 @@
             size(70);
         padding-top: size(20);
 
-        &--no-border {
+        &:first-child {
+            padding-top: 0;
             border: 0;
         }
     }
