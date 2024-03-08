@@ -4,6 +4,7 @@
     &__fields {
         border-radius: var(--mc-border-radius-xs);
         border: var(--mc-border-hairline) var(--mc-gray-300);
+        border-top: none;
         display: grid;
         grid-template-columns: calc(30% - size(64)) calc(30% - size(32));
         gap: size(16);
@@ -42,6 +43,18 @@
             display: grid;
             grid-template-columns: 1fr size(256);
             gap: size(80);
+        }
+
+        .title__input {
+            font-size: inherit;
+            padding: 0 0 0 size(14);
+            margin: 0;
+            line-height: 1;
+        }
+
+        & span {
+            display: flex;
+            align-items: center;
         }
 
         .title__buttons {
