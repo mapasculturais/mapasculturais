@@ -39,7 +39,7 @@ class Module extends \MapasCulturais\Module{
 
             $hasPreviousTechnicalEvaluation =  false;
             foreach($previousPhases as $phase) {
-                if($phase->evaluationMethodConfiguration->type->id === "technical") {
+                if($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguration->type->id === "technical") {
                     $hasPreviousTechnicalEvaluation = true;
                 }
             }
