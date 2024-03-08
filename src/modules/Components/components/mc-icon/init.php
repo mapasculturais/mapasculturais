@@ -53,6 +53,7 @@ $iconset = [
     'close' => 'gg:close',
     'closed' => 'mdi:close',
     'code' => 'fa-solid:code',
+    'columns' => 'heroicons:view-columns',
     'copy' => 'ic:baseline-content-copy',
     'dashboard' => 'ic:round-dashboard',
     'date'=> 'material-symbols:date-range-rounded',
