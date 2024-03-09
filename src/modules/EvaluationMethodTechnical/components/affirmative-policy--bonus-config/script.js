@@ -115,7 +115,8 @@ app.component("affirmative-policy--bonus-config", {
       }
 
       if (!this.entity.isActivePointReward) {
-        this.entity.isActivePointReward = true;
+        this.entity.isActivePointReward = "true";
+        this.autoSave();
       }
     },
 
