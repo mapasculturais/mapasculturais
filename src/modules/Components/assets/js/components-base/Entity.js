@@ -389,6 +389,9 @@ class Entity {
 
     async save(delay = 300, preserveValues = true) {
         this.__processing = this.text('salvando');
+        if(!this.id) {
+            preserveValues = false;
+        }
         
         clearTimeout(this.__saveTimeout);
 
@@ -419,12 +422,17 @@ class Entity {
                         } else {
                             this.sendMessage(this.text('entidade salva'));
                         }
-                        this.populate(entity, preserveValues)
+                        this.populate(entity, preserveValues);
+
                     }).then((response) => {
                         for(let resolve of this.resolvers) {
                             resolve(response);
                         }
-                    });
+                    }).catch((error) => {
+                        for(let reject of this.rejecters) {
+                            reject(error);
+                        }
+                    })
         
                 } catch (error) {
                     this.doCatch(error).then((response) => {
