@@ -42,7 +42,6 @@ $this->import("
 
     <div class="col-12 evaluation-step__section-content">
         <entity-field :entity="firstPhase" prop="enableQuotasQuestion"></entity-field>
-        <entity-field :entity="firstPhase" prop="considerQuotasInGeneralList"></entity-field>
         <affirmative-policies--quota-configuration :phase="phase"></affirmative-policies--quota-configuration>
         <affirmative-policies--geo-quota-configuration :phase="phase"></affirmative-policies--geo-quota-configuration>
         <affirmative-policy--bonus-config :entity="phase"></affirmative-policy--bonus-config>
