@@ -6,14 +6,6 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased - 7.5]
-### Melhorias
-- torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
-- possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
-
-### Correções
-- Corrige seleção de relacionamentos OneToOne
-
-## [unreleased]
 ### Novas funcionalidades
 - Implementa botão de aplicar avaliações para avaliações técnicas
 - Implementa exibição de parecer na avaliação documental
@@ -32,8 +24,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa a exibição de nova coluna na listagem de inscrições para baixar os anexos
 - Altera nome da coluna resultado final da avaliação para "Avaliação" na listagem de inscrições
 - Implementa estêncil circular para definir tamanho do avatar durante o recorte
+- torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
+- possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
+- melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
 
 ### Correções
+- Corrige seleção de relacionamentos OneToOne
 - Corrige erro da instalação do npm após o node.
 - Corrige extrações de planilhas em excel das entidades via API
 - Corrige erro na exibição do paracer técnico da avaliação técnica, quando nao existe avaliações enviadas
