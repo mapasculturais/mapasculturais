@@ -130,10 +130,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $this->registerEvaluationMethodConfigurationMetadata('isActivePointReward', [
             'label' => i::__('Controla se as induções por pontuação estão ou não ativadas'),
-            'type' => 'boolean',
-            'serialize' => function ($val){
-                return ($val == "true") ? true : false;
-            }
+            'type' => 'boolean'
         ]);
 
         $this->registerEvaluationMethodConfigurationMetadata('pointRewardRoof', [
@@ -165,6 +162,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $this->registerEvaluationMethodConfigurationMetadata('geoQuotaConfiguration', [
             'label' => i::__('Configuração territorial'),
             'type' => 'json',
+            'default' => json_encode(['distribution' => (object) [], 'geoDivision' => null])
         ]);
 
         $this->registerEvaluationMethodConfigurationMetadata('tiebreakerCriteriaConfiguration', [
@@ -333,7 +331,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $quota_config = $phase_evaluation_config->quotaConfiguration;
         $geo_quota_config = $phase_evaluation_config->geoQuotaConfiguration ?: (object) ['distribution' => (object) [], 'geoDivision' => null];
         $tiebreaker_config = $phase_evaluation_config->tiebreakerCriteriaConfiguration ?: [];
-
+        
         $selected_global = [];
         $selected_by_quotas = [];
         $selected_by_geo = [];
@@ -359,6 +357,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 unset($geo_quota_config->distribution->$region);
             }
         }
+
         $geo_quota_config->distribution->OTHERS = $vacancies - $total_distribution;
     
         // distribuição nas faixas
@@ -439,9 +438,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         }
 
-        usort($selected_global, function($reg1, $reg2) {
-            return ((float) $reg2->score) <=> ((float) $reg1->score);
-        });
+        $selected_global = $this->tiebreaker($tiebreaker_config, $selected_global);
 
         $result = array_values($selected_global);
 
@@ -1025,7 +1022,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $pointRewardRoof = $registration->opportunity->evaluationMethodConfiguration->pointRewardRoof;
         $isActivePointReward = filter_var($registration->opportunity->evaluationMethodConfiguration->isActivePointReward, FILTER_VALIDATE_BOOL);
         $metadata = $registration->getRegisteredMetadata();
-
        
         if(!$isActivePointReward || empty($affirmativePoliciesConfig)){
             return $result;
@@ -1100,7 +1096,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
             'percentage' => $percentage,
             'rules' => $appliedPolicies
         ];
-
         if($percentage > 0){
             return $this->percentCalc($result, $percentage);
         }else{
