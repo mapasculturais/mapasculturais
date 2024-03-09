@@ -18,7 +18,7 @@ $this->import('
 <div class="affirmative-policy--bonus-config">
     <div class="affirmative-policy--bonus-config__card" v-if="entity.pointReward && entity.pointReward.length || entity.isActivePointReward">
         <div class="affirmative-policy--bonus-config__header">
-            <h4 class="bold"><?= i::__('Configuração do Bônus de Pontuação') ?></h4>
+            <h4 class="bold"><?= i::__('Configuração do bônus de pontuação') ?></h4>
             <div class="affirmative-policy--bonus-config__field field">
                 <label>
                     <?= i::__('Percentual total de indução:') ?>
@@ -92,7 +92,7 @@ $this->import('
                         </button>
                     </template>
                     <template #message="message">
-                        <?= i::__('Deseja deletar a cota?') ?>
+                        <?= i::__('Deseja remover esta configuração de bôuns?') ?>
                     </template>
                 </mc-confirm-button>
             </div>
@@ -107,7 +107,7 @@ $this->import('
                 <?php i::_e("Adicionar categoria") ?>
             </label>
             <label v-else>
-                <?php i::_e("Configurar bonus de pontuação") ?>
+                <?php i::_e("Configurar bônus de pontuação") ?>
             </label>
         </button>
     </div>
