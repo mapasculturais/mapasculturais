@@ -39,7 +39,7 @@ app.component('opportunity-registrations-table', {
             });
         }
 
-        const fieldTypes = ['select', 'agent-owner-field', 'agent-collective-field'];
+        const fieldTypes = ['select', 'boolean', 'checkbox', 'multiselect', 'checkboxes', 'agent-owner-field', 'agent-collective-field'];
         for(let key of Object.keys($DESC)) {
             const field = $DESC[key];
 
@@ -58,8 +58,9 @@ app.component('opportunity-registrations-table', {
         const sortOptions = [
             { order: 'status DESC,consolidatedResult AS FLOAT DESC', label: 'por status descendente' },
             { order: 'status ASC,consolidatedResult AS FLOAT ASC', label: 'por status ascendente' },
-            { order: 'consolidatedResult AS FLOAT DESC', label: 'por resultado das avaliações' },
-            { order: '@quota', label: 'por resultado das avaliações CONSIDERANDO COTAS' },
+            { order: 'consolidatedResult AS FLOAT DESC', label: 'resultado das avaliações' },
+            { order: 'score DESC', label: 'pontuação final' },
+            { order: '@quota', label: 'pontuação final CONSIDERANDO COTAS' },
             { order: 'createTimestamp ASC', label: 'mais antigas primeiro' },
             { order: 'createTimestamp DESC', label: 'mais recentes primeiro' },
             { order: 'sentTimestamp ASC', label: 'enviadas a mais tempo primeiro' },
@@ -110,12 +111,15 @@ app.component('opportunity-registrations-table', {
                 itens.splice(2,0,{ text: "Avaliação", value: "consolidatedResult"});
             }
 
+            itens.splice(3,0,{ text: "Pontuação", value: "score"});
+
+
             return itens;
         },
         select() {
             const fields = this.avaliableFields.map((item) => item.fieldName);
             
-            return ['number,consolidatedResult,status,files,owner.{name,geoMesoregiao}', ...fields].join(',');
+            return ['number,consolidatedResult,score,status,files,owner.{name,geoMesoregiao}', ...fields].join(',');
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
