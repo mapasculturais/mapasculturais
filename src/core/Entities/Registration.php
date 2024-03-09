@@ -292,6 +292,8 @@ class Registration extends \MapasCulturais\Entity
         $em = $this->getEvaluationMethod();
         
         $result = $em->getConsolidatedResult($this);
+        
+        $this->consolidatedResult = $result;
 
         // para que dentro do hook as permissões funcionem
         $app->enableAccessControl();
