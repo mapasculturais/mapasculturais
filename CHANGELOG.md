@@ -35,6 +35,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
 
+## [7.3.25] - 2024-03-11
+### Melhorias
+- Implementa aba para definir os avaliadores manualmente na single da inscrição
+
 ## [7.3.24] - 2024-03-06
 ### Correções
 - Corrige exibição do botão publicar resultados e suas frases de advertência para que sejam exibidos e funcionais somente quando a fase estiver terminada
