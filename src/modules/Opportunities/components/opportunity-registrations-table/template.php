@@ -64,14 +64,13 @@ $entity = $this->controller->requestedEntity;
                 <template #filters="{entities,filters}">
                     <div class="grid-12">
                         <mc-select v-if="statusEvaluationResult" class="col-5" :default-value="selectedAvaliation" @change-option="filterAvaliation($event,entities)" placeholder="<?= i::__("Resultado de avaliação") ?>">
-                            <template #empetyOption>
-                                <?= i::__("Resultado de avaliação") ?>
-                            </template>
                             <option v-for="(item,index) in statusEvaluationResult" :value="index">{{item}}</option>
                         </mc-select>
+
                         <mc-select class="col-4" :default-value="selectedStatus" @change-option="filterByStatus($event,entities)" placeholder="<?= i::__("Status de inscrição") ?>">
                             <option v-for="item in statusDict" :value="item.value">{{item.label}}</option>
                         </mc-select>
+                        
                         <mc-select v-if="statusCategory.length > 0" class="col-3" :default-value="selectedCategory" @change-option="filterByCategory($event,entities)" placeholder="<?= i::__("Categoria") ?>">
                             <option v-for="item in statusCategory" :value="item">{{item}}</option>
                         </mc-select>
@@ -79,11 +78,11 @@ $entity = $this->controller->requestedEntity;
                 </template>
 
                 <template #attachments={entity}>
-                    <a v-if="entity.files?.zipArchive?.url" :href="entity.files?.zipArchive?.url">Anexo</a>
+                    <a v-if="entity.files?.zipArchive?.url" :href="entity.files?.zipArchive?.url"><?= i::__('Anexo') ?></a>
                 </template>
 
                 <template #status="{entity}">
-                    <mc-select :default-value="entity.status" @change-option="setStatus($event, entity)">
+                    <mc-select small :default-value="entity.status" @change-option="setStatus($event, entity)">
                         <mc-status v-for="item in statusDict" :value="item.value" :status-name="item.label"></mc-status>
                     </mc-select>
                 </template>
