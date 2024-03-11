@@ -214,7 +214,7 @@ app.component('opportunity-registrations-table', {
             entities.refresh();
         },
         
-        filterByRanges(option,entities) {
+        filterByRanges(entities) {
             this.query['range'] = `IN(${this.selectedRanges.toString()})`;
             entities.refresh();
         },
