@@ -458,9 +458,12 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $self = $this;
 
         // Define o valor da coluna eligible da inscrição no momento do insert
-        $app->hook('entity(Registration).insert:after', function() use($app){
+        $app->hook('entity(Registration).<<insert|send>>:after', function() use($app){
             /** @var Registration $this */
             $app->disableAccessControl();
+
+            $this->eligible = $this->isEligibleForAffirmativePolicies();
+            $this->save(true);
             
             if ($this->previousPhase) {
                 $this->eligible =  $this->previousPhase->isEligibleForAffirmativePolicies();
@@ -487,6 +490,18 @@ class Module extends \MapasCulturais\EvaluationMethod {
             /** @var Registration $this */
             $registration = $this;
             $em = $registration->evaluationMethodConfiguration;
+
+            $allPhases = $registration->opportunity->allPhases;
+            $appliedForQuota = true;
+            foreach($allPhases as $phase) {
+                if($phase->enableQuotasQuestion && !$registration->appliedForQuota) {
+                    $appliedForQuota = false;
+                }
+            }
+
+            if($appliedForQuota) {
+                return false;
+            }
             
             $_rules = [];
             if($pointRewards = $em->pointReward) {
@@ -1115,11 +1130,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
      * @return boolean
      */
     public function qualifiesForQuotaRule(object $rule, Registration $registration): bool
-    {
-        if($registration->appliedForQuota) {
-            return false;
-        }
-     
+    {     
         foreach($rule->fields as $field) {
             if($field_name = $field->fieldName) {
                 if($val = $registration->$field_name) {
