@@ -73,11 +73,11 @@ app.component('opportunity-registrations-table', {
             resultStatus:[],
             query: {
                 '@opportunity': this.phase.id,
-                status: `GTE(0)`
             },
-            selectedCategory:null,
-            selectedStatus:null,
-            selectedStatus:null,
+            selectedCategories: [],
+            selectedProponentTypes: [],
+            selectedRanges: [],
+            selectedStatus: [],
             selectedAvaliation:null,
             order: 'consolidatedResult AS FLOAT DESC',
             avaliableFields
@@ -85,7 +85,7 @@ app.component('opportunity-registrations-table', {
     },
 
     computed: {
-        statusDict () {
+        statusDict() {
             return $MAPAS.config.opportunityRegistrationTable.registrationStatusDict;
         },
         statusEvaluation () {
@@ -95,13 +95,42 @@ app.component('opportunity-registrations-table', {
             let evaluationType = this.phase.evaluationMethodConfiguration ? this.phase.evaluationMethodConfiguration.type : null;
             return evaluationType ? this.statusEvaluation[evaluationType] : null;
         },
-        statusCategory (){
-            return this.phase.registrationCategories.map(category => {
-                return {
-                    value: category.replace(',', '\\,'),
-                    label: category
-                };
-            });
+        status () {
+            const result = {};
+            for (let status of this.statusDict) {
+                result[status.value] = status.label;
+            }
+            return result;
+        },
+        categories (){
+            if (this.phase.registrationCategories && this.phase.registrationCategories.length > 0) {
+                const result = {};
+                for (let category of this.phase.registrationCategories) {
+                    result[category.replace(/,/g, '\\,')] = category;
+                }
+                return result;
+            }
+            return null;
+        },
+        proponentTypes (){
+            if (this.phase.registrationProponentTypes && this.phase.registrationProponentTypes.length > 0) {
+                const result = {};
+                for (let proponentType of this.phase.registrationProponentTypes) {
+                    result[proponentType.replace(/,/g, '\\,')] = proponentType;
+                }
+                return result;
+            }
+            return null;
+        },
+        ranges (){
+            if (this.phase.registrationRanges && this.phase.registrationRanges.length > 0) {
+                const result = {};
+                for (let range of this.phase.registrationRanges) {
+                    result[range.replace(/,/g, '\\,')] = range;
+                }
+                return result;
+            }
+            return null;
         },
         headers () {
             let itens = [
@@ -140,26 +169,56 @@ app.component('opportunity-registrations-table', {
         },
 
         clearFilters(entities) {
-            this.selectedCategory = null;
-            this.selectedStatus = null;
-            this.selectedStatus = null;
+            this.selectedStatus = [];
+            this.selectedCategories = [];
+            this.selectedProponentTypes = [];
+            this.selectedRanges = [];
             this.selectedAvaliation = null;
-            this.query['status'] = `GTE(0)`;
+            delete this.query['range'];
+            delete this.query['status'];
             delete this.query['category'];
+            delete this.query['proponentType'];
             delete this.query['consolidatedResult'];
             entities.refresh();
         },
 
-        filterByCategory(option,entities) {
-            this.selectedCategory = option.value;
-            this.query['category'] = `EQ(${this.selectedCategory})`;
+        removeFilter(filter) {
+            switch (filter.prop) {
+                case 'status':
+                    this.selectedStatus = this.selectedStatus.filter(status => status !== filter.value);
+                    break;
+                case 'category':
+                    this.selectedCategories = this.selectedCategories.filter(category => category !== filter.value);
+                    break;
+                case 'proponentType':
+                    this.selectedProponentTypes = this.selectedProponentTypes.filter(proponentType => proponentType !== filter.value);
+                    break;
+                case 'range':
+                    this.selectedRanges = this.selectedRanges.filter(range => range !== filter.value);
+                    break;
+            }
+        },
+
+        filterByStatus(entities) {
+            this.query['status'] = `IN(${this.selectedStatus.toString()})`;
             entities.refresh();
         },
-        filterByStatus(option,entities) {
-            this.selectedStatus = option.value;
-            this.query['status'] = `EQ(${this.selectedStatus})`;
+        
+        filterByCategories(entities) {
+            this.query['category'] = `IN(${this.selectedCategories.toString()})`;
             entities.refresh();
         },
+
+        filterByProponentTypes(entities) {
+            this.query['proponentType'] = `IN(${this.selectedProponentTypes.toString()})`;
+            entities.refresh();
+        },
+        
+        filterByRanges(option,entities) {
+            this.query['range'] = `IN(${this.selectedRanges.toString()})`;
+            entities.refresh();
+        },
+
         filterAvaliation(option,entities){
             this.selectedAvaliation = option.value;
             this.query['consolidatedResult'] = `EQ(${this.selectedAvaliation})`;
@@ -182,6 +241,7 @@ app.component('opportunity-registrations-table', {
         statusToString(status) {
             return this.text(status)
         },
+
         isFuture() {
             const phase = this.phase;
             if (phase.isLastPhase) {
