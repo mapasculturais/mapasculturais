@@ -102,14 +102,16 @@ $this->import('
                         </template>
                         <th class="entity-table__select_columns">
                             <mc-popover>
-                                <label><?= i::__('Exibir colunas')?></label>
+                                <div class="entity-table__popover">
+                                    <label class="field__title bold"><?= i::__('Selecione as colunas que deseja exibir:')?></label>
 
-                                <label class="field__checkbox">
-                                    <input ref="allHeaders" type="checkbox" @click="showAllHeaders()"> <?= i::__('Todas as colunas') ?>
-                                </label>
-                                <label v-for="column in columns" class="field__checkbox">
-                                    <input v-if="column.text" :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
-                                </label>
+                                    <label class="field__checkbox">
+                                        <input ref="allHeaders" type="checkbox" @click="showAllHeaders()"> <?= i::__('Todas as colunas') ?>
+                                    </label>
+                                    <label v-for="column in columns" class="field__checkbox">
+                                        <input v-if="column.text" :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
+                                    </label>
+                                </div>
 
                                 <template #button="popover">
                                     <a href="#" title="<?= i::__("definir colunas habilitadas") ?> "><mc-icon name="columns" @click.prevent="popover.toggle()" ></mc-icon></a>
