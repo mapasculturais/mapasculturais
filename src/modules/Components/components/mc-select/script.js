@@ -17,6 +17,11 @@ app.component('mc-select', {
             type: Boolean,
             default: false,
         },
+
+        small: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     setup(props, { slots }) {
