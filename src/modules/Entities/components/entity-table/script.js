@@ -252,33 +252,40 @@ app.component('entity-table', {
         },
 
         removeFilter(filter) {
-            if (filter.prop == 'status') {
-                let status = /(EQ|IN|GT|GTE|LT|LTE)\(([^\)]+,?)+\)/.exec(this.query[filter.prop]);
-                let operator = status[1];
-                let values = status[2];
 
-                if (operator == 'IN') {
-                    values = values.split(',');
+            switch (filter.prop) {
+                case 'status':
+                    const status = /(EQ|IN|GT|GTE|LT|LTE)\(([^\)]+,?)+\)/.exec(this.query[filter.prop]);
+                    const operator = status[1];
+                    const values = status[2];
 
-                    if (values.length > 1) {
-                        for (let index of Object.keys(values)) {
-                            if (values[index] == filter.value) {
-                                values.splice(index, 1);
+                    if (operator == 'IN') {
+                        values = values.split(',');
+
+                        if (values.length > 1) {
+                            for (let index of Object.keys(values)) {
+                                if (values[index] == filter.value) {
+                                    values.splice(index, 1);
+                                }
                             }
+                            
+                            this.query[filter.prop] = `${operator}(${values.toString()})`;
+                        } else {
+                            this.query[filter.prop] = 'GTE(0)';
                         }
-                        
-                        this.query[filter.prop] = `${operator}(${values.toString()})`;
                     } else {
                         this.query[filter.prop] = 'GTE(0)';
                     }
-                } else {
-                    this.query[filter.prop] = 'GTE(0)';
-                }
-            }
+                    break;
 
-            if (filter.prop == '@keyword') {
-                delete this.query['@keyword'];
-                this.searchText = '';
+                case '@keyword':
+                    delete this.query[filter.prop];
+                    this.searchText = '';
+                    break;
+                    
+                default:
+                    delete this.query[filter.prop];
+                    break;
             }
         },
     },
