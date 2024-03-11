@@ -96,7 +96,12 @@ app.component('opportunity-registrations-table', {
             return evaluationType ? this.statusEvaluation[evaluationType] : null;
         },
         statusCategory (){
-            return this.phase.registrationCategories;
+            return this.phase.registrationCategories.map(category => {
+                return {
+                    value: category.replace(',', '\\,'),
+                    label: category
+                };
+            });
         },
         headers () {
             let itens = [

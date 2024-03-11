@@ -72,7 +72,7 @@ $this->import('
                     <div class="mc-tag-list">
                         <ul class="mc-tag-list__tagList">
                             <li v-for="filter in appliedFilters" class="mc-tag-list__tag mc-tag-list__tag--editable opportunity__background opportunity__color">
-                                <span>{{ filter.label }}</span>
+                                <span>{{ filter }}</span>
                                 <mc-icon name="delete" @click="removeFilter(filter)" is-link></mc-icon>
                             </li>
                             <li>
