@@ -15,12 +15,30 @@
     }
 
     &__select_columns {
+
         text-align: right;
         >*{
             display: inline-block;
         }
         .iconify {
             font-size: $font-size-lg;
+        }
+    }
+
+    &__popover {
+        max-width: size(500);
+        max-height: size(500);
+        overflow: auto;
+
+        .field__title {
+            display: flex;
+            color: var(--mc-primary-500);
+            font-size: var(--mc-font-size-xs);
+            margin-bottom: size(16);
+        }
+
+        .field__checkbox {
+            padding-bottom: size(10);
         }
     }
 
