@@ -72,7 +72,7 @@ $entity = $this->controller->requestedEntity;
                         </mc-select>
                         
                         <mc-select v-if="statusCategory.length > 0" class="col-3" :default-value="selectedCategory" @change-option="filterByCategory($event,entities)" placeholder="<?= i::__("Categoria") ?>">
-                            <option v-for="item in statusCategory" :value="item">{{item}}</option>
+                            <option v-for="item in statusCategory" :value="item.value">{{item.label}}</option>
                         </mc-select>
                     </div>
                 </template>

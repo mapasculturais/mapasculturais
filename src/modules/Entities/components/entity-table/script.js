@@ -106,6 +106,7 @@ app.component('entity-table', {
         appliedFilters() {
             const type = this.type;
             const query = JSON.parse(JSON.stringify(this.query));
+            const $description = this.$description;
             
             delete query['@limit'];
             delete query['@opportunity'];
@@ -147,7 +148,7 @@ app.component('entity-table', {
                     });
 
                 } else {
-                    const fieldDescription = this.$description[prop];
+                    const fieldDescription = $description[prop];
 
                     if (fieldDescription.field_type == 'select') {
                         return values.map((value) => { 
@@ -162,7 +163,13 @@ app.component('entity-table', {
                 //      EQ(10), EQ(preto), IN(8, 10), IN(preto, pardo)                
                 let values = /(EQ|IN|GT|GTE|LT|LTE)\(([^\)]+,?)+\)/.exec(value); 
                 
-                return values[2].split(',').filter(value => value.trim());
+                if(values[1] == 'IN') {
+                    values = values[2].replace(/[^\\],/, '$$$$$$');
+                } else {
+                    values = values[2];
+                }
+
+                return values.split('$$$$$$').filter(value => value.trim());
             }
 
             let result = [];
@@ -260,6 +267,7 @@ app.component('entity-table', {
                     const values = status[2];
 
                     if (operator == 'IN') {
+                        values = values.replace(/[^\\],/, '$$$$$$');
                         values = values.split(',');
 
                         if (values.length > 1) {
